@@ -72,18 +72,6 @@ def test_healthz_is_the_only_non_stub(client: TestClient) -> None:
             {"run_id": str(uuid4())},
         ),
         (
-            "/runs/list",
-            {"user_id": "alex"},
-        ),
-        (
-            "/runs/status",
-            {"run_id": str(uuid4())},
-        ),
-        (
-            "/runs/artifact",
-            {"artifact_id": str(uuid4())},
-        ),
-        (
             "/hpc/estimate",
             {"run_id": str(uuid4())},
         ),

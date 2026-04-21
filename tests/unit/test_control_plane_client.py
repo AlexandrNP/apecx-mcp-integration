@@ -10,14 +10,10 @@ These exercise the client against a real ASGI app (no mock HTTP layer) using
 
 from __future__ import annotations
 
-from uuid import uuid4
-
 import httpx
 import pytest
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.schemas.api import (
-    GetStatusRequest,
-    ListRunsRequest,
     StartWorkflowRequest,
 )
 from apecx_integration.mcp_surface.control_plane_client import ControlPlaneClient
@@ -46,13 +42,3 @@ async def test_start_workflow_raises_not_implemented(client: ControlPlaneClient)
     await client.close()
 
 
-async def test_list_runs_raises_not_implemented(client: ControlPlaneClient) -> None:
-    with pytest.raises(NotImplementedError):
-        await client.list_runs(ListRunsRequest(user_id="alex"))
-    await client.close()
-
-
-async def test_get_status_raises_not_implemented(client: ControlPlaneClient) -> None:
-    with pytest.raises(NotImplementedError):
-        await client.get_status(GetStatusRequest(run_id=uuid4()))
-    await client.close()
