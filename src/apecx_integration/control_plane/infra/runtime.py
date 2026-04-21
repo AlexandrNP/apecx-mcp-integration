@@ -91,10 +91,35 @@ def _docker_daemon_is_up() -> bool:
     return res.returncode == 0 and bool(res.stdout.strip())
 
 
+_INSTALL_HINT = """\
+Neither Docker (daemon-up) nor Apptainer/Singularity is available. Options:
+
+  macOS:
+    - Docker Desktop:  https://www.docker.com/products/docker-desktop
+    - Apptainer (via Lima VM):
+        https://apptainer.org/docs/admin/main/installation.html#mac
+
+  Linux (laptop / workstation):
+    - Docker Engine:   apt install docker.io   (or equivalent)
+                       then add your user to the 'docker' group.
+    - Apptainer:       https://apptainer.org/docs/admin/main/installation.html
+
+  HPC (no root):
+    - Apptainer is typically pre-installed; try `module load apptainer`
+      or `module load singularity` for the legacy binary.
+    - Docker is rarely available on HPC; don't expect it.
+
+Escape hatches that need no container:
+    - export APECX_CP_DB_URL='sqlite:///./apecx_cp.db'       # zero infra
+    - export APECX_CP_DB_URL='postgresql+psycopg://...'      # BYO remote
+"""
+
+
 def detect_runtime() -> ContainerRuntime:
     """Pick a runtime. Docker first if its daemon is up, Apptainer next.
 
-    Raises :class:`ContainerRuntimeUnavailable` if neither is available.
+    Raises :class:`ContainerRuntimeUnavailable` with OS-specific install
+    hints and BYO-escape-hatch env-var examples if neither is available.
     """
     # Late imports so Docker-only and Apptainer-only code paths don't
     # import each other's subprocess shims at module load time.
@@ -110,7 +135,4 @@ def detect_runtime() -> ContainerRuntime:
         binary = "apptainer" if _have_command("apptainer") else "singularity"
         return ApptainerRuntime(binary=binary)
 
-    raise ContainerRuntimeUnavailable(
-        "Neither Docker (daemon-up) nor Apptainer/Singularity found on PATH. "
-        "Install one, or set APECX_CP_DB_URL to a remote Postgres you manage."
-    )
+    raise ContainerRuntimeUnavailable(_INSTALL_HINT)

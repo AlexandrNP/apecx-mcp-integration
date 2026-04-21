@@ -93,8 +93,9 @@ def teardown_infra(
     decision = decide_infra_mode(db_url)
     if decision.mode is not InfraMode.LOCAL_POSTGRES_MANAGED:
         log.info(
-            "teardown skipped: %s does not correspond to a managed container "
-            "(mode=%s)", db_url, decision.mode.value,
+            "teardown skipped: %s does not correspond to a managed container " "(mode=%s)",
+            db_url,
+            decision.mode.value,
         )
         return
     resolved_runtime = runtime or detect_runtime()

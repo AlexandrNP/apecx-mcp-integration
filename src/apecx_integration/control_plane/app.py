@@ -90,10 +90,47 @@ def _serve(args: argparse.Namespace) -> int:
 
 
 def _teardown(args: argparse.Namespace) -> int:
-    from apecx_integration.control_plane.infra.lifecycle import teardown_infra
+    from apecx_integration.control_plane.infra.apptainer_runtime import (
+        ApptainerRuntime,
+        _managed_data_path,
+    )
+    from apecx_integration.control_plane.infra.lifecycle import (
+        default_data_dir,
+        teardown_infra,
+    )
+    from apecx_integration.control_plane.infra.runtime import (
+        PostgresConfig,
+        detect_runtime,
+    )
+    from apecx_integration.control_plane.infra.urls import InfraMode, decide_infra_mode
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
-    teardown_infra(get_db_url(), remove_data=args.remove_data)
+
+    db_url = get_db_url()
+    if args.remove_data and not args.yes:
+        decision = decide_infra_mode(db_url)
+        if decision.mode is InfraMode.LOCAL_POSTGRES_MANAGED:
+            # Resolve the exact path / volume that would be destroyed so
+            # the user sees what they're agreeing to.
+            runtime = detect_runtime()
+            cfg = PostgresConfig(data_dir=str(default_data_dir()))
+            if isinstance(runtime, ApptainerRuntime):
+                target = (
+                    f"rm -rf on {_managed_data_path(cfg)!r} (managed Apptainer "
+                    "bind-mount subdirectory)"
+                )
+            else:
+                # Docker: we drop the named volume, not a host path.
+                target = (
+                    "docker volume rm apecx_cp_postgres_data (all Postgres " "state; unrecoverable)"
+                )
+            print(f"--remove-data is DESTRUCTIVE. It will run:\n  {target}")
+            answer = input("Proceed? [type 'yes' to confirm]: ").strip().lower()
+            if answer != "yes":
+                print("Aborted.")
+                return 1
+
+    teardown_infra(db_url, remove_data=args.remove_data)
     return 0
 
 
@@ -113,8 +150,17 @@ def main(argv: list[str] | None = None) -> int:
     teardown_p.add_argument(
         "--remove-data",
         action="store_true",
-        help="Also delete the persistent Postgres data (volume on Docker, "
-        "bind-mount dir on Apptainer). DESTRUCTIVE — only for explicit reset.",
+        help="Also delete the persistent Postgres data (named volume on "
+        "Docker, managed bind-mount subdir on Apptainer). DESTRUCTIVE — "
+        "only for explicit reset. Prompts before running unless --yes is "
+        "also passed.",
+    )
+    teardown_p.add_argument(
+        "--yes",
+        "-y",
+        action="store_true",
+        help="Skip the interactive confirmation prompt for --remove-data. "
+        "Intended for scripts / CI.",
     )
     teardown_p.set_defaults(func=_teardown)
 

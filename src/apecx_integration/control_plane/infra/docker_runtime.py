@@ -15,6 +15,7 @@ Why ``docker compose`` and not ``docker run``:
 
 from __future__ import annotations
 
+import logging
 import subprocess
 import time
 from pathlib import Path
@@ -23,6 +24,8 @@ from apecx_integration.control_plane.infra.runtime import (
     PostgresConfig,
     RuntimeKind,
 )
+
+log = logging.getLogger(__name__)
 
 CONTAINER_NAME = "apecx-cp-postgres"
 VOLUME_NAME = "apecx_cp_postgres_data"
@@ -69,8 +72,26 @@ class DockerRuntime:
                 f"PostgresConfig asked for {config.port}. Edit the compose "
                 "file if you need a different port."
             )
+        already = self.is_postgres_running()
+        if already:
+            log.info("Docker container %s already running; no-op.", CONTAINER_NAME)
+        else:
+            log.info(
+                "Docker: starting container %s via `docker compose up -d "
+                "postgres`. Image %s will be pulled on first run; this may "
+                "take a minute.",
+                CONTAINER_NAME,
+                config.image,
+            )
         self._compose("up", "-d", "postgres")
+        if not already:
+            log.info(
+                "Waiting for Postgres to report healthy on localhost:%d...",
+                config.port,
+            )
         self._wait_for_healthy(timeout_seconds=30)
+        if not already:
+            log.info("Postgres ready on localhost:%d.", config.port)
 
     def is_postgres_running(self) -> bool:
         res = self._compose("ps", "--format", "{{.Name}}\t{{.State}}", check=False)

@@ -98,3 +98,122 @@ from `test_postgres_parity.py` to isolate each test.
 See `docs/t09_postgres_parity_gap.md` for the broader T09 parity gap
 (crash-atomicity on Postgres, backup-restore on Postgres,
 tamper-detection parity).
+
+---
+
+## Apptainer Postgres runtime image
+
+**What:** The Apptainer runtime is wired and its plumbing is proven end-
+to-end via the Lima integration tests (lightweight Alpine image),
+but `ApptainerRuntime.ensure_postgres_running(config)` with the default
+`image="postgres:16-alpine"` does **not** yield a running Postgres. The
+`tests/integration/test_apptainer_runtime.py::test_postgres_accepts_connections_under_apptainer`
+test is `xfail(strict=True)` with a pointer to this entry — the moment a
+working image lands, that test flips to pass and CI flags it.
+
+**Why it doesn't work:** `apptainer instance start docker://postgres:16-alpine`
+spawns Apptainer's own `appinit` as PID 1 inside the container instead of
+invoking the image's ENTRYPOINT. The Postgres `docker-entrypoint.sh`
+never runs, so no `initdb`, no `postgres` listener. This is an
+Apptainer↔Docker semantic difference, not a bug in our wrapper: `instance
+start` expects the image to define `%startscript` (SIF format only), not
+a Docker ENTRYPOINT. Additionally, the Postgres Docker image assumes
+root-owned `gosu postgres` dropdown — a pattern that does not survive
+Apptainer's unprivileged user-namespace execution model.
+
+**Why deferred:** Docker is sufficient on scientist laptops (the priority
+deployment). Apptainer is for HPC, and HPC users who actually need
+Postgres under Apptainer will need a custom SIF image anyway — a generic
+`docker://postgres` wouldn't be the right artifact in that environment
+either (storage locations, shared filesystems, user-namespace quirks all
+vary per cluster).
+
+**Trigger to revisit:** any of
+- A paying user sits on an HPC node and wants to run the Control Plane
+  there with Apptainer-managed Postgres.
+- We find that SQLite-on-HPC-shared-filesystem misbehaves (lock issues,
+  WAL file semantics on NFS/Lustre) at which point BYO-Postgres or a
+  custom SIF becomes the path.
+
+**Cost estimate:** ~3–5 days.
+- Build an Apptainer recipe (`.def`) file that bakes Postgres configured
+  for a non-root user (e.g., `postgres-nonroot.sif`).
+- Define a `%startscript` that invokes `postgres` with the appropriate
+  `PGDATA` under the bind-mount.
+- Update `ApptainerRuntime` to default `image="file:///path/to.sif"` or
+  accept an `image_uri` override (probably already works — verify).
+- Run the xfail test on a cluster + verify.
+
+---
+
+## Teardown race: ensure-immediately-after-teardown
+
+**What:** `teardown_infra(db_url)` calls the runtime's `teardown` then
+returns. It does not block until the container is guaranteed-gone; both
+`docker compose down` (usually synchronous) and `apptainer instance stop`
+(async-ish) can leave transient state where a subsequent
+`ensure_infra_ready(db_url)` races.
+
+**Why deferred:** In normal scientist usage (`apecx-cp serve` → Ctrl-C →
+`apecx-cp serve` again) there is plenty of wall-clock between the two,
+so the race is a theoretical risk. We have no reported occurrences.
+
+**Trigger to revisit:** any automated orchestration that does
+back-to-back `teardown → ensure` (e.g., a `reset-db` subcommand, a test
+harness that cycles infra). Also if a user reports mysterious
+"container name already in use" errors after `apecx-cp teardown`.
+
+**Mitigation strategies, in order of invasiveness:**
+- **Sleep-and-poll wrapper around teardown.** `teardown_infra` polls
+  `is_postgres_running()` until false (or timeout) before returning.
+  Cheap, ~10 LOC.
+- **Docker: use `docker compose down --wait`.** Compose blocks until
+  containers are actually removed. For Apptainer, wait-loop on
+  `apptainer instance list`.
+- **Retry-with-backoff inside `ensure_postgres_running`.** If the
+  `up -d` call fails with "container name in use" or similar, sleep
+  briefly and retry. More robust but hides real bugs.
+
+**Cost estimate:** ~0.5 day (option 1), ~1 day (option 2).
+
+---
+
+## Stress / concurrent-startup tests for infra governance
+
+**What:** No test exercises two `apecx-cp serve` processes starting
+simultaneously, or one `serve` invocation interrupted mid-startup
+and a second one begun. Compose's project-level lockfile should
+handle this gracefully, but we have not verified.
+
+**Why deferred:** Pathological case. Single-user laptop target makes
+it unlikely.
+
+**Trigger to revisit:** multi-user shared deployment, or a CI pipeline
+that parallelizes apecx-cp serve across test matrices.
+
+**Cost estimate:** ~0.5 day. Spawn two subprocess.Popen instances of
+`apecx-cp serve` with staggered delays; verify both converge to the
+same healthy Postgres without error.
+
+---
+
+## Lima-on-macOS caveats for Apptainer
+
+**What:** Apptainer-on-macOS via Lima has a few sharp edges documented
+in `tests/integration/test_apptainer_runtime.py` but worth escalating:
+- Lima reverse-mounts `$HOME` **read-only** by default. Apptainer
+  bind-mounts need writable host paths, so tests use `/tmp/` inside
+  the VM, not host `tmp_path`.
+- `/private/var/folders/.../tmp` (macOS pytest tmp dir) isn't mounted
+  inside the VM at all.
+- Lima's default port-forward picks up anything on the VM's
+  `127.0.0.1`, but the set is bounded — large-port setups may need
+  explicit `portForwards` config.
+
+**Why deferred:** We got the tests working around these; no code
+action needed unless the test matrix grows.
+
+**Trigger to revisit:** If a non-macOS / non-HPC platform emerges that
+needs containerized Apptainer (WSL? Windows? — unlikely).
+
+**Cost estimate:** 0 unless required.

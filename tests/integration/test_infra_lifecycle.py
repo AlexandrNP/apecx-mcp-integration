@@ -15,8 +15,6 @@ Apptainer path, run on a host with apptainer and no docker daemon.
 from __future__ import annotations
 
 import pytest
-from sqlalchemy import create_engine, inspect
-
 from apecx_integration.control_plane.infra.docker_runtime import DockerRuntime
 from apecx_integration.control_plane.infra.lifecycle import (
     ensure_infra_ready,
@@ -26,6 +24,7 @@ from apecx_integration.control_plane.infra.runtime import (
     PostgresConfig,
     _docker_daemon_is_up,
 )
+from sqlalchemy import create_engine, inspect
 
 pytestmark = [
     pytest.mark.integration,
@@ -126,11 +125,7 @@ def test_byo_postgres_url_skips_container_and_attempts_migration_directly(
     # ensure was NOT called.
     import sqlalchemy.exc
 
-    with pytest.raises(
-        (sqlalchemy.exc.OperationalError, sqlalchemy.exc.DBAPIError)
-    ):
-        ensure_infra_ready(
-            "postgresql+psycopg://u:p@db.example.invalid:5432/x"
-        )
+    with pytest.raises((sqlalchemy.exc.OperationalError, sqlalchemy.exc.DBAPIError)):
+        ensure_infra_ready("postgresql+psycopg://u:p@db.example.invalid:5432/x")
 
     assert calls == []

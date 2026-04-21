@@ -21,6 +21,42 @@ The logic lives in `src/apecx_integration/control_plane/infra/urls.py`
 (`decide_infra_mode`) and in `src/.../infra/lifecycle.py`
 (`ensure_infra_ready`, `teardown_infra`).
 
+## Why remote Postgres is BYO, not managed
+
+The third row of the table above deserves a rationale. Linking a remote
+Postgres is **not** a substitute for the app providing infrastructure —
+the three modes solve three genuinely different problems:
+
+- **LOCAL_POSTGRES_MANAGED** (the "we provide it" path) exists because
+  the scientist shouldn't have to install or configure anything. The
+  backend uses whatever local container runtime is available to bring
+  up a process on the same host it runs on. This is the default ergonomic
+  we promise.
+- **SQLITE_NO_INFRA** is the "we provide it, but even lighter" path:
+  the DB is a file, so there's nothing to provision.
+- **REMOTE_POSTGRES_BYO** is the escape hatch for operators who
+  deliberately want a different backing store (managed RDS, an
+  organization-provided Postgres cluster, a shared dev DB, a test harness
+  pointing at a scratch DB for a specific pipeline). The app honors their
+  choice by **not interfering** with whatever is upstream.
+
+There is a **hard architectural reason the app cannot manage remote
+infra**, beyond preference: the only levers we have for provisioning
+(Docker daemon socket, Apptainer CLI) are **local**. Managing a container
+on a remote host would require SSH orchestration, remote runtime binaries,
+credentials, firewall assumptions — i.e., a deployment tool (Ansible,
+Terraform, k8s operators) bolted into the Control Plane. That scope
+explosion would turn the backend into a devops framework, which is the
+opposite of "scientist installs MCP server + backend and interacts with
+Claude." The BYO mode is the explicit, honest boundary between "the app
+owns its infra" and "the operator owns the infra"; pretending to manage
+something upstream we can't actually reach would be worse than refusing.
+
+The remaining real question — "what if an ops team needs this for a
+shared deployment?" — is answered by the existing escape hatches. They
+bring their own Postgres via `APECX_CP_DB_URL`; we migrate schema and
+stay out of their way.
+
 ## Runtime selection
 
 `detect_runtime()` in `src/.../infra/runtime.py` picks between Docker
