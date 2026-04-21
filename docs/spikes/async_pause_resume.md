@@ -77,22 +77,29 @@ The spike's `InMemoryApprovalStore` is the *shape* of what the Control Plane (Ti
 
 Not urgent. Logged as a scope-item for the shared-backend phase.
 
-### 3.3 Packaging: nanobrain's `pyproject.toml` is broken
+### 3.3 Packaging: nanobrain's `pyproject.toml` was broken — **RESOLVED 2026-04-21**
 
-`pip install -e /path/to/nanobrain` fails with a setuptools error:
+**Historical note (kept for traceability):** at the time of the spike, `pip install -e /path/to/nanobrain` failed with a setuptools error:
 
 > others must be specified via the equivalent attribute in `setup.py`
 
-Also, `aiofiles` is used by nanobrain but not declared in its deps; importing nanobrain raises `ModuleNotFoundError: No module named 'aiofiles'` until you install it manually.
+And `aiofiles` could not be imported because the install itself never completed (it was already in `dependencies`, just not reachable since the wheel didn't build).
 
-**Design implication for T10 (and for all integration work):**
+**Resolution (scope-decision memo 03, user-approved 2026-04-21):** two targeted edits to `nanobrain/pyproject.toml`:
 
-- Real `apecx-mcp-integration` code cannot depend on `pip install nanobrain` working. We must either:
-  - (a) bundle nanobrain as a vendored subtree in apecx-integration, or
-  - (b) fix nanobrain's packaging (requires the "edit nanobrain discussed separately" approval), or
-  - (c) do sys.path insertion (acceptable for spikes, NOT for shipped integration code).
+1. Removed the `dynamic = ["authors", "license", "keywords", "classifiers", "urls", "scripts"]` line — those fields had no backing source since there is no `setup.py`.
+2. Added explicit `[tool.setuptools.packages.find]` with `include = ["nanobrain*"]` so setuptools discovers the nested package unambiguously.
 
-**Recommendation:** Option (b). This is the cleanest path; it's one of the candidate edits for the batch-carve-out conversation.
+**Verification after fix:**
+```
+pip install -e /Users/onarykov/Downloads/apecx-cowork/nanobrain
+→ Successfully installed nanobrain-0.1.0
+
+python -c "from nanobrain.core.executor import LocalExecutor; print('OK:', LocalExecutor)"
+→ OK: <class 'nanobrain.core.executor.LocalExecutor'>
+```
+
+**Design implication going forward:** `apecx-mcp-integration` can now declare nanobrain as a `pip install -e ../nanobrain` dev-dep in its pyproject; no more sys.path insertion in shipped code. The spike script still uses sys.path insertion for historical fidelity, but any new integration code should import nanobrain via the normal install path.
 
 ---
 

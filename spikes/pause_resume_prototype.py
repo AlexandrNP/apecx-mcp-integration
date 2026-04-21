@@ -33,9 +33,10 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-# Spike-only: nanobrain is not pip-installable cleanly from its current setup,
-# so we import it via sys.path insertion. Real integration code will install it
-# properly once the nanobrain packaging fix is in scope.
+# 2026-04-21 update: nanobrain's packaging was fixed (scope-decision memo 03),
+# so `pip install -e ../nanobrain` works. The sys.path fallback below remains as
+# a safety net for users who haven't installed nanobrain yet; real integration
+# code should rely on the pip install.
 NANOBRAIN_SRC = Path(__file__).resolve().parent.parent.parent / "nanobrain"
 if str(NANOBRAIN_SRC) not in sys.path:
     sys.path.insert(0, str(NANOBRAIN_SRC))

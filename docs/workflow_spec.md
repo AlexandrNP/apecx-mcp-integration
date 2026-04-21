@@ -247,13 +247,20 @@ The workflow is "T01-ready" when:
 
 ---
 
-## 8. Open questions for user
+## 8. Open questions — resolved as of 2026-04-21
 
-1. **Is the sample query `"What vaccines target chikungunya?"`** the right starting query, or is there a different one that would better exercise the VIOLIN/BV-BRC cross-reference? (The output's usefulness depends on which query hits the most populated cells in both datasets.)
-2. **HARD vs. SOFT gate for Step 4?** A HARD gate blocks indefinitely; a SOFT gate times out (default: auto-approve top matches). With v2's cache-hit short-circuit, the gate fires less often — HARD is probably the right default now.
-3. **Batch query behavior — defer explicitly?** Current spec is single-query. Making this explicit in the scope document avoids scope creep later.
-4. **Fuzzy-match threshold.** Step 3b emits `confident_fuzzy_hits` above some similarity threshold (say 0.92) and `residuals` below it. Where to draw the line is an empirical question — start at 0.92 and tune based on first-scientist feedback.
-5. **Verified-synonym overrides.** Can a user revoke or correct a previously-approved `VerifiedSynonym`? Probably yes (mistakes happen). If so, the cache lookup (Step 3a) needs an "active" flag and a revocation path. Defer to T09 migration design, but flag now.
+1. **Sample query.** Still open — default is `"What vaccines target chikungunya?"` unless the team redirects.
+2. **HARD vs. SOFT gate for Step 4.** Still open; my default recommendation remains HARD for the first release (the cache short-circuit makes it fire less often anyway).
+3. **Batch query behavior.** Deferred explicitly. MVP is single-query; batch is a post-MVP scope item.
+4. **Fuzzy-match threshold — DECIDED: 0.92.** User directive 2026-04-21. Step 3b classifies candidates as `confident_fuzzy_hits` iff similarity ≥ 0.92; anything below flows to `residuals` and hence to the LLM proposal step. Tune based on first-scientist feedback; log the decision in `docs/scope_decisions/` if it changes.
+5. **Verified-synonym revocation — DECIDED: supported via soft-delete.** User directive 2026-04-21.
+   - `VerifiedSynonym` has `is_active`, `revoked_by`, `revoked_at`, `revocation_reason`, `superseded_by` fields.
+   - Revoked rows are NEVER deleted — they remain for audit and provenance.
+   - Cache lookup (Step 3a) filters by `is_active=true`.
+   - Supersession: when a revoked mapping is replaced by a corrected one, the new row's ID is recorded as `superseded_by` on the revoked row, giving a history chain.
+   - MCP surface adds a new tool (to be specced in T09): `revoke_synonym(synonym_id, reason)`.
+   - T09 migration enforces uniqueness only over the ACTIVE subset:
+     `CREATE UNIQUE INDEX verified_synonym_active_unique ON verified_synonym (source_vocabulary, query_term, target_vocabulary, scope) WHERE is_active = true;`
 
 ---
 
