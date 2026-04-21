@@ -34,15 +34,27 @@ def get_db_url() -> str:
 
 
 def make_engine(url: str | None = None, *, echo: bool = False) -> Engine:
-    """Create an engine with SQLite WAL mode wired in on connect."""
+    """Create an engine with SQLite WAL mode wired in on connect.
+
+    SQLite / FastAPI threadpool note: ``check_same_thread=False`` lets a
+    pooled connection cross Python-thread boundaries, which FastAPI's sync
+    handler dispatch (anyio threadpool) requires. SQLAlchemy's engine-level
+    connection pool is still the gate that prevents two threads from
+    simultaneously executing on the same DBAPI connection: as long as each
+    unit of work acquires a connection/session via the factory and releases
+    it before yielding back, there is no thread-sharing of mid-flight
+    transaction state. What this does NOT protect against:
+      * holding a Session across an await that yields to another request;
+      * spawning a worker thread from inside a handler that reuses the
+        handler's Session.
+    Both are bugs we will catch under load, not at compile time; if the
+    Control Plane ever gets real concurrent traffic, add a Session-scope
+    stress test before assuming this still holds.
+    """
     resolved = url or get_db_url()
     engine = create_engine(
         resolved,
         echo=echo,
-        # check_same_thread=False so FastAPI can share a SQLite connection
-        # across threads (FastAPI's default dependency injection runs
-        # handlers on a thread pool). The engine-level connection pool
-        # still gates real concurrency.
         connect_args={"check_same_thread": False} if resolved.startswith("sqlite") else {},
         future=True,
     )

@@ -12,10 +12,22 @@ Canonical JSON uses ``sort_keys=True`` and tight separators so that
 functionally-equal payloads produce the same hash regardless of dict
 iteration order.
 
-Concurrency: a single ``ProvenanceRecorder`` instance serializes writes
-within a process via a threading lock. For multi-process deployments, use
-a DB-level advisory lock or a SERIALIZABLE transaction upstream; this
-class is designed for the laptop single-process Control Plane.
+Concurrency model:
+- Target: single process, multiple OS threads (FastAPI's sync-handler
+  threadpool). ``threading.Lock`` is the correct primitive for that
+  lane: it serializes write attempts between threads so two concurrent
+  ``record`` calls cannot both read the same ``prev_event_hash`` and
+  then write siblings that claim the same predecessor.
+- If a caller moves this into a native-async handler (``async def``
+  with an ``await`` reachable from under the lock), the blocking
+  acquire pins the event loop. An async-aware primitive (e.g.,
+  ``anyio.Lock``) would be needed then. The recorder has no awaits
+  today, so this is only a live concern the moment an async code
+  path wraps it.
+- Multi-process deployment (gunicorn workers, multiple uvicorn
+  processes) is out of scope: two processes can both read the same
+  tail event and race. A DB advisory lock (Postgres) or SERIALIZABLE
+  transaction would be required to extend to that lane.
 """
 
 from __future__ import annotations

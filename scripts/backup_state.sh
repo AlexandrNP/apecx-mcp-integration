@@ -4,6 +4,15 @@
 # Reads APECX_CP_DB_URL (default sqlite:///./apecx_cp.db).
 # Writes backup to the path given as the first argument.
 #
+# Required tools on $PATH:
+#   - sqlite3        (SQLite backends)
+#   - pg_dump        (Postgres backends)
+# macOS ships sqlite3 by default; pg_dump comes with Postgres.app or
+# `brew install libpq && brew link --force libpq`. On a slim Linux base
+# image install packages `sqlite3` and `postgresql-client` respectively.
+# The script exits non-zero with a clear message if a required tool is
+# missing (set -e + the tool's own "command not found").
+#
 # SQLite: uses sqlite3's `.backup` command, which takes a consistent
 #   snapshot via the SQLite backup API (correctly handles WAL + any
 #   in-progress writers — a raw `cp` can produce a corrupt copy when

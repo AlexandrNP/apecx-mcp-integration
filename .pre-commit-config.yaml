@@ -20,6 +20,6 @@ repos:
     hooks:
       - id: no-ungated-mocks-in-src
         name: Reject unittest.mock usage in src/ (workspace CLAUDE.md)
-        entry: bash -c 'if grep -rn "from unittest.mock\|from unittest import mock\|import mock\|MagicMock" src/ 2>/dev/null; then echo "Found mocks in src/ — workspace policy forbids."; exit 1; fi'
+        entry: bash -c 'if grep -rn --include="*.py" --exclude-dir="*.egg-info" "from unittest.mock\|from unittest import mock\|^import mock\|MagicMock" src/ 2>/dev/null; then echo "Found mocks in src/ — workspace policy forbids."; exit 1; fi'
         language: system
         pass_filenames: false

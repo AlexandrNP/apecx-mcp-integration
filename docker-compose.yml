@@ -1,12 +1,17 @@
-# T09 AC7: Postgres service for parity integration tests.
+# T09 AC7: Postgres service for the Control Plane.
 #
-# Usage:
+# Default usage (persistent data survives restarts):
 #   docker compose up -d postgres
 #   export APECX_CP_POSTGRES_URL="postgresql+psycopg://apecx:apecx@localhost:5433/apecx_cp"
-#   pytest tests/integration/test_postgres_parity.py
 #
-# Port 5433 (not 5432) to avoid colliding with a locally-installed Postgres.
-# pg_isready healthcheck so pytest can wait for readiness without sleeping.
+# CI / ephemeral usage (tmpfs, zero-state between runs):
+#   docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d postgres
+# The override file replaces the named volume with tmpfs so every CI
+# job starts with a blank DB and nothing survives container restart.
+#
+# Port 5433 (not 5432) to avoid colliding with a locally-installed
+# Postgres. pg_isready healthcheck so tests wait for readiness without
+# sleeping.
 
 services:
   postgres:
@@ -23,7 +28,8 @@ services:
       interval: 2s
       timeout: 2s
       retries: 15
-    tmpfs:
-      # Ephemeral state: tests start with a fresh DB every CI run. Drop
-      # this block if you want persistent data across restarts.
-      - /var/lib/postgresql/data
+    volumes:
+      - apecx_cp_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  apecx_cp_postgres_data:

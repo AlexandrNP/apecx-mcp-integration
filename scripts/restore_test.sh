@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # T09 step 6: restore a Control Plane backup and verify it is queryable.
 #
+# Required tools on $PATH:
+#   - sqlite3                 (SQLite backups)
+#   - pg_restore + psql       (Postgres backups)
+#   - head, od                (basic coreutils, for magic-byte detection)
+# See backup_state.sh for install guidance.
+#
 # Auto-detects backup format (SQLite magic bytes vs. pg_dump magic) and
 # restores to either:
 #   - a local SQLite file (arg 2, default /tmp/apecx_cp_restored.db)

@@ -1,0 +1,11 @@
+# CI override: replace the named volume with tmpfs so each CI run starts
+# with a blank DB and nothing persists after container shutdown.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d postgres
+
+services:
+  postgres:
+    volumes: []
+    tmpfs:
+      - /var/lib/postgresql/data
