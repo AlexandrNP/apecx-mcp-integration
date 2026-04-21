@@ -1,8 +1,14 @@
-# T00.1b — Workflow Spec: VIOLIN × BV-BRC with LLM Synonym Review
+# T00.1b — Workflow Spec: VIOLIN × BV-BRC with Verified-Synonym Caching
 
-**Date:** 2026-04-21
-**Status:** Draft; requires user sign-off before T01 fixtures are written.
+**Date:** 2026-04-21 (v2 with user modifications 2026-04-21)
+**Status:** Modified per user directive; awaiting final sign-off.
 **Derived from:** `apecx-db-integration/` (the Explore subagent's walk found ~900 lines of existing LLM synonym matching in `apecx-db-integration/src/agent.py`) + existing-asset inventory + user directive 2026-04-21 ("pause/resume for manual review of LLM-proposed synonyms").
+
+### v2 changes (user directive 2026-04-21)
+
+1. **Persistent `VerifiedSynonym` entity** — approved synonym mappings persist across runs. Second-and-later runs hit the cache for previously-verified terms; only genuinely novel terms reach the LLM + HITL gate.
+2. **Pre-processing Step 0** — one-time (or snapshot-refresh-triggered) extraction of unique IDs and name variants from the BV-BRC and VIOLIN snapshots into separate vocabulary artifacts. These vocabularies ground the synonym search: deterministic fuzzy match first, LLM reasoning only for genuinely novel cases.
+3. **Step 3 split into deterministic + LLM passes** — the previous single-step synonym proposal now has: (a) check `VerifiedSynonym` cache, (b) fuzzy-match against the Step-0 vocabulary artifact, (c) LLM propose for residuals, (d) HITL approve. Each layer reduces what flows into the next.
 
 ---
 
@@ -49,36 +55,85 @@ Plus `results/<run_id>/ranked_entities.json` with the same data plus provenance 
 
 ---
 
-## 3. Steps (7)
+## 3. Steps (8 main + 1 preprocessing)
+
+### Step 0 (preprocessing — separate workflow, run on snapshot refresh)
+
+`vocabulary_extraction` — reads `data/bvbrc_cache/*.tsv` and `data/violin/*.csv`; produces two artifacts:
+
+- `bvbrc_vocabulary.jsonl` — unique genome/strain/protein IDs and every name variant observed. Schema: `{id, type, canonical_name, aliases: [...], source_file, source_row}`.
+- `violin_vocabulary.jsonl` — unique vaccine/pathogen/gene IDs and every name variant. Same schema.
+
+These are *artifacts*, not a live DB: they are hashed, stored in the Control Plane artifact store, and referenced by `library_version` so the main workflow can pin its dependencies. They regenerate only when the snapshot files change (detected by mtime + content hash).
+
+This step is **NOT** part of the main workflow. It is its own tiny workflow (single step + file-write). The main workflow consumes its output artifacts read-only.
+
+### Main workflow (7 steps)
 
 | # | Step name | Disposition | Existing asset | Wall-time |
 |---|---|---|---|---|
 | 1 | `entity_extraction` | reuse | `apecx-db-integration/src/agent.py:extract_entities_llm()` | ~2–3s (1 LLM call) |
-| 2 | `bvbrc_snapshot_match` | wrap | nanobrain `enhanced_bv_brc_data_acquisition_step.py` (needs real TSV loader — the `_load_csv_data()` is currently a placeholder returning empty DataFrame) | ~1s file + ~3s LLM |
-| 3 | `llm_synonym_proposals` | reuse | `apecx-db-integration/src/agent.py:consolidated_synonym_search()` + `enrich_matches_with_database_data()` | ~3–5s |
-| 4 | **`synonym_approval_gate`** | **new (T10 scope)** | none — blocked on `ApprovalStep` class | 30s–5m (human) |
-| 5 | `violin_entity_lookup` | reuse + small new | join logic in `enrich_matches_with_database_data()`; maybe 1–2 VIOLIN CSV readers | ~0.5s |
+| 2 | `bvbrc_snapshot_match` | wrap | nanobrain `enhanced_bv_brc_data_acquisition_step.py` (needs real TSV loader) | ~1s file + ~3s LLM |
+| 3a | `synonym_cache_lookup` | **new (small)** | queries `VerifiedSynonym` via Control Plane; no LLM | <0.1s |
+| 3b | `synonym_fuzzy_match` | **new (small)** | deterministic fuzzy match against the Step-0 vocabulary artifacts for terms that missed the cache; emits a `likely_synonyms` set plus a `novel_terms` set | <0.2s |
+| 3c | `synonym_llm_proposals` | reuse (smaller inputs) | `apecx-db-integration/src/agent.py:consolidated_synonym_search()` — now only called for `novel_terms` | ~2–4s (scales with residual count) |
+| 4 | **`synonym_approval_gate`** | **new (T10, in nanobrain per scope-decision memo 02)** | `ApprovalStep` in `nanobrain/nanobrain/library/steps/` | 30s–5m (human); short-circuits to 0s for cache hits |
+| 4p | `verified_synonym_writeback` | **new (small)** | POSTs approved synonyms to Control Plane so future runs hit the cache | <0.1s |
+| 5 | `violin_entity_lookup` | reuse + small new | join logic in `enrich_matches_with_database_data()` | ~0.5s |
 | 6 | `genomic_annotation` | wrap | nanobrain `bv_brc_data_acquisition_step.py` + `ProteinSynonymAgent` | ~2–4s |
 | 7 | `result_ranking` | reuse | nanobrain `result_collection_step.py` + `ResponseFormattingStep` | <0.5s |
 
-### 3.1 Data flow (condensed)
+### Cache-hit / cache-miss economics
+
+On the **first run** of a novel query, the flow is:
+`entity_extraction → snapshot_match → cache_lookup (miss) → fuzzy_match (candidates) → llm_proposals → approval_gate (human) → writeback → ...`
+
+On the **second run** of the same query (or a structurally similar one), the flow becomes:
+`entity_extraction → snapshot_match → cache_lookup (hit) → (skip fuzzy / llm / approval) → violin_lookup → ...`
+
+This is the core win of the v2 design: repeat-query cost drops from "~5s LLM + human review" to "<0.2s DB lookup."
+
+### Conditional short-circuit
+
+The `synonym_approval_gate` (Step 4) is only invoked when `novel_terms` is non-empty after Steps 3a and 3b. If everything hit the cache or fuzzy-matched with high confidence, the workflow skips the gate entirely and proceeds to Step 5.
+
+This is an explicit design choice: we trade "always ask the user to confirm" for "ask the user only when we cannot confirm algorithmically." The first policy is safer against drift; the second policy respects the user's attention.
+
+**Safety net:** a SOFT gate variant is available for paranoid mode — auto-approve cache-and-fuzzy hits after a short timeout. Configurable per run.
+
+### 3.1 Data flow (condensed, v2)
 
 ```
+              (separate preprocessing workflow, runs on snapshot refresh)
+              [0 vocabulary_extraction]
+                     └─> bvbrc_vocabulary.jsonl, violin_vocabulary.jsonl  (pinned artifacts)
+
 query
   └─> [1 entity_extraction]
-         └─> detected_entities: [{name, type, confidence}, ...]
-               └─> [2 bvbrc_snapshot_match] ───┐
-               │                                ├─> matched_genomes: [{genome_id, strain, ...}, ...]
-               └─> [3 llm_synonym_proposals]    │
-                     └─> synonym_proposals: {entity -> [top-3 candidates with scores]}
-                           └─> [4 synonym_approval_gate] ── HITL pause ──> approved_synonyms
-                                 └─> [5 violin_entity_lookup]
-                                       └─> resolved_entities: {vaccines, pathogens, genes, joins}
-                                             └─> [6 genomic_annotation] ─ uses matched_genomes + resolved_entities
-                                                   └─> genomic_annotations: {genome_id -> [{protein, violin_match, score}]}
-                                                         └─> [7 result_ranking]
-                                                               └─> ranked_entities.{csv,json}
+         └─> detected_entities
+               ├─> [2 bvbrc_snapshot_match] ────> matched_genomes
+               └─> [3a synonym_cache_lookup]
+                     ├─> cache_hits (already-verified mappings)
+                     └─> cache_misses
+                           └─> [3b synonym_fuzzy_match]  (uses Step 0 artifacts)
+                                 ├─> confident_fuzzy_hits
+                                 └─> residuals
+                                       └─> [3c synonym_llm_proposals] (only residuals)
+                                             └─> llm_proposals
+                                                   └─> [4 synonym_approval_gate] ── HITL pause ──> approved_novel
+                                                         └─> [4p verified_synonym_writeback] ─> cache updated for next run
+                                                               └─┐
+                                                                 │
+ (cache_hits + confident_fuzzy_hits + approved_novel) ──────────> resolved_synonyms
+                                                                 │
+                                                                 └─> [5 violin_entity_lookup]
+                                                                       └─> resolved_entities
+                                                                             └─> [6 genomic_annotation] ─ uses matched_genomes
+                                                                                   └─> [7 result_ranking]
+                                                                                         └─> ranked_entities.{csv,json}
 ```
+
+**If `residuals` is empty after 3b:** Steps 3c and 4 are skipped entirely. 4p is a no-op. The workflow completes without any LLM call for synonym work and without any human review.
 
 ### 3.2 Step 4 contract (the HITL hook)
 
@@ -169,26 +224,36 @@ The workflow is "T01-ready" when:
 
 ---
 
-## 7. Effort estimate (Round 3 post-derivation)
+## 7. Effort estimate (v2, post user directive)
 
 | Block | Days | Notes |
 |---|---|---|
-| 7 step wrappers (from agent.py + existing nanobrain steps) | 3d | One per step; each ~0.5d; Step 6 is the most involved at ~1d |
-| Workflow YAML + links | 0.5d | Follows the nanobrain-workflow-authoring pattern |
-| VIOLIN readers (composite ~2) | 1d | Or deferred; `pd.read_csv` inline is fine for MVP |
-| `ApprovalStep` class (T10) | 3d | Assumes T00.2 spike is green |
-| Snapshot-loader wrapper for Step 2 | 1d | Wraps the placeholder-CSV step with a real TSV reader |
-| Tests: smoke + integration | 2d | Real-data integration test per workspace policy |
+| **Step 0 preprocessing workflow** (vocabulary extraction) | 1d | Single step + file-write; small |
+| Step wrappers 1, 2, 5, 6, 7 (existing logic) | 2.5d | Each ~0.5d |
+| Step 3a (cache lookup) — new | 0.5d | DB query via Control Plane client |
+| Step 3b (fuzzy match) — new | 1d | Uses `rapidfuzz` or similar against vocab artifacts |
+| Step 3c (LLM proposals) — reuse (smaller input) | 0.5d | Same `consolidated_synonym_search` but called on residuals only |
+| Step 4 `ApprovalStep` (T10, in nanobrain) | 3d | Per scope-decision memo 02 |
+| Step 4p writeback | 0.5d | POST verified synonyms to Control Plane |
+| Workflow YAML + links (main workflow) | 0.5d | Standard nanobrain pattern |
+| VIOLIN readers | 1d | Defer to inline pandas in MVP if needed |
+| Snapshot-loader wrapper (Step 2) | 1d | Real TSV reader replaces placeholder |
+| `VerifiedSynonym` T09 migration + routes | 1d | New table + GET/POST endpoints |
+| Integration test (real data, full workflow) | 2d | Per workspace mocks-policy (mocks must also have real-data integration coverage) |
 
-**Total: ~10.5 code-days.** Matches the Round 3 T02 + T10 envelope in `implementation_plan.md`.
+**Total: ~14.5 code-days.** +4d from v1. The preprocessing step, the cache lookup, the fuzzy match, and the writeback are new. In exchange, we trade "every run costs human time" for "novel terms cost human time; repeats are free."
+
+**Break-even:** if the workflow is run ≥4 times with overlapping queries, v2 pays off in saved human review time. Below that, v1 would have been cheaper — but v2 is still the right call because the verified-synonym table has provenance value beyond the immediate workflow.
 
 ---
 
 ## 8. Open questions for user
 
 1. **Is the sample query `"What vaccines target chikungunya?"`** the right starting query, or is there a different one that would better exercise the VIOLIN/BV-BRC cross-reference? (The output's usefulness depends on which query hits the most populated cells in both datasets.)
-2. **HARD vs. SOFT gate for Step 4?** A HARD gate blocks indefinitely; a SOFT gate times out (default: auto-approve top matches). HARD is safer for the first release; SOFT is what scientists will actually want after they get bored of approving every run.
+2. **HARD vs. SOFT gate for Step 4?** A HARD gate blocks indefinitely; a SOFT gate times out (default: auto-approve top matches). With v2's cache-hit short-circuit, the gate fires less often — HARD is probably the right default now.
 3. **Batch query behavior — defer explicitly?** Current spec is single-query. Making this explicit in the scope document avoids scope creep later.
+4. **Fuzzy-match threshold.** Step 3b emits `confident_fuzzy_hits` above some similarity threshold (say 0.92) and `residuals` below it. Where to draw the line is an empirical question — start at 0.92 and tune based on first-scientist feedback.
+5. **Verified-synonym overrides.** Can a user revoke or correct a previously-approved `VerifiedSynonym`? Probably yes (mistakes happen). If so, the cache lookup (Step 3a) needs an "active" flag and a revocation path. Defer to T09 migration design, but flag now.
 
 ---
 
