@@ -7,7 +7,6 @@ pattern as test_postgres_parity.py skipping without APECX_CP_POSTGRES_URL.
 from __future__ import annotations
 
 import pytest
-
 from apecx_integration.control_plane.infra.docker_runtime import (
     CONTAINER_NAME,
     DockerRuntime,

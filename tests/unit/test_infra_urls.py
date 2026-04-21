@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from apecx_integration.control_plane.infra.urls import (
     InfraMode,
     decide_infra_mode,

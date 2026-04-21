@@ -25,7 +25,6 @@ import os
 import shutil
 
 import pytest
-
 from apecx_integration.control_plane.infra.apptainer_runtime import ApptainerRuntime
 from apecx_integration.control_plane.infra.runtime import PostgresConfig
 

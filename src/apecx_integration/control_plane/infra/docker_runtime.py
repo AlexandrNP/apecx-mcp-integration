@@ -20,7 +20,6 @@ import time
 from pathlib import Path
 
 from apecx_integration.control_plane.infra.runtime import (
-    ContainerRuntime,
     PostgresConfig,
     RuntimeKind,
 )
@@ -74,9 +73,7 @@ class DockerRuntime:
         self._wait_for_healthy(timeout_seconds=30)
 
     def is_postgres_running(self) -> bool:
-        res = self._compose(
-            "ps", "--format", "{{.Name}}\t{{.State}}", check=False
-        )
+        res = self._compose("ps", "--format", "{{.Name}}\t{{.State}}", check=False)
         if res.returncode != 0:
             return False
         for line in res.stdout.splitlines():
@@ -113,9 +110,7 @@ class DockerRuntime:
         deadline = time.monotonic() + timeout_seconds
         last_state = ""
         while time.monotonic() < deadline:
-            res = self._compose(
-                "ps", "--format", "{{.Name}}\t{{.State}}\t{{.Health}}", check=False
-            )
+            res = self._compose("ps", "--format", "{{.Name}}\t{{.State}}\t{{.Health}}", check=False)
             for line in res.stdout.splitlines():
                 if not line.startswith(CONTAINER_NAME + "\t"):
                     continue

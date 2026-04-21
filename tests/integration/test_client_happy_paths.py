@@ -17,8 +17,6 @@ from uuid import UUID, uuid4
 
 import httpx
 import pytest
-from sqlalchemy import Engine, text
-
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.schemas.api import (
     ApproveRequest,
@@ -36,6 +34,7 @@ from apecx_integration.control_plane.schemas.enums import (
     RunStatus,
 )
 from apecx_integration.mcp_surface.control_plane_client import ControlPlaneClient
+from sqlalchemy import Engine, text
 
 pytestmark = pytest.mark.integration
 
@@ -100,9 +99,7 @@ async def test_approve_reject_correct_via_client(
 
     for rid, sid in [(run_a, step_a), (run_b, step_b), (run_c, step_c)]:
         await cp_client_http.create_approval(
-            CreateApprovalRequest(
-                run_id=rid, step_id=sid, kind=ApprovalKind.HARD, summary="s"
-            )
+            CreateApprovalRequest(run_id=rid, step_id=sid, kind=ApprovalKind.HARD, summary="s")
         )
 
     pending = await cp_client_http.list_pending_approvals(
@@ -115,9 +112,7 @@ async def test_approve_reject_correct_via_client(
     assert r1.approval.status is ApprovalStatus.APPROVED
     assert r1.approval.comment == "ok"
 
-    r2 = await cp_client_http.reject(
-        RejectRequest(approval_id=ids[1], reason="wrong pathogen")
-    )
+    r2 = await cp_client_http.reject(RejectRequest(approval_id=ids[1], reason="wrong pathogen"))
     assert r2.approval.status is ApprovalStatus.REJECTED
 
     r3 = await cp_client_http.correct(
@@ -137,9 +132,7 @@ async def test_double_approve_surfaces_http_409(
 ) -> None:
     run_id, step_id = _seed_run_and_step(cp_engine)
     created = await cp_client_http.create_approval(
-        CreateApprovalRequest(
-            run_id=run_id, step_id=step_id, kind=ApprovalKind.HARD, summary="s"
-        )
+        CreateApprovalRequest(run_id=run_id, step_id=step_id, kind=ApprovalKind.HARD, summary="s")
     )
     await cp_client_http.approve(ApproveRequest(approval_id=created.approval.id))
     with pytest.raises(httpx.HTTPStatusError) as exc:
@@ -155,9 +148,7 @@ async def test_unknown_approval_surfaces_http_404(
     assert exc.value.response.status_code == 404
 
 
-async def test_list_runs_via_client(
-    cp_client_http: ControlPlaneClient, cp_engine
-) -> None:
+async def test_list_runs_via_client(cp_client_http: ControlPlaneClient, cp_engine) -> None:
     run_id, _ = _seed_run_and_step(cp_engine, user_id="alex")
     _seed_run_and_step(cp_engine, user_id="bob")
 
@@ -176,9 +167,7 @@ async def test_get_status_via_client_includes_pending_approval(
 ) -> None:
     run_id, step_id = _seed_run_and_step(cp_engine)
     await cp_client_http.create_approval(
-        CreateApprovalRequest(
-            run_id=run_id, step_id=step_id, kind=ApprovalKind.HARD, summary="s"
-        )
+        CreateApprovalRequest(run_id=run_id, step_id=step_id, kind=ApprovalKind.HARD, summary="s")
     )
     status = await cp_client_http.get_status(GetStatusRequest(run_id=run_id))
     assert status.run.id == run_id
@@ -218,8 +207,6 @@ async def test_still_stubbed_start_workflow_raises_not_implemented(
     from apecx_integration.control_plane.schemas.api import StartWorkflowRequest
 
     with pytest.raises(NotImplementedError) as exc:
-        await cp_client_http.start_workflow(
-            StartWorkflowRequest(description="x", user_id="alex")
-        )
+        await cp_client_http.start_workflow(StartWorkflowRequest(description="x", user_id="alex"))
     # 501 detail points at composer or T09.
     assert "composer" in str(exc.value).lower() or "T09" in str(exc.value)

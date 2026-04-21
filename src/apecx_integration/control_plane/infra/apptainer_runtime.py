@@ -42,7 +42,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from apecx_integration.control_plane.infra.runtime import (
-    ContainerRuntime,
     PostgresConfig,
     RuntimeKind,
 )
@@ -70,9 +69,7 @@ class _SubprocessRunner:
         self, cmd: list[str], *, check: bool = True, timeout: float | None = 120.0
     ) -> _CommandResult:
         self.captured_calls.append(list(cmd))
-        res = subprocess.run(
-            cmd, capture_output=True, text=True, check=check, timeout=timeout
-        )
+        res = subprocess.run(cmd, capture_output=True, text=True, check=check, timeout=timeout)
         return _CommandResult(
             cmd=cmd, returncode=res.returncode, stdout=res.stdout, stderr=res.stderr
         )
@@ -115,8 +112,16 @@ class ApptainerRuntime:
             "PGDATA=/var/lib/postgresql/data/pgdata",
         ]
         return [
-            [self._binary, "instance", "start", "--bind", bind_arg, *env_args,
-             image_uri, INSTANCE_NAME],
+            [
+                self._binary,
+                "instance",
+                "start",
+                "--bind",
+                bind_arg,
+                *env_args,
+                image_uri,
+                INSTANCE_NAME,
+            ],
         ]
 
     def build_teardown_commands(
@@ -145,9 +150,7 @@ class ApptainerRuntime:
 
     def is_postgres_running(self) -> bool:
         try:
-            res = self._runner.run(
-                self.build_is_running_command(), check=False, timeout=5.0
-            )
+            res = self._runner.run(self.build_is_running_command(), check=False, timeout=5.0)
         except (OSError, subprocess.TimeoutExpired):
             return False
         if res.returncode != 0:

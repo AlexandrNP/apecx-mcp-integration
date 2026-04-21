@@ -62,6 +62,18 @@ def postgres_url() -> str:
             "`docker compose up -d postgres` and set "
             "APECX_CP_POSTGRES_URL=postgresql+psycopg://apecx:apecx@localhost:5433/apecx_cp"
         )
+    # The env var can be set while the container is down (e.g., after a
+    # lifecycle test tore it down). Skip in that case instead of raising
+    # so the rest of the suite stays green.
+    from sqlalchemy.exc import OperationalError
+
+    try:
+        probe = create_engine(url, future=True, connect_args={"connect_timeout": 2})
+        with probe.connect():
+            pass
+        probe.dispose()
+    except OperationalError as e:
+        pytest.skip(f"Postgres at {url} is not reachable: {e}")
     return url
 
 
