@@ -10,9 +10,8 @@ import threading
 from pathlib import Path
 
 import pytest
-from sqlalchemy import text
-
 from apecx_integration.control_plane.db import make_engine
+from sqlalchemy import text
 
 
 @pytest.mark.integration
@@ -103,9 +102,7 @@ def test_reader_not_blocked_by_writer(tmp_path: Path) -> None:
 
     # After writer commits, the row is visible.
     with engine.connect() as conn:
-        seen = conn.execute(
-            text("SELECT v FROM kv WHERE k = 'writer_key'")
-        ).scalar()
+        seen = conn.execute(text("SELECT v FROM kv WHERE k = 'writer_key'")).scalar()
     assert seen == "writer_val"
 
     # Sanity: the raw sqlite3 connection is subject to the same journal

@@ -100,7 +100,7 @@ async def approval_step_process(
     else:
         try:
             await asyncio.wait_for(ev.wait(), timeout=timeout_seconds)
-        except asyncio.TimeoutError:
+        except TimeoutError:
             print(f"  [step] timed out after {timeout_seconds}s")
             raise
 
@@ -117,10 +117,7 @@ async def mcp_surface_approve_after_delay(
 ) -> None:
     """Stands in for the MCP surface telling the Control Plane "user approved"."""
     await asyncio.sleep(delay_seconds)
-    print(
-        f"  [mcp] user decided {decision.status} for {approval_id} "
-        f"after {delay_seconds}s"
-    )
+    print(f"  [mcp] user decided {decision.status} for {approval_id} " f"after {delay_seconds}s")
     store.record_decision(approval_id, decision)
 
 
@@ -230,16 +227,12 @@ async def scenario_timeout() -> None:
     print("\n=== Scenario 3: soft-gate timeout (0.3s) with no decision ===")
     store = InMemoryApprovalStore()
     approval_id = "spike-03"
-    proposals = [
-        SynonymProposal(entity="gene:E1", candidates=[("E1 glycoprotein", 0.91)])
-    ]
+    proposals = [SynonymProposal(entity="gene:E1", candidates=[("E1 glycoprotein", 0.91)])]
 
     async def paused_task() -> str:
         try:
-            await approval_step_process(
-                store, approval_id, proposals, timeout_seconds=0.3
-            )
-        except asyncio.TimeoutError:
+            await approval_step_process(store, approval_id, proposals, timeout_seconds=0.3)
+        except TimeoutError:
             return "timed_out_as_expected"
         return "unexpected_no_timeout"
 

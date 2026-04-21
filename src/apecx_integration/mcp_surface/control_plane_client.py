@@ -112,9 +112,7 @@ class ControlPlaneClient:
     async def list_pending_approvals(
         self, body: ListPendingApprovalsRequest
     ) -> ListPendingApprovalsResponse:
-        return await self._post(
-            "/approvals/pending", body, ListPendingApprovalsResponse
-        )
+        return await self._post("/approvals/pending", body, ListPendingApprovalsResponse)
 
     async def list_runs(self, body: ListRunsRequest) -> ListRunsResponse:
         return await self._post("/runs/list", body, ListRunsResponse)

@@ -20,9 +20,7 @@ import sys
 from pathlib import Path
 
 import yaml
-
 from apecx_integration.control_plane.app import create_app
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = REPO_ROOT / "docs" / "api_contract.yaml"

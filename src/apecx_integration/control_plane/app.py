@@ -41,4 +41,6 @@ app = create_app()
 def main() -> None:
     import uvicorn
 
-    uvicorn.run("apecx_integration.control_plane.app:app", host="127.0.0.1", port=8000, reload=False)
+    uvicorn.run(
+        "apecx_integration.control_plane.app:app", host="127.0.0.1", port=8000, reload=False
+    )

@@ -10,21 +10,20 @@ Per workspace CLAUDE.md: this is an integration test (real DB, no mocks).
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import text
-
 from apecx_integration.control_plane.db import make_engine, make_session_factory
 from apecx_integration.control_plane.provenance.recorder import (
     ChainBroken,
     ProvenanceRecorder,
 )
 from apecx_integration.control_plane.schemas.enums import ProvenanceEventType
+from sqlalchemy import text
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -42,14 +41,13 @@ def cp_engine(tmp_path: Path):
     with engine.begin() as conn:
         conn.execute(
             text(
-                "INSERT INTO run (id, user_id, status, created_at) "
-                "VALUES (:id, :uid, :st, :ts)"
+                "INSERT INTO run (id, user_id, status, created_at) " "VALUES (:id, :uid, :st, :ts)"
             ),
             {
                 "id": "00000000-0000-0000-0000-000000000001",
                 "uid": "tester",
                 "st": "PENDING",
-                "ts": datetime.now(timezone.utc).isoformat(),
+                "ts": datetime.now(UTC).isoformat(),
             },
         )
     return engine
@@ -66,7 +64,7 @@ def test_first_event_has_null_prev_hash(cp_engine) -> None:
                 "INSERT INTO run (id, user_id, status, created_at) "
                 "VALUES (:id, 'tester', 'PENDING', :ts)"
             ),
-            {"id": str(run_id), "ts": datetime.now(timezone.utc).isoformat()},
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
     evt = recorder.record(
         run_id=run_id,
@@ -88,7 +86,7 @@ def test_chain_links_second_to_first(cp_engine) -> None:
                 "INSERT INTO run (id, user_id, status, created_at) "
                 "VALUES (:id, 'tester', 'PENDING', :ts)"
             ),
-            {"id": str(run_id), "ts": datetime.now(timezone.utc).isoformat()},
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
     e1 = recorder.record(run_id, ProvenanceEventType.RUN_STARTED, "system", {"i": 1})
     e2 = recorder.record(run_id, ProvenanceEventType.STEP_STARTED, "system", {"i": 2})
@@ -108,7 +106,7 @@ def test_validate_passes_on_clean_chain(cp_engine) -> None:
                 "INSERT INTO run (id, user_id, status, created_at) "
                 "VALUES (:id, 'tester', 'PENDING', :ts)"
             ),
-            {"id": str(run_id), "ts": datetime.now(timezone.utc).isoformat()},
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
     for i in range(5):
         recorder.record(run_id, ProvenanceEventType.STEP_STARTED, "system", {"i": i})
@@ -126,7 +124,7 @@ def test_validate_detects_tampered_payload(cp_engine) -> None:
                 "INSERT INTO run (id, user_id, status, created_at) "
                 "VALUES (:id, 'tester', 'PENDING', :ts)"
             ),
-            {"id": str(run_id), "ts": datetime.now(timezone.utc).isoformat()},
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
     recorder.record(run_id, ProvenanceEventType.RUN_STARTED, "system", {"step": 1})
     recorder.record(run_id, ProvenanceEventType.STEP_COMPLETED, "system", {"step": 2})
@@ -156,7 +154,7 @@ def test_validate_detects_tampered_prev_hash(cp_engine) -> None:
                 "INSERT INTO run (id, user_id, status, created_at) "
                 "VALUES (:id, 'tester', 'PENDING', :ts)"
             ),
-            {"id": str(run_id), "ts": datetime.now(timezone.utc).isoformat()},
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
     e1 = recorder.record(run_id, ProvenanceEventType.RUN_STARTED, "system", {})
     recorder.record(run_id, ProvenanceEventType.STEP_STARTED, "system", {})
@@ -182,7 +180,7 @@ def test_chain_is_per_run(cp_engine) -> None:
     run_a = uuid4()
     run_b = uuid4()
     with cp_engine.begin() as conn:
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         conn.execute(
             text(
                 "INSERT INTO run (id, user_id, status, created_at) "

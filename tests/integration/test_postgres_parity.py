@@ -23,19 +23,18 @@ core component work on Postgres," which is what AC7 requires.
 from __future__ import annotations
 
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, inspect, text
-from sqlalchemy.exc import IntegrityError
-
 from apecx_integration.control_plane.db import make_engine, make_session_factory
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
 from apecx_integration.control_plane.schemas.enums import ProvenanceEventType
+from sqlalchemy import create_engine, inspect, text
+from sqlalchemy.exc import IntegrityError
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 EXPECTED_TABLES = {
@@ -109,20 +108,19 @@ def test_circular_fk_enforced_on_postgres(clean_postgres: str) -> None:
     command.upgrade(_alembic_cfg(url), "head")
 
     engine = make_engine(url)
-    with pytest.raises(IntegrityError):
-        with engine.begin() as conn:
-            conn.execute(
-                text(
-                    "INSERT INTO run (id, user_id, workflow_config_id, status, created_at) "
-                    "VALUES (:id, :uid, :wid, 'PENDING', :ts)"
-                ),
-                {
-                    "id": str(uuid4()),
-                    "uid": "tester",
-                    "wid": str(uuid4()),  # non-existent artifact id
-                    "ts": datetime.now(timezone.utc).isoformat(),
-                },
-            )
+    with pytest.raises(IntegrityError), engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO run (id, user_id, workflow_config_id, status, created_at) "
+                "VALUES (:id, :uid, :wid, 'PENDING', :ts)"
+            ),
+            {
+                "id": str(uuid4()),
+                "uid": "tester",
+                "wid": str(uuid4()),  # non-existent artifact id
+                "ts": datetime.now(UTC).isoformat(),
+            },
+        )
 
 
 def test_provenance_chain_on_postgres(clean_postgres: str) -> None:
@@ -139,7 +137,7 @@ def test_provenance_chain_on_postgres(clean_postgres: str) -> None:
                 "INSERT INTO run (id, user_id, status, created_at) "
                 "VALUES (:id, 'tester', 'PENDING', :ts)"
             ),
-            {"id": str(run_id), "ts": datetime.now(timezone.utc).isoformat()},
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
 
     e1 = recorder.record(run_id, ProvenanceEventType.RUN_STARTED, "system", {"i": 1})

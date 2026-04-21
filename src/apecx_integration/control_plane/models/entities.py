@@ -23,13 +23,15 @@ from uuid import UUID, uuid4
 from sqlalchemy import (
     JSON,
     Boolean,
-    Enum as SQLAEnum,
     Float,
     ForeignKey,
     Integer,
     String,
     Text,
     UniqueConstraint,
+)
+from sqlalchemy import (
+    Enum as SQLAEnum,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -60,19 +62,13 @@ class Run(Base):
         ForeignKey("artifact.id", use_alter=True, name="fk_run_workflow_config"),
         nullable=True,
     )
-    status: Mapped[RunStatus] = mapped_column(
-        _enum_col(RunStatus), default=RunStatus.PENDING
-    )
+    status: Mapped[RunStatus] = mapped_column(_enum_col(RunStatus), default=RunStatus.PENDING)
     created_at: Mapped[datetime]
     started_at: Mapped[datetime | None] = mapped_column(nullable=True)
     completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
-    parent_run_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("run.id"), nullable=True
-    )
+    parent_run_id: Mapped[UUID | None] = mapped_column(ForeignKey("run.id"), nullable=True)
 
-    steps: Mapped[list[Step]] = relationship(
-        back_populates="run", cascade="all, delete-orphan"
-    )
+    steps: Mapped[list[Step]] = relationship(back_populates="run", cascade="all, delete-orphan")
 
 
 class Step(Base):
@@ -84,9 +80,7 @@ class Step(Base):
     executor: Mapped[ExecutorKind] = mapped_column(
         _enum_col(ExecutorKind), default=ExecutorKind.LOCAL
     )
-    status: Mapped[StepStatus] = mapped_column(
-        _enum_col(StepStatus), default=StepStatus.PENDING
-    )
+    status: Mapped[StepStatus] = mapped_column(_enum_col(StepStatus), default=StepStatus.PENDING)
     started_at: Mapped[datetime | None] = mapped_column(nullable=True)
     completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
     input_artifact_ids: Mapped[list[UUID]] = mapped_column(JSON, default=list)
@@ -121,9 +115,7 @@ class Artifact(Base):
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     run_id: Mapped[UUID] = mapped_column(ForeignKey("run.id"), index=True)
-    step_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("step.id"), nullable=True
-    )
+    step_id: Mapped[UUID | None] = mapped_column(ForeignKey("step.id"), nullable=True)
     kind: Mapped[ArtifactKind] = mapped_column(_enum_col(ArtifactKind))
     location: Mapped[str] = mapped_column(Text)
     content_hash: Mapped[str] = mapped_column(String(64), index=True)
@@ -135,9 +127,7 @@ class Artifact(Base):
 class GeneratedArtifact(Base):
     __tablename__ = "generated_artifact"
 
-    artifact_id: Mapped[UUID] = mapped_column(
-        ForeignKey("artifact.id"), primary_key=True
-    )
+    artifact_id: Mapped[UUID] = mapped_column(ForeignKey("artifact.id"), primary_key=True)
     source_prompt: Mapped[str] = mapped_column(Text)
     library_version: Mapped[str] = mapped_column(String(64))
     llm_model: Mapped[str] = mapped_column(String(128))
@@ -203,9 +193,7 @@ class VerifiedSynonym(Base):
     verified_by: Mapped[str] = mapped_column(String(255))
     verified_at: Mapped[datetime]
     confidence: Mapped[float] = mapped_column(Float)
-    source_run_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("run.id"), nullable=True
-    )
+    source_run_id: Mapped[UUID | None] = mapped_column(ForeignKey("run.id"), nullable=True)
     comment: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)

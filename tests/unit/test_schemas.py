@@ -7,12 +7,10 @@ No mocks needed; this is pure schema validation.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 import pytest
-from pydantic import ValidationError
-
 from apecx_integration.control_plane.schemas import (
     AllocationEstimate,
     Approval,
@@ -38,10 +36,11 @@ from apecx_integration.control_plane.schemas.api import (
     StartWorkflowRequest,
     StartWorkflowResponse,
 )
+from pydantic import ValidationError
 
 
 def _now() -> datetime:
-    return datetime.now(tz=timezone.utc)
+    return datetime.now(tz=UTC)
 
 
 def _valid_hash() -> str:
@@ -258,6 +257,4 @@ def test_extra_fields_are_rejected() -> None:
     """We use extra='forbid' so that typo'd field names fail loudly."""
 
     with pytest.raises(ValidationError):
-        Run.model_validate(
-            {"user_id": "alex", "created_at": _now(), "userid_typo": "alex"}
-        )
+        Run.model_validate({"user_id": "alex", "created_at": _now(), "userid_typo": "alex"})

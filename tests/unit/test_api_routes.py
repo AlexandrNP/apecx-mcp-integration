@@ -11,9 +11,8 @@ from __future__ import annotations
 from uuid import uuid4
 
 import pytest
-from fastapi.testclient import TestClient
-
 from apecx_integration.control_plane.app import create_app
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture(name="client")

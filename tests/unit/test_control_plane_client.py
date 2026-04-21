@@ -14,7 +14,6 @@ from uuid import uuid4
 
 import httpx
 import pytest
-
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.schemas.api import (
     ApproveRequest,
@@ -43,9 +42,7 @@ async def test_healthz_round_trips(client: ControlPlaneClient) -> None:
 
 
 async def test_start_workflow_raises_not_implemented(client: ControlPlaneClient) -> None:
-    body = StartWorkflowRequest(
-        description="Run VIOLIN × BV-BRC", user_id="alex"
-    )
+    body = StartWorkflowRequest(description="Run VIOLIN × BV-BRC", user_id="alex")
     with pytest.raises(NotImplementedError) as exc:
         await client.start_workflow(body)
     assert "T09" in str(exc.value) or "composer" in str(exc.value).lower()

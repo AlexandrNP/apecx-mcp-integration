@@ -11,12 +11,10 @@ from __future__ import annotations
 import os
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
-
 from alembic import context
-
-from apecx_integration.control_plane.models.base import Base
 from apecx_integration.control_plane.models import entities  # noqa: F401 — register mappers
+from apecx_integration.control_plane.models.base import Base
+from sqlalchemy import engine_from_config, pool
 
 config = context.config
 

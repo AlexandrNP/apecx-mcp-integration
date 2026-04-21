@@ -12,13 +12,9 @@ CLAUDE.md 2026-04-21) does not apply here because there is no mock.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from uuid import uuid4
+from datetime import UTC, datetime
 
 import pytest
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session
-
 from apecx_integration.control_plane.models import (
     AllocationEstimate,
     Approval,
@@ -41,6 +37,8 @@ from apecx_integration.control_plane.schemas.enums import (
     RunStatus,
     StepStatus,
 )
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session
 
 
 @pytest.fixture(name="session")
@@ -52,7 +50,7 @@ def _session() -> Session:
 
 
 def _now() -> datetime:
-    return datetime.now(tz=timezone.utc)
+    return datetime.now(tz=UTC)
 
 
 def _hash() -> str:
@@ -78,7 +76,7 @@ def test_metadata_creates_all_tables_without_error() -> None:
 
 def test_run_and_step_relationship(session: Session) -> None:
     run = Run(user_id="alex", created_at=_now())
-    step = Step(run=run, step_name="entity_extraction")
+    Step(run=run, step_name="entity_extraction")
     session.add(run)
     session.commit()
     session.refresh(run)

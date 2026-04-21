@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import pytest
 
-
 pytestmark = pytest.mark.smoke
 
 
@@ -19,11 +18,11 @@ def test_top_level_package_imports() -> None:
 
 
 def test_tier_subpackages_import() -> None:
-    import apecx_integration.mcp_surface  # noqa: F401
-    import apecx_integration.control_plane  # noqa: F401
     import apecx_integration.composition  # noqa: F401
-    import apecx_integration.execution  # noqa: F401
     import apecx_integration.config  # noqa: F401
+    import apecx_integration.control_plane  # noqa: F401
+    import apecx_integration.execution  # noqa: F401
+    import apecx_integration.mcp_surface  # noqa: F401
 
 
 def test_control_plane_app_factory_runs() -> None:
@@ -34,9 +33,8 @@ def test_control_plane_app_factory_runs() -> None:
 
 
 def test_healthz_route_is_registered() -> None:
-    from fastapi.testclient import TestClient
-
     from apecx_integration.control_plane.app import create_app
+    from fastapi.testclient import TestClient
 
     client = TestClient(create_app())
     response = client.get("/healthz")

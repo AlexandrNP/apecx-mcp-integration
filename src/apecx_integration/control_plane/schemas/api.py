@@ -35,6 +35,7 @@ class _APIBase(BaseModel):
 
 # --- start_workflow ---------------------------------------------------------
 
+
 class StartWorkflowRequest(_APIBase):
     description: str = Field(min_length=1)
     user_id: str
@@ -47,6 +48,7 @@ class StartWorkflowResponse(_APIBase):
 
 
 # --- generate_plan ---------------------------------------------------------
+
 
 class GeneratePlanRequest(_APIBase):
     description: str = Field(min_length=1)
@@ -69,6 +71,7 @@ class GeneratePlanResponse(_APIBase):
 
 # --- show_yaml_diff / show_novel_python / show_diff_summary -----------------
 
+
 class ShowYamlDiffRequest(_APIBase):
     run_id: UUID
 
@@ -81,6 +84,7 @@ class ShowYamlDiffResponse(_APIBase):
 
 
 # --- approve / reject / correct --------------------------------------------
+
 
 class ApproveRequest(_APIBase):
     approval_id: UUID
@@ -102,6 +106,7 @@ class ApprovalResponse(_APIBase):
 
 
 # --- list_pending_approvals / list_runs / get_status -----------------------
+
 
 class ListPendingApprovalsRequest(_APIBase):
     user_id: str
@@ -133,6 +138,7 @@ class GetStatusResponse(_APIBase):
 
 # --- get_artifact ----------------------------------------------------------
 
+
 class GetArtifactRequest(_APIBase):
     artifact_id: UUID
 
@@ -144,6 +150,7 @@ class GetArtifactResponse(_APIBase):
 
 
 # --- estimate_cost / submit_hpc / export_hpc_bundle (optional) --------------
+
 
 class EstimateCostRequest(_APIBase):
     run_id: UUID
@@ -191,6 +198,7 @@ class ExportHpcBundleResponse(_APIBase):
 
 
 # --- create_approval (internal, called from ApprovalStep) -------------------
+
 
 class CreateApprovalRequest(_APIBase):
     run_id: UUID

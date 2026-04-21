@@ -61,9 +61,9 @@ def test_downgrade_then_upgrade_round_trips(tmp_path: Path) -> None:
 
     engine = create_engine(url)
     tables_after_down = set(inspect(engine).get_table_names())
-    assert tables_after_down == {"alembic_version"}, (
-        "downgrade should leave only the alembic bookkeeping table"
-    )
+    assert tables_after_down == {
+        "alembic_version"
+    }, "downgrade should leave only the alembic bookkeeping table"
 
     command.upgrade(cfg, "head")
     tables_after_up = set(inspect(engine).get_table_names())

@@ -18,16 +18,15 @@ import multiprocessing as mp
 import os
 import signal
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID, uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import text
-
 from apecx_integration.control_plane.db import make_engine
+from sqlalchemy import text
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -46,7 +45,7 @@ def _child_insert_uncommitted(db_url: str, run_id: str, ready_event) -> None:
     INSERT is never committed.
     """
     engine = make_engine(db_url)
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     conn = engine.raw_connection()
     try:
         cur = conn.cursor()
@@ -64,7 +63,7 @@ def _child_insert_uncommitted(db_url: str, run_id: str, ready_event) -> None:
 def _child_insert_and_commit(db_url: str, run_id: str, ready_event) -> None:
     """Open tx, INSERT, COMMIT, signal ready, sleep forever."""
     engine = make_engine(db_url)
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     conn = engine.raw_connection()
     try:
         cur = conn.cursor()
@@ -116,9 +115,7 @@ def test_sigkill_before_commit_leaves_no_row(tmp_path: Path) -> None:
 
     _kill_child(proc, ready)
 
-    assert not _row_exists(db_url, run_id), (
-        "uncommitted INSERT survived SIGKILL — atomicity broken"
-    )
+    assert not _row_exists(db_url, run_id), "uncommitted INSERT survived SIGKILL — atomicity broken"
 
 
 @pytest.mark.integration
@@ -140,6 +137,6 @@ def test_sigkill_after_commit_preserves_row(tmp_path: Path) -> None:
 
     _kill_child(proc, ready)
 
-    assert _row_exists(db_url, run_id), (
-        "committed INSERT was lost after SIGKILL — durability broken"
-    )
+    assert _row_exists(
+        db_url, run_id
+    ), "committed INSERT was lost after SIGKILL — durability broken"

@@ -23,7 +23,7 @@ from __future__ import annotations
 import hashlib
 import json
 import threading
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
@@ -54,8 +54,8 @@ def _canonical_timestamp(ts: datetime) -> str:
     (naive) disagree and every chain looks broken.
     """
     if ts.tzinfo is None:
-        ts = ts.replace(tzinfo=timezone.utc)
-    return ts.astimezone(timezone.utc).isoformat()
+        ts = ts.replace(tzinfo=UTC)
+    return ts.astimezone(UTC).isoformat()
 
 
 def _compute_event_hash(
@@ -96,7 +96,7 @@ class ProvenanceRecorder:
         *,
         now: datetime | None = None,
     ) -> ProvenanceEvent:
-        ts = now or datetime.now(timezone.utc)
+        ts = now or datetime.now(UTC)
         with self._lock, self._session_factory() as session:
             prev = self._last_event_for_run(session, run_id)
             prev_hash = prev.event_hash if prev else None
