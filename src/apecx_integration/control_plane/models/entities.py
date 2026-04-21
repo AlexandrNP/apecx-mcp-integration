@@ -57,7 +57,8 @@ class Run(Base):
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     user_id: Mapped[str] = mapped_column(String(255))
     workflow_config_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("artifact.id"), nullable=True
+        ForeignKey("artifact.id", use_alter=True, name="fk_run_workflow_config"),
+        nullable=True,
     )
     status: Mapped[RunStatus] = mapped_column(
         _enum_col(RunStatus), default=RunStatus.PENDING
