@@ -89,16 +89,23 @@ class ShowYamlDiffResponse(_APIBase):
 class ApproveRequest(_APIBase):
     approval_id: UUID
     comment: str = ""
+    # TX1: no auth layer yet; the MCP client (or whoever calls this)
+    # can attribute the decision. Defaults to "api_user" when unset so
+    # early integrations don't have to supply it. When auth lands this
+    # becomes derived from the session/token.
+    decided_by: str = "api_user"
 
 
 class RejectRequest(_APIBase):
     approval_id: UUID
     reason: str = Field(min_length=1)
+    decided_by: str = "api_user"
 
 
 class CorrectRequest(_APIBase):
     approval_id: UUID
     modifications: dict[str, object]
+    decided_by: str = "api_user"
 
 
 class ApprovalResponse(_APIBase):

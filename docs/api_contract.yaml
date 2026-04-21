@@ -79,6 +79,10 @@ components:
           default: ''
           title: Comment
           type: string
+        decided_by:
+          default: api_user
+          title: Decided By
+          type: string
       required:
       - approval_id
       title: ApproveRequest
@@ -176,6 +180,10 @@ components:
         approval_id:
           format: uuid
           title: Approval Id
+          type: string
+        decided_by:
+          default: api_user
+          title: Decided By
           type: string
         modifications:
           additionalProperties: true
@@ -481,6 +489,10 @@ components:
         approval_id:
           format: uuid
           title: Approval Id
+          type: string
+        decided_by:
+          default: api_user
+          title: Decided By
           type: string
         reason:
           minLength: 1
