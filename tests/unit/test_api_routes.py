@@ -1,9 +1,13 @@
 """Wiring tests for the Control Plane API (TX1).
 
-Round 3: every route is a stub that raises HTTP 501. These tests verify that
-(a) the routes are registered under the documented paths, (b) the request
-envelopes validate and reach the handler, and (c) the 501 detail message
-includes a task reference so operators can trace what is missing.
+Routes fall into two groups:
+  * Persistence-only (approvals, runs/list, runs/status, runs/artifact):
+    wired to real T09 persistence — covered by integration tests in
+    tests/integration/test_api_*.py, not here.
+  * Downstream-dependent (workflows/*, hpc/*): still stubs that raise
+    HTTP 501 because the composer / HPC-export / differ tasks have not
+    landed. This file verifies their shape and that the 501 detail
+    points at the task that unblocks them.
 """
 
 from __future__ import annotations
@@ -66,34 +70,6 @@ def test_healthz_is_the_only_non_stub(client: TestClient) -> None:
         (
             "/workflows/diff",
             {"run_id": str(uuid4())},
-        ),
-        (
-            "/approvals/",
-            {
-                "run_id": str(uuid4()),
-                "step_id": str(uuid4()),
-                "kind": "soft",
-                "summary": "Review proposed synonyms",
-            },
-        ),
-        (
-            "/approvals/approve",
-            {"approval_id": str(uuid4())},
-        ),
-        (
-            "/approvals/reject",
-            {"approval_id": str(uuid4()), "reason": "wrong pathogen"},
-        ),
-        (
-            "/approvals/correct",
-            {
-                "approval_id": str(uuid4()),
-                "modifications": {"synonyms": ["A", "B"]},
-            },
-        ),
-        (
-            "/approvals/pending",
-            {"user_id": "alex"},
         ),
         (
             "/runs/list",

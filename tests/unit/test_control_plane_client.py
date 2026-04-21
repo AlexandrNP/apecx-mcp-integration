@@ -16,13 +16,10 @@ import httpx
 import pytest
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.schemas.api import (
-    ApproveRequest,
-    CreateApprovalRequest,
     GetStatusRequest,
     ListRunsRequest,
     StartWorkflowRequest,
 )
-from apecx_integration.control_plane.schemas.enums import ApprovalKind
 from apecx_integration.mcp_surface.control_plane_client import ControlPlaneClient
 
 
@@ -46,25 +43,6 @@ async def test_start_workflow_raises_not_implemented(client: ControlPlaneClient)
     with pytest.raises(NotImplementedError) as exc:
         await client.start_workflow(body)
     assert "T09" in str(exc.value) or "composer" in str(exc.value).lower()
-    await client.close()
-
-
-async def test_create_approval_raises_not_implemented(client: ControlPlaneClient) -> None:
-    body = CreateApprovalRequest(
-        run_id=uuid4(),
-        step_id=uuid4(),
-        kind=ApprovalKind.SOFT,
-        summary="Please review proposed synonyms for EEEV",
-    )
-    with pytest.raises(NotImplementedError) as exc:
-        await client.create_approval(body)
-    assert "T10" in str(exc.value) or "T09" in str(exc.value)
-    await client.close()
-
-
-async def test_approve_raises_not_implemented(client: ControlPlaneClient) -> None:
-    with pytest.raises(NotImplementedError):
-        await client.approve(ApproveRequest(approval_id=uuid4()))
     await client.close()
 
 
