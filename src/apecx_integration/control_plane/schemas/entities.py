@@ -149,10 +149,17 @@ class VerifiedSynonym(_EntityBase):
     - ``scope``: optional narrowing, e.g. restrict a mapping to a specific
       taxonomic family or dataset version.
 
+    Revocation (user directive 2026-04-21, workflow_spec v2 open question 5):
+    a previously-verified mapping can be revoked when a user discovers it was
+    incorrect. Revoked rows are NOT deleted — they stay for audit. The cache
+    lookup in Step 3a filters by ``is_active``. Revocation is recorded as a
+    state transition, not a hard delete, so provenance remains intact.
+
     The same query term may have multiple verified mappings with different
     ``target_vocabulary`` values (one per corpus). Uniqueness is intended at
-    the ``(source_vocabulary, query_term, target_vocabulary, scope)`` tuple
-    level; the T09 migration will enforce that.
+    the ``(source_vocabulary, query_term, target_vocabulary, scope, is_active)``
+    tuple level; the T09 migration will enforce that *active* mappings are
+    unique but allow historical revoked rows to coexist.
     """
 
     id: UUID = Field(default_factory=uuid4)
@@ -166,6 +173,13 @@ class VerifiedSynonym(_EntityBase):
     confidence: float = Field(ge=0.0, le=1.0)
     source_run_id: UUID | None = None
     comment: str | None = None
+
+    # Revocation fields (soft-delete)
+    is_active: bool = True
+    revoked_by: str | None = None
+    revoked_at: datetime | None = None
+    revocation_reason: str | None = None
+    superseded_by: UUID | None = None  # points at a replacement VerifiedSynonym row
 
 
 class AllocationEstimate(_EntityBase):

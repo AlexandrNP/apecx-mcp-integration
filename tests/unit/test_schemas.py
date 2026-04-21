@@ -201,8 +201,34 @@ def test_verified_synonym_defaults_and_round_trip() -> None:
     )
     assert syn.scope is None
     assert syn.source_run_id is None
+    assert syn.is_active is True
+    assert syn.revoked_by is None
+    assert syn.revoked_at is None
+    assert syn.revocation_reason is None
+    assert syn.superseded_by is None
     reloaded = VerifiedSynonym.model_validate_json(syn.model_dump_json())
     assert reloaded == syn
+
+
+def test_verified_synonym_revocation_round_trip() -> None:
+    revoked = VerifiedSynonym(
+        source_vocabulary="user_query",
+        query_term="chik",
+        target_vocabulary="violin.pathogen_name",
+        canonical_term="Chikungunya virus",
+        verified_by="alex",
+        verified_at=_now(),
+        confidence=0.72,
+        is_active=False,
+        revoked_by="alex",
+        revoked_at=_now(),
+        revocation_reason="user realized the abbreviation was ambiguous",
+        superseded_by=uuid4(),
+    )
+    reloaded = VerifiedSynonym.model_validate_json(revoked.model_dump_json())
+    assert reloaded == revoked
+    assert reloaded.is_active is False
+    assert reloaded.revocation_reason is not None
 
 
 def test_verified_synonym_rejects_out_of_range_confidence() -> None:
