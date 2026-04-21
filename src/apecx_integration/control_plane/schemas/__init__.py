@@ -13,6 +13,7 @@ from apecx_integration.control_plane.schemas.entities import (
     ProvenanceEvent,
     Run,
     Step,
+    VerifiedSynonym,
 )
 from apecx_integration.control_plane.schemas.enums import (
     ApprovalKind,
@@ -44,4 +45,5 @@ __all__ = [
     "Step",
     "StepCategory",
     "StepStatus",
+    "VerifiedSynonym",
 ]

@@ -132,6 +132,42 @@ class Component(_EntityBase):
     examples: list[str] = Field(default_factory=list)
 
 
+class VerifiedSynonym(_EntityBase):
+    """A user-verified synonym mapping persisted across runs.
+
+    Round 3 addition (user directive 2026-04-21): instead of asking a human to
+    approve the same synonym on every run, we remember past approvals and only
+    surface novel terms to the HITL gate.
+
+    Naming conventions:
+    - ``source_vocabulary``: which corpus the query term came from, e.g.
+      ``user_query``, ``violin.vaccine_name``, ``bvbrc.strain_name``.
+    - ``target_vocabulary``: where the canonical term lives, e.g.
+      ``violin.pathogen_id``, ``bvbrc.genome_id``.
+    - ``canonical_term``: the resolved identifier (may be an ID or a name
+       string, depending on the target vocabulary).
+    - ``scope``: optional narrowing, e.g. restrict a mapping to a specific
+      taxonomic family or dataset version.
+
+    The same query term may have multiple verified mappings with different
+    ``target_vocabulary`` values (one per corpus). Uniqueness is intended at
+    the ``(source_vocabulary, query_term, target_vocabulary, scope)`` tuple
+    level; the T09 migration will enforce that.
+    """
+
+    id: UUID = Field(default_factory=uuid4)
+    source_vocabulary: str
+    query_term: str
+    target_vocabulary: str
+    canonical_term: str
+    scope: str | None = None
+    verified_by: str
+    verified_at: datetime
+    confidence: float = Field(ge=0.0, le=1.0)
+    source_run_id: UUID | None = None
+    comment: str | None = None
+
+
 class AllocationEstimate(_EntityBase):
     id: UUID = Field(default_factory=uuid4)
     run_id: UUID

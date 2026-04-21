@@ -30,6 +30,7 @@ from apecx_integration.control_plane.schemas import (
     RunStatus,
     Step,
     StepStatus,
+    VerifiedSynonym,
 )
 from apecx_integration.control_plane.schemas.api import (
     ApproveRequest,
@@ -186,6 +187,45 @@ def test_estimate_cost_response_confidence_interval_is_tuple() -> None:
         endpoint="polaris",
     )
     assert resp.confidence_interval == (50.0, 150.0)
+
+
+def test_verified_synonym_defaults_and_round_trip() -> None:
+    syn = VerifiedSynonym(
+        source_vocabulary="user_query",
+        query_term="chikungunya",
+        target_vocabulary="violin.pathogen_name",
+        canonical_term="Chikungunya virus",
+        verified_by="alex",
+        verified_at=_now(),
+        confidence=0.98,
+    )
+    assert syn.scope is None
+    assert syn.source_run_id is None
+    reloaded = VerifiedSynonym.model_validate_json(syn.model_dump_json())
+    assert reloaded == syn
+
+
+def test_verified_synonym_rejects_out_of_range_confidence() -> None:
+    with pytest.raises(ValidationError):
+        VerifiedSynonym(
+            source_vocabulary="user_query",
+            query_term="x",
+            target_vocabulary="violin.pathogen_name",
+            canonical_term="y",
+            verified_by="alex",
+            verified_at=_now(),
+            confidence=1.5,
+        )
+    with pytest.raises(ValidationError):
+        VerifiedSynonym(
+            source_vocabulary="user_query",
+            query_term="x",
+            target_vocabulary="violin.pathogen_name",
+            canonical_term="y",
+            verified_by="alex",
+            verified_at=_now(),
+            confidence=-0.1,
+        )
 
 
 def test_extra_fields_are_rejected() -> None:
