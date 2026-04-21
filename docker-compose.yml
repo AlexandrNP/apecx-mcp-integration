@@ -1,0 +1,29 @@
+# T09 AC7: Postgres service for parity integration tests.
+#
+# Usage:
+#   docker compose up -d postgres
+#   export APECX_CP_POSTGRES_URL="postgresql+psycopg://apecx:apecx@localhost:5433/apecx_cp"
+#   pytest tests/integration/test_postgres_parity.py
+#
+# Port 5433 (not 5432) to avoid colliding with a locally-installed Postgres.
+# pg_isready healthcheck so pytest can wait for readiness without sleeping.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: apecx-cp-postgres
+    environment:
+      POSTGRES_USER: apecx
+      POSTGRES_PASSWORD: apecx
+      POSTGRES_DB: apecx_cp
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apecx -d apecx_cp"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+    tmpfs:
+      # Ephemeral state: tests start with a fresh DB every CI run. Drop
+      # this block if you want persistent data across restarts.
+      - /var/lib/postgresql/data
