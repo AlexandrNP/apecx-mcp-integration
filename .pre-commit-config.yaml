@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: no-ungated-mocks-in-src
+        name: Reject unittest.mock usage in src/ (workspace CLAUDE.md)
+        entry: bash -c 'if grep -rn "from unittest.mock\|from unittest import mock\|import mock\|MagicMock" src/ 2>/dev/null; then echo "Found mocks in src/ — workspace policy forbids."; exit 1; fi'
+        language: system
+        pass_filenames: false
