@@ -1,0 +1,1180 @@
+components:
+  schemas:
+    Approval:
+      additionalProperties: false
+      properties:
+        comment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comment
+        decided_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Decided At
+        decided_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Decided By
+        id:
+          format: uuid
+          title: Id
+          type: string
+        kind:
+          $ref: '#/components/schemas/ApprovalKind'
+        policy:
+          additionalProperties: true
+          title: Policy
+          type: object
+        status:
+          $ref: '#/components/schemas/ApprovalStatus'
+          default: pending
+        step_id:
+          format: uuid
+          title: Step Id
+          type: string
+      required:
+      - step_id
+      - kind
+      title: Approval
+      type: object
+    ApprovalKind:
+      enum:
+      - hard
+      - soft
+      - silent
+      - allocation
+      title: ApprovalKind
+      type: string
+    ApprovalResponse:
+      additionalProperties: false
+      properties:
+        approval:
+          $ref: '#/components/schemas/Approval'
+      required:
+      - approval
+      title: ApprovalResponse
+      type: object
+    ApprovalStatus:
+      enum:
+      - pending
+      - approved
+      - approved_with_modifications
+      - rejected
+      - auto_approved
+      - timed_out
+      title: ApprovalStatus
+      type: string
+    ApproveRequest:
+      additionalProperties: false
+      properties:
+        approval_id:
+          format: uuid
+          title: Approval Id
+          type: string
+        comment:
+          default: ''
+          title: Comment
+          type: string
+      required:
+      - approval_id
+      title: ApproveRequest
+      type: object
+    Artifact:
+      additionalProperties: false
+      properties:
+        content_hash:
+          pattern: ^[0-9a-f]{64}$
+          title: Content Hash
+          type: string
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        id:
+          format: uuid
+          title: Id
+          type: string
+        kind:
+          $ref: '#/components/schemas/ArtifactKind'
+        location:
+          title: Location
+          type: string
+        mime_type:
+          title: Mime Type
+          type: string
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+        size_bytes:
+          minimum: 0.0
+          title: Size Bytes
+          type: integer
+        step_id:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Step Id
+      required:
+      - run_id
+      - kind
+      - location
+      - content_hash
+      - size_bytes
+      - mime_type
+      - created_at
+      title: Artifact
+      type: object
+    ArtifactKind:
+      enum:
+      - input
+      - intermediate
+      - output
+      - generated_workflow
+      - generated_python
+      title: ArtifactKind
+      type: string
+    ConfirmAllocationRequest:
+      additionalProperties: false
+      properties:
+        confirmed_core_hours:
+          minimum: 0.0
+          title: Confirmed Core Hours
+          type: number
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+      required:
+      - run_id
+      - confirmed_core_hours
+      title: ConfirmAllocationRequest
+      type: object
+    ConfirmAllocationResponse:
+      additionalProperties: false
+      properties:
+        confirmed:
+          title: Confirmed
+          type: boolean
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+      required:
+      - run_id
+      - confirmed
+      title: ConfirmAllocationResponse
+      type: object
+    CorrectRequest:
+      additionalProperties: false
+      properties:
+        approval_id:
+          format: uuid
+          title: Approval Id
+          type: string
+        modifications:
+          additionalProperties: true
+          title: Modifications
+          type: object
+      required:
+      - approval_id
+      - modifications
+      title: CorrectRequest
+      type: object
+    CreateApprovalRequest:
+      additionalProperties: false
+      properties:
+        artifact_ids:
+          items:
+            format: uuid
+            type: string
+          title: Artifact Ids
+          type: array
+        kind:
+          $ref: '#/components/schemas/ApprovalKind'
+        policy:
+          additionalProperties: true
+          title: Policy
+          type: object
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+        step_id:
+          format: uuid
+          title: Step Id
+          type: string
+        summary:
+          title: Summary
+          type: string
+      required:
+      - run_id
+      - step_id
+      - kind
+      - summary
+      title: CreateApprovalRequest
+      type: object
+    CreateApprovalResponse:
+      additionalProperties: false
+      properties:
+        approval:
+          $ref: '#/components/schemas/Approval'
+      required:
+      - approval
+      title: CreateApprovalResponse
+      type: object
+    EstimateCostRequest:
+      additionalProperties: false
+      properties:
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+      required:
+      - run_id
+      title: EstimateCostRequest
+      type: object
+    EstimateCostResponse:
+      additionalProperties: false
+      properties:
+        confidence_interval:
+          maxItems: 2
+          minItems: 2
+          prefixItems:
+          - type: number
+          - type: number
+          title: Confidence Interval
+          type: array
+        endpoint:
+          title: Endpoint
+          type: string
+        novel_python_capped_at:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Novel Python Capped At
+        per_step_core_hours:
+          additionalProperties:
+            type: number
+          title: Per Step Core Hours
+          type: object
+        total_core_hours:
+          minimum: 0.0
+          title: Total Core Hours
+          type: number
+      required:
+      - total_core_hours
+      - per_step_core_hours
+      - confidence_interval
+      - endpoint
+      title: EstimateCostResponse
+      type: object
+    ExecutorKind:
+      enum:
+      - local
+      - globus_compute
+      - pbs_bundle
+      title: ExecutorKind
+      type: string
+    ExportHpcBundleRequest:
+      additionalProperties: false
+      properties:
+        output_directory:
+          title: Output Directory
+          type: string
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+        target_system:
+          title: Target System
+          type: string
+      required:
+      - run_id
+      - target_system
+      - output_directory
+      title: ExportHpcBundleRequest
+      type: object
+    ExportHpcBundleResponse:
+      additionalProperties: false
+      properties:
+        bundle_path:
+          title: Bundle Path
+          type: string
+        submit_command:
+          title: Submit Command
+          type: string
+      required:
+      - bundle_path
+      - submit_command
+      title: ExportHpcBundleResponse
+      type: object
+    GeneratePlanRequest:
+      additionalProperties: false
+      properties:
+        description:
+          minLength: 1
+          title: Description
+          type: string
+        library_version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Library Version
+      required:
+      - description
+      title: GeneratePlanRequest
+      type: object
+    GeneratePlanResponse:
+      additionalProperties: false
+      properties:
+        generated_artifact_id:
+          format: uuid
+          title: Generated Artifact Id
+          type: string
+        plan:
+          items:
+            $ref: '#/components/schemas/StepPlan'
+          title: Plan
+          type: array
+        yaml_text:
+          title: Yaml Text
+          type: string
+      required:
+      - plan
+      - yaml_text
+      - generated_artifact_id
+      title: GeneratePlanResponse
+      type: object
+    GetArtifactRequest:
+      additionalProperties: false
+      properties:
+        artifact_id:
+          format: uuid
+          title: Artifact Id
+          type: string
+      required:
+      - artifact_id
+      title: GetArtifactRequest
+      type: object
+    GetArtifactResponse:
+      additionalProperties: false
+      properties:
+        artifact:
+          $ref: '#/components/schemas/Artifact'
+        inline_bytes:
+          anyOf:
+          - contentMediaType: application/octet-stream
+            type: string
+          - type: 'null'
+          title: Inline Bytes
+        reason_inline_omitted:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason Inline Omitted
+      required:
+      - artifact
+      title: GetArtifactResponse
+      type: object
+    GetStatusRequest:
+      additionalProperties: false
+      properties:
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+      required:
+      - run_id
+      title: GetStatusRequest
+      type: object
+    GetStatusResponse:
+      additionalProperties: false
+      properties:
+        pending_approval:
+          anyOf:
+          - $ref: '#/components/schemas/Approval'
+          - type: 'null'
+        run:
+          $ref: '#/components/schemas/Run'
+        steps:
+          items:
+            $ref: '#/components/schemas/Step'
+          title: Steps
+          type: array
+      required:
+      - run
+      - steps
+      title: GetStatusResponse
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    ListPendingApprovalsRequest:
+      additionalProperties: false
+      properties:
+        user_id:
+          title: User Id
+          type: string
+      required:
+      - user_id
+      title: ListPendingApprovalsRequest
+      type: object
+    ListPendingApprovalsResponse:
+      additionalProperties: false
+      properties:
+        approvals:
+          items:
+            $ref: '#/components/schemas/Approval'
+          title: Approvals
+          type: array
+      required:
+      - approvals
+      title: ListPendingApprovalsResponse
+      type: object
+    ListRunsRequest:
+      additionalProperties: false
+      properties:
+        limit:
+          default: 50
+          maximum: 500.0
+          minimum: 1.0
+          title: Limit
+          type: integer
+        status_filter:
+          anyOf:
+          - $ref: '#/components/schemas/RunStatus'
+          - type: 'null'
+        user_id:
+          title: User Id
+          type: string
+      required:
+      - user_id
+      title: ListRunsRequest
+      type: object
+    ListRunsResponse:
+      additionalProperties: false
+      properties:
+        runs:
+          items:
+            $ref: '#/components/schemas/Run'
+          title: Runs
+          type: array
+      required:
+      - runs
+      title: ListRunsResponse
+      type: object
+    RejectRequest:
+      additionalProperties: false
+      properties:
+        approval_id:
+          format: uuid
+          title: Approval Id
+          type: string
+        reason:
+          minLength: 1
+          title: Reason
+          type: string
+      required:
+      - approval_id
+      - reason
+      title: RejectRequest
+      type: object
+    Run:
+      additionalProperties: false
+      properties:
+        completed_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Completed At
+        created_at:
+          format: date-time
+          title: Created At
+          type: string
+        id:
+          format: uuid
+          title: Id
+          type: string
+        parent_run_id:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Parent Run Id
+        started_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Started At
+        status:
+          $ref: '#/components/schemas/RunStatus'
+          default: pending
+        user_id:
+          title: User Id
+          type: string
+        workflow_config_id:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Workflow Config Id
+      required:
+      - user_id
+      - created_at
+      title: Run
+      type: object
+    RunStatus:
+      enum:
+      - pending
+      - running
+      - paused
+      - completed
+      - failed
+      - cancelled
+      title: RunStatus
+      type: string
+    ShowYamlDiffRequest:
+      additionalProperties: false
+      properties:
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+      required:
+      - run_id
+      title: ShowYamlDiffRequest
+      type: object
+    ShowYamlDiffResponse:
+      additionalProperties: false
+      properties:
+        categorization:
+          items:
+            $ref: '#/components/schemas/StepPlan'
+          title: Categorization
+          type: array
+        novel_python_by_step:
+          additionalProperties:
+            type: string
+          title: Novel Python By Step
+          type: object
+        summary_sentence:
+          title: Summary Sentence
+          type: string
+        yaml_text:
+          title: Yaml Text
+          type: string
+      required:
+      - yaml_text
+      - categorization
+      - summary_sentence
+      title: ShowYamlDiffResponse
+      type: object
+    StartWorkflowRequest:
+      additionalProperties: false
+      properties:
+        description:
+          minLength: 1
+          title: Description
+          type: string
+        preferred_executor:
+          $ref: '#/components/schemas/ExecutorKind'
+          default: local
+        user_id:
+          title: User Id
+          type: string
+      required:
+      - description
+      - user_id
+      title: StartWorkflowRequest
+      type: object
+    StartWorkflowResponse:
+      additionalProperties: false
+      properties:
+        generated_workflow_artifact_id:
+          format: uuid
+          title: Generated Workflow Artifact Id
+          type: string
+        run:
+          $ref: '#/components/schemas/Run'
+      required:
+      - run
+      - generated_workflow_artifact_id
+      title: StartWorkflowResponse
+      type: object
+    Step:
+      additionalProperties: false
+      properties:
+        completed_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Completed At
+        executor:
+          $ref: '#/components/schemas/ExecutorKind'
+          default: local
+        id:
+          format: uuid
+          title: Id
+          type: string
+        input_artifact_ids:
+          items:
+            format: uuid
+            type: string
+          title: Input Artifact Ids
+          type: array
+        log_location:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Log Location
+        output_artifact_ids:
+          items:
+            format: uuid
+            type: string
+          title: Output Artifact Ids
+          type: array
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+        started_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Started At
+        status:
+          $ref: '#/components/schemas/StepStatus'
+          default: pending
+        step_name:
+          title: Step Name
+          type: string
+      required:
+      - run_id
+      - step_name
+      title: Step
+      type: object
+    StepCategory:
+      description: "Disposition category from the differential-review UX (T06).\n\n\
+        See architectural_plan.md \xA75.6."
+      enum:
+      - composed_standard
+      - composed_parameterized
+      - composed_wrapped
+      - novel
+      title: StepCategory
+      type: string
+    StepPlan:
+      additionalProperties: false
+      properties:
+        category:
+          $ref: '#/components/schemas/StepCategory'
+        rationale:
+          title: Rationale
+          type: string
+        reference_component_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reference Component Id
+        step_id:
+          title: Step Id
+          type: string
+        step_name:
+          title: Step Name
+          type: string
+      required:
+      - step_id
+      - step_name
+      - category
+      - rationale
+      title: StepPlan
+      type: object
+    StepStatus:
+      enum:
+      - pending
+      - running
+      - paused_for_approval
+      - completed
+      - failed
+      - skipped
+      title: StepStatus
+      type: string
+    SubmitHpcRequest:
+      additionalProperties: false
+      properties:
+        allocation_account:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Allocation Account
+        executor:
+          $ref: '#/components/schemas/ExecutorKind'
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+      required:
+      - run_id
+      - executor
+      title: SubmitHpcRequest
+      type: object
+    SubmitHpcResponse:
+      additionalProperties: false
+      properties:
+        external_job_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: External Job Id
+        run_id:
+          format: uuid
+          title: Run Id
+          type: string
+        submitted_executor:
+          $ref: '#/components/schemas/ExecutorKind'
+      required:
+      - run_id
+      - submitted_executor
+      title: SubmitHpcResponse
+      type: object
+    ValidationError:
+      properties:
+        ctx:
+          title: Context
+          type: object
+        input:
+          title: Input
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+info:
+  description: "Tier 2 of the APECx integration. Holds run state, provenance, approvals,\
+    \ artifacts, allocation accountant. See architectural_plan.md \xA73.1 and \xA7\
+    R3."
+  title: APECx Control Plane
+  version: 0.0.1
+openapi: 3.1.0
+paths:
+  /approvals/:
+    post:
+      operationId: create_approval_approvals__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApprovalRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApprovalResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Approval
+      tags:
+      - approval
+  /approvals/approve:
+    post:
+      operationId: approve_approvals_approve_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Approve
+      tags:
+      - approval
+  /approvals/correct:
+    post:
+      operationId: correct_approvals_correct_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CorrectRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Correct
+      tags:
+      - approval
+  /approvals/pending:
+    post:
+      operationId: list_pending_approvals_approvals_pending_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPendingApprovalsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPendingApprovalsResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Pending Approvals
+      tags:
+      - approval
+  /approvals/reject:
+    post:
+      operationId: reject_approvals_reject_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Reject
+      tags:
+      - approval
+  /healthz:
+    get:
+      operationId: healthz_healthz_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                title: Response Healthz Healthz Get
+                type: object
+          description: Successful Response
+      summary: Healthz
+      tags:
+      - meta
+  /hpc/confirm:
+    post:
+      operationId: confirm_allocation_hpc_confirm_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmAllocationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmAllocationResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Confirm Allocation
+      tags:
+      - hpc
+  /hpc/estimate:
+    post:
+      operationId: estimate_cost_hpc_estimate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EstimateCostRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimateCostResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Estimate Cost
+      tags:
+      - hpc
+  /hpc/export:
+    post:
+      operationId: export_hpc_bundle_hpc_export_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportHpcBundleRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportHpcBundleResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Export Hpc Bundle
+      tags:
+      - hpc
+  /hpc/submit:
+    post:
+      operationId: submit_hpc_hpc_submit_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitHpcRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitHpcResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Submit Hpc
+      tags:
+      - hpc
+  /runs/artifact:
+    post:
+      operationId: get_artifact_runs_artifact_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetArtifactRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetArtifactResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Artifact
+      tags:
+      - status
+  /runs/list:
+    post:
+      operationId: list_runs_runs_list_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRunsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRunsResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Runs
+      tags:
+      - status
+  /runs/status:
+    post:
+      operationId: get_status_runs_status_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetStatusRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStatusResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Status
+      tags:
+      - status
+  /workflows/diff:
+    post:
+      operationId: show_yaml_diff_workflows_diff_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowYamlDiffRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowYamlDiffResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Show Yaml Diff
+      tags:
+      - workflow
+  /workflows/plan:
+    post:
+      operationId: generate_plan_workflows_plan_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratePlanRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratePlanResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Generate Plan
+      tags:
+      - workflow
+  /workflows/start:
+    post:
+      operationId: start_workflow_workflows_start_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartWorkflowRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartWorkflowResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Start Workflow
+      tags:
+      - workflow
