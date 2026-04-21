@@ -16,17 +16,17 @@ This document records the answers to the five blocking questions in `architectur
 - BV-BRC is accessed **via local snapshot only** — files live under `../../data/bvbrc_cache/` (path relative to this file). No live queries to bv-brc.org. No browser automation. If a workflow needs data not in the snapshot, the workflow fails loudly — no silent fallback.
 - VIOLIN is accessed via `../../data/violin/` CSV files.
 
-**What is still missing (Round 3 derived blocker):**
+**What was still missing — now partially resolved:**
 
-"VIOLIN × BV-BRC integration" names a topic, not a workflow spec. Before task T01 (vertical-slice integration test) can be written, the team must commit to:
+Round 3 said the topic was named but the spec was not written. As of 2026-04-21, the workflow has been derived from `apecx-db-integration/` and documented in `docs/workflow_spec.md`. Remaining open questions for the user are in `workflow_spec.md` §8 (query choice, gate kind, batch behavior).
 
-1. A specific scientific question (example candidate: "given a vaccine ID from VIOLIN, retrieve the matching pathogen's BV-BRC genomes and proteins, cluster, and produce PSSMs for the top N clusters").
-2. Which specific files feed the workflow (alphavirus? chikungunya? both? cross-family?).
-3. The 3–7 named steps in order.
-4. Output artifact shape (columns + types, or file format + schema).
-5. Expected laptop wall-time, measured against the closest existing script.
+Brief summary of the now-known workflow:
 
-See `implementation_plan.md` task **T00.1b** for the spec-writing task.
+- **7 steps**, entity-extraction → BV-BRC snapshot match → LLM synonym propose → **human approval gate (T10)** → VIOLIN lookup → genomic annotation → result ranking.
+- **Reuses** ~900 lines of existing LLM synonym matching in `apecx-db-integration/src/agent.py` plus substantial portions of the nanobrain viral-protein-analysis pipeline.
+- **Net-new work:** `ApprovalStep` class (T10), 7 step wrappers in `apecx-mcp-integration/`, 1–2 VIOLIN readers (or inline `pd.read_csv` for MVP), snapshot-loader fix for Step 2.
+- **Estimated effort:** ~10.5 code-days.
+- **Target laptop wall-time:** ~15–20s compute + variable human-review time.
 
 ---
 
