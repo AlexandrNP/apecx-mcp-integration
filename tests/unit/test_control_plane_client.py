@@ -40,5 +40,3 @@ async def test_start_workflow_raises_not_implemented(client: ControlPlaneClient)
         await client.start_workflow(body)
     assert "T09" in str(exc.value) or "composer" in str(exc.value).lower()
     await client.close()
-
-

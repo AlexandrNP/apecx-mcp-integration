@@ -8,7 +8,7 @@ real and wired by ``create_app(engine=cp_engine)``.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 import pytest
@@ -21,7 +21,7 @@ pytestmark = pytest.mark.integration
 def _seed_run_and_step(engine: Engine, *, user_id: str = "alex") -> tuple[UUID, UUID]:
     run_id = uuid4()
     step_id = uuid4()
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     with engine.begin() as conn:
         conn.execute(
             text(

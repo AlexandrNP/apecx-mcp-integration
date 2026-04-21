@@ -16,7 +16,7 @@ provenance event under the owning run's hash chain.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
 
@@ -135,7 +135,7 @@ def _decide(
     run_id = _run_id_for_step(session, approval.step_id)
     approval.status = new_status
     approval.decided_by = decided_by
-    approval.decided_at = datetime.now(timezone.utc)
+    approval.decided_at = datetime.now(UTC)
     if comment is not None:
         approval.comment = comment
     if extra_policy:
@@ -226,6 +226,4 @@ def list_pending_approvals(
         .scalars()
         .all()
     )
-    return ListPendingApprovalsResponse(
-        approvals=[ApprovalSchema.model_validate(r) for r in rows]
-    )
+    return ListPendingApprovalsResponse(approvals=[ApprovalSchema.model_validate(r) for r in rows])

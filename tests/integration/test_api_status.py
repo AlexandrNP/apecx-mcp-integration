@@ -6,7 +6,7 @@ SQLite DB from the ``cp_client`` / ``cp_engine`` fixtures.
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from uuid import UUID, uuid4
 
 import pytest
@@ -24,12 +24,11 @@ def _insert_run(
     created_at: datetime | None = None,
 ) -> UUID:
     run_id = uuid4()
-    ts = (created_at or datetime.now(timezone.utc)).isoformat()
+    ts = (created_at or datetime.now(UTC)).isoformat()
     with engine.begin() as conn:
         conn.execute(
             text(
-                "INSERT INTO run (id, user_id, status, created_at) "
-                "VALUES (:id, :uid, :st, :ts)"
+                "INSERT INTO run (id, user_id, status, created_at) " "VALUES (:id, :uid, :st, :ts)"
             ),
             {"id": str(run_id), "uid": user_id, "st": status_value, "ts": ts},
         )
@@ -75,14 +74,14 @@ def _insert_artifact(engine: Engine, run_id: UUID) -> UUID:
                 "id": str(artifact_id),
                 "rid": str(run_id),
                 "hash": "a" * 64,
-                "ts": datetime.now(timezone.utc).isoformat(),
+                "ts": datetime.now(UTC).isoformat(),
             },
         )
     return artifact_id
 
 
 def test_list_runs_returns_user_scoped_rows(cp_client: TestClient, cp_engine) -> None:
-    t0 = datetime.now(timezone.utc)
+    t0 = datetime.now(UTC)
     r_alex_new = _insert_run(cp_engine, user_id="alex", created_at=t0)
     r_alex_old = _insert_run(cp_engine, user_id="alex", created_at=t0 - timedelta(hours=1))
     _insert_run(cp_engine, user_id="bob")
@@ -121,10 +120,10 @@ def test_get_status_returns_run_steps_and_pending_approval(
     cp_client: TestClient, cp_engine
 ) -> None:
     run_id = _insert_run(cp_engine)
-    step_id = _insert_step(cp_engine, run_id, step_name="synonym_gate",
-                           status_value="PAUSED_FOR_APPROVAL")
-    _insert_step(cp_engine, run_id, step_name="entity_extraction",
-                 status_value="COMPLETED")
+    step_id = _insert_step(
+        cp_engine, run_id, step_name="synonym_gate", status_value="PAUSED_FOR_APPROVAL"
+    )
+    _insert_step(cp_engine, run_id, step_name="entity_extraction", status_value="COMPLETED")
     # Create a pending approval via the real endpoint (also exercises that path).
     cr = cp_client.post(
         "/approvals/",

@@ -12,10 +12,9 @@ from pathlib import Path
 import pytest
 from alembic import command
 from alembic.config import Config
-from fastapi.testclient import TestClient
-
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.db import make_engine
+from fastapi.testclient import TestClient
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
