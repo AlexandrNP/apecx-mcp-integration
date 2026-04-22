@@ -9,11 +9,18 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import socket
 from uuid import uuid4
 
 import pytest
 from aiosmtpd.controller import Controller
 from aiosmtpd.handlers import Message
+from apecx_integration.control_plane.notifications.email import (
+    EmailNotifier,
+    SMTPConfig,
+    load_smtp_config_from_env,
+)
+from apecx_integration.control_plane.schemas.enums import RunStatus
 
 
 def _pick_free_port() -> int:
@@ -28,18 +35,10 @@ def _pick_free_port() -> int:
     aiosmtpd binding, but with ephemeral ports the odds of collision
     are negligible at test volumes.
     """
-    import socket
-
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("127.0.0.1", 0))
         return s.getsockname()[1]
 
-from apecx_integration.control_plane.notifications.email import (
-    EmailNotifier,
-    SMTPConfig,
-    load_smtp_config_from_env,
-)
-from apecx_integration.control_plane.schemas.enums import RunStatus
 
 pytestmark = pytest.mark.integration
 
@@ -67,7 +66,9 @@ def _running_smtp():
         controller.stop()
 
 
-def _fresh_notifier(host: str, port: int, *, default_to: str | None = "alex@example.com") -> EmailNotifier:
+def _fresh_notifier(
+    host: str, port: int, *, default_to: str | None = "alex@example.com"
+) -> EmailNotifier:
     return EmailNotifier(
         SMTPConfig(
             host=host,

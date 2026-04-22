@@ -91,9 +91,7 @@ def load_smtp_config_from_env() -> SMTPConfig | None:
     try:
         port = int(port_raw)
     except ValueError as exc:
-        raise ValueError(
-            f"APECX_SMTP_PORT must be an integer, got {port_raw!r}"
-        ) from exc
+        raise ValueError(f"APECX_SMTP_PORT must be an integer, got {port_raw!r}") from exc
     return SMTPConfig(
         host=host,
         port=port,
@@ -140,8 +138,10 @@ class EmailNotifier:
         """
         if self._config is None:
             log.info(
-                "EmailNotifier: SMTP disabled; skipping email for run %s "
-                "%s -> %s", run_id, old_status.value, new_status.value,
+                "EmailNotifier: SMTP disabled; skipping email for run %s " "%s -> %s",
+                run_id,
+                old_status.value,
+                new_status.value,
             )
             return False
         if new_status not in NOTIFY_TRANSITIONS_TO:
@@ -157,7 +157,8 @@ class EmailNotifier:
                 "EmailNotifier: no recipient for run %s (user_id=%s); "
                 "no APECX_SMTP_TO_ADDR default and no explicit to_addr. "
                 "Skipping.",
-                run_id, user_id,
+                run_id,
+                user_id,
             )
             return False
 
@@ -172,7 +173,10 @@ class EmailNotifier:
         self._send(msg)
         log.info(
             "EmailNotifier: sent %s -> %s for run %s to %s",
-            old_status.value, new_status.value, run_id, resolved_to,
+            old_status.value,
+            new_status.value,
+            run_id,
+            resolved_to,
         )
         return True
 

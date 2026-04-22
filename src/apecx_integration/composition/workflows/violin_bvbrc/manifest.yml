@@ -160,7 +160,7 @@ components:
     disposition: reuse
     class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
     yaml: "steps/result_ranking.yml"
-    status: pending
+    status: ready      # wrapper YAML loads via from_config (T02 Phase 4)
     rag_description: >
       Final ranking + formatting of the enriched entity-relationship
       results. Emits a ranked-entities JSON artifact keyed by VIOLIN

@@ -102,14 +102,16 @@ class RunStateSweeper:
             sweep decision;
           - returns a :class:`SweepResult` describing the transition.
         """
-        reference = (now or datetime.now(UTC))
+        reference = now or datetime.now(UTC)
         cutoff = reference - stale_after
         results: list[SweepResult] = []
 
         with self._session_factory() as session:
-            candidate_runs = session.execute(
-                select(RunORM).where(RunORM.status.in_(SWEEPABLE_STATES))
-            ).scalars().all()
+            candidate_runs = (
+                session.execute(select(RunORM).where(RunORM.status.in_(SWEEPABLE_STATES)))
+                .scalars()
+                .all()
+            )
 
             for run in candidate_runs:
                 last_event_at = session.execute(

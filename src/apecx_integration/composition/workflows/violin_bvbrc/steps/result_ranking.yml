@@ -1,0 +1,29 @@
+# Workflow spec Step 7 — result_ranking
+#
+# Reuses nanobrain's ResultCollectionStep (from the viral-protein-
+# analysis library). Aggregates outputs from upstream steps into a
+# single ranked-entities JSON artifact with provenance fields
+# (run_id, model_version, approved_synonym_decisions). Reuse asset
+# per the T02 manifest — no wrapping logic, pure config.
+
+class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+name: result_ranking
+description: "Format final enriched entity-relationship results as ranked JSON."
+
+input_data_units:
+  enriched_results_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: enriched_results_input
+    description: "Dict of per-step outputs keyed by step_id."
+    persistent: false
+
+output_data_units:
+  ranked_entities_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: ranked_entities_output
+    description: "Final ranked-entities JSON artifact."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "enriched_results_input"

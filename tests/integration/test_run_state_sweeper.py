@@ -7,8 +7,6 @@ from pathlib import Path
 from uuid import UUID, uuid4
 
 import pytest
-from sqlalchemy import text
-
 from apecx_integration.control_plane.db import make_engine, make_session_factory
 from apecx_integration.control_plane.notifications.sweeper import RunStateSweeper
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
@@ -16,6 +14,7 @@ from apecx_integration.control_plane.schemas.enums import (
     ProvenanceEventType,
     RunStatus,
 )
+from sqlalchemy import text
 
 pytestmark = pytest.mark.integration
 
@@ -40,8 +39,7 @@ def _insert_run(engine, *, status_value: str, created_at: datetime, user_id: str
     with engine.begin() as conn:
         conn.execute(
             text(
-                "INSERT INTO run (id, user_id, status, created_at) "
-                "VALUES (:id, :uid, :st, :ts)"
+                "INSERT INTO run (id, user_id, status, created_at) " "VALUES (:id, :uid, :st, :ts)"
             ),
             {"id": str(run_id), "uid": user_id, "st": status_value, "ts": created_at.isoformat()},
         )
@@ -166,9 +164,7 @@ def test_sweep_records_run_failed_provenance_event(rig) -> None:
             {"rid": str(run_id)},
         ).all()
     # There's at least one RUN_FAILED written by the sweeper (actor = run_state_sweeper).
-    assert any(
-        e[0] == "RUN_FAILED" and e[1] == "run_state_sweeper" for e in events
-    ), events
+    assert any(e[0] == "RUN_FAILED" and e[1] == "run_state_sweeper" for e in events), events
 
 
 def test_sweep_threshold_boundary_is_strict(rig) -> None:
