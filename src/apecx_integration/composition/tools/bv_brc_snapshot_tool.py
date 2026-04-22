@@ -150,7 +150,8 @@ def _read_fasta_by_md5(path: Path) -> dict[str, str]:
         log.warning(
             "BVBRCSnapshotTool: %d FASTA headers in %s had no md5= token; "
             "skipped their sequences. Check snapshot format.",
-            skipped_headers, path.name,
+            skipped_headers,
+            path.name,
         )
     return sequences
 
@@ -166,9 +167,7 @@ class BVBRCSnapshotTool(BVBRCTool):
     def snapshot_dir(self) -> Path:
         return _resolve_snapshot_dir()
 
-    async def download_alphavirus_genomes(
-        self, limit: int | None = None
-    ) -> list[GenomeData]:
+    async def download_alphavirus_genomes(self, limit: int | None = None) -> list[GenomeData]:
         """Load genomes from ``<snapshot>/alphavirus_genomes.tsv``.
 
         The snapshot TSV has only 2 columns (genome_id + genome_name).
@@ -196,13 +195,12 @@ class BVBRCSnapshotTool(BVBRCTool):
             genomes = genomes[:limit]
         log.info(
             "BVBRCSnapshotTool: loaded %d genomes from %s",
-            len(genomes), path.name,
+            len(genomes),
+            path.name,
         )
         return genomes
 
-    async def filter_genomes_by_size(
-        self, genomes: list[GenomeData]
-    ) -> list[GenomeData]:
+    async def filter_genomes_by_size(self, genomes: list[GenomeData]) -> list[GenomeData]:
         """Snapshot-variant pass-through.
 
         The 2-column snapshot TSV has no ``genome.genome_length`` field,
@@ -218,15 +216,15 @@ class BVBRCSnapshotTool(BVBRCTool):
                 "BVBRCSnapshotTool.filter_genomes_by_size: %d/%d genomes had "
                 "genome_length=0 (snapshot lacks the column); passing all "
                 "%d through unfiltered.",
-                unfiltered_count, len(genomes), len(genomes),
+                unfiltered_count,
+                len(genomes),
+                len(genomes),
             )
             return list(genomes)
         # If the snapshot somehow carries genome_length, defer to base.
         return await super().filter_genomes_by_size(genomes)
 
-    async def get_unique_protein_md5s(
-        self, genome_ids: list[str]
-    ) -> list[ProteinData]:
+    async def get_unique_protein_md5s(self, genome_ids: list[str]) -> list[ProteinData]:
         """Load protein rows from ``<snapshot>/alphavirus_proteins.tsv``
         filtered to the requested genome_ids. Returns ``ProteinData``
         entries without sequences (call ``get_feature_sequences`` next
@@ -256,13 +254,12 @@ class BVBRCSnapshotTool(BVBRCTool):
             )
         log.info(
             "BVBRCSnapshotTool: loaded %d unique proteins across %d genomes",
-            len(out), len(genome_id_set),
+            len(out),
+            len(genome_id_set),
         )
         return out
 
-    async def get_feature_sequences(
-        self, md5_list: list[str]
-    ) -> list[ProteinData]:
+    async def get_feature_sequences(self, md5_list: list[str]) -> list[ProteinData]:
         """Populate aa_sequences by reading the annotated FASTA.
 
         Returns ``ProteinData`` entries with sequence populated.
@@ -290,8 +287,10 @@ class BVBRCSnapshotTool(BVBRCTool):
             )
         if missing:
             log.warning(
-                "BVBRCSnapshotTool.get_feature_sequences: %d/%d md5s missing "
-                "from %s", missing, len(md5_list), path.name,
+                "BVBRCSnapshotTool.get_feature_sequences: %d/%d md5s missing " "from %s",
+                missing,
+                len(md5_list),
+                path.name,
             )
         return out
 

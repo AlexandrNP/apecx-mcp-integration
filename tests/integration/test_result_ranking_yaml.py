@@ -7,7 +7,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step import (
     ResultCollectionStep,
 )

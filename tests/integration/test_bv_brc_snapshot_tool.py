@@ -8,12 +8,10 @@ a fresh clone doesn't require downloading the snapshot.
 from __future__ import annotations
 
 import os
-import tempfile
 import textwrap
 from pathlib import Path
 
 import pytest
-
 from apecx_integration.composition.tools.bv_brc_snapshot_tool import (
     DEFAULT_SNAPSHOT_DIR,
     SNAPSHOT_ENV_VAR,

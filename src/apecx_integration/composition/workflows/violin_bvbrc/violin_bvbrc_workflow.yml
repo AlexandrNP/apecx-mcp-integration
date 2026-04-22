@@ -1,0 +1,102 @@
+# VIOLIN × BV-BRC workflow — SKELETON (T02 Phase 4 finish).
+#
+# This YAML composes the six step-YAMLs in ``steps/`` that currently
+# load cleanly via ``BaseStep.from_config(...)``. It is **not
+# runnable end-to-end** — the workflow spec (``docs/workflow_spec.md``)
+# has 10 steps; four are still pending wrapper YAMLs (commented in
+# the steps: block below with the exact blocker per step).
+#
+# Purpose: prove that nanobrain's ``Workflow.from_config(...)`` can
+# compose the ready pieces, catch configuration-schema regressions as
+# new YAMLs land, and give T01 vertical-slice work a concrete starting
+# artifact.
+#
+# Coverage vs. T00.1b workflow_spec.md:
+#
+#   Step ID | step_name                  | present here
+#   --------+----------------------------+--------------
+#   0       | vocabulary extraction      | deferred (HARD directive)
+#   1       | entity_extraction          | PENDING — needs apecx-db-integration wiring
+#   2       | bvbrc_snapshot_match       | PENDING — needs BVBRCTool child-config YAMLs
+#   3a      | synonym_cache_lookup       | ✅
+#   3b      | synonym_fuzzy_match        | deferred (HARD directive)
+#   3c      | synonym_llm_proposals      | PENDING — needs apecx-db-integration wiring
+#   4       | synonym_approval_gate      | ✅
+#   4p      | verified_synonym_writeback | ✅
+#   5       | violin_entity_lookup       | PENDING — needs apecx-db-integration wiring
+#   6       | genomic_annotation         | PENDING — needs BVBRCTool + SynonymDetection agent
+#   7       | result_ranking             | ✅
+#
+# Plus two demo file-readers (violin_vaccine_reader,
+# bvbrc_alphavirus_genomes_reader) that real Steps 1 / 2 would
+# consume as input. Included here as explicit steps so the workflow
+# demonstrates snapshot ingestion end-to-end once the missing pieces
+# land.
+#
+# Links are intentionally left empty — data flow wiring lands with
+# the missing steps and T01 vertical slice work, so we don't
+# commit misleading link wiring for a pipeline that can't run yet.
+
+name: violin_bvbrc_workflow
+description: "VIOLIN × BV-BRC entity-synonym workflow (first-release HARD-synonym variant)."
+version: 0.1.0
+
+steps:
+  violin_vaccine_reader:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/violin_vaccine_reader.yml"
+
+  bvbrc_alphavirus_genomes_reader:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+
+  synonym_cache_lookup:
+    class: "apecx_integration.composition.steps.synonym_cache.SynonymCacheLookupStep"
+    config: "steps/synonym_cache_lookup.yml"
+
+  synonym_approval_gate:
+    class: "nanobrain.library.steps.approval_step.ApprovalStep"
+    config: "steps/synonym_approval_gate.yml"
+
+  verified_synonym_writeback:
+    class: "apecx_integration.composition.steps.synonym_cache.VerifiedSynonymWritebackStep"
+    config: "steps/verified_synonym_writeback.yml"
+
+  result_ranking:
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+    config: "steps/result_ranking.yml"
+
+  # -------- PENDING STEPS (scope-tracked in docs/future_work.md) --------
+  # entity_extraction:
+  #   class: <wrapper around apecx-db-integration/agent.py:extract_entities_llm>
+  #   config: "steps/entity_extraction.yml"
+  #   blocker: apecx-db-integration/agent.py is not pip-installable; needs
+  #            a nanobrain Step wrapper + sys.path injection or a proper
+  #            package layout in the sibling repo.
+  #
+  # bvbrc_snapshot_match:
+  #   class: "nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep"
+  #   config: "steps/bvbrc_snapshot_match.yml"
+  #   blocker: the step's Python hardcodes BVBRCTool.from_config(...) and
+  #            looks for a companion BVBRCTool.yml under
+  #            ../config/DataAcquisitionStep/. Either author that YAML to
+  #            load our BVBRCSnapshotTool instead, or subclass the step
+  #            and override _create_bv_brc_tool. Belongs with T01.
+  #
+  # synonym_llm_proposals:
+  #   class: <wrapper around apecx-db-integration/agent.py:consolidated_synonym_search>
+  #   config: "steps/synonym_llm_proposals.yml"
+  #   blocker: same apecx-db-integration wiring as entity_extraction.
+  #
+  # violin_entity_lookup:
+  #   class: <wrapper around apecx-db-integration/agent.py:enrich_matches_with_database_data>
+  #   config: "steps/violin_entity_lookup.yml"
+  #   blocker: same apecx-db-integration wiring + VIOLIN DataFrames.
+  #
+  # genomic_annotation:
+  #   class: "nanobrain.library.workflows.viral_protein_analysis.steps.bv_brc_data_acquisition_step.BVBRCDataAcquisitionStep"
+  #   config: "steps/genomic_annotation.yml"
+  #   blocker: requires a SynonymDetection agent YAML + the same BVBRCTool
+  #            child-YAML as bvbrc_snapshot_match.
+
+links: {}
