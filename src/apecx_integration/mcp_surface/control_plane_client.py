@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import Any, TypeVar
+from uuid import UUID
 
 import httpx
 from pydantic import BaseModel
@@ -111,6 +112,16 @@ class ControlPlaneClient:
 
     async def create_approval(self, body: CreateApprovalRequest) -> CreateApprovalResponse:
         return await self._post("/approvals/", body, CreateApprovalResponse)
+
+    async def get_approval(self, approval_id: UUID) -> ApprovalResponse:
+        """Poll the current state of an approval.
+
+        Used by the nanobrain ApprovalStep (T10) while it's paused.
+        2xx returns the Approval with current status; 404 if unknown.
+        """
+        resp = await self._client.get(f"/approvals/{approval_id}")
+        resp.raise_for_status()
+        return ApprovalResponse.model_validate(resp.json())
 
     async def approve(self, body: ApproveRequest) -> ApprovalResponse:
         return await self._post("/approvals/approve", body, ApprovalResponse)

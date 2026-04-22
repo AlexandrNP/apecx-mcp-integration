@@ -924,6 +924,45 @@ paths:
       summary: Reject
       tags:
       - approval
+  /approvals/{approval_id}:
+    get:
+      description: 'Return the current state of an approval.
+
+
+        Called by the nanobrain ``ApprovalStep`` (T10) to poll for a
+
+        decision while it''s paused. Returns 404 if the id is unknown.
+
+        Status transitions from PENDING to one of APPROVED /
+
+        APPROVED_WITH_MODIFICATIONS / REJECTED / AUTO_APPROVED /
+
+        TIMED_OUT; the polling step detects the change and resumes.'
+      operationId: get_approval_approvals__approval_id__get
+      parameters:
+      - in: path
+        name: approval_id
+        required: true
+        schema:
+          format: uuid
+          title: Approval Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Approval
+      tags:
+      - approval
   /healthz:
     get:
       operationId: healthz_healthz_get

@@ -188,6 +188,31 @@ def test_decide_unknown_approval_is_404(cp_client) -> None:
     assert resp.status_code == 404
 
 
+def test_get_approval_returns_current_state_for_polling(cp_client, cp_engine) -> None:
+    """GET /approvals/{id} is what the nanobrain ApprovalStep polls while
+    paused. It must reflect status transitions as decisions land.
+    """
+    run_id, step_id = _seed_run_and_step(cp_engine)
+    created = _create_approval(cp_client, run_id, step_id)
+    aid = created["id"]
+
+    r_pending = cp_client.get(f"/approvals/{aid}")
+    assert r_pending.status_code == 200
+    assert r_pending.json()["approval"]["status"] == "pending"
+
+    cp_client.post("/approvals/approve", json={"approval_id": aid, "decided_by": "alex"})
+    r_decided = cp_client.get(f"/approvals/{aid}")
+    assert r_decided.status_code == 200
+    body = r_decided.json()["approval"]
+    assert body["status"] == "approved"
+    assert body["decided_by"] == "alex"
+
+
+def test_get_unknown_approval_is_404(cp_client) -> None:
+    resp = cp_client.get(f"/approvals/{uuid4()}")
+    assert resp.status_code == 404
+
+
 def test_list_pending_filters_by_user_and_status(cp_client, cp_engine) -> None:
     run_a, step_a = _seed_run_and_step(cp_engine, user_id="alex")
     run_b, step_b = _seed_run_and_step(cp_engine, user_id="bob")

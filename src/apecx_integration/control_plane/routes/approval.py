@@ -48,6 +48,23 @@ from apecx_integration.control_plane.schemas.enums import (
 router = APIRouter(prefix="/approvals", tags=["approval"])
 
 
+@router.get("/{approval_id}", response_model=ApprovalResponse)
+def get_approval(
+    approval_id: UUID,
+    session: Annotated[Session, Depends(get_session)],
+) -> ApprovalResponse:
+    """Return the current state of an approval.
+
+    Called by the nanobrain ``ApprovalStep`` (T10) to poll for a
+    decision while it's paused. Returns 404 if the id is unknown.
+    Status transitions from PENDING to one of APPROVED /
+    APPROVED_WITH_MODIFICATIONS / REJECTED / AUTO_APPROVED /
+    TIMED_OUT; the polling step detects the change and resumes.
+    """
+    approval = _load_approval_or_404(session, approval_id)
+    return ApprovalResponse(approval=ApprovalSchema.model_validate(approval))
+
+
 def _load_approval_or_404(session: Session, approval_id: UUID) -> ApprovalORM:
     approval = session.get(ApprovalORM, approval_id)
     if approval is None:
