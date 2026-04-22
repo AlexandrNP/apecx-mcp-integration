@@ -35,6 +35,7 @@ from apecx_integration.control_plane.schemas.api import (
     CorrectRequest,
     CreateApprovalRequest,
     CreateApprovalResponse,
+    CreateVerifiedSynonymRequest,
     GeneratePlanRequest,
     GeneratePlanResponse,
     GetArtifactRequest,
@@ -46,10 +47,14 @@ from apecx_integration.control_plane.schemas.api import (
     ListRunsRequest,
     ListRunsResponse,
     RejectRequest,
+    RevokeVerifiedSynonymRequest,
     ShowYamlDiffRequest,
     ShowYamlDiffResponse,
     StartWorkflowRequest,
     StartWorkflowResponse,
+    VerifiedSynonymLookupRequest,
+    VerifiedSynonymLookupResponse,
+    VerifiedSynonymResponse,
 )
 
 R = TypeVar("R", bound=BaseModel)
@@ -145,3 +150,25 @@ class ControlPlaneClient:
 
     async def get_artifact(self, body: GetArtifactRequest) -> GetArtifactResponse:
         return await self._post("/runs/artifact", body, GetArtifactResponse)
+
+    # ---- /verified_synonyms (T02) -------------------------------------
+
+    async def lookup_verified_synonyms(
+        self, body: VerifiedSynonymLookupRequest
+    ) -> VerifiedSynonymLookupResponse:
+        return await self._post("/verified_synonyms/lookup", body, VerifiedSynonymLookupResponse)
+
+    async def create_verified_synonym(
+        self, body: CreateVerifiedSynonymRequest
+    ) -> VerifiedSynonymResponse:
+        return await self._post("/verified_synonyms/", body, VerifiedSynonymResponse)
+
+    async def revoke_verified_synonym(
+        self, synonym_id: UUID, body: RevokeVerifiedSynonymRequest
+    ) -> VerifiedSynonymResponse:
+        resp = await self._client.patch(
+            f"/verified_synonyms/{synonym_id}",
+            json=body.model_dump(mode="json"),
+        )
+        resp.raise_for_status()
+        return VerifiedSynonymResponse.model_validate(resp.json())

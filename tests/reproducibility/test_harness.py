@@ -93,8 +93,10 @@ def test_python_ast_equivalence_rejects_syntax_errors() -> None:
 
 def test_discover_fixtures_skips_dirs_missing_required_files(tmp_path) -> None:
     _write_fixture(
-        tmp_path, "ok_fixture",
-        prompt="generate x", kind="yaml",
+        tmp_path,
+        "ok_fixture",
+        prompt="generate x",
+        kind="yaml",
         baseline_bytes=b"a: 1\n",
     )
     incomplete = tmp_path / "incomplete"
@@ -141,7 +143,11 @@ def test_check_falls_back_to_semantic_when_hash_differs_but_yaml_equivalent(
     baseline = b"a: 1\nb: 2\n"
     regenerated = b"b: 2\na: 1\n"  # same YAML, different bytes
     _write_fixture(
-        tmp_path, "reorder", prompt="x", kind="yaml", baseline_bytes=baseline,
+        tmp_path,
+        "reorder",
+        prompt="x",
+        kind="yaml",
+        baseline_bytes=baseline,
     )
     fixture = Fixture.load(tmp_path / "reorder")
     check(generated=regenerated, fixture=fixture)  # must not raise
@@ -151,7 +157,11 @@ def test_check_raises_when_hash_and_semantic_both_differ(tmp_path) -> None:
     baseline = b"threshold: 0.92\n"
     drifted = b"threshold: 0.80\n"
     _write_fixture(
-        tmp_path, "drift", prompt="x", kind="yaml", baseline_bytes=baseline,
+        tmp_path,
+        "drift",
+        prompt="x",
+        kind="yaml",
+        baseline_bytes=baseline,
     )
     fixture = Fixture.load(tmp_path / "drift")
     with pytest.raises(SemanticDivergence, match="semantic yaml divergence"):
@@ -164,8 +174,11 @@ def test_check_raises_when_hash_differs_and_no_baseline_content_file(
     baseline = b"a: 1\n"
     regen = b"b: 2\n"
     _write_fixture(
-        tmp_path, "no_fallback",
-        prompt="x", kind="yaml", baseline_bytes=baseline,
+        tmp_path,
+        "no_fallback",
+        prompt="x",
+        kind="yaml",
+        baseline_bytes=baseline,
         include_baseline_content=False,  # only hash file, no baseline_content.yml
     )
     fixture = Fixture.load(tmp_path / "no_fallback")
@@ -182,7 +195,11 @@ def test_check_python_semantic_fallback(tmp_path) -> None:
     ).encode()
     regenerated = b"def f(x): return x+1\n"
     _write_fixture(
-        tmp_path, "py_reformat", prompt="x", kind="python", baseline_bytes=baseline,
+        tmp_path,
+        "py_reformat",
+        prompt="x",
+        kind="python",
+        baseline_bytes=baseline,
     )
     fixture = Fixture.load(tmp_path / "py_reformat")
     check(generated=regenerated, fixture=fixture)  # must not raise

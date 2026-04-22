@@ -295,6 +295,66 @@ components:
       - approval
       title: CreateApprovalResponse
       type: object
+    CreateVerifiedSynonymRequest:
+      additionalProperties: false
+      description: 'Write-back after ApprovalStep approves a novel mapping.
+
+
+        ``verified_by`` is the reviewer''s identifier (same placeholder shape
+
+        as ApprovalStep''s ``decided_by``: defaults to ``"api_user"`` until
+
+        auth lands).'
+      properties:
+        canonical_term:
+          minLength: 1
+          title: Canonical Term
+          type: string
+        comment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comment
+        confidence:
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
+          type: number
+        query_term:
+          minLength: 1
+          title: Query Term
+          type: string
+        scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope
+        source_run_id:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Source Run Id
+        source_vocabulary:
+          minLength: 1
+          title: Source Vocabulary
+          type: string
+        target_vocabulary:
+          minLength: 1
+          title: Target Vocabulary
+          type: string
+        verified_by:
+          default: api_user
+          title: Verified By
+          type: string
+      required:
+      - source_vocabulary
+      - query_term
+      - target_vocabulary
+      - canonical_term
+      - confidence
+      title: CreateVerifiedSynonymRequest
+      type: object
     EstimateCostRequest:
       additionalProperties: false
       properties:
@@ -561,6 +621,32 @@ components:
       - approval_id
       - reason
       title: RejectRequest
+      type: object
+    RevokeVerifiedSynonymRequest:
+      additionalProperties: false
+      description: 'Soft-delete a previously-approved mapping. Row is preserved for
+
+        audit; ``is_active`` flips to false and the revocation fields are
+
+        populated. Optional ``superseded_by`` points at a replacement row.'
+      properties:
+        revocation_reason:
+          minLength: 1
+          title: Revocation Reason
+          type: string
+        revoked_by:
+          default: api_user
+          title: Revoked By
+          type: string
+        superseded_by:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Superseded By
+      required:
+      - revocation_reason
+      title: RevokeVerifiedSynonymRequest
       type: object
     Run:
       additionalProperties: false
@@ -849,6 +935,183 @@ components:
       - msg
       - type
       title: ValidationError
+      type: object
+    VerifiedSynonym:
+      additionalProperties: false
+      description: "A user-verified synonym mapping persisted across runs.\n\nRound\
+        \ 3 addition (user directive 2026-04-21): instead of asking a human to\napprove\
+        \ the same synonym on every run, we remember past approvals and only\nsurface\
+        \ novel terms to the HITL gate.\n\nNaming conventions:\n- ``source_vocabulary``:\
+        \ which corpus the query term came from, e.g.\n  ``user_query``, ``violin.vaccine_name``,\
+        \ ``bvbrc.strain_name``.\n- ``target_vocabulary``: where the canonical term\
+        \ lives, e.g.\n  ``violin.pathogen_id``, ``bvbrc.genome_id``.\n- ``canonical_term``:\
+        \ the resolved identifier (may be an ID or a name\n   string, depending on\
+        \ the target vocabulary).\n- ``scope``: optional narrowing, e.g. restrict\
+        \ a mapping to a specific\n  taxonomic family or dataset version.\n\nRevocation\
+        \ (user directive 2026-04-21, workflow_spec v2 open question 5):\na previously-verified\
+        \ mapping can be revoked when a user discovers it was\nincorrect. Revoked\
+        \ rows are NOT deleted \u2014 they stay for audit. The cache\nlookup in Step\
+        \ 3a filters by ``is_active``. Revocation is recorded as a\nstate transition,\
+        \ not a hard delete, so provenance remains intact.\n\nThe same query term\
+        \ may have multiple verified mappings with different\n``target_vocabulary``\
+        \ values (one per corpus). Uniqueness is intended at\nthe ``(source_vocabulary,\
+        \ query_term, target_vocabulary, scope, is_active)``\ntuple level; the T09\
+        \ migration will enforce that *active* mappings are\nunique but allow historical\
+        \ revoked rows to coexist."
+      properties:
+        canonical_term:
+          title: Canonical Term
+          type: string
+        comment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comment
+        confidence:
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
+          type: number
+        id:
+          format: uuid
+          title: Id
+          type: string
+        is_active:
+          default: true
+          title: Is Active
+          type: boolean
+        query_term:
+          title: Query Term
+          type: string
+        revocation_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Revocation Reason
+        revoked_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Revoked At
+        revoked_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Revoked By
+        scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope
+        source_run_id:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Source Run Id
+        source_vocabulary:
+          title: Source Vocabulary
+          type: string
+        superseded_by:
+          anyOf:
+          - format: uuid
+            type: string
+          - type: 'null'
+          title: Superseded By
+        target_vocabulary:
+          title: Target Vocabulary
+          type: string
+        verified_at:
+          format: date-time
+          title: Verified At
+          type: string
+        verified_by:
+          title: Verified By
+          type: string
+      required:
+      - source_vocabulary
+      - query_term
+      - target_vocabulary
+      - canonical_term
+      - verified_by
+      - verified_at
+      - confidence
+      title: VerifiedSynonym
+      type: object
+    VerifiedSynonymLookupRequest:
+      additionalProperties: false
+      description: 'Batched cache lookup. Every workflow run starts with a lookup
+
+        for the entity terms it extracted from the user query; this is
+
+        the hot path for HARD-synonym strategy, so the API is batched.'
+      properties:
+        query_terms:
+          items:
+            type: string
+          maxItems: 500
+          minItems: 1
+          title: Query Terms
+          type: array
+        scope:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope
+        source_vocabulary:
+          minLength: 1
+          title: Source Vocabulary
+          type: string
+        target_vocabulary:
+          minLength: 1
+          title: Target Vocabulary
+          type: string
+      required:
+      - source_vocabulary
+      - target_vocabulary
+      - query_terms
+      title: VerifiedSynonymLookupRequest
+      type: object
+    VerifiedSynonymLookupResponse:
+      additionalProperties: false
+      properties:
+        matches:
+          items:
+            $ref: '#/components/schemas/VerifiedSynonymMatch'
+          title: Matches
+          type: array
+      required:
+      - matches
+      title: VerifiedSynonymLookupResponse
+      type: object
+    VerifiedSynonymMatch:
+      additionalProperties: false
+      description: 'One cache-lookup result. ``result`` is the active
+
+        :class:`VerifiedSynonym` row for the term, or null when the term
+
+        is novel (no human-approved mapping yet).'
+      properties:
+        query_term:
+          title: Query Term
+          type: string
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/VerifiedSynonym'
+          - type: 'null'
+      required:
+      - query_term
+      title: VerifiedSynonymMatch
+      type: object
+    VerifiedSynonymResponse:
+      additionalProperties: false
+      properties:
+        verified_synonym:
+          $ref: '#/components/schemas/VerifiedSynonym'
+      required:
+      - verified_synonym
+      title: VerifiedSynonymResponse
       type: object
 info:
   description: "Tier 2 of the APECx integration. Holds run state, provenance, approvals,\
@@ -1243,6 +1506,109 @@ paths:
       summary: Get Status
       tags:
       - status
+  /verified_synonyms/:
+    post:
+      description: "Record a novel approved mapping. Called by the workflow's\n``verified_synonym_writeback``\
+        \ step after ``ApprovalStep`` returns\nan APPROVED / APPROVED_WITH_MODIFICATIONS\
+        \ decision.\n\nEnforces at most one active mapping per (source, query, target,\n\
+        scope) tuple via the unique index. A second write for the same\ntuple raises\
+        \ HTTP 409 \u2014 the caller is expected to either revoke\nthe existing row\
+        \ first or treat its canonical_term as the\nalready-recorded answer."
+      operationId: create_verified_synonym_verified_synonyms__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerifiedSynonymRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedSynonymResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Verified Synonym
+      tags:
+      - verified_synonyms
+  /verified_synonyms/lookup:
+    post:
+      description: 'Batched cache lookup. Returns one match per input term, in
+
+        the same order as ``body.query_terms``. ``result`` is ``null`` for
+
+        terms with no active mapping under the requested (source, target,
+
+        scope) tuple.'
+      operationId: lookup_verified_synonyms_lookup_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifiedSynonymLookupRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedSynonymLookupResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Lookup
+      tags:
+      - verified_synonyms
+  /verified_synonyms/{synonym_id}:
+    patch:
+      description: "Soft-delete: set ``is_active=false``, record revocation metadata.\n\
+        \nThe row is preserved for audit. ``superseded_by``, if set, points\nat the\
+        \ replacement row that the caller already created \u2014 giving\nthe audit\
+        \ trail a forward pointer for \"what did we change this\nto?\" questions.\n\
+        \nRevoking a row that is already inactive is a 409 (idempotency is\nthe caller's\
+        \ job; allowing double-revocation would overwrite the\noriginal revocation\
+        \ metadata)."
+      operationId: revoke_verified_synonym_verified_synonyms__synonym_id__patch
+      parameters:
+      - in: path
+        name: synonym_id
+        required: true
+        schema:
+          format: uuid
+          title: Synonym Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevokeVerifiedSynonymRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedSynonymResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Revoke Verified Synonym
+      tags:
+      - verified_synonyms
   /workflows/diff:
     post:
       operationId: show_yaml_diff_workflows_diff_post

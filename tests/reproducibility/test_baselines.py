@@ -76,8 +76,7 @@ def test_at_least_one_fixture_present() -> None:
     """
     if not _fixtures:
         pytest.skip(
-            "No fixtures present yet. See tests/reproducibility/README.md "
-            "for how to add one."
+            "No fixtures present yet. See tests/reproducibility/README.md " "for how to add one."
         )
     # We have at least one fixture — trivially pass.
     assert len(_fixtures) >= 1

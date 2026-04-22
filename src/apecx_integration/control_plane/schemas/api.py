@@ -255,3 +255,69 @@ class ApprovalMetricsResponse(_APIBase):
         description="True when count>5 and median_time_to_decide_seconds<5.",
     )
     window_start_iso: str = Field(description="Caller-supplied `since` timestamp, echoed.")
+
+
+# --- /verified_synonyms (T02: batched cache lookup + create + revoke) -----
+
+
+class VerifiedSynonymLookupRequest(_APIBase):
+    """Batched cache lookup. Every workflow run starts with a lookup
+    for the entity terms it extracted from the user query; this is
+    the hot path for HARD-synonym strategy, so the API is batched.
+    """
+
+    source_vocabulary: str = Field(min_length=1)
+    target_vocabulary: str = Field(min_length=1)
+    query_terms: list[str] = Field(min_length=1, max_length=500)
+    scope: str | None = None
+
+
+from apecx_integration.control_plane.schemas.entities import VerifiedSynonym  # noqa: E402
+
+
+class VerifiedSynonymMatch(_APIBase):
+    """One cache-lookup result. ``result`` is the active
+    :class:`VerifiedSynonym` row for the term, or null when the term
+    is novel (no human-approved mapping yet).
+    """
+
+    query_term: str
+    result: VerifiedSynonym | None = None
+
+
+class VerifiedSynonymLookupResponse(_APIBase):
+    matches: list[VerifiedSynonymMatch]
+
+
+class CreateVerifiedSynonymRequest(_APIBase):
+    """Write-back after ApprovalStep approves a novel mapping.
+
+    ``verified_by`` is the reviewer's identifier (same placeholder shape
+    as ApprovalStep's ``decided_by``: defaults to ``"api_user"`` until
+    auth lands).
+    """
+
+    source_vocabulary: str = Field(min_length=1)
+    query_term: str = Field(min_length=1)
+    target_vocabulary: str = Field(min_length=1)
+    canonical_term: str = Field(min_length=1)
+    scope: str | None = None
+    verified_by: str = "api_user"
+    confidence: float = Field(ge=0.0, le=1.0)
+    source_run_id: UUID | None = None
+    comment: str | None = None
+
+
+class VerifiedSynonymResponse(_APIBase):
+    verified_synonym: VerifiedSynonym
+
+
+class RevokeVerifiedSynonymRequest(_APIBase):
+    """Soft-delete a previously-approved mapping. Row is preserved for
+    audit; ``is_active`` flips to false and the revocation fields are
+    populated. Optional ``superseded_by`` points at a replacement row.
+    """
+
+    revoked_by: str = "api_user"
+    revocation_reason: str = Field(min_length=1)
+    superseded_by: UUID | None = None

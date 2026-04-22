@@ -1,0 +1,178 @@
+# VIOLIN × BV-BRC workflow — T02 component manifest
+#
+# Source: docs/workflow_spec.md (T00.1b) as modified by the HARD-synonym
+# directive 2026-04-21 (Steps 0 and 3b dropped).
+#
+# One entry per step in the workflow. Each entry carries its asset
+# disposition (reuse / wrap / new / deferred), the class path that
+# implements it, the YAML path in this repo that wires it into the
+# workflow, and a RAG description + two example prompts so the T03
+# index can retrieve it.
+#
+# Status legend:
+#   ready     — YAML exists, step class exists, integration-tested
+#   in-progress — identified, class or YAML partially landed
+#   pending   — reserved in this manifest but not yet authored
+#   done-ext  — relies on a class in another repo (nanobrain); no
+#               YAML wiring work done in this repo yet
+
+workflow:
+  name: violin_bvbrc_synonym_gate
+  spec: docs/workflow_spec.md
+  first_release_variant: hard_only   # per user directive 2026-04-21
+
+components:
+
+  - step_id: "1"
+    step_name: entity_extraction
+    disposition: reuse
+    class: "apecx_db_integration.agent.extract_entities_llm"
+    yaml: null
+    status: pending
+    rag_description: >
+      LLM-driven extraction of pathogen / vaccine / gene entity names from a
+      free-text user query. Emits a list of entity candidates with LLM
+      confidence scores.
+    rag_examples:
+      - "find genes related to EEEV vaccine studies"
+      - "what pathogens does the vaccinia-based smallpox vaccine target?"
+
+  - step_id: "2"
+    step_name: bvbrc_snapshot_match
+    disposition: wrap
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep"
+    yaml: "steps/bvbrc_snapshot_match.yml"
+    status: pending
+    wrap_notes: >
+      Inject a BVBRCSnapshotTool that reads ``data/bvbrc_cache/*.tsv``
+      instead of the live BV-BRC API. Enhanced step's _load_csv_data
+      placeholder at line 1402 needs wiring to the real TSV path.
+    rag_description: >
+      Deterministic match of extracted entity names against the local
+      BV-BRC genome / protein snapshot. Emits candidate (entity_name →
+      genome_id | protein_id) mappings with a plain-text similarity
+      score.
+    rag_examples:
+      - "map 'EEEV' to a BV-BRC genome id"
+      - "look up vaccinia virus proteins in the local snapshot"
+
+  - step_id: "3a"
+    step_name: synonym_cache_lookup
+    disposition: new
+    class: "apecx_integration.composition.steps.synonym_cache.SynonymCacheLookupStep"
+    yaml: "steps/synonym_cache_lookup.yml"
+    status: in-progress        # class + integration test shipped; YAML wiring pending
+    rag_description: >
+      Batched lookup in the Control Plane's VerifiedSynonym cache.
+      Returns terms the human reviewer has already blessed so the
+      LLM + HITL steps run only on genuinely novel terms.
+    rag_examples:
+      - "check the cache for approved synonyms before proposing"
+      - "batch-lookup 20 entity terms against the VerifiedSynonym table"
+
+  - step_id: "3b"
+    step_name: synonym_fuzzy_match
+    disposition: deferred
+    class: null
+    yaml: null
+    status: deferred_by_directive
+    deferred_rationale: >
+      HARD-synonym first-release directive 2026-04-21 drops fuzzy
+      matching. Cache + LLM + HARD gate covers the use case without
+      the 0.92-threshold tuning risk.
+
+  - step_id: "3c"
+    step_name: synonym_llm_proposals
+    disposition: reuse
+    class: "apecx_db_integration.agent.consolidated_synonym_search"
+    yaml: "steps/synonym_llm_proposals.yml"
+    status: pending
+    rag_description: >
+      LLM-driven synonym proposal for terms that missed the
+      VerifiedSynonym cache. Inputs: residual novel_terms + target
+      vocabulary hints. Output: ranked synonym candidates with
+      LLM confidence.
+    rag_examples:
+      - "ask the LLM to propose BV-BRC synonyms for these 3 novel terms"
+      - "propose canonical VIOLIN pathogen IDs for 'EEV', 'WEEV'"
+
+  - step_id: "4"
+    step_name: synonym_approval_gate
+    disposition: new
+    class: "nanobrain.library.steps.approval_step.ApprovalStep"
+    yaml: "steps/synonym_approval_gate.yml"
+    status: done-ext       # T10 shipped the class; YAML for this workflow pending
+    rag_description: >
+      HARD approval gate for LLM-proposed synonyms. Pauses the run
+      and POSTs to the Control Plane's /approvals/ endpoint; resumes
+      when a human approves / rejects / corrects.
+    rag_examples:
+      - "wait for human approval of these 5 proposed synonyms"
+      - "pause the workflow for HITL review"
+
+  - step_id: "4p"
+    step_name: verified_synonym_writeback
+    disposition: new
+    class: "apecx_integration.composition.steps.synonym_cache.VerifiedSynonymWritebackStep"
+    yaml: "steps/verified_synonym_writeback.yml"
+    status: in-progress        # class + integration test shipped; YAML wiring pending
+    rag_description: >
+      Persist approved synonyms to the VerifiedSynonym cache so future
+      runs short-circuit past the LLM + HITL steps for the same terms.
+      Tolerates 409 (concurrent-run race) by treating them as already-
+      cached.
+    rag_examples:
+      - "record these 3 approved synonyms so the next run caches them"
+      - "write back approved LLM proposals to the persistent cache"
+
+  - step_id: "5"
+    step_name: violin_entity_lookup
+    disposition: reuse
+    class: "apecx_db_integration.enrich_matches_with_database_data"
+    yaml: "steps/violin_entity_lookup.yml"
+    status: pending
+    rag_description: >
+      Join resolved synonyms against the VIOLIN CSV tables (vaccine /
+      pathogen / gene info) to enrich with VIOLIN-native attributes.
+    rag_examples:
+      - "enrich the resolved pathogen IDs with VIOLIN descriptions"
+      - "join VIOLIN_c_pathogen_id against Pathogen_Information.csv"
+
+  - step_id: "6"
+    step_name: genomic_annotation
+    disposition: wrap
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.bv_brc_data_acquisition_step.BVBRCDataAcquisitionStep"
+    yaml: "steps/genomic_annotation.yml"
+    status: pending
+    wrap_notes: >
+      Same BVBRCSnapshotTool injection as Step 2. Pair with
+      ProteinSynonymAgent from nanobrain/library/agents/ for the
+      annotation layer.
+    rag_description: >
+      Enrich genome / protein matches with canonical protein
+      annotations from the BV-BRC snapshot.
+    rag_examples:
+      - "annotate these chikungunya genome hits with protein product names"
+      - "emit protein annotations for the matched BV-BRC genome IDs"
+
+  - step_id: "7"
+    step_name: result_ranking
+    disposition: reuse
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+    yaml: "steps/result_ranking.yml"
+    status: pending
+    rag_description: >
+      Final ranking + formatting of the enriched entity-relationship
+      results. Emits a ranked-entities JSON artifact keyed by VIOLIN
+      and BV-BRC IDs with provenance fields (run_id, model_version,
+      approved_synonym_decisions).
+    rag_examples:
+      - "format the final enriched results as ranked JSON"
+      - "rank resolved entities by combined confidence"
+
+coverage_target:
+  # T02 AC4: the entire T00.1b workflow composes using ≥80% existing
+  # or minimally-wrapped assets. Each component counts as 1 unit;
+  # deferred (Step 3b) and done-ext (Step 4 -- ApprovalStep) are
+  # excluded from the denominator since they are not composed here.
+  minimum_reuse_plus_wrap_share: 0.80

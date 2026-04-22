@@ -116,9 +116,7 @@ class Fixture:
             )
         suffix = ".yml" if kind_raw == "yaml" else ".py"
         baseline_path = fixture_dir / f"baseline_content{suffix}"
-        baseline_content = (
-            baseline_path.read_bytes() if baseline_path.is_file() else None
-        )
+        baseline_content = baseline_path.read_bytes() if baseline_path.is_file() else None
         return cls(
             name=fixture_dir.name,
             prompt=prompt,
