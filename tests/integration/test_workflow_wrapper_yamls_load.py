@@ -17,13 +17,11 @@ import os
 from pathlib import Path
 
 import pytest
-
-from nanobrain.library.steps.approval_step import ApprovalStep
-
 from apecx_integration.composition.steps.synonym_cache import (
     SynonymCacheLookupStep,
     VerifiedSynonymWritebackStep,
 )
+from nanobrain.library.steps.approval_step import ApprovalStep
 
 pytestmark = pytest.mark.integration
 
@@ -118,15 +116,14 @@ def test_env_var_not_set_is_a_loud_failure() -> None:
         # SynonymCacheLookupStep has base_url validation that only
         # checks non-empty — a literal ${VAR} is non-empty, so it
         # loads. The real failure is deferred to process() time.
-        step = SynonymCacheLookupStep.from_config(
-            str(STEPS_DIR / "synonym_cache_lookup.yml")
-        )
+        step = SynonymCacheLookupStep.from_config(str(STEPS_DIR / "synonym_cache_lookup.yml"))
         # Accept either: env-var interpolation already happened at
         # YAML load (leaving "" or nothing) or the literal persists.
         base_url = step._control_plane_config.get("base_url", "")
-        assert base_url in ("", "${CONTROL_PLANE_URL}"), (
-            f"unexpected base_url when env var unset: {base_url!r}"
-        )
+        assert base_url in (
+            "",
+            "${CONTROL_PLANE_URL}",
+        ), f"unexpected base_url when env var unset: {base_url!r}"
     finally:
         if original is not None:
             os.environ["CONTROL_PLANE_URL"] = original

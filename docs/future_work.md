@@ -282,4 +282,62 @@ but unbuilt, and on minor wiring for the reused components.
 **Trigger to revisit:** before T01 vertical-slice work starts.
 
 **Cost estimate:** ~3.5d per the original T02 rescope breakdown
-(inventory + effort section in implementation_plan.md T02).
+(inventory + effort section in implementation_plan.md T02). T02
+Phase 3 (2026-04-22) shipped the generic reader; remaining ~2.5d is
+wrapper YAMLs + the BVBRCSnapshotTool.
+
+---
+
+## Nanobrain config whitespace-stripping on string fields
+
+**What:** When a nanobrain step's YAML carries a string field whose
+value is pure whitespace (e.g., ``delimiter: "\t"``), the value
+arrives at the step's ``_init_from_config`` as an empty string. A
+tab character written as a YAML escape (``"\t"``) parses correctly
+in isolation via ``yaml.safe_load`` — a real tab comes back. But
+something in the nanobrain config stack (likely Pydantic's
+``str_strip_whitespace=True`` on ``StepConfig`` or the
+``ConfigBase`` loader) strips whitespace before the value reaches
+the subclass.
+
+**Evidence:** `DelimitedFileReaderStep` (T02 Phase 3) hit this.
+Direct ``yaml.safe_load`` of the step YAML returned the real tab;
+loading via ``DelimitedFileReaderStep.from_config(...)`` produced
+``self._delimiter = ""``.
+
+**Why deferred:** Worked around by switching the step's config
+from ``delimiter: str`` to ``format: Literal["csv","tsv"]`` (named
+enum mapped to real delimiters internally). The workaround is
+reasonable UX — ``format: tsv`` is more readable than
+``delimiter: "\t"`` — but it won't scale if every step
+reinventing the enum.
+
+**Trigger to revisit:** a second step needs a whitespace-bearing
+string field, or a nanobrain framework bug is filed.
+
+**Cost estimate:** 0.25d to patch ``StepConfig`` with
+``str_strip_whitespace=False`` and a regression test; 0 if we accept
+the per-step workaround.
+
+---
+
+## apecx-db-integration not pip-installed
+
+**What:** Three T02 wrapper YAMLs — Step 1 ``entity_extraction``,
+Step 3c ``synonym_llm_proposals``, Step 5 ``violin_entity_lookup``
+— reuse code from the sibling repo ``apecx-db-integration``. That
+package is not currently installed into the project's venv, so
+``from apecx_db_integration import ...`` raises
+``ModuleNotFoundError`` and those wrapper YAMLs can't load.
+
+**Why deferred:** The three wrapper YAMLs are part of T02 Phase 3
+(still pending). Installing the sibling is a one-line
+``pip install -e ../apecx-db-integration`` but we haven't decided
+whether to put it in ``pyproject.toml`` as a runtime dep vs. an
+optional extra. Pick the right dep shape when the wrapper YAMLs
+get authored.
+
+**Trigger to revisit:** when T02 Phase 3 authors the three wrapper
+YAMLs that reference ``apecx_db_integration``.
+
+**Cost estimate:** 0.25d (install wiring + smoke test).
