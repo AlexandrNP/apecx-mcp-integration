@@ -11,14 +11,13 @@ from datetime import UTC, datetime, timedelta
 from uuid import UUID, uuid4
 
 import pytest
-from sqlalchemy import text
-
 from apecx_integration.control_plane.db import make_session_factory
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
 from apecx_integration.control_plane.schemas.enums import (
     ApprovalStatus,
     ProvenanceEventType,
 )
+from sqlalchemy import text
 
 pytestmark = pytest.mark.integration
 
@@ -108,9 +107,7 @@ def test_empty_window_returns_zero_counts(cp_client, cp_engine) -> None:
     assert body["rubber_stamping_suspected"] is False
 
 
-def test_ac3_ten_synthetic_approvals_produce_correct_median(
-    cp_client, cp_engine
-) -> None:
+def test_ac3_ten_synthetic_approvals_produce_correct_median(cp_client, cp_engine) -> None:
     """TX3 AC3: seed 10 approvals with known timing, assert the median
     matches. Durations chosen so median is unambiguous: times
     [10, 20, 30, 40, 50, 60, 70, 80, 90, 100] -> median = 55.
@@ -120,7 +117,9 @@ def test_ac3_ten_synthetic_approvals_produce_correct_median(
     base = datetime.now(UTC)
     for seconds in (10, 20, 30, 40, 50, 60, 70, 80, 90, 100):
         _seed_decided_approval(
-            cp_engine, recorder, run_id,
+            cp_engine,
+            recorder,
+            run_id,
             seconds_to_decide=float(seconds),
             final_status=ApprovalStatus.APPROVED,
             base_time=base,
@@ -149,7 +148,9 @@ def test_rubber_stamping_triggers_when_fast_and_frequent(cp_client, cp_engine) -
     base = datetime.now(UTC)
     for _ in range(6):
         _seed_decided_approval(
-            cp_engine, recorder, run_id,
+            cp_engine,
+            recorder,
+            run_id,
             seconds_to_decide=1.0,
             final_status=ApprovalStatus.APPROVED,
             base_time=base,
@@ -166,9 +167,7 @@ def test_rubber_stamping_triggers_when_fast_and_frequent(cp_client, cp_engine) -
     assert body["rubber_stamping_suspected"] is True
 
 
-def test_rubber_stamping_does_not_trigger_below_min_count(
-    cp_client, cp_engine
-) -> None:
+def test_rubber_stamping_does_not_trigger_below_min_count(cp_client, cp_engine) -> None:
     """5 fast approvals (== min_count, not > min_count) -> no trigger,
     per the AP §7 threshold "N>5 approvals".
     """
@@ -177,7 +176,9 @@ def test_rubber_stamping_does_not_trigger_below_min_count(
     base = datetime.now(UTC)
     for _ in range(5):
         _seed_decided_approval(
-            cp_engine, recorder, run_id,
+            cp_engine,
+            recorder,
+            run_id,
             seconds_to_decide=1.0,
             final_status=ApprovalStatus.APPROVED,
             base_time=base,
@@ -198,16 +199,28 @@ def test_percent_rejected_and_auto_approved(cp_client, cp_engine) -> None:
     base = datetime.now(UTC)
     for _ in range(2):
         _seed_decided_approval(
-            cp_engine, recorder, run_id, seconds_to_decide=30.0,
-            final_status=ApprovalStatus.APPROVED, base_time=base,
+            cp_engine,
+            recorder,
+            run_id,
+            seconds_to_decide=30.0,
+            final_status=ApprovalStatus.APPROVED,
+            base_time=base,
         )
     _seed_decided_approval(
-        cp_engine, recorder, run_id, seconds_to_decide=30.0,
-        final_status=ApprovalStatus.REJECTED, base_time=base,
+        cp_engine,
+        recorder,
+        run_id,
+        seconds_to_decide=30.0,
+        final_status=ApprovalStatus.REJECTED,
+        base_time=base,
     )
     _seed_decided_approval(
-        cp_engine, recorder, run_id, seconds_to_decide=30.0,
-        final_status=ApprovalStatus.AUTO_APPROVED, base_time=base,
+        cp_engine,
+        recorder,
+        run_id,
+        seconds_to_decide=30.0,
+        final_status=ApprovalStatus.AUTO_APPROVED,
+        base_time=base,
     )
 
     resp = cp_client.get(
@@ -240,12 +253,20 @@ def test_window_excludes_older_events(cp_client, cp_engine) -> None:
     near_past = datetime.now(UTC) - timedelta(minutes=1)
 
     _seed_decided_approval(
-        cp_engine, recorder, run_id, seconds_to_decide=10.0,
-        final_status=ApprovalStatus.APPROVED, base_time=far_past,
+        cp_engine,
+        recorder,
+        run_id,
+        seconds_to_decide=10.0,
+        final_status=ApprovalStatus.APPROVED,
+        base_time=far_past,
     )
     _seed_decided_approval(
-        cp_engine, recorder, run_id, seconds_to_decide=10.0,
-        final_status=ApprovalStatus.APPROVED, base_time=near_past,
+        cp_engine,
+        recorder,
+        run_id,
+        seconds_to_decide=10.0,
+        final_status=ApprovalStatus.APPROVED,
+        base_time=near_past,
     )
 
     since = (datetime.now(UTC) - timedelta(hours=1)).isoformat()

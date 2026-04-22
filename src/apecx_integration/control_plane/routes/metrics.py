@@ -115,10 +115,11 @@ def approval_metrics(
     # approval events (≤ few hundred rows) is negligible.
     stmt = (
         select(ProvenanceEventORM)
-        .where(ProvenanceEventORM.event_type.in_(
-            (ProvenanceEventType.APPROVAL_REQUESTED,
-             ProvenanceEventType.APPROVAL_DECIDED)
-        ))
+        .where(
+            ProvenanceEventORM.event_type.in_(
+                (ProvenanceEventType.APPROVAL_REQUESTED, ProvenanceEventType.APPROVAL_DECIDED)
+            )
+        )
         .where(ProvenanceEventORM.timestamp >= window_start)
         .order_by(ProvenanceEventORM.timestamp)
     )
@@ -171,12 +172,8 @@ def approval_metrics(
             status_counts[status_val] += 1
 
     total_with_status = sum(status_counts.values()) or 1
-    percent_auto_approved = (
-        100.0 * status_counts[ApprovalStatus.AUTO_APPROVED] / total_with_status
-    )
-    percent_rejected = (
-        100.0 * status_counts[ApprovalStatus.REJECTED] / total_with_status
-    )
+    percent_auto_approved = 100.0 * status_counts[ApprovalStatus.AUTO_APPROVED] / total_with_status
+    percent_rejected = 100.0 * status_counts[ApprovalStatus.REJECTED] / total_with_status
 
     median = _median(durations)
     p95 = _percentile(durations, 95.0) if count >= P95_MIN_SAMPLES else None
