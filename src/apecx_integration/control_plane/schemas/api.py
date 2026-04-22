@@ -218,3 +218,40 @@ class CreateApprovalRequest(_APIBase):
 
 class CreateApprovalResponse(_APIBase):
     approval: Approval
+
+
+# --- /metrics/approvals (TX3 review-UX telemetry) --------------------------
+
+
+class ApprovalMetricsResponse(_APIBase):
+    """Aggregate telemetry over approval decisions in a time window.
+
+    Rubber-stamping detection (AP §7 risk #4): if median time-to-decide
+    drops below 5 seconds across a week with N>5 approvals, the reviewer
+    is likely not reading — ``rubber_stamping_suspected`` becomes true.
+    Document the threshold so it's checked at retros (TX3 AC4).
+    """
+
+    count: int = Field(
+        ge=0, description="Approvals with both started and decided timestamps in the window."
+    )
+    median_time_to_decide_seconds: float | None = Field(
+        description="Median seconds between APPROVAL_REQUESTED and APPROVAL_DECIDED. Null when count==0.",
+    )
+    p95_time_to_decide_seconds: float | None = Field(
+        description="95th-percentile time-to-decide. Null when count < 20 (statistic is meaningless below that sample size).",
+    )
+    percent_auto_approved: float = Field(
+        ge=0.0,
+        le=100.0,
+        description="Share of decisions with final status AUTO_APPROVED. Always 0 when count==0.",
+    )
+    percent_rejected: float = Field(
+        ge=0.0,
+        le=100.0,
+        description="Share of decisions with final status REJECTED. Always 0 when count==0.",
+    )
+    rubber_stamping_suspected: bool = Field(
+        description="True when count>5 and median_time_to_decide_seconds<5.",
+    )
+    window_start_iso: str = Field(description="Caller-supplied `since` timestamp, echoed.")

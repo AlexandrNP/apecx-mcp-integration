@@ -30,16 +30,15 @@ from __future__ import annotations
 
 import asyncio
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx
 import pytest
 import yaml
 from fastapi import FastAPI
-from sqlalchemy import Engine, text
-
 from nanobrain.library.steps.approval_step import ApprovalStep, StepRejected
+from sqlalchemy import Engine, text
 
 pytestmark = pytest.mark.integration
 
@@ -95,7 +94,7 @@ def _build_step(
 def _seed_run_and_step(engine: Engine, *, user_id: str = "alex"):
     run_id = uuid.uuid4()
     step_id = uuid.uuid4()
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     with engine.begin() as conn:
         conn.execute(
             text(
@@ -124,9 +123,7 @@ async def _async_client_for(app: FastAPI) -> httpx.AsyncClient:
     )
 
 
-async def _wait_for_pending(
-    engine: Engine, run_id: uuid.UUID, *, timeout: float = 2.0
-) -> str:
+async def _wait_for_pending(engine: Engine, run_id: uuid.UUID, *, timeout: float = 2.0) -> str:
     """Poll the DB until a PENDING approval appears for ``run_id``.
 
     The decider task uses this to wait for the step to have POSTed,

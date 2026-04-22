@@ -49,6 +49,65 @@ components:
       - allocation
       title: ApprovalKind
       type: string
+    ApprovalMetricsResponse:
+      additionalProperties: false
+      description: "Aggregate telemetry over approval decisions in a time window.\n\
+        \nRubber-stamping detection (AP \xA77 risk #4): if median time-to-decide\n\
+        drops below 5 seconds across a week with N>5 approvals, the reviewer\nis likely\
+        \ not reading \u2014 ``rubber_stamping_suspected`` becomes true.\nDocument\
+        \ the threshold so it's checked at retros (TX3 AC4)."
+      properties:
+        count:
+          description: Approvals with both started and decided timestamps in the window.
+          minimum: 0.0
+          title: Count
+          type: integer
+        median_time_to_decide_seconds:
+          anyOf:
+          - type: number
+          - type: 'null'
+          description: Median seconds between APPROVAL_REQUESTED and APPROVAL_DECIDED.
+            Null when count==0.
+          title: Median Time To Decide Seconds
+        p95_time_to_decide_seconds:
+          anyOf:
+          - type: number
+          - type: 'null'
+          description: 95th-percentile time-to-decide. Null when count < 20 (statistic
+            is meaningless below that sample size).
+          title: P95 Time To Decide Seconds
+        percent_auto_approved:
+          description: Share of decisions with final status AUTO_APPROVED. Always
+            0 when count==0.
+          maximum: 100.0
+          minimum: 0.0
+          title: Percent Auto Approved
+          type: number
+        percent_rejected:
+          description: Share of decisions with final status REJECTED. Always 0 when
+            count==0.
+          maximum: 100.0
+          minimum: 0.0
+          title: Percent Rejected
+          type: number
+        rubber_stamping_suspected:
+          description: True when count>5 and median_time_to_decide_seconds<5.
+          title: Rubber Stamping Suspected
+          type: boolean
+        window_start_iso:
+          description: Caller-supplied `since` timestamp, echoed.
+          title: Window Start Iso
+          type: string
+      required:
+      - count
+      - median_time_to_decide_seconds
+      - p95_time_to_decide_seconds
+      - percent_auto_approved
+      - percent_rejected
+      - rubber_stamping_suspected
+      - window_start_iso
+      title: ApprovalMetricsResponse
+      type: object
     ApprovalResponse:
       additionalProperties: false
       properties:
@@ -1079,6 +1138,36 @@ paths:
       summary: Submit Hpc
       tags:
       - hpc
+  /metrics/approvals:
+    get:
+      operationId: approval_metrics_metrics_approvals_get
+      parameters:
+      - description: 'ISO-8601 window start; approvals decided at or after this time
+          are included. Example: 2026-04-15T00:00:00Z'
+        in: query
+        name: since
+        required: true
+        schema:
+          description: 'ISO-8601 window start; approvals decided at or after this
+            time are included. Example: 2026-04-15T00:00:00Z'
+          title: Since
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalMetricsResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Approval Metrics
+      tags:
+      - metrics
   /runs/artifact:
     post:
       operationId: get_artifact_runs_artifact_post

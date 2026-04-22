@@ -52,6 +52,26 @@ pre-commit run --all-files
 - **HPC is optional export.** ALCF Polaris / Aurora bundles are a feature scientists opt into via MCP tool `export_hpc_bundle(run_id)`.
 - **BV-BRC via local snapshot only** — no live queries. Data lives under `../data/bvbrc_cache/`.
 
+## Review-UX telemetry (TX3)
+
+`GET /metrics/approvals?since=<iso-timestamp>` returns aggregate
+approval-decision timings sourced from the hash-chained
+`ProvenanceEvent` log (no extra Approval columns). Fields:
+
+- `count` — approvals with both REQUESTED and DECIDED events in window.
+- `median_time_to_decide_seconds` / `p95_time_to_decide_seconds`
+  (p95 null below 20 samples).
+- `percent_auto_approved` / `percent_rejected`.
+- `rubber_stamping_suspected` — the canary: **true iff `count > 5` and
+  `median_time_to_decide_seconds < 5`**, matching the AP §7 risk #4
+  threshold.
+
+**Check this at every retro.** The HITL review is the project's most
+subtle failure mode; if the median drops below 5s over a week of >5
+decisions, someone is rubber-stamping and the "human-approved
+synonyms" audit trail becomes hollow. Flagging is the responsibility
+of whoever runs the retro — the endpoint does not alert on its own.
+
 ## Contribution and review
 
 All code in `src/` is agent-authored (Round 3 staffing: Q4). Every PR passes through `review-gate` before the single human engineer merges. The review harness (TX5) enforces:

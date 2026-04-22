@@ -26,7 +26,7 @@ from sqlalchemy import Engine
 
 from apecx_integration.control_plane.db import get_db_url, make_engine, make_session_factory
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
-from apecx_integration.control_plane.routes import approval, hpc, status, workflow
+from apecx_integration.control_plane.routes import approval, hpc, metrics, status, workflow
 
 
 def create_app(engine: Engine | None = None) -> FastAPI:
@@ -64,6 +64,7 @@ def create_app(engine: Engine | None = None) -> FastAPI:
     app.include_router(approval.router)
     app.include_router(status.router)
     app.include_router(hpc.router)
+    app.include_router(metrics.router)
 
     return app
 
