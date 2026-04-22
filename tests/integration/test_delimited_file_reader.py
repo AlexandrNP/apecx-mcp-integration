@@ -13,7 +13,6 @@ from pathlib import Path
 
 import pytest
 import yaml
-
 from apecx_integration.composition.steps.file_readers import DelimitedFileReaderStep
 
 pytestmark = pytest.mark.integration
@@ -153,9 +152,7 @@ async def test_wrapper_yamls_load_via_from_config() -> None:
         / "violin_bvbrc"
         / "steps"
     )
-    violin = DelimitedFileReaderStep.from_config(
-        str(steps_dir / "violin_vaccine_reader.yml")
-    )
+    violin = DelimitedFileReaderStep.from_config(str(steps_dir / "violin_vaccine_reader.yml"))
     assert violin.name == "violin_vaccine_reader"
     assert violin._format == "csv"
     assert violin._delimiter == ","

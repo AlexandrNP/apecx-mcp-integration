@@ -53,9 +53,8 @@ import logging
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import Field
-
 from nanobrain.core.step import BaseStep, StepConfig
+from pydantic import Field
 
 log = logging.getLogger(__name__)
 
@@ -94,9 +93,7 @@ class DelimitedFileReaderStep(BaseStep):
         return DelimitedFileReaderStepConfig
 
     @classmethod
-    def extract_component_config(
-        cls, config: DelimitedFileReaderStepConfig
-    ) -> dict[str, Any]:
+    def extract_component_config(cls, config: DelimitedFileReaderStepConfig) -> dict[str, Any]:
         base = super().extract_component_config(config)
         return {
             **base,
@@ -125,9 +122,7 @@ class DelimitedFileReaderStep(BaseStep):
         self._encoding: str = component_config.get("encoding") or "utf-8"
         self._required_columns: list[str] = component_config["required_columns"]
 
-    async def process(
-        self, input_data: dict[str, Any] | None = None, **kwargs
-    ) -> dict[str, Any]:
+    async def process(self, input_data: dict[str, Any] | None = None, **kwargs) -> dict[str, Any]:
         path = Path(self._file_path)
         if not path.is_file():
             raise FileNotFoundError(
@@ -152,7 +147,10 @@ class DelimitedFileReaderStep(BaseStep):
 
         log.info(
             "DelimitedFileReaderStep %s: read %d rows from %s (format=%s)",
-            self.name, len(records), path.name, self._format,
+            self.name,
+            len(records),
+            path.name,
+            self._format,
         )
         return {
             "records": records,

@@ -38,6 +38,9 @@ dev = [
     "mypy>=1.10",
     "pre-commit>=3.7",
     "types-PyYAML",
+    # In-process SMTP server for EmailNotifier integration tests (T08).
+    # No production code imports it; dev-only.
+    "aiosmtpd>=1.4",
 ]
 rag = [
     "sentence-transformers>=2.7",
