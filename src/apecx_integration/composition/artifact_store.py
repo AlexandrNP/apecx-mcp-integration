@@ -56,7 +56,7 @@ import logging
 import os
 import subprocess
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4
@@ -77,9 +77,7 @@ from apecx_integration.control_plane.schemas.enums import (
 
 log = logging.getLogger(__name__)
 
-GENERATED_KINDS = frozenset(
-    {ArtifactKind.GENERATED_WORKFLOW, ArtifactKind.GENERATED_PYTHON}
-)
+GENERATED_KINDS = frozenset({ArtifactKind.GENERATED_WORKFLOW, ArtifactKind.GENERATED_PYTHON})
 
 
 class ArtifactNotFound(LookupError):
@@ -154,7 +152,7 @@ class ArtifactStore:
                 content_hash=content_hash,
                 size_bytes=len(content),
                 mime_type=mime_type,
-                created_at=datetime.now(timezone.utc),
+                created_at=datetime.now(UTC),
             )
             session.add(artifact)
 
@@ -184,9 +182,7 @@ class ArtifactStore:
                     "content_hash": content_hash,
                     "kind": kind.value,
                     "llm_model": (
-                        generated_metadata.llm_model
-                        if generated_metadata
-                        else "unknown"
+                        generated_metadata.llm_model if generated_metadata else "unknown"
                     ),
                     "size_bytes": len(content),
                 },
@@ -262,11 +258,15 @@ class ArtifactStore:
         try:
             subprocess.run(
                 ["git", "-C", str(repo_path), "add", target.name],
-                check=True, capture_output=True, text=True,
+                check=True,
+                capture_output=True,
+                text=True,
             )
             subprocess.run(
                 ["git", "-C", str(repo_path), "commit", "-m", msg],
-                check=True, capture_output=True, text=True,
+                check=True,
+                capture_output=True,
+                text=True,
             )
         except subprocess.CalledProcessError as e:
             raise RuntimeError(

@@ -11,8 +11,6 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from sqlalchemy import text
-
 from apecx_integration.composition.artifact_store import (
     ArtifactNotFound,
     ArtifactStore,
@@ -21,6 +19,7 @@ from apecx_integration.composition.artifact_store import (
 from apecx_integration.control_plane.db import make_engine, make_session_factory
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
 from apecx_integration.control_plane.schemas.enums import ArtifactKind
+from sqlalchemy import text
 
 pytestmark = pytest.mark.integration
 
@@ -107,12 +106,18 @@ def test_ac1_two_generations_of_same_content_produce_two_distinct_rows(store) ->
     st, engine, run_id = store
     content = b"identical-bytes"
     a1 = st.store(
-        content=content, kind=ArtifactKind.GENERATED_WORKFLOW, run_id=run_id,
-        mime_type="application/yaml", generated_metadata=_gen_meta(),
+        content=content,
+        kind=ArtifactKind.GENERATED_WORKFLOW,
+        run_id=run_id,
+        mime_type="application/yaml",
+        generated_metadata=_gen_meta(),
     )
     a2 = st.store(
-        content=content, kind=ArtifactKind.GENERATED_WORKFLOW, run_id=run_id,
-        mime_type="application/yaml", generated_metadata=_gen_meta(),
+        content=content,
+        kind=ArtifactKind.GENERATED_WORKFLOW,
+        run_id=run_id,
+        mime_type="application/yaml",
+        generated_metadata=_gen_meta(),
     )
     assert a1.id != a2.id
     assert a1.content_hash == a2.content_hash  # identical content → same hash
@@ -121,8 +126,10 @@ def test_ac1_two_generations_of_same_content_produce_two_distinct_rows(store) ->
 def test_ac3_load_content_raises_when_file_manually_deleted(store) -> None:
     st, _engine, run_id = store
     artifact = st.store(
-        content=b"irrelevant", kind=ArtifactKind.GENERATED_WORKFLOW,
-        run_id=run_id, mime_type="application/yaml",
+        content=b"irrelevant",
+        kind=ArtifactKind.GENERATED_WORKFLOW,
+        run_id=run_id,
+        mime_type="application/yaml",
         generated_metadata=_gen_meta(),
     )
     Path(artifact.location).unlink()
@@ -136,8 +143,10 @@ def test_load_content_detects_bit_tampering(store) -> None:
     """
     st, _engine, run_id = store
     artifact = st.store(
-        content=b"honest content", kind=ArtifactKind.GENERATED_WORKFLOW,
-        run_id=run_id, mime_type="application/yaml",
+        content=b"honest content",
+        kind=ArtifactKind.GENERATED_WORKFLOW,
+        run_id=run_id,
+        mime_type="application/yaml",
         generated_metadata=_gen_meta(),
     )
     Path(artifact.location).write_bytes(b"tampered content")
@@ -149,8 +158,11 @@ def test_input_artifact_rejects_generated_metadata(store) -> None:
     st, _engine, run_id = store
     with pytest.raises(ValueError, match="does not accept generated_metadata"):
         st.store(
-            content=b"x", kind=ArtifactKind.INPUT, run_id=run_id,
-            mime_type="text/plain", generated_metadata=_gen_meta(),
+            content=b"x",
+            kind=ArtifactKind.INPUT,
+            run_id=run_id,
+            mime_type="text/plain",
+            generated_metadata=_gen_meta(),
         )
 
 
@@ -158,7 +170,9 @@ def test_generated_kind_requires_metadata(store) -> None:
     st, _engine, run_id = store
     with pytest.raises(ValueError, match="requires generated_metadata"):
         st.store(
-            content=b"x", kind=ArtifactKind.GENERATED_WORKFLOW, run_id=run_id,
+            content=b"x",
+            kind=ArtifactKind.GENERATED_WORKFLOW,
+            run_id=run_id,
             mime_type="application/yaml",
         )
 
@@ -166,8 +180,11 @@ def test_generated_kind_requires_metadata(store) -> None:
 def test_generated_artifact_emits_workflow_generated_provenance(store) -> None:
     st, engine, run_id = store
     st.store(
-        content=b"y", kind=ArtifactKind.GENERATED_PYTHON, run_id=run_id,
-        mime_type="text/x-python", generated_metadata=_gen_meta(),
+        content=b"y",
+        kind=ArtifactKind.GENERATED_PYTHON,
+        run_id=run_id,
+        mime_type="text/x-python",
+        generated_metadata=_gen_meta(),
     )
     with engine.connect() as conn:
         kinds = [
@@ -190,14 +207,14 @@ def test_non_generated_artifact_does_not_emit_provenance(store) -> None:
     """
     st, engine, run_id = store
     st.store(
-        content=b"z", kind=ArtifactKind.INPUT, run_id=run_id,
+        content=b"z",
+        kind=ArtifactKind.INPUT,
+        run_id=run_id,
         mime_type="text/plain",
     )
     with engine.connect() as conn:
         count = conn.execute(
-            text(
-                "SELECT COUNT(*) FROM provenance_event WHERE run_id = :rid"
-            ),
+            text("SELECT COUNT(*) FROM provenance_event WHERE run_id = :rid"),
             {"rid": str(run_id)},
         ).scalar()
     assert count == 0
@@ -216,20 +233,25 @@ def test_ac4_git_commit_happens_when_env_set(store, tmp_path, monkeypatch) -> No
         check=True,
     )
     subprocess.run(
-        ["git", "-C", str(repo), "config", "user.name", "test"], check=True,
+        ["git", "-C", str(repo), "config", "user.name", "test"],
+        check=True,
     )
     monkeypatch.setenv("GENERATED_ARTIFACTS_REPO_PATH", str(repo))
 
     artifact = st.store(
-        content=b"workflow: {}\n", kind=ArtifactKind.GENERATED_WORKFLOW,
-        run_id=run_id, mime_type="application/yaml",
+        content=b"workflow: {}\n",
+        kind=ArtifactKind.GENERATED_WORKFLOW,
+        run_id=run_id,
+        mime_type="application/yaml",
         generated_metadata=_gen_meta(),
     )
     # File landed in the repo and was committed.
     assert (repo / f"{artifact.id}.yml").is_file()
     log = subprocess.run(
         ["git", "-C", str(repo), "log", "--oneline"],
-        check=True, capture_output=True, text=True,
+        check=True,
+        capture_output=True,
+        text=True,
     )
     assert str(artifact.id)[:8] in log.stdout or "apecx:" in log.stdout
 
@@ -240,8 +262,11 @@ def test_ac4_no_git_env_no_git_commit(store, tmp_path, monkeypatch) -> None:
     monkeypatch.delenv("GENERATED_ARTIFACTS_REPO_PATH", raising=False)
     # Should not raise. No git infra around.
     st.store(
-        content=b"w", kind=ArtifactKind.GENERATED_WORKFLOW, run_id=run_id,
-        mime_type="application/yaml", generated_metadata=_gen_meta(),
+        content=b"w",
+        kind=ArtifactKind.GENERATED_WORKFLOW,
+        run_id=run_id,
+        mime_type="application/yaml",
+        generated_metadata=_gen_meta(),
     )
 
 
@@ -252,6 +277,9 @@ def test_git_env_pointing_at_non_repo_raises(store, tmp_path, monkeypatch) -> No
     st, _engine, run_id = store
     with pytest.raises(RuntimeError, match="not a git working tree"):
         st.store(
-            content=b"x", kind=ArtifactKind.GENERATED_WORKFLOW, run_id=run_id,
-            mime_type="application/yaml", generated_metadata=_gen_meta(),
+            content=b"x",
+            kind=ArtifactKind.GENERATED_WORKFLOW,
+            run_id=run_id,
+            mime_type="application/yaml",
+            generated_metadata=_gen_meta(),
         )
