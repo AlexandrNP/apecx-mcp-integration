@@ -46,9 +46,8 @@ from typing import Any
 from uuid import UUID
 
 import httpx
-from pydantic import Field
-
 from nanobrain.core.step import BaseStep, StepConfig
+from pydantic import Field
 
 log = logging.getLogger(__name__)
 
@@ -75,9 +74,7 @@ def _http_client_from_config(control_plane_config: dict[str, Any]) -> httpx.Asyn
     if not base_url:
         raise ValueError("control_plane.base_url is required")
     timeout = float(
-        control_plane_config.get(
-            "request_timeout_seconds", DEFAULT_REQUEST_TIMEOUT_SECONDS
-        )
+        control_plane_config.get("request_timeout_seconds", DEFAULT_REQUEST_TIMEOUT_SECONDS)
     )
     return httpx.AsyncClient(base_url=base_url.rstrip("/"), timeout=timeout)
 
@@ -133,15 +130,11 @@ class SynonymCacheLookupStep(BaseStep):
         self._target_vocabulary: str = component_config["target_vocabulary"]
         self._scope: str | None = component_config.get("scope")
         # Pluggable for tests. Default builds a real httpx.AsyncClient.
-        self._http_client_factory = lambda: _http_client_from_config(
-            self._control_plane_config
-        )
+        self._http_client_factory = lambda: _http_client_from_config(self._control_plane_config)
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         query_terms = input_data.get("query_terms")
-        if not isinstance(query_terms, list) or not all(
-            isinstance(t, str) for t in query_terms
-        ):
+        if not isinstance(query_terms, list) or not all(isinstance(t, str) for t in query_terms):
             raise ValueError(
                 f"SynonymCacheLookupStep '{self.name}': input_data must have "
                 f"'query_terms' as list[str], got {type(query_terms).__name__}"
@@ -182,7 +175,10 @@ class SynonymCacheLookupStep(BaseStep):
 
         log.info(
             "SynonymCacheLookupStep %s: %d cached, %d novel (of %d terms)",
-            self.name, len(cached_mappings), len(novel_terms), len(query_terms),
+            self.name,
+            len(cached_mappings),
+            len(novel_terms),
+            len(query_terms),
         )
         return {"cached_mappings": cached_mappings, "novel_terms": novel_terms}
 
@@ -227,9 +223,7 @@ class VerifiedSynonymWritebackStep(BaseStep):
         return VerifiedSynonymWritebackStepConfig
 
     @classmethod
-    def extract_component_config(
-        cls, config: VerifiedSynonymWritebackStepConfig
-    ) -> dict[str, Any]:
+    def extract_component_config(cls, config: VerifiedSynonymWritebackStepConfig) -> dict[str, Any]:
         base = super().extract_component_config(config)
         return {
             **base,
@@ -252,9 +246,7 @@ class VerifiedSynonymWritebackStep(BaseStep):
         self._target_vocabulary: str = component_config["target_vocabulary"]
         self._scope: str | None = component_config.get("scope")
         self._verified_by: str = component_config.get("verified_by", "api_user")
-        self._http_client_factory = lambda: _http_client_from_config(
-            self._control_plane_config
-        )
+        self._http_client_factory = lambda: _http_client_from_config(self._control_plane_config)
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         approved_mappings = input_data.get("approved_mappings")
@@ -292,7 +284,9 @@ class VerifiedSynonymWritebackStep(BaseStep):
 
         log.info(
             "VerifiedSynonymWritebackStep %s: wrote %d, %d already existed",
-            self.name, len(written), len(already_existed),
+            self.name,
+            len(written),
+            len(already_existed),
         )
         return {"written": written, "already_existed": already_existed}
 
@@ -306,6 +300,4 @@ def _coerce_uuid_string(value: Any) -> str | None:
     if isinstance(value, str):
         # Validate shape; UUID() raises ValueError on malformed input.
         return str(UUID(value))
-    raise TypeError(
-        f"source_run_id must be UUID, str, or None, got {type(value).__name__}"
-    )
+    raise TypeError(f"source_run_id must be UUID, str, or None, got {type(value).__name__}")

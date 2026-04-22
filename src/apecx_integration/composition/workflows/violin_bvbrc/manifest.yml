@@ -61,7 +61,7 @@ components:
     disposition: new
     class: "apecx_integration.composition.steps.synonym_cache.SynonymCacheLookupStep"
     yaml: "steps/synonym_cache_lookup.yml"
-    status: in-progress        # class + integration test shipped; YAML wiring pending
+    status: ready        # class + integration test + wrapper YAML (loadable via from_config)
     rag_description: >
       Batched lookup in the Control Plane's VerifiedSynonym cache.
       Returns terms the human reviewer has already blessed so the
@@ -101,7 +101,7 @@ components:
     disposition: new
     class: "nanobrain.library.steps.approval_step.ApprovalStep"
     yaml: "steps/synonym_approval_gate.yml"
-    status: done-ext       # T10 shipped the class; YAML for this workflow pending
+    status: ready       # T10 shipped the class; workflow-specific YAML loads via from_config
     rag_description: >
       HARD approval gate for LLM-proposed synonyms. Pauses the run
       and POSTs to the Control Plane's /approvals/ endpoint; resumes
@@ -115,7 +115,7 @@ components:
     disposition: new
     class: "apecx_integration.composition.steps.synonym_cache.VerifiedSynonymWritebackStep"
     yaml: "steps/verified_synonym_writeback.yml"
-    status: in-progress        # class + integration test shipped; YAML wiring pending
+    status: ready        # class + integration test + wrapper YAML (loadable via from_config)
     rag_description: >
       Persist approved synonyms to the VerifiedSynonym cache so future
       runs short-circuit past the LLM + HITL steps for the same terms.

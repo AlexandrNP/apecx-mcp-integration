@@ -217,3 +217,69 @@ action needed unless the test matrix grows.
 needs containerized Apptainer (WSL? Windows? — unlikely).
 
 **Cost estimate:** 0 unless required.
+
+---
+
+## Nanobrain env-var interpolation in step configs
+
+**What:** The workflow step YAMLs under
+`src/apecx_integration/composition/workflows/violin_bvbrc/steps/`
+reference `${CONTROL_PLANE_URL}` for env-var interpolation. Nanobrain's
+CLAUDE.md documents env-var interpolation as a framework feature, but
+at step `from_config` load time the literal string `${CONTROL_PLANE_URL}`
+is stored as-is in the step's `control_plane.base_url` field. The same
+behavior exists in `ApprovalStep` (T10) — the framework's interpolation
+evidently runs at a different layer (workflow composition?) that isn't
+triggered when loading a single step via `Step.from_config(path)`.
+
+The integration test
+`tests/integration/test_workflow_wrapper_yamls_load.py::test_all_three_steps_reference_the_same_control_plane_placeholder`
+documents the current behavior (placeholder literal is stored).
+
+**Why deferred:** None of the steps actually call `process()` during
+`from_config` — the URL is consumed at HTTP-call time, not init time.
+In production the caller is expected to interpolate the env var before
+constructing the step, or the workflow layer injects the resolved
+value. Neither path is wired yet, but the integration tests that run
+real HTTP explicitly pass a resolved URL via `_http_client_factory`
+override, so the gap has not blocked anything.
+
+**Trigger to revisit:** when the T01 vertical slice actually loads the
+full workflow via `Workflow.from_config(...)` and tries to run it
+against a live Control Plane. If the workflow composer resolves env
+vars, nothing to do. If it doesn't, add explicit env-var expansion in
+the step's `_init_from_config` (5-line fix with `os.path.expandvars`
+plus tests).
+
+**Cost estimate:** 0.25d to add explicit interpolation and a test, or
+0 if the workflow layer already handles it.
+
+---
+
+## Remaining T02 Phase 2 work
+
+**What:** Five of the ten VIOLIN × BV-BRC workflow steps still need
+wrapper YAMLs and, for two of them, upstream component work:
+
+- Step 1 `entity_extraction` (reuse `apecx-db-integration:agent`): wrapper YAML pending.
+- Step 2 `bvbrc_snapshot_match` (wrap `enhanced_bv_brc_data_acquisition_step`): needs a `BVBRCSnapshotTool` that reads `data/bvbrc_cache/*.tsv` instead of the API.
+- Step 3c `synonym_llm_proposals` (reuse): wrapper YAML pending.
+- Step 5 `violin_entity_lookup` (reuse + small new glue): depends on VIOLIN CSV reader (1 generic step to author).
+- Step 6 `genomic_annotation` (wrap `bv_brc_data_acquisition_step`): same `BVBRCSnapshotTool` dependency.
+- Step 7 `result_ranking` (reuse `result_collection_step`): wrapper YAML pending.
+
+Plus:
+- Top-level `violin_bvbrc_workflow.yml` linking the 10 (minus dropped) steps.
+- Integration test that runs the workflow end-to-end against real
+  snapshot data — belongs with T01 vertical slice, not T02 itself.
+
+**Why deferred:** This session's T02 Phase 1+2 shipped the load-bearing
+pieces (Control Plane HTTP surface + the three synonym-gate steps with
+loadable YAMLs + the manifest). The remaining work depends on two
+small generic nanobrain readers (CSV + TSV) that are straightforward
+but unbuilt, and on minor wiring for the reused components.
+
+**Trigger to revisit:** before T01 vertical-slice work starts.
+
+**Cost estimate:** ~3.5d per the original T02 rescope breakdown
+(inventory + effort section in implementation_plan.md T02).

@@ -1,0 +1,42 @@
+# Workflow spec Step 4 — synonym_approval_gate
+#
+# HARD approval gate for LLM-proposed synonyms (first-release default
+# per user directive 2026-04-21; soft-gate variant available by
+# changing gate_policy.kind).
+#
+# Reuses the generic ApprovalStep class shipped by T10. This YAML
+# wires it into the VIOLIN × BV-BRC workflow with the right input /
+# output shapes. For the standalone usage example see the copy at
+# nanobrain/library/steps/approval_step.yml.
+
+class: "nanobrain.library.steps.approval_step.ApprovalStep"
+name: synonym_approval_gate
+description: "Pause the workflow for human review of LLM-proposed synonyms."
+
+input_data_units:
+  llm_proposals_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: llm_proposals_input
+    description: "LLM synonym proposals from Step 3c awaiting human review."
+    persistent: false
+
+output_data_units:
+  approved_synonyms_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: approved_synonyms_output
+    description: "Human-approved (and possibly modified) synonym set."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "llm_proposals_input"
+
+gate_policy:
+  kind: hard
+  timeout_seconds: null
+  on_timeout: reject
+
+control_plane:
+  base_url: "${CONTROL_PLANE_URL}"
+  poll_interval_seconds: 2.0
+  request_timeout_seconds: 10.0

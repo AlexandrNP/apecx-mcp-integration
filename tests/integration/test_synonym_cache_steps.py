@@ -13,12 +13,11 @@ from pathlib import Path
 import httpx
 import pytest
 import yaml
-from fastapi import FastAPI
-
 from apecx_integration.composition.steps.synonym_cache import (
     SynonymCacheLookupStep,
     VerifiedSynonymWritebackStep,
 )
+from fastapi import FastAPI
 
 pytestmark = pytest.mark.integration
 
@@ -134,12 +133,14 @@ async def test_writeback_step_persists_approved_mappings(cp_client, cp_engine, t
     app = create_app(engine=cp_engine)
     step = _build_writeback_step(app, tmp_path)
 
-    result = await step.process({
-        "approved_mappings": [
-            {"query_term": "eeev", "canonical_term": "VIOLIN_205", "confidence": 0.9},
-            {"query_term": "vee", "canonical_term": "VIOLIN_210", "confidence": 0.85},
-        ],
-    })
+    result = await step.process(
+        {
+            "approved_mappings": [
+                {"query_term": "eeev", "canonical_term": "VIOLIN_205", "confidence": 0.9},
+                {"query_term": "vee", "canonical_term": "VIOLIN_210", "confidence": 0.85},
+            ],
+        }
+    )
     assert len(result["written"]) == 2
     assert result["already_existed"] == []
 
@@ -157,9 +158,7 @@ async def test_writeback_step_persists_approved_mappings(cp_client, cp_engine, t
     assert matches[1]["result"]["canonical_term"] == "VIOLIN_210"
 
 
-async def test_writeback_step_tolerates_409_as_already_existed(
-    cp_client, cp_engine, tmp_path
-):
+async def test_writeback_step_tolerates_409_as_already_existed(cp_client, cp_engine, tmp_path):
     """Race condition: another run wrote the same mapping first. The
     writeback step reports this via ``already_existed``, not as an
     exception — per the "approval-race collision is not an error"
@@ -183,12 +182,14 @@ async def test_writeback_step_tolerates_409_as_already_existed(
     )
 
     step = _build_writeback_step(app, tmp_path)
-    result = await step.process({
-        "approved_mappings": [
-            {"query_term": "eeev", "canonical_term": "VIOLIN_COMPETING", "confidence": 0.9},
-            {"query_term": "vee", "canonical_term": "VIOLIN_NEW", "confidence": 0.9},
-        ],
-    })
+    result = await step.process(
+        {
+            "approved_mappings": [
+                {"query_term": "eeev", "canonical_term": "VIOLIN_COMPETING", "confidence": 0.9},
+                {"query_term": "vee", "canonical_term": "VIOLIN_NEW", "confidence": 0.9},
+            ],
+        }
+    )
     assert result["already_existed"] == ["eeev"]
     assert len(result["written"]) == 1  # only 'vee' got through
 

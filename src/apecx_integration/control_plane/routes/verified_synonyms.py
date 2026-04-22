@@ -92,9 +92,7 @@ def lookup(
         VerifiedSynonymMatch(
             query_term=term,
             result=(
-                VerifiedSynonymSchema.model_validate(by_term[term])
-                if term in by_term
-                else None
+                VerifiedSynonymSchema.model_validate(by_term[term]) if term in by_term else None
             ),
         )
         for term in body.query_terms
@@ -170,9 +168,7 @@ def create_verified_synonym(
         # back to 409 for those even though we checked above (race-safe).
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=(
-                f"verified_synonym insert rejected by DB: {type(e).__name__}"
-            ),
+            detail=(f"verified_synonym insert rejected by DB: {type(e).__name__}"),
         ) from e
     session.refresh(row)
     return VerifiedSynonymResponse(verified_synonym=VerifiedSynonymSchema.model_validate(row))
