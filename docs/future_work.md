@@ -288,36 +288,18 @@ wrapper YAMLs + the BVBRCSnapshotTool.
 
 ---
 
-## Nanobrain config whitespace-stripping on string fields
+## Nanobrain config whitespace-stripping on string fields — **RESOLVED 2026-04-22**
 
-**What:** When a nanobrain step's YAML carries a string field whose
-value is pure whitespace (e.g., ``delimiter: "\t"``), the value
-arrives at the step's ``_init_from_config`` as an empty string. A
-tab character written as a YAML escape (``"\t"``) parses correctly
-in isolation via ``yaml.safe_load`` — a real tab comes back. But
-something in the nanobrain config stack (likely Pydantic's
-``str_strip_whitespace=True`` on ``StepConfig`` or the
-``ConfigBase`` loader) strips whitespace before the value reaches
-the subclass.
+**What:** String fields in step YAMLs lost whitespace
+(``delimiter: "\t"`` arrived as ``""``).
 
-**Evidence:** `DelimitedFileReaderStep` (T02 Phase 3) hit this.
-Direct ``yaml.safe_load`` of the step YAML returned the real tab;
-loading via ``DelimitedFileReaderStep.from_config(...)`` produced
-``self._delimiter = ""``.
+**Resolution:** Scope memo 06 patched
+``nanobrain/core/config/config_base.py:626`` to set
+``str_strip_whitespace=False``. Full 218-test suite still green.
 
-**Why deferred:** Worked around by switching the step's config
-from ``delimiter: str`` to ``format: Literal["csv","tsv"]`` (named
-enum mapped to real delimiters internally). The workaround is
-reasonable UX — ``format: tsv`` is more readable than
-``delimiter: "\t"`` — but it won't scale if every step
-reinventing the enum.
-
-**Trigger to revisit:** a second step needs a whitespace-bearing
-string field, or a nanobrain framework bug is filed.
-
-**Cost estimate:** 0.25d to patch ``StepConfig`` with
-``str_strip_whitespace=False`` and a regression test; 0 if we accept
-the per-step workaround.
+**Workaround in `DelimitedFileReaderStepConfig`** (format enum
+instead of raw delimiter field) is left in place — the enum is
+better UX even with the underlying bug fixed.
 
 ---
 
