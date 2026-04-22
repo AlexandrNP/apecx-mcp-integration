@@ -1,0 +1,26 @@
+# BVBRCSnapshotTool config — consumed by Step 2 (bvbrc_snapshot_match)
+# and Step 6 (genomic_annotation) via the step's
+# ``_create_bv_brc_tool(component_config)`` machinery.
+#
+# The nanobrain step looks at ``component_config.tools.bv_brc_tool.
+# config_file`` for this path; the step's wrapper YAML wires the
+# pointer.
+#
+# Settings that keep the snapshot reader honest:
+# - use_http_api: false  (no live BV-BRC calls)
+# - min/max_genome_length: wide range  (snapshot lacks length column;
+#   BVBRCSnapshotTool's filter_genomes_by_size pass-through overrides
+#   regardless, but a sane range prevents accidental base-class filter)
+# - use_cache: false  (the snapshot IS the cache; no second cache)
+
+class: "apecx_integration.composition.tools.bv_brc_snapshot_tool.BVBRCSnapshotTool"
+tool_name: bv_brc
+use_http_api: false
+api_base_url: "https://localhost-never-called.invalid"
+genome_batch_size: 10
+md5_batch_size: 5
+min_genome_length: 0
+max_genome_length: 999999
+use_cache: false
+timeout_seconds: 5
+retry_attempts: 0

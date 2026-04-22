@@ -42,11 +42,13 @@ components:
     disposition: wrap
     class: "nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep"
     yaml: "steps/bvbrc_snapshot_match.yml"
-    status: pending
+    status: ready       # wrapper YAML loads via from_config; BVBRCSnapshotTool child-YAML injected (T02 Phase 4)
     wrap_notes: >
-      Inject a BVBRCSnapshotTool that reads ``data/bvbrc_cache/*.tsv``
-      instead of the live BV-BRC API. Enhanced step's _load_csv_data
-      placeholder at line 1402 needs wiring to the real TSV path.
+      Injects a BVBRCSnapshotTool via ``tools.bv_brc_tool.config_file``
+      so the step reads ``data/bvbrc_cache/*.tsv`` instead of the live
+      BV-BRC API. Species- and taxonomic-verification agent YAMLs are
+      supplied via the same tools: block; their LLM calls fire only at
+      process() time, so from_config init runs without an API key.
     rag_description: >
       Deterministic match of extracted entity names against the local
       BV-BRC genome / protein snapshot. Emits candidate (entity_name →
@@ -143,11 +145,13 @@ components:
     disposition: wrap
     class: "nanobrain.library.workflows.viral_protein_analysis.steps.bv_brc_data_acquisition_step.BVBRCDataAcquisitionStep"
     yaml: "steps/genomic_annotation.yml"
-    status: pending
+    status: ready       # wrapper YAML loads via from_config (T02 Phase 4)
     wrap_notes: >
-      Same BVBRCSnapshotTool injection as Step 2. Pair with
-      ProteinSynonymAgent from nanobrain/library/agents/ for the
-      annotation layer.
+      Same BVBRCSnapshotTool injection as Step 2, but through a
+      different knob: Step 6 reads the tool YAML path from its
+      top-level ``bvbrc_config_file`` field (not ``tools.bv_brc_tool``).
+      Pairs with a SynonymDetectionAgent wired via the top-level
+      ``synonym_detection_agent`` field.
     rag_description: >
       Enrich genome / protein matches with canonical protein
       annotations from the BV-BRC snapshot.
