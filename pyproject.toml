@@ -83,6 +83,7 @@ testpaths = ["tests"]
 markers = [
     "integration: tests that hit real data / real external systems (workspace policy)",
     "smoke: fast wiring-shape tests; mocks permitted per workspace policy",
+    "unit: fast, in-process tests of a pure function or narrow component",
     "slow: tests >30s",
 ]
 asyncio_mode = "auto"

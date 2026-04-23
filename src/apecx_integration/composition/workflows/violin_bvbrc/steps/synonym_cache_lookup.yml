@@ -33,5 +33,7 @@ target_vocabulary: violin.pathogen_id
 scope: null
 
 control_plane:
-  base_url: "${CONTROL_PLANE_URL}"
+  # Defaults to the local-dev apecx-cp URL (docker-compose.yml exposes
+  # port 8000). Override ``CONTROL_PLANE_URL`` for BYO-infra deployments.
+  base_url: "${CONTROL_PLANE_URL:-http://localhost:8000}"
   request_timeout_seconds: 10.0

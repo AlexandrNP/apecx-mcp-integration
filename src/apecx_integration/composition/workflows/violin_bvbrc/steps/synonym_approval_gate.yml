@@ -37,6 +37,11 @@ gate_policy:
   on_timeout: reject
 
 control_plane:
-  base_url: "${CONTROL_PLANE_URL}"
+  # Defaults to the local-dev apecx-cp URL (docker-compose.yml exposes
+  # port 8000). Override ``CONTROL_PLANE_URL`` for BYO-infra deployments.
+  # Memo 08 made ``${VAR}`` fail-loud; the ``${VAR:-default}`` form here
+  # is explicit about the intended fallback rather than silently
+  # depending on an unset env var.
+  base_url: "${CONTROL_PLANE_URL:-http://localhost:8000}"
   poll_interval_seconds: 2.0
   request_timeout_seconds: 10.0

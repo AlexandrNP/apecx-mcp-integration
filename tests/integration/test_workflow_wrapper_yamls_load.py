@@ -13,7 +13,6 @@ process() time, not init time).
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import pytest
@@ -77,53 +76,52 @@ def test_verified_synonym_writeback_yaml_loads() -> None:
     assert step._verified_by == "api_user"
 
 
-def test_all_three_steps_reference_the_same_control_plane_placeholder() -> None:
-    """The workflow wires all three to the same Control Plane. If one
-    YAML silently drifts to a different base_url, this catches it.
+def test_all_three_steps_resolve_to_the_same_control_plane_base_url(
+    monkeypatch,
+) -> None:
+    """The three Control Plane-integrated steps must all load with the
+    same resolved ``base_url``. Memo 08 made ``ConfigBase`` interpolate
+    ``${CONTROL_PLANE_URL:-http://localhost:8000}`` at load time, so
+    this now asserts on the *resolved* value rather than the old
+    literal-placeholder-passthrough behavior.
 
-    Brutal-truth caveat: nanobrain's env-var interpolation does NOT fire
-    on nested-dict values during step ``from_config`` — the literal
-    ``"${CONTROL_PLANE_URL}"`` is stored as-is. ApprovalStep (T10)
-    exhibits the same pre-existing behavior; interpolation presumably
-    happens at a higher workflow layer or when the step is actually
-    used. This test therefore asserts that all three YAMLs carry the
-    **same placeholder literal**, which is the coherence check we
-    actually care about. Interpolation correctness is the next layer's
-    problem; a follow-up should either add it at step level or
-    explicitly interpolate before calling process().
+    When the env var is unset, all three resolve to the local-dev
+    default. That's the coherence check: if one YAML silently drifts
+    to a different default or a different env-var name, this catches
+    it at step-construction time.
     """
-    cache = SynonymCacheLookupStep.from_config(str(STEPS_DIR / "synonym_cache_lookup.yml"))
+    monkeypatch.delenv("CONTROL_PLANE_URL", raising=False)
+
+    cache = SynonymCacheLookupStep.from_config(
+        str(STEPS_DIR / "synonym_cache_lookup.yml")
+    )
     gate = ApprovalStep.from_config(str(STEPS_DIR / "synonym_approval_gate.yml"))
     writeback = VerifiedSynonymWritebackStep.from_config(
         str(STEPS_DIR / "verified_synonym_writeback.yml")
     )
-    placeholder = "${CONTROL_PLANE_URL}"
-    assert cache._control_plane_config["base_url"] == placeholder
-    assert gate._base_url == placeholder
-    assert writeback._control_plane_config["base_url"] == placeholder
+
+    expected = "http://localhost:8000"
+    assert cache._control_plane_config["base_url"] == expected
+    assert gate._base_url == expected
+    assert writeback._control_plane_config["base_url"] == expected
 
 
-def test_env_var_not_set_is_a_loud_failure() -> None:
-    """If CONTROL_PLANE_URL is unset, env-var interpolation leaves a
-    literal '${CONTROL_PLANE_URL}' in the config. The steps should
-    accept the literal at load time; the actual HTTP call will fail
-    later with a clearer error. This test documents that the loader
-    does not fail silently — it just passes the literal through.
+def test_env_var_override_propagates_to_all_three_steps(monkeypatch) -> None:
+    """Setting ``CONTROL_PLANE_URL`` overrides the default in all three
+    YAMLs. This is the BYO-infra contract promised in memo 08: one env
+    var, all affected steps retarget together — no per-YAML edits.
     """
-    # Unset any inherited value.
-    original = os.environ.pop("CONTROL_PLANE_URL", None)
-    try:
-        # SynonymCacheLookupStep has base_url validation that only
-        # checks non-empty — a literal ${VAR} is non-empty, so it
-        # loads. The real failure is deferred to process() time.
-        step = SynonymCacheLookupStep.from_config(str(STEPS_DIR / "synonym_cache_lookup.yml"))
-        # Accept either: env-var interpolation already happened at
-        # YAML load (leaving "" or nothing) or the literal persists.
-        base_url = step._control_plane_config.get("base_url", "")
-        assert base_url in (
-            "",
-            "${CONTROL_PLANE_URL}",
-        ), f"unexpected base_url when env var unset: {base_url!r}"
-    finally:
-        if original is not None:
-            os.environ["CONTROL_PLANE_URL"] = original
+    override = "https://apecx-cp.example.invalid:9999"
+    monkeypatch.setenv("CONTROL_PLANE_URL", override)
+
+    cache = SynonymCacheLookupStep.from_config(
+        str(STEPS_DIR / "synonym_cache_lookup.yml")
+    )
+    gate = ApprovalStep.from_config(str(STEPS_DIR / "synonym_approval_gate.yml"))
+    writeback = VerifiedSynonymWritebackStep.from_config(
+        str(STEPS_DIR / "verified_synonym_writeback.yml")
+    )
+
+    assert cache._control_plane_config["base_url"] == override
+    assert gate._base_url == override
+    assert writeback._control_plane_config["base_url"] == override
