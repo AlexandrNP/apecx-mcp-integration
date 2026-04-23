@@ -13,7 +13,71 @@ steady state.
 
 ## Current gaps
 
-_None as of 2026-04-21._
+### T-2026-04-23-01 — A2A real-transport integration test
+
+**Context:** T14 audit §2-C1 flagged that `a2a_support.py` silently
+fell back to mock responses when `aiohttp` was missing. T14 fixes
+replaced those fallbacks with `A2ANotAvailableError`. The error paths
+are covered by `tests/integration/test_nanobrain_mocks_policy.py`
+(added same commit as the fixes).
+
+**Missing:** a true positive-path integration test that stands up a
+local A2A agent server (mock or demo), runs `A2AClient.send_task`
+against it, and asserts the returned `A2ATask` matches the server's
+response. The happy-path in `a2a_support.py` is currently un-exercised
+by any automated test.
+
+**Rough scope:** 0.5–1d. Options:
+- (a) Spin a simple aiohttp server inside the test that implements the
+  JSON-RPC A2A protocol for one skill.
+- (b) Bring in a canned A2A demo server from the A2A reference spec
+  (if one exists).
+
+**Blocker:** none; can be authored now against real aiohttp.
+
+---
+
+### T-2026-04-23-02 — Academy real integration (not just demo-mode)
+
+**Context:** T14 audit §2-C2 flagged that `academy_integration.py`
+unconditionally returned `_generate_mock_response` regardless of
+whether Academy agents were deployed. The comment was: "Real Academy
+agent call would go here / For now, always use mock response."
+
+T14 fixes:
+- Default behavior: raise `AcademyNotImplementedError`.
+- `ACADEMY_DEMO_MODE=1`: preserves the mock for existing demos.
+
+**Missing:** the actual Academy-call implementation. Not a test gap —
+it's an implementation gap that the mock was hiding. Until the real
+call lands, every Academy-backed code path in nanobrain is either
+demo-mode (ACADEMY_DEMO_MODE=1 → mock) or raises at runtime.
+
+**Rough scope:** unknown; requires Academy-integration expertise +
+access to a live Academy deployment. Out of T14 / my authority to
+estimate.
+
+**Blocker:** Academy-integration expertise + live endpoint.
+
+---
+
+### T-2026-04-23-03 — PubMed real API integration
+
+**Context:** T14 audit §2-E1 flagged that
+`library/tools/bioinformatics/pubmed_client.py::search_alphavirus_literature`
+returned an empty list labeled "Phase 4A placeholder for infrastructure
+testing." T14 fix replaced it with `NotImplementedError` pointing at
+Phase 4B.
+
+**Missing:** the actual NCBI E-utils call (Phase 4B per the pubmed_client
+docstring).
+
+**Rough scope:** 1–2d. Pattern well-established — use `requests` /
+`aiohttp` against `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/`.
+
+**Blocker:** none beyond scheduling.
+
+---
 
 The current unit suite has three files with mock-like constructs, all
 of which are already covered by a real-backend integration test:
