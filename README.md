@@ -17,6 +17,27 @@ MCP surface, control plane, composition, and execution integration for the APECx
 
 Do not start Phase 1 until these gates pass.
 
+## Agent-output review harness (TX5)
+
+All agent-authored code passes through mechanical pre-commit checks
+before the human engineer signs off:
+
+| Check                         | AC  | Script                              |
+|-------------------------------|-----|-------------------------------------|
+| No `unittest.mock` in `src/`  | AC1 | inline in `.pre-commit-config.yaml` |
+| Every import resolves         | AC2 | `scripts/checks/imports_resolve.py` |
+| Step subclass compliance      | AC3 | `scripts/checks/step_authoring.py`  |
+
+All three run as pre-commit hooks (via `pre-commit install`) and as
+standalone CLI scripts for ad-hoc verification. The judgement-layer
+review-gate subagent (`.claude/agents/review-gate.agent.md`) sits on
+top of these and is invoked via Claude's `Agent` tool when a PR is
+"code-complete" per AC4.
+
+CI wiring (running the same checks on every GitHub PR) is gated on
+TX2 AC2 — the repo isn't on GitHub yet. Scripts work standalone
+today; when CI ships, the same commands go into the workflow YAML.
+
 ## Security — no runtime sandbox in Phase 1
 
 **LLM-generated Python is scanned at generation time and runs unisolated
