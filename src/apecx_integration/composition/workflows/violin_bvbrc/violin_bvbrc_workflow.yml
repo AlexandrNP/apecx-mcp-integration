@@ -1,41 +1,41 @@
-# VIOLIN × BV-BRC workflow — SKELETON (T02 Phase 4 finish).
+# VIOLIN × BV-BRC workflow — first-release HARD-synonym variant.
 #
-# This YAML composes the six step-YAMLs in ``steps/`` that currently
-# load cleanly via ``BaseStep.from_config(...)``. It is **not
-# runnable end-to-end** — the workflow spec (``docs/workflow_spec.md``)
-# has 10 steps; four are still pending wrapper YAMLs (commented in
-# the steps: block below with the exact blocker per step).
+# All 10 first-release-relevant step YAMLs in ``steps/`` are wired in
+# below. Loadable via ``Workflow.from_config(...)``; not yet runnable
+# end-to-end because ``links: {}`` is still empty. Link wiring lands in
+# T04 (T01 vertical slice) — see next_tasks_2026_04_22.md Task 4.
 #
-# Purpose: prove that nanobrain's ``Workflow.from_config(...)`` can
-# compose the ready pieces, catch configuration-schema regressions as
-# new YAMLs land, and give T01 vertical-slice work a concrete starting
-# artifact.
+# Coverage vs. T00.1b workflow_spec.md (post-T03 wiring):
 #
-# Coverage vs. T00.1b workflow_spec.md:
-#
-#   Step ID | step_name                  | present here
-#   --------+----------------------------+--------------
+#   Step ID | step_name                  | wired here
+#   --------+----------------------------+------------
 #   0       | vocabulary extraction      | deferred (HARD directive)
-#   1       | entity_extraction          | PENDING — needs apecx-db-integration wiring
+#   1       | entity_extraction          | ✅ (apecx-db-integration wrapper)
 #   2       | bvbrc_snapshot_match       | ✅ (BVBRCSnapshotTool-backed)
 #   3a      | synonym_cache_lookup       | ✅
 #   3b      | synonym_fuzzy_match        | deferred (HARD directive)
-#   3c      | synonym_llm_proposals      | PENDING — needs apecx-db-integration wiring
+#   3c      | synonym_llm_proposals      | ✅ (apecx-db-integration wrapper)
 #   4       | synonym_approval_gate      | ✅
 #   4p      | verified_synonym_writeback | ✅
-#   5       | violin_entity_lookup       | PENDING — needs apecx-db-integration wiring
+#   5       | violin_entity_lookup       | ✅ (apecx-db-integration wrapper)
 #   6       | genomic_annotation         | ✅ (BVBRCSnapshotTool-backed)
 #   7       | result_ranking             | ✅
 #
 # Plus two demo file-readers (violin_vaccine_reader,
-# bvbrc_alphavirus_genomes_reader) that real Steps 1 / 2 would
-# consume as input. Included here as explicit steps so the workflow
-# demonstrates snapshot ingestion end-to-end once the missing pieces
-# land.
+# bvbrc_alphavirus_genomes_reader) that the broader pipeline can pull
+# from. Included as explicit steps so the workflow demonstrates
+# snapshot ingestion as soon as link wiring lands.
+#
+# Operator install requirement: ``pip install -e ../apecx-db-integration``
+# into the apecx-mcp-integration venv before loading this workflow. The
+# three apecx-db-integration wrapper steps (1, 3c, 5) ImportError loudly
+# at YAML load if the sibling repo is not installed — see
+# ``src/apecx_integration/composition/steps/db_integration_wrappers.py``
+# module docstring for the rationale.
 #
 # Links are intentionally left empty — data flow wiring lands with
-# the missing steps and T01 vertical slice work, so we don't
-# commit misleading link wiring for a pipeline that can't run yet.
+# T01 vertical slice work (Task 4), so we don't commit misleading
+# link wiring for a pipeline that can't run yet.
 
 name: violin_bvbrc_workflow
 description: "VIOLIN × BV-BRC entity-synonym workflow (first-release HARD-synonym variant)."
@@ -74,22 +74,17 @@ steps:
     class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
     config: "steps/result_ranking.yml"
 
-  # -------- PENDING STEPS (scope-tracked in docs/future_work.md) --------
-  # entity_extraction:
-  #   class: <wrapper around apecx-db-integration/agent.py:extract_entities_llm>
-  #   config: "steps/entity_extraction.yml"
-  #   blocker: apecx-db-integration/agent.py is not pip-installable; needs
-  #            a nanobrain Step wrapper + sys.path injection or a proper
-  #            package layout in the sibling repo.
-  #
-  # synonym_llm_proposals:
-  #   class: <wrapper around apecx-db-integration/agent.py:consolidated_synonym_search>
-  #   config: "steps/synonym_llm_proposals.yml"
-  #   blocker: same apecx-db-integration wiring as entity_extraction.
-  #
-  # violin_entity_lookup:
-  #   class: <wrapper around apecx-db-integration/agent.py:enrich_matches_with_database_data>
-  #   config: "steps/violin_entity_lookup.yml"
-  #   blocker: same apecx-db-integration wiring + VIOLIN DataFrames.
+  # -------- apecx-db-integration wrapper steps (T03 wiring) --------
+  entity_extraction:
+    class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
+    config: "steps/entity_extraction.yml"
+
+  synonym_llm_proposals:
+    class: "apecx_integration.composition.steps.db_integration_wrappers.SynonymLLMProposalsStep"
+    config: "steps/synonym_llm_proposals.yml"
+
+  violin_entity_lookup:
+    class: "apecx_integration.composition.steps.db_integration_wrappers.ViolinEntityLookupStep"
+    config: "steps/violin_entity_lookup.yml"
 
 links: {}
