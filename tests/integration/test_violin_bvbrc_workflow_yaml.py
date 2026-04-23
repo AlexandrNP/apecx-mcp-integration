@@ -12,7 +12,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from nanobrain.core.step import BaseStep
 from nanobrain.core.workflow import Workflow
 
@@ -31,6 +30,9 @@ WORKFLOW_DIR = (
 WORKFLOW_YAML = WORKFLOW_DIR / "violin_bvbrc_workflow.yml"
 STEP2_YAML = WORKFLOW_DIR / "steps" / "bvbrc_snapshot_match.yml"
 STEP6_YAML = WORKFLOW_DIR / "steps" / "genomic_annotation.yml"
+STEP1_YAML = WORKFLOW_DIR / "steps" / "entity_extraction.yml"
+STEP3C_YAML = WORKFLOW_DIR / "steps" / "synonym_llm_proposals.yml"
+STEP5_YAML = WORKFLOW_DIR / "steps" / "violin_entity_lookup.yml"
 
 
 @pytest.fixture
@@ -76,3 +78,33 @@ def test_step6_genomic_annotation_loads(chdir_repo_root) -> None:
     assert STEP6_YAML.is_file(), STEP6_YAML
     step = BaseStep.from_config(str(STEP6_YAML))
     assert step.name == "genomic_annotation"
+
+
+def test_step1_entity_extraction_loads(chdir_repo_root) -> None:
+    """Step 1 (EntityExtractionStep) is the thinnest of the three
+    db-integration wrappers — no extra config beyond StepConfig. Loads
+    via from_config without any operator-side LLM env vars; the wrapped
+    function only resolves env vars at process() time, not init time."""
+    assert STEP1_YAML.is_file(), STEP1_YAML
+    step = BaseStep.from_config(str(STEP1_YAML))
+    assert step.name == "entity_extraction"
+
+
+def test_step3c_synonym_llm_proposals_loads(chdir_repo_root) -> None:
+    """Step 3c (SynonymLLMProposalsStep) carries an optional ``data_dir``
+    field. The wrapper YAML sets it to ``null`` (falls through to
+    APECX_DB_DATA_DIR env var). Loadability proves the optional-config
+    contract round-trips cleanly."""
+    assert STEP3C_YAML.is_file(), STEP3C_YAML
+    step = BaseStep.from_config(str(STEP3C_YAML))
+    assert step.name == "synonym_llm_proposals"
+
+
+def test_step5_violin_entity_lookup_loads(chdir_repo_root) -> None:
+    """Step 5 (ViolinEntityLookupStep) is the only no-LLM wrapper; pure
+    pandas join over VIOLIN tables. Loadability is identical-shape to
+    Step 3c (data_dir override field) — pinned separately so a future
+    schema drift on either step shows up in the test name."""
+    assert STEP5_YAML.is_file(), STEP5_YAML
+    step = BaseStep.from_config(str(STEP5_YAML))
+    assert step.name == "violin_entity_lookup"

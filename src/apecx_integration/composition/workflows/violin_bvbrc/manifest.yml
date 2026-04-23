@@ -27,8 +27,17 @@ components:
     step_name: entity_extraction
     disposition: reuse
     class: "apecx_db_integration.agent.extract_entities_llm"
-    yaml: null
-    status: pending
+    yaml: "steps/entity_extraction.yml"
+    status: ready        # wrapper YAML loads via from_config; LLM stub-tested
+    wrap_notes: >
+      Bridged via ``EntityExtractionStep`` in
+      ``apecx_integration.composition.steps.db_integration_wrappers``.
+      Wrapper input DataUnit: ``user_query_input`` (str). Output:
+      ``entity_candidates_output`` (list of {name, type, confidence}).
+      LLM env-var resolution defers to apecx_db_integration's
+      ``_build_chat_llm`` factory (APECX_LLM_BASE_URL / MODEL / API_KEY).
+      Operator must ``pip install -e ../apecx-db-integration`` into the
+      apecx-mcp-integration venv.
     rag_description: >
       LLM-driven extraction of pathogen / vaccine / gene entity names from a
       free-text user query. Emits a list of entity candidates with LLM
@@ -88,7 +97,17 @@ components:
     disposition: reuse
     class: "apecx_db_integration.agent.consolidated_synonym_search"
     yaml: "steps/synonym_llm_proposals.yml"
-    status: pending
+    status: ready        # wrapper YAML loads via from_config; LLM stub-tested (2 calls/process)
+    wrap_notes: >
+      Bridged via ``SynonymLLMProposalsStep`` in
+      ``apecx_integration.composition.steps.db_integration_wrappers``.
+      Two LLM round-trips per process() (entity extraction + synonym
+      matching). Wrapper input DataUnit: ``novel_terms_input``
+      (list[str]). Output: ``llm_proposals_output``
+      (list of {query_entity, synonym, score}). The wrapped function
+      takes a single query string, so the wrapper joins novel_terms
+      with a space; per-term batching is filed in future_work.md.
+      Optional ``data_dir`` override field; defaults to env var.
     rag_description: >
       LLM-driven synonym proposal for terms that missed the
       VerifiedSynonym cache. Inputs: residual novel_terms + target
@@ -132,7 +151,15 @@ components:
     disposition: reuse
     class: "apecx_db_integration.enrich_matches_with_database_data"
     yaml: "steps/violin_entity_lookup.yml"
-    status: pending
+    status: ready        # wrapper YAML loads via from_config; pure pandas, no LLM
+    wrap_notes: >
+      Bridged via ``ViolinEntityLookupStep`` in
+      ``apecx_integration.composition.steps.db_integration_wrappers``.
+      No LLM calls — pure pandas join. Wrapper input DataUnit:
+      ``resolved_matches_input`` (list of match dicts). Output:
+      ``enriched_matches_output`` (same dicts plus ``relevant_data``
+      key with VIOLIN/BV-BRC row joins). Optional ``data_dir`` override
+      field; defaults to APECX_DB_DATA_DIR env var.
     rag_description: >
       Join resolved synonyms against the VIOLIN CSV tables (vaccine /
       pathogen / gene info) to enrich with VIOLIN-native attributes.
