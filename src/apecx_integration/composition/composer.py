@@ -56,6 +56,12 @@ REQUIRED_PROMPT_FILES: tuple[str, ...] = (
     "novel_python_flagging.md",
 )
 
+# Keys the composer consumes internally from ``context`` — not included
+# in the LLM-visible "Additional context" block. ``run_id`` is the
+# ArtifactStore's attribution target (Phase 3); more plumbing keys may
+# land in Phase 4+ (retrieval_override, etc.).
+_INTERNAL_CONTEXT_KEYS: frozenset[str] = frozenset({"run_id"})
+
 
 class ComposerConfigurationError(ValueError):
     """Raised when a composer config is structurally wrong."""
@@ -75,7 +81,16 @@ class Composer:
 
     Phase 2: retrieval + LLM call + parse + scanner. ``compose()``
     returns a ``ComposedWorkflow`` but does NOT persist via
-    ``ArtifactStore`` — that's Phase 3.
+    ``ArtifactStore``.
+
+    Phase 3 (2026-04-23): optional ``artifact_store`` injection in
+    ``__init__``. If provided AND the caller passes
+    ``context={"run_id": ...}`` to ``compose()``, the generated YAML
+    is persisted via ``ArtifactStore.store()`` and the returned
+    ``ComposedWorkflow.artifact_id`` is the Artifact row's UUID.
+    When either is missing, Phase-2 behavior is preserved: a uuid4
+    is synthesized and no persistence happens (useful for tests
+    that don't want to stand up a DB).
     """
 
     def __init__(
@@ -83,6 +98,7 @@ class Composer:
         config: ComposerConfig,
         *,
         llm_factory=None,
+        artifact_store=None,
     ) -> None:
         """
         Args:
@@ -92,6 +108,12 @@ class Composer:
                 ``apecx_db_integration.agent._build_chat_llm``. Tests
                 inject a placeholder via this seam — see
                 ``tests/integration/test_composer_phase2.py``.
+            artifact_store: Optional ``ArtifactStore`` (T11 primitive).
+                When provided + ``compose(context={"run_id": ...})``,
+                the generated YAML is persisted and the returned
+                ``ComposedWorkflow.artifact_id`` is the Artifact row's
+                UUID. When ``None`` (default), Phase-2 behavior is
+                preserved: uuid4 synthesized, no persistence.
         """
         self._config = config
         self._prompts: dict[str, str] = self._load_prompts(config.prompt_dir)
@@ -99,12 +121,16 @@ class Composer:
             list(config.component_catalog_paths)
         )
         self._llm_factory = llm_factory or _default_llm_factory
+        self._artifact_store = artifact_store
         log.info(
-            "Composer initialized (Phase 2): library=%s llm=%s prompts=%d components=%d",
+            "Composer initialized (Phase %s): library=%s llm=%s prompts=%d "
+            "components=%d persist=%s",
+            "3" if artifact_store is not None else "2",
             config.library_version,
             config.llm_model,
             len(self._prompts),
             len(self._catalog),
+            artifact_store is not None,
         )
 
     @classmethod
@@ -247,7 +273,7 @@ class Composer:
                 f"got {type(workflow_dict).__name__}"
             )
 
-        # 7. Assemble ComposedWorkflow (not yet persisted via ArtifactStore)
+        # 7. Assemble ComposedWorkflow.
         yaml_bytes = yaml_text.encode("utf-8")
         reused = [h.component.id for h in hits if h.component.id in (workflow_dict.get("steps") or {})]
         summary = CompositionSummary(
@@ -262,19 +288,107 @@ class Composer:
                 f"novel Python step: {k}" for k in novel_python
             ),
         )
+        llm_model_version_hash = hashlib.sha256(
+            self._config.llm_model.encode("utf-8")
+        ).hexdigest()
+
+        # 8. Persist via ArtifactStore when both an injected store AND a
+        # run_id context are available. Otherwise stay on the Phase-2
+        # in-memory path (synthesize uuid4, no DB write). This split
+        # preserves compatibility for tests that don't want DB setup.
+        artifact_id = self._persist_or_synthesize(
+            yaml_bytes=yaml_bytes,
+            prompt=prompt,
+            context=context,
+            composition_summary=summary,
+            llm_model_version_hash=llm_model_version_hash,
+        )
+
         return ComposedWorkflow(
-            artifact_id=uuid4(),
+            artifact_id=artifact_id,
             yaml_bytes=yaml_bytes,
             novel_python=novel_python,
             composition_summary=summary,
             retrieved_components=tuple(h.component.id for h in hits),
             llm_model=self._config.llm_model,
-            llm_model_version_hash=hashlib.sha256(
-                self._config.llm_model.encode("utf-8")
-            ).hexdigest(),
+            llm_model_version_hash=llm_model_version_hash,
         )
 
     # ---- internals ---------------------------------------------------------
+
+    def _persist_or_synthesize(
+        self,
+        *,
+        yaml_bytes: bytes,
+        prompt: str,
+        context: dict[str, Any] | None,
+        composition_summary: CompositionSummary,
+        llm_model_version_hash: str,
+    ):
+        """Either persist via ArtifactStore and return its Artifact UUID,
+        or synthesize a uuid4 (Phase-2 compat).
+
+        Persistence requires BOTH:
+          1. An ``ArtifactStore`` was injected at Composer construction.
+          2. The caller passed ``context={"run_id": <UUID>}`` to compose().
+
+        Rationale for the split: tests that only want to exercise the
+        LLM-call + parse path don't need to spin up a migrated SQLite
+        DB. Production always has both and always persists.
+        """
+        from uuid import UUID as UUIDType
+
+        if self._artifact_store is None:
+            return uuid4()
+
+        run_id_raw = (context or {}).get("run_id")
+        if run_id_raw is None:
+            # Store injected but caller didn't provide run_id. This is
+            # a valid configuration for smoke-type usage; warn once
+            # and fall back to the Phase-2 path.
+            log.warning(
+                "Composer has an ArtifactStore but compose() was called "
+                "without context['run_id']; skipping persistence, "
+                "synthesizing uuid4 instead. For production, pass "
+                "context={'run_id': <run uuid>}."
+            )
+            return uuid4()
+
+        run_id = run_id_raw if isinstance(run_id_raw, UUIDType) else UUIDType(str(run_id_raw))
+
+        # Lazy import so non-persisting tests don't need the full
+        # control_plane dependency chain just to import Composer.
+        from apecx_integration.composition.artifact_store import (
+            GenerationMetadata,
+        )
+        from apecx_integration.control_plane.schemas.enums import ArtifactKind
+
+        generated_metadata = GenerationMetadata(
+            source_prompt=prompt,
+            library_version=self._config.library_version,
+            llm_model=self._config.llm_model,
+            llm_model_version_hash=llm_model_version_hash,
+            composition_summary={
+                "steps_reused": composition_summary.steps_reused,
+                "steps_generated": composition_summary.steps_generated,
+                "steps_swapped": composition_summary.steps_swapped,
+                "summary_sentence": composition_summary.summary_sentence,
+            },
+        )
+        artifact = self._artifact_store.store(
+            content=yaml_bytes,
+            kind=ArtifactKind.GENERATED_WORKFLOW,
+            run_id=run_id,
+            mime_type="application/yaml",
+            generated_metadata=generated_metadata,
+        )
+        log.info(
+            "Composer persisted artifact %s (content_hash=%s, len=%d)",
+            artifact.id,
+            artifact.content_hash[:16],
+            artifact.size_bytes,
+        )
+        return artifact.id
 
     def _build_system_prompt(self) -> str:
         """Concatenate the three prompt files with section separators."""
@@ -308,11 +422,22 @@ class Composer:
             "",
             prompt.strip(),
         ]
+        # Strip internal plumbing keys before rendering — the LLM doesn't
+        # need (or want) the run_id, and YAML's safe_dump can't serialize
+        # a UUID anyway. Anything in ``_INTERNAL_CONTEXT_KEYS`` is
+        # composer plumbing, not LLM-visible context.
         if context:
-            parts.append("")
-            parts.append("## Additional context")
-            parts.append("")
-            parts.append(yaml.safe_dump(context, sort_keys=True).strip())
+            llm_visible = {
+                k: v for k, v in context.items()
+                if k not in _INTERNAL_CONTEXT_KEYS
+            }
+            if llm_visible:
+                parts.append("")
+                parts.append("## Additional context")
+                parts.append("")
+                parts.append(yaml.safe_dump(
+                    llm_visible, sort_keys=True, default_flow_style=False,
+                ).strip())
         return "\n".join(parts)
 
     @classmethod

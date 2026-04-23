@@ -239,15 +239,32 @@ Also shipped in Phase 2:
 loads via `Workflow.from_config(...)` (AC2 happy path; AC3 deferred
 to Phase 3).
 
-### Phase 3 — persistence integration (≤1d)
+### Phase 3 — persistence integration (≤1d) ✅ shipped 2026-04-23
 
-- Wire `ArtifactStore.store()` call at the end of `compose()`.
-- Populate `GeneratedArtifact` metadata from the LLM config.
+- Wire `ArtifactStore.store()` call at the end of `compose()`. ✅
+- Populate `GeneratedArtifact` metadata from the LLM config. ✅
 - Emit a `WORKFLOW_GENERATED` provenance event (free — already
-  hooked inside `ArtifactStore.store()`).
+  hooked inside `ArtifactStore.store()`). ✅
+
+**Deviation from spec, documented**: the ArtifactStore hookup is
+**opt-in via injection** — `Composer(config, artifact_store=store)`
++ `compose(prompt, context={"run_id": <uuid>})`. When either the
+store or the run_id is missing, the composer falls back to the
+Phase-2 path (uuid4 + no-persist) with a one-shot warning log.
+Rationale: tests of the LLM pipeline should not have to spin up a
+migrated SQLite DB + Run row just to exercise compose(). Production
+always has both.
 
 **Exit criterion**: AC3 passes — artifact row + on-disk file +
-generated metadata all consistent.
+generated metadata all consistent. ✅ (6 tests in
+`tests/integration/test_composer_phase3.py` cover AC3 + AC4 partial.)
+
+**AC4 status after P3**: partial. Two successive compose() calls
+produce distinct artifact_ids (append-only invariant) ✅. Same-content
+responses produce the same content_hash but distinct UUIDs ✅. Full
+AC4 (semantic-equivalence fallback when model version changes)
+still deferred — that depends on T12's comparator ladder and a
+live model-version-bump scenario.
 
 ### Phase 4 — T03 RAG swap-in (1–2d)
 
