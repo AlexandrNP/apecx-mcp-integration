@@ -224,6 +224,94 @@ decision.
 
 ---
 
+## 10. Verify source-of-truth branch before editing a framework file
+
+**Cost this session:** ~1 min (user caught it before any wrong code
+landed); 0 min of actual bad editing. Durable risk: ~hours if it
+ever bites.
+
+**Root cause:** started editing `nanobrain/core/a2a_support.py` and
+`academy_integration.py` without verifying which branch / state the
+nanobrain directory was on. The prior-session assumption was
+"nanobrain isn't a git repo, so there's nothing to check" — correct
+for that directory, but the user asked "did you check the
+academy-integration branch first?" and that was a real question.
+Turned out there are multiple nanobrain clones on disk under
+`/Users/onarykov/git/nanobrain*/`, some of them git-tracked with
+feature branches. The in-workspace copy happened to be the one I
+should edit, but I hadn't verified.
+
+**Mitigation (behavioral):** before any edit to a framework file
+(nanobrain/ or similar read-mostly repo):
+
+- ``git rev-parse --git-dir`` — is this a git repo?
+- If yes: ``git branch --show-current`` + ``git log -1 --oneline``.
+- ``find ~ -maxdepth 6 -name "<repo-name>" -type d`` — are there
+  other clones? Which is canonical?
+
+**Detection signal:** user says "check the X branch first" OR the
+framework directory might be a clone/copy of an upstream repo. One
+minute of verification beats the "edited the wrong thing for an hour"
+outcome.
+
+---
+
+## 11. Merge runs from main repo's working tree, not from the worktree
+
+**Cost this session:** ~2 min on the T14 audit merge, debugging
+"Already up to date." Recurrence: this is the SECOND session where
+I've tripped this.
+
+**Root cause:** `git worktree add ../wt-X -b branch-X main` creates
+the worktree at `../wt-X` with HEAD on `branch-X`. If I stay in
+that worktree's cwd and run `git merge branch-X`, git sees HEAD is
+already `branch-X`, so there's nothing to merge — exits clean with
+"Already up to date." but doesn't create the merge commit I wanted
+on main.
+
+**Mitigation (behavioral):** `cd ../apecx-mcp-integration` BEFORE
+the `git merge` invocation. Documented in
+`.claude/agents/git-worktree-guardian.agent.md` standard flow.
+
+**Detection signal:** `git log --oneline --graph -4` after the merge
+doesn't show the expected new merge commit. Or the merge output says
+"Already up to date." when you wanted a merge bubble.
+
+---
+
+## 12. Hook scripts can fail silently
+
+**Cost this session:** 0 min of visible failure, but ~weeks of
+silent failure across prior sessions — the PostToolUse review hook
+never produced a single `system-reminder` despite firing after every
+Edit. Only caught when the user asked about failing hooks.
+
+**Root cause:** `.claude/scripts/review_on_change.sh` used `mapfile`
+(bash 4+ builtin) which doesn't exist on macOS bash 3.2. Under
+``set -uo pipefail`` the mapfile failure plus subsequent
+unbound-variable accesses exit with rc=1. But rc=1 isn't rc=2 — the
+PostToolUse convention is "exit 2 surfaces stderr to Claude as a
+system-reminder." Exit 1 was silently swallowed.
+
+**Mitigation (shipped):** rewrote the mapfile call as a
+``while IFS= read`` loop. Bash 3-compatible.
+
+**Detection signal:** hooks have not produced any feedback in a
+session that did many Edits. Run the hook manually:
+
+    CLAUDE_FILE_PATH=<some file> bash .claude/scripts/<hook>.sh
+    echo "exit=$?"
+
+If it errors or exits non-zero on a clean file, the hook is broken.
+
+**Meta-lesson:** hooks configured in `.claude/settings.json` and
+pre-commit hooks in `.pre-commit-config.yaml` should be tested at
+session start if you rely on them for feedback. A "hook health
+check" at the top of a new session would have caught this in under
+a minute.
+
+---
+
 ## 9. Scaffold-vs-stub distinction blurs across sessions
 
 **Cost this session:** 0 minutes, but I've explicitly flagged it

@@ -25,15 +25,21 @@ repos:
         pass_filenames: false
 
       # TX5 AC2 — every top-level import in src/ must resolve.
+      # Uses .venv/bin/python explicitly: plain ``python`` picks up
+      # whichever interpreter is first on PATH, which may not have the
+      # editable installs (apecx_db_integration, psycopg, etc.) and
+      # flags false-positive "unresolvable" imports. Assumes the venv
+      # lives at .venv/ in the repo root — if yours lives elsewhere,
+      # adjust.
       - id: imports-resolve
         name: All src/ imports resolve (TX5 AC2)
-        entry: python scripts/checks/imports_resolve.py src/
+        entry: .venv/bin/python scripts/checks/imports_resolve.py src/
         language: system
         pass_filenames: false
 
       # TX5 AC3 — nanobrain step-authoring compliance.
       - id: step-authoring-compliance
         name: Step subclasses implement process(), don't override execute() (TX5 AC3)
-        entry: python scripts/checks/step_authoring.py src/
+        entry: .venv/bin/python scripts/checks/step_authoring.py src/
         language: system
         pass_filenames: false
