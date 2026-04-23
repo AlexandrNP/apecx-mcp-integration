@@ -17,6 +17,25 @@ MCP surface, control plane, composition, and execution integration for the APECx
 
 Do not start Phase 1 until these gates pass.
 
+## Security — no runtime sandbox in Phase 1
+
+**LLM-generated Python is scanned at generation time and runs unisolated
+in the Tier-2 process.** The T13 Phase-1 sandbox
+(`src/apecx_integration/composition/sandbox.py`) is a static
+import-whitelist + banned-construct scanner only. Once an artifact
+passes the scan, it executes with the same filesystem, network, and
+process privileges as the control-plane host. Human review (Step 4
+HITL gate + operator review) is the only runtime safety control.
+
+Whitelist: `configs/sandbox/import_whitelist.txt`. Proposing a new
+whitelist entry requires a PR + justification; narrow whitelist is the
+whole point of Phase 1. Dynamic-import constructs
+(`importlib.import_module`, `__import__`, `exec`, `eval`, `compile`)
+are rejected outright so the whitelist can't be bypassed.
+
+Runtime isolation lands in T13b (Phase-2 Docker sandbox) — see
+`../implementation_plan.md`.
+
 ## Layout
 
 ```
