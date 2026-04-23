@@ -209,6 +209,11 @@ def test_t01_vertical_slice_end_to_end(monkeypatch):
     monkeypatch.setenv("APECX_LLM_BASE_URL", f"{OLLAMA_URL}/v1")
     monkeypatch.setenv("APECX_LLM_MODEL", OLLAMA_MODEL)
     monkeypatch.setenv("APECX_LLM_API_KEY", "EMPTY")
+    # Tight bounds per next_tasks Task 3.2 (b) — keeps each LLM call
+    # under ~1s on mistral-nemo:latest. apecx-db-integration's
+    # _build_chat_llm reads these env vars (since commit aa1c547).
+    monkeypatch.setenv("APECX_LLM_TEMPERATURE", "0.0")
+    monkeypatch.setenv("APECX_LLM_MAX_TOKENS", "256")
     monkeypatch.setenv("CONTROL_PLANE_URL", CP_URL)
     monkeypatch.chdir(REPO_ROOT)
 

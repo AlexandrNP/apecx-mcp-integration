@@ -25,22 +25,22 @@ Scope of the test (one happy-path assertion)
 3. Build the bvbrc_snapshot_match Step (Step 2) from its committed YAML
    and feed it the entity list from Step 1 → assert non-empty matches.
 
-Known caveats (documented, not fixed in T03)
---------------------------------------------
-- ``max_tokens=256`` directive from next_tasks Task 3.2 is NOT currently
-  enforceable: the wrapped ``apecx_db_integration._build_chat_llm`` is
-  invoked by ``extract_entities_llm`` with hardcoded ``max_tokens=1024``,
-  and the wrapper Step does not expose an override yet. Filed as a
-  T04-folded concern. Until then, expect ~1024-token responses; the
-  ``mistral-nemo:latest`` default keeps wall-time tolerable.
+Known caveats
+-------------
+- ``max_tokens=256`` directive from next_tasks Task 3.2 is now honored
+  via the ``APECX_LLM_MAX_TOKENS`` env var (set in the ``ollama_env``
+  fixture). The apecx-db-integration ``_build_chat_llm`` reads the env
+  var and overrides any per-call kwarg (resolution: env > caller > default).
+  Filed-and-closed in apecx-db-integration commit ``aa1c547``.
 - Step 2's ``EnhancedBVBRCDataAcquisitionStep`` also issues LLM calls
   (synonym + species verification agents). So this test triples as a
   Step-2 LLM smoke test on top of the Step-1 wrapper test.
 - The "minimum T01 vertical slice" framing in next_tasks_2026_04_22.md
   Task 3.2 is honest but still fragile — if either Step 1 or Step 2
   drifts, this test can fail in non-obvious ways. T04's
-  ``test_t01_vertical_slice_against_ollama.py`` will provide the full
-  7-step coverage with explicit per-step assertions.
+  ``test_t01_vertical_slice_against_ollama.py`` provides the full
+  6-step coverage (Step 2 deferred per the parallel-branch design;
+  see that file's docstring) with end-to-end assertions.
 """
 
 from __future__ import annotations
@@ -134,10 +134,18 @@ def ollama_env(monkeypatch):
     """Point apecx-db-integration's LLM factory at the Ollama daemon for
     the duration of one test. Resets the lazy LLM client cache (none
     today, but if one is added later this guards the contamination).
+
+    Honors next_tasks_2026_04_22.md Task 3.2 (b) directive — tight
+    bounds (temperature=0.0, max_tokens=256) keep each LLM call short
+    on the fast dev loop. apecx-db-integration ``_build_chat_llm``
+    reads APECX_LLM_TEMPERATURE / APECX_LLM_MAX_TOKENS as overrides on
+    its per-call kwargs (see that repo's commit ``aa1c547``).
     """
     monkeypatch.setenv("APECX_LLM_BASE_URL", f"{OLLAMA_URL}/v1")
     monkeypatch.setenv("APECX_LLM_MODEL", OLLAMA_MODEL)
     monkeypatch.setenv("APECX_LLM_API_KEY", "EMPTY")
+    monkeypatch.setenv("APECX_LLM_TEMPERATURE", "0.0")
+    monkeypatch.setenv("APECX_LLM_MAX_TOKENS", "256")
 
 
 @pytest.mark.skipif(
