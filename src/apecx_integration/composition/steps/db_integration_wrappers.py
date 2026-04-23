@@ -108,12 +108,21 @@ class EntityExtractionStep(BaseStep):
 
         {"query": "find EEEV vaccines"}
 
-    Return shape::
+    Return shape (matches Step1Output in data_unit_schemas)::
 
-        {"entities": [
-            {"name": "EEEV", "type": "pathogen", "confidence": 0.95},
-            ...,
-        ]}
+        {
+            "entities": [
+                {"name": "EEEV", "type": "pathogen", "confidence": 0.95},
+                ...,
+            ],
+            "query_terms": ["EEEV", ...],
+        }
+
+    The duplicated ``query_terms`` field is so Step 3a (cache lookup)
+    can read names directly without a transform-link from
+    ``entities[].name``. ``entities`` stays in the output for any
+    downstream consumer that needs the type / confidence metadata
+    (e.g., Step 2 when wired in via the parallel-branch wrappers).
     """
 
     COMPONENT_TYPE: str = "entity_extraction_step"
@@ -131,13 +140,14 @@ class EntityExtractionStep(BaseStep):
                 f"non-empty 'query' string, got {type(query).__name__}"
             )
         entities = apecx_db_integration.extract_entities_llm(query)
+        query_terms = [e["name"] for e in entities if "name" in e]
         log.info(
             "EntityExtractionStep %s: extracted %d entities from query (len=%d)",
             self.name,
             len(entities),
             len(query),
         )
-        return {"entities": entities}
+        return {"entities": entities, "query_terms": query_terms}
 
 
 # ---------------------------------------------------------------------------
