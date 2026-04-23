@@ -277,16 +277,24 @@ live model-version-bump scenario.
 **Exit criterion**: T03 AC and composer AC2/AC7 both pass
 concurrently on the same prompt set.
 
-### Phase 5 — hardening + AC6 prompt discipline + AC8 wall-time (≤1d)
+### Phase 5 — hardening + AC6 prompt discipline + AC8 wall-time (≤1d) — partial 2026-04-22
 
 - Move any remaining inline prompt strings to `composer_prompts/`
-  files (AC6).
-- Add the composition-bias regression test (AC7).
+  files (AC6). ✅ already satisfied after Phase 2; enforcement added
+  at `tests/unit/test_composer_prompts_are_files.py` (AST walk +
+  400-char + "You are" signature check; 3 unit tests).
+- Add the composition-bias regression test (AC7). ✅ shipped at
+  `tests/integration/test_composer_ac7_composition_bias.py`
+  (live-LLM skip-gated; asserts `result.novel_python == {}` for a
+  prompt fully covered by the violin_bvbrc catalog).
 - Measure wall-time on the fixture prompt set; tune `max_tokens`
   (via APECX_LLM_MAX_TOKENS — already supported since 2026-04-23).
+  **AC8 status: pending** — operator-run measurement; not
+  automatable under the no-live-LLM constraint.
 
 **Exit criterion**: all 8 ACs pass; CI (when GitHub ships per TX2)
-gates on the composer's tests.
+gates on the composer's tests. **Phase 5 status (2026-04-22):**
+AC6 + AC7 shipped; AC8 deferred to operator.
 
 ---
 
