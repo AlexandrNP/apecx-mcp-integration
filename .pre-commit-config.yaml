@@ -23,3 +23,17 @@ repos:
         entry: bash -c 'if grep -rn --include="*.py" --exclude-dir="*.egg-info" "from unittest.mock\|from unittest import mock\|^import mock\|MagicMock" src/ 2>/dev/null; then echo "Found mocks in src/ — workspace policy forbids."; exit 1; fi'
         language: system
         pass_filenames: false
+
+      # TX5 AC2 — every top-level import in src/ must resolve.
+      - id: imports-resolve
+        name: All src/ imports resolve (TX5 AC2)
+        entry: python scripts/checks/imports_resolve.py src/
+        language: system
+        pass_filenames: false
+
+      # TX5 AC3 — nanobrain step-authoring compliance.
+      - id: step-authoring-compliance
+        name: Step subclasses implement process(), don't override execute() (TX5 AC3)
+        entry: python scripts/checks/step_authoring.py src/
+        language: system
+        pass_filenames: false
