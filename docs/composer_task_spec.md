@@ -189,7 +189,7 @@ constraint.
 
 ## 6. Phased delivery (effort estimate: 5–7 engineer-days)
 
-### Phase 1 — skeleton + config + loadability (≤1d)
+### Phase 1 — skeleton + config + loadability (≤1d) ✅ shipped 2026-04-23 (`2d543df`)
 
 - Author `composer.py` with the class signature + `from_config`
   classmethod that loads a `ComposerConfig` pydantic model.
@@ -205,18 +205,35 @@ constraint.
 **Exit criterion**: `Composer.from_config(default_config)` test
 passes; `compose()` is not yet callable.
 
-### Phase 2 — linear-scan library retrieval + first real prompt (1–2d)
+### Phase 2 — linear-scan library retrieval + first real prompt (1–2d) ✅ shipped 2026-04-23
 
-- Query the `Component` table directly (no RAG yet); filter by
-  substring match on the prompt against component descriptions.
-- Build the LLM input from: system prompt + composition-bias prompt
-  + candidate components (text dump) + user prompt.
-- Call the Ollama-backed agent; parse the response as YAML +
-  optional novel-Python dict.
-- Run T13 scanner over any novel Python; raise `ScanViolation` if
-  it fails (AC5).
-- Return `ComposedWorkflow` without calling `ArtifactStore.store()`
-  yet.
+**Deviation from original plan (documented)**: the spec said "Query
+the Component table directly (no RAG yet)." The T09 Component DB
+table has zero seed data — querying returns nothing. Phase 2 reads
+components from `ComponentCatalog.from_manifests([paths])` instead,
+paths come from `ComposerConfig.component_catalog_paths`. The
+`ComponentCatalog.search` signature stays stable when T03 RAG
+replaces the substring-match internals in Phase 4.
+
+Also shipped in Phase 2:
+
+- Real prompt text in `composer_prompts/*.md` (was placeholder).
+- T13 scanner integration (novel-Python `ScanViolation` short-
+  circuits the compose call — AC5 satisfied).
+- Fenced-block parser for LLM output (`yaml` + optional
+  `novel_python`), with error paths for missing / malformed /
+  non-mapping-top-level yaml.
+- Placeholder-LLM test suite (12 tests in
+  `tests/integration/test_composer_phase2.py`).
+- Operator-run live test (2 tests in
+  `test_composer_phase2_against_ollama.py`, auto-skip via
+  `APECX_SKIP_LIVE_LLM=1`).
+
+**Not in Phase 2** (Phase 3):
+
+- `ArtifactStore.store()` integration — `ComposedWorkflow` has an
+  `artifact_id` (uuid4) but no Artifact row is written yet.
+- `WORKFLOW_GENERATED` provenance event emission.
 
 **Exit criterion**: a fixture prompt produces a non-empty YAML that
 loads via `Workflow.from_config(...)` (AC2 happy path; AC3 deferred

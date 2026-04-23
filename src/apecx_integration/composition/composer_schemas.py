@@ -53,6 +53,11 @@ class ComposerConfig(BaseModel):
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     max_retries: int = Field(default=0, ge=0)
 
+    # Phase-2 additions — retrieval + sandbox integration.
+    component_catalog_paths: list[Path] = Field(default_factory=list)
+    retrieval_k: int = Field(default=10, ge=1)
+    sandbox_whitelist_path: Path | None = None
+
 
 # ---------------------------------------------------------------------------
 # Output shapes

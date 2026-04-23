@@ -1,22 +1,38 @@
-# T-COMP Phase 1 — sample composer config.
+# T-COMP Phase 2 — sample composer config.
 #
-# Points at the placeholder prompt files in ``composer_prompts/`` (same
-# directory as this file, so ``prompt_dir`` is a repo-root-relative
-# path once the config file's parent is resolved).
+# Points at the prompt files + a component catalog + the T13 sandbox
+# whitelist. All paths are relative to this config file's parent
+# directory and get resolved by ``Composer.from_config``.
 #
 # LLM defaults match apecx_db_integration's APECX_LLM_* env-var
 # contract — operator overrides via env vars at deploy time rather
-# than editing this file. Override this whole file via a workflow-specific
-# alternative if needed.
+# than editing this file.
 
 library_version: "0.1.0-dev"
 llm_model: "mistral-small:latest"
 llm_base_url: "http://localhost:11434/v1"
 
-# Relative path resolved against this config file's parent directory
-# by ``Composer.from_config``.
 prompt_dir: "composer_prompts"
 
 max_tokens: 4096
 temperature: 0.0
 max_retries: 0
+
+# Phase-2 additions: where to find components + novel-Python safety gate.
+#
+# ``component_catalog_paths`` is a list of T02-style manifest YAMLs.
+# Each manifest's ``components:`` entries get flattened into the
+# retrieval corpus. Add more lines as more workflows ship.
+component_catalog_paths:
+  - "workflows/violin_bvbrc/manifest.yml"
+
+# ``sandbox_whitelist_path`` points at the T13 import whitelist. When
+# set, any novel Python the LLM emits gets scanned before the
+# composer returns. When null, the composer skips the scan — useful
+# for tests that only exercise the YAML path. Production should ALWAYS
+# set this.
+sandbox_whitelist_path: "../../../configs/sandbox/import_whitelist.txt"
+
+# How many catalog hits to surface to the LLM. Tight bound to keep
+# the prompt readable — bumping past ~10 tends to confuse mistral-nemo.
+retrieval_k: 10

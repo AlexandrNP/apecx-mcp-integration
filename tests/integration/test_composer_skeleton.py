@@ -69,10 +69,13 @@ def test_no_inline_prompt_text_in_composer_source():
     composer_py = Path(
         REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer.py"
     ).read_text()
+    # Markers are distinctive strings from the CURRENT prompt files.
+    # If a future author copy-pastes prompt text into composer.py, these
+    # substrings will appear in the Python source and the test fires.
     for marker in (
-        "You are a workflow-composition assistant",
-        "Prefer composition. Only generate new Python",
-        "Mark every novel Python block",
+        "You are a workflow composer for the APECx nanobrain",
+        "Prefer composition over generation",
+        "If — and only if — you emit novel Python",
     ):
         assert marker not in composer_py, (
             f"found inline prompt text in composer.py: {marker!r}. "
@@ -82,22 +85,18 @@ def test_no_inline_prompt_text_in_composer_source():
 
 
 # ---------------------------------------------------------------------------
-# compose() is NotImplementedError in Phase 1
+# compose() validates the prompt shape even before calling the LLM
 # ---------------------------------------------------------------------------
 
-def test_compose_raises_with_phase_reference():
-    """Phase-1 compose() MUST raise, and the message MUST name the
-    phase that implements it — so a caller hitting this during Phase 1
-    work knows exactly where the implementation is specified.
+def test_compose_rejects_empty_prompt():
+    """compose() must guard against empty prompts before invoking the
+    LLM — an empty prompt wastes a round-trip and confuses the model.
     """
     composer = Composer.from_config(DEFAULT_CONFIG)
-    with pytest.raises(NotImplementedError, match="Phase 1"):
-        asyncio.run(composer.compose("any prompt"))
-    # Also verify the spec doc is referenced in the message.
-    try:
-        asyncio.run(composer.compose("any prompt"))
-    except NotImplementedError as exc:
-        assert "composer_task_spec.md" in str(exc)
+    with pytest.raises(ValueError, match="non-empty prompt"):
+        asyncio.run(composer.compose(""))
+    with pytest.raises(ValueError, match="non-empty prompt"):
+        asyncio.run(composer.compose("   "))
 
 
 # ---------------------------------------------------------------------------
