@@ -323,3 +323,97 @@ get authored.
 YAMLs that reference ``apecx_db_integration``.
 
 **Cost estimate:** 0.25d (install wiring + smoke test).
+
+---
+
+## apecx-db-integration CSV agents broken on langchain 1.x
+
+**What:** ``apecx_db_integration.agent.initialize_csv_agent`` and
+``initialize_bvbrc_agent`` import three symbols that were reorganised
+in langchain 1.x:
+
+- ``langchain.agents.agent_types.AgentType``
+- ``langchain_experimental.agents.agent_toolkits.create_csv_agent``
+- ``langchain_experimental.tools.python.tool.PythonREPLTool``
+
+These imports are now lazy (inlined inside the two functions), so the
+``apecx_db_integration`` package loads cleanly and the three public
+functions Step 1 / 3c / 5 actually use (``extract_entities_llm``,
+``consolidated_synonym_search``, ``enrich_matches_with_database_data``)
+work fine. But calling either CSV-agent factory raises
+``ModuleNotFoundError`` or ``ImportError`` against langchain 1.x's
+import paths.
+
+The leaked credential discovery in 2026-04-22 surfaced this: the old
+``requirements.txt`` used ``langchain>=0.1.0`` floors which now resolve
+to 1.x on a fresh install. So every fresh clone since langchain 1.0
+shipped has had silently broken CSV agents — the packaging work didn't
+cause this; it surfaced it.
+
+**Why deferred:** The CSV agents are not on the violin_bvbrc T01
+vertical-slice path. The three public functions are what the workflow
+wraps. Porting the CSV agents to langchain 1.x means re-checking the
+``AgentType.OPENAI_FUNCTIONS`` model-compatibility story (function
+calling support is uneven on local Ollama models) plus auditing the
+``PythonREPLTool`` ``allow_dangerous_code=True`` blast radius.
+
+**Trigger to revisit:** when a workflow Step actually wants the CSV
+agents (none does today). The ``mistral-small:24b`` function-calling
+quality should be measured against a small fixed query set before
+committing to the port — if it's worse than direct prompted JSON,
+the right answer may be to delete the CSV agents instead.
+
+**Cost estimate:** 0.5–1d for the port + a quality measurement pass;
+0.25d if the decision is to delete.
+
+---
+
+## apecx-db-integration ruff residual hidden behind per-file ignore
+
+**What:** ``apecx-db-integration/pyproject.toml`` carries a
+``per-file-ignores = {"src/apecx_db_integration/agent.py" = ["W291",
+"W293"]}`` block. The ignored hits are whitespace-on-blank-line
+**inside multi-line f-string LLM prompts** — auto-fixing them would
+mutate prompt content sent to the model, which is a behavior change.
+
+**Why deferred:** The cleanup is mechanical (migrate the indented
+heredoc strings to ``textwrap.dedent`` so the blank lines no longer
+need leading whitespace, then drop the ignore). It's a 30-min pass on
+a file that already shipped with the ignore, no urgency.
+
+**Trigger to revisit:** any time someone touches the LLM prompts in
+``agent.py`` for substantive reasons (prompt-engineering pass, model
+swap that changes the prompt format, etc.) — fold the dedent into
+that work.
+
+**Cost estimate:** 0.5h.
+
+---
+
+## apecx-db-integration data provisioning undocumented
+
+**What:** ``apecx-db-integration`` requires five VIOLIN CSVs at the
+``APECX_DB_DATA_DIR`` location to function end-to-end. Only
+``BVBRC_genome_alphavirus.csv`` is committed; the five VIOLIN tables
+(``Vaccine_Information.csv``, ``Pathogen_Information.csv``,
+``Gene_Information.csv``, ``Gene_Vaccine_Pathogen_Information.csv``,
+``Vaccine_Pathogen_Information.csv``) are operator-provided. There is
+no committed source-of-record for them — no URL, no gdrive link, no
+documented one-time export step.
+
+Downstream code silently skips missing files (logged warning, returns
+empty results). That means a workflow can run end-to-end on a fresh
+clone and produce empty outputs without ever raising — the worst
+class of failure mode.
+
+**Why deferred:** Cataloging the data provenance requires asking the
+VIOLIN team where their canonical export lives. Out of scope for the
+packaging work that landed today.
+
+**Trigger to revisit:** any new operator joining the project; or
+when the silent-empty-results failure mode bites someone in
+production. Whichever comes first.
+
+**Cost estimate:** 0.5d to write a ``data_provisioning.md`` covering
+download URL / export procedure / file-shape validation; longer if
+the VIOLIN team turns out not to have a clean export workflow.
