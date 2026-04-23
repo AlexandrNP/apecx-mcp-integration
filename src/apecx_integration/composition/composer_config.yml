@@ -1,0 +1,22 @@
+# T-COMP Phase 1 — sample composer config.
+#
+# Points at the placeholder prompt files in ``composer_prompts/`` (same
+# directory as this file, so ``prompt_dir`` is a repo-root-relative
+# path once the config file's parent is resolved).
+#
+# LLM defaults match apecx_db_integration's APECX_LLM_* env-var
+# contract — operator overrides via env vars at deploy time rather
+# than editing this file. Override this whole file via a workflow-specific
+# alternative if needed.
+
+library_version: "0.1.0-dev"
+llm_model: "mistral-small:latest"
+llm_base_url: "http://localhost:11434/v1"
+
+# Relative path resolved against this config file's parent directory
+# by ``Composer.from_config``.
+prompt_dir: "composer_prompts"
+
+max_tokens: 4096
+temperature: 0.0
+max_retries: 0
