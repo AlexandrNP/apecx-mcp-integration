@@ -24,13 +24,20 @@ from pathlib import Path
 
 import httpx
 import pytest
-
 from nanobrain.core.agent import SimpleAgent
 
 pytestmark = pytest.mark.integration
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "mistral-small:latest")
+
+
+def _skip_live_llm_requested() -> bool:
+    """Opt-out env var for Claude-Code sessions: set
+    ``APECX_SKIP_LIVE_LLM=1`` to force-skip every live-LLM test in
+    this file, regardless of whether the daemon is reachable. See
+    ``docs/session_friction_log.md`` #1."""
+    return os.environ.get("APECX_SKIP_LIVE_LLM") == "1"
 
 
 def _ollama_reachable_with_model(model: str) -> bool:
@@ -43,6 +50,9 @@ def _ollama_reachable_with_model(model: str) -> bool:
         return False
 
 
+SKIP_LIVE_LLM_OPTOUT = (
+    "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
+)
 SKIP_REASON = (
     f"Ollama daemon not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} "
     "not pulled. Run `ollama serve` + `ollama pull mistral-small:latest`."
@@ -77,6 +87,7 @@ def ollama_agent_yaml(tmp_path) -> Path:
     return yaml_path
 
 
+@pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_LIVE_LLM_OPTOUT)
 @pytest.mark.skipif(
     not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON
 )
@@ -100,6 +111,7 @@ async def test_simple_agent_initializes_against_ollama(
     assert agent.config.base_url == f"{OLLAMA_URL}/v1"
 
 
+@pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_LIVE_LLM_OPTOUT)
 @pytest.mark.skipif(
     not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON
 )

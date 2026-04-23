@@ -80,6 +80,15 @@ REQUIRED_VIOLIN_CSVS = (
 )
 
 
+def _skip_live_llm_requested() -> bool:
+    """Opt-out env var for Claude-Code sessions: set
+    ``APECX_SKIP_LIVE_LLM=1`` to force-skip every live-LLM test in
+    this file, regardless of whether the daemon is reachable. See
+    ``docs/session_friction_log.md`` #1 for the friction this
+    addresses."""
+    return os.environ.get("APECX_SKIP_LIVE_LLM") == "1"
+
+
 def _ollama_reachable_with_model(model: str) -> bool:
     try:
         r = httpx.get(f"{OLLAMA_URL}/api/tags", timeout=2.0)
@@ -107,6 +116,9 @@ def _control_plane_reachable() -> bool:
         return False
 
 
+SKIP_LIVE_LLM_OPTOUT = (
+    "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
+)
 SKIP_OLLAMA = (
     f"Ollama daemon not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} "
     "not pulled. Run `ollama serve` + `ollama pull mistral-nemo:latest`."
@@ -184,6 +196,7 @@ def _pre_approve_pending_decisions(timeout_s: float = 30.0) -> int:
     return approved_count
 
 
+@pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_LIVE_LLM_OPTOUT)
 @pytest.mark.skipif(
     not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_OLLAMA
 )

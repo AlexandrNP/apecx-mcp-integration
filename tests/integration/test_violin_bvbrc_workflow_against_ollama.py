@@ -90,6 +90,15 @@ BVBRC_CACHE_DIR = Path(
 )
 
 
+def _skip_live_llm_requested() -> bool:
+    """Opt-out env var for Claude-Code sessions: set
+    ``APECX_SKIP_LIVE_LLM=1`` to force-skip every live-LLM test in
+    this file, regardless of whether the daemon is reachable. See
+    ``docs/session_friction_log.md`` #1 for the friction this
+    addresses."""
+    return os.environ.get("APECX_SKIP_LIVE_LLM") == "1"
+
+
 def _ollama_reachable_with_model(model: str) -> bool:
     try:
         r = httpx.get(f"{OLLAMA_URL}/api/tags", timeout=2.0)
@@ -115,6 +124,9 @@ def _bvbrc_cache_present() -> bool:
     return any(BVBRC_CACHE_DIR.glob("*.tsv"))
 
 
+SKIP_REASON_LIVE_LLM_OPTOUT = (
+    "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
+)
 SKIP_REASON_OLLAMA = (
     f"Ollama daemon not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} "
     "not pulled. Run `ollama serve` + `ollama pull mistral-nemo:latest`."
@@ -148,6 +160,7 @@ def ollama_env(monkeypatch):
     monkeypatch.setenv("APECX_LLM_MAX_TOKENS", "256")
 
 
+@pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_REASON_LIVE_LLM_OPTOUT)
 @pytest.mark.skipif(
     not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON_OLLAMA
 )
@@ -182,6 +195,7 @@ def test_entity_extraction_step_against_ollama(ollama_env):
     )
 
 
+@pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_REASON_LIVE_LLM_OPTOUT)
 @pytest.mark.skipif(
     not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON_OLLAMA
 )
