@@ -1,0 +1,34 @@
+# Workflow spec Step 1 — entity_extraction
+#
+# LLM-driven extraction of pathogen / vaccine / gene entity names from a
+# free-text user query. Wraps apecx_db_integration.extract_entities_llm
+# (see src/apecx_integration/composition/steps/db_integration_wrappers.py).
+#
+# LLM backend resolved from APECX_LLM_BASE_URL / APECX_LLM_MODEL /
+# APECX_LLM_API_KEY env vars (default: local Ollama at
+# http://localhost:11434/v1 with mistral-small:latest).
+
+class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
+name: entity_extraction
+description: "Extract biomedical entity candidates from a user query (LLM)."
+
+input_data_units:
+  user_query_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: user_query_input
+    description: "Single string with the scientist's query, e.g., 'find EEEV vaccines'."
+    persistent: false
+
+output_data_units:
+  entity_candidates_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: entity_candidates_output
+    description: >
+      List of extracted entity dicts: {name, type, confidence}.
+      Schema must match Step 2 (bvbrc_snapshot_match)'s
+      entity_candidates_input.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "user_query_input"

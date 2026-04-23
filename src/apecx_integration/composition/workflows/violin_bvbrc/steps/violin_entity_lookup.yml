@@ -1,0 +1,38 @@
+# Workflow spec Step 5 — violin_entity_lookup
+#
+# Pure-pandas enrichment of resolved matches with VIOLIN + BV-BRC
+# database fields. Wraps apecx_db_integration.enrich_matches_with_database_data
+# (see src/apecx_integration/composition/steps/db_integration_wrappers.py).
+#
+# NO LLM calls. Pure pandas join over the VIOLIN tables loaded by
+# apecx_db_integration._get_dfs() from APECX_DB_DATA_DIR.
+
+class: "apecx_integration.composition.steps.db_integration_wrappers.ViolinEntityLookupStep"
+name: violin_entity_lookup
+description: "Enrich resolved matches with VIOLIN database fields (no LLM)."
+
+input_data_units:
+  resolved_matches_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: resolved_matches_input
+    description: >
+      List of resolved-match dicts: {query_entity, synonym, score}. Comes
+      from the verified_synonym_writeback or synonym_approval_gate output.
+    persistent: false
+
+output_data_units:
+  enriched_matches_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: enriched_matches_output
+    description: >
+      Same dicts as input plus a 'relevant_data' key carrying the
+      VIOLIN/BV-BRC row joins.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "resolved_matches_input"
+
+# Step-specific config. data_dir is optional — defaults to APECX_DB_DATA_DIR
+# env var. Override only if this workflow needs a non-standard data path.
+data_dir: null
