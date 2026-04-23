@@ -13,11 +13,12 @@ from pathlib import Path
 import httpx
 import pytest
 import yaml
+from fastapi import FastAPI
+
 from apecx_integration.composition.steps.synonym_cache import (
     SynonymCacheLookupStep,
     VerifiedSynonymWritebackStep,
 )
-from fastapi import FastAPI
 
 pytestmark = pytest.mark.integration
 
@@ -203,6 +204,60 @@ async def test_writeback_step_tolerates_409_as_already_existed(cp_client, cp_eng
         },
     )
     assert lookup.json()["matches"][0]["result"]["canonical_term"] == "VIOLIN_EXISTING"
+
+
+async def test_writeback_step_accepts_llm_proposals_passthrough(cp_client, cp_engine, tmp_path):
+    """T04 contract: VerifiedSynonymWritebackStep must accept the
+    ``llm_proposals`` shape that ApprovalStep emits when it passes the
+    Step 3c output through unmodified. This avoids the need for a
+    TransformLink between Step 4 and Step 4p.
+
+    Field rename per ``_coerce_input``:
+      query_entity → query_term
+      synonym → canonical_term
+      score → confidence
+    """
+    from apecx_integration.control_plane.app import create_app
+
+    app = create_app(engine=cp_engine)
+    step = _build_writeback_step(app, tmp_path)
+
+    result = await step.process(
+        {
+            "llm_proposals": [
+                {"query_entity": "eeev", "synonym": "VIOLIN_205", "score": 0.92},
+                {"query_entity": "vee", "synonym": "VIOLIN_210", "score": 0.88},
+            ],
+        }
+    )
+    assert len(result["written"]) == 2
+    assert result["already_existed"] == []
+
+    # Verify the rows landed under the renamed fields.
+    lookup = cp_client.post(
+        "/verified_synonyms/lookup",
+        json={
+            "source_vocabulary": "user_query",
+            "target_vocabulary": "violin.pathogen_id",
+            "query_terms": ["eeev", "vee"],
+        },
+    )
+    matches = lookup.json()["matches"]
+    assert matches[0]["result"]["canonical_term"] == "VIOLIN_205"
+    assert matches[1]["result"]["canonical_term"] == "VIOLIN_210"
+
+
+async def test_writeback_step_rejects_input_with_neither_shape(cp_client, cp_engine, tmp_path):
+    """If neither ``approved_mappings`` nor ``llm_proposals`` is present,
+    raise a clear ValueError instead of silently doing nothing.
+    """
+    from apecx_integration.control_plane.app import create_app
+
+    app = create_app(engine=cp_engine)
+    step = _build_writeback_step(app, tmp_path)
+
+    with pytest.raises(ValueError, match="approved_mappings.*llm_proposals"):
+        await step.process({"some_other_key": []})
 
 
 async def test_lookup_and_writeback_round_trip_through_the_workflow_shape(

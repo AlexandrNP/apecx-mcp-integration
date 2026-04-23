@@ -144,6 +144,11 @@ def test_entity_extraction_step_with_placeholder_llm(tmp_path, monkeypatch):
     assert "low-conf-noise" not in names
     assert len(placeholder.calls) == 1
 
+    # T04 contract (data_unit_schemas.Step1Output): query_terms emitted
+    # alongside entities so the Step 1 → Step 3a DirectLink works without
+    # a TransformLink. Step 3a reads input_data["query_terms"].
+    assert result["query_terms"] == [e["name"] for e in result["entities"]]
+
 
 def test_entity_extraction_step_rejects_non_string_query(tmp_path, monkeypatch):
     """Wrapper is responsible for shape validation BEFORE invoking the

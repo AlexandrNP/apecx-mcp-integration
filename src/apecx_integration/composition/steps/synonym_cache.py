@@ -189,7 +189,10 @@ class VerifiedSynonymWritebackStep(BaseStep):
     dropped from the ``written`` list, not re-raised — approval-race
     collision is not a workflow error.
 
-    Expected ``process()`` input::
+    Expected ``process()`` input — TWO accepted shapes:
+
+    1. **Canonical** (preferred when an upstream caller has already
+       reshaped the data)::
 
         {
             "approved_mappings": [
@@ -201,6 +204,25 @@ class VerifiedSynonymWritebackStep(BaseStep):
                 ...
             ]
         }
+
+    2. **ApprovalStep passthrough** (T01 vertical slice — Step 4
+       returns whatever Step 3c emitted, possibly augmented by reviewer
+       modifications, with no key rename). ``llm_proposals`` is
+       converted internally to the ``approved_mappings`` shape::
+
+        {
+            "llm_proposals": [
+                {"query_entity": "eeev",
+                 "synonym": "VIOLIN_205",
+                 "score": 0.95},
+                ...
+            ]
+        }
+
+    The dual-shape acceptance keeps the workflow YAML's link block
+    a set of plain DirectLinks. Doing the contract bridge in the
+    Python step body (not in a TransformLink) works around nanobrain's
+    YAML-loader gap on TransformLink's ``transform_function: str``.
 
     Return shape::
 
@@ -249,13 +271,7 @@ class VerifiedSynonymWritebackStep(BaseStep):
         self._http_client_factory = lambda: _http_client_from_config(self._control_plane_config)
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
-        approved_mappings = input_data.get("approved_mappings")
-        if not isinstance(approved_mappings, list):
-            raise ValueError(
-                f"VerifiedSynonymWritebackStep '{self.name}': input_data must "
-                f"have 'approved_mappings' as list, got "
-                f"{type(approved_mappings).__name__}"
-            )
+        approved_mappings = self._coerce_input(input_data)
 
         written: list[str] = []
         already_existed: list[str] = []
@@ -289,6 +305,48 @@ class VerifiedSynonymWritebackStep(BaseStep):
             len(already_existed),
         )
         return {"written": written, "already_existed": already_existed}
+
+    def _coerce_input(self, input_data: dict[str, Any]) -> list[dict[str, Any]]:
+        """Accept either ``approved_mappings`` (canonical) or
+        ``llm_proposals`` (ApprovalStep passthrough). Returns the
+        canonical list-of-mapping-dicts shape used by ``process``.
+        """
+        if "approved_mappings" in input_data:
+            value = input_data["approved_mappings"]
+            if not isinstance(value, list):
+                raise ValueError(
+                    f"VerifiedSynonymWritebackStep '{self.name}': "
+                    f"'approved_mappings' must be a list, got "
+                    f"{type(value).__name__}"
+                )
+            return value
+
+        if "llm_proposals" in input_data:
+            value = input_data["llm_proposals"]
+            if not isinstance(value, list):
+                raise ValueError(
+                    f"VerifiedSynonymWritebackStep '{self.name}': "
+                    f"'llm_proposals' must be a list, got {type(value).__name__}"
+                )
+            # Field rename: query_entity → query_term, synonym → canonical_term,
+            # score → confidence. Reviewer-supplied keys (source_run_id,
+            # comment) pass through if present.
+            converted: list[dict[str, Any]] = []
+            for proposal in value:
+                converted.append({
+                    "query_term": proposal["query_entity"],
+                    "canonical_term": proposal["synonym"],
+                    "confidence": float(proposal.get("score", 1.0)),
+                    "source_run_id": proposal.get("source_run_id"),
+                    "comment": proposal.get("comment"),
+                })
+            return converted
+
+        raise ValueError(
+            f"VerifiedSynonymWritebackStep '{self.name}': input_data must have "
+            "'approved_mappings' (canonical) or 'llm_proposals' "
+            "(ApprovalStep passthrough)."
+        )
 
 
 def _coerce_uuid_string(value: Any) -> str | None:
