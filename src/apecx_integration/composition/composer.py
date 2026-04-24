@@ -33,6 +33,7 @@ from uuid import uuid4
 import yaml
 
 from apecx_integration.composition.component_catalog import (
+    CatalogComponent,
     ComponentCatalog,
     SearchHit,
 )
@@ -122,14 +123,46 @@ class Composer:
         )
         self._llm_factory = llm_factory or _default_llm_factory
         self._artifact_store = artifact_store
+
+        # Phase-4 RAG swap-in. Loaded lazily: when ``rag_index_dir`` is
+        # set we deserialize the pre-built FAISS index; when it's None
+        # we keep the Phase-2 linear-scan catalog as the retrieval
+        # backend. The composer never builds the index on its own —
+        # the operator runs ``scripts/build_rag_index.py`` out-of-band.
+        self._rag_index = None
+        if config.rag_index_dir is not None:
+            try:
+                from nanobrain.lightweight.component_index import (
+                    ComponentIndex,
+                )
+            except ImportError as exc:
+                raise ComposerConfigurationError(
+                    f"rag_index_dir is set in composer config but "
+                    f"nanobrain.lightweight.component_index is not "
+                    f"importable: {exc}"
+                ) from exc
+            index_dir = Path(config.rag_index_dir)
+            if not (index_dir / "faiss.bin").is_file() or not (
+                index_dir / "metadata.json"
+            ).is_file():
+                raise ComposerConfigurationError(
+                    f"rag_index_dir={index_dir} is missing faiss.bin "
+                    "or metadata.json. Run scripts/build_rag_index.py "
+                    "to create the index."
+                )
+            self._rag_index = ComponentIndex.load(index_dir)
+
         log.info(
             "Composer initialized (Phase %s): library=%s llm=%s prompts=%d "
-            "components=%d persist=%s",
-            "3" if artifact_store is not None else "2",
+            "components=%d retrieval=%s persist=%s",
+            "4" if self._rag_index is not None
+            else "3" if artifact_store is not None
+            else "2",
             config.library_version,
             config.llm_model,
             len(self._prompts),
             len(self._catalog),
+            "rag" if self._rag_index is not None else "linear",
             artifact_store is not None,
         )
 
@@ -181,6 +214,13 @@ class Composer:
                 wlp = (path.parent / wlp).resolve()
             raw["sandbox_whitelist_path"] = wlp
 
+        rag_dir_raw = raw.get("rag_index_dir")
+        if rag_dir_raw is not None:
+            rdir = Path(rag_dir_raw)
+            if not rdir.is_absolute():
+                rdir = (path.parent / rdir).resolve()
+            raw["rag_index_dir"] = rdir
+
         try:
             config = ComposerConfig(**raw)
         except Exception as exc:
@@ -201,6 +241,35 @@ class Composer:
     @property
     def catalog(self) -> ComponentCatalog:
         return self._catalog
+
+    def _retrieve(self, prompt: str, k: int) -> list[SearchHit]:
+        """Route retrieval to RAG or linear-scan.
+
+        When a RAG index is loaded, query FAISS and adapt each
+        ``ComponentMatch`` to the ``SearchHit(CatalogComponent, score)``
+        shape the composer's prompt-rendering already expects. Score
+        becomes ``int(similarity * 1000)`` so the higher-is-better
+        convention from linear-scan is preserved — currently unused
+        by ``_render_candidates`` but kept so downstream consumers
+        (e.g. diff UX in T06) can read a consistent field.
+        """
+        if self._rag_index is None:
+            return self._catalog.search(prompt, k=k)
+        matches = self._rag_index.search(prompt, k=k)
+        return [
+            SearchHit(
+                component=CatalogComponent(
+                    id=m.id,
+                    name=m.name,
+                    description=m.description,
+                    class_path=m.class_path,
+                    yaml_path=m.yaml_path,
+                    examples=m.examples,
+                ),
+                score=int(round(m.similarity * 1000)),
+            )
+            for m in matches
+        ]
 
     async def compose(
         self,
@@ -224,9 +293,13 @@ class Composer:
                 f"{type(prompt).__name__}"
             )
 
-        # 1. Retrieve candidate components
-        hits = self._catalog.search(prompt, k=self._config.retrieval_k)
-        log.info("Composer retrieval: %d hits for prompt", len(hits))
+        # 1. Retrieve candidate components (RAG if configured, else linear-scan)
+        hits = self._retrieve(prompt, k=self._config.retrieval_k)
+        log.info(
+            "Composer retrieval (%s): %d hits for prompt",
+            "rag" if self._rag_index is not None else "linear",
+            len(hits),
+        )
 
         # 2. Build LLM messages
         system_prompt = self._build_system_prompt()

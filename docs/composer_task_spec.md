@@ -266,16 +266,32 @@ AC4 (semantic-equivalence fallback when model version changes)
 still deferred — that depends on T12's comparator ladder and a
 live model-version-bump scenario.
 
-### Phase 4 — T03 RAG swap-in (1–2d)
+### Phase 4 — T03 RAG swap-in (1–2d) ✅ shipped 2026-04-22
 
 - Replace the linear-scan retrieval with a `ComponentIndex.search`
   call. This is the composer side of T03; the RAG index's
-  embedding/build work is separate.
+  embedding/build work is separate. ✅ `_retrieve(prompt, k)`
+  adapter method added to `Composer`: when
+  `ComposerConfig.rag_index_dir` is set, loads
+  `nanobrain.lightweight.component_index.ComponentIndex` and
+  converts `ComponentMatch` → `SearchHit` with `score` =
+  `int(round(similarity * 1000))`. Unset → Phase-2 linear scan
+  remains the default.
+- `scripts/build_rag_index.py` builds the FAISS artifact
+  out-of-band (reads composer config, rebuilds + saves). Avoids
+  ~5s model-load on first `compose()` call.
 - Tune the K value against the 20-synthetic-query test suite in
-  T03's AC (80% top-5 recall target).
+  T03's AC (80% top-5 recall target). Current default
+  `retrieval_k=10`; T03 diagnostics show top-1 at 80%, so tightening
+  to 5 is a pending optimization — deferred, not hard-required.
 
 **Exit criterion**: T03 AC and composer AC2/AC7 both pass
-concurrently on the same prompt set.
+concurrently on the same prompt set. ✅ Verified:
+`tests/integration/test_composer_phase4_rag.py` (6 tests, all
+green) covers config loading, RAG retrieval, linear-scan fallback,
+and two error paths (missing dir, half-built index). Composer AC2
+(existing Phase-2 tests) regression-green with `rag_index_dir=None`
+fallback.
 
 ### Phase 5 — hardening + AC6 prompt discipline + AC8 wall-time (≤1d) — partial 2026-04-22
 
