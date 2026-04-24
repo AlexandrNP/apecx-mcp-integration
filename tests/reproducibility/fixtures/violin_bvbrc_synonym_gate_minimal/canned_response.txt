@@ -4,7 +4,7 @@ description: "VIOLIN + BV-BRC synonym-gated entity extraction, HARD approval."
 version: "0.1.0"
 steps:
   extract:
-    class: "apecx_db_integration.agent.extract_entities_llm"
+    class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
     config: "steps/entity_extraction.yml"
   snapshot_match:
     class: "nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep"
