@@ -241,5 +241,93 @@ async def submit_hpc(body: SubmitHpcRequest) -> SubmitHpcResponse:
 
 
 @router.post("/export", response_model=ExportHpcBundleResponse)
-async def export_hpc_bundle(body: ExportHpcBundleRequest) -> ExportHpcBundleResponse:
-    raise _not_implemented("T05 (PBS bundle generator)")
+async def export_hpc_bundle(
+    body: ExportHpcBundleRequest,
+    session: Annotated[Session, Depends(get_session)],
+) -> ExportHpcBundleResponse:
+    """T05 — produce a qsub-able PBS bundle on disk for a Run.
+
+    Error classes mirror /hpc/estimate; the generator itself raises
+    ``UnsupportedSystem`` for target_system outside {polaris, aurora}.
+
+    The endpoint does NOT submit via qsub. Scientist runs qsub
+    manually; Tier 2 re-ingest on completion consumes
+    ``provenance_seed.json`` inside the bundle.
+    """
+    from apecx_integration.control_plane.models.entities import (
+        GeneratedArtifact as GeneratedArtifactORM,
+    )
+    from apecx_integration.execution.pbs_bundle import (
+        BundleRequest,
+        UnsupportedSystem,
+        generate_bundle,
+    )
+
+    run = session.get(RunORM, body.run_id)
+    if run is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Run {body.run_id} not found",
+        )
+    if run.workflow_config_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Run {body.run_id} has no workflow_config_id — "
+                "nothing to export. Compose a workflow first."
+            ),
+        )
+    artifact = session.get(ArtifactORM, run.workflow_config_id)
+    if artifact is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=(
+                f"Run {body.run_id} references Artifact "
+                f"{run.workflow_config_id} which does not exist."
+            ),
+        )
+    on_disk = Path(artifact.location)
+    if not on_disk.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=(
+                f"Artifact {artifact.id} row exists but its on-disk "
+                f"file {on_disk} is missing."
+            ),
+        )
+    generated = session.get(GeneratedArtifactORM, artifact.id)
+    if generated is None:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Artifact {artifact.id} has no GeneratedArtifact row; "
+                "cannot export without composition metadata."
+            ),
+        )
+
+    summary: dict = generated.composition_summary or {}
+    try:
+        result = generate_bundle(
+            BundleRequest(
+                run_id=body.run_id,
+                target_system=body.target_system,
+                output_directory=Path(body.output_directory),
+                workflow_yaml_path=on_disk,
+                library_version=generated.library_version,
+                llm_model=generated.llm_model,
+                artifact_id=artifact.id,
+                composition_summary_sentence=summary.get(
+                    "summary_sentence", ""
+                ),
+            )
+        )
+    except UnsupportedSystem as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+    return ExportHpcBundleResponse(
+        bundle_path=str(result.bundle_path),
+        submit_command=result.submit_command,
+    )
