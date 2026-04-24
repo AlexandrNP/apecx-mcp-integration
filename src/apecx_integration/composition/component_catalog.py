@@ -185,8 +185,15 @@ def _load_manifest(path: Path) -> list[CatalogComponent]:
             _strip_multiline(e) for e in examples_raw
             if isinstance(e, str)
         )
+        # Rich id format — matches
+        # ``nanobrain.lightweight.component_index.ComponentMatch.id`` so
+        # both retrieval backends (linear-scan here, FAISS there) emit
+        # the same shape. Audited 2026-04-22 after the AC7 live-LLM
+        # regression surfaced the mismatch.
+        workflow_slug = path.parent.name
+        rich_id = f"{workflow_slug}/{name}:{step_id}"
         out.append(CatalogComponent(
-            id=str(step_id),
+            id=rich_id,
             name=str(name),
             description=description,
             class_path=str(entry.get("class") or ""),

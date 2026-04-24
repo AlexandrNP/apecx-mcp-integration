@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -224,6 +225,14 @@ class Composer:
             if not rdir.is_absolute():
                 rdir = (path.parent / rdir).resolve()
             raw["rag_index_dir"] = rdir
+
+        # APECX_LLM_* env vars override the YAML values so operators
+        # can re-target a deploy without editing the config file. The
+        # composer_config.yml's own header says exactly this — the
+        # env-var honoring is what makes that promise true. Audit
+        # trails (``result.llm_model``) then reflect what was actually
+        # USED, not what was configured on disk.
+        _apply_llm_env_overrides(raw)
 
         try:
             config = ComposerConfig(**raw)
@@ -640,6 +649,40 @@ _FENCE_RE = re.compile(
     r"\n```",
     re.DOTALL,
 )
+
+
+def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
+    """Honor the ``APECX_LLM_*`` env-var contract the composer_config
+    header promises. In-place edit of the raw mapping before pydantic
+    validation runs.
+
+    Mapping (env → config key):
+        APECX_LLM_MODEL       → llm_model
+        APECX_LLM_BASE_URL    → llm_base_url
+        APECX_LLM_TEMPERATURE → temperature (float)
+        APECX_LLM_MAX_TOKENS  → max_tokens  (int)
+
+    Unset env vars leave the YAML value untouched. Invalid numeric
+    values raise ValueError at pydantic validation; the composer
+    surfaces that as ``ComposerConfigurationError``.
+    """
+    str_pairs = (
+        ("APECX_LLM_MODEL", "llm_model"),
+        ("APECX_LLM_BASE_URL", "llm_base_url"),
+    )
+    for env, key in str_pairs:
+        value = os.environ.get(env)
+        if value:
+            raw[key] = value
+
+    numeric_pairs = (
+        ("APECX_LLM_TEMPERATURE", "temperature", float),
+        ("APECX_LLM_MAX_TOKENS", "max_tokens", int),
+    )
+    for env, key, caster in numeric_pairs:
+        value = os.environ.get(env)
+        if value is not None and value != "":
+            raw[key] = caster(value)
 
 
 def _parse_response(content: str) -> tuple[str, dict[str, str]]:

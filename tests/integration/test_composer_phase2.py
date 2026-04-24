@@ -173,7 +173,12 @@ def test_compose_retrieval_hits_appear_in_retrieved_components():
     composer._llm_factory = factory
 
     result = asyncio.run(composer.compose("extract biomedical entities from query"))
-    assert "1" in result.retrieved_components  # step_id "1" == entity_extraction
+    # Rich id format: ``<workflow_slug>/<step_name>:<step_id>``.
+    # Matches the ComponentIndex RAG backend so both retrieval
+    # paths produce identical audit-trail shapes.
+    assert any(
+        "entity_extraction:1" in rid for rid in result.retrieved_components
+    ), f"expected entity_extraction:1 in retrieved_components; got {result.retrieved_components}"
 
 
 # ---------------------------------------------------------------------------
