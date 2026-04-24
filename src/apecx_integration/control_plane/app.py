@@ -36,12 +36,23 @@ from apecx_integration.control_plane.routes import (
 )
 
 
-def create_app(engine: Engine | None = None) -> FastAPI:
+def create_app(
+    engine: Engine | None = None,
+    *,
+    composer=None,
+    approval_policy=None,
+) -> FastAPI:
     """Build the FastAPI app.
 
     ``engine`` is injected by tests to point at an isolated SQLite file
     (or a containerized Postgres). If not supplied, ``make_engine()``
     resolves ``APECX_CP_DB_URL`` or falls back to the SQLite default.
+
+    ``composer`` and ``approval_policy`` (T01) are optional. When None,
+    the ``/workflows/start`` route raises 503 with a pointer at how to
+    configure them; tests that don't exercise that route don't need to
+    pass either. Production deployments build them from env vars in the
+    CLI entrypoint (``_serve``).
 
     This function does NOT touch infrastructure — the CLI ``main()``
     below is responsible for bringing up Postgres and running migrations
@@ -62,6 +73,8 @@ def create_app(engine: Engine | None = None) -> FastAPI:
     app.state.engine = resolved_engine
     app.state.session_factory = session_factory
     app.state.recorder = ProvenanceRecorder(session_factory)
+    app.state.composer = composer
+    app.state.approval_policy = approval_policy
 
     @app.get("/healthz", tags=["meta"])
     def healthz() -> dict[str, str]:

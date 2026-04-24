@@ -1,21 +1,30 @@
-"""Workflow-creation and plan-inspection routes (TX1).
+"""Workflow-creation and plan-inspection routes.
 
-Two endpoints still stub 501 — ``/workflows/start`` depends on T09
-run-lifecycle wiring and ``/workflows/plan`` depends on the composer
-being invoked directly from the API (currently only via
-``Composer.compose`` in-process). T06 landed ``/workflows/diff``
-2026-04-22.
+- ``/workflows/start``  — T01 P1: composes a workflow, creates a Run
+                          row + Artifact via the composer, sets
+                          status=PAUSED or RUNNING per T06 policy.
+- ``/workflows/plan``   — still 501 (no standalone use case yet —
+                          /workflows/start covers prompt → composed).
+- ``/workflows/diff``   — T06 2026-04-22.
 """
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
+from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from apecx_integration.control_plane.dependencies import get_session
+from apecx_integration.composition.approval_policy import ApprovalPolicy
+from apecx_integration.composition.composer import Composer
+from apecx_integration.control_plane.dependencies import (
+    get_approval_policy,
+    get_composer,
+    get_session,
+)
 from apecx_integration.control_plane.models.entities import (
     Artifact as ArtifactORM,
 )
@@ -34,7 +43,11 @@ from apecx_integration.control_plane.schemas.api import (
     StartWorkflowResponse,
     StepPlan,
 )
-from apecx_integration.control_plane.schemas.enums import StepCategory
+from apecx_integration.control_plane.schemas.entities import Run as RunSchema
+from apecx_integration.control_plane.schemas.enums import (
+    RunStatus,
+    StepCategory,
+)
 
 router = APIRouter(prefix="/workflows", tags=["workflow"])
 
@@ -47,8 +60,77 @@ def _not_implemented(task_ref: str) -> HTTPException:
 
 
 @router.post("/start", response_model=StartWorkflowResponse)
-async def start_workflow(body: StartWorkflowRequest) -> StartWorkflowResponse:
-    raise _not_implemented("T09 (run persistence) + composer")
+async def start_workflow(
+    body: StartWorkflowRequest,
+    session: Annotated[Session, Depends(get_session)],
+    composer: Annotated[Composer, Depends(get_composer)],
+    policy: Annotated[ApprovalPolicy, Depends(get_approval_policy)],
+) -> StartWorkflowResponse:
+    """T01 P1: compose a workflow, persist it, return the Run.
+
+    Flow:
+    1. Create Run row (status=PENDING). Commit before calling composer
+       so the Artifact FK at compose time resolves.
+    2. ``composer.compose(description, context={"run_id": ...})`` —
+       generates YAML + novel Python, runs the T13 scanner + T06
+       categorization, persists via the injected ArtifactStore.
+    3. Back-link Run.workflow_config_id.
+    4. Evaluate the T06 approval policy against the categorization
+       and set run.status:
+         - policy AUTO             → RUNNING (ready for execution)
+         - REQUIRE_REVIEW / EXPERT → PAUSED (awaits reviewer)
+       No Approval ORM row is created here — approvals are
+       step-scoped runtime events (ApprovalStep, T10). Clients
+       discover pre-execution review gating via
+       ``/workflows/diff`` + the Run's PAUSED status.
+
+    **Not covered here (T01 Phase 2 scope):** actually executing the
+    composed workflow locally. That needs a Tier 4 local executor
+    wired into the Control Plane — see implementation_plan.md §T01
+    steps 5-8.
+    """
+    from apecx_integration.composition.approval_policy import ApprovalAction
+    from apecx_integration.composition.differ import CategorizedWorkflow
+
+    run_id = uuid4()
+    now = datetime.now(UTC)
+    run = RunORM(
+        id=run_id,
+        user_id=body.user_id,
+        status=RunStatus.PENDING,
+        created_at=now,
+    )
+    session.add(run)
+    session.commit()
+
+    composed = await composer.compose(
+        body.description,
+        context={"run_id": run_id},
+    )
+
+    # Re-read from this session: the composer wrote via its own
+    # session, so we need to fetch the Run and back-link it.
+    run = session.get(RunORM, run_id)
+    assert run is not None, "Run row disappeared between commits"
+    run.workflow_config_id = composed.artifact_id
+
+    categorized = CategorizedWorkflow(
+        categorizations=composed.composition_summary.step_categorizations,
+    )
+    decision = policy.evaluate(categorized)
+    if decision.strongest_required_action is ApprovalAction.AUTO:
+        run.status = RunStatus.RUNNING
+        run.started_at = now
+    else:
+        run.status = RunStatus.PAUSED
+
+    session.commit()
+    session.refresh(run)
+
+    return StartWorkflowResponse(
+        run=RunSchema.model_validate(run),
+        generated_workflow_artifact_id=composed.artifact_id,
+    )
 
 
 @router.post("/plan", response_model=GeneratePlanResponse)
