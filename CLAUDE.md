@@ -91,6 +91,18 @@ Output is `<config_dir>/rag_index/{faiss.bin,metadata.json}` by
 default (override with `--out`). Without a built index, the
 composer falls back to the Phase-2 linear-scan ComponentCatalog.
 
+## PBS bundle export
+
+`/hpc/export` writes a full qsub-able bundle to disk for a Run. The
+bundle layout matches AP §5.5 exactly (submit.pbs / run.sh /
+workflow.yml / staging_plan.yml / provenance_seed.json / README.md).
+The route does NOT submit via qsub — scientist runs qsub manually.
+Tier-2 ingest on completion consumes `provenance_seed.json`
+(consumer route is T05 follow-up scoped when an operator exercises
+the AC2 round-trip on Polaris / Aurora).
+
+See `src/apecx_integration/execution/pbs_bundle.py`.
+
 ## Key reference docs
 
 - `../architectural_plan.md` — project-level source of truth.
