@@ -23,8 +23,10 @@ from apecx_integration.composition.composer import Composer
 from apecx_integration.control_plane.dependencies import (
     get_approval_policy,
     get_composer,
+    get_local_executor,
     get_session,
 )
+from apecx_integration.control_plane.executors.local import LocalExecutor
 from apecx_integration.control_plane.models.entities import (
     Artifact as ArtifactORM,
 )
@@ -35,6 +37,8 @@ from apecx_integration.control_plane.models.entities import (
     Run as RunORM,
 )
 from apecx_integration.control_plane.schemas.api import (
+    ExecuteWorkflowRequest,
+    ExecuteWorkflowResponse,
     GeneratePlanRequest,
     GeneratePlanResponse,
     ShowYamlDiffRequest,
@@ -193,6 +197,37 @@ async def generate_plan(
         plan=plan,
         yaml_text=composed.yaml_bytes.decode("utf-8"),
         generated_artifact_id=composed.artifact_id,
+    )
+
+
+@router.post("/execute", response_model=ExecuteWorkflowResponse)
+async def execute_workflow(
+    body: ExecuteWorkflowRequest,
+    executor: Annotated[LocalExecutor, Depends(get_local_executor)],
+) -> ExecuteWorkflowResponse:
+    """T01 P2 HTTP surface — run a composed workflow to terminal state.
+
+    Synchronous: holds the HTTP connection until the LocalExecutor
+    returns. That's fine at first-release scale (workflows are short
+    and the operator is watching) but should move to a worker queue
+    once workflows run for minutes — track the gap explicitly in the
+    plan when it matters.
+
+    Returns the TERMINAL state (COMPLETED or FAILED), never the
+    in-flight RUNNING state. A 200 means the executor ran to
+    completion *of some kind*, not that the workflow succeeded.
+    The caller checks ``status`` on the response to branch.
+
+    503 when the Control Plane was built without a local_executor
+    (no route-specific error-catching otherwise — the executor owns
+    run-state transitions and is the right place to surface failures).
+    """
+    result = await executor.execute(body.run_id)
+    return ExecuteWorkflowResponse(
+        run_id=result.run_id,
+        status=result.status,
+        reason=result.reason,
+        output_artifact_id=result.output_artifact_id,
     )
 
 

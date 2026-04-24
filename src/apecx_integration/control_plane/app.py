@@ -41,6 +41,7 @@ def create_app(
     *,
     composer=None,
     approval_policy=None,
+    local_executor=None,
 ) -> FastAPI:
     """Build the FastAPI app.
 
@@ -75,6 +76,7 @@ def create_app(
     app.state.recorder = ProvenanceRecorder(session_factory)
     app.state.composer = composer
     app.state.approval_policy = approval_policy
+    app.state.local_executor = local_executor
 
     @app.get("/healthz", tags=["meta"])
     def healthz() -> dict[str, str]:

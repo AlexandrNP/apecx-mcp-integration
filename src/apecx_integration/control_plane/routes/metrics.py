@@ -161,7 +161,7 @@ def approval_metrics(
 
     # Look up final statuses for the paired approvals to compute
     # percent_auto_approved / percent_rejected.
-    status_counts = {s: 0 for s in ApprovalStatus}
+    status_counts = dict.fromkeys(ApprovalStatus, 0)
     if paired_ids:
         rows = session.execute(
             select(ApprovalORM.id, ApprovalORM.status).where(

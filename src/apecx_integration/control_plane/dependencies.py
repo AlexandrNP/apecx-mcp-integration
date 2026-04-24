@@ -22,6 +22,7 @@ from apecx_integration.control_plane.provenance.recorder import ProvenanceRecord
 if TYPE_CHECKING:
     from apecx_integration.composition.approval_policy import ApprovalPolicy
     from apecx_integration.composition.composer import Composer
+    from apecx_integration.control_plane.executors.local import LocalExecutor
 
 
 def get_session(request: Request) -> Iterator[Session]:
@@ -68,3 +69,17 @@ def get_approval_policy(request: Request) -> ApprovalPolicy:
             ),
         )
     return policy
+
+
+def get_local_executor(request: Request) -> LocalExecutor:
+    executor = getattr(request.app.state, "local_executor", None)
+    if executor is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "LocalExecutor is not configured on this Control "
+                "Plane. Pass local_executor= into create_app() or set "
+                "APECX_WORKFLOW_BASE_DIR so the app can build one."
+            ),
+        )
+    return executor

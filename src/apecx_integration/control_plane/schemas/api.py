@@ -83,6 +83,28 @@ class ShowYamlDiffResponse(_APIBase):
     summary_sentence: str
 
 
+# --- execute (T01 P2 HTTP surface) -----------------------------------------
+
+
+class ExecuteWorkflowRequest(_APIBase):
+    run_id: UUID
+
+
+class ExecuteWorkflowResponse(_APIBase):
+    """Mirror of ``LocalExecutor.ExecutionResult`` as a Pydantic shape.
+
+    ``status`` is the TERMINAL run status after execute() returned —
+    either COMPLETED or FAILED. ``reason`` and ``output_artifact_id``
+    are mutually exclusive: a COMPLETED run has no reason and carries
+    an artifact UUID; a FAILED run has a reason and no artifact.
+    """
+
+    run_id: UUID
+    status: RunStatus
+    reason: str | None = None
+    output_artifact_id: UUID | None = None
+
+
 # --- approve / reject / correct --------------------------------------------
 
 
