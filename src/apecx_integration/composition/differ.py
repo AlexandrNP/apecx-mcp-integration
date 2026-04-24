@@ -34,11 +34,11 @@ exact class path isn't in retrieval, the step falls to ``novel``
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class StepCategory(str, Enum):
+class StepCategory(StrEnum):
     """AP §5.6 step categorization.
 
     Values are lowercase strings so they serialize naturally into YAML /

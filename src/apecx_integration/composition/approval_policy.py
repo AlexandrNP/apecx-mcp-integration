@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 
 import yaml
@@ -27,7 +27,7 @@ from apecx_integration.composition.differ import (
 )
 
 
-class ApprovalAction(str, Enum):
+class ApprovalAction(StrEnum):
     AUTO = "auto"
     REQUIRE_REVIEW = "require_review"
     REQUIRE_EXPERT_REVIEW = "require_expert_review"
