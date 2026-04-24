@@ -1,0 +1,9 @@
+name: single_novel_python_step
+description: "Emit ten synthetic scored rows for downstream debugging."
+version: "0.1.0"
+steps:
+  synth:
+    class: "SyntheticScoredRows"
+    config:
+      row_count: 10
+links: {}

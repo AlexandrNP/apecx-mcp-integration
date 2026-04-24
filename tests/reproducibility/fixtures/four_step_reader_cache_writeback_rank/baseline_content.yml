@@ -1,0 +1,35 @@
+name: four_step_reader_cache_writeback_rank
+description: "Read terms, consult cache, writeback approved terms, rank the final set."
+version: "0.1.0"
+steps:
+  read:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+  cache_lookup:
+    class: "apecx_integration.composition.steps.synonym_cache.SynonymCacheLookupStep"
+    config: "steps/synonym_cache_lookup.yml"
+  writeback:
+    class: "apecx_integration.composition.steps.synonym_cache.VerifiedSynonymWritebackStep"
+    config: "steps/verified_synonym_writeback.yml"
+  rank:
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+    config: "steps/result_ranking.yml"
+links:
+  read_to_cache:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "read.genome_rows_output"
+      target: "cache_lookup.terms_input"
+  cache_to_writeback:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "cache_lookup.cached_synonyms_output"
+      target: "writeback.approved_mappings_input"
+  writeback_to_rank:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "writeback.persisted_mappings_output"
+      target: "rank.results_input"

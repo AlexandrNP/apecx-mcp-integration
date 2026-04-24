@@ -1,0 +1,48 @@
+```yaml
+name: library_plus_novel_python_filter
+description: "Read a TSV then apply a novel row filter."
+version: "0.1.0"
+steps:
+  read:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+  filter:
+    class: "ScoreThresholdFilter"
+    config:
+      threshold: 0.5
+      score_field: "score"
+links:
+  read_to_filter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "read.genome_rows_output"
+      target: "filter.rows_input"
+```
+
+```novel_python
+filter: |
+  from dataclasses import dataclass
+  from typing import Any
+  from nanobrain.core.step import BaseStep, StepConfig
+
+
+  @dataclass
+  class ScoreThresholdFilterConfig(StepConfig):
+      threshold: float = 0.5
+      score_field: str = "score"
+
+
+  class ScoreThresholdFilter(BaseStep):
+      COMPONENT_TYPE = "score_threshold_filter"
+      REQUIRED_CONFIG_FIELDS = ["name", "threshold", "score_field"]
+
+      @classmethod
+      def _get_config_class(cls):
+          return ScoreThresholdFilterConfig
+
+      async def process(self, inputs: dict[str, Any]) -> dict[str, Any]:
+          rows = inputs["rows_input"]
+          kept = [r for r in rows if float(r.get(self._score_field, 0.0)) >= self._threshold]
+          return {"filtered_rows_output": kept}
+```

@@ -1,0 +1,19 @@
+name: library_plus_novel_python_filter
+description: "Read a TSV then apply a novel row filter."
+version: "0.1.0"
+steps:
+  read:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+  filter:
+    class: "ScoreThresholdFilter"
+    config:
+      threshold: 0.5
+      score_field: "score"
+links:
+  read_to_filter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "read.genome_rows_output"
+      target: "filter.rows_input"
