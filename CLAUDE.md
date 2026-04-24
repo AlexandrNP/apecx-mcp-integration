@@ -113,6 +113,30 @@ the AC2 round-trip on Polaris / Aurora).
 
 See `src/apecx_integration/execution/pbs_bundle.py`.
 
+## T13b Docker sandbox (scaffold only)
+
+`src/apecx_integration/composition/docker_sandbox.py` is the
+Phase-2 runtime-isolation scaffold that backstops T13's static
+import-whitelist scanner. **It is not yet wired into the composer's
+execution path — that is Phase-3 work.**
+
+- `build_docker_sandbox_command(...)` — pure argv construction.
+  Every hardening flag (`--network=none`, `--read-only`,
+  `--cap-drop=ALL`, seccomp default, memory / cpus / pids caps,
+  read-only bind mount) is pinned by
+  `tests/unit/test_docker_sandbox_command.py`. Weakening a flag
+  there requires updating the threat-model table in the design
+  doc in lockstep.
+- `DockerSandboxRunner.run(...)` — real `docker run` invoker. Refuses
+  to execute unless `APECX_T13B_SANDBOX_EXECUTE=1` is set, so CI
+  runs of the full test suite do NOT shell out to Docker.
+- Live-sandbox tests in `tests/integration/test_docker_sandbox_runtime.py`
+  are double-gated (env var + Docker daemon reachable) and skip by
+  default.
+
+Design doc: `docs/t13b_sandbox_design.md` (threat model, flag
+rationale, open Phase-3 design questions).
+
 ## MCP surface (Tier 1)
 
 `src/apecx_integration/mcp_surface/server.py` is a FastMCP server
