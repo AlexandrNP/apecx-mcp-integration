@@ -9,13 +9,44 @@ MCP surface, control plane, composition, and execution integration for the APECx
 
 ## Status
 
-**Pre-Phase-1.** Repo is scaffolded; Phase 0 blockers remain:
-- T00.1b — concrete VIOLIN × BV-BRC workflow spec
-- T00.2 — nanobrain async pause/resume spike
-- T00.4 — mocks-policy decision
-- T00.5 — existing-asset inventory (initial pass done; source-read pass pending)
+**Phase 2 in progress.** Phase 0 blockers all ✅ cleared. Critical-path
+tasks landed on main as of 2026-04-22:
 
-Do not start Phase 1 until these gates pass.
+| Task    | Status    | Notes                                                |
+|---------|-----------|------------------------------------------------------|
+| T02     | ✅ done   | component library + manifests for VIOLIN × BV-BRC    |
+| T03     | ✅ done   | FAISS RAG index over T02 manifests                   |
+| T06     | ✅ done   | differential-review UX (AC1+AC2+AC4)                 |
+| T07     | ✅ done   | `/hpc/estimate` API wired                            |
+| T09     | ✅ done   | run persistence + provenance (TX1)                   |
+| T10     | ✅ done   | HITL ApprovalStep                                    |
+| T11     | ✅ done   | artifact store + generated-artifact rows             |
+| T12     | ✅ done   | reproducibility harness + 3 placeholder fixtures     |
+| T13     | ✅ done   | sandbox scanner + composer-wired suggestions         |
+| T14     | ✅ done   | mocks-in-nanobrain policy audit + 6 fix rows         |
+| T-COMP  | ✅ done   | LLM composer, phases 1-5 (AC8 operator-pending)      |
+| T01     | ⚠️ P1    | `/workflows/start` wired; P2 local executor open     |
+| T04/T05 | optional  | HPC export lane — gated on user opt-in               |
+| T13b    | post-12w  | Docker sandbox (runtime isolation)                   |
+
+**API surface now live** (all routes real, not 501):
+
+- `POST /workflows/start` — T01 P1 (composes + persists + gates)
+- `POST /workflows/plan`  — preview-mode composition
+- `POST /workflows/diff`  — T06 categorization + novel Python
+- `POST /hpc/estimate`    — T07 pre-submission cost estimate
+- `POST /approvals/*`     — TX1 HITL approval lifecycle
+- `GET  /metrics/*`       — TX3 review-UX telemetry
+- `GET  /runs/*`, verified-synonyms, status — all TX1-backed
+
+Still stubbed 501: `/hpc/confirm_allocation`, `/hpc/submit` (blocked
+on T04/T05, which are demoted optional).
+
+Operator-pending (cannot be code-authored in CI): T-COMP Phase 5 AC8
+wall-time, T06 AC3 scientist-review session, T12 AC1 final 7 live-LLM
+fixtures, T01 P2 full end-to-end execution (hard-blocked on
+`apecx_db_integration` being importable + real local-executor
+plumbing).
 
 ## Agent-output review harness (TX5)
 
