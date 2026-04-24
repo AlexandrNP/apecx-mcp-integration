@@ -1,10 +1,16 @@
-"""Optional HPC-export routes (TX1).
+"""Optional HPC-export routes.
 
-Round 3: these tools are only meaningful when the user opts into the HPC export
-feature. They remain registered in the API surface so the MCP tool schema is
-stable. T07 (/hpc/estimate + /hpc/confirm) landed 2026-04-22; /hpc/submit
-and /hpc/export still stub with 501 until T04/T05 land (HPC export lane is
-demoted optional).
+Round 3: these tools only matter when the user opts into the HPC
+export lane. They remain registered for MCP tool-schema stability.
+
+Route status (2026-04-22):
+    /hpc/estimate    T07 pre-submission cost (live)
+    /hpc/confirm     T07 user-acknowledgement gate (live)
+    /hpc/export      T05 PBS bundle generator (live)
+    /hpc/ingest      T05 AC3 tier-2 reconciliation (live)
+    /hpc/submit      **still 501** — genuinely blocked on T04/T05
+                     runtime (qsub via SSH or Globus SDK; both
+                     require operator access to an HPC endpoint).
 """
 
 from __future__ import annotations

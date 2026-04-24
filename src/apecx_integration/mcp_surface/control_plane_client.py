@@ -1,21 +1,24 @@
 """Thin HTTP client the MCP surface uses to call the Control Plane (Tier 2).
 
-The client is intentionally dumb: it marshals envelope types to/from JSON and
+The client is intentionally dumb: marshals envelope types to/from JSON and
 raises on non-2xx. Status-code handling:
 
-- 2xx  → parse the body into the declared response model and return it.
-- 501  → ``NotImplementedError`` (``detail`` as message). A handful of
-         composer-/HPC-dependent routes still stub with 501 so MCP tools can
-         render a clear "not built yet" message to Claude Desktop until the
-         blocking task lands.
-- other non-2xx → ``httpx.HTTPStatusError`` via ``raise_for_status()``. Callers
-         handle 404/409 as appropriate (e.g. double-approve a decided approval
-         → 409, unknown approval_id → 404).
+- 2xx → parse the body into the declared response model and return it.
+- 501 → ``NotImplementedError`` (``detail`` as message). Only
+        ``/hpc/submit`` still stubs with 501 (demoted-optional HPC
+        executor work, T04/T05 runtime).
+- 503 → propagated as ``httpx.HTTPStatusError`` — means a composer
+        or approval-policy dependency isn't configured on the
+        Control Plane (see ``get_composer`` / ``get_approval_policy``
+        / ``get_local_executor`` in ``control_plane/dependencies.py``).
+- other non-2xx → ``httpx.HTTPStatusError`` via ``raise_for_status()``.
 
-Real-backed endpoints as of TX1 merge: create_approval, approve, reject,
-correct, list_pending_approvals, list_runs, get_status, get_artifact.
-Still stubbed (501): start_workflow, generate_plan, show_yaml_diff
-(blocked by composer / T06 differ).
+Real-backed endpoints (as of 2026-04-22):
+  /workflows/start, /workflows/plan, /workflows/diff, /workflows/execute,
+  /approvals/*, /runs/*, verified-synonyms, /metrics/*,
+  /hpc/estimate, /hpc/confirm, /hpc/export, /hpc/ingest.
+
+Still stubbed 501: /hpc/submit (needs T04 Globus / T05 qsub runtime).
 
 See architectural_plan.md §3.2 (why HTTP between Tier 1 and Tier 2).
 """
