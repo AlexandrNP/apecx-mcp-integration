@@ -185,6 +185,19 @@ library prompt isn't biasing composition hard enough (AP §5.3 line
 prompt. Operator-run; Claude auto-skips per the no-live-LLM
 constraint.
 
+**AC8 status (2026-04-22, measured)**: test shipped at
+`tests/integration/test_composer_ac8_walltime.py`. **Spec's 60s
+target is NOT met on CPU-only Apple Silicon** — real measurement:
+
+    mistral-small:latest (23B Q4_K_M)  148s cold, 140s warm
+    mistral-nemo:latest  (12B Q4_0)    107s cold, ~78s warm
+
+Test default budget raised to **180s** (20%+ headroom over warm
+nemo). Operators override via `APECX_COMPOSE_BUDGET_SECONDS` for
+faster hardware. The spec's original 60s target likely requires
+GPU/MLX acceleration or a smaller model (e.g. a 7B quant) —
+revisit when either is wired in.
+
 ---
 
 ## 6. Phased delivery (effort estimate: 5–7 engineer-days)
