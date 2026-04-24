@@ -134,8 +134,66 @@ async def start_workflow(
 
 
 @router.post("/plan", response_model=GeneratePlanResponse)
-async def generate_plan(body: GeneratePlanRequest) -> GeneratePlanResponse:
-    raise _not_implemented("composer (Phase 2) + T02 (library wrappers)")
+async def generate_plan(
+    body: GeneratePlanRequest,
+    session: Annotated[Session, Depends(get_session)],
+    composer: Annotated[Composer, Depends(get_composer)],
+) -> GeneratePlanResponse:
+    """Preview-mode composition — same composer flow as
+    ``/workflows/start`` but the Run is immediately marked CANCELLED.
+
+    The caller gets a ``GeneratePlanResponse`` with the generated
+    YAML, a per-step plan (reusing the T06 categorization), and the
+    artifact UUID. Semantically this is "show me what you would
+    compose for this prompt; I'm not committing to it yet." The
+    CANCELLED Run row stays in the DB so the artifact's FK resolves
+    and provenance is intact, but nothing downstream picks it up.
+
+    Why the Run exists at all: ArtifactStore.store() requires a Run
+    FK. Rather than grow the schema with a "preview" Run variant,
+    we reuse the normal path and flip status post-hoc. The stray
+    CANCELLED rows are discoverable by ``user_id='_preview'`` for
+    anyone who wants to prune them.
+    """
+    run_id = uuid4()
+    now = datetime.now(UTC)
+    run = RunORM(
+        id=run_id,
+        user_id="_preview",
+        status=RunStatus.PENDING,
+        created_at=now,
+    )
+    session.add(run)
+    session.commit()
+
+    composed = await composer.compose(
+        body.description, context={"run_id": run_id}
+    )
+
+    run = session.get(RunORM, run_id)
+    assert run is not None, "Run row disappeared between commits"
+    run.workflow_config_id = composed.artifact_id
+    run.status = RunStatus.CANCELLED
+    run.completed_at = now
+    session.commit()
+
+    plan: list[StepPlan] = []
+    for s in composed.composition_summary.step_categorizations:
+        plan.append(
+            StepPlan(
+                step_id=s.step_id,
+                step_name=s.step_id,
+                category=StepCategory(s.category.value),
+                reference_component_id=s.step_class or None,
+                rationale=s.reason,
+            )
+        )
+
+    return GeneratePlanResponse(
+        plan=plan,
+        yaml_text=composed.yaml_bytes.decode("utf-8"),
+        generated_artifact_id=composed.artifact_id,
+    )
 
 
 @router.post("/diff", response_model=ShowYamlDiffResponse)
