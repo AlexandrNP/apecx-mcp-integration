@@ -58,6 +58,18 @@ class ComposerConfig(BaseModel):
     retrieval_k: int = Field(default=10, ge=1)
     sandbox_whitelist_path: Path | None = None
 
+    # Phase-4 addition — RAG retrieval swap-in. When set, the composer
+    # loads ``ComponentIndex.load(rag_index_dir)`` instead of running
+    # the Phase-2 linear-scan ``ComponentCatalog``. When None, falls
+    # back to linear scan (the Phase-2 production default).
+    #
+    # Operators build the index out-of-band via
+    # ``scripts/build_rag_index.py``, then point this field at the
+    # output directory. Keeping the build step off the compose()
+    # path avoids surprising scientists with a one-time ~5s model
+    # download + ~1s embedding pass on every cold start.
+    rag_index_dir: Path | None = None
+
 
 # ---------------------------------------------------------------------------
 # Output shapes
