@@ -242,6 +242,38 @@ class Composer:
     def catalog(self) -> ComponentCatalog:
         return self._catalog
 
+    def _suggest_for_violation(
+        self, source: str, *, k: int = 3
+    ) -> tuple[str, ...]:
+        """Pick ``k`` components from the active retrieval backend that
+        best match the rejected novel-Python source.
+
+        Strategy: run the source text through ``_retrieve`` — the
+        surrounding comments + variable names + function names carry
+        the author's *intent* better than the raw violated module name
+        would. ``entity_extraction`` won't match ``import subprocess``
+        if you only query the import; it does match when the source
+        uses words like "extract" / "entities" / "pathogens".
+
+        Returns an empty tuple when retrieval has nothing — don't
+        render a "closest matches: none" block; just stay quiet.
+        """
+        try:
+            hits = self._retrieve(source, k=k)
+        except Exception:
+            # Retrieval backend failing shouldn't swallow a
+            # ScanViolation — the user still needs to see the real
+            # sandbox error. Fall through to no suggestions.
+            return ()
+        out: list[str] = []
+        for h in hits:
+            c = h.component
+            line = f"{c.id} — {c.description}"
+            if c.yaml_path:
+                line += f" (config: {c.yaml_path})"
+            out.append(line)
+        return tuple(out)
+
     def _retrieve(self, prompt: str, k: int) -> list[SearchHit]:
         """Route retrieval to RAG or linear-scan.
 
@@ -322,14 +354,19 @@ class Composer:
         # 4. Parse fenced blocks
         yaml_text, novel_python = _parse_response(raw_content)
 
-        # 5. T13 scanner over novel Python (if any)
+        # 5. T13 scanner over novel Python (if any). On violation,
+        # enrich the exception with "closest matches in component
+        # library" suggestions (T13 step 3) — the message should
+        # steer the LLM / reviewer back toward composition instead
+        # of fighting the whitelist.
         if novel_python and self._config.sandbox_whitelist_path is not None:
             whitelist = load_whitelist(self._config.sandbox_whitelist_path)
             scanner = ImportScanner(whitelist=whitelist)
             for _step_id, source in novel_python.items():
                 result = scanner.scan(source)
                 if not result.ok:
-                    raise ScanViolation(result)
+                    suggestions = self._suggest_for_violation(source)
+                    raise ScanViolation(result, suggestions=suggestions)
 
         # 6. Sanity-parse the YAML so we catch obviously-broken output
         #    before returning. If the LLM emitted un-parseable YAML, that's
