@@ -14,6 +14,12 @@ nanobrain is not a git repo on this workspace (friction log #6), so
 these tests are the durable artifact of the fixes — if the nanobrain
 edits get reverted (e.g., by a re-fetch), these tests flip red and
 the regression is visible.
+
+A2A happy-path parity (T-2026-04-23-01): the error paths in row 1
+below have a matching positive-path integration test at
+``tests/integration/test_a2a_happy_path.py`` which exercises the
+full ``connect → discover → send → get → cancel`` lifecycle against
+a real in-process aiohttp JSON-RPC server (no mocks).
 """
 
 from __future__ import annotations

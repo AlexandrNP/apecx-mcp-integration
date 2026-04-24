@@ -13,30 +13,6 @@ steady state.
 
 ## Current gaps
 
-### T-2026-04-23-01 — A2A real-transport integration test
-
-**Context:** T14 audit §2-C1 flagged that `a2a_support.py` silently
-fell back to mock responses when `aiohttp` was missing. T14 fixes
-replaced those fallbacks with `A2ANotAvailableError`. The error paths
-are covered by `tests/integration/test_nanobrain_mocks_policy.py`
-(added same commit as the fixes).
-
-**Missing:** a true positive-path integration test that stands up a
-local A2A agent server (mock or demo), runs `A2AClient.send_task`
-against it, and asserts the returned `A2ATask` matches the server's
-response. The happy-path in `a2a_support.py` is currently un-exercised
-by any automated test.
-
-**Rough scope:** 0.5–1d. Options:
-- (a) Spin a simple aiohttp server inside the test that implements the
-  JSON-RPC A2A protocol for one skill.
-- (b) Bring in a canned A2A demo server from the A2A reference spec
-  (if one exists).
-
-**Blocker:** none; can be authored now against real aiohttp.
-
----
-
 ### T-2026-04-23-02 — Academy real integration (not just demo-mode)
 
 **Context:** T14 audit §2-C2 flagged that `academy_integration.py`
