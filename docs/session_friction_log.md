@@ -398,6 +398,40 @@ as editable installs into the venv — none are on the system Python.
 
 ---
 
+## 15. Don't `--ignore=` a test after one failure — run it under the venv first
+
+**Cost this session:** unknown number of merges' worth of
+opportunity cost. Six separate tests spent the session being
+``--ignore=``-ed because I saw ONE collection error early on
+(under system Python, not the venv — friction #14) and cargo-culted
+the ignore list from there. Running the full suite under the venv
+at end-of-session: every ignored test passed. The "env-drift"
+blockers were imaginary; the real ignore list should have been
+empty.
+
+**Detection signal:**
+- You're writing ``--ignore=<path>`` pytest flags.
+- You last ran the ignored tests under system conda Python, not
+  ``.venv/bin/python``.
+- You haven't retried since friction log #14 (venv vs system
+  Python) was distilled.
+
+**Mitigation:**
+- Before adding ``--ignore=``, run the test under the canonical
+  runner (``scripts/run_tests.sh <path>``) and paste the failure
+  output into the commit message or your session notes. No
+  justification = no ignore.
+- When reviewing your own ignore list at session start, RUN each
+  one first. The answer is usually "it works now."
+- Prefer ``@pytest.mark.skipif`` inside the test (with a specific
+  reason string) over a shell ignore — it documents the gate at
+  the failure point and auto-resurrects when conditions change.
+
+**Source:** 2026-04-23, end-of-session full-suite validation
+revealed six false-blocker tests.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.

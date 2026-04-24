@@ -92,8 +92,19 @@ SKIP_LLM = (
     "LLM not reachable — set APECX_LLM_BASE_URL and make sure the "
     "configured model is pulled"
 )
+SKIP_OPT_IN = (
+    "AC8 wall-time is an operator-run benchmark; set "
+    "APECX_RUN_AC8_WALLTIME=1 to exercise it. The budget is "
+    "model+hardware sensitive — deliberately a measurement, not a "
+    "pass/fail gate that surprises CI sweeps."
+)
 
 
+def _opted_in() -> bool:
+    return os.environ.get("APECX_RUN_AC8_WALLTIME") == "1"
+
+
+@pytest.mark.skipif(not _opted_in(), reason=SKIP_OPT_IN)
 @pytest.mark.skipif(not _DEPS_OK, reason=SKIP_DEPS)
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
 def test_ac8_single_compose_within_budget():
