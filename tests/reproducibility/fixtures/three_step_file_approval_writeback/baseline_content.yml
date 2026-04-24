@@ -1,0 +1,26 @@
+name: three_step_file_approval_writeback
+description: "Read candidate terms, gate on human approval, write approved terms back."
+version: "0.1.0"
+steps:
+  read:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+  approve:
+    class: "nanobrain.library.steps.approval_step.ApprovalStep"
+    config: "steps/synonym_approval_gate.yml"
+  writeback:
+    class: "apecx_integration.composition.steps.synonym_cache.VerifiedSynonymWritebackStep"
+    config: "steps/verified_synonym_writeback.yml"
+links:
+  read_to_approve:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "read.genome_rows_output"
+      target: "approve.proposals_input"
+  approve_to_writeback:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "approve.approved_mappings_output"
+      target: "writeback.approved_mappings_input"

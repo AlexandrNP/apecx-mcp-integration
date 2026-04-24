@@ -1,0 +1,36 @@
+```yaml
+name: single_novel_python_step
+description: "Emit ten synthetic scored rows for downstream debugging."
+version: "0.1.0"
+steps:
+  synth:
+    class: "SyntheticScoredRows"
+    config:
+      row_count: 10
+links: {}
+```
+
+```novel_python
+synth: |
+  from dataclasses import dataclass
+  from typing import Any
+  from nanobrain.core.step import BaseStep, StepConfig
+
+
+  @dataclass
+  class SyntheticScoredRowsConfig(StepConfig):
+      row_count: int = 10
+
+
+  class SyntheticScoredRows(BaseStep):
+      COMPONENT_TYPE = "synthetic_scored_rows"
+      REQUIRED_CONFIG_FIELDS = ["name", "row_count"]
+
+      @classmethod
+      def _get_config_class(cls):
+          return SyntheticScoredRowsConfig
+
+      async def process(self, inputs: dict[str, Any]) -> dict[str, Any]:
+          rows = [{"id": i, "score": float(i) / 10.0} for i in range(self._row_count)]
+          return {"rows_output": rows}
+```

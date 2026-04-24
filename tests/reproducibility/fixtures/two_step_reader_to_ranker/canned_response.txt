@@ -1,0 +1,19 @@
+```yaml
+name: two_step_reader_to_ranker
+description: "Read scored rows and emit a ranked JSON artifact."
+version: "0.1.0"
+steps:
+  read:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+  rank:
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+    config: "steps/result_ranking.yml"
+links:
+  read_to_rank:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "read.genome_rows_output"
+      target: "rank.results_input"
+```

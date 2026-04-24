@@ -1,0 +1,8 @@
+name: single_step_empty_links_generic
+description: "Load a TSV file and expose its rows."
+version: "0.1.0"
+steps:
+  read:
+    class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
+    config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+links: {}

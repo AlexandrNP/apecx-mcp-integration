@@ -1,0 +1,19 @@
+name: two_novel_python_steps_chained
+description: "Generate a synthetic ranked list and format it as a JSON artifact."
+version: "0.1.0"
+steps:
+  generate:
+    class: "SyntheticRankedList"
+    config:
+      row_count: 5
+  format_json:
+    class: "JsonListFormatter"
+    config:
+      indent: 2
+links:
+  generate_to_format:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "generate.ranked_rows_output"
+      target: "format_json.rows_input"

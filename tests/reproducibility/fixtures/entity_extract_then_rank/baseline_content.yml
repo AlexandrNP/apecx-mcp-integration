@@ -1,0 +1,17 @@
+name: entity_extract_then_rank
+description: "Extract pathogen entities and rank them as JSON."
+version: "0.1.0"
+steps:
+  extract:
+    class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
+    config: "steps/entity_extraction.yml"
+  rank:
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+    config: "steps/result_ranking.yml"
+links:
+  extract_to_rank:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "extract.entity_candidates_output"
+      target: "rank.results_input"

@@ -1,0 +1,70 @@
+```yaml
+name: two_novel_python_steps_chained
+description: "Generate a synthetic ranked list and format it as a JSON artifact."
+version: "0.1.0"
+steps:
+  generate:
+    class: "SyntheticRankedList"
+    config:
+      row_count: 5
+  format_json:
+    class: "JsonListFormatter"
+    config:
+      indent: 2
+links:
+  generate_to_format:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "generate.ranked_rows_output"
+      target: "format_json.rows_input"
+```
+
+```novel_python
+generate: |
+  from dataclasses import dataclass
+  from typing import Any
+  from nanobrain.core.step import BaseStep, StepConfig
+
+
+  @dataclass
+  class SyntheticRankedListConfig(StepConfig):
+      row_count: int = 5
+
+
+  class SyntheticRankedList(BaseStep):
+      COMPONENT_TYPE = "synthetic_ranked_list"
+      REQUIRED_CONFIG_FIELDS = ["name", "row_count"]
+
+      @classmethod
+      def _get_config_class(cls):
+          return SyntheticRankedListConfig
+
+      async def process(self, inputs: dict[str, Any]) -> dict[str, Any]:
+          rows = [{"id": i, "rank": i + 1, "score": 1.0 - (i / 10.0)} for i in range(self._row_count)]
+          return {"ranked_rows_output": rows}
+
+format_json: |
+  import json
+  from dataclasses import dataclass
+  from typing import Any
+  from nanobrain.core.step import BaseStep, StepConfig
+
+
+  @dataclass
+  class JsonListFormatterConfig(StepConfig):
+      indent: int = 2
+
+
+  class JsonListFormatter(BaseStep):
+      COMPONENT_TYPE = "json_list_formatter"
+      REQUIRED_CONFIG_FIELDS = ["name", "indent"]
+
+      @classmethod
+      def _get_config_class(cls):
+          return JsonListFormatterConfig
+
+      async def process(self, inputs: dict[str, Any]) -> dict[str, Any]:
+          text = json.dumps(inputs["rows_input"], indent=self._indent, sort_keys=True)
+          return {"json_text_output": text}
+```
