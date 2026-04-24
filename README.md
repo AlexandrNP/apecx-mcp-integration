@@ -31,12 +31,13 @@ tasks landed on main as of 2026-04-22:
 
 **API surface now live** (all routes real, not 501):
 
-- `POST /workflows/start` — T01 P1 (composes + persists + gates)
-- `POST /workflows/plan`  — preview-mode composition
-- `POST /workflows/diff`  — T06 categorization + novel Python
-- `POST /hpc/estimate`    — T07 pre-submission cost estimate
-- `POST /approvals/*`     — TX1 HITL approval lifecycle
-- `GET  /metrics/*`       — TX3 review-UX telemetry
+- `POST /workflows/start`   — T01 P1 (composes + persists + gates)
+- `POST /workflows/plan`    — preview-mode composition (CANCELLED run)
+- `POST /workflows/execute` — T01 P2 (LocalExecutor → terminal state)
+- `POST /workflows/diff`    — T06 categorization + novel Python
+- `POST /hpc/estimate`      — T07 pre-submission cost estimate
+- `POST /approvals/*`       — TX1 HITL approval lifecycle
+- `GET  /metrics/*`         — TX3 review-UX telemetry
 - `GET  /runs/*`, verified-synonyms, status — all TX1-backed
 
 Still stubbed 501: `/hpc/confirm_allocation`, `/hpc/submit` (blocked
@@ -44,9 +45,9 @@ on T04/T05, which are demoted optional).
 
 Operator-pending (cannot be code-authored in CI): T-COMP Phase 5 AC8
 wall-time, T06 AC3 scientist-review session, T12 AC1 final 7 live-LLM
-fixtures, T01 P2 full end-to-end execution (hard-blocked on
-`apecx_db_integration` being importable + real local-executor
-plumbing).
+fixtures, T01 AC1 real-workflow happy path (needs Ollama +
+mistral-nemo reachable in CI — the P2 executor's success branch is
+proven, CI just never exercises it).
 
 ## Agent-output review harness (TX5)
 
