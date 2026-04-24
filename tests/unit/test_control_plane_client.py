@@ -1,11 +1,11 @@
 """Tests for the MCP surface's Control Plane HTTP client.
 
-These exercise the client against a real ASGI app (no mock HTTP layer) using
-``httpx.ASGITransport``. We verify:
-1. The client talks to the stub routes and gets `NotImplementedError` on 501.
-2. Request envelopes are serialized correctly (if they weren't, the server
-   would return 422 and the client would raise HTTPStatusError, not NotImplementedError).
-3. The healthz round-trip works.
+Exercise the client against a real ASGI app (no mock HTTP layer)
+using ``httpx.ASGITransport``. We verify:
+1. Healthz round-trip.
+2. The client surfaces a 503 "not configured" error when
+   ``create_app()`` is built without a composer. Integration tests
+   cover the 200 happy path with a wired composer.
 """
 
 from __future__ import annotations
@@ -34,9 +34,17 @@ async def test_healthz_round_trips(client: ControlPlaneClient) -> None:
     await client.close()
 
 
-async def test_start_workflow_raises_not_implemented(client: ControlPlaneClient) -> None:
+async def test_start_workflow_surfaces_503_when_composer_absent(
+    client: ControlPlaneClient,
+) -> None:
+    """Bare ``create_app()`` has no composer → /workflows/start
+    returns 503. The MCP client must propagate that as an
+    HTTPStatusError (previously this test asserted NotImplementedError
+    because the route was a 501 stub; the route is real now, just
+    unconfigured on this test app)."""
     body = StartWorkflowRequest(description="Run VIOLIN × BV-BRC", user_id="alex")
-    with pytest.raises(NotImplementedError) as exc:
+    with pytest.raises(httpx.HTTPStatusError) as exc:
         await client.start_workflow(body)
-    assert "T09" in str(exc.value) or "composer" in str(exc.value).lower()
+    assert exc.value.response.status_code == 503
+    assert "Composer is not configured" in exc.value.response.json()["detail"]
     await client.close()
