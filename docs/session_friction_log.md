@@ -364,6 +364,40 @@ it. Device is `cpu` (MPS/CUDA surface different failures).
 
 ---
 
+## 14. "Python not found" really means "wrong Python"
+
+**Cost this session:** ~5 minutes of false-confidence ("T01 P2 is
+blocked!") before noticing the project has a venv with
+``apecx_db_integration`` installed editable. The blocker I declared
+was imaginary — I was using ``/opt/anaconda3/bin/python``, not
+``apecx-mcp-integration/.venv/bin/python``.
+
+**Cause:** Bash invocations default to the first ``python`` on
+``PATH``. On this laptop that's the anaconda system Python, which
+has a different site-packages than the project's ``.venv``. The
+project pins ``apecx_db_integration``, ``nanobrain``, ``apecx_integration``
+as editable installs into the venv — none are on the system Python.
+
+**Detection signal:**
+- ``ModuleNotFoundError`` on a module that obviously exists in the
+  repo (e.g. ``apecx_db_integration`` which is right next door at
+  ``../apecx-db-integration``).
+- ``which python`` points at ``/opt/anaconda3`` or similar system
+  path, not ``<repo>/.venv/bin/python``.
+- Test suite's rootdir is correct but collection fails at import.
+
+**Mitigation:**
+- Run the project's Python explicitly:
+  ``/path/to/apecx-mcp-integration/.venv/bin/python -m pytest ...``
+- For pytest invocations, prefer ``python -m pytest`` over bare
+  ``pytest`` so the Python interpreter is explicit in the command.
+- Before declaring an env dep "not installed", check the venv
+  FIRST: ``.venv/bin/python -c "import <mod>; print(<mod>.__file__)"``.
+
+**Source:** 2026-04-22, T01 P2 LocalExecutor bootstrap.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
