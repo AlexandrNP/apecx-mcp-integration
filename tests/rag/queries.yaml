@@ -1,0 +1,69 @@
+# T03 AC3 ground-truth recall suite — 20 queries.
+#
+# Each entry is a natural-language query a scientist might actually type,
+# paired with the `top_expected` step_name that should surface in the top-5
+# retrieval results.
+#
+# Honest disclosure — curation bias
+# ----------------------------------
+# These queries are authored by the same person who wrote the component
+# descriptions they're tested against. Per the implementation_plan.md
+# §T03 Risks section, curation bias is the main failure mode of this
+# test: queries that "know" which descriptors to use will show
+# artificially high recall. Mitigations applied here:
+#
+# 1. Queries are paraphrases, not verbatim copies of ``rag_examples``.
+# 2. Several queries use domain terminology (chikungunya, EEEV, HITL)
+#    that appears in the examples but not the descriptions — tests
+#    whether example text lifts retrieval for near-synonym queries.
+# 3. 20 queries cover 9 components = ~2 each; multiple phrasings per
+#    component expose semantic coverage, not just keyword match.
+#
+# A second curator should re-review before production release. Until
+# then, AC3's 80% top-5 target is a FLOOR; don't read it as a ceiling.
+
+workflow_slug: violin_bvbrc
+
+cases:
+  - query: "pull out virus and gene names from a free-text user question"
+    top_expected: entity_extraction
+  - query: "identify pathogen terms mentioned in a biomedical prompt"
+    top_expected: entity_extraction
+  - query: "find the BV-BRC genome id for the chikungunya virus"
+    top_expected: bvbrc_snapshot_match
+  - query: "resolve a virus name to a local BV-BRC protein record"
+    top_expected: bvbrc_snapshot_match
+  - query: "see which entity names already have cached synonyms"
+    top_expected: synonym_cache_lookup
+  - query: "batch-check terms against the synonym cache table"
+    top_expected: synonym_cache_lookup
+  - query: "generate candidate synonyms via an LLM for novel pathogen terms"
+    top_expected: synonym_llm_proposals
+  - query: "ask the model for alternative names of a newly seen virus"
+    top_expected: synonym_llm_proposals
+  - query: "pause the workflow until a human approves the proposed synonyms"
+    top_expected: synonym_approval_gate
+  - query: "wait for HITL sign-off on LLM-proposed synonyms"
+    top_expected: synonym_approval_gate
+  - query: "persist human-approved synonym mappings for the next run"
+    top_expected: verified_synonym_writeback
+  - query: "save vetted synonyms into the durable cache"
+    top_expected: verified_synonym_writeback
+  - query: "attach VIOLIN metadata to the matched pathogen ids"
+    top_expected: violin_entity_lookup
+  - query: "enrich BV-BRC pathogen records with VIOLIN vaccine info"
+    top_expected: violin_entity_lookup
+  - query: "annotate each matched genome with its predicted proteins"
+    top_expected: genomic_annotation
+  - query: "label protein-coding regions on the resolved genomes"
+    top_expected: genomic_annotation
+  - query: "produce a final ranked JSON answer for the user"
+    top_expected: result_ranking
+  - query: "sort the enriched results by relevance and emit the top hits"
+    top_expected: result_ranking
+  # Edge cases — purposely abstract so retrieval leans on descriptions
+  # rather than keyword match.
+  - query: "kick off the pipeline by parsing the user's question"
+    top_expected: entity_extraction
+  - query: "turn the end-state of the workflow into something the user reads"
+    top_expected: result_ranking

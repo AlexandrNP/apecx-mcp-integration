@@ -330,6 +330,40 @@ a stub, not a scaffold. Either make it raise or make it do the work.
 
 ---
 
+## 13. `faiss-cpu` + `sentence-transformers` import order segfaults silently on macOS ARM
+
+**Cost this session:** ~15 minutes (2026-04-22). Smoke test died
+immediately after "Load pretrained SentenceTransformer" log line
+with only a "resource_tracker: leaked semaphore" warning on exit —
+no traceback, no segfault message.
+
+**Cause:** both `faiss-cpu` and `torch`/`sentence-transformers` link
+their own copy of libomp (OpenMP). When `faiss` is imported first,
+its runtime wins the symbol table; `torch` then runs against a
+runtime it wasn't built for and `SentenceTransformer.encode()`
+silently segfaults. Isolated repro: the order
+`import faiss; from sentence_transformers import SentenceTransformer;
+m.encode([...])` kills the process; swapping the import order fixes
+it. Device is `cpu` (MPS/CUDA surface different failures).
+
+**Detection signal:**
+- Process dies without traceback after `SentenceTransformer` init
+  log line.
+- Exit shows `resource_tracker: There appear to be 1 leaked
+  semaphore objects to clean up at shutdown`.
+- Repro works in isolation (one-liner) but fails in your real module.
+
+**Mitigation:**
+- Import `sentence_transformers` FIRST in any module that touches
+  both libraries. Add a load-bearing comment + file-level
+  `# ruff: noqa: I001, E402` so an auto-sort doesn't "tidy" it back.
+- Example: `nanobrain/nanobrain/lightweight/component_index.py`
+  lines 1-20.
+
+**Source:** 2026-04-22, T03 ComponentIndex bootstrap.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
