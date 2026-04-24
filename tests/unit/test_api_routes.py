@@ -1,13 +1,18 @@
-"""Wiring tests for the Control Plane API (TX1).
+"""Wiring tests for the Control Plane API.
 
-Routes fall into two groups:
-  * Persistence-only (approvals, runs/list, runs/status, runs/artifact):
-    wired to real T09 persistence — covered by integration tests in
-    tests/integration/test_api_*.py, not here.
-  * Downstream-dependent (workflows/*, hpc/*): still stubs that raise
-    HTTP 501 because the composer / HPC-export / differ tasks have not
-    landed. This file verifies their shape and that the 501 detail
-    points at the task that unblocks them.
+Route status as of 2026-04-22:
+  * Persistence-only (approvals, runs/*, verified-synonyms): wired,
+    covered by integration tests in tests/integration/test_api_*.py.
+  * Composer-backed (/workflows/start | plan | diff | /hpc/estimate |
+    /hpc/confirm): wired, integration-tested under the venv.
+  * HPC export lane (/hpc/submit, /hpc/export): **still 501** — they
+    genuinely need T04 or T05 (demoted optional per Round 3).
+
+Body-shape + request-validation tests live in integration (where a
+real composer fixture is wired into ``create_app``). A bare
+``create_app()`` trips the ``get_composer`` 503 gate before pydantic
+body-validation runs, so the classic "422 for bad body" pattern
+isn't exercisable here.
 """
 
 from __future__ import annotations
@@ -60,26 +65,6 @@ def test_healthz_is_the_only_non_stub(client: TestClient) -> None:
     ("path", "payload"),
     [
         (
-            "/workflows/start",
-            {"description": "Run VIOLIN × BV-BRC", "user_id": "alex"},
-        ),
-        (
-            "/workflows/plan",
-            {"description": "Run VIOLIN × BV-BRC"},
-        ),
-        (
-            "/workflows/diff",
-            {"run_id": str(uuid4())},
-        ),
-        (
-            "/hpc/estimate",
-            {"run_id": str(uuid4())},
-        ),
-        (
-            "/hpc/confirm",
-            {"run_id": str(uuid4()), "confirmed_core_hours": 10.0},
-        ),
-        (
             "/hpc/submit",
             {"run_id": str(uuid4()), "executor": "pbs_bundle"},
         ),
@@ -93,42 +78,34 @@ def test_healthz_is_the_only_non_stub(client: TestClient) -> None:
         ),
     ],
 )
-def test_every_route_stubs_with_501_and_task_ref(
+def test_hpc_export_lane_still_501(
     client: TestClient, path: str, payload: dict[str, object]
 ) -> None:
+    """The two HPC-export routes remain 501 pending T04/T05 work.
+
+    Both routes are registered (OpenAPI schema test confirms it) but
+    the handlers raise 501 with a task-ref detail string so operators
+    can trace the block.
+    """
     resp = client.post(path, json=payload)
     assert resp.status_code == 501
     detail = resp.json()["detail"]
     assert "not implemented" in detail.lower()
-    # Every stub must point at a task or doc anchor so ops can trace it.
     assert (
         "implementation_plan.md" in detail or "T" in detail
     ), f"501 detail for {path} does not reference a task: {detail!r}"
 
 
-def test_request_validation_rejects_empty_description(client: TestClient) -> None:
+def test_composer_backed_routes_return_503_without_composer(
+    client: TestClient,
+) -> None:
+    """``create_app()`` with no composer → /workflows/start returns
+    503 from the get_composer dependency, NOT 501. Canary: if anyone
+    makes the route always-live or drops the DI, this catches it.
+    """
     resp = client.post(
         "/workflows/start",
-        json={"description": "", "user_id": "alex"},
+        json={"description": "ok", "user_id": "alex"},
     )
-    assert resp.status_code == 422
-
-
-def test_request_validation_rejects_unknown_executor(client: TestClient) -> None:
-    resp = client.post(
-        "/workflows/start",
-        json={
-            "description": "ok",
-            "user_id": "alex",
-            "preferred_executor": "not_a_real_executor",
-        },
-    )
-    assert resp.status_code == 422
-
-
-def test_request_validation_rejects_extra_fields(client: TestClient) -> None:
-    resp = client.post(
-        "/workflows/start",
-        json={"description": "ok", "user_id": "alex", "surprise_field": 1},
-    )
-    assert resp.status_code == 422
+    assert resp.status_code == 503
+    assert "Composer is not configured" in resp.json()["detail"]
