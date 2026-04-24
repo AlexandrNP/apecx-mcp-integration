@@ -36,18 +36,21 @@ tasks landed on main as of 2026-04-22:
 - `POST /workflows/execute` — T01 P2 (LocalExecutor → terminal state)
 - `POST /workflows/diff`    — T06 categorization + novel Python
 - `POST /hpc/estimate`      — T07 pre-submission cost estimate
+- `POST /hpc/confirm`       — user acknowledgement gate for estimate
 - `POST /approvals/*`       — TX1 HITL approval lifecycle
 - `GET  /metrics/*`         — TX3 review-UX telemetry
 - `GET  /runs/*`, verified-synonyms, status — all TX1-backed
 
-Still stubbed 501: `/hpc/confirm_allocation`, `/hpc/submit` (blocked
-on T04/T05, which are demoted optional).
+Still stubbed 501: `/hpc/submit`, `/hpc/export` (blocked on T04/T05
+— HPC export lane is user-opt-in).
 
-Operator-pending (cannot be code-authored in CI): T-COMP Phase 5 AC8
-wall-time, T06 AC3 scientist-review session, T12 AC1 final 7 live-LLM
-fixtures, T01 AC1 real-workflow happy path (needs Ollama +
-mistral-nemo reachable in CI — the P2 executor's success branch is
-proven, CI just never exercises it).
+Operator-pending (cannot be code-authored in CI): T06 AC3
+scientist-review session, T12 AC1 final 7 live-LLM fixtures, T01
+AC1 strict "RUN_COMPLETED on real violin_bvbrc" bar. T-COMP Phase 5
+AC8 wall-time: measured 2026-04-22 — see
+`tests/integration/test_composer_ac8_walltime.py` and
+`docs/composer_task_spec.md` for the real numbers vs the spec's
+original 60s target.
 
 ## Agent-output review harness (TX5)
 
