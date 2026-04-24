@@ -26,7 +26,17 @@ anaconda, which does not see any of the editable installs. Symptoms:
 PYTHONPATH=src .venv/bin/python -m pytest tests/...
 ```
 
-See `docs/session_friction_log.md` #14.
+Or — easier — use the canonical runner:
+
+```bash
+scripts/run_tests.sh              # full suite
+scripts/run_tests.sh tests/unit   # a subset
+```
+
+It sets ``PYTHONPATH=src``, uses ``.venv/bin/python``, and runs from
+the repo root. Pass any pytest args after the path.
+
+See `docs/session_friction_log.md` #14, #15.
 
 ## Live-LLM test recipe
 
