@@ -122,12 +122,30 @@ class ScanViolation(ValueError):
     The ``result`` attribute carries the full ``ScanResult`` — callers
     that want to surface all violations at once (instead of just the
     first) can iterate ``exc.result.violations``.
+
+    The optional ``suggestions`` attribute carries "closest matches
+    in component library" entries the composer looked up when
+    rejecting the novel Python. Surfacing these in the exception
+    message steers the LLM (on retry) or the human reviewer back
+    toward composition. Empty when the scanner is called standalone
+    (e.g. tests that don't need the composer's catalog).
     """
 
-    def __init__(self, result: ScanResult):
+    def __init__(
+        self,
+        result: ScanResult,
+        *,
+        suggestions: tuple[str, ...] = (),
+    ):
         self.result = result
-        message = "import-scan rejected:\n  " + "\n  ".join(result.violations)
-        super().__init__(message)
+        self.suggestions = suggestions
+        body = "import-scan rejected:\n  " + "\n  ".join(result.violations)
+        if suggestions:
+            body += (
+                "\nClosest matches in component library:\n  "
+                + "\n  ".join(suggestions)
+            )
+        super().__init__(body)
 
 
 # ---------------------------------------------------------------------------
