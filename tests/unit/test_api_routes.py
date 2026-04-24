@@ -68,24 +68,18 @@ def test_healthz_is_the_only_non_stub(client: TestClient) -> None:
             "/hpc/submit",
             {"run_id": str(uuid4()), "executor": "pbs_bundle"},
         ),
-        (
-            "/hpc/export",
-            {
-                "run_id": str(uuid4()),
-                "target_system": "polaris",
-                "output_directory": "/tmp/bundle",
-            },
-        ),
     ],
 )
-def test_hpc_export_lane_still_501(
+def test_hpc_submit_still_501(
     client: TestClient, path: str, payload: dict[str, object]
 ) -> None:
-    """The two HPC-export routes remain 501 pending T04/T05 work.
+    """``/hpc/submit`` is the ONLY route still 501 — genuinely blocked
+    on T04/T05-side executor runtime (actual qsub or Globus Compute
+    submission). ``/hpc/export`` landed 2026-04-22 (T05 bundle
+    generator).
 
-    Both routes are registered (OpenAPI schema test confirms it) but
-    the handlers raise 501 with a task-ref detail string so operators
-    can trace the block.
+    The route is registered (OpenAPI schema test confirms it) but
+    the handler raises 501 with a task-ref detail string.
     """
     resp = client.post(path, json=payload)
     assert resp.status_code == 501
