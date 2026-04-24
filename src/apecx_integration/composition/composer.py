@@ -42,6 +42,10 @@ from apecx_integration.composition.composer_schemas import (
     ComposerConfig,
     CompositionSummary,
 )
+from apecx_integration.composition.differ import (
+    StepCategory,
+    categorize_workflow,
+)
 from apecx_integration.composition.sandbox import (
     ImportScanner,
     ScanViolation,
@@ -385,18 +389,43 @@ class Composer:
 
         # 7. Assemble ComposedWorkflow.
         yaml_bytes = yaml_text.encode("utf-8")
-        reused = [h.component.id for h in hits if h.component.id in (workflow_dict.get("steps") or {})]
+
+        # T06 categorization (AP §5.6). The differ runs over the parsed
+        # workflow + novel_python + the retrieved catalog class paths
+        # + canonical wrapper-YAML map; each step gets one row in
+        # ``step_categorizations``. The resulting summary_sentence is
+        # what the MCP UI / diff endpoint surfaces to the reviewer.
+        retrieved_class_paths = {h.component.class_path for h in hits}
+        yaml_paths = {
+            h.component.class_path: h.component.yaml_path
+            for h in hits
+            if h.component.yaml_path
+        }
+        categorized = categorize_workflow(
+            workflow_dict=workflow_dict,
+            novel_python=novel_python,
+            retrieved_class_paths=retrieved_class_paths,
+            catalog_yaml_paths=yaml_paths,
+        )
+
+        # Backward-compat counts: steps_reused = composed_*; the
+        # original Phase-1 contract was "count of library components
+        # reused" which matches composed_standard + composed_parameterized
+        # + composed_wrapped.
+        steps_reused = (
+            categorized.count(StepCategory.COMPOSED_STANDARD)
+            + categorized.count(StepCategory.COMPOSED_PARAMETERIZED)
+            + categorized.count(StepCategory.COMPOSED_WRAPPED)
+        )
         summary = CompositionSummary(
-            steps_reused=len(reused),
+            steps_reused=steps_reused,
             steps_generated=len(novel_python),
             steps_swapped=0,
-            summary_sentence=(
-                f"Reused {len(reused)} library component(s); "
-                f"generated {len(novel_python)} novel Python step(s)."
-            ),
+            summary_sentence=categorized.summary_sentence,
             review_notes=tuple(
                 f"novel Python step: {k}" for k in novel_python
             ),
+            step_categorizations=categorized.categorizations,
         )
         llm_model_version_hash = hashlib.sha256(
             self._config.llm_model.encode("utf-8")
@@ -411,6 +440,7 @@ class Composer:
             prompt=prompt,
             context=context,
             composition_summary=summary,
+            novel_python=novel_python,
             llm_model_version_hash=llm_model_version_hash,
         )
 
@@ -433,6 +463,7 @@ class Composer:
         prompt: str,
         context: dict[str, Any] | None,
         composition_summary: CompositionSummary,
+        novel_python: dict[str, str],
         llm_model_version_hash: str,
     ):
         """Either persist via ArtifactStore and return its Artifact UUID,
@@ -483,6 +514,21 @@ class Composer:
                 "steps_generated": composition_summary.steps_generated,
                 "steps_swapped": composition_summary.steps_swapped,
                 "summary_sentence": composition_summary.summary_sentence,
+                # T06: persist per-step categorization so
+                # /workflows/diff can surface it without re-running
+                # retrieval, and the novel_python source so
+                # /workflows/novel_python has something to return.
+                "step_categorizations": [
+                    {
+                        "step_id": s.step_id,
+                        "step_class": s.step_class,
+                        "category": s.category.value,
+                        "reason": s.reason,
+                    }
+                    for s in composition_summary.step_categorizations
+                ],
+                "review_notes": list(composition_summary.review_notes),
+                "novel_python_by_step": dict(novel_python),
             },
         )
         artifact = self._artifact_store.store(

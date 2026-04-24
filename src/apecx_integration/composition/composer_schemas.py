@@ -20,9 +20,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pydantic import BaseModel, Field
+
+if TYPE_CHECKING:
+    from apecx_integration.composition.differ import StepCategorization
 
 # ---------------------------------------------------------------------------
 # Config
@@ -77,8 +81,12 @@ class ComposerConfig(BaseModel):
 
 @dataclass(frozen=True, kw_only=True)
 class CompositionSummary:
-    """Diff-UX payload (feeds T06). Phase 1 defines the shape; Phase 2
-    populates it; Phase 4 (T06 UX) consumes it.
+    """Diff-UX payload (feeds T06).
+
+    Phase-1 counts (``steps_reused`` / ``steps_generated`` /
+    ``steps_swapped``) stay for backward compat — existing callers
+    read them. T06 adds ``step_categorizations`` (one row per step
+    per AP §5.6 AC1) + a richer ``summary_sentence`` format.
     """
 
     steps_reused: int
@@ -86,6 +94,10 @@ class CompositionSummary:
     steps_swapped: int
     summary_sentence: str
     review_notes: tuple[str, ...] = ()
+    # T06 addition — per-step AP §5.6 categorization. Populated by
+    # the composer via ``apecx_integration.composition.differ``.
+    # Empty tuple when no steps (backward-compat default).
+    step_categorizations: tuple[StepCategorization, ...] = ()
 
 
 @dataclass(frozen=True, kw_only=True)

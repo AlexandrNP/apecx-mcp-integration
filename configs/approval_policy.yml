@@ -1,0 +1,31 @@
+# T06 / AP §5.6 approval policy.
+#
+# Maps every ``StepCategory`` to an action the approval gate takes
+# when it sees a step of that category. The composer's diff surface
+# consults this YAML; the Control Plane's approval endpoint uses the
+# same map to decide whether to auto-approve or require human review.
+#
+# Allowed actions (AP §5.6 step 5):
+#   - auto                    : auto-approved, no human review
+#   - require_review          : any human reviewer suffices
+#   - require_expert_review   : needs a reviewer with the "expert"
+#                               flag (defined in T10's HITL config)
+#
+# First-release defaults biased toward caution:
+#   - Only fully-canonical compositions auto-approve.
+#   - Inline-parameterized compositions require a plain review so the
+#     reviewer can sanity-check the inline config.
+#   - Wrapped compositions need a review because novel Python is
+#     stitched in via config.
+#   - Pure-novel steps need expert review — that's the one category
+#     where the blast radius is largest.
+#
+# Operators who want a looser posture edit this file (it's a config,
+# not code) and point the composer at the override path via the
+# ``APECX_APPROVAL_POLICY_PATH`` env var or by passing it into the
+# ``ApprovalPolicy.load()`` call site.
+
+composed_standard:      auto
+composed_parameterized: require_review
+composed_wrapped:       require_review
+novel:                  require_expert_review
