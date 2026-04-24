@@ -35,16 +35,26 @@ from pydantic import BaseModel
 from apecx_integration.control_plane.schemas.api import (
     ApprovalResponse,
     ApproveRequest,
+    ConfirmAllocationRequest,
+    ConfirmAllocationResponse,
     CorrectRequest,
     CreateApprovalRequest,
     CreateApprovalResponse,
     CreateVerifiedSynonymRequest,
+    EstimateCostRequest,
+    EstimateCostResponse,
+    ExecuteWorkflowRequest,
+    ExecuteWorkflowResponse,
+    ExportHpcBundleRequest,
+    ExportHpcBundleResponse,
     GeneratePlanRequest,
     GeneratePlanResponse,
     GetArtifactRequest,
     GetArtifactResponse,
     GetStatusRequest,
     GetStatusResponse,
+    IngestHpcBundleRequest,
+    IngestHpcBundleResponse,
     ListPendingApprovalsRequest,
     ListPendingApprovalsResponse,
     ListRunsRequest,
@@ -66,9 +76,8 @@ R = TypeVar("R", bound=BaseModel)
 class ControlPlaneClient:
     """HTTP client to the Control Plane.
 
-    Round 3: HPC endpoints are intentionally omitted from this client. They are
-    exercised only by the optional HPC-export lane; the MCP surface consumes
-    them through a separate optional extension.
+    All composer-backed + HPC (non-submit) routes are exposed. The
+    MCP surface's tools wrap these one-to-one.
     """
 
     def __init__(self, base_url: str, *, timeout: float = 30.0) -> None:
@@ -117,6 +126,39 @@ class ControlPlaneClient:
 
     async def show_yaml_diff(self, body: ShowYamlDiffRequest) -> ShowYamlDiffResponse:
         return await self._post("/workflows/diff", body, ShowYamlDiffResponse)
+
+    async def execute_workflow(
+        self, body: ExecuteWorkflowRequest
+    ) -> ExecuteWorkflowResponse:
+        return await self._post("/workflows/execute", body, ExecuteWorkflowResponse)
+
+    # ---- /hpc (T07 + T05) ---------------------------------------------
+
+    async def estimate_cost(
+        self, body: EstimateCostRequest
+    ) -> EstimateCostResponse:
+        return await self._post("/hpc/estimate", body, EstimateCostResponse)
+
+    async def confirm_allocation(
+        self, body: ConfirmAllocationRequest
+    ) -> ConfirmAllocationResponse:
+        return await self._post(
+            "/hpc/confirm", body, ConfirmAllocationResponse
+        )
+
+    async def export_hpc_bundle(
+        self, body: ExportHpcBundleRequest
+    ) -> ExportHpcBundleResponse:
+        return await self._post(
+            "/hpc/export", body, ExportHpcBundleResponse
+        )
+
+    async def ingest_hpc_bundle(
+        self, body: IngestHpcBundleRequest
+    ) -> IngestHpcBundleResponse:
+        return await self._post(
+            "/hpc/ingest", body, IngestHpcBundleResponse
+        )
 
     async def create_approval(self, body: CreateApprovalRequest) -> CreateApprovalResponse:
         return await self._post("/approvals/", body, CreateApprovalResponse)
