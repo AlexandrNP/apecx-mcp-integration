@@ -1,0 +1,37 @@
+```yaml
+name: violin_bvbrc_synonym_gate_minimal
+description: "VIOLIN + BV-BRC synonym-gated entity extraction, HARD approval."
+version: "0.1.0"
+steps:
+  extract:
+    class: "apecx_db_integration.agent.extract_entities_llm"
+    config: "steps/entity_extraction.yml"
+  snapshot_match:
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep"
+    config: "steps/bvbrc_snapshot_match.yml"
+  synonym_cache:
+    class: "apecx_integration.composition.steps.synonym_cache.SynonymCacheLookupStep"
+    config: "steps/synonym_cache_lookup.yml"
+  rank:
+    class: "nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep"
+    config: "steps/result_ranking.yml"
+links:
+  extract_to_match:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "extract.entity_candidates_output"
+      target: "snapshot_match.entity_candidates_input"
+  match_to_cache:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "snapshot_match.candidate_mappings_output"
+      target: "synonym_cache.terms_input"
+  cache_to_rank:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "synonym_cache.cached_synonyms_output"
+      target: "rank.results_input"
+```
