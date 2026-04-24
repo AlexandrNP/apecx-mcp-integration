@@ -1,11 +1,24 @@
 """FastAPI application entrypoint for the Control Plane (Tier 2).
 
-TX1 status (post-debt-clearing): the persistence-only routes
-(``/approvals/*``, ``/runs/*``) are fully wired to the T09 DB layer.
-Composer-dependent routes (``/workflows/start``, ``/workflows/plan``,
-``/workflows/diff``) and HPC routes (``/hpc/*``) remain 501 until the
-downstream tasks land — their 501 detail messages point at the exact
-implementation_plan.md task that unblocks each one.
+Route surface (as of 2026-04-22):
+
+    /healthz                — always-on
+    /workflows/start        — T01 P1 (composer + policy gated, 503 if unwired)
+    /workflows/plan         — preview-mode composition
+    /workflows/diff         — T06 categorization + novel Python
+    /workflows/execute      — T01 P2 LocalExecutor (503 if unwired)
+    /approvals/*            — TX1 HITL lifecycle
+    /runs/*, verified-synonyms, /metrics/*
+    /hpc/estimate           — T07
+    /hpc/confirm            — T07 allocation confirmation
+    /hpc/export             — T05 PBS bundle generator
+    /hpc/ingest             — T05 AC3 bundle reconciliation
+    /hpc/submit             — **still 501**, blocked on T04/T05 executor-runtime
+
+Composer + approval-policy + local-executor are injected at app
+construction time (``create_app(engine, composer=..., approval_policy=...,
+local_executor=...)``). When unset, the corresponding routes surface 503
+with a specific "X is not configured" detail so operators can trace.
 
 CLI:
     apecx-cp                 # serve — ensures infra + runs uvicorn
