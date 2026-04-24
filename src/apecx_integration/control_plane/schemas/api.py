@@ -226,6 +226,21 @@ class ExportHpcBundleResponse(_APIBase):
     submit_command: str
 
 
+# --- ingest (T05 AC3 — tier-2 reconciliation after remote run) -------------
+
+
+class IngestHpcBundleRequest(_APIBase):
+    """Point at a completed bundle on disk (post-qsub, post-transfer-back)."""
+
+    bundle_path: str
+
+
+class IngestHpcBundleResponse(_APIBase):
+    run_id: UUID
+    status: RunStatus
+    output_artifact_id: UUID | None = None
+
+
 # --- create_approval (internal, called from ApprovalStep) -------------------
 
 
