@@ -20,6 +20,14 @@ below have a matching positive-path integration test at
 ``tests/integration/test_a2a_happy_path.py`` which exercises the
 full ``connect → discover → send → get → cancel`` lifecycle against
 a real in-process aiohttp JSON-RPC server (no mocks).
+
+Academy happy-path parity (T-2026-04-23-02, G5, 2026-04-24): the
+error paths in row 2 below have a matching positive-path integration
+test at ``tests/integration/test_academy_real_integration.py`` which
+launches a real ``academy.agent.Agent`` via the nanobrain manager
+wrapper and dispatches actions through the real
+``academy.handle.Handle`` — verifying both the full lifecycle AND
+that ``ACADEMY_DEMO_MODE=1`` still produces the aurora-demo mock.
 """
 
 from __future__ import annotations

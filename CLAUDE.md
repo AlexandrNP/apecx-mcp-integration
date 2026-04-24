@@ -113,6 +113,61 @@ the AC2 round-trip on Polaris / Aurora).
 
 See `src/apecx_integration/execution/pbs_bundle.py`.
 
+## Academy integration (real, as of G5 — 2026-04-24)
+
+`nanobrain/core/academy_integration.py` now has a working real
+Academy path. Before G5, ``AcademyAgentHandle.__call__`` raised
+``AcademyNotImplementedError`` in the non-demo branch; today it
+dispatches through a real ``academy.handle.Handle`` via a
+process-level ``AcademyManagerWrapper`` that owns the
+``academy.manager.Manager`` async context.
+
+**Use the ``academy`` extra:**
+
+```bash
+.venv/bin/pip install -e '.[academy]'
+# or, if the venv already exists and you just want to add it:
+.venv/bin/pip install academy-py
+```
+
+**Lifecycle rules:**
+
+1. First call to any dispatched action enters the Manager context.
+   The context is held process-wide until ``shutdown_academy_manager()``
+   is called.
+2. Tests that touch Academy MUST call ``shutdown_academy_manager()``
+   in teardown (see the ``academy_manager`` fixture in
+   ``tests/integration/test_academy_real_integration.py``) —
+   leaving the singleton entered bleeds state across tests.
+3. ``ACADEMY_DEMO_MODE=1`` preserved: the aurora demo
+   (``demos/academylink_aurora_demo``) still gets synthesized
+   mock responses. A warning log line is emitted on every call so
+   operators cannot miss that they are on the demo path.
+4. Direct instantiation of ``AcademyManagerWrapper`` is supported
+   for tests but the canonical accessor is
+   ``AcademyIntegration.setup_academy_manager()`` — it returns the
+   process singleton.
+
+**Registration API:**
+
+- ``await mgr.register_agent_class(name, Cls)`` — launches a fresh
+  Academy agent and stores its real Handle under ``name``.
+- ``mgr.register_agent_handle(name, real_handle)`` — registers a
+  pre-launched ``academy.handle.Handle`` under ``name`` (use when
+  the agent was launched by another process).
+- ``mgr.register_agent(name, instance)`` — removed. Academy owns
+  agent lifecycle; the old inline-instance API made no sense. Calls
+  now raise ``AcademyNotImplementedError`` with a migration hint.
+
+Positive-path coverage:
+``tests/integration/test_academy_real_integration.py`` —
+six tests launching a real local Academy agent, no mocks, clean
+shutdown.
+
+nanobrain is not a git repo on this workspace, so the integration
+test is the durable artifact: a re-fetch of nanobrain that reverts
+``core/academy_integration.py`` turns every test in that file red.
+
 ## T13b Docker sandbox (scaffold only)
 
 `src/apecx_integration/composition/docker_sandbox.py` is the

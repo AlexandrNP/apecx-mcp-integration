@@ -187,6 +187,29 @@ call would go here" is a TODO that's shipped.
   synthetic data substitution" is stronger than the code's
   "pretend Academy works."
 
+**Shipped (2026-04-23, T14):** option (b). `AcademyNotImplementedError`
+now raises by default; `ACADEMY_DEMO_MODE=1` preserves the mock for
+explicit demo paths. Covered by
+`tests/integration/test_nanobrain_mocks_policy.py::test_academy_not_implemented_error_class_exists`
+and `::test_academy_demo_mode_env_var_gate_documented`.
+
+**Shipped (2026-04-24, G5 — CLOSES C2):** option (a). The real Academy
+call path is now wired. `AcademyManagerWrapper` enters the real
+``academy.manager.Manager`` context via ``async with`` and holds it
+for the process lifetime; ``register_agent_class(name, cls)``
+launches a real Academy agent and stores its real
+``academy.handle.Handle``; ``AcademyAgentHandle.__call__`` dispatches
+through the real handle in the non-demo path. Positive-path coverage
+lives at ``tests/integration/test_academy_real_integration.py`` —
+six tests, all green against a real local Academy agent (no mocks).
+The gaps-doc classification "domain-expert" turned out to be wrong:
+every piece of the integration was already present in nanobrain
+(`academy_integration/academy_link.py`, `academy_agent_step.py`);
+the only broken spot was the one inline `AcademyAgentHandle.__call__`
+method that T14 had hardened to `raise`. The G5 fix replaces that
+single method and adds the manager lifecycle that the pre-existing
+code path had silently lacked.
+
 ### Category D — developer-mode convenience (partially gated)
 
 **Count: 1 config surface, multiple config callers.**
