@@ -29,28 +29,40 @@ tasks landed on main as of 2026-04-22:
 | T04/T05 | optional  | HPC export lane — gated on user opt-in               |
 | T13b    | post-12w  | Docker sandbox (runtime isolation)                   |
 
-**API surface now live** (all routes real, not 501):
+**Control Plane API surface now live** (all routes real, not 501):
 
 - `POST /workflows/start`   — T01 P1 (composes + persists + gates)
 - `POST /workflows/plan`    — preview-mode composition (CANCELLED run)
 - `POST /workflows/execute` — T01 P2 (LocalExecutor → terminal state)
 - `POST /workflows/diff`    — T06 categorization + novel Python
 - `POST /hpc/estimate`      — T07 pre-submission cost estimate
-- `POST /hpc/confirm`       — user acknowledgement gate for estimate
+- `POST /hpc/confirm`       — T07 user acknowledgement gate
+- `POST /hpc/export`        — T05 PBS bundle generator
+- `POST /hpc/ingest`        — T05 AC3 bundle reconciliation
 - `POST /approvals/*`       — TX1 HITL approval lifecycle
 - `GET  /metrics/*`         — TX3 review-UX telemetry
 - `GET  /runs/*`, verified-synonyms, status — all TX1-backed
 
-Still stubbed 501: `/hpc/submit`, `/hpc/export` (blocked on T04/T05
-— HPC export lane is user-opt-in).
+Still stubbed 501: `/hpc/submit` (genuinely blocked on T04 Globus
+or T05 qsub runtime — requires operator HPC access).
 
-Operator-pending (cannot be code-authored in CI): T06 AC3
-scientist-review session, T12 AC1 final 7 live-LLM fixtures, T01
-AC1 strict "RUN_COMPLETED on real violin_bvbrc" bar. T-COMP Phase 5
-AC8 wall-time: measured 2026-04-22 — see
-`tests/integration/test_composer_ac8_walltime.py` and
-`docs/composer_task_spec.md` for the real numbers vs the spec's
-original 60s target.
+**MCP tool surface** (`apecx-mcp` entry point exposes 11 tools over
+stdio for Claude Desktop):
+
+- `start_workflow`, `show_diff`, `execute_workflow`
+- `list_pending_approvals`, `approve`, `reject`, `correct`
+- `estimate_cost`, `confirm_allocation`,
+  `export_hpc_bundle`, `ingest_hpc_bundle`
+
+Set `APECX_CONTROL_PLANE_URL` to point at the Control Plane
+(default `http://localhost:8000`).
+
+Operator-pending: T06 AC3 scientist-review session, T12 AC1 final 7
+live-LLM fixtures. T01 AC1 strict bar met 3/3 on mistral-nemo
+post-prompt-uplift. T-COMP Phase 5 AC8 wall-time: measured
+2026-04-22 — see `tests/integration/test_composer_ac8_walltime.py`
+and `docs/composer_task_spec.md` for real numbers vs the spec's 60s
+target.
 
 ## Agent-output review harness (TX5)
 
