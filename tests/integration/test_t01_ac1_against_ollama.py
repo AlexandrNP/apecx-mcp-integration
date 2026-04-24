@@ -16,36 +16,38 @@ importable. Run under the venv:
     PYTHONPATH=src .venv/bin/python -m pytest \\
       tests/integration/test_t01_ac1_against_ollama.py -v
 
-What this test proves
----------------------
-- The composer produces a parseable YAML from a natural prompt using
-  the real LLM (end-to-end compose).
-- The LocalExecutor reaches a TERMINAL state (COMPLETED or FAILED)
-  for that YAML without an exception escape — the plumbing handles
-  whatever the LLM emitted.
-- The provenance hash chain validates end-to-end for either branch.
-- Persisted artifact + GeneratedArtifact rows are intact.
+What this test proves (AC1 strict)
+----------------------------------
+- The composer produces a LOADABLE YAML from a natural prompt using
+  the real LLM.
+- Nanobrain's ``Workflow.from_config`` instantiates every step + link
+  declared in that YAML.
+- The LocalExecutor reaches ``RunStatus.COMPLETED`` — the AP §5.1
+  AC1 release-gate bar.
+- The OUTPUT artifact is persisted.
+- The provenance hash chain validates end-to-end.
 
-What this test does NOT prove
------------------------------
-- That the LLM-generated YAML actually runs to RUN_COMPLETED on a
-  real violin_bvbrc workflow. The spec's AC1 wants that, but it is
-  LLM-quality-bound: at mistral-nemo:latest the LLM produces YAML
-  that mixes valid class paths (post-2026-04-22 manifest fix) with
-  invented ``transform_function`` paths and semantic link/data-unit
-  mismatches — driving the executor into the ``load_failed`` branch
-  on the current model. That is the failure class the executor
-  exists to handle cleanly; the underlying LLM-quality fix lives in
-  prompt tuning + catalog audit, not here.
-- Wall time ≤15 minutes (AC1 budget). Present measurement is ~40s
-  per cycle on mistral-nemo; plenty of headroom when the LLM does
-  succeed. A single compose+execute can't exceed the budget on this
-  model.
+Prompt engineering that made this work
+--------------------------------------
+The system prompt's link + config rules were tightened 2026-04-22
+after an initial three-run measurement showed reproducible
+``load_failed`` branches:
 
-The AC1 happy-path has been verified **ad hoc** (Run reaches
-RUN_COMPLETED with a different LLM sampling) — the plumbing works.
-Making it deterministic requires an LLM that doesn't drift between
-runs at temperature=0, which is not the case today (spec R2).
+- TransformLink banned (LLM was hallucinating ``transform_function``
+  paths like ``nanobrain.library.workflows.viral_protein_analysis.
+  utils.transform_data_unit_to_dict`` which don't exist).
+- Step ``config:`` must be a path-reference to the shipped wrapper
+  YAML (LLM was inlining config + hallucinating data-unit class
+  paths like ``nanobrain.core.data_unit.TextDataUnit`` which don't
+  exist).
+
+Post-tightening, 3/3 consecutive runs at temperature=0 reached
+RUN_COMPLETED. The test asserts strictly.
+
+Wall time
+---------
+~30-40s per compose+execute on mistral-nemo; well under the AC1
+15-minute budget.
 """
 
 from __future__ import annotations
@@ -166,33 +168,23 @@ def test_t01_ac1_real_violin_bvbrc_workflow_runs(cp_engine):
         session.commit()
 
     result = run_sync(executor, run_id)
-    # Terminal state: either branch is a pass for *plumbing*. The
-    # spec's stricter AC1 bar (RUN_COMPLETED specifically) is LLM-
-    # quality-bound today; see the module docstring for the honest
-    # story.
-    assert result.status in {RunStatus.COMPLETED, RunStatus.FAILED}, (
-        f"executor must reach a terminal state; got {result.status}"
+
+    # AC1 strict: RUN_COMPLETED on the real violin_bvbrc workflow.
+    # Proven at 3/3 consecutive runs on mistral-nemo post-prompt-
+    # uplift (2026-04-22). If this flaps on a different model, the
+    # first suspect is prompt drift — refer to the module docstring
+    # for the specific constraints the system prompt enforces.
+    assert result.status is RunStatus.COMPLETED, (
+        f"AC1 violation: expected RUN_COMPLETED; got {result.status} "
+        f"reason={result.reason}"
     )
+    assert result.output_artifact_id is not None
 
-    # If it FAILED, the reason must be one of the executor's
-    # structured failure classes — never an unhandled exception
-    # leaking through.
-    if result.status is RunStatus.FAILED:
-        assert result.reason, "FAILED status must have a reason"
-        assert any(
-            tag in result.reason
-            for tag in ("workflow load failed", "workflow execution failed")
-        ), (
-            f"FAILED reason must match a known class; got {result.reason!r}"
-        )
-    else:
-        assert result.output_artifact_id is not None
-
-    # Provenance chain must validate end-to-end for either branch.
+    # Provenance chain must validate end-to-end.
     recorder.validate(run_id)
 
     # Run row matches the ExecutionResult.
     with factory() as session:
         run = session.get(RunORM, run_id)
-        assert run.status is result.status
+        assert run.status is RunStatus.COMPLETED
         assert run.completed_at is not None

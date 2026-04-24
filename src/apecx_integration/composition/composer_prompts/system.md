@@ -15,13 +15,48 @@ The workflow YAML must:
   ``steps:``, ``links:``.
 - Under ``steps:``, each step is a mapping ``<step_id>: { class: ...,
   config: ... }`` where ``class`` is the fully-qualified Python class
-  path (use the library's ``implementation_path`` verbatim) and
-  ``config`` is either a path to a wrapper YAML or an inline mapping.
-- Under ``links:``, each link is a ``<link_id>: { class: ...,
-  config: { link_type: direct, source: "step.out", target:
-  "step.in" } }`` entry. Use ``nanobrain.core.link.DirectLink`` for
-  plain transfers and ``nanobrain.core.link.TransformLink`` with
-  ``transform_function: "pkg.mod.func"`` for shape-bridging.
+  path (use the library's ``implementation_path`` verbatim).
+
+**Step config rules — hard constraints, no exceptions:**
+
+- **For any library component (a component in the candidate list),
+  ``config`` MUST be the exact string path from that component's
+  ``yaml:`` field.** Example:
+  ``config: "steps/entity_extraction.yml"``. The wrapper YAML
+  already declares the step's data units, triggers, and all class
+  paths — pointing at it is the ONLY correct way to reuse a
+  library component.
+- **Do NOT emit inline ``config: { ... }`` mappings for library
+  components.** Inline config forces you to reproduce fields like
+  ``input_data_units`` / ``output_data_units`` / ``triggers`` and
+  their class paths — you will hallucinate class paths like
+  ``nanobrain.core.data_unit.TextDataUnit`` that do not exist.
+- **Do NOT add top-level ``data_units:`` or ``triggers:`` to the
+  workflow YAML.** Those live inside each step's wrapper YAML.
+- If a library component's shipped wrapper YAML is wrong for this
+  task, the correct answer is to pick a different component or to
+  author a novel Python step — not to override with inline config.
+- Under ``links:``, each link is a ``<link_id>: { class:
+  "nanobrain.core.link.DirectLink", config: { link_type: direct,
+  source: "<source_step_id>.<output_data_unit_name>", target:
+  "<target_step_id>.<input_data_unit_name>" } }`` entry.
+
+**Link rules — hard constraints, no exceptions:**
+
+- **Only ``nanobrain.core.link.DirectLink`` is allowed.** Do NOT emit
+  ``TransformLink`` or any other link class. If two steps don't have
+  matching schemas, the correct fix is a novel Python step that
+  reshapes — not a ``transform_function`` hallucinated from an
+  invented import path.
+- ``source`` and ``target`` strings must reference REAL data unit
+  names. Data unit names look like ``entity_candidates_output`` or
+  ``user_query_input`` — not ``out`` / ``in``. Each candidate
+  component's description and examples tell you what it reads and
+  writes; use THOSE names. If a component's I/O shape isn't clear,
+  pick a different component or author a novel step.
+- Links are OPTIONAL. If the workflow has one step, emit
+  ``links: {}`` and stop. Don't invent links between steps whose
+  data units you're guessing at.
 
 If you emit novel Python, wrap each source block in the
 ``novel_python`` fence as a mapping ``<step_id>: |\n<source>``. Every
