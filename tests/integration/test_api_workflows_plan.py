@@ -63,7 +63,7 @@ MIXED_RESPONSE = textwrap.dedent(
     version: "0.1.0"
     steps:
       extract:
-        class: "apecx_db_integration.agent.extract_entities_llm"
+        class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
         config: "steps/entity_extraction.yml"
       custom_postproc:
         class: "generated.CustomPostproc"

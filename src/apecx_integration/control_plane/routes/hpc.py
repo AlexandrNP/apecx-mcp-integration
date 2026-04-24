@@ -2,23 +2,30 @@
 
 Round 3: these tools are only meaningful when the user opts into the HPC export
 feature. They remain registered in the API surface so the MCP tool schema is
-stable. T07 (/hpc/estimate) landed 2026-04-23; the rest still stub with 501
-until T04/T05 land.
+stable. T07 (/hpc/estimate + /hpc/confirm) landed 2026-04-22; /hpc/submit
+and /hpc/export still stub with 501 until T04/T05 land (HPC export lane is
+demoted optional).
 """
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
+from uuid import uuid4
 
 import yaml
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from apecx_integration.control_plane.accounting.cost_estimator import (
     estimate_workflow_cost,
 )
 from apecx_integration.control_plane.dependencies import get_session
+from apecx_integration.control_plane.models.entities import (
+    AllocationEstimate as AllocationEstimateORM,
+)
 from apecx_integration.control_plane.models.entities import (
     Artifact as ArtifactORM,
 )
@@ -131,7 +138,9 @@ async def estimate_cost(
         )
 
     try:
-        return estimate_workflow_cost(workflow_dict, endpoint=_DEFAULT_ENDPOINT)
+        estimate = estimate_workflow_cost(
+            workflow_dict, endpoint=_DEFAULT_ENDPOINT
+        )
     except ValueError as exc:
         # The estimator raises ValueError on a missing/non-mapping
         # ``steps:`` block. Surface as 422 — the artifact is structurally
@@ -141,10 +150,89 @@ async def estimate_cost(
             detail=str(exc),
         ) from exc
 
+    # Persist the estimate so /hpc/confirm has something to flip. Each
+    # estimate call writes a new row — we don't update in place — so
+    # the audit trail shows every pre-submission look the user took.
+    session.add(
+        AllocationEstimateORM(
+            id=uuid4(),
+            run_id=body.run_id,
+            estimated_core_hours=estimate.total_core_hours,
+            estimated_wall_time_seconds=estimate.total_core_hours * 3600.0,
+            estimated_memory_gb=None,
+            endpoint=estimate.endpoint,
+            user_confirmed=False,
+            user_confirmed_at=None,
+            actual_core_hours=None,
+        )
+    )
+    session.commit()
+
+    return estimate
+
 
 @router.post("/confirm", response_model=ConfirmAllocationResponse)
-async def confirm_allocation(body: ConfirmAllocationRequest) -> ConfirmAllocationResponse:
-    raise _not_implemented("T07")
+async def confirm_allocation(
+    body: ConfirmAllocationRequest,
+    session: Annotated[Session, Depends(get_session)],
+) -> ConfirmAllocationResponse:
+    """User acknowledges the estimated core-hours for a run.
+
+    Contract:
+    - 404 if run unknown.
+    - 422 if no prior estimate exists for the run (``/hpc/estimate`` has
+      never been called, or all estimate rows were purged).
+    - 422 if ``confirmed_core_hours`` is less than the most-recent
+      estimated value (user is trying to short-pay the allocation).
+
+    Side effect: sets ``user_confirmed=true`` + ``user_confirmed_at``
+    on the latest AllocationEstimate row for the run. Previous rows
+    stay untouched — they're the audit trail of "every time the user
+    looked at the estimate".
+
+    What this does NOT do: actually submit anything. HPC submission
+    lives behind ``/hpc/submit`` (still 501 until T04/T05 land).
+    """
+    run = session.get(RunORM, body.run_id)
+    if run is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Run {body.run_id} not found",
+        )
+
+    latest = session.execute(
+        select(AllocationEstimateORM)
+        .where(AllocationEstimateORM.run_id == body.run_id)
+        .order_by(AllocationEstimateORM.id.desc())
+        .limit(1)
+    ).scalar_one_or_none()
+
+    if latest is None:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Run {body.run_id} has no AllocationEstimate row. "
+                "Call /hpc/estimate before /hpc/confirm."
+            ),
+        )
+
+    if body.confirmed_core_hours < latest.estimated_core_hours:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"confirmed_core_hours ({body.confirmed_core_hours}) < "
+                f"latest estimate ({latest.estimated_core_hours}). The "
+                "confirmation ceiling must cover the estimate."
+            ),
+        )
+
+    latest.user_confirmed = True
+    latest.user_confirmed_at = datetime.now(UTC)
+    session.commit()
+
+    return ConfirmAllocationResponse(
+        run_id=body.run_id, confirmed=True
+    )
 
 
 @router.post("/submit", response_model=SubmitHpcResponse)
