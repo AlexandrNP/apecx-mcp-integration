@@ -56,6 +56,16 @@ hpc = [
     "globus-compute-sdk>=2.20",
     "globus-sdk>=3.40",
 ]
+# G5 (2026-04-24): academy-py is the Academy agent framework that
+# nanobrain's AcademyManagerWrapper / AcademyLink / AcademyAgentStep
+# dispatch through. Before G5 the real path raised
+# AcademyNotImplementedError; it is now an exercised integration
+# covered by tests/integration/test_academy_real_integration.py.
+# Pinned to >=0.4 because the canonical
+# ``Manager.from_exchange_factory`` entry point lives there.
+academy = [
+    "academy-py>=0.4",
+]
 
 [project.scripts]
 apecx-cp = "apecx_integration.control_plane.app:main"

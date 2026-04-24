@@ -13,30 +13,6 @@ steady state.
 
 ## Current gaps
 
-### T-2026-04-23-02 — Academy real integration (not just demo-mode)
-
-**Context:** T14 audit §2-C2 flagged that `academy_integration.py`
-unconditionally returned `_generate_mock_response` regardless of
-whether Academy agents were deployed. The comment was: "Real Academy
-agent call would go here / For now, always use mock response."
-
-T14 fixes:
-- Default behavior: raise `AcademyNotImplementedError`.
-- `ACADEMY_DEMO_MODE=1`: preserves the mock for existing demos.
-
-**Missing:** the actual Academy-call implementation. Not a test gap —
-it's an implementation gap that the mock was hiding. Until the real
-call lands, every Academy-backed code path in nanobrain is either
-demo-mode (ACADEMY_DEMO_MODE=1 → mock) or raises at runtime.
-
-**Rough scope:** unknown; requires Academy-integration expertise +
-access to a live Academy deployment. Out of T14 / my authority to
-estimate.
-
-**Blocker:** Academy-integration expertise + live endpoint.
-
----
-
 ### T-2026-04-23-03 — PubMed real API integration
 
 **Context:** T14 audit §2-E1 flagged that
