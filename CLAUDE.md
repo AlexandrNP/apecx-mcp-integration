@@ -103,6 +103,25 @@ the AC2 round-trip on Polaris / Aurora).
 
 See `src/apecx_integration/execution/pbs_bundle.py`.
 
+## MCP surface (Tier 1)
+
+`src/apecx_integration/mcp_surface/server.py` is a FastMCP server
+exposing 11 scientist-facing tools. Entry point:
+
+```bash
+apecx-mcp                                   # stdio transport
+APECX_CONTROL_PLANE_URL=http://.../  apecx-mcp   # override CP URL
+```
+
+Tools (split across `tools/workflows.py`, `tools/approvals.py`,
+`tools/hpc.py`): start_workflow, show_diff, execute_workflow,
+list_pending_approvals, approve, reject, correct, estimate_cost,
+confirm_allocation, export_hpc_bundle, ingest_hpc_bundle.
+
+Deliberately NOT exposed: `/hpc/submit` (still 501),
+`create_approval` (internal — called by nanobrain's ApprovalStep
+during execution).
+
 ## Key reference docs
 
 - `../architectural_plan.md` — project-level source of truth.
