@@ -25,8 +25,8 @@ components:
 
   - step_id: "1"
     step_name: entity_extraction
-    disposition: reuse
-    class: "apecx_db_integration.agent.extract_entities_llm"
+    disposition: wrap    # reuse underlying function via EntityExtractionStep wrapper
+    class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
     yaml: "steps/entity_extraction.yml"
     status: ready        # wrapper YAML loads via from_config; LLM stub-tested
     wrap_notes: >
@@ -94,8 +94,8 @@ components:
 
   - step_id: "3c"
     step_name: synonym_llm_proposals
-    disposition: reuse
-    class: "apecx_db_integration.agent.consolidated_synonym_search"
+    disposition: wrap    # reuse underlying function via SynonymLLMProposalsStep wrapper
+    class: "apecx_integration.composition.steps.db_integration_wrappers.SynonymLLMProposalsStep"
     yaml: "steps/synonym_llm_proposals.yml"
     status: ready        # wrapper YAML loads via from_config; LLM stub-tested (2 calls/process)
     wrap_notes: >
@@ -148,8 +148,8 @@ components:
 
   - step_id: "5"
     step_name: violin_entity_lookup
-    disposition: reuse
-    class: "apecx_db_integration.enrich_matches_with_database_data"
+    disposition: wrap    # reuse underlying function via ViolinEntityLookupStep wrapper
+    class: "apecx_integration.composition.steps.db_integration_wrappers.ViolinEntityLookupStep"
     yaml: "steps/violin_entity_lookup.yml"
     status: ready        # wrapper YAML loads via from_config; pure pandas, no LLM
     wrap_notes: >
