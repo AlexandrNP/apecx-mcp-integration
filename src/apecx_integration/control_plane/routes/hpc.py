@@ -22,7 +22,7 @@ from sqlalchemy.orm import Session
 from apecx_integration.control_plane.accounting.cost_estimator import (
     estimate_workflow_cost,
 )
-from apecx_integration.control_plane.dependencies import get_session
+from apecx_integration.control_plane.dependencies import get_recorder, get_session
 from apecx_integration.control_plane.models.entities import (
     AllocationEstimate as AllocationEstimateORM,
 )
@@ -32,6 +32,9 @@ from apecx_integration.control_plane.models.entities import (
 from apecx_integration.control_plane.models.entities import (
     Run as RunORM,
 )
+from apecx_integration.control_plane.provenance.recorder import (
+    ProvenanceRecorder,
+)
 from apecx_integration.control_plane.schemas.api import (
     ConfirmAllocationRequest,
     ConfirmAllocationResponse,
@@ -39,8 +42,15 @@ from apecx_integration.control_plane.schemas.api import (
     EstimateCostResponse,
     ExportHpcBundleRequest,
     ExportHpcBundleResponse,
+    IngestHpcBundleRequest,
+    IngestHpcBundleResponse,
     SubmitHpcRequest,
     SubmitHpcResponse,
+)
+from apecx_integration.control_plane.schemas.enums import (
+    ArtifactKind,
+    ProvenanceEventType,
+    RunStatus,
 )
 
 router = APIRouter(prefix="/hpc", tags=["hpc"])
@@ -330,4 +340,167 @@ async def export_hpc_bundle(
     return ExportHpcBundleResponse(
         bundle_path=str(result.bundle_path),
         submit_command=result.submit_command,
+    )
+
+
+@router.post("/ingest", response_model=IngestHpcBundleResponse)
+async def ingest_hpc_bundle(
+    body: IngestHpcBundleRequest,
+    session: Annotated[Session, Depends(get_session)],
+    recorder: Annotated[ProvenanceRecorder, Depends(get_recorder)],
+) -> IngestHpcBundleResponse:
+    """T05 AC3 — reconcile a completed bundle back into Tier 2.
+
+    After a scientist qsubs a bundle and it completes on the remote
+    system, they transfer the bundle directory back (with
+    ``outputs/result.json`` + ``apecx_status.txt`` populated) and
+    POST that path here. This route:
+
+    1. Reads ``provenance_seed.json`` to identify the owning Run.
+    2. Reads ``apecx_status.txt`` to decide terminal state.
+    3. Persists ``outputs/result.json`` as a new OUTPUT Artifact.
+    4. Flips the Run to COMPLETED (or FAILED on status=failed).
+    5. Emits RUN_COMPLETED / RUN_FAILED provenance events.
+
+    Error classes:
+    - 404: bundle path doesn't exist / provenance_seed.json missing
+    - 422: provenance_seed malformed; run_id missing or not a UUID
+    - 404: run_id in seed doesn't exist in this Control Plane
+    - 409: Run is already in a terminal state (no silent re-ingest)
+    - 422: outputs/result.json missing + status=completed (contract
+      violation — a completed bundle must carry a result)
+    """
+    from uuid import UUID as UUIDType
+
+    bundle = Path(body.bundle_path)
+    if not bundle.is_dir():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"bundle_path {bundle} does not exist or is not a directory",
+        )
+    seed_file = bundle / "provenance_seed.json"
+    if not seed_file.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=(
+                f"bundle at {bundle} has no provenance_seed.json — "
+                "not an APECx export bundle."
+            ),
+        )
+    try:
+        import json as _json
+        seed = _json.loads(seed_file.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"provenance_seed.json malformed: {exc}",
+        ) from exc
+
+    raw_run_id = seed.get("run_id")
+    try:
+        seed_run_id = UUIDType(str(raw_run_id))
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"provenance_seed.json run_id is not a UUID: {raw_run_id!r}",
+        ) from exc
+
+    run = session.get(RunORM, seed_run_id)
+    if run is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=(
+                f"Run {seed_run_id} from bundle's provenance_seed.json "
+                "does not exist in this Control Plane. Bundle was "
+                "generated elsewhere?"
+            ),
+        )
+
+    terminal = {RunStatus.COMPLETED, RunStatus.FAILED, RunStatus.CANCELLED}
+    if run.status in terminal:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                f"Run {seed_run_id} is already in terminal state "
+                f"{run.status.value}; bundle ingest is append-only, "
+                "not idempotent."
+            ),
+        )
+
+    status_file = bundle / "apecx_status.txt"
+    reported = (
+        status_file.read_text(encoding="utf-8").strip()
+        if status_file.is_file()
+        else "completed"
+    )
+    result_file = bundle / "outputs" / "result.json"
+
+    if reported == "failed":
+        run.status = RunStatus.FAILED
+        run.completed_at = datetime.now(UTC)
+        session.commit()
+        recorder.record(
+            run_id=seed_run_id,
+            event_type=ProvenanceEventType.RUN_FAILED,
+            actor="hpc_ingest",
+            payload={
+                "bundle_path": str(bundle),
+                "reason": "remote_failure",
+            },
+        )
+        return IngestHpcBundleResponse(
+            run_id=seed_run_id,
+            status=RunStatus.FAILED,
+            output_artifact_id=None,
+        )
+
+    # reported in {"completed", "started", anything else} → treat as
+    # completed-if-result-present, else 422.
+    if not result_file.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"bundle at {bundle} claims success but has no "
+                "outputs/result.json — contract violation."
+            ),
+        )
+
+    # Persist the result as an OUTPUT Artifact. Content-hash for
+    # integrity, same pattern as ArtifactStore writes though we do it
+    # inline here because the ingest doesn't go through the generator
+    # path.
+    import hashlib as _hashlib
+    import uuid as _uuid
+    content = result_file.read_bytes()
+    artifact_id = _uuid.uuid4()
+    output_artifact = ArtifactORM(
+        id=artifact_id,
+        run_id=seed_run_id,
+        step_id=None,
+        kind=ArtifactKind.OUTPUT,
+        location=str(result_file.resolve()),
+        content_hash=_hashlib.sha256(content).hexdigest(),
+        size_bytes=len(content),
+        mime_type="application/json",
+        created_at=datetime.now(UTC),
+    )
+    session.add(output_artifact)
+    run.status = RunStatus.COMPLETED
+    run.completed_at = datetime.now(UTC)
+    session.commit()
+
+    recorder.record(
+        run_id=seed_run_id,
+        event_type=ProvenanceEventType.RUN_COMPLETED,
+        actor="hpc_ingest",
+        payload={
+            "bundle_path": str(bundle),
+            "output_artifact_id": str(artifact_id),
+        },
+    )
+
+    return IngestHpcBundleResponse(
+        run_id=seed_run_id,
+        status=RunStatus.COMPLETED,
+        output_artifact_id=artifact_id,
     )
