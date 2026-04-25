@@ -441,6 +441,57 @@ async def ingest_hpc_bundle(
     )
     result_file = bundle / "outputs" / "result.json"
 
+    completion_time = datetime.now(UTC)
+
+    # Audit §3.5: the stub bundle (Phase-2 scaffold, T05 follow-up)
+    # writes ``stub_completed`` instead of ``completed`` to flag that
+    # the actual workflow did NOT execute. Detect that here and refuse
+    # to mark the run COMPLETED — otherwise an operator round-tripping
+    # a stub bundle would see a green "completed" status downstream
+    # despite no real work having been done. Setting the run to FAILED
+    # with a clear reason makes the failure mode visible.
+    if reported == "stub_completed":
+        result = session.execute(
+            update(RunORM)
+            .where(
+                RunORM.id == seed_run_id,
+                RunORM.status.notin_(list(terminal)),
+            )
+            .values(status=RunStatus.FAILED, completed_at=completion_time)
+        )
+        if result.rowcount != 1:
+            session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    f"Run {seed_run_id} reached terminal state from a "
+                    "concurrent ingest before this stub bundle could "
+                    "be reconciled."
+                ),
+            )
+        session.commit()
+        recorder.record(
+            run_id=seed_run_id,
+            event_type=ProvenanceEventType.RUN_FAILED,
+            actor="hpc_ingest",
+            payload={
+                "bundle_path": str(bundle),
+                "reason": "stub_bundle_detected",
+                "note": (
+                    "Bundle's run.sh wrote 'stub_completed' marker "
+                    "(audit §3.5). Phase-2 PBS bundle scaffolds do "
+                    "not execute the workflow; T05 runtime is still "
+                    "pending. Run marked FAILED so the stub success "
+                    "doesn't masquerade as a real terminal state."
+                ),
+            },
+        )
+        return IngestHpcBundleResponse(
+            run_id=seed_run_id,
+            status=RunStatus.FAILED,
+            output_artifact_id=None,
+        )
+
     # Audit §2.3: the read-then-write pattern above (line 414 read +
     # line 426 terminal-check + the write below) is racy against a
     # concurrent ingest on the same run — both could see status as
@@ -449,8 +500,8 @@ async def ingest_hpc_bundle(
     # so only one transaction can flip the run; the loser's UPDATE
     # affects 0 rows and is converted to a 409. Works on both SQLite
     # (statements serialize on the WAL writer) and Postgres (row lock
-    # acquired during UPDATE).
-    completion_time = datetime.now(UTC)
+    # acquired during UPDATE). ``completion_time`` was already
+    # captured before the stub-bundle branch above.
 
     if reported == "failed":
         result = session.execute(
