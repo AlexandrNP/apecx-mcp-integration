@@ -32,7 +32,9 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
+from pathlib import Path
 
 from fastapi import FastAPI
 from sqlalchemy import Engine
@@ -46,6 +48,28 @@ from apecx_integration.control_plane.routes import (
     status,
     verified_synonyms,
     workflow,
+)
+
+log = logging.getLogger(__name__)
+
+# Repo root resolution for default config paths used by ``_serve``.
+# This file lives at ``<repo>/src/apecx_integration/control_plane/app.py``,
+# so parents[3] is the repo root in editable-install layouts. The CLI
+# defaults only need to work for the editable-install case (the
+# tutorial / development path); wheel deployments override every
+# default via env vars.
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+_DEFAULT_COMPOSER_CONFIG = (
+    _REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
+)
+_DEFAULT_APPROVAL_POLICY = _REPO_ROOT / "configs" / "approval_policy.yml"
+_DEFAULT_WORKFLOW_BASE_DIR = (
+    _REPO_ROOT
+    / "src"
+    / "apecx_integration"
+    / "composition"
+    / "workflows"
+    / "violin_bvbrc"
 )
 
 
@@ -108,6 +132,116 @@ def create_app(
 app = create_app()
 
 
+def _build_components_from_env(engine: Engine) -> tuple:
+    """Build composer + approval policy + local executor from env vars.
+
+    The 503 error messages on ``/workflows/start`` etc. promise that
+    setting ``APECX_COMPOSER_CONFIG_PATH`` / ``APECX_APPROVAL_POLICY_PATH``
+    / ``APECX_WORKFLOW_BASE_DIR`` configures the corresponding
+    components — but pre-2026-04-25, ``apecx-cp serve`` ran the
+    module-level ``app = create_app()`` (no kwargs) and ignored every
+    one of those env vars. Result: every operator following the
+    tutorial hit a 503 on the first ``/workflows/start`` call.
+
+    This helper closes that gap. Defaults point at the in-repo
+    ``composer_config.yml`` / ``approval_policy.yml`` / ``violin_bvbrc``
+    workflow dir, so a fresh ``apecx-cp serve`` works out of the box
+    for the tutorial scenario. Operators with custom configs override
+    via env vars.
+
+    Returns ``(composer, approval_policy, local_executor)``. Any of
+    the three may be ``None`` if explicitly disabled (set the
+    corresponding ``APECX_*_PATH=`` to empty string), in which case
+    the matching route returns 503 with the same "not configured"
+    detail as before.
+    """
+    from apecx_integration.composition.approval_policy import ApprovalPolicy
+    from apecx_integration.composition.artifact_store import ArtifactStore
+    from apecx_integration.composition.composer import Composer
+    from apecx_integration.control_plane.executors.local import LocalExecutor
+
+    session_factory = make_session_factory(engine)
+    recorder = ProvenanceRecorder(session_factory)
+    store = ArtifactStore(session_factory=session_factory, recorder=recorder)
+
+    composer = None
+    composer_path_env = os.environ.get("APECX_COMPOSER_CONFIG_PATH")
+    composer_path = (
+        Path(composer_path_env)
+        if composer_path_env
+        else _DEFAULT_COMPOSER_CONFIG
+    )
+    if composer_path_env == "":
+        log.info(
+            "apecx-cp serve: APECX_COMPOSER_CONFIG_PATH set to empty "
+            "string; composer disabled, /workflows/start will 503."
+        )
+    elif composer_path.is_file():
+        composer = Composer.from_config(composer_path)
+        composer._artifact_store = store  # noqa: SLF001 — documented hook
+        log.info("apecx-cp serve: composer loaded from %s", composer_path)
+    else:
+        log.warning(
+            "apecx-cp serve: composer config %s not found; /workflows/start "
+            "will 503. Set APECX_COMPOSER_CONFIG_PATH to override.",
+            composer_path,
+        )
+
+    approval_policy = None
+    policy_path_env = os.environ.get("APECX_APPROVAL_POLICY_PATH")
+    policy_path = (
+        Path(policy_path_env)
+        if policy_path_env
+        else _DEFAULT_APPROVAL_POLICY
+    )
+    if policy_path_env == "":
+        log.info(
+            "apecx-cp serve: APECX_APPROVAL_POLICY_PATH set to empty "
+            "string; approval policy disabled, /workflows/start will 503."
+        )
+    elif policy_path.is_file():
+        approval_policy = ApprovalPolicy.load(policy_path)
+        log.info("apecx-cp serve: approval policy loaded from %s", policy_path)
+    else:
+        log.warning(
+            "apecx-cp serve: approval policy %s not found; /workflows/start "
+            "will 503. Set APECX_APPROVAL_POLICY_PATH to override.",
+            policy_path,
+        )
+
+    local_executor = None
+    workflow_dir_env = os.environ.get("APECX_WORKFLOW_BASE_DIR")
+    workflow_dir = (
+        Path(workflow_dir_env)
+        if workflow_dir_env
+        else _DEFAULT_WORKFLOW_BASE_DIR
+    )
+    if workflow_dir_env == "":
+        log.info(
+            "apecx-cp serve: APECX_WORKFLOW_BASE_DIR set to empty string; "
+            "local executor disabled, /workflows/execute will 503."
+        )
+    elif workflow_dir.is_dir():
+        local_executor = LocalExecutor(
+            session_factory=session_factory,
+            artifact_store=store,
+            recorder=recorder,
+            workflow_base_dir=workflow_dir,
+        )
+        log.info(
+            "apecx-cp serve: local executor wired against workflow_base_dir=%s",
+            workflow_dir,
+        )
+    else:
+        log.warning(
+            "apecx-cp serve: workflow base dir %s not found; "
+            "/workflows/execute will 503. Set APECX_WORKFLOW_BASE_DIR.",
+            workflow_dir,
+        )
+
+    return composer, approval_policy, local_executor
+
+
 def _serve(args: argparse.Namespace) -> int:
     from apecx_integration.control_plane.infra.lifecycle import ensure_infra_ready
 
@@ -115,13 +249,30 @@ def _serve(args: argparse.Namespace) -> int:
     db_url = get_db_url()
     ensure_infra_ready(db_url)
 
+    # Build a fully-wired app for production. Pre-2026-04-25 the CLI
+    # ran uvicorn against the module-level ``app = create_app()``
+    # which had no composer / policy / executor wired, so every
+    # /workflows/start request returned 503 even though the docstring
+    # of ``create_app`` and the env-var error messages claimed
+    # otherwise. Now: build the components from env vars, pass them
+    # explicitly into ``create_app``, and run uvicorn against the
+    # resulting wired app.
+    engine = make_engine()
+    composer, policy, executor = _build_components_from_env(engine)
+    wired_app = create_app(
+        engine=engine,
+        composer=composer,
+        approval_policy=policy,
+        local_executor=executor,
+    )
+
     import uvicorn
 
     uvicorn.run(
-        "apecx_integration.control_plane.app:app",
+        wired_app,
         host=args.host,
         port=args.port,
-        reload=False,
+        log_level="info",
     )
     return 0
 
