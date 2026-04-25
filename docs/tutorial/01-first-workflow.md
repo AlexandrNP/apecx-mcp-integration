@@ -35,6 +35,40 @@ You get back a ``run`` object. Note:
 Typical first-try: under 60 seconds against mistral-nemo. If it
 takes longer, the LLM is cold-loading; retries after are ~30s.
 
+### If you see "Composer is not configured" (HTTP 503)
+
+This is the most common stumbling block at this step. The Control
+Plane's ``apecx-cp serve`` boot path is supposed to wire a Composer
+from ``composer_config.yml`` automatically (see chapter 00 §5), but
+if you're running ``apecx-cp serve`` from outside the repo, the
+default config paths don't resolve. Symptoms:
+
+```json
+{
+  "detail": "Composer is not configured on this Control Plane. Set APECX_COMPOSER_CONFIG_PATH or pass composer= into create_app()."
+}
+```
+
+**Fix:** restart ``apecx-cp serve`` with explicit env-var overrides
+pointing at the in-repo configs:
+
+```bash
+APECX_COMPOSER_CONFIG_PATH=$(pwd)/src/apecx_integration/composition/composer_config.yml \
+APECX_APPROVAL_POLICY_PATH=$(pwd)/configs/approval_policy.yml \
+APECX_WORKFLOW_BASE_DIR=$(pwd)/src/apecx_integration/composition/workflows/violin_bvbrc \
+.venv/bin/apecx-cp serve
+```
+
+Then watch the startup logs for three INFO lines confirming the
+composer / policy / executor each loaded. The 503 should not
+recur.
+
+Operators reading old (pre-2026-04-25) issues that say "the env
+var doesn't actually do anything" — that was true historically;
+the CLI didn't read those env vars at all. The wiring is real
+now, so the env-var override above is a real fix, not a
+workaround.
+
 ## 2. See what was composed
 
 ```bash

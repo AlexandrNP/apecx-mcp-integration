@@ -97,6 +97,46 @@ curl -s http://localhost:8000/healthz
 # → {"status": "ok", "phase": "scaffold"}
 ```
 
+**`/healthz` is necessary but not sufficient.** It only verifies the
+HTTP server is up; it does NOT verify that the composer / approval
+policy / local executor are wired (those drive ``/workflows/start``,
+``/workflows/diff``, and ``/workflows/execute``). Watch the
+``apecx-cp serve`` startup logs — you should see three lines:
+
+```
+INFO apecx_integration.control_plane.app: apecx-cp serve: composer loaded from .../composer_config.yml
+INFO apecx_integration.control_plane.app: apecx-cp serve: approval policy loaded from .../approval_policy.yml
+INFO apecx_integration.control_plane.app: apecx-cp serve: local executor wired against workflow_base_dir=...
+```
+
+If any of those is a ``WARNING ... not found`` instead, the
+corresponding ``/workflows/*`` route will return ``503`` even
+though ``/healthz`` says the server is up. Most common cause:
+running ``apecx-cp serve`` from outside the repo. The defaults
+resolve relative to the editable-install layout
+(``Path(__file__).resolve().parents[3]`` from inside
+``app.py``); if you're running from a wheel install, override
+with explicit paths:
+
+```bash
+APECX_COMPOSER_CONFIG_PATH=/abs/path/to/composer_config.yml \
+APECX_APPROVAL_POLICY_PATH=/abs/path/to/approval_policy.yml \
+APECX_WORKFLOW_BASE_DIR=/abs/path/to/workflow_dir \
+.venv/bin/apecx-cp serve
+```
+
+Set any of these to an empty string (``APECX_COMPOSER_CONFIG_PATH=``)
+to explicitly disable the corresponding component — useful if you
+want a Control Plane that hosts the approval / status routes but
+not the composer.
+
+Note: Pre-2026-04-25 the CLI didn't actually consume these env
+vars at all (the module-level ``app = create_app()`` ran with
+``composer=None``), so the 503 you'd see if you were reading old
+issues was unconditional — there was no env var that fixed it.
+The wiring is real now; the env vars in the 503 detail strings
+mean what they say.
+
 ## 6. Start the MCP server
 
 In another terminal:
