@@ -16,6 +16,10 @@ prompt_dir: "composer_prompts"
 
 max_tokens: 4096
 temperature: 0.0
+# DEVELOPMENT DEFAULT — a transient LLM 5xx fails the entire
+# compose request without retry. Production deployments should
+# override to 2 or 3 via this file or APECX_LLM_MAX_RETRIES.
+# Audit §5.2 (docs/codebase_audit_2026_04_24.md).
 max_retries: 0
 
 # Phase-2 additions: where to find components + novel-Python safety gate.
