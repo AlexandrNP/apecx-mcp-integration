@@ -22,7 +22,7 @@ from uuid import uuid4
 
 import yaml
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from apecx_integration.control_plane.accounting.cost_estimator import (
@@ -441,9 +441,36 @@ async def ingest_hpc_bundle(
     )
     result_file = bundle / "outputs" / "result.json"
 
+    # Audit §2.3: the read-then-write pattern above (line 414 read +
+    # line 426 terminal-check + the write below) is racy against a
+    # concurrent ingest on the same run — both could see status as
+    # non-terminal, then both write conflicting outcomes. The fix is
+    # a conditional UPDATE keyed on the current non-terminal state
+    # so only one transaction can flip the run; the loser's UPDATE
+    # affects 0 rows and is converted to a 409. Works on both SQLite
+    # (statements serialize on the WAL writer) and Postgres (row lock
+    # acquired during UPDATE).
+    completion_time = datetime.now(UTC)
+
     if reported == "failed":
-        run.status = RunStatus.FAILED
-        run.completed_at = datetime.now(UTC)
+        result = session.execute(
+            update(RunORM)
+            .where(
+                RunORM.id == seed_run_id,
+                RunORM.status.notin_(list(terminal)),
+            )
+            .values(status=RunStatus.FAILED, completed_at=completion_time)
+        )
+        if result.rowcount != 1:
+            session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    f"Run {seed_run_id} reached terminal state from a "
+                    "concurrent ingest before this one could write — "
+                    "another bundle was ingested for the same run."
+                ),
+            )
         session.commit()
         recorder.record(
             run_id=seed_run_id,
@@ -488,11 +515,31 @@ async def ingest_hpc_bundle(
         content_hash=_hashlib.sha256(content).hexdigest(),
         size_bytes=len(content),
         mime_type="application/json",
-        created_at=datetime.now(UTC),
+        created_at=completion_time,
     )
     session.add(output_artifact)
-    run.status = RunStatus.COMPLETED
-    run.completed_at = datetime.now(UTC)
+    session.flush()  # surface FK or constraint errors before the UPDATE.
+
+    # Same conditional-UPDATE guard as the FAILED branch — atomic
+    # against concurrent ingests.
+    result = session.execute(
+        update(RunORM)
+        .where(
+            RunORM.id == seed_run_id,
+            RunORM.status.notin_(list(terminal)),
+        )
+        .values(status=RunStatus.COMPLETED, completed_at=completion_time)
+    )
+    if result.rowcount != 1:
+        session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                f"Run {seed_run_id} reached terminal state from a "
+                "concurrent ingest before this one could write — "
+                "another bundle was ingested for the same run."
+            ),
+        )
     session.commit()
 
     recorder.record(
