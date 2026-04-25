@@ -53,8 +53,19 @@ class ComposerConfig(BaseModel):
 
     # Phase-2+ caps. Kept here at Phase 1 so ComposerConfig's shape
     # is stable across phases.
+    #
+    # ``max_tokens`` budget covers a typical workflow YAML (< 2000
+    # tokens) + optional novel Python fence (< 1500 tokens) + margin
+    # for composition overhead. Bumping past ~4096 tends to confuse
+    # mistral-nemo on the prompt — see ollama integration tests.
     max_tokens: int = Field(default=4096, ge=1)
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
+    # ``max_retries`` defaults to 0 — that's a development default
+    # (fast feedback when prompt-tuning), NOT a production-safe value.
+    # In production, a transient LLM 5xx will fail the entire compose
+    # request without retry. Operators deploying this composer behind
+    # a real workload should override to 2 or 3 via the composer
+    # config or APECX_LLM_MAX_RETRIES (audit §5.2).
     max_retries: int = Field(default=0, ge=0)
 
     # Phase-2 additions — retrieval + sandbox integration.

@@ -1,8 +1,38 @@
-# Current gaps — 2026-04-23
+# Current gaps — 2026-04-23 (snapshot, partially overturned)
 
 Honest inventory of what's NOT done. Each gap is classified by
 blocker class so the next session / operator knows whether it's
 Claude-authorable or something else.
+
+---
+
+## STATUS APPENDIX (added 2026-04-24, audit §5.1)
+
+This file is a frozen snapshot from 2026-04-23 and several rows
+have been overturned since. Read this appendix before relying on
+any specific row below.
+
+| Gap | Status as of 2026-04-24 | Where it landed |
+|-----|-------------------------|-----------------|
+| G4 (A2A integration test) | **CLOSED** | `tests/integration/test_a2a_happy_path.py` — 5 tests against an in-process aiohttp JSON-RPC server. Closes T-2026-04-23-01. |
+| G5 (Academy real integration) | **CLOSED** | `nanobrain/core/academy_integration.py` rewritten end-to-end (~470 lines); 6 integration tests in `tests/integration/test_academy_real_integration.py`. The "domain-expert" classification in this snapshot was wrong — see CLAUDE.md "Academy integration (real, as of G5 — 2026-04-24)" for the current API contract. |
+| G6 (T13b Docker sandbox scaffold) | **CLOSED at scaffold level** | `src/apecx_integration/composition/docker_sandbox.py` (~291 lines), 23 argv-pinning unit tests, 4 gated runtime tests, threat-model doc at `docs/t13b_sandbox_design.md`. Composer integration is still Phase-3 work. |
+| G7 (T12 AC1 fixtures) | **CLOSED at 10 placeholder-LLM fixtures** | 7 non-virus fixtures shipped under `tests/reproducibility/fixtures/`. Live-LLM fixtures remain operator-run. |
+| G16 (cSpell wordlist) | **CLOSED** | `cspell.json` shipped with 246 domain words. |
+| G3 (PubMed NCBI E-utils) | **STILL OPEN — out of scope per user 2026-04-24** | Function name is virus-domain (`search_alphavirus_literature`); user explicitly scoped it out. |
+| G1, G2, G11 (HPC) | **STILL hard-blocked** | Need operator HPC access. |
+| G8, G9, G10 (UX validation) | **STILL operator-run** | Need named scientist + 60-90 min session. |
+| G12 (wall-time on hardware) | **STILL operator-run** | Need deployment hardware. |
+| G13–G15 (process hygiene) | **No action; informational** | |
+
+**Read the appendix above before quoting any specific row below.**
+The text below is preserved verbatim as the 2026-04-23 snapshot,
+but several rows are now historical, not current. See also
+`docs/codebase_audit_2026_04_24.md` for the next round of findings
+and the cluster-A through cluster-I follow-up commits that closed
+several audit findings.
+
+---
 
 ## Legend
 
