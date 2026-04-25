@@ -115,7 +115,21 @@ async def start_workflow(
     # Re-read from this session: the composer wrote via its own
     # session, so we need to fetch the Run and back-link it.
     run = session.get(RunORM, run_id)
-    assert run is not None, "Run row disappeared between commits"
+    if run is None:
+        # Was an `assert` (audit §2.4) — Python's -O strips asserts
+        # so this safety check would silently disappear under any
+        # production deployment that opts into bytecode optimization.
+        # The condition is "should never happen" but a real 500 is
+        # the right response if it does.
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                f"Run {run_id} disappeared between session commits — "
+                "composer.compose() did not persist the run row, or a "
+                "concurrent writer deleted it. This is a server-side "
+                "invariant violation."
+            ),
+        )
     run.workflow_config_id = composed.artifact_id
 
     categorized = CategorizedWorkflow(
@@ -299,11 +313,25 @@ async def show_yaml_diff(
     novel_by_step = summary.get("novel_python_by_step") or {}
 
     plan: list[StepPlan] = []
-    for row in cat_rows:
+    for idx, row in enumerate(cat_rows):
         try:
             category = StepCategory(row["category"])
-        except (KeyError, ValueError):
-            continue
+        except (KeyError, ValueError) as exc:
+            # The categorization rows were persisted at compose time
+            # (see Composer.compose -> _persist_or_synthesize). A
+            # malformed row here is durable corruption, not an
+            # expected tolerance — silently dropping the row produced
+            # a diff with fewer steps than the YAML and no signal to
+            # the client (audit §2.2). Surface a 500 with the index
+            # and offending row so the operator can investigate.
+            raise HTTPException(
+                status_code=500,
+                detail=(
+                    f"step_categorizations[{idx}] is malformed "
+                    f"({type(exc).__name__}: {exc}); persisted "
+                    f"composition_summary is corrupt for run {body.run_id}."
+                ),
+            ) from exc
         plan.append(
             StepPlan(
                 step_id=row.get("step_id", ""),

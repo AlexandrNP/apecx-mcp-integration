@@ -60,6 +60,7 @@ def _insert_diff_fixture(
     yaml_text: str,
     on_disk_path: Path,
     with_generated_metadata: bool = True,
+    composition_summary_override: str | None = None,
 ):
     """Drop YAML on disk; insert Artifact + GeneratedArtifact rows;
     back-link run.workflow_config_id -> artifact."""
@@ -86,6 +87,26 @@ def _insert_diff_fixture(
             },
         )
         if with_generated_metadata:
+            default_summary = (
+                '{"steps_reused": 1, "steps_generated": 1, '
+                '"steps_swapped": 0, '
+                '"summary_sentence": "This workflow has 2 '
+                'step(s). 1 compose library components '
+                '(1 standard + 0 parameterized + 0 wrapped). '
+                '1 step(s) are novel Python requiring review.", '
+                '"step_categorizations": ['
+                '{"step_id": "extract", "step_class": '
+                '"pkg.library.A", "category": '
+                '"composed_standard", "reason": "library '
+                'class with canonical wrapper YAML path."},'
+                '{"step_id": "rogue", "step_class": '
+                '"generated.Rogue", "category": "novel", '
+                '"reason": "step_id appears in the '
+                'novel_python fence."}], '
+                '"review_notes": ["novel Python step: rogue"], '
+                '"novel_python_by_step": {"rogue": "class '
+                'Rogue: ...\\n"}}'
+            )
             conn.execute(
                 text(
                     "INSERT INTO generated_artifact "
@@ -100,24 +121,7 @@ def _insert_diff_fixture(
                     "lv": "0.1.0-test",
                     "lm": "mistral-small:latest",
                     "lmh": "0" * 64,
-                    "cs": '{"steps_reused": 1, "steps_generated": 1, '
-                          '"steps_swapped": 0, '
-                          '"summary_sentence": "This workflow has 2 '
-                          'step(s). 1 compose library components '
-                          '(1 standard + 0 parameterized + 0 wrapped). '
-                          '1 step(s) are novel Python requiring review.", '
-                          '"step_categorizations": ['
-                          '{"step_id": "extract", "step_class": '
-                          '"pkg.library.A", "category": '
-                          '"composed_standard", "reason": "library '
-                          'class with canonical wrapper YAML path."},'
-                          '{"step_id": "rogue", "step_class": '
-                          '"generated.Rogue", "category": "novel", '
-                          '"reason": "step_id appears in the '
-                          'novel_python fence."}], '
-                          '"review_notes": ["novel Python step: rogue"], '
-                          '"novel_python_by_step": {"rogue": "class '
-                          'Rogue: ...\\n"}}',
+                    "cs": composition_summary_override or default_summary,
                 },
             )
         conn.execute(
@@ -203,3 +207,65 @@ def test_diff_returns_422_when_generated_artifact_row_missing(
     )
     assert response.status_code == 422
     assert "no GeneratedArtifact row" in response.json()["detail"]
+
+
+def test_diff_returns_500_when_categorization_row_has_unknown_category(
+    cp_client: TestClient, cp_engine: Engine, tmp_path: Path
+):
+    """Audit §2.2 regression guard.
+
+    Pre-fix the route silently dropped malformed rows with `continue`,
+    so the response had fewer steps than the YAML and the client had
+    no signal. After the fix, a row whose `category` is not a valid
+    StepCategory enum value raises 500 with the row index in the
+    detail message.
+    """
+    run_id = _insert_run(cp_engine)
+    bad_summary = (
+        '{"steps_reused": 0, "steps_generated": 1, "steps_swapped": 0, '
+        '"summary_sentence": "x", '
+        '"step_categorizations": ['
+        '{"step_id": "extract", "step_class": "pkg.library.A", '
+        '"category": "TOTALLY_UNKNOWN_CATEGORY", '
+        '"reason": "row was corrupted in storage"}], '
+        '"review_notes": [], "novel_python_by_step": {}}'
+    )
+    _insert_diff_fixture(
+        cp_engine, run_id,
+        yaml_text=SAMPLE_YAML,
+        on_disk_path=tmp_path / "bad_cats.yml",
+        composition_summary_override=bad_summary,
+    )
+    response = cp_client.post(
+        "/workflows/diff", json={"run_id": str(run_id)}
+    )
+    assert response.status_code == 500, response.text
+    detail = response.json()["detail"]
+    assert "step_categorizations[0]" in detail
+    assert "malformed" in detail
+    assert str(run_id) in detail
+
+
+def test_diff_returns_500_when_categorization_row_missing_category_key(
+    cp_client: TestClient, cp_engine: Engine, tmp_path: Path
+):
+    """Same audit §2.2 path for the KeyError branch (no `category`)."""
+    run_id = _insert_run(cp_engine)
+    bad_summary = (
+        '{"steps_reused": 0, "steps_generated": 0, "steps_swapped": 0, '
+        '"summary_sentence": "x", '
+        '"step_categorizations": [{"step_id": "extract", '
+        '"step_class": "pkg.library.A", "reason": "no category key"}], '
+        '"review_notes": [], "novel_python_by_step": {}}'
+    )
+    _insert_diff_fixture(
+        cp_engine, run_id,
+        yaml_text=SAMPLE_YAML,
+        on_disk_path=tmp_path / "no_category.yml",
+        composition_summary_override=bad_summary,
+    )
+    response = cp_client.post(
+        "/workflows/diff", json={"run_id": str(run_id)}
+    )
+    assert response.status_code == 500, response.text
+    assert "step_categorizations[0]" in response.json()["detail"]
