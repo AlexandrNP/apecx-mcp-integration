@@ -11,13 +11,10 @@ Per workspace CLAUDE.md: this is an integration test (real DB, no mocks).
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from alembic import command
-from alembic.config import Config
-from apecx_integration.control_plane.db import make_engine, make_session_factory
+from apecx_integration.control_plane.db import make_session_factory
 from apecx_integration.control_plane.provenance.recorder import (
     ChainBroken,
     ProvenanceRecorder,
@@ -25,32 +22,15 @@ from apecx_integration.control_plane.provenance.recorder import (
 from apecx_integration.control_plane.schemas.enums import ProvenanceEventType
 from sqlalchemy import text
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 
-
-@pytest.fixture
-def cp_engine(tmp_path: Path):
-    db_file = tmp_path / "cp.db"
-    url = f"sqlite:///{db_file}"
-    cfg = Config(str(REPO_ROOT / "alembic.ini"))
-    cfg.set_main_option("sqlalchemy.url", url)
-    cfg.set_main_option("script_location", str(REPO_ROOT / "migrations"))
-    command.upgrade(cfg, "head")
-    engine = make_engine(url)
-    # The Run must exist before we can FK-reference it.
-    with engine.begin() as conn:
-        conn.execute(
-            text(
-                "INSERT INTO run (id, user_id, status, created_at) " "VALUES (:id, :uid, :st, :ts)"
-            ),
-            {
-                "id": "00000000-0000-0000-0000-000000000001",
-                "uid": "tester",
-                "st": "PENDING",
-                "ts": datetime.now(UTC).isoformat(),
-            },
-        )
-    return engine
+# Audit §4.4: this file used to redefine ``cp_engine`` locally,
+# duplicating tests/integration/conftest.py's fixture and adding a
+# pre-seeded Run row at id ``00000000-...001``. Each test below
+# creates its own Run inline before recording events, so the
+# pre-seeded row was dead code. Deleted; the conftest fixture is
+# now used directly. If a future test genuinely needs a seeded
+# baseline run, add a separate ``seeded_run_id`` fixture rather
+# than shadowing ``cp_engine``.
 
 
 @pytest.mark.integration
