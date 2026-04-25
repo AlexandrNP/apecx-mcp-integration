@@ -321,3 +321,95 @@ def test_get_client_builds_from_env(monkeypatch):
     client = get_client()
     assert client._base_url == "http://example.invalid"
     set_client(None)
+
+
+# ---------------------------------------------------------------------------
+# Audit §3.1 + §3.10 — malformed input is echoed back, not raised raw
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "tool_name, kwargs",
+    [
+        ("estimate_cost", {"run_id": "not-a-uuid"}),
+        ("confirm_allocation", {"run_id": "not-a-uuid", "confirmed_core_hours": 1.0}),
+        (
+            "export_hpc_bundle",
+            {"run_id": "x", "target_system": "polaris", "output_directory": "/tmp/x"},
+        ),
+        ("show_diff", {"run_id": ""}),
+        ("execute_workflow", {"run_id": "garbage"}),
+    ],
+)
+def test_mcp_tools_echo_malformed_run_id(tool_name, kwargs):
+    """Pre-fix bare ``UUID(run_id)`` raised a generic ValueError
+    whose message ('badly formed hexadecimal UUID string') didn't
+    name which field failed or what was passed. After audit §3.1
+    the helper raises ``InvalidRunIdError`` with the offending input
+    echoed back so Claude can self-correct.
+    """
+    from apecx_integration.mcp_surface.tools._shared import InvalidRunIdError
+    from apecx_integration.mcp_surface.tools import (
+        approvals as approvals_tools,
+    )
+    from apecx_integration.mcp_surface.tools import hpc as hpc_tools
+    from apecx_integration.mcp_surface.tools import (
+        workflows as workflow_tools,
+    )
+
+    # Resolve the tool from one of the three modules.
+    for mod in (workflow_tools, hpc_tools, approvals_tools):
+        if hasattr(mod, tool_name):
+            tool = getattr(mod, tool_name)
+            break
+    else:
+        raise AssertionError(f"unknown tool {tool_name}")
+
+    with pytest.raises(InvalidRunIdError) as excinfo:
+        asyncio.run(tool(**kwargs))
+    err = excinfo.value
+    assert err.field == "run_id"
+    assert err.raw == kwargs["run_id"]
+    assert "is not a valid UUID" in str(err)
+
+
+@pytest.mark.parametrize(
+    "tool_name, kwargs",
+    [
+        ("approve", {"approval_id": "bad-uuid", "comment": "x"}),
+        ("reject", {"approval_id": "bad-uuid", "comment": "x"}),
+        ("correct", {"approval_id": "bad-uuid", "corrected_payload": {}}),
+    ],
+)
+def test_approval_tools_echo_malformed_approval_id(tool_name, kwargs):
+    """Same audit §3.1 path for approval tools — the field name is
+    ``approval_id`` so the error message must say ``approval_id``,
+    not ``run_id``.
+    """
+    from apecx_integration.mcp_surface.tools._shared import InvalidRunIdError
+    from apecx_integration.mcp_surface.tools import (
+        approvals as approvals_tools,
+    )
+
+    tool = getattr(approvals_tools, tool_name)
+    with pytest.raises(InvalidRunIdError) as excinfo:
+        asyncio.run(tool(**kwargs))
+    err = excinfo.value
+    assert err.field == "approval_id"
+    assert "is not a valid UUID" in str(err)
+
+
+def test_start_workflow_rejects_invalid_executor():
+    """Audit §3.10. Pre-fix the bare ``ExecutorKind(...)`` raised
+    a generic Pydantic enum-coercion error from inside the request
+    schema. The fix validates explicitly so the error message lists
+    the valid executor names.
+    """
+    from apecx_integration.mcp_surface.tools.workflows import start_workflow
+
+    with pytest.raises(ValueError, match=r"preferred_executor='gpu'.*valid executor"):
+        asyncio.run(
+            start_workflow(
+                description="x", user_id="alex", preferred_executor="gpu"
+            )
+        )

@@ -12,6 +12,7 @@ Kept tiny on purpose — the tools are one-line delegations.
 from __future__ import annotations
 
 import os
+from uuid import UUID
 
 from apecx_integration.mcp_surface.control_plane_client import (
     ControlPlaneClient,
@@ -38,4 +39,39 @@ def get_client() -> ControlPlaneClient:
     return _client
 
 
-__all__ = ["get_client", "set_client"]
+class InvalidRunIdError(ValueError):
+    """Raised when a tool argument that should be a UUID is not.
+
+    Carries the offending input verbatim so the MCP error message
+    can echo it back to the caller (Claude, in practice) for self-
+    correction.
+    """
+
+    def __init__(self, raw: str, field: str = "run_id"):
+        super().__init__(
+            f"{field}={raw!r} is not a valid UUID; expected a "
+            "canonical UUID like '550e8400-e29b-41d4-a716-446655440000'."
+        )
+        self.raw = raw
+        self.field = field
+
+
+def parse_run_id(raw: str, *, field: str = "run_id") -> UUID:
+    """Parse a UUID from a string with a friendly error.
+
+    The Tier-1 MCP tools accept user-typed run-id strings (typically
+    pasted by Claude after a `/workflows/start` response). A bare
+    `UUID(raw)` raises a generic ``ValueError`` whose message ("badly
+    formed hexadecimal UUID string") is correct but unhelpful — the
+    caller can't tell which field failed or what was passed.
+    Audit §3.1 (docs/codebase_audit_2026_04_24.md).
+    """
+    if not isinstance(raw, str):
+        raise InvalidRunIdError(repr(raw), field=field)
+    try:
+        return UUID(raw)
+    except (ValueError, AttributeError, TypeError) as exc:
+        raise InvalidRunIdError(raw, field=field) from exc
+
+
+__all__ = ["InvalidRunIdError", "get_client", "parse_run_id", "set_client"]
