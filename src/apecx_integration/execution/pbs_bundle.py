@@ -186,17 +186,39 @@ def _render_submit_pbs(request: BundleRequest, workflow_path: Path) -> str:
 def _render_run_sh(request: BundleRequest) -> str:
     """The inner script the PBS job runs.
 
-    First release keeps the body simple: log identity, emit a marker
-    file + a stub result, and exit 0. A real runner wiring nanobrain's
-    executor into HPC is T05 follow-up — this establishes the bundle
-    contract so Tier-2 ingest has something deterministic to consume.
+    **STUB BUNDLE — DOES NOT EXECUTE THE WORKFLOW.** Audit §3.5
+    (docs/codebase_audit_2026_04_24.md): pre-fix, this script wrote
+    "completed" + a stub result and exited 0; a scientist could
+    qsub the bundle, see "success" downstream, and never realize
+    the actual workflow never ran. The bundle now writes
+    ``stub_completed`` to BOTH ``apecx_status.txt`` AND
+    ``outputs/result.json`` so the ingest path can detect-and-warn
+    on this marker rather than silently treating it as a
+    completed run.
+
+    A real runner wiring nanobrain's executor into HPC is T05
+    follow-up — this establishes the bundle contract so Tier-2
+    ingest has something deterministic to consume.
     """
     return textwrap.dedent(
         f"""\
         #!/bin/bash
         set -euo pipefail
 
-        echo "apecx-run starting: run_id={request.run_id}"
+        # ============================================================
+        # APECX BUNDLE STUB — Phase-2 scaffold.
+        # ============================================================
+        # This script does NOT execute the apecx workflow. It writes
+        # a "stub_completed" marker so the Tier-2 ingest contract is
+        # exercisable end-to-end while the real qsub-driven runner
+        # (T05 follow-up) is still pending.
+        #
+        # If you are running this bundle on a real HPC and expect
+        # apecx to do useful work, the runner has NOT shipped yet —
+        # see implementation_plan.md §T05.
+        # ============================================================
+
+        echo "apecx-run starting: run_id={request.run_id} (STUB BUNDLE)"
         echo "  target_system   : {request.target_system}"
         echo "  library_version : {request.library_version}"
         echo "  llm_model       : {request.llm_model}"
@@ -207,13 +229,15 @@ def _render_run_sh(request: BundleRequest) -> str:
         test -f staging_plan.yml
         test -f provenance_seed.json
 
-        # Marker file: Tier 2 ingest looks for this + the result JSON.
+        # Marker files: Tier 2 ingest looks for this + the result JSON.
+        # The "stub_completed" status (NOT "completed") tells the
+        # ingest path to treat this as a stub — see audit §3.5.
         echo "started" > apecx_status.txt
         mkdir -p outputs
-        echo '{{"status": "stub_completed"}}' > outputs/result.json
-        echo "completed" > apecx_status.txt
+        echo '{{"status": "stub_completed", "stub": true}}' > outputs/result.json
+        echo "stub_completed" > apecx_status.txt
 
-        echo "apecx-run done"
+        echo "apecx-run done (STUB)"
         """
     )
 

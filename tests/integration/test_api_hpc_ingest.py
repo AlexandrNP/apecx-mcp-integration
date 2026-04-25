@@ -188,6 +188,59 @@ def test_ingest_404_for_unknown_run(cp_client: TestClient, tmp_path: Path):
     assert "does not exist in this Control Plane" in resp.json()["detail"]
 
 
+def test_ingest_marks_run_failed_when_bundle_is_stub(
+    cp_client: TestClient, cp_engine: Engine, tmp_path: Path
+):
+    """Audit §3.5 regression guard.
+
+    The Phase-2 PBS bundle's run.sh writes ``stub_completed`` as
+    the apecx_status.txt marker (the actual workflow execution is
+    T05 follow-up). Pre-fix, the ingest path treated any non-failed
+    status as a successful completion — a scientist round-tripping
+    a stub bundle saw a green "completed" run downstream despite
+    nothing having actually run. After the fix, the ingest detects
+    the ``stub_completed`` marker and marks the Run as FAILED with
+    a clear ``stub_bundle_detected`` reason on the provenance event.
+    """
+    run_id, artifact_id = _insert_run_with_artifact(cp_engine, tmp_path)
+    bundle = _make_completed_bundle(
+        tmp_path, run_id, artifact_id,
+        status_text="stub_completed",
+    )
+
+    resp = cp_client.post(
+        "/hpc/ingest", json={"bundle_path": str(bundle)}
+    )
+    assert resp.status_code == 200, resp.text
+    body = resp.json()
+    assert body["status"] == "failed", (
+        "stub bundles MUST surface as failed so the success doesn't "
+        "masquerade as a real terminal state."
+    )
+    assert body["output_artifact_id"] is None
+
+    # Run row transitioned.
+    with cp_engine.connect() as conn:
+        status_row = conn.execute(
+            text("SELECT status FROM run WHERE id = :rid"),
+            {"rid": str(run_id)},
+        ).first()
+    assert status_row[0].lower() == "failed"
+
+    # Provenance event recorded with the stub_bundle_detected reason.
+    with cp_engine.connect() as conn:
+        payload_row = conn.execute(
+            text(
+                "SELECT payload FROM provenance_event "
+                "WHERE run_id = :rid AND event_type = 'RUN_FAILED'"
+            ),
+            {"rid": str(run_id)},
+        ).first()
+    assert payload_row is not None
+    payload = json.loads(payload_row[0])
+    assert payload["reason"] == "stub_bundle_detected"
+
+
 def test_ingest_409_when_run_already_terminal(
     cp_client: TestClient, cp_engine: Engine, tmp_path: Path
 ):
