@@ -157,6 +157,14 @@ class Composer:
                 )
             self._rag_index = ComponentIndex.load(index_dir)
 
+        # Cache the import whitelist at init so that high-QPS compose()
+        # calls don't re-read the file from disk on every novel-Python
+        # request (audit §1.4). The whitelist is static config; reload
+        # would require restarting the composer anyway.
+        self._whitelist: set[str] | None = None
+        if config.sandbox_whitelist_path is not None:
+            self._whitelist = load_whitelist(config.sandbox_whitelist_path)
+
         log.info(
             "Composer initialized (Phase %s): library=%s llm=%s prompts=%d "
             "components=%d retrieval=%s persist=%s",
@@ -273,10 +281,19 @@ class Composer:
         """
         try:
             hits = self._retrieve(source, k=k)
-        except Exception:
+        except Exception as exc:
             # Retrieval backend failing shouldn't swallow a
             # ScanViolation — the user still needs to see the real
-            # sandbox error. Fall through to no suggestions.
+            # sandbox error. Fall through to no suggestions, but log
+            # the underlying retrieval failure so operators have a
+            # signal that retrieval is broken (was a silent hole per
+            # audit §1.1).
+            log.warning(
+                "Suggestion retrieval failed (%s: %s); "
+                "ScanViolation will surface without suggestions.",
+                type(exc).__name__,
+                exc,
+            )
             return ()
         out: list[str] = []
         for h in hits:
@@ -372,9 +389,8 @@ class Composer:
         # library" suggestions (T13 step 3) — the message should
         # steer the LLM / reviewer back toward composition instead
         # of fighting the whitelist.
-        if novel_python and self._config.sandbox_whitelist_path is not None:
-            whitelist = load_whitelist(self._config.sandbox_whitelist_path)
-            scanner = ImportScanner(whitelist=whitelist)
+        if novel_python and self._whitelist is not None:
+            scanner = ImportScanner(whitelist=self._whitelist)
             for _step_id, source in novel_python.items():
                 result = scanner.scan(source)
                 if not result.ok:
