@@ -16,7 +16,7 @@ from typing import Annotated
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from apecx_integration.composition.approval_policy import ApprovalPolicy
 from apecx_integration.composition.composer import Composer
@@ -25,6 +25,7 @@ from apecx_integration.control_plane.dependencies import (
     get_composer,
     get_local_executor,
     get_session,
+    get_session_factory,
 )
 from apecx_integration.control_plane.executors.local import LocalExecutor
 from apecx_integration.control_plane.models.entities import (
@@ -66,32 +67,31 @@ def _not_implemented(task_ref: str) -> HTTPException:
 @router.post("/start", response_model=StartWorkflowResponse)
 async def start_workflow(
     body: StartWorkflowRequest,
-    session: Annotated[Session, Depends(get_session)],
+    session_factory: Annotated[
+        sessionmaker[Session], Depends(get_session_factory)
+    ],
     composer: Annotated[Composer, Depends(get_composer)],
     policy: Annotated[ApprovalPolicy, Depends(get_approval_policy)],
 ) -> StartWorkflowResponse:
     """T01 P1: compose a workflow, persist it, return the Run.
 
-    Flow:
-    1. Create Run row (status=PENDING). Commit before calling composer
-       so the Artifact FK at compose time resolves.
-    2. ``composer.compose(description, context={"run_id": ...})`` —
-       generates YAML + novel Python, runs the T13 scanner + T06
-       categorization, persists via the injected ArtifactStore.
-    3. Back-link Run.workflow_config_id.
-    4. Evaluate the T06 approval policy against the categorization
-       and set run.status:
-         - policy AUTO             → RUNNING (ready for execution)
-         - REQUIRE_REVIEW / EXPERT → PAUSED (awaits reviewer)
-       No Approval ORM row is created here — approvals are
-       step-scoped runtime events (ApprovalStep, T10). Clients
-       discover pre-execution review gating via
-       ``/workflows/diff`` + the Run's PAUSED status.
+    Flow (audit §2.1 — uses ``get_session_factory`` instead of
+    ``get_session`` so no session is held across the
+    ``await composer.compose(...)`` boundary):
 
-    **Not covered here (T01 Phase 2 scope):** actually executing the
-    composed workflow locally. That needs a Tier 4 local executor
-    wired into the Control Plane — see implementation_plan.md §T01
-    steps 5-8.
+    1. Open a session, create the Run row (status=PENDING), commit,
+       and CLOSE the session before the composer call. Commit-before-
+       compose so the Artifact FK at compose time resolves.
+    2. ``await composer.compose(description, context={"run_id": ...})``
+       — composer uses its own injected session; this route is
+       holding no DB connection during the await.
+    3. Open a second session, fetch the Run, back-link
+       ``workflow_config_id``, evaluate the policy, set status,
+       commit, close.
+
+    Pre-fix (cluster D), this route held the FastAPI ``Depends(get_session)``
+    SQLAlchemy session across the await, pinning a pooled connection
+    for the duration of the LLM call.
     """
     from apecx_integration.composition.approval_policy import ApprovalAction
     from apecx_integration.composition.differ import CategorizedWorkflow
@@ -104,61 +104,78 @@ async def start_workflow(
         status=RunStatus.PENDING,
         created_at=now,
     )
-    session.add(run)
-    session.commit()
+    # Step 1: open session, persist Run row, close.
+    with session_factory() as session:
+        session.add(run)
+        session.commit()
 
+    # Step 2: composer call is now OUTSIDE any session scope. The
+    # composer drives its own ArtifactStore session internally.
     composed = await composer.compose(
         body.description,
         context={"run_id": run_id},
     )
 
-    # Re-read from this session: the composer wrote via its own
-    # session, so we need to fetch the Run and back-link it.
-    run = session.get(RunORM, run_id)
-    if run is None:
-        # Was an `assert` (audit §2.4) — Python's -O strips asserts
-        # so this safety check would silently disappear under any
-        # production deployment that opts into bytecode optimization.
-        # The condition is "should never happen" but a real 500 is
-        # the right response if it does.
-        raise HTTPException(
-            status_code=500,
-            detail=(
-                f"Run {run_id} disappeared between session commits — "
-                "composer.compose() did not persist the run row, or a "
-                "concurrent writer deleted it. This is a server-side "
-                "invariant violation."
-            ),
+    # Step 3: fresh session for the back-link + status write.
+    with session_factory() as session:
+        run = session.get(RunORM, run_id)
+        if run is None:
+            # Was an `assert` (audit §2.4) — Python's -O strips
+            # asserts so this safety check would silently disappear
+            # under any production deployment that opts into
+            # bytecode optimization. The condition is "should never
+            # happen" but a real 500 is the right response if it does.
+            raise HTTPException(
+                status_code=500,
+                detail=(
+                    f"Run {run_id} disappeared between session "
+                    "commits — composer.compose() did not persist "
+                    "the run row, or a concurrent writer deleted "
+                    "it. This is a server-side invariant violation."
+                ),
+            )
+        run.workflow_config_id = composed.artifact_id
+
+        categorized = CategorizedWorkflow(
+            categorizations=composed.composition_summary.step_categorizations,
         )
-    run.workflow_config_id = composed.artifact_id
+        decision = policy.evaluate(categorized)
+        if decision.strongest_required_action is ApprovalAction.AUTO:
+            run.status = RunStatus.RUNNING
+            run.started_at = now
+        else:
+            run.status = RunStatus.PAUSED
 
-    categorized = CategorizedWorkflow(
-        categorizations=composed.composition_summary.step_categorizations,
-    )
-    decision = policy.evaluate(categorized)
-    if decision.strongest_required_action is ApprovalAction.AUTO:
-        run.status = RunStatus.RUNNING
-        run.started_at = now
-    else:
-        run.status = RunStatus.PAUSED
+        session.commit()
+        session.refresh(run)
+        # Materialize the response model BEFORE the session closes;
+        # ``model_validate`` reads run attributes lazily on detached
+        # ORM instances without expire_on_commit (which we set to
+        # False in db.py:make_session_factory), so this is safe in
+        # principle, but explicit serialization here makes the
+        # boundary obvious.
+        response = StartWorkflowResponse(
+            run=RunSchema.model_validate(run),
+            generated_workflow_artifact_id=composed.artifact_id,
+        )
 
-    session.commit()
-    session.refresh(run)
-
-    return StartWorkflowResponse(
-        run=RunSchema.model_validate(run),
-        generated_workflow_artifact_id=composed.artifact_id,
-    )
+    return response
 
 
 @router.post("/plan", response_model=GeneratePlanResponse)
 async def generate_plan(
     body: GeneratePlanRequest,
-    session: Annotated[Session, Depends(get_session)],
+    session_factory: Annotated[
+        sessionmaker[Session], Depends(get_session_factory)
+    ],
     composer: Annotated[Composer, Depends(get_composer)],
 ) -> GeneratePlanResponse:
     """Preview-mode composition — same composer flow as
     ``/workflows/start`` but the Run is immediately marked CANCELLED.
+
+    Same audit §2.1 pattern as ``start_workflow`` — uses
+    ``get_session_factory`` so no DB connection is held across
+    ``await composer.compose(...)``.
 
     The caller gets a ``GeneratePlanResponse`` with the generated
     YAML, a per-step plan (reusing the T06 categorization), and the
@@ -181,19 +198,29 @@ async def generate_plan(
         status=RunStatus.PENDING,
         created_at=now,
     )
-    session.add(run)
-    session.commit()
+    with session_factory() as session:
+        session.add(run)
+        session.commit()
 
     composed = await composer.compose(
         body.description, context={"run_id": run_id}
     )
 
-    run = session.get(RunORM, run_id)
-    assert run is not None, "Run row disappeared between commits"
-    run.workflow_config_id = composed.artifact_id
-    run.status = RunStatus.CANCELLED
-    run.completed_at = now
-    session.commit()
+    with session_factory() as session:
+        run = session.get(RunORM, run_id)
+        if run is None:
+            raise HTTPException(
+                status_code=500,
+                detail=(
+                    f"Run {run_id} disappeared between session "
+                    "commits in /workflows/plan — composer did not "
+                    "persist the run row."
+                ),
+            )
+        run.workflow_config_id = composed.artifact_id
+        run.status = RunStatus.CANCELLED
+        run.completed_at = now
+        session.commit()
 
     plan: list[StepPlan] = []
     for s in composed.composition_summary.step_categorizations:

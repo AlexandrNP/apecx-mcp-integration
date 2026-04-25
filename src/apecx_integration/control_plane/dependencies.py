@@ -15,7 +15,7 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
 from fastapi import HTTPException, Request, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
 
@@ -29,6 +29,25 @@ def get_session(request: Request) -> Iterator[Session]:
     factory = request.app.state.session_factory
     with factory() as session:
         yield session
+
+
+def get_session_factory(request: Request) -> sessionmaker[Session]:
+    """Return the raw factory so routes that ``await`` external work
+    can scope each session to a single non-async block.
+
+    Audit §2.1 (docs/codebase_audit_2026_04_24.md): a FastAPI route
+    that takes ``Depends(get_session)`` holds the session (and its
+    pooled connection) across any ``await`` in the body. Under load,
+    a route that awaits an external service (e.g.,
+    ``composer.compose()`` calling out to an LLM) starves the
+    connection pool.
+
+    Routes that do NOT await across DB work should keep using
+    ``get_session``. Routes that DO await across DB work should
+    inject this factory and explicitly open / close one session per
+    pre-await write block and one per post-await write block.
+    """
+    return request.app.state.session_factory
 
 
 def get_recorder(request: Request) -> ProvenanceRecorder:
