@@ -40,12 +40,15 @@ Design notes
 
 from __future__ import annotations
 
+import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -89,13 +92,27 @@ class ComponentCatalog:
     def from_manifests(cls, paths: list[Path]) -> ComponentCatalog:
         """Load + flatten components from one or more manifest YAMLs."""
         all_components: list[CatalogComponent] = []
+        # Track which manifest each component first came from so the
+        # last-write-wins overrides can be logged with a useful "X
+        # shadowed by Y" message (audit §1.5).
+        first_seen: dict[str, Path] = {}
         for p in paths:
             loaded = _load_manifest(p)
+            for c in loaded:
+                if c.id in first_seen and first_seen[c.id] != p:
+                    log.warning(
+                        "ComponentCatalog: component id=%r from %s "
+                        "shadowed by entry in %s (last-write-wins). "
+                        "Phase-4 multi-library setups should choose "
+                        "stable ids; otherwise debugging "
+                        "'component X went missing' is hard.",
+                        c.id,
+                        first_seen[c.id],
+                        p,
+                    )
+                else:
+                    first_seen[c.id] = p
             all_components.extend(loaded)
-        # Deduplicate on id — if the same component appears in multiple
-        # manifests, the last one wins. Empirically the composer shouldn't
-        # see duplicates at Phase 2 (one manifest per workflow); this
-        # guard exists for Phase 4 multi-library setups.
         by_id: dict[str, CatalogComponent] = {}
         for c in all_components:
             by_id[c.id] = c

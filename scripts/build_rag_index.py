@@ -96,9 +96,32 @@ def build(config_path: Path, out_dir: Path | None = None) -> Path:
         manifest_paths=manifest_paths, library_version=library_version
     )
     idx.save(target)
+
+    # Audit §3.9: post-save verification. Pre-fix, if `idx.save`
+    # raised mid-write (disk full, permission flap), the print
+    # below didn't fire and the operator was left guessing whether
+    # any files reached disk. The verification here surfaces a
+    # partial-write as an explicit RuntimeError, naming the missing
+    # file so the operator can clean up before retrying.
+    expected = ("faiss.bin", "metadata.json")
+    missing: list[str] = []
+    for name in expected:
+        path = target / name
+        if not path.is_file() or path.stat().st_size == 0:
+            missing.append(name)
+    if missing:
+        raise RuntimeError(
+            f"[build_rag_index] post-save verification failed at "
+            f"{target}: expected non-empty {expected!r}, missing or "
+            f"empty: {missing!r}. The save partially completed; "
+            "inspect / clean up before retrying."
+        )
+
     print(
         f"[build_rag_index] wrote {len(idx)} components to {target} "
-        f"(hash={idx.index_hash[:12]})"
+        f"(hash={idx.index_hash[:12]}); verified faiss.bin "
+        f"({(target / 'faiss.bin').stat().st_size} B) and "
+        f"metadata.json ({(target / 'metadata.json').stat().st_size} B)"
     )
     return target
 
