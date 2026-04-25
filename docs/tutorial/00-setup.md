@@ -111,6 +111,17 @@ APECX_LLM_MODEL=mistral-nemo:latest \
 The MCP server speaks stdio. Wire it into Claude Desktop via
 Claude's MCP config, or drive it from the CLI next-step.
 
+**Startup health check (since 2026-04-24):** before binding the
+stdio transport, ``apecx-mcp`` synchronously hits the configured
+``$APECX_CONTROL_PLANE_URL/healthz``. If the Control Plane is
+unreachable, the server logs a clear "Control Plane at <url>
+unreachable" message and exits with code 2 — you don't get a
+silent server-up-but-broken state that only fails when a scientist
+calls a tool. If you're starting the MCP server before the Control
+Plane on purpose (offline development, or testing the MCP surface
+in isolation), set ``APECX_MCP_SKIP_HEALTHCHECK=1`` to bypass the
+guard.
+
 ## Where you are now
 
 - Control Plane serving on `:8000`

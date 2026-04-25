@@ -65,6 +65,35 @@ See ``CLAUDE.md`` § "Composer prompt engineering is load-bearing."
 3. Look at Control Plane logs for the full traceback — the HTTP
    response truncates it.
 
+## 4. `stub_bundle_detected` (HPC ingest only)
+
+**Symptom**: a Run that's been through ``/hpc/export`` →
+``qsub`` → ``/hpc/ingest`` ends in ``failed`` with the provenance
+event payload's ``reason`` field set to ``stub_bundle_detected``.
+
+**What happened**: this is **expected** for the Phase-2 PBS
+scaffold. The exporter's ``run.sh`` is a stub that doesn't
+execute the workflow (T05 follow-up). The stub writes
+``stub_completed`` to ``apecx_status.txt`` and the ingest path
+maps that marker to ``RUN_FAILED`` rather than masquerade as a
+real success.
+
+**Fix**: nothing to fix; the run-level "FAILED" outcome is the
+correct surface for "we never actually ran the workflow on HPC."
+When T05 lands, ``run.sh`` will write ``completed`` and the
+ingest will mark the run COMPLETED. See chapter 04's
+"Phase-2 scaffold caveat" + ``docs/codebase_audit_2026_04_24.md``
+§3.5.
+
+To inspect the reason verbatim:
+
+```sql
+SELECT payload FROM provenance_event
+ WHERE run_id = '<run id>' AND event_type = 'RUN_FAILED'
+ ORDER BY timestamp DESC LIMIT 1;
+-- expect: {"bundle_path": "...", "reason": "stub_bundle_detected", "note": "..."}
+```
+
 ## How to re-run after a fix
 
 Runs are **append-only**. You don't re-run the same Run after
