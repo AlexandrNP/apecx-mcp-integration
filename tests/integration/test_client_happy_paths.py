@@ -201,21 +201,27 @@ async def test_get_artifact_via_client_reports_t11_gap(
     assert resp.reason_inline_omitted is not None and "T11" in resp.reason_inline_omitted
 
 
-async def test_unconfigured_start_workflow_surfaces_503(
+async def test_unconfigured_start_workflow_raises_dependency_error(
     cp_client_http: ControlPlaneClient,
 ) -> None:
     """``cp_client_http`` is built on a bare ``create_app()`` — no
     composer wired. /workflows/start hits the ``get_composer`` 503
     gate. Previously this route was 501-stubbed; now it's real but
     DI-gated.
+
+    Audit §3.3 (2026-04-24): the client used to surface 503 as a raw
+    ``httpx.HTTPStatusError`` (exposing httpx internals to MCP
+    callers). It now wraps to ``ControlPlaneDependencyError`` for
+    parity with the 501 → ``NotImplementedError`` path. The 503
+    detail message is preserved verbatim as the exception's str.
     """
-    import httpx
-
     from apecx_integration.control_plane.schemas.api import StartWorkflowRequest
+    from apecx_integration.mcp_surface.control_plane_client import (
+        ControlPlaneDependencyError,
+    )
 
-    with pytest.raises(httpx.HTTPStatusError) as exc:
+    with pytest.raises(ControlPlaneDependencyError) as exc:
         await cp_client_http.start_workflow(
             StartWorkflowRequest(description="x", user_id="alex")
         )
-    assert exc.value.response.status_code == 503
-    assert "Composer is not configured" in exc.value.response.json()["detail"]
+    assert "Composer is not configured" in str(exc.value)
