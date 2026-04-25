@@ -47,7 +47,10 @@ from apecx_integration.mcp_surface.tools import (
 from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
-from apecx_integration.mcp_surface.tools._shared import get_client
+# Note: ``get_client`` is intentionally NOT imported here. The
+# startup health check builds an ephemeral client (see
+# ``_verify_control_plane_reachable``) so it doesn't pollute the
+# tool-call singleton with a dead-loop binding.
 
 log = logging.getLogger(__name__)
 
@@ -96,10 +99,27 @@ async def _verify_control_plane_reachable() -> None:
             "reachability check."
         )
         return
-    client = get_client()
-    base_url = client._base_url  # noqa: SLF001 — log only
+    base_url = os.environ.get(
+        "APECX_CONTROL_PLANE_URL", "http://localhost:8000"
+    )
+    # Build an EPHEMERAL client; do NOT touch the get_client()
+    # singleton here. The singleton's httpx.AsyncClient binds to
+    # whatever event loop is current at construction. main() runs
+    # this function via asyncio.run(), which closes its loop on
+    # return. If we built the singleton inside that loop, every
+    # FastMCP tool call later in main() would hit the singleton
+    # bound to a dead loop and fail with "Event loop is closed".
+    # Discovered via stdio JSON-RPC e2e probe 2026-04-25 — the
+    # cluster D §3.2 fix was correct in spirit but introduced this
+    # lifecycle regression. Keep startup-time and tool-time clients
+    # strictly separate.
+    from apecx_integration.mcp_surface.control_plane_client import (
+        ControlPlaneClient,
+    )
+
+    ephemeral = ControlPlaneClient(base_url)
     try:
-        resp = await client.healthz()
+        resp = await ephemeral.healthz()
     except Exception as exc:  # noqa: BLE001 — must catch any wire error
         log.error(
             "MCP startup: Control Plane at %s is unreachable (%s: %s). "
@@ -110,7 +130,9 @@ async def _verify_control_plane_reachable() -> None:
             type(exc).__name__,
             exc,
         )
+        await ephemeral.close()
         raise SystemExit(2) from exc
+    await ephemeral.close()
     log.info(
         "MCP startup: Control Plane at %s reachable (%s).", base_url, resp
     )
