@@ -163,11 +163,24 @@ def test_prompt_dir_is_resolved_relative_to_config_file(tmp_path):
     assert composer.config.prompt_dir == prompt_dir
 
 
-def test_bad_temperature_range_raises_cleanly(tmp_path):
+def test_bad_temperature_range_raises_cleanly(tmp_path, monkeypatch):
     """Pydantic validation should surface via ComposerConfigurationError,
     not raw pydantic.ValidationError — error-message ergonomics for
     operators who aren't fluent in pydantic.
+
+    Found 2026-04-25 (live-suite verification): pre-fix this test
+    was test-isolation-broken. ``_apply_llm_env_overrides`` runs
+    BEFORE pydantic validation and silently rewrites the YAML's
+    temperature with the value of ``APECX_LLM_TEMPERATURE`` if
+    that env var is set. So a developer running pytest in a shell
+    that has the live-LLM recipe env vars exported (per
+    ``CLAUDE.md`` "Live-LLM test recipe") would see this test pass
+    with a bad temperature being silently corrected, masking the
+    real validation gate. Explicitly delete the env var so the
+    test always exercises the YAML-side validation path it
+    documents.
     """
+    monkeypatch.delenv("APECX_LLM_TEMPERATURE", raising=False)
     prompt_dir = tmp_path / "my_prompts"
     prompt_dir.mkdir()
     for fname in REQUIRED_PROMPT_FILES:
