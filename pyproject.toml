@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "apecx-integration"
 version = "0.0.1"
 description = "APECx MCP + Control Plane + Composition + Execution integration (Tier 1–4)"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "BSD-3-Clause"}
 authors = [{name = "APECx team"}]
@@ -49,7 +49,10 @@ dev = [
     "aiosmtpd>=1.4",
 ]
 rag = [
-    "sentence-transformers>=2.7",
+    # Upper bound matches nanobrain's pin; sentence-transformers 3.x
+    # would require coordinated upgrades across both repos. See audit
+    # finding §8.3 (docs/codebase_audit_2026_04_24.md).
+    "sentence-transformers>=2.7,<3.0.0",
     "faiss-cpu>=1.8",
 ]
 hpc = [
@@ -76,14 +79,14 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4"]
 ignore = ["E501"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = false
 warn_unused_ignores = true
 warn_redundant_casts = true
