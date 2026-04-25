@@ -25,6 +25,7 @@ API:
 from __future__ import annotations
 
 import asyncio
+import logging
 import os
 import shutil
 import subprocess
@@ -32,6 +33,8 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Sequence
+
+log = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Configuration + result types
@@ -56,6 +59,11 @@ class SandboxConfig:
     tmpfs_size: str = "256m"
     workdir: str = "/work"
     timeout_seconds: float = 60.0
+    # Audit §1.7: kill_timeout was hardcoded at 5.0 inside the kill
+    # fallback. Slow Docker daemons cascade timeouts; making this
+    # tunable lets operators on stressed CI hosts grant the kill
+    # more time before declaring the container abandoned.
+    kill_timeout_seconds: float = 5.0
     extra_run_args: tuple[str, ...] = field(default_factory=tuple)
 
 
@@ -68,6 +76,14 @@ class SandboxResult:
     stderr: str
     duration_seconds: float
     killed_by_timeout: bool
+    # Audit §1.8: pre-fix the docker-kill fallback was a bare
+    # ``except Exception: pass`` — kill failure (slow daemon,
+    # permission issue, container already gone) returned
+    # ``killed_by_timeout=True`` even when the kill itself errored
+    # and the container might still be alive. ``kill_succeeded``
+    # surfaces that distinction so the caller knows whether
+    # post-timeout state is clean.
+    kill_succeeded: bool = True
     argv: tuple[str, ...]  # the exact docker run invocation (for audit)
 
 
@@ -240,6 +256,7 @@ class DockerSandboxRunner:
         )
 
         killed = False
+        kill_succeeded = True  # only meaningful when killed=True
         try:
             stdout_b, stderr_b = await asyncio.wait_for(
                 proc.communicate(),
@@ -247,19 +264,42 @@ class DockerSandboxRunner:
             )
         except asyncio.TimeoutError:
             killed = True
+            kill_succeeded = False
             # Ask the container to die. ``--rm`` takes care of removal.
             if container_name is not None:
-                # Best-effort kill; fire-and-forget (we're already timing
-                # out, don't block further).
+                # Audit §1.7+§1.8: the kill timeout is now configurable
+                # (was hardcoded 5.0) and the exception handling is no
+                # longer a bare ``except Exception: pass``. We catch
+                # specific exceptions, log them, and surface the
+                # outcome via ``kill_succeeded`` on the result so the
+                # caller knows whether the container is definitely
+                # dead.
                 try:
                     subprocess.run(
                         ["docker", "kill", container_name],
                         check=False,
-                        timeout=5.0,
+                        timeout=self._config.kill_timeout_seconds,
                         capture_output=True,
                     )
-                except Exception:
-                    pass
+                    kill_succeeded = True
+                except subprocess.TimeoutExpired:
+                    log.warning(
+                        "docker kill %s timed out after %.1fs; "
+                        "container may still be running.",
+                        container_name,
+                        self._config.kill_timeout_seconds,
+                    )
+                except OSError as exc:
+                    log.warning(
+                        "docker kill %s failed with OSError (%s); "
+                        "container may still be running.",
+                        container_name,
+                        exc,
+                    )
+                # Other exceptions (e.g., FileNotFoundError if docker
+                # binary disappeared mid-run) propagate — those are
+                # not "container left running"; they're environment
+                # corruption worth surfacing.
             # Kill the docker-run client process itself, whatever state
             # it's in. Without this, communicate() below can still hang.
             try:
@@ -277,6 +317,7 @@ class DockerSandboxRunner:
             stderr=stderr_b.decode("utf-8", errors="replace"),
             duration_seconds=duration,
             killed_by_timeout=killed,
+            kill_succeeded=kill_succeeded,
             argv=tuple(argv),
         )
 
