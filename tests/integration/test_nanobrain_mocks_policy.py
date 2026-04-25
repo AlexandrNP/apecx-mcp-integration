@@ -124,28 +124,21 @@ def test_academy_not_implemented_error_class_exists():
     assert issubclass(AcademyNotImplementedError, NotImplementedError)
 
 
-def test_academy_demo_mode_env_var_gate_documented():
-    """Per T14 fix: the mock response path is gated on ACADEMY_DEMO_MODE=1.
-    Without it, real Academy call is the required path (currently raises).
-
-    We don't stand up a real Academy client here — that requires the
-    unimplemented integration. What we CAN verify: the source contains
-    the env-var gate and the NotImplementedError raise. This is a
-    source-inspection test, not a behavioral one; it pins the policy
-    contract so a future "accidentally remove the gate" commit flips red.
-    """
-    import inspect
-
-    from nanobrain.core import academy_integration
-
-    source = inspect.getsource(academy_integration)
-    assert 'ACADEMY_DEMO_MODE' in source, (
-        "T14 fix removed — expected ACADEMY_DEMO_MODE env-var gate in "
-        "academy_integration.py. See T14 audit §2-C2."
-    )
-    assert 'AcademyNotImplementedError' in source, (
-        "T14 fix removed — expected AcademyNotImplementedError raise."
-    )
+# Removed 2026-04-24 (audit §4.2):
+# ``test_academy_demo_mode_env_var_gate_documented`` was a source-
+# string grep against ``academy_integration.py`` checking that the
+# strings ``ACADEMY_DEMO_MODE`` and ``AcademyNotImplementedError``
+# appeared in the source. That test would have passed if those
+# names appeared in a comment or a removed-but-imported symbol —
+# i.e., it tested documentation, not behavior.
+#
+# Behavioral coverage of the demo-mode gate is now provided by
+# ``tests/integration/test_academy_real_integration.py::
+# test_demo_mode_still_produces_mock_response`` (added with the G5
+# real-Academy integration, 2026-04-24). That test sets
+# ``ACADEMY_DEMO_MODE=1``, dispatches a real action, and asserts
+# the mock response shape — a real "remove the gate" commit would
+# fail that test, not just trigger a string mismatch in a comment.
 
 
 # ---------------------------------------------------------------------------
