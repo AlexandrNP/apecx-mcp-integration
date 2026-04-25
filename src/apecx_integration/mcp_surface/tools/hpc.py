@@ -12,19 +12,20 @@ HPC executor which remains 501 at the Control Plane layer.
 
 from __future__ import annotations
 
-from uuid import UUID
-
 from apecx_integration.control_plane.schemas.api import (
     ConfirmAllocationRequest,
     EstimateCostRequest,
     ExportHpcBundleRequest,
     IngestHpcBundleRequest,
 )
-from apecx_integration.mcp_surface.tools._shared import get_client
+from apecx_integration.mcp_surface.tools._shared import (
+    get_client,
+    parse_run_id,
+)
 
 
 async def estimate_cost(run_id: str) -> dict:
-    body = EstimateCostRequest(run_id=UUID(run_id))
+    body = EstimateCostRequest(run_id=parse_run_id(run_id))
     client = get_client()
     result = await client.estimate_cost(body)
     return result.model_dump(mode="json")
@@ -34,7 +35,7 @@ async def confirm_allocation(
     run_id: str, confirmed_core_hours: float
 ) -> dict:
     body = ConfirmAllocationRequest(
-        run_id=UUID(run_id),
+        run_id=parse_run_id(run_id),
         confirmed_core_hours=confirmed_core_hours,
     )
     client = get_client()
@@ -46,7 +47,7 @@ async def export_hpc_bundle(
     run_id: str, target_system: str, output_directory: str
 ) -> dict:
     body = ExportHpcBundleRequest(
-        run_id=UUID(run_id),
+        run_id=parse_run_id(run_id),
         target_system=target_system,
         output_directory=output_directory,
     )

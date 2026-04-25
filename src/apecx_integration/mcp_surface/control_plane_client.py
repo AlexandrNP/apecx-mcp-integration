@@ -7,10 +7,14 @@ raises on non-2xx. Status-code handling:
 - 501 → ``NotImplementedError`` (``detail`` as message). Only
         ``/hpc/submit`` still stubs with 501 (demoted-optional HPC
         executor work, T04/T05 runtime).
-- 503 → propagated as ``httpx.HTTPStatusError`` — means a composer
-        or approval-policy dependency isn't configured on the
-        Control Plane (see ``get_composer`` / ``get_approval_policy``
-        / ``get_local_executor`` in ``control_plane/dependencies.py``).
+- 503 → ``ControlPlaneDependencyError`` (``detail`` as message).
+        Means a composer or approval-policy dependency isn't
+        configured on the Control Plane (see ``get_composer`` /
+        ``get_approval_policy`` / ``get_local_executor`` in
+        ``control_plane/dependencies.py``). Pre-2026-04-24 this was
+        a raw ``httpx.HTTPStatusError`` — confusing for MCP callers
+        because the traceback exposed httpx internals; now wrapped
+        for consistency with the 501 path. Audit §3.3.
 - other non-2xx → ``httpx.HTTPStatusError`` via ``raise_for_status()``.
 
 Real-backed endpoints (as of 2026-04-22):
@@ -73,6 +77,16 @@ from apecx_integration.control_plane.schemas.api import (
 R = TypeVar("R", bound=BaseModel)
 
 
+class ControlPlaneDependencyError(RuntimeError):
+    """Raised when the Control Plane returns 503 because a backend
+    dependency (composer, approval policy, executor) isn't configured.
+
+    Distinct from ``NotImplementedError`` (which the client raises
+    on 501) so callers can differentiate "this endpoint doesn't
+    exist yet" from "this endpoint exists but is misconfigured."
+    """
+
+
 class ControlPlaneClient:
     """HTTP client to the Control Plane.
 
@@ -103,6 +117,13 @@ class ControlPlaneClient:
         if resp.status_code == httpx.codes.NOT_IMPLEMENTED:
             detail = self._extract_detail(resp.json())
             raise NotImplementedError(detail or "Control Plane endpoint not implemented yet")
+        if resp.status_code == httpx.codes.SERVICE_UNAVAILABLE:
+            detail = self._extract_detail(resp.json())
+            raise ControlPlaneDependencyError(
+                detail
+                or f"Control Plane returned 503 from {path} "
+                "(composer / approval-policy / executor not configured)"
+            )
         resp.raise_for_status()
         return response_model.model_validate(resp.json())
 

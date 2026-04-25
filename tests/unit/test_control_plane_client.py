@@ -3,9 +3,10 @@
 Exercise the client against a real ASGI app (no mock HTTP layer)
 using ``httpx.ASGITransport``. We verify:
 1. Healthz round-trip.
-2. The client surfaces a 503 "not configured" error when
-   ``create_app()`` is built without a composer. Integration tests
-   cover the 200 happy path with a wired composer.
+2. The client surfaces a 503 "not configured" error as
+   ``ControlPlaneDependencyError`` when ``create_app()`` is built
+   without a composer. Integration tests cover the 200 happy path
+   with a wired composer.
 """
 
 from __future__ import annotations
@@ -16,7 +17,10 @@ from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.schemas.api import (
     StartWorkflowRequest,
 )
-from apecx_integration.mcp_surface.control_plane_client import ControlPlaneClient
+from apecx_integration.mcp_surface.control_plane_client import (
+    ControlPlaneClient,
+    ControlPlaneDependencyError,
+)
 
 
 @pytest.fixture(name="client")
@@ -34,17 +38,18 @@ async def test_healthz_round_trips(client: ControlPlaneClient) -> None:
     await client.close()
 
 
-async def test_start_workflow_surfaces_503_when_composer_absent(
+async def test_start_workflow_503_wraps_as_dependency_error(
     client: ControlPlaneClient,
 ) -> None:
-    """Bare ``create_app()`` has no composer → /workflows/start
-    returns 503. The MCP client must propagate that as an
-    HTTPStatusError (previously this test asserted NotImplementedError
-    because the route was a 501 stub; the route is real now, just
-    unconfigured on this test app)."""
+    """Audit §3.3. Pre-fix the 503 fell through ``raise_for_status()``
+    and surfaced as a raw ``httpx.HTTPStatusError`` (exposing httpx
+    internals to MCP callers). Now wrapped in
+    ``ControlPlaneDependencyError`` for parity with the 501 →
+    ``NotImplementedError`` path; the original 503 detail message
+    is preserved as the exception's str.
+    """
     body = StartWorkflowRequest(description="Run VIOLIN × BV-BRC", user_id="alex")
-    with pytest.raises(httpx.HTTPStatusError) as exc:
+    with pytest.raises(ControlPlaneDependencyError) as exc:
         await client.start_workflow(body)
-    assert exc.value.response.status_code == 503
-    assert "Composer is not configured" in exc.value.response.json()["detail"]
+    assert "Composer is not configured" in str(exc.value)
     await client.close()

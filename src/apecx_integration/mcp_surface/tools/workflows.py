@@ -9,15 +9,19 @@ Names follow AP §3 — these are what Claude Desktop surfaces as tools.
 
 from __future__ import annotations
 
-from uuid import UUID
-
 from apecx_integration.control_plane.schemas.api import (
     ExecuteWorkflowRequest,
     ShowYamlDiffRequest,
     StartWorkflowRequest,
 )
 from apecx_integration.control_plane.schemas.enums import ExecutorKind
-from apecx_integration.mcp_surface.tools._shared import get_client
+from apecx_integration.mcp_surface.tools._shared import (
+    get_client,
+    parse_run_id,
+)
+
+
+_VALID_EXECUTORS = {e.value for e in ExecutorKind}
 
 
 async def start_workflow(
@@ -31,6 +35,14 @@ async def start_workflow(
     depending on the approval policy) and the generated workflow
     artifact id.
     """
+    if preferred_executor not in _VALID_EXECUTORS:
+        # Audit §3.10. Pre-fix the bare `ExecutorKind(...)` raised
+        # deep inside Pydantic with a generic enum-coercion error;
+        # echo the offending value back so the caller can correct.
+        raise ValueError(
+            f"preferred_executor={preferred_executor!r} is not a "
+            f"valid executor; expected one of {sorted(_VALID_EXECUTORS)}."
+        )
     body = StartWorkflowRequest(
         description=description,
         user_id=user_id,
@@ -48,7 +60,7 @@ async def show_diff(run_id: str) -> dict:
     ``categorization`` (composed_standard / composed_parameterized /
     composed_wrapped / novel), and a one-sentence summary.
     """
-    body = ShowYamlDiffRequest(run_id=UUID(run_id))
+    body = ShowYamlDiffRequest(run_id=parse_run_id(run_id))
     client = get_client()
     result = await client.show_yaml_diff(body)
     return result.model_dump(mode="json")
@@ -61,7 +73,7 @@ async def execute_workflow(run_id: str) -> dict:
     reaches terminal state. Returns ``status`` (completed / failed),
     ``output_artifact_id`` (on success), and ``reason`` (on failure).
     """
-    body = ExecuteWorkflowRequest(run_id=UUID(run_id))
+    body = ExecuteWorkflowRequest(run_id=parse_run_id(run_id))
     client = get_client()
     result = await client.execute_workflow(body)
     return result.model_dump(mode="json")

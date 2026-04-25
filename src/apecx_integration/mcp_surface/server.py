@@ -31,6 +31,11 @@ What's deliberately NOT exposed
 
 from __future__ import annotations
 
+import asyncio
+import logging
+import os
+import sys
+
 from mcp.server.fastmcp import FastMCP
 
 from apecx_integration.mcp_surface.tools import (
@@ -42,6 +47,9 @@ from apecx_integration.mcp_surface.tools import (
 from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
+from apecx_integration.mcp_surface.tools._shared import get_client
+
+log = logging.getLogger(__name__)
 
 
 def build_server() -> FastMCP:
@@ -69,7 +77,48 @@ def build_server() -> FastMCP:
     return server
 
 
+async def _verify_control_plane_reachable() -> None:
+    """Hit /healthz on the configured Control Plane URL.
+
+    Audit §3.2: pre-fix the lazy client meant a misconfigured
+    ``APECX_CONTROL_PLANE_URL`` only surfaced when a scientist
+    actually invoked a tool, by which point the operator had no
+    signal that anything was wrong. Eager-failing at startup gives
+    the operator an immediate, actionable error.
+
+    Set ``APECX_MCP_SKIP_HEALTHCHECK=1`` to skip this guard — useful
+    for offline development or when the Control Plane is intentionally
+    deferred (e.g., during MCP-only smoke testing).
+    """
+    if os.environ.get("APECX_MCP_SKIP_HEALTHCHECK") == "1":
+        log.info(
+            "MCP startup: APECX_MCP_SKIP_HEALTHCHECK=1, skipping CP "
+            "reachability check."
+        )
+        return
+    client = get_client()
+    base_url = client._base_url  # noqa: SLF001 — log only
+    try:
+        resp = await client.healthz()
+    except Exception as exc:  # noqa: BLE001 — must catch any wire error
+        log.error(
+            "MCP startup: Control Plane at %s is unreachable (%s: %s). "
+            "Set APECX_CONTROL_PLANE_URL to the correct URL, or "
+            "APECX_MCP_SKIP_HEALTHCHECK=1 to bypass. Tool calls would "
+            "fail at first invocation; failing fast at startup instead.",
+            base_url,
+            type(exc).__name__,
+            exc,
+        )
+        raise SystemExit(2) from exc
+    log.info(
+        "MCP startup: Control Plane at %s reachable (%s).", base_url, resp
+    )
+
+
 def main() -> None:
+    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
+    asyncio.run(_verify_control_plane_reachable())
     server = build_server()
     server.run()
 
