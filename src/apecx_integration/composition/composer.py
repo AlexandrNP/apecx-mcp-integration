@@ -381,6 +381,21 @@ class Composer:
         ])
         raw_content = getattr(response, "content", str(response))
 
+        # Audit §1.2: validate the LLM produced a non-empty string
+        # response. Pre-fix `getattr(response, "content", str(response))`
+        # would return None if a future LangChain version made
+        # content=None legal — `_parse_response` then crashed on
+        # `_FENCE_RE.finditer(None)` with a TypeError instead of a
+        # clear "empty response" error. The `str(response)` fallback
+        # is also worthless (object repr never contains a yaml fence).
+        if not isinstance(raw_content, str) or not raw_content.strip():
+            raise ComposerResponseError(
+                "LLM response content was empty or non-string "
+                f"(got {type(raw_content).__name__}={raw_content!r}). "
+                "The composer expected a yaml-fenced block; nothing "
+                "to parse."
+            )
+
         # 4. Parse fenced blocks
         yaml_text, novel_python = _parse_response(raw_content)
 
@@ -659,10 +674,18 @@ def _default_llm_factory(**kwargs: Any):
 # body is group 2. Handles both ``` and ~~~ fences per CommonMark
 # (limited to ``` to keep the regex simple). Greedy on the body with
 # a non-greedy-ish trailing fence.
+#
+# Audit §1.3: `\n\s*` before the closing fence (instead of plain
+# `\n```) tolerates trailing whitespace or a blank line between the
+# body and the closing fence — valid CommonMark, occasionally
+# emitted by LLMs whose training distribution includes that pattern.
+# Pre-fix the parser silently failed to match such blocks and the
+# composer raised "no ```yaml fenced block" with no hint that the
+# block existed but had a trailing blank line.
 _FENCE_RE = re.compile(
     r"```\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\n"
     r"(.*?)"
-    r"\n```",
+    r"\n\s*```",
     re.DOTALL,
 )
 
