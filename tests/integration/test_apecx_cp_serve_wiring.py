@@ -117,6 +117,49 @@ def test_build_components_returns_none_on_missing_path(
     assert executor is not None
 
 
+def test_build_components_prints_loaded_banners_to_stderr(
+    cp_engine_in_memory, monkeypatch, capsys
+):
+    """Tutorial chapter 00 §5 documents three startup banner lines
+    that operators rely on to verify "is the composer wired?":
+
+      INFO apecx-cp serve: composer loaded from ...
+      INFO apecx-cp serve: approval policy loaded from ...
+      INFO apecx-cp serve: local executor wired against workflow_base_dir=...
+
+    Pre-fix these were ``log.info(...)`` calls; alembic.ini's
+    ``disable_existing_loggers=True`` fileConfig in
+    ``ensure_infra_ready`` silently disabled the
+    ``apecx_integration.control_plane.app`` logger BEFORE
+    ``_build_components_from_env`` ran, so the lines never appeared
+    in the visible log even though the composer was actually being
+    wired. The fix bypasses logging entirely and prints to stderr
+    via ``print(..., file=sys.stderr)`` — the lines are startup
+    banners, not log records, and shouldn't be subject to log-config
+    filtering.
+    """
+    from apecx_integration.control_plane.app import _build_components_from_env
+
+    for var in (
+        "APECX_COMPOSER_CONFIG_PATH",
+        "APECX_APPROVAL_POLICY_PATH",
+        "APECX_WORKFLOW_BASE_DIR",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+    _build_components_from_env(cp_engine_in_memory)
+
+    captured = capsys.readouterr()
+    err = captured.err
+    assert "INFO apecx-cp serve: composer loaded from" in err, (
+        f"Tutorial chapter 00 §5's 'composer loaded from' banner is "
+        f"missing from stderr; operators would think the composer is "
+        f"unwired even when it isn't. stderr was:\n{err!r}"
+    )
+    assert "INFO apecx-cp serve: approval policy loaded from" in err
+    assert "INFO apecx-cp serve: local executor wired against" in err
+
+
 def test_serve_wires_app_so_workflows_start_does_not_503(
     cp_engine_in_memory, monkeypatch
 ):

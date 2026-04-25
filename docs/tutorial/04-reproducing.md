@@ -48,6 +48,37 @@ branch will mark the Run COMPLETED. This chapter will be
 re-validated then. See ``docs/codebase_audit_2026_04_24.md`` §3.5
 for context.
 
+## 0. Compose a fresh run for the HPC flow
+
+You **cannot** reuse the run from chapter 01 here. Chapter 01 §4
+executed the workflow locally, which marked the run as ``completed``
+(a terminal state). ``/hpc/ingest`` rejects ingestion against
+already-terminal runs with a ``409 Conflict`` ("Run is already in
+terminal state ... bundle ingest is append-only, not idempotent").
+
+That's by design — once a run reaches a terminal state, its
+provenance chain is sealed. The HPC flow is a separate lifecycle
+from local execution.
+
+So compose a fresh run, but **do not execute it locally**:
+
+```bash
+curl -s http://localhost:8000/workflows/start \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "description": "Map pathogen names from a query to BV-BRC genome ids.",
+    "user_id": "alex"
+  }' | jq .
+
+# Save the run id; this is the run we'll export to HPC.
+HPC_RUN_ID=<run.id from the response>
+```
+
+The new run starts in ``running`` (or ``paused`` if the composer
+emitted novel Python). Don't call ``/workflows/execute`` against
+this one — leave it in its non-terminal state so the ingest path
+can land it cleanly.
+
 ## 1. Export a bundle
 
 ``/hpc/export`` packages the Run into a qsub-able directory:
@@ -56,9 +87,9 @@ for context.
 curl -s http://localhost:8000/hpc/export \
   -H 'Content-Type: application/json' \
   -d "{
-    \"run_id\": \"$RUN_ID\",
+    \"run_id\": \"$HPC_RUN_ID\",
     \"target_system\": \"polaris\",
-    \"output_directory\": \"/tmp/run_$RUN_ID\"
+    \"output_directory\": \"/tmp/run_$HPC_RUN_ID\"
   }" | jq .
 ```
 
@@ -89,7 +120,7 @@ directory back (with populated ``outputs/result.json`` +
 ```bash
 curl -s http://localhost:8000/hpc/ingest \
   -H 'Content-Type: application/json' \
-  -d "{\"bundle_path\": \"/tmp/run_$RUN_ID\"}" | jq .
+  -d "{\"bundle_path\": \"/tmp/run_$HPC_RUN_ID\"}" | jq .
 ```
 
 The Control Plane reads ``provenance_seed.json``, then branches
@@ -121,13 +152,13 @@ Before committing HPC cycles, get an allocation estimate:
 ```bash
 curl -s http://localhost:8000/hpc/estimate \
   -H 'Content-Type: application/json' \
-  -d "{\"run_id\": \"$RUN_ID\"}" | jq .
+  -d "{\"run_id\": \"$HPC_RUN_ID\"}" | jq .
 # → { "total_core_hours": 0.42, "per_step_core_hours": {...}, ... }
 
 # Approve the estimate
 curl -s http://localhost:8000/hpc/confirm \
   -H 'Content-Type: application/json' \
-  -d "{\"run_id\": \"$RUN_ID\", \"confirmed_core_hours\": 0.5}" | jq .
+  -d "{\"run_id\": \"$HPC_RUN_ID\", \"confirmed_core_hours\": 0.5}" | jq .
 ```
 
 Confirmation records a user-acknowledgement before the scientist
@@ -142,7 +173,7 @@ A colleague re-runs the same workflow with:
 # Fetch the workflow YAML from your Run
 curl -s http://localhost:8000/workflows/diff \
   -H 'Content-Type: application/json' \
-  -d "{\"run_id\": \"$RUN_ID\"}" | jq -r '.yaml_text' > their_workflow.yml
+  -d "{\"run_id\": \"$HPC_RUN_ID\"}" | jq -r '.yaml_text' > their_workflow.yml
 
 # They re-instantiate it against their Control Plane — not
 # documented here since "colleague runs a local Control Plane" is

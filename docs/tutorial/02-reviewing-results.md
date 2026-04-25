@@ -17,22 +17,51 @@ execute, you should see ``completed``.
 
 ## 2. Pull the output artifact
 
+The Tier-2 API exposes artifacts by id (``POST /runs/artifact``
+takes ``{"artifact_id": "<uuid>"}``); there is no list-by-run
+route today. That's a known product gap (T15 follow-up). The
+tutorial walks you through fetching the two artifacts you already
+know about from chapter 01:
+
+- The composed-workflow artifact id is the
+  ``generated_workflow_artifact_id`` field of
+  ``/workflows/start``'s response (also surfaced as
+  ``run.workflow_config_id``).
+- The output-artifact id is the ``output_artifact_id`` field of
+  ``/workflows/execute``'s response.
+
 ```bash
-# List every artifact tied to this run
+# Fetch the composed-workflow artifact.
+WORKFLOW_ARTIFACT_ID=<generated_workflow_artifact_id from /workflows/start>
 curl -s http://localhost:8000/runs/artifact \
   -H 'Content-Type: application/json' \
-  -d "{\"run_id\": \"$RUN_ID\"}" | jq .
+  -d "{\"artifact_id\": \"$WORKFLOW_ARTIFACT_ID\"}" | jq .
+
+# Fetch the output artifact.
+OUTPUT_ARTIFACT_ID=<output_artifact_id from /workflows/execute>
+curl -s http://localhost:8000/runs/artifact \
+  -H 'Content-Type: application/json' \
+  -d "{\"artifact_id\": \"$OUTPUT_ARTIFACT_ID\"}" | jq .
 ```
 
-You'll see at least two:
+Each response has ``artifact.kind`` (``generated_workflow`` or
+``output``), ``artifact.content_hash`` (sha256 hex), an
+``artifact.location`` on disk, and an optional ``inline_bytes``
+(present for small artifacts; check ``reason_inline_omitted`` if
+it's null).
 
-- ``kind: generated_workflow`` — the composed YAML (same one
-  ``/workflows/diff`` surfaced).
-- ``kind: output`` — the result JSON the LocalExecutor persisted
-  when execution completed.
+If you want to discover ALL artifacts for a run without the prior
+ids, query the SQLite DB directly:
 
-Each artifact has a ``content_hash`` (sha256 hex) and a
-``location`` on disk.
+```bash
+sqlite3 ./tut_cp.db \
+  "SELECT id, kind, location FROM artifact WHERE run_id = '$RUN_ID';"
+```
+
+(Replace ``./tut_cp.db`` with your ``APECX_CP_DB_URL`` target.
+For Postgres, use ``psql`` with the equivalent SELECT.) A
+``GET /runs/<run_id>/artifacts`` route is queued as a T15
+follow-up so the tutorial can drop the SQL escape hatch.
 
 ## 3. Validate the provenance chain
 

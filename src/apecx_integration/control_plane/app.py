@@ -164,6 +164,23 @@ def _build_components_from_env(engine: Engine) -> tuple:
     recorder = ProvenanceRecorder(session_factory)
     store = ArtifactStore(session_factory=session_factory, recorder=recorder)
 
+    # NOTE on stderr prints below: alembic.ini's [logger_root]
+    # fileConfig (called by ``ensure_infra_ready -> command.upgrade``)
+    # uses ``disable_existing_loggers=True`` by default, which disables
+    # every logger imported before alembic ran — including
+    # ``apecx_integration.control_plane.app``. Re-enabling each
+    # disabled logger by walking the dict is fragile across Python
+    # versions; the operator-facing component-loaded announcements
+    # are not log records anyway, they're startup banners that should
+    # always print regardless of log config. So we bypass the logging
+    # module here and write directly to stderr. The tutorial documents
+    # these lines as the "is the composer wired?" verification signal.
+    # Found during the 2026-04-25 tutorial e2e validation pass —
+    # earlier attempts (basicConfig, setLevel) failed because of the
+    # disable_existing_loggers gotcha.
+    def _banner(msg: str) -> None:
+        print(f"INFO apecx-cp serve: {msg}", file=sys.stderr, flush=True)
+
     composer = None
     composer_path_env = os.environ.get("APECX_COMPOSER_CONFIG_PATH")
     composer_path = (
@@ -172,19 +189,19 @@ def _build_components_from_env(engine: Engine) -> tuple:
         else _DEFAULT_COMPOSER_CONFIG
     )
     if composer_path_env == "":
-        log.info(
-            "apecx-cp serve: APECX_COMPOSER_CONFIG_PATH set to empty "
-            "string; composer disabled, /workflows/start will 503."
+        _banner(
+            "APECX_COMPOSER_CONFIG_PATH set to empty string; composer "
+            "disabled, /workflows/start will 503."
         )
     elif composer_path.is_file():
         composer = Composer.from_config(composer_path)
         composer._artifact_store = store  # noqa: SLF001 — documented hook
-        log.info("apecx-cp serve: composer loaded from %s", composer_path)
+        _banner(f"composer loaded from {composer_path}")
     else:
-        log.warning(
-            "apecx-cp serve: composer config %s not found; /workflows/start "
-            "will 503. Set APECX_COMPOSER_CONFIG_PATH to override.",
-            composer_path,
+        _banner(
+            f"WARNING composer config {composer_path} not found; "
+            "/workflows/start will 503. Set APECX_COMPOSER_CONFIG_PATH "
+            "to override."
         )
 
     approval_policy = None
@@ -195,18 +212,18 @@ def _build_components_from_env(engine: Engine) -> tuple:
         else _DEFAULT_APPROVAL_POLICY
     )
     if policy_path_env == "":
-        log.info(
-            "apecx-cp serve: APECX_APPROVAL_POLICY_PATH set to empty "
-            "string; approval policy disabled, /workflows/start will 503."
+        _banner(
+            "APECX_APPROVAL_POLICY_PATH set to empty string; approval "
+            "policy disabled, /workflows/start will 503."
         )
     elif policy_path.is_file():
         approval_policy = ApprovalPolicy.load(policy_path)
-        log.info("apecx-cp serve: approval policy loaded from %s", policy_path)
+        _banner(f"approval policy loaded from {policy_path}")
     else:
-        log.warning(
-            "apecx-cp serve: approval policy %s not found; /workflows/start "
-            "will 503. Set APECX_APPROVAL_POLICY_PATH to override.",
-            policy_path,
+        _banner(
+            f"WARNING approval policy {policy_path} not found; "
+            "/workflows/start will 503. Set APECX_APPROVAL_POLICY_PATH "
+            "to override."
         )
 
     local_executor = None
@@ -217,9 +234,9 @@ def _build_components_from_env(engine: Engine) -> tuple:
         else _DEFAULT_WORKFLOW_BASE_DIR
     )
     if workflow_dir_env == "":
-        log.info(
-            "apecx-cp serve: APECX_WORKFLOW_BASE_DIR set to empty string; "
-            "local executor disabled, /workflows/execute will 503."
+        _banner(
+            "APECX_WORKFLOW_BASE_DIR set to empty string; local executor "
+            "disabled, /workflows/execute will 503."
         )
     elif workflow_dir.is_dir():
         local_executor = LocalExecutor(
@@ -228,15 +245,13 @@ def _build_components_from_env(engine: Engine) -> tuple:
             recorder=recorder,
             workflow_base_dir=workflow_dir,
         )
-        log.info(
-            "apecx-cp serve: local executor wired against workflow_base_dir=%s",
-            workflow_dir,
+        _banner(
+            f"local executor wired against workflow_base_dir={workflow_dir}"
         )
     else:
-        log.warning(
-            "apecx-cp serve: workflow base dir %s not found; "
-            "/workflows/execute will 503. Set APECX_WORKFLOW_BASE_DIR.",
-            workflow_dir,
+        _banner(
+            f"WARNING workflow base dir {workflow_dir} not found; "
+            "/workflows/execute will 503. Set APECX_WORKFLOW_BASE_DIR."
         )
 
     return composer, approval_policy, local_executor
