@@ -168,6 +168,7 @@ def test_allocation_estimate(session: Session) -> None:
         estimated_core_hours=42.0,
         estimated_wall_time_seconds=3600.0,
         endpoint="polaris",
+        created_at=_now(),
     )
     session.add(est)
     session.commit()

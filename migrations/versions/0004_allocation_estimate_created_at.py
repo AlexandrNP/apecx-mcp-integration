@@ -36,7 +36,12 @@ depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
-    backfill_ts = datetime.now(UTC).isoformat()
+    # Pass a datetime, not an ISO string. SQLite will store it as
+    # text either way, but Postgres rejects bound VARCHAR going
+    # into a timestamp column without explicit cast. Binding a
+    # datetime lets SQLAlchemy emit the right type for both
+    # backends.
+    backfill_ts = datetime.now(UTC)
     op.add_column(
         "allocation_estimate",
         sa.Column("created_at", sa.DateTime(), nullable=True),
@@ -49,7 +54,7 @@ def upgrade() -> None:
         sa.text(
             "UPDATE allocation_estimate SET created_at = :ts "
             "WHERE created_at IS NULL"
-        ).bindparams(ts=backfill_ts)
+        ).bindparams(sa.bindparam("ts", backfill_ts, type_=sa.DateTime()))
     )
     # SQLite supports ALTER COLUMN only via batch mode.
     with op.batch_alter_table("allocation_estimate") as batch_op:
