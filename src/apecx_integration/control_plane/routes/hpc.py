@@ -251,9 +251,50 @@ async def confirm_allocation(
             ),
         )
 
-    latest.user_confirmed = True
-    latest.user_confirmed_at = datetime.now(UTC)
+    # Cluster AK (2026-04-26) — fail-fast against a racing
+    # concurrent /hpc/estimate insert. The earlier SELECT picked
+    # the latest at SELECT-time; if a NEWER row landed between
+    # SELECT and our UPDATE, the user's intent (confirm the
+    # latest) cannot be honored: marking the stale row would
+    # leave the new row unconfirmed while the API returns 200,
+    # which is exactly the silent-failure shape friction-log #19
+    # warns against.
+    #
+    # Conditional UPDATE: target ``latest.id`` AND require that
+    # no AllocationEstimate for this run has a strictly newer
+    # ``created_at``. rowcount==0 → race detected, 409. Tie on
+    # microseconds keeps the behavior idempotent for the same
+    # row (the conditional re-read sees latest itself).
+    from sqlalchemy import not_, select as _select, exists as _exists
+
+    confirmed_at = datetime.now(UTC)
+    newer_exists = (
+        _select(AllocationEstimateORM.id)
+        .where(AllocationEstimateORM.run_id == body.run_id)
+        .where(AllocationEstimateORM.created_at > latest.created_at)
+    ).exists()
+    result = session.execute(
+        update(AllocationEstimateORM)
+        .where(AllocationEstimateORM.id == latest.id)
+        .where(not_(newer_exists))
+        .values(
+            user_confirmed=True,
+            user_confirmed_at=confirmed_at,
+        )
+    )
     session.commit()
+    if result.rowcount == 0:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                f"Run {body.run_id}: a newer AllocationEstimate "
+                "appeared between this confirm's SELECT and UPDATE. "
+                "Refusing to mark a stale row as confirmed (would "
+                "leave the actual latest unconfirmed). Re-fetch the "
+                "latest estimate (call /hpc/estimate again or read "
+                "the run state) and re-confirm."
+            ),
+        )
 
     return ConfirmAllocationResponse(
         run_id=body.run_id, confirmed=True

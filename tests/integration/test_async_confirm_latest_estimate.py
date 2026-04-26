@@ -118,24 +118,31 @@ def _insert_estimate(
     # microseconds, and the test's "older vs newer" semantics rely
     # on the timestamps being distinguishable.
     time.sleep(0.001)
-    with cp_engine.begin() as conn:
-        conn.execute(
-            text(
-                "INSERT INTO allocation_estimate ("
-                "id, run_id, estimated_core_hours, "
-                "estimated_wall_time_seconds, "
-                "endpoint, user_confirmed, created_at) VALUES "
-                "(:id, :rid, :ch, :wt, :ep, 0, :ts)"
-            ),
-            {
-                "id": str(estimate_id),
-                "rid": str(run_id),
-                "ch": estimated_core_hours,
-                "wt": estimated_core_hours * 3600.0,
-                "ep": "polaris",
-                "ts": datetime.now(UTC).isoformat(),
-            },
+    # Use the ORM so the stored ``created_at`` format matches what
+    # the production /hpc/estimate route writes. Earlier helpers
+    # used ``datetime.isoformat()`` strings (T-separator + tz) which
+    # mismatch the ORM's space-separator-no-tz format. Mixing formats
+    # in one column breaks lex comparison and thus cluster AK's
+    # race-detection predicate. Cluster AK follow-up (2026-04-26).
+    from apecx_integration.control_plane.db import make_session_factory
+    from apecx_integration.control_plane.models.entities import (
+        AllocationEstimate as AEORM,
+    )
+
+    factory = make_session_factory(cp_engine)
+    with factory() as session:
+        session.add(
+            AEORM(
+                id=estimate_id,
+                run_id=run_id,
+                estimated_core_hours=estimated_core_hours,
+                estimated_wall_time_seconds=estimated_core_hours * 3600.0,
+                endpoint="polaris",
+                user_confirmed=False,
+                created_at=datetime.now(UTC),
+            )
         )
+        session.commit()
 
 
 def test_confirm_picks_most_recently_inserted_not_lex_largest_uuid(
