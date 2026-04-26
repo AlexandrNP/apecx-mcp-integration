@@ -173,24 +173,77 @@ class ProvenanceRecorder:
             return evt
 
     def validate(self, run_id: UUID) -> None:
-        """Walk the chain for ``run_id`` in timestamp order, raising
-        :class:`ChainBroken` on the first violation.
+        """Walk the chain for ``run_id`` by following ``prev_event_hash``
+        links from genesis, raising :class:`ChainBroken` on the first
+        violation.
+
+        Originally validate ordered events by ``(timestamp ASC, id
+        ASC)`` and asserted each event's prev pointer matched the
+        previous walk-event's hash. That re-derives an order from
+        SQL, but the writer's order (cluster X cache) doesn't agree
+        with id-ASC tiebreak under tied microsecond timestamps.
+        Result: under K=20 concurrent appends the on-disk chain
+        was structurally valid (no forks, single genesis) but
+        validate() raised ChainBroken because its walk visited
+        events in a permutation of write order.
+
+        Cluster AF (2026-04-26) replaced the order-derive approach
+        with a graph walk: start at the genesis event (the unique
+        event with ``prev_event_hash = NULL``), then at each step
+        find the unique event whose ``prev_event_hash`` matches the
+        current event's ``event_hash``. The walk follows the
+        chain's actual structure rather than re-deriving it.
+
+        Failure modes still surfaced:
+          - ``ChainBroken``: zero or multiple genesis events; an
+            event references a prev that doesn't exist; multiple
+            events claim the same predecessor (fork); the walk
+            fails to visit every event (partition); a stored
+            event_hash doesn't match its recomputed hash.
         """
         with self._session_factory() as session:
             events = list(
                 session.execute(
-                    select(ProvenanceEvent)
-                    .where(ProvenanceEvent.run_id == run_id)
-                    .order_by(ProvenanceEvent.timestamp, ProvenanceEvent.id)
+                    select(ProvenanceEvent).where(
+                        ProvenanceEvent.run_id == run_id
+                    )
                 ).scalars()
             )
-        expected_prev: str | None = None
-        for idx, e in enumerate(events):
-            if e.prev_event_hash != expected_prev:
-                raise ChainBroken(
-                    f"event {idx} (id={e.id}) prev_event_hash link mismatch: "
-                    f"expected {expected_prev!r}, got {e.prev_event_hash!r}"
-                )
+        if not events:
+            return  # no events for the run — vacuously valid
+
+        # Index by prev_event_hash so we can walk forward in O(1)
+        # per step. Two events with the same prev = fork. We catch
+        # that here even if the genesis check passes.
+        by_prev: dict[str | None, list[ProvenanceEvent]] = {}
+        for e in events:
+            by_prev.setdefault(e.prev_event_hash, []).append(e)
+
+        forks = {prev: lst for prev, lst in by_prev.items() if len(lst) > 1}
+        if forks:
+            sample_prev, sample_events = next(iter(forks.items()))
+            ids = [str(e.id) for e in sample_events]
+            raise ChainBroken(
+                f"chain forks: prev_event_hash={sample_prev!r} is "
+                f"referenced by {len(sample_events)} events: {ids}"
+            )
+
+        genesis_list = by_prev.get(None, [])
+        if len(genesis_list) == 0:
+            raise ChainBroken(
+                "no genesis event (every event has a non-NULL "
+                "prev_event_hash) — chain is rootless"
+            )
+        if len(genesis_list) > 1:
+            raise ChainBroken(
+                f"{len(genesis_list)} genesis events; exactly 1 expected"
+            )
+
+        # Walk forward from genesis, validating each event's stored
+        # hash and accumulating visited count.
+        visited = 0
+        e: ProvenanceEvent | None = genesis_list[0]
+        while e is not None:
             recomputed = _compute_event_hash(
                 prev_event_hash=e.prev_event_hash,
                 run_id=e.run_id,
@@ -201,10 +254,24 @@ class ProvenanceRecorder:
             )
             if recomputed != e.event_hash:
                 raise ChainBroken(
-                    f"event {idx} (id={e.id}) hash mismatch: "
+                    f"event {visited} (id={e.id}) hash mismatch: "
                     f"stored={e.event_hash}, recomputed={recomputed}"
                 )
-            expected_prev = e.event_hash
+            visited += 1
+            successors = by_prev.get(e.event_hash, [])
+            if not successors:
+                e = None
+            else:
+                # Single-successor invariant already enforced by
+                # the fork check above.
+                e = successors[0]
+
+        if visited != len(events):
+            raise ChainBroken(
+                f"chain walk visited {visited} events but "
+                f"{len(events)} exist for run_id — partition (some "
+                "events not reachable from genesis)"
+            )
 
     @staticmethod
     def _last_event_for_run(session: Session, run_id: UUID) -> ProvenanceEvent | None:
