@@ -432,6 +432,153 @@ revealed six false-blocker tests.
 
 ---
 
+## 16. State-mutation routes need a CAS guard, not a pre-check + commit
+
+**Cost:** 2026-04-26 adversarial-async hunt over a single session
+turned up 12 production bugs — 9 of them the same anti-pattern in
+9 different code paths. Without the hunt these would have been
+discovered as data-corruption tickets in production.
+
+**Cause:** Default ORM-style state mutation reads, decides,
+writes:
+
+    row = session.get(X, id)
+    if row.status == EXPECTED:
+        row.status = NEXT
+        session.commit()
+        recorder.record(SOMETHING)
+
+The session.commit emits ``UPDATE x SET status=NEXT WHERE id=:id``
+— no precondition. Two concurrent requests both pass the check,
+both UPDATE, last writer wins. Each then records a side effect
+(provenance event, audit row, terminal-state HTTP response),
+giving you two terminal events for one transition.
+
+**Confirmed instances in this session:** approve+reject (V1),
+double-execute (V3), verified-synonym revoke last-writer-wins
+(AA), sweeper double-record RUN_FAILED (Z), executor rebirth from
+terminal (AB×3), verified-synonym scope=NULL pre-check race (Y),
+plus orphan-PENDING composer fail (U) which is a non-CAS variant.
+
+**Detection signal:** Any of:
+
+- A route docstring claims "idempotency is the caller's job"
+  about a check that's a Python ``if row.X != Y: raise 409``.
+- A scheduled job (sweeper, queue drainer, reconciler) reads a
+  row, decides, then mutates the same row.
+- A SQLAlchemy ORM ``run.status = X`` followed by
+  ``session.commit()`` where ``X`` is a terminal value.
+
+**Mitigation:** Conditional UPDATE.
+
+    result = session.execute(
+        update(X)
+        .where(X.id == id)
+        .where(X.status.in_(LEGAL_PRECONDITIONS))
+        .values(status=NEXT, ...)
+    )
+    session.commit()
+    if result.rowcount == 0:
+        raise 409   # or skip the side effect — somebody else owns
+                    # this transition
+
+OR: a partial unique index that turns the second concurrent write
+into an IntegrityError (used for the sweeper's RUN_STARTED
+single-claim, and for the verified-synonym scope=NULL case).
+
+If the side effect is a ProvenanceEvent, the rowcount==0 branch
+must NOT call recorder.record() — otherwise the loser still
+emits a terminal event and the chain has two of them.
+
+**Source:** 2026-04-26 adversarial async hunt, clusters U / V1 /
+V3 / Y / Z / AA / AB. Same anti-pattern, same fix shape.
+
+---
+
+## 17. "ORDER BY id DESC" on a random-UUID PK is a bug, not an ordering
+
+**Cost:** ~30 min to find + fix (cluster AC, 2026-04-26). User-
+visible: roughly half the time, ``/hpc/confirm`` confirmed the
+WRONG AllocationEstimate, silently — by pure UUID-lex coincidence.
+
+**Cause:** ORM PKs in this schema are ``Mapped[UUID] = mapped_column(
+primary_key=True, default=uuid4)``. uuid4 is random; lex-largest
+has nothing to do with insertion order. Any code that does
+``ORDER BY id DESC LIMIT 1`` to get "the latest" of something is
+picking a row by chance, not by chronology.
+
+**Confirmed instances:** ``/hpc/confirm`` AllocationEstimate
+selection (cluster AC) — fixed by adding ``created_at`` column,
+ordering by ``created_at DESC, id DESC``. Cluster X
+(ProvenanceEvent ``ORDER BY timestamp DESC, id DESC``) had a
+related variant: real timestamp present, but ties at microsecond
+resolution still resolved by random-UUID tiebreak — fixed by an
+in-memory cursor cache in ProvenanceRecorder.
+
+**Detection signal:** Any of:
+
+- ``ORDER BY <PK> DESC`` where the PK is a UUID (random) and
+  there's no other ordering column on the table.
+- ``ORDER BY <ts> DESC, <PK> DESC`` where ``<ts>`` has microsecond
+  resolution and concurrent appends are common — the tiebreak
+  effectively picks a random row when timestamps tie.
+- "Latest" semantics in a route docstring or comment, paired with
+  a SELECT that doesn't have a monotonic ordering key.
+
+**Mitigation:** Add a ``created_at: Mapped[datetime]`` column at
+the model level, set it on every INSERT, ORDER BY it. For
+existing rows, backfill with the migration timestamp; tiebreak
+on PK only for the unlikely tied-microsecond case.
+
+**Companion mitigation when** the table is ProvenanceEvent or
+similar append-only-but-validated chain: maintain a per-process
+in-memory "last hash per run_id" cache, updated AFTER successful
+commit, so the writer doesn't depend on the DB query's tiebreak
+behavior. NOTE: that cache is *per-instance* — see #18.
+
+**Source:** 2026-04-26 cluster X (recorder cache) + cluster AC
+(allocation_estimate.created_at).
+
+---
+
+## 18. Per-instance caches break when more than one instance writes
+
+**Cost:** ~25 min to find + fix (cluster AD, 2026-04-26).
+User-invisible until the chain is validated; once ``recorder.
+validate(run_id)`` ran, ``ChainBroken`` was thrown.
+
+**Cause:** ``ProvenanceRecorder._last_hash: dict[UUID, str]`` —
+the cluster X cache that fixes tied-timestamp UUID-tiebreak forks
+— is per-instance. The Control Plane was creating two recorders
+per process (one for HTTP routes, one for composer + executor).
+Both write to the same run_id. Each maintains its own private
+cache. When recorder A writes, then recorder B writes, then
+recorder A writes again, A's cache still says "my last write was
+the OLD event"; A picks that as prev, missing B's intervening
+events. Chain forks.
+
+**Detection signal:** Any of:
+
+- More than one instance of a class that maintains a per-key
+  in-memory cache for a shared resource.
+- A class docstring promises "concurrency model: single process,
+  multiple OS threads" but the production code constructs the
+  class twice.
+- Hash-chain validation passes in single-recorder unit tests but
+  fails when two distinct write paths exercise the same run.
+
+**Mitigation:** Single instance per process, plumbed end-to-end.
+``create_app(recorder=...)`` and
+``_build_components_from_env(engine, recorder=...)`` both accept
+a recorder so the serve path builds one and shares it. A
+structural test (``executor._recorder is shared``) catches
+refactors that re-introduce the second instance before any chain
+even forks.
+
+**Source:** 2026-04-26 cluster AD.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
