@@ -79,6 +79,7 @@ def create_app(
     composer=None,
     approval_policy=None,
     local_executor=None,
+    recorder: ProvenanceRecorder | None = None,
 ) -> FastAPI:
     """Build the FastAPI app.
 
@@ -91,6 +92,18 @@ def create_app(
     configure them; tests that don't exercise that route don't need to
     pass either. Production deployments build them from env vars in the
     CLI entrypoint (``_serve``).
+
+    ``recorder`` lets the caller supply the SAME ``ProvenanceRecorder``
+    instance that the composer / executor / artifact store hold a
+    reference to. This is load-bearing: the recorder maintains a
+    per-run in-memory hash-cursor cache (cluster X), and that cache
+    is per-instance. Two recorders writing to the same run produce a
+    forking provenance chain (cluster AD, 2026-04-26) — recorder A's
+    next write picks A's stale cached predecessor, missing the
+    intervening events recorder B wrote. The serve path builds one
+    recorder and passes it both here and into ``_build_components_from_env``.
+    Tests that don't exercise composer/executor + routes for the
+    same run can pass nothing and a fresh recorder is created.
 
     This function does NOT touch infrastructure — the CLI ``main()``
     below is responsible for bringing up Postgres and running migrations
@@ -110,7 +123,7 @@ def create_app(
     )
     app.state.engine = resolved_engine
     app.state.session_factory = session_factory
-    app.state.recorder = ProvenanceRecorder(session_factory)
+    app.state.recorder = recorder or ProvenanceRecorder(session_factory)
     app.state.composer = composer
     app.state.approval_policy = approval_policy
     app.state.local_executor = local_executor
@@ -132,7 +145,11 @@ def create_app(
 app = create_app()
 
 
-def _build_components_from_env(engine: Engine) -> tuple:
+def _build_components_from_env(
+    engine: Engine,
+    *,
+    recorder: ProvenanceRecorder | None = None,
+) -> tuple:
     """Build composer + approval policy + local executor from env vars.
 
     The 503 error messages on ``/workflows/start`` etc. promise that
@@ -161,7 +178,15 @@ def _build_components_from_env(engine: Engine) -> tuple:
     from apecx_integration.control_plane.executors.local import LocalExecutor
 
     session_factory = make_session_factory(engine)
-    recorder = ProvenanceRecorder(session_factory)
+    # Single recorder per process (cluster AD, 2026-04-26): the
+    # caller is expected to pass the same instance that ``create_app``
+    # will hang on ``app.state.recorder``. Cluster X's per-run hash
+    # cache is per-instance, so two instances writing to one run
+    # produce a forking chain. Fall back to a fresh recorder only
+    # when the caller hasn't given us one — for symmetry with
+    # tests that bootstrap components directly.
+    if recorder is None:
+        recorder = ProvenanceRecorder(session_factory)
     store = ArtifactStore(session_factory=session_factory, recorder=recorder)
 
     # NOTE on stderr prints below: alembic.ini's [logger_root]
@@ -273,12 +298,20 @@ def _serve(args: argparse.Namespace) -> int:
     # explicitly into ``create_app``, and run uvicorn against the
     # resulting wired app.
     engine = make_engine()
-    composer, policy, executor = _build_components_from_env(engine)
+    # Build the recorder once and share it: one in-memory hash
+    # cache for the whole process, so the composer/executor and
+    # the route handlers don't fork the chain (cluster AD).
+    serve_session_factory = make_session_factory(engine)
+    serve_recorder = ProvenanceRecorder(serve_session_factory)
+    composer, policy, executor = _build_components_from_env(
+        engine, recorder=serve_recorder
+    )
     wired_app = create_app(
         engine=engine,
         composer=composer,
         approval_policy=policy,
         local_executor=executor,
+        recorder=serve_recorder,
     )
 
     import uvicorn
