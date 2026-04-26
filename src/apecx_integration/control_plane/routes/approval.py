@@ -21,7 +21,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from apecx_integration.control_plane.dependencies import get_recorder, get_session
@@ -148,17 +148,63 @@ def _decide(
     extra_policy: dict[str, object] | None = None,
 ) -> ApprovalORM:
     approval = _load_approval_or_404(session, approval_id)
-    _require_pending(approval)
+    _require_pending(approval)  # fast-path 409 on the obvious race
     run_id = _run_id_for_step(session, approval.step_id)
-    approval.status = new_status
-    approval.decided_by = decided_by
-    approval.decided_at = datetime.now(UTC)
-    if comment is not None:
-        approval.comment = comment
-    if extra_policy:
-        approval.policy = {**approval.policy, **extra_policy}
+
+    # Audit-trail integrity (cluster V1, found 2026-04-25):
+    # the read-then-mutate-then-commit pattern is racy under
+    # concurrent approve+reject. Two coroutines on different
+    # sessions both load the approval, both pass _require_pending
+    # (each sees PENDING from its own snapshot), both set status,
+    # both commit (the second wins on the row), and both proceed
+    # to recorder.record() — yielding TWO APPROVAL_DECIDED events
+    # with conflicting status values for the same approval id.
+    #
+    # The hash-chain audit's whole purpose is to make that kind
+    # of contradiction impossible. Mirror cluster E's atomic
+    # conditional UPDATE: WHERE status='PENDING' so only the
+    # first writer's UPDATE matches a row; the loser sees
+    # rowcount=0, rolls back, and raises 409 BEFORE recording
+    # any provenance event.
+    new_decided_at = datetime.now(UTC)
+    update_stmt = (
+        update(ApprovalORM)
+        .where(
+            ApprovalORM.id == approval_id,
+            ApprovalORM.status == ApprovalStatus.PENDING,
+        )
+        .values(
+            status=new_status,
+            decided_by=decided_by,
+            decided_at=new_decided_at,
+            comment=(
+                comment
+                if comment is not None
+                else approval.comment
+            ),
+            policy=(
+                {**approval.policy, **extra_policy}
+                if extra_policy
+                else approval.policy
+            ),
+        )
+    )
+    result = session.execute(update_stmt)
+    if result.rowcount != 1:
+        # Concurrent decision beat us. Don't record an event — the
+        # winner already did. Surface a clear 409 to the loser.
+        session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                f"Approval {approval_id} was decided concurrently by "
+                "another caller; this transition lost the race. "
+                "Re-fetch and retry."
+            ),
+        )
     session.commit()
-    session.refresh(approval)
+    # Re-read so the response reflects the committed state.
+    approval = _load_approval_or_404(session, approval_id)
     recorder.record(
         run_id=run_id,
         event_type=ProvenanceEventType.APPROVAL_DECIDED,

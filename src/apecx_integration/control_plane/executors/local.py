@@ -117,15 +117,39 @@ class LocalExecutor:
                 output_artifact_id=None,
             )
 
-        self._recorder.record(
-            run_id=run_id,
-            event_type=ProvenanceEventType.RUN_STARTED,
-            actor=self._actor,
-            payload={
-                "workflow_yaml": str(yaml_path),
-                "workflow_base_dir": str(self._workflow_base_dir),
-            },
-        )
+        # Atomic claim. Two concurrent /workflows/execute calls on
+        # the same run both pass _validate_and_fetch above (the helper
+        # only validates state, doesn't claim). Without a guard here,
+        # both proceed through workflow.process() to completion,
+        # doubling every side effect. Migration 0002 added a partial
+        # unique index on provenance_event(run_id) WHERE
+        # event_type='RUN_STARTED'; the SECOND record() call here
+        # raises IntegrityError, which we catch and short-circuit.
+        # Found 2026-04-26 by adversarial test (cluster V3).
+        from sqlalchemy.exc import IntegrityError
+
+        try:
+            self._recorder.record(
+                run_id=run_id,
+                event_type=ProvenanceEventType.RUN_STARTED,
+                actor=self._actor,
+                payload={
+                    "workflow_yaml": str(yaml_path),
+                    "workflow_base_dir": str(self._workflow_base_dir),
+                },
+            )
+        except IntegrityError:
+            log.warning(
+                "Run %s already has a RUN_STARTED event; concurrent "
+                "executor claimed it. Aborting without re-running.",
+                run_id,
+            )
+            return ExecutionResult(
+                run_id=run_id,
+                status=RunStatus.RUNNING,
+                reason="concurrent_executor_already_claimed_run",
+                output_artifact_id=None,
+            )
 
         import tempfile
 
