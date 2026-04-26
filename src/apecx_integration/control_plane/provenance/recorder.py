@@ -274,10 +274,60 @@ class ProvenanceRecorder:
             )
 
     @staticmethod
-    def _last_event_for_run(session: Session, run_id: UUID) -> ProvenanceEvent | None:
-        return session.execute(
-            select(ProvenanceEvent)
-            .where(ProvenanceEvent.run_id == run_id)
-            .order_by(ProvenanceEvent.timestamp.desc(), ProvenanceEvent.id.desc())
-            .limit(1)
-        ).scalar_one_or_none()
+    def _last_event_for_run(
+        session: Session, run_id: UUID
+    ) -> ProvenanceEvent | None:
+        """Identify the chain TAIL for ``run_id`` — the unique event
+        whose ``event_hash`` is not referenced by any other event's
+        ``prev_event_hash``.
+
+        Originally this used ``ORDER BY (timestamp DESC, id DESC)
+        LIMIT 1``. That works when timestamps are monotonic, but
+        under tied microseconds the secondary sort key is ``id``
+        (random uuid4). The lex-largest UUID has nothing to do
+        with chronological "latest" — it might be a middle-of-
+        chain event, in which case the next ``record()``'s
+        prev_event_hash forks the chain. Cluster AG (2026-04-26).
+
+        The fix: SELECT all events for the run, build a set of
+        every hash that is referenced as someone's prev, and
+        return the unique event whose hash is NOT in that set.
+        That is the chain's tail by definition, regardless of
+        timestamp/id tiebreaks.
+
+        Returns None if the run has no events. Raises ChainBroken
+        if the chain is partitioned (zero tails — every event
+        is referenced as a prev, implying a cycle) or has been
+        forked already (more than one tail). Cluster X's hot-
+        cache writer prevents new forks; this lookup refuses to
+        compound an existing one — failing fast at write-time
+        instead of late at validate-time.
+        """
+        events = list(
+            session.execute(
+                select(ProvenanceEvent).where(
+                    ProvenanceEvent.run_id == run_id
+                )
+            ).scalars()
+        )
+        if not events:
+            return None
+        referenced = {
+            e.prev_event_hash for e in events if e.prev_event_hash is not None
+        }
+        tails = [e for e in events if e.event_hash not in referenced]
+        if len(tails) == 1:
+            return tails[0]
+        if len(tails) == 0:
+            raise ChainBroken(
+                f"run {run_id} has {len(events)} events but no chain "
+                "tail — the chain forms a cycle or every event is "
+                "referenced as someone's predecessor"
+            )
+        raise ChainBroken(
+            f"run {run_id} has {len(tails)} chain tails (events whose "
+            "hash isn't anyone's prev); chain is partitioned or "
+            "already forked. Cluster X's cache should have prevented "
+            "this on the writer side; this lookup refuses to compound "
+            "the fork by guessing which tail is 'most recent'"
+        )
