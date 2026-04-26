@@ -57,7 +57,11 @@ def test_downgrade_then_upgrade_round_trips(tmp_path: Path) -> None:
     cfg = _alembic_cfg(url)
 
     command.upgrade(cfg, "head")
-    command.downgrade(cfg, "-1")
+    # Downgrade to ``base`` (empty pre-migration state). Was ``-1``
+    # when only one migration existed; that broke when 0002 (cluster
+    # V's partial unique index) landed because ``-1`` only goes back
+    # one revision, not all the way to empty.
+    command.downgrade(cfg, "base")
 
     engine = create_engine(url)
     tables_after_down = set(inspect(engine).get_table_names())

@@ -98,6 +98,32 @@ class ProvenanceRecorder:
     def __init__(self, session_factory: sessionmaker[Session]) -> None:
         self._session_factory = session_factory
         self._lock = threading.Lock()
+        # Per-run in-memory hash cursor. Updated inside the lock
+        # after each successful commit. Read inside the lock before
+        # computing the next event's prev_event_hash.
+        #
+        # Why a cache instead of a DB query: the DB-side
+        # ``_last_event_for_run`` orders by ``(timestamp DESC, id
+        # DESC)``. When N concurrent record() calls share the same
+        # microsecond timestamp (cheap on fast hardware), the
+        # ``id DESC`` tiebreaker is on a UUID — random, not
+        # monotonic — so the SELECT can return an OLDER event as
+        # "latest" even when a newer one is committed. This caused
+        # the chain to fork: multiple writers all picked the same
+        # predecessor (the lex-largest UUID with the tied
+        # timestamp), producing N events with identical
+        # ``prev_event_hash``. Found 2026-04-26 by adversarial test
+        # cluster R follow-up; reproduced 9/10 trials at K=20
+        # concurrent appends on a shared run.
+        #
+        # The fix: track the last-written hash per run in a
+        # process-local dict, guarded by the same threading.Lock
+        # that already serializes the write path. This is a single-
+        # process invariant; cross-process operation would need a
+        # SQL-level lease (audit follow-up if the Control Plane ever
+        # multi-process). On startup, the cache is empty — the
+        # fallback DB query handles the first record() per run.
+        self._last_hash: dict[UUID, str] = {}
 
     def record(
         self,
@@ -110,8 +136,15 @@ class ProvenanceRecorder:
     ) -> ProvenanceEvent:
         ts = now or datetime.now(UTC)
         with self._lock, self._session_factory() as session:
-            prev = self._last_event_for_run(session, run_id)
-            prev_hash = prev.event_hash if prev else None
+            # Prefer the in-memory cursor (set under this same lock
+            # by every prior committed call); fall back to the DB on
+            # cold start. The DB fallback's UUID-tiebreak ambiguity
+            # is harmless on cold start because there's at most one
+            # event per run.
+            prev_hash = self._last_hash.get(run_id)
+            if prev_hash is None:
+                prev = self._last_event_for_run(session, run_id)
+                prev_hash = prev.event_hash if prev else None
             event_hash = _compute_event_hash(
                 prev_event_hash=prev_hash,
                 run_id=run_id,
@@ -132,6 +165,11 @@ class ProvenanceRecorder:
             session.add(evt)
             session.commit()
             session.refresh(evt)
+            # Update cursor only AFTER the commit succeeds. If the
+            # commit raises (e.g., the unique RUN_STARTED index from
+            # migration 0002), the cursor stays at the pre-call
+            # value — correct behavior.
+            self._last_hash[run_id] = event_hash
             return evt
 
     def validate(self, run_id: UUID) -> None:
