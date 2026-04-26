@@ -31,7 +31,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from apecx_integration.control_plane.dependencies import get_session
@@ -205,11 +205,37 @@ def revoke_verified_synonym(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"superseded_by points at unknown id {body.superseded_by}",
             )
-    row.is_active = False
-    row.revoked_by = body.revoked_by
-    row.revoked_at = datetime.now(UTC)
-    row.revocation_reason = body.revocation_reason
-    row.superseded_by = body.superseded_by
+    # Conditional UPDATE so two concurrent revokes cannot both
+    # silently succeed and overwrite each other's metadata. The
+    # ``WHERE is_active`` predicate is the CAS guard; rowcount==0
+    # means somebody else already revoked the row between our
+    # ``_load_or_404`` and now, and we surface the same 409 the
+    # idempotency check would have raised on a sequential call.
+    revoked_at = datetime.now(UTC)
+    result = session.execute(
+        update(VerifiedSynonymORM)
+        .where(VerifiedSynonymORM.id == synonym_id)
+        .where(VerifiedSynonymORM.is_active.is_(True))
+        .values(
+            is_active=False,
+            revoked_by=body.revoked_by,
+            revoked_at=revoked_at,
+            revocation_reason=body.revocation_reason,
+            superseded_by=body.superseded_by,
+        )
+    )
     session.commit()
+    if result.rowcount == 0:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                f"verified_synonym {synonym_id} was revoked by a "
+                "concurrent request before this one completed"
+            ),
+        )
+    # Re-read so the response reflects the actual persisted state
+    # (including any DB-side defaults) rather than the in-memory
+    # ORM object whose attributes we never assigned to.
+    session.expire(row)
     session.refresh(row)
     return VerifiedSynonymResponse(verified_synonym=VerifiedSynonymSchema.model_validate(row))
