@@ -579,6 +579,65 @@ even forks.
 
 ---
 
+## 19. Conditional UPDATE that "skips silently" + caller that fabricates the result
+
+**Cost:** ~25 min to find + fix (cluster AJ, 2026-04-26). User
+pushback was the trigger — "Make sure your code paths do not
+cause silent failures that would make tests pass but would
+impede the actual product use. Follow fail fast policy."
+
+**Cause:** Friction log #16 prescribed conditional UPDATEs +
+``rowcount == 0`` → log + skip the side effect. That is correct
+on the WRITER side. The trap: the CALLER often computes a
+result/response from ``what I intended to do`` rather than
+``what's actually true``. The helper logs a warning, returns
+to the caller, and the caller still constructs
+``ExecutionResult(status=COMPLETED, ...)`` even though the
+helper's UPDATE was rejected and the run is actually FAILED.
+
+End result is exactly the silent-failure shape:
+- the test of the helper alone passes (transition is correctly
+  skipped, no double terminal event),
+- the test of the API response with a swept run might not
+  exist (was missing in this codebase),
+- production sees an executor that reports COMPLETED for a
+  workflow it didn't drive,
+- the user / MCP tool / status poll sees "completed" and moves
+  on without noticing the run is actually FAILED in the DB.
+
+**Detection signal:** Any of:
+
+- A function calls a helper that can return without performing
+  its named action, and constructs a hand-written success
+  response immediately afterward.
+- The helper has a ``log.warning(... skipping ...)`` line and
+  no return value (or a return value the caller ignores).
+- A test asserts the helper's behavior in isolation but no
+  test asserts the surrounding function's behavior when the
+  helper skipped.
+- "Conditional UPDATE WHERE preconditions" is paired with a
+  caller that ignores ``rowcount``.
+
+**Mitigation:**
+- Helpers that perform a state transition return a ``bool`` (or
+  raise) indicating whether they actually performed it.
+- Callers route every terminal result through a single helper
+  (e.g., ``_terminal_result``) that consults the actual DB
+  state when the writer was rejected. NEVER hand-construct a
+  terminal status in multiple places.
+- Add an integration test that exercises the API surface with
+  the precondition-violating state pre-installed (e.g.,
+  pre-flip the run to FAILED, then call ``execute()``; assert
+  the response status is FAILED, not COMPLETED).
+
+**Source:** 2026-04-26 cluster AJ. Same pattern bit twice in
+follow-ups: the IntegrityError handler returned a fabricated
+``status=RUNNING``, and the run-not-found early-return
+fabricated ``status=FAILED``. Both routed through
+``_terminal_result`` after the audit.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
