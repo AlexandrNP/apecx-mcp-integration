@@ -62,8 +62,41 @@ def get_composer(request: Request) -> Composer:
     a placeholder-LLM composer, which they inject at app-create time;
     (3) deployments without an LLM backend (e.g. schema-only smoke
     runs) shouldn't be forced to build one just to start the API.
+
+    Probe batch 4 (2026-04-26) found that FastAPI evaluates this
+    Depends BEFORE the body is validated by Pydantic. A malformed
+    request to a route that depends on get_composer would return
+    503 ("composer not configured") instead of 422 ("your input is
+    invalid") — masking the user's real error. For fail-fast input
+    validation, prefer ``get_composer_or_none`` in route signatures
+    and check the result manually AFTER the body parameter is in
+    scope (Pydantic will have validated by then).
     """
     composer = getattr(request.app.state, "composer", None)
+    if composer is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "Composer is not configured on this Control Plane. "
+                "Set APECX_COMPOSER_CONFIG_PATH or pass composer= "
+                "into create_app()."
+            ),
+        )
+    return composer
+
+
+def get_composer_or_none(request: Request) -> Composer | None:
+    """Non-raising variant for routes that want to keep body
+    validation (422) ordered BEFORE service availability (503).
+    Caller checks for None manually after body is in scope.
+    """
+    return getattr(request.app.state, "composer", None)
+
+
+def require_composer(composer: Composer | None) -> Composer:
+    """Raise the canonical 503 if composer is None. Use after body
+    validation has succeeded so the user gets 422 first when they
+    sent malformed input."""
     if composer is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -90,8 +123,44 @@ def get_approval_policy(request: Request) -> ApprovalPolicy:
     return policy
 
 
+def get_approval_policy_or_none(request: Request) -> ApprovalPolicy | None:
+    return getattr(request.app.state, "approval_policy", None)
+
+
+def require_approval_policy(policy: ApprovalPolicy | None) -> ApprovalPolicy:
+    if policy is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "ApprovalPolicy is not configured on this Control "
+                "Plane. Set APECX_APPROVAL_POLICY_PATH or pass "
+                "approval_policy= into create_app()."
+            ),
+        )
+    return policy
+
+
 def get_local_executor(request: Request) -> LocalExecutor:
     executor = getattr(request.app.state, "local_executor", None)
+    if executor is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "LocalExecutor is not configured on this Control "
+                "Plane. Pass local_executor= into create_app() or set "
+                "APECX_WORKFLOW_BASE_DIR so the app can build one."
+            ),
+        )
+    return executor
+
+
+def get_local_executor_or_none(request: Request) -> LocalExecutor | None:
+    return getattr(request.app.state, "local_executor", None)
+
+
+def require_local_executor(
+    executor: LocalExecutor | None,
+) -> LocalExecutor:
     if executor is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
