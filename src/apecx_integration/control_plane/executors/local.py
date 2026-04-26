@@ -110,17 +110,37 @@ class LocalExecutor:
     async def execute(self, run_id: UUID) -> ExecutionResult:
         yaml_path = self._validate_and_fetch(run_id)
         if yaml_path is None:
-            # Precondition failure (no workflow_config_id, artifact
-            # missing, etc.). The helper attempted FAILED inside its
-            # own session; we trust its commit and report FAILED.
-            # The contrived race "concurrent CANCELLED during
-            # validate" would leave a misleading reason here, but
-            # validate is single-threaded with respect to the run
-            # at this stage (no RUN_STARTED yet, no other writer
-            # touches it).
+            # Three sub-cases, all returning yaml_path=None:
+            # A) the run row doesn't exist (helper logged + bailed),
+            # B) run exists with no workflow_config_id (helper
+            #    committed FAILED via in_session mark),
+            # C) workflow_config_id set but artifact / file missing
+            #    (same — committed FAILED).
+            #
+            # Cluster AJ + AJ-followup (2026-04-26): be truthful.
+            # Read actual DB status. If absent (case A), surface a
+            # clear "run not found" reason rather than fabricating
+            # FAILED for a row that doesn't exist. Otherwise, the
+            # actual status IS FAILED (B or C) and we return that
+            # with the operator-friendly "workflow_misconfigured"
+            # reason.
+            actual = self._read_actual_status(run_id)
+            if actual is None:
+                return ExecutionResult(
+                    run_id=run_id,
+                    status=RunStatus.FAILED,
+                    reason=(
+                        f"run {run_id} not found in DB; cannot execute "
+                        "a non-existent run. Caller should treat this "
+                        "as a 404-equivalent rather than as a real "
+                        "FAILED transition (no provenance event was "
+                        "emitted)."
+                    ),
+                    output_artifact_id=None,
+                )
             return ExecutionResult(
                 run_id=run_id,
-                status=RunStatus.FAILED,
+                status=actual,
                 reason="workflow_misconfigured",
                 output_artifact_id=None,
             )
