@@ -230,7 +230,32 @@ class LocalExecutor:
                     output_artifact_id=None,
                 )
 
-        output_artifact_id = self._persist_output(run_id, raw_result)
+        # The workflow succeeded; persist the output artifact and
+        # mark the run completed. If persistence fails (disk full,
+        # FK violation, content-hash collision in some future schema,
+        # etc.), the run was already past RUN_STARTED — we have to
+        # transition it to a terminal state so it doesn't sit in
+        # RUNNING until the sweeper catches it. Cluster AJ fail-fast
+        # extension (2026-04-26).
+        try:
+            output_artifact_id = self._persist_output(run_id, raw_result)
+        except Exception as exc:
+            reason = (
+                f"workflow succeeded but output persistence failed: "
+                f"{type(exc).__name__}: {exc}"
+            )
+            log.warning("Run %s: %s", run_id, reason)
+            transitioned = self._mark_failed(
+                run_id, reason, failure_class="persist_failed"
+            )
+            return self._terminal_result(
+                run_id=run_id,
+                intended_status=RunStatus.FAILED,
+                transitioned=transitioned,
+                intended_reason=reason,
+                output_artifact_id=None,
+            )
+
         transitioned = self._mark_completed(run_id, output_artifact_id)
 
         return self._terminal_result(
