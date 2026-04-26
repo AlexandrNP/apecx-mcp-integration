@@ -133,47 +133,95 @@ async def start_workflow(
         raise
 
     # Step 3: fresh session for the back-link + status write.
-    with session_factory() as session:
-        run = session.get(RunORM, run_id)
-        if run is None:
-            # Was an `assert` (audit §2.4) — Python's -O strips
-            # asserts so this safety check would silently disappear
-            # under any production deployment that opts into
-            # bytecode optimization. The condition is "should never
-            # happen" but a real 500 is the right response if it does.
-            raise HTTPException(
-                status_code=500,
-                detail=(
-                    f"Run {run_id} disappeared between session "
-                    "commits — composer.compose() did not persist "
-                    "the run row, or a concurrent writer deleted "
-                    "it. This is a server-side invariant violation."
-                ),
+    #
+    # Cluster AI (2026-04-26) — the cluster U fix wrapped only the
+    # ``compose()`` block. Anything between the successful
+    # ``compose()`` and the final commit (policy.evaluate, the
+    # status assignments, session.commit itself) was unguarded.
+    # If those raised, the run was orphaned in PENDING — sweeper
+    # only sweeps RUNNING/PAUSED (cluster Z), so PENDING orphans
+    # accumulate forever. Wrap the whole post-compose block. The
+    # HTTPException-for-"run-disappeared" sub-case re-raises
+    # without the flip because there's no run row left to flip.
+    try:
+        with session_factory() as session:
+            run = session.get(RunORM, run_id)
+            if run is None:
+                # Was an `assert` (audit §2.4) — Python's -O strips
+                # asserts so this safety check would silently disappear
+                # under any production deployment that opts into
+                # bytecode optimization. The condition is "should never
+                # happen" but a real 500 is the right response if it does.
+                raise HTTPException(
+                    status_code=500,
+                    detail=(
+                        f"Run {run_id} disappeared between session "
+                        "commits — composer.compose() did not persist "
+                        "the run row, or a concurrent writer deleted "
+                        "it. This is a server-side invariant violation."
+                    ),
+                )
+            run.workflow_config_id = composed.artifact_id
+
+            categorized = CategorizedWorkflow(
+                categorizations=composed.composition_summary.step_categorizations,
             )
-        run.workflow_config_id = composed.artifact_id
+            decision = policy.evaluate(categorized)
+            if decision.strongest_required_action is ApprovalAction.AUTO:
+                run.status = RunStatus.RUNNING
+                run.started_at = now
+            else:
+                run.status = RunStatus.PAUSED
 
-        categorized = CategorizedWorkflow(
-            categorizations=composed.composition_summary.step_categorizations,
-        )
-        decision = policy.evaluate(categorized)
-        if decision.strongest_required_action is ApprovalAction.AUTO:
-            run.status = RunStatus.RUNNING
-            run.started_at = now
-        else:
-            run.status = RunStatus.PAUSED
+            session.commit()
+            session.refresh(run)
+            # Materialize the response model BEFORE the session closes;
+            # ``model_validate`` reads run attributes lazily on detached
+            # ORM instances without expire_on_commit (which we set to
+            # False in db.py:make_session_factory), so this is safe in
+            # principle, but explicit serialization here makes the
+            # boundary obvious.
+            response = StartWorkflowResponse(
+                run=RunSchema.model_validate(run),
+                generated_workflow_artifact_id=composed.artifact_id,
+            )
+    except HTTPException:
+        # The "run disappeared" case — no row to flip; let FastAPI
+        # surface the 500 as-is.
+        raise
+    except Exception:
+        # Anything else: policy.evaluate failure, session.commit
+        # failure (disk full / Postgres connection drop / SQLITE_BUSY),
+        # arithmetic errors in policy evaluation, etc. Flip the
+        # PENDING run to FAILED via a fresh session, then re-raise
+        # so the original cause surfaces to the operator. Use a
+        # conditional UPDATE WHERE status IN (PENDING, RUNNING,
+        # PAUSED) — same shape as cluster AB's executor fix —
+        # so we don't rebirth a run that some other writer (a
+        # racing sweeper, a future /workflows/cancel) has already
+        # transitioned out of an active state.
+        with session_factory() as session:
+            from sqlalchemy import update as _update
 
-        session.commit()
-        session.refresh(run)
-        # Materialize the response model BEFORE the session closes;
-        # ``model_validate`` reads run attributes lazily on detached
-        # ORM instances without expire_on_commit (which we set to
-        # False in db.py:make_session_factory), so this is safe in
-        # principle, but explicit serialization here makes the
-        # boundary obvious.
-        response = StartWorkflowResponse(
-            run=RunSchema.model_validate(run),
-            generated_workflow_artifact_id=composed.artifact_id,
-        )
+            session.execute(
+                _update(RunORM)
+                .where(RunORM.id == run_id)
+                .where(
+                    RunORM.status.in_(
+                        (
+                            RunStatus.PENDING,
+                            RunStatus.RUNNING,
+                            RunStatus.PAUSED,
+                        )
+                    )
+                )
+                .values(
+                    status=RunStatus.FAILED,
+                    completed_at=datetime.now(UTC),
+                )
+            )
+            session.commit()
+        raise
 
     return response
 
@@ -236,21 +284,53 @@ async def generate_plan(
                 session.commit()
         raise
 
-    with session_factory() as session:
-        run = session.get(RunORM, run_id)
-        if run is None:
-            raise HTTPException(
-                status_code=500,
-                detail=(
-                    f"Run {run_id} disappeared between session "
-                    "commits in /workflows/plan — composer did not "
-                    "persist the run row."
-                ),
+    # Cluster AI (2026-04-26): same orphan gap as /workflows/start
+    # commit-3 — anything between the successful compose() and the
+    # final commit can raise and leave the preview run in PENDING.
+    # Wrap the post-compose block; flip to FAILED on non-HTTP
+    # exceptions so the preview row doesn't accumulate as a
+    # PENDING orphan under user_id="_preview".
+    try:
+        with session_factory() as session:
+            run = session.get(RunORM, run_id)
+            if run is None:
+                raise HTTPException(
+                    status_code=500,
+                    detail=(
+                        f"Run {run_id} disappeared between session "
+                        "commits in /workflows/plan — composer did not "
+                        "persist the run row."
+                    ),
+                )
+            run.workflow_config_id = composed.artifact_id
+            run.status = RunStatus.CANCELLED
+            run.completed_at = now
+            session.commit()
+    except HTTPException:
+        raise
+    except Exception:
+        with session_factory() as session:
+            from sqlalchemy import update as _update
+
+            session.execute(
+                _update(RunORM)
+                .where(RunORM.id == run_id)
+                .where(
+                    RunORM.status.in_(
+                        (
+                            RunStatus.PENDING,
+                            RunStatus.RUNNING,
+                            RunStatus.PAUSED,
+                        )
+                    )
+                )
+                .values(
+                    status=RunStatus.FAILED,
+                    completed_at=datetime.now(UTC),
+                )
             )
-        run.workflow_config_id = composed.artifact_id
-        run.status = RunStatus.CANCELLED
-        run.completed_at = now
-        session.commit()
+            session.commit()
+        raise
 
     plan: list[StepPlan] = []
     for s in composed.composition_summary.step_categorizations:
