@@ -72,7 +72,17 @@ def get_status(
         session.execute(
             select(StepORM)
             .where(StepORM.run_id == body.run_id)
-            .order_by(StepORM.started_at.asc().nulls_last(), StepORM.id)
+            # Order by start time when the step has run, falling
+            # back to creation time for PENDING steps. ``id`` is a
+            # random uuid4, so falling back to it scrambled PENDING
+            # steps (cluster AH, 2026-04-26). Migration 0006 added
+            # ``created_at``; tiebreak on id only for the unlikely
+            # tied-microsecond case.
+            .order_by(
+                StepORM.started_at.asc().nulls_last(),
+                StepORM.created_at.asc(),
+                StepORM.id,
+            )
         )
         .scalars()
         .all()
@@ -84,7 +94,10 @@ def get_status(
             StepORM.run_id == body.run_id,
             ApprovalORM.status == ApprovalStatus.PENDING,
         )
-        .order_by(ApprovalORM.id)
+        # FIFO: pick the OLDEST pending approval to surface, not
+        # the lex-smallest UUID. Same shape as cluster AE's fix to
+        # /approvals/pending but for this single-result picker.
+        .order_by(ApprovalORM.created_at, ApprovalORM.id)
         .limit(1)
     ).scalar_one_or_none()
     return GetStatusResponse(

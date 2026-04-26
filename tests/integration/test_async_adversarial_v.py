@@ -56,15 +56,17 @@ def _seed_run_with_step_and_pending_approval(cp_engine: Engine):
             {"id": str(run_id), "ts": now},
         )
         # Step model: id, run_id, step_name, executor (NOT NULL),
-        # status, ... (no summary, no step_id column).
+        # status, ... (no summary, no step_id column). created_at
+        # is NOT NULL since migration 0006 (cluster AH).
         conn.execute(
             text(
                 "INSERT INTO step (id, run_id, step_name, executor, "
-                "status, input_artifact_ids, output_artifact_ids) "
+                "status, input_artifact_ids, output_artifact_ids, "
+                "created_at) "
                 "VALUES (:id, :rid, 'gate', 'LOCAL', 'PENDING', "
-                "'[]', '[]')"
+                "'[]', '[]', :ts)"
             ),
-            {"id": str(step_id), "rid": str(run_id)},
+            {"id": str(step_id), "rid": str(run_id), "ts": now},
         )
         # Approval model: id, step_id, kind, status, policy,
         # created_at, ... (no summary). created_at is NOT NULL since

@@ -67,11 +67,12 @@ def _seed_run_step_approval(
         conn.execute(
             text(
                 "INSERT INTO step (id, run_id, step_name, executor, "
-                "status, input_artifact_ids, output_artifact_ids) "
+                "status, input_artifact_ids, output_artifact_ids, "
+                "created_at) "
                 "VALUES (:id, :rid, 'gate', 'LOCAL', 'PENDING', "
-                "'[]', '[]')"
+                "'[]', '[]', :ts)"
             ),
-            {"id": str(step_id), "rid": str(run_id)},
+            {"id": str(step_id), "rid": str(run_id), "ts": now_iso},
         )
         conn.execute(
             text(

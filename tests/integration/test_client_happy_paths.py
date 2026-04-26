@@ -65,10 +65,11 @@ def _seed_run_and_step(engine: Engine, *, user_id: str = "alex") -> tuple[UUID, 
         conn.execute(
             text(
                 "INSERT INTO step (id, run_id, step_name, executor, status, "
-                "input_artifact_ids, output_artifact_ids) "
-                "VALUES (:id, :rid, 's', 'LOCAL', 'PAUSED_FOR_APPROVAL', '[]', '[]')"
+                "input_artifact_ids, output_artifact_ids, created_at) "
+                "VALUES (:id, :rid, 's', 'LOCAL', 'PAUSED_FOR_APPROVAL', "
+                "'[]', '[]', :ts)"
             ),
-            {"id": str(step_id), "rid": str(run_id)},
+            {"id": str(step_id), "rid": str(run_id), "ts": now},
         )
     return run_id, step_id
 
