@@ -58,6 +58,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID
 
+from sqlalchemy import update
 from sqlalchemy.orm import Session, sessionmaker
 
 from apecx_integration.composition.artifact_store import ArtifactStore
@@ -268,15 +269,49 @@ class LocalExecutor:
         )
         return artifact.id
 
+    # Conditional terminal-transition helpers (cluster AB,
+    # 2026-04-26). The executor must not "rebirth" a run from a
+    # terminal state. If the sweeper already marked the run FAILED
+    # (cluster Z), or an external CANCELLED arrives, or any other
+    # terminal transition has happened first, the executor's
+    # _mark_completed / _mark_failed must be a no-op for the row
+    # AND must skip emitting the terminal provenance event (the
+    # winner already emitted theirs).
+    #
+    # The "legal source states" differ between the two helpers:
+    # _mark_completed implies the executor actually ran the
+    # workflow, so status must have been RUNNING/PAUSED. PENDING
+    # → COMPLETED would be a bug (executor never started).
+    # _mark_failed includes PENDING because validation failures
+    # (no workflow_config_id, artifact missing on disk) fire
+    # before the RUN_STARTED transition — we want those PENDING
+    # runs marked FAILED so they don't sit as orphans.
+    _COMPLETED_SOURCE_STATES = (RunStatus.RUNNING, RunStatus.PAUSED)
+    _FAILED_SOURCE_STATES = (
+        RunStatus.PENDING,
+        RunStatus.RUNNING,
+        RunStatus.PAUSED,
+    )
+
     def _mark_completed(
         self, run_id: UUID, output_artifact_id: UUID
     ) -> None:
         now = datetime.now(UTC)
         with self._session_factory() as session:
-            run = session.get(RunORM, run_id)
-            run.status = RunStatus.COMPLETED
-            run.completed_at = now
+            result = session.execute(
+                update(RunORM)
+                .where(RunORM.id == run_id)
+                .where(RunORM.status.in_(self._COMPLETED_SOURCE_STATES))
+                .values(status=RunStatus.COMPLETED, completed_at=now)
+            )
             session.commit()
+            if result.rowcount == 0:
+                log.warning(
+                    "Run %s not in RUNNING/PAUSED at _mark_completed; "
+                    "skipping terminal transition + RUN_COMPLETED event",
+                    run_id,
+                )
+                return
         self._recorder.record(
             run_id=run_id,
             event_type=ProvenanceEventType.RUN_COMPLETED,
@@ -293,18 +328,41 @@ class LocalExecutor:
         in_session: Session | None = None,
     ) -> None:
         now = datetime.now(UTC)
+
         if in_session is not None:
+            # Pre-RUN_STARTED validation-failure path. The run is
+            # PENDING and no other writer touches it yet, so race
+            # protection isn't relevant. Use the ORM-tracked
+            # in-memory mutation so we don't issue a DML statement
+            # that holds the SQLite writer lock and blocks the
+            # recorder's separate session from committing the
+            # RUN_FAILED event a few lines below. Caller commits.
             run = in_session.get(RunORM, run_id)
             if run is not None:
                 run.status = RunStatus.FAILED
                 run.completed_at = now
         else:
+            # Post-RUN_STARTED failure path. The run was claimed
+            # via the migration-0002 partial unique index, so its
+            # status was RUNNING/PAUSED — until possibly the
+            # sweeper or an external CANCELLED arrived. Conditional
+            # UPDATE so we don't rebirth a terminal run.
             with self._session_factory() as session:
-                run = session.get(RunORM, run_id)
-                if run is not None:
-                    run.status = RunStatus.FAILED
-                    run.completed_at = now
-                    session.commit()
+                result = session.execute(
+                    update(RunORM)
+                    .where(RunORM.id == run_id)
+                    .where(RunORM.status.in_(self._FAILED_SOURCE_STATES))
+                    .values(status=RunStatus.FAILED, completed_at=now)
+                )
+                session.commit()
+                if result.rowcount == 0:
+                    log.warning(
+                        "Run %s already terminal (or absent) at "
+                        "_mark_failed; skipping terminal transition + "
+                        "RUN_FAILED event",
+                        run_id,
+                    )
+                    return
         self._recorder.record(
             run_id=run_id,
             event_type=ProvenanceEventType.RUN_FAILED,
