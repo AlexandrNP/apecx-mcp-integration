@@ -179,6 +179,10 @@ class AllocationEstimate(Base):
     user_confirmed: Mapped[bool] = mapped_column(Boolean, default=False)
     user_confirmed_at: Mapped[datetime | None] = mapped_column(nullable=True)
     actual_core_hours: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # Migration 0004: real ordering key for /hpc/confirm. ``id`` is a
+    # random uuid4, so ``ORDER BY id DESC`` picked the wrong row when
+    # UUID lex order disagreed with insertion order. See cluster AC.
+    created_at: Mapped[datetime]
 
 
 class VerifiedSynonym(Base):

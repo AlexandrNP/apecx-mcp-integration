@@ -180,6 +180,7 @@ async def estimate_cost(
             user_confirmed=False,
             user_confirmed_at=None,
             actual_core_hours=None,
+            created_at=datetime.now(UTC),
         )
     )
     session.commit()
@@ -219,7 +220,15 @@ async def confirm_allocation(
     latest = session.execute(
         select(AllocationEstimateORM)
         .where(AllocationEstimateORM.run_id == body.run_id)
-        .order_by(AllocationEstimateORM.id.desc())
+        # Migration 0004 added ``created_at`` so we have a real
+        # chronological key. ``id`` is a random uuid4 — ordering by
+        # it picked the wrong row when UUID lex order disagreed with
+        # insertion order. We tiebreak on id only for the unlikely
+        # tied-microsecond case (cluster AC, 2026-04-26).
+        .order_by(
+            AllocationEstimateORM.created_at.desc(),
+            AllocationEstimateORM.id.desc(),
+        )
         .limit(1)
     ).scalar_one_or_none()
 
