@@ -88,7 +88,7 @@ def test_run_and_step_relationship(session: Session) -> None:
 def test_approval_cascades_with_step(session: Session) -> None:
     run = Run(user_id="alex", created_at=_now())
     step = Step(run=run, step_name="gate")
-    approval = Approval(step=step, kind=ApprovalKind.HARD)
+    approval = Approval(step=step, kind=ApprovalKind.HARD, created_at=_now())
     session.add(run)
     session.commit()
 

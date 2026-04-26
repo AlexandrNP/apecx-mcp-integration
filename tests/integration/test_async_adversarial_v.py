@@ -66,17 +66,19 @@ def _seed_run_with_step_and_pending_approval(cp_engine: Engine):
             ),
             {"id": str(step_id), "rid": str(run_id)},
         )
-        # Approval model: id, step_id, kind, status, policy, ... (no
-        # summary, no created_at column).
+        # Approval model: id, step_id, kind, status, policy,
+        # created_at, ... (no summary). created_at is NOT NULL since
+        # migration 0005 (cluster AE).
         conn.execute(
             text(
                 "INSERT INTO approval (id, step_id, kind, status, "
-                "policy) "
-                "VALUES (:id, :sid, 'HARD', 'PENDING', '{}')"
+                "policy, created_at) "
+                "VALUES (:id, :sid, 'HARD', 'PENDING', '{}', :ts)"
             ),
             {
                 "id": str(approval_id),
                 "sid": str(step_id),
+                "ts": now,
             },
         )
     return run_id, step_id, approval_id
