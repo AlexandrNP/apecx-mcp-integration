@@ -70,8 +70,27 @@ async def execute_workflow(run_id: str) -> dict:
     """Run the composed workflow locally.
 
     Synchronous wrt MCP — holds the tool call until the LocalExecutor
-    reaches terminal state. Returns ``status`` (completed / failed),
-    ``output_artifact_id`` (on success), and ``reason`` (on failure).
+    reaches terminal state OR until the executor recognizes another
+    writer owns the transition (sweeper, future /workflows/cancel).
+
+    Returns:
+      - ``status``: the actual DB status (``completed``, ``failed``,
+        ``cancelled``, or, in the rare concurrent-claim path,
+        ``running`` — see ``reason``).
+      - ``output_artifact_id``: present when the executor itself
+        completed the run; None otherwise.
+      - ``reason``: None on a clean executor-driven completion. Non-
+        None when the executor's terminal transition was rejected by
+        a conditional UPDATE — e.g. "run was already in status=X by
+        the time the executor finished" — so the caller can
+        distinguish executor-driven outcomes from outcomes another
+        writer landed first.
+
+    Cluster AJ (2026-04-26) made ``status`` truthful. Before, the
+    field was fabricated as "completed" any time the workflow code
+    finished, regardless of whether the run had been swept to FAILED
+    in the meantime. Trust the ``reason`` field as the source of
+    truth for "did THIS executor drive the transition."
     """
     body = ExecuteWorkflowRequest(run_id=parse_run_id(run_id))
     client = get_client()

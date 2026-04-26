@@ -93,10 +93,30 @@ class ExecuteWorkflowRequest(_APIBase):
 class ExecuteWorkflowResponse(_APIBase):
     """Mirror of ``LocalExecutor.ExecutionResult`` as a Pydantic shape.
 
-    ``status`` is the TERMINAL run status after execute() returned —
-    either COMPLETED or FAILED. ``reason`` and ``output_artifact_id``
-    are mutually exclusive: a COMPLETED run has no reason and carries
-    an artifact UUID; a FAILED run has a reason and no artifact.
+    ``status`` is the ACTUAL run status after execute() returned —
+    NOT the executor's intended status (cluster AJ, 2026-04-26).
+    Possible values:
+
+      - ``completed`` — the executor drove the workflow to success.
+        ``reason`` is None and ``output_artifact_id`` is set.
+      - ``failed`` — either (a) the executor failed during load /
+        process / a precondition (``reason`` describes the failure
+        class), or (b) another writer (the run-state sweeper, a
+        future ``/workflows/cancel``) had already terminated the
+        run before the executor's transition could land
+        (``reason`` says "executor attempted X but the run was
+        already in status=Y").
+      - ``cancelled`` — another writer cancelled the run while
+        the executor was running. ``reason`` reflects that.
+      - ``running`` — the rare concurrent-claim path, where another
+        executor took the run via the migration-0002 RUN_STARTED
+        unique index. ``reason`` says
+        ``concurrent_executor_already_claimed_run``.
+
+    ``reason`` is the source of truth for "did THIS executor drive
+    the transition." A None reason on a completed status means yes;
+    any non-None reason means the executor did NOT drive the
+    terminal state, even if the status field looks successful.
     """
 
     run_id: UUID
