@@ -152,10 +152,18 @@ class LocalExecutor:
                 "executor claimed it. Aborting without re-running.",
                 run_id,
             )
-            return ExecutionResult(
+            # Cluster AJ follow-up — we previously fabricated
+            # status=RUNNING here on the assumption that the OTHER
+            # executor was still running. Truth: the other executor
+            # might already be COMPLETED, FAILED, or anywhere. Read
+            # the actual DB status and surface it. The reason field
+            # tells the caller WHY this executor didn't drive the
+            # transition.
+            return self._terminal_result(
                 run_id=run_id,
-                status=RunStatus.RUNNING,
-                reason="concurrent_executor_already_claimed_run",
+                intended_status=RunStatus.RUNNING,
+                transitioned=False,
+                intended_reason="concurrent_executor_already_claimed_run",
                 output_artifact_id=None,
             )
 
