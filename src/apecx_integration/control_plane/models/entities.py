@@ -86,6 +86,10 @@ class Step(Base):
     input_artifact_ids: Mapped[list[UUID]] = mapped_column(JSON, default=list)
     output_artifact_ids: Mapped[list[UUID]] = mapped_column(JSON, default=list)
     log_location: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Migration 0006: ordering key for /runs/status. ``id`` is a
+    # random uuid4, so PENDING steps (started_at = NULL) returned
+    # in arbitrary order before. Cluster AH (2026-04-26).
+    created_at: Mapped[datetime]
 
     run: Mapped[Run] = relationship(back_populates="steps")
     approvals: Mapped[list[Approval]] = relationship(

@@ -76,7 +76,7 @@ def test_metadata_creates_all_tables_without_error() -> None:
 
 def test_run_and_step_relationship(session: Session) -> None:
     run = Run(user_id="alex", created_at=_now())
-    Step(run=run, step_name="entity_extraction")
+    Step(run=run, step_name="entity_extraction", created_at=_now())
     session.add(run)
     session.commit()
     session.refresh(run)
@@ -87,7 +87,7 @@ def test_run_and_step_relationship(session: Session) -> None:
 
 def test_approval_cascades_with_step(session: Session) -> None:
     run = Run(user_id="alex", created_at=_now())
-    step = Step(run=run, step_name="gate")
+    step = Step(run=run, step_name="gate", created_at=_now())
     approval = Approval(step=step, kind=ApprovalKind.HARD, created_at=_now())
     session.add(run)
     session.commit()

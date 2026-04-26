@@ -42,19 +42,21 @@ def _insert_step(
     step_name: str = "example",
     status_value: str = "PENDING",
 ) -> UUID:
+    from datetime import UTC, datetime
     step_id = uuid4()
     with engine.begin() as conn:
         conn.execute(
             text(
                 "INSERT INTO step (id, run_id, step_name, executor, status, "
-                "input_artifact_ids, output_artifact_ids) "
-                "VALUES (:id, :rid, :name, 'LOCAL', :st, '[]', '[]')"
+                "input_artifact_ids, output_artifact_ids, created_at) "
+                "VALUES (:id, :rid, :name, 'LOCAL', :st, '[]', '[]', :ts)"
             ),
             {
                 "id": str(step_id),
                 "rid": str(run_id),
                 "name": step_name,
                 "st": status_value,
+                "ts": datetime.now(UTC).isoformat(),
             },
         )
     return step_id
