@@ -35,7 +35,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session, sessionmaker
 
 from apecx_integration.control_plane.models.entities import (
@@ -140,10 +140,27 @@ class RunStateSweeper:
                 )
 
                 old_status = run.status
-                run.status = RunStatus.FAILED
-                run.completed_at = reference
+                # Conditional UPDATE: only transition if the run is
+                # STILL in a sweepable state. A concurrent sweeper or
+                # the real executor may have moved this run to
+                # COMPLETED / FAILED between our SELECT and now;
+                # rowcount==0 in that case and we skip the
+                # RUN_FAILED record so the chain does not collect
+                # duplicate or contradictory terminal events.
+                result = session.execute(
+                    update(RunORM)
+                    .where(RunORM.id == run.id)
+                    .where(RunORM.status.in_(SWEEPABLE_STATES))
+                    .values(status=RunStatus.FAILED, completed_at=reference)
+                )
                 session.commit()
-                session.refresh(run)
+                if result.rowcount == 0:
+                    log.debug(
+                        "RunStateSweeper: run %s left sweepable state "
+                        "between SELECT and UPDATE; skipping RUN_FAILED",
+                        run.id,
+                    )
+                    continue
 
                 self._recorder.record(
                     run_id=run.id,
