@@ -110,7 +110,14 @@ class LocalExecutor:
     async def execute(self, run_id: UUID) -> ExecutionResult:
         yaml_path = self._validate_and_fetch(run_id)
         if yaml_path is None:
-            # Precondition failure already marked FAILED inside helper.
+            # Precondition failure (no workflow_config_id, artifact
+            # missing, etc.). The helper attempted FAILED inside its
+            # own session; we trust its commit and report FAILED.
+            # The contrived race "concurrent CANCELLED during
+            # validate" would leave a misleading reason here, but
+            # validate is single-threaded with respect to the run
+            # at this stage (no RUN_STARTED yet, no other writer
+            # touches it).
             return ExecutionResult(
                 run_id=run_id,
                 status=RunStatus.FAILED,
@@ -166,11 +173,14 @@ class LocalExecutor:
             except Exception as exc:
                 reason = f"workflow load failed: {type(exc).__name__}: {exc}"
                 log.warning("Run %s: %s", run_id, reason)
-                self._mark_failed(run_id, reason, failure_class="load_failed")
-                return ExecutionResult(
+                transitioned = self._mark_failed(
+                    run_id, reason, failure_class="load_failed"
+                )
+                return self._terminal_result(
                     run_id=run_id,
-                    status=RunStatus.FAILED,
-                    reason=reason,
+                    intended_status=RunStatus.FAILED,
+                    transitioned=transitioned,
+                    intended_reason=reason,
                     output_artifact_id=None,
                 )
 
@@ -181,23 +191,80 @@ class LocalExecutor:
                     f"workflow execution failed: {type(exc).__name__}: {exc}"
                 )
                 log.warning("Run %s: %s", run_id, reason)
-                self._mark_failed(
+                transitioned = self._mark_failed(
                     run_id, reason, failure_class="execute_failed"
                 )
-                return ExecutionResult(
+                return self._terminal_result(
                     run_id=run_id,
-                    status=RunStatus.FAILED,
-                    reason=reason,
+                    intended_status=RunStatus.FAILED,
+                    transitioned=transitioned,
+                    intended_reason=reason,
                     output_artifact_id=None,
                 )
 
         output_artifact_id = self._persist_output(run_id, raw_result)
-        self._mark_completed(run_id, output_artifact_id)
+        transitioned = self._mark_completed(run_id, output_artifact_id)
 
+        return self._terminal_result(
+            run_id=run_id,
+            intended_status=RunStatus.COMPLETED,
+            transitioned=transitioned,
+            intended_reason=None,
+            output_artifact_id=output_artifact_id,
+        )
+
+    def _terminal_result(
+        self,
+        *,
+        run_id: UUID,
+        intended_status: RunStatus,
+        transitioned: bool,
+        intended_reason: str | None,
+        output_artifact_id: UUID | None,
+    ) -> ExecutionResult:
+        """Construct the ExecutionResult, honoring the ACTUAL DB state.
+
+        Cluster AJ (2026-04-26) — fail-fast: the executor must NOT
+        report a terminal status it didn't actually achieve. If
+        ``_mark_completed`` / ``_mark_failed`` returned False, the
+        run had already left an active state (likely swept to
+        FAILED, or externally CANCELLED), and the actual DB
+        status — not the executor's attempted one — is the truth.
+        Surface a non-None ``reason`` so the caller / HTTP route /
+        MCP client knows the executor didn't drive this transition.
+        """
+        if transitioned:
+            return ExecutionResult(
+                run_id=run_id,
+                status=intended_status,
+                reason=intended_reason,
+                output_artifact_id=output_artifact_id,
+            )
+        actual = self._read_actual_status(run_id)
+        if actual is None:
+            # Run row vanished. That's an upstream invariant
+            # violation (Run rows are append-only after insert);
+            # surface as FAILED with a clear reason so the caller
+            # has a terminal status to act on.
+            return ExecutionResult(
+                run_id=run_id,
+                status=RunStatus.FAILED,
+                reason=(
+                    f"executor finished but run {run_id} no longer "
+                    "exists in the DB; somebody deleted it mid-flight"
+                ),
+                output_artifact_id=output_artifact_id,
+            )
         return ExecutionResult(
             run_id=run_id,
-            status=RunStatus.COMPLETED,
-            reason=None,
+            status=actual,
+            reason=(
+                f"executor attempted {intended_status.value} but the "
+                f"run was already in status={actual.value} — another "
+                "writer (sweeper, /workflows/cancel, etc) owned the "
+                "terminal transition; executor did NOT emit a "
+                "terminal provenance event"
+            ),
             output_artifact_id=output_artifact_id,
         )
 
@@ -295,7 +362,18 @@ class LocalExecutor:
 
     def _mark_completed(
         self, run_id: UUID, output_artifact_id: UUID
-    ) -> None:
+    ) -> bool:
+        """Transition run to COMPLETED + emit RUN_COMPLETED.
+
+        Returns True if THIS call performed the transition (the
+        caller is the source of truth — it can return COMPLETED).
+        Returns False if the run had already left RUNNING/PAUSED
+        before our UPDATE — the caller is NOT the source of truth
+        and must NOT pretend it completed the run. Cluster AJ
+        (2026-04-26) added the bool to fix the silent-success
+        path where execute() returned status=COMPLETED even
+        though the helper had skipped the transition.
+        """
         now = datetime.now(UTC)
         with self._session_factory() as session:
             result = session.execute(
@@ -311,13 +389,14 @@ class LocalExecutor:
                     "skipping terminal transition + RUN_COMPLETED event",
                     run_id,
                 )
-                return
+                return False
         self._recorder.record(
             run_id=run_id,
             event_type=ProvenanceEventType.RUN_COMPLETED,
             actor=self._actor,
             payload={"output_artifact_id": str(output_artifact_id)},
         )
+        return True
 
     def _mark_failed(
         self,
@@ -326,7 +405,21 @@ class LocalExecutor:
         *,
         failure_class: str,
         in_session: Session | None = None,
-    ) -> None:
+    ) -> bool:
+        """Transition run to FAILED + emit RUN_FAILED.
+
+        Returns True if THIS call performed the transition. Returns
+        False if the run had already left an active state (already
+        terminal, or absent). Cluster AJ (2026-04-26) — see
+        ``_mark_completed`` rationale.
+
+        For the in_session pre-RUN_STARTED validation-failure path,
+        we keep the ORM-tracked in-memory mutation (race-free
+        because no other writer touches PENDING-without-an-
+        artifact) but still surface the bool truthfully: True only
+        if the run row was found AND was in an eligible source
+        state.
+        """
         now = datetime.now(UTC)
 
         if in_session is not None:
@@ -338,9 +431,24 @@ class LocalExecutor:
             # recorder's separate session from committing the
             # RUN_FAILED event a few lines below. Caller commits.
             run = in_session.get(RunORM, run_id)
-            if run is not None:
-                run.status = RunStatus.FAILED
-                run.completed_at = now
+            if run is None:
+                log.warning(
+                    "Run %s not found at in-session _mark_failed; "
+                    "skipping terminal transition + RUN_FAILED event",
+                    run_id,
+                )
+                return False
+            if run.status not in self._FAILED_SOURCE_STATES:
+                log.warning(
+                    "Run %s already terminal (status=%s) at in-session "
+                    "_mark_failed; skipping terminal transition + "
+                    "RUN_FAILED event",
+                    run_id,
+                    run.status,
+                )
+                return False
+            run.status = RunStatus.FAILED
+            run.completed_at = now
         else:
             # Post-RUN_STARTED failure path. The run was claimed
             # via the migration-0002 partial unique index, so its
@@ -362,13 +470,25 @@ class LocalExecutor:
                         "RUN_FAILED event",
                         run_id,
                     )
-                    return
+                    return False
         self._recorder.record(
             run_id=run_id,
             event_type=ProvenanceEventType.RUN_FAILED,
             actor=self._actor,
             payload={"reason": reason, "failure_class": failure_class},
         )
+        return True
+
+    def _read_actual_status(self, run_id: UUID) -> RunStatus | None:
+        """Fetch the run's current status from the DB. Used by
+        ``execute()`` when ``_mark_completed`` / ``_mark_failed``
+        return False — i.e. somebody else owns the terminal
+        transition for this run, and we must report THEIR truth
+        rather than our (rejected) attempted transition.
+        """
+        with self._session_factory() as session:
+            run = session.get(RunORM, run_id)
+            return run.status if run is not None else None
 
 
 def run_sync(executor: LocalExecutor, run_id: UUID) -> ExecutionResult:
