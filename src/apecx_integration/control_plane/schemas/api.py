@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from apecx_integration.control_plane.schemas.entities import (
     Approval,
@@ -216,6 +216,35 @@ class EstimateCostResponse(_APIBase):
 class ConfirmAllocationRequest(_APIBase):
     run_id: UUID
     confirmed_core_hours: float = Field(ge=0.0)
+
+    @field_validator("confirmed_core_hours", mode="before")
+    @classmethod
+    def _reject_non_finite(cls, v):
+        # Probe batch 1 (2026-04-26): mode="before" so this fires
+        # BEFORE Pydantic's Field(ge=0.0) check. Without it,
+        # NaN passes through to ge=0.0, which rejects it but
+        # builds an error response containing the raw NaN value,
+        # which then crashes FastAPI's JSON serializer on the
+        # response side (NaN is not JSON-compliant). Infinity
+        # passes ge=0.0 (Infinity >= 0.0 is True) entirely and
+        # reaches the route, allowing "unbounded allocation
+        # confirmation."
+        #
+        # Reject non-finite at parse time so the error message we
+        # build never includes the raw float, and so Infinity
+        # never reaches the route's ceiling check.
+        import math
+
+        try:
+            f = float(v)
+        except (TypeError, ValueError):
+            return v  # let Pydantic's normal type coercion reject
+        if not math.isfinite(f):
+            raise ValueError(
+                "confirmed_core_hours must be a finite number "
+                "(got non-finite: NaN, Infinity, or -Infinity)"
+            )
+        return v
 
 
 class ConfirmAllocationResponse(_APIBase):

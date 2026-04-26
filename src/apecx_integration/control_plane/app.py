@@ -132,6 +132,54 @@ def create_app(
     def healthz() -> dict[str, str]:
         return {"status": "ok", "phase": "scaffold"}
 
+    # Probe batch 1 (2026-04-26) — fail-fast for non-finite floats.
+    # Standard JSON forbids NaN / Infinity / -Infinity; Python's
+    # json.loads accepts them by default. Pydantic happily binds them
+    # to ``float`` fields; a per-field finiteness validator catches
+    # them, BUT the resulting RequestValidationError context contains
+    # the raw float, and FastAPI's default error response serializer
+    # (Python's json.dumps with allow_nan=False after fastapi
+    # encodes) crashes on encode → 500 with no body. From the user's
+    # perspective: a malformed input gets a generic "internal server
+    # error" instead of a clean 422 explaining what's wrong.
+    #
+    # Register an exception handler that scrubs non-finite floats
+    # from the error context before serialization. Same intent as
+    # adding a strict JSON parser at the request boundary, but
+    # cheaper to ship.
+    from fastapi import Request as _FastAPIRequest
+    from fastapi.exceptions import RequestValidationError as _RVE
+    from fastapi.responses import JSONResponse as _JSONResponse
+
+    def _scrub(value):
+        # Replace any value the default JSON encoder can't handle —
+        # non-finite floats, ValueError/other exception objects in
+        # Pydantic's error context, etc. — with a string repr.
+        import math as _math
+
+        if isinstance(value, float):
+            if not _math.isfinite(value):
+                return f"<non-finite: {value!r}>"
+            return value
+        if isinstance(value, dict):
+            return {k: _scrub(v) for k, v in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [_scrub(v) for v in value]
+        if isinstance(value, (str, int, bool)) or value is None:
+            return value
+        # Anything else (ValueError, Exception subclasses, custom
+        # objects) — stringify so json.dumps can serialize.
+        return repr(value)
+
+    @app.exception_handler(_RVE)
+    async def _request_validation_handler(
+        request: _FastAPIRequest, exc: _RVE
+    ) -> _JSONResponse:
+        # Scrub the error list so JSON serialization can't crash on
+        # non-finite floats nested in the input context.
+        scrubbed = _scrub(exc.errors())
+        return _JSONResponse(status_code=422, content={"detail": scrubbed})
+
     app.include_router(workflow.router)
     app.include_router(approval.router)
     app.include_router(status.router)
