@@ -21,11 +21,14 @@ from sqlalchemy.orm import Session, sessionmaker
 from apecx_integration.composition.approval_policy import ApprovalPolicy
 from apecx_integration.composition.composer import Composer
 from apecx_integration.control_plane.dependencies import (
-    get_approval_policy,
-    get_composer,
-    get_local_executor,
+    get_approval_policy_or_none,
+    get_composer_or_none,
+    get_local_executor_or_none,
     get_session,
     get_session_factory,
+    require_approval_policy,
+    require_composer,
+    require_local_executor,
 )
 from apecx_integration.control_plane.executors.local import LocalExecutor
 from apecx_integration.control_plane.models.entities import (
@@ -70,8 +73,16 @@ async def start_workflow(
     session_factory: Annotated[
         sessionmaker[Session], Depends(get_session_factory)
     ],
-    composer: Annotated[Composer, Depends(get_composer)],
-    policy: Annotated[ApprovalPolicy, Depends(get_approval_policy)],
+    # Probe batch 4 (2026-04-26) — use _or_none variants so that a
+    # malformed body (missing fields, extra fields) gets a clean
+    # 422 from Pydantic, not 503 from the service-availability
+    # check. We explicitly call the require_* helpers AFTER body
+    # parameter is in scope, so 503 only fires when the body was
+    # well-formed.
+    composer: Annotated[Composer | None, Depends(get_composer_or_none)] = None,
+    policy: Annotated[
+        ApprovalPolicy | None, Depends(get_approval_policy_or_none)
+    ] = None,
 ) -> StartWorkflowResponse:
     """T01 P1: compose a workflow, persist it, return the Run.
 
@@ -95,6 +106,11 @@ async def start_workflow(
     """
     from apecx_integration.composition.approval_policy import ApprovalAction
     from apecx_integration.composition.differ import CategorizedWorkflow
+
+    # Body has been validated by Pydantic by the time we reach
+    # this point; now check service availability (cluster AM).
+    composer = require_composer(composer)
+    policy = require_approval_policy(policy)
 
     run_id = uuid4()
     now = datetime.now(UTC)
@@ -232,7 +248,7 @@ async def generate_plan(
     session_factory: Annotated[
         sessionmaker[Session], Depends(get_session_factory)
     ],
-    composer: Annotated[Composer, Depends(get_composer)],
+    composer: Annotated[Composer | None, Depends(get_composer_or_none)] = None,
 ) -> GeneratePlanResponse:
     """Preview-mode composition — same composer flow as
     ``/workflows/start`` but the Run is immediately marked CANCELLED.
@@ -254,6 +270,7 @@ async def generate_plan(
     CANCELLED rows are discoverable by ``user_id='_preview'`` for
     anyone who wants to prune them.
     """
+    composer = require_composer(composer)
     run_id = uuid4()
     now = datetime.now(UTC)
     run = RunORM(
@@ -354,7 +371,9 @@ async def generate_plan(
 @router.post("/execute", response_model=ExecuteWorkflowResponse)
 async def execute_workflow(
     body: ExecuteWorkflowRequest,
-    executor: Annotated[LocalExecutor, Depends(get_local_executor)],
+    executor: Annotated[
+        LocalExecutor | None, Depends(get_local_executor_or_none)
+    ] = None,
 ) -> ExecuteWorkflowResponse:
     """T01 P2 HTTP surface — run a composed workflow to terminal state.
 
@@ -373,6 +392,7 @@ async def execute_workflow(
     (no route-specific error-catching otherwise — the executor owns
     run-state transitions and is the right place to surface failures).
     """
+    executor = require_local_executor(executor)
     result = await executor.execute(body.run_id)
     return ExecuteWorkflowResponse(
         run_id=result.run_id,
