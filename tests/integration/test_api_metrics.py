@@ -67,13 +67,18 @@ def _seed_decided_approval(
         )
         conn.execute(
             text(
-                "INSERT INTO approval (id, step_id, kind, status, policy) "
-                "VALUES (:id, :sid, 'HARD', :st, '{}')"
+                "INSERT INTO approval (id, step_id, kind, status, policy, "
+                "created_at) "
+                "VALUES (:id, :sid, 'HARD', :st, '{}', :ts)"
             ),
             {
                 "id": str(approval_id),
                 "sid": str(step_id),
                 "st": final_status.value.upper(),
+                # Use ``started`` so test assertions about
+                # request-to-decide latency continue to be
+                # consistent with the synthetic timeline.
+                "ts": started.isoformat(),
             },
         )
 

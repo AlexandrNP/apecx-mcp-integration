@@ -106,6 +106,10 @@ class Approval(Base):
     decided_by: Mapped[str | None] = mapped_column(String(255), nullable=True)
     decided_at: Mapped[datetime | None] = mapped_column(nullable=True)
     comment: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Migration 0005: real ordering key for /approvals/pending. ``id``
+    # is a random uuid4, so ORDER BY id scrambles the operator's
+    # backlog (cluster AE, 2026-04-26).
+    created_at: Mapped[datetime]
 
     step: Mapped[Step] = relationship(back_populates="approvals")
 

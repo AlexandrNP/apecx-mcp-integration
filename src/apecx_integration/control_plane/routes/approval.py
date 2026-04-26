@@ -119,6 +119,7 @@ def create_approval(
             "artifact_ids": [str(aid) for aid in body.artifact_ids],
             **body.policy,
         },
+        created_at=datetime.now(UTC),
     )
     session.add(approval)
     session.commit()
@@ -284,7 +285,12 @@ def list_pending_approvals(
                 ApprovalORM.status == ApprovalStatus.PENDING,
                 RunORM.user_id == body.user_id,
             )
-            .order_by(ApprovalORM.id)
+            # FIFO: oldest pending approvals first so an operator
+            # draining the backlog handles them in submission
+            # order. Migration 0005 added ``created_at``; the
+            # secondary tiebreak on ``id`` covers the unlikely
+            # tied-microsecond case (cluster AE, 2026-04-26).
+            .order_by(ApprovalORM.created_at, ApprovalORM.id)
         )
         .scalars()
         .all()
