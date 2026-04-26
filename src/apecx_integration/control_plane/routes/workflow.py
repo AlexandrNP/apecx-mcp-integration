@@ -111,10 +111,26 @@ async def start_workflow(
 
     # Step 2: composer call is now OUTSIDE any session scope. The
     # composer drives its own ArtifactStore session internally.
-    composed = await composer.compose(
-        body.description,
-        context={"run_id": run_id},
-    )
+    #
+    # If compose() raises (LLM unreachable, malformed response, T13
+    # scanner violation, etc.), the run row committed in step 1 is
+    # left in PENDING — an audit-trail orphan. Catch and mark
+    # FAILED, then re-raise so FastAPI's exception middleware
+    # surfaces the original cause to the operator. Found 2026-04-25
+    # by adversarial testing (cluster U1).
+    try:
+        composed = await composer.compose(
+            body.description,
+            context={"run_id": run_id},
+        )
+    except Exception:
+        with session_factory() as session:
+            run_row = session.get(RunORM, run_id)
+            if run_row is not None:
+                run_row.status = RunStatus.FAILED
+                run_row.completed_at = datetime.now(UTC)
+                session.commit()
+        raise
 
     # Step 3: fresh session for the back-link + status write.
     with session_factory() as session:
@@ -202,9 +218,23 @@ async def generate_plan(
         session.add(run)
         session.commit()
 
-    composed = await composer.compose(
-        body.description, context={"run_id": run_id}
-    )
+    # Same orphan-cleanup as /workflows/start (cluster U1). Without
+    # it, a compose() exception leaves the preview run silently in
+    # PENDING — and preview runs already use user_id="_preview" as
+    # a discoverability hack, which compounds: orphans there are
+    # harder to spot.
+    try:
+        composed = await composer.compose(
+            body.description, context={"run_id": run_id}
+        )
+    except Exception:
+        with session_factory() as session:
+            run_row = session.get(RunORM, run_id)
+            if run_row is not None:
+                run_row.status = RunStatus.FAILED
+                run_row.completed_at = datetime.now(UTC)
+                session.commit()
+        raise
 
     with session_factory() as session:
         run = session.get(RunORM, run_id)
