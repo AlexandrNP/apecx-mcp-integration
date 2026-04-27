@@ -377,8 +377,8 @@ def test_mcp_tools_echo_malformed_run_id(tool_name, kwargs):
     "tool_name, kwargs",
     [
         ("approve", {"approval_id": "bad-uuid", "comment": "x"}),
-        ("reject", {"approval_id": "bad-uuid", "comment": "x"}),
-        ("correct", {"approval_id": "bad-uuid", "corrected_payload": {}}),
+        ("reject", {"approval_id": "bad-uuid", "reason": "x"}),
+        ("correct", {"approval_id": "bad-uuid", "modifications": {}}),
     ],
 )
 def test_approval_tools_echo_malformed_approval_id(tool_name, kwargs):

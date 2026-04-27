@@ -45,11 +45,13 @@ async def approve(
 
 
 async def reject(
-    approval_id: str, comment: str = "", decided_by: str = "api_user"
+    approval_id: str, reason: str, decided_by: str = "api_user"
 ) -> dict:
+    """Reject a pending approval. ``reason`` is required (min length 1)
+    by ``RejectRequest`` — a reviewer who rejects must justify it."""
     body = RejectRequest(
         approval_id=parse_run_id(approval_id, field="approval_id"),
-        comment=comment,
+        reason=reason,
         decided_by=decided_by,
     )
     client = get_client()
@@ -59,14 +61,15 @@ async def reject(
 
 async def correct(
     approval_id: str,
-    corrected_payload: dict,
-    comment: str = "",
+    modifications: dict,
     decided_by: str = "api_user",
 ) -> dict:
+    """Approve with reviewer-supplied modifications. ``modifications``
+    is the free-form payload the reviewer wants applied to the
+    proposed action; downstream consumers interpret its shape."""
     body = CorrectRequest(
         approval_id=parse_run_id(approval_id, field="approval_id"),
-        corrected_payload=corrected_payload,
-        comment=comment,
+        modifications=modifications,
         decided_by=decided_by,
     )
     client = get_client()
