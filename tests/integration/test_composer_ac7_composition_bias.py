@@ -71,8 +71,12 @@ def _ollama_reachable_with_model(model: str) -> bool:
 
 
 def _composer_runtime_deps_importable() -> bool:
+    """Composer runtime deps gate. 2026-04-27: apecx_db_integration
+    dropped — Day 1 migration moved the agents into
+    ``apecx_integration.agents.violin_bvbrc``. The new gate verifies
+    nanobrain (the only remaining sibling-repo runtime dep)."""
     try:
-        import apecx_db_integration  # noqa: F401
+        import nanobrain.core.workflow  # noqa: F401
     except ImportError:
         return False
     return True

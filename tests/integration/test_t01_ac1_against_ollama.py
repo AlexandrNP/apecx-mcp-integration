@@ -62,7 +62,11 @@ import httpx
 import pytest
 
 try:
-    import apecx_db_integration  # noqa: F401
+    # 2026-04-27: apecx_db_integration import dropped — the agents are
+    # now in apecx_integration.agents.violin_bvbrc (Day 1 migration).
+    # Per user directive, this repo's only sibling-repo dependency is
+    # nanobrain + apecx-harvesters; gating on the legacy import would
+    # falsely skip the test on a clean venv.
     import nanobrain.core.workflow  # noqa: F401
     _DEPS_OK = True
 except ImportError:
