@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 if TYPE_CHECKING:
     from apecx_integration.composition.differ import StepCategorization
@@ -38,7 +38,14 @@ class ComposerConfig(BaseModel):
     Phase-1 fields are locked (spec §6 P1). Phase-2+ may add optional
     fields (e.g. ``retry_count`` for repair-prompt logic) — add here
     with defaults so existing configs keep loading.
+
+    ``extra='forbid'`` (workspace rule, 2026-04-27 batch 36): a typo
+    in ``composer_config.yml`` (e.g. ``library_versoin``) raises at
+    config-load instead of silently using whatever the schema chose
+    when the missing required field happens to be optional.
     """
+
+    model_config = ConfigDict(extra="forbid")
 
     # Library pin — embedded in every GeneratedArtifact row (T11 AC3).
     library_version: str
