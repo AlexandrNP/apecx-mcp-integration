@@ -75,12 +75,8 @@ class DatabaseStore:
 
         if bvbrc_csv_path:
             try:
-                self.dfs["bvbrc_genomes"] = pd.read_csv(
-                    bvbrc_csv_path, low_memory=False
-                )
-                logger.info(
-                    "Loaded bvbrc_genomes: %d rows", len(self.dfs["bvbrc_genomes"])
-                )
+                self.dfs["bvbrc_genomes"] = pd.read_csv(bvbrc_csv_path, low_memory=False)
+                logger.info("Loaded bvbrc_genomes: %d rows", len(self.dfs["bvbrc_genomes"]))
             except Exception as e:
                 logger.error("Failed to load BV-BRC genomes: %s", e)
 
@@ -154,8 +150,7 @@ def get_store() -> tuple[DatabaseStore | None, str | None]:
         return None, _store_load_error
     if not data_root.is_dir():
         _store_load_error = (
-            f"Configured data root {data_root} does not exist or is not a "
-            "directory."
+            f"Configured data root {data_root} does not exist or is not a directory."
         )
         return None, _store_load_error
 
@@ -221,17 +216,13 @@ def set_store_for_tests(store: DatabaseStore | None) -> None:
 # ---------------------------------------------------------------------------
 
 
-def _safe_str_contains(
-    df: pd.DataFrame, columns: list[str], term: str
-) -> pd.DataFrame:
+def _safe_str_contains(df: pd.DataFrame, columns: list[str], term: str) -> pd.DataFrame:
     """Case-insensitive substring search across multiple columns. NaN-safe."""
     mask = pd.Series(False, index=df.index)
     term_lower = term.lower()
     for col in columns:
         if col in df.columns:
-            mask |= df[col].astype(str).str.lower().str.contains(
-                term_lower, na=False, regex=False
-            )
+            mask |= df[col].astype(str).str.lower().str.contains(term_lower, na=False, regex=False)
     return df[mask]
 
 
@@ -301,9 +292,7 @@ def query_pathogens(
     df = store.dfs["pathogens"].copy()
 
     if search_term:
-        df = _safe_str_contains(
-            df, ["Pathogen", "Disease", "Pathogen_Description"], search_term
-        )
+        df = _safe_str_contains(df, ["Pathogen", "Disease", "Pathogen_Description"], search_term)
 
     if disease:
         df = _safe_str_contains(df, ["Disease"], disease)
@@ -314,9 +303,7 @@ def query_pathogens(
         for rec in records:
             pid = rec.get("id")
             if pid is not None:
-                rec["vaccine_count"] = int(
-                    vp_df[vp_df["pathogen_id"] == pid].shape[0]
-                )
+                rec["vaccine_count"] = int(vp_df[vp_df["pathogen_id"] == pid].shape[0])
 
     return {
         "pathogens": records,
@@ -389,9 +376,7 @@ def query_bvbrc_genomes(
         df = _safe_str_contains(df, ["Host Name", "Host Common Name"], host)
 
     if country:
-        df = _safe_str_contains(
-            df, ["Isolation Country", "Geographic Location"], country
-        )
+        df = _safe_str_contains(df, ["Isolation Country", "Geographic Location"], country)
 
     if min_year is not None and "Collection Year" in df.columns:
         df = df[pd.to_numeric(df["Collection Year"], errors="coerce") >= min_year]
@@ -446,24 +431,26 @@ def get_vaccine_pathogen_genes(
 
         gene_list = []
         for _, g in gene_rows.iterrows():
-            gene_list.append({
-                "gene_name": g.get("Gene_Name"),
-                "protein_name": g.get("Protein_Name"),
-                "organism": g.get("Organism"),
-                "molecule_role": g.get("Molecule_Role"),
-            })
+            gene_list.append(
+                {
+                    "gene_name": g.get("Gene_Name"),
+                    "protein_name": g.get("Protein_Name"),
+                    "organism": g.get("Organism"),
+                    "molecule_role": g.get("Molecule_Role"),
+                }
+            )
         total_genes += len(gene_list)
 
-        results.append({
-            "vaccine_name": vax.get("Vaccine_Name") or vax.get("Vaccine"),
-            "type": vax.get("Type"),
-            "status": vax.get("Status"),
-            "genes": gene_list,
-        })
+        results.append(
+            {
+                "vaccine_name": vax.get("Vaccine_Name") or vax.get("Vaccine"),
+                "type": vax.get("Type"),
+                "status": vax.get("Status"),
+                "genes": gene_list,
+            }
+        )
 
-    pathogen_display = (
-        pathogens_df.iloc[0]["Pathogen"] if not pathogens_df.empty else pathogen_name
-    )
+    pathogen_display = pathogens_df.iloc[0]["Pathogen"] if not pathogens_df.empty else pathogen_name
 
     return {
         "pathogen": pathogen_display,
@@ -500,17 +487,17 @@ def resolve_entity(store: DatabaseStore, name: str) -> dict[str, Any]:
     cached = store.virus_cache.get(name.lower())
 
     if "pathogens" in store.dfs:
-        p_df = _safe_str_contains(
-            store.dfs["pathogens"], ["Pathogen", "Disease"], name
-        )
+        p_df = _safe_str_contains(store.dfs["pathogens"], ["Pathogen", "Disease"], name)
         for _, row in p_df.iterrows():
-            matches["pathogens"].append({
-                "id": int(row["id"]) if pd.notna(row.get("id")) else None,
-                "name": row.get("Pathogen"),
-                "ncbi_taxonomy_id": row.get("NCBI_Taxonomy_ID"),
-                "violin_id": row.get("VIOLIN_c_pathogen_id"),
-                "disease": row.get("Disease"),
-            })
+            matches["pathogens"].append(
+                {
+                    "id": int(row["id"]) if pd.notna(row.get("id")) else None,
+                    "name": row.get("Pathogen"),
+                    "ncbi_taxonomy_id": row.get("NCBI_Taxonomy_ID"),
+                    "violin_id": row.get("VIOLIN_c_pathogen_id"),
+                    "disease": row.get("Disease"),
+                }
+            )
             if pd.notna(row.get("NCBI_Taxonomy_ID")):
                 tid = str(row["NCBI_Taxonomy_ID"])
                 if tid not in identifiers["ncbi_taxonomy_ids"]:
@@ -527,24 +514,28 @@ def resolve_entity(store: DatabaseStore, name: str) -> dict[str, Any]:
             name,
         )
         for _, row in v_df.head(10).iterrows():
-            matches["vaccines"].append({
-                "id": int(row["id"]) if pd.notna(row.get("id")) else None,
-                "name": row.get("Vaccine_Name") or row.get("Vaccine"),
-                "type": row.get("Type"),
-                "status": row.get("Status"),
-            })
+            matches["vaccines"].append(
+                {
+                    "id": int(row["id"]) if pd.notna(row.get("id")) else None,
+                    "name": row.get("Vaccine_Name") or row.get("Vaccine"),
+                    "type": row.get("Type"),
+                    "status": row.get("Status"),
+                }
+            )
 
     if "genes" in store.dfs:
         g_df = _safe_str_contains(
             store.dfs["genes"], ["Gene_Name", "Protein_Name", "Organism"], name
         )
         for _, row in g_df.head(10).iterrows():
-            matches["genes"].append({
-                "id": int(row["id"]) if pd.notna(row.get("id")) else None,
-                "name": row.get("Gene_Name"),
-                "protein_name": row.get("Protein_Name"),
-                "organism": row.get("Organism"),
-            })
+            matches["genes"].append(
+                {
+                    "id": int(row["id"]) if pd.notna(row.get("id")) else None,
+                    "name": row.get("Gene_Name"),
+                    "protein_name": row.get("Protein_Name"),
+                    "organism": row.get("Organism"),
+                }
+            )
 
     if "bvbrc_genomes" in store.dfs:
         bg_df = _safe_str_contains(
@@ -556,16 +547,20 @@ def resolve_entity(store: DatabaseStore, name: str) -> dict[str, Any]:
             species_col = "Species" if "Species" in bg_df.columns else None
             if species_col:
                 for sp, group in bg_df.groupby(species_col):
-                    matches["bvbrc_genomes"].append({
-                        "species": sp,
-                        "count": len(group),
-                        "example_genome_id": group.iloc[0].get("Genome ID"),
-                    })
+                    matches["bvbrc_genomes"].append(
+                        {
+                            "species": sp,
+                            "count": len(group),
+                            "example_genome_id": group.iloc[0].get("Genome ID"),
+                        }
+                    )
             else:
-                matches["bvbrc_genomes"].append({
-                    "species": "unknown",
-                    "count": len(bg_df),
-                })
+                matches["bvbrc_genomes"].append(
+                    {
+                        "species": "unknown",
+                        "count": len(bg_df),
+                    }
+                )
 
     return {
         "query": name,

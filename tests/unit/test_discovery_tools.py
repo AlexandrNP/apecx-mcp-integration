@@ -12,14 +12,11 @@ non-default-config path (env-var override + multi-manifest case).
 from __future__ import annotations
 
 import asyncio
-import os
-from pathlib import Path
 
 import pytest
 import yaml
 
 from apecx_integration.mcp_surface.tools import discovery
-
 
 # ---------------------------------------------------------------------------
 # Default packaged config — exercises the real manifest
@@ -35,10 +32,7 @@ def test_list_workflows_returns_violin_bvbrc():
 
 def test_list_workflows_row_shape():
     out = asyncio.run(discovery.list_workflows())
-    row = next(
-        r for r in out["workflows"]
-        if r["workflow_name"] == "violin_bvbrc_synonym_gate"
-    )
+    row = next(r for r in out["workflows"] if r["workflow_name"] == "violin_bvbrc_synonym_gate")
     # Required fields present + types are JSON-friendly
     assert isinstance(row["manifest_path"], str)
     assert row["manifest_path"].endswith("manifest.yml")
@@ -103,29 +97,37 @@ def test_apecx_composer_config_env_var_override(tmp_path, monkeypatch):
     discovery to the alternate config + its manifests."""
     manifest = tmp_path / "fake_workflow" / "manifest.yml"
     manifest.parent.mkdir()
-    manifest.write_text(yaml.safe_dump({
-        "workflow": {
-            "name": "fake_for_test",
-            "spec": "docs/fake_spec.md",
-            "first_release_variant": "v1",
-        },
-        "components": [
+    manifest.write_text(
+        yaml.safe_dump(
             {
-                "step_id": "1",
-                "step_name": "fake_step",
-                "disposition": "new",
-                "status": "ready",
-                "class": "fake.module.FakeStep",
-                "yaml": "steps/fake.yml",
-                "rag_description": "A   fake   step\nfor testing.",
-                "rag_examples": ["example one", "example two"],
-            },
-        ],
-    }))
+                "workflow": {
+                    "name": "fake_for_test",
+                    "spec": "docs/fake_spec.md",
+                    "first_release_variant": "v1",
+                },
+                "components": [
+                    {
+                        "step_id": "1",
+                        "step_name": "fake_step",
+                        "disposition": "new",
+                        "status": "ready",
+                        "class": "fake.module.FakeStep",
+                        "yaml": "steps/fake.yml",
+                        "rag_description": "A   fake   step\nfor testing.",
+                        "rag_examples": ["example one", "example two"],
+                    },
+                ],
+            }
+        )
+    )
     cfg = tmp_path / "composer_config.yml"
-    cfg.write_text(yaml.safe_dump({
-        "component_catalog_paths": ["fake_workflow/manifest.yml"],
-    }))
+    cfg.write_text(
+        yaml.safe_dump(
+            {
+                "component_catalog_paths": ["fake_workflow/manifest.yml"],
+            }
+        )
+    )
 
     monkeypatch.setenv("APECX_COMPOSER_CONFIG", str(cfg))
 

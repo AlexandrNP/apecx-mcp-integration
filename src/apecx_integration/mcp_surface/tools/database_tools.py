@@ -29,14 +29,6 @@ from __future__ import annotations
 from apecx_integration.mcp_surface.data import database as _db
 
 
-def _store_or_error() -> tuple[_db.DatabaseStore | None, dict | None]:
-    """Return ``(store, None)`` if loadable, else ``(None, error_dict)``."""
-    store, err = _db.get_store()
-    if store is None:
-        return None, {"error": err or "Database not loaded"}
-    return store, None
-
-
 async def query_vaccines(
     search_term: str = "",
     vaccine_type: str = "",
@@ -52,9 +44,9 @@ async def query_vaccines(
     "Research"), or target pathogen name. Returns structured vaccine
     records.
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.query_vaccines(
         store,
         search_term=search_term or None,
@@ -76,9 +68,9 @@ async def query_pathogens(
     Returns pathogen records with disease info, pathogenesis details,
     host immunity information, and associated vaccine counts.
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.query_pathogens(
         store,
         search_term=search_term or None,
@@ -98,9 +90,9 @@ async def query_genes(
     roles. Returns gene records with NCBI cross-references, PDB IDs,
     and GenBank accessions.
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.query_genes(
         store,
         search_term=search_term or None,
@@ -127,9 +119,9 @@ async def query_bvbrc_genomes(
     to skip the year filter (avoids the model needing to know about
     sentinel values).
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.query_bvbrc_genomes(
         store,
         search_term=search_term or None,
@@ -150,9 +142,9 @@ async def get_vaccine_pathogen_genes(pathogen_name: str) -> dict:
     tables (vaccine_pathogen, gene_vaccine_pathogen) to build the
     complete relationship graph.
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.get_vaccine_pathogen_genes(store, pathogen_name)
 
 
@@ -165,9 +157,9 @@ async def resolve_entity(name: str) -> dict:
     follow-up queries. Also checks the virus resolution cache for
     pre-resolved mappings.
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.resolve_entity(store, name)
 
 
@@ -178,9 +170,9 @@ async def database_statistics() -> dict:
     querying. Useful for self-correction when the model is unsure
     whether a column it wants exists.
     """
-    store, error = _store_or_error()
-    if error is not None:
-        return error
+    store, err = _db.get_store()
+    if store is None:
+        return {"error": err or "Database not loaded"}
     return _db.database_statistics(store)
 
 
