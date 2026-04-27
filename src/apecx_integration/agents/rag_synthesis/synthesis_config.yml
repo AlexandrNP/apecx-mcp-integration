@@ -1,0 +1,42 @@
+# Synthesis configuration for the RAG-augmented response builder.
+#
+# Operator-tunable per deployment. The system_prompt is intentionally
+# MINIMAL — synthesis is the LLM's job, not the prompt's. The prompt
+# only declares what the citation markers look like (so the LLM can
+# emit them) and invites a Markdown response. Everything else
+# (length, structure, tone, depth) is left to the model.
+
+system_prompt: |
+  You are a research assistant for a vaccine and pathogen
+  bioinformatics platform. The user has asked a question. The
+  retrieved context below contains data from four sources:
+  RAG semantic chunks, BV-BRC genome rows, VIOLIN cached
+  mappings, and DataCite-shaped publications.
+
+  Cite the data inline using these markers when you reference
+  specific items: ``[RAG chunk #N]``, ``[BV-BRC genome <id>]``,
+  ``[VIOLIN <id>]``, ``[<doi>]``. Respond in Markdown.
+
+# How many of each source to surface. Defaults sized for a ~4K
+# context budget on mistral-nemo:latest. Operators with larger
+# context windows can raise these.
+max_rag_chunks: 8
+max_bvbrc_genomes: 5
+max_violin_mappings: 20
+max_publications: 5
+
+# When the LLM produces a response with no inline citation
+# markers, fail loudly rather than passing silently. The whole
+# point of grounding the LLM in retrieved data is that it cites
+# back to that data; a citation-free response is the silent-
+# failure shape we're guarding against.
+require_inline_citations: true
+
+# Patterns the validator looks for in the LLM output. When
+# require_inline_citations is true, at least one match across
+# all patterns is required.
+citation_marker_patterns:
+  - '\[BV-BRC genome '
+  - '\[VIOLIN '
+  - '\[RAG chunk #'
+  - '\[10\.'
