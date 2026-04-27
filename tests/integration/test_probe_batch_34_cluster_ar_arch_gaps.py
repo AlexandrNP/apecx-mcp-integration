@@ -275,23 +275,47 @@ def test_probe_915_result_collection_input_has_no_harvester_data() -> None:
     assert "verified_synonym_writeback" in incoming[0][1]
 
 
-def test_probe_916_no_datacite_metadata_flows_through_workflow() -> None:
-    """Harvesters emit DataCite-shaped records. The workflow's
-    DataUnits never carry DataCite-shaped data. Lock — a future
-    DataCite enrichment must come through here."""
+def test_probe_916_datacite_references_only_in_rag_synthesis() -> None:
+    """Boundary invariant for DataCite-shaped publication metadata.
+
+    Originally written (2026-04-26) as a "no DataCite anywhere" lock:
+    the harvester emits DataCite records but no production code path
+    consumed them, so the lock forced any future integration to come
+    through this test deliberately.
+
+    2026-04-27: rag_synthesis legitimately integrates DataCite-shaped
+    publications via the ``_render_publications`` pathway (DOIs are
+    the only stable citation token DataCite carries). The lock has
+    served its purpose; converting it to a BOUNDARY invariant is more
+    useful long-term: DataCite references are now allowed ONLY inside
+    ``agents/rag_synthesis/``. This prevents the metadata shape from
+    sprawling into ``db_integration`` / ``control_plane`` / etc., where
+    a leak would mean DataCite is being treated as a first-class
+    type rather than a renderer-local concept.
+
+    If a future commit needs DataCite outside ``agents/rag_synthesis/``,
+    update this allowlist deliberately and document why in the commit.
+    """
     src_root = (
         _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
     )
     if not src_root.is_dir():
         pytest.skip("src not present")
+    allowed_prefixes = ("agents/rag_synthesis/",)
     offenders = []
     for py in src_root.rglob("*.py"):
         text = py.read_text(encoding="utf-8", errors="ignore")
         if "DataCite" in text or "datacite" in text:
-            offenders.append(str(py.relative_to(src_root)))
+            rel = str(py.relative_to(src_root))
+            if not any(rel.startswith(p) for p in allowed_prefixes):
+                offenders.append(rel)
     assert not offenders, (
-        f"PROBE 916: DataCite reference found in {offenders} — verify "
-        f"intentional integration"
+        f"PROBE 916: DataCite reference leaked outside the allowlist "
+        f"{allowed_prefixes!r} — found in {offenders}. The DataCite "
+        f"shape is renderer-local to ``agents/rag_synthesis/`` (it is "
+        f"NOT a first-class type in this package). If you intentionally "
+        f"need DataCite knowledge elsewhere, extend the allowlist in "
+        f"this probe with a justification in the commit message."
     )
 
 

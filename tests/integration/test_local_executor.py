@@ -290,40 +290,61 @@ def test_executor_marks_failed_when_run_has_no_workflow_config(
 
 
 def test_executor_provenance_failure_payload_records_class(
-    client_with_composer: TestClient,
-    executor: LocalExecutor,
-    cp_engine: Engine,
+    cp_engine: Engine, executor: LocalExecutor
 ):
     """RUN_FAILED must carry a structured ``failure_class`` so
     downstream UIs can bucket error types without regex-matching
-    the reason string."""
-    run_id = _start_and_get_run_id(client_with_composer)
-    result = run_sync(executor, run_id)
+    the reason string.
 
-    if result.status is not RunStatus.FAILED:
-        pytest.skip(
-            "execution happened to succeed — test only asserts on "
-            "failure payload; success is covered by the terminal-"
-            "event test."
+    Pre-2026-04-27 this test ran the full composer + run path and
+    skipped if the run happened to succeed (relying on Ollama being
+    unreachable). On a dev machine with Ollama running, the test
+    silently always-skipped — never asserting on the failure_class
+    contract. That is the silent-failure shape the user-directive
+    guards against.
+
+    Rewritten to FORCE a deterministic failure using the same
+    "no workflow_config artifact" precondition as
+    ``test_executor_marks_failed_when_run_has_no_workflow_config``.
+    Now the test runs (and asserts) on every CI / dev run.
+    """
+    import json
+    import uuid
+    from datetime import UTC, datetime
+
+    run_id = uuid.uuid4()
+    with cp_engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO run (id, user_id, status, created_at) "
+                "VALUES (:id, 'alex', 'PENDING', :ts)"
+            ),
+            {"id": str(run_id), "ts": datetime.now(UTC).isoformat()},
         )
 
+    result = run_sync(executor, run_id)
+    assert result.status is RunStatus.FAILED, (
+        f"forced precondition failure must land in FAILED; got "
+        f"{result.status}"
+    )
+
     with cp_engine.connect() as conn:
-        # Enum column stores uppercase — SQLAlchemy ``StrEnum`` uses
-        # the member ``name``, not ``value``, for the stored token.
         row = conn.execute(
             text(
                 "SELECT payload FROM provenance_event "
                 "WHERE run_id = :rid AND event_type = 'RUN_FAILED'"
             ),
-            {"rid": run_id},
+            {"rid": str(run_id)},
         ).first()
-    assert row is not None
-    import json
+    assert row is not None, "RUN_FAILED event missing from provenance"
     payload = json.loads(row[0]) if isinstance(row[0], str) else row[0]
-    assert "failure_class" in payload
+    assert "failure_class" in payload, (
+        f"failure_class missing from RUN_FAILED payload: {payload!r}"
+    )
     assert payload["failure_class"] in {
         "load_failed",
         "execute_failed",
         "workflow_misconfigured",
-    }
+    }, f"unexpected failure_class: {payload['failure_class']!r}"
     assert "reason" in payload
+    assert payload["reason"]  # non-empty
