@@ -172,36 +172,32 @@ running model) or `curl -s http://localhost:11434/api/tags`.
 Skip this section if you are only running `apecx-mcp` from a
 released install. This is for contributors editing the source.
 
-### One-time per checkout: install pre-commit hooks
+### One-time install: pre-commit hooks
 
 `.pre-commit-config.yaml` declares ruff + ruff-format hooks but they
-are inert until you wire them into the local `.git/hooks/`. Without
-this step, lint findings (import order, unused imports, formatting)
-silently land in commits — even though the same checks fail in CI.
+are inert until you wire them into `.git/hooks/`. Without this step,
+lint findings (import order, unused imports, formatting) silently
+land in commits — even though the same checks fail in CI.
 
 ```bash
 .venv/bin/pip install pre-commit       # if not already present
 .venv/bin/pre-commit install            # writes .git/hooks/pre-commit
 ```
 
-### Per-worktree gotcha
+This is genuinely a one-time install per **clone**, not per worktree.
+Git worktrees share the main repo's `.git/hooks/` by default
+(`git rev-parse --git-path hooks` from any worktree resolves to the
+main checkout's hooks dir), so installing once in the main checkout
+covers every existing and future worktree on the same clone. Verify
+with: `git rev-parse --git-path hooks` from the worktree — if it
+prints a path under `apecx-mcp-integration/.git/hooks` rather than
+`worktrees/<name>/hooks`, the main hook fires for your commits.
 
-`git worktree add` creates a new working tree but **does not share
-hooks** with the main checkout — each worktree has its own
-`worktrees/<name>/hooks/` directory under the parent `.git/`, and
-that directory starts empty. After creating a worktree:
-
-```bash
-git worktree add ../wt-my-task -b my-task
-cd ../wt-my-task
-.venv/bin/pre-commit install            # required separately
-```
-
-If you forget, the symptom is "I ran ruff manually after the fact
-and found violations that should have been blocked at commit time."
-That happened during the 2026-04-27 MCP discovery + DB-tools rollout
-(commits e3372a2, 9e26e82) and required a follow-up cleanup commit
-(d184f5b).
+If you forget to install at all, the symptom is "I ran ruff manually
+after the fact and found violations that should have been blocked
+at commit time." That happened during the 2026-04-27 MCP discovery
++ DB-tools rollout (commits e3372a2, 9e26e82) and required a
+follow-up cleanup commit (d184f5b).
 
 ### Running the test suite
 
