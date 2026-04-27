@@ -62,6 +62,7 @@ from __future__ import annotations
 import csv
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -105,17 +106,57 @@ def _read_tsv(path: Path) -> list[dict[str, str]]:
     return rows
 
 
+_MD5_HEX_RE = re.compile(r"^[0-9a-f]{32}$")
+
+
+def _extract_md5_from_header(line: str) -> str | None:
+    """Extract a 32-char-hex md5 from a FASTA header line.
+
+    Two header formats are accepted (BV-BRC snapshot data uses both
+    over time):
+
+    1. **Pipe-delimited** (real ``alphavirus_proteins_annotated.fasta``
+       format observed 2026-04-26): the md5 is a pipe-delimited
+       field on the header. Shape::
+
+           >fig_<genome>.<feature_type>.<n>|<product>|<source>|<md5_hex>
+
+    2. **md5= token** (older BV-BRC export shape; documented in the
+       original module docstring)::
+
+           >fig|<genome_id>.peg.<n> <product> [md5=<md5_hex>]
+
+    Returns the md5 hex string when found, else None. Cluster AQ
+    (2026-04-26): the original parser only handled format 2 and
+    silently skipped 100% of real BV-BRC headers, producing empty
+    protein-sequence tables and downstream workflow corruption.
+    """
+    body = line[1:].strip()
+    # Format 1: pipe-delimited tail. Pick the last field that looks
+    # like a 32-hex md5; tolerates additional metadata fields appended
+    # after the md5 in future exports.
+    if "|" in body:
+        for part in reversed(body.split("|")):
+            stripped = part.strip()
+            if _MD5_HEX_RE.match(stripped):
+                return stripped
+    # Format 2: md5= token (whitespace-separated; bracket-stripped).
+    for token in body.split():
+        if token.startswith("md5=") and len(token) > 4:
+            candidate = token[4:].strip("]").strip(",").strip()
+            if candidate:
+                return candidate
+    return None
+
+
 def _read_fasta_by_md5(path: Path) -> dict[str, str]:
     """Parse the annotated FASTA into ``{md5_hex: aa_sequence}``.
 
-    Expects FASTA headers to contain the md5 identifier. For the
-    BV-BRC snapshot the header shape is::
-
-        >fig|<genome_id>.peg.<n> <product> [md5=<md5_hex>]
-
-    We extract the ``md5=`` portion defensively; headers without one
-    are logged and skipped rather than silently dropped, so a
-    snapshot format drift surfaces early.
+    Header parsing delegates to ``_extract_md5_from_header`` to support
+    both the pipe-delimited BV-BRC snapshot format AND the older
+    md5=<hex> token format. Headers that match neither are logged
+    and skipped — a snapshot whose headers carry no md5 surfaces as
+    a warning rather than a silent miss.
     """
     if not path.is_file():
         raise FileNotFoundError(
@@ -134,12 +175,7 @@ def _read_fasta_by_md5(path: Path) -> dict[str, str]:
                 if current_md5 is not None and current_chunks:
                     sequences[current_md5] = "".join(current_chunks)
                 current_chunks = []
-                # Pull "md5=<hex>" token out of the header.
-                current_md5 = None
-                for token in line[1:].split():
-                    if token.startswith("md5=") and len(token) > 4:
-                        current_md5 = token[4:].strip("]").strip(",")
-                        break
+                current_md5 = _extract_md5_from_header(line)
                 if current_md5 is None:
                     skipped_headers += 1
             else:
@@ -148,8 +184,9 @@ def _read_fasta_by_md5(path: Path) -> dict[str, str]:
             sequences[current_md5] = "".join(current_chunks)
     if skipped_headers:
         log.warning(
-            "BVBRCSnapshotTool: %d FASTA headers in %s had no md5= token; "
-            "skipped their sequences. Check snapshot format.",
+            "BVBRCSnapshotTool: %d FASTA headers in %s carried no recognizable "
+            "md5 (neither pipe-delimited tail nor md5= token); skipped their "
+            "sequences. Check snapshot format.",
             skipped_headers,
             path.name,
         )
