@@ -32,11 +32,43 @@ max_publications: 5
 # failure shape we're guarding against.
 require_inline_citations: true
 
-# Patterns the validator looks for in the LLM output. When
-# require_inline_citations is true, at least one match across
-# all patterns is required.
+# Minimum number of DISTINCT citation tokens. Deduplicated by
+# exact token text — citing the same source N times counts once.
+# 1 = "any citation will do" (preserves prior behavior).
+# 2+ = forces multi-source grounding (recommended for prod).
+min_distinct_citations: 1
+
+# Patterns matching INLINE CITATION TOKENS. Each pattern matches
+# a complete citation (not a prefix), so the validator can extract
+# distinct tokens — not just check whether any pattern appears
+# anywhere. A prefix pattern ``\[BV-BRC genome `` would let the
+# LLM emit ``[BV-BRC genome ?]`` and pass; the tightened pattern
+# ``\[BV-BRC genome [^\]]+\]`` requires the citation to close,
+# but does NOT validate the inner ID — that's the renderer's job
+# (strict_input_validation rejects rows with no id upstream).
 citation_marker_patterns:
-  - '\[BV-BRC genome '
-  - '\[VIOLIN '
-  - '\[RAG chunk #'
-  - '\[10\.'
+  - '\[BV-BRC genome [^\]]+\]'
+  - '\[VIOLIN [^\]]+\]'
+  - '\[RAG chunk #\d+\]'
+  - '\[10\.[0-9]+/[^\]]+\]'
+
+# Minimum length of the LLM response. Below this floor the
+# response is rejected as curtailed (per user directive
+# 2026-04-27 — "responses should be non-trivial and not
+# curtailed"). Set to 0 to disable for unit-test fixtures.
+min_response_chars: 200
+
+# Fail BEFORE invoking the LLM when every retrieval input is
+# empty. The synthesis is grounded in retrieved data; with no
+# data the LLM can only confabulate, and the citation validator
+# would fail downstream with an error pointing at the wrong
+# cause. Promote the failure to its true root.
+fail_on_empty_retrieval: true
+
+# Reject input rows missing essential fields (genome_id /
+# canonical_term / chunk text / DOI for publications) BEFORE
+# rendering. Closes a silent-failure shape: a row with no id
+# rendered as ``[BV-BRC genome ?]`` would let the LLM cite ``?``
+# past the validator. Operators with dirty data set this False
+# to skip-with-warning instead.
+strict_input_validation: true

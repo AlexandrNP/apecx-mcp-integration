@@ -90,15 +90,69 @@ class SynthesisConfig(BaseModel):
     )
     citation_marker_patterns: list[str] = Field(
         default_factory=lambda: [
-            r"\[BV-BRC genome ",
-            r"\[VIOLIN ",
-            r"\[RAG chunk #",
-            r"\[10\.",
+            r"\[BV-BRC genome [^\]]+\]",
+            r"\[VIOLIN [^\]]+\]",
+            r"\[RAG chunk #\d+\]",
+            r"\[10\.[0-9]+/[^\]]+\]",
         ],
         description=(
-            "Regex patterns the validator looks for in LLM output. "
-            "When ``require_inline_citations`` is True, the response "
-            "must contain at least one match across all patterns."
+            "Regex patterns matching INLINE CITATION TOKENS in LLM "
+            "output. Each pattern matches a complete citation (not a "
+            "prefix) so the validator can extract distinct citation "
+            "tokens — not just count whether ANY pattern matches "
+            "anywhere. Tightening from the prefix-only earlier shape "
+            "closes a silent-failure where the LLM emitted "
+            "``[BV-BRC genome ?]`` and the validator passed."
+        ),
+    )
+    min_response_chars: int = Field(
+        default=200, ge=0,
+        description=(
+            "Minimum response length (characters) below which the "
+            "response is rejected as curtailed. Local LLMs occasionally "
+            "return one-line responses like ``See above.`` that satisfy "
+            "every citation rule but ship no value. The user directive "
+            "(2026-04-27) calls out non-trivial, not-curtailed responses "
+            "as a hard requirement; 200 chars is the floor. Set to 0 to "
+            "disable (e.g., for unit tests with deliberately short "
+            "fixtures)."
+        ),
+    )
+    min_distinct_citations: int = Field(
+        default=1, ge=0,
+        description=(
+            "Minimum count of DISTINCT inline citation tokens. Above 1 "
+            "forces multi-source grounding (the LLM cannot cite one "
+            "source N times to satisfy the rule). The validator extracts "
+            "all matches across all patterns, deduplicates by exact "
+            "token text, and counts. Default 1 preserves prior "
+            "behavior; 2+ is recommended for production deployments "
+            "where the retrieval surface always populates >1 source."
+        ),
+    )
+    fail_on_empty_retrieval: bool = Field(
+        default=True,
+        description=(
+            "When True, fail-fast BEFORE invoking the LLM if every "
+            "retrieval input (RAG chunks, BV-BRC genomes, VIOLIN "
+            "mappings, publications) is empty / None. The synthesis "
+            "is grounded in retrieved data; with no data, the LLM can "
+            "only confabulate and the citation validator will fail "
+            "downstream with a confusing error pointing at the wrong "
+            "cause. This flag promotes the failure to its true root."
+        ),
+    )
+    strict_input_validation: bool = Field(
+        default=True,
+        description=(
+            "When True, reject input rows missing essential fields "
+            "(genome_id / canonical_term / chunk text) BEFORE rendering. "
+            "Closes a silent-failure shape: a BV-BRC row with no "
+            "genome_id rendered as ``[BV-BRC genome ?]`` would let the "
+            "LLM cite ``?`` and pass validation with a meaningless "
+            "citation. Operators with dirty data can disable by setting "
+            "this to False; the renderer then falls back to skipping "
+            "the row with a logger.warning."
         ),
     )
 
@@ -119,40 +173,105 @@ def _load_default_config() -> SynthesisConfig:
     return SynthesisConfig.model_validate(raw)
 
 
-def _render_rag_chunks(chunks: Iterable[dict[str, Any]], cap: int) -> str:
+def _reject_or_skip(
+    msg: str, *, strict: bool, kind: str, idx: int
+) -> bool:
+    """Centralize the strict-vs-lenient policy. In strict mode, raise;
+    in lenient mode, log a warning and tell the caller to skip.
+
+    Returns True when the caller should skip the row, False when the
+    caller should proceed. (Strict mode never returns — it raises.)
+    """
+    if strict:
+        raise ValueError(
+            f"synthesize_response: {kind} #{idx} contract violation — "
+            f"{msg}. Disable ``strict_input_validation`` in the synthesis "
+            f"config if your data pipeline is allowed to surface dirty "
+            f"rows; the default is fail-fast so silent-failure shapes "
+            f"(LLM citing ``?`` as if it were data) cannot ship."
+        )
+    logger.warning(
+        "rag_synthesis: skipping %s #%d — %s (strict_input_validation=False)",
+        kind, idx, msg,
+    )
+    return True
+
+
+def _render_rag_chunks(
+    chunks: Iterable[dict[str, Any]], cap: int, *, strict: bool
+) -> tuple[str, int]:
     """Render retrieved RAG chunks for inclusion in the user prompt.
 
-    Each chunk is a dict with at least a ``text`` field; optional
+    Each chunk is a dict with a non-empty ``text`` field; optional
     ``id``, ``source``, ``score`` are surfaced when present so the
-    LLM can cite them precisely.
+    LLM can cite them precisely. The chunk's *index* in the surviving
+    list is what the LLM cites (``[RAG chunk #N]``) — that is why
+    rendering uses 1-based ``enumerate`` ON THE FILTERED list, not on
+    the input list (so #1 is always the first surviving chunk and
+    cannot be a skipped row).
+
+    Returns ``(rendered, count)`` where ``count`` is the number of
+    chunks actually rendered.
     """
-    lines: list[str] = []
-    for i, chunk in enumerate(list(chunks)[:cap], start=1):
+    rendered_lines: list[str] = []
+    surviving = 0
+    for i, chunk in enumerate(list(chunks)[:cap]):
+        if not isinstance(chunk, dict):
+            _reject_or_skip(
+                f"expected dict, got {type(chunk).__name__}",
+                strict=strict, kind="rag_chunk", idx=i,
+            )
+            continue
         text = (chunk.get("text") or "").strip()
         if not text:
+            _reject_or_skip(
+                "missing or empty ``text`` field",
+                strict=strict, kind="rag_chunk", idx=i,
+            )
             continue
+        surviving += 1
         cid = chunk.get("id")
         source = chunk.get("source")
         score = chunk.get("score")
-        header_parts = [f"### RAG chunk #{i}"]
+        header_parts = [f"### RAG chunk #{surviving}"]
         if cid:
             header_parts.append(f"id={cid}")
         if source:
             header_parts.append(f"source={source}")
         if score is not None:
             header_parts.append(f"similarity={score:.3f}")
-        lines.append(" — ".join(header_parts))
-        lines.append(text)
-        lines.append("")
-    return "\n".join(lines).rstrip() if lines else "(no RAG chunks retrieved)"
+        rendered_lines.append(" — ".join(header_parts))
+        rendered_lines.append(text)
+        rendered_lines.append("")
+    if not rendered_lines:
+        return ("(no RAG chunks retrieved)", 0)
+    return ("\n".join(rendered_lines).rstrip(), surviving)
 
 
-def _render_bvbrc_genomes(genomes: Iterable[dict[str, Any]], cap: int) -> str:
-    """Render BV-BRC genome rows in a Markdown-friendly shape."""
-    lines: list[str] = []
-    for i, g in enumerate(list(genomes)[:cap], start=1):
-        gid = g.get("genome_id") or g.get("id") or "?"
-        name = g.get("genome_name") or g.get("name") or "?"
+def _render_bvbrc_genomes(
+    genomes: Iterable[dict[str, Any]], cap: int, *, strict: bool
+) -> tuple[str, int]:
+    """Render BV-BRC genome rows. Returns ``(rendered, count)``."""
+    rendered_lines: list[str] = []
+    surviving = 0
+    for i, g in enumerate(list(genomes)[:cap]):
+        if not isinstance(g, dict):
+            _reject_or_skip(
+                f"expected dict, got {type(g).__name__}",
+                strict=strict, kind="bvbrc_genome", idx=i,
+            )
+            continue
+        gid = g.get("genome_id") or g.get("id")
+        if not gid:
+            _reject_or_skip(
+                "missing ``genome_id`` / ``id`` field — citation would "
+                "render as ``[BV-BRC genome ?]`` and let the LLM cite "
+                "garbage past the validator",
+                strict=strict, kind="bvbrc_genome", idx=i,
+            )
+            continue
+        surviving += 1
+        name = g.get("genome_name") or g.get("name") or "(unnamed)"
         taxon = g.get("taxon_lineage") or g.get("lineage") or ""
         host = g.get("host_name") or g.get("host") or ""
         bits = [f"- **BV-BRC genome `{gid}`** — {name}"]
@@ -160,45 +279,98 @@ def _render_bvbrc_genomes(genomes: Iterable[dict[str, Any]], cap: int) -> str:
             bits.append(f"  - Taxonomy: {taxon}")
         if host:
             bits.append(f"  - Host: {host}")
-        lines.extend(bits)
-    return "\n".join(lines) if lines else "(no BV-BRC genomes matched)"
+        rendered_lines.extend(bits)
+    if not rendered_lines:
+        return ("(no BV-BRC genomes matched)", 0)
+    return ("\n".join(rendered_lines), surviving)
 
 
-def _render_violin_mappings(mappings: Iterable[dict[str, Any]], cap: int) -> str:
-    """Render VIOLIN cached mappings."""
-    lines: list[str] = []
-    for m in list(mappings)[:cap]:
-        q = m.get("query_term") or m.get("query") or "?"
-        c = m.get("canonical_term") or m.get("canonical") or "?"
-        sid = m.get("synonym_id") or m.get("id") or ""
+def _render_violin_mappings(
+    mappings: Iterable[dict[str, Any]], cap: int, *, strict: bool
+) -> tuple[str, int]:
+    """Render VIOLIN cached mappings. Returns ``(rendered, count)``.
+
+    A mapping with no ``synonym_id``/``id`` is dropped in strict mode:
+    without an ID the citation token degenerates to a free-text phrase
+    that won't satisfy the ``[VIOLIN <id>]`` pattern, and the row's
+    presence in the prompt risks the LLM emitting a malformed marker.
+    """
+    rendered_lines: list[str] = []
+    surviving = 0
+    for i, m in enumerate(list(mappings)[:cap]):
+        if not isinstance(m, dict):
+            _reject_or_skip(
+                f"expected dict, got {type(m).__name__}",
+                strict=strict, kind="violin_mapping", idx=i,
+            )
+            continue
+        sid = m.get("synonym_id") or m.get("id")
+        if not sid:
+            _reject_or_skip(
+                "missing ``synonym_id`` / ``id`` field — citation would "
+                "lack a stable token and the LLM would emit a malformed "
+                "``[VIOLIN]`` marker",
+                strict=strict, kind="violin_mapping", idx=i,
+            )
+            continue
+        c = m.get("canonical_term") or m.get("canonical")
+        if not c:
+            _reject_or_skip(
+                "missing ``canonical_term`` / ``canonical`` field",
+                strict=strict, kind="violin_mapping", idx=i,
+            )
+            continue
+        surviving += 1
+        q = m.get("query_term") or m.get("query") or "(unspecified)"
         conf = m.get("confidence")
-        bits = [f"- **VIOLIN mapping**: `{q}` → `{c}`"]
-        if sid:
-            bits[0] += f" [VIOLIN {sid}]"
+        bit = f"- **VIOLIN mapping**: `{q}` → `{c}` [VIOLIN {sid}]"
+        rendered_lines.append(bit)
         if conf is not None:
-            bits.append(f"  - Confidence: {conf}")
-        lines.extend(bits)
-    return "\n".join(lines) if lines else "(no VIOLIN cached mappings)"
+            rendered_lines.append(f"  - Confidence: {conf}")
+    if not rendered_lines:
+        return ("(no VIOLIN cached mappings)", 0)
+    return ("\n".join(rendered_lines), surviving)
 
 
-def _render_publications(pubs: Iterable[dict[str, Any]], cap: int) -> str:
+def _render_publications(
+    pubs: Iterable[dict[str, Any]], cap: int, *, strict: bool
+) -> tuple[str, int]:
     """Render harvester publication metadata.
 
-    Expected keys (DataCite-shaped, all optional):
-      - ``doi`` (used as inline citation marker)
-      - ``title``, ``authors``, ``year``, ``journal``
-      - ``abstract`` or ``description``
+    Expected keys (DataCite-shaped):
+      - ``doi`` REQUIRED — used as the inline citation token.
+      - ``title``, ``authors``, ``year``, ``journal`` (optional).
+      - ``abstract`` or ``description`` (optional, truncated).
+
+    A publication without a DOI cannot be cited (the ``[10.x/...]``
+    pattern requires a DOI literal); strict mode rejects, lenient
+    mode skips with a warning. Returns ``(rendered, count)``.
     """
-    lines: list[str] = []
-    for p in list(pubs)[:cap]:
-        doi = p.get("doi") or "?"
+    rendered_lines: list[str] = []
+    surviving = 0
+    for i, p in enumerate(list(pubs)[:cap]):
+        if not isinstance(p, dict):
+            _reject_or_skip(
+                f"expected dict, got {type(p).__name__}",
+                strict=strict, kind="publication", idx=i,
+            )
+            continue
+        doi = p.get("doi")
+        if not doi or not str(doi).startswith("10."):
+            _reject_or_skip(
+                f"missing or non-DOI ``doi`` field (got {doi!r}); "
+                "citation requires a DOI literal matching ``10.<id>/...``",
+                strict=strict, kind="publication", idx=i,
+            )
+            continue
+        surviving += 1
         title = p.get("title") or "(untitled)"
         authors = p.get("authors") or []
         year = p.get("year") or ""
         journal = p.get("journal") or p.get("publisher") or ""
         abstract = p.get("abstract") or p.get("description") or ""
         bits = [f"- **[{doi}]** *{title}*"]
-        meta_parts = []
+        meta_parts: list[str] = []
         if authors:
             if isinstance(authors, list):
                 meta_parts.append(", ".join(str(a) for a in authors[:3]))
@@ -211,16 +383,27 @@ def _render_publications(pubs: Iterable[dict[str, Any]], cap: int) -> str:
         if meta_parts:
             bits.append(f"  - {' · '.join(meta_parts)}")
         if abstract:
-            bits.append(f"  - {abstract[:300]}")
-        lines.extend(bits)
-    return "\n".join(lines) if lines else "(no publications)"
+            shown = abstract[:300]
+            ellipsis = "…" if len(abstract) > 300 else ""
+            bits.append(f"  - {shown}{ellipsis}")
+        rendered_lines.extend(bits)
+    if not rendered_lines:
+        return ("(no publications)", 0)
+    return ("\n".join(rendered_lines), surviving)
 
 
-def _validate_response_has_citations(
-    text: str, patterns: list[str]
-) -> bool:
+def _extract_distinct_citations(text: str, patterns: list[str]) -> set[str]:
+    """Return the set of distinct citation tokens in ``text``.
+
+    Patterns each match a complete citation (e.g. ``\\[RAG chunk #\\d+\\]``,
+    not a prefix). Distinct = unique by exact token text — so the LLM
+    citing the same source 12 times counts as one distinct citation.
+    """
     import re
-    return any(re.search(pat, text) for pat in patterns)
+    out: set[str] = set()
+    for pat in patterns:
+        out.update(re.findall(pat, text))
+    return out
 
 
 def synthesize_response(
@@ -274,16 +457,40 @@ def synthesize_response(
 
     cfg = config or _load_default_config()
 
-    rag_block = _render_rag_chunks(rag_chunks or [], cfg.max_rag_chunks)
-    bvbrc_block = _render_bvbrc_genomes(
-        bvbrc_genomes or [], cfg.max_bvbrc_genomes
+    rag_block, n_rag = _render_rag_chunks(
+        rag_chunks or [], cfg.max_rag_chunks,
+        strict=cfg.strict_input_validation,
     )
-    violin_block = _render_violin_mappings(
-        violin_mappings or [], cfg.max_violin_mappings
+    bvbrc_block, n_bvbrc = _render_bvbrc_genomes(
+        bvbrc_genomes or [], cfg.max_bvbrc_genomes,
+        strict=cfg.strict_input_validation,
     )
-    pubs_block = _render_publications(
-        publications or [], cfg.max_publications
+    violin_block, n_violin = _render_violin_mappings(
+        violin_mappings or [], cfg.max_violin_mappings,
+        strict=cfg.strict_input_validation,
     )
+    pubs_block, n_pubs = _render_publications(
+        publications or [], cfg.max_publications,
+        strict=cfg.strict_input_validation,
+    )
+
+    # Pre-LLM all-empty check. Without retrieved data the LLM can only
+    # confabulate; running it would burn tokens and produce a
+    # citation-free response that fails the post-LLM validator with a
+    # confusing error pointing at the wrong cause. Promote the failure
+    # to its true root by checking BEFORE the LLM call.
+    if cfg.fail_on_empty_retrieval and (n_rag + n_bvbrc + n_violin + n_pubs) == 0:
+        raise ValueError(
+            "synthesize_response: every retrieval input is empty after "
+            "validation. The synthesis is grounded in retrieved data; "
+            "with no data the LLM can only confabulate. Either supply "
+            "retrieval results from BV-BRC / VIOLIN / RAG / harvesters, "
+            "or set ``fail_on_empty_retrieval=False`` in the synthesis "
+            "config (not recommended — citation validation will then "
+            "fail with a less actionable error).\n\n"
+            f"Surviving counts: rag={n_rag} bvbrc={n_bvbrc} "
+            f"violin={n_violin} pubs={n_pubs}"
+        )
 
     # User prompt = data only. The system prompt declares the role
     # and citation marker shapes (operator-tunable in
@@ -320,18 +527,35 @@ def synthesize_response(
             f"(got {type(content).__name__}={content!r})"
         )
 
+    if cfg.min_response_chars and len(content.strip()) < cfg.min_response_chars:
+        raise ValueError(
+            f"synthesize_response: LLM response is curtailed "
+            f"(len={len(content.strip())} < min_response_chars="
+            f"{cfg.min_response_chars}). Local LLMs occasionally return "
+            f"trivial one-liners that satisfy the citation rule but "
+            f"ship no value; the user directive (2026-04-27) calls "
+            f"non-trivial responses out as a hard requirement. Lower "
+            f"``min_response_chars`` in the config if your fixtures "
+            f"are deliberately short.\n\nResponse was:\n{content}"
+        )
+
     if cfg.require_inline_citations:
-        if not _validate_response_has_citations(
+        distinct = _extract_distinct_citations(
             content, cfg.citation_marker_patterns
-        ):
+        )
+        if len(distinct) < cfg.min_distinct_citations:
             raise ValueError(
-                "synthesize_response: LLM response carries NO inline "
-                "citation marker. The response should ground every "
-                "claim in retrieved data. Disable "
-                "``require_inline_citations`` in the synthesis config "
-                "if this validation is too strict for your deployment, "
-                "but the default policy is fail-fast.\n\n"
-                f"Response was:\n{content}"
+                f"synthesize_response: LLM response has only "
+                f"{len(distinct)} distinct citation token(s) but "
+                f"``min_distinct_citations`` requires "
+                f"{cfg.min_distinct_citations}. Distinct tokens "
+                f"found: {sorted(distinct)!r}. The synthesis must "
+                f"ground every claim in retrieved data; an uncited or "
+                f"single-source response is the silent-failure shape "
+                f"this validator guards. Disable "
+                f"``require_inline_citations`` or lower "
+                f"``min_distinct_citations`` if this is too strict for "
+                f"your deployment.\n\nResponse was:\n{content}"
             )
 
     return content
