@@ -638,6 +638,54 @@ fabricated ``status=FAILED``. Both routed through
 
 ---
 
+## 20. Pydantic BaseModel default-allow-extras silently swallows YAML typos
+
+**Cost:** ~10 min to find + audit + fix (probe batch 36, 2026-04-27,
+proactive find via adversarial probe 955).
+
+**Cause:** Pydantic's default ``Config.extra`` is ``'allow'``. A
+``BaseModel`` subclass with no explicit ``model_config`` silently
+accepts arbitrary unknown keys. In a YAML-driven config
+(``synthesis_config.yml``, ``composer_config.yml``), an operator's
+typo (``max_rag_chuncks: 8`` vs. ``max_rag_chunks: 8``) is silently
+ignored — the typoed key disappears, and the schema's *default*
+value is used. They might bump the typoed value to 16 thinking
+they raised the cap; the synthesizer continues to use the
+original 8.
+
+Exactly the silent-failure shape the user-directive forbids:
+"Make sure your code paths do not cause silent failures that
+would make tests pass but would impede the actual product use.
+Follow fail fast policy."
+
+**Detection signal:** Any of:
+
+- ``grep -rn 'class .*(BaseModel)' --include='*.py' src/`` —
+  for each match, check the next ~5 lines for
+  ``model_config = ConfigDict(extra=``; if absent, this shape.
+- A YAML config carries a key the schema accepts at-parse but
+  silently uses defaults at runtime.
+- An operator reports "I changed X in the YAML and nothing
+  happened."
+
+**Mitigation:**
+
+- Workspace rule (added 2026-04-27): every ``BaseModel`` subclass
+  in ``apecx_integration/`` MUST set
+  ``model_config = ConfigDict(extra='forbid')`` unless the class
+  explicitly needs open shape (rare; document the exception).
+- Audit pass after the rule landed: ``SynthesisConfig`` and
+  ``ComposerConfig`` fixed; ``_APIBase``, ``_EntityBase`` already
+  compliant. No further offenders in apecx_integration/ as of
+  2026-04-27.
+- For a new ``BaseModel``, write the ``model_config`` line in
+  the same commit — defer-it = forget-it.
+
+**Source:** 2026-04-27 batch 36 probe 955 (synthesizer.py).
+Audit pass also fixed composer_schemas.py.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
