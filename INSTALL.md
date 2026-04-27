@@ -92,7 +92,7 @@ inside `mcpServers`).
 `which apecx-mcp`). Tilde and `$PATH` are not expanded by Claude
 Desktop's spawner.
 
-Fully quit and relaunch Claude Desktop. The 11 apecx tools appear
+Fully quit and relaunch Claude Desktop. The 20 apecx tools appear
 in the tool picker.
 
 ## What just happened
@@ -167,9 +167,62 @@ running, the composer's first invocation fails with a connection
 error. Confirm Ollama is up: `ollama ps` (should list at least one
 running model) or `curl -s http://localhost:11434/api/tags`.
 
+## Developer setup
+
+Skip this section if you are only running `apecx-mcp` from a
+released install. This is for contributors editing the source.
+
+### One-time per checkout: install pre-commit hooks
+
+`.pre-commit-config.yaml` declares ruff + ruff-format hooks but they
+are inert until you wire them into the local `.git/hooks/`. Without
+this step, lint findings (import order, unused imports, formatting)
+silently land in commits — even though the same checks fail in CI.
+
+```bash
+.venv/bin/pip install pre-commit       # if not already present
+.venv/bin/pre-commit install            # writes .git/hooks/pre-commit
+```
+
+### Per-worktree gotcha
+
+`git worktree add` creates a new working tree but **does not share
+hooks** with the main checkout — each worktree has its own
+`worktrees/<name>/hooks/` directory under the parent `.git/`, and
+that directory starts empty. After creating a worktree:
+
+```bash
+git worktree add ../wt-my-task -b my-task
+cd ../wt-my-task
+.venv/bin/pre-commit install            # required separately
+```
+
+If you forget, the symptom is "I ran ruff manually after the fact
+and found violations that should have been blocked at commit time."
+That happened during the 2026-04-27 MCP discovery + DB-tools rollout
+(commits e3372a2, 9e26e82) and required a follow-up cleanup commit
+(d184f5b).
+
+### Running the test suite
+
+The canonical runner sets `PYTHONPATH=src`, uses `.venv/bin/python`,
+and runs from the repo root — use it instead of `pytest` directly:
+
+```bash
+scripts/run_tests.sh                    # full suite
+scripts/run_tests.sh tests/unit         # subset
+APECX_DATA_ROOT=/path/to/data \
+  scripts/run_tests.sh tests/integration/test_db_tools_real_data.py
+```
+
+Database integration tests auto-skip when `APECX_DATA_ROOT` (or
+`APECX_ROOT/data`) doesn't contain `violin/Vaccine_Information.csv`.
+
 ## Reference
 
 - `docs/mcp_integration.md` — full per-tool reference, env vars,
   architecture, security notes
 - `pyproject.toml` — git dependencies on nanobrain + apecx-harvesters
 - `scripts/install.sh` — the one-shot installer this doc describes
+- `.pre-commit-config.yaml` — ruff + ruff-format hooks (developer
+  only; not required for end users running the released binary)
