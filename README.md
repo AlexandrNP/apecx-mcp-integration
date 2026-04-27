@@ -2,7 +2,19 @@
 
 MCP surface, control plane, composition, and execution integration for the APECx project.
 
-- **Install in one command:** [`INSTALL.md`](INSTALL.md) — `uv tool install git+…` pulls apecx-mcp + nanobrain + apecx-harvesters in one shot. No manual clones, no Docker required (SQLite default).
+## Install in one line
+
+```bash
+uv tool install --python 3.12 git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
+```
+
+That single command pulls `apecx-mcp-integration` + `nanobrain @ academy-integration` + `apecx-harvesters @ main` and exposes the `apecx-mcp` and `apecx-cp` binaries on your `PATH`. No manual clones, no Docker required (SQLite default). Don't have `uv`? `curl -LsSf https://astral.sh/uv/install.sh | sh`.
+
+Then add the binary to `claude_desktop_config.json` — see [`INSTALL.md`](INSTALL.md) for the snippet, [`docs/mcp_integration.md`](docs/mcp_integration.md) for the full reference.
+
+## Pointers
+
+- **Install reference:** [`INSTALL.md`](INSTALL.md)
 - **New scientist? Start here:** [`docs/tutorial/`](docs/tutorial/README.md) — 5-chapter walkthrough from clean laptop to reproducible run (T15 Phase-2 draft, 2026-04-23).
 - **Connecting Claude Desktop / MCP clients:** [`docs/mcp_integration.md`](docs/mcp_integration.md) — `claude_desktop_config.json` snippet, per-tool input/output reference, troubleshooting.
 - **Architectural source of truth:** `../architectural_plan.md` (§R3 for current Round 3 revisions)

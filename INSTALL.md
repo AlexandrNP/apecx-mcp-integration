@@ -1,8 +1,24 @@
 # Install — apecx-mcp
 
-One command pulls everything (apecx-mcp-integration + nanobrain +
-apecx-harvesters from their respective git repos) into an isolated
-environment, then exposes the `apecx-mcp` and `apecx-cp` binaries.
+## The one-liner
+
+```bash
+uv tool install --python 3.12 git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
+```
+
+That's the entire install. It pulls `apecx-mcp-integration` plus the
+two sibling repos (`nanobrain @ academy-integration`,
+`apecx-harvesters @ main`) from git in one shot, builds them, and
+exposes `apecx-mcp` + `apecx-cp` on your `PATH`.
+
+Don't have `uv` yet? Add it first:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+After install, find the binary path with `which apecx-mcp` and paste
+it into Claude Desktop (snippet below).
 
 ## Prerequisites
 
@@ -13,28 +29,16 @@ environment, then exposes the `apecx-mcp` and `apecx-cp` binaries.
 - **Docker is OPTIONAL.** The autostart backend uses SQLite by
   default. Set `APECX_CP_POSTGRES_URL` only if you want Postgres.
 
-## One-shot install (recommended)
+## Alternative installers
 
-Pick whichever installer you have:
+If you don't want to use `uv`:
 
 ```bash
-# Option A: uv (fastest, recommended)
-uv tool install --python 3.12 \
-  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-
 # Option B: pipx
-pipx install \
-  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
+pipx install git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
 
-# Option C: pip --user (does NOT isolate; use only if you have neither uv nor pipx)
-python3.12 -m pip install --user \
-  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-```
-
-Don't have `uv`? One line:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# Option C: pip --user (does NOT isolate; use only as a last resort)
+python3.12 -m pip install --user git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
 ```
 
 After install, verify:
