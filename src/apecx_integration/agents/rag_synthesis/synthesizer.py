@@ -155,6 +155,25 @@ class SynthesisConfig(BaseModel):
             "the row with a logger.warning."
         ),
     )
+    validate_citations_against_inputs: bool = Field(
+        default=True,
+        description=(
+            "When True, every distinct citation token the LLM emits "
+            "MUST appear in the set of tokens the renderers built from "
+            "the input data. This closes the last silent-failure shape "
+            "in citation validation: an LLM that hallucinates a "
+            "plausible-looking ID (e.g. ``[BV-BRC genome 99999.99]`` "
+            "for a genome that was never in the input) currently passes "
+            "the regex-only check because the pattern matches by shape, "
+            "not by content. Each renderer reports the set of tokens it "
+            "authorizes; the validator unions them and rejects any "
+            "extracted token outside the union, naming the offending "
+            "tokens and the closest legitimate alternatives. Disable "
+            "ONLY for callers that deliberately let the LLM cite data "
+            "outside the supplied retrieval bundle (rare; usually a "
+            "smell)."
+        ),
+    )
 
 
 def _load_default_config() -> SynthesisConfig:
@@ -199,7 +218,7 @@ def _reject_or_skip(
 
 def _render_rag_chunks(
     chunks: Iterable[dict[str, Any]], cap: int, *, strict: bool
-) -> tuple[str, int]:
+) -> tuple[str, set[str]]:
     """Render retrieved RAG chunks for inclusion in the user prompt.
 
     Each chunk is a dict with a non-empty ``text`` field; optional
@@ -210,10 +229,14 @@ def _render_rag_chunks(
     the input list (so #1 is always the first surviving chunk and
     cannot be a skipped row).
 
-    Returns ``(rendered, count)`` where ``count`` is the number of
-    chunks actually rendered.
+    Returns ``(rendered, allowed_tokens)`` where ``allowed_tokens`` is
+    the set of citation tokens this renderer authorizes (e.g.
+    ``{"[RAG chunk #1]", "[RAG chunk #2]"}``). The synthesizer's
+    citation-grounding validator unions these per-source sets and
+    rejects any LLM-emitted token outside the union.
     """
     rendered_lines: list[str] = []
+    allowed: set[str] = set()
     surviving = 0
     for i, chunk in enumerate(list(chunks)[:cap]):
         if not isinstance(chunk, dict):
@@ -230,6 +253,7 @@ def _render_rag_chunks(
             )
             continue
         surviving += 1
+        allowed.add(f"[RAG chunk #{surviving}]")
         cid = chunk.get("id")
         source = chunk.get("source")
         score = chunk.get("score")
@@ -244,16 +268,21 @@ def _render_rag_chunks(
         rendered_lines.append(text)
         rendered_lines.append("")
     if not rendered_lines:
-        return ("(no RAG chunks retrieved)", 0)
-    return ("\n".join(rendered_lines).rstrip(), surviving)
+        return ("(no RAG chunks retrieved)", allowed)
+    return ("\n".join(rendered_lines).rstrip(), allowed)
 
 
 def _render_bvbrc_genomes(
     genomes: Iterable[dict[str, Any]], cap: int, *, strict: bool
-) -> tuple[str, int]:
-    """Render BV-BRC genome rows. Returns ``(rendered, count)``."""
+) -> tuple[str, set[str]]:
+    """Render BV-BRC genome rows. Returns ``(rendered, allowed_tokens)``.
+
+    ``allowed_tokens`` carries one ``[BV-BRC genome <gid>]`` per
+    surviving row; the citation-grounding validator uses this to
+    reject hallucinated genome IDs.
+    """
     rendered_lines: list[str] = []
-    surviving = 0
+    allowed: set[str] = set()
     for i, g in enumerate(list(genomes)[:cap]):
         if not isinstance(g, dict):
             _reject_or_skip(
@@ -270,7 +299,7 @@ def _render_bvbrc_genomes(
                 strict=strict, kind="bvbrc_genome", idx=i,
             )
             continue
-        surviving += 1
+        allowed.add(f"[BV-BRC genome {gid}]")
         name = g.get("genome_name") or g.get("name") or "(unnamed)"
         taxon = g.get("taxon_lineage") or g.get("lineage") or ""
         host = g.get("host_name") or g.get("host") or ""
@@ -281,22 +310,25 @@ def _render_bvbrc_genomes(
             bits.append(f"  - Host: {host}")
         rendered_lines.extend(bits)
     if not rendered_lines:
-        return ("(no BV-BRC genomes matched)", 0)
-    return ("\n".join(rendered_lines), surviving)
+        return ("(no BV-BRC genomes matched)", allowed)
+    return ("\n".join(rendered_lines), allowed)
 
 
 def _render_violin_mappings(
     mappings: Iterable[dict[str, Any]], cap: int, *, strict: bool
-) -> tuple[str, int]:
-    """Render VIOLIN cached mappings. Returns ``(rendered, count)``.
+) -> tuple[str, set[str]]:
+    """Render VIOLIN cached mappings. Returns ``(rendered, allowed_tokens)``.
 
     A mapping with no ``synonym_id``/``id`` is dropped in strict mode:
     without an ID the citation token degenerates to a free-text phrase
     that won't satisfy the ``[VIOLIN <id>]`` pattern, and the row's
     presence in the prompt risks the LLM emitting a malformed marker.
+    ``allowed_tokens`` carries one ``[VIOLIN <sid>]`` per surviving
+    row; the citation-grounding validator uses it to reject IDs that
+    were never offered to the LLM.
     """
     rendered_lines: list[str] = []
-    surviving = 0
+    allowed: set[str] = set()
     for i, m in enumerate(list(mappings)[:cap]):
         if not isinstance(m, dict):
             _reject_or_skip(
@@ -320,7 +352,7 @@ def _render_violin_mappings(
                 strict=strict, kind="violin_mapping", idx=i,
             )
             continue
-        surviving += 1
+        allowed.add(f"[VIOLIN {sid}]")
         q = m.get("query_term") or m.get("query") or "(unspecified)"
         conf = m.get("confidence")
         bit = f"- **VIOLIN mapping**: `{q}` → `{c}` [VIOLIN {sid}]"
@@ -328,13 +360,13 @@ def _render_violin_mappings(
         if conf is not None:
             rendered_lines.append(f"  - Confidence: {conf}")
     if not rendered_lines:
-        return ("(no VIOLIN cached mappings)", 0)
-    return ("\n".join(rendered_lines), surviving)
+        return ("(no VIOLIN cached mappings)", allowed)
+    return ("\n".join(rendered_lines), allowed)
 
 
 def _render_publications(
     pubs: Iterable[dict[str, Any]], cap: int, *, strict: bool
-) -> tuple[str, int]:
+) -> tuple[str, set[str]]:
     """Render harvester publication metadata.
 
     Expected keys (DataCite-shaped):
@@ -344,10 +376,10 @@ def _render_publications(
 
     A publication without a DOI cannot be cited (the ``[10.x/...]``
     pattern requires a DOI literal); strict mode rejects, lenient
-    mode skips with a warning. Returns ``(rendered, count)``.
+    mode skips with a warning. Returns ``(rendered, allowed_tokens)``.
     """
     rendered_lines: list[str] = []
-    surviving = 0
+    allowed: set[str] = set()
     for i, p in enumerate(list(pubs)[:cap]):
         if not isinstance(p, dict):
             _reject_or_skip(
@@ -363,7 +395,7 @@ def _render_publications(
                 strict=strict, kind="publication", idx=i,
             )
             continue
-        surviving += 1
+        allowed.add(f"[{doi}]")
         title = p.get("title") or "(untitled)"
         authors = p.get("authors") or []
         year = p.get("year") or ""
@@ -388,8 +420,8 @@ def _render_publications(
             bits.append(f"  - {shown}{ellipsis}")
         rendered_lines.extend(bits)
     if not rendered_lines:
-        return ("(no publications)", 0)
-    return ("\n".join(rendered_lines), surviving)
+        return ("(no publications)", allowed)
+    return ("\n".join(rendered_lines), allowed)
 
 
 def _extract_distinct_citations(text: str, patterns: list[str]) -> set[str]:
@@ -457,21 +489,31 @@ def synthesize_response(
 
     cfg = config or _load_default_config()
 
-    rag_block, n_rag = _render_rag_chunks(
+    rag_block, rag_tokens = _render_rag_chunks(
         rag_chunks or [], cfg.max_rag_chunks,
         strict=cfg.strict_input_validation,
     )
-    bvbrc_block, n_bvbrc = _render_bvbrc_genomes(
+    bvbrc_block, bvbrc_tokens = _render_bvbrc_genomes(
         bvbrc_genomes or [], cfg.max_bvbrc_genomes,
         strict=cfg.strict_input_validation,
     )
-    violin_block, n_violin = _render_violin_mappings(
+    violin_block, violin_tokens = _render_violin_mappings(
         violin_mappings or [], cfg.max_violin_mappings,
         strict=cfg.strict_input_validation,
     )
-    pubs_block, n_pubs = _render_publications(
+    pubs_block, pub_tokens = _render_publications(
         publications or [], cfg.max_publications,
         strict=cfg.strict_input_validation,
+    )
+    # The union of every token a renderer authorized. The LLM is
+    # allowed to cite any of these and nothing else (when
+    # ``validate_citations_against_inputs`` is on).
+    allowed_tokens: set[str] = (
+        rag_tokens | bvbrc_tokens | violin_tokens | pub_tokens
+    )
+    n_rag, n_bvbrc, n_violin, n_pubs = (
+        len(rag_tokens), len(bvbrc_tokens),
+        len(violin_tokens), len(pub_tokens),
     )
 
     # Pre-LLM all-empty check. Without retrieved data the LLM can only
@@ -479,7 +521,7 @@ def synthesize_response(
     # citation-free response that fails the post-LLM validator with a
     # confusing error pointing at the wrong cause. Promote the failure
     # to its true root by checking BEFORE the LLM call.
-    if cfg.fail_on_empty_retrieval and (n_rag + n_bvbrc + n_violin + n_pubs) == 0:
+    if cfg.fail_on_empty_retrieval and not allowed_tokens:
         raise ValueError(
             "synthesize_response: every retrieval input is empty after "
             "validation. The synthesis is grounded in retrieved data; "
@@ -557,5 +599,30 @@ def synthesize_response(
                 f"``min_distinct_citations`` if this is too strict for "
                 f"your deployment.\n\nResponse was:\n{content}"
             )
+
+        # Citation-input grounding. Each renderer reports the set of
+        # citation tokens it authorized; the LLM is only allowed to cite
+        # tokens in the union. A token outside the union is a
+        # hallucination — the LLM invented an ID (or scrambled a
+        # legitimate one). Reject; do NOT pass garbage to the
+        # scientist. This closes the silent-failure shape where
+        # ``[BV-BRC genome 99999.99]`` (never in inputs) satisfies the
+        # regex-only check.
+        if cfg.validate_citations_against_inputs:
+            unknown = distinct - allowed_tokens
+            if unknown:
+                raise ValueError(
+                    f"synthesize_response: LLM cited "
+                    f"{len(unknown)} token(s) that were NOT in the "
+                    f"retrieval inputs. The LLM is hallucinating IDs "
+                    f"(citation grounding has been violated). "
+                    f"Hallucinated tokens: {sorted(unknown)!r}. "
+                    f"Allowed tokens (from inputs): "
+                    f"{sorted(allowed_tokens)!r}. Disable "
+                    f"``validate_citations_against_inputs`` ONLY if "
+                    f"your caller deliberately allows the LLM to cite "
+                    f"data outside the supplied retrieval bundle (rare "
+                    f"and usually a smell).\n\nResponse was:\n{content}"
+                )
 
     return content

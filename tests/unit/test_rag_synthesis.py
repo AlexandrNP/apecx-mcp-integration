@@ -120,6 +120,7 @@ def test_default_config_loads_with_expected_defaults():
     assert cfg.min_response_chars == 200
     assert cfg.fail_on_empty_retrieval is True
     assert cfg.strict_input_validation is True
+    assert cfg.validate_citations_against_inputs is True
     assert cfg.max_rag_chunks == 8
     # Tightened patterns: each must match a CLOSED token shape.
     for pat in cfg.citation_marker_patterns:
@@ -174,11 +175,20 @@ def test_all_empty_retrieval_allowed_when_disabled():
 
 def test_partial_retrieval_passes_empty_check():
     """Any one source populated is enough to pass the empty-retrieval
-    gate. The synth must still return Markdown with citations."""
+    gate. The synth must still return Markdown with citations.
+
+    NB: the LLM may only cite tokens that were rendered into the
+    prompt. With BV-BRC alone supplied, the response can only cite
+    ``[BV-BRC genome <id>]`` — citing RAG/VIOLIN/DOI here would
+    correctly raise a hallucination error under v4 grounding."""
     inputs = {"bvbrc_genomes": [{"genome_id": "11036.7", "name": "X"}]}
-    stub = _StubLLM(content=_good_response())
+    canned = (
+        "Sindbis virus reference genome [BV-BRC genome 11036.7] anchors "
+        "the analysis. " * 6
+    )
+    stub = _StubLLM(content=canned)
     out = synthesize_response("Sindbis?", llm=stub, **inputs)
-    assert out == _good_response()
+    assert out == canned
 
 
 # --------------------------------------------------------------------------- #
@@ -244,10 +254,12 @@ def test_strict_rejects_non_dict_row():
 def test_lenient_skips_rows_with_warning(caplog):
     """strict_input_validation=False: bad rows skipped with logger.warning
     rather than raised. With at least one good row remaining, synthesis
-    proceeds normally."""
+    proceeds normally. The LLM stub cites only the surviving token to
+    satisfy v4 citation grounding."""
     caplog.set_level("WARNING", logger="apecx_integration.agents.rag_synthesis.synthesizer")
     cfg = _cfg(strict_input_validation=False, min_response_chars=0)
-    stub = _StubLLM(content=_good_response())
+    canned = "Genome [BV-BRC genome 11036.7] survived. " * 8
+    stub = _StubLLM(content=canned)
     out = synthesize_response(
         "Q",
         bvbrc_genomes=[
@@ -256,7 +268,7 @@ def test_lenient_skips_rows_with_warning(caplog):
         ],
         llm=stub, config=cfg,
     )
-    assert out == _good_response()
+    assert out == canned
     skip_logs = [r for r in caplog.records if "skipping" in r.message]
     assert any("bvbrc_genome" in r.message for r in skip_logs)
 
@@ -337,25 +349,106 @@ def test_repeated_citation_counts_as_one_distinct():
         synthesize_response("Q", llm=stub, config=cfg, **inputs)
 
 
-def test_malformed_marker_does_not_count():
-    """``[BV-BRC genome ?]`` matches the closed pattern but is data
-    garbage. Strict input validation prevents the row from being
-    rendered in the first place — but if the LLM emits the marker on
-    its own, the validator still counts it. Validate the actual
-    contract: distinct match counting is purely string-based.
-
-    This is a test of CURRENT behavior (validator does not deep-check
-    that the cited ID was actually in the inputs). A future probe
-    could promote that to a real check."""
+def test_v4_hallucinated_genome_id_rejected():
+    """v4 closes the silent-failure shape that v3 documented but did
+    not yet fix: an LLM-emitted marker with an ID that was NEVER in
+    the rendered inputs (e.g. ``[BV-BRC genome ?]`` or
+    ``[BV-BRC genome 99999.99]``) is now rejected as a hallucination.
+    The validator unions the per-renderer ``allowed_tokens`` and
+    rejects any extracted token outside the union."""
     stub = _StubLLM(
         content=("Lots of text. " * 30) + "[BV-BRC genome ?]"
     )
     inputs = _full_inputs()
-    # Default min_distinct=1 → the malformed-but-syntactically-valid
-    # marker satisfies the rule. Document that this passes here so a
-    # future tightening test fails loudly when we change the contract.
-    out = synthesize_response("Q", llm=stub, **inputs)
+    with pytest.raises(ValueError, match="hallucinating IDs"):
+        synthesize_response("Q", llm=stub, **inputs)
+
+
+def test_v4_hallucinated_doi_rejected():
+    """A DOI literal that's correctly shaped but not in the input pubs
+    is a hallucination — reject."""
+    stub = _StubLLM(
+        content=("Lots of text. " * 30) + "[10.9999/never-cited]"
+    )
+    inputs = _full_inputs()  # has [10.1234/abc]
+    with pytest.raises(ValueError, match="hallucinat"):
+        synthesize_response("Q", llm=stub, **inputs)
+
+
+def test_v4_hallucinated_violin_id_rejected():
+    stub = _StubLLM(
+        content=("Lots of text. " * 30) + "[VIOLIN VO_9999999]"
+    )
+    inputs = _full_inputs()
+    with pytest.raises(ValueError, match="hallucinat"):
+        synthesize_response("Q", llm=stub, **inputs)
+
+
+def test_v4_rag_chunk_number_out_of_range_rejected():
+    """``[RAG chunk #99]`` when only 2 chunks were rendered must reject.
+    Chunk numbers are 1-based and bounded by the surviving count; an
+    LLM citing #99 is hallucinating beyond the prompt."""
+    stub = _StubLLM(
+        content=("Lots of text. " * 30) + "[RAG chunk #99]"
+    )
+    inputs = _full_inputs()  # 2 RAG chunks → allowed: #1, #2
+    with pytest.raises(ValueError, match="hallucinat"):
+        synthesize_response("Q", llm=stub, **inputs)
+
+
+def test_v4_grounding_can_be_disabled():
+    """Operators with deliberately-out-of-band citations can disable
+    grounding; the regex-only check still applies. (Smell, but
+    supported for unusual deployments.)"""
+    stub = _StubLLM(
+        content=("Lots of text. " * 30) + "[BV-BRC genome ?]"
+    )
+    inputs = _full_inputs()
+    cfg = _cfg(validate_citations_against_inputs=False)
+    out = synthesize_response("Q", llm=stub, config=cfg, **inputs)
     assert "[BV-BRC genome ?]" in out
+
+
+def test_v4_legitimate_citation_passes_grounding():
+    """Sanity: the happy-path response (which cites the actual input
+    IDs) MUST still pass the new validator. Regression guard against
+    an over-strict implementation that rejects legitimate citations."""
+    stub = _StubLLM(content=_good_response())
+    inputs = _full_inputs()
+    out = synthesize_response("Q", llm=stub, **inputs)
+    assert out == _good_response()
+
+
+def test_v4_partial_hallucination_with_legitimate_citations_still_rejected():
+    """The LLM cites two real tokens AND one hallucinated. Grounding
+    must reject — partial hallucination is still hallucination."""
+    content = (
+        ("Long body. " * 30)
+        + "[RAG chunk #1] [BV-BRC genome 11036.7] [VIOLIN VO_FAKE]"
+    )
+    stub = _StubLLM(content=content)
+    inputs = _full_inputs()
+    with pytest.raises(ValueError, match="VIOLIN VO_FAKE"):
+        synthesize_response("Q", llm=stub, **inputs)
+
+
+def test_v4_error_message_lists_allowed_tokens():
+    """The error message must enumerate the legitimate tokens so
+    operators (and downstream LLM-judge agents) can see what the LLM
+    SHOULD have cited. Without this, debugging hallucinations is
+    needle-in-haystack work."""
+    stub = _StubLLM(
+        content=("Lots of text. " * 30) + "[RAG chunk #99]"
+    )
+    inputs = _full_inputs()
+    with pytest.raises(ValueError) as exc:
+        synthesize_response("Q", llm=stub, **inputs)
+    msg = str(exc.value)
+    # legitimate tokens that should appear in the error
+    assert "[RAG chunk #1]" in msg
+    assert "[BV-BRC genome 11036.7]" in msg
+    assert "[VIOLIN VO_0000001]" in msg
+    assert "[10.1234/abc]" in msg
 
 
 # --------------------------------------------------------------------------- #
@@ -406,11 +499,11 @@ def test_caps_applied_to_each_source():
 def test_render_rag_chunks_numbers_by_surviving_position():
     """Skipped rows must NOT shift downstream chunk numbers — chunk #1
     is always the first surviving chunk."""
-    rendered, count = _render_rag_chunks(
+    rendered, allowed = _render_rag_chunks(
         [{"id": "c0"}, {"text": "real"}, {"id": "c2"}, {"text": "real2"}],
         cap=8, strict=False,
     )
-    assert count == 2
+    assert allowed == {"[RAG chunk #1]", "[RAG chunk #2]"}
     assert "### RAG chunk #1" in rendered
     assert "### RAG chunk #2" in rendered
     assert "### RAG chunk #3" not in rendered
@@ -430,33 +523,35 @@ def test_render_bvbrc_falls_back_on_alt_keys():
     """The renderer accepts both ``genome_id``/``id`` and
     ``genome_name``/``name`` shapes — the harvester step might emit
     either."""
-    rendered, count = _render_bvbrc_genomes(
+    rendered, allowed = _render_bvbrc_genomes(
         [{"id": "11036.7", "name": "Sindbis"}], cap=5, strict=True,
     )
-    assert count == 1
+    assert allowed == {"[BV-BRC genome 11036.7]"}
     assert "BV-BRC genome `11036.7`" in rendered
     assert "Sindbis" in rendered
 
 
 def test_render_violin_emits_citation_marker():
-    rendered, _ = _render_violin_mappings(
+    rendered, allowed = _render_violin_mappings(
         [{"synonym_id": "VO_0000001",
           "canonical_term": "Sindbis virus", "query_term": "sindbis"}],
         cap=5, strict=True,
     )
     # The token is what the LLM is supposed to copy into its citation.
     assert "[VIOLIN VO_0000001]" in rendered
+    assert allowed == {"[VIOLIN VO_0000001]"}
 
 
 def test_render_publications_truncates_long_abstract_with_ellipsis():
     long_abstract = "A" * 500
-    rendered, _ = _render_publications(
+    rendered, allowed = _render_publications(
         [{"doi": "10.1234/abc", "title": "T", "abstract": long_abstract}],
         cap=1, strict=True,
     )
     # 300 chars + ellipsis.
     assert ("A" * 300 + "…") in rendered
     assert "A" * 301 not in rendered
+    assert allowed == {"[10.1234/abc]"}
 
 
 def test_render_handles_empty_input_gracefully():
@@ -469,8 +564,8 @@ def test_render_handles_empty_input_gracefully():
         (_render_violin_mappings, "no VIOLIN"),
         (_render_publications, "no publications"),
     ]:
-        rendered, count = fn([], cap=5, strict=True)
-        assert count == 0
+        rendered, allowed = fn([], cap=5, strict=True)
+        assert allowed == set()
         assert kind in rendered
 
 

@@ -72,3 +72,15 @@ fail_on_empty_retrieval: true
 # past the validator. Operators with dirty data set this False
 # to skip-with-warning instead.
 strict_input_validation: true
+
+# Cross-check that every distinct citation token the LLM emits
+# corresponds to an ID actually rendered into the prompt. Closes
+# the last silent-failure shape: an LLM hallucinating a
+# plausibly-shaped ID like ``[BV-BRC genome 99999.99]`` (when
+# 99999.99 was never in the inputs) currently passes the regex-
+# only validator. With this on, each renderer reports the set of
+# tokens it authorized; the validator unions them and rejects any
+# extracted token outside the union. Disable ONLY if your caller
+# deliberately allows LLM citations beyond the supplied retrieval
+# bundle (rare; usually a smell).
+validate_citations_against_inputs: true
