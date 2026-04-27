@@ -199,6 +199,31 @@ at commit time." That happened during the 2026-04-27 MCP discovery
 + DB-tools rollout (commits e3372a2, 9e26e82) and required a
 follow-up cleanup commit (d184f5b).
 
+### Per-worktree gotcha: symlink `.venv`
+
+Hooks are shared across worktrees — but the venv is not.
+`.pre-commit-config.yaml`'s local hooks (`imports-resolve`,
+`step-authoring-compliance`) invoke `.venv/bin/python` as a
+**relative** path, so a worktree without a `.venv/` at its root
+fails the hook with:
+
+```
+Executable `.venv/bin/python` not found
+```
+
+Fix once per worktree, after `git worktree add`:
+
+```bash
+ln -s ../apecx-mcp-integration/.venv ../wt-my-task/.venv
+# or, from inside the worktree:
+ln -s /absolute/path/to/apecx-mcp-integration/.venv .venv
+```
+
+Symlinking is correct here — the worktree shares the repo and the
+dependency tree with main, so it should share the interpreter too.
+A separate per-worktree venv would re-pip-install the entire dep
+tree for no benefit.
+
 ### Running the test suite
 
 The canonical runner sets `PYTHONPATH=src`, uses `.venv/bin/python`,
