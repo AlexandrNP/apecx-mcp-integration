@@ -49,8 +49,14 @@ import os
 from contextlib import contextmanager
 from typing import Any
 
-import apecx_db_integration
-from apecx_db_integration import agent as _db_agent
+# Migrated 2026-04-27: VIOLIN agent code now lives in
+# ``apecx_integration.agents.violin_bvbrc`` (cluster AR fix shipped
+# in apecx-db-integration commit b54e571 + ported here verbatim
+# under user directive "this repo should only depend on nanobrain
+# and apecx-harvesters"). The legacy import path is no longer
+# referenced from any apecx-mcp-integration production code.
+from apecx_integration.agents import violin_bvbrc as apecx_db_integration  # noqa: N812
+from apecx_integration.agents.violin_bvbrc import agent as _db_agent
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import Field
 

@@ -33,6 +33,13 @@ dependencies = [
     # deployments never import psycopg at runtime; the dep cost is just
     # ~5MB of wheel on install.
     "psycopg[binary]>=3.1",
+    # Migrated from apecx-db-integration (2026-04-27, user directive
+    # "this repo should only depend on nanobrain and apecx-harvesters").
+    # The violin_bvbrc agents need pandas for VIOLIN dataframe loading
+    # and the langchain-* family for the OpenAI-compatible chat client.
+    "pandas>=2.0",
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
 ]
 
 [project.optional-dependencies]

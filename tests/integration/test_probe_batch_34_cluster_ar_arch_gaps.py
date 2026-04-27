@@ -102,7 +102,7 @@ def test_probe_907_consolidated_synonym_uses_named_constant_post_fix() -> None:
     A regression that re-introduces a bare integer literal trips
     this probe."""
     try:
-        from apecx_db_integration import agent as agent_mod
+        from apecx_integration.agents.violin_bvbrc import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
@@ -120,7 +120,7 @@ def test_probe_908_get_candidate_terms_returns_full_list_no_truncation() -> None
     confirm that so any future fix can replace the prompt-side
     truncation with a smarter selector without breaking this helper."""
     try:
-        from apecx_db_integration.agent import get_candidate_terms
+        from apecx_integration.agents.violin_bvbrc import get_candidate_terms
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     import pandas as pd
@@ -160,7 +160,7 @@ def test_probe_910_truncation_emits_warning_post_fix() -> None:
     fix shape — a future PR that silences the warning would
     silently re-create the cluster-AR-class diagnostic gap."""
     try:
-        from apecx_db_integration import agent as agent_mod
+        from apecx_integration.agents.violin_bvbrc import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
@@ -175,7 +175,7 @@ def test_probe_911_consolidated_uses_filtered_candidates_post_fix() -> None:
     ``filtered_candidates`` (the similarity-filtered dict), NOT
     from a bare slice of ``all_candidates``."""
     try:
-        from apecx_db_integration import agent as agent_mod
+        from apecx_integration.agents.violin_bvbrc import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
@@ -192,7 +192,7 @@ def test_probe_912_truncation_cap_constant_named_post_fix() -> None:
     rewrite to ``[:50]`` or ``[:1000]`` would change behavior
     without a single-line review point."""
     try:
-        from apecx_db_integration import agent as agent_mod
+        from apecx_integration.agents.violin_bvbrc import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     assert hasattr(agent_mod, "MAX_CANDIDATES_PER_CATEGORY")
