@@ -88,6 +88,7 @@ academy = [
 [project.scripts]
 apecx-cp = "apecx_integration.control_plane.app:main"
 apecx-mcp = "apecx_integration.mcp_surface.server:main"
+apecx-setup = "apecx_integration.cli.setup_data:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

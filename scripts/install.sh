@@ -72,7 +72,41 @@ if [ -z "${APECX_MCP_BIN}" ]; then
     exit 1
 fi
 
-# 3. Print the Claude Desktop config block.
+# 3. Offer data-directory setup.
+APECX_SETUP_BIN="$(command -v apecx-setup 2>/dev/null || true)"
+if [ -z "${APECX_SETUP_BIN}" ] && [ -x "${HOME}/.local/bin/apecx-setup" ]; then
+    APECX_SETUP_BIN="${HOME}/.local/bin/apecx-setup"
+fi
+
+echo "==> Data setup (VIOLIN + BV-BRC)"
+echo "    The database query tools need local CSV files to work."
+echo "    Requires: gh (GitHub CLI) authenticated — https://cli.github.com"
+echo
+printf "    Download data now? [y/N] "
+read -r _DATA_ANSWER
+if [ "${_DATA_ANSWER}" = "y" ] || [ "${_DATA_ANSWER}" = "Y" ]; then
+    if [ -n "${APECX_SETUP_BIN}" ]; then
+        "${APECX_SETUP_BIN}"
+        APECX_DATA_DIR="${HOME}/.apecx/data"   # default; user may have changed it
+    else
+        echo "WARNING: apecx-setup binary not found. Run it manually after install:" >&2
+        echo "  apecx-setup" >&2
+        APECX_DATA_DIR=""
+    fi
+else
+    echo "    Skipped. Run 'apecx-setup' at any time to download the data."
+    APECX_DATA_DIR=""
+fi
+echo
+
+# 4. Print the Claude Desktop config block.
+# Build the env block — include APECX_DATA_ROOT only when data was downloaded.
+if [ -n "${APECX_DATA_DIR}" ]; then
+    _DATA_ENV_LINE="        \"APECX_DATA_ROOT\": \"${APECX_DATA_DIR}\","
+else
+    _DATA_ENV_LINE="        // \"APECX_DATA_ROOT\": \"/path/to/data\",  <- run apecx-setup then set this"
+fi
+
 cat <<EOF
 ==> Install complete.
 
@@ -94,6 +128,7 @@ inside mcpServers).
       "command": "${APECX_MCP_BIN}",
       "args": [],
       "env": {
+${_DATA_ENV_LINE}
         "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
         "APECX_LLM_MODEL": "mistral-nemo:latest",
         "APECX_LLM_API_KEY": "unused"
@@ -105,10 +140,16 @@ inside mcpServers).
 
 Then fully quit and relaunch Claude Desktop.
 
-The 11 apecx tools (start_workflow, show_diff, execute_workflow,
-list_pending_approvals, approve, reject, correct, estimate_cost,
-confirm_allocation, export_hpc_bundle, ingest_hpc_bundle) will
-appear in Claude Desktop's tool picker.
+The 20 apecx tools (start_workflow, show_diff, execute_workflow,
+list_workflows, describe_workflow, query_vaccines, query_pathogens,
+query_genes, query_bvbrc_genomes, get_vaccine_pathogen_genes,
+resolve_entity, database_statistics, list_pending_approvals,
+approve, reject, correct, estimate_cost, confirm_allocation,
+export_hpc_bundle, ingest_hpc_bundle) will appear in Claude
+Desktop's tool picker.
+
+The database tools (query_*) require APECX_DATA_ROOT to point at
+the data directory populated by 'apecx-setup'.
 
 The Control Plane backend autostarts on the first MCP server
 launch; SQLite at \$PWD/apecx_cp.db. No Docker needed.
