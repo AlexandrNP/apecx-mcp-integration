@@ -26,7 +26,6 @@ import pytest
 from apecx_integration.mcp_surface.data import database as db
 from apecx_integration.mcp_surface.tools import database_tools as tools
 
-
 # ---------------------------------------------------------------------------
 # Skip guard — require both data and the APECX_DATA_ROOT / APECX_ROOT env var
 # ---------------------------------------------------------------------------

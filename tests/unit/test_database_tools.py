@@ -16,7 +16,6 @@ import pytest
 from apecx_integration.mcp_surface.data import database as db
 from apecx_integration.mcp_surface.tools import database_tools as tools
 
-
 # ---------------------------------------------------------------------------
 # Fixtures — realistic column sets matching the real VIOLIN/BV-BRC schemas
 # ---------------------------------------------------------------------------
@@ -33,58 +32,118 @@ def _clear_store():
 @pytest.fixture()
 def small_store():
     """A pre-built DatabaseStore loaded from tiny in-process DataFrames."""
-    vaccines_df = pd.DataFrame([
-        {"id": 1, "Vaccine": "Vax-A", "Vaccine_Name": "Alpha Vaccine",
-         "Type": "Subunit vaccine", "Status": "Licensed",
-         "Antigen": "EEEV E2 protein", "Description": "Eastern equine encephalitis",
-         "Tradename": None},
-        {"id": 2, "Vaccine": "Vax-B", "Vaccine_Name": "Beta Vaccine",
-         "Type": "Live attenuated vaccine", "Status": "Clinical trial",
-         "Antigen": "Influenza HA", "Description": "Influenza prevention",
-         "Tradename": "FluShot"},
-        {"id": 3, "Vaccine": "Vax-C", "Vaccine_Name": "Gamma Vaccine",
-         "Type": "Subunit vaccine", "Status": "Research",
-         "Antigen": "Rubella E1", "Description": "Rubella disease",
-         "Tradename": None},
-    ])
-    pathogens_df = pd.DataFrame([
-        {"id": 10, "Pathogen": "Eastern equine encephalitis virus",
-         "Disease": "Eastern equine encephalitis",
-         "NCBI_Taxonomy_ID": 11021, "VIOLIN_c_pathogen_id": "P10",
-         "Pathogen_Description": "Alphavirus causing EEEV encephalitis"},
-        {"id": 11, "Pathogen": "Influenza A virus",
-         "Disease": "Influenza",
-         "NCBI_Taxonomy_ID": 11520, "VIOLIN_c_pathogen_id": "P11",
-         "Pathogen_Description": "Orthomyxovirus"},
-    ])
-    genes_df = pd.DataFrame([
-        {"id": 100, "Gene_Name": "E2", "Protein_Name": "Envelope glycoprotein E2",
-         "Organism": "Eastern equine encephalitis virus",
-         "Molecule_Role": "Structural protein"},
-        {"id": 101, "Gene_Name": "HA", "Protein_Name": "Hemagglutinin",
-         "Organism": "Influenza A virus",
-         "Molecule_Role": "Surface glycoprotein"},
-    ])
-    vaccine_pathogen_df = pd.DataFrame([
-        {"id": 1000, "vaccine_id": 1, "pathogen_id": 10},
-        {"id": 1001, "vaccine_id": 2, "pathogen_id": 11},
-    ])
-    gene_vaccine_pathogen_df = pd.DataFrame([
-        {"id": 2000, "vaccine_pathogen_id": 1000, "gene_id": 100},
-        {"id": 2001, "vaccine_pathogen_id": 1001, "gene_id": 101},
-    ])
-    bvbrc_df = pd.DataFrame([
-        {"Genome ID": "G1", "Genome Name": "EEEV strain X", "Species": "Eastern equine encephalitis virus",
-         "Strain": "North American", "Host Name": "Homo sapiens",
-         "Host Common Name": "human", "Isolation Country": "United States",
-         "Geographic Location": "USA", "Collection Year": 2010,
-         "Other Names": None},
-        {"Genome ID": "G2", "Genome Name": "CHIKV isolate Y", "Species": "Chikungunya virus",
-         "Strain": "Asian", "Host Name": "Aedes albopictus",
-         "Host Common Name": "mosquito", "Isolation Country": "India",
-         "Geographic Location": "India", "Collection Year": 2019,
-         "Other Names": None},
-    ])
+    vaccines_df = pd.DataFrame(
+        [
+            {
+                "id": 1,
+                "Vaccine": "Vax-A",
+                "Vaccine_Name": "Alpha Vaccine",
+                "Type": "Subunit vaccine",
+                "Status": "Licensed",
+                "Antigen": "EEEV E2 protein",
+                "Description": "Eastern equine encephalitis",
+                "Tradename": None,
+            },
+            {
+                "id": 2,
+                "Vaccine": "Vax-B",
+                "Vaccine_Name": "Beta Vaccine",
+                "Type": "Live attenuated vaccine",
+                "Status": "Clinical trial",
+                "Antigen": "Influenza HA",
+                "Description": "Influenza prevention",
+                "Tradename": "FluShot",
+            },
+            {
+                "id": 3,
+                "Vaccine": "Vax-C",
+                "Vaccine_Name": "Gamma Vaccine",
+                "Type": "Subunit vaccine",
+                "Status": "Research",
+                "Antigen": "Rubella E1",
+                "Description": "Rubella disease",
+                "Tradename": None,
+            },
+        ]
+    )
+    pathogens_df = pd.DataFrame(
+        [
+            {
+                "id": 10,
+                "Pathogen": "Eastern equine encephalitis virus",
+                "Disease": "Eastern equine encephalitis",
+                "NCBI_Taxonomy_ID": 11021,
+                "VIOLIN_c_pathogen_id": "P10",
+                "Pathogen_Description": "Alphavirus causing EEEV encephalitis",
+            },
+            {
+                "id": 11,
+                "Pathogen": "Influenza A virus",
+                "Disease": "Influenza",
+                "NCBI_Taxonomy_ID": 11520,
+                "VIOLIN_c_pathogen_id": "P11",
+                "Pathogen_Description": "Orthomyxovirus",
+            },
+        ]
+    )
+    genes_df = pd.DataFrame(
+        [
+            {
+                "id": 100,
+                "Gene_Name": "E2",
+                "Protein_Name": "Envelope glycoprotein E2",
+                "Organism": "Eastern equine encephalitis virus",
+                "Molecule_Role": "Structural protein",
+            },
+            {
+                "id": 101,
+                "Gene_Name": "HA",
+                "Protein_Name": "Hemagglutinin",
+                "Organism": "Influenza A virus",
+                "Molecule_Role": "Surface glycoprotein",
+            },
+        ]
+    )
+    vaccine_pathogen_df = pd.DataFrame(
+        [
+            {"id": 1000, "vaccine_id": 1, "pathogen_id": 10},
+            {"id": 1001, "vaccine_id": 2, "pathogen_id": 11},
+        ]
+    )
+    gene_vaccine_pathogen_df = pd.DataFrame(
+        [
+            {"id": 2000, "vaccine_pathogen_id": 1000, "gene_id": 100},
+            {"id": 2001, "vaccine_pathogen_id": 1001, "gene_id": 101},
+        ]
+    )
+    bvbrc_df = pd.DataFrame(
+        [
+            {
+                "Genome ID": "G1",
+                "Genome Name": "EEEV strain X",
+                "Species": "Eastern equine encephalitis virus",
+                "Strain": "North American",
+                "Host Name": "Homo sapiens",
+                "Host Common Name": "human",
+                "Isolation Country": "United States",
+                "Geographic Location": "USA",
+                "Collection Year": 2010,
+                "Other Names": None,
+            },
+            {
+                "Genome ID": "G2",
+                "Genome Name": "CHIKV isolate Y",
+                "Species": "Chikungunya virus",
+                "Strain": "Asian",
+                "Host Name": "Aedes albopictus",
+                "Host Common Name": "mosquito",
+                "Isolation Country": "India",
+                "Geographic Location": "India",
+                "Collection Year": 2019,
+                "Other Names": None,
+            },
+        ]
+    )
 
     store = db.DatabaseStore(
         violin_csv_paths={},  # load via dfs injection below
@@ -107,20 +166,13 @@ def small_store():
 # ---------------------------------------------------------------------------
 
 
-def test_query_vaccines_no_data_returns_error_not_raise():
+def test_query_vaccines_no_data_returns_error_not_raise(monkeypatch):
     """When data root is unset, tools return structured error — no exception."""
-    import os
-    old_root = os.environ.pop("APECX_DATA_ROOT", None)
-    old_workspace = os.environ.pop("APECX_ROOT", None)
-    try:
-        result = asyncio.run(tools.query_vaccines())
-        assert "error" in result
-        assert isinstance(result["error"], str)
-    finally:
-        if old_root is not None:
-            os.environ["APECX_DATA_ROOT"] = old_root
-        if old_workspace is not None:
-            os.environ["APECX_ROOT"] = old_workspace
+    monkeypatch.delenv("APECX_DATA_ROOT", raising=False)
+    monkeypatch.delenv("APECX_ROOT", raising=False)
+    result = asyncio.run(tools.query_vaccines())
+    assert "error" in result
+    assert isinstance(result["error"], str)
 
 
 # ---------------------------------------------------------------------------
@@ -283,8 +335,12 @@ def test_resolve_entity_returns_identifiers(small_store):
 def test_database_statistics_shows_all_loaded_tables(small_store):
     out = asyncio.run(tools.database_statistics())
     assert set(out["tables"].keys()) >= {
-        "vaccines", "pathogens", "genes", "vaccine_pathogen",
-        "gene_vaccine_pathogen", "bvbrc_genomes",
+        "vaccines",
+        "pathogens",
+        "genes",
+        "vaccine_pathogen",
+        "gene_vaccine_pathogen",
+        "bvbrc_genomes",
     }
     assert out["tables"]["vaccines"]["rows"] == 3
     assert "id" in out["tables"]["vaccines"]["columns"]
