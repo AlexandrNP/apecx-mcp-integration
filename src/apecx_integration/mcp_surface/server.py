@@ -58,6 +58,9 @@ from apecx_integration.mcp_surface.tools import (
     approvals as approvals_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    discovery as discovery_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -86,6 +89,12 @@ def build_server() -> FastMCP:
     server.tool()(workflow_tools.start_workflow)
     server.tool()(workflow_tools.show_diff)
     server.tool()(workflow_tools.execute_workflow)
+
+    # Discovery — read-only catalog tools that let the model see
+    # which workflows / components the composer can actually build
+    # before it calls start_workflow.
+    server.tool()(discovery_tools.list_workflows)
+    server.tool()(discovery_tools.describe_workflow)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)
