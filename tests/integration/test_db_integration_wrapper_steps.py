@@ -37,7 +37,12 @@ from pathlib import Path
 
 import pytest
 import yaml
-from apecx_db_integration import agent as _db_agent
+# Migrated 2026-04-27: VIOLIN agent now lives in
+# ``apecx_integration.agents.violin_bvbrc`` (no longer under
+# ``apecx_db_integration``). The test patches ``_build_chat_llm``
+# at this NEW location so the wrapper steps' real LLM calls get
+# intercepted by ``_PlaceholderLLM``.
+from apecx_integration.agents.violin_bvbrc import agent as _db_agent
 
 from apecx_integration.composition.steps.db_integration_wrappers import (
     EntityExtractionStep,

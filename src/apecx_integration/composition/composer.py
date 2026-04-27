@@ -663,10 +663,20 @@ class Composer:
 # ---------------------------------------------------------------------------
 
 def _default_llm_factory(**kwargs: Any):
-    """Default LLM client builder — imports lazily so tests that monkeypatch
-    ``apecx_db_integration.agent._build_chat_llm`` can intercept.
+    """Default LLM client builder — imports lazily so tests that
+    monkeypatch ``apecx_integration.agents.violin_bvbrc.agent.
+    _build_chat_llm`` can intercept.
+
+    Migrated 2026-04-27 from ``apecx_db_integration.agent._build_chat_llm``
+    per user directive "this repo should only depend on nanobrain and
+    apecx-harvesters". The factory honors APECX_LLM_BASE_URL /
+    APECX_LLM_MODEL / APECX_LLM_API_KEY / APECX_LLM_TEMPERATURE /
+    APECX_LLM_MAX_TOKENS env vars; pass-through to the underlying
+    ChatOpenAI-compatible client. Local LLMs (Ollama, vLLM) are
+    first-class — both expose an OpenAI-compatible chat-completions
+    endpoint.
     """
-    from apecx_db_integration.agent import _build_chat_llm
+    from apecx_integration.agents.violin_bvbrc.agent import _build_chat_llm
     return _build_chat_llm(**kwargs)
 
 
