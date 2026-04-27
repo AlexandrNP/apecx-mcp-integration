@@ -12,6 +12,16 @@ Running
 The server speaks MCP over stdio; Claude Desktop's client wires it
 automatically when configured.
 
+Backend autostart (added 2026-04-27 — config-only-deployment UX)
+----------------------------------------------------------------
+When ``APECX_MCP_AUTOSTART_BACKEND=1`` (the recommended default for
+Claude Desktop installs) and the Control Plane is unreachable at
+startup, this module spawns ``apecx-cp serve`` as a child process,
+polls ``/healthz`` until it answers, and registers an atexit hook
+to terminate the child on MCP-server exit. The child uses SQLite
+for state by default — no Docker / Postgres required for the
+single-user case the MCP target audience runs.
+
 What's exposed
 --------------
 - ``start_workflow`` / ``show_diff`` / ``execute_workflow``
@@ -32,9 +42,15 @@ What's deliberately NOT exposed
 from __future__ import annotations
 
 import asyncio
+import atexit
 import logging
 import os
+import shutil
+import subprocess
 import sys
+import time
+from pathlib import Path
+from urllib.parse import urlparse
 
 from mcp.server.fastmcp import FastMCP
 
@@ -53,6 +69,10 @@ from apecx_integration.mcp_surface.tools import (
 # tool-call singleton with a dead-loop binding.
 
 log = logging.getLogger(__name__)
+
+
+_CHILD_BACKEND_PROC: subprocess.Popen[bytes] | None = None
+_CHILD_BACKEND_LOG: Path | None = None
 
 
 def build_server() -> FastMCP:
@@ -80,18 +100,154 @@ def build_server() -> FastMCP:
     return server
 
 
+async def _ping_control_plane(base_url: str) -> bool:
+    """Hit /healthz — return True iff the backend answers."""
+    from apecx_integration.mcp_surface.control_plane_client import (
+        ControlPlaneClient,
+    )
+    ephemeral = ControlPlaneClient(base_url)
+    try:
+        await ephemeral.healthz()
+        return True
+    except Exception:  # noqa: BLE001 — any wire error is "unreachable"
+        return False
+    finally:
+        await ephemeral.close()
+
+
+def _autostart_backend(base_url: str) -> subprocess.Popen[bytes] | None:
+    """Spawn ``apecx-cp serve`` as a child process.
+
+    Returns the Popen handle on success; None on failure (in which
+    case the caller should fall back to the eager-fail path).
+
+    Lifecycle: child is registered via atexit so it terminates when
+    the MCP server exits. Stderr lands in a log file under
+    ``$TMPDIR/apecx-cp-autostart.log`` so the operator can debug
+    backend issues without losing the stdout MCP stream.
+    """
+    parsed = urlparse(base_url)
+    host = parsed.hostname or "127.0.0.1"
+    port = parsed.port or 8000
+
+    # Refuse to autostart against a non-loopback host. Spawning a
+    # backend bound to 0.0.0.0 / a public IP from inside an MCP
+    # client is a significant security shape — the operator should
+    # do that explicitly.
+    if host not in {"127.0.0.1", "localhost", "::1"}:
+        log.error(
+            "MCP autostart: refusing to spawn backend for "
+            "non-loopback URL %s. Configure APECX_CONTROL_PLANE_URL "
+            "to a loopback address, or start the backend manually "
+            "and set APECX_MCP_AUTOSTART_BACKEND=0.",
+            base_url,
+        )
+        return None
+
+    # Find the apecx-cp entry point. When this module is installed
+    # editable into a venv, the binary lives next to ``apecx-mcp`` in
+    # the same bin dir. ``shutil.which`` finds it on PATH (which
+    # FastMCP's spawned context inherits).
+    cp_binary = shutil.which("apecx-cp")
+    if cp_binary is None:
+        # Fall back to the same Python interpreter + module form. This
+        # works when the venv's bin dir isn't on PATH (rare for
+        # editable installs but happens with isolated launch contexts).
+        cp_binary = sys.executable
+        cp_args = ["-m", "apecx_integration.control_plane.app", "serve",
+                   "--host", host, "--port", str(port)]
+    else:
+        cp_args = ["serve", "--host", host, "--port", str(port)]
+
+    import tempfile
+    log_path = Path(tempfile.gettempdir()) / "apecx-cp-autostart.log"
+    log_fh = log_path.open("ab")
+    log.info(
+        "MCP autostart: spawning backend (%s %s) — child stderr -> %s",
+        cp_binary, " ".join(cp_args), log_path,
+    )
+
+    # Inherit env (LLM vars + APECX_CP_POSTGRES_URL if set). Force
+    # SQLite default by NOT setting POSTGRES URL when absent.
+    proc = subprocess.Popen(
+        [cp_binary, *cp_args],
+        stdin=subprocess.DEVNULL,
+        stdout=log_fh,
+        stderr=log_fh,
+        # Detach from MCP server's process group so child doesn't
+        # receive the SIGINT MCP server gets on Ctrl-C from Claude
+        # Desktop. We terminate it explicitly via atexit.
+        start_new_session=True,
+    )
+
+    global _CHILD_BACKEND_PROC, _CHILD_BACKEND_LOG
+    _CHILD_BACKEND_PROC = proc
+    _CHILD_BACKEND_LOG = log_path
+    atexit.register(_terminate_child_backend)
+    return proc
+
+
+def _terminate_child_backend() -> None:
+    """atexit handler — SIGTERM the child backend with a 5s grace,
+    then SIGKILL if it lingers."""
+    proc = _CHILD_BACKEND_PROC
+    if proc is None or proc.poll() is not None:
+        return  # already exited
+    log.info("MCP shutdown: terminating autostart backend (pid=%s)", proc.pid)
+    try:
+        proc.terminate()
+        proc.wait(timeout=5.0)
+    except subprocess.TimeoutExpired:
+        log.warning(
+            "MCP shutdown: backend did not terminate within 5s; "
+            "sending SIGKILL"
+        )
+        proc.kill()
+        proc.wait(timeout=2.0)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("MCP shutdown: error during backend cleanup: %s", exc)
+
+
+async def _wait_for_backend_ready(
+    base_url: str, *, timeout_s: float = 60.0,
+) -> bool:
+    """Poll /healthz until it answers or timeout. Returns True on
+    success, False on timeout. 60s default covers SQLite migrations
+    on a cold first run."""
+    deadline = time.monotonic() + timeout_s
+    poll_interval = 0.5
+    while time.monotonic() < deadline:
+        if await _ping_control_plane(base_url):
+            return True
+        # If the child died early, fail fast — no point polling.
+        if _CHILD_BACKEND_PROC and _CHILD_BACKEND_PROC.poll() is not None:
+            return False
+        await asyncio.sleep(poll_interval)
+    return False
+
+
 async def _verify_control_plane_reachable() -> None:
-    """Hit /healthz on the configured Control Plane URL.
+    """Ensure the Control Plane is reachable, autostarting it if
+    configured to do so.
 
-    Audit §3.2: pre-fix the lazy client meant a misconfigured
-    ``APECX_CONTROL_PLANE_URL`` only surfaced when a scientist
-    actually invoked a tool, by which point the operator had no
-    signal that anything was wrong. Eager-failing at startup gives
-    the operator an immediate, actionable error.
+    Behavior matrix:
 
-    Set ``APECX_MCP_SKIP_HEALTHCHECK=1`` to skip this guard — useful
-    for offline development or when the Control Plane is intentionally
-    deferred (e.g., during MCP-only smoke testing).
+      ============================  ===============  ============================
+      APECX_MCP_SKIP_HEALTHCHECK    Backend up        Action
+      ============================  ===============  ============================
+      1                             —                 Skip; warn-log only
+      0 (default)                   yes               Log success
+      0 (default)                   no, autostart=1   Spawn backend; poll; succeed
+                                                      OR exit(2) on poll timeout
+      0 (default)                   no, autostart=0   Exit(2) with the
+                                                      ``set APECX_CONTROL_PLANE_URL``
+                                                      remediation hint
+      ============================  ===============  ============================
+
+    Audit §3.2: pre-fix the lazy client meant a misconfigured URL
+    only surfaced when a scientist actually invoked a tool. Eager-
+    failing at startup gives the operator an immediate, actionable
+    error.
     """
     if os.environ.get("APECX_MCP_SKIP_HEALTHCHECK") == "1":
         log.info(
@@ -99,42 +255,65 @@ async def _verify_control_plane_reachable() -> None:
             "reachability check."
         )
         return
+
     base_url = os.environ.get(
         "APECX_CONTROL_PLANE_URL", "http://localhost:8000"
     )
-    # Build an EPHEMERAL client; do NOT touch the get_client()
-    # singleton here. The singleton's httpx.AsyncClient binds to
-    # whatever event loop is current at construction. main() runs
-    # this function via asyncio.run(), which closes its loop on
-    # return. If we built the singleton inside that loop, every
-    # FastMCP tool call later in main() would hit the singleton
-    # bound to a dead loop and fail with "Event loop is closed".
-    # Discovered via stdio JSON-RPC e2e probe 2026-04-25 — the
-    # cluster D §3.2 fix was correct in spirit but introduced this
-    # lifecycle regression. Keep startup-time and tool-time clients
-    # strictly separate.
-    from apecx_integration.mcp_surface.control_plane_client import (
-        ControlPlaneClient,
-    )
 
-    ephemeral = ControlPlaneClient(base_url)
-    try:
-        resp = await ephemeral.healthz()
-    except Exception as exc:  # noqa: BLE001 — must catch any wire error
+    if await _ping_control_plane(base_url):
+        log.info("MCP startup: Control Plane at %s reachable.", base_url)
+        return
+
+    autostart_enabled = os.environ.get(
+        "APECX_MCP_AUTOSTART_BACKEND", "1"
+    ) != "0"
+    if not autostart_enabled:
         log.error(
-            "MCP startup: Control Plane at %s is unreachable (%s: %s). "
-            "Set APECX_CONTROL_PLANE_URL to the correct URL, or "
-            "APECX_MCP_SKIP_HEALTHCHECK=1 to bypass. Tool calls would "
-            "fail at first invocation; failing fast at startup instead.",
+            "MCP startup: Control Plane at %s is unreachable AND "
+            "APECX_MCP_AUTOSTART_BACKEND=0. Either start the "
+            "backend manually (`apecx-cp serve`), set "
+            "APECX_MCP_AUTOSTART_BACKEND=1, or set "
+            "APECX_MCP_SKIP_HEALTHCHECK=1 to bypass the check.",
             base_url,
-            type(exc).__name__,
-            exc,
         )
-        await ephemeral.close()
-        raise SystemExit(2) from exc
-    await ephemeral.close()
+        raise SystemExit(2)
+
     log.info(
-        "MCP startup: Control Plane at %s reachable (%s).", base_url, resp
+        "MCP startup: Control Plane at %s unreachable; autostarting "
+        "backend (set APECX_MCP_AUTOSTART_BACKEND=0 to disable).",
+        base_url,
+    )
+    proc = _autostart_backend(base_url)
+    if proc is None:
+        log.error(
+            "MCP startup: autostart failed — could not locate the "
+            "apecx-cp binary or refused to spawn. See the autostart "
+            "log path printed above; verify ``apecx-cp`` is on PATH "
+            "or in the same venv as ``apecx-mcp``."
+        )
+        raise SystemExit(2)
+
+    if not await _wait_for_backend_ready(base_url, timeout_s=60.0):
+        # Surface the child's stderr tail so the operator sees what
+        # actually went wrong (port conflict, missing dep, etc.).
+        log.error(
+            "MCP startup: autostart spawned backend (pid=%s) but it "
+            "did not become ready within 60s. Backend log: %s",
+            proc.pid, _CHILD_BACKEND_LOG,
+        )
+        if _CHILD_BACKEND_LOG and _CHILD_BACKEND_LOG.is_file():
+            try:
+                tail = _CHILD_BACKEND_LOG.read_text(
+                    encoding="utf-8", errors="ignore",
+                )[-2000:]
+                log.error("Backend log tail:\n%s", tail)
+            except Exception:  # noqa: BLE001
+                pass
+        raise SystemExit(2)
+
+    log.info(
+        "MCP startup: autostart succeeded — backend at %s, child pid=%s",
+        base_url, proc.pid,
     )
 
 
