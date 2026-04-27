@@ -3,6 +3,7 @@
 MCP surface, control plane, composition, and execution integration for the APECx project.
 
 - **New scientist? Start here:** [`docs/tutorial/`](docs/tutorial/README.md) — 5-chapter walkthrough from clean laptop to reproducible run (T15 Phase-2 draft, 2026-04-23).
+- **Connecting Claude Desktop / MCP clients:** [`docs/mcp_integration.md`](docs/mcp_integration.md) — install path, `claude_desktop_config.json` snippet, per-tool input/output reference, troubleshooting.
 - **Architectural source of truth:** `../architectural_plan.md` (§R3 for current Round 3 revisions)
 - **Implementation plan:** `../implementation_plan.md`
 - **Scoping answers (Round 3):** `docs/scoping_answers.md`

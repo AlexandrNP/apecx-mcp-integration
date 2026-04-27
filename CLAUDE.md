@@ -211,6 +211,10 @@ Deliberately NOT exposed: `/hpc/submit` (still 501),
 `create_approval` (internal — called by nanobrain's ApprovalStep
 during execution).
 
+Full operator-facing install + reference: `docs/mcp_integration.md`
+(Claude Desktop config snippet, env vars, per-tool input/output
+shapes, troubleshooting).
+
 ## Key reference docs
 
 - `../architectural_plan.md` — project-level source of truth.
