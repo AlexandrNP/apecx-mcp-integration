@@ -26,11 +26,33 @@ from sqlalchemy.orm import Session, sessionmaker
 def get_db_url() -> str:
     """Resolve the Control Plane DB URL.
 
-    Env var ``APECX_CP_DB_URL`` takes precedence. Default is an on-disk
-    SQLite file at ``./apecx_cp.db`` (CWD-relative; fine for tests and
-    laptop use, set the env var in production).
+    Resolution order:
+      1. Explicit env var ``APECX_CP_DB_URL`` — wins over everything.
+      2. SQLite at ``$APECX_CP_HOME/cp.db`` if ``APECX_CP_HOME`` is set.
+      3. SQLite at ``$XDG_DATA_HOME/apecx-cp/cp.db`` if XDG is set.
+      4. SQLite at ``~/.apecx-cp/cp.db``.
+
+    The default is an absolute, user-writable path so the backend
+    survives Claude Desktop / pipx / uv-tool spawn contexts where cwd
+    is read-only or unpredictable. Pre-2026-04-27 the default was
+    the CWD-relative ``sqlite:///./apecx_cp.db`` which crashed under
+    Claude Desktop's spawn cwd with ``unable to open database file``.
+
+    The parent directory is created on first call if missing.
     """
-    return os.environ.get("APECX_CP_DB_URL", "sqlite:///./apecx_cp.db")
+    explicit = os.environ.get("APECX_CP_DB_URL")
+    if explicit:
+        return explicit
+    from pathlib import Path
+    home = os.environ.get("APECX_CP_HOME")
+    if home:
+        base = Path(home)
+    elif os.environ.get("XDG_DATA_HOME"):
+        base = Path(os.environ["XDG_DATA_HOME"]) / "apecx-cp"
+    else:
+        base = Path.home() / ".apecx-cp"
+    base.mkdir(parents=True, exist_ok=True)
+    return f"sqlite:///{base / 'cp.db'}"
 
 
 def make_engine(url: str | None = None, *, echo: bool = False) -> Engine:

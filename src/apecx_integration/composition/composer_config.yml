@@ -35,7 +35,7 @@ component_catalog_paths:
 # composer returns. When null, the composer skips the scan — useful
 # for tests that only exercise the YAML path. Production should ALWAYS
 # set this.
-sandbox_whitelist_path: "../../../configs/sandbox/import_whitelist.txt"
+sandbox_whitelist_path: "../_configs/import_whitelist.txt"
 
 # How many catalog hits to surface to the LLM. Tight bound to keep
 # the prompt readable — bumping past ~10 tends to confuse mistral-nemo.

@@ -1,0 +1,55 @@
+# T13 Phase 1 — pinned import whitelist for LLM-generated Python.
+#
+# Each line is ONE top-level package name. Submodules are NOT listed here
+# (the scanner matches on top-level package; ``from pandas.io import ...``
+# is accepted because ``pandas`` is whitelisted).
+#
+# Policy for adding a new entry: propose it in a PR, justify why the
+# composer genuinely needs it, confirm it has no obvious side-effect
+# code paths. Narrow whitelist is the whole point of Phase 1 — if
+# "just add requests" becomes routine, the whitelist is a speed bump,
+# not a gate.
+#
+# Comments (# ...) and blank lines are ignored.
+
+# --- stdlib essentials -----------------------------------------------------
+# Chosen because novel workflow glue code legitimately needs them AND they
+# have no direct network / process-spawn surface. (``subprocess`` and
+# ``socket`` are INTENTIONALLY not here.)
+collections
+dataclasses
+datetime
+enum
+functools
+itertools
+json
+math
+operator
+pathlib
+re
+statistics
+typing
+uuid
+
+# --- numeric / dataframe ---------------------------------------------------
+# The apecx workflow core domain. Whitelisted because it's the shape of
+# data the composer will actually emit.
+numpy
+pandas
+
+# --- validation / framework ------------------------------------------------
+pydantic
+typing_extensions
+
+# --- project-specific ------------------------------------------------------
+# Nanobrain components are the whole reason the composer exists.
+nanobrain
+
+# Apecx-db-integration is used by the T02 Steps 1 / 3c / 5 wrappers; a
+# composer-generated workflow that reuses one of those Steps needs
+# ``from apecx_db_integration import ...``.
+apecx_db_integration
+
+# Apecx's own integration package — composer-generated code can reference
+# existing wrapper Steps by their qualified path.
+apecx_integration

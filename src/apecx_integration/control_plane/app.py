@@ -52,24 +52,23 @@ from apecx_integration.control_plane.routes import (
 
 log = logging.getLogger(__name__)
 
-# Repo root resolution for default config paths used by ``_serve``.
-# This file lives at ``<repo>/src/apecx_integration/control_plane/app.py``,
-# so parents[3] is the repo root in editable-install layouts. The CLI
-# defaults only need to work for the editable-install case (the
-# tutorial / development path); wheel deployments override every
-# default via env vars.
-_REPO_ROOT = Path(__file__).resolve().parents[3]
+# Default config paths resolved RELATIVE TO this module file, so they
+# work in BOTH editable-install AND isolated-wheel install modes
+# (uv tool / pipx / pip --user). ``Path(__file__).resolve().parent.parent``
+# is the ``apecx_integration/`` package root regardless of how the
+# package was installed.
+#
+# ``configs/approval_policy.yml`` is shipped inside the package at
+# ``_configs/approval_policy.yml`` (bundled copy) so it ships with the
+# wheel; see ``_configs/`` directory and the byte-equivalence
+# regression test (``tests/integration/test_alembic_bundled_in_package.py``).
+_PKG_ROOT = Path(__file__).resolve().parent.parent
 _DEFAULT_COMPOSER_CONFIG = (
-    _REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
+    _PKG_ROOT / "composition" / "composer_config.yml"
 )
-_DEFAULT_APPROVAL_POLICY = _REPO_ROOT / "configs" / "approval_policy.yml"
+_DEFAULT_APPROVAL_POLICY = _PKG_ROOT / "_configs" / "approval_policy.yml"
 _DEFAULT_WORKFLOW_BASE_DIR = (
-    _REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "workflows"
-    / "violin_bvbrc"
+    _PKG_ROOT / "composition" / "workflows" / "violin_bvbrc"
 )
 
 

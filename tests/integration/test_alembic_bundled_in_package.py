@@ -116,3 +116,84 @@ def test_find_alembic_root_resolves_to_in_package_copy():
         f"in-package _alembic directory. Walk-from-here-up is the "
         f"legacy fallback; the in-package lookup must win."
     )
+
+
+def test_approval_policy_in_package_matches_repo_root():
+    """``configs/approval_policy.yml`` is bundled into the package at
+    ``_configs/approval_policy.yml`` so installed wheels can find it
+    without the repo on disk. Same byte-equivalence guard as alembic.
+    """
+    repo_policy = REPO_ROOT / "configs" / "approval_policy.yml"
+    pkg_policy = (
+        REPO_ROOT / "src" / "apecx_integration" / "_configs"
+        / "approval_policy.yml"
+    )
+    assert repo_policy.is_file(), repo_policy
+    assert pkg_policy.is_file(), pkg_policy
+    assert filecmp.cmp(repo_policy, pkg_policy, shallow=False), (
+        f"{repo_policy} and {pkg_policy} have diverged. Resync via:\n"
+        f"  cp {repo_policy} {pkg_policy}"
+    )
+
+
+def test_import_whitelist_in_package_matches_repo_root():
+    """``configs/sandbox/import_whitelist.txt`` is bundled at
+    ``_configs/import_whitelist.txt`` so the composer can find it
+    when installed. Same byte-equivalence guard as alembic."""
+    repo_wl = REPO_ROOT / "configs" / "sandbox" / "import_whitelist.txt"
+    pkg_wl = (
+        REPO_ROOT / "src" / "apecx_integration" / "_configs"
+        / "import_whitelist.txt"
+    )
+    assert repo_wl.is_file(), repo_wl
+    assert pkg_wl.is_file(), pkg_wl
+    assert filecmp.cmp(repo_wl, pkg_wl, shallow=False), (
+        f"{repo_wl} and {pkg_wl} have diverged. Resync via:\n"
+        f"  cp {repo_wl} {pkg_wl}"
+    )
+
+
+def test_default_paths_in_app_resolve_to_existing_files():
+    """The ``_DEFAULT_*`` constants in ``control_plane/app.py`` must
+    resolve to files / dirs that exist in BOTH editable AND installed
+    install modes. They are the load-bearing path-resolution
+    constants for ``apecx-cp serve``; if they break under installed
+    mode, every workflow route 503s with no clear signal."""
+    from apecx_integration.control_plane.app import (
+        _DEFAULT_APPROVAL_POLICY,
+        _DEFAULT_COMPOSER_CONFIG,
+        _DEFAULT_WORKFLOW_BASE_DIR,
+    )
+    assert _DEFAULT_COMPOSER_CONFIG.is_file(), (
+        f"composer config not found at {_DEFAULT_COMPOSER_CONFIG}. "
+        f"This break causes /workflows/start to 503 under installed mode."
+    )
+    assert _DEFAULT_APPROVAL_POLICY.is_file(), (
+        f"approval policy not found at {_DEFAULT_APPROVAL_POLICY}. "
+        f"This break causes /workflows/start to 503 under installed mode."
+    )
+    assert _DEFAULT_WORKFLOW_BASE_DIR.is_dir(), (
+        f"workflow base dir not found at {_DEFAULT_WORKFLOW_BASE_DIR}. "
+        f"This break causes /workflows/execute to 503 under installed mode."
+    )
+
+
+def test_get_db_url_returns_absolute_path_by_default(tmp_path, monkeypatch):
+    """The default SQLite URL MUST be an absolute path. Pre-2026-04-27
+    the default was ``./apecx_cp.db`` which crashed under Claude
+    Desktop's spawn cwd with ``unable to open database file``."""
+    from apecx_integration.control_plane.db import get_db_url
+    monkeypatch.delenv("APECX_CP_DB_URL", raising=False)
+    monkeypatch.delenv("APECX_CP_HOME", raising=False)
+    monkeypatch.delenv("XDG_DATA_HOME", raising=False)
+    monkeypatch.setenv("HOME", str(tmp_path))
+    url = get_db_url()
+    assert url.startswith("sqlite:///"), url
+    db_path_str = url.removeprefix("sqlite:///")
+    db_path = Path(db_path_str)
+    assert db_path.is_absolute(), (
+        f"default DB URL points to a relative path {db_path!r}; "
+        f"absolute path required so the backend survives any cwd."
+    )
+    # Parent directory was created.
+    assert db_path.parent.is_dir()
