@@ -36,6 +36,9 @@ Public API:
   - ``DEFAULT_SYNTHESIS_CONFIG_PATH`` — bundled YAML config path.
 """
 
+from apecx_integration.agents.rag_synthesis.harvester_adapter import (
+    datacite_to_publication,
+)
 from apecx_integration.agents.rag_synthesis.synthesizer import (
     DEFAULT_SYNTHESIS_CONFIG_PATH,
     SynthesisConfig,
@@ -45,5 +48,6 @@ from apecx_integration.agents.rag_synthesis.synthesizer import (
 __all__ = [
     "DEFAULT_SYNTHESIS_CONFIG_PATH",
     "SynthesisConfig",
+    "datacite_to_publication",
     "synthesize_response",
 ]
