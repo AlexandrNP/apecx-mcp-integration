@@ -49,7 +49,6 @@ from langchain_core.messages import HumanMessage, SystemMessage
 # older ``langchain.agents.agent_types.AgentType`` shape, and langchain
 # 1.x reorganised both. Failing at call time instead of import time
 # keeps the packaging loadable for everyone who doesn't touch CSV agents.
-from langchain_openai import ChatOpenAI
 
 # Load environment variables from a .env file in the caller's CWD if
 # present. Does NOT mutate process env for vars that are already set,
@@ -142,52 +141,16 @@ def __getattr__(name: str):
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
-def _build_chat_llm(
-    temperature: float = 0.0,
-    max_tokens: int = 1024,
-    **overrides: Any,
-) -> ChatOpenAI:
-    """Build a LangChain ``ChatOpenAI`` instance against the configured
-    endpoint. Defaults to the local Ollama daemon; override via env vars
-    or per-call kwargs.
-
-    Resolution order for ``temperature`` and ``max_tokens``:
-
-      env var > caller kwarg (explicit) > function default
-
-    Env vars (``APECX_LLM_TEMPERATURE`` / ``APECX_LLM_MAX_TOKENS``) win
-    so that operators can tune cost/quality bounds without re-deploying
-    or editing wrapper YAMLs. Caller kwargs win over the function
-    defaults for callers that need a specific shape (e.g., a CSV agent
-    that genuinely needs ``max_tokens=16384`` regardless of operator
-    policy).
-
-    ``ChatOpenAI`` speaks the OpenAI chat-completions protocol, which
-    Ollama and vLLM both implement at their ``/v1`` endpoints — no
-    separate ``ChatOllama`` / ``ChatvLLM`` wrapper needed.
-    """
-    base_url = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
-    model = os.environ.get("APECX_LLM_MODEL", "mistral-small:latest")
-    api_key = (
-        os.environ.get("APECX_LLM_API_KEY")
-        or os.environ.get("OPENAI_API_KEY")
-        or "EMPTY"
-    )
-    env_temperature = os.environ.get("APECX_LLM_TEMPERATURE")
-    if env_temperature is not None:
-        temperature = float(env_temperature)
-    env_max_tokens = os.environ.get("APECX_LLM_MAX_TOKENS")
-    if env_max_tokens is not None:
-        max_tokens = int(env_max_tokens)
-    kwargs: dict[str, Any] = {
-        "temperature": temperature,
-        "model": model,
-        "max_tokens": max_tokens,
-        "base_url": base_url,
-        "api_key": api_key,
-    }
-    kwargs.update(overrides)
-    return ChatOpenAI(**kwargs)
+# LLM client factory. The canonical implementation lives in
+# ``apecx_integration.agents._llm_factory``; this module re-binds it
+# under the historical ``_build_chat_llm`` name so existing tests that
+# do ``monkeypatch.setattr(violin_bvbrc.agent, "_build_chat_llm", ...)``
+# keep working. Internal callers below reference the bare name
+# ``_build_chat_llm`` so that monkeypatching this module attribute
+# rebinds what they see (Python LEGB lookup at call time, not import
+# time). New callers should import ``build_chat_llm`` directly from
+# ``apecx_integration.agents._llm_factory``.
+from apecx_integration.agents._llm_factory import build_chat_llm as _build_chat_llm
 
 
 def get_agent_statistics() -> dict[str, int]:

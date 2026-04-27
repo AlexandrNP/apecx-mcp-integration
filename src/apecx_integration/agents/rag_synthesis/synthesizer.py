@@ -298,11 +298,14 @@ def synthesize_response(
         f"## Publications\n\n{pubs_block}"
     )
 
-    # Lazy import: tests that mock the factory don't need the heavy
-    # langchain stack to load
+    # Lazy import: tests that pass a stub ``llm`` don't need the heavy
+    # langchain stack to load. Canonical factory lives in
+    # ``_llm_factory``; importing it here (not at module top) keeps
+    # the synthesis package import-cheap for callers that always
+    # supply their own LLM.
     if llm is None:
-        from apecx_integration.agents.violin_bvbrc.agent import _build_chat_llm
-        llm = _build_chat_llm()
+        from apecx_integration.agents._llm_factory import build_chat_llm
+        llm = build_chat_llm()
 
     from langchain_core.messages import HumanMessage, SystemMessage
 

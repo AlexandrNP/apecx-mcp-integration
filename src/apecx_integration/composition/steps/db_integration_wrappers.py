@@ -33,11 +33,14 @@ through the same lazy-cache (Step 3c, but only when the optional
 
 Mock-policy compliance
 ----------------------
-All three wrappers route their LLM calls through
-``apecx_db_integration.agent._build_chat_llm`` exactly as the bare
-functions do. Tests that need to avoid live LLM round-trips
-monkeypatch that factory on the ``apecx_db_integration.agent`` module
-— the same injection point ``apecx-db-integration/tests/`` uses. See
+All three wrappers route their LLM calls through the same factory
+the bare functions use. The canonical factory now lives in
+``apecx_integration.agents._llm_factory.build_chat_llm``; the
+historical ``apecx_integration.agents.violin_bvbrc.agent.
+_build_chat_llm`` name is preserved as a re-bound module attribute
+so existing test monkeypatch sites keep working. Tests that need
+to avoid live LLM round-trips monkeypatch that legacy attribute on
+the ``violin_bvbrc.agent`` module. See
 ``tests/integration/test_db_integration_wrapper_steps.py`` for the
 fixture shape.
 """
