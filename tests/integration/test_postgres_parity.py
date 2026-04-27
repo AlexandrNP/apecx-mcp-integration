@@ -103,7 +103,11 @@ def test_alembic_roundtrip_on_postgres(clean_postgres: str) -> None:
     tables = set(inspect(create_engine(url)).get_table_names())
     assert tables == EXPECTED_TABLES
 
-    command.downgrade(cfg, "-1")
+    # Migrations 0002+ landed during the 2026-04-26 adversarial-async
+    # hunt; ``-1`` only reverts ONE step now. Use ``base`` to fully
+    # downgrade so the post-condition (only alembic_version remains)
+    # holds for any future migration count.
+    command.downgrade(cfg, "base")
     tables_after = set(inspect(create_engine(url)).get_table_names())
     assert tables_after == {"alembic_version"}, tables_after
 
