@@ -6,41 +6,21 @@ Claude Desktop, the `mcp` CLI, custom MCP clients, etc. Scientists
 ask questions or describe workflows in natural language; the server
 composes, surfaces a diff for review, executes, and reports.
 
-This document is the canonical install + reference. It is accurate to
-the code as of **2026-04-27** and is updated on every change to
-`src/apecx_integration/mcp_surface/`.
+## TL;DR — Claude Desktop in 3 steps
 
----
-
-## TL;DR — Claude Desktop in 5 minutes
-
-```bash
-# 1. Clone the workspace + install editable into a venv.
-git clone <apecx-mcp-integration> ~/code/apecx-mcp-integration
-cd ~/code/apecx-mcp-integration
-python3.12 -m venv .venv
-.venv/bin/pip install -e .
-.venv/bin/pip install -e ../apecx-harvesters    # required sibling
-.venv/bin/pip install -e ../nanobrain           # required sibling
-
-# 2. Bring up the Control Plane backend (Postgres + apecx-cp HTTP server).
-docker compose up -d postgres
-export APECX_CP_POSTGRES_URL="postgresql+psycopg://apecx:apecx@localhost:5433/apecx_cp"
-.venv/bin/apecx-cp serve &                       # backend on :8000
-
-# 3. Tell Claude Desktop about the apecx-mcp server.
-#    macOS: edit ~/Library/Application Support/Claude/claude_desktop_config.json
-#    Windows: %APPDATA%/Claude/claude_desktop_config.json
-```
+After a one-time `pip install` (see "Install" below), the entire
+config is **one block in `claude_desktop_config.json`**. The MCP
+server **autostarts the Control Plane backend** if it isn't already
+running, so you do not need a separate terminal, docker compose, or
+manual `apecx-cp serve`.
 
 ```jsonc
 {
   "mcpServers": {
     "apecx": {
-      "command": "/Users/<you>/code/apecx-mcp-integration/.venv/bin/apecx-mcp",
+      "command": "/ABSOLUTE/PATH/TO/apecx-mcp-integration/.venv/bin/apecx-mcp",
       "args": [],
       "env": {
-        "APECX_CONTROL_PLANE_URL": "http://localhost:8000",
         "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
         "APECX_LLM_MODEL": "mistral-nemo:latest",
         "APECX_LLM_API_KEY": "unused"
@@ -50,307 +30,200 @@ export APECX_CP_POSTGRES_URL="postgresql+psycopg://apecx:apecx@localhost:5433/ap
 }
 ```
 
-Restart Claude Desktop. The 11 apecx tools appear in the tool picker.
-If the Control Plane is unreachable at startup, the server logs a
-clear error to stderr and exits with code `2` — Claude Desktop will
-surface a "server failed to start" notification.
+Restart Claude Desktop. The 11 apecx tools appear in the tool
+picker. The first launch takes ~5–15 s while the backend boots and
+runs SQLite migrations; subsequent launches are <1 s.
 
----
+## Two pitfalls that cause silent failure in Claude Desktop
+
+If the tools don't appear, the cause is almost always one of these.
+Claude Desktop **does not surface a user-visible error** for either —
+it just shows the empty tool list — so check both before debugging
+anything else.
+
+| Pitfall | Symptom | Fix |
+|---|---|---|
+| Server block placed OUTSIDE `mcpServers` | Tools never appear; no log | Indent the `apecx` block as a child of `mcpServers`, not a sibling |
+| `command` points at the venv directory, not the binary | Process exits instantly with exec error; no user-visible log | Use the **absolute** path to `.venv/bin/apecx-mcp` (not `.venv`) |
+
+The Claude Desktop logs that capture the actual stderr live at:
+
+| OS | Log file |
+|---|---|
+| macOS | `~/Library/Logs/Claude/mcp-server-apecx.log` |
+| Windows | `%LOCALAPPDATA%\Claude\Logs\mcp-server-apecx.log` |
+
+Tail that file when in doubt:
+
+```bash
+tail -f ~/Library/Logs/Claude/mcp-server-apecx.log
+```
+
+If the log is **empty**, the binary couldn't even be exec'd — almost
+always pitfall #2 (wrong `command` path).
+
+## Install (one-time)
+
+The honest current state: there is **not yet a `pip install
+apecx-mcp` from PyPI**. The server depends on two sibling repos
+(`nanobrain`, `apecx-harvesters`) that are also not on PyPI today.
+For now the install is "clone + one editable install", which we'll
+phase out as the sibling repos publish wheels.
+
+### Standard install (clone + venv)
+
+```bash
+# 1. Clone the workspace + siblings.
+mkdir ~/apecx-cowork && cd ~/apecx-cowork
+git clone <apecx-mcp-integration> apecx-mcp-integration
+git clone <apecx-harvesters>      apecx-harvesters
+git clone <nanobrain>             nanobrain
+
+# 2. Create a venv inside apecx-mcp-integration and editable-install
+#    everything in one command.
+cd apecx-mcp-integration
+python3.12 -m venv .venv
+.venv/bin/pip install --upgrade pip
+.venv/bin/pip install -e ../nanobrain ../apecx-harvesters .
+
+# 3. Verify the binary is on the venv's bin dir.
+ls .venv/bin/apecx-mcp     # should print the path
+```
+
+That's everything. From here, the only ongoing requirement is the
+Claude Desktop config block (above). The MCP server bundles
+`apecx-cp` (the backend), spawns it on-demand, and runs against
+SQLite — no Docker, no separate process to babysit.
+
+### After install, what actually runs?
+
+When Claude Desktop spawns `apecx-mcp`:
+
+1. The MCP server reads `APECX_CONTROL_PLANE_URL`
+   (default `http://localhost:8000`).
+2. It probes `/healthz`. If the backend is already running (e.g.,
+   you started one manually for development), continue.
+3. If not, AND `APECX_MCP_AUTOSTART_BACKEND=1` (the default), spawn
+   `apecx-cp serve` as a child process. Stderr lands in
+   `$TMPDIR/apecx-cp-autostart.log`. Poll `/healthz` for up to 60 s.
+4. On clean exit (stdin closes, Ctrl-C, Claude Desktop kills the
+   server), an `atexit` handler SIGTERMs the child with a 5 s grace,
+   then SIGKILLs if it lingers. No orphan processes.
+
+If the autostart fails (binary not found, port conflict, migration
+error), the MCP server logs the autostart-log tail to its own stderr
+(which Claude Desktop captures) and exits with code `2`.
 
 ## What this server is (and is not)
 
 **Is**: a thin MCP-stdio adapter over the apecx Control Plane HTTP
-API (`apecx-cp`). Each tool is a one-call wrapper that marshals the
-client's input into the right JSON envelope and returns the parsed
-response.
+API. Each tool is a one-call wrapper that marshals MCP input into
+the right JSON envelope and returns the parsed response.
 
 **Is not**:
 
-- An LLM. The tools call the Control Plane, which calls the local LLM
-  (Ollama / vLLM / OpenAI) via the `APECX_LLM_*` env vars. The MCP
-  server itself does not invoke an LLM.
+- An LLM. Tools call the Control Plane, which calls a local LLM
+  (Ollama / vLLM / hosted OpenAI) via the `APECX_LLM_*` env vars.
 - A scheduler. HPC submission (`/hpc/submit`) is deliberately not
   exposed — the user runs `qsub` themselves on the bundle this
   server hands them.
 - A persistence layer. State (runs, approvals, artifacts, provenance
-  events) lives in the Control Plane's Postgres or SQLite.
-
-The full architecture is
+  events) lives in SQLite (default) or Postgres (opt-in).
 
 ```
   ┌────────────────┐   stdio JSON-RPC   ┌────────────────┐   HTTP   ┌──────────┐
   │ Claude Desktop │───────────────────▶│   apecx-mcp    │─────────▶│ apecx-cp │
   │  (MCP client)  │◀───────────────────│  (this server) │◀─────────│ (backend)│
-  └────────────────┘                    └────────────────┘          └──────────┘
+  └────────────────┘                    └─────┬──────────┘          └──────────┘
+                                              │ spawns + supervises       │
+                                              │ on first start            │
+                                              └───────────────────────────┘
                                                                           │
-                                                              Postgres / SQLite
-                                                              + local LLM (Ollama)
+                                                              SQLite (default)
+                                                              + local LLM
 ```
-
----
-
-## Prerequisites
-
-| Component | Required | Notes |
-|---|---|---|
-| Python 3.12 | yes | Earlier versions reject the type syntax |
-| The `nanobrain` sibling repo | yes | Editable-installed into the venv |
-| The `apecx-harvesters` sibling repo | yes | DataCite-shaped publication adapter |
-| Docker | yes for Postgres backend | Skip if you run with the SQLite default |
-| Ollama (or another OpenAI-compatible LLM endpoint) | yes for compose / synth | The composer + RAG synthesis call an LLM |
-| MCP client | yes | Claude Desktop is the canonical one; any client works |
-
-**Why two sibling repos?** Workspace policy: `apecx-mcp-integration`
-depends on `nanobrain` (the framework) and `apecx-harvesters` (the
-DataCite-shaped publication source). Day 1+ migrations pulled the
-formerly-external `apecx_db_integration` and `apecx_rag` code into
-this repo so the dependency surface is exactly two siblings.
-
----
-
-## Installation
-
-### 1. Clone the workspace
-
-The workspace expects sibling repos at the same level:
-
-```
-apecx-cowork/
-├── apecx-mcp-integration/    ← this repo
-├── apecx-harvesters/         ← sibling (required)
-├── nanobrain/                ← sibling (required)
-└── data/                     ← optional, for E2E tests
-```
-
-### 2. Create the venv and install editable
-
-```bash
-cd apecx-mcp-integration
-python3.12 -m venv .venv
-.venv/bin/pip install --upgrade pip
-.venv/bin/pip install -e .
-.venv/bin/pip install -e ../apecx-harvesters
-.venv/bin/pip install -e ../nanobrain
-```
-
-This installs two console entry points into the venv:
-
-| Command | Purpose |
-|---|---|
-| `apecx-cp` | Control Plane HTTP server (FastAPI, port 8000) |
-| `apecx-mcp` | This MCP stdio server |
-
-Verify:
-
-```bash
-.venv/bin/apecx-mcp --help     # FastMCP prints "apecx-mcp" + tool list
-.venv/bin/apecx-cp --help      # uvicorn entry-point options
-```
-
-### 3. (Optional) Build the RAG component index
-
-The composer's retrieval over component manifests is faster with a
-prebuilt FAISS index. Build it out-of-band:
-
-```bash
-PYTHONPATH=../nanobrain:src .venv/bin/python \
-  scripts/build_rag_index.py \
-  src/apecx_integration/composition/composer_config.yml
-```
-
-The composer falls back to a linear-scan catalog when the index is
-absent, so this step is optional for first-run setup.
-
----
 
 ## Configuration — environment variables
 
-Every variable the server reads. Most have defaults; override as
-needed.
+The server reads these from the Claude Desktop config's `env` block.
+Most have sensible defaults; you really only need the LLM block.
 
-### Control Plane connection
+### Backend autostart + connection
 
 | Variable | Default | What it does |
 |---|---|---|
-| `APECX_CONTROL_PLANE_URL` | `http://localhost:8000` | Where this MCP server forwards each tool call |
-| `APECX_MCP_SKIP_HEALTHCHECK` | unset | Set to `1` to skip the startup `/healthz` probe (offline dev only) |
+| `APECX_CONTROL_PLANE_URL` | `http://localhost:8000` | Where the MCP server forwards each tool call |
+| `APECX_MCP_AUTOSTART_BACKEND` | `1` (on) | Spawn `apecx-cp serve` if URL unreachable. Set `0` to require a manually-started backend. |
+| `APECX_MCP_SKIP_HEALTHCHECK` | unset | Set `1` to skip the startup `/healthz` probe entirely. Developer-only escape hatch — do not ship in user configs. |
+| `APECX_CP_POSTGRES_URL` | unset → SQLite | Optional Postgres connection string. When set, the autostarted backend uses it instead of SQLite. |
 
-The server hits `GET /healthz` at startup. If unreachable, it logs to
-stderr and exits with code `2` — Claude Desktop displays "MCP server
-failed to start". Without this guard, scientists would only learn the
-backend was misconfigured on the first tool call, by which point the
-operator has no signal that anything is wrong.
-
-### Local LLM (used by the Control Plane's composer + by RAG
-synthesis)
+### Local LLM (used by the composer + RAG synthesis)
 
 | Variable | Default | What it does |
 |---|---|---|
 | `APECX_LLM_BASE_URL` | `http://localhost:11434/v1` | OpenAI-compatible endpoint |
-| `APECX_LLM_MODEL` | `mistral-small:latest` | Model name the endpoint exposes |
-| `APECX_LLM_API_KEY` | empty | Required by `langchain-openai` even when the endpoint ignores it; set to any non-empty string for Ollama |
-| `APECX_LLM_TEMPERATURE` | `0.0` | Composer determinism — leave at 0 for reproducibility |
+| `APECX_LLM_MODEL` | `mistral-small:latest` | Model name the endpoint serves |
+| `APECX_LLM_API_KEY` | empty | `langchain-openai` requires a non-empty value even when the endpoint ignores it; set to `"unused"` for Ollama |
+| `APECX_LLM_TEMPERATURE` | `0.0` | Composer determinism; leave at 0 for reproducibility |
 | `APECX_LLM_MAX_TOKENS` | `4096` | Per-call budget |
-| `APECX_LLM_MAX_RETRIES` | `0` | Override `composer_config.yml` `max_retries` |
 
-These are read by the Control Plane process (`apecx-cp`) and by the
-RAG synthesis pipeline. The MCP server itself does not call an LLM
-directly — it delegates everything via HTTP.
-
-### Postgres backend (optional; SQLite is the default)
-
-| Variable | Default | What it does |
-|---|---|---|
-| `APECX_CP_POSTGRES_URL` | unset → SQLite | Switches the Control Plane from `apecx_cp.db` to Postgres |
-
-The bundled `docker-compose.yml` brings up a Postgres on port `5433`
-(deliberately not 5432 to avoid colliding with a system install) with
-matching credentials. Use this for production-shape state durability.
-
-### Other (workflow-step level)
+### Workflow-step (only matters if you wire those steps in)
 
 | Variable | Used by | Notes |
 |---|---|---|
-| `APECX_DB_DATA_DIR` | VIOLIN steps | Path to the directory carrying the VIOLIN CSVs |
-| `APECX_BVBRC_CACHE_DIR` | BV-BRC step | Path to the BV-BRC TSV snapshot cache |
-| `APECX_SKIP_LIVE_LLM` | tests only | `=1` makes live-LLM tests skip silently |
+| `APECX_DB_DATA_DIR` | VIOLIN steps | Path to VIOLIN CSVs |
+| `APECX_BVBRC_CACHE_DIR` | BV-BRC step | Path to BV-BRC TSV snapshots |
 
----
+## Local LLM setup (Ollama)
 
-## Claude Desktop setup
-
-The Claude Desktop config file lives at:
-
-| OS | Path |
-|---|---|
-| macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
-| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
-| Linux (Claude Desktop preview) | `~/.config/Claude/claude_desktop_config.json` |
-
-### Recommended config
-
-```jsonc
-{
-  "mcpServers": {
-    "apecx": {
-      "command": "/absolute/path/to/apecx-mcp-integration/.venv/bin/apecx-mcp",
-      "args": [],
-      "env": {
-        "APECX_CONTROL_PLANE_URL": "http://localhost:8000",
-        "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
-        "APECX_LLM_MODEL": "mistral-nemo:latest",
-        "APECX_LLM_API_KEY": "unused",
-        "APECX_LLM_TEMPERATURE": "0.0",
-        "APECX_LLM_MAX_TOKENS": "4096"
-      }
-    }
-  }
-}
-```
-
-**Use the absolute path to the venv's `apecx-mcp` binary.** Claude
-Desktop spawns the process directly without your shell — `~`, `$PATH`,
-and shell aliases are not expanded.
-
-After saving the file, fully quit and relaunch Claude Desktop. The
-tool picker should show 11 tools prefixed with `apecx`. Hover any
-tool to see its docstring + parameter schema.
-
-### Multiple installations
-
-You can run more than one apecx instance against different Control
-Planes (e.g., a local dev backend and a staging shared backend):
-
-```jsonc
-{
-  "mcpServers": {
-    "apecx-local": {
-      "command": "/path/local/.venv/bin/apecx-mcp",
-      "env": { "APECX_CONTROL_PLANE_URL": "http://localhost:8000" }
-    },
-    "apecx-staging": {
-      "command": "/path/staging/.venv/bin/apecx-mcp",
-      "env": { "APECX_CONTROL_PLANE_URL": "https://staging.apecx.example.com" }
-    }
-  }
-}
-```
-
-Each appears as its own tool group in the picker.
-
----
-
-## Other MCP clients
-
-### Direct stdio
-
-Any MCP client that speaks JSON-RPC over stdio works:
+Default profile. Install Ollama, pull a model, and the env vars
+above will Just Work:
 
 ```bash
-.venv/bin/apecx-mcp
-# server reads JSON-RPC requests on stdin, writes responses on stdout,
-# logs on stderr.
+# 1. Install (https://ollama.ai/) and pull a model.
+ollama pull mistral-nemo:latest
+
+# 2. Confirm reachability.
+curl -s http://localhost:11434/api/tags | jq '.models[].name'
 ```
 
-### MCP Inspector (debugging)
+Other endpoints work — vLLM, llama.cpp's OpenAI mode, hosted OpenAI
+proper. Anything that speaks the OpenAI v1 chat completions API.
+Set `APECX_LLM_BASE_URL` accordingly. For hosted OpenAI, set a real
+API key.
+
+## Optional: Postgres backend
+
+SQLite is fine for a single user. For multi-process / shared state:
 
 ```bash
-.venv/bin/pip install mcp[cli]
-mcp dev .venv/bin/apecx-mcp
-# opens an interactive debugger at http://localhost:5173
+docker compose up -d postgres
+# then add to the env block:
+"APECX_CP_POSTGRES_URL": "postgresql+psycopg://apecx:apecx@localhost:5433/apecx_cp"
 ```
 
-### Custom Python client
-
-```python
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
-
-params = StdioServerParameters(
-    command="/path/to/.venv/bin/apecx-mcp",
-    args=[],
-    env={
-        "APECX_CONTROL_PLANE_URL": "http://localhost:8000",
-        # ... LLM env vars ...
-    },
-)
-
-async with stdio_client(params) as (read, write):
-    async with ClientSession(read, write) as session:
-        await session.initialize()
-        tools = await session.list_tools()
-        result = await session.call_tool(
-            "start_workflow",
-            arguments={
-                "description": "find EEEV vaccines",
-                "user_id": "alex",
-            },
-        )
-```
-
----
+The autostart path inherits this env var, so when the MCP server
+spawns the backend, the backend uses Postgres.
 
 ## Tool reference
 
-The server exposes 11 tools across three lifecycles. Each entry below
-shows the tool's signature, the input/output JSON shape, and a usage
-example as the scientist would phrase it to Claude.
+The server exposes 11 tools across three lifecycles. Each entry
+shows the signature, JSON return shape, and an example
+natural-language prompt as a scientist would phrase it.
 
-### Workflow lifecycle (3 tools)
+### Workflow lifecycle
 
 #### `start_workflow`
 
-Compose a workflow from a natural-language description.
-
 ```python
 start_workflow(
-    description: str,            # required, min length 1
-    user_id: str,                # required
-    preferred_executor: str = "local",   # one of: "local", "hpc"
+    description: str,                     # required, min length 1
+    user_id: str,                         # required
+    preferred_executor: str = "local",    # one of: "local", "hpc"
 ) -> dict
 ```
 
-**Returns**:
+Returns:
 
 ```jsonc
 {
@@ -366,184 +239,81 @@ start_workflow(
 ```
 
 `status: paused` means the approval policy classified at least one
-step as requiring human review (novel Python, novel YAML). Use
-`list_pending_approvals` to find what's waiting; `approve` / `reject`
-/ `correct` to act on it.
+step as requiring human review. Use `list_pending_approvals` next.
 
-**Example prompt**: *"Compose a workflow that finds EEEV vaccines."*
+**Prompt**: *"Compose a workflow that finds EEEV vaccines."*
 
 #### `show_diff`
-
-Surface the differential-review payload for a run — the YAML the
-composer produced, any novel Python it generated, and per-step
-categorization.
 
 ```python
 show_diff(run_id: str) -> dict
 ```
 
-**Returns**:
+Returns the differential-review payload — the YAML the composer
+produced, any novel Python it generated, and per-step categorization
+(`composed_standard` / `composed_parameterized` / `composed_wrapped`
+/ `novel`).
 
-```jsonc
-{
-  "yaml_text": "name: ...\nsteps:\n  ...",
-  "novel_python_by_step": {
-    "step_id": "def custom_transform(...): ...",
-    "...": "..."
-  },
-  "categorization": [
-    {
-      "step_id": "entity_extraction",
-      "step_class": "...EntityExtractionStep",
-      "category": "composed_standard",
-      "reason": "Wrapper YAML matches catalog canonical path."
-    }
-  ],
-  "summary_sentence": "This workflow has 6 step(s). 5 compose library components..."
-}
-```
-
-The `category` values are: `composed_standard`,
-`composed_parameterized`, `composed_wrapped`, `novel`. Approval
-policy (`configs/approval_policy.yml`) maps each category to an
-action: `auto`, `require_review`, `require_expert_review`.
-
-**Example prompt**: *"Show me the diff for the run we just created."*
+**Prompt**: *"Show me the diff for the run we just created."*
 
 #### `execute_workflow`
-
-Run the composed workflow locally. Synchronous wrt MCP — the call
-holds until the executor reaches a terminal state.
 
 ```python
 execute_workflow(run_id: str) -> dict
 ```
 
-**Returns**:
+Run the composed workflow locally. Synchronous wrt MCP — holds
+until terminal state. Returns `{run_id, status, output_artifact_id,
+reason}`. `status` is the actual DB status; `reason` is non-null
+only when another writer beat the executor to the terminal
+transition.
 
-```jsonc
-{
-  "run_id": "9c1f...uuid",
-  "status": "completed" | "failed" | "cancelled" | "running",
-  "output_artifact_id": "1a2b...uuid" | null,
-  "reason": null | "<diagnostic string>"
-}
-```
+**Prompt**: *"Run the workflow."*
 
-`status` is the **actual** DB status after `execute()` returned, NOT
-the executor's intended status (cluster AJ regression fix,
-2026-04-26). `reason` is `null` on a clean executor-driven completion;
-non-null when another writer (sweeper, future cancel route) landed
-the terminal transition first.
-
-**Example prompt**: *"Run the workflow."*
-
----
-
-### Approval lifecycle (4 tools)
+### Approval lifecycle
 
 #### `list_pending_approvals`
-
-List approvals waiting for a given user.
 
 ```python
 list_pending_approvals(user_id: str) -> dict
 ```
 
-**Returns**:
-
-```jsonc
-{
-  "approvals": [
-    {
-      "id": "abc123-uuid",
-      "kind": "step_approval" | "workflow_approval",
-      "status": "pending",
-      "run_id": "...",
-      "proposed_action": { /* free-form */ },
-      "created_at": "..."
-    }
-  ]
-}
-```
-
-The approval queue is **per-scientist** — there is no global view
-exposed via this tool. Operators with admin access can hit the
-Control Plane's HTTP API directly.
-
-**Example prompt**: *"What approvals am I waiting on?"*
+Per-scientist queue. **Prompt**: *"What approvals am I waiting on?"*
 
 #### `approve`
 
-Approve a pending approval.
-
 ```python
-approve(
-    approval_id: str,
-    comment: str = "",
-    decided_by: str = "api_user",
-) -> dict
+approve(approval_id: str, comment: str = "", decided_by: str = "api_user") -> dict
 ```
-
-**Returns**: `{ "approval": { ... updated approval ... } }`
-
-**Example prompt**: *"Approve approval `abc123` with comment 'looks
-good'."*
 
 #### `reject`
 
-Reject a pending approval. **`reason` is required and non-empty** —
-a reviewer who rejects must justify it.
-
 ```python
-reject(
-    approval_id: str,
-    reason: str,         # min length 1
-    decided_by: str = "api_user",
-) -> dict
+reject(approval_id: str, reason: str, decided_by: str = "api_user") -> dict
 ```
 
-**Example prompt**: *"Reject `abc123` because the novel Python touches
-the filesystem."*
+`reason` is required (min length 1) — a reviewer who rejects must
+justify it.
 
 #### `correct`
 
-Approve with reviewer-supplied modifications. The `modifications`
-payload is free-form; downstream consumers (e.g., a synonym-cache
-writeback step) interpret its shape.
-
 ```python
-correct(
-    approval_id: str,
-    modifications: dict,    # arbitrary JSON
-    decided_by: str = "api_user",
-) -> dict
+correct(approval_id: str, modifications: dict, decided_by: str = "api_user") -> dict
 ```
 
-**Example prompt**: *"Correct `abc123` to use VIOLIN ID `VO_205` instead
-of `VO_99`."*
+Approve with reviewer-supplied modifications.
 
----
+### HPC export lane
 
-### HPC export lane (4 tools)
-
-For workflows that need cluster-grade compute, the scientist exports
-a qsub-able bundle, runs it manually on the HPC, and ingests the
-results back. `/hpc/submit` is intentionally not exposed (the live
-HPC executor is 501 at the Control Plane).
-
-The expected sequence:
+`/hpc/submit` is intentionally not exposed (the live HPC executor is
+501 at the Control Plane). The expected sequence:
 
 ```
-estimate_cost(run_id)
-   ↓
-confirm_allocation(run_id, confirmed_core_hours)
-   ↓
-export_hpc_bundle(run_id, target_system, output_directory)
-   ↓
+estimate_cost → confirm_allocation → export_hpc_bundle
+                ↓
 [scientist runs qsub manually on HPC; transfers result back]
-   ↓
-ingest_hpc_bundle(bundle_path)
+                ↓
+ingest_hpc_bundle
 ```
 
 #### `estimate_cost`
@@ -552,336 +322,188 @@ ingest_hpc_bundle(bundle_path)
 estimate_cost(run_id: str) -> dict
 ```
 
-**Returns**:
-
-```jsonc
-{
-  "total_core_hours": 12.5,
-  "per_step_core_hours": { "step_id": 3.2, "...": "..." },
-  "confidence_interval": [10.0, 15.0],
-  "endpoint": "polaris" | "aurora" | "...",
-  "novel_python_capped_at": 4.0
-}
-```
-
-Novel Python steps are capped at a conservative ceiling because their
-cost is unknowable at compose time. `novel_python_capped_at` is
-`null` when no novel Python is present.
+Returns `{total_core_hours, per_step_core_hours, confidence_interval,
+endpoint, novel_python_capped_at}`.
 
 #### `confirm_allocation`
 
 ```python
-confirm_allocation(
-    run_id: str,
-    confirmed_core_hours: float,
-) -> dict
+confirm_allocation(run_id: str, confirmed_core_hours: float) -> dict
 ```
-
-**Returns**: `{ "run_id": "...", "confirmed": true | false }`
-
-The scientist confirms they have an allocation grant for the cited
-core-hours. Confirms are recorded as a provenance event.
 
 #### `export_hpc_bundle`
 
 ```python
-export_hpc_bundle(
-    run_id: str,
-    target_system: str,         # e.g. "polaris", "aurora"
-    output_directory: str,      # local path to write the bundle to
-) -> dict
+export_hpc_bundle(run_id: str, target_system: str, output_directory: str) -> dict
 ```
 
-**Returns**:
-
-```jsonc
-{
-  "bundle_path": "/path/to/bundle/",
-  "submit_command": "qsub /path/to/bundle/submit.pbs"
-}
-```
-
-Bundle layout matches AP §5.5 exactly:
-
-```
-bundle/
-├── submit.pbs              ← qsub-ready PBS script
-├── run.sh                  ← shell entry point
-├── workflow.yml            ← composed workflow
-├── staging_plan.yml        ← what to copy where on the cluster
-├── provenance_seed.json    ← consumed by ingest_hpc_bundle
-└── README.md               ← scientist-facing instructions
-```
+Returns `{bundle_path, submit_command}`. Bundle layout matches AP
+§5.5: `submit.pbs`, `run.sh`, `workflow.yml`, `staging_plan.yml`,
+`provenance_seed.json`, `README.md`.
 
 #### `ingest_hpc_bundle`
-
-After the scientist runs `qsub` and transfers the result directory
-back, this tool consumes `provenance_seed.json` + the run output
-files and lands a terminal-state Run row.
 
 ```python
 ingest_hpc_bundle(bundle_path: str) -> dict
 ```
 
-**Returns**:
+Consumes `provenance_seed.json` + run output files and lands a
+terminal-state Run row.
 
-```jsonc
-{
-  "run_id": "...",
-  "status": "completed" | "failed",
-  "output_artifact_id": "..." | null
-}
-```
+## Other MCP clients
 
----
+### Direct stdio
 
-## Architecture details
-
-### Why a healthcheck at startup
-
-If `APECX_CONTROL_PLANE_URL` points at a dead backend, scientists see
-nothing wrong until the first tool call — by which point the operator
-configuring Claude Desktop has already moved on. The startup `/healthz`
-probe surfaces config errors **before** a scientist invokes a tool.
-The error log line includes the URL the server tried, the exception
-type, and remediation hints (set the env var, or set
-`APECX_MCP_SKIP_HEALTHCHECK=1` to bypass).
-
-### Why two separate HTTP clients
-
-The startup health check builds an **ephemeral**
-`ControlPlaneClient` and closes it immediately. Tool calls use a
-**lazily-built singleton** client, constructed in the event loop
-FastMCP runs against. This separation is load-bearing: an
-`httpx.AsyncClient` binds to the event loop active when it is
-constructed. The ephemeral client lives in a short-lived
-`asyncio.run()` loop; if we accidentally cached it as the singleton,
-every subsequent tool call would hit a client bound to a closed loop
-and fail with `Event loop is closed`. Discovered via stdio JSON-RPC
-e2e probing on 2026-04-25.
-
-### Why HPC submit is not a tool
-
-`/hpc/submit` returns 501 at the Control Plane until a live HPC
-executor lands (T04/T05). Exposing a tool that always errors is
-strictly worse than "tool absent" — Claude would attempt it, fail,
-and the scientist would lose the run-orientation cue that "this
-platform doesn't submit for you". The export bundle pattern is the
-deliberate design.
-
-### How RAG synthesis fits in
-
-A RAG synthesis step (`RagSynthesisStep`, Day 2 v9) is registered in
-the `violin_bvbrc` workflow. It assembles BV-BRC genomes + VIOLIN
-mappings + RAG semantic chunks + DataCite-shaped publications into a
-Markdown response with **inline citations grounded in the input
-data**. The synthesizer's gates (citation grounding, min response
-length, distinct-citation count) raise rather than return garbage —
-silent-failure-resistant by design.
-
-The synthesis step is loaded but not yet auto-linked into the T01
-chain (the chain doesn't yet produce RAG chunks or harvester
-publications). A scientist using the MCP server today exercises the
-synthesis pathway via the E2E test infrastructure or via custom
-workflow YAML; the standard `start_workflow` -> `execute_workflow`
-flow will pick up synthesis once the upstream retrieval steps are
-wired (Phase-2).
-
----
-
-## Running the Control Plane backend
-
-The MCP server speaks to the Control Plane HTTP service. Two ways to
-run it:
-
-### SQLite (zero infra; fine for dev)
+Any MCP client that speaks JSON-RPC over stdio works:
 
 ```bash
-.venv/bin/apecx-cp serve
+.venv/bin/apecx-mcp
+# Reads JSON-RPC on stdin, writes responses on stdout, logs on stderr.
 ```
 
-State lands in `apecx_cp.db` in the current directory. WAL mode is
-enabled for crash safety. Killing the process and restarting picks
-up where you left off.
-
-### Postgres (production-shape, persistent volumes)
+### MCP Inspector (debugging)
 
 ```bash
-docker compose up -d postgres
-export APECX_CP_POSTGRES_URL="postgresql+psycopg://apecx:apecx@localhost:5433/apecx_cp"
-.venv/bin/apecx-cp serve
+.venv/bin/pip install 'mcp[cli]'
+mcp dev .venv/bin/apecx-mcp
+# Opens an interactive debugger at http://localhost:5173
 ```
 
-The bundled `docker-compose.yml` exposes Postgres on port `5433` (not
-the default 5432, to avoid colliding with a system install) with
-credentials `apecx:apecx`. CI / ephemeral usage adds the
-`docker-compose.ci.yml` overlay so volumes are tmpfs and nothing
-survives container restart.
+### Custom Python client
 
-To tear down with destructive data removal (asks for `yes`
-confirmation):
+```python
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
 
-```bash
-.venv/bin/apecx-cp teardown --remove-data
+params = StdioServerParameters(
+    command="/path/to/.venv/bin/apecx-mcp",
+    args=[],
+    env={
+        "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
+        "APECX_LLM_MODEL": "mistral-nemo:latest",
+        "APECX_LLM_API_KEY": "unused",
+    },
+)
+
+async with stdio_client(params) as (read, write):
+    async with ClientSession(read, write) as session:
+        await session.initialize()
+        tools = await session.list_tools()
+        result = await session.call_tool(
+            "start_workflow",
+            arguments={"description": "find EEEV vaccines", "user_id": "alex"},
+        )
 ```
-
----
-
-## Local LLM setup
-
-The composer (used by `start_workflow`) and the optional RAG
-synthesis path call an OpenAI-compatible LLM endpoint. The default
-profile is Ollama with `mistral-nemo:latest`.
-
-```bash
-# 1. Install Ollama (https://ollama.ai/) and pull a model.
-ollama pull mistral-nemo:latest
-
-# 2. Confirm the daemon is reachable.
-curl -s http://localhost:11434/api/tags | jq '.models[].name'
-
-# 3. Set env vars to point at it.
-export APECX_LLM_BASE_URL=http://localhost:11434/v1
-export APECX_LLM_MODEL=mistral-nemo:latest
-export APECX_LLM_API_KEY=unused      # any non-empty string
-export APECX_LLM_TEMPERATURE=0.0
-export APECX_LLM_MAX_TOKENS=4096
-```
-
-For Claude Desktop, put these in the `env` block of the MCP server
-config (see "Claude Desktop setup" above) so they are inherited by
-the spawned process.
-
-**Other endpoints work** — vLLM, llama.cpp's OpenAI mode, hosted
-OpenAI proper, etc. Anything that speaks the OpenAI v1 chat
-completions API. Set `APECX_LLM_BASE_URL` accordingly. If you point
-at hosted OpenAI, set a real API key.
-
----
 
 ## Troubleshooting
 
-### "MCP server failed to start" in Claude Desktop
+### Tools don't appear in Claude Desktop
 
-Check `stderr` for the apecx-mcp process. Claude Desktop captures it;
-on macOS:
+In order of likelihood:
 
-```bash
-tail -f ~/Library/Logs/Claude/mcp-server-apecx.log
-```
-
-Common causes:
-
-| Log line | Fix |
-|---|---|
-| `Control Plane at http://localhost:8000 is unreachable` | Start `apecx-cp serve`, or fix `APECX_CONTROL_PLANE_URL` |
-| `ModuleNotFoundError: No module named 'apecx_integration'` | The `command` in `claude_desktop_config.json` points at the wrong venv. Use the absolute path to the venv's `apecx-mcp` binary. |
-| `ModuleNotFoundError: No module named 'apecx_harvesters'` | Run `pip install -e ../apecx-harvesters` into the venv |
-| `ModuleNotFoundError: No module named 'nanobrain'` | Run `pip install -e ../nanobrain` into the venv |
+1. **Config-shape error.** The `apecx` block is OUTSIDE `mcpServers`.
+   Check that it is indented as a child of `mcpServers`, not a
+   sibling.
+2. **Wrong `command` path.** It points at the venv directory, not at
+   `.venv/bin/apecx-mcp`. Use the binary's absolute path.
+3. **MCP server died at startup.** Tail
+   `~/Library/Logs/Claude/mcp-server-apecx.log` (macOS) /
+   `%LOCALAPPDATA%\Claude\Logs\mcp-server-apecx.log` (Windows).
+   Empty log = the binary couldn't be exec'd (back to #2).
+4. **Autostart backend failed.** The MCP server log will show
+   `autostart spawned backend ... did not become ready within 60s`
+   followed by the autostart log tail. Common causes:
+   - **Port 8000 already in use** by something other than apecx-cp.
+     Either free the port or set
+     `APECX_CONTROL_PLANE_URL=http://localhost:<other-port>`.
+   - **Missing dependency** — a sibling-repo editable install was
+     skipped. Run `pip install -e ../nanobrain ../apecx-harvesters .`
+     in the venv.
+   - **Migration error** on first run — usually permissions on the
+     working directory where SQLite tries to create `apecx_cp.db`.
+5. **Restart Claude Desktop.** Full quit, not just minimize. The
+   config is read once at launch.
 
 ### Tool call returns "preferred_executor=...is not a valid executor"
 
-The `preferred_executor` argument must be one of `local`, `hpc`. The
-error message lists the allowed values. This is fail-fast; before the
-fix the LLM saw an opaque pydantic enum-coercion error.
+The argument must be one of `local`, `hpc`. Fail-fast.
 
 ### Tool call hangs
 
 `execute_workflow` is synchronous wrt the MCP call — it holds until
-the local executor reaches terminal state. For workflows that take
-> a few minutes, expect the call to wait. Cancel from Claude
-Desktop's UI; the Control Plane's sweeper will mark the run FAILED if
-it stays in RUNNING longer than its timeout.
+the local executor reaches terminal state. For long workflows,
+expect the call to wait. Cancel from Claude Desktop's UI; the
+sweeper will mark the run FAILED if it stays in RUNNING longer than
+its timeout.
 
 ### Citation grounding errors from RAG synthesis
-
-Two error shapes you might see:
-
-```
-synthesize_response: LLM cited N token(s) that were NOT in the
-retrieval inputs. The LLM is hallucinating IDs (citation grounding
-has been violated). Hallucinated tokens: [...]. Allowed tokens
-(from inputs): [...]
-```
 
 The local LLM emitted a citation for a DOI/genome/synonym that was
 not in the retrieved context. Either:
 
-1. The LLM is genuinely hallucinating — try a stronger model
-   (`mistral-small`) or set `APECX_LLM_TEMPERATURE=0.0`.
-2. Your inputs are too sparse — a single chunk gives the LLM nothing
-   to ground in. Increase `max_rag_chunks` or feed richer fixtures.
+1. The LLM is hallucinating — try a stronger model or set
+   `APECX_LLM_TEMPERATURE=0.0`.
+2. Inputs are too sparse — increase `max_rag_chunks` in the
+   synthesis config.
 
-```
-synthesize_response: LLM response is curtailed (len=N <
-min_response_chars=200)
-```
+### "Connection refused" on tool calls but no autostart logs
 
-The LLM returned a response below the configured floor (200 chars
-default). Either your fixture is too thin (allow with
-`min_response_chars: 0`) or the model timed out / was rate-limited.
+The Control Plane URL points at a host the autostart can't manage
+(non-loopback). The autostart deliberately refuses to spawn against
+public IPs — that's a security shape, not a bug. Either point
+`APECX_CONTROL_PLANE_URL` at `localhost:8000` or start the backend
+manually on the remote host and set
+`APECX_MCP_AUTOSTART_BACKEND=0`.
 
-### Healthcheck-blocked offline development
+## Honest limitations
 
-`APECX_MCP_SKIP_HEALTHCHECK=1` bypasses the startup probe. **Don't
-ship this flag in production configs** — it's a developer escape
-hatch, not a recommended deployment pattern. Tool calls still fail
-when the backend is unreachable; the only difference is that the
-failure surfaces on first call rather than at startup.
+What you should know if you're betting production work on this:
 
----
+- **No PyPI publication yet.** `pip install apecx-mcp` is the goal
+  but is gated on publishing `nanobrain` and `apecx-harvesters`. For
+  now the install requires three local clones + one editable install
+  command. Pipeline to PyPI is tracked in `docs/future_work.md`.
+- **No auth on the Control Plane HTTP API.** The autostart path
+  binds to localhost, so this is fine for the single-user case. For
+  shared deployments behind a real network, put an auth proxy in
+  front and set `APECX_CONTROL_PLANE_URL` to the proxy.
+- **Autostart runs as the same user as Claude Desktop.** SQLite
+  files land in the cwd Claude Desktop spawned `apecx-mcp` from
+  (varies per platform). For production, set `APECX_CP_POSTGRES_URL`
+  to pin state somewhere durable.
+- **No automatic backend upgrade.** When you `git pull` updates,
+  `pip install -e .` is required to pick up the changes; an old
+  cached binary on PATH would otherwise be stale. The MCP layer
+  doesn't detect this.
+- **No multi-user namespacing.** All state is shared across whoever
+  hits the same Control Plane. The `user_id` field is informational,
+  not an isolation boundary.
+- **No prompt-injection hardening on tool inputs.** The composer's
+  prompts are designed to be robust against accidental injection
+  from the workflow description, but any tool that interprets the
+  free-form `modifications` payload from `correct(...)` should
+  validate before acting. Citation grounding (RAG synthesis) is
+  defense-in-depth, not a clinical-trust boundary.
 
-## Updating apecx-mcp
+## Updating
 
 ```bash
 cd apecx-mcp-integration
 git pull
-.venv/bin/pip install -e .              # editable; usually no-op
-.venv/bin/pip install -e ../apecx-harvesters
-.venv/bin/pip install -e ../nanobrain
+.venv/bin/pip install -e ../nanobrain ../apecx-harvesters .
 ```
 
-Restart Claude Desktop to pick up new tool signatures. The MCP server
-re-runs the startup `/healthz` probe; any backend incompatibilities
-surface as a clear startup error rather than silent stale tool
-behavior.
-
-If a `pyproject.toml` change adds a new dependency, the editable
-install picks it up. If a sibling repo adds one, run the editable
-install for that sibling too.
-
----
-
-## Security notes
-
-- **The MCP server runs on the user's machine** (not as a network
-  service). It speaks JSON-RPC over stdio to a single MCP client.
-- **No auth on the Control Plane HTTP API by default.** Treat it as
-  localhost-only. Production deployments behind a real network must
-  add an auth proxy; the `APECX_CONTROL_PLANE_URL` can point at one.
-- **Local LLM calls are unencrypted** to localhost. If you point at a
-  remote hosted LLM, ensure `APECX_LLM_BASE_URL` uses HTTPS.
-- **Tool inputs are not sanitized for LLM-prompt-injection patterns**
-  by the MCP layer. The composer's prompts are designed to be robust,
-  but downstream tools that interpret the `modifications` payload
-  from `correct(...)` should validate before applying.
-- **Citation grounding (RAG synthesis)** is a defense-in-depth
-  mitigation for LLM hallucination; do not rely on it as the only
-  trust boundary for medical / clinical decisions.
-
----
+Restart Claude Desktop. The MCP server picks up the new code; the
+autostarted backend uses the same binary so it gets the update too.
 
 ## Reference
 
-- `src/apecx_integration/mcp_surface/server.py` — server entry point
-- `src/apecx_integration/mcp_surface/tools/{workflows,approvals,hpc}.py` —
-  tool implementations
-- `src/apecx_integration/mcp_surface/control_plane_client.py` — HTTP
-  client targeting `apecx-cp`
+- `src/apecx_integration/mcp_surface/server.py` — server entry +
+  autostart
+- `src/apecx_integration/mcp_surface/tools/{workflows,approvals,hpc}.py`
+- `src/apecx_integration/mcp_surface/control_plane_client.py`
 - `src/apecx_integration/control_plane/schemas/api.py` — request /
-  response Pydantic shapes
-- `src/apecx_integration/control_plane/schemas/enums.py` — enum
-  values (run status, executor kind, approval action, …)
+  response shapes
+- `src/apecx_integration/control_plane/schemas/enums.py`
 - `configs/approval_policy.yml` — category → action mapping
-- `docker-compose.yml` — Postgres backend
-- `docs/api_contract.yaml` — full HTTP API spec (apecx-cp surface)
+- `docs/api_contract.yaml` — full HTTP API spec
