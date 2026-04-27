@@ -62,38 +62,34 @@ tail -f ~/Library/Logs/Claude/mcp-server-apecx.log
 If the log is **empty**, the binary couldn't even be exec'd — almost
 always pitfall #2 (wrong `command` path).
 
-## Install (one-time)
+## Install (one command)
 
-The honest current state: there is **not yet a `pip install
-apecx-mcp` from PyPI**. The server depends on two sibling repos
-(`nanobrain`, `apecx-harvesters`) that are also not on PyPI today.
-For now the install is "clone + one editable install", which we'll
-phase out as the sibling repos publish wheels.
-
-### Standard install (clone + venv)
+`pyproject.toml` declares `nanobrain` and `apecx-harvesters` as git
+dependencies, so a single install command pulls the entire tree —
+no manual clones.
 
 ```bash
-# 1. Clone the workspace + siblings.
-mkdir ~/apecx-cowork && cd ~/apecx-cowork
-git clone <apecx-mcp-integration> apecx-mcp-integration
-git clone <apecx-harvesters>      apecx-harvesters
-git clone <nanobrain>             nanobrain
+# uv (recommended; fastest)
+uv tool install --python 3.12 \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
 
-# 2. Create a venv inside apecx-mcp-integration and editable-install
-#    everything in one command.
-cd apecx-mcp-integration
-python3.12 -m venv .venv
-.venv/bin/pip install --upgrade pip
-.venv/bin/pip install -e ../nanobrain ../apecx-harvesters .
-
-# 3. Verify the binary is on the venv's bin dir.
-ls .venv/bin/apecx-mcp     # should print the path
+# Or pipx
+pipx install \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
 ```
 
-That's everything. From here, the only ongoing requirement is the
-Claude Desktop config block (above). The MCP server bundles
-`apecx-cp` (the backend), spawns it on-demand, and runs against
-SQLite — no Docker, no separate process to babysit.
+Don't have `uv` yet? One line:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+After install, `apecx-mcp` and `apecx-cp` are on your PATH (typically
+`~/.local/bin/`). Find the absolute path with `which apecx-mcp` —
+that's what you'll paste into the Claude Desktop config above.
+
+Full install reference (script wrapper, troubleshooting, update flow):
+**[INSTALL.md](../INSTALL.md)** at the repo root.
 
 ### After install, what actually runs?
 

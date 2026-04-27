@@ -42,21 +42,47 @@ def default_data_dir() -> Path:
     return Path.home() / ".apecx_cp" / "postgres_data"
 
 
-def _alembic_cfg_for(db_url: str, *, repo_root: Path) -> Config:
-    cfg = Config(str(repo_root / "alembic.ini"))
+def _alembic_cfg_for(db_url: str, *, alembic_root: Path) -> Config:
+    cfg = Config(str(alembic_root / "alembic.ini"))
     cfg.set_main_option("sqlalchemy.url", db_url)
-    cfg.set_main_option("script_location", str(repo_root / "migrations"))
+    cfg.set_main_option("script_location", str(alembic_root / "migrations"))
     return cfg
 
 
-def _find_repo_root() -> Path:
+def _find_alembic_root() -> Path:
+    """Locate the alembic.ini + migrations/ pair.
+
+    Looks in two places, in order:
+
+      1. Bundled inside the installed package at
+         ``apecx_integration/_alembic/``. This is the path that
+         works in any install mode (uv tool / pipx / pip --user /
+         editable) because the lookup is relative to this module's
+         file location, not to the cwd or repo root.
+      2. The repo root (parent walk from this file). This is the
+         legacy editable-install path; preserved so existing tests
+         that use ``REPO_ROOT / "alembic.ini"`` keep working.
+
+    The two copies (in-package vs repo-root) are kept byte-equivalent
+    by a regression test (``tests/integration/test_alembic_bundled_in_package.py``).
+    The in-package copy is the one that ships with the wheel.
+    """
+    # 1. In-package copy. ``Path(__file__).parents[2]`` is
+    # ``apecx_integration/`` regardless of install mode.
+    in_package = Path(__file__).resolve().parents[2] / "_alembic"
+    if (in_package / "alembic.ini").is_file():
+        return in_package
+    # 2. Legacy repo-root walk.
     here = Path(__file__).resolve()
     for parent in [here, *here.parents]:
         if (parent / "alembic.ini").is_file():
             return parent
     raise FileNotFoundError(
-        "alembic.ini not found in any parent of infra/lifecycle.py; "
-        "cannot run migrations from outside the repo."
+        "alembic.ini not found in the in-package _alembic/ directory "
+        "AND no parent of infra/lifecycle.py contains alembic.ini. "
+        "This indicates a broken installation — reinstall via "
+        "``pip install ...`` or ``uv tool install ...`` and verify "
+        "the package was built with the bundled migrations."
     )
 
 
@@ -79,7 +105,7 @@ def ensure_infra_ready(
     # create the file on first connect; BYO must already have a
     # reachable server — alembic upgrade head fails loudly if it doesn't.
     log.info("running alembic upgrade head against %s", db_url)
-    cfg = _alembic_cfg_for(db_url, repo_root=_find_repo_root())
+    cfg = _alembic_cfg_for(db_url, alembic_root=_find_alembic_root())
     command.upgrade(cfg, "head")
 
 

@@ -40,6 +40,14 @@ dependencies = [
     "pandas>=2.0",
     "langchain-core>=0.3",
     "langchain-openai>=0.2",
+    # Sibling repos installed directly from git so a single
+    # ``pipx install git+...apecx-mcp-integration`` brings the whole
+    # tree. Workspace policy (CLAUDE.md): this repo's only
+    # sibling-repo runtime deps are nanobrain + apecx-harvesters.
+    # Branch refs are pinned for reproducibility — bump explicitly
+    # when upstream lands a feature this repo depends on.
+    "nanobrain @ git+https://github.com/AlexandrNP/nanobrain.git@academy-integration",
+    "apecx-harvesters @ git+https://github.com/abought/apecx-harvesters.git@main",
 ]
 
 [project.optional-dependencies]
@@ -83,6 +91,25 @@ apecx-mcp = "apecx_integration.mcp_surface.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# Ship the alembic.ini + migrations/ tree inside the wheel so
+# ``apecx-cp serve`` can run from any install mode (uv tool / pipx /
+# pip --user) without needing the repo root on disk. The two copies
+# (in-package + repo-root) are kept byte-equivalent by a regression
+# test; see ``src/apecx_integration/control_plane/infra/lifecycle.py``
+# ``_find_alembic_root()`` for the runtime lookup contract.
+[tool.setuptools.package-data]
+apecx_integration = [
+    "_alembic/alembic.ini",
+    "_alembic/migrations/*",
+    "_alembic/migrations/versions/*",
+    "agents/rag_synthesis/*.yml",
+    "composition/composer_config.yml",
+    "composition/composer_prompts/*.md",
+    "composition/workflows/violin_bvbrc/*.yml",
+    "composition/workflows/violin_bvbrc/steps/*.yml",
+    "composition/workflows/violin_bvbrc/tools/*.yml",
+]
 
 [tool.ruff]
 line-length = 100
