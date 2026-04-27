@@ -94,21 +94,23 @@ def test_probe_906_real_violin_genes_count_exceeds_100() -> None:
     )
 
 
-def test_probe_907_consolidated_synonym_truncates_to_100_in_source() -> None:
-    """Cluster AR — the truncation site is at
-    ``apecx_db_integration.agent.consolidated_synonym_search`` line ~957:
-    ``{json.dumps({k: v[:100] for k, v in all_candidates.items()}, ...)``
-    Lock this in source — a future fix that REMOVES the truncation
-    must come through this probe."""
+def test_probe_907_consolidated_synonym_uses_named_constant_post_fix() -> None:
+    """Cluster AR fix landed (2026-04-27). Lock the post-fix shape:
+    ``consolidated_synonym_search`` references the named
+    ``MAX_CANDIDATES_PER_CATEGORY`` constant AND invokes
+    ``filter_candidates_by_similarity`` for per-category selection.
+    A regression that re-introduces a bare integer literal trips
+    this probe."""
     try:
         from apecx_db_integration import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
-    assert "[:100]" in src, (
-        "PROBE 907: cluster AR truncation marker [:100] missing from "
-        "consolidated_synonym_search — either fixed (great!) or moved. "
-        "If fixed, this probe should be flipped to assert the fix shape."
+    assert "MAX_CANDIDATES_PER_CATEGORY" in src, (
+        "PROBE 907: post-fix shape regressed — named constant missing"
+    )
+    assert "filter_candidates_by_similarity" in src, (
+        "PROBE 907: post-fix shape regressed — similarity filter missing"
     )
 
 
@@ -152,63 +154,49 @@ def test_probe_909_truncation_yields_first_100_alphabetical_or_insertion() -> No
     assert set(first_100).isdisjoint(set(last_100))
 
 
-def test_probe_910_silent_truncation_visible_only_via_count() -> None:
-    """The truncation has NO log message, NO warning, NO error.
-    The only signal is "candidate term not found" downstream. Probe
-    asserts there's no log/warn at the truncation site — pinning
-    the silent-failure shape."""
+def test_probe_910_truncation_emits_warning_post_fix() -> None:
+    """Cluster AR fix added a ``logger.warning`` at the truncation
+    site so an operator knows when the cap is biting. Lock the
+    fix shape — a future PR that silences the warning would
+    silently re-create the cluster-AR-class diagnostic gap."""
     try:
         from apecx_db_integration import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
-    # The [:100] line has no companion log call
-    truncation_line_idx = src.index("[:100]")
-    surrounding = src[max(0, truncation_line_idx - 200):truncation_line_idx + 200]
-    # No log.warn / log.info adjacent to the truncation
-    assert "log.warn" not in surrounding
-    assert "log.info(" not in surrounding
+    assert "logger.warning" in src
+    # The warning message must mention the named constant so the
+    # log line is searchable and unambiguous
+    assert "MAX_CANDIDATES_PER_CATEGORY" in src
 
 
-def test_probe_911_synthetic_query_misses_after_position_100() -> None:
-    """End-to-end demo of cluster AR via a synthetic catalog. We
-    construct a 250-vaccine dataframe and verify the prompt-builder
-    truncation hides the last 150."""
+def test_probe_911_consolidated_uses_filtered_candidates_post_fix() -> None:
+    """Cluster AR fix structural marker: the prompt is built from
+    ``filtered_candidates`` (the similarity-filtered dict), NOT
+    from a bare slice of ``all_candidates``."""
     try:
         from apecx_db_integration import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
-    # Confirm the structural shape: dict comprehension with [:100]
-    # over all_candidates
-    assert "all_candidates.items()" in src
-    assert "[:100]" in src
+    # Fix shape: filtered_candidates is the structure fed to the LLM
+    assert "filtered_candidates" in src
+    # And the prompt actually uses it
+    assert "json.dumps(filtered_candidates" in src
 
 
-def test_probe_912_truncation_cap_constant_should_be_named() -> None:
-    """The bare ``[:100]`` is a magic number. A proper fix would
-    name it as a constant (``MAX_CANDIDATES_PER_CATEGORY``) AND
-    log when truncation hits. Probe documents the design issue —
-    a future fix that introduces such a constant flips this probe
-    from "bug present" to "fix landed"."""
+def test_probe_912_truncation_cap_constant_named_post_fix() -> None:
+    """Cluster AR fix introduced ``MAX_CANDIDATES_PER_CATEGORY``
+    as a module-level constant. Lock the value at 100 — operators
+    can override by editing this constant intentionally; a silent
+    rewrite to ``[:50]`` or ``[:1000]`` would change behavior
+    without a single-line review point."""
     try:
         from apecx_db_integration import agent as agent_mod
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
-    src = inspect.getsource(agent_mod)
-    # The bug shape: bare integer literal in the prompt builder
-    assert "[:100]" in src, "cluster AR truncation literal removed"
-    # The fix shape (not yet present): a named constant
-    has_named_constant = (
-        "MAX_CANDIDATES_PER_CATEGORY" in src
-        or "CANDIDATE_TRUNCATION_LIMIT" in src
-        or "MAX_VIOLIN_CANDIDATES" in src
-    )
-    # Currently expected: NO named constant (= bug present)
-    assert not has_named_constant, (
-        "PROBE 912: a candidate-truncation constant appeared — verify "
-        "cluster AR fix landed and remove this probe (or invert it)."
-    )
+    assert hasattr(agent_mod, "MAX_CANDIDATES_PER_CATEGORY")
+    assert agent_mod.MAX_CANDIDATES_PER_CATEGORY == 100
 
 
 # ---------------------------------------------------------------------------
