@@ -58,6 +58,9 @@ from apecx_integration.mcp_surface.tools import (
     approvals as approvals_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    database_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     discovery as discovery_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -95,6 +98,17 @@ def build_server() -> FastMCP:
     # before it calls start_workflow.
     server.tool()(discovery_tools.list_workflows)
     server.tool()(discovery_tools.describe_workflow)
+
+    # Direct database lookups — bypass the composer for one-shot
+    # VIOLIN + BV-BRC queries the model can answer without orchestrating
+    # a workflow ("list vaccines targeting EEEV").
+    server.tool()(database_tools.query_vaccines)
+    server.tool()(database_tools.query_pathogens)
+    server.tool()(database_tools.query_genes)
+    server.tool()(database_tools.query_bvbrc_genomes)
+    server.tool()(database_tools.get_vaccine_pathogen_genes)
+    server.tool()(database_tools.resolve_entity)
+    server.tool()(database_tools.database_statistics)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)

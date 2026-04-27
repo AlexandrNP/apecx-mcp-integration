@@ -195,27 +195,38 @@ rationale, open Phase-3 design questions).
 ## MCP surface (Tier 1)
 
 `src/apecx_integration/mcp_surface/server.py` is a FastMCP server
-exposing 13 scientist-facing tools. Entry point:
+exposing 20 scientist-facing tools. Entry point:
 
 ```bash
 apecx-mcp                                   # stdio transport
 APECX_CONTROL_PLANE_URL=http://.../  apecx-mcp   # override CP URL
+APECX_DATA_ROOT=/path/to/data apecx-mcp          # enable DB tools
 ```
 
-Tools (split across `tools/workflows.py`, `tools/discovery.py`,
-`tools/approvals.py`, `tools/hpc.py`): start_workflow, show_diff,
-execute_workflow, list_workflows, describe_workflow,
-list_pending_approvals, approve, reject, correct, estimate_cost,
-confirm_allocation, export_hpc_bundle, ingest_hpc_bundle.
+Tools by module:
+
+- `tools/workflows.py` (3): start_workflow, show_diff, execute_workflow
+- `tools/discovery.py` (2): list_workflows, describe_workflow
+- `tools/database_tools.py` (7): query_vaccines, query_pathogens,
+  query_genes, query_bvbrc_genomes, get_vaccine_pathogen_genes,
+  resolve_entity, database_statistics
+- `tools/approvals.py` (4): list_pending_approvals, approve, reject, correct
+- `tools/hpc.py` (4): estimate_cost, confirm_allocation, export_hpc_bundle,
+  ingest_hpc_bundle
 
 `list_workflows` / `describe_workflow` are the discovery surface
 (2026-04-27): they read the composer config's
 `component_catalog_paths` so the model can see which workflows /
 components the composer can build BEFORE calling start_workflow.
-Without them, the model has no signal about whether its description
-will retrieve any matching components, which produced consistent
-"composer fails to identify proper workflows" failures on database-
-shaped prompts.
+
+`query_vaccines`, `query_pathogens`, `query_genes`,
+`query_bvbrc_genomes`, `get_vaccine_pathogen_genes`, `resolve_entity`,
+`database_statistics` are direct-lookup tools (2026-04-27, B-1
+vendor): bypass the composer for one-shot VIOLIN + BV-BRC queries.
+Data layer is vendored from `apecx-mcp/src/apecx_mcp/database.py`
+into `mcp_surface/data/database.py` (pure pandas, no LLM). Requires
+APECX_DATA_ROOT or APECX_ROOT to point at the workspace data dir;
+when unset the tools return `{"error": "..."}` rather than raising.
 
 Deliberately NOT exposed: `/hpc/submit` (still 501),
 `create_approval` (internal — called by nanobrain's ApprovalStep
