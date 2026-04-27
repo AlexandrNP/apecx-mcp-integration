@@ -195,17 +195,27 @@ rationale, open Phase-3 design questions).
 ## MCP surface (Tier 1)
 
 `src/apecx_integration/mcp_surface/server.py` is a FastMCP server
-exposing 11 scientist-facing tools. Entry point:
+exposing 13 scientist-facing tools. Entry point:
 
 ```bash
 apecx-mcp                                   # stdio transport
 APECX_CONTROL_PLANE_URL=http://.../  apecx-mcp   # override CP URL
 ```
 
-Tools (split across `tools/workflows.py`, `tools/approvals.py`,
-`tools/hpc.py`): start_workflow, show_diff, execute_workflow,
+Tools (split across `tools/workflows.py`, `tools/discovery.py`,
+`tools/approvals.py`, `tools/hpc.py`): start_workflow, show_diff,
+execute_workflow, list_workflows, describe_workflow,
 list_pending_approvals, approve, reject, correct, estimate_cost,
 confirm_allocation, export_hpc_bundle, ingest_hpc_bundle.
+
+`list_workflows` / `describe_workflow` are the discovery surface
+(2026-04-27): they read the composer config's
+`component_catalog_paths` so the model can see which workflows /
+components the composer can build BEFORE calling start_workflow.
+Without them, the model has no signal about whether its description
+will retrieve any matching components, which produced consistent
+"composer fails to identify proper workflows" failures on database-
+shaped prompts.
 
 Deliberately NOT exposed: `/hpc/submit` (still 501),
 `create_approval` (internal — called by nanobrain's ApprovalStep
