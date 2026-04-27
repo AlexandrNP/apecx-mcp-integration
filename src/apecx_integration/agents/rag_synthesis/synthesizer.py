@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,14 @@ class SynthesisConfig(BaseModel):
     Loaded from ``synthesis_config.yml`` by default; operators
     override per-deployment by editing the YAML or passing an
     instance directly to ``synthesize_response``.
+
+    ``extra='forbid'`` — a typo in the YAML (e.g.
+    ``max_rag_chuncks: 8``) raises at config-load time instead of
+    silently using the schema default. Probe 955 (batch 36) found
+    the silent-acceptance shape and this commit closes it.
     """
+
+    model_config = ConfigDict(extra="forbid")
 
     system_prompt: str = Field(
         ...,
