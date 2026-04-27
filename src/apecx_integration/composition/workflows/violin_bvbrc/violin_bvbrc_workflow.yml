@@ -30,6 +30,21 @@
 #   6       | genomic_annotation         | DEFERRED — same reason as
 #                                          Step 5 (enrichment step).
 #   7       | result_ranking             | ✅ T01 step 6 of 6
+#   8       | rag_synthesis              | LOADED-BUT-UNLINKED — final
+#                                          synthesis step (Day 2 v9).
+#                                          The step expects an
+#                                          aggregated four-source bundle
+#                                          (BV-BRC genomes + VIOLIN
+#                                          mappings + RAG chunks +
+#                                          DataCite pubs); upstream
+#                                          steps don't produce the RAG
+#                                          chunks or pubs yet, so the
+#                                          step is registered but not
+#                                          on the T01 link chain. A
+#                                          TransformLink that assembles
+#                                          the bundle from a future
+#                                          retrieval+harvester step is
+#                                          Phase-2+ wiring.
 #
 # Why Step 2 is loaded but unlinked
 # ---------------------------------
@@ -110,6 +125,13 @@ steps:
   bvbrc_alphavirus_genomes_reader:
     class: "apecx_integration.composition.steps.file_readers.DelimitedFileReaderStep"
     config: "steps/bvbrc_alphavirus_genomes_reader.yml"
+
+  # Day 2 v9 — final synthesis step. Loaded via from_config so the
+  # workflow YAML carries it as a discoverable component; not on the
+  # T01 link chain (see workflow header for rationale).
+  rag_synthesis:
+    class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+    config: "steps/rag_synthesis.yml"
 
 # T01 vertical-slice link wiring.
 #

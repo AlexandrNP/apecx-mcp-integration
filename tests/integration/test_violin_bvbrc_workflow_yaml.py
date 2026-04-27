@@ -33,6 +33,7 @@ STEP6_YAML = WORKFLOW_DIR / "steps" / "genomic_annotation.yml"
 STEP1_YAML = WORKFLOW_DIR / "steps" / "entity_extraction.yml"
 STEP3C_YAML = WORKFLOW_DIR / "steps" / "synonym_llm_proposals.yml"
 STEP5_YAML = WORKFLOW_DIR / "steps" / "violin_entity_lookup.yml"
+STEP_RAG_SYNTHESIS_YAML = WORKFLOW_DIR / "steps" / "rag_synthesis.yml"
 
 
 @pytest.fixture
@@ -108,3 +109,45 @@ def test_step5_violin_entity_lookup_loads(chdir_repo_root) -> None:
     assert STEP5_YAML.is_file(), STEP5_YAML
     step = BaseStep.from_config(str(STEP5_YAML))
     assert step.name == "violin_entity_lookup"
+
+
+def test_step_rag_synthesis_loads(chdir_repo_root) -> None:
+    """Day 2 v9 final-synthesis step. Wrapper YAML uses
+    ``DataUnitChangeTrigger`` on a single aggregated input; the bundled
+    ``synthesis_config.yml`` is loaded via the synthesizer's lazy
+    default path. Loadability proves the wrapper matches the
+    StepConfig + RagSynthesisStepConfig shape."""
+    assert STEP_RAG_SYNTHESIS_YAML.is_file(), STEP_RAG_SYNTHESIS_YAML
+    step = BaseStep.from_config(str(STEP_RAG_SYNTHESIS_YAML))
+    assert step.name == "rag_synthesis"
+
+
+def test_workflow_yaml_includes_rag_synthesis_step(chdir_repo_root) -> None:
+    """Day 2 v9: the workflow YAML must register ``rag_synthesis`` as a
+    discoverable step. Loaded-but-unlinked at this point (the link
+    chain is Phase-2 wiring); registration is the contract this
+    test pins.
+
+    Detection signal: a future commit accidentally removes the
+    rag_synthesis step block from the workflow YAML — this test
+    fails loudly instead of silently shipping a workflow without
+    the synthesis component."""
+    workflow = Workflow.from_config(str(WORKFLOW_YAML))
+    # The framework's exact attribute name for child steps varies
+    # by version; introspect by class name to be robust.
+    children = (
+        getattr(workflow, "child_steps", None)
+        or getattr(workflow, "_child_steps", None)
+        or getattr(workflow, "steps", None)
+    )
+    assert children is not None, (
+        "could not introspect workflow's child steps; framework "
+        "attribute layout may have changed"
+    )
+    names = set(children.keys()) if isinstance(children, dict) else {
+        getattr(s, "name", None) for s in children
+    }
+    assert "rag_synthesis" in names, (
+        f"rag_synthesis step missing from workflow registration; "
+        f"got: {sorted(n for n in names if n)!r}"
+    )
