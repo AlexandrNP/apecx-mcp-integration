@@ -47,10 +47,14 @@ min_distinct_citations: 1
 # but does NOT validate the inner ID — that's the renderer's job
 # (strict_input_validation rejects rows with no id upstream).
 citation_marker_patterns:
-  - '\[BV-BRC genome [^\]]+\]'
-  - '\[VIOLIN [^\]]+\]'
+  # Tightened post-probe 1066 (2026-04-27): inner class excludes
+  # closing bracket, whitespace, AND opening bracket to prevent the
+  # greedy-match-across-tokens shape (e.g. an interrupted
+  # ``[10.1234/abc...`` followed by a later ``[10.5/y]``).
+  - '\[BV-BRC genome [^\]\s\[]+\]'
+  - '\[VIOLIN [^\]\s\[]+\]'
   - '\[RAG chunk #\d+\]'
-  - '\[10\.[0-9]+/[^\]]+\]'
+  - '\[10\.[0-9]+/[^\]\s\[]+\]'
 
 # Minimum length of the LLM response. Below this floor the
 # response is rejected as curtailed (per user directive

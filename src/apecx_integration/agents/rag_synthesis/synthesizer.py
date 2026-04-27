@@ -97,19 +97,26 @@ class SynthesisConfig(BaseModel):
     )
     citation_marker_patterns: list[str] = Field(
         default_factory=lambda: [
-            r"\[BV-BRC genome [^\]]+\]",
-            r"\[VIOLIN [^\]]+\]",
+            r"\[BV-BRC genome [^\]\s\[]+\]",
+            r"\[VIOLIN [^\]\s\[]+\]",
             r"\[RAG chunk #\d+\]",
-            r"\[10\.[0-9]+/[^\]]+\]",
+            r"\[10\.[0-9]+/[^\]\s\[]+\]",
         ],
         description=(
             "Regex patterns matching INLINE CITATION TOKENS in LLM "
             "output. Each pattern matches a complete citation (not a "
             "prefix) so the validator can extract distinct citation "
             "tokens — not just count whether ANY pattern matches "
-            "anywhere. Tightening from the prefix-only earlier shape "
-            "closes a silent-failure where the LLM emitted "
-            "``[BV-BRC genome ?]`` and the validator passed."
+            "anywhere. The inner character class ``[^\\]\\s\\[]+`` "
+            "excludes closing bracket, whitespace, AND opening bracket "
+            "to prevent the greedy-match-across-tokens shape probe 1066 "
+            "(batch 40, 2026-04-27) surfaced: an interrupted citation "
+            "``[10.1234/abc...`` followed later by ``[10.5/y]`` would "
+            "otherwise match ``[10.1234/abc... and also [10.5/y]`` as "
+            "one token, silently swallowing a legitimate later citation "
+            "and accepting a malformed earlier one. DOIs / IDs / "
+            "ontology IDs do not contain whitespace or unescaped "
+            "brackets, so excluding them is safe."
         ),
     )
     min_response_chars: int = Field(
