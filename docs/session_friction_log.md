@@ -686,6 +686,56 @@ Audit pass also fixed composer_schemas.py.
 
 ---
 
+## 21. Regex character class ``[^X]+`` greedy-matches across tokens
+
+**Cost:** ~15 min to find + audit + fix (probe batch 40, 2026-04-27,
+proactive find via adversarial probe 1066). Cluster of 4 patterns
+in one config.
+
+**Cause:** A regex pattern like ``\[10\.[0-9]+/[^\]]+\]`` (used in
+the citation extraction layer) excludes only the closing delimiter
+in its inner character class. So a string like:
+
+    "see [10.1234/abc... and also [10.5/y]"
+
+matches as ONE token spanning both citations:
+
+    "[10.1234/abc... and also [10.5/y]"
+
+The downstream consequences are subtle: the truncated leading
+citation is silently treated as a single complete token; the
+legitimate trailing citation is invisible to the extractor; and
+the grounding validator then sees the mega-token as
+"hallucinated", raising a misleading error pointing at the LLM
+rather than the regex.
+
+**Detection signal:** Any of:
+
+- A regex with ``[^X]+`` where ``X`` is the close delimiter — and
+  the matched value can contain WHITESPACE or the OPEN delimiter
+  in its grammar.
+- An "extracted citation" / "extracted token" in test output that
+  is much longer than expected (multiple sentences worth).
+- A grounding / membership check fails with a token that looks
+  like a sentence-with-nested-citations rather than a single ID.
+
+**Mitigation:**
+
+- Tighten the inner character class to ALSO exclude whitespace
+  and the open delimiter: ``[^\]\s\[]+``. Safe whenever the
+  contained value's grammar disallows those chars (DOIs, IDs,
+  ontology slugs).
+- For pattern catalogs (e.g.,
+  ``citation_marker_patterns: list[str]``), keep the patterns in
+  ONE place (Python default factory + YAML config) and add a
+  probe that asserts the inner character class excludes
+  whitespace.
+
+**Source:** 2026-04-27 batch 40 probe 1066 (synthesizer.py +
+synthesis_config.yml — patterns must be tightened in BOTH).
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
