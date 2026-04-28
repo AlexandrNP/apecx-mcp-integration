@@ -60,12 +60,7 @@ pytestmark = pytest.mark.integration
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_DIR = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "workflows"
-    / "violin_bvbrc"
+    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "violin_bvbrc"
 )
 WORKFLOW_YAML = WORKFLOW_DIR / "violin_bvbrc_workflow.yml"
 
@@ -83,9 +78,7 @@ REQUIRED_VIOLIN_CSVS = (
 def _skip_live_llm_requested() -> bool:
     """Opt-out env var for Claude-Code sessions: set
     ``APECX_SKIP_LIVE_LLM=1`` to force-skip every live-LLM test in
-    this file, regardless of whether the daemon is reachable. See
-    ``docs/session_friction_log.md`` #1 for the friction this
-    addresses."""
+    this file, regardless of whether the daemon is reachable."""
     return os.environ.get("APECX_SKIP_LIVE_LLM") == "1"
 
 
@@ -116,16 +109,13 @@ def _control_plane_reachable() -> bool:
         return False
 
 
-SKIP_LIVE_LLM_OPTOUT = (
-    "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
-)
+SKIP_LIVE_LLM_OPTOUT = "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
 SKIP_OLLAMA = (
     f"Ollama daemon not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} "
     "not pulled. Run `ollama serve` + `ollama pull mistral-nemo:latest`."
 )
 SKIP_VIOLIN = (
-    "APECX_DB_DATA_DIR is unset or missing VIOLIN CSVs "
-    f"({', '.join(REQUIRED_VIOLIN_CSVS)})."
+    "APECX_DB_DATA_DIR is unset or missing VIOLIN CSVs " f"({', '.join(REQUIRED_VIOLIN_CSVS)})."
 )
 SKIP_CP = (
     f"Control Plane unreachable at {CP_URL}. Run `apecx-cp serve` (or "
@@ -136,6 +126,7 @@ SKIP_CP = (
 # ---------------------------------------------------------------------------
 # Always-on loadability counterpart (Claude DOES exercise this)
 # ---------------------------------------------------------------------------
+
 
 def test_workflow_loads_with_5_links():
     """Post-T04 workflow YAML composes via Workflow.from_config and
@@ -163,6 +154,7 @@ def test_workflow_loads_with_5_links():
 # ---------------------------------------------------------------------------
 # Operator-run live end-to-end (Claude does NOT exercise these)
 # ---------------------------------------------------------------------------
+
 
 def _pre_approve_pending_decisions(timeout_s: float = 30.0) -> int:
     """Poll the Control Plane for any PENDING approval rows and approve
@@ -197,9 +189,7 @@ def _pre_approve_pending_decisions(timeout_s: float = 30.0) -> int:
 
 
 @pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_LIVE_LLM_OPTOUT)
-@pytest.mark.skipif(
-    not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_OLLAMA
-)
+@pytest.mark.skipif(not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_OLLAMA)
 @pytest.mark.skipif(not _violin_data_dir_complete(), reason=SKIP_VIOLIN)
 @pytest.mark.skipif(not _control_plane_reachable(), reason=SKIP_CP)
 def test_t01_vertical_slice_end_to_end(monkeypatch):
@@ -235,6 +225,7 @@ def test_t01_vertical_slice_end_to_end(monkeypatch):
     # Spawn the auto-approve poller in a background thread so it can
     # release the HITL gate while the workflow is mid-flight.
     import threading
+
     approve_result: dict[str, int] = {"approved": -1}
 
     def _bg():

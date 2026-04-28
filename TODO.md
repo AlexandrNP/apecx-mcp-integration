@@ -94,6 +94,8 @@ appear in the run."
 **Trigger to revisit:** N/A — just write the friction-log entry.
 
 **Cost estimate:** 10 minutes.  Add an entry to
-`docs/session_friction_log.md` with the detection signal ("test
-count from `pytest -v` doesn't match the number of `def test_` lines
-in the file under test") and the fix (`--rootdir=.`).
+`../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md`
+with the detection signal ("test count from `pytest -v` doesn't
+match the number of `def test_` lines in the file under test") and
+the fix (`--rootdir=.`).  Note: friction log is now unversioned
+(see workspace `_workspace_notes/README.md`).

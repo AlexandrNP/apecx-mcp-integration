@@ -252,7 +252,7 @@ The workflow is "T01-ready" when:
 1. **Sample query.** Still open — default is `"What vaccines target chikungunya?"` unless the team redirects.
 2. **HARD vs. SOFT gate for Step 4.** Still open; my default recommendation remains HARD for the first release (the cache short-circuit makes it fire less often anyway).
 3. **Batch query behavior.** Deferred explicitly. MVP is single-query; batch is a post-MVP scope item.
-4. **Fuzzy-match threshold — DECIDED: 0.92.** User directive 2026-04-21. Step 3b classifies candidates as `confident_fuzzy_hits` iff similarity ≥ 0.92; anything below flows to `residuals` and hence to the LLM proposal step. Tune based on first-scientist feedback; log the decision in `docs/scope_decisions/` if it changes.
+4. **Fuzzy-match threshold — DECIDED: 0.92.** User directive 2026-04-21. Step 3b classifies candidates as `confident_fuzzy_hits` iff similarity ≥ 0.92; anything below flows to `residuals` and hence to the LLM proposal step. Tune based on first-scientist feedback; log the rationale in the PR description if it changes.
 5. **Verified-synonym revocation — DECIDED: supported via soft-delete.** User directive 2026-04-21.
    - `VerifiedSynonym` has `is_active`, `revoked_by`, `revoked_at`, `revocation_reason`, `superseded_by` fields.
    - Revoked rows are NEVER deleted — they remain for audit and provenance.

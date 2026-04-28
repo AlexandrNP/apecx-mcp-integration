@@ -1,9 +1,8 @@
 """Unit tests for ``build_docker_sandbox_command`` argv construction.
 
-These tests pin every hardening flag from the T13b threat-model table
-(``docs/t13b_sandbox_design.md``). If someone weakens or drops a flag
-here, the corresponding test goes red and the reviewer sees it
-immediately.
+These tests pin every hardening flag from the T13b threat-model table.
+If someone weakens or drops a flag here, the corresponding test goes
+red and the reviewer sees it immediately.
 
 These tests run on any machine — no Docker required, no
 ``APECX_T13B_SANDBOX_EXECUTE`` gate needed. ``build_docker_sandbox_command``
@@ -15,7 +14,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from apecx_integration.composition.docker_sandbox import (
     SandboxConfig,
     build_docker_sandbox_command,
@@ -56,7 +54,8 @@ def _all_pair_values(argv: list[str], flag: str) -> list[str]:
 
 def test_argv_starts_with_docker_run():
     argv = build_docker_sandbox_command(
-        ["python", "-c", "print('hi')"], input_host_path=None,
+        ["python", "-c", "print('hi')"],
+        input_host_path=None,
     )
     assert argv[0] == "docker"
     assert argv[1] == "run"
@@ -69,7 +68,9 @@ def test_image_precedes_command():
     """
     cfg = SandboxConfig(image="python:3.12-slim")
     argv = build_docker_sandbox_command(
-        ["python", "-c", "print('hi')"], input_host_path=None, config=cfg,
+        ["python", "-c", "print('hi')"],
+        input_host_path=None,
+        config=cfg,
     )
     img_idx = argv.index("python:3.12-slim")
     # Command follows the image
@@ -102,7 +103,9 @@ def test_network_honors_override():
     """
     cfg = SandboxConfig(network="bridge")
     argv = build_docker_sandbox_command(
-        ["true"], input_host_path=None, config=cfg,
+        ["true"],
+        input_host_path=None,
+        config=cfg,
     )
     assert _pair_value(argv, "--network") == "bridge"
 
@@ -128,7 +131,9 @@ def test_tmpfs_bounded_and_world_writable():
 def test_tmpfs_size_honors_override():
     cfg = SandboxConfig(tmpfs_size="64m")
     argv = build_docker_sandbox_command(
-        ["true"], input_host_path=None, config=cfg,
+        ["true"],
+        input_host_path=None,
+        config=cfg,
     )
     assert "/tmp:size=64m,mode=1777" in argv
 
@@ -195,7 +200,9 @@ def test_pids_cap():
 def test_resource_caps_honor_override():
     cfg = SandboxConfig(memory_mb=1024, cpus=2.5, pids_limit=64)
     argv = build_docker_sandbox_command(
-        ["true"], input_host_path=None, config=cfg,
+        ["true"],
+        input_host_path=None,
+        config=cfg,
     )
     assert _pair_value(argv, "--memory") == "1024m"
     assert _pair_value(argv, "--memory-swap") == "1024m"
@@ -215,7 +222,8 @@ def test_no_bind_mount_when_input_is_none():
 
 def test_bind_mount_is_read_only(tmp_path: Path):
     argv = build_docker_sandbox_command(
-        ["true"], input_host_path=tmp_path,
+        ["true"],
+        input_host_path=tmp_path,
     )
     mount_val = _pair_value(argv, "--mount")
     assert mount_val.startswith("type=bind,")
@@ -227,7 +235,9 @@ def test_bind_mount_is_read_only(tmp_path: Path):
 def test_bind_mount_target_honors_workdir_override(tmp_path: Path):
     cfg = SandboxConfig(workdir="/artifact")
     argv = build_docker_sandbox_command(
-        ["true"], input_host_path=tmp_path, config=cfg,
+        ["true"],
+        input_host_path=tmp_path,
+        config=cfg,
     )
     assert _pair_value(argv, "--workdir") == "/artifact"
     mount_val = _pair_value(argv, "--mount")
@@ -249,7 +259,9 @@ def test_no_name_by_default():
 
 def test_container_name_flag_when_provided():
     argv = build_docker_sandbox_command(
-        ["true"], input_host_path=None, container_name="t13b-test-xyz",
+        ["true"],
+        input_host_path=None,
+        container_name="t13b-test-xyz",
     )
     assert _pair_value(argv, "--name") == "t13b-test-xyz"
 
@@ -267,7 +279,9 @@ def test_extra_run_args_appended_before_image(tmp_path: Path):
         extra_run_args=("--runtime=runsc", "--label", "t13b=phase3"),
     )
     argv = build_docker_sandbox_command(
-        ["python", "-V"], input_host_path=None, config=cfg,
+        ["python", "-V"],
+        input_host_path=None,
+        config=cfg,
     )
     runsc_idx = argv.index("--runtime=runsc")
     img_idx = argv.index(cfg.image)

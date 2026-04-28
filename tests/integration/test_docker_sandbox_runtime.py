@@ -16,8 +16,7 @@ attempt to open a TCP socket, open ``/etc/passwd``, and assert both
 fail. That test is high-value but needs to live alongside a
 controlled Docker environment (specific daemon version, specific
 seccomp profile); adding it here without that controlled environment
-risks false-greens. Phase-3 concern — noted in
-``docs/t13b_sandbox_design.md``.
+risks false-greens. Phase-3 concern.
 """
 
 from __future__ import annotations
@@ -28,7 +27,6 @@ import shutil
 import subprocess
 
 import pytest
-
 from apecx_integration.composition.docker_sandbox import (
     DockerSandboxRunner,
     SandboxConfig,
@@ -110,8 +108,7 @@ _OPT_IN_REASON = (
 
 
 @pytest.mark.skipif(
-    os.environ.get("APECX_T13B_SANDBOX_EXECUTE") != "1"
-    or not _docker_daemon_reachable(),
+    os.environ.get("APECX_T13B_SANDBOX_EXECUTE") != "1" or not _docker_daemon_reachable(),
     reason=_OPT_IN_REASON,
 )
 def test_sandbox_runs_trivial_python_command():
@@ -122,9 +119,11 @@ def test_sandbox_runs_trivial_python_command():
             timeout_seconds=120.0,  # first run pulls the image
         ),
     )
-    result = asyncio.run(runner.run(
-        ["python", "-c", "print('t13b-ok')"],
-    ))
+    result = asyncio.run(
+        runner.run(
+            ["python", "-c", "print('t13b-ok')"],
+        )
+    )
     assert result.exit_code == 0, (
         f"sandbox exited {result.exit_code}\n"
         f"stdout: {result.stdout!r}\n"
@@ -136,8 +135,7 @@ def test_sandbox_runs_trivial_python_command():
 
 
 @pytest.mark.skipif(
-    os.environ.get("APECX_T13B_SANDBOX_EXECUTE") != "1"
-    or not _docker_daemon_reachable(),
+    os.environ.get("APECX_T13B_SANDBOX_EXECUTE") != "1" or not _docker_daemon_reachable(),
     reason=_OPT_IN_REASON,
 )
 def test_sandbox_kills_runaway_via_timeout():
@@ -153,9 +151,11 @@ def test_sandbox_kills_runaway_via_timeout():
             timeout_seconds=2.0,
         ),
     )
-    result = asyncio.run(runner.run(
-        ["python", "-c", "import time; time.sleep(30)"],
-    ))
+    result = asyncio.run(
+        runner.run(
+            ["python", "-c", "import time; time.sleep(30)"],
+        )
+    )
     assert result.killed_by_timeout, (
         f"timeout did not fire; exit_code={result.exit_code}, "
         f"duration={result.duration_seconds:.2f}s"

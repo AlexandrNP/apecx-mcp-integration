@@ -51,23 +51,17 @@ from pathlib import Path
 
 import httpx
 import pytest
-from nanobrain.core.step import BaseStep
-
 from apecx_integration.composition.steps.db_integration_wrappers import (
     EntityExtractionStep,
 )
+from nanobrain.core.step import BaseStep
 
 pytestmark = pytest.mark.integration
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW_DIR = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "workflows"
-    / "violin_bvbrc"
+    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "violin_bvbrc"
 )
 STEP1_YAML = WORKFLOW_DIR / "steps" / "entity_extraction.yml"
 STEP2_YAML = WORKFLOW_DIR / "steps" / "bvbrc_snapshot_match.yml"
@@ -93,9 +87,9 @@ BVBRC_CACHE_DIR = Path(
 def _skip_live_llm_requested() -> bool:
     """Opt-out env var for Claude-Code sessions: set
     ``APECX_SKIP_LIVE_LLM=1`` to force-skip every live-LLM test in
-    this file, regardless of whether the daemon is reachable. See
-    ``docs/session_friction_log.md`` #1 for the friction this
-    addresses."""
+    this file, regardless of whether the daemon is reachable.
+    Addresses the long-running pytest hang when Ollama is reachable
+    but the test author wanted skip-by-default."""
     return os.environ.get("APECX_SKIP_LIVE_LLM") == "1"
 
 
@@ -124,16 +118,13 @@ def _bvbrc_cache_present() -> bool:
     return any(BVBRC_CACHE_DIR.glob("*.tsv"))
 
 
-SKIP_REASON_LIVE_LLM_OPTOUT = (
-    "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
-)
+SKIP_REASON_LIVE_LLM_OPTOUT = "APECX_SKIP_LIVE_LLM=1 is set — live-LLM tests explicitly skipped."
 SKIP_REASON_OLLAMA = (
     f"Ollama daemon not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} "
     "not pulled. Run `ollama serve` + `ollama pull mistral-nemo:latest`."
 )
 SKIP_REASON_VIOLIN = (
-    "APECX_DB_DATA_DIR is unset or missing VIOLIN CSVs "
-    f"({', '.join(REQUIRED_VIOLIN_CSVS)})."
+    "APECX_DB_DATA_DIR is unset or missing VIOLIN CSVs " f"({', '.join(REQUIRED_VIOLIN_CSVS)})."
 )
 SKIP_REASON_BVBRC = (
     f"BV-BRC snapshot cache not found at {BVBRC_CACHE_DIR}. "
@@ -161,9 +152,7 @@ def ollama_env(monkeypatch):
 
 
 @pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_REASON_LIVE_LLM_OPTOUT)
-@pytest.mark.skipif(
-    not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON_OLLAMA
-)
+@pytest.mark.skipif(not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON_OLLAMA)
 @pytest.mark.skipif(not _violin_data_dir_complete(), reason=SKIP_REASON_VIOLIN)
 def test_entity_extraction_step_against_ollama(ollama_env):
     """Step 1 happy-path: 'find EEEV vaccines' should yield at least
@@ -196,9 +185,7 @@ def test_entity_extraction_step_against_ollama(ollama_env):
 
 
 @pytest.mark.skipif(_skip_live_llm_requested(), reason=SKIP_REASON_LIVE_LLM_OPTOUT)
-@pytest.mark.skipif(
-    not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON_OLLAMA
-)
+@pytest.mark.skipif(not _ollama_reachable_with_model(OLLAMA_MODEL), reason=SKIP_REASON_OLLAMA)
 @pytest.mark.skipif(not _violin_data_dir_complete(), reason=SKIP_REASON_VIOLIN)
 @pytest.mark.skipif(not _bvbrc_cache_present(), reason=SKIP_REASON_BVBRC)
 def test_step1_to_step2_chain_against_ollama(ollama_env, monkeypatch):
@@ -236,9 +223,7 @@ def test_step1_to_step2_chain_against_ollama(ollama_env, monkeypatch):
     # assert non-empty; per-field assertions belong with the T04 vertical
     # slice test.
     matches = step2_result.get("matches") or step2_result.get("snapshot_matches")
-    assert matches, (
-        f"expected non-empty Step 2 snapshot matches; got result={step2_result!r}"
-    )
+    assert matches, f"expected non-empty Step 2 snapshot matches; got result={step2_result!r}"
 
 
 def test_workflow_yaml_smoke_loads_with_all_11_steps():

@@ -13,23 +13,17 @@ from pathlib import Path
 
 import pytest
 
-
 pytestmark = pytest.mark.integration
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WORKSPACE_ROOT = REPO_ROOT.parent
-PROMPT_DIR = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "composer_prompts"
-)
+PROMPT_DIR = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_prompts"
 
 
 try:
     import nanobrain  # noqa: F401
+
     _NANOBRAIN_AVAILABLE = True
 except ImportError:
     _NANOBRAIN_AVAILABLE = False
@@ -66,16 +60,21 @@ def test_probe_228_nanobrain_claude_md_exists() -> None:
 
 
 def test_probe_229_workspace_claude_md_links_resolve() -> None:
-    """Workspace CLAUDE.md mentions specific file paths
-    (apecx-mcp-integration/docs/session_friction_log.md, etc.).
-    Validate they exist."""
+    """Workspace CLAUDE.md may reference repo-relative paths
+    (e.g., apecx-mcp-integration/docs/QUICKSTART.md).  Validate
+    that any such paths still resolve on disk.
+
+    Vacuous-pass when the workspace CLAUDE.md no longer mentions
+    any apecx-mcp-integration/*.md path (which is the case after
+    the 2026-04-28 docs cleanup that moved dev artifacts to
+    _workspace_notes/).  That's intentional — the test guards
+    against stale repo-relative paths but doesn't require them."""
     text = (WORKSPACE_ROOT / "CLAUDE.md").read_text()
     # Look for `apecx-mcp-integration/...` paths
     for match in re.finditer(r"apecx-mcp-integration/[\w./_-]+\.md", text):
         p = WORKSPACE_ROOT / match.group(0)
         assert p.is_file(), (
-            f"PROBE 229 BUG: workspace CLAUDE.md references {match.group(0)} "
-            "which doesn't exist"
+            f"PROBE 229 BUG: workspace CLAUDE.md references {match.group(0)} " "which doesn't exist"
         )
 
 
@@ -88,9 +87,7 @@ def test_probe_230_repo_claude_md_size_bounded() -> None:
     p = REPO_ROOT / "CLAUDE.md"
     size = p.stat().st_size
     # ~10KB is a reasonable upper bound for an always-loaded context file
-    assert size < 16_000, (
-        f"PROBE 230: repo CLAUDE.md is {size} bytes — may bloat session context"
-    )
+    assert size < 16_000, f"PROBE 230: repo CLAUDE.md is {size} bytes — may bloat session context"
 
 
 # --- Probe 231: workspace CLAUDE.md size bounded ---
@@ -99,9 +96,7 @@ def test_probe_230_repo_claude_md_size_bounded() -> None:
 def test_probe_231_workspace_claude_md_size_bounded() -> None:
     p = WORKSPACE_ROOT / "CLAUDE.md"
     size = p.stat().st_size
-    assert size < 24_000, (
-        f"PROBE 231: workspace CLAUDE.md is {size} bytes — too large"
-    )
+    assert size < 24_000, f"PROBE 231: workspace CLAUDE.md is {size} bytes — too large"
 
 
 # --- Probe 232: composer system.md mentions "DataUnitMemory" (real class) ---
@@ -134,9 +129,7 @@ def test_probe_232_system_md_uses_real_data_unit_class() -> None:
 def test_probe_233_combined_prompt_budget() -> None:
     """All prompt files combined fit in a 2K-token budget for the
     LLM (assuming ~4 chars/token). 8KB total combined."""
-    total = sum(
-        f.stat().st_size for f in PROMPT_DIR.iterdir() if f.suffix == ".md"
-    )
+    total = sum(f.stat().st_size for f in PROMPT_DIR.iterdir() if f.suffix == ".md")
     assert total < 32_000, (
         f"PROBE 233: combined prompts total {total} bytes — large fraction "
         "of any LLM's context budget; consider tightening"
@@ -163,6 +156,7 @@ def test_probe_235_nanobrain_workflow_class_present() -> None:
     if not _NANOBRAIN_AVAILABLE:
         pytest.skip("nanobrain not importable")
     from nanobrain.core.workflow import Workflow
+
     assert hasattr(Workflow, "from_config")
 
 
@@ -182,6 +176,7 @@ def test_probe_237_lightweight_builder_api_complete() -> None:
     if not _NANOBRAIN_AVAILABLE:
         pytest.skip()
     from nanobrain.lightweight.workflow_builder import WorkflowBuilder
+
     b = WorkflowBuilder(name="t", description="d")
     assert hasattr(b, "add_step")
     assert hasattr(b, "add_input")
@@ -210,10 +205,10 @@ def test_probe_238_system_md_no_direct_constructor() -> None:
     if suspicious:
         for s in suspicious:
             ctx_idx = text.find(s)
-            ctx = text[max(0, ctx_idx - 100): ctx_idx + 200]
-            assert any(neg in ctx.lower() for neg in ["do not", "forbid", "not allowed"]), (
-                f"PROBE 238 BUG: system.md shows direct constructor {s!r} without 'do not' context"
-            )
+            ctx = text[max(0, ctx_idx - 100) : ctx_idx + 200]
+            assert any(
+                neg in ctx.lower() for neg in ["do not", "forbid", "not allowed"]
+            ), f"PROBE 238 BUG: system.md shows direct constructor {s!r} without 'do not' context"
 
 
 # --- Probe 239: composer system.md mentions wrapper YAML correctly ---
@@ -234,10 +229,10 @@ def test_probe_240_no_transformlink_recommendation_in_bias() -> None:
     if "TransformLink" not in text:
         pytest.skip("TransformLink not in composition_bias.md")
     for match in re.finditer(r"TransformLink", text):
-        ctx = text[max(0, match.start() - 200): match.end() + 200]
-        assert any(neg in ctx for neg in ["NOT", "forbid", "don't", "Do NOT", "do not"]), (
-            f"PROBE 240 BUG: composition_bias.md mentions TransformLink without forbidding context"
-        )
+        ctx = text[max(0, match.start() - 200) : match.end() + 200]
+        assert any(
+            neg in ctx for neg in ["NOT", "forbid", "don't", "Do NOT", "do not"]
+        ), "PROBE 240 BUG: composition_bias.md mentions TransformLink without forbidding context"
 
 
 # --- Probe 241: novel_python_flagging.md explains when to flag novel code ---
@@ -265,10 +260,10 @@ def test_probe_242_prompts_no_deprecated_references() -> None:
     if "register_agent" in text:
         # Must be mentioned in removal context
         for match in re.finditer(r"register_agent", text):
-            ctx = text[max(0, match.start() - 200): match.end() + 200]
-            assert any(neg in ctx.lower() for neg in ["removed", "do not", "deprecated"]), (
-                "PROBE 242 BUG: prompt references register_agent without removal context"
-            )
+            ctx = text[max(0, match.start() - 200) : match.end() + 200]
+            assert any(
+                neg in ctx.lower() for neg in ["removed", "do not", "deprecated"]
+            ), "PROBE 242 BUG: prompt references register_agent without removal context"
 
 
 # --- Probe 243: composer config.yml is parseable YAML ---
@@ -279,6 +274,7 @@ def test_probe_243_composer_config_parseable() -> None:
     if not cfg.is_file():
         pytest.skip()
     import yaml
+
     yaml.safe_load(cfg.read_text())
 
 
@@ -290,6 +286,7 @@ def test_probe_244_all_workflow_yamls_parse() -> None:
     if not workflows_dir.is_dir():
         pytest.skip()
     import yaml
+
     for yml in workflows_dir.rglob("*.yml"):
         try:
             yaml.safe_load(yml.read_text())
@@ -307,9 +304,7 @@ def test_probe_245_no_tab_indentation_in_yamls() -> None:
     for yml in workflows_dir.rglob("*.yml"):
         text = yml.read_text()
         for lineno, line in enumerate(text.splitlines(), 1):
-            assert "\t" not in line, (
-                f"PROBE 245: {yml}:{lineno} has tab indentation: {line!r}"
-            )
+            assert "\t" not in line, f"PROBE 245: {yml}:{lineno} has tab indentation: {line!r}"
 
 
 # --- Probe 246: workspace CLAUDE.md's nanobrain rules section exists ---
