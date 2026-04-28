@@ -240,8 +240,10 @@ shapes, troubleshooting).
 
 - `../architectural_plan.md` — project-level source of truth.
 - `../implementation_plan.md` — task table + scoreboard.
-- `docs/composer_task_spec.md` — T-COMP phased delivery + ACs.
-- `docs/workflow_spec.md` — the VIOLIN × BV-BRC workflow definition.
+- `../_workspace_notes/apecx-mcp-integration_dev_history/composer_task_spec.md`
+  — T-COMP phased delivery + ACs (moved out of repo 2026-04-28).
+- `../_workspace_notes/apecx-mcp-integration_dev_history/workflow_spec.md`
+  — the VIOLIN × BV-BRC workflow definition (moved out of repo 2026-04-28).
 - `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md`
   — what burned time before (moved out of repo 2026-04-28; see workspace
   `_workspace_notes/README.md` for the move rationale + git-history caveat).
