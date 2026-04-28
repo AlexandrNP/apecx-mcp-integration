@@ -27,7 +27,7 @@
 set -euo pipefail
 
 REPO_URL="${APECX_REPO_URL:-https://github.com/AlexandrNP/apecx-mcp-integration.git}"
-BRANCH="${APECX_BRANCH:-day2-rag-synthesis-agent}"
+BRANCH="${APECX_BRANCH:-main}"
 
 GIT_SPEC="git+${REPO_URL}@${BRANCH}"
 
