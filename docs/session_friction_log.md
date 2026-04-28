@@ -736,6 +736,52 @@ synthesis_config.yml — patterns must be tightened in BOTH).
 
 ---
 
+## 22. Destructive-ops deny-list missed `git checkout -B` and friends
+
+**Cost this session:** ~4 min — one blocked `git reset --hard
+origin/main` (correctly denied), then one `git checkout -B
+day2-rag-synthesis-agent origin/main` that went through and
+silently rewrote the local-branch upstream to `origin/main`.
+
+**Root cause:** `.claude/settings.json` `permissions.deny` listed
+`git reset --hard` but not the equivalent forms — `git checkout
+-B` (force-creates-or-resets a branch to a ref), `git checkout
+--force`, `git branch -D`. They're all "rewrite local branch
+state, drop work that doesn't have a remote". Two semantically
+identical operations had different permission outcomes.
+
+**Mitigation shipped (commit ``<pending>``):** added missing
+forms to the deny list:
+
+- `git push --force-with-lease`
+- `git checkout -B`
+- `git checkout --force` / `git checkout -f`
+- `git branch -D` / `git branch --delete --force`
+- `git clean -fd`
+
+The replacement form when you genuinely want to reset a branch
+to a ref: ask the user and use `git fetch + git merge --ff-only`
+when the new ref is a fast-forward, or use `git reset --hard`
+under explicit user approval (the deny prompts the user, doesn't
+silently block).
+
+**Detection signal:** any time a `git ...` command that *modifies
+local refs* goes through without a permission prompt while a
+sibling form gets denied — there's a deny-list gap.
+
+**Side effect to remember:** `git checkout -B <branch> <ref>`
+also resets the upstream tracking config to whatever `<ref>`
+points to (e.g., `origin/main`), even if `<branch>` previously
+tracked a different remote ref. After a `checkout -B`, run
+`git branch --set-upstream-to=origin/<correct-branch>
+<branch>` before the next push or you'll push to the wrong place
+(or hit a "no upstream configured" error).
+
+**Source:** 2026-04-28, post-PR-#10 day2-rag-synthesis-agent
+recovery from a divergent local commit.
+
+---
+
 ## How to add to this log
 
 - Only entries that ate ≥3 min or recurred across turns.
