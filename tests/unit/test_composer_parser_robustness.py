@@ -1,6 +1,6 @@
 """Audit cluster J — composer parser robustness.
 
-Two narrow regression guards (docs/codebase_audit_2026_04_24.md):
+Two narrow regression guards from the 2026-04-24 codebase audit:
 
 §1.2 — `_parse_response` is now preceded by an explicit empty-content
        check at the call site. If a future LangChain version returns
@@ -18,7 +18,6 @@ in ``test_composer_phase2.py`` already cover the round-trip path.
 from __future__ import annotations
 
 import pytest
-
 from apecx_integration.composition.composer import (
     ComposerResponseError,
     _parse_response,

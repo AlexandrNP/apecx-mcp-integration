@@ -82,8 +82,7 @@ real success.
 correct surface for "we never actually ran the workflow on HPC."
 When T05 lands, ``run.sh`` will write ``completed`` and the
 ingest will mark the run COMPLETED. See chapter 04's
-"Phase-2 scaffold caveat" + ``docs/codebase_audit_2026_04_24.md``
-§3.5.
+"Phase-2 scaffold caveat".
 
 To inspect the reason verbatim:
 

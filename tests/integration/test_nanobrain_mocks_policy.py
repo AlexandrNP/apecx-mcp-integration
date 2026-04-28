@@ -1,8 +1,8 @@
 """T14 mocks-policy enforcement — tests for the nanobrain fixes.
 
-Per the T14 audit (``docs/nanobrain_mock_audit.md``) and its approved
-§4 carve-out #2 fixes, this file verifies the new **error paths** that
-replaced the previous silent mock fallbacks in nanobrain.
+Per the T14 audit and its approved §4 carve-out #2 fixes, this file
+verifies the new **error paths** that replaced the previous silent
+mock fallbacks in nanobrain.
 
 The actual nanobrain edits live at:
 - ``nanobrain/core/a2a_support.py`` (row 1)
@@ -43,6 +43,7 @@ pytestmark = pytest.mark.integration
 # Row 1 — a2a_support.py
 # ---------------------------------------------------------------------------
 
+
 def test_a2a_not_available_error_class_exists():
     """Pre-T14 there was no A2ANotAvailableError — callers had no way
     to distinguish "aiohttp missing" from other failures because the
@@ -66,11 +67,13 @@ def test_a2a_connect_raises_when_aiohttp_missing(monkeypatch):
     monkeypatch.setattr(a2a_support, "AIOHTTP_AVAILABLE", False)
 
     client = A2AClient()
-    client.add_agent(A2AAgentConfig(
-        name="test-agent",
-        url="http://example.invalid",
-        description="test",
-    ))
+    client.add_agent(
+        A2AAgentConfig(
+            name="test-agent",
+            url="http://example.invalid",
+            description="test",
+        )
+    )
 
     # Behavior: raises A2AConnectionError wrapping A2ANotAvailableError,
     # per the except-block wrap in connect_to_agent.
@@ -100,23 +103,28 @@ def test_a2a_send_task_raises_via_connect_when_aiohttp_missing(monkeypatch):
     monkeypatch.setattr(a2a_support, "AIOHTTP_AVAILABLE", False)
 
     client = A2AClient()
-    client.add_agent(A2AAgentConfig(
-        name="test-agent",
-        url="http://example.invalid",
-        description="test",
-    ))
+    client.add_agent(
+        A2AAgentConfig(
+            name="test-agent",
+            url="http://example.invalid",
+            description="test",
+        )
+    )
 
     with pytest.raises(A2AConnectionError, match="aiohttp is not installed"):
-        asyncio.run(client.send_task(
-            "test-agent",
-            task_id="t-123",
-            message=A2AMessage(role="user", parts=[]),
-        ))
+        asyncio.run(
+            client.send_task(
+                "test-agent",
+                task_id="t-123",
+                message=A2AMessage(role="user", parts=[]),
+            )
+        )
 
 
 # ---------------------------------------------------------------------------
 # Row 2 — academy_integration.py
 # ---------------------------------------------------------------------------
+
 
 def test_academy_not_implemented_error_class_exists():
     from nanobrain.core.academy_integration import AcademyNotImplementedError
@@ -145,6 +153,7 @@ def test_academy_not_implemented_error_class_exists():
 # Rows 3+4 — config_manager.py use_mock_clients default + warning
 # ---------------------------------------------------------------------------
 
+
 def test_use_mock_clients_default_is_false(tmp_path, monkeypatch):
     """When a config has no ``development`` block at all, is_development_mode
     must return False. Pre-T14 the default-config dict shipped with
@@ -170,10 +179,7 @@ def test_use_mock_clients_true_emits_warning(tmp_path, caplog):
     from nanobrain.core.config.config_manager import ConfigManager
 
     cfg = tmp_path / "devmode_config.yml"
-    cfg.write_text(
-        "framework:\n  name: test\n"
-        "development:\n  use_mock_clients: true\n"
-    )
+    cfg.write_text("framework:\n  name: test\n" "development:\n  use_mock_clients: true\n")
 
     mgr = ConfigManager(str(cfg))
     mgr.load_config()
@@ -181,12 +187,10 @@ def test_use_mock_clients_true_emits_warning(tmp_path, caplog):
     with caplog.at_level(logging.WARNING, logger="nanobrain.core.config.config_manager"):
         assert mgr.is_development_mode() is True
 
-    warning_texts = [
-        r.message for r in caplog.records if r.levelno >= logging.WARNING
-    ]
-    assert any("dev-mode" in m and "mock" in m.lower() for m in warning_texts), (
-        f"Expected dev-mode warning; got warnings: {warning_texts!r}"
-    )
+    warning_texts = [r.message for r in caplog.records if r.levelno >= logging.WARNING]
+    assert any(
+        "dev-mode" in m and "mock" in m.lower() for m in warning_texts
+    ), f"Expected dev-mode warning; got warnings: {warning_texts!r}"
 
 
 def test_use_mock_clients_warning_emits_once(tmp_path, caplog):
@@ -197,10 +201,7 @@ def test_use_mock_clients_warning_emits_once(tmp_path, caplog):
     from nanobrain.core.config.config_manager import ConfigManager
 
     cfg = tmp_path / "devmode_config.yml"
-    cfg.write_text(
-        "framework:\n  name: test\n"
-        "development:\n  use_mock_clients: true\n"
-    )
+    cfg.write_text("framework:\n  name: test\n" "development:\n  use_mock_clients: true\n")
 
     mgr = ConfigManager(str(cfg))
     mgr.load_config()
@@ -211,8 +212,7 @@ def test_use_mock_clients_warning_emits_once(tmp_path, caplog):
         mgr.is_development_mode()
 
     warning_count = sum(
-        1 for r in caplog.records
-        if r.levelno >= logging.WARNING and "dev-mode" in r.message
+        1 for r in caplog.records if r.levelno >= logging.WARNING and "dev-mode" in r.message
     )
     assert warning_count == 1, f"Expected 1 warning, got {warning_count}"
 
@@ -220,6 +220,7 @@ def test_use_mock_clients_warning_emits_once(tmp_path, caplog):
 # ---------------------------------------------------------------------------
 # Row 5 — pubmed_client.py
 # ---------------------------------------------------------------------------
+
 
 def test_pubmed_search_raises_not_implemented():
     """Pre-T14: returned ``[]`` silently and cached it. Post-T14: raises
@@ -230,8 +231,8 @@ def test_pubmed_search_raises_not_implemented():
     # Construct against a default PubMedConfig. The real NCBI config
     # doesn't matter — the method raises before touching anything.
     client = PubMedClient.__new__(PubMedClient)
-    client.logger = __import__('logging').getLogger("test")
-    client.pubmed_config = type('_C', (), {'cache_results': False})()
+    client.logger = __import__("logging").getLogger("test")
+    client.pubmed_config = type("_C", (), {"cache_results": False})()
     client.search_cache = {}
 
     with pytest.raises(NotImplementedError, match="Phase 4B"):

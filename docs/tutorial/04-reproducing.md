@@ -45,8 +45,7 @@ and runs the composed workflow) is still pending. Until it lands:
 When T05 lands, ``run.sh`` will write ``completed`` (not
 ``stub_completed``) and the ingest path's existing happy-path
 branch will mark the Run COMPLETED. This chapter will be
-re-validated then. See ``docs/codebase_audit_2026_04_24.md`` §3.5
-for context.
+re-validated then.
 
 ## 0. Compose a fresh run for the HPC flow
 

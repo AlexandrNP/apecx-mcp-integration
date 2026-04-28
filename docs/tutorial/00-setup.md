@@ -55,8 +55,7 @@ scripts/run_tests.sh tests/unit -q
 Expected output: **all unit tests pass in a few seconds**. If you
 see `ModuleNotFoundError`, you're probably running the system Python
 — use `scripts/run_tests.sh` (it routes through `.venv/bin/python`
-automatically). See `docs/session_friction_log.md` #14 for the
-history.
+automatically).
 
 ## 4. Install Ollama + pull a model
 

@@ -33,8 +33,7 @@ scientists are the authoritative feedback channel.
 ### What changed in the 2026-04-25 refresh
 
 The tutorial was reconciled against the cluster A–M behavior
-changes documented in
-[`docs/codebase_audit_2026_04_24.md`](../codebase_audit_2026_04_24.md).
+changes documented in the 2026-04-24 codebase audit.
 User-visible drift was concentrated in three places:
 
 - **Chapter 00 §6** — the MCP server now eagerly hits the Control

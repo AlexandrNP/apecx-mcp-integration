@@ -36,7 +36,7 @@ scripts/run_tests.sh tests/unit   # a subset
 It sets ``PYTHONPATH=src``, uses ``.venv/bin/python``, and runs from
 the repo root. Pass any pytest args after the path.
 
-See `docs/session_friction_log.md` #14, #15.
+See `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md` #14, #15.
 
 ## Live-LLM test recipe
 
@@ -84,7 +84,7 @@ LLM or the executor.
 `sentence_transformers` BEFORE `faiss`. Load-bearing — reversing
 the order causes a silent segfault on macOS ARM. The file carries
 a `# ruff: noqa: I001, E402` + a comment explaining why. Do not
-let an auto-sort "fix" that. See `docs/session_friction_log.md` #13.
+let an auto-sort "fix" that. See `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md` #13.
 
 ## RAG index build
 
@@ -189,8 +189,8 @@ execution path — that is Phase-3 work.**
   are double-gated (env var + Docker daemon reachable) and skip by
   default.
 
-Design doc: `docs/t13b_sandbox_design.md` (threat model, flag
-rationale, open Phase-3 design questions).
+Design doc: `../_workspace_notes/apecx-mcp-integration_dev_history/t13b_sandbox_design.md`
+(threat model, flag rationale, open Phase-3 design questions).
 
 ## MCP surface (Tier 1)
 
@@ -242,5 +242,8 @@ shapes, troubleshooting).
 - `../implementation_plan.md` — task table + scoreboard.
 - `docs/composer_task_spec.md` — T-COMP phased delivery + ACs.
 - `docs/workflow_spec.md` — the VIOLIN × BV-BRC workflow definition.
-- `docs/session_friction_log.md` — what burned time before.
-- `docs/nanobrain_mock_audit.md` — T14 audit + fix rows.
+- `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md`
+  — what burned time before (moved out of repo 2026-04-28; see workspace
+  `_workspace_notes/README.md` for the move rationale + git-history caveat).
+- `../_workspace_notes/apecx-mcp-integration_dev_history/nanobrain_mock_audit.md`
+  — T14 audit + fix rows.
