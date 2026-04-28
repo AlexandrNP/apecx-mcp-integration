@@ -93,6 +93,63 @@ def _find_apecx_mcp_binary() -> str | None:
     return None
 
 
+def _build_apecx_server_block(data_dir: Path) -> dict:
+    """Construct the full ``mcpServers.apecx`` block for a fresh install.
+
+    Returns the dict to be serialized into the Claude Desktop config.
+    Raises RuntimeError if apecx-mcp can't be located on disk.
+    """
+    apecx_mcp = _find_apecx_mcp_binary()
+    if apecx_mcp is None:
+        raise RuntimeError(
+            "Could not locate the apecx-mcp binary. Install it first "
+            "(uv tool install / pipx install) before running apecx-setup."
+        )
+    return {
+        "command": apecx_mcp,
+        "args": [],
+        "env": {"APECX_DATA_ROOT": str(data_dir), **_DEFAULT_LLM_ENV},
+    }
+
+
+def _load_or_init_config(config_path: Path) -> dict:
+    """Load the Claude Desktop config, or return ``{}`` if missing.
+
+    Raises RuntimeError on malformed JSON or non-object root.
+    """
+    if not config_path.exists():
+        return {}
+    try:
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"Existing config at {config_path} is not valid JSON: {exc}. "
+            "Refusing to overwrite — please fix or delete it first."
+        ) from exc
+    if not isinstance(config, dict):
+        raise RuntimeError(f"Existing config at {config_path} is not a JSON object.")
+    return config
+
+
+def _apecx_block_state(config: dict, config_path: Path) -> dict | None:
+    """Return the existing ``mcpServers.apecx`` block, or None if absent.
+
+    Validates that ``mcpServers`` and the apecx block (when present) are
+    JSON objects.  Raises RuntimeError on shape mismatch.
+    """
+    mcp_servers = config.get("mcpServers")
+    if mcp_servers is None:
+        return None
+    if not isinstance(mcp_servers, dict):
+        raise RuntimeError(f"Existing config at {config_path} has a non-object 'mcpServers' value.")
+    apecx_block = mcp_servers.get("apecx")
+    if apecx_block is None:
+        return None
+    if not isinstance(apecx_block, dict):
+        raise RuntimeError(f"Existing 'mcpServers.apecx' in {config_path} is not an object.")
+    return apecx_block
+
+
 def _update_claude_config(config_path: Path, data_dir: Path) -> str:
     """Patch the Claude Desktop config to set APECX_DATA_ROOT.
 
@@ -105,40 +162,14 @@ def _update_claude_config(config_path: Path, data_dir: Path) -> str:
 
     Returns a one-line summary of what changed.
     """
-    if config_path.exists():
-        try:
-            config = json.loads(config_path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError as exc:
-            raise RuntimeError(
-                f"Existing config at {config_path} is not valid JSON: {exc}. "
-                "Refusing to overwrite — please fix or delete it first."
-            ) from exc
-        if not isinstance(config, dict):
-            raise RuntimeError(f"Existing config at {config_path} is not a JSON object.")
-    else:
-        config = {}
+    config = _load_or_init_config(config_path)
+    apecx_block = _apecx_block_state(config, config_path)
 
     mcp_servers = config.setdefault("mcpServers", {})
-    if not isinstance(mcp_servers, dict):
-        raise RuntimeError(f"Existing config at {config_path} has a non-object 'mcpServers' value.")
-
-    apecx_block = mcp_servers.get("apecx")
     if apecx_block is None:
-        apecx_mcp = _find_apecx_mcp_binary()
-        if apecx_mcp is None:
-            raise RuntimeError(
-                "Could not locate the apecx-mcp binary. Install it first "
-                "(uv tool install / pipx install) before running apecx-setup."
-            )
-        mcp_servers["apecx"] = {
-            "command": apecx_mcp,
-            "args": [],
-            "env": {"APECX_DATA_ROOT": str(data_dir), **_DEFAULT_LLM_ENV},
-        }
-        change = f"created new 'apecx' server entry pointing at {apecx_mcp}"
+        mcp_servers["apecx"] = _build_apecx_server_block(data_dir)
+        change = f"created new 'apecx' server entry pointing at {mcp_servers['apecx']['command']}"
     else:
-        if not isinstance(apecx_block, dict):
-            raise RuntimeError(f"Existing 'mcpServers.apecx' in {config_path} is not an object.")
         env = apecx_block.setdefault("env", {})
         if not isinstance(env, dict):
             raise RuntimeError(
@@ -167,28 +198,104 @@ def _prompt_yes_no(question: str, default: bool) -> bool:
     return answer in ("y", "yes")
 
 
-def _maybe_update_claude_config(data_dir: Path) -> None:
-    """Find the Claude Desktop config and offer to patch APECX_DATA_ROOT."""
-    print()
-    print("Claude Desktop config update")
-    default_path = _default_claude_config_path()
+def _resolve_config_target(default_path: Path) -> Path | None:
+    """Confirm the standard config path or prompt for a manual path.
 
+    Returns the resolved Path, or None if the user declined to specify one.
+    """
     if default_path.exists():
         print(f"  Found config: {default_path}")
-        if not _prompt_yes_no("  Update this config to set APECX_DATA_ROOT?", default=True):
+        if _prompt_yes_no("  Use this config?", default=True):
+            return default_path
+        raw = input("  Alternate config path (blank to skip): ").strip()
+        return Path(raw).expanduser() if raw else None
+
+    print(f"  No config at the default location ({default_path}).")
+    if not _prompt_yes_no("  Specify a config path manually?", default=False):
+        return None
+    raw = input("  Config path: ").strip()
+    return Path(raw).expanduser() if raw else None
+
+
+def _format_apecx_block_preview(block: dict) -> str:
+    """Pretty-print the proposed apecx block for the first-time prompt."""
+    return json.dumps({"mcpServers": {"apecx": block}}, indent=2)
+
+
+def _maybe_update_claude_config(data_dir: Path) -> None:
+    """Find the Claude Desktop config and offer to patch / install the apecx block.
+
+    Two distinct flows depending on whether ``mcpServers.apecx`` already
+    exists in the target config:
+
+    First-time install (apecx block absent):
+      - Show the FULL proposed JSON block (command, args, env vars).
+      - Warn that LLM defaults assume Ollama on localhost:11434.
+      - Confirm before writing.
+
+    Update (apecx block present):
+      - Touch only ``env.APECX_DATA_ROOT``; preserve everything else.
+      - Confirm before writing.
+    """
+    print()
+    print("Claude Desktop config update")
+
+    target = _resolve_config_target(_default_claude_config_path())
+    if target is None:
+        print("  Skipped. Update your Claude Desktop config manually.")
+        return
+
+    # Inspect existing state to choose the right flow + prompt.
+    try:
+        existing = _load_or_init_config(target)
+        apecx_existing = _apecx_block_state(existing, target)
+    except RuntimeError as exc:
+        print(f"  ERROR: {exc}")
+        sys.exit(1)
+
+    if apecx_existing is None:
+        # First-time install: show the complete block we're about to write.
+        try:
+            proposed_block = _build_apecx_server_block(data_dir)
+        except RuntimeError as exc:
+            print(f"  ERROR: {exc}")
+            sys.exit(1)
+
+        print()
+        print("  No 'apecx' MCP server found — this is a first-time install.")
+        print("  The following block will be ADDED to mcpServers:")
+        print()
+        for line in _format_apecx_block_preview(proposed_block).splitlines():
+            print(f"    {line}")
+        print()
+        print("  NOTE: APECX_LLM_BASE_URL / _MODEL / _API_KEY default to a local")
+        print("  Ollama install (mistral-nemo on localhost:11434). If you use a")
+        print("  different LLM, edit those values in the config after this step.")
+        print()
+        if not _prompt_yes_no("  Add this block to your Claude Desktop config?", default=True):
+            print("  Skipped. Add the apecx MCP server to your config manually.")
+            return
+    else:
+        # Update flow: touch only APECX_DATA_ROOT.
+        prior = (
+            apecx_existing.get("env", {}).get("APECX_DATA_ROOT")
+            if isinstance(apecx_existing.get("env"), dict)
+            else None
+        )
+        print()
+        print("  Existing 'apecx' MCP server found.")
+        if prior == str(data_dir):
+            print(f"  APECX_DATA_ROOT is already set to {data_dir}. Nothing to do.")
+            return
+        if prior is None:
+            print(f"  Will ADD APECX_DATA_ROOT = {data_dir}")
+        else:
+            print(f"  Will CHANGE APECX_DATA_ROOT: {prior} -> {data_dir}")
+        print("  All other fields (command, args, LLM env vars) will be preserved.")
+        print()
+        if not _prompt_yes_no("  Apply this change?", default=True):
             print("  Skipped. Set APECX_DATA_ROOT manually in your Claude Desktop config.")
             return
-        target = default_path
-    else:
-        print(f"  No config at the default location ({default_path}).")
-        if not _prompt_yes_no("  Specify a config path manually?", default=False):
-            print("  Skipped. Add the apecx MCP server to your Claude Desktop config manually.")
-            return
-        raw = input("  Config path: ").strip()
-        if not raw:
-            print("  Empty path — skipping config update.")
-            return
-        target = Path(raw).expanduser()
 
     try:
         change = _update_claude_config(target, data_dir)
