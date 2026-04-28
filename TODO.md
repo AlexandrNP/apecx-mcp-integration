@@ -99,3 +99,80 @@ with the detection signal ("test count from `pytest -v` doesn't
 match the number of `def test_` lines in the file under test") and
 the fix (`--rootdir=.`).  Note: friction log is now unversioned
 (see workspace `_workspace_notes/README.md`).
+
+## 5. Workspace-root files are unversioned (CLAUDE.md, settings, _workspace_notes)
+
+**What:** Three workspace-root artifacts shape every Claude Code
+session AND every `git`/install operation, but live in
+`/Users/<you>/Downloads/apecx-cowork/` which is not a git repo:
+
+- `CLAUDE.md` — workspace-wide rules loaded into every session.
+  Edited four times this session (PRs #11, #13, plus inline edits
+  for friction-log path updates).
+- `.claude/settings.json` — harness permission deny-list.  Edited
+  in PR #11 to close the `git checkout -B` gap.  Active behavioral
+  change with no version control.
+- `_workspace_notes/` — created in PR #13.  Contains the friction
+  log (entry #22 added today), 13 historical dev docs, and the
+  `agentic/` scratch dir.
+
+These are critical-to-process and lose ALL of:
+- git history (no `git log`, no `git blame` on individual entries),
+- visibility on PRs (changes don't show up in any review),
+- portability (a fresh laptop doesn't have them; another collaborator
+  has whatever-state-they-last-pulled),
+- backup (only via Time Machine / Dropbox / whatever's running).
+
+The friction log is the worst case: it was actively being appended
+to as a versioned artifact for weeks, and is now unversioned going
+forward.  Same for the deny-list (a future hook gap will need to
+be discovered all over again).
+
+**Why deferred:** the cleanup PR (#13) was about reducing repo
+docs/ noise, not about restructuring the workspace itself.
+Bundling versioning would have ballooned scope.
+
+**Trigger to revisit:** any of these conditions, in roughly
+priority order:
+1. Second developer joins and needs to pick up the workspace
+   conventions (their copy is naively different from yours).
+2. Disk failure / OS reinstall of the current machine.
+3. Friction log entry #25 gets written, demonstrating that the
+   "unversioned" status hasn't slowed accretion (and so the loss
+   risk is non-trivial).
+4. Workspace `CLAUDE.md` size approaches the always-loaded
+   context budget — at which point splitting/refactoring it is
+   risky without `git log` to undo.
+
+**Two solution sketches** (not implementations):
+
+**A. Make workspace root itself a git repo.**
+   - `cd /Users/<you>/Downloads/apecx-cowork && git init`.
+   - Track `CLAUDE.md`, `.claude/`, `_workspace_notes/` (and
+     anything else workspace-meta).
+   - `.gitignore` the sibling repos (`apecx-mcp-integration/`,
+     `nanobrain/`, etc.) since they're independent clones with
+     their own histories.
+   - Push to a new GitHub repo (e.g., `AlexandrNP/apecx-workspace`).
+   - **Risk:** the workspace CLAUDE.md says "the workspace root
+     itself is not a git repo" — this is a deliberate prior
+     decision the user made and should re-decide before reversing.
+   - **Cost:** ~30 min to init + ignore sibling repos + push.
+
+**B. Sibling versioned-config repo.**
+   - Create `apecx-workspace-config` as a sibling repo containing
+     just the meta files.
+   - Symlink them into the workspace root: `ln -s
+     ../apecx-workspace-config/CLAUDE.md /workspace/CLAUDE.md`.
+   - Push to GitHub like the others.
+   - **Risk:** symlinks break on Windows (some setups), and the
+     symlink-into-workspace-root pattern is non-obvious to a
+     fresh operator landing in the workspace.
+   - **Cost:** ~1 hour, more moving parts than A.
+
+Recommendation if/when this gets done: **A**, with a short README
+at the workspace root explaining the structure to a new operator.
+
+**Cost estimate:** 0.5–1 day depending on how much existing state
+lands in the new repo and whether you want a CI hook to enforce
+"no plaintext secrets in workspace config" or similar.
