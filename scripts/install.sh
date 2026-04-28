@@ -72,21 +72,65 @@ if [ -z "${APECX_MCP_BIN}" ]; then
     exit 1
 fi
 
-# 3. Offer data-directory setup.
-APECX_SETUP_BIN="$(command -v apecx-setup 2>/dev/null || true)"
-if [ -z "${APECX_SETUP_BIN}" ] && [ -x "${HOME}/.local/bin/apecx-setup" ]; then
-    APECX_SETUP_BIN="${HOME}/.local/bin/apecx-setup"
-fi
+# 3. Locate apecx-setup, chained to whichever installer just put it
+#    in place.  ``uv tool run`` does NOT find installed tools by
+#    command name (it would try to fetch ``apecx-setup`` from PyPI),
+#    so we resolve to the actual binary path:
+#
+#      uv tool   →  ~/.local/share/uv/tools/apecx-integration/bin/apecx-setup
+#                   (or the ~/.local/bin/apecx-setup symlink uv creates)
+#      pipx      →  ~/.local/bin/apecx-setup
+#      pip --user→  $(python -m site --user-base)/bin/apecx-setup
+#
+APECX_SETUP_BIN=""
+case "${INSTALLER}" in
+    "uv tool")
+        for _candidate in \
+            "${HOME}/.local/bin/apecx-setup" \
+            "${HOME}/.local/share/uv/tools/apecx-integration/bin/apecx-setup" \
+            "$(command -v apecx-setup 2>/dev/null || true)"; do
+            if [ -n "${_candidate}" ] && [ -x "${_candidate}" ]; then
+                APECX_SETUP_BIN="${_candidate}"
+                break
+            fi
+        done
+        ;;
+    *)
+        APECX_SETUP_BIN="$(command -v apecx-setup 2>/dev/null || true)"
+        if [ -z "${APECX_SETUP_BIN}" ] && [ -x "${HOME}/.local/bin/apecx-setup" ]; then
+            APECX_SETUP_BIN="${HOME}/.local/bin/apecx-setup"
+        fi
+        ;;
+esac
 
 echo "==> Data setup (VIOLIN + BV-BRC)"
 echo "    The database query tools need local CSV files to work."
 echo "    Requires: gh (GitHub CLI) authenticated — https://cli.github.com"
 echo
+
+# When this script is run via ``curl … | bash``, stdin is the pipe
+# carrying the script source, not the terminal — ``read`` would
+# silently consume script bytes.  Read from /dev/tty when available,
+# fall back to stdin for non-interactive invocations (CI, tests).
+if [ -t 0 ] || [ ! -e /dev/tty ]; then
+    _READ_SRC="/dev/stdin"
+else
+    _READ_SRC="/dev/tty"
+fi
+
 printf "    Download data now? [y/N] "
-read -r _DATA_ANSWER
+read -r _DATA_ANSWER < "${_READ_SRC}"
 if [ "${_DATA_ANSWER}" = "y" ] || [ "${_DATA_ANSWER}" = "Y" ]; then
     if [ -n "${APECX_SETUP_BIN}" ]; then
-        "${APECX_SETUP_BIN}"
+        # apecx-setup runs interactive ``input()`` prompts.  When this
+        # script is invoked via ``curl … | bash``, the subprocess
+        # inherits the pipe as stdin — input() would EOF immediately.
+        # Redirect stdin from /dev/tty when it exists.
+        if [ -e /dev/tty ]; then
+            "${APECX_SETUP_BIN}" < /dev/tty
+        else
+            "${APECX_SETUP_BIN}"
+        fi
         APECX_DATA_DIR="${HOME}/.apecx/data"   # default; user may have changed it
     else
         echo "WARNING: apecx-setup binary not found. Run it manually after install:" >&2
