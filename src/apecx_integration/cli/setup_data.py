@@ -327,12 +327,14 @@ def _maybe_update_claude_config(data_dir: Path) -> None:
         print("  Existing 'apecx' MCP server found.")
         if prior == str(data_dir):
             print(f"  APECX_DATA_ROOT is already set to {data_dir}. Nothing to do.")
+            print("  (To change LLM settings, run: apecx-setup --reconfigure-llm)")
             return
         if prior is None:
             print(f"  Will ADD APECX_DATA_ROOT = {data_dir}")
         else:
             print(f"  Will CHANGE APECX_DATA_ROOT: {prior} -> {data_dir}")
         print("  All other fields (command, args, LLM env vars) will be preserved.")
+        print("  (To change LLM settings, run: apecx-setup --reconfigure-llm)")
         print()
         if not _prompt_yes_no("  Apply this change?", default=True):
             print("  Skipped. Set APECX_DATA_ROOT manually in your Claude Desktop config.")
@@ -352,7 +354,111 @@ def _maybe_update_claude_config(data_dir: Path) -> None:
     print("  Fully quit and relaunch Claude Desktop for the change to take effect.")
 
 
-def main() -> None:
+def _reconfigure_llm_in_config(config_path: Path) -> None:
+    """Re-prompt for LLM env vars in an existing apecx config block.
+
+    Standalone path — does NOT download data, does NOT touch
+    APECX_DATA_ROOT, command, args, or unrelated env vars.  Errors out
+    if no apecx block exists; the user must run plain ``apecx-setup``
+    first.
+
+    Prompts prefill with the *current* config values (not Ollama
+    defaults), so the operator can see what they have and only change
+    what they want.  API keys are shown in the prompt — they live in
+    plaintext in the file already, and masking would prevent the user
+    from confirming the value they're keeping.
+    """
+    print("apecx-setup --reconfigure-llm — update LLM env in Claude Desktop config")
+    print()
+
+    try:
+        config = _load_or_init_config(config_path)
+    except RuntimeError as exc:
+        print(f"ERROR: {exc}")
+        sys.exit(1)
+    if not config_path.exists():
+        print(f"ERROR: config file does not exist: {config_path}")
+        print("       Run 'apecx-setup' (without --reconfigure-llm) first.")
+        sys.exit(1)
+
+    try:
+        apecx_block = _apecx_block_state(config, config_path)
+    except RuntimeError as exc:
+        print(f"ERROR: {exc}")
+        sys.exit(1)
+    if apecx_block is None:
+        print(f"ERROR: no 'apecx' MCP server found in {config_path}.")
+        print("       Run 'apecx-setup' (without --reconfigure-llm) first to install one.")
+        sys.exit(1)
+
+    current_env = apecx_block.get("env")
+    if not isinstance(current_env, dict):
+        print(f"ERROR: 'mcpServers.apecx.env' in {config_path} is missing or not an object.")
+        sys.exit(1)
+
+    print(f"  Editing config: {config_path}")
+    print("  Current values shown in [brackets]. Press Enter to keep, type to replace.")
+    print()
+
+    new_env: dict[str, str] = {}
+    for key in ("APECX_LLM_BASE_URL", "APECX_LLM_MODEL", "APECX_LLM_API_KEY"):
+        current = current_env.get(key, _DEFAULT_LLM_ENV[key])
+        raw = input(f"  {key} [{current}]: ").strip()
+        new_env[key] = raw or current
+
+    print()
+    print("  Proposed changes:")
+    any_change = False
+    for key in ("APECX_LLM_BASE_URL", "APECX_LLM_MODEL", "APECX_LLM_API_KEY"):
+        old = current_env.get(key, "<unset>")
+        new = new_env[key]
+        if old == new:
+            print(f"    {key}: unchanged")
+        else:
+            any_change = True
+            print(f"    {key}: {old} -> {new}")
+
+    if not any_change:
+        print()
+        print("  No changes. Config not modified.")
+        return
+
+    print()
+    if not _prompt_yes_no("  Apply these changes?", default=True):
+        print("  Cancelled. Config not modified.")
+        return
+
+    current_env.update(new_env)
+    try:
+        config_path.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+    except OSError as exc:
+        print(f"ERROR: could not write {config_path}: {exc}")
+        sys.exit(1)
+    print(f"  OK — wrote {config_path}")
+    print("  Fully quit and relaunch Claude Desktop for the change to take effect.")
+
+
+def _run_reconfigure_llm() -> None:
+    """Entry point for ``apecx-setup --reconfigure-llm``.
+
+    Resolves the Claude Desktop config path the same way the data-install
+    flow does (default location → confirm; or prompt for alternate),
+    then hands off to ``_reconfigure_llm_in_config``.
+    """
+    print("LLM reconfiguration — Claude Desktop config")
+    target = _resolve_config_target(_default_claude_config_path())
+    if target is None:
+        print("  Skipped. No config selected.")
+        return
+    if not target.exists():
+        print(f"ERROR: {target} does not exist.")
+        print("       Run 'apecx-setup' (without --reconfigure-llm) first.")
+        sys.exit(1)
+    _reconfigure_llm_in_config(target)
+
+
+def _run_full_setup() -> None:
+    """Entry point for plain ``apecx-setup`` (data download + config patch)."""
     print("apecx-setup — VIOLIN + BV-BRC data initializer")
     print()
 
@@ -411,3 +517,36 @@ def main() -> None:
         print(f"All {len(_EXPECTED_FILES)} data files extracted successfully.")
 
     _maybe_update_claude_config(data_dir)
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Console entry point. Parses CLI flags and dispatches.
+
+    ``argv`` is exposed for tests; real callers let argparse pull from
+    ``sys.argv``.
+    """
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        prog="apecx-setup",
+        description=(
+            "Download VIOLIN + BV-BRC data and patch Claude Desktop config. "
+            "Use --reconfigure-llm to change LLM env vars in an existing "
+            "config without re-downloading data."
+        ),
+    )
+    parser.add_argument(
+        "--reconfigure-llm",
+        action="store_true",
+        help=(
+            "Re-prompt for APECX_LLM_BASE_URL / _MODEL / _API_KEY in an "
+            "existing apecx server block; skip data download. Errors if "
+            "the config has no apecx block yet."
+        ),
+    )
+    args = parser.parse_args(argv)
+
+    if args.reconfigure_llm:
+        _run_reconfigure_llm()
+    else:
+        _run_full_setup()
