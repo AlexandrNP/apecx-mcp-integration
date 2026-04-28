@@ -1,9 +1,20 @@
 """
 Unit tests for apecx_integration.cli.setup_data.
 
-Verifies: gh availability checks, download dispatch, extraction, and
-the Claude Desktop config-update logic.  Does NOT shell out to GitHub
-or gh.
+Verifies: gh availability checks, download dispatch, extraction,
+Claude Desktop config-update logic, and ``--reconfigure-llm`` flow.
+
+Mock surface is kept minimal:
+- ``subprocess.run`` is intercepted with real ``CompletedProcess``
+  objects (no ``unittest.mock.MagicMock``); the gh subprocess itself
+  is the only cross-process boundary, and tests never shell out to
+  the real network.
+- ``_download_asset`` is patched per-test to copy a real local
+  tarball into the destination — preserves the unpack/extract path
+  end-to-end (real tarfile, real disk, real Path operations).
+- ``input()`` is the only unavoidable mock — there's no portable
+  way to simulate a TTY without a pty.
+- All Path / JSON / tarfile work uses real components on tmp_path.
 """
 
 import json
@@ -11,7 +22,6 @@ import subprocess
 import sys
 import tarfile
 from pathlib import Path
-from unittest.mock import MagicMock
 
 import pytest
 from apecx_integration.cli.setup_data import (
@@ -22,9 +32,17 @@ from apecx_integration.cli.setup_data import (
     _gh_authenticated,
     _gh_available,
     _prompt_for_llm_config,
+    _reconfigure_llm_in_config,
     _update_claude_config,
     main,
 )
+
+
+def _fake_gh_status(returncode: int):
+    """Return a real ``subprocess.CompletedProcess`` — no MagicMock."""
+    return lambda *a, **kw: subprocess.CompletedProcess(
+        args=list(a[0]) if a else [], returncode=returncode, stdout="", stderr=""
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -41,12 +59,12 @@ def test_gh_available_when_missing(monkeypatch):
 
 
 def test_gh_authenticated_success(monkeypatch):
-    monkeypatch.setattr("subprocess.run", lambda *a, **kw: MagicMock(returncode=0))
+    monkeypatch.setattr("subprocess.run", _fake_gh_status(0))
     assert _gh_authenticated() is True
 
 
 def test_gh_authenticated_failure(monkeypatch):
-    monkeypatch.setattr("subprocess.run", lambda *a, **kw: MagicMock(returncode=1))
+    monkeypatch.setattr("subprocess.run", _fake_gh_status(1))
     assert _gh_authenticated() is False
 
 
@@ -233,7 +251,7 @@ def test_update_rejects_when_no_apecx_mcp_binary(monkeypatch, tmp_path):
 def test_main_exits_when_gh_missing(monkeypatch, capsys):
     monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: False)
     with pytest.raises(SystemExit) as exc:
-        main()
+        main([])
     assert exc.value.code == 1
     assert "gh" in capsys.readouterr().out.lower()
 
@@ -242,7 +260,7 @@ def test_main_exits_when_not_authenticated(monkeypatch, capsys):
     monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
     monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: False)
     with pytest.raises(SystemExit) as exc:
-        main()
+        main([])
     assert exc.value.code == 1
     assert "auth" in capsys.readouterr().out.lower()
 
@@ -290,7 +308,7 @@ def test_main_happy_path_with_config_update(monkeypatch, tmp_path, capsys):
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
 
-    main()
+    main([])
 
     out = capsys.readouterr().out
     assert "All 6 data files extracted successfully" in out
@@ -340,7 +358,7 @@ def test_main_first_install_decline_does_not_write(monkeypatch, tmp_path, capsys
         shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main()
+    main([])
 
     assert json.loads(config_path.read_text()) == {"mcpServers": {}}, "config untouched"
 
@@ -388,7 +406,7 @@ def test_main_update_existing_apecx_shows_change_only(monkeypatch, tmp_path, cap
         shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main()
+    main([])
 
     out = capsys.readouterr().out
     assert "Existing 'apecx' MCP server found" in out
@@ -441,7 +459,7 @@ def test_main_update_idempotent_when_already_correct(monkeypatch, tmp_path, caps
         shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main()
+    main([])
 
     out = capsys.readouterr().out
     assert "already set" in out.lower() or "Nothing to do" in out
@@ -480,7 +498,7 @@ def test_main_skips_config_update_when_user_declines(monkeypatch, tmp_path, caps
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
 
-    main()
+    main([])
 
     # Config untouched.
     assert json.loads(config_path.read_text()) == {"mcpServers": {}}
@@ -585,7 +603,7 @@ def test_main_first_install_writes_custom_llm_env(monkeypatch, tmp_path, capsys)
         shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main()
+    main([])
 
     apecx_env = json.loads(config_path.read_text())["mcpServers"]["apecx"]["env"]
     assert apecx_env["APECX_LLM_BASE_URL"] == "https://api.anthropic.com/v1"
@@ -596,6 +614,270 @@ def test_main_first_install_writes_custom_llm_env(monkeypatch, tmp_path, capsys)
     out = capsys.readouterr().out
     assert '"APECX_LLM_BASE_URL": "https://api.anthropic.com/v1"' in out
     assert '"APECX_LLM_BASE_URL": "http://localhost:11434/v1"' not in out
+
+
+# ---------------------------------------------------------------------------
+# --reconfigure-llm — direct unit tests of the helper
+# ---------------------------------------------------------------------------
+def test_reconfigure_errors_when_no_apecx_block(monkeypatch, tmp_path, capsys):
+    """No apecx server in the config → exits with a clear remediation hint."""
+    config = tmp_path / "claude_desktop_config.json"
+    config.write_text(json.dumps({"mcpServers": {}}))
+
+    with pytest.raises(SystemExit) as exc:
+        _reconfigure_llm_in_config(config)
+    assert exc.value.code == 1
+
+    out = capsys.readouterr().out
+    assert "no 'apecx' MCP server found" in out
+    assert "apecx-setup" in out  # remediation pointer
+
+
+def test_reconfigure_errors_when_env_missing(monkeypatch, tmp_path, capsys):
+    """Apecx block exists but its 'env' field is missing — explicit error."""
+    config = tmp_path / "claude_desktop_config.json"
+    config.write_text(json.dumps({"mcpServers": {"apecx": {"command": "/x"}}}))
+
+    with pytest.raises(SystemExit) as exc:
+        _reconfigure_llm_in_config(config)
+    assert exc.value.code == 1
+    assert "missing or not an object" in capsys.readouterr().out
+
+
+def test_reconfigure_all_unchanged_writes_nothing(monkeypatch, tmp_path, capsys):
+    """User keeps every value (3 Enters) → no diff, no write."""
+    config = tmp_path / "claude_desktop_config.json"
+    original = {
+        "mcpServers": {
+            "apecx": {
+                "command": "/usr/bin/apecx-mcp",
+                "env": {
+                    "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
+                    "APECX_LLM_MODEL": "mistral-nemo:latest",
+                    "APECX_LLM_API_KEY": "unused",
+                    "APECX_DATA_ROOT": "/data",
+                },
+            }
+        }
+    }
+    config.write_text(json.dumps(original))
+    pre_mtime = config.stat().st_mtime_ns
+
+    monkeypatch.setattr("builtins.input", lambda _p: "")
+    _reconfigure_llm_in_config(config)
+
+    assert json.loads(config.read_text()) == original
+    assert config.stat().st_mtime_ns == pre_mtime, "file should not be re-written"
+    out = capsys.readouterr().out
+    assert "No changes" in out
+
+
+def test_reconfigure_replaces_only_llm_env_preserves_rest(monkeypatch, tmp_path):
+    """Custom URL + model → only LLM env changes; DATA_ROOT, command, args, other env preserved."""
+    config = tmp_path / "claude_desktop_config.json"
+    config.write_text(
+        json.dumps(
+            {
+                "mcpServers": {
+                    "apecx": {
+                        "command": "/some/path/apecx-mcp",
+                        "args": ["--flag"],
+                        "env": {
+                            "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
+                            "APECX_LLM_MODEL": "mistral-nemo:latest",
+                            "APECX_LLM_API_KEY": "old-key",
+                            "APECX_DATA_ROOT": "/preserved/data",
+                            "MY_CUSTOM_VAR": "preserved",
+                        },
+                    },
+                    "other-server": {"command": "/x"},
+                }
+            }
+        )
+    )
+
+    # User changes URL + model; keeps API key by pressing Enter.
+    inputs = iter(["https://api.openai.com/v1", "gpt-4o", "", "y"])
+    monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
+
+    _reconfigure_llm_in_config(config)
+
+    parsed = json.loads(config.read_text())
+    apecx = parsed["mcpServers"]["apecx"]
+    # LLM env updated.
+    assert apecx["env"]["APECX_LLM_BASE_URL"] == "https://api.openai.com/v1"
+    assert apecx["env"]["APECX_LLM_MODEL"] == "gpt-4o"
+    assert apecx["env"]["APECX_LLM_API_KEY"] == "old-key", "kept on Enter"
+    # Everything else preserved.
+    assert apecx["command"] == "/some/path/apecx-mcp"
+    assert apecx["args"] == ["--flag"]
+    assert apecx["env"]["APECX_DATA_ROOT"] == "/preserved/data"
+    assert apecx["env"]["MY_CUSTOM_VAR"] == "preserved"
+    assert parsed["mcpServers"]["other-server"] == {"command": "/x"}
+
+
+def test_reconfigure_user_cancels_after_diff(monkeypatch, tmp_path):
+    """Diff shown, user says 'n' → file unchanged."""
+    config = tmp_path / "claude_desktop_config.json"
+    original = {
+        "mcpServers": {
+            "apecx": {
+                "command": "/x",
+                "env": {
+                    "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
+                    "APECX_LLM_MODEL": "mistral-nemo:latest",
+                    "APECX_LLM_API_KEY": "unused",
+                },
+            }
+        }
+    }
+    config.write_text(json.dumps(original))
+
+    inputs = iter(["https://newurl/v1", "newmodel", "newkey", "n"])
+    monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
+
+    _reconfigure_llm_in_config(config)
+    assert json.loads(config.read_text()) == original
+
+
+def test_reconfigure_round_trip_via_main(monkeypatch, tmp_path):
+    """End-to-end through main(['--reconfigure-llm']): write, then re-load and verify.
+
+    This is the integration-style assertion the user asked for: not
+    just 'JSON has the right shape after one call', but 'the value
+    we wrote is the value a fresh process would read back'.
+    """
+    config = tmp_path / "claude_desktop_config.json"
+    config.write_text(
+        json.dumps(
+            {
+                "mcpServers": {
+                    "apecx": {
+                        "command": "/x",
+                        "env": dict(_DEFAULT_LLM_ENV, APECX_DATA_ROOT="/preserved"),
+                    }
+                }
+            }
+        )
+    )
+    monkeypatch.setattr(
+        "apecx_integration.cli.setup_data._default_claude_config_path",
+        lambda: config,
+    )
+
+    # "Use this config?" → URL → model → key → "Apply?"
+    inputs = iter(
+        [
+            "y",
+            "https://api.anthropic.com/v1",
+            "claude-sonnet-4-6",
+            "sk-ant-fake",
+            "y",
+        ]
+    )
+    monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
+
+    main(["--reconfigure-llm"])
+
+    # Re-read the file from disk (NOT just trust in-memory state).
+    written = json.loads(config.read_text(encoding="utf-8"))
+    apecx_env = written["mcpServers"]["apecx"]["env"]
+    assert apecx_env["APECX_LLM_BASE_URL"] == "https://api.anthropic.com/v1"
+    assert apecx_env["APECX_LLM_MODEL"] == "claude-sonnet-4-6"
+    assert apecx_env["APECX_LLM_API_KEY"] == "sk-ant-fake"
+    assert apecx_env["APECX_DATA_ROOT"] == "/preserved", "data root NOT touched"
+
+
+def test_main_reconfigure_does_not_invoke_data_download(monkeypatch, tmp_path):
+    """--reconfigure-llm must not trigger gh / tarfile / data-dir prompts.
+
+    Guard against regression: if a future refactor accidentally
+    routes the flag through _run_full_setup, the canary functions
+    below would be called and the test fails loudly.
+    """
+    config = tmp_path / "claude_desktop_config.json"
+    config.write_text(
+        json.dumps(
+            {
+                "mcpServers": {
+                    "apecx": {
+                        "command": "/x",
+                        "env": dict(_DEFAULT_LLM_ENV, APECX_DATA_ROOT="/d"),
+                    }
+                }
+            }
+        )
+    )
+    monkeypatch.setattr(
+        "apecx_integration.cli.setup_data._default_claude_config_path",
+        lambda: config,
+    )
+
+    canary = {"download_called": False, "gh_check_called": False}
+
+    def boom_download(_dest):
+        canary["download_called"] = True
+        raise AssertionError("data download should not run under --reconfigure-llm")
+
+    def boom_gh_avail():
+        canary["gh_check_called"] = True
+        raise AssertionError("gh check should not run under --reconfigure-llm")
+
+    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", boom_download)
+    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", boom_gh_avail)
+
+    inputs = iter(["y", "", "", "", "y"])  # use config / 3 Enters / apply
+    monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
+
+    main(["--reconfigure-llm"])
+
+    assert canary["download_called"] is False
+    assert canary["gh_check_called"] is False
+
+
+def test_main_full_setup_prompt_mentions_reconfigure_flag(monkeypatch, tmp_path):
+    """Update path (existing apecx block, full apecx-setup) prints the --reconfigure-llm pointer."""
+    archive_dir = tmp_path / "archive_src"
+    archive_dir.mkdir()
+    (archive_dir / "violin").mkdir()
+    for f in _EXPECTED_FILES:
+        (archive_dir / f).write_text("data\n")
+    archive_path = tmp_path / "apecx-data.tar.gz"
+    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
+        for f in _EXPECTED_FILES:
+            tf.add(archive_dir / f, arcname=f)
+
+    dest_dir = tmp_path / "data"
+    config_path = tmp_path / "claude_desktop_config.json"
+    config_path.write_text(
+        json.dumps({"mcpServers": {"apecx": {"command": "/x", "env": {"APECX_DATA_ROOT": "/old"}}}})
+    )
+
+    monkeypatch.setattr(
+        "apecx_integration.cli.setup_data._default_claude_config_path",
+        lambda: config_path,
+    )
+    inputs = iter([str(dest_dir), "y", "y"])
+    monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
+    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
+    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
+
+    def fake_download(dest: str) -> None:
+        import shutil
+
+        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
+
+    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
+
+    import io
+    from contextlib import redirect_stdout
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        main([])
+
+    output = buf.getvalue()
+    assert "--reconfigure-llm" in output, "update flow must point users at the flag"
 
 
 def test_main_download_failure_exits(monkeypatch, tmp_path, capsys):
@@ -610,6 +892,6 @@ def test_main_download_failure_exits(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", failing_download)
 
     with pytest.raises(SystemExit) as exc:
-        main()
+        main([])
     assert exc.value.code == 1
     assert "download failed" in capsys.readouterr().out

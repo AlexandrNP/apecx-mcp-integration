@@ -417,3 +417,54 @@ production. Whichever comes first.
 **Cost estimate:** 0.5d to write a ``data_provisioning.md`` covering
 download URL / export procedure / file-shape validation; longer if
 the VIOLIN team turns out not to have a clean export workflow.
+
+## `APECX_LLM_API_KEY` plaintext storage in Claude Desktop config
+
+**What:** ``apecx-setup`` (and ``apecx-setup --reconfigure-llm``)
+writes the LLM API key directly into ``claude_desktop_config.json``
+under ``mcpServers.apecx.env.APECX_LLM_API_KEY``. For Ollama users
+this is harmless (the value is the literal string ``"unused"``), but
+operators who paste a real Anthropic / OpenAI / cloud key end up
+with that key in plaintext on disk — captured by Time Machine,
+Dropbox, and any backup system that snapshots the user's home dir.
+
+This is a structural limitation of the Claude Desktop MCP config
+format: ``env`` blocks accept only plain strings, no indirection.
+Every MCP server with a credential faces the same constraint.
+
+**Why deferred:** the safe-default path (Ollama, ``"unused"``) is
+the documented common case in our user base. The fix has multiple
+moving parts and shouldn't piggy-back on the install-UX work.
+
+**Proposed solution:** integrate the
+[``keyring``](https://pypi.org/project/keyring/) library so the API
+key lives in the OS keychain (macOS Keychain / Windows Credential
+Manager / libsecret on Linux). Required pieces:
+
+1. ``keyring`` as a runtime dependency.
+2. ``apecx-setup`` writes the key via ``keyring.set_password(
+   "apecx-mcp", "APECX_LLM_API_KEY", value)`` and writes a sentinel
+   like ``APECX_LLM_API_KEY="keyring:apecx-mcp"`` to the config.
+3. ``apecx-mcp`` (and ``apecx-cp``) parse the sentinel at startup,
+   resolving via ``keyring.get_password`` when present, falling back
+   to the literal value otherwise. Backwards-compatible.
+4. ``apecx-setup --reconfigure-llm`` rewrites both the keychain
+   entry and the config sentinel atomically.
+5. New flag ``--no-keyring`` for users who can't or won't use the
+   keychain (CI, headless boxes); writes plaintext as today.
+6. Documentation update: spell out the threat model the keyring
+   actually addresses (file-system snapshots, accidental commit of
+   a backed-up config) and what it does NOT (a privileged process
+   on the same machine reading the keychain). The existing
+   ``docs/mcp_integration.md`` "Secrets handling" section is the
+   anchor — expand it.
+
+**Trigger to revisit:** first operator request for a paid-cloud
+LLM in production, OR the first time a user accidentally commits
+``claude_desktop_config.json`` to a git repo.
+
+**Cost estimate:** 1.5–2 days. Most of the time is in the apecx-mcp
+sentinel-resolution path + cross-platform keyring testing (macOS
+Keychain prompts UI permission on first access; Linux libsecret
+backends vary; Windows is generally clean). Implementation is small;
+fragility is in the integration tests across OSes.

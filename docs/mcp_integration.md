@@ -480,6 +480,51 @@ What you should know if you're betting production work on this:
   free-form `modifications` payload from `correct(...)` should
   validate before acting. Citation grounding (RAG synthesis) is
   defense-in-depth, not a clinical-trust boundary.
+- **`APECX_LLM_API_KEY` is stored in plaintext in
+  `claude_desktop_config.json`.** See "Secrets handling" below.
+
+## Secrets handling — plaintext API keys (known limitation)
+
+`apecx-setup` writes `APECX_LLM_BASE_URL`, `APECX_LLM_MODEL`, and
+`APECX_LLM_API_KEY` directly into the Claude Desktop config file
+under `mcpServers.apecx.env`. This means **any real API key
+(Anthropic, OpenAI, etc.) you paste into the prompt ends up in
+plaintext on disk** at:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- Linux: `~/.config/Claude/claude_desktop_config.json`
+
+This is not a bug in `apecx-setup` per se — it's the only mechanism
+the Claude Desktop MCP-config format provides. Every MCP server that
+needs an API key (gh, openai-mcp, anthropic-mcp, etc.) faces the same
+constraint.
+
+**What this means in practice:**
+
+- File permissions on Unix-y systems default to `0644` (readable by
+  any local user). Tighten to `0600` if you share the machine:
+  `chmod 600 ~/Library/Application\ Support/Claude/claude_desktop_config.json`
+- Backups (Time Machine, Dropbox folder sync, etc.) capture the file
+  verbatim. Audit your backup destinations before pasting a real key.
+- For shared machines, prefer a per-user, locally-bound LLM endpoint
+  (Ollama on `localhost:11434` with `APECX_LLM_API_KEY=unused`)
+  rather than a real cloud key. The Ollama default is the path of
+  least disclosure.
+- For paid cloud LLMs in production, the right move is **NOT** this
+  config file — it's an upstream proxy with its own auth. Run
+  apecx-mcp pointed at, e.g., a LiteLLM proxy whose API key is
+  managed by your secrets system, and put the proxy's URL (no key
+  required from your side) in the config.
+
+**Proposed solution (tracked, not implemented):** integrate
+[`keyring`](https://pypi.org/project/keyring/) so the API key lives
+in the OS keychain (macOS Keychain / Windows Credential Manager /
+libsecret) and apecx-mcp resolves it at startup via a sentinel like
+`APECX_LLM_API_KEY=keyring:apecx`. This requires (a) `keyring` as a
+runtime dep, (b) apecx-mcp resolution logic, (c) `apecx-setup`
+write-to-keychain path. Sized as a follow-up PR; see
+`docs/future_work.md`.
 
 ## Updating
 
