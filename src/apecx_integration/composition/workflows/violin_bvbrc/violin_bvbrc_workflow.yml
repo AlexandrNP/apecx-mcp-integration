@@ -65,13 +65,6 @@
 # bvbrc_alphavirus_genomes_reader) defined here so the broader
 # pipeline can pull from them once Step 5/6 wiring lands. Unlinked
 # in T01.
-#
-# Operator install requirement: ``pip install -e ../apecx-db-integration``
-# into the apecx-mcp-integration venv before loading this workflow. The
-# three apecx-db-integration wrapper steps (1, 3c, 5) ImportError loudly
-# at YAML load if the sibling repo is not installed — see
-# ``src/apecx_integration/composition/steps/db_integration_wrappers.py``
-# module docstring for the rationale.
 
 name: violin_bvbrc_workflow
 description: "VIOLIN × BV-BRC entity-synonym workflow (first-release HARD-synonym variant)."
