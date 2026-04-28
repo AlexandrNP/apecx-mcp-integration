@@ -93,10 +93,14 @@ def _find_apecx_mcp_binary() -> str | None:
     return None
 
 
-def _build_apecx_server_block(data_dir: Path) -> dict:
+def _build_apecx_server_block(data_dir: Path, llm_env: dict | None = None) -> dict:
     """Construct the full ``mcpServers.apecx`` block for a fresh install.
 
-    Returns the dict to be serialized into the Claude Desktop config.
+    ``llm_env`` overrides the LLM defaults; pass the result of
+    ``_prompt_for_llm_config()`` for the interactive first-install path.
+    When None, falls back to ``_DEFAULT_LLM_ENV`` (used by tests and
+    non-interactive callers).
+
     Raises RuntimeError if apecx-mcp can't be located on disk.
     """
     apecx_mcp = _find_apecx_mcp_binary()
@@ -105,11 +109,39 @@ def _build_apecx_server_block(data_dir: Path) -> dict:
             "Could not locate the apecx-mcp binary. Install it first "
             "(uv tool install / pipx install) before running apecx-setup."
         )
+    env = dict(_DEFAULT_LLM_ENV)
+    if llm_env is not None:
+        env.update(llm_env)
+    env["APECX_DATA_ROOT"] = str(data_dir)
     return {
         "command": apecx_mcp,
         "args": [],
-        "env": {"APECX_DATA_ROOT": str(data_dir), **_DEFAULT_LLM_ENV},
+        "env": env,
     }
+
+
+def _prompt_for_llm_config() -> dict:
+    """Prompt for the three LLM env vars; Enter accepts each default.
+
+    Empty input picks the default verbatim — the common Ollama path is
+    three Enter presses.  Non-empty input is taken literally with no
+    URL/model validation; we trust the operator and surface mistakes
+    later (apecx-mcp will fail loudly at first composer call).
+    """
+    print()
+    print("LLM configuration")
+    print("  apecx-mcp uses an OpenAI-compatible LLM endpoint for the composer.")
+    print("  Defaults assume Ollama on localhost:11434.  Press Enter to accept,")
+    print("  or type a replacement.  Re-running apecx-setup later will not")
+    print("  re-prompt — edit the values directly in claude_desktop_config.json.")
+    print()
+
+    chosen: dict[str, str] = {}
+    for key in ("APECX_LLM_BASE_URL", "APECX_LLM_MODEL", "APECX_LLM_API_KEY"):
+        default = _DEFAULT_LLM_ENV[key]
+        raw = input(f"  {key} [{default}]: ").strip()
+        chosen[key] = raw or default
+    return chosen
 
 
 def _load_or_init_config(config_path: Path) -> dict:
@@ -150,15 +182,23 @@ def _apecx_block_state(config: dict, config_path: Path) -> dict | None:
     return apecx_block
 
 
-def _update_claude_config(config_path: Path, data_dir: Path) -> str:
+def _update_claude_config(
+    config_path: Path,
+    data_dir: Path,
+    llm_env: dict | None = None,
+) -> str:
     """Patch the Claude Desktop config to set APECX_DATA_ROOT.
 
     Behavior:
       - Missing file: create a minimal config with a full ``apecx`` block.
       - Missing ``mcpServers``: add it.
       - Missing ``mcpServers.apecx``: add a full block (defaults + the data dir).
+        ``llm_env`` (when provided) overrides APECX_LLM_BASE_URL/_MODEL/_API_KEY
+        in the new block — used by the interactive first-install path.
       - Existing ``mcpServers.apecx``: update only ``env.APECX_DATA_ROOT``;
         preserve every other field (command, args, other env vars).
+        ``llm_env`` is ignored on the update path — we never overwrite an
+        existing operator's LLM settings.
 
     Returns a one-line summary of what changed.
     """
@@ -167,7 +207,7 @@ def _update_claude_config(config_path: Path, data_dir: Path) -> str:
 
     mcp_servers = config.setdefault("mcpServers", {})
     if apecx_block is None:
-        mcp_servers["apecx"] = _build_apecx_server_block(data_dir)
+        mcp_servers["apecx"] = _build_apecx_server_block(data_dir, llm_env=llm_env)
         change = f"created new 'apecx' server entry pointing at {mcp_servers['apecx']['command']}"
     else:
         env = apecx_block.setdefault("env", {})
@@ -253,24 +293,25 @@ def _maybe_update_claude_config(data_dir: Path) -> None:
         print(f"  ERROR: {exc}")
         sys.exit(1)
 
+    llm_env: dict | None = None
     if apecx_existing is None:
-        # First-time install: show the complete block we're about to write.
+        # First-time install: prompt for LLM config FIRST so the preview
+        # reflects the operator's actual choices, not the defaults.
+        print()
+        print("  No 'apecx' MCP server found — this is a first-time install.")
+        llm_env = _prompt_for_llm_config()
+
         try:
-            proposed_block = _build_apecx_server_block(data_dir)
+            proposed_block = _build_apecx_server_block(data_dir, llm_env=llm_env)
         except RuntimeError as exc:
             print(f"  ERROR: {exc}")
             sys.exit(1)
 
         print()
-        print("  No 'apecx' MCP server found — this is a first-time install.")
         print("  The following block will be ADDED to mcpServers:")
         print()
         for line in _format_apecx_block_preview(proposed_block).splitlines():
             print(f"    {line}")
-        print()
-        print("  NOTE: APECX_LLM_BASE_URL / _MODEL / _API_KEY default to a local")
-        print("  Ollama install (mistral-nemo on localhost:11434). If you use a")
-        print("  different LLM, edit those values in the config after this step.")
         print()
         if not _prompt_yes_no("  Add this block to your Claude Desktop config?", default=True):
             print("  Skipped. Add the apecx MCP server to your config manually.")
@@ -298,7 +339,7 @@ def _maybe_update_claude_config(data_dir: Path) -> None:
             return
 
     try:
-        change = _update_claude_config(target, data_dir)
+        change = _update_claude_config(target, data_dir, llm_env=llm_env)
     except RuntimeError as exc:
         print(f"  ERROR: {exc}")
         sys.exit(1)

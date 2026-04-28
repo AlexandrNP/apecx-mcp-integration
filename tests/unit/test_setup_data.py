@@ -21,6 +21,7 @@ from apecx_integration.cli.setup_data import (
     _find_apecx_mcp_binary,
     _gh_authenticated,
     _gh_available,
+    _prompt_for_llm_config,
     _update_claude_config,
     main,
 )
@@ -275,8 +276,8 @@ def test_main_happy_path_with_config_update(monkeypatch, tmp_path, capsys):
         lambda: "/usr/bin/apecx-mcp",
     )
 
-    # input() sequence: data dir → "Use this config? Y/n" → "Add this block? Y/n"
-    inputs = iter([str(dest_dir), "y", "y"])
+    # input() sequence: data dir → "Use this config?" → 3 LLM prompts → "Add block?"
+    inputs = iter([str(dest_dir), "y", "", "", "", "y"])
     monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
 
     monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
@@ -327,7 +328,8 @@ def test_main_first_install_decline_does_not_write(monkeypatch, tmp_path, capsys
         "apecx_integration.cli.setup_data._find_apecx_mcp_binary",
         lambda: "/usr/bin/apecx-mcp",
     )
-    inputs = iter([str(dest_dir), "y", "n"])
+    # data dir → "Use config?" → 3 LLM defaults → "Add block? n"
+    inputs = iter([str(dest_dir), "y", "", "", "", "n"])
     monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
     monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
     monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
@@ -483,6 +485,117 @@ def test_main_skips_config_update_when_user_declines(monkeypatch, tmp_path, caps
     # Config untouched.
     assert json.loads(config_path.read_text()) == {"mcpServers": {}}
     assert "Skipped" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------------------
+# _prompt_for_llm_config — direct unit tests
+# ---------------------------------------------------------------------------
+def test_prompt_for_llm_config_all_defaults(monkeypatch):
+    """Three Enter presses → all defaults preserved."""
+    inputs = iter(["", "", ""])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+    result = _prompt_for_llm_config()
+    assert result == _DEFAULT_LLM_ENV
+
+
+def test_prompt_for_llm_config_all_custom(monkeypatch):
+    """All three values overridden — none of the defaults survive."""
+    inputs = iter(
+        [
+            "https://api.openai.com/v1",
+            "gpt-4o",
+            "sk-fakekey-1234",
+        ]
+    )
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+    result = _prompt_for_llm_config()
+    assert result == {
+        "APECX_LLM_BASE_URL": "https://api.openai.com/v1",
+        "APECX_LLM_MODEL": "gpt-4o",
+        "APECX_LLM_API_KEY": "sk-fakekey-1234",
+    }
+
+
+def test_prompt_for_llm_config_mixed(monkeypatch):
+    """Override only the model; URL and API key keep defaults."""
+    inputs = iter(["", "llama3.1:70b", ""])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+    result = _prompt_for_llm_config()
+    assert result["APECX_LLM_BASE_URL"] == _DEFAULT_LLM_ENV["APECX_LLM_BASE_URL"]
+    assert result["APECX_LLM_MODEL"] == "llama3.1:70b"
+    assert result["APECX_LLM_API_KEY"] == _DEFAULT_LLM_ENV["APECX_LLM_API_KEY"]
+
+
+def test_prompt_for_llm_config_strips_whitespace(monkeypatch):
+    """Leading/trailing whitespace shouldn't leak into the config."""
+    inputs = iter(["  https://x/v1  ", " mymodel ", "  "])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+    result = _prompt_for_llm_config()
+    assert result["APECX_LLM_BASE_URL"] == "https://x/v1"
+    assert result["APECX_LLM_MODEL"] == "mymodel"
+    # Whitespace-only is treated as empty → default kicks in.
+    assert result["APECX_LLM_API_KEY"] == _DEFAULT_LLM_ENV["APECX_LLM_API_KEY"]
+
+
+# ---------------------------------------------------------------------------
+# Threading: custom LLM env actually reaches the written config
+# ---------------------------------------------------------------------------
+def test_main_first_install_writes_custom_llm_env(monkeypatch, tmp_path, capsys):
+    """User customizes LLM URL + model → values land in the written config."""
+    archive_dir = tmp_path / "archive_src"
+    archive_dir.mkdir()
+    (archive_dir / "violin").mkdir()
+    for f in _EXPECTED_FILES:
+        (archive_dir / f).write_text("data\n")
+    archive_path = tmp_path / "apecx-data.tar.gz"
+    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
+        for f in _EXPECTED_FILES:
+            tf.add(archive_dir / f, arcname=f)
+
+    dest_dir = tmp_path / "data"
+    config_path = tmp_path / "claude_desktop_config.json"
+    config_path.write_text(json.dumps({"mcpServers": {}}))
+
+    monkeypatch.setattr(
+        "apecx_integration.cli.setup_data._default_claude_config_path",
+        lambda: config_path,
+    )
+    monkeypatch.setattr(
+        "apecx_integration.cli.setup_data._find_apecx_mcp_binary",
+        lambda: "/usr/bin/apecx-mcp",
+    )
+    # data dir → "Use config?" → URL → model → key → "Add block?"
+    inputs = iter(
+        [
+            str(dest_dir),
+            "y",
+            "https://api.anthropic.com/v1",
+            "claude-sonnet-4-6",
+            "sk-ant-fake",
+            "y",
+        ]
+    )
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
+    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
+
+    def fake_download(dest: str) -> None:
+        import shutil
+
+        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
+
+    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
+    main()
+
+    apecx_env = json.loads(config_path.read_text())["mcpServers"]["apecx"]["env"]
+    assert apecx_env["APECX_LLM_BASE_URL"] == "https://api.anthropic.com/v1"
+    assert apecx_env["APECX_LLM_MODEL"] == "claude-sonnet-4-6"
+    assert apecx_env["APECX_LLM_API_KEY"] == "sk-ant-fake"
+    # The JSON preview must show the chosen URL, not the default.
+    # ("localhost:11434" appears in the help text — assert the JSON key/value form.)
+    out = capsys.readouterr().out
+    assert '"APECX_LLM_BASE_URL": "https://api.anthropic.com/v1"' in out
+    assert '"APECX_LLM_BASE_URL": "http://localhost:11434/v1"' not in out
 
 
 def test_main_download_failure_exits(monkeypatch, tmp_path, capsys):
