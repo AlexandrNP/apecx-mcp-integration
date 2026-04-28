@@ -1,9 +1,13 @@
 # apecx-mcp-integration
 
-MCP server for the APECx scientific platform. Exposes 11 scientist-facing
-tools to Claude Desktop (or any MCP client) over stdio: compose a
-workflow from a natural-language description, review the diff, execute
-locally, optionally export to HPC.
+MCP server for the APECx scientific platform. Exposes 20 scientist-facing
+tools to Claude Desktop (or any MCP client) over stdio: query VIOLIN +
+BV-BRC databases directly, compose workflows from natural-language
+descriptions, review diffs, execute locally, and export to HPC.
+
+> **Fresh laptop to first query in ~15 min: see [`docs/QUICKSTART.md`](docs/QUICKSTART.md).**
+> Deeper install options: [`INSTALL.md`](INSTALL.md);
+> per-tool reference + troubleshooting: [`docs/mcp_integration.md`](docs/mcp_integration.md).
 
 > **License: All Rights Reserved (proprietary, source-available).**
 > See [`LICENSE`](LICENSE). Public for transparency; reuse, redistribution,

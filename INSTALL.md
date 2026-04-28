@@ -1,5 +1,10 @@
 # Install — apecx-mcp
 
+> **Looking for a single linear walkthrough from fresh machine to
+> first query?** → [`docs/QUICKSTART.md`](docs/QUICKSTART.md).
+> This file is the deeper install reference (alternative installers,
+> developer-mode editable install, post-install verification).
+
 ## The one-liner
 
 ```bash
