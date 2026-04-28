@@ -69,6 +69,7 @@ from apecx_integration.mcp_surface.tools import (
 from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
+
 # Note: ``get_client`` is intentionally NOT imported here. The
 # startup health check builds an ephemeral client (see
 # ``_verify_control_plane_reachable``) so it doesn't pollute the
@@ -128,6 +129,7 @@ async def _ping_control_plane(base_url: str) -> bool:
     from apecx_integration.mcp_surface.control_plane_client import (
         ControlPlaneClient,
     )
+
     ephemeral = ControlPlaneClient(base_url)
     try:
         await ephemeral.healthz()
@@ -177,17 +179,27 @@ def _autostart_backend(base_url: str) -> subprocess.Popen[bytes] | None:
         # works when the venv's bin dir isn't on PATH (rare for
         # editable installs but happens with isolated launch contexts).
         cp_binary = sys.executable
-        cp_args = ["-m", "apecx_integration.control_plane.app", "serve",
-                   "--host", host, "--port", str(port)]
+        cp_args = [
+            "-m",
+            "apecx_integration.control_plane.app",
+            "serve",
+            "--host",
+            host,
+            "--port",
+            str(port),
+        ]
     else:
         cp_args = ["serve", "--host", host, "--port", str(port)]
 
     import tempfile
+
     log_path = Path(tempfile.gettempdir()) / "apecx-cp-autostart.log"
     log_fh = log_path.open("ab")
     log.info(
         "MCP autostart: spawning backend (%s %s) — child stderr -> %s",
-        cp_binary, " ".join(cp_args), log_path,
+        cp_binary,
+        " ".join(cp_args),
+        log_path,
     )
 
     # Inherit env (LLM vars + APECX_CP_POSTGRES_URL if set). Force
@@ -221,10 +233,7 @@ def _terminate_child_backend() -> None:
         proc.terminate()
         proc.wait(timeout=5.0)
     except subprocess.TimeoutExpired:
-        log.warning(
-            "MCP shutdown: backend did not terminate within 5s; "
-            "sending SIGKILL"
-        )
+        log.warning("MCP shutdown: backend did not terminate within 5s; sending SIGKILL")
         proc.kill()
         proc.wait(timeout=2.0)
     except Exception as exc:  # noqa: BLE001
@@ -232,7 +241,9 @@ def _terminate_child_backend() -> None:
 
 
 async def _wait_for_backend_ready(
-    base_url: str, *, timeout_s: float = 60.0,
+    base_url: str,
+    *,
+    timeout_s: float = 60.0,
 ) -> bool:
     """Poll /healthz until it answers or timeout. Returns True on
     success, False on timeout. 60s default covers SQLite migrations
@@ -273,23 +284,16 @@ async def _verify_control_plane_reachable() -> None:
     error.
     """
     if os.environ.get("APECX_MCP_SKIP_HEALTHCHECK") == "1":
-        log.info(
-            "MCP startup: APECX_MCP_SKIP_HEALTHCHECK=1, skipping CP "
-            "reachability check."
-        )
+        log.info("MCP startup: APECX_MCP_SKIP_HEALTHCHECK=1, skipping CP reachability check.")
         return
 
-    base_url = os.environ.get(
-        "APECX_CONTROL_PLANE_URL", "http://localhost:8000"
-    )
+    base_url = os.environ.get("APECX_CONTROL_PLANE_URL", "http://localhost:8000")
 
     if await _ping_control_plane(base_url):
         log.info("MCP startup: Control Plane at %s reachable.", base_url)
         return
 
-    autostart_enabled = os.environ.get(
-        "APECX_MCP_AUTOSTART_BACKEND", "1"
-    ) != "0"
+    autostart_enabled = os.environ.get("APECX_MCP_AUTOSTART_BACKEND", "1") != "0"
     if not autostart_enabled:
         log.error(
             "MCP startup: Control Plane at %s is unreachable AND "
@@ -322,12 +326,14 @@ async def _verify_control_plane_reachable() -> None:
         log.error(
             "MCP startup: autostart spawned backend (pid=%s) but it "
             "did not become ready within 60s. Backend log: %s",
-            proc.pid, _CHILD_BACKEND_LOG,
+            proc.pid,
+            _CHILD_BACKEND_LOG,
         )
         if _CHILD_BACKEND_LOG and _CHILD_BACKEND_LOG.is_file():
             try:
                 tail = _CHILD_BACKEND_LOG.read_text(
-                    encoding="utf-8", errors="ignore",
+                    encoding="utf-8",
+                    errors="ignore",
                 )[-2000:]
                 log.error("Backend log tail:\n%s", tail)
             except Exception:  # noqa: BLE001
@@ -336,13 +342,62 @@ async def _verify_control_plane_reachable() -> None:
 
     log.info(
         "MCP startup: autostart succeeded — backend at %s, child pid=%s",
-        base_url, proc.pid,
+        base_url,
+        proc.pid,
     )
+
+
+def _check_data_root_or_warn() -> None:
+    """Log a loud banner when the VIOLIN/BV-BRC data dir is missing.
+
+    The MCP server itself starts fine without data — start_workflow
+    and the approval/HPC tools still work — but every database tool
+    (query_vaccines, etc.) returns ``{"error": ...}``.  Operators who
+    install via ``uv tool install`` (bypassing scripts/install.sh)
+    have no other signal that they skipped ``apecx-setup``; surface
+    the missing piece in the MCP server log so it's visible in
+    ``~/Library/Logs/Claude/mcp-server-apecx.log``.
+    """
+    # Local import: keep server boot lean for paths that never use db.
+    from apecx_integration.mcp_surface.data.database import _resolve_data_root
+
+    data_root = _resolve_data_root()
+    if data_root is None:
+        reason = "neither APECX_DATA_ROOT nor APECX_ROOT is set in the MCP server's env block"
+    elif not data_root.is_dir():
+        reason = f"configured data root {data_root} does not exist"
+    else:
+        violin_dir = data_root / "violin"
+        bvbrc_csv = data_root / "BVBRC_genome_alphavirus.csv"
+        if not violin_dir.is_dir() and not bvbrc_csv.is_file():
+            reason = (
+                f"data root {data_root} exists but contains neither "
+                f"violin/ nor BVBRC_genome_alphavirus.csv"
+            )
+        else:
+            return  # data present — silent success.
+
+    log.warning("=" * 64)
+    log.warning("APECx data tools DISABLED — %s", reason)
+    log.warning("")
+    log.warning("Database tools (query_vaccines, query_pathogens, …) will")
+    log.warning("return errors on every call until this is fixed.")
+    log.warning("")
+    log.warning("To fix:")
+    log.warning("  1. Run ``apecx-setup`` to download the dataset")
+    log.warning("     (one-time, ~1.5 MB).")
+    log.warning("  2. Set APECX_DATA_ROOT in your Claude Desktop config:")
+    log.warning('       "env": { "APECX_DATA_ROOT": "<path>", ... }')
+    log.warning("  3. Fully quit and relaunch Claude Desktop.")
+    log.warning("")
+    log.warning("Log path (macOS): ~/Library/Logs/Claude/mcp-server-apecx.log")
+    log.warning("=" * 64)
 
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     asyncio.run(_verify_control_plane_reachable())
+    _check_data_root_or_warn()
     server = build_server()
     server.run()
 
