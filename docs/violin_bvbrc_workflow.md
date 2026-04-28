@@ -283,15 +283,6 @@ A typical complete run produces approximately 20–30 events depending on how ma
 
 ## References
 
-### Visual diagrams (in `diagrams/`)
-
-- `01_system_architecture.svg` — where the workflow runtime sits in the four-tier architecture.
-- `02_workflow_lifecycle.svg` — the end-to-end stages with their MCP tool calls.
-- `04_composition_and_differ.svg` — how the composer categorizes the workflow's steps.
-- `05_hitl_approval_flow.svg` — the durable approval primitive used by Step 4.
-- `09_provenance_in_workflow.svg` — provenance events emitted during a real run.
-- `10_state_and_artifacts.svg` — what the control plane records.
-- `11_violin_bvbrc_workflow.svg` — this workflow specifically, including the cache short-circuit.
 
 ### Code (canonical entry points)
 
