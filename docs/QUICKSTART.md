@@ -194,8 +194,7 @@ Other things you can ask:
 The composer-orchestrated tools (`start_workflow`, `show_diff`,
 `execute_workflow`, the approval/HPC tools) require an LLM that
 can reason about workflow YAML.  `mistral-nemo` works for the
-composer; smaller / quantized models are unreliable.  See
-`docs/composer_task_spec.md` for what the composer actually needs.
+composer; smaller / quantized models are unreliable.
 
 ---
 
@@ -251,15 +250,13 @@ uv tool install --reinstall --python 3.12 \
 
 - **`APECX_LLM_API_KEY` is plaintext** in `claude_desktop_config.json`
   if you use a paid cloud LLM.  See "Secrets handling" in
-  `docs/mcp_integration.md`.  Fix tracked in `docs/future_work.md`.
+  `docs/mcp_integration.md`.
 - **Private data repo** — `apecx-data` requires `gh auth` access
   to `AlexandrNP/apecx-data`.  Anyone outside the org can't
-  download the dataset; for a public-data variant, see
-  `docs/future_work.md`.
+  download the dataset.
 - **First-launch latency** — apecx-mcp autostarts the Control
   Plane backend on first MCP call.  ~2–5 seconds the first time;
   subsequent calls are sub-second.
 - **Composer is sensitive to model choice.** mistral-nemo and
   larger models work; small / heavily-quantized models hallucinate
-  workflow YAML in ways that break execution.  See
-  `docs/composer_task_spec.md` § "Model bias".
+  workflow YAML in ways that break execution.

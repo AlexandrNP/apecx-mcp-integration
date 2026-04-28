@@ -458,7 +458,7 @@ What you should know if you're betting production work on this:
 - **No PyPI publication yet.** `pip install apecx-mcp` is the goal
   but is gated on publishing `nanobrain` and `apecx-harvesters`. For
   now the install requires three local clones + one editable install
-  command. Pipeline to PyPI is tracked in `docs/future_work.md`.
+  command.
 - **No auth on the Control Plane HTTP API.** The autostart path
   binds to localhost, so this is fine for the single-user case. For
   shared deployments behind a real network, put an auth proxy in
@@ -523,8 +523,7 @@ in the OS keychain (macOS Keychain / Windows Credential Manager /
 libsecret) and apecx-mcp resolves it at startup via a sentinel like
 `APECX_LLM_API_KEY=keyring:apecx`. This requires (a) `keyring` as a
 runtime dep, (b) apecx-mcp resolution logic, (c) `apecx-setup`
-write-to-keychain path. Sized as a follow-up PR; see
-`docs/future_work.md`.
+write-to-keychain path. Tracked internally as a sized follow-up.
 
 ## Updating
 

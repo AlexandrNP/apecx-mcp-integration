@@ -1,14 +1,15 @@
 # TODO
 
 Bite-sized follow-ups from the install/setup work that landed across
-PRs #2 → #9 (2026-04-27/28).  Each item lists **what**, **why
+PRs #2 → #14 (2026-04-27/28).  Each item lists **what**, **why
 deferred**, and **trigger to revisit**.  Larger initiatives have
-fuller writeups in `docs/future_work.md` — those are cross-linked
-here, not duplicated.
+fuller writeups in the workspace-config repo's
+`apecx-mcp-integration_dev_history/future_work.md` — referenced by
+relative path below.
 
 This file is intentionally short.  When an item ships, delete it.
-When it grows past three bullets, promote it into `docs/future_work.md`
-or its own design doc.
+When it grows past three bullets, promote it into the dev-history
+`future_work.md` or its own design doc.
 
 ---
 
@@ -28,9 +29,9 @@ size.
 production, OR first `claude_desktop_config.json` accidentally
 committed to a git repo.
 
-**Full proposal:** `docs/future_work.md` — section
-"`APECX_LLM_API_KEY` plaintext storage in Claude Desktop config".
-Sized 1.5–2d.
+**Full proposal:** `../_workspace_notes/apecx-mcp-integration_dev_history/future_work.md`
+— section "`APECX_LLM_API_KEY` plaintext storage in Claude Desktop
+config".  Sized 1.5–2d.
 
 ## 2. LLM-reachability startup gate in `apecx-mcp`
 
