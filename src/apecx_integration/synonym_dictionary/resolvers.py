@@ -47,8 +47,17 @@ def normalize_iri(value: str | int | float | None, *, prefix: str) -> str | None
     if _BARE_ID_RE.match(text):
         return _OBO_PURL + text
     # Numeric-only — combine with the supplied prefix (e.g. "NCBITaxon_").
+    # Handles both plain integers ("10298") and float-strings from pandas
+    # ("10298.0" — numpy.float64 columns read as "10298.0" via str()).
     if text.isdigit():
         return f"{_OBO_PURL}{prefix}{text}"
+    try:
+        float_val = float(text)
+        int_val = int(float_val)
+        if float_val == int_val and int_val > 0:
+            return f"{_OBO_PURL}{prefix}{int_val}"
+    except ValueError:
+        pass
     return None
 
 

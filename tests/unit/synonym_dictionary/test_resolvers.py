@@ -85,6 +85,28 @@ def test_normalize_iri_handles_nan_and_none() -> None:
     assert normalize_iri("nan", prefix="NCBITaxon_") is None
 
 
+def test_normalize_iri_float_string_from_pandas() -> None:
+    """Regression: pandas reads integer columns as numpy.float64.
+    str(numpy.float64(10298.0)) == '10298.0' which isdigit() == False.
+    normalize_iri must handle float-integer strings correctly."""
+    # Float-string form that pandas produces for integer columns
+    assert (
+        normalize_iri("10298.0", prefix="NCBITaxon_")
+        == "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+    )
+    # The actual float value from numpy
+    import numpy as np
+
+    val = np.float64(10298.0)
+    assert (
+        normalize_iri(val, prefix="NCBITaxon_") == "http://purl.obolibrary.org/obo/NCBITaxon_10298"
+    )
+    # Negative float should not produce a valid IRI
+    assert normalize_iri(-1.0, prefix="NCBITaxon_") is None
+    # Non-integer float should return None
+    assert normalize_iri(10298.5, prefix="NCBITaxon_") is None
+
+
 # ---------- PathogenResolver: anchor mode ----------
 
 
