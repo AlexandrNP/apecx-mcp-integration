@@ -71,6 +71,7 @@ DATA_BVBRC = WORKSPACE_ROOT / "data" / "bvbrc_cache"
 
 VIOLIN_PATHOGENS = DATA_VIOLIN / "Pathogen_Information.csv"
 VIOLIN_VACCINES = DATA_VIOLIN / "Vaccine_Information.csv"
+VIOLIN_GENES = DATA_VIOLIN / "Gene_Information.csv"
 BVBRC_GENOMES = DATA_BVBRC / "alphavirus_genomes.tsv"
 
 
@@ -352,3 +353,69 @@ def test_cli_violin_vaccine_end_to_end(tmp_path: Path) -> None:
         f"Expected ≥3 of 5 vaccine rows to resolve (84.4% fill rate per M1), "
         f"but only {len(resolved)} resolved.  Statuses: {df['resolution_status'].tolist()}"
     )
+
+
+def test_cli_combined_pathogens_and_genes(tmp_path: Path) -> None:
+    """Multi-spec build: pathogens (OLS calls) + genes (no OLS) in one run.
+
+    Verifies that the shared OLSClient doesn't break the gene build and
+    that both entity types end up in the same SQLite dictionary artifact.
+    Gene entries must use identifiers.org IRIs; pathogen entries must use
+    OBO purl IRIs.  This exercises the multi-spec orchestration path
+    in build_dictionary().
+    """
+    assert VIOLIN_PATHOGENS.exists(), f"VIOLIN pathogen data not found at {VIOLIN_PATHOGENS}"
+    assert VIOLIN_GENES.exists(), f"VIOLIN gene data not found at {VIOLIN_GENES}"
+
+    from apecx_integration.synonym_dictionary.cli import main
+    from apecx_integration.synonym_dictionary.enums import EntityType
+    from apecx_integration.synonym_dictionary.sqlite_writer import SQLiteDictionaryReader
+
+    out = tmp_path / "dict_combined"
+    ret = main(
+        [
+            "--violin-pathogens",
+            str(VIOLIN_PATHOGENS),
+            "--violin-genes",
+            str(VIOLIN_GENES),
+            "--output",
+            str(out),
+            "--dictionary-version",
+            "test-combined",
+            "--max-rows",
+            "5",
+            "--log-level",
+            "WARNING",
+        ]
+    )
+    assert ret == 0, f"CLI exited with code {ret}"
+
+    db_path = out / "dictionary.sqlite"
+    assert db_path.exists()
+    reader = SQLiteDictionaryReader(db_path)
+    entries = list(reader.all_entries())
+
+    pathogen_entries = [e for e in entries if e.entity_type == EntityType.PATHOGEN]
+    gene_entries = [e for e in entries if e.entity_type == EntityType.GENE]
+
+    assert (
+        len(pathogen_entries) >= 1
+    ), "Combined build produced no pathogen entries from 5 VIOLIN pathogen rows"
+    assert len(gene_entries) >= 1, "Combined build produced no gene entries from 5 VIOLIN gene rows"
+
+    # Pathogen IRIs must use OBO purl namespace.
+    for e in pathogen_entries:
+        assert e.canonical_iri.startswith(
+            "http://purl.obolibrary.org/obo/NCBITaxon_"
+        ), f"Pathogen entry has unexpected IRI: {e.canonical_iri}"
+
+    # Gene IRIs must use identifiers.org ncbigene namespace.
+    for e in gene_entries:
+        assert e.canonical_iri.startswith(
+            "http://identifiers.org/ncbigene/"
+        ), f"Gene entry has unexpected IRI: {e.canonical_iri}"
+
+    # Manifest must record both entity types.
+    manifest = reader.read_manifest()
+    assert manifest.record_count_total == 10  # 5 pathogens + 5 genes
+    assert "ncbigene" in manifest.ontology_versions
