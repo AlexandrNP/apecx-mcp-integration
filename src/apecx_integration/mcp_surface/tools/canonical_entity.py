@@ -68,7 +68,8 @@ async def resolve_canonical_entity(
     ----------
     name:
         The entity name to resolve.  Can be a formal name, abbreviation,
-        or synonym.  Examples: "EEEV", "Chikungunya virus", "H1N1", "HIV-1".
+        synonym, or a full OBO IRI.  Examples: "EEEV", "Chikungunya virus",
+        "H1N1", "HIV-1", "http://purl.obolibrary.org/obo/NCBITaxon_37124".
     entity_type:
         Optional filter: one of "pathogen", "vaccine", "disease", "gene".
         When empty, search across all entity types.
