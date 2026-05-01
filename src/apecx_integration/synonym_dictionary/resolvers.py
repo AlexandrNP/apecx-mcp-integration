@@ -1,4 +1,4 @@
-"""Per-entity-type resolvers backed by OLS.
+"""Per-entity-type resolvers backed by OLS (or, for genes, source-row data).
 
 Each resolver takes an entity record (a dict from a VIOLIN/BV-BRC row),
 extracts the relevant fields, and produces a :class:`ResolutionResult`.
@@ -7,6 +7,10 @@ The resolver uses the **anchor-mode** path when the row carries an
 existing authoritative ID (per M1 measurements, this is the dominant
 case: 84-97% of VIOLIN's pathogen/vaccine rows).  Falls back to
 **search-mode** for un-IDd rows.
+
+:class:`GeneResolver` is the exception: NCBI Gene is not hosted in EBI OLS,
+so it constructs ``identifiers.org`` IRIs directly from ``NCBI_Gene_ID``
+without any OLS calls.  See the class docstring for details.
 """
 
 from __future__ import annotations
@@ -267,3 +271,139 @@ class DiseaseResolver(_ResolverBase):
         if not isinstance(label, str) or not label.strip():
             return self._unresolved(reason="no Disease field")
         return await self._resolve_by_search(label)
+
+
+# ---------------------------------------------------------------------------
+# Gene-specific helpers
+# ---------------------------------------------------------------------------
+
+_IDENTIFIERS_ORG_NCBIGENE = "http://identifiers.org/ncbigene/"
+
+# Matches "Ifng (Interferon gamma)" — captures symbol + long name.
+_GENE_NAME_PARENS_RE = re.compile(r"^(.+?)\s+\((.+)\)\s*$")
+
+# Matches "SodC from B. abortus strain 2308" — captures symbol before "from".
+_GENE_NAME_FROM_RE = re.compile(r"^(.+?)\s+from\s+.+$", re.IGNORECASE)
+
+
+def _build_ncbigene_iri(value: str | int | float | None) -> str | None:
+    """Construct an identifiers.org NCBI Gene IRI from a gene ID value.
+
+    Handles the pandas float-string issue (NCBI_Gene_ID read as float64,
+    producing "15978.0") the same way normalize_iri handles NCBITaxon.
+    """
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text or text.lower() in ("nan", "none", "null"):
+        return None
+    if text.startswith("http://") or text.startswith("https://"):
+        return text
+    if text.isdigit():
+        return f"{_IDENTIFIERS_ORG_NCBIGENE}{text}"
+    try:
+        float_val = float(text)
+        int_val = int(float_val)
+        if float_val == int_val and int_val > 0:
+            return f"{_IDENTIFIERS_ORG_NCBIGENE}{int_val}"
+    except ValueError:
+        pass
+    return None
+
+
+def _gene_label_from_name(gene_name: str) -> str:
+    """Extract the primary label (gene symbol) from a Gene_Name column value.
+
+    Examples:
+    - "Ifng (Interferon gamma)" -> "Ifng"
+    - "SodC from B. abortus strain 2308" -> "SodC"
+    - "IglC" -> "IglC"
+    """
+    if not gene_name:
+        return gene_name
+    m = _GENE_NAME_PARENS_RE.match(gene_name)
+    if m:
+        return m.group(1).strip()
+    m = _GENE_NAME_FROM_RE.match(gene_name)
+    if m:
+        return m.group(1).strip()
+    return gene_name.strip()
+
+
+def _extract_gene_synonyms(gene_name: str) -> tuple[str, ...]:
+    """Extract all useful synonym forms from a Gene_Name column value.
+
+    Always includes the full Gene_Name string.  Additionally extracts:
+    - The bare symbol and the parenthesised long name for "symbol (long)" format.
+    - The bare symbol for "symbol from Organism" format.
+    """
+    if not gene_name or not gene_name.strip():
+        return ()
+    gene_name = gene_name.strip()
+    synonyms: set[str] = {gene_name}
+
+    m = _GENE_NAME_PARENS_RE.match(gene_name)
+    if m:
+        synonyms.add(m.group(1).strip())
+        synonyms.add(m.group(2).strip())
+        return tuple(sorted(synonyms))
+
+    m = _GENE_NAME_FROM_RE.match(gene_name)
+    if m:
+        synonyms.add(m.group(1).strip())
+
+    return tuple(sorted(synonyms))
+
+
+class GeneResolver(_ResolverBase):
+    """VIOLIN ``Gene_Information`` rows.
+
+    NCBI Gene is **not** hosted in EBI OLS, so this resolver constructs
+    canonical IRIs and synonyms purely from source-row data — no OLS
+    calls are made.
+
+    Reads:
+
+    - ``NCBI_Gene_ID`` — VIOLIN column (73.5% fill rate per M1).
+      Produces ``http://identifiers.org/ncbigene/{id}`` IRI (identifiers.org
+      standard for NCBI Gene).
+    - ``Gene_Name`` — free-text label used for both the canonical label and
+      synonym extraction.  Names follow two patterns:
+        - ``symbol (long name)`` — e.g. "Ifng (Interferon gamma)"
+        - ``symbol from Organism`` — e.g. "SodC from B. abortus strain 2308"
+    - ``Organism`` — used as disambiguation context (not yet wired into
+      search, since there is no OLS search fallback).
+
+    Rows without ``NCBI_Gene_ID`` are marked UNRESOLVED.  Unlike pathogen
+    or vaccine resolvers, there is no OLS search fallback because no OLS
+    endpoint covers all organisms' gene identifiers.
+
+    OLS client: accepted in the constructor to satisfy ``_ResolverBase``'s
+    interface but never called.
+    """
+
+    entity_type = EntityType.GENE
+    ontology = OntologyName.NCBIGENE
+    iri_prefix = "ncbigene_"  # unused — IRI constructed from identifiers.org base
+
+    async def resolve(self, record: EntityRecord) -> ResolutionResult:
+        gene_id = record.get("NCBI_Gene_ID")
+        iri = _build_ncbigene_iri(gene_id)
+        if iri is None:
+            return self._unresolved(reason="no NCBI_Gene_ID")
+
+        gene_name = record.get("Gene_Name") or ""
+        if not isinstance(gene_name, str):
+            gene_name = str(gene_name)
+        label = _gene_label_from_name(gene_name) if gene_name else iri
+        synonyms = _extract_gene_synonyms(gene_name)
+
+        return ResolutionResult(
+            canonical_iri=iri,
+            canonical_label=label,
+            canonical_ontology=self.ontology,
+            synonyms=synonyms,
+            resolution_status=ResolutionStatus.ID_ANCHORED,
+            resolution_confidence=1.0,
+            dictionary_version=self._dictionary_version,
+        )

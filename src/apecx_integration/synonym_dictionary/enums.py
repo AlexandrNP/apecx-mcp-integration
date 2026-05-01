@@ -69,4 +69,7 @@ class OntologyName(StrEnum):
     VO = "vo"
     DOID = "doid"
     GO = "go"
+    # NCBI Gene uses identifiers.org IRIs (http://identifiers.org/ncbigene/{id}),
+    # not OBO purl IRIs — it is not hosted in EBI OLS.
+    NCBIGENE = "ncbigene"
     APECX_LOCAL = "apecx_local"

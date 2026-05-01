@@ -17,8 +17,12 @@ from apecx_integration.synonym_dictionary.enums import (
 )
 from apecx_integration.synonym_dictionary.resolvers import (
     DiseaseResolver,
+    GeneResolver,
     PathogenResolver,
     VaccineResolver,
+    _build_ncbigene_iri,
+    _extract_gene_synonyms,
+    _gene_label_from_name,
     normalize_iri,
 )
 
@@ -263,3 +267,129 @@ async def test_disease_resolver_unresolved_for_missing_field() -> None:
     resolver = DiseaseResolver(fake, dictionary_version="test-v1")
     result = await resolver.resolve({"Disease": None})
     assert result.resolution_status == ResolutionStatus.UNRESOLVED
+
+
+# ---------- _build_ncbigene_iri helpers ----------
+
+
+def test_build_ncbigene_iri_integer() -> None:
+    assert _build_ncbigene_iri(15978) == "http://identifiers.org/ncbigene/15978"
+
+
+def test_build_ncbigene_iri_float_string_from_pandas() -> None:
+    assert _build_ncbigene_iri("15978.0") == "http://identifiers.org/ncbigene/15978"
+
+
+def test_build_ncbigene_iri_none_and_nan() -> None:
+    assert _build_ncbigene_iri(None) is None
+    assert _build_ncbigene_iri(float("nan")) is None
+    assert _build_ncbigene_iri("nan") is None
+    assert _build_ncbigene_iri("") is None
+
+
+def test_build_ncbigene_iri_full_url_passthrough() -> None:
+    url = "http://identifiers.org/ncbigene/15978"
+    assert _build_ncbigene_iri(url) == url
+
+
+# ---------- _gene_label_from_name helpers ----------
+
+
+def test_gene_label_from_symbol_long_pattern() -> None:
+    assert _gene_label_from_name("Ifng (Interferon gamma)") == "Ifng"
+
+
+def test_gene_label_from_organism_pattern() -> None:
+    assert _gene_label_from_name("SodC from B. abortus strain 2308") == "SodC"
+
+
+def test_gene_label_bare_symbol() -> None:
+    assert _gene_label_from_name("IglC") == "IglC"
+
+
+# ---------- _extract_gene_synonyms helpers ----------
+
+
+def test_extract_gene_synonyms_parens_pattern() -> None:
+    syns = _extract_gene_synonyms("Ifng (Interferon gamma)")
+    assert "Ifng" in syns
+    assert "Interferon gamma" in syns
+    assert "Ifng (Interferon gamma)" in syns
+
+
+def test_extract_gene_synonyms_from_pattern() -> None:
+    syns = _extract_gene_synonyms("SodC from B. abortus strain 2308")
+    assert "SodC" in syns
+    assert "SodC from B. abortus strain 2308" in syns
+
+
+def test_extract_gene_synonyms_bare_symbol() -> None:
+    syns = _extract_gene_synonyms("IglC")
+    assert "IglC" in syns
+
+
+def test_extract_gene_synonyms_empty() -> None:
+    assert _extract_gene_synonyms("") == ()
+    assert _extract_gene_synonyms("   ") == ()
+
+
+# ---------- GeneResolver ----------
+
+
+@pytest.mark.asyncio
+async def test_gene_resolver_resolves_via_ncbi_gene_id() -> None:
+    """Covered by tests/integration/test_gene_dictionary.py::test_gene_build_anchor_mode_confidence."""
+    fake = _FakeOLSClient()  # never called by GeneResolver
+    resolver = GeneResolver(fake, dictionary_version="test-v1")
+    result = await resolver.resolve(
+        {"NCBI_Gene_ID": "15978.0", "Gene_Name": "Ifng (Interferon gamma)"}
+    )
+    assert result.resolution_status == ResolutionStatus.ID_ANCHORED
+    assert result.resolution_confidence == 1.0
+    assert result.canonical_iri == "http://identifiers.org/ncbigene/15978"
+    assert result.canonical_label == "Ifng"
+    assert "Interferon gamma" in result.synonyms
+    assert "Ifng (Interferon gamma)" in result.synonyms
+
+
+@pytest.mark.asyncio
+async def test_gene_resolver_handles_bare_integer_id() -> None:
+    fake = _FakeOLSClient()
+    resolver = GeneResolver(fake, dictionary_version="test-v1")
+    result = await resolver.resolve({"NCBI_Gene_ID": 3827840, "Gene_Name": "SodC"})
+    assert result.resolution_status == ResolutionStatus.ID_ANCHORED
+    assert result.canonical_iri == "http://identifiers.org/ncbigene/3827840"
+
+
+@pytest.mark.asyncio
+async def test_gene_resolver_unresolved_when_no_ncbi_gene_id() -> None:
+    fake = _FakeOLSClient()
+    resolver = GeneResolver(fake, dictionary_version="test-v1")
+    result = await resolver.resolve({"NCBI_Gene_ID": None, "Gene_Name": "some gene"})
+    assert result.resolution_status == ResolutionStatus.UNRESOLVED
+    assert result.canonical_iri is None
+
+
+@pytest.mark.asyncio
+async def test_gene_resolver_unresolved_for_nan_id() -> None:
+    fake = _FakeOLSClient()
+    resolver = GeneResolver(fake, dictionary_version="test-v1")
+    result = await resolver.resolve({"NCBI_Gene_ID": float("nan"), "Gene_Name": "some gene"})
+    assert result.resolution_status == ResolutionStatus.UNRESOLVED
+
+
+@pytest.mark.asyncio
+async def test_gene_resolver_does_not_call_ols() -> None:
+    """GeneResolver must never call OLS — it builds IRIs from source data only."""
+
+    class _AssertingOLSClient(_FakeOLSClient):
+        async def get_term(self, ontology, iri):
+            raise AssertionError("GeneResolver called get_term — should not use OLS")
+
+        async def search(self, query, ontology, *, rows=5, exact=False):
+            raise AssertionError("GeneResolver called search — should not use OLS")
+
+    resolver = GeneResolver(_AssertingOLSClient(), dictionary_version="test-v1")
+    result = await resolver.resolve({"NCBI_Gene_ID": "15978.0", "Gene_Name": "Ifng"})
+    # If we get here without AssertionError, OLS was not called.
+    assert result.resolution_status == ResolutionStatus.ID_ANCHORED

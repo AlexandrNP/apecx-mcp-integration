@@ -212,6 +212,7 @@ async def _process_table(
                 "Vaccine_Name",
                 "Vaccine",
                 "Disease",
+                "Gene_Name",
                 "genome_name",
                 "genome.genome_name",
             ):

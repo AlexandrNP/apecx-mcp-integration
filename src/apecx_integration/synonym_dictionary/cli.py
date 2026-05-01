@@ -35,6 +35,7 @@ from apecx_integration.synonym_dictionary.build import (
 )
 from apecx_integration.synonym_dictionary.enums import OntologyName
 from apecx_integration.synonym_dictionary.resolvers import (
+    GeneResolver,
     PathogenResolver,
     VaccineResolver,
 )
@@ -62,6 +63,15 @@ def _build_argparser() -> argparse.ArgumentParser:
         type=Path,
         default=None,
         help="Path to VIOLIN Vaccine_Information.csv",
+    )
+    parser.add_argument(
+        "--violin-genes",
+        type=Path,
+        default=None,
+        help=(
+            "Path to VIOLIN Gene_Information.csv.  Resolves via NCBI_Gene_ID "
+            "to identifiers.org/ncbigene/ IRIs; no OLS calls needed."
+        ),
     )
     parser.add_argument(
         "--bvbrc-genomes",
@@ -97,6 +107,14 @@ def _build_argparser() -> argparse.ArgumentParser:
         "--doid-version",
         default="unknown",
         help="Pinned Disease Ontology release identifier.",
+    )
+    parser.add_argument(
+        "--ncbigene-version",
+        default="unknown",
+        help=(
+            "NCBI Gene build identifier (e.g. '2026-04-01').  "
+            "Recorded in the manifest; no OLS release to pin against."
+        ),
     )
     parser.add_argument(
         "--max-rows",
@@ -137,6 +155,16 @@ def _make_table_specs(args: argparse.Namespace) -> list[TableSpec]:
                 input_path=args.violin_vaccines,
                 output_path=enriched_dir / "violin_vaccines_enriched.csv",
                 resolver_factory=lambda c, v: VaccineResolver(c, dictionary_version=v),
+                sep=",",
+            )
+        )
+    if args.violin_genes:
+        specs.append(
+            TableSpec(
+                name="violin.gene",
+                input_path=args.violin_genes,
+                output_path=enriched_dir / "violin_genes_enriched.csv",
+                resolver_factory=lambda c, v: GeneResolver(c, dictionary_version=v),
                 sep=",",
             )
         )
@@ -193,7 +221,7 @@ def main(argv: list[str] | None = None) -> int:
     if not specs:
         print(
             "error: at least one of --violin-pathogens / --violin-vaccines / "
-            "--bvbrc-genomes is required",
+            "--violin-genes / --bvbrc-genomes is required",
             file=sys.stderr,
         )
         return 2
@@ -209,6 +237,7 @@ def main(argv: list[str] | None = None) -> int:
         OntologyName.NCBITAXON: args.ncbitaxon_version,
         OntologyName.VO: args.vo_version,
         OntologyName.DOID: args.doid_version,
+        OntologyName.NCBIGENE: args.ncbigene_version,
     }
 
     manifest = run_build_sync(
