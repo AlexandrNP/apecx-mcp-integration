@@ -7,6 +7,7 @@ Usage:
     apecx-build-dictionary \\
         --violin-pathogens data/violin/Pathogen_Information.csv \\
         --violin-vaccines data/violin/Vaccine_Information.csv \\
+        --violin-genes data/violin/Gene_Information.csv \\
         --bvbrc-genomes data/bvbrc_cache/alphavirus_genomes.tsv \\
         --output build/dictionary
 
