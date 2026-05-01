@@ -114,7 +114,16 @@ def lookup_entity(
 
     index, load_error = get_dictionary_index()
 
-    # Fast path
+    # Fast path — IRI shortcut: if the caller already has a canonical IRI,
+    # skip surface-form normalization and look it up directly.
+    if index is not None and (
+        surface_form.startswith("http://") or surface_form.startswith("https://")
+    ):
+        entry = index.lookup_by_iri(surface_form)
+        if entry is not None:
+            return _entry_to_result(surface_form, entry, path="fast")
+
+    # Fast path — surface form lookup
     if index is not None:
         if entity_type is not None:
             entry = index.lookup(entity_type, surface_form)

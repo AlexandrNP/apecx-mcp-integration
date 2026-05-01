@@ -96,6 +96,17 @@ class DictionaryIndex:
         results.sort(key=lambda e: e.confidence, reverse=True)
         return results
 
+    def lookup_by_iri(self, canonical_iri: str) -> DictionaryEntry | None:
+        """Reverse lookup: canonical IRI -> dictionary entry.
+
+        Used when the caller already has an IRI (e.g. from a prior
+        resolution step or from a cross-database join) and wants to
+        retrieve the canonical label and synonym set.
+
+        Returns ``None`` when the IRI is not present in this index build.
+        """
+        return self._entries.get(canonical_iri)
+
     def entry_count(self) -> int:
         return len(self._entries)
 

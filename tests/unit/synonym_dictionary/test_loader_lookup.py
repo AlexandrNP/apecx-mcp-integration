@@ -289,3 +289,62 @@ def test_singleton_thread_safe_concurrent_get(tmp_path: Path) -> None:
     assert all(r is not None for r in results)
     first = results[0]
     assert all(r is first for r in results), "singleton must return same instance"
+
+
+# ---------------------------------------------------------------------------
+# P3.4 — reverse IRI lookup (DictionaryIndex.lookup_by_iri + lookup_entity
+#         IRI shortcut)
+# ---------------------------------------------------------------------------
+
+
+def test_lookup_by_iri_hit(tmp_path: Path) -> None:
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+    index = DictionaryIndex.load(db)
+
+    entry = index.lookup_by_iri("http://purl.obolibrary.org/obo/NCBITaxon_37124")
+    assert entry is not None
+    assert entry.canonical_label == "Chikungunya virus"
+    assert "CHIKV" in entry.synonyms
+
+
+def test_lookup_by_iri_miss_returns_none(tmp_path: Path) -> None:
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+    index = DictionaryIndex.load(db)
+
+    assert index.lookup_by_iri("http://purl.obolibrary.org/obo/NCBITaxon_99999") is None
+
+
+def test_lookup_entity_accepts_iri_as_surface_form(tmp_path: Path) -> None:
+    """lookup_entity must fast-path on IRI input without surface-form normalization.
+
+    Covered by: tests/integration/test_stage2_lookup.py::test_stage2_lookup_by_iri_real_data
+    (gated on APECX_SYNONYM_DICT_LIVE_OLS=1).
+    """
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("http://purl.obolibrary.org/obo/NCBITaxon_37124")
+    assert result.path == "fast"
+    assert result.canonical_iri == "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+    assert result.canonical_label == "Chikungunya virus"
+    assert result.confidence == 1.0
+
+
+def test_lookup_entity_iri_miss_falls_through(tmp_path: Path) -> None:
+    """An IRI not in the dictionary falls through to slow/miss, not a crash."""
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("http://purl.obolibrary.org/obo/NCBITaxon_99999")
+    assert result.path in ("slow", "miss")
+    assert result.canonical_iri is None
