@@ -1,0 +1,227 @@
+"""Stage 2 runtime lookup API.
+
+Exposes a single entry point -- :func:`lookup_entity` -- that:
+
+1. **Fast path**: normalizes the user term and looks it up in the
+   in-memory :class:`~apecx_integration.synonym_dictionary.loader.DictionaryIndex`.
+   O(1) hash lookup; returns in microseconds.
+
+2. **Slow path**: on a fast-path miss, falls back to the existing
+   substring-matching logic in
+   :mod:`apecx_integration.mcp_surface.data.database` (which benefits
+   from the Phase 0 pre-filter fix in apecx-db-integration).  The slow
+   path is inherently approximate; a HITL gate is upstream of this module.
+
+Visibility requirement (analysis doc §0.1, §6.2.1):
+  The lookup result ALWAYS includes which path was taken and at what
+  confidence.  Stage 2 MUST NOT silently route "EEEV" to an IRI without
+  surfacing that decision.  The :class:`LookupResult` type makes the
+  routing decision explicit and machine-readable.
+
+What this module does NOT do:
+- Taxonomic-graph traversal (P3.5 — design decision required; see
+  ontology_integration_initial_analysis.md §4.9(1)).
+- Provisional-synonym lookup (Phase 4 — deferred per analysis doc §6.1).
+- Per-user or per-session caching (unnecessary at current scale).
+"""
+
+from __future__ import annotations
+
+import logging
+from dataclasses import dataclass, field
+from typing import Literal
+
+from apecx_integration.synonym_dictionary.enums import EntityType, ResolutionStatus
+from apecx_integration.synonym_dictionary.loader import get_dictionary_index
+from apecx_integration.synonym_dictionary.schema import DictionaryEntry
+
+log = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Result types
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class LookupResult:
+    """The outcome of a single Stage 2 entity lookup.
+
+    ``path`` is "fast" (dictionary hit) or "slow" (fell through to
+    substring search) so callers can reason about confidence without
+    parsing the numeric value.
+    """
+
+    surface_form: str
+    path: Literal["fast", "slow", "miss"]
+    canonical_iri: str | None
+    canonical_label: str | None
+    canonical_ontology: str | None
+    confidence: float
+    resolution_status: ResolutionStatus
+    synonyms: tuple[str, ...] = field(default_factory=tuple)
+    evidence: str = ""
+
+
+def fast_miss(surface_form: str, *, reason: str = "") -> LookupResult:
+    """Return a LookupResult representing a complete miss on both paths."""
+    return LookupResult(
+        surface_form=surface_form,
+        path="miss",
+        canonical_iri=None,
+        canonical_label=None,
+        canonical_ontology=None,
+        confidence=0.0,
+        resolution_status=ResolutionStatus.UNRESOLVED,
+        evidence=reason,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Main entry point
+# ---------------------------------------------------------------------------
+
+
+def lookup_entity(
+    surface_form: str,
+    *,
+    entity_type: EntityType | None = None,
+) -> LookupResult:
+    """Look up a user-supplied term against the synonym dictionary.
+
+    Parameters
+    ----------
+    surface_form:
+        The user-typed term ("EEEV", "Eastern equine encephalitis virus",
+        "Chikungunya", etc.).
+    entity_type:
+        Optional hint.  When ``None``, search all entity types and return
+        the highest-confidence match.  When supplied, restrict to that type.
+
+    Returns
+    -------
+    A :class:`LookupResult` with ``path`` set to:
+
+    - ``"fast"`` — dictionary hit.
+    - ``"slow"`` — substring match in the database store (degraded path).
+    - ``"miss"`` — no match on either path.
+
+    The visibility guarantee: the caller sees WHICH path was taken and at
+    what confidence.  Do not suppress this into a naked "entity not found".
+    """
+    if not surface_form or not surface_form.strip():
+        return fast_miss(surface_form, reason="empty input")
+
+    index, load_error = get_dictionary_index()
+
+    # Fast path
+    if index is not None:
+        if entity_type is not None:
+            entry = index.lookup(entity_type, surface_form)
+            if entry is not None:
+                return _entry_to_result(surface_form, entry, path="fast")
+        else:
+            matches = index.lookup_any_type(surface_form)
+            if matches:
+                return _entry_to_result(surface_form, matches[0], path="fast")
+
+    # Slow path: delegate to the existing database substring matcher.
+    slow = _try_slow_path(surface_form)
+    if slow is not None:
+        return slow
+
+    reason = (
+        load_error
+        if (index is None and load_error)
+        else f"no match in dictionary or database for {surface_form!r}"
+    )
+    return fast_miss(surface_form, reason=reason)
+
+
+# ---------------------------------------------------------------------------
+# Internals
+# ---------------------------------------------------------------------------
+
+
+def _entry_to_result(
+    surface_form: str, entry: DictionaryEntry, *, path: Literal["fast", "slow"]
+) -> LookupResult:
+    return LookupResult(
+        surface_form=surface_form,
+        path=path,
+        canonical_iri=entry.canonical_iri,
+        canonical_label=entry.canonical_label,
+        canonical_ontology=entry.ontology.value,
+        confidence=entry.confidence,
+        resolution_status=ResolutionStatus.ID_ANCHORED
+        if entry.confidence == 1.0
+        else ResolutionStatus.OLS_FUZZY,
+        synonyms=entry.synonyms,
+        evidence=(
+            f"dictionary_version={entry.ontology_version}; "
+            f"source_records={len(entry.source_records)}"
+        ),
+    )
+
+
+def _try_slow_path(surface_form: str) -> LookupResult | None:
+    """Fall back to the existing database substring resolver.
+
+    Uses ``database.resolve_entity`` which returns:
+    ``{"query": ..., "matches": {"pathogens": [...], "vaccines": [...], ...},
+       "identifiers": {"ncbi_taxonomy_ids": [...], ...}, ...}``
+
+    Returns None when the database store isn't loaded or no matches exist.
+    Keeps this module importable in environments without APECX_DATA_ROOT set.
+    """
+    try:
+        from apecx_integration.mcp_surface.data import database as _db  # noqa: PLC0415
+
+        store, _ = _db.get_store()
+        if store is None:
+            return None
+        result = _db.resolve_entity(store, surface_form)
+        matches = result.get("matches", {})
+        identifiers = result.get("identifiers", {})
+
+        # Prefer pathogen matches (highest NCBI Taxonomy coverage).
+        pathogens = matches.get("pathogens") or []
+        if pathogens:
+            best = pathogens[0]
+            ncbi_ids = identifiers.get("ncbi_taxonomy_ids", [])
+            ncbi_iri = (
+                f"http://purl.obolibrary.org/obo/NCBITaxon_{ncbi_ids[0]}" if ncbi_ids else None
+            )
+            return LookupResult(
+                surface_form=surface_form,
+                path="slow",
+                canonical_iri=ncbi_iri,
+                canonical_label=best.get("name"),
+                canonical_ontology="ncbitaxon" if ncbi_iri else None,
+                confidence=0.3,
+                resolution_status=ResolutionStatus.OLS_FUZZY,
+                synonyms=(),
+                evidence=(f"database substring match (pathogen); " f"ncbi_ids={ncbi_ids[:3]}"),
+            )
+
+        # Fall back to vaccine matches.
+        vaccines = matches.get("vaccines") or []
+        if vaccines:
+            best = vaccines[0]
+            violin_ids = identifiers.get("violin_vaccine_ids", [])
+            return LookupResult(
+                surface_form=surface_form,
+                path="slow",
+                canonical_iri=None,
+                canonical_label=best.get("name"),
+                canonical_ontology=None,
+                confidence=0.2,
+                resolution_status=ResolutionStatus.OLS_FUZZY,
+                synonyms=(),
+                evidence=(f"database substring match (vaccine); " f"violin_ids={violin_ids[:3]}"),
+            )
+
+        return None
+    except Exception as exc:
+        log.debug("slow path unavailable: %s", exc)
+        return None

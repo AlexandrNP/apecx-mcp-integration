@@ -58,6 +58,9 @@ from apecx_integration.mcp_surface.tools import (
     approvals as approvals_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    canonical_entity as canonical_entity_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -110,6 +113,10 @@ def build_server() -> FastMCP:
     server.tool()(database_tools.get_vaccine_pathogen_genes)
     server.tool()(database_tools.resolve_entity)
     server.tool()(database_tools.database_statistics)
+
+    # Stage 2 canonical entity resolution — dictionary fast path first,
+    # substring slow path fallback.  Always surfaces path + confidence.
+    server.tool()(canonical_entity_tools.resolve_canonical_entity)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)
