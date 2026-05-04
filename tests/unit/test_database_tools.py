@@ -358,7 +358,8 @@ def test_database_statistics_shows_all_loaded_tables(small_store):
 # These tests verify the fast-path precision filter wiring.  They mock
 # lookup_entity so we control the path without a real synonym dictionary.
 # Each mock-covered code path has a matching integration test in
-# tests/integration/test_db_tools_real_data.py (TODO: P3.9 integration row).
+# tests/integration/test_p39_precision_path_with_dict.py
+# (gated on APECX_SYNONYM_DICT_LIVE_OLS=1).
 # ---------------------------------------------------------------------------
 
 

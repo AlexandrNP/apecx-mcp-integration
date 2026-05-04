@@ -235,9 +235,10 @@ def test_real_resolve_entity_returns_ncbi_ids():
 # These tests verify that the P3.9 wiring degrades correctly when the synonym
 # dictionary is NOT built (i.e. lookup_entity returns slow/miss → substring
 # fallback).  Full precision-path coverage (fast/ancestor) requires a built
-# synonym dictionary; that path is tested in:
-#   TODO (P3.9-integration): add test_p39_precision_path_with_dict.py once
-#   the synonym dictionary build is part of the CI data setup.
+# synonym dictionary; see:
+#   tests/integration/test_p39_precision_path_with_dict.py
+#   (gated on APECX_SYNONYM_DICT_LIVE_OLS=1 — tests query_pathogens fast path
+#    + _resolution injection against a real OLS-built dictionary)
 # ---------------------------------------------------------------------------
 
 
