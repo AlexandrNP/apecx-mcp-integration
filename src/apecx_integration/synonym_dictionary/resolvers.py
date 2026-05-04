@@ -263,17 +263,21 @@ class PathogenResolver(_ResolverBase):
         db_label_str = db_label if isinstance(db_label, str) and db_label.strip() else None
         # BV-BRC genome_id is itself a useful surface form: scientists may
         # type "37124.6497" expecting to land on the species. Add it as a
-        # synonym so the precision filter still resolves correctly.
+        # synonym so the precision filter still resolves correctly. The
+        # genome_id IS uniquely the species (the ".N" suffix is a strain
+        # serial), so it's a legitimate species-level synonym.
         db_extra: list[str] = []
         gid = record.get("genome_id") or record.get("genome.genome_id")
         if isinstance(gid, str) and gid.strip():
             db_extra.append(gid.strip())
-        # Genus / Species / Family are not surface forms in the strict sense,
-        # but they're useful aliases. Skip empty strings.
-        for k in ("Genus", "Species", "Family"):
-            v = record.get(k)
-            if isinstance(v, str) and v.strip() and v.strip().lower() != "nan":
-                db_extra.append(v.strip())
+        # Genus / Species / Family are NOT synonyms of the species — they
+        # name PARENT taxa (Henipavirus is a genus containing many species,
+        # Coronaviridae a family containing many genera). Treating them as
+        # synonyms breaks the strict-hierarchy contract: a query for
+        # "Coronaviridae" should match the family taxon (and therefore all
+        # its descendants), not collapse onto a single child species. They
+        # remain available as ``context_terms`` for OLS disambiguation
+        # below, but never as direct synonyms.
         db_extra_tuple = tuple(db_extra)
 
         # Anchor mode: existing taxonomy ID column.
@@ -319,27 +323,43 @@ class VaccineResolver(_ResolverBase):
     iri_prefix = "VO_"
 
     async def resolve(self, record: EntityRecord) -> ResolutionResult:
+        # Database-side label captured once for both anchor + search paths.
+        db_label = record.get("Vaccine_Name") or record.get("Vaccine")
+        db_label_str = db_label if isinstance(db_label, str) and db_label.strip() else None
+
         vo_id = record.get("Vaccine_Ontology_ID")
         iri = normalize_iri(vo_id, prefix=self.iri_prefix)
         if iri is not None:
-            return await self._resolve_by_iri(iri)
+            # Same pattern as PathogenResolver: VIOLIN's Vaccine_Ontology_ID
+            # is the source of truth for VIOLIN data; if VO has retired or
+            # restructured an entry, the fallback_label preserves the
+            # operator-typed name as canonical.
+            return await self._resolve_by_iri(
+                iri,
+                fallback_label=db_label_str,
+                fallback_synonyms=(),
+            )
 
-        label = record.get("Vaccine_Name") or record.get("Vaccine")
-        if not isinstance(label, str):
+        if db_label_str is None:
             return self._unresolved(reason="no Vaccine/Vaccine_Name field")
         context = [str(record.get(k, "")) for k in ("Type", "Antigen")]
-        return await self._resolve_by_search(label, context_terms=context)
+        return await self._resolve_by_search(db_label_str, context_terms=context)
 
 
 class DiseaseResolver(_ResolverBase):
-    """VIOLIN ``Disease`` column on Pathogen_Information rows."""
+    """VIOLIN ``Disease`` column on Pathogen_Information rows.
+
+    No native DOID column in VIOLIN snapshot — search-only path. The
+    fallback_label kwarg on _resolve_by_iri is unused here because there
+    is no anchor-mode IRI; if VIOLIN ever adds a DOID_id column, the
+    PathogenResolver pattern applies trivially.
+    """
 
     entity_type = EntityType.DISEASE
     ontology = OntologyName.DOID
     iri_prefix = "DOID_"
 
     async def resolve(self, record: EntityRecord) -> ResolutionResult:
-        # No native DOID column in VIOLIN snapshot — search-only.
         label = record.get("Disease")
         if not isinstance(label, str) or not label.strip():
             return self._unresolved(reason="no Disease field")

@@ -156,6 +156,39 @@ def _build_expected_pathogen_iri(taxon_id: float | int | str | None) -> str | No
     return f"http://purl.obolibrary.org/obo/NCBITaxon_{as_int}"
 
 
+def _build_expected_vaccine_iri(vo_id: float | int | str | None) -> str | None:
+    """Convert a VIOLIN ``Vaccine_Ontology_ID`` cell to an OBO IRI, or None.
+
+    Source values are like "VO_0000003" or "3"; we accept either and emit
+    the canonical OBO form. Padding is consistent with the build-time IRI
+    construction in ``normalize_iri(prefix='VO_')``.
+    """
+    if vo_id is None or pd.isna(vo_id):
+        return None
+    s = str(vo_id).strip()
+    if not s:
+        return None
+    # Strip "VO_" / "VO:" prefix if present so we can re-zero-pad.
+    if s.upper().startswith("VO_") or s.upper().startswith("VO:"):
+        s = s[3:]
+    try:
+        as_int = int(float(s))
+    except (TypeError, ValueError):
+        return None
+    return f"http://purl.obolibrary.org/obo/VO_{as_int:07d}"
+
+
+def _build_expected_gene_iri(gene_id: float | int | str | None) -> str | None:
+    """Convert a VIOLIN ``NCBI_Gene_ID`` cell to an identifiers.org IRI."""
+    if gene_id is None or pd.isna(gene_id):
+        return None
+    try:
+        as_int = int(float(gene_id))
+    except (TypeError, ValueError):
+        return None
+    return f"http://identifiers.org/ncbigene/{as_int}"
+
+
 def _confidence_bucket(confidence: float) -> str:
     """Human-readable confidence band."""
     if confidence >= 0.95:
@@ -169,74 +202,86 @@ def _confidence_bucket(confidence: float) -> str:
     return "0.00"
 
 
-def measure_pathogen_accuracy(
+def _measure_accuracy(
     dictionary_path: Path | str,
-    violin_pathogens_csv: Path | str,
+    csv_path: Path | str,
     *,
+    entity_type: EntityType,
+    surface_form_column: str,
+    ground_truth_column: str | None,
+    expected_iri_builder,
     max_rows: int | None = None,
-    surface_form_column: str = "Pathogen",
-    ground_truth_column: str = "NCBI_Taxonomy_ID",
+    surface_form_fallback_columns: tuple[str, ...] = (),
 ) -> AccuracyMetrics:
-    """Measure accuracy of pathogen IRI resolution against VIOLIN ground truth.
+    """Generic accuracy measurement core. Use the public wrappers.
 
     Parameters
     ----------
     dictionary_path:
         Path to a built ``dictionary.sqlite`` artifact.
-    violin_pathogens_csv:
-        Path to ``Pathogen_Information.csv`` (or any CSV with columns matching
-        ``surface_form_column`` + ``ground_truth_column``).
-    max_rows:
-        Cap the number of rows examined. ``None`` = examine all.
+    csv_path:
+        Path to a CSV with at least ``surface_form_column``.
+    entity_type:
+        Restricts the lookup to one EntityType (passed to ``lookup_entity``).
     surface_form_column:
-        CSV column carrying the user-typed pathogen name. Default ``"Pathogen"``.
+        Primary column carrying the user-typed name.
+    surface_form_fallback_columns:
+        Additional columns checked in order if the primary is empty/null.
+        Useful for VIOLIN tables where the canonical surface column varies
+        by row (e.g., ``Vaccine`` vs ``Vaccine_Name``).
     ground_truth_column:
-        CSV column carrying the integer NCBI taxon ID. Default
-        ``"NCBI_Taxonomy_ID"``.
+        Column carrying the expected ID. ``None`` skips correctness scoring
+        (used for entity types without an in-CSV ground-truth column,
+        e.g. Disease).
+    expected_iri_builder:
+        Callable mapping the ground-truth cell value to an expected IRI.
 
-    Returns
-    -------
-    AccuracyMetrics. Side effect: configures the process-level
-    dictionary singleton to point at ``dictionary_path``.
-
-    Notes
-    -----
-    "Correct" means the returned ``canonical_iri`` exactly equals the
-    expected IRI built from the ground-truth column. The dictionary may
-    return an *ancestor* (species) when the ground truth is a strain; that
-    counts as INCORRECT for precision purposes — the test is whether the
-    dictionary recovers the operator's expected target, not whether it
-    returns a related taxon.
+    Behavior
+    --------
+    Resets the process singleton, configures it to ``dictionary_path``,
+    iterates the CSV, and tallies path / correctness / confidence
+    distribution into an :class:`AccuracyMetrics`.
     """
     dictionary_path = Path(dictionary_path)
-    violin_pathogens_csv = Path(violin_pathogens_csv)
+    csv_path = Path(csv_path)
     if not dictionary_path.exists():
         raise FileNotFoundError(f"Dictionary not found: {dictionary_path}")
-    if not violin_pathogens_csv.exists():
-        raise FileNotFoundError(f"VIOLIN CSV not found: {violin_pathogens_csv}")
+    if not csv_path.exists():
+        raise FileNotFoundError(f"CSV not found: {csv_path}")
 
-    # Wire the dictionary into the singleton lookup uses.
-    # Reset first so a stale singleton from a different test doesn't leak in.
+    # Reset + configure the singleton each call so stale state from another
+    # test doesn't leak in.
     import apecx_integration.synonym_dictionary.loader as _loader
 
     _loader._singleton = _ProcessSingleton()
     configure_dictionary_path(dictionary_path)
 
-    df = pd.read_csv(violin_pathogens_csv)
+    df = pd.read_csv(csv_path)
     if max_rows is not None:
         df = df.head(max_rows)
 
     metrics = AccuracyMetrics(total_rows=len(df), rows_with_ground_truth=0)
 
     for _, row in df.iterrows():
+        # Pull surface form, falling back through optional alt columns.
         surface_form = row.get(surface_form_column)
         if not isinstance(surface_form, str) or not surface_form.strip():
+            for alt in surface_form_fallback_columns:
+                v = row.get(alt)
+                if isinstance(v, str) and v.strip():
+                    surface_form = v
+                    break
+        if not isinstance(surface_form, str) or not surface_form.strip():
             continue
-        expected_iri = _build_expected_pathogen_iri(row.get(ground_truth_column))
 
-        result = lookup_entity(surface_form, entity_type=EntityType.PATHOGEN)
+        expected_iri = (
+            expected_iri_builder(row.get(ground_truth_column))
+            if ground_truth_column is not None
+            else None
+        )
 
-        # Tally path
+        result = lookup_entity(surface_form, entity_type=entity_type)
+
         if result.path == "fast":
             metrics.fast_count += 1
         elif result.path == "ancestor":
@@ -250,7 +295,6 @@ def measure_pathogen_accuracy(
         metrics.confidence_buckets[bucket] = metrics.confidence_buckets.get(bucket, 0) + 1
 
         if expected_iri is None:
-            # No ground truth → don't tally correctness (only path)
             continue
         metrics.rows_with_ground_truth += 1
 
@@ -273,3 +317,89 @@ def measure_pathogen_accuracy(
             )
 
     return metrics
+
+
+def measure_pathogen_accuracy(
+    dictionary_path: Path | str,
+    violin_pathogens_csv: Path | str,
+    *,
+    max_rows: int | None = None,
+) -> AccuracyMetrics:
+    """Pathogen IRI accuracy against VIOLIN ``Pathogen_Information``."""
+    return _measure_accuracy(
+        dictionary_path,
+        violin_pathogens_csv,
+        entity_type=EntityType.PATHOGEN,
+        surface_form_column="Pathogen",
+        ground_truth_column="NCBI_Taxonomy_ID",
+        expected_iri_builder=_build_expected_pathogen_iri,
+        max_rows=max_rows,
+    )
+
+
+def measure_vaccine_accuracy(
+    dictionary_path: Path | str,
+    violin_vaccines_csv: Path | str,
+    *,
+    max_rows: int | None = None,
+) -> AccuracyMetrics:
+    """Vaccine IRI accuracy against VIOLIN ``Vaccine_Information``.
+
+    Surface form falls back ``Vaccine_Name`` → ``Vaccine`` to match the
+    resolver's own source-column priority.
+    """
+    return _measure_accuracy(
+        dictionary_path,
+        violin_vaccines_csv,
+        entity_type=EntityType.VACCINE,
+        surface_form_column="Vaccine_Name",
+        surface_form_fallback_columns=("Vaccine",),
+        ground_truth_column="Vaccine_Ontology_ID",
+        expected_iri_builder=_build_expected_vaccine_iri,
+        max_rows=max_rows,
+    )
+
+
+def measure_gene_accuracy(
+    dictionary_path: Path | str,
+    violin_genes_csv: Path | str,
+    *,
+    max_rows: int | None = None,
+) -> AccuracyMetrics:
+    """Gene IRI accuracy against VIOLIN ``Gene_Information``.
+
+    NCBI Gene IRIs use identifiers.org canonical form, not OBO.
+    """
+    return _measure_accuracy(
+        dictionary_path,
+        violin_genes_csv,
+        entity_type=EntityType.GENE,
+        surface_form_column="Gene_Name",
+        ground_truth_column="NCBI_Gene_ID",
+        expected_iri_builder=_build_expected_gene_iri,
+        max_rows=max_rows,
+    )
+
+
+def measure_disease_path_distribution(
+    dictionary_path: Path | str,
+    violin_pathogens_csv: Path | str,
+    *,
+    max_rows: int | None = None,
+) -> AccuracyMetrics:
+    """Disease lookup metrics from the ``Disease`` column of Pathogen rows.
+
+    No ground-truth DOID column exists in VIOLIN, so this returns
+    path-distribution + confidence stats only. Recall/precision will
+    show 0/1.0 trivially (no rows have ground truth) — the useful signal
+    is fast/slow/miss counts.
+    """
+    return _measure_accuracy(
+        dictionary_path,
+        violin_pathogens_csv,
+        entity_type=EntityType.DISEASE,
+        surface_form_column="Disease",
+        ground_truth_column=None,
+        expected_iri_builder=lambda _: None,
+        max_rows=max_rows,
+    )
