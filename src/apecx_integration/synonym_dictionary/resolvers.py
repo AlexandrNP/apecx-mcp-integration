@@ -77,21 +77,68 @@ class _ResolverBase:
         self._ols = ols
         self._dictionary_version = dictionary_version
 
-    async def _resolve_by_iri(self, iri: str) -> ResolutionResult:
+    async def _resolve_by_iri(
+        self,
+        iri: str,
+        *,
+        fallback_label: str | None = None,
+        fallback_synonyms: tuple[str, ...] = (),
+    ) -> ResolutionResult:
+        """Anchor-mode lookup for an existing IRI.
+
+        When OLS returns a term, use the ontology-supplied label + synonyms.
+        When OLS returns 404 (deprecated taxon ID, missing branch, etc.) and
+        the caller supplied ``fallback_label``, build an entry from the
+        database-side label so the dictionary still resolves the user-typed
+        name. This is the "database-specific entries" path — VIOLIN's anchor
+        ID is the source of truth even when OLS has moved on. ``fallback_synonyms``
+        merge with any OLS-supplied synonyms (or stand alone on 404).
+        """
         term = await self._ols.get_term(self.ontology, iri)
         if term is None:
+            if fallback_label:
+                merged_synonyms = self._merge_synonyms((), fallback_synonyms)
+                return ResolutionResult(
+                    canonical_iri=iri,
+                    canonical_label=fallback_label,
+                    canonical_ontology=self.ontology,
+                    synonyms=merged_synonyms,
+                    # Still ID-anchored: the caller supplied the IRI from the
+                    # source database, so the IRI is trusted. The label just
+                    # comes from the database rather than the ontology.
+                    resolution_status=ResolutionStatus.ID_ANCHORED,
+                    resolution_confidence=1.0,
+                    dictionary_version=self._dictionary_version,
+                )
             return self._unresolved(reason=f"OLS get_term returned None for {iri}")
         label = OLSClient.extract_label(term) or iri
-        synonyms = OLSClient.extract_synonyms(term)
+        ols_synonyms = OLSClient.extract_synonyms(term)
+        merged_synonyms = self._merge_synonyms(ols_synonyms, fallback_synonyms)
+        # If the OLS label and the fallback label differ, register the
+        # fallback label as an extra synonym so user-typed names from the
+        # source database still hit the fast path.
+        if fallback_label and fallback_label.strip() and fallback_label != label:
+            merged_synonyms = self._merge_synonyms(merged_synonyms, (fallback_label,))
         return ResolutionResult(
             canonical_iri=iri,
             canonical_label=label,
             canonical_ontology=self.ontology,
-            synonyms=synonyms,
+            synonyms=merged_synonyms,
             resolution_status=ResolutionStatus.ID_ANCHORED,
             resolution_confidence=1.0,
             dictionary_version=self._dictionary_version,
         )
+
+    @staticmethod
+    def _merge_synonyms(
+        primary: tuple[str, ...] | list, extra: tuple[str, ...] | list
+    ) -> tuple[str, ...]:
+        """Concat two synonym lists, dedupe, preserve order."""
+        seen: dict[str, None] = {}
+        for s in list(primary) + list(extra):
+            if isinstance(s, str) and s and s not in seen:
+                seen[s] = None
+        return tuple(seen)
 
     async def _resolve_by_search(
         self,
@@ -207,28 +254,54 @@ class PathogenResolver(_ResolverBase):
     iri_prefix = "NCBITaxon_"
 
     async def resolve(self, record: EntityRecord) -> ResolutionResult:
+        # Compute the database-side label + extra synonyms once; reuse for
+        # any anchor-mode lookup so deprecated NCBI IDs still resolve via
+        # the VIOLIN-supplied label (database-specific entries).
+        db_label = (
+            record.get("Pathogen") or record.get("genome_name") or record.get("genome.genome_name")
+        )
+        db_label_str = db_label if isinstance(db_label, str) and db_label.strip() else None
+        # BV-BRC genome_id is itself a useful surface form: scientists may
+        # type "37124.6497" expecting to land on the species. Add it as a
+        # synonym so the precision filter still resolves correctly.
+        db_extra: list[str] = []
+        gid = record.get("genome_id") or record.get("genome.genome_id")
+        if isinstance(gid, str) and gid.strip():
+            db_extra.append(gid.strip())
+        # Genus / Species / Family are not surface forms in the strict sense,
+        # but they're useful aliases. Skip empty strings.
+        for k in ("Genus", "Species", "Family"):
+            v = record.get(k)
+            if isinstance(v, str) and v.strip() and v.strip().lower() != "nan":
+                db_extra.append(v.strip())
+        db_extra_tuple = tuple(db_extra)
+
         # Anchor mode: existing taxonomy ID column.
         ncbi_id = record.get("NCBI_Taxonomy_ID")
         iri = normalize_iri(ncbi_id, prefix=self.iri_prefix)
         if iri is not None:
-            return await self._resolve_by_iri(iri)
+            return await self._resolve_by_iri(
+                iri,
+                fallback_label=db_label_str,
+                fallback_synonyms=db_extra_tuple,
+            )
 
         # BV-BRC implicit taxon (genome_id like "37124.6497").
-        genome_id = record.get("genome_id") or record.get("genome.genome_id")
-        if isinstance(genome_id, str) and "." in genome_id:
-            head = genome_id.split(".", 1)[0]
+        if isinstance(gid, str) and "." in gid:
+            head = gid.split(".", 1)[0]
             implicit = normalize_iri(head, prefix=self.iri_prefix)
             if implicit is not None:
-                return await self._resolve_by_iri(implicit)
+                return await self._resolve_by_iri(
+                    implicit,
+                    fallback_label=db_label_str,
+                    fallback_synonyms=db_extra_tuple,
+                )
 
         # Search-mode fallback.
-        label = (
-            record.get("Pathogen") or record.get("genome_name") or record.get("genome.genome_name")
-        )
-        if not isinstance(label, str):
+        if db_label_str is None:
             return self._unresolved(reason="no Pathogen/genome_name field")
         context = [str(record.get(k, "")) for k in ("Genus", "Species", "Family")]
-        return await self._resolve_by_search(label, context_terms=context)
+        return await self._resolve_by_search(db_label_str, context_terms=context)
 
 
 class VaccineResolver(_ResolverBase):
