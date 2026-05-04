@@ -30,7 +30,7 @@ manual `apecx-cp serve`.
 }
 ```
 
-Restart Claude Desktop. The 11 apecx tools appear in the tool
+Restart Claude Desktop. The 21 apecx tools appear in the tool
 picker. The first launch takes ~5–15 s while the backend boots and
 runs SQLite migrations; subsequent launches are <1 s.
 
@@ -308,6 +308,33 @@ only when another writer beat the executor to the terminal
 transition.
 
 **Prompt**: *"Run the workflow."*
+
+### Discovery
+
+Read-only tools that let the model see what the composer can build
+before calling `start_workflow`.
+
+#### `list_workflows`
+
+```python
+list_workflows() -> dict
+```
+
+Returns the names and descriptions of all registered workflow templates
+and component-catalog entries.
+
+**Prompt**: *"What kinds of workflows can you build?"*
+
+#### `describe_workflow`
+
+```python
+describe_workflow(name: str) -> dict
+```
+
+Returns the full component manifest for a named workflow or component,
+including required parameters and output schema.
+
+**Prompt**: *"Describe the violin_bvbrc workflow."*
 
 ### Approval lifecycle
 
