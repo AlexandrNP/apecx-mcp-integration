@@ -452,7 +452,12 @@ def test_lookup_ancestor_returns_none_when_no_ancestor_in_dict(tmp_path: Path) -
 
 
 def test_lookup_entity_takes_ancestor_path_for_strain_iri(tmp_path: Path) -> None:
-    """lookup_entity returns path='ancestor' when strain IRI misses but ancestor found."""
+    """lookup_entity returns path='ancestor' when strain IRI misses but ancestor found.
+
+    Covered by:
+    tests/integration/test_stage2_lookup.py::test_p35_ancestor_traversal_on_real_dictionary
+    (per parity rule — integration test uses a real OLS-built dictionary)
+    """
     db = tmp_path / "test.sqlite"
     _write_dictionary_with_hierarchy(db)
 
@@ -467,7 +472,11 @@ def test_lookup_entity_takes_ancestor_path_for_strain_iri(tmp_path: Path) -> Non
 
 
 def test_ancestor_result_confidence_is_penalized(tmp_path: Path) -> None:
-    """Ancestor path confidence = ancestor_entry.confidence × 0.9."""
+    """Ancestor path confidence = ancestor_entry.confidence × 0.9.
+
+    Covered by:
+    tests/integration/test_stage2_lookup.py::test_p35_ancestor_confidence_penalty_applied
+    """
     db = tmp_path / "test.sqlite"
     _write_dictionary_with_hierarchy(db)
 
