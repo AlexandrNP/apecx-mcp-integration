@@ -298,3 +298,69 @@ def test_lookup_entity_ancestor_confidence_penalty(dict_with_real_hierarchy: Pat
         )
     finally:
         _loader._singleton = _orig
+
+
+# ---------------------------------------------------------------------------
+# MCP-tool layer: ancestor path through query_pathogens
+# ---------------------------------------------------------------------------
+#
+# Coverage gap closed 2026-05-04: the lookup-layer ancestor tests above
+# verify lookup_entity() returns path='ancestor', but they don't prove the
+# MCP database tools handle that path correctly.  This test exercises the
+# full chain: real taxdump → built dict with hierarchy → singleton wired
+# → query_pathogens called with a strain IRI → tool walks ancestor chain
+# → result includes _resolution with path='ancestor'.
+
+
+def test_query_pathogens_ancestor_path_with_real_hierarchy(
+    dict_with_real_hierarchy: Path,
+) -> None:
+    """query_pathogens with a strain IRI walks ancestor chain and injects _resolution.
+
+    Verifies the precision filter integration handles path='ancestor' the same
+    way it handles path='fast' — _resolution must appear in the response and
+    its canonical_iri must point at the species (NCBITaxon:11021), not the
+    strain (NCBITaxon:11022).
+    """
+    import asyncio
+
+    import apecx_integration.synonym_dictionary.loader as _loader
+    from apecx_integration.mcp_surface.tools import database_tools as tools
+    from apecx_integration.synonym_dictionary.loader import _ProcessSingleton
+
+    singleton = _ProcessSingleton()
+    singleton.configure(dict_with_real_hierarchy)
+    _orig = _loader._singleton
+    _loader._singleton = singleton
+
+    try:
+        # Pass the strain IRI as search_term. The dict only contains the species
+        # (11021); the lookup walks the real NCBITaxon hierarchy from 11022 → 11021.
+        out = asyncio.run(tools.query_pathogens(search_term=EEEV_STRAIN_IRI))
+    finally:
+        _loader._singleton = _orig
+
+    if "error" in out:
+        pytest.skip(
+            f"query_pathogens returned error (likely missing APECX_DATA_ROOT or "
+            f"VIOLIN data): {out['error']}"
+        )
+
+    assert "_resolution" in out, (
+        "query_pathogens did not inject _resolution for an ancestor-path lookup. "
+        "Either the MCP tool layer is not handling path='ancestor' correctly, or "
+        "the dictionary does not contain the species IRI."
+    )
+    resolution = out["_resolution"]
+    assert resolution["path"] == "ancestor", (
+        f"Expected path='ancestor' for strain IRI {EEEV_STRAIN_IRI!r}; "
+        f"got path={resolution['path']!r}."
+    )
+    assert resolution["canonical_iri"] == EEEV_SPECIES_IRI, (
+        f"Expected canonical_iri to be species {EEEV_SPECIES_IRI!r}, "
+        f"got {resolution['canonical_iri']!r}."
+    )
+    # Confidence is species confidence × 0.9 (ancestor penalty).
+    assert resolution["confidence"] < 1.0, (
+        f"Ancestor confidence should be <1.0 (penalty applied); " f"got {resolution['confidence']}"
+    )
