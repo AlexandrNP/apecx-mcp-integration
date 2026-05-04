@@ -88,6 +88,8 @@ async def build_dictionary(
     ontology_versions: dict[OntologyName, str],
     writer_factory: Any,  # Callable[[Path], DictionaryWriter]
     ols_client: OLSClient | None = None,
+    nodes_dmp_path: Path | None = None,
+    merged_dmp_path: Path | None = None,
 ) -> BuildManifest:
     """Run a full Stage 1 build.
 
@@ -109,6 +111,13 @@ async def build_dictionary(
     ols_client:
         Optional injected client.  If None, a default OLS client is
         constructed for the duration of the build.
+    nodes_dmp_path:
+        Optional path to NCBI Taxonomy ``nodes.dmp``.  When supplied,
+        the full ``taxon_hierarchy`` table is written into the SQLite
+        artifact, enabling Stage 2 ancestor traversal.
+    merged_dmp_path:
+        Optional path to NCBI Taxonomy ``merged.dmp``.  When supplied,
+        deprecated taxon ID remappings are stored alongside the hierarchy.
 
     Returns
     -------
@@ -167,6 +176,23 @@ async def build_dictionary(
             record_count_total=record_count_total,
         )
         writer.write_manifest(manifest)
+
+        # Optional: embed the NCBITaxon hierarchy for Stage 2 ancestor traversal.
+        if nodes_dmp_path is not None:
+            from apecx_integration.synonym_dictionary.hierarchy_loader import (  # noqa: PLC0415
+                parse_nodes_dmp,
+            )
+
+            log.info("writing taxon_hierarchy from %s", nodes_dmp_path)
+            writer.write_taxon_hierarchy(parse_nodes_dmp(nodes_dmp_path))
+
+        if merged_dmp_path is not None:
+            from apecx_integration.synonym_dictionary.hierarchy_loader import (  # noqa: PLC0415
+                parse_merged_dmp,
+            )
+
+            log.info("writing merged_taxons from %s", merged_dmp_path)
+            writer.write_merged_taxons(parse_merged_dmp(merged_dmp_path))
 
     return manifest
 

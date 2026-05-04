@@ -13,20 +13,18 @@ Design decisions:
 - Thread safety: load is protected by a threading.Lock.  Concurrent reads
   after load are lock-free (plain dict reads in CPython hold the GIL, so
   they're safe without explicit locking).
-- No on-disk caching beyond what SQLite already provides; the SQLite file
-  is the cache.
-
-Open decision (P3.5 — requires user direction):
-  Taxonomic-graph traversal is NOT implemented here.  A query for
-  "Eastern equine encephalitis virus" (species-level IRI) would NOT match
-  BV-BRC rows whose genome_id maps to a strain-level descendant taxon.
-  See ontology_integration_initial_analysis.md §4.9(1) for the design
-  options (bundled hierarchy snapshot vs. live OLS at runtime).
+- Ancestor traversal (P3.5): when the dictionary includes a
+  ``taxon_hierarchy`` table (built with ``--ncbitaxon-nodes``), queries for
+  strain-level NCBITaxon IRIs that miss the fast path are walked upward to
+  the nearest ancestor in the dictionary.  This is implemented with a
+  SQLite recursive CTE (opens a fresh read-only connection per traversal —
+  hierarchy traversal is a miss-path fallback, not the hot path).
 """
 
 from __future__ import annotations
 
 import logging
+import sqlite3
 import threading
 from pathlib import Path
 
@@ -38,6 +36,24 @@ from apecx_integration.synonym_dictionary.sqlite_writer import SQLiteDictionaryR
 log = logging.getLogger(__name__)
 
 _NOT_LOADED = object()
+
+_NCBITAXON_OBO_PREFIX = "http://purl.obolibrary.org/obo/NCBITaxon_"
+
+# SQLite recursive CTE that walks upward from a given taxon to the root (taxid=1).
+# Returns all ancestor taxon IDs in order (closest first).
+_ANCESTOR_CTE = """
+WITH RECURSIVE anc(id, depth) AS (
+    SELECT h.parent_taxon_id, 1
+    FROM   taxon_hierarchy h
+    WHERE  h.child_taxon_id = :taxon_id
+    UNION ALL
+    SELECT h.parent_taxon_id, anc.depth + 1
+    FROM   taxon_hierarchy h
+    JOIN   anc ON h.child_taxon_id = anc.id
+    WHERE  anc.id != 1
+)
+SELECT id FROM anc ORDER BY depth
+"""
 
 
 class DictionaryIndex:
@@ -53,10 +69,14 @@ class DictionaryIndex:
         inverse: dict[tuple[str, str], str],
         entries: dict[str, DictionaryEntry],
         manifest: BuildManifest,
+        db_path: Path | None = None,
+        has_hierarchy: bool = False,
     ) -> None:
         self._inverse = inverse
         self._entries = entries
         self._manifest = manifest
+        self._db_path = db_path
+        self._has_hierarchy = has_hierarchy
 
     @property
     def manifest(self) -> BuildManifest:
@@ -107,6 +127,57 @@ class DictionaryIndex:
         """
         return self._entries.get(canonical_iri)
 
+    @property
+    def has_hierarchy(self) -> bool:
+        """True if this index was built with an embedded NCBITaxon hierarchy."""
+        return self._has_hierarchy
+
+    def lookup_ancestor(self, iri: str) -> DictionaryEntry | None:
+        """Walk the NCBITaxon hierarchy upward to find the nearest ancestor in this dictionary.
+
+        Only meaningful for NCBITaxon IRIs
+        (``http://purl.obolibrary.org/obo/NCBITaxon_<id>``).  Returns the
+        closest ancestor whose canonical IRI is already in this index, or
+        ``None`` when no hierarchy is available or no ancestor matches.
+
+        Opens a fresh read-only SQLite connection per call — this is
+        intentionally on the miss/slow path, not the hot path.
+        """
+        if not self._has_hierarchy or self._db_path is None:
+            return None
+        if not iri.startswith(_NCBITAXON_OBO_PREFIX):
+            return None
+        taxon_id_str = iri[len(_NCBITAXON_OBO_PREFIX) :]
+        try:
+            taxon_id = int(taxon_id_str)
+        except ValueError:
+            return None
+
+        try:
+            conn = sqlite3.connect(f"file:{self._db_path}?mode=ro", uri=True)
+            try:
+                # Follow merged ID if this taxon was deprecated.
+                merge_row = conn.execute(
+                    "SELECT new_taxon_id FROM merged_taxons WHERE old_taxon_id = ?",
+                    (taxon_id,),
+                ).fetchone()
+                if merge_row:
+                    taxon_id = merge_row[0]
+
+                rows = conn.execute(_ANCESTOR_CTE, {"taxon_id": taxon_id}).fetchall()
+            finally:
+                conn.close()
+        except Exception as exc:
+            log.debug("ancestor traversal error for %s: %s", iri, exc)
+            return None
+
+        for (ancestor_id,) in rows:
+            ancestor_iri = f"{_NCBITAXON_OBO_PREFIX}{ancestor_id}"
+            entry = self._entries.get(ancestor_iri)
+            if entry is not None:
+                return entry
+        return None
+
     def entry_count(self) -> int:
         return len(self._entries)
 
@@ -119,7 +190,9 @@ class DictionaryIndex:
 
         Reads all entries + the full inverse index into Python dicts.
         For VIOLIN+BV-BRC scale (< 10k entries) this completes in
-        milliseconds.
+        milliseconds.  If the artifact contains a ``taxon_hierarchy``
+        table (built with ``--ncbitaxon-nodes``), ancestor traversal
+        is available via :meth:`lookup_ancestor`.
         """
         path = Path(path)
         reader = SQLiteDictionaryReader(path)
@@ -137,14 +210,22 @@ class DictionaryIndex:
                     if key not in inverse:
                         inverse[key] = entry.canonical_iri
 
+        has_hierarchy = reader.has_taxon_hierarchy()
         log.info(
-            "loaded dictionary %s: %d entries, %d index rows (version %s)",
+            "loaded dictionary %s: %d entries, %d index rows (version %s, hierarchy=%s)",
             path,
             len(entries),
             len(inverse),
             manifest.dictionary_version,
+            has_hierarchy,
         )
-        return cls(inverse=inverse, entries=entries, manifest=manifest)
+        return cls(
+            inverse=inverse,
+            entries=entries,
+            manifest=manifest,
+            db_path=path,
+            has_hierarchy=has_hierarchy,
+        )
 
 
 class _ProcessSingleton:

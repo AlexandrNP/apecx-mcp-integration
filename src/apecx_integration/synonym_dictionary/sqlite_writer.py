@@ -2,11 +2,18 @@
 
 Persists dictionary entries + inverse index + manifest to a single
 SQLite file.  Schema documented in ``synonym_dictionary_contract.md`` §4.
+
+Optional extension: when ``--ncbitaxon-nodes`` is supplied at build time,
+the ``taxon_hierarchy`` and ``merged_taxons`` tables are populated from
+NCBI's ``nodes.dmp`` / ``merged.dmp``.  These tables power the Stage 2
+ancestor traversal in :mod:`apecx_integration.synonym_dictionary.loader`.
 """
 
 from __future__ import annotations
 
+import itertools
 import json
+import logging
 import sqlite3
 from collections.abc import Iterator
 from pathlib import Path
@@ -23,6 +30,16 @@ from apecx_integration.synonym_dictionary.schema import (
     BuildManifest,
     DictionaryEntry,
 )
+
+log = logging.getLogger(__name__)
+
+
+def _batched(it: Iterator, n: int) -> Iterator[list]:
+    """Yield successive lists of up to n items from iterator."""
+    it = iter(it)
+    while batch := list(itertools.islice(it, n)):
+        yield batch
+
 
 _SCHEMA_DDL = (
     """
@@ -61,6 +78,28 @@ _SCHEMA_DDL = (
 
 
 _MANIFEST_ROW_KEY = "manifest_json"
+
+_HIERARCHY_DDL = (
+    """
+    CREATE TABLE IF NOT EXISTS taxon_hierarchy (
+        child_taxon_id  INTEGER NOT NULL,
+        parent_taxon_id INTEGER NOT NULL,
+        PRIMARY KEY (child_taxon_id)
+    );
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_taxon_hierarchy_child
+        ON taxon_hierarchy (child_taxon_id);
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS merged_taxons (
+        old_taxon_id INTEGER NOT NULL PRIMARY KEY,
+        new_taxon_id INTEGER NOT NULL
+    );
+    """,
+)
+
+_HIERARCHY_BATCH = 50_000
 
 
 class SQLiteDictionaryWriter(DictionaryWriter):
@@ -143,6 +182,55 @@ class SQLiteDictionaryWriter(DictionaryWriter):
             (_MANIFEST_ROW_KEY, payload),
         )
 
+    def write_taxon_hierarchy(self, nodes_iter: Iterator[tuple[int, int]]) -> int:
+        """Persist the full NCBITaxon parent-child mapping from ``nodes.dmp``.
+
+        ``nodes_iter`` yields ``(child_taxon_id, parent_taxon_id)`` pairs.
+        Returns the number of rows written.  Idempotent: duplicate
+        child_taxon_id rows are silently ignored (INSERT OR IGNORE).
+        """
+        for ddl in _HIERARCHY_DDL:
+            self._conn.execute(ddl)
+        count = 0
+        for batch in _batched(nodes_iter, _HIERARCHY_BATCH):
+            self._conn.executemany(
+                "INSERT OR IGNORE INTO taxon_hierarchy "
+                "(child_taxon_id, parent_taxon_id) VALUES (?, ?)",
+                batch,
+            )
+            count += len(batch)
+            self._conn.commit()
+        log.info("taxon_hierarchy: wrote %d rows", count)
+        return count
+
+    def write_merged_taxons(self, merged_iter: Iterator[tuple[int, int]]) -> int:
+        """Persist the NCBITaxon merged-ID table from ``merged.dmp``.
+
+        ``merged_iter`` yields ``(old_taxon_id, new_taxon_id)`` pairs.
+        Returns the number of rows written.
+        """
+        for ddl in _HIERARCHY_DDL:
+            self._conn.execute(ddl)
+        count = 0
+        for batch in _batched(merged_iter, _HIERARCHY_BATCH):
+            self._conn.executemany(
+                "INSERT OR REPLACE INTO merged_taxons "
+                "(old_taxon_id, new_taxon_id) VALUES (?, ?)",
+                batch,
+            )
+            count += len(batch)
+        self._conn.commit()
+        log.info("merged_taxons: wrote %d rows", count)
+        return count
+
+    def has_taxon_hierarchy(self) -> bool:
+        """Return True if the hierarchy table was written and is non-empty."""
+        try:
+            row = self._conn.execute("SELECT COUNT(*) FROM taxon_hierarchy LIMIT 1").fetchone()
+            return bool(row and row[0] > 0)
+        except sqlite3.OperationalError:
+            return False
+
     def close(self) -> None:
         self._conn.commit()
         self._conn.close()
@@ -214,6 +302,14 @@ class SQLiteDictionaryReader(DictionaryReader):
         if row is None:
             return None
         return self._row_to_entry(row)
+
+    def has_taxon_hierarchy(self) -> bool:
+        """Return True if the SQLite file contains a non-empty taxon_hierarchy table."""
+        try:
+            row = self._conn.execute("SELECT COUNT(*) FROM taxon_hierarchy LIMIT 1").fetchone()
+            return bool(row and row[0] > 0)
+        except sqlite3.OperationalError:
+            return False
 
     def all_entries(self) -> Iterator[DictionaryEntry]:
         for row in self._conn.execute(

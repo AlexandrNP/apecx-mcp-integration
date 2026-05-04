@@ -118,6 +118,28 @@ def _build_argparser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--ncbitaxon-nodes",
+        type=Path,
+        default=None,
+        help=(
+            "Path to NCBI Taxonomy ``nodes.dmp`` (from taxdump.tar.gz). "
+            "When supplied, embeds the full NCBITaxon parent-child hierarchy "
+            "in the dictionary artifact, enabling Stage 2 ancestor traversal "
+            "(strain → species → genus).  Increases build time by ~30s and "
+            "artifact size by ~30 MB."
+        ),
+    )
+    parser.add_argument(
+        "--ncbitaxon-merged",
+        type=Path,
+        default=None,
+        help=(
+            "Path to NCBI Taxonomy ``merged.dmp`` (from taxdump.tar.gz). "
+            "Records deprecated taxon ID remappings alongside the hierarchy. "
+            "Only useful when --ncbitaxon-nodes is also supplied."
+        ),
+    )
+    parser.add_argument(
         "--max-rows",
         type=int,
         default=None,
@@ -247,6 +269,8 @@ def main(argv: list[str] | None = None) -> int:
         dictionary_version=dictionary_version,
         ontology_versions=ontology_versions,
         writer_factory=SQLiteDictionaryWriter,
+        nodes_dmp_path=args.ncbitaxon_nodes,
+        merged_dmp_path=args.ncbitaxon_merged,
     )
 
     # Human-inspectable manifest copy.

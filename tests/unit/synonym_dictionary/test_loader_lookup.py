@@ -18,6 +18,7 @@ import threading
 from datetime import UTC, datetime
 from pathlib import Path
 
+import pytest
 from apecx_integration.synonym_dictionary.enums import EntityType, OntologyName, ResolutionStatus
 from apecx_integration.synonym_dictionary.loader import DictionaryIndex, _ProcessSingleton
 from apecx_integration.synonym_dictionary.lookup import LookupResult, lookup_entity
@@ -337,9 +338,9 @@ def test_lookup_entity_accepts_iri_as_surface_form(tmp_path: Path) -> None:
 
 
 def test_lookup_entity_iri_miss_falls_through(tmp_path: Path) -> None:
-    """An IRI not in the dictionary falls through to slow/miss, not a crash."""
+    """IRI miss in a dict WITHOUT hierarchy → falls through to slow/miss (no ancestor table)."""
     db = tmp_path / "test.sqlite"
-    _write_test_dictionary(db)
+    _write_test_dictionary(db)  # no hierarchy table
 
     from apecx_integration.synonym_dictionary import loader as _loader
 
@@ -348,3 +349,183 @@ def test_lookup_entity_iri_miss_falls_through(tmp_path: Path) -> None:
     result = lookup_entity("http://purl.obolibrary.org/obo/NCBITaxon_99999")
     assert result.path in ("slow", "miss")
     assert result.canonical_iri is None
+
+
+# ---------------------------------------------------------------------------
+# P3.5 — ancestor traversal (DictionaryIndex.lookup_ancestor + lookup_entity
+#         "ancestor" path)
+# ---------------------------------------------------------------------------
+
+
+def _write_dictionary_with_hierarchy(path: Path) -> None:
+    """Write a SQLite dictionary that includes NCBITaxon_37124 (CHIKV, species-level)
+    and a minimal hierarchy: NCBITaxon_99999 (synthetic strain) → 37124 → 11019 → 1.
+    """
+    manifest = BuildManifest(
+        dictionary_version="test-v1",
+        built_at=datetime.now(UTC),
+        ontology_versions={"ncbitaxon": "2026-04-01"},
+        record_counts_per_entity_type={EntityType.PATHOGEN: 1},
+        unresolved_count=0,
+        record_count_total=1,
+    )
+    species_entry = DictionaryEntry(
+        entity_type=EntityType.PATHOGEN,
+        canonical_iri="http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        canonical_label="Chikungunya virus",
+        synonyms=("CHIKV",),
+        ontology=OntologyName.NCBITAXON,
+        ontology_version="2026-04-01",
+        source_records=("violin.pathogen.1",),
+        confidence=1.0,
+        resolved_at=datetime.now(UTC),
+    )
+    hierarchy = [
+        (99999, 37124),  # synthetic strain → CHIKV species
+        (37124, 11019),  # CHIKV species → Alphavirus genus
+        (11019, 1),  # Alphavirus → root
+    ]
+    with SQLiteDictionaryWriter(path) as writer:
+        writer.write_entry(species_entry)
+        writer.write_manifest(manifest)
+        writer.write_taxon_hierarchy(iter(hierarchy))
+
+
+def test_has_hierarchy_false_without_hierarchy_table(tmp_path: Path) -> None:
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+    index = DictionaryIndex.load(db)
+    assert index.has_hierarchy is False
+
+
+def test_has_hierarchy_true_when_table_written(tmp_path: Path) -> None:
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+    index = DictionaryIndex.load(db)
+    assert index.has_hierarchy is True
+
+
+def test_lookup_ancestor_returns_none_no_hierarchy(tmp_path: Path) -> None:
+    """lookup_ancestor returns None immediately when has_hierarchy is False."""
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+    index = DictionaryIndex.load(db)
+    assert index.has_hierarchy is False
+    result = index.lookup_ancestor("http://purl.obolibrary.org/obo/NCBITaxon_99999")
+    assert result is None
+
+
+def test_lookup_ancestor_returns_none_for_non_ncbitaxon_iri(tmp_path: Path) -> None:
+    """lookup_ancestor only handles NCBITaxon IRIs; VO IRIs return None."""
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+    index = DictionaryIndex.load(db)
+    result = index.lookup_ancestor("http://purl.obolibrary.org/obo/VO_0000122")
+    assert result is None
+
+
+def test_lookup_ancestor_walks_to_nearest_ancestor(tmp_path: Path) -> None:
+    """Strain IRI not in dict → ancestor walk → species IRI in dict → return entry."""
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+    index = DictionaryIndex.load(db)
+
+    # NCBITaxon_99999 is the synthetic strain — not in the dict directly
+    entry = index.lookup_ancestor("http://purl.obolibrary.org/obo/NCBITaxon_99999")
+    assert entry is not None
+    assert entry.canonical_iri == "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+    assert entry.canonical_label == "Chikungunya virus"
+
+
+def test_lookup_ancestor_returns_none_when_no_ancestor_in_dict(tmp_path: Path) -> None:
+    """If the ancestor walk finds no IRI that's in the dict, return None."""
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+    index = DictionaryIndex.load(db)
+
+    # NCBITaxon_11019 (Alphavirus genus) is above CHIKV and NOT in the dict
+    # Only CHIKV (37124) is in the dict, and 11019's parent chain leads to root (1)
+    # 11019 itself has no parent in dict → None
+    entry = index.lookup_ancestor("http://purl.obolibrary.org/obo/NCBITaxon_11019")
+    # 11019 → parent 1 (root), root isn't in dict
+    assert entry is None
+
+
+def test_lookup_entity_takes_ancestor_path_for_strain_iri(tmp_path: Path) -> None:
+    """lookup_entity returns path='ancestor' when strain IRI misses but ancestor found."""
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("http://purl.obolibrary.org/obo/NCBITaxon_99999")
+    assert result.path == "ancestor"
+    assert result.canonical_iri == "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+    assert result.canonical_label == "Chikungunya virus"
+
+
+def test_ancestor_result_confidence_is_penalized(tmp_path: Path) -> None:
+    """Ancestor path confidence = ancestor_entry.confidence × 0.9."""
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("http://purl.obolibrary.org/obo/NCBITaxon_99999")
+    assert result.path == "ancestor"
+    # Species entry confidence is 1.0 → 1.0 * 0.9 = 0.9
+    assert result.confidence == pytest.approx(0.9)
+
+
+def test_ancestor_result_evidence_names_ancestor_iri(tmp_path: Path) -> None:
+    """Ancestor path evidence string identifies the matched ancestor IRI."""
+    db = tmp_path / "test.sqlite"
+    _write_dictionary_with_hierarchy(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("http://purl.obolibrary.org/obo/NCBITaxon_99999")
+    assert "NCBITaxon_37124" in result.evidence
+    assert "ancestor" in result.evidence.lower()
+
+
+def test_lookup_ancestor_handles_merged_deprecated_taxon(tmp_path: Path) -> None:
+    """A deprecated strain IRI (in merged.dmp) is remapped before ancestor walk."""
+    db = tmp_path / "test.sqlite"
+    manifest = BuildManifest(
+        dictionary_version="test-v1",
+        built_at=datetime.now(UTC),
+        ontology_versions={"ncbitaxon": "2026-04-01"},
+        record_counts_per_entity_type={EntityType.PATHOGEN: 1},
+        unresolved_count=0,
+        record_count_total=1,
+    )
+    species_entry = DictionaryEntry(
+        entity_type=EntityType.PATHOGEN,
+        canonical_iri="http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        canonical_label="Chikungunya virus",
+        synonyms=("CHIKV",),
+        ontology=OntologyName.NCBITAXON,
+        ontology_version="2026-04-01",
+        source_records=("violin.pathogen.1",),
+        confidence=1.0,
+        resolved_at=datetime.now(UTC),
+    )
+    with SQLiteDictionaryWriter(db) as writer:
+        writer.write_entry(species_entry)
+        writer.write_manifest(manifest)
+        # 88888 → deprecated; merged to 99999 → parent 37124 (CHIKV species)
+        writer.write_taxon_hierarchy(iter([(99999, 37124), (37124, 1)]))
+        writer.write_merged_taxons(iter([(88888, 99999)]))
+
+    index = DictionaryIndex.load(db)
+    # Querying deprecated IRI 88888 should remap → 99999 → ancestor 37124
+    entry = index.lookup_ancestor("http://purl.obolibrary.org/obo/NCBITaxon_88888")
+    assert entry is not None
+    assert entry.canonical_iri == "http://purl.obolibrary.org/obo/NCBITaxon_37124"

@@ -163,3 +163,74 @@ def test_all_entries_iterates_every_entry(tmp_path: Path) -> None:
     with SQLiteDictionaryReader(artifact) as reader:
         entries = list(reader.all_entries())
     assert len(entries) == 2
+
+
+# ---------------------------------------------------------------------------
+# P3.5 — taxon_hierarchy + merged_taxons table
+# ---------------------------------------------------------------------------
+
+
+def test_has_taxon_hierarchy_false_when_not_written(tmp_path: Path) -> None:
+    """Artifact without hierarchy table → has_taxon_hierarchy() returns False."""
+    artifact = tmp_path / "dictionary.sqlite"
+    with SQLiteDictionaryWriter(artifact) as writer:
+        writer.write_entry(_sample_entry())
+        writer.write_manifest(_sample_manifest())
+
+    with SQLiteDictionaryReader(artifact) as reader:
+        assert reader.has_taxon_hierarchy() is False
+
+
+def test_write_taxon_hierarchy_persists_rows(tmp_path: Path) -> None:
+    """write_taxon_hierarchy populates the table and has_taxon_hierarchy returns True."""
+    artifact = tmp_path / "dictionary.sqlite"
+    hierarchy_pairs = [
+        (12345, 37124),  # strain → species
+        (37124, 11019),  # species → genus
+        (11019, 1),  # genus → root
+    ]
+    with SQLiteDictionaryWriter(artifact) as writer:
+        writer.write_entry(_sample_entry())
+        writer.write_manifest(_sample_manifest())
+        row_count = writer.write_taxon_hierarchy(iter(hierarchy_pairs))
+
+    assert row_count == 3
+    with SQLiteDictionaryReader(artifact) as reader:
+        assert reader.has_taxon_hierarchy() is True
+
+
+def test_write_taxon_hierarchy_idempotent_on_duplicate_child(tmp_path: Path) -> None:
+    """Duplicate child_taxon_id rows are silently ignored (INSERT OR IGNORE)."""
+    artifact = tmp_path / "dictionary.sqlite"
+    with SQLiteDictionaryWriter(artifact) as writer:
+        writer.write_entry(_sample_entry())
+        writer.write_manifest(_sample_manifest())
+        # Write same row twice
+        writer.write_taxon_hierarchy(iter([(12345, 37124), (12345, 99999)]))
+
+    # Should not raise; second write silently dropped
+    with SQLiteDictionaryReader(artifact) as reader:
+        assert reader.has_taxon_hierarchy() is True
+
+
+def test_write_merged_taxons_persists_rows(tmp_path: Path) -> None:
+    """write_merged_taxons stores deprecated-ID remappings."""
+    artifact = tmp_path / "dictionary.sqlite"
+    with SQLiteDictionaryWriter(artifact) as writer:
+        writer.write_entry(_sample_entry())
+        writer.write_manifest(_sample_manifest())
+        writer.write_taxon_hierarchy(iter([(37124, 11019)]))
+        merged_count = writer.write_merged_taxons(iter([(99001, 37124)]))
+
+    assert merged_count == 1
+
+
+def test_writer_has_taxon_hierarchy_true_after_write(tmp_path: Path) -> None:
+    """SQLiteDictionaryWriter.has_taxon_hierarchy also reflects in-session writes."""
+    artifact = tmp_path / "dictionary.sqlite"
+    with SQLiteDictionaryWriter(artifact) as writer:
+        writer.write_entry(_sample_entry())
+        writer.write_manifest(_sample_manifest())
+        assert writer.has_taxon_hierarchy() is False
+        writer.write_taxon_hierarchy(iter([(12345, 37124)]))
+        assert writer.has_taxon_hierarchy() is True

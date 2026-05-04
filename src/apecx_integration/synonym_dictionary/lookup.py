@@ -6,7 +6,13 @@ Exposes a single entry point -- :func:`lookup_entity` -- that:
    in-memory :class:`~apecx_integration.synonym_dictionary.loader.DictionaryIndex`.
    O(1) hash lookup; returns in microseconds.
 
-2. **Slow path**: on a fast-path miss, falls back to the existing
+2. **Ancestor path**: on a fast-path IRI miss, walks the NCBITaxon
+   hierarchy (``taxon_hierarchy`` table) upward to the nearest ancestor
+   whose IRI IS in the dictionary.  Only active when the dictionary was
+   built with ``--ncbitaxon-nodes``; degrades gracefully to slow path
+   when the table is absent.
+
+3. **Slow path**: on a fast-path miss, falls back to the existing
    substring-matching logic in
    :mod:`apecx_integration.mcp_surface.data.database` (which benefits
    from the Phase 0 pre-filter fix in apecx-db-integration).  The slow
@@ -19,8 +25,6 @@ Visibility requirement (analysis doc §0.1, §6.2.1):
   routing decision explicit and machine-readable.
 
 What this module does NOT do:
-- Taxonomic-graph traversal (P3.5 — design decision required; see
-  ontology_integration_initial_analysis.md §4.9(1)).
 - Provisional-synonym lookup (Phase 4 — deferred per analysis doc §6.1).
 - Per-user or per-session caching (unnecessary at current scale).
 """
@@ -47,13 +51,17 @@ log = logging.getLogger(__name__)
 class LookupResult:
     """The outcome of a single Stage 2 entity lookup.
 
-    ``path`` is "fast" (dictionary hit) or "slow" (fell through to
-    substring search) so callers can reason about confidence without
-    parsing the numeric value.
+    ``path`` values:
+    - ``"fast"``     — exact dictionary hit (canonical IRI or synonym).
+    - ``"ancestor"`` — IRI miss but a taxonomic ancestor was found in the
+                       dictionary via the NCBITaxon hierarchy table.
+                       Confidence is the ancestor entry's confidence × 0.9.
+    - ``"slow"``     — fell through to database substring matcher.
+    - ``"miss"``     — no match on any path.
     """
 
     surface_form: str
-    path: Literal["fast", "slow", "miss"]
+    path: Literal["fast", "ancestor", "slow", "miss"]
     canonical_iri: str | None
     canonical_label: str | None
     canonical_ontology: str | None
@@ -64,7 +72,7 @@ class LookupResult:
 
 
 def fast_miss(surface_form: str, *, reason: str = "") -> LookupResult:
-    """Return a LookupResult representing a complete miss on both paths."""
+    """Return a LookupResult representing a complete miss on all paths."""
     return LookupResult(
         surface_form=surface_form,
         path="miss",
@@ -102,9 +110,10 @@ def lookup_entity(
     -------
     A :class:`LookupResult` with ``path`` set to:
 
-    - ``"fast"`` — dictionary hit.
-    - ``"slow"`` — substring match in the database store (degraded path).
-    - ``"miss"`` — no match on either path.
+    - ``"fast"``     — exact dictionary hit.
+    - ``"ancestor"`` — strain-level IRI matched via NCBITaxon ancestor chain.
+    - ``"slow"``     — substring match in the database store (degraded path).
+    - ``"miss"``     — no match on any path.
 
     The visibility guarantee: the caller sees WHICH path was taken and at
     what confidence.  Do not suppress this into a naked "entity not found".
@@ -122,6 +131,11 @@ def lookup_entity(
         entry = index.lookup_by_iri(surface_form)
         if entry is not None:
             return _entry_to_result(surface_form, entry, path="fast")
+
+        # IRI miss — try taxonomic ancestor traversal (NCBITaxon hierarchy).
+        ancestor = index.lookup_ancestor(surface_form)
+        if ancestor is not None:
+            return _ancestor_to_result(surface_form, ancestor)
 
     # Fast path — surface form lookup
     if index is not None:
@@ -153,7 +167,7 @@ def lookup_entity(
 
 
 def _entry_to_result(
-    surface_form: str, entry: DictionaryEntry, *, path: Literal["fast", "slow"]
+    surface_form: str, entry: DictionaryEntry, *, path: Literal["fast", "ancestor", "slow"]
 ) -> LookupResult:
     return LookupResult(
         surface_form=surface_form,
@@ -169,6 +183,31 @@ def _entry_to_result(
         evidence=(
             f"dictionary_version={entry.ontology_version}; "
             f"source_records={len(entry.source_records)}"
+        ),
+    )
+
+
+def _ancestor_to_result(surface_form: str, ancestor: DictionaryEntry) -> LookupResult:
+    """Build a LookupResult for a taxon-hierarchy ancestor match.
+
+    Confidence is the ancestor entry's confidence × 0.9 to signal that
+    the match is indirect (caller queried a strain; we matched the species).
+    """
+    return LookupResult(
+        surface_form=surface_form,
+        path="ancestor",
+        canonical_iri=ancestor.canonical_iri,
+        canonical_label=ancestor.canonical_label,
+        canonical_ontology=ancestor.ontology.value,
+        confidence=round(ancestor.confidence * 0.9, 4),
+        resolution_status=ResolutionStatus.ID_ANCHORED
+        if ancestor.confidence == 1.0
+        else ResolutionStatus.OLS_FUZZY,
+        synonyms=ancestor.synonyms,
+        evidence=(
+            f"NCBITaxon ancestor match; queried={surface_form!r}; "
+            f"ancestor_iri={ancestor.canonical_iri}; "
+            f"dictionary_version={ancestor.ontology_version}"
         ),
     )
 
