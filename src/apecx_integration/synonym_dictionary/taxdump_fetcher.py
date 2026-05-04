@@ -21,7 +21,7 @@ import logging
 import tarfile
 from pathlib import Path
 
-import requests
+import httpx
 
 log = logging.getLogger(__name__)
 
@@ -86,12 +86,12 @@ def fetch_taxdump(
 
 def _download(url: str, dest: Path, *, show_progress: bool) -> None:
     log.info("Downloading taxdump from %s → %s", url, dest)
-    with requests.get(url, stream=True, timeout=300) as resp:
+    with httpx.stream("GET", url, follow_redirects=True, timeout=300) as resp:
         resp.raise_for_status()
         total = int(resp.headers.get("content-length", 0))
         downloaded = 0
         with dest.open("wb") as fh:
-            for chunk in resp.iter_content(chunk_size=_CHUNK):
+            for chunk in resp.iter_bytes(chunk_size=_CHUNK):
                 fh.write(chunk)
                 downloaded += len(chunk)
                 if show_progress and total:
