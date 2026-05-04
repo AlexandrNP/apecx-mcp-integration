@@ -1,38 +1,42 @@
-"""IRIResolutionWorkflow — nanobrain Workflow subclass with explicit step orchestration.
+"""IRIResolutionWorkflow — nanobrain Workflow subclass with synchronous orchestration.
 
-Why a Workflow subclass instead of relying on the default trigger cascade?
-=========================================================================
-Nanobrain's data-driven trigger cascade for inter-step links was disabled
-when the framework migrated to "automatic triggers" (see
-``nanobrain/core/link.py:742-773`` — ``_setup_callback_registration`` is
-intentionally a no-op now), and the auto-trigger mechanism that was
-supposed to replace it (``DataUnit.register_with_link``) is defined but
-never invoked anywhere in the framework.  The result: ``Workflow.execute()``
-populates the first step's input data unit but the second-and-later steps
-never fire.
+Two equally-valid invocation paths
+==================================
+Both work correctly as of 2026-05-04 (after the
+``nanobrain/core/link.py::_setup_callback_registration`` fix that
+re-enabled inter-step DirectLink change listeners):
 
-The framework's imperative fallback (``divergence_enabled: True`` →
-``_process_with_divergence``) has its own bug: for single-input steps it
-wraps the upstream result dict around itself before passing it down, so
-``process(input_data)`` receives ``{"normalized_records": {"normalized_records": [...]}}``
-instead of ``{"normalized_records": [...]}``.
+1. **Synchronous, single-call** (this class's ``process()``):
+   ``await workflow.process({"entity_records": [<records>]})`` walks
+   the steps in topological order, pipes outputs to inputs, and returns
+   ``{"resolved_records": [<enriched records>]}`` once the whole cascade
+   has completed. The harvester adapter uses this path because it needs
+   a deterministic per-record return value.
 
-We bypass both code paths and orchestrate the cascade explicitly here.
-The workflow remains a real ``nanobrain.core.workflow.Workflow`` (built
-via ``from_config``, owns child_steps + step_links + DataUnits), so it
-can still be composed with other nanobrain workflows, but its ``process()``
-walks the steps in topological order and pipes outputs to inputs without
-relying on the (broken) trigger / data-unit propagation.
+2. **Data-driven, event-fired** (the framework's default cascade):
+   Setting the workflow input data unit and calling
+   ``await workflow.execute()`` kicks off the cascade via DataUnit
+   change listeners. Returns control as soon as the first step is
+   triggered; the rest of the chain runs in the background. The
+   workflow output data unit is populated when the cascade completes.
+   Tests that exercise this path appear in
+   ``tests/integration/test_iri_resolution_workflow.py::
+   test_workflow_native_framework_cascade``.
 
-What this means for callers
----------------------------
-- ``IRIResolutionWorkflow.from_config('iri_resolution_workflow.yml')``
-  produces a usable workflow object.
-- ``await workflow.process({"entity_records": [<records>]})`` returns
-  ``{"resolved_records": [<enriched records>]}`` and writes the same
-  list onto the workflow's ``resolved_records`` output data unit.
-- The :func:`apecx_integration.synonym_dictionary.harvester_adapter.adapt_workflow_to_harvester_transform`
-  helper drives this same ``process()`` for the harvester ingest stage.
+Why a Workflow subclass at all?
+-------------------------------
+The synchronous ``process()`` method on this subclass is the canonical
+in-process API for the harvester adapter and any future caller that
+wants to await a complete result without writing
+``await asyncio.sleep(...)`` to let the async cascade finish. The base
+``Workflow.process()`` runs in data-driven mode and returns
+``{"status": "data_flow_initiated", ...}`` rather than the resolved
+records — useful for monitoring, awkward for one-shot lookups.
+
+Both paths use the same step instances, the same data units, and the
+same framework plumbing. The choice is just about whether the caller
+wants the answer in the return value or via an out-of-band data unit
+read.
 """
 
 from __future__ import annotations

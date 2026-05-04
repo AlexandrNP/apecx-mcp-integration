@@ -232,6 +232,49 @@ def test_workflow_can_be_invoked_multiple_times():
         assert result["resolved_records"][0]["resolution_path"] == "miss"
 
 
+def test_workflow_native_framework_cascade():
+    """REGRESSION GUARD: nanobrain's native data-driven cascade fires all steps.
+
+    This test exercises the BASE Workflow class (not IRIResolutionWorkflow's
+    explicit override) to prove that the framework's DirectLink change-listener
+    propagation works end-to-end. If someone re-disables
+    ``DirectLink._setup_callback_registration`` in nanobrain/core/link.py
+    (the comment block that previously short-circuited the legacy callback
+    mechanism), this test will fail because the resolve step's output data
+    unit will stay None.
+
+    See ``nanobrain/core/link.py::_setup_callback_registration`` for the
+    fix and the rationale comment.
+    """
+    from nanobrain.core.workflow import Workflow
+
+    async def run() -> dict | list | None:
+        # Use the base Workflow class — proves the framework cascade fires.
+        w = Workflow.from_config(str(WORKFLOW_YAML))
+        inp = w.step_input_data_units["entity_records"]
+        await inp.set([{"surface_form": "  EEEV  ", "entity_type": "pathogen"}])
+        await w.execute()
+        # The framework cascade is async (change listeners fire via an
+        # AsyncTriggerExecutor). Wait for the chain to complete.
+        await asyncio.sleep(1.5)
+        out = w.step_output_data_units["resolved_records"]
+        return await out.get()
+
+    final_payload = asyncio.run(run())
+    assert final_payload is not None, (
+        "Native framework cascade did not propagate to workflow output data unit. "
+        "DirectLink._setup_callback_registration may have been re-disabled in "
+        "nanobrain/core/link.py — see the rationale comment there."
+    )
+    # The cascade completed; the resolved record should have miss-path shape
+    # since no dictionary is configured.
+    assert isinstance(final_payload, list)
+    assert len(final_payload) == 1
+    rec = final_payload[0]
+    assert rec["resolution_path"] == "miss"
+    assert rec["surface_form"] == "eeev"  # normalize step also fired
+
+
 # ---------------------------------------------------------------------------
 # Fast-path test — gated on live OLS build
 # ---------------------------------------------------------------------------
