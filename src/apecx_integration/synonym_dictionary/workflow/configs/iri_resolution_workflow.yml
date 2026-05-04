@@ -1,0 +1,80 @@
+# End-to-end IRI resolution workflow.
+#
+# Wraps the existing plain-Python lookup_entity pipeline as a real
+# nanobrain workflow so it can be (a) composed with other nanobrain
+# workflows and (b) plugged into the apecx-harvesters ingest stage as
+# a Transform via ``adapt_workflow_to_harvester_transform``.
+#
+# Topology
+# --------
+#   entity_records (workflow input)
+#         │ DirectLink
+#         ▼
+#   normalize.entity_records_input
+#         │ NormalizeEntityRecordsStep.process()
+#         ▼
+#   normalize.normalized_records_output
+#         │ DirectLink
+#         ▼
+#   resolve.normalized_records_input
+#         │ ResolveIRIStep.process()
+#         ▼
+#   resolve.resolved_records_output
+#         │ DirectLink
+#         ▼
+#   resolved_records (workflow output)
+#
+# Ownership boundary
+# ------------------
+# Each step owns its own input/output DataUnits and trigger (declared in
+# the step YAML files). The workflow owns only the entry/exit data units
+# and the three DirectLinks below. See nanobrain-workflow-authoring skill.
+
+name: iri_resolution_workflow
+description: "Wrap lookup_entity as a multi-step nanobrain workflow with DataUnits, Triggers, and Links."
+version: "0.1.0"
+
+input_data_units:
+  entity_records:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: entity_records
+    description: "Workflow entry port — batch of entity records to resolve."
+    persistent: false
+
+output_data_units:
+  resolved_records:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: resolved_records
+    description: "Workflow exit port — records enriched with canonical IRI fields."
+    persistent: false
+
+steps:
+  normalize:
+    class: "apecx_integration.synonym_dictionary.workflow.normalize_step.NormalizeEntityRecordsStep"
+    config: "normalize_step.yml"
+
+  resolve:
+    class: "apecx_integration.synonym_dictionary.workflow.resolve_step.ResolveIRIStep"
+    config: "resolve_step.yml"
+
+links:
+  workflow_input_to_normalize:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "entity_records"
+      target: "normalize.entity_records"
+
+  normalize_to_resolve:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "normalize.normalized_records"
+      target: "resolve.normalized_records"
+
+  resolve_to_workflow_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "resolve.resolved_records"
+      target: "resolved_records"
