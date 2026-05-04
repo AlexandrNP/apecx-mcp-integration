@@ -22,7 +22,6 @@ import os
 from pathlib import Path
 
 import pytest
-
 from apecx_integration.mcp_surface.data import database as db
 from apecx_integration.mcp_surface.tools import database_tools as tools
 
@@ -228,3 +227,38 @@ def test_real_resolve_entity_returns_ncbi_ids():
     """Integration counterpart to test_resolve_entity_returns_identifiers."""
     out = asyncio.run(tools.resolve_entity("eastern equine encephalitis"))
     assert len(out["identifiers"]["ncbi_taxonomy_ids"]) >= 1
+
+
+# ---------------------------------------------------------------------------
+# P3.9 — lookup_entity wiring against real data (slow/miss fallback path)
+#
+# These tests verify that the P3.9 wiring degrades correctly when the synonym
+# dictionary is NOT built (i.e. lookup_entity returns slow/miss → substring
+# fallback).  Full precision-path coverage (fast/ancestor) requires a built
+# synonym dictionary; that path is tested in:
+#   TODO (P3.9-integration): add test_p39_precision_path_with_dict.py once
+#   the synonym dictionary build is part of the CI data setup.
+# ---------------------------------------------------------------------------
+
+
+def test_real_query_pathogens_without_dictionary_falls_back():
+    """P3.9: without dictionary, pathogens query degrades to substring match."""
+    out = asyncio.run(tools.query_pathogens(search_term="eastern equine encephalitis"))
+    assert "error" not in out
+    assert out["total_matching"] >= 1
+    # No _resolution key expected — slow/miss path doesn't inject one
+    assert "_resolution" not in out
+
+
+def test_real_query_bvbrc_without_dictionary_falls_back():
+    """P3.9: without dictionary, BV-BRC query degrades to substring match."""
+    out = asyncio.run(tools.query_bvbrc_genomes(search_term="eastern equine"))
+    assert "error" not in out
+    assert out["total_matching"] >= 1
+
+
+def test_real_resolve_entity_canonical_absent_without_dictionary():
+    """P3.9: resolve_entity has no canonical_resolution when dictionary not loaded."""
+    out = asyncio.run(tools.resolve_entity("influenza"))
+    assert "error" not in out
+    assert "canonical_resolution" not in out
