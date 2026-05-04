@@ -198,9 +198,10 @@ Design doc: `../_workspace_notes/apecx-mcp-integration_dev_history/t13b_sandbox_
 exposing 20 scientist-facing tools. Entry point:
 
 ```bash
-apecx-mcp                                   # stdio transport
+apecx-mcp                                        # stdio transport
 APECX_CONTROL_PLANE_URL=http://.../  apecx-mcp   # override CP URL
 APECX_DATA_ROOT=/path/to/data apecx-mcp          # enable DB tools
+APECX_SYNONYM_DICT_PATH=/path/to/dict.sqlite apecx-mcp  # enable fast lookup
 ```
 
 Tools by module:
@@ -210,6 +211,8 @@ Tools by module:
 - `tools/database_tools.py` (7): query_vaccines, query_pathogens,
   query_genes, query_bvbrc_genomes, get_vaccine_pathogen_genes,
   resolve_entity, database_statistics
+- `tools/canonical_entity.py` (1): resolve_canonical_entity (Stage 2
+  fast path — dictionary lookup → ancestor walk → slow substring fallback)
 - `tools/approvals.py` (4): list_pending_approvals, approve, reject, correct
 - `tools/hpc.py` (4): estimate_cost, confirm_allocation, export_hpc_bundle,
   ingest_hpc_bundle
