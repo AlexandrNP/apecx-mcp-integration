@@ -90,6 +90,7 @@ apecx-cp = "apecx_integration.control_plane.app:main"
 apecx-mcp = "apecx_integration.mcp_surface.server:main"
 apecx-setup = "apecx_integration.cli.setup_data:main"
 apecx-build-dictionary = "apecx_integration.synonym_dictionary.cli:main"
+apecx-fetch-taxdump = "apecx_integration.synonym_dictionary.taxdump_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
