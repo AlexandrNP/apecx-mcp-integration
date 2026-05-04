@@ -222,18 +222,29 @@ def test_use_mock_clients_warning_emits_once(tmp_path, caplog):
 # ---------------------------------------------------------------------------
 
 
-def test_pubmed_search_raises_not_implemented():
-    """Pre-T14: returned ``[]`` silently and cached it. Post-T14: raises
-    NotImplementedError pointing at Phase 4B.
+def test_pubmed_search_is_implemented():
+    """Phase 4B (2026-05-04): search_alphavirus_literature() is now implemented
+    via NCBI E-utils.  This test verifies the method no longer raises
+    NotImplementedError (which was the T14 mocks-policy sentinel).
+
+    Live network calls are NOT made here — the test verifies the method exists
+    as a coroutine (not a stub), confirming the Phase 4B implementation landed.
+    The live integration is covered by tests/integration/test_pubmed_live.py
+    (gated on APECX_PUBMED_LIVE=1).
     """
+    import inspect
+
     from nanobrain.library.tools.bioinformatics.pubmed_client import PubMedClient
 
-    # Construct against a default PubMedConfig. The real NCBI config
-    # doesn't matter — the method raises before touching anything.
-    client = PubMedClient.__new__(PubMedClient)
-    client.logger = __import__("logging").getLogger("test")
-    client.pubmed_config = type("_C", (), {"cache_results": False})()
-    client.search_cache = {}
+    assert inspect.iscoroutinefunction(
+        PubMedClient.search_alphavirus_literature
+    ), "search_alphavirus_literature must be a coroutine (async def)"
+    # Confirm the method body no longer immediately raises NotImplementedError.
+    # We do this by reading the source rather than executing (to avoid hitting NCBI).
+    import inspect as _inspect
 
-    with pytest.raises(NotImplementedError, match="Phase 4B"):
-        asyncio.run(client.search_alphavirus_literature("capsid protein"))
+    src = _inspect.getsource(PubMedClient.search_alphavirus_literature)
+    assert "NotImplementedError" not in src, (
+        "search_alphavirus_literature still raises NotImplementedError — "
+        "Phase 4B implementation may not have landed"
+    )

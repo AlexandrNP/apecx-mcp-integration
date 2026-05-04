@@ -13,21 +13,18 @@ steady state.
 
 ## Current gaps
 
-### T-2026-04-23-03 — PubMed real API integration
+**(none)**
 
-**Context:** T14 audit §2-E1 flagged that
-`library/tools/bioinformatics/pubmed_client.py::search_alphavirus_literature`
-returned an empty list labeled "Phase 4A placeholder for infrastructure
-testing." T14 fix replaced it with `NotImplementedError` pointing at
-Phase 4B.
+---
 
-**Missing:** the actual NCBI E-utils call (Phase 4B per the pubmed_client
-docstring).
+### CLOSED: T-2026-04-23-03 — PubMed real API integration (closed 2026-05-04)
 
-**Rough scope:** 1–2d. Pattern well-established — use `requests` /
-`aiohttp` against `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/`.
-
-**Blocker:** none beyond scheduling.
+Implemented NCBI E-utils pipeline (esearch → efetch → XML parse) in
+`nanobrain/nanobrain/library/tools/bioinformatics/pubmed_client.py`.
+Covered by `tests/integration/test_pubmed_live.py` (APECX_PUBMED_LIVE=1).
+6/6 live tests pass against real NCBI API.  Mock-policy sentinel in
+`test_nanobrain_mocks_policy.py` updated from "raises NotImplementedError"
+to "is a coroutine + source has no NotImplementedError."
 
 ---
 
