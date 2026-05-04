@@ -163,6 +163,50 @@ Most have sensible defaults; you really only need the LLM block.
 | `APECX_LLM_TEMPERATURE` | `0.0` | Composer determinism; leave at 0 for reproducibility |
 | `APECX_LLM_MAX_TOKENS` | `4096` | Per-call budget |
 
+### Database tools (`query_*`, `resolve_entity`, `database_statistics`)
+
+These tools require VIOLIN + BV-BRC data on the local filesystem.  Run
+`apecx-setup` once to download it (~1.5 MB snapshot), then set:
+
+| Variable | Default | What it does |
+|---|---|---|
+| `APECX_DATA_ROOT` | unset | Root of the local data directory (`data/violin/`, `BVBRC_genome_alphavirus.csv` must exist beneath it). Takes precedence over `APECX_ROOT`. |
+| `APECX_ROOT` | unset | Workspace root; server looks for `<APECX_ROOT>/data/` automatically. Fallback when `APECX_DATA_ROOT` is not set. |
+
+When neither is set the database tools return `{"error": "..."}` on
+every call (visible in the Claude response).  The server logs a loud
+warning at startup.
+
+### Entity resolution (`resolve_canonical_entity`, `query_*` precision filter)
+
+The synonym dictionary powers fast canonical-IRI matching for all
+`query_*` tools.  Without it the tools still work via substring search;
+with it they also inject `_resolution` metadata and use exact taxon IDs
+as precision filters.
+
+Build the dictionary once:
+
+```bash
+apecx-build-dictionary \
+  --violin-pathogens data/violin/Pathogen_Information.csv \
+  --violin-vaccines  data/violin/Vaccine_Catalog.csv \
+  --violin-genes     data/violin/Gene_Information.csv \
+  --output           build/synonym_dict \
+  --dictionary-version $(date +%Y-%m-%d)
+# Optional: ancestor traversal requires NCBI taxdump
+# --ncbitaxon-nodes <taxdump>/nodes.dmp \
+# --ncbitaxon-merged <taxdump>/merged.dmp \
+```
+
+Then set:
+
+| Variable | Default | What it does |
+|---|---|---|
+| `APECX_SYNONYM_DICT_PATH` | unset | Absolute path to the `.sqlite` file produced by `apecx-build-dictionary`. When set and valid, the server pre-warms the dictionary at startup. |
+
+When unset, all entity-resolution paths silently fall back to substring
+search (a WARNING banner appears in the MCP server log at startup).
+
 ### Workflow-step (only matters if you wire those steps in)
 
 | Variable | Used by | Notes |
@@ -203,9 +247,8 @@ spawns the backend, the backend uses Postgres.
 
 ## Tool reference
 
-The server exposes 11 tools across three lifecycles. Each entry
-shows the signature, JSON return shape, and an example
-natural-language prompt as a scientist would phrase it.
+The server exposes 21 tools across four areas. Each entry shows the
+signature, JSON return shape, and an example natural-language prompt.
 
 ### Workflow lifecycle
 
@@ -345,6 +388,150 @@ ingest_hpc_bundle(bundle_path: str) -> dict
 
 Consumes `provenance_seed.json` + run output files and lands a
 terminal-state Run row.
+
+### Database tools
+
+All database tools require `APECX_DATA_ROOT` (see Configuration).
+Results are paginated at `limit` rows (default 20).
+
+#### `query_pathogens`
+
+```python
+query_pathogens(
+    search_term: str = "",
+    disease: str = "",
+    limit: int = 20,
+) -> dict
+```
+
+Returns VIOLIN pathogen rows matching `search_term` (substring on
+Pathogen + Disease columns, or exact NCBITaxon ID when a synonym
+dictionary is loaded and the fast path hits).  When `_resolution` is
+present in the response, the fast path fired and a canonical match was
+found.
+
+**Prompt**: *"What pathogens cause encephalitis?"*
+
+#### `query_vaccines`
+
+```python
+query_vaccines(
+    search_term: str = "",
+    pathogen: str = "",
+    vaccine_type: str = "",
+    limit: int = 20,
+) -> dict
+```
+
+Returns VIOLIN vaccine rows. `vaccine_type` filters on
+Vaccine_Type column.
+
+**Prompt**: *"Find licensed vaccines against Alphaviruses."*
+
+#### `query_genes`
+
+```python
+query_genes(
+    search_term: str = "",
+    pathogen: str = "",
+    gene_function: str = "",
+    limit: int = 20,
+) -> dict
+```
+
+Returns VIOLIN gene/antigen rows.  `gene_function` filters on
+Gene_Function column.
+
+**Prompt**: *"What genes are used in EEEV vaccines?"*
+
+#### `query_bvbrc_genomes`
+
+```python
+query_bvbrc_genomes(
+    search_term: str = "",
+    limit: int = 20,
+) -> dict
+```
+
+Returns BV-BRC genome rows.  The dataset ships as an alphavirus subset
+(5 450 genomes, 60 taxa).
+
+**Prompt**: *"How many Chikungunya genomes are in BV-BRC?"*
+
+#### `get_vaccine_pathogen_genes`
+
+```python
+get_vaccine_pathogen_genes(
+    pathogen: str,        # required
+    search_term: str = "",
+    limit: int = 20,
+) -> dict
+```
+
+Cross-table join: returns VIOLIN vaccine + gene rows for a given
+pathogen.
+
+**Prompt**: *"What vaccines and genes does VIOLIN have for EEEV?"*
+
+#### `resolve_entity`
+
+```python
+resolve_entity(
+    search_term: str,    # required
+    entity_types: list[str] = ["pathogen", "vaccine", "gene"],
+) -> dict
+```
+
+Returns IRIs + confidence across all matching entity types.
+
+**Prompt**: *"What canonical IDs exist for 'Eastern Equine Encephalitis'?"*
+
+#### `database_statistics`
+
+```python
+database_statistics() -> dict
+```
+
+Returns row counts per table + last-modified timestamps.
+
+**Prompt**: *"How many entries does the VIOLIN database have?"*
+
+### Entity resolution
+
+#### `resolve_canonical_entity`
+
+```python
+resolve_canonical_entity(
+    search_term: str,                               # required
+    entity_type: str = "pathogen",                  # pathogen | vaccine | gene
+) -> dict
+```
+
+Returns:
+
+```jsonc
+{
+  "path": "fast" | "ancestor" | "slow" | "miss",
+  "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+  "canonical_label": "Eastern equine encephalomyelitis virus",
+  "confidence": 1.0,
+  "evidence": "surface_form_normalized='eastern equine encephalitis' matched canonical_label"
+}
+```
+
+- `fast` — exact hit in the synonym dictionary; confidence reflects
+  the OLS anchor (1.0) or search (0.5–0.95) mode used at build time.
+- `ancestor` — the input IRI maps to a strain not in the dictionary;
+  the walk found a species-level ancestor. Confidence = ancestor
+  confidence × 0.9.
+- `slow` — dictionary miss; fell back to substring search over VIOLIN.
+- `miss` — no match anywhere.
+
+Requires `APECX_SYNONYM_DICT_PATH` (see Configuration) for `fast` /
+`ancestor` paths.  Always works on `slow` / `miss` without a
+dictionary.
+
+**Prompt**: *"What is the canonical IRI for 'EEEV'?"*
 
 ## Other MCP clients
 
