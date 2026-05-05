@@ -29,6 +29,7 @@ max_retries: 0
 # retrieval corpus. Add more lines as more workflows ship.
 component_catalog_paths:
   - "workflows/violin_bvbrc/manifest.yml"
+  - "workflows/rag_e2e_synthesis/manifest.yml"
 
 # ``sandbox_whitelist_path`` points at the T13 import whitelist. When
 # set, any novel Python the LLM emits gets scanned before the

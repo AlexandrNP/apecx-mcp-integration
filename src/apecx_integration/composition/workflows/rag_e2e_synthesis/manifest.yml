@@ -1,0 +1,63 @@
+# RAG end-to-end synthesis workflow — component manifest (2026-05-05)
+#
+# Covers the two steps in rag_e2e_synthesis_workflow.yml:
+#   synthesis_context_assembly  — concurrent retrieval fan-in
+#   rag_synthesis               — LLM synthesis with citations
+#
+# The three individual retrieval steps (domain_rag_search,
+# violin_bvbrc_context, pubmed_harvester) live in
+# ../violin_bvbrc/manifest.yml (steps 8a-8c) and share the same
+# YAML configs. SynthesisContextAssemblyStep bundles all three
+# concurrently inside a single step, avoiding complex multi-input
+# link topologies — prefer it when the task is "retrieve from all
+# sources and synthesize."
+
+workflow:
+  name: rag_e2e_synthesis_workflow
+  spec: workflows/rag_e2e_synthesis/rag_e2e_synthesis_workflow.yml
+  description: >
+    End-to-end synthesis workflow: one query in, one Markdown answer
+    out. Two steps: (1) concurrent retrieval fan-in across domain RAG +
+    VIOLIN/BV-BRC + PubMed; (2) LLM synthesis with inline citations.
+
+components:
+
+  - step_id: "A1"
+    step_name: synthesis_context_assembly
+    disposition: new
+    class: "apecx_integration.composition.steps.synthesis_context_assembly_step.SynthesisContextAssemblyStep"
+    yaml: "steps/synthesis_context_assembly.yml"
+    status: ready
+    rag_description: >
+      Concurrent retrieval fan-in: runs domain-RAG semantic search,
+      VIOLIN/BV-BRC tabular lookup, and PubMed publication harvest in
+      parallel (asyncio.gather). Outputs the full synthesis bundle
+      {query, rag_chunks, bvbrc_genomes, violin_mappings, publications}
+      in a single step. Combined retrieval latency = max(three branches)
+      rather than their sum. Prefer this over wiring domain_rag_search +
+      violin_bvbrc_context + pubmed_harvester separately unless per-step
+      configuration differs.
+    rag_examples:
+      - "assemble retrieval context for 'EEEV vaccine efficacy' from RAG + VIOLIN + PubMed"
+      - "fan-in all three data sources before LLM synthesis"
+      - "concurrent multi-source context assembly for a pathogen question"
+
+  - step_id: "A2"
+    step_name: rag_synthesis
+    disposition: new
+    class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+    yaml: "steps/rag_synthesis.yml"
+    status: ready
+    rag_description: >
+      LLM synthesis step — takes the aggregated retrieval bundle
+      {query, rag_chunks, bvbrc_genomes, violin_mappings, publications}
+      and produces a free-form Markdown response with inline citations
+      grounded in the retrieved data. Validates the response (size gate
+      + grounded-claim gate) before returning. LLM backend resolved
+      from APECX_LLM_BASE_URL / APECX_LLM_MODEL / APECX_LLM_API_KEY
+      (default: local Ollama at http://localhost:11434/v1 with
+      mistral-nemo:latest).
+    rag_examples:
+      - "synthesize a Markdown answer to a vaccine-efficacy question with citations"
+      - "produce an LLM response grounded in VIOLIN + BV-BRC + RAG context"
+      - "final synthesis step after multi-source retrieval fan-in"

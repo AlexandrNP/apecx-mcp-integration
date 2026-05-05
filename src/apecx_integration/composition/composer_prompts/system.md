@@ -58,6 +58,30 @@ The workflow YAML must:
   ``links: {}`` and stop. Don't invent links between steps whose
   data units you're guessing at.
 
+**Multi-source retrieval + synthesis pattern:**
+
+When the task involves "retrieve from multiple sources and synthesize
+an answer," the library provides two ready-made pathways:
+
+1. **Fan-in + synthesis (preferred for most queries):**
+   Use ``SynthesisContextAssemblyStep`` (config:
+   ``steps/synthesis_context_assembly.yml``) followed by
+   ``RagSynthesisStep`` (config: ``steps/rag_synthesis.yml``).
+   The assembly step runs domain-RAG + VIOLIN/BV-BRC + PubMed
+   concurrently inside a single step. Link:
+   ``synthesis_context_assembly.synthesis_bundle_output`` →
+   ``rag_synthesis.synthesis_input``.
+
+2. **Individual retrieval branches (only when per-step config differs):**
+   Wire ``DomainRagSearchStep``, ``VIOLINBVBRCContextStep``, and
+   ``PubMedHarvesterStep`` as separate steps, then author a novel
+   Python fan-in step that assembles the bundle for ``RagSynthesisStep``.
+   Only choose this path when the assembly step's defaults don't fit.
+
+Do NOT wire three retrieval steps directly into ``RagSynthesisStep`` —
+its ``synthesis_input`` data unit expects a single pre-assembled bundle
+dict, not three separate outputs.
+
 If you emit novel Python, wrap each source block in the
 ``novel_python`` fence as a mapping ``<step_id>: |\n<source>``. Every
 novel step MUST appear as a step in the workflow with a ``class`` that
