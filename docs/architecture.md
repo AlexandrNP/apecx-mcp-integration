@@ -697,7 +697,94 @@ flowchart TB
 
 ---
 
-## 13. References
+## 13. Backend vs. user-facing — two pipelines, one bridge
+
+Two distinct lifecycles converge on the same data. Calling them out
+separately is the only way to keep the operator's mental model
+straight: **one runs periodically and offline, the other runs every
+time a scientist asks a question.**
+
+### 13.1 Backend harmonization (offline, periodic)
+
+See `docs/figures/10_backend_harmonization.png`.
+
+Two parallel sub-pipelines refresh the artifacts that the user-facing
+workflow consumes:
+
+1. **Harvester pipeline** (`apecx-harvesters` repo, OUT OF SCOPE
+   here): 9 source loaders (PubMed, PDB, DataCite, Crossref, OpenAlex,
+   bioRxiv, EMDB, DOI, …) → unified DataCite-shaped record →
+   `scripts/aggregate_gsearch.py` → batch ingestion to the **APECx
+   Globus Search index** (UUID `e74bf12a-d0dd-4d19-a965-03f4936db851`,
+   public).
+2. **Dictionary builder** (`apecx-mcp-integration`): the
+   `apecx-build-dictionary` CLI invokes `synonym_dictionary/build.py`
+   which harvests entity names from VIOLIN + BV-BRC source rows,
+   resolves them via the **EBI Ontology Lookup Service**, and writes
+   `apecx_synonym_dict.sqlite` plus the `taxon_hierarchy` table built
+   from the NCBI taxdump.
+
+Both are synchronous one-shot processes — never on the per-query hot
+path. Run cadence: when source data is refreshed (monthly cycle).
+
+**Resolution status taxonomy** (per dictionary entry; written at
+build time, surfaced at query time as `confidence`):
+
+| Status | Confidence | Meaning |
+|---|---|---|
+| `id_anchored` | 1.0 | source row carried authoritative ID; OLS provided synonyms |
+| `ols_exact` | 0.9 | OLS exact-match search hit (label or synonym) |
+| `ols_fuzzy` | <0.9 | OLS multi-match disambiguated by row context |
+| `project_local` | varies | private IRI in `apecx_local` namespace |
+| `unresolved` | 0.0 | no mapping; row stays with `canonical_iri = None` (surfaced explicitly) |
+
+### 13.2 User-facing workflow (online, per-query)
+
+See `docs/figures/11_user_facing_workflow.png`.
+
+Three vertical bands:
+
+1. **MCP entry** — scientist query → MCP client → FastMCP server →
+   one of 23 tools (this figure expands `synthesize_query`).
+2. **`synthesize_query` expanded** — `SynthesisContextAssemblyStep`
+   fans out to four retrieval branches via
+   `asyncio.gather(return_exceptions=True)`:
+
+   | Branch | Source | Latency |
+   |---|---|---|
+   | FAISS RAG search | in-memory `domain_rag/faiss_index.bin` | ~5 ms |
+   | VIOLIN/BV-BRC pandas | offline CSV/TSV | ~50 ms |
+   | PubMed eSearch + eFetch | network | 1–3 s |
+   | Globus Search | network (harvester index) | ~500 ms |
+
+   Bundle is fed to `RagSynthesisStep` → 1 LLM round-trip (~30–60 s
+   on Ollama) → `synthesis_output: {synthesis: <markdown>}`.
+
+3. **Artifacts consumed** (read-only): FAISS index (built by
+   `scripts/build_domain_rag_index.py`), VIOLIN+BV-BRC files,
+   Globus Search index (built by harvester), synonym dictionary
+   (built by `apecx-build-dictionary`).
+
+Total wall-clock budget: ~5–10 s retrieval (mostly PubMed) +
+~30–60 s LLM = **~70 s end-to-end** on local Ollama.
+
+### 13.3 Bridge between the two
+
+Every artifact the backend writes, the user-facing workflow reads —
+and **never** writes to. This is the load-bearing rule that lets the
+backend pipeline be batch / offline / asynchronous without coupling
+to per-query latency:
+
+| Artifact | Written by (backend) | Read by (user-facing) |
+|---|---|---|
+| Globus Search index | harvester `aggregate_gsearch.py` | `query_globus_search` MCP tool, synthesis Globus branch |
+| `synonym_dict.sqlite` | `apecx-build-dictionary` CLI | `resolve_canonical_entity`, fast path of every database tool |
+| FAISS index | `scripts/build_domain_rag_index.py` | synthesis FAISS branch |
+| VIOLIN/BV-BRC files | `apecx-setup` (download) | synthesis pandas branch + database tools |
+
+---
+
+## 14. References
 
 | Topic | File |
 |---|---|

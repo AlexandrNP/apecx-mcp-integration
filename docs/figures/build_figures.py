@@ -871,6 +871,445 @@ def fig_session_bug_count() -> None:
 
 
 # ---------------------------------------------------------------------
+# Figure 10 — Backend harmonization pipeline (offline, run periodically)
+# ---------------------------------------------------------------------
+
+
+def fig_backend_harmonization() -> None:
+    """The OFFLINE pipeline that runs periodically to refresh the
+    artifacts the user-facing workflow consumes. Two parallel
+    sub-pipelines on top, full-width Resolution Status taxonomy on
+    the bottom. Wider canvas + larger gutters so no labels overlap."""
+    fig, ax = plt.subplots(figsize=(17, 11))
+    palette = sns.color_palette("muted", n_colors=8)
+
+    # Heading band
+    _box(ax, 0.0, 10.4, 17.0, 0.6, "", palette[7], 11)
+    ax.text(
+        8.5,
+        10.7,
+        "BACKEND HARMONIZATION  ·  offline  ·  run periodically (e.g. monthly)",
+        ha="center",
+        fontsize=14,
+        fontweight="bold",
+        color="white",
+    )
+
+    # ============================================================
+    # Top half — pipeline. Full width split into 3 columns:
+    #   sources (left) → 2 stacked pipelines (middle) → artifacts (right)
+    # ============================================================
+
+    # Left: external sources
+    ax.text(0.3, 9.95, "EXTERNAL SOURCES", fontsize=11, fontweight="bold", color="#666")
+    sources = [
+        "PubMed eUtils  (network)",
+        "PDB  (network)",
+        "DataCite  (network)",
+        "Crossref / OpenAlex / bioRxiv",
+        "EMDB / DOI  (network)",
+        "NCBI taxdump  (one-time)",
+        "VIOLIN source CSVs  (vendored)",
+        "BV-BRC source TSVs  (vendored)",
+    ]
+    for i, s in enumerate(sources):
+        _box(ax, 0.3, 9.2 - i * 0.6, 3.6, 0.5, s, palette[6], 9.5)
+
+    # Middle-upper: harvester pipeline
+    ax.text(
+        4.4,
+        9.95,
+        "HARVESTER PIPELINE  (apecx-harvesters)",
+        fontsize=11,
+        fontweight="bold",
+        color="#666",
+    )
+    ax.text(
+        4.4,
+        9.7,
+        "OUT OF SCOPE — read-only consumer at the ingest seam",
+        fontsize=8.5,
+        color="#a04040",
+        style="italic",
+    )
+    _box(
+        ax,
+        4.4,
+        8.5,
+        4.7,
+        0.7,
+        "loaders/<source>/  (9 loaders)\nsources.py  +  pipeline/run.py",
+        palette[2],
+        9.5,
+        "bold",
+    )
+    _box(
+        ax,
+        4.4,
+        7.5,
+        4.7,
+        0.7,
+        "DataCite-shaped record normalization\n(per-source schema → unified container)",
+        palette[2],
+        9.5,
+    )
+    _box(
+        ax,
+        4.4,
+        6.5,
+        4.7,
+        0.7,
+        "scripts/aggregate_gsearch.py\nbatch ingestion → Globus Search API",
+        palette[2],
+        9.5,
+        "bold",
+    )
+    _arrow(ax, 6.75, 8.5, 6.75, 8.2, lw=1.4)
+    _arrow(ax, 6.75, 7.5, 6.75, 7.2, lw=1.4)
+
+    # Middle-lower: dictionary builder
+    ax.text(
+        4.4,
+        5.85,
+        "DICTIONARY BUILDER  (apecx-mcp-integration)",
+        fontsize=11,
+        fontweight="bold",
+        color="#666",
+    )
+    ax.text(4.4, 5.6, "CLI: apecx-build-dictionary", fontsize=8.5, color="#666")
+    _box(
+        ax,
+        4.4,
+        4.4,
+        4.7,
+        0.7,
+        "synonym_dictionary/build.py\nharvest from VIOLIN + BV-BRC source rows",
+        palette[3],
+        9.5,
+        "bold",
+    )
+    _box(ax, 4.4, 3.4, 4.7, 0.7, "OLS resolution\n(EBI Ontology Lookup Service)", palette[3], 9.5)
+    _box(
+        ax,
+        4.4,
+        2.4,
+        4.7,
+        0.7,
+        "synonym_dictionary/sqlite_writer.py\n+ taxon_hierarchy from NCBI taxdump",
+        palette[3],
+        9.5,
+        "bold",
+    )
+    _arrow(ax, 6.75, 4.4, 6.75, 4.1, lw=1.4)
+    _arrow(ax, 6.75, 3.4, 6.75, 3.1, lw=1.4)
+
+    # Source → pipeline arrows (representative)
+    _arrow(ax, 3.95, 8.5, 4.4, 8.85, color="#666", lw=1.0)
+    _arrow(ax, 3.95, 4.5, 4.4, 4.75, color="#666", lw=1.0)
+
+    # Right: artifacts
+    ax.text(
+        10.0,
+        9.95,
+        "ARTIFACTS  (consumed at query time)",
+        fontsize=11,
+        fontweight="bold",
+        color="#666",
+    )
+    _box(
+        ax,
+        10.0,
+        7.7,
+        6.7,
+        1.6,
+        "Globus Search index\n\nsubject-keyed records of harvested\nPubMed / PDB / DataCite / ...\n\nUUID  e74bf12a-d0dd-4d19-a965-03f4936db851\npublic, no auth at query time",
+        palette[4],
+        9.5,
+        "bold",
+    )
+    _box(
+        ax,
+        10.0,
+        2.2,
+        6.7,
+        1.9,
+        "apecx_synonym_dict.sqlite\n\n(entity_type, canonical_iri) → synonyms + ontology\n+ taxon_hierarchy table for ancestor/descendant CTEs\n+ ambiguous_surface_forms table\n\nenv:  APECX_SYNONYM_DICT_PATH",
+        palette[5],
+        9.5,
+        "bold",
+    )
+
+    # Pipeline → artifact arrows
+    _arrow(ax, 9.1, 6.85, 10.0, 7.9, color="#306060", lw=1.8)
+    _arrow(ax, 9.1, 2.75, 10.0, 2.7, color="#604060", lw=1.8)
+
+    # ============================================================
+    # Bottom — Resolution Status Taxonomy as a 5-row stacked table
+    # (descriptions are long; columnar layout would force wrap)
+    # ============================================================
+    _box(ax, 0.3, 0.0, 16.4, 2.1, "", palette[1], 9)
+    ax.text(
+        0.5,
+        1.85,
+        "RESOLUTION STATUS TAXONOMY  ·  per dictionary entry  ·  written by build.py, surfaced at query time as confidence",
+        fontsize=11,
+        fontweight="bold",
+        color="#444",
+    )
+
+    statuses = [
+        ("id_anchored", "1.0", "source row carried authoritative ID; OLS provided synonyms"),
+        ("ols_exact", "0.9", "OLS exact-match search hit (label or synonym)"),
+        ("ols_fuzzy", "<0.9", "OLS multi-match disambiguated by row context"),
+        ("project_local", "varies", "private IRI in apecx_local namespace (no external mapping)"),
+        (
+            "unresolved",
+            "0.0",
+            "no mapping; row stays with canonical_iri=None — surfaced explicitly at query time",
+        ),
+    ]
+
+    # Header row
+    H_Y = 1.55
+    ax.text(0.55, H_Y, "status", fontsize=9, fontweight="bold", color="#666")
+    ax.text(2.4, H_Y, "confidence", fontsize=9, fontweight="bold", color="#666")
+    ax.text(4.0, H_Y, "meaning", fontsize=9, fontweight="bold", color="#666")
+
+    for i, (status, conf, desc) in enumerate(statuses):
+        y = 1.30 - i * 0.26
+        ax.text(
+            0.55, y, status, fontsize=10, fontweight="bold", family="monospace", color="#306030"
+        )
+        ax.text(2.4, y, conf, fontsize=10, family="monospace", color="#666")
+        ax.text(4.0, y, desc, fontsize=9.5, color="#333")
+
+    ax.set_xlim(0, 17.0)
+    ax.set_ylim(0, 11.0)
+    ax.axis("off")
+    fig.savefig(OUT_DIR / "10_backend_harmonization.png")
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------
+# Figure 11 — User-facing query workflow (online, per-query, real-time)
+# ---------------------------------------------------------------------
+
+
+def fig_user_facing_workflow() -> None:
+    """The ONLINE per-query path. Reads artifacts that the backend
+    pipeline produced; never writes to them. Three vertically-stacked
+    bands with generous gutters: (1) MCP entry, (2) synthesize_query
+    expanded, (3) artifacts consumed."""
+    fig, ax = plt.subplots(figsize=(17, 11))
+    palette = sns.color_palette("Set2", n_colors=8)
+
+    # Heading band
+    _box(ax, 0.0, 10.4, 17.0, 0.6, "", palette[5], 11)
+    ax.text(
+        8.5,
+        10.7,
+        "USER-FACING WORKFLOW  ·  online  ·  per-query  ·  ~70s wall-clock on Ollama",
+        ha="center",
+        fontsize=14,
+        fontweight="bold",
+        color="white",
+    )
+
+    # ============================================================
+    # Band 1 — MCP entry (top)
+    # ============================================================
+    ax.text(0.3, 9.95, "BAND 1  ·  MCP ENTRY", fontsize=11, fontweight="bold", color="#666")
+
+    _box(ax, 0.3, 9.0, 3.0, 0.75, "scientist\nfree-text query", palette[0], 10.5, "bold")
+    _box(
+        ax, 4.0, 9.0, 4.5, 0.75, "MCP client\nClaude Desktop / IDE / CLI (stdio)", palette[1], 10.5
+    )
+    _box(
+        ax,
+        9.2,
+        9.0,
+        7.4,
+        0.75,
+        "FastMCP server  —  apecx-mcp-integration  (23 tools)",
+        palette[2],
+        11,
+        "bold",
+    )
+
+    _arrow(ax, 3.3, 9.38, 4.0, 9.38, lw=1.5)
+    _arrow(ax, 8.5, 9.38, 9.2, 9.38, lw=1.5)
+
+    # Tool dispatch
+    _box(ax, 0.3, 7.9, 4.0, 0.7, "synthesize_query\n(this band's focus)", palette[3], 10, "bold")
+    _box(ax, 4.5, 7.9, 4.0, 0.7, "query_globus_search\nfree-text Globus tool", palette[6], 9.5)
+    _box(
+        ax,
+        8.7,
+        7.9,
+        4.0,
+        0.7,
+        "query_pathogens / vaccines / ...\nstructured DB lookup (7)",
+        palette[6],
+        9.5,
+    )
+    _box(ax, 12.9, 7.9, 3.7, 0.7, "resolve_canonical_entity\nfast-path resolution", palette[6], 9.5)
+
+    _arrow(ax, 12.9, 9.0, 2.3, 8.6, color="#666", lw=0.9)
+    _arrow(ax, 12.9, 9.0, 6.5, 8.6, color="#666", lw=0.9)
+    _arrow(ax, 12.9, 9.0, 10.7, 8.6, color="#666", lw=0.9)
+    _arrow(ax, 12.9, 9.0, 14.75, 8.6, color="#666", lw=0.9)
+
+    # ============================================================
+    # Band 2 — synthesize_query expanded
+    # ============================================================
+    ax.text(
+        0.3,
+        7.4,
+        "BAND 2  ·  SYNTHESIZE_QUERY EXPANDED",
+        fontsize=11,
+        fontweight="bold",
+        color="#a04040",
+    )
+
+    # Assembly container
+    _box(ax, 0.3, 3.4, 9.0, 3.7, "", palette[1], 9)
+    ax.text(4.8, 6.85, "SynthesisContextAssemblyStep", ha="center", fontsize=12, fontweight="bold")
+
+    # gather hub
+    _box(ax, 0.5, 5.4, 2.3, 0.85, "asyncio.gather\nreturn_exceptions=True", palette[2], 10, "bold")
+
+    # 4 retrieval branches  (clearly OUTSIDE the gather box, no overlap)
+    branches = [
+        (6.05, "FAISS RAG search\nin-memory  ·  ~5 ms", "rag_chunks"),
+        (
+            5.10,
+            "VIOLIN / BV-BRC pandas\noffline CSV+TSV  ·  ~50 ms",
+            "violin_mappings + bvbrc_genomes",
+        ),
+        (4.15, "PubMed eSearch + eFetch\nnetwork  ·  1–3 s", "publications"),
+        (3.20, "Globus Search\nnetwork  ·  ~500 ms", "globus_results"),
+    ]
+    for y, lbl, _ in branches:
+        _box(ax, 3.4, y, 5.7, 0.85, lbl, palette[4], 9.5)
+
+    # Bundle (below assembly box but inside band 2)
+    _box(
+        ax,
+        0.3,
+        2.55,
+        9.0,
+        0.7,
+        "synthesis_bundle_output  ·  {query, rag_chunks, bvbrc_genomes, violin_mappings, publications, globus_results}",
+        palette[5],
+        9,
+        "bold",
+    )
+
+    # Synthesis container
+    _box(ax, 9.7, 3.4, 7.0, 3.7, "", palette[3], 9)
+    ax.text(13.2, 6.85, "RagSynthesisStep", ha="center", fontsize=12, fontweight="bold")
+    _box(
+        ax,
+        9.9,
+        5.7,
+        6.6,
+        0.85,
+        "synthesize_response\nsingle LLM round-trip  ·  30–60 s",
+        palette[2],
+        10,
+        "bold",
+    )
+    _box(
+        ax,
+        9.9,
+        4.55,
+        6.6,
+        0.85,
+        "validation gates\nsize · grounded · empty-retrieval",
+        palette[2],
+        9.5,
+    )
+    _box(
+        ax,
+        9.9,
+        3.55,
+        6.6,
+        0.85,
+        "synthesis_output\n{synthesis: <markdown>}",
+        palette[5],
+        10,
+        "bold",
+    )
+
+    # Synthesis → markdown answer (in band 2 too)
+    _box(
+        ax,
+        9.7,
+        2.55,
+        7.0,
+        0.7,
+        "Markdown answer with inline citations  ·  returned to MCP client",
+        palette[0],
+        10.5,
+        "bold",
+    )
+
+    # Arrows in band 2
+    _arrow(ax, 2.3, 7.9, 1.65, 6.25, color="#a04040", lw=1.5)
+    for y, _, _ in branches:
+        _arrow(ax, 2.8, 5.85, 3.4, y + 0.42, color="#666", lw=0.9)
+    for y, _, _ in branches:
+        _arrow(ax, 6.3, y, 6.3, 3.25, color="#888", lw=0.7)
+    _arrow(ax, 9.3, 2.9, 9.7, 4.05, color="#306060", lw=1.8)
+    _arrow(ax, 13.2, 5.7, 13.2, 5.4, lw=1.4)
+    _arrow(ax, 13.2, 4.55, 13.2, 4.4, lw=1.4)
+    _arrow(ax, 13.2, 3.55, 13.2, 3.25, lw=1.4)
+
+    # ============================================================
+    # Band 3 — artifacts consumed (read-only)
+    # ============================================================
+    ax.text(
+        0.3,
+        1.95,
+        "BAND 3  ·  ARTIFACTS CONSUMED  (read-only)",
+        fontsize=11,
+        fontweight="bold",
+        color="#666",
+    )
+
+    arts = [
+        (0.3, "FAISS index\nbuilt by build_domain_rag_index.py", palette[7]),
+        (4.5, "VIOLIN CSVs / BV-BRC TSV\nvendored, refreshed by apecx-setup", palette[7]),
+        (8.7, "Globus Search index\nbuilt by harvester pipeline", palette[7]),
+        (12.9, "synonym_dictionary SQLite\nbuilt by apecx-build-dictionary", palette[7]),
+    ]
+    for x, lbl, c in arts:
+        _box(ax, x, 0.7, 4.0, 1.0, lbl, c, 10)
+
+    # Band 2 → Band 3 arrows (which artifact serves which branch)
+    _arrow(ax, 6.3, 3.2, 2.3, 1.7, color="#888", lw=0.8)
+    _arrow(ax, 6.3, 3.2, 6.5, 1.7, color="#888", lw=0.8)
+    _arrow(ax, 6.3, 3.2, 10.7, 1.7, color="#888", lw=0.8)
+    _arrow(ax, 14.75, 7.9, 14.9, 1.7, color="#888", lw=0.8)
+
+    # Footer: timing summary
+    ax.text(
+        0.3,
+        0.25,
+        "Total wall-clock budget: ~5–10s retrieval (mostly PubMed) + ~30–60s LLM = ~70s end-to-end on local Ollama.",
+        fontsize=10,
+        color="#444",
+        style="italic",
+    )
+
+    ax.set_xlim(0, 17.0)
+    ax.set_ylim(0, 11.0)
+    ax.axis("off")
+    fig.savefig(OUT_DIR / "11_user_facing_workflow.png")
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------
 
@@ -885,6 +1324,8 @@ def main() -> None:
     fig_mcp_tool_distribution()
     fig_trigger_cascade_timeline()
     fig_session_bug_count()
+    fig_backend_harmonization()
+    fig_user_facing_workflow()
     print("Figures written to", OUT_DIR)
     for p in sorted(OUT_DIR.glob("*.png")):
         print(f"  {p.name}: {p.stat().st_size // 1024} KB")

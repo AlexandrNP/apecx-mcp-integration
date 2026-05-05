@@ -183,14 +183,14 @@ def slide_agenda(prs, total):
     s = _new_slide(prs)
     _add_title_bar(s, "Agenda", "What this deck covers")
     items = [
+        "Two lifecycles — backend (offline, periodic) vs. user-facing (online, per-query)",
+        "Backend harmonization pipeline — harvester + dictionary builder",
+        "User-facing query workflow — MCP entry → synthesis → markdown",
         "Three-tier runtime topology (Tiers 1, 2, 4)",
-        "Synthesis pipeline — 5 retrieval branches + LLM synthesis",
-        "Three invocation paths (MCP tool · Workflow runtime · direct steps)",
+        "Synthesis pipeline detail — 5 retrieval branches + LLM",
         "Trigger-cascade primitive (added 2026-05-05 to nanobrain)",
         "Mapping & resolution strategy — fast / ancestor / slow / miss",
-        "Ontologies — NCBITaxon, VO, DOID, GO, NCBI Gene, APECx Local",
-        "MCP tool surface — 23 tools across 8 groups",
-        "Test surface — 504 unit + workflow YAML + cascade runtime",
+        "Ontologies, MCP tool surface, test surface",
         "Things that will surprise you (silent-failure shapes)",
     ]
     _add_bullets(s, Inches(0.8), Inches(1.3), Inches(12.0), Inches(5.5), items, fontsize=20)
@@ -233,6 +233,117 @@ def slide_purpose(prs, total):
     _add_footer(s, 3, total)
 
 
+def slide_two_lifecycles(prs, total):
+    """The orienting slide: this system has two distinct lifecycles
+    and confusing them is the #1 onboarding mistake."""
+    s = _new_slide(prs)
+    _add_title_bar(
+        s,
+        "Two Lifecycles, One Bridge",
+        "Backend vs. user-facing — the central organizing distinction",
+    )
+
+    # Left column: Backend
+    _add_text_block(
+        s,
+        Inches(0.7),
+        Inches(1.3),
+        Inches(6.0),
+        Inches(0.6),
+        "BACKEND HARMONIZATION",
+        fontsize=18,
+        bold=True,
+        color=ACCENT,
+    )
+    backend_items = [
+        "Run periodically (e.g. monthly)",
+        "Two pipelines: harvester (apecx-harvesters) + dictionary builder (this repo)",
+        "Writes Globus Search index + apecx_synonym_dict.sqlite",
+        "Synchronous, batch, NOT on the per-query hot path",
+        "Sources: PubMed, PDB, DataCite, Crossref, OpenAlex, bioRxiv, EMDB, DOI, VIOLIN, BV-BRC, NCBI taxdump",
+    ]
+    _add_bullets(
+        s,
+        Inches(0.7),
+        Inches(1.95),
+        Inches(6.0),
+        Inches(4.5),
+        backend_items,
+        fontsize=14,
+        line_spacing=1.25,
+    )
+
+    # Right column: User-facing
+    _add_text_block(
+        s,
+        Inches(7.0),
+        Inches(1.3),
+        Inches(6.0),
+        Inches(0.6),
+        "USER-FACING WORKFLOW",
+        fontsize=18,
+        bold=True,
+        color=RGBColor(0x30, 0x60, 0xA0),
+    )
+    user_items = [
+        "Per scientist query (~70s wall-clock on Ollama)",
+        "MCP server → synthesize_query → 4 retrieval branches → LLM",
+        "Reads the artifacts the backend wrote — never writes back",
+        "Real-time, async, fail-soft branch failures",
+        "Globus + FAISS + VIOLIN/BV-BRC + PubMed + (synonym dict for fast-path resolution)",
+    ]
+    _add_bullets(
+        s,
+        Inches(7.0),
+        Inches(1.95),
+        Inches(6.0),
+        Inches(4.5),
+        user_items,
+        fontsize=14,
+        line_spacing=1.25,
+    )
+
+    # Bottom: bridge sentence
+    _add_text_block(
+        s,
+        Inches(0.7),
+        Inches(6.3),
+        Inches(12.0),
+        Inches(0.7),
+        "Bridge: every artifact the backend writes, the user-facing workflow reads — and never writes to.",
+        fontsize=15,
+        bold=True,
+        color=BODY_TXT,
+    )
+    _add_footer(s, 4, total)
+
+
+def slide_backend_pipeline(prs, total):
+    s = _new_slide(prs)
+    _add_title_bar(
+        s,
+        "Backend Harmonization Pipeline",
+        "Offline · run periodically · harvester (apecx-harvesters) + dictionary builder (this repo)",
+    )
+    _add_image(
+        s, FIG_DIR / "10_backend_harmonization.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
+    )
+    _add_footer(s, 5, total)
+
+
+def slide_user_facing_pipeline(prs, total):
+    s = _new_slide(prs)
+    _add_title_bar(
+        s,
+        "User-Facing Workflow",
+        "Online · per-query · ~70s wall-clock · 3 bands (MCP entry → synthesis → artifacts read)",
+    )
+    _add_image(
+        s, FIG_DIR / "11_user_facing_workflow.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
+    )
+    _add_footer(s, 6, total)
+
+
 def slide_topology(prs, total):
     s = _new_slide(prs)
     _add_title_bar(
@@ -243,7 +354,7 @@ def slide_topology(prs, total):
     _add_image(
         s, FIG_DIR / "01_three_tier_topology.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 4, total)
+    _add_footer(s, 7, total)
 
 
 def slide_synthesis(prs, total):
@@ -256,14 +367,14 @@ def slide_synthesis(prs, total):
     _add_image(
         s, FIG_DIR / "02_synthesis_pipeline.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 5, total)
+    _add_footer(s, 8, total)
 
 
 def slide_invocation(prs, total):
     s = _new_slide(prs)
     _add_title_bar(s, "Three Invocation Paths", "Pick one based on the calling context")
     _add_image(s, FIG_DIR / "03_invocation_paths.png", Inches(0.4), Inches(1.0), width=Inches(12.6))
-    _add_footer(s, 6, total)
+    _add_footer(s, 9, total)
 
 
 def slide_trigger_cascade(prs, total):
@@ -276,7 +387,7 @@ def slide_trigger_cascade(prs, total):
     _add_image(
         s, FIG_DIR / "08_trigger_cascade_timeline.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 7, total)
+    _add_footer(s, 10, total)
 
 
 def slide_resolution(prs, total):
@@ -289,7 +400,7 @@ def slide_resolution(prs, total):
     _add_image(
         s, FIG_DIR / "04_resolution_decision_tree.png", Inches(2.0), Inches(1.0), width=Inches(9.5)
     )
-    _add_footer(s, 8, total)
+    _add_footer(s, 11, total)
 
 
 def slide_ontologies(prs, total):
@@ -298,7 +409,7 @@ def slide_ontologies(prs, total):
     _add_image(
         s, FIG_DIR / "06_ontologies_coverage.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 9, total)
+    _add_footer(s, 12, total)
 
 
 def slide_mcp_tools(prs, total):
@@ -307,7 +418,7 @@ def slide_mcp_tools(prs, total):
     _add_image(
         s, FIG_DIR / "07_mcp_tool_distribution.png", Inches(0.7), Inches(1.0), width=Inches(11.9)
     )
-    _add_footer(s, 10, total)
+    _add_footer(s, 13, total)
 
 
 def slide_tests(prs, total):
@@ -318,7 +429,7 @@ def slide_tests(prs, total):
         "504 unit tests · 7 workflow YAML · 1 cascade runtime — auto-skip when external deps missing",
     )
     _add_image(s, FIG_DIR / "05_test_surface.png", Inches(0.4), Inches(1.0), width=Inches(12.6))
-    _add_footer(s, 11, total)
+    _add_footer(s, 14, total)
 
 
 def slide_session_bugs(prs, total):
@@ -329,7 +440,7 @@ def slide_session_bugs(prs, total):
     _add_image(
         s, FIG_DIR / "09_session_bug_count.png", Inches(0.7), Inches(1.0), width=Inches(11.9)
     )
-    _add_footer(s, 12, total)
+    _add_footer(s, 15, total)
 
 
 def slide_brutal_truth(prs, total):
@@ -357,7 +468,7 @@ def slide_brutal_truth(prs, total):
         fontsize=18,
         line_spacing=1.25,
     )
-    _add_footer(s, 13, total)
+    _add_footer(s, 16, total)
 
 
 def slide_failure_contract(prs, total):
@@ -423,7 +534,7 @@ def slide_failure_contract(prs, total):
                 cell.fill.fore_color.rgb = (
                     RGBColor(0xF5, 0xF5, 0xF8) if ri % 2 == 1 else RGBColor(0xFF, 0xFF, 0xFF)
                 )
-    _add_footer(s, 14, total)
+    _add_footer(s, 17, total)
 
 
 def slide_close(prs, total):
@@ -461,6 +572,9 @@ def main() -> None:
         slide_title,
         slide_agenda,
         slide_purpose,
+        slide_two_lifecycles,
+        slide_backend_pipeline,
+        slide_user_facing_pipeline,
         slide_topology,
         slide_synthesis,
         slide_invocation,
