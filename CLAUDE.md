@@ -195,7 +195,7 @@ Design doc: `../_workspace_notes/apecx-mcp-integration_dev_history/t13b_sandbox_
 ## MCP surface (Tier 1)
 
 `src/apecx_integration/mcp_surface/server.py` is a FastMCP server
-exposing 20 scientist-facing tools. Entry point:
+exposing 22 scientist-facing tools. Entry point:
 
 ```bash
 apecx-mcp                                        # stdio transport
@@ -213,6 +213,8 @@ Tools by module:
   resolve_entity, database_statistics
 - `tools/canonical_entity.py` (1): resolve_canonical_entity (Stage 2
   fast path — dictionary lookup → ancestor walk → slow substring fallback)
+- `tools/synthesis.py` (1): synthesize_query (E2E RAG synthesis pipeline,
+  bypasses the Composer)
 - `tools/approvals.py` (4): list_pending_approvals, approve, reject, correct
 - `tools/hpc.py` (4): estimate_cost, confirm_allocation, export_hpc_bundle,
   ingest_hpc_bundle
@@ -238,6 +240,50 @@ during execution).
 Full operator-facing install + reference: `docs/mcp_integration.md`
 (Claude Desktop config snippet, env vars, per-tool input/output
 shapes, troubleshooting).
+
+## E2E RAG synthesis pipeline (Day 2)
+
+`src/apecx_integration/composition/workflows/rag_e2e_synthesis/` is
+the two-step "ask a question, get a grounded Markdown answer" pipeline:
+
+1. **`SynthesisContextAssemblyStep`** — fan-in retrieval. Concurrently
+   runs domain-RAG semantic search (FAISS), VIOLIN/BV-BRC tabular
+   substring lookup (pure pandas), and PubMed eSearch+eFetch. Output:
+   a single bundle dict with five keys (query, rag_chunks, bvbrc_genomes,
+   violin_mappings, publications). asyncio.gather runs all three
+   branches in parallel; **branch failures degrade to empty bundles**
+   (regression-tested in `tests/unit/test_synthesis_assembly_branch_failures.py`).
+2. **`RagSynthesisStep`** — single LLM call (via APECX_LLM_*) that
+   produces Markdown with inline citations grounded in the bundle.
+   The synthesizer's gates (size, grounded-citation, empty-retrieval)
+   raise `ValueError` on contract violations.
+
+Three ways to invoke:
+
+- **`synthesize_query` MCP tool** (canonical). One call, one Markdown
+  answer. Step instances are cached process-wide so the FAISS index is
+  loaded once. Use this from Claude Desktop or any MCP client.
+- **`Workflow.from_config(rag_e2e_synthesis_workflow.yml)`** — drives
+  the same chain through the nanobrain workflow runtime (triggers + links).
+  Loadability is pinned by `tests/integration/test_rag_e2e_workflow_yaml.py`.
+- **Direct step instantiation** — instantiate both steps via
+  `BaseStep.from_config()` and call `process()` manually. Used by the
+  E2E test suite (`tests/integration/test_rag_e2e_pipeline.py`).
+
+**Workspace-root resolution** for the VIOLIN/BV-BRC step now honors
+`APECX_WORKSPACE_ROOT` env var first, then walks upward looking for
+canonical workspace markers (apecx-mcp-integration + nanobrain /
+_workspace_notes / data siblings). This replaced an earlier brittle
+`Path(__file__).parents[5]` assumption that broke in non-standard
+checkout layouts. Source: 2026-05-05 audit (Finding #16).
+
+**Failure contract per branch:**
+- Domain RAG missing/corrupted → log WARNING, `rag_chunks=[]`.
+- VIOLIN/BV-BRC CSVs missing/wrong shape → log WARNING, both bundles `[]`.
+- PubMed network error → log WARNING, `publications=[]`.
+- All branches empty → synthesizer's `fail_on_empty_retrieval` gate
+  fires `ValueError`, surfaced as `{"error": "synthesis gate failed: ..."}`
+  by `synthesize_query`.
 
 ## Key reference docs
 
