@@ -36,6 +36,7 @@ from __future__ import annotations
 
 from apecx_integration.mcp_surface.data import database as _db
 from apecx_integration.synonym_dictionary.enums import EntityType
+from apecx_integration.synonym_dictionary.loader import get_dictionary_index
 from apecx_integration.synonym_dictionary.lookup import LookupResult, lookup_entity
 
 # ---------------------------------------------------------------------------
@@ -142,19 +143,30 @@ async def query_pathogens(
         return {"error": err or "Database not loaded"}
 
     ncbi_id: int | None = None
+    ncbi_ids: list[int] | None = None
     resolution: dict | None = None
     if search_term:
         lr = lookup_entity(search_term, entity_type=EntityType.PATHOGEN)
         if lr.path in ("fast", "ancestor"):
             ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
             resolution = _resolution_meta(lr)
+            # Strict taxonomy hierarchy: expand family/genus-level IRIs to
+            # include all descendant taxa. A query for "Coronaviridae"
+            # (NCBITaxon_11118) returns every coronavirus species; a query
+            # for "covid-19" (NCBITaxon_2697049) returns only SARS-CoV-2.
+            if ncbi_id is not None and lr.canonical_iri:
+                index, _ = get_dictionary_index()
+                if index is not None:
+                    child_ids = index.lookup_descendant_taxon_ids(lr.canonical_iri)
+                    ncbi_ids = [ncbi_id] + child_ids if child_ids else [ncbi_id]
 
     result = _db.query_pathogens(
         store,
         search_term=search_term or None,
         disease=disease or None,
         limit=limit,
-        ncbi_taxonomy_id=ncbi_id,
+        ncbi_taxonomy_id=ncbi_id if ncbi_ids is None else None,
+        ncbi_taxonomy_ids=ncbi_ids,
     )
     if resolution:
         result["_resolution"] = resolution

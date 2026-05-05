@@ -55,6 +55,22 @@ WITH RECURSIVE anc(id, depth) AS (
 SELECT id FROM anc ORDER BY depth
 """
 
+# Descend: starting from a parent taxon, return all descendant taxon IDs
+# (depth-first, closest first). The root-stop guard (id != 1) is applied
+# on the parent side so we never traverse above the root.
+_DESCENDANT_CTE = """
+WITH RECURSIVE desc_tree(id, depth) AS (
+    SELECT h.child_taxon_id, 1
+    FROM   taxon_hierarchy h
+    WHERE  h.parent_taxon_id = :taxon_id
+    UNION ALL
+    SELECT h.child_taxon_id, desc_tree.depth + 1
+    FROM   taxon_hierarchy h
+    JOIN   desc_tree ON h.parent_taxon_id = desc_tree.id
+)
+SELECT id FROM desc_tree ORDER BY depth
+"""
+
 
 class DictionaryIndex:
     """In-memory index loaded from a SQLite dictionary artifact.
@@ -177,6 +193,55 @@ class DictionaryIndex:
             if entry is not None:
                 return entry
         return None
+
+    def lookup_descendant_taxon_ids(self, iri: str) -> list[int]:
+        """Return all descendant NCBITaxon integer IDs for ``iri``.
+
+        Descends the taxonomy hierarchy starting from the taxon identified
+        by ``iri``.  Returns the integer IDs of all descendants (not
+        including the root taxon itself — callers add that separately if
+        needed).
+
+        Strict hierarchy contract
+        -------------------------
+        A family-level IRI like Coronaviridae (NCBITaxon_11118) returns
+        all species and strain IDs under it (SARS-CoV-2, MERS-CoV, …).
+        A species-level IRI like SARS-CoV-2 (NCBITaxon_2697049) returns
+        only its own strain-level children.  This is the "strict hierarchy"
+        required by the user directive (2026-05-05).
+
+        Returns an empty list when:
+        - ``iri`` is not an NCBITaxon IRI
+        - the dictionary has no embedded hierarchy (``has_hierarchy=False``)
+        - the taxon has no children
+        """
+        if not self._has_hierarchy or self._db_path is None:
+            return []
+        if not iri.startswith(_NCBITAXON_OBO_PREFIX):
+            return []
+        taxon_id_str = iri[len(_NCBITAXON_OBO_PREFIX) :]
+        try:
+            taxon_id = int(taxon_id_str)
+        except ValueError:
+            return []
+
+        try:
+            conn = sqlite3.connect(f"file:{self._db_path}?mode=ro", uri=True)
+            try:
+                merge_row = conn.execute(
+                    "SELECT new_taxon_id FROM merged_taxons WHERE old_taxon_id = ?",
+                    (taxon_id,),
+                ).fetchone()
+                if merge_row:
+                    taxon_id = merge_row[0]
+                rows = conn.execute(_DESCENDANT_CTE, {"taxon_id": taxon_id}).fetchall()
+            finally:
+                conn.close()
+        except Exception as exc:
+            log.debug("descendant traversal error for %s: %s", iri, exc)
+            return []
+
+        return [row[0] for row in rows]
 
     def entry_count(self) -> int:
         return len(self._entries)

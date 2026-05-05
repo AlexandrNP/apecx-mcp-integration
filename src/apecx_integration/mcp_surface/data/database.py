@@ -291,15 +291,21 @@ def query_pathogens(
     disease: str | None = None,
     limit: int = 25,
     ncbi_taxonomy_id: int | None = None,
+    ncbi_taxonomy_ids: list[int] | None = None,
 ) -> dict[str, Any]:
-    """``ncbi_taxonomy_id``: integer taxon ID for precision filtering.
-    When supplied, replaces the substring search on search_term."""
+    """``ncbi_taxonomy_id``: single taxon ID for leaf-level precision.
+    ``ncbi_taxonomy_ids``: set of taxon IDs for hierarchy-expanded queries.
+    When either is supplied, replaces the substring search on search_term.
+    ``ncbi_taxonomy_ids`` takes priority over ``ncbi_taxonomy_id``."""
     if "pathogens" not in store.dfs:
         return {"error": "Pathogen data not loaded"}
 
     df = store.dfs["pathogens"].copy()
 
-    if ncbi_taxonomy_id is not None and "NCBI_Taxonomy_ID" in df.columns:
+    if ncbi_taxonomy_ids is not None and "NCBI_Taxonomy_ID" in df.columns:
+        id_set = set(ncbi_taxonomy_ids)
+        df = df[pd.to_numeric(df["NCBI_Taxonomy_ID"], errors="coerce").isin(id_set)]
+    elif ncbi_taxonomy_id is not None and "NCBI_Taxonomy_ID" in df.columns:
         df = df[pd.to_numeric(df["NCBI_Taxonomy_ID"], errors="coerce") == ncbi_taxonomy_id]
     elif search_term:
         df = _safe_str_contains(df, ["Pathogen", "Disease", "Pathogen_Description"], search_term)
