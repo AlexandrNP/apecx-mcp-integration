@@ -55,13 +55,39 @@ from pydantic import ConfigDict, Field, model_validator
 log = logging.getLogger(__name__)
 
 
-# Workspace-relative fallback when neither YAML nor env var sets a
-# path. ``violin_bvbrc_context_step.py`` lives at:
-#   src/apecx_integration/composition/steps/violin_bvbrc_context_step.py
-# ``parents[5]`` = the apecx-cowork workspace root, sibling of
-# ``apecx-mcp-integration/``. Operators in non-workspace deployments
-# should set ``violin_data_dir`` / ``bvbrc_cache_dir`` explicitly.
-_WORKSPACE_ROOT = Path(__file__).resolve().parents[5]
+def _resolve_workspace_root() -> Path:
+    """Locate the apecx-cowork workspace root.
+
+    Resolution order (first hit wins):
+
+    1. ``APECX_WORKSPACE_ROOT`` env var — explicit operator override.
+       Always honored when set, even if the path doesn't exist (the
+       caller will produce a clearer error than silent fallback).
+    2. Walk upward from this file looking for the canonical workspace
+       layout: a directory that contains ``apecx-mcp-integration/``
+       plus at least one of ``nanobrain/``, ``_workspace_notes/``, or
+       ``data/`` as siblings. This handles non-standard parent depths
+       (vendored, monorepo, container).
+    3. Fallback: ``parents[5]``, which is correct for the documented
+       standard checkout layout.
+    """
+    explicit = os.environ.get("APECX_WORKSPACE_ROOT")
+    if explicit:
+        return Path(explicit).expanduser().resolve()
+
+    here = Path(__file__).resolve()
+    for ancestor in here.parents:
+        if (ancestor / "apecx-mcp-integration").is_dir() and (
+            (ancestor / "nanobrain").is_dir()
+            or (ancestor / "_workspace_notes").is_dir()
+            or (ancestor / "data").is_dir()
+        ):
+            return ancestor
+
+    return here.parents[5]
+
+
+_WORKSPACE_ROOT = _resolve_workspace_root()
 _DEFAULT_VIOLIN_DIR = _WORKSPACE_ROOT / "data" / "violin"
 _DEFAULT_BVBRC_DIR = _WORKSPACE_ROOT / "data" / "bvbrc_cache"
 

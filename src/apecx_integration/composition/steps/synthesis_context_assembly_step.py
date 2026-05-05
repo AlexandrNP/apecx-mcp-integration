@@ -383,6 +383,12 @@ class SynthesisContextAssemblyStep(BaseStep):
         )
 
         # ---- Concurrent retrieval branches ----
+        # ``return_exceptions=True`` so a single branch failure (e.g.
+        # corrupted FAISS index, missing CSV column, network outage) is
+        # logged + degraded to an empty bundle rather than crashing the
+        # whole synthesis call. The synthesizer's
+        # ``fail_on_empty_retrieval`` gate still fires if EVERY branch
+        # ends up empty, so silent total failure is impossible.
         async def _pubmed_task() -> list[dict]:
             if self._skip_pubmed:
                 return []
@@ -392,10 +398,39 @@ class SynthesisContextAssemblyStep(BaseStep):
             asyncio.to_thread(self._rag_search, query),
             asyncio.to_thread(self._violin_bvbrc_lookup, terms),
             _pubmed_task(),
+            return_exceptions=True,
         )
 
-        rag_chunks: list[dict] = rag_result
-        violin_mappings, bvbrc_genomes = violin_bvbrc
+        if isinstance(rag_result, BaseException):
+            log.warning(
+                "%s: RAG branch failed (%s: %s); rag_chunks=[]",
+                self.name,
+                type(rag_result).__name__,
+                rag_result,
+            )
+            rag_chunks: list[dict] = []
+        else:
+            rag_chunks = rag_result
+
+        if isinstance(violin_bvbrc, BaseException):
+            log.warning(
+                "%s: VIOLIN/BV-BRC branch failed (%s: %s); both bundles=[]",
+                self.name,
+                type(violin_bvbrc).__name__,
+                violin_bvbrc,
+            )
+            violin_mappings, bvbrc_genomes = [], []
+        else:
+            violin_mappings, bvbrc_genomes = violin_bvbrc
+
+        if isinstance(publications, BaseException):
+            log.warning(
+                "%s: PubMed branch failed (%s: %s); publications=[]",
+                self.name,
+                type(publications).__name__,
+                publications,
+            )
+            publications = []
 
         log.info(
             "%s: rag=%d violin=%d bvbrc=%d pubs=%d",
