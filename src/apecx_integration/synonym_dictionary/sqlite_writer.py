@@ -74,6 +74,28 @@ _SCHEMA_DDL = (
         value TEXT NOT NULL
     );
     """,
+    # Specialized catalog (added 2026-05-04, task #14): every time the
+    # writer sees TWO different ``canonical_iri`` values mapped to the
+    # same ``(entity_type, surface_form_normalized)``, it records the
+    # losing IRI here so the conflict isn't silently lost. The
+    # ``inverse_index`` keeps its INSERT OR REPLACE semantics (last
+    # write wins for the fast lookup), but a specialized
+    # ``query_ambiguous_surface_forms`` query can surface the conflicts
+    # to operators / scientists. Composite PK includes the alt IRI so
+    # multiple alts per surface-form / entity-type are preserved.
+    """
+    CREATE TABLE IF NOT EXISTS ambiguous_surface_forms (
+        entity_type             TEXT NOT NULL,
+        surface_form_normalized TEXT NOT NULL,
+        winning_canonical_iri   TEXT NOT NULL,
+        alternative_canonical_iri TEXT NOT NULL,
+        PRIMARY KEY (entity_type, surface_form_normalized, alternative_canonical_iri)
+    );
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_ambiguous_by_surface
+        ON ambiguous_surface_forms (surface_form_normalized);
+    """,
 )
 
 
@@ -157,10 +179,52 @@ class SQLiteDictionaryWriter(DictionaryWriter):
         # Inverse index: every synonym + the canonical label all map back to
         # this canonical IRI.  Normalize at write-time so the runtime read
         # path is a direct equality lookup.
+        #
+        # Ambiguity capture (2026-05-04, task #14): when a normalized
+        # surface form already maps to a *different* canonical IRI, record
+        # the conflict in ``ambiguous_surface_forms`` BEFORE the
+        # ``INSERT OR REPLACE`` overwrites it. The inverse_index keeps
+        # last-write-wins semantics for runtime speed, but the
+        # ``ambiguous_surface_forms`` table makes the loss queryable.
         for surface in (entry.canonical_label, *entry.synonyms):
             normalized = normalize_surface_form(surface)
             if not normalized:
                 continue
+            existing = self._conn.execute(
+                "SELECT canonical_iri FROM inverse_index "
+                "WHERE entity_type = ? AND surface_form_normalized = ?",
+                (entry.entity_type.value, normalized),
+            ).fetchone()
+            if existing is not None and existing[0] != entry.canonical_iri:
+                # Conflict — record before overwrite. We treat the EXISTING
+                # IRI as the loser ("alternative") and the incoming entry's
+                # IRI as the winner. The choice is arbitrary but stable
+                # under repeat builds (alphabetical traversal order in
+                # the build pipeline).
+                losing_iri = existing[0]
+                winning_iri = entry.canonical_iri
+                self._conn.execute(
+                    """
+                    INSERT OR IGNORE INTO ambiguous_surface_forms (
+                        entity_type, surface_form_normalized,
+                        winning_canonical_iri, alternative_canonical_iri
+                    )
+                    VALUES (?, ?, ?, ?)
+                    """,
+                    (
+                        entry.entity_type.value,
+                        normalized,
+                        winning_iri,
+                        losing_iri,
+                    ),
+                )
+                log.info(
+                    "Ambiguous surface form %r (%s): %s overwrites %s",
+                    normalized,
+                    entry.entity_type.value,
+                    winning_iri,
+                    losing_iri,
+                )
             self._conn.execute(
                 """
                 INSERT OR REPLACE INTO inverse_index (

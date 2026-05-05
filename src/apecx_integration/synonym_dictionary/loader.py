@@ -184,6 +184,83 @@ class DictionaryIndex:
     def index_entry_count(self) -> int:
         return len(self._inverse)
 
+    def lookup_ambiguous_surface_forms(
+        self,
+        *,
+        surface_form: str | None = None,
+        entity_type: str | None = None,
+        limit: int = 100,
+    ) -> list[dict[str, str]]:
+        """Specialized query: ambiguous-synonym catalog.
+
+        Surfaces conflicts captured at build time when two different
+        canonical IRIs share the same normalized surface form. The
+        ``inverse_index`` keeps last-write-wins for fast runtime lookup,
+        but THIS table records the IRIs that lost — so an operator can
+        ask "what alternative IRIs does the dictionary know about for
+        'vp35'?" and get the full picture.
+
+        Parameters
+        ----------
+        surface_form:
+            Optional filter on the normalized surface form (lowercased,
+            stripped).  When ``None``, returns conflicts across all
+            surface forms.
+        entity_type:
+            Optional filter on entity type ("pathogen", "gene", etc.).
+        limit:
+            Caps the result count so a degenerate dictionary doesn't
+            return millions of rows.
+
+        Returns
+        -------
+        List of dicts, each with keys: ``entity_type``,
+        ``surface_form_normalized``, ``winning_canonical_iri``,
+        ``alternative_canonical_iri``. Empty list when the dictionary
+        has no recorded conflicts (or when filters exclude everything).
+
+        Notes
+        -----
+        Reads from ``ambiguous_surface_forms`` which was added in the
+        2026-05-04 schema (no migration; new dictionaries get it
+        automatically, older builds report empty).
+        """
+        if self._db_path is None:
+            return []
+        params: list[object] = []
+        clauses: list[str] = []
+        if surface_form is not None:
+            clauses.append("surface_form_normalized = ?")
+            params.append(surface_form.strip().lower())
+        if entity_type is not None:
+            clauses.append("entity_type = ?")
+            params.append(entity_type)
+        where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
+        sql = (
+            "SELECT entity_type, surface_form_normalized, "
+            "winning_canonical_iri, alternative_canonical_iri "
+            "FROM ambiguous_surface_forms" + where + " LIMIT ?"
+        )
+        params.append(int(limit))
+        try:
+            conn = sqlite3.connect(f"file:{self._db_path}?mode=ro", uri=True)
+            try:
+                rows = conn.execute(sql, params).fetchall()
+            finally:
+                conn.close()
+        except sqlite3.OperationalError:
+            # Older dictionary built before this table existed.
+            return []
+        return [
+            {
+                "entity_type": r[0],
+                "surface_form_normalized": r[1],
+                "winning_canonical_iri": r[2],
+                "alternative_canonical_iri": r[3],
+            }
+            for r in rows
+        ]
+
     @classmethod
     def load(cls, path: Path | str) -> DictionaryIndex:
         """Load a SQLite dictionary artifact into memory.
