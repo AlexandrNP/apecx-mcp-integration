@@ -2,7 +2,7 @@
 
 This document is the canonical map of the apecx-mcp-integration system.
 It covers the three runtime tiers (MCP surface, control plane, executor),
-the synthesis pipeline, all 22 MCP tools, all six ontologies, the
+the synthesis pipeline, all 23 MCP tools, all six ontologies, the
 mapping/resolution strategies, the test surface, and external service
 dependencies.
 
@@ -19,11 +19,12 @@ APECx-MCP-integration takes free-text scientist questions about
 viral pathogens, vaccines, genes, and genomes, and turns them into
 **grounded Markdown answers with inline citations**. It does this by
 fanning out across local FAISS-indexed knowledge (domain RAG),
-local VIOLIN/BV-BRC tabular data (substring lookup), and live PubMed
-publications, then driving one LLM call to weave the retrieved
-evidence into a structured response. The system is exposed through
-the Model Context Protocol (MCP) so it appears as a tool surface
-inside Claude Desktop and any MCP-compatible client.
+local VIOLIN/BV-BRC tabular data (substring lookup), live PubMed
+publications, and the APECx Globus Search index of harvested records,
+then driving one LLM call to weave the retrieved evidence into a
+structured response. The system is exposed through the Model Context
+Protocol (MCP) so it appears as a tool surface inside Claude Desktop
+and any MCP-compatible client.
 
 ---
 
@@ -36,12 +37,13 @@ flowchart TB
     end
 
     subgraph Tier1["Tier 1 — MCP surface (this repo)"]
-        SRV["FastMCP server<br/>apecx-mcp-integration<br/>22 tools"]
+        SRV["FastMCP server<br/>apecx-mcp-integration<br/>23 tools"]
         ToolsW["workflow tools (3)<br/>start_workflow / show_diff / execute_workflow"]
         ToolsD["discovery tools (2)<br/>list_workflows / describe_workflow"]
         ToolsDB["database tools (7)<br/>query_vaccines / pathogens / genes / genomes / etc."]
         ToolsCE["resolve_canonical_entity (1)"]
         ToolsSy["synthesize_query (1)"]
+        ToolsGS["query_globus_search (1)"]
         ToolsAp["approval tools (4)"]
         ToolsHpc["HPC tools (4)"]
     end
@@ -59,12 +61,13 @@ flowchart TB
         VIOLIN["VIOLIN CSVs<br/>data/violin/"]
         BVBRC["BV-BRC TSVs<br/>data/bvbrc_cache/"]
         PUBMED["NCBI PubMed eUtils<br/>(network)"]
+        GLOBUS["Globus Search index<br/>e74bf12a... (network, public)"]
         DICT["synonym_dictionary<br/>SQLite"]
         LLM["APECX_LLM_BASE_URL<br/>OpenAI-compatible API"]
     end
 
     CD <-- "stdio JSON-RPC" --> SRV
-    SRV --> ToolsW & ToolsD & ToolsDB & ToolsCE & ToolsSy & ToolsAp & ToolsHpc
+    SRV --> ToolsW & ToolsD & ToolsDB & ToolsCE & ToolsSy & ToolsGS & ToolsAp & ToolsHpc
     ToolsW --> CP
     ToolsAp --> CP
     ToolsHpc --> CP
@@ -73,8 +76,9 @@ flowchart TB
     ToolsDB --> BVBRC
     ToolsDB --> DICT
     ToolsCE --> DICT
-    ToolsSy --> FAISS & VIOLIN & BVBRC & PUBMED & LLM
-    Exec --> FAISS & VIOLIN & BVBRC & PUBMED & LLM
+    ToolsGS --> GLOBUS
+    ToolsSy --> FAISS & VIOLIN & BVBRC & PUBMED & GLOBUS & LLM
+    Exec --> FAISS & VIOLIN & BVBRC & PUBMED & GLOBUS & LLM
 ```
 
 **Key facts:**
@@ -110,9 +114,11 @@ flowchart LR
         Gather --> RAG["DomainRagIndex.search<br/>(FAISS)"]
         Gather --> VBL["lookup_violin / lookup_bvbrc<br/>(pandas)"]
         Gather --> PUB["pubmed eSearch + eFetch<br/>(network, optional)"]
+        Gather --> GS["globus_search.search<br/>(network, optional)"]
         RAG --> Bundle
         VBL --> Bundle
         PUB --> Bundle
+        GS --> Bundle
         Bundle["synthesis_bundle_output<br/>DataUnitMemory"]
     end
 
@@ -137,6 +143,7 @@ flowchart LR
     "bvbrc_genomes":   list[dict],    # genome_id, genome_name
     "violin_mappings": list[dict],    # synonym_id, canonical_term, query_term, entity_type, source
     "publications":    list[dict],    # doi, title, authors[], year, journal, pmid
+    "globus_results":  list[dict],    # subject, content, score (added 2026-05-05)
 }
 ```
 
@@ -144,9 +151,10 @@ flowchart LR
 
 | Branch | What can fail | Effect | Where caught |
 |---|---|---|---|
-| Domain RAG | Missing FAISS index, corrupted bin file | `rag_chunks=[]`, WARNING logged | `asyncio.gather(return_exceptions=True)` in `synthesis_context_assembly_step.py:391` |
+| Domain RAG | Missing FAISS index, corrupted bin file | `rag_chunks=[]`, WARNING logged | `asyncio.gather(return_exceptions=True)` in `synthesis_context_assembly_step.py` |
 | VIOLIN/BV-BRC | Missing CSV, missing required column | both bundles `[]`, WARNING logged | same gather |
 | PubMed | Network error, eUtils 5xx, timeout | `publications=[]`, WARNING logged | inner try/except in `_pubmed_harvest` + outer gather |
+| Globus Search | SDK missing, network failure, invalid index UUID | `globus_results=[]`, WARNING logged | `GlobusSearchUnavailableError` → outer gather |
 | Synthesis LLM | Endpoint down, model rejects request | `ValueError` raised | caller (synthesize_query MCP tool catches and returns `{"error": ...}`) |
 | All branches empty | Synthesizer's `fail_on_empty_retrieval` gate | `ValueError` raised | synthesis_config.yml gate |
 
@@ -185,9 +193,64 @@ composer overhead, cached steps). Path B is for the case where the
 composer plans the synthesis as part of a larger workflow. Path C is
 exclusive to test code.
 
+### 3.4 Trigger cascade — `Workflow.wait_for_cascade`
+
+Path B above (workflow runtime) is data-driven:
+`Workflow.process(input_data)` writes to the first step's input data
+unit and **returns immediately** with
+`{"status": "data_flow_initiated", ...}`. The actual work happens
+in async background tasks the trigger executor spawns; the caller
+needs a way to await cascade completion synchronously.
+
+**The framework primitive (added 2026-05-05):**
+
+```python
+wf = Workflow.from_config('rag_e2e_synthesis_workflow.yml')
+await wf.initialize()                                 # resolves triggers
+await wf.process({'assembly_input': {'query': '...'}})
+ok = await wf.wait_for_cascade(timeout=90.0, settle_ms=100)
+assert ok
+output = await wf.child_steps['rag_synthesis'] \
+    .step_output_data_units['synthesis_output'].get()
+```
+
+`wait_for_cascade` delegates to
+`AsyncTriggerExecutor.wait_for_all_tasks(timeout, settle_ms)`,
+which loops over the executor's background-task set and re-snapshots
+on each iteration to catch transitively-spawned tasks (a snapshot
+taken once at call time misses task A spawning task B during its
+execution).
+
+**Why this matters — four silent-failure bugs caught by this test:**
+
+1. **`DirectLink.auto_transfer` defaults to `False`.** Without
+   `auto_transfer: true` in the link config, the link only
+   transfers on explicit `transfer()` calls; the trigger cascade
+   silently no-ops. The workflow YAML loads, validators pass, no
+   exception fires — and no work happens.
+2. **Workflow-level `input_data_units` / `output_data_units` are
+   required.** The framework's integrity validator
+   (`workflow.py::_validate_workflow_integrity`) raises
+   `ComponentConfigurationError` at `Workflow.initialize()` time
+   if a step input has no source or a step output has no consumer.
+   The required workflow-level data units are DIFFERENT from the
+   forbidden bare `data_units:` key.
+3. **Step input wrapping.** `Step._execute_on_trigger` wraps
+   trigger inputs as `{unit_name: payload}`, but direct callers
+   pass payload raw. Steps that only handle the raw shape silently
+   no-op in trigger mode.
+4. **Single-output fallback parity.** When a step returns a dict
+   that does NOT contain the output data unit's name as a key,
+   trigger mode used to skip writing while imperative mode wrote
+   the entire result. Brought into parity in nanobrain
+   `step.py::_update_output_data_units`.
+
+All four are now pinned by `test_workflow_runtime_executes_via_trigger_cascade`
+in `tests/integration/test_rag_e2e_workflow_yaml.py`.
+
 ---
 
-## 4. The 22 MCP tools
+## 4. The 23 MCP tools
 
 Source: `src/apecx_integration/mcp_surface/server.py`. Every tool
 returns either a result dict or `{"error": "..."}`; tools never raise
@@ -220,12 +283,13 @@ to the MCP transport.
 | `resolve_entity` | Multi-table substring scan + dict lookup | dict + substring | DatabaseStore + DictionaryIndex |
 | `database_statistics` | Row counts + columns for all loaded tables | none | DatabaseStore metadata |
 
-### 4.4 Entity resolution + synthesis (2)
+### 4.4 Entity resolution + synthesis + Globus search (3)
 
 | Tool | Purpose | Output |
 |---|---|---|
 | `resolve_canonical_entity` | Stage 2 fast path: lookup → ancestor → slow → miss | `{path, canonical_iri, canonical_label, confidence, ...}` |
 | `synthesize_query` | Drive the rag_e2e_synthesis pipeline directly | `{synthesis: markdown, retrieved: {counts}}` |
+| `query_globus_search` | Free-text query of the APECx harvested-corpus index | `{results: [{subject, content, score}], count, query}` |
 
 ### 4.5 Approval tools (4) — HITL gate
 
@@ -389,6 +453,7 @@ This is the **strict hierarchy contract** (user directive 2026-05-05).
 |---|---|---|---|
 | **APECX_LLM_BASE_URL** | LLM completion (synthesis, composition, entity extraction) | env var; default `http://localhost:11434/v1` (Ollama) | Synthesis raises ValueError → MCP returns `{"error": ...}` |
 | **NCBI eUtils** (network) | PubMed eSearch + eFetch | hard-coded `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/`; rate-limit 3/s | Branch returns `[]`, WARNING logged |
+| **Globus Search** (network) | APECx harvested-corpus index — public, no auth | default index UUID `e74bf12a-d0dd-4d19-a965-03f4936db851`; `APECX_GLOBUS_SEARCH_INDEX_UUID` overrides; `APECX_GLOBUS_SEARCH_DISABLED=1` skips | Branch returns `[]`, WARNING logged |
 | **Control Plane** | workflow + approval + HPC state | `APECX_CONTROL_PLANE_URL` env var (default `http://localhost:8000`); auto-starts on first MCP call | Server exits(2) with remediation hint if unreachable |
 
 ### 8.2 Required offline data
@@ -411,15 +476,30 @@ in this order: `APECX_WORKSPACE_ROOT` env var → marker-walk for
 flowchart LR
     AMI["apecx-mcp-integration<br/>(this repo)"]
     NB["nanobrain<br/>(framework)"]
-    AH["apecx-harvesters<br/>(PubMed loaders)"]
+    AH["apecx-harvesters<br/>(PubMed loaders + harvest writer — write-side OUT OF SCOPE)"]
     ADB["apecx-db-integration<br/>(LLM-driven entity functions)"]
     ARG["apecx-rag<br/>(synthesis prompts/config)"]
 
-    AMI -- "BaseStep, StepConfig, ApprovalStep, viral_protein_analysis steps" --> NB
+    AMI -- "BaseStep, StepConfig, ApprovalStep, viral_protein_analysis steps,<br/>wait_for_cascade (added 2026-05-05)" --> NB
     AMI -- "pubmed.search, pubmed.retrieve, DataCite container" --> AH
     AMI -- "extract_entities_llm, get_candidate_terms (via wrappers)" --> ADB
     AMI -- "synthesize_response, SynthesisConfig, prompt files" --> ARG
 ```
+
+**Harvester boundary (2026-05-05 user directive):** The harvester
+side of `apecx-harvesters` runs as a STAND-ALONE process: it
+populates two outputs (the APECx synonym dictionary AND the Globus
+Search index) and is invoked offline. This repo only consumes:
+
+- **Synonym dictionary** via `apecx_integration.synonym_dictionary`
+  (Stage 2 lookup, `APECX_SYNONYM_DICT_PATH`).
+- **Globus Search index** via
+  `apecx_integration.agents.globus_search.search` (public, no auth).
+- **PubMed loaders** via `apecx_harvesters.loaders.pubmed.*` for
+  the live PubMed retrieval branch in the synthesis pipeline.
+
+Harvester WRITE code is explicitly out of scope. Any change to how
+harvesters populate the index belongs in the apecx-harvesters repo.
 
 All sibling repos must be `pip install -e ../<repo>`'d into the project venv.
 
@@ -472,11 +552,12 @@ expects a single pre-assembled bundle).
 
 | Suite | Files | Tests | Notes |
 |---|---|---|---|
-| `tests/unit/` | 36 | **478** | All run against pure pandas / SQLite / mocks; no external services |
-| `tests/integration/` | 152 | **2,096** | Many gated on env vars (Ollama, control plane, GitHub); auto-skip when absent |
+| `tests/unit/` | 38 | **504** | All run against pure pandas / SQLite / mocks; no external services |
+| `tests/integration/` | 152 | **2,097** | Many gated on env vars (Ollama, control plane, GitHub); auto-skip when absent |
 
-Full unit run: ~13s. Integration including Ollama subset: ~3 min when
-Ollama is reachable.
+Full unit run: ~3.3s. Integration including Ollama subset: ~3 min when
+Ollama is reachable. The trigger-cascade runtime test alone takes
+~69s (real LLM round-trip).
 
 ### 10.2 Synthesis-pipeline-specific test coverage
 
@@ -486,9 +567,11 @@ Ollama is reachable.
 | `tests/unit/test_synthesize_query_tool.py` | 7 | MCP tool input validation, load-error caching, gate marshaling, skip_pubmed restoration |
 | `tests/unit/test_violin_bvbrc_lookup_helpers.py` | 12 | Stateless lookup utility — substring match, vaccine override, missing files, dedupe |
 | `tests/unit/test_pubmed_helpers.py` | 26 | Stateless PubMed helpers — entity_name, build_term, container_to_dict, 25-author cap |
+| `tests/unit/test_globus_search.py` | 19 | Globus client, MCP tool, synthesizer renderer, citation pattern |
+| `tests/unit/test_composer_prompt_correctness.py` | 7 | Pin substantive content of composer's system prompt |
 | `tests/unit/test_workspace_root_resolver.py` | 6 | Env var override > marker walk > parents[N] fallback |
 | `tests/unit/test_descendant_traversal.py` | 9 | Strict NCBITaxon hierarchy expansion |
-| `tests/integration/test_rag_e2e_workflow_yaml.py` | 6 | 5 static loadability tests + 1 runtime test driving framework-instantiated steps |
+| `tests/integration/test_rag_e2e_workflow_yaml.py` | 7 | 5 static loadability + 1 imperative-drive + 1 trigger-cascade runtime |
 | `tests/integration/test_rag_e2e_pipeline.py` | 25 | E2E with real Ollama, real FAISS, real CSVs (gated; auto-skip) |
 | `tests/integration/test_violin_bvbrc_workflow_yaml.py` | 8 | Loadability of the violin_bvbrc workflow + each step YAML |
 
@@ -517,6 +600,8 @@ flowchart TB
         EV8["APECX_CONTROL_PLANE_URL"]
         EV9["APECX_WORKSPACE_ROOT"]
         EV10["APECX_SKIP_LIVE_LLM"]
+        EV11["APECX_GLOBUS_SEARCH_INDEX_UUID"]
+        EV12["APECX_GLOBUS_SEARCH_DISABLED"]
     end
 
     EV1 & EV2 & EV3 & EV4 & EV5 --> LLM["build_chat_llm()<br/>OpenAI-compatible client"]
@@ -525,63 +610,88 @@ flowchart TB
     EV8 --> CP["ControlPlaneClient"]
     EV9 --> WS["resolve_workspace_root()"]
     EV10 --> Tests["test gating"]
+    EV11 & EV12 --> GS["globus_search.search()"]
 
     LLM --> SYN["RagSynthesisStep, EntityExtractionStep, Composer"]
     DBS --> DT["query_* MCP tools, VIOLINBVBRCContextStep"]
     DICT --> RT["resolve_canonical_entity, query_pathogens (descendant)"]
     CP --> WT["start_workflow, approvals, HPC tools"]
     WS --> DR["DomainRagIndex, VIOLINBVBRCContextStep defaults"]
+    GS --> GST["query_globus_search MCP tool, SynthesisContextAssemblyStep"]
 ```
 
 ---
 
-## 12. Ten things that will surprise you (brutal-truth section)
+## 12. Things that will surprise you (brutal-truth section)
 
-1. **`Workflow.process(input_data)` is fire-and-forget.** It writes
-   to the first step's input data unit and returns
-   `{"status": "data_flow_initiated", ...}`. The actual trigger
-   cascade runs in background tasks the caller can't await. If you
-   want synchronous workflow execution, drive the steps directly via
-   `process()` like `synthesize_query` does, or set
-   `divergence_enabled: true` on the workflow YAML.
+1. **`Workflow.process(input_data)` is fire-and-forget. Use
+   `wait_for_cascade` to await completion.** Process returns
+   `{"status": "data_flow_initiated", ...}` immediately; the
+   trigger cascade fires asynchronously. The framework now exposes
+   `Workflow.wait_for_cascade(timeout, settle_ms)` — added 2026-05-05
+   alongside the runtime test that proved it necessary.
 
 2. **`BaseStep.execute()` takes only kwargs.** `wf.execute(input)`
    raises `TypeError`. The data-driven entry point is `process(input)`.
 
-3. **The FAISS / sentence-transformers import order is load-bearing.**
+3. **DirectLink defaults to `auto_transfer=False`.** Without
+   explicit `auto_transfer: true` in the link config, the workflow
+   YAML loads cleanly but every link is a runtime no-op. The
+   composer prompt now mandates this; manually-authored YAMLs must
+   set it. This was one of FOUR silent-failure bugs uncovered by
+   the trigger-cascade test.
+
+4. **Workflows need both step-level AND workflow-level data units.**
+   The framework's integrity validator requires every step input/
+   output to have an external source/consumer. Workflow-level
+   `input_data_units` / `output_data_units` provide them. Bare
+   `data_units:` (singular) is forbidden; the plural variants are
+   REQUIRED for any multi-step workflow.
+
+5. **Step trigger inputs are wrapped as `{unit_name: payload}`.**
+   `Step._execute_on_trigger` wraps; direct callers pass raw.
+   Steps must detect both shapes. Synthesis steps now do.
+
+6. **The FAISS / sentence-transformers import order is load-bearing.**
    `sentence_transformers` MUST import before `faiss` on macOS ARM
    or you get a silent segfault. There's a `# ruff: noqa: I001, E402`
    directive at the top of `domain_rag/index.py` to prevent auto-sort.
 
-4. **`object.__new__(StepClass)` was the prior shortcut for sharing
-   logic between steps.** As of 2026-05-05 it's gone — replaced by
+7. **`object.__new__(StepClass)` was the prior shortcut for sharing
+   logic between steps.** Gone as of 2026-05-05 — replaced by
    stateless utility modules (`_violin_bvbrc_lookup`, `_pubmed_helpers`).
 
-5. **Synthesis branch failures degrade gracefully but the all-empty
+8. **Synthesis branch failures degrade gracefully but the all-empty
    case still raises.** A single corrupt FAISS or PubMed 5xx → empty
-   slot in the bundle. ALL three retrieval branches empty → the
+   slot in the bundle. ALL FIVE retrieval branches empty → the
    synthesizer's `fail_on_empty_retrieval` gate fires `ValueError`.
 
-6. **The composer is not on the synthesize_query path.** The
-   `synthesize_query` MCP tool drives the rag_e2e_synthesis workflow
-   directly via `from_config + process()`. No LLM-driven workflow
-   composition. Use `start_workflow` when the operator wants
-   composer-planned multi-step workflows.
+9. **Globus Search is read-only at the ingest boundary.** The
+   harvester (in `apecx-harvesters`) populates the index as a
+   stand-alone offline process. This repo NEVER writes to the
+   index. The harvester boundary is enforced by code review, not
+   by mechanical guard.
 
-7. **`extra='forbid'` is mandatory on every step config.** YAML typos
-   in step configs would otherwise be silently dropped. The workspace
-   rule is enforced; auditors check for this on every PR.
+10. **The composer is not on the synthesize_query path.** The
+    `synthesize_query` MCP tool drives the rag_e2e_synthesis workflow
+    directly via `from_config + process()`. No LLM-driven workflow
+    composition. Use `start_workflow` when the operator wants
+    composer-planned multi-step workflows.
 
-8. **Path resolution honors `APECX_WORKSPACE_ROOT` first.** If the
-   env var is set, marker-walk + `parents[5]` fallback are skipped.
-   Use this in non-standard checkout layouts (vendored, monorepo,
-   container).
+11. **`extra='forbid'` is mandatory on every step config.** YAML typos
+    in step configs would otherwise be silently dropped. The workspace
+    rule is enforced; auditors check for this on every PR.
 
-9. **The slow path does NOT use the synonym dictionary.** It scans
-   the DatabaseStore (VIOLIN + BV-BRC pandas frames) for substring
-   matches. Confidence ≈ 0.3. Only used as last resort.
+12. **Path resolution honors `APECX_WORKSPACE_ROOT` first.** If the
+    env var is set, marker-walk + `parents[5]` fallback are skipped.
+    Use this in non-standard checkout layouts (vendored, monorepo,
+    container).
 
-10. **`_workspace_notes/` is a separate sibling repo.** Friction logs
+13. **The slow path does NOT use the synonym dictionary.** It scans
+    the DatabaseStore (VIOLIN + BV-BRC pandas frames) for substring
+    matches. Confidence ≈ 0.3. Only used as last resort.
+
+14. **`_workspace_notes/` is a separate sibling repo.** Friction logs
     and dev-history docs live there, NOT in this repo. Workspace
     rules are documented in `../CLAUDE.md` (also outside this repo).
 

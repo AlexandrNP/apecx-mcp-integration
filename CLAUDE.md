@@ -195,7 +195,7 @@ Design doc: `../_workspace_notes/apecx-mcp-integration_dev_history/t13b_sandbox_
 ## MCP surface (Tier 1)
 
 `src/apecx_integration/mcp_surface/server.py` is a FastMCP server
-exposing 22 scientist-facing tools. Entry point:
+exposing 23 scientist-facing tools. Entry point:
 
 ```bash
 apecx-mcp                                        # stdio transport
@@ -215,6 +215,8 @@ Tools by module:
   fast path — dictionary lookup → ancestor walk → slow substring fallback)
 - `tools/synthesis.py` (1): synthesize_query (E2E RAG synthesis pipeline,
   bypasses the Composer)
+- `tools/globus_search.py` (1): query_globus_search (APECx harvested-corpus
+  index, read-only consumer at the ingest boundary)
 - `tools/approvals.py` (4): list_pending_approvals, approve, reject, correct
 - `tools/hpc.py` (4): estimate_cost, confirm_allocation, export_hpc_bundle,
   ingest_hpc_bundle
