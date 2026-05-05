@@ -70,6 +70,9 @@ from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    synthesis as synthesis_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
 
@@ -117,6 +120,12 @@ def build_server() -> FastMCP:
     # Stage 2 canonical entity resolution — dictionary fast path first,
     # substring slow path fallback.  Always surfaces path + confidence.
     server.tool()(canonical_entity_tools.resolve_canonical_entity)
+
+    # End-to-end RAG synthesis — drives the rag_e2e_synthesis workflow
+    # directly (no composer round-trip). One LLM call total. Steps are
+    # cached as module-level singletons so a long-running server
+    # doesn't pay the FAISS load cost on every call.
+    server.tool()(synthesis_tools.synthesize_query)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)
