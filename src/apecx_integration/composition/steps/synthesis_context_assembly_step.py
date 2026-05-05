@@ -201,9 +201,6 @@ class SynthesisContextAssemblyStep(BaseStep):
         from pathlib import Path
 
         from apecx_integration.agents.domain_rag import DomainRagIndex
-        from apecx_integration.composition.steps.violin_bvbrc_context_step import (
-            VIOLINBVBRCContextStep,
-        )
 
         idx_path = component_config.get("index_path")
         self._rag_index = DomainRagIndex(index_dir=Path(idx_path) if idx_path else None)
@@ -229,35 +226,15 @@ class SynthesisContextAssemblyStep(BaseStep):
         self._query_template: str = str(component_config.get("query_template", "{query}"))
         self._skip_pubmed: bool = bool(component_config.get("skip_pubmed", False))
 
-        # Reuse the lookup logic from VIOLINBVBRCContextStep by
-        # instantiating a lightweight helper that borrows only the
-        # pandas lookup methods (no from_config required; we call
-        # the internal methods directly).
+        # VIOLIN / BV-BRC lookup is delegated to stateless functions in
+        # ``_violin_bvbrc_lookup`` (see ``_violin_bvbrc_lookup`` for
+        # the actual code). Direct delegation avoids the prior
+        # ``object.__new__(VIOLINBVBRCContextStep)`` shortcut that
+        # bypassed the framework's from_config contract.
         self._violin_data_dir: str | None = component_config.get("violin_data_dir")
         self._bvbrc_cache_dir: str | None = component_config.get("bvbrc_cache_dir")
         self._max_violin: int = int(component_config.get("max_violin_mappings", 10))
         self._max_bvbrc: int = int(component_config.get("max_bvbrc_genomes", 10))
-        # Build a helper instance for the VIOLIN/BV-BRC lookups.
-        # We call its internal methods directly rather than going
-        # through from_config — it's an internal-implementation
-        # reuse, not a nested workflow step.
-        self._violin_helper: VIOLINBVBRCContextStep = self._build_violin_helper()
-
-    def _build_violin_helper(self):
-        """Build a VIOLINBVBRCContextStep configured with our
-        path + cap settings without going through from_config."""
-        from apecx_integration.composition.steps.violin_bvbrc_context_step import (
-            VIOLINBVBRCContextStep,
-        )
-
-        helper = object.__new__(VIOLINBVBRCContextStep)
-        # Set the attributes that _lookup_violin / _lookup_bvbrc read.
-        helper.name = f"{self.name}._violin_helper"
-        helper._violin_data_dir = self._violin_data_dir
-        helper._bvbrc_cache_dir = self._bvbrc_cache_dir
-        helper._max_violin = self._max_violin
-        helper._max_bvbrc = self._max_bvbrc
-        return helper
 
     # ------------------------------------------------------------------
     # Entity normalization
@@ -317,6 +294,10 @@ class SynthesisContextAssemblyStep(BaseStep):
         import os
         from pathlib import Path
 
+        from apecx_integration.composition.steps._violin_bvbrc_lookup import (
+            lookup_bvbrc,
+            lookup_violin,
+        )
         from apecx_integration.composition.steps.violin_bvbrc_context_step import (
             _DEFAULT_BVBRC_DIR,
             _DEFAULT_VIOLIN_DIR,
@@ -330,24 +311,36 @@ class SynthesisContextAssemblyStep(BaseStep):
             else _DEFAULT_VIOLIN_DIR
         )
         bvbrc_dir = Path(self._bvbrc_cache_dir) if self._bvbrc_cache_dir else _DEFAULT_BVBRC_DIR
-        violin_mappings = self._violin_helper._lookup_violin(terms, violin_dir)
-        bvbrc_genomes = self._violin_helper._lookup_bvbrc(terms, bvbrc_dir)
+        violin_mappings = lookup_violin(
+            terms,
+            violin_dir,
+            max_results=self._max_violin,
+            owner_name=self.name,
+        )
+        bvbrc_genomes = lookup_bvbrc(
+            terms,
+            bvbrc_dir,
+            max_results=self._max_bvbrc,
+            owner_name=self.name,
+        )
         return violin_mappings, bvbrc_genomes
 
     def _pubmed_harvest(self, query: str, entities: list[Any] | None) -> list[dict[str, Any]]:
-        """Drive the PubMed harvest synchronously on a fresh loop."""
-        from apecx_integration.composition.steps.pubmed_harvester_step import (
-            PubMedHarvesterStep,
+        """Drive the PubMed harvest synchronously on a fresh loop.
+
+        Called from a worker thread (asyncio.to_thread) so a fresh
+        event loop is the right shape — the harvester opens its own
+        httpx.AsyncClient lifecycle that should not share the outer
+        workflow loop.
+        """
+        from apecx_integration.composition.steps import _pubmed_helpers
+
+        term = _pubmed_helpers.build_term(
+            query,
+            entities,
+            self._query_template,
+            owner_name=self.name,
         )
-
-        # Re-use the template formatting from PubMedHarvesterStep.
-        # Construct a minimal helper instance without from_config.
-        helper = object.__new__(PubMedHarvesterStep)
-        helper.name = f"{self.name}._pubmed_helper"
-        helper._max_papers = self._max_publications
-        helper._query_template = self._query_template
-
-        term = helper._build_term(query, entities)
         log.info(
             "%s: PubMed term=%.100r (max=%d)",
             self.name,
@@ -355,7 +348,7 @@ class SynthesisContextAssemblyStep(BaseStep):
             self._max_publications,
         )
         try:
-            return asyncio.run(helper._harvest(term))
+            return asyncio.run(_pubmed_helpers.harvest(term, max_papers=self._max_publications))
         except Exception as exc:
             log.warning(
                 "%s: PubMed harvest failed (%s: %s); returning []",

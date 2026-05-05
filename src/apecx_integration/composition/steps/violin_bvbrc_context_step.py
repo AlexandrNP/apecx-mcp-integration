@@ -53,6 +53,10 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration._workspace import resolve_workspace_root
+from apecx_integration.composition.steps._violin_bvbrc_lookup import (
+    lookup_bvbrc,
+    lookup_violin,
+)
 
 log = logging.getLogger(__name__)
 
@@ -240,6 +244,11 @@ class VIOLINBVBRCContextStep(BaseStep):
 
     # ------------------------------------------------------------------
     # Pandas lookups (sync, called via asyncio.to_thread)
+    #
+    # The actual lookup logic is in ``_violin_bvbrc_lookup`` (a
+    # stateless module) so other callers — notably
+    # ``SynthesisContextAssemblyStep`` — can reuse it WITHOUT
+    # instantiating a step instance via ``object.__new__``.
     # ------------------------------------------------------------------
 
     def _lookup_violin(
@@ -247,188 +256,24 @@ class VIOLINBVBRCContextStep(BaseStep):
         terms: list[tuple[str, str]],
         violin_dir: Path,
     ) -> list[dict[str, Any]]:
-        """Substring-match against pathogen + vaccine CSVs."""
-        if not terms:
-            return []
-
-        # Local import — pandas is heavy and not all callers of
-        # this module instantiate the step.
-        import pandas as pd
-
-        pathogen_csv = violin_dir / "Pathogen_Information.csv"
-        vaccine_csv = violin_dir / "Vaccine_Information.csv"
-
-        results: list[dict[str, Any]] = []
-
-        if pathogen_csv.is_file():
-            try:
-                df = pd.read_csv(pathogen_csv, dtype=str).fillna("")
-            except Exception as exc:
-                log.warning(
-                    "VIOLINBVBRCContextStep %s: failed reading %s: %s",
-                    self.name,
-                    pathogen_csv,
-                    exc,
-                )
-            else:
-                # The CSV columns we need: id, Pathogen, NCBI_Taxonomy_ID.
-                if "Pathogen" in df.columns:
-                    name_lower = df["Pathogen"].astype(str).str.lower()
-                    for query, etype in terms:
-                        if len(results) >= self._max_violin:
-                            break
-                        mask = name_lower.str.contains(query.lower(), regex=False, na=False)
-                        for _, row in df[mask].iterrows():
-                            if len(results) >= self._max_violin:
-                                break
-                            canonical = str(row.get("NCBI_Taxonomy_ID", ""))
-                            if not canonical:
-                                canonical = str(row.get("Pathogen", query))
-                            results.append(
-                                {
-                                    "synonym_id": (f"VIOLIN_pathogen_{row.get('id', '')}"),
-                                    "canonical_term": canonical,
-                                    "query_term": query,
-                                    "entity_type": etype,
-                                    "source": "VIOLIN_Pathogen_Information",
-                                }
-                            )
-                else:
-                    log.warning(
-                        "VIOLINBVBRCContextStep %s: %s missing 'Pathogen' column",
-                        self.name,
-                        pathogen_csv,
-                    )
-        else:
-            log.warning(
-                "VIOLINBVBRCContextStep %s: VIOLIN pathogen CSV not "
-                "found at %s — returning no pathogen mappings",
-                self.name,
-                pathogen_csv,
-            )
-
-        if len(results) < self._max_violin and vaccine_csv.is_file():
-            try:
-                df = pd.read_csv(vaccine_csv, dtype=str).fillna("")
-            except Exception as exc:
-                log.warning(
-                    "VIOLINBVBRCContextStep %s: failed reading %s: %s",
-                    self.name,
-                    vaccine_csv,
-                    exc,
-                )
-            else:
-                # Vaccine CSV uses ``Vaccine_Name`` for the display
-                # name and ``Vaccine_Ontology_ID`` for the canonical
-                # term. Some rows have only ``Vaccine``; match both.
-                name_cols = [c for c in ("Vaccine_Name", "Vaccine") if c in df.columns]
-                if name_cols:
-                    for query, etype in terms:
-                        if len(results) >= self._max_violin:
-                            break
-                        mask = None
-                        for col in name_cols:
-                            col_lower = df[col].astype(str).str.lower()
-                            sub = col_lower.str.contains(query.lower(), regex=False, na=False)
-                            mask = sub if mask is None else (mask | sub)
-                        if mask is None:
-                            continue
-                        for _, row in df[mask].iterrows():
-                            if len(results) >= self._max_violin:
-                                break
-                            vac_canonical = str(row.get("Vaccine_Ontology_ID", ""))
-                            if not vac_canonical:
-                                vac_canonical = str(
-                                    row.get("Vaccine_Name", "") or row.get("Vaccine", query)
-                                )
-                            results.append(
-                                {
-                                    "synonym_id": (f"VIOLIN_vaccine_{row.get('id', '')}"),
-                                    "canonical_term": vac_canonical,
-                                    "query_term": query,
-                                    # Vaccine matches override entity_type
-                                    # to ``vaccine`` — the upstream entity
-                                    # type may say ``pathogen`` but we
-                                    # matched on a vaccine row.
-                                    "entity_type": "vaccine" if etype == "unknown" else etype,
-                                    "source": "VIOLIN_Vaccine_Information",
-                                }
-                            )
-                else:
-                    log.warning(
-                        "VIOLINBVBRCContextStep %s: %s missing vaccine name columns",
-                        self.name,
-                        vaccine_csv,
-                    )
-        elif not vaccine_csv.is_file():
-            log.warning(
-                "VIOLINBVBRCContextStep %s: VIOLIN vaccine CSV not "
-                "found at %s — returning no vaccine mappings",
-                self.name,
-                vaccine_csv,
-            )
-
-        return results
+        return lookup_violin(
+            terms,
+            violin_dir,
+            max_results=self._max_violin,
+            owner_name=f"VIOLINBVBRCContextStep {self.name}",
+        )
 
     def _lookup_bvbrc(
         self,
         terms: list[tuple[str, str]],
         bvbrc_dir: Path,
     ) -> list[dict[str, Any]]:
-        if not terms:
-            return []
-
-        import pandas as pd
-
-        tsv_path = bvbrc_dir / "alphavirus_genomes.tsv"
-        if not tsv_path.is_file():
-            log.warning(
-                "VIOLINBVBRCContextStep %s: BV-BRC TSV not found at %s — returning no genomes",
-                self.name,
-                tsv_path,
-            )
-            return []
-
-        try:
-            df = pd.read_csv(tsv_path, sep="\t", dtype=str).fillna("")
-        except Exception as exc:
-            log.warning(
-                "VIOLINBVBRCContextStep %s: failed reading %s: %s",
-                self.name,
-                tsv_path,
-                exc,
-            )
-            return []
-
-        if "genome.genome_name" not in df.columns:
-            log.warning(
-                "VIOLINBVBRCContextStep %s: %s missing 'genome.genome_name' column",
-                self.name,
-                tsv_path,
-            )
-            return []
-
-        name_lower = df["genome.genome_name"].astype(str).str.lower()
-        results: list[dict[str, Any]] = []
-        seen_ids: set[str] = set()
-        for query, _etype in terms:
-            if len(results) >= self._max_bvbrc:
-                break
-            mask = name_lower.str.contains(query.lower(), regex=False, na=False)
-            for _, row in df[mask].iterrows():
-                if len(results) >= self._max_bvbrc:
-                    break
-                gid = str(row.get("genome.genome_id", ""))
-                if gid in seen_ids:
-                    continue
-                seen_ids.add(gid)
-                results.append(
-                    {
-                        "genome_id": gid,
-                        "genome_name": str(row.get("genome.genome_name", "")),
-                    }
-                )
-        return results
+        return lookup_bvbrc(
+            terms,
+            bvbrc_dir,
+            max_results=self._max_bvbrc,
+            owner_name=f"VIOLINBVBRCContextStep {self.name}",
+        )
 
     # ------------------------------------------------------------------
     # Step entry point

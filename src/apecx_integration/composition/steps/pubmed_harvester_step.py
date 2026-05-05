@@ -54,6 +54,8 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration.composition.steps import _pubmed_helpers
+
 log = logging.getLogger(__name__)
 
 
@@ -139,163 +141,35 @@ class PubMedHarvesterStep(BaseStep):
         self._max_papers: int = int(component_config.get("max_papers", 5))
         self._query_template: str = str(component_config.get("query_template", "{query}"))
 
+    # Helper logic lives in ``_pubmed_helpers`` (a stateless module)
+    # so other callers — notably ``SynthesisContextAssemblyStep`` —
+    # can reuse it WITHOUT instantiating a step instance via
+    # ``object.__new__``. The thin wrappers below preserve the prior
+    # method API for any external callers.
+
     @staticmethod
     def _entity_name(entity: Any) -> str | None:
-        """Extract a name from an entity dict or string. Returns
-        ``None`` if neither shape is recognized — the caller filters."""
-        if isinstance(entity, str):
-            return entity.strip() or None
-        if isinstance(entity, dict):
-            name = entity.get("name")
-            if isinstance(name, str) and name.strip():
-                return name.strip()
-        return None
+        return _pubmed_helpers.entity_name(entity)
 
     def _build_term(self, query: str, entities: list[Any] | None) -> str:
-        """Apply ``query_template`` to build the eSearch term."""
-        names: list[str] = []
-        if entities:
-            for ent in entities:
-                name = self._entity_name(ent)
-                if name:
-                    names.append(name)
-        entities_str = ", ".join(names)
-        # Format only the keys the template references; missing keys
-        # in the template are fine.
-        try:
-            return self._query_template.format(query=query, entities=entities_str)
-        except (KeyError, IndexError) as exc:
-            log.warning(
-                "PubMedHarvesterStep %s: query_template format failed "
-                "(%s); falling back to raw query",
-                self.name,
-                exc,
-            )
-            return query
+        return _pubmed_helpers.build_term(
+            query,
+            entities,
+            self._query_template,
+            owner_name=f"PubMedHarvesterStep {self.name}",
+        )
 
     @staticmethod
     def _container_to_dict(container: Any) -> dict[str, Any]:
-        """Project a ``PubMedContainer`` into the synthesizer's
-        publication-dict shape.
-
-        Resilient to missing fields — DataCite is permissive about
-        which optional fields are populated, and PubMed XML records
-        vary widely in completeness.
-        """
-        # title — DataCite stores a list; first entry is the primary.
-        title = ""
-        titles = getattr(container, "titles", None) or []
-        if titles:
-            title = getattr(titles[0], "title", "") or ""
-
-        # authors — flatten Creator entries to display strings.
-        # Hard cap at 25 authors. Real-world papers can have 1000+
-        # consortium authors; the synthesizer's per-publication context
-        # budget is small (citations + first-author display) and an
-        # unbounded list bloats RAM and the LLM prompt for no benefit.
-        # Truncation is signaled with an "et al." marker so the LLM
-        # doesn't claim the list is exhaustive.
-        _AUTHORS_CAP = 25
-        authors: list[str] = []
-        creators = getattr(container, "creators", None) or []
-        creators_total = len(creators)
-        for creator in creators[:_AUTHORS_CAP]:
-            name = getattr(creator, "name", None)
-            if not name:
-                family = getattr(creator, "familyName", None)
-                given = getattr(creator, "givenName", None)
-                if family and given:
-                    name = f"{family}, {given}"
-                elif family:
-                    name = family
-                elif given:
-                    name = given
-            if name:
-                authors.append(name)
-        if creators_total > _AUTHORS_CAP:
-            authors.append(f"et al. ({creators_total - _AUTHORS_CAP} more)")
-
-        # year — DataCite has both publicationYear and a list of dates.
-        year = getattr(container, "publicationYear", None) or ""
-        if not year:
-            for date in getattr(container, "dates", None) or []:
-                date_str = getattr(date, "date", None)
-                if date_str:
-                    # Take the first 4 digits as the year guess.
-                    year = date_str[:4]
-                    break
-
-        # journal — DataCite uses ``publisher.name``.
-        publisher = getattr(container, "publisher", None)
-        journal = getattr(publisher, "name", "") if publisher else ""
-
-        # doi — the primary identifier is a DOI when present.
-        doi = ""
-        identifier = getattr(container, "identifier", None)
-        if identifier is not None:
-            doi = getattr(identifier, "identifier", "") or ""
-
-        # pmid — stored as an alternateIdentifier with type=='PMID'.
-        pmid = ""
-        for alt in getattr(container, "alternateIdentifiers", None) or []:
-            if getattr(alt, "alternateIdentifierType", "") == "PMID":
-                pmid = getattr(alt, "alternateIdentifier", "") or ""
-                if pmid:
-                    break
-
-        return {
-            "doi": doi,
-            "title": title,
-            "authors": authors,
-            "year": str(year) if year else "",
-            "journal": journal,
-            "pmid": pmid,
-        }
+        return _pubmed_helpers.container_to_dict(container)
 
     async def _harvest(self, term: str) -> list[dict[str, Any]]:
-        """Run the search → fetch chain.
-
-        Imports are local so the wrapper module loads even when the
-        ``apecx_harvesters`` extra is not yet installed (the import
-        error then surfaces only when this step actually runs, with
-        a clear message).
-        """
-        from apecx_harvesters.loaders.pubmed.retrieve import (
-            PubMedHarvester,
-        )
-        from apecx_harvesters.loaders.pubmed.search import (
-            search as pubmed_search,
-        )
-
-        # Phase 1 — collect up to max_papers PMIDs.
-        pmids: list[str] = []
-        async for pmid in pubmed_search(term):
-            pmids.append(pmid)
-            if len(pmids) >= self._max_papers:
-                break
-
-        if not pmids:
-            return []
-
-        # Phase 2 — fetch + parse via the harvester. Pass the PMIDs
-        # as an in-memory list (matches the iter_results contract).
-        harvester = PubMedHarvester()
-        publications: list[dict[str, Any]] = []
-        async for result in harvester.iter_results(pmids):
-            if result.ok and result.record is not None:
-                publications.append(PubMedHarvesterStep._container_to_dict(result.record))
-            elif result.error:
-                log.warning(
-                    "PubMedHarvesterStep: failed to retrieve PMID %s: %s",
-                    result.id,
-                    result.error,
-                )
-        return publications
+        return await _pubmed_helpers.harvest(term, max_papers=self._max_papers)
 
     def _harvest_sync(self, term: str) -> list[dict[str, Any]]:
-        """Drive ``_harvest`` on a fresh event loop. Called from a
+        """Drive the async harvest on a fresh event loop. Called from a
         worker thread (see ``asyncio.to_thread`` in process())."""
-        return asyncio.run(self._harvest(term))
+        return asyncio.run(_pubmed_helpers.harvest(term, max_papers=self._max_papers))
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         if not isinstance(input_data, dict):
