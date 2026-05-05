@@ -287,6 +287,10 @@ checkout layouts. Source: 2026-05-05 audit (Finding #16).
 
 ## Key reference docs
 
+- `docs/architecture.md` — **canonical end-to-end architecture map**
+  (8 Mermaid diagrams, 22 MCP tools, 6 ontologies, 3 invocation paths,
+  test surface, failure contract per branch). Start here for any
+  architecture-shaped question.
 - `../architectural_plan.md` — project-level source of truth.
 - `../implementation_plan.md` — task table + scoreboard.
 - `../_workspace_notes/apecx-mcp-integration_dev_history/composer_task_spec.md`
