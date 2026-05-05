@@ -132,6 +132,23 @@ class DomainRagSearchStep(BaseStep):
         self._index: DomainRagIndex = DomainRagIndex(
             index_dir=Path(self._index_path) if self._index_path else None
         )
+        # Path-existence check at boot. Cheap (one stat call) — does NOT
+        # trigger the sentence-transformer model download or FAISS load,
+        # which both stay lazy until first search(). Logged as a
+        # WARNING so workflow boot still succeeds in environments that
+        # haven't built the index yet (the assembly step's
+        # gather(return_exceptions=True) catches the FileNotFoundError
+        # at first search and degrades to rag_chunks=[]).
+        faiss_path = self._index.index_dir / "faiss_index.bin"
+        if not faiss_path.is_file():
+            log.warning(
+                "%s: domain RAG index not found at %s; "
+                "search() will raise FileNotFoundError on first call. "
+                "Build the index with: PYTHONPATH=src .venv/bin/python "
+                "scripts/build_domain_rag_index.py",
+                self.name,
+                faiss_path,
+            )
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         if not isinstance(input_data, dict):

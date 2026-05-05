@@ -189,8 +189,17 @@ class PubMedHarvesterStep(BaseStep):
             title = getattr(titles[0], "title", "") or ""
 
         # authors — flatten Creator entries to display strings.
+        # Hard cap at 25 authors. Real-world papers can have 1000+
+        # consortium authors; the synthesizer's per-publication context
+        # budget is small (citations + first-author display) and an
+        # unbounded list bloats RAM and the LLM prompt for no benefit.
+        # Truncation is signaled with an "et al." marker so the LLM
+        # doesn't claim the list is exhaustive.
+        _AUTHORS_CAP = 25
         authors: list[str] = []
-        for creator in getattr(container, "creators", None) or []:
+        creators = getattr(container, "creators", None) or []
+        creators_total = len(creators)
+        for creator in creators[:_AUTHORS_CAP]:
             name = getattr(creator, "name", None)
             if not name:
                 family = getattr(creator, "familyName", None)
@@ -203,6 +212,8 @@ class PubMedHarvesterStep(BaseStep):
                     name = given
             if name:
                 authors.append(name)
+        if creators_total > _AUTHORS_CAP:
+            authors.append(f"et al. ({creators_total - _AUTHORS_CAP} more)")
 
         # year — DataCite has both publicationYear and a list of dates.
         year = getattr(container, "publicationYear", None) or ""

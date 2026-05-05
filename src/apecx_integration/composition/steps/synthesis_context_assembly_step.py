@@ -207,6 +207,22 @@ class SynthesisContextAssemblyStep(BaseStep):
 
         idx_path = component_config.get("index_path")
         self._rag_index = DomainRagIndex(index_dir=Path(idx_path) if idx_path else None)
+        # Boot-time existence check (one stat call; no FAISS or
+        # sentence-transformer load). A WARNING — not an error — so
+        # workflow boot still succeeds when the index hasn't been
+        # built yet; gather(return_exceptions=True) catches the actual
+        # FileNotFoundError at first search() and degrades to
+        # rag_chunks=[].
+        faiss_path = self._rag_index.index_dir / "faiss_index.bin"
+        if not faiss_path.is_file():
+            log.warning(
+                "%s: domain RAG index not found at %s; "
+                "RAG branch will degrade to empty chunks at runtime. "
+                "Build the index with: PYTHONPATH=src .venv/bin/python "
+                "scripts/build_domain_rag_index.py",
+                self.name,
+                faiss_path,
+            )
         self._k_rag: int = int(component_config.get("k_rag", 5))
 
         self._max_publications: int = int(component_config.get("max_publications", 5))
@@ -371,6 +387,24 @@ class SynthesisContextAssemblyStep(BaseStep):
 
         entities: list[Any] | None = input_data.get("entities")
         query_terms: list[Any] | None = input_data.get("query_terms")
+        # Fail fast on wrong-shape upstream input. The internal
+        # ``_extract_search_terms`` is permissive about element types
+        # (skips non-dict/non-str entries silently), but if the OUTER
+        # type is wrong (e.g. an upstream step packed its output as a
+        # str instead of a list) we want a clear error here, not a
+        # silent fall-through to whitespace tokenization.
+        if entities is not None and not isinstance(entities, list):
+            raise ValueError(
+                f"SynthesisContextAssemblyStep '{self.name}': "
+                f"'entities' must be a list or None; got "
+                f"{type(entities).__name__}={entities!r}"
+            )
+        if query_terms is not None and not isinstance(query_terms, list):
+            raise ValueError(
+                f"SynthesisContextAssemblyStep '{self.name}': "
+                f"'query_terms' must be a list or None; got "
+                f"{type(query_terms).__name__}={query_terms!r}"
+            )
 
         terms = self._extract_search_terms(query, entities, query_terms)
 

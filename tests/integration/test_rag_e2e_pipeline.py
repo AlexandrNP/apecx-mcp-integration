@@ -227,7 +227,7 @@ def assembly_step():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "synthesis_context_assembly.yml"
     )
@@ -377,38 +377,50 @@ def test_rag_e2e_workflow_yaml_loads():
 
 
 def test_all_new_step_yamls_reference_valid_classes():
-    """Each new step YAML's ``class:`` field resolves to an importable class."""
+    """Every step YAML in the Day-2 workflow directories has an
+    importable ``class:`` field.
+
+    Enumerates the steps directories dynamically rather than hardcoding
+    a list — so a future step added to either workflow is auto-covered
+    without anyone remembering to update this test.
+    """
     import importlib
 
     import yaml
 
-    steps_dir = (
-        REPO_ROOT
-        / "src"
-        / "apecx_integration"
-        / "composition"
-        / "workflows"
-        / "violin_bvbrc"
-        / "steps"
-    )
-    new_yamls = [
-        "domain_rag_search.yml",
-        "pubmed_harvester.yml",
-        "violin_bvbrc_context.yml",
-        "synthesis_context_assembly.yml",
+    workflows_root = REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows"
+    # Day-2 workflow step directories. Each contains the YAMLs that
+    # were authored or wrapped during the synthesis-pipeline work.
+    day2_step_dirs = [
+        workflows_root / "violin_bvbrc" / "steps",
+        workflows_root / "rag_e2e_synthesis" / "steps",
     ]
-    for fname in new_yamls:
-        path = steps_dir / fname
-        with open(path) as f:
-            cfg = yaml.safe_load(f)
-        class_str = cfg["class"]
-        module_path, class_name = class_str.rsplit(".", 1)
-        try:
-            mod = importlib.import_module(module_path)
-            cls = getattr(mod, class_name)
-            assert cls is not None, f"{fname}: class {class_str} is None"
-        except (ImportError, AttributeError) as exc:
-            pytest.fail(f"{fname}: class {class_str} not importable: {exc}")
+
+    checked = 0
+    for steps_dir in day2_step_dirs:
+        if not steps_dir.is_dir():
+            continue
+        for path in sorted(steps_dir.glob("*.yml")):
+            with open(path) as f:
+                cfg = yaml.safe_load(f)
+            class_str = cfg.get("class")
+            if not class_str:
+                # Some YAMLs (e.g. tool wrappers) don't have a top-level
+                # ``class:`` — skip them, they're not steps.
+                continue
+            module_path, class_name = class_str.rsplit(".", 1)
+            try:
+                mod = importlib.import_module(module_path)
+                cls = getattr(mod, class_name)
+                assert cls is not None, f"{path.name}: class {class_str} is None"
+            except (ImportError, AttributeError) as exc:
+                pytest.fail(f"{path.name}: class {class_str} not importable: {exc}")
+            checked += 1
+
+    # Sanity floor — at least 4 Day-2 step YAMLs exist (domain_rag_search,
+    # pubmed_harvester, violin_bvbrc_context, rag_synthesis). If this
+    # ever drops below 4, the test isn't actually checking anything.
+    assert checked >= 4, f"only {checked} step YAMLs were checked; expected ≥4"
 
 
 # ---------------------------------------------------------------------------
@@ -453,7 +465,7 @@ def test_full_e2e_pipeline_against_ollama():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "synthesis_context_assembly.yml"
     )
@@ -463,7 +475,7 @@ def test_full_e2e_pipeline_against_ollama():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "rag_synthesis.yml"
     )
@@ -536,7 +548,7 @@ def test_e2e_pipeline_sars_cov2_query():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "synthesis_context_assembly.yml"
     )
@@ -546,7 +558,7 @@ def test_e2e_pipeline_sars_cov2_query():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "rag_synthesis.yml"
     )

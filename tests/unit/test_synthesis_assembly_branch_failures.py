@@ -125,6 +125,26 @@ async def test_both_branches_failing_returns_empty_bundles_not_crash(assembly_st
     assert out["query"] == "EEEV"
 
 
+async def test_wrong_shape_entities_raises_clearly(assembly_step):
+    """``entities`` passed as a non-list raises ValueError with the
+    actual shape echoed back. Detection signal: an upstream step that
+    accidentally packs entities as a JSON-encoded string would otherwise
+    silently fall through to whitespace tokenization, producing an
+    empty / wrong VIOLIN lookup with no surface error.
+    """
+    import pytest
+
+    with pytest.raises(ValueError, match="'entities' must be a list or None"):
+        await assembly_step.process({"query": "ok", "entities": "EEEV,WEEV"})
+
+
+async def test_wrong_shape_query_terms_raises_clearly(assembly_step):
+    import pytest
+
+    with pytest.raises(ValueError, match="'query_terms' must be a list or None"):
+        await assembly_step.process({"query": "ok", "query_terms": "EEEV"})
+
+
 async def test_all_branches_succeeding_returns_full_bundle(assembly_step):
     """Sanity: when nothing fails, the original happy path still works."""
 
