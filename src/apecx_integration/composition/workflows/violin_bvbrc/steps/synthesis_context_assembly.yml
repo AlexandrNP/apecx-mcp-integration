@@ -1,0 +1,63 @@
+# Workflow spec assembly step — synthesis_context_assembly
+#
+# Fan-in step: runs domain RAG search, VIOLIN/BV-BRC tabular lookup,
+# and PubMed harvest concurrently, then assembles the complete
+# synthesis input bundle consumed by rag_synthesis.
+#
+# Wraps SynthesisContextAssemblyStep (see
+# src/apecx_integration/composition/steps/synthesis_context_assembly_step.py).
+#
+# Design rationale (see module docstring):
+#   - single entry point for all retrieval avoids complex multi-input
+#     link topologies
+#   - concurrent asyncio.gather over three branches reduces latency
+#   - clean fan-in/fan-out seam between "retrieval" and "synthesis"
+
+class: "apecx_integration.composition.steps.synthesis_context_assembly_step.SynthesisContextAssemblyStep"
+name: synthesis_context_assembly
+description: >
+  Concurrent retrieval fan-in: domain RAG search + VIOLIN/BV-BRC
+  substring lookup + PubMed harvest → assembles the full synthesis
+  input bundle {query, rag_chunks, bvbrc_genomes, violin_mappings,
+  publications} for the downstream RagSynthesisStep.
+
+# --- Domain RAG ---
+# index_path: null  # null = workspace default (data/apecx_domain_rag)
+k_rag: 5
+
+# --- PubMed ---
+max_publications: 5
+query_template: "{query}"
+skip_pubmed: false  # set true for offline/test environments
+
+# --- VIOLIN / BV-BRC ---
+# violin_data_dir: null  # null = APECX_DB_DATA_DIR or workspace default
+# bvbrc_cache_dir: null  # null = workspace default
+max_violin_mappings: 10
+max_bvbrc_genomes: 10
+
+input_data_units:
+  assembly_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: assembly_input
+    description: >
+      ``{query: str, entities: list[dict] | None,
+      query_terms: list[str] | None}`` — scientist query and optional
+      entity context from an upstream EntityExtractionStep. When
+      entities/query_terms are absent the lookup falls back to
+      whitespace-tokenized query words.
+    persistent: false
+
+output_data_units:
+  synthesis_bundle_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: synthesis_bundle_output
+    description: >
+      ``{query: str, rag_chunks: list[dict], bvbrc_genomes: list[dict],
+      violin_mappings: list[dict], publications: list[dict]}`` —
+      complete synthesis input bundle. Consumed by RagSynthesisStep.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "assembly_input"

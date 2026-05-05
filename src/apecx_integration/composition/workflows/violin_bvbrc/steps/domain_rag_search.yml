@@ -1,0 +1,48 @@
+# Workflow spec retrieval branch — domain_rag_search
+#
+# Semantic search over the pre-built domain RAG FAISS index. One of
+# the four retrieval branches feeding rag_synthesis (alongside
+# pubmed_harvester, violin_bvbrc_context, and the upstream BV-BRC
+# genome reader).
+#
+# Wraps ``apecx_integration.agents.domain_rag.DomainRagIndex.search``
+# via DomainRagSearchStep (see
+# ``src/apecx_integration/composition/steps/domain_rag_step.py``).
+#
+# The FAISS index + sentence-transformer model are lazy-loaded on
+# the first ``search`` call. Build the index out-of-band with
+# ``scripts/build_rag_index.py`` (see repo CLAUDE.md).
+
+class: "apecx_integration.composition.steps.domain_rag_step.DomainRagSearchStep"
+name: domain_rag_search
+description: >
+  Semantic search over the domain RAG index — returns up to ``k``
+  nearest chunks for the scientist query. Pure FAISS / sentence-
+  transformers, NO LLM.
+
+# Optional override; null = ``DomainRagIndex`` default.
+index_path: null
+k: 5
+
+input_data_units:
+  rag_query_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: rag_query_input
+    description: >
+      ``{query: str}`` — the scientist query string. Empty / blank
+      queries raise ValueError at process() entry.
+    persistent: false
+
+output_data_units:
+  rag_chunks_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: rag_chunks_output
+    description: >
+      ``{rag_chunks: list[dict]}`` — each hit dict has keys ``id``,
+      ``text``, ``score``, ``source``, ``metadata``. Consumed by the
+      downstream RagSynthesisStep.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "rag_query_input"
