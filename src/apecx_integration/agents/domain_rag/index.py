@@ -31,7 +31,11 @@ _DEFAULT_MODEL: str = "sentence-transformers/all-mpnet-base-v2"
 # ``nanobrain.lightweight.component_index._DEFAULT_DEVICE``).
 _DEFAULT_DEVICE: str = "cpu"
 
-_DEFAULT_INDEX_DIR: Path = Path(__file__).resolve().parents[5] / "data" / "apecx_domain_rag"
+from apecx_integration._workspace import resolve_workspace_root  # noqa: E402
+
+_DEFAULT_INDEX_DIR: Path = (
+    resolve_workspace_root(__file__, fallback_depth=5) / "data" / "apecx_domain_rag"
+)
 
 
 class DomainRagIndex:

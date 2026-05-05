@@ -52,42 +52,12 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration._workspace import resolve_workspace_root
+
 log = logging.getLogger(__name__)
 
 
-def _resolve_workspace_root() -> Path:
-    """Locate the apecx-cowork workspace root.
-
-    Resolution order (first hit wins):
-
-    1. ``APECX_WORKSPACE_ROOT`` env var — explicit operator override.
-       Always honored when set, even if the path doesn't exist (the
-       caller will produce a clearer error than silent fallback).
-    2. Walk upward from this file looking for the canonical workspace
-       layout: a directory that contains ``apecx-mcp-integration/``
-       plus at least one of ``nanobrain/``, ``_workspace_notes/``, or
-       ``data/`` as siblings. This handles non-standard parent depths
-       (vendored, monorepo, container).
-    3. Fallback: ``parents[5]``, which is correct for the documented
-       standard checkout layout.
-    """
-    explicit = os.environ.get("APECX_WORKSPACE_ROOT")
-    if explicit:
-        return Path(explicit).expanduser().resolve()
-
-    here = Path(__file__).resolve()
-    for ancestor in here.parents:
-        if (ancestor / "apecx-mcp-integration").is_dir() and (
-            (ancestor / "nanobrain").is_dir()
-            or (ancestor / "_workspace_notes").is_dir()
-            or (ancestor / "data").is_dir()
-        ):
-            return ancestor
-
-    return here.parents[5]
-
-
-_WORKSPACE_ROOT = _resolve_workspace_root()
+_WORKSPACE_ROOT = resolve_workspace_root(__file__, fallback_depth=5)
 _DEFAULT_VIOLIN_DIR = _WORKSPACE_ROOT / "data" / "violin"
 _DEFAULT_BVBRC_DIR = _WORKSPACE_ROOT / "data" / "bvbrc_cache"
 
