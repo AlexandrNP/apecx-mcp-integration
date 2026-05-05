@@ -218,7 +218,7 @@ class RagSynthesisStep(BaseStep):
                 f"{type(query).__name__}={query!r}"
             )
 
-        # Forward the four-source bundle. Missing keys default to
+        # Forward the five-source bundle. Missing keys default to
         # empty lists; the synthesizer's fail_on_empty_retrieval gate
         # fires only when EVERY source is empty.
         kwargs_for_synth = {
@@ -226,6 +226,7 @@ class RagSynthesisStep(BaseStep):
             "bvbrc_genomes": input_data.get("bvbrc_genomes") or [],
             "violin_mappings": input_data.get("violin_mappings") or [],
             "publications": input_data.get("publications") or [],
+            "globus_results": input_data.get("globus_results") or [],
         }
 
         # synthesize_response is sync; offload the blocking LLM call.

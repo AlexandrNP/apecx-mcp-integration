@@ -67,6 +67,9 @@ from apecx_integration.mcp_surface.tools import (
     discovery as discovery_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    globus_search as globus_search_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -126,6 +129,11 @@ def build_server() -> FastMCP:
     # cached as module-level singletons so a long-running server
     # doesn't pay the FAISS load cost on every call.
     server.tool()(synthesis_tools.synthesize_query)
+
+    # Globus Search — query the APECx harvested-corpus index. Read-only;
+    # the harvester runs as a stand-alone process and writes to this
+    # index. We never write to it from the MCP surface.
+    server.tool()(globus_search_tools.query_globus_search)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)

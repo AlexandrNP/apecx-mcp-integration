@@ -94,6 +94,15 @@ class SynthesisConfig(BaseModel):
         ge=0,
         description="Cap on harvester publications surfaced to the LLM.",
     )
+    max_globus_results: int = Field(
+        default=10,
+        ge=0,
+        description=(
+            "Cap on Globus Search hits (from the APECx harvested-corpus "
+            "index) surfaced to the LLM. Set to 0 to omit the Globus "
+            "section from the prompt entirely."
+        ),
+    )
     require_inline_citations: bool = Field(
         default=True,
         description=(
@@ -109,6 +118,7 @@ class SynthesisConfig(BaseModel):
             r"\[VIOLIN [^\]\s\[]+\]",
             r"\[RAG chunk #\d+\]",
             r"\[10\.[0-9]+/[^\]\s\[]+\]",
+            r"\[Globus [^\]\s\[]+\]",
         ],
         description=(
             "Regex patterns matching INLINE CITATION TOKENS in LLM "
@@ -483,6 +493,81 @@ def _render_publications(
     return ("\n".join(rendered_lines), allowed)
 
 
+def _render_globus_results(
+    hits: Iterable[dict[str, Any]], cap: int, *, strict: bool
+) -> tuple[str, set[str]]:
+    """Render Globus Search hits from the APECx harvested-corpus index.
+
+    Expected hit keys (per ``apecx_integration.agents.globus_search.search``):
+
+      - ``subject`` REQUIRED — unique harvester record ID (DOI, PMID,
+        PDB accession, etc.). Used as the inline citation token via
+        the ``[Globus <subject>]`` shape.
+      - ``content`` (dict, optional) — indexed payload. Shape varies by
+        source; we surface ``title`` / ``abstract`` / ``description``
+        when present.
+
+    Returns ``(rendered, allowed_tokens)``. A hit without a ``subject``
+    cannot be cited; strict mode rejects, lenient mode skips with a
+    warning.
+    """
+    rendered_lines: list[str] = []
+    allowed: set[str] = set()
+    if cap <= 0:
+        return ("(no Globus Search hits)", allowed)
+    import re as _re
+
+    for i, h in enumerate(list(hits)[:cap]):
+        if not isinstance(h, dict):
+            _reject_or_skip(
+                f"expected dict, got {type(h).__name__}",
+                strict=strict,
+                kind="globus_result",
+                idx=i,
+            )
+            continue
+        subject = h.get("subject")
+        if not subject or not isinstance(subject, str):
+            _reject_or_skip(
+                f"missing or non-str ``subject`` field (got {subject!r}); "
+                "Globus citation requires a string subject (record ID)",
+                strict=strict,
+                kind="globus_result",
+                idx=i,
+            )
+            continue
+        # Same constraint as DOI: subject must not contain ']', '[', or
+        # whitespace — those characters are excluded by the citation
+        # extraction pattern ``[Globus [^\]\s\[]+]``.
+        if _re.search(r"[\]\s\[]", subject):
+            _reject_or_skip(
+                f"subject {subject!r} contains characters (']', '[', or "
+                "whitespace) that break the citation extraction pattern",
+                strict=strict,
+                kind="globus_result",
+                idx=i,
+            )
+            continue
+        token = f"[Globus {subject}]"
+        allowed.add(token)
+        content = h.get("content") or {}
+        title = content.get("title") if isinstance(content, dict) else None
+        abstract = (
+            content.get("abstract") or content.get("description")
+            if isinstance(content, dict)
+            else None
+        )
+        bits = [f"- **{token}** *{title or '(untitled)'}*"]
+        if abstract:
+            shown = str(abstract)[:300]
+            ellipsis = "…" if len(str(abstract)) > 300 else ""
+            bits.append(f"  - {shown}{ellipsis}")
+        rendered_lines.extend(bits)
+    if not rendered_lines:
+        return ("(no Globus Search hits)", allowed)
+    return ("\n".join(rendered_lines), allowed)
+
+
 def _extract_distinct_citations(text: str, patterns: list[str]) -> set[str]:
     """Return the set of distinct citation tokens in ``text``.
 
@@ -505,6 +590,7 @@ def synthesize_response(
     bvbrc_genomes: Iterable[dict[str, Any]] | None = None,
     violin_mappings: Iterable[dict[str, Any]] | None = None,
     publications: Iterable[dict[str, Any]] | None = None,
+    globus_results: Iterable[dict[str, Any]] | None = None,
     llm: Any = None,
     config: SynthesisConfig | None = None,
 ) -> str:
@@ -569,15 +655,23 @@ def synthesize_response(
         cfg.max_publications,
         strict=cfg.strict_input_validation,
     )
+    globus_block, globus_tokens = _render_globus_results(
+        globus_results or [],
+        cfg.max_globus_results,
+        strict=cfg.strict_input_validation,
+    )
     # The union of every token a renderer authorized. The LLM is
     # allowed to cite any of these and nothing else (when
     # ``validate_citations_against_inputs`` is on).
-    allowed_tokens: set[str] = rag_tokens | bvbrc_tokens | violin_tokens | pub_tokens
-    n_rag, n_bvbrc, n_violin, n_pubs = (
+    allowed_tokens: set[str] = (
+        rag_tokens | bvbrc_tokens | violin_tokens | pub_tokens | globus_tokens
+    )
+    n_rag, n_bvbrc, n_violin, n_pubs, n_globus = (
         len(rag_tokens),
         len(bvbrc_tokens),
         len(violin_tokens),
         len(pub_tokens),
+        len(globus_tokens),
     )
 
     # Pre-LLM all-empty check. Without retrieved data the LLM can only
@@ -595,7 +689,7 @@ def synthesize_response(
             "config (not recommended — citation validation will then "
             "fail with a less actionable error).\n\n"
             f"Surviving counts: rag={n_rag} bvbrc={n_bvbrc} "
-            f"violin={n_violin} pubs={n_pubs}"
+            f"violin={n_violin} pubs={n_pubs} globus={n_globus}"
         )
 
     # User prompt = data only. The system prompt declares the role
@@ -608,7 +702,8 @@ def synthesize_response(
         f"## Retrieved RAG chunks\n\n{rag_block}\n\n"
         f"## BV-BRC genomes\n\n{bvbrc_block}\n\n"
         f"## VIOLIN cached mappings\n\n{violin_block}\n\n"
-        f"## Publications\n\n{pubs_block}"
+        f"## Publications\n\n{pubs_block}\n\n"
+        f"## Globus Search hits (APECx harvested corpus)\n\n{globus_block}"
     )
 
     # Lazy import: tests that pass a stub ``llm`` don't need the heavy

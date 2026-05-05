@@ -141,6 +141,25 @@ class SynthesisContextAssemblyStepConfig(StepConfig):
         description="Cap on BV-BRC genomes returned per query.",
     )
 
+    # --- Globus Search (harvested corpus) ---
+    max_globus_hits: int = Field(
+        default=10,
+        description=(
+            "Hard cap on hits returned from the APECx Globus Search "
+            "index. The index covers harvested PubMed/PDB/DataCite "
+            "records. Set to 0 to skip this branch entirely."
+        ),
+    )
+    skip_globus: bool = Field(
+        default=False,
+        description=(
+            "When True, skip the Globus Search branch entirely "
+            "(offline/sandboxed environments). The "
+            "``APECX_GLOBUS_SEARCH_DISABLED=1`` env var has the same "
+            "effect at the client level."
+        ),
+    )
+
 
 class SynthesisContextAssemblyStep(BaseStep):
     """Fan-in assembly step — runs three retrieval branches
@@ -189,6 +208,8 @@ class SynthesisContextAssemblyStep(BaseStep):
             "bvbrc_cache_dir": getattr(config, "bvbrc_cache_dir", None),
             "max_violin_mappings": getattr(config, "max_violin_mappings", 10),
             "max_bvbrc_genomes": getattr(config, "max_bvbrc_genomes", 10),
+            "max_globus_hits": getattr(config, "max_globus_hits", 10),
+            "skip_globus": getattr(config, "skip_globus", False),
         }
 
     def _init_from_config(
@@ -235,6 +256,9 @@ class SynthesisContextAssemblyStep(BaseStep):
         self._bvbrc_cache_dir: str | None = component_config.get("bvbrc_cache_dir")
         self._max_violin: int = int(component_config.get("max_violin_mappings", 10))
         self._max_bvbrc: int = int(component_config.get("max_bvbrc_genomes", 10))
+
+        self._max_globus: int = int(component_config.get("max_globus_hits", 10))
+        self._skip_globus: bool = bool(component_config.get("skip_globus", False))
 
     # ------------------------------------------------------------------
     # Entity normalization
@@ -324,6 +348,18 @@ class SynthesisContextAssemblyStep(BaseStep):
             owner_name=self.name,
         )
         return violin_mappings, bvbrc_genomes
+
+    def _globus_search(self, query: str) -> list[dict[str, Any]]:
+        """Query the APECx Globus Search index.
+
+        Read-only access to the harvester-populated corpus (PubMed +
+        PDB + DataCite records). Network call — failures are
+        propagated as ``GlobusSearchUnavailableError`` and caught by
+        the outer ``asyncio.gather(return_exceptions=True)``.
+        """
+        from apecx_integration.agents.globus_search import search
+
+        return search(query, max_results=self._max_globus)
 
     def _pubmed_harvest(self, query: str, entities: list[Any] | None) -> list[dict[str, Any]]:
         """Drive the PubMed harvest synchronously on a fresh loop.
@@ -432,10 +468,18 @@ class SynthesisContextAssemblyStep(BaseStep):
                 return []
             return await asyncio.to_thread(self._pubmed_harvest, query, entities)
 
-        rag_result, violin_bvbrc, publications = await asyncio.gather(
+        async def _globus_task() -> list[dict]:
+            # Skip when explicitly disabled OR when the cap is 0
+            # (operator-level "off" without removing the field).
+            if self._skip_globus or self._max_globus <= 0:
+                return []
+            return await asyncio.to_thread(self._globus_search, query)
+
+        rag_result, violin_bvbrc, publications, globus_hits = await asyncio.gather(
             asyncio.to_thread(self._rag_search, query),
             asyncio.to_thread(self._violin_bvbrc_lookup, terms),
             _pubmed_task(),
+            _globus_task(),
             return_exceptions=True,
         )
 
@@ -470,13 +514,25 @@ class SynthesisContextAssemblyStep(BaseStep):
             )
             publications = []
 
+        if isinstance(globus_hits, BaseException):
+            log.warning(
+                "%s: Globus Search branch failed (%s: %s); globus_results=[]",
+                self.name,
+                type(globus_hits).__name__,
+                globus_hits,
+            )
+            globus_results: list[dict] = []
+        else:
+            globus_results = globus_hits
+
         log.info(
-            "%s: rag=%d violin=%d bvbrc=%d pubs=%d",
+            "%s: rag=%d violin=%d bvbrc=%d pubs=%d globus=%d",
             self.name,
             len(rag_chunks),
             len(violin_mappings),
             len(bvbrc_genomes),
             len(publications),
+            len(globus_results),
         )
 
         return {
@@ -485,4 +541,5 @@ class SynthesisContextAssemblyStep(BaseStep):
             "bvbrc_genomes": bvbrc_genomes,
             "violin_mappings": violin_mappings,
             "publications": publications,
+            "globus_results": globus_results,
         }
