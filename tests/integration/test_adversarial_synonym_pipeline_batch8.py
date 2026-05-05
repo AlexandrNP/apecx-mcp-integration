@@ -211,6 +211,7 @@ def test_probe_231_datacite_to_publication_doi_in_output():
 
 def test_probe_232_datacite_to_publication_no_identifier_raises():
     from apecx_harvesters.loaders.base.model import Creator, DataCite, Publisher, Title
+
     from apecx_integration.agents.rag_synthesis.harvester_adapter import (
         datacite_to_publication,
     )
@@ -234,6 +235,7 @@ def test_probe_233_datacite_to_publication_wrong_identifier_type_raises():
         Publisher,
         Title,
     )
+
     from apecx_integration.agents.rag_synthesis.harvester_adapter import (
         datacite_to_publication,
     )
@@ -289,6 +291,7 @@ def test_probe_237_datacite_to_publication_given_family_name_formatted():
         Publisher,
         Title,
     )
+
     from apecx_integration.agents.rag_synthesis.harvester_adapter import (
         datacite_to_publication,
     )
