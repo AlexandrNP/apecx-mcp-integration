@@ -369,6 +369,17 @@ class SynthesisContextAssemblyStep(BaseStep):
                 f"input_data must be a dict, got "
                 f"{type(input_data).__name__}"
             )
+        # Unwrap framework-wrapped input. When this step runs through
+        # the trigger cascade, ``Step._execute_on_trigger`` wraps the
+        # data unit value as ``{unit_name: payload}``. When called
+        # directly (tests, MCP tools), the payload is passed through
+        # raw. Detect both shapes by checking for the wrapper key.
+        if (
+            "assembly_input" in input_data
+            and isinstance(input_data["assembly_input"], dict)
+            and "query" not in input_data
+        ):
+            input_data = input_data["assembly_input"]
         query = input_data.get("query")
         if not isinstance(query, str) or not query.strip():
             raise ValueError(

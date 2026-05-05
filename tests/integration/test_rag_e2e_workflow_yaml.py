@@ -304,3 +304,117 @@ def test_workflow_step_data_contract_via_imperative_drive(monkeypatch, chdir_rep
         "synthesis Markdown body suspiciously short — "
         "either the LLM call failed or a synthesizer gate degraded the response"
     )
+
+
+def test_workflow_runtime_executes_via_trigger_cascade(monkeypatch, chdir_repo_root):
+    """Drive the rag_e2e_synthesis workflow through the FULL data-driven
+    trigger cascade — populating only the first input data unit and
+    awaiting the output via the new ``Workflow.wait_for_cascade()``
+    primitive (added to nanobrain alongside this test).
+
+    What this pins (that test_workflow_step_data_contract_via_imperative_drive
+    does NOT):
+
+      - The DataUnitChangeTrigger registered on the assembly step's
+        input_data_unit ACTUALLY fires when ``Workflow.process()`` writes
+        to it.
+      - The DirectLink between ``synthesis_context_assembly.synthesis_bundle_output``
+        and ``rag_synthesis.synthesis_input`` ACTUALLY auto-transfers
+        when the source data unit is set.
+      - The synthesis step's trigger fires after the link transfer.
+      - The whole cascade drains within a reasonable wall-clock budget.
+
+    This is the test that catches:
+      - A future regression in the trigger executor's task management
+        (the cascade never completes; wait_for_cascade returns False)
+      - A workflow YAML link typo that loaded cleanly but doesn't
+        actually transfer (cascade drains but synthesis_output is empty)
+      - Trigger registration bugs (assembly fires but synthesis never
+        does)
+
+    Gated on all three external dependencies + Ollama.
+    """
+    if not (DOMAIN_RAG_INDEX / "faiss_index.bin").exists():
+        pytest.skip(f"Domain RAG index not built at {DOMAIN_RAG_INDEX}")
+    if not (VIOLIN_DIR / "Pathogen_Information.csv").exists():
+        pytest.skip(f"VIOLIN data not found at {VIOLIN_DIR}")
+    if not _ollama_reachable():
+        pytest.skip(f"Ollama not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL!r} not pulled")
+
+    monkeypatch.setenv("APECX_LLM_BASE_URL", f"{OLLAMA_URL}/v1")
+    monkeypatch.setenv("APECX_LLM_MODEL", OLLAMA_MODEL)
+    monkeypatch.setenv("APECX_LLM_API_KEY", "EMPTY")
+    monkeypatch.setenv("APECX_LLM_TEMPERATURE", "0.0")
+    monkeypatch.setenv("APECX_LLM_MAX_TOKENS", "512")
+
+    async def _drive_cascade() -> dict:
+        wf = Workflow.from_config(str(WORKFLOW_YAML))
+
+        # ``Workflow.from_config`` constructs the step instances but
+        # does NOT resolve their triggers — that happens in Phase 3 of
+        # ``Workflow.initialize()``, which must be invoked explicitly.
+        # Without this, the data-driven cascade can't fire because no
+        # listeners are registered on the input data units. Source:
+        # nanobrain/core/step.py::_resolve_and_bind_step_triggers.
+        await wf.initialize()
+
+        children = (
+            getattr(wf, "child_steps", None)
+            or getattr(wf, "_child_steps", None)
+            or getattr(wf, "steps", None)
+        )
+        assembly = children["synthesis_context_assembly"]
+        synthesis = children["rag_synthesis"]
+        assembly._skip_pubmed = True
+
+        # Data-driven entry point: this populates the assembly step's
+        # ``assembly_input`` data unit and returns immediately. The
+        # actual processing happens in async background tasks the
+        # framework spawned from the trigger system.
+        init_result = await wf.process(
+            {"assembly_input": {"query": "Eastern equine encephalitis vaccines"}}
+        )
+        assert init_result is not None
+        # The data-driven mode reports a synchronous initiation envelope.
+        assert init_result.get("status") == "data_flow_initiated", (
+            f"expected data_flow_initiated; got: {init_result!r}"
+        )
+
+        # The new primitive: drain the trigger cascade synchronously.
+        # 90s budget covers FAISS load (one-shot, ~5s) + LLM round-trip
+        # (~30-60s on mistral-nemo) with margin.
+        drained = await wf.wait_for_cascade(timeout=90.0, settle_ms=100)
+        assert drained, (
+            "trigger cascade did not drain within 90s — either the "
+            "wait_for_cascade implementation is buggy, or one of the "
+            "trigger handlers is hanging."
+        )
+
+        # Read the synthesis output from the framework-managed data unit.
+        out_du = synthesis.step_output_data_units["synthesis_output"]
+        synthesis_value = await out_du.get()
+        return synthesis_value
+
+    output = asyncio.run(_drive_cascade())
+    assert output is not None, (
+        "synthesis_output was not set after the cascade drained — the "
+        "DirectLink between assembly and synthesis may not have fired "
+        "the synthesis step. Check the workflow YAML's link wiring."
+    )
+    # The synthesis step writes either the full bundle dict or just
+    # the synthesis string depending on the framework version's
+    # output-mapping behavior; accept either.
+    if isinstance(output, dict):
+        assert "synthesis" in output, (
+            f"synthesis_output dict missing 'synthesis' key; got: {sorted(output.keys())!r}"
+        )
+        body = output["synthesis"]
+    else:
+        body = output
+    assert isinstance(body, str)
+    assert len(body) > 50, (
+        f"synthesis body suspiciously short ({len(body)} chars) — "
+        "either the cascade fired but the synthesis step short-circuited, "
+        "or the LLM returned a degraded response. Body excerpt: "
+        f"{body[:200]!r}"
+    )

@@ -201,6 +201,15 @@ class RagSynthesisStep(BaseStep):
                 f"RagSynthesisStep '{self.name}': input_data must be a "
                 f"dict, got {type(input_data).__name__}"
             )
+        # Unwrap framework-wrapped input. ``Step._execute_on_trigger``
+        # wraps the data unit value as ``{unit_name: payload}``. Direct
+        # callers (tests, MCP tool) pass the payload raw.
+        if (
+            "synthesis_input" in input_data
+            and isinstance(input_data["synthesis_input"], dict)
+            and "query" not in input_data
+        ):
+            input_data = input_data["synthesis_input"]
         query = input_data.get("query")
         if not isinstance(query, str) or not query.strip():
             raise ValueError(

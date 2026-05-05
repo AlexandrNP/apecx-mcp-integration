@@ -39,6 +39,33 @@ description: >
   a Markdown response with grounded inline citations.
 version: 0.2.0
 
+# Workflow-level data units bracket the step chain. Required by the
+# framework's integrity validator: every step input must have a data
+# source (workflow input OR another step's output via link), and every
+# step output must have a consumer (another step's input OR workflow
+# output). Without these, ``Workflow.initialize()`` fails fast with a
+# data-flow validation error.
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      ``{query: str, entities?: list, query_terms?: list}`` — the
+      scientist question + optional upstream entity context. Forwarded
+      to the assembly step's ``assembly_input`` via the
+      ``input_to_assembly`` link.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: >
+      ``{synthesis: str}`` — Markdown response with inline citations.
+      Receives the synthesis step's output via the
+      ``synthesis_to_output`` link.
+    persistent: false
+
 steps:
   synthesis_context_assembly:
     class: "apecx_integration.composition.steps.synthesis_context_assembly_step.SynthesisContextAssemblyStep"
@@ -49,9 +76,33 @@ steps:
     config: "steps/rag_synthesis.yml"
 
 links:
+  # ──────────────────────────────────────────────────────────────────
+  # All three links MUST set ``auto_transfer: true``. Default is
+  # False (DirectLink only transfers on explicit ``transfer()`` calls),
+  # which lets the YAML load cleanly but turns the workflow into a
+  # no-op at runtime — a classic silent-failure shape.
+  # ──────────────────────────────────────────────────────────────────
+
+  input_to_assembly:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "synthesis_context_assembly.assembly_input"
+      auto_transfer: true
+
   assembly_to_synthesis:
     class: "nanobrain.core.link.DirectLink"
     config:
       link_type: "direct"
       source: "synthesis_context_assembly.synthesis_bundle_output"
       target: "rag_synthesis.synthesis_input"
+      auto_transfer: true
+
+  synthesis_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "rag_synthesis.synthesis_output"
+      target: "workflow_output"
+      auto_transfer: true
