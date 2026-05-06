@@ -1,0 +1,32 @@
+# Step 1 of the IRI-resolution workflow — surface-form normalization.
+#
+# Lower-cases + strips each record's surface_form and preserves the
+# original under _original_surface_form. See normalize_step.py for the
+# input/output shape contract.
+#
+# Data-unit naming: matches the workflow-level entry port name
+# (``entity_records``) so Workflow._initiate_data_flow() auto-populates
+# this step's input from the workflow-level input. See
+# nanobrain/nanobrain/core/workflow.py:1736 — match is by unit name.
+
+class: "apecx_integration.synonym_dictionary.workflow.normalize_step.NormalizeEntityRecordsStep"
+name: normalize_entity_records
+description: "Normalize each entity record's surface_form to a lookup-friendly key."
+
+input_data_units:
+  entity_records:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: entity_records
+    description: "Batch of entity records to normalize."
+    persistent: false
+
+output_data_units:
+  normalized_records:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: normalized_records
+    description: "Normalized entity records ready for IRI resolution."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "entity_records"

@@ -243,13 +243,18 @@ def query_vaccines(
     status: str | None = None,
     pathogen: str | None = None,
     limit: int = 25,
+    vo_id: str | None = None,
 ) -> dict[str, Any]:
+    """``vo_id``: bare VO id string (e.g. ``"VO_0000122"``) for precision
+    filtering.  When supplied, replaces substring search on search_term."""
     if "vaccines" not in store.dfs:
         return {"error": "Vaccine data not loaded"}
 
     df = store.dfs["vaccines"].copy()
 
-    if search_term:
+    if vo_id is not None and "Vaccine_Ontology_ID" in df.columns:
+        df = df[df["Vaccine_Ontology_ID"].astype(str).str.strip() == vo_id]
+    elif search_term:
         df = _safe_str_contains(
             df,
             ["Vaccine", "Vaccine_Name", "Type", "Antigen", "Description", "Tradename"],
@@ -285,13 +290,24 @@ def query_pathogens(
     search_term: str | None = None,
     disease: str | None = None,
     limit: int = 25,
+    ncbi_taxonomy_id: int | None = None,
+    ncbi_taxonomy_ids: list[int] | None = None,
 ) -> dict[str, Any]:
+    """``ncbi_taxonomy_id``: single taxon ID for leaf-level precision.
+    ``ncbi_taxonomy_ids``: set of taxon IDs for hierarchy-expanded queries.
+    When either is supplied, replaces the substring search on search_term.
+    ``ncbi_taxonomy_ids`` takes priority over ``ncbi_taxonomy_id``."""
     if "pathogens" not in store.dfs:
         return {"error": "Pathogen data not loaded"}
 
     df = store.dfs["pathogens"].copy()
 
-    if search_term:
+    if ncbi_taxonomy_ids is not None and "NCBI_Taxonomy_ID" in df.columns:
+        id_set = set(ncbi_taxonomy_ids)
+        df = df[pd.to_numeric(df["NCBI_Taxonomy_ID"], errors="coerce").isin(id_set)]
+    elif ncbi_taxonomy_id is not None and "NCBI_Taxonomy_ID" in df.columns:
+        df = df[pd.to_numeric(df["NCBI_Taxonomy_ID"], errors="coerce") == ncbi_taxonomy_id]
+    elif search_term:
         df = _safe_str_contains(df, ["Pathogen", "Disease", "Pathogen_Description"], search_term)
 
     if disease:
@@ -318,13 +334,18 @@ def query_genes(
     search_term: str | None = None,
     organism: str | None = None,
     limit: int = 25,
+    ncbi_gene_id: int | None = None,
 ) -> dict[str, Any]:
+    """``ncbi_gene_id``: integer gene ID for precision filtering.
+    When supplied, replaces the substring search on search_term."""
     if "genes" not in store.dfs:
         return {"error": "Gene data not loaded"}
 
     df = store.dfs["genes"].copy()
 
-    if search_term:
+    if ncbi_gene_id is not None and "NCBI_Gene_ID" in df.columns:
+        df = df[pd.to_numeric(df["NCBI_Gene_ID"], errors="coerce") == ncbi_gene_id]
+    elif search_term:
         df = _safe_str_contains(
             df, ["Gene_Name", "Protein_Name", "Molecule_Role", "Organism"], search_term
         )
@@ -349,13 +370,19 @@ def query_bvbrc_genomes(
     min_year: int | None = None,
     max_year: int | None = None,
     limit: int = 25,
+    ncbi_taxonomy_id: int | None = None,
 ) -> dict[str, Any]:
+    """``ncbi_taxonomy_id``: integer taxon ID for precision filtering on the
+    ``NCBI Taxon ID`` column.  When supplied, replaces substring search on
+    search_term."""
     if "bvbrc_genomes" not in store.dfs:
         return {"error": "BV-BRC genome data not loaded"}
 
     df = store.dfs["bvbrc_genomes"].copy()
 
-    if search_term:
+    if ncbi_taxonomy_id is not None and "NCBI Taxon ID" in df.columns:
+        df = df[pd.to_numeric(df["NCBI Taxon ID"], errors="coerce") == ncbi_taxonomy_id]
+    elif search_term:
         df = _safe_str_contains(
             df,
             [
@@ -395,15 +422,24 @@ def query_bvbrc_genomes(
 def get_vaccine_pathogen_genes(
     store: DatabaseStore,
     pathogen_name: str,
+    ncbi_taxonomy_id: int | None = None,
 ) -> dict[str, Any]:
+    """``ncbi_taxonomy_id``: integer taxon ID for precision pathogen matching.
+    When supplied, replaces substring search on pathogen_name."""
     required = {"pathogens", "vaccines", "vaccine_pathogen", "gene_vaccine_pathogen", "genes"}
     missing = required - set(store.dfs.keys())
     if missing:
         return {"error": f"Missing tables: {', '.join(sorted(missing))}"}
 
-    pathogens_df = _safe_str_contains(
-        store.dfs["pathogens"], ["Pathogen", "Disease"], pathogen_name
-    )
+    if ncbi_taxonomy_id is not None and "NCBI_Taxonomy_ID" in store.dfs["pathogens"].columns:
+        pathogens_df = store.dfs["pathogens"]
+        pathogens_df = pathogens_df[
+            pd.to_numeric(pathogens_df["NCBI_Taxonomy_ID"], errors="coerce") == ncbi_taxonomy_id
+        ]
+    else:
+        pathogens_df = _safe_str_contains(
+            store.dfs["pathogens"], ["Pathogen", "Disease"], pathogen_name
+        )
     if pathogens_df.empty:
         return {"pathogen": pathogen_name, "vaccines": [], "total_vaccines": 0, "total_genes": 0}
 

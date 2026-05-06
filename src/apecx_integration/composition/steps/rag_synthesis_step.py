@@ -61,16 +61,12 @@ from pathlib import Path
 from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
-from pydantic import Field
+from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.agents.rag_synthesis import (
     SynthesisConfig,
     synthesize_response,
 )
-from apecx_integration.agents.rag_synthesis.synthesizer import (
-    DEFAULT_SYNTHESIS_CONFIG_PATH,
-)
-
 
 log = logging.getLogger(__name__)
 
@@ -81,7 +77,26 @@ class RagSynthesisStepConfig(StepConfig):
     Extends ``StepConfig`` with one optional override:
     ``synthesis_config_path`` — path to a custom ``synthesis_config.yml``.
     When None, the bundled default is used.
+
+    ``extra='forbid'`` (workspace rule): YAML typos raise at config-load
+    time rather than silently using defaults.
     """
+
+    model_config = ConfigDict(extra="forbid", validate_assignment=False)
+
+    # Framework tracking attribute set by ConfigBase.from_config after
+    # construction. Declared here so extra="forbid" doesn't block setattr.
+    source_path: str | None = Field(default=None)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _strip_framework_keys(cls, data: Any) -> Any:
+        # nanobrain ConfigBase passes the raw YAML dict to Pydantic;
+        # the top-level ``class`` key is a framework identifier, not a
+        # config field. Strip it before extra="forbid" fires.
+        if isinstance(data, dict):
+            data.pop("class", None)
+        return data
 
     synthesis_config_path: str | None = Field(
         default=None,
@@ -136,15 +151,11 @@ class RagSynthesisStep(BaseStep):
         return RagSynthesisStepConfig
 
     @classmethod
-    def extract_component_config(
-        cls, config: RagSynthesisStepConfig
-    ) -> dict[str, Any]:
+    def extract_component_config(cls, config: RagSynthesisStepConfig) -> dict[str, Any]:
         base = super().extract_component_config(config)
         return {
             **base,
-            "synthesis_config_path": getattr(
-                config, "synthesis_config_path", None
-            ),
+            "synthesis_config_path": getattr(config, "synthesis_config_path", None),
         }
 
     def _init_from_config(
@@ -177,20 +188,28 @@ class RagSynthesisStep(BaseStep):
                 f"directory; check the path in the wrapper YAML."
             )
         import yaml
+
         raw = yaml.safe_load(path.read_text(encoding="utf-8"))
         # extra='forbid' is set on SynthesisConfig (workspace rule);
         # a typo in the operator's YAML raises here with the
         # offending key named.
         return SynthesisConfig.model_validate(raw)
 
-    async def process(
-        self, input_data: dict[str, Any], **kwargs
-    ) -> dict[str, Any]:
+    async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         if not isinstance(input_data, dict):
             raise ValueError(
                 f"RagSynthesisStep '{self.name}': input_data must be a "
                 f"dict, got {type(input_data).__name__}"
             )
+        # Unwrap framework-wrapped input. ``Step._execute_on_trigger``
+        # wraps the data unit value as ``{unit_name: payload}``. Direct
+        # callers (tests, MCP tool) pass the payload raw.
+        if (
+            "synthesis_input" in input_data
+            and isinstance(input_data["synthesis_input"], dict)
+            and "query" not in input_data
+        ):
+            input_data = input_data["synthesis_input"]
         query = input_data.get("query")
         if not isinstance(query, str) or not query.strip():
             raise ValueError(
@@ -199,7 +218,7 @@ class RagSynthesisStep(BaseStep):
                 f"{type(query).__name__}={query!r}"
             )
 
-        # Forward the four-source bundle. Missing keys default to
+        # Forward the five-source bundle. Missing keys default to
         # empty lists; the synthesizer's fail_on_empty_retrieval gate
         # fires only when EVERY source is empty.
         kwargs_for_synth = {
@@ -207,6 +226,7 @@ class RagSynthesisStep(BaseStep):
             "bvbrc_genomes": input_data.get("bvbrc_genomes") or [],
             "violin_mappings": input_data.get("violin_mappings") or [],
             "publications": input_data.get("publications") or [],
+            "globus_results": input_data.get("globus_results") or [],
         }
 
         # synthesize_response is sync; offload the blocking LLM call.

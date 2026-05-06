@@ -1,0 +1,39 @@
+# Step 2 of the IRI-resolution workflow — canonical IRI lookup.
+#
+# Calls lookup_entity per record and writes the canonical-resolution keys
+# back onto the record. See resolve_step.py for the field contract and
+# the rationale for adding ``resolution_path`` on top of the harvester's
+# RESOLUTION_OUTPUT_KEYS.
+#
+# Data-unit naming: ``resolved_records`` matches the workflow-level exit
+# port name so the LAST step's output flows naturally to the workflow
+# output. The intermediate input is named ``normalized_records`` to match
+# the upstream normalize step's output.
+
+class: "apecx_integration.synonym_dictionary.workflow.resolve_step.ResolveIRIStep"
+name: resolve_iri
+description: "Look up each normalized record against the synonym dictionary."
+
+input_data_units:
+  normalized_records:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: normalized_records
+    description: "Normalized entity records produced by the normalize step."
+    persistent: false
+
+output_data_units:
+  resolved_records:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: resolved_records
+    description: "Records enriched with canonical IRI / label / status fields."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "normalized_records"
+
+# Optional path to a SQLite dictionary artifact. When set, the step
+# wires the process-level dictionary singleton at init so callers can
+# skip the APECX_SYNONYM_DICT_PATH env var. When unset / empty, the
+# step relies on whatever the singleton already points at.
+dictionary_path: "${APECX_SYNONYM_DICT_PATH:-}"

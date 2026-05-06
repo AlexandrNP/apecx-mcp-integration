@@ -1,0 +1,108 @@
+# RAG end-to-end synthesis workflow
+#
+# Complete synthesis pipeline: receives a scientist query, assembles
+# context from three independent retrieval branches (domain RAG
+# semantic search, VIOLIN/BV-BRC tabular lookup, PubMed publications),
+# and produces a free-form Markdown response with inline citations.
+#
+# Step topology:
+#
+#   scientist query
+#       │
+#       ▼
+#   synthesis_context_assembly   ← [RAG] [VIOLIN/BV-BRC] [PubMed] concurrently
+#       │
+#       │ {query, rag_chunks, bvbrc_genomes, violin_mappings, publications}
+#       ▼
+#   rag_synthesis               ← LLM synthesis with inline citations
+#       │
+#       ▼
+#   {synthesis: "<Markdown with inline citations>"}
+#
+# The assembly step runs all three retrieval branches concurrently via
+# asyncio.gather — the combined retrieval latency is the max of the
+# three branches rather than their sum.
+#
+# LLM backend: APECX_LLM_BASE_URL / APECX_LLM_MODEL / APECX_LLM_API_KEY
+# env vars. Defaults to local Ollama at http://localhost:11434/v1 with
+# mistral-nemo:latest.  No API key required for local-LLM deployments.
+#
+# Offline / test use:
+#   Set synthesis_context_assembly.skip_pubmed: true  (or env APECX_SKIP_LIVE_LLM=1)
+#   to skip the PubMed network branch. RAG + VIOLIN/BV-BRC always work
+#   locally given the pre-built index and CSV fixtures.
+
+name: rag_e2e_synthesis_workflow
+description: >
+  End-to-end synthesis workflow combining domain-RAG semantic retrieval,
+  VIOLIN/BV-BRC tabular lookup, and PubMed publication harvesting into
+  a Markdown response with grounded inline citations.
+version: 0.2.0
+
+# Workflow-level data units bracket the step chain. Required by the
+# framework's integrity validator: every step input must have a data
+# source (workflow input OR another step's output via link), and every
+# step output must have a consumer (another step's input OR workflow
+# output). Without these, ``Workflow.initialize()`` fails fast with a
+# data-flow validation error.
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      ``{query: str, entities?: list, query_terms?: list}`` — the
+      scientist question + optional upstream entity context. Forwarded
+      to the assembly step's ``assembly_input`` via the
+      ``input_to_assembly`` link.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: >
+      ``{synthesis: str}`` — Markdown response with inline citations.
+      Receives the synthesis step's output via the
+      ``synthesis_to_output`` link.
+    persistent: false
+
+steps:
+  synthesis_context_assembly:
+    class: "apecx_integration.composition.steps.synthesis_context_assembly_step.SynthesisContextAssemblyStep"
+    config: "steps/synthesis_context_assembly.yml"
+
+  rag_synthesis:
+    class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+    config: "steps/rag_synthesis.yml"
+
+links:
+  # ──────────────────────────────────────────────────────────────────
+  # All three links MUST set ``auto_transfer: true``. Default is
+  # False (DirectLink only transfers on explicit ``transfer()`` calls),
+  # which lets the YAML load cleanly but turns the workflow into a
+  # no-op at runtime — a classic silent-failure shape.
+  # ──────────────────────────────────────────────────────────────────
+
+  input_to_assembly:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "synthesis_context_assembly.assembly_input"
+      auto_transfer: true
+
+  assembly_to_synthesis:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "synthesis_context_assembly.synthesis_bundle_output"
+      target: "rag_synthesis.synthesis_input"
+      auto_transfer: true
+
+  synthesis_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "rag_synthesis.synthesis_output"
+      target: "workflow_output"
+      auto_transfer: true

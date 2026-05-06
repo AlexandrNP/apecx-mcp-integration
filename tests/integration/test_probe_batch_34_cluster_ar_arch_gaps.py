@@ -44,12 +44,10 @@ user can authorize the cross-repo work.
 
 from __future__ import annotations
 
-import importlib
 import inspect
 from pathlib import Path
 
 import pytest
-
 
 pytestmark = pytest.mark.integration
 
@@ -76,6 +74,7 @@ def test_probe_905_real_violin_vaccines_count_exceeds_100() -> None:
     that drops below 100 (and thus 'fixes' the symptom) doesn't
     silently mask the bug."""
     import pandas as pd
+
     p = _require(_VIOLIN_DIR / "Vaccine_Information.csv")
     df = pd.read_csv(p)
     assert df["Vaccine"].nunique(dropna=True) > 100, (
@@ -87,11 +86,12 @@ def test_probe_905_real_violin_vaccines_count_exceeds_100() -> None:
 
 def test_probe_906_real_violin_genes_count_exceeds_100() -> None:
     import pandas as pd
+
     p = _require(_VIOLIN_DIR / "Gene_Information.csv")
     df = pd.read_csv(p)
-    assert df["Gene_Name"].nunique(dropna=True) > 100, (
-        "PROBE 906: VIOLIN Gene_Information.Gene_Name count <= 100"
-    )
+    assert (
+        df["Gene_Name"].nunique(dropna=True) > 100
+    ), "PROBE 906: VIOLIN Gene_Information.Gene_Name count <= 100"
 
 
 def test_probe_907_consolidated_synonym_uses_named_constant_post_fix() -> None:
@@ -106,12 +106,12 @@ def test_probe_907_consolidated_synonym_uses_named_constant_post_fix() -> None:
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
-    assert "MAX_CANDIDATES_PER_CATEGORY" in src, (
-        "PROBE 907: post-fix shape regressed — named constant missing"
-    )
-    assert "filter_candidates_by_similarity" in src, (
-        "PROBE 907: post-fix shape regressed — similarity filter missing"
-    )
+    assert (
+        "MAX_CANDIDATES_PER_CATEGORY" in src
+    ), "PROBE 907: post-fix shape regressed — named constant missing"
+    assert (
+        "filter_candidates_by_similarity" in src
+    ), "PROBE 907: post-fix shape regressed — similarity filter missing"
 
 
 def test_probe_908_get_candidate_terms_returns_full_list_no_truncation() -> None:
@@ -124,11 +124,14 @@ def test_probe_908_get_candidate_terms_returns_full_list_no_truncation() -> None
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     import pandas as pd
+
     # Build a synthetic vaccines dataframe with 250 rows
-    df = pd.DataFrame({
-        "Vaccine": [f"vaccine_{i:03d}" for i in range(250)],
-        "Vaccine_Name": [f"name_{i:03d}" for i in range(250)],
-    })
+    df = pd.DataFrame(
+        {
+            "Vaccine": [f"vaccine_{i:03d}" for i in range(250)],
+            "Vaccine_Name": [f"name_{i:03d}" for i in range(250)],
+        }
+    )
     candidates = get_candidate_terms({"vaccines": df})
     # No truncation here — full set returned (250 vaccine entries)
     assert len(candidates["vaccine"]) >= 250
@@ -140,6 +143,7 @@ def test_probe_909_truncation_yields_first_100_alphabetical_or_insertion() -> No
     documents this — a query for a vaccine alphabetically AFTER
     'a..a' would silently never reach the LLM's candidate list."""
     import pandas as pd
+
     p = _require(_VIOLIN_DIR / "Vaccine_Information.csv")
     df = pd.read_csv(p)
     vaccines = df["Vaccine"].dropna().astype(str).unique().tolist()
@@ -204,25 +208,44 @@ def test_probe_912_truncation_cap_constant_named_post_fix() -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_probe_913_apecx_harvesters_not_imported_by_integration() -> None:
-    """No file under apecx-mcp-integration/src imports apecx_harvesters.
-    Lock the boundary — a future integration must come through here."""
-    src_root = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-    )
+def test_probe_913_apecx_harvesters_imported_only_at_seam() -> None:
+    """apecx_harvesters imports are restricted to the documented seam.
+
+    2026-05-04: original probe locked "no imports anywhere"; the
+    boundary now permits ONE seam file (``synonym_dictionary/harvester_adapter.py``)
+    that imports DataCite under TYPE_CHECKING for the
+    ``adapt_workflow_to_harvester_transform`` contract. Any *other*
+    file importing apecx_harvesters indicates the integration sprawled
+    beyond the seam — fail.
+    """
+    src_root = _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
     if not src_root.is_dir():
         pytest.skip("apecx-mcp-integration src not present")
+    SEAM_ALLOWLIST = (
+        "synonym_dictionary/harvester_adapter.py",
+        "agents/rag_synthesis/harvester_adapter.py",
+    )
+    # Match real import statements (line-anchored), not docstring or
+    # comment mentions — a coarser grep gave false positives on
+    # transform.py whose docstring discusses the harvester contract.
+    import re as _re
+
+    import_pattern = _re.compile(
+        r"^\s*(?:from\s+apecx_harvesters|import\s+apecx_harvesters)",
+        flags=_re.MULTILINE,
+    )
     offenders = []
     for py in src_root.rglob("*.py"):
         text = py.read_text(encoding="utf-8", errors="ignore")
-        if (
-            "from apecx_harvesters" in text
-            or "import apecx_harvesters" in text
-        ):
-            offenders.append(str(py.relative_to(src_root)))
+        if import_pattern.search(text):
+            rel = str(py.relative_to(src_root))
+            if rel not in SEAM_ALLOWLIST:
+                offenders.append(rel)
     assert not offenders, (
-        f"PROBE 913: apecx_harvesters imported from {offenders} — verify "
-        f"the integration is intentional and update probe 917."
+        f"PROBE 913: apecx_harvesters imported outside the seam allowlist "
+        f"{SEAM_ALLOWLIST!r} — found in {offenders}. The harvester "
+        "integration is supposed to be a single-file seam (the adapter); "
+        "imports anywhere else mean the integration is leaking."
     )
 
 
@@ -231,9 +254,15 @@ def test_probe_914_no_harvester_step_in_violin_workflow() -> None:
     publication/metadata data. Lock — a future enrichment step
     that uses harvester output must come through here."""
     import yaml
+
     p = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-        / "composition" / "workflows" / "violin_bvbrc"
+        _WORKSPACE_ROOT
+        / "apecx-mcp-integration"
+        / "src"
+        / "apecx_integration"
+        / "composition"
+        / "workflows"
+        / "violin_bvbrc"
         / "violin_bvbrc_workflow.yml"
     )
     if not p.is_file():
@@ -245,8 +274,7 @@ def test_probe_914_no_harvester_step_in_violin_workflow() -> None:
         classes.append(cls)
     harvester_classes = [c for c in classes if "harvester" in c.lower()]
     assert not harvester_classes, (
-        f"PROBE 914: harvester step found in violin_bvbrc workflow: "
-        f"{harvester_classes}"
+        f"PROBE 914: harvester step found in violin_bvbrc workflow: " f"{harvester_classes}"
     )
 
 
@@ -255,9 +283,15 @@ def test_probe_915_result_collection_input_has_no_harvester_data() -> None:
     verified_synonym_writeback's output. No harvester data flows
     through. Lock the wiring."""
     import yaml
+
     wf_dir = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-        / "composition" / "workflows" / "violin_bvbrc"
+        _WORKSPACE_ROOT
+        / "apecx-mcp-integration"
+        / "src"
+        / "apecx_integration"
+        / "composition"
+        / "workflows"
+        / "violin_bvbrc"
     )
     if not wf_dir.is_dir():
         pytest.skip("workflow dir not present")
@@ -265,7 +299,7 @@ def test_probe_915_result_collection_input_has_no_harvester_data() -> None:
     # Find the link landing on result_ranking.enriched_results_input
     incoming = []
     for link_id, link in (wf.get("links") or {}).items():
-        cfg = (link.get("config") or {})
+        cfg = link.get("config") or {}
         tgt = cfg.get("target", "")
         if tgt.startswith("result_ranking."):
             src = cfg.get("source", "")
@@ -296,12 +330,24 @@ def test_probe_916_datacite_references_only_in_rag_synthesis() -> None:
     If a future commit needs DataCite outside ``agents/rag_synthesis/``,
     update this allowlist deliberately and document why in the commit.
     """
-    src_root = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-    )
+    src_root = _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
     if not src_root.is_dir():
         pytest.skip("src not present")
-    allowed_prefixes = ("agents/rag_synthesis/",)
+    # Allowlist extended 2026-05-04 (commit task #11):
+    # ``synonym_dictionary/harvester_adapter.py`` + ``synonym_dictionary/transform.py``
+    # + ``synonym_dictionary/workflow/resolve_step.py`` legitimately reference
+    # DataCite as the input/output type for the harvester ingest stage. These
+    # are the seam between the synonym pipeline and apecx-harvesters'
+    # ``Transform = Callable[[DataCite], Awaitable[DataCite]]``. The DataCite
+    # mention is in TYPE_CHECKING blocks + docstrings, not runtime imports;
+    # the boundary invariant the original probe protected (DataCite is a
+    # renderer-local concept) holds for `db_integration` / `control_plane`.
+    allowed_prefixes = (
+        "agents/rag_synthesis/",
+        "synonym_dictionary/harvester_adapter.py",
+        "synonym_dictionary/transform.py",
+        "synonym_dictionary/workflow/resolve_step.py",
+    )
     offenders = []
     for py in src_root.rglob("*.py"):
         text = py.read_text(encoding="utf-8", errors="ignore")
@@ -319,19 +365,28 @@ def test_probe_916_datacite_references_only_in_rag_synthesis() -> None:
     )
 
 
-def test_probe_917_pkg_info_documents_harvester_as_unintegrated() -> None:
-    """The PKG-INFO carries the documented boundary: 'publication/
-    metadata loaders (not BV-BRC/VIOLIN)'. Lock the documentation
-    so a future integration must update it."""
+def test_probe_917_pkg_info_documents_harvester_as_required_sibling() -> None:
+    """The PKG-INFO carries apecx-harvesters as a required sibling.
+
+    Originally this probe asserted the harvester was UNINTEGRATED
+    ('not BV-BRC/VIOLIN' phrase). 2026-05-04 (task #11/#12 batch):
+    the synonym-dictionary workflow now exposes a Transform[DataCite]
+    via ``adapt_workflow_to_harvester_transform``, so 'unintegrated'
+    is no longer accurate. The boundary invariant the probe still
+    protects: harvesters must be declared as a required dep so a
+    fresh install pulls it.
+    """
     pkg = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src"
-        / "apecx_integration.egg-info" / "PKG-INFO"
+        _WORKSPACE_ROOT
+        / "apecx-mcp-integration"
+        / "src"
+        / "apecx_integration.egg-info"
+        / "PKG-INFO"
     )
     if not pkg.is_file():
         pytest.skip("PKG-INFO not present (build artifact)")
     text = pkg.read_text(encoding="utf-8")
-    assert "apecx-harvesters" in text
-    assert "not BV-BRC/VIOLIN" in text or "publication/metadata" in text
+    assert "apecx-harvesters" in text, "PKG-INFO must list apecx-harvesters dep"
 
 
 # ---------------------------------------------------------------------------
@@ -345,10 +400,17 @@ def test_probe_918_step_7_is_result_collection_not_synthesizer() -> None:
     fact: the workflow's terminal step does NOT synthesize a
     natural-language response."""
     import yaml
+
     p = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-        / "composition" / "workflows" / "violin_bvbrc"
-        / "steps" / "result_ranking.yml"
+        _WORKSPACE_ROOT
+        / "apecx-mcp-integration"
+        / "src"
+        / "apecx_integration"
+        / "composition"
+        / "workflows"
+        / "violin_bvbrc"
+        / "steps"
+        / "result_ranking.yml"
     )
     if not p.is_file():
         pytest.skip("step yaml not present")
@@ -374,15 +436,24 @@ def test_probe_919_result_collection_step_calls_no_llm() -> None:
     assert "SystemMessage" not in src
 
 
-def test_probe_920_workflow_has_no_synthesis_step_with_llm_and_rag() -> None:
-    """The user expectation: an end-to-end step that combines
-    BV-BRC genome data + VIOLIN vaccine data + RAG semantic chunks
-    via LLM synthesis. Probe walks every step config; none has
-    that shape."""
+def test_probe_920_workflow_has_synthesis_step_with_llm_and_rag() -> None:
+    """REVERSED 2026-05-04: the original probe asserted there was NO
+    synthesis step (locking an architectural gap). The architectural
+    intent was always to add one — RagSynthesisStep landed and is now
+    in the workflow. The probe is reversed to assert presence; if
+    the synthesis step ever gets removed accidentally, the probe
+    fails red.
+    """
     import yaml
+
     wf_dir = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-        / "composition" / "workflows" / "violin_bvbrc"
+        _WORKSPACE_ROOT
+        / "apecx-mcp-integration"
+        / "src"
+        / "apecx_integration"
+        / "composition"
+        / "workflows"
+        / "violin_bvbrc"
     )
     if not wf_dir.is_dir():
         pytest.skip("workflow dir absent")
@@ -390,14 +461,13 @@ def test_probe_920_workflow_has_no_synthesis_step_with_llm_and_rag() -> None:
     synthesis_step = None
     for step_id, step in wf["steps"].items():
         cls = step["class"]
-        # A synthesis step would have "synthesis" or "rag" or
-        # "summarize" or "answer" in its name/class
         if any(kw in cls.lower() for kw in ("synthes", "summari", "answer")):
             synthesis_step = (step_id, cls)
             break
-    assert synthesis_step is None, (
-        f"PROBE 920: synthesis step found {synthesis_step} — verify "
-        "and remove this probe."
+    assert synthesis_step is not None, (
+        "PROBE 920: synthesis step is missing from violin_bvbrc workflow. "
+        "RagSynthesisStep should appear under one of the synthesis-keyword "
+        "class names (synthes / summari / answer)."
     )
 
 
@@ -425,9 +495,7 @@ def test_probe_922_apecx_rag_prototype_not_integrated() -> None:
     rag_dir = _WORKSPACE_ROOT / "apecx-rag"
     if not rag_dir.is_dir():
         pytest.skip("apecx-rag prototype absent")
-    src_root = (
-        _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
-    )
+    src_root = _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
     if not src_root.is_dir():
         pytest.skip("apecx-mcp-integration src absent")
     offenders = []
@@ -438,8 +506,7 @@ def test_probe_922_apecx_rag_prototype_not_integrated() -> None:
         if "RAGAgentTeam" in text:
             offenders.append(str(py.relative_to(src_root)))
     assert not offenders, (
-        f"PROBE 922: apecx-rag integrated via {offenders} — verify "
-        "and update this probe."
+        f"PROBE 922: apecx-rag integrated via {offenders} — verify " "and update this probe."
     )
 
 
@@ -453,11 +520,9 @@ def _model_cached() -> bool:
     downloaded? If not, the probes that need it skip."""
     try:
         from huggingface_hub import scan_cache_dir
+
         scan = scan_cache_dir()
-        return any(
-            "all-mpnet-base-v2" in repo.repo_id
-            for repo in scan.repos
-        )
+        return any("all-mpnet-base-v2" in repo.repo_id for repo in scan.repos)
     except Exception:
         return False
 
@@ -471,6 +536,7 @@ _HEAVY_RAG_PROBES = pytest.mark.skipif(
 def _build_synth_index(tmp_path, entries):
     import yaml as _yaml
     from nanobrain.lightweight.component_index import ComponentIndex
+
     tmp_path.mkdir(parents=True, exist_ok=True)
     manifest_path = tmp_path / "manifest.yml"
     manifest = {
@@ -499,17 +565,29 @@ def test_probe_923_paraphrase_stability(tmp_path) -> None:
     """A paraphrased query should hit the same top-1 component as
     the canonical phrasing — semantic stability under paraphrase
     is the whole point of an embedding-based retriever."""
-    idx = _build_synth_index(tmp_path / "p923", [
-        _entry("1", "fasta_reader",
-               "Reads FASTA-format protein sequence files.",
-               ["read fasta", "load proteins"]),
-        _entry("2", "csv_reader",
-               "Reads CSV files with row-per-record structure.",
-               ["read csv", "load tabular data"]),
-        _entry("3", "synonym_lookup",
-               "Resolves alternative names for biological entities.",
-               ["synonyms", "alternative names"]),
-    ])
+    idx = _build_synth_index(
+        tmp_path / "p923",
+        [
+            _entry(
+                "1",
+                "fasta_reader",
+                "Reads FASTA-format protein sequence files.",
+                ["read fasta", "load proteins"],
+            ),
+            _entry(
+                "2",
+                "csv_reader",
+                "Reads CSV files with row-per-record structure.",
+                ["read csv", "load tabular data"],
+            ),
+            _entry(
+                "3",
+                "synonym_lookup",
+                "Resolves alternative names for biological entities.",
+                ["synonyms", "alternative names"],
+            ),
+        ],
+    )
     canonical = idx.search("read FASTA file", k=1)[0]
     paraphrase_a = idx.search("load a protein FASTA", k=1)[0]
     paraphrase_b = idx.search("parse FASTA format", k=1)[0]
@@ -521,14 +599,23 @@ def test_probe_924_domain_separation(tmp_path) -> None:
     """A vaccine query should NOT match a genomic-annotation
     component, even though both are in the biomedical domain.
     Locks adversarial robustness against domain blur."""
-    idx = _build_synth_index(tmp_path / "p924", [
-        _entry("1", "vaccine_lookup",
-               "Look up vaccine information from VIOLIN.",
-               ["find vaccine info", "vaccine details"]),
-        _entry("2", "genome_annotation",
-               "Annotate genomic features in BV-BRC.",
-               ["annotate genome", "genomic features"]),
-    ])
+    idx = _build_synth_index(
+        tmp_path / "p924",
+        [
+            _entry(
+                "1",
+                "vaccine_lookup",
+                "Look up vaccine information from VIOLIN.",
+                ["find vaccine info", "vaccine details"],
+            ),
+            _entry(
+                "2",
+                "genome_annotation",
+                "Annotate genomic features in BV-BRC.",
+                ["annotate genome", "genomic features"],
+            ),
+        ],
+    )
     vaccine_top = idx.search("find vaccine information", k=1)[0]
     genome_top = idx.search("annotate genome features", k=1)[0]
     assert vaccine_top.name == "vaccine_lookup"
@@ -539,12 +626,13 @@ def test_probe_924_domain_separation(tmp_path) -> None:
 def test_probe_925_capitalization_invariant(tmp_path) -> None:
     """Capitalization should not change top-1 selection — the
     embedder is case-insensitive in practice."""
-    idx = _build_synth_index(tmp_path / "p925", [
-        _entry("1", "fasta_reader",
-               "Reads FASTA files.", ["read fasta"]),
-        _entry("2", "json_reader",
-               "Reads JSON files.", ["read json"]),
-    ])
+    idx = _build_synth_index(
+        tmp_path / "p925",
+        [
+            _entry("1", "fasta_reader", "Reads FASTA files.", ["read fasta"]),
+            _entry("2", "json_reader", "Reads JSON files.", ["read json"]),
+        ],
+    )
     lower = idx.search("read fasta file", k=1)[0]
     upper = idx.search("READ FASTA FILE", k=1)[0]
     mixed = idx.search("Read FASTA File", k=1)[0]
@@ -554,12 +642,13 @@ def test_probe_925_capitalization_invariant(tmp_path) -> None:
 @_HEAVY_RAG_PROBES
 def test_probe_926_punctuation_invariant(tmp_path) -> None:
     """Punctuation should not flip top-1 selection."""
-    idx = _build_synth_index(tmp_path / "p926", [
-        _entry("1", "fasta_reader",
-               "Reads FASTA files.", ["read fasta"]),
-        _entry("2", "csv_reader",
-               "Reads CSV files.", ["read csv"]),
-    ])
+    idx = _build_synth_index(
+        tmp_path / "p926",
+        [
+            _entry("1", "fasta_reader", "Reads FASTA files.", ["read fasta"]),
+            _entry("2", "csv_reader", "Reads CSV files.", ["read csv"]),
+        ],
+    )
     plain = idx.search("read FASTA file", k=1)[0]
     punct = idx.search("read FASTA file?!", k=1)[0]
     assert plain.id == punct.id
@@ -570,11 +659,17 @@ def test_probe_927_similarity_score_well_calibrated(tmp_path) -> None:
     """For a clear-match query, similarity > 0.5. For an unrelated
     query against the same corpus, similarity < clear-match score
     by a meaningful margin (> 0.05)."""
-    idx = _build_synth_index(tmp_path / "p927", [
-        _entry("1", "vaccine_lookup",
-               "Look up vaccine information from VIOLIN.",
-               ["find vaccine info"]),
-    ])
+    idx = _build_synth_index(
+        tmp_path / "p927",
+        [
+            _entry(
+                "1",
+                "vaccine_lookup",
+                "Look up vaccine information from VIOLIN.",
+                ["find vaccine info"],
+            ),
+        ],
+    )
     clear = idx.search("vaccine information lookup", k=1)[0]
     unrelated = idx.search("compute fluid dynamics", k=1)[0]
     assert clear.similarity > 0.5
@@ -587,11 +682,15 @@ def test_probe_928_save_load_preserves_search_results(tmp_path) -> None:
     top-K results — the FAISS file + metadata.json round-trip
     is load-bearing for the operator workflow."""
     from nanobrain.lightweight.component_index import ComponentIndex
-    idx = _build_synth_index(tmp_path / "p928", [
-        _entry("1", "fasta_reader", "Reads FASTA files.", ["read fasta"]),
-        _entry("2", "csv_reader", "Reads CSV files.", ["read csv"]),
-        _entry("3", "json_reader", "Reads JSON files.", ["read json"]),
-    ])
+
+    idx = _build_synth_index(
+        tmp_path / "p928",
+        [
+            _entry("1", "fasta_reader", "Reads FASTA files.", ["read fasta"]),
+            _entry("2", "csv_reader", "Reads CSV files.", ["read csv"]),
+            _entry("3", "json_reader", "Reads JSON files.", ["read json"]),
+        ],
+    )
     persisted = tmp_path / "p928_saved"
     idx.save(persisted)
     loaded = ComponentIndex.load(persisted)
@@ -606,12 +705,13 @@ def test_probe_929_rag_index_top1_robust_under_long_query(tmp_path) -> None:
     correct component as top-1. This is what happens in real use:
     a scientist's query has a clear intent buried in extra
     context."""
-    idx = _build_synth_index(tmp_path / "p929", [
-        _entry("1", "fasta_reader",
-               "Reads FASTA files.", ["read fasta"]),
-        _entry("2", "csv_reader",
-               "Reads CSV files.", ["read csv"]),
-    ])
+    idx = _build_synth_index(
+        tmp_path / "p929",
+        [
+            _entry("1", "fasta_reader", "Reads FASTA files.", ["read fasta"]),
+            _entry("2", "csv_reader", "Reads CSV files.", ["read csv"]),
+        ],
+    )
     short = idx.search("read FASTA file", k=1)[0]
     padded = idx.search(
         "I am working on a research paper about alphavirus genomes "

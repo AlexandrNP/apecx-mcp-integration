@@ -1,0 +1,59 @@
+# Workflow spec retrieval branch — pubmed_harvester
+#
+# PubMed eSearch + efetch via the apecx-harvesters pubmed loaders.
+# One of the four retrieval branches feeding rag_synthesis.
+#
+# Wraps ``apecx_harvesters.loaders.pubmed.search`` +
+# ``apecx_harvesters.loaders.pubmed.retrieve.PubMedHarvester`` via
+# PubMedHarvesterStep (see
+# ``src/apecx_integration/composition/steps/pubmed_harvester_step.py``).
+#
+# Network errors / eSearch errors are caught and degraded to an
+# empty publications list — a transient PubMed outage must not
+# crash the whole workflow.
+#
+# NCBI rate limits: 3 req/s without an API key. The harvester
+# enforces this via ``apecx_harvesters.loaders.pubmed.constants``.
+
+class: "apecx_integration.composition.steps.pubmed_harvester_step.PubMedHarvesterStep"
+name: pubmed_harvester
+description: >
+  PubMed search + fetch — returns up to ``max_papers`` DataCite-
+  shaped publication dicts (doi, title, authors, year, journal,
+  pmid). Network failures degrade to an empty list.
+
+# Hard cap on PMIDs returned. PubMed searches can return 10k+; we
+# stop after this many. Increase only if the synthesis prompt has
+# room for more citations.
+max_papers: 5
+
+# eSearch term template. ``{query}`` substitutes the scientist
+# query; ``{entities}`` substitutes a comma-joined list of entity
+# names from the upstream EntityExtractionStep (empty string when
+# no entities). The default passes the query through unchanged.
+query_template: "{query}"
+
+input_data_units:
+  pubmed_query_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: pubmed_query_input
+    description: >
+      ``{query: str, entities: list[dict] | list[str] | None}`` —
+      the scientist query plus optional entities from upstream
+      extraction. Entities feed the ``query_template`` only when
+      the template references ``{entities}``.
+    persistent: false
+
+output_data_units:
+  publications_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: publications_output
+    description: >
+      ``{publications: list[dict]}`` — each dict has keys ``doi``,
+      ``title``, ``authors``, ``year``, ``journal``, ``pmid``.
+      Consumed by the downstream RagSynthesisStep.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "pubmed_query_input"

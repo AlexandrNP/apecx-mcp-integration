@@ -19,7 +19,11 @@ from sqlalchemy import engine_from_config, pool
 config = context.config
 
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    # disable_existing_loggers=False preserves loggers already configured by
+    # pytest or the application. The default (True) would set disabled=True on
+    # every logger not listed in alembic.ini, silently swallowing WARNING
+    # records from apecx_integration loggers for the rest of the test session.
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 if db_url := os.environ.get("APECX_CP_DB_URL"):
     config.set_main_option("sqlalchemy.url", db_url)

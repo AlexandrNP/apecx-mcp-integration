@@ -12,7 +12,6 @@ import asyncio
 
 import pandas as pd
 import pytest
-
 from apecx_integration.mcp_surface.data import database as db
 from apecx_integration.mcp_surface.tools import database_tools as tools
 
@@ -43,6 +42,7 @@ def small_store():
                 "Antigen": "EEEV E2 protein",
                 "Description": "Eastern equine encephalitis",
                 "Tradename": None,
+                "Vaccine_Ontology_ID": "VO_0000001",
             },
             {
                 "id": 2,
@@ -53,6 +53,7 @@ def small_store():
                 "Antigen": "Influenza HA",
                 "Description": "Influenza prevention",
                 "Tradename": "FluShot",
+                "Vaccine_Ontology_ID": "VO_0000002",
             },
             {
                 "id": 3,
@@ -63,6 +64,7 @@ def small_store():
                 "Antigen": "Rubella E1",
                 "Description": "Rubella disease",
                 "Tradename": None,
+                "Vaccine_Ontology_ID": None,
             },
         ]
     )
@@ -94,6 +96,7 @@ def small_store():
                 "Protein_Name": "Envelope glycoprotein E2",
                 "Organism": "Eastern equine encephalitis virus",
                 "Molecule_Role": "Structural protein",
+                "NCBI_Gene_ID": 11041,
             },
             {
                 "id": 101,
@@ -101,6 +104,7 @@ def small_store():
                 "Protein_Name": "Hemagglutinin",
                 "Organism": "Influenza A virus",
                 "Molecule_Role": "Surface glycoprotein",
+                "NCBI_Gene_ID": 956579,
             },
         ]
     )
@@ -129,6 +133,7 @@ def small_store():
                 "Geographic Location": "USA",
                 "Collection Year": 2010,
                 "Other Names": None,
+                "NCBI Taxon ID": 11021,
             },
             {
                 "Genome ID": "G2",
@@ -141,6 +146,7 @@ def small_store():
                 "Geographic Location": "India",
                 "Collection Year": 2019,
                 "Other Names": None,
+                "NCBI Taxon ID": 37827,
             },
         ]
     )
@@ -344,3 +350,132 @@ def test_database_statistics_shows_all_loaded_tables(small_store):
     }
     assert out["tables"]["vaccines"]["rows"] == 3
     assert "id" in out["tables"]["vaccines"]["columns"]
+
+
+# ---------------------------------------------------------------------------
+# P3.9 — lookup_entity wiring tests
+# ---------------------------------------------------------------------------
+# These tests verify the fast-path precision filter wiring.  They mock
+# lookup_entity so we control the path without a real synonym dictionary.
+# Each mock-covered code path has a matching integration test in
+# tests/integration/test_p39_precision_path_with_dict.py
+# (gated on APECX_SYNONYM_DICT_LIVE_OLS=1).
+# ---------------------------------------------------------------------------
+
+
+def _fast_hit(surface_form: str, iri: str, label: str, ontology: str = "ncbitaxon"):
+    from apecx_integration.synonym_dictionary.enums import ResolutionStatus
+    from apecx_integration.synonym_dictionary.lookup import LookupResult
+
+    return LookupResult(
+        surface_form=surface_form,
+        path="fast",
+        canonical_iri=iri,
+        canonical_label=label,
+        canonical_ontology=ontology,
+        confidence=1.0,
+        resolution_status=ResolutionStatus.ID_ANCHORED,
+    )
+
+
+def _miss(surface_form: str):
+    from apecx_integration.synonym_dictionary.lookup import fast_miss
+
+    return fast_miss(surface_form)
+
+
+def test_query_pathogens_precision_filter_on_fast_path(monkeypatch, small_store):
+    """Fast-path hit → ncbi_taxonomy_id precision filter → exact row returned."""
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+    )
+    out = asyncio.run(tools.query_pathogens(search_term="anything"))
+    assert out["total_matching"] == 1
+    assert out["pathogens"][0]["Pathogen"] == "Eastern equine encephalitis virus"
+    assert out["_resolution"]["path"] == "fast"
+    assert out["_resolution"]["canonical_iri"] == "http://purl.obolibrary.org/obo/NCBITaxon_11021"
+
+
+def test_query_pathogens_falls_back_to_substring_on_miss(monkeypatch, small_store):
+    """Miss → no precision filter → existing substring behaviour unchanged."""
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _miss(sf),
+    )
+    out = asyncio.run(tools.query_pathogens(search_term="Influenza"))
+    assert out["total_matching"] == 1
+    assert "_resolution" not in out
+
+
+def test_query_pathogens_no_lookup_when_no_search_term(monkeypatch, small_store):
+    """Empty search_term must not call lookup_entity at all."""
+    called = []
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: called.append(sf) or _miss(sf),
+    )
+    asyncio.run(tools.query_pathogens())
+    assert called == []
+
+
+def test_query_vaccines_precision_filter_on_fast_path(monkeypatch, small_store):
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _fast_hit(
+            sf, "http://purl.obolibrary.org/obo/VO_0000001", "Alpha Vaccine", "vo"
+        ),
+    )
+    out = asyncio.run(tools.query_vaccines(search_term="anything"))
+    assert out["total_matching"] == 1
+    assert out["vaccines"][0]["Vaccine_Name"] == "Alpha Vaccine"
+    assert out["_resolution"]["path"] == "fast"
+
+
+def test_query_genes_precision_filter_on_fast_path(monkeypatch, small_store):
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _fast_hit(
+            sf, "http://identifiers.org/ncbigene/11041", "E2 glycoprotein", "ncbigene"
+        ),
+    )
+    out = asyncio.run(tools.query_genes(search_term="anything"))
+    assert out["total_matching"] == 1
+    assert out["genes"][0]["Gene_Name"] == "E2"
+    assert out["_resolution"]["confidence"] == 1.0
+
+
+def test_query_bvbrc_precision_filter_on_fast_path(monkeypatch, small_store):
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+    )
+    out = asyncio.run(tools.query_bvbrc_genomes(search_term="anything"))
+    assert out["total_matching"] == 1
+    assert out["genomes"][0]["Species"] == "Eastern equine encephalitis virus"
+    assert out["_resolution"]["path"] == "fast"
+
+
+def test_get_vaccine_pathogen_genes_precision_filter(monkeypatch, small_store):
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+    )
+    out = asyncio.run(tools.get_vaccine_pathogen_genes("anything"))
+    assert out["total_vaccines"] == 1
+    assert out["vaccines"][0]["vaccine_name"] == "Alpha Vaccine"
+    assert out["_resolution"]["path"] == "fast"
+
+
+def test_resolve_entity_includes_canonical_on_fast_path(monkeypatch, small_store):
+    monkeypatch.setattr(
+        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
+        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+    )
+    out = asyncio.run(tools.resolve_entity("EEEV"))
+    assert "canonical_resolution" in out
+    assert out["canonical_resolution"]["canonical_iri"] == (
+        "http://purl.obolibrary.org/obo/NCBITaxon_11021"
+    )
+    # Cross-table substring result still present
+    assert "matches" in out

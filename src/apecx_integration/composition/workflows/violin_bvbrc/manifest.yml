@@ -201,6 +201,74 @@ components:
       - "format the final enriched results as ranked JSON"
       - "rank resolved entities by combined confidence"
 
+  # ────────────────────────────────────────────────────────────────
+  # Day-2 retrieval + synthesis steps (added 2026-05-05)
+  # These steps are loaded-but-unlinked in the T01 violin_bvbrc
+  # chain; they are the live chain in rag_e2e_synthesis_workflow.
+  # ────────────────────────────────────────────────────────────────
+
+  - step_id: "8a"
+    step_name: domain_rag_search
+    disposition: new
+    class: "apecx_integration.composition.steps.domain_rag_step.DomainRagSearchStep"
+    yaml: "steps/domain_rag_search.yml"
+    status: ready
+    rag_description: >
+      Semantic search over the pre-built APECx domain RAG FAISS index.
+      Takes a query string; returns the top-k nearest chunks from the
+      VIOLIN/BV-BRC knowledge corpus (title, text, source). Pure FAISS /
+      sentence-transformers — no LLM call, fast, deterministic.
+    rag_examples:
+      - "retrieve domain-relevant context chunks for EEEV vaccine research"
+      - "semantic search for alphavirus genome annotation documents"
+
+  - step_id: "8b"
+    step_name: violin_bvbrc_context
+    disposition: new
+    class: "apecx_integration.composition.steps.violin_bvbrc_context_step.VIOLINBVBRCContextStep"
+    yaml: "steps/violin_bvbrc_context.yml"
+    status: ready
+    rag_description: >
+      Pure-pandas substring lookup over VIOLIN Pathogen + Vaccine CSVs
+      and the BV-BRC alphavirus genomes TSV. Takes entity names or query
+      terms; produces violin_mappings (synonym_id, canonical_term,
+      entity_type) and bvbrc_genomes (genome_id, genome_name). No LLM,
+      no network — runs entirely from local CSV/TSV files.
+    rag_examples:
+      - "look up EEEV in VIOLIN and BV-BRC to get tabular context"
+      - "find VIOLIN vaccine records and BV-BRC genomes for 'alphavirus'"
+
+  - step_id: "8c"
+    step_name: pubmed_harvester
+    disposition: new
+    class: "apecx_integration.composition.steps.pubmed_harvester_step.PubMedHarvesterStep"
+    yaml: "steps/pubmed_harvester.yml"
+    status: ready
+    rag_description: >
+      PubMed eSearch + eFetch — searches NCBI PubMed and returns up to
+      ``max_papers`` DataCite-shaped publication dicts (doi, title,
+      authors, year, journal, pmid). Network failures degrade gracefully
+      to an empty publications list.
+    rag_examples:
+      - "harvest recent PubMed papers on SARS-CoV-2 spike protein vaccines"
+      - "find published literature on West Nile virus genomics"
+
+  - step_id: "8d"
+    step_name: rag_synthesis
+    disposition: new
+    class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+    yaml: "steps/rag_synthesis.yml"
+    status: ready
+    rag_description: >
+      LLM synthesis step — takes the aggregated retrieval bundle
+      {query, rag_chunks, bvbrc_genomes, violin_mappings, publications}
+      and produces a free-form Markdown response with inline citations
+      grounded in the retrieved data. Uses APECX_LLM_BASE_URL /
+      APECX_LLM_MODEL / APECX_LLM_API_KEY (default: local Ollama).
+    rag_examples:
+      - "synthesize a Markdown answer to a vaccine-efficacy question with citations"
+      - "produce an LLM response grounded in VIOLIN + BV-BRC + RAG context"
+
 coverage_target:
   # T02 AC4: the entire T00.1b workflow composes using ≥80% existing
   # or minimally-wrapped assets. Each component counts as 1 unit;

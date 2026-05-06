@@ -58,13 +58,22 @@ from apecx_integration.mcp_surface.tools import (
     approvals as approvals_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    canonical_entity as canonical_entity_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
 from apecx_integration.mcp_surface.tools import (
     discovery as discovery_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    globus_search as globus_search_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
+)
+from apecx_integration.mcp_surface.tools import (
+    synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
@@ -110,6 +119,21 @@ def build_server() -> FastMCP:
     server.tool()(database_tools.get_vaccine_pathogen_genes)
     server.tool()(database_tools.resolve_entity)
     server.tool()(database_tools.database_statistics)
+
+    # Stage 2 canonical entity resolution — dictionary fast path first,
+    # substring slow path fallback.  Always surfaces path + confidence.
+    server.tool()(canonical_entity_tools.resolve_canonical_entity)
+
+    # End-to-end RAG synthesis — drives the rag_e2e_synthesis workflow
+    # directly (no composer round-trip). One LLM call total. Steps are
+    # cached as module-level singletons so a long-running server
+    # doesn't pay the FAISS load cost on every call.
+    server.tool()(synthesis_tools.synthesize_query)
+
+    # Globus Search — query the APECx harvested-corpus index. Read-only;
+    # the harvester runs as a stand-alone process and writes to this
+    # index. We never write to it from the MCP surface.
+    server.tool()(globus_search_tools.query_globus_search)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)
@@ -394,10 +418,62 @@ def _check_data_root_or_warn() -> None:
     log.warning("=" * 64)
 
 
+def _check_synonym_dict_or_warn() -> None:
+    """Warn at startup when ``APECX_SYNONYM_DICT_PATH`` is absent or stale.
+
+    The dictionary singleton loads lazily on first lookup, so the server
+    starts without it.  But a missing or mis-configured path causes every
+    ``lookup_entity()`` call to silently fall back to the slow substring
+    path with no log entry unless the operator watches the tool response.
+    Surfacing the gap here gives a single, early signal.
+    """
+    dict_path_env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
+
+    if not dict_path_env:
+        log.warning("=" * 64)
+        log.warning("Synonym dictionary NOT configured.")
+        log.warning("")
+        log.warning("APECX_SYNONYM_DICT_PATH is unset.  Entity resolution tools")
+        log.warning("(query_pathogens, query_bvbrc_genomes, resolve_entity, …)")
+        log.warning("will use the slow substring fallback on every call.")
+        log.warning("")
+        log.warning("To fix: build the dictionary once —")
+        log.warning("  apecx-build-dictionary --violin-pathogens <path> ...")
+        log.warning("then set APECX_SYNONYM_DICT_PATH to the .sqlite output file.")
+        log.warning("=" * 64)
+        return
+
+    dict_path = Path(dict_path_env)
+    if not dict_path.is_file():
+        log.warning("=" * 64)
+        log.warning("Synonym dictionary file not found: %s", dict_path)
+        log.warning("Entity resolution will fall back to slow substring search.")
+        log.warning("=" * 64)
+        return
+
+    # Path is set and file exists — pre-warm the singleton so the first
+    # MCP tool call doesn't pay the SQLite open + manifest validation cost.
+    from apecx_integration.synonym_dictionary.loader import (
+        configure_dictionary_path,
+        get_dictionary_index,
+    )
+
+    configure_dictionary_path(dict_path)
+    _, err = get_dictionary_index()
+    if err:
+        log.warning("=" * 64)
+        log.warning("Synonym dictionary failed to load: %s", err)
+        log.warning("Entity resolution will fall back to slow substring search.")
+        log.warning("=" * 64)
+    else:
+        log.info("Synonym dictionary loaded from %s", dict_path)
+
+
 def main() -> None:
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
+    _check_synonym_dict_or_warn()
     server = build_server()
     server.run()
 

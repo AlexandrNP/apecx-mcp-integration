@@ -22,11 +22,68 @@ two paths for database-shaped requests:
 
 For "list vaccines targeting EEEV" the lookup path is correct — it
 bypasses the composer entirely and answers in one tool call.
+
+P3.9: each query tool now calls ``lookup_entity()`` on the main
+search term before pandas-querying.  On a fast or ancestor path hit
+the canonical IRI is extracted and passed as a precision-filter
+parameter to the data layer (``ncbi_taxonomy_id``, ``vo_id``,
+``ncbi_gene_id``).  On slow/miss the existing substring behaviour is
+unchanged.  Results include a ``_resolution`` field when a canonical
+match was found so the model sees which path was taken.
 """
 
 from __future__ import annotations
 
 from apecx_integration.mcp_surface.data import database as _db
+from apecx_integration.synonym_dictionary.enums import EntityType
+from apecx_integration.synonym_dictionary.loader import get_dictionary_index
+from apecx_integration.synonym_dictionary.lookup import LookupResult, lookup_entity
+
+# ---------------------------------------------------------------------------
+# IRI → database-ID helpers
+# ---------------------------------------------------------------------------
+
+
+def _ncbi_taxon_id(iri: str | None) -> int | None:
+    """Extract integer taxon ID from an NCBITaxon OBO IRI."""
+    if iri and "NCBITaxon_" in iri:
+        try:
+            return int(iri.split("NCBITaxon_")[-1])
+        except ValueError:
+            pass
+    return None
+
+
+def _vo_local_id(iri: str | None) -> str | None:
+    """Extract the local VO identifier (e.g. ``VO_0000001``) from an OBO IRI."""
+    if iri and "/obo/VO_" in iri:
+        return iri.split("/obo/")[-1]
+    return None
+
+
+def _ncbi_gene_id(iri: str | None) -> int | None:
+    """Extract integer gene ID from an identifiers.org ncbigene IRI."""
+    if iri and "ncbigene/" in iri:
+        try:
+            return int(iri.split("ncbigene/")[-1])
+        except ValueError:
+            pass
+    return None
+
+
+def _resolution_meta(lr: LookupResult) -> dict:
+    return {
+        "input": lr.surface_form,
+        "path": lr.path,
+        "canonical_iri": lr.canonical_iri,
+        "canonical_label": lr.canonical_label,
+        "confidence": lr.confidence,
+    }
+
+
+# ---------------------------------------------------------------------------
+# MCP tools
+# ---------------------------------------------------------------------------
 
 
 async def query_vaccines(
@@ -47,14 +104,27 @@ async def query_vaccines(
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    return _db.query_vaccines(
+
+    vo_id: str | None = None
+    resolution: dict | None = None
+    if search_term:
+        lr = lookup_entity(search_term, entity_type=EntityType.VACCINE)
+        if lr.path in ("fast", "ancestor"):
+            vo_id = _vo_local_id(lr.canonical_iri)
+            resolution = _resolution_meta(lr)
+
+    result = _db.query_vaccines(
         store,
         search_term=search_term or None,
         vaccine_type=vaccine_type or None,
         status=status or None,
         pathogen=pathogen or None,
         limit=limit,
+        vo_id=vo_id,
     )
+    if resolution:
+        result["_resolution"] = resolution
+    return result
 
 
 async def query_pathogens(
@@ -71,12 +141,36 @@ async def query_pathogens(
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    return _db.query_pathogens(
+
+    ncbi_id: int | None = None
+    ncbi_ids: list[int] | None = None
+    resolution: dict | None = None
+    if search_term:
+        lr = lookup_entity(search_term, entity_type=EntityType.PATHOGEN)
+        if lr.path in ("fast", "ancestor"):
+            ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
+            resolution = _resolution_meta(lr)
+            # Strict taxonomy hierarchy: expand family/genus-level IRIs to
+            # include all descendant taxa. A query for "Coronaviridae"
+            # (NCBITaxon_11118) returns every coronavirus species; a query
+            # for "covid-19" (NCBITaxon_2697049) returns only SARS-CoV-2.
+            if ncbi_id is not None and lr.canonical_iri:
+                index, _ = get_dictionary_index()
+                if index is not None:
+                    child_ids = index.lookup_descendant_taxon_ids(lr.canonical_iri)
+                    ncbi_ids = [ncbi_id] + child_ids if child_ids else [ncbi_id]
+
+    result = _db.query_pathogens(
         store,
         search_term=search_term or None,
         disease=disease or None,
         limit=limit,
+        ncbi_taxonomy_id=ncbi_id if ncbi_ids is None else None,
+        ncbi_taxonomy_ids=ncbi_ids,
     )
+    if resolution:
+        result["_resolution"] = resolution
+    return result
 
 
 async def query_genes(
@@ -93,12 +187,25 @@ async def query_genes(
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    return _db.query_genes(
+
+    gene_id: int | None = None
+    resolution: dict | None = None
+    if search_term:
+        lr = lookup_entity(search_term, entity_type=EntityType.GENE)
+        if lr.path in ("fast", "ancestor"):
+            gene_id = _ncbi_gene_id(lr.canonical_iri)
+            resolution = _resolution_meta(lr)
+
+    result = _db.query_genes(
         store,
         search_term=search_term or None,
         organism=organism or None,
         limit=limit,
+        ncbi_gene_id=gene_id,
     )
+    if resolution:
+        result["_resolution"] = resolution
+    return result
 
 
 async def query_bvbrc_genomes(
@@ -122,7 +229,16 @@ async def query_bvbrc_genomes(
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    return _db.query_bvbrc_genomes(
+
+    ncbi_id: int | None = None
+    resolution: dict | None = None
+    if search_term:
+        lr = lookup_entity(search_term, entity_type=EntityType.PATHOGEN)
+        if lr.path in ("fast", "ancestor"):
+            ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
+            resolution = _resolution_meta(lr)
+
+    result = _db.query_bvbrc_genomes(
         store,
         search_term=search_term or None,
         species=species or None,
@@ -131,7 +247,11 @@ async def query_bvbrc_genomes(
         min_year=min_year if min_year > 0 else None,
         max_year=max_year if max_year > 0 else None,
         limit=limit,
+        ncbi_taxonomy_id=ncbi_id,
     )
+    if resolution:
+        result["_resolution"] = resolution
+    return result
 
 
 async def get_vaccine_pathogen_genes(pathogen_name: str) -> dict:
@@ -145,7 +265,19 @@ async def get_vaccine_pathogen_genes(pathogen_name: str) -> dict:
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    return _db.get_vaccine_pathogen_genes(store, pathogen_name)
+
+    ncbi_id: int | None = None
+    resolution: dict | None = None
+    if pathogen_name:
+        lr = lookup_entity(pathogen_name, entity_type=EntityType.PATHOGEN)
+        if lr.path in ("fast", "ancestor"):
+            ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
+            resolution = _resolution_meta(lr)
+
+    result = _db.get_vaccine_pathogen_genes(store, pathogen_name, ncbi_taxonomy_id=ncbi_id)
+    if resolution:
+        result["_resolution"] = resolution
+    return result
 
 
 async def resolve_entity(name: str) -> dict:
@@ -155,12 +287,18 @@ async def resolve_entity(name: str) -> dict:
     substring match. Returns all matching identifiers (NCBI Taxonomy
     IDs, VIOLIN canonical IDs) so you can use them in targeted
     follow-up queries. Also checks the virus resolution cache for
-    pre-resolved mappings.
+    pre-resolved mappings. When the synonym dictionary is available,
+    includes a ``canonical_resolution`` field with the ontology-level
+    canonical IRI and confidence.
     """
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    return _db.resolve_entity(store, name)
+    result = _db.resolve_entity(store, name)
+    lr = lookup_entity(name)
+    if lr.path in ("fast", "ancestor"):
+        result["canonical_resolution"] = _resolution_meta(lr)
+    return result
 
 
 async def database_statistics() -> dict:
