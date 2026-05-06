@@ -184,7 +184,20 @@ async def _drive_workflow(cfg: EnsureDictionaryConfig) -> Path:
         **cfg.extra_env,
     }
 
+    # Workaround for a nanobrain bug (async_logging.py:103, logging_system.py:1051):
+    # both default the log directory to ``Path("logs")`` — relative to cwd. When
+    # apecx-mcp is launched from Claude Desktop on macOS, cwd is ``/`` (read-only),
+    # so the logger crashes with ``[Errno 30] Read-only file system: 'logs'`` and
+    # the workflow instantiation fails. We chdir to a writable apecx state dir for
+    # the duration of the workflow so any cwd-relative ``logs/`` resolves under it.
+    # Restored in finally so the parent process's cwd is unaffected.
+    log_root = Path("~/.apecx").expanduser()
+    log_root.mkdir(parents=True, exist_ok=True)
+    prev_cwd = os.getcwd()
+
     try:
+        os.chdir(log_root)
+
         for key, value in env_overrides.items():
             saved_env[key] = os.environ.get(key)
             if value is not None:
@@ -209,8 +222,9 @@ async def _drive_workflow(cfg: EnsureDictionaryConfig) -> Path:
                 f"{cfg.cascade_timeout_seconds}s — check logs for hung steps"
             )
     finally:
-        # Restore env even on exception so a failed bootstrap doesn't
+        # Restore env + cwd even on exception so a failed bootstrap doesn't
         # corrupt the parent process's environment.
+        os.chdir(prev_cwd)
         for key, prior in saved_env.items():
             if prior is None:
                 os.environ.pop(key, None)
