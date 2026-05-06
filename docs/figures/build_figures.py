@@ -1310,6 +1310,222 @@ def fig_user_facing_workflow() -> None:
 
 
 # ---------------------------------------------------------------------
+# Figure 12 — Accuracy thresholds (per entity class, slice vs full corpus)
+#
+# Source of truth for the numbers:
+#   tests/integration/test_synonym_accuracy.py — the enforced floors
+#   src/apecx_integration/synonym_dictionary/metrics.py — AccuracyMetrics
+#
+# These are LOWER BOUNDS, not historical run numbers. The test suite
+# fails CI if a build drops below any of them. We show them as ranges
+# (floor → 1.0) so an engineer reading the slide doesn't mistake the
+# threshold for the observed value.
+# ---------------------------------------------------------------------
+
+
+def fig_accuracy_thresholds() -> None:
+    # Real floors from test_synonym_accuracy.py (verified 2026-05-05).
+    # n_rows is the per-class slice size (slice baseline) / full-corpus row count.
+    classes = [
+        {
+            "name": "Pathogen",
+            "n_full": 218,
+            "metrics": [
+                ("Recall", 0.95, 0.90),
+                ("Precision", 0.95, 0.95),
+                ("F1", 0.95, 0.92),
+            ],
+        },
+        {
+            "name": "Vaccine",
+            "n_full": 3507,
+            "metrics": [
+                ("Recall", 0.80, 0.75),
+                ("Precision", 0.80, 0.85),
+            ],
+        },
+        {
+            "name": "Gene",
+            "n_full": 4063,
+            "metrics": [
+                ("Recall", 0.70, 0.65),
+                ("Precision", 0.95, 0.95),
+            ],
+        },
+    ]
+    palette = sns.color_palette("muted", n_colors=4)
+    color_slice = palette[1]
+    color_full = palette[3]
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5.2), sharex=True)
+    bar_h = 0.36
+    for ax, cls in zip(axes, classes, strict=True):
+        labels = [m[0] for m in cls["metrics"]]
+        slice_vals = [m[1] for m in cls["metrics"]]
+        full_vals = [m[2] for m in cls["metrics"]]
+        y = np.arange(len(labels))
+
+        ax.barh(
+            y + bar_h / 2,
+            slice_vals,
+            height=bar_h,
+            color=color_slice,
+            alpha=ALPHA,
+            edgecolor="#333",
+            linewidth=0.5,
+            label="slice (60 rows) baseline floor",
+        )
+        ax.barh(
+            y - bar_h / 2,
+            full_vals,
+            height=bar_h,
+            color=color_full,
+            alpha=ALPHA,
+            edgecolor="#333",
+            linewidth=0.5,
+            label=f"full corpus floor ({cls['n_full']:,} rows, CI-enforced)",
+        )
+        for yi, sv, fv in zip(y, slice_vals, full_vals, strict=True):
+            ax.text(
+                sv + 0.012, yi + bar_h / 2, f"{sv:.2f}", va="center", fontsize=9, fontweight="bold"
+            )
+            ax.text(
+                fv + 0.012, yi - bar_h / 2, f"{fv:.2f}", va="center", fontsize=9, fontweight="bold"
+            )
+
+        ax.axvline(1.0, color="#888", linestyle=":", linewidth=0.8, alpha=0.6)
+        ax.set_yticks(y)
+        ax.set_yticklabels(labels, fontsize=11)
+        ax.set_xlim(0, 1.18)
+        ax.invert_yaxis()
+        ax.set_title(f"{cls['name']}  ·  n = {cls['n_full']:,}", fontsize=12, fontweight="bold")
+        ax.set_xlabel("Score (0–1)", fontsize=10)
+        ax.legend(loc="lower right", fontsize=8.5, frameon=False)
+        sns.despine(ax=ax, left=False)
+
+    fig.suptitle(
+        "Synonym-resolution accuracy — CI-enforced lower bounds (1.0 = perfect)",
+        fontsize=13,
+        fontweight="bold",
+        y=1.02,
+    )
+    fig.text(
+        0.5,
+        -0.06,
+        "Bars are LOWER BOUNDS in tests/integration/test_synonym_accuracy.py — a build that fails any floor fails CI.\n"
+        "Vaccine + Gene F1 floors are not separately enforced (recall + precision floors suffice). "
+        "Disease has no recall floor (search-only).",
+        ha="center",
+        fontsize=8.5,
+        color="#444",
+        style="italic",
+    )
+    fig.tight_layout()
+    fig.savefig(OUT_DIR / "12_accuracy_thresholds.png", bbox_inches="tight")
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------
+# Figure 13 — Harmonization statistics
+#
+# Real, verified numbers:
+#   - Source row counts (wc -l on the actual CSVs/TSVs in data/, 2026-05-05)
+#   - Ontology coverage (synonym_dictionary/enums.py)
+#   - Resolution status taxonomy (synonym_dictionary/enums.py)
+# ---------------------------------------------------------------------
+
+
+def fig_harmonization_stats() -> None:
+    fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+    palette = sns.color_palette("muted", n_colors=8)
+
+    # ---- Left: source corpus row counts (real, verified 2026-05-05) ----
+    ax1 = axes[0]
+    sources = [
+        ("VIOLIN Pathogens", 218),
+        ("VIOLIN Vaccines", 3_507),
+        ("VIOLIN Genes", 4_063),
+        ("BV-BRC genomes", 5_450),
+    ]
+    labels = [s[0] for s in sources]
+    counts = [s[1] for s in sources]
+    colors = [palette[0], palette[1], palette[2], palette[3]]
+
+    bars = ax1.barh(
+        np.arange(len(labels)),
+        counts,
+        color=colors,
+        alpha=ALPHA,
+        edgecolor="#333",
+        linewidth=0.6,
+    )
+    for bar, n in zip(bars, counts, strict=True):
+        ax1.text(
+            bar.get_width() + max(counts) * 0.01,
+            bar.get_y() + bar.get_height() / 2,
+            f"{n:,}",
+            va="center",
+            fontsize=10,
+            fontweight="bold",
+        )
+
+    ax1.set_yticks(np.arange(len(labels)))
+    ax1.set_yticklabels(labels, fontsize=10)
+    ax1.invert_yaxis()
+    ax1.set_xlabel("Source rows", fontsize=11)
+    ax1.set_title(
+        "Source corpus  ·  13,238 total rows  ·  verified 2026-05-05", fontsize=11.5, pad=10
+    )
+    ax1.set_xlim(0, max(counts) * 1.15)
+    sns.despine(ax=ax1, left=True)
+
+    # ---- Right: resolution status confidence buckets ----
+    ax2 = axes[1]
+    statuses = [
+        ("id_anchored", 1.0),
+        ("ols_exact", 0.9),
+        ("ols_fuzzy", 0.7),
+        ("project_local", 0.5),
+        ("unresolved", 0.0),
+    ]
+    s_labels = [s[0] for s in statuses]
+    s_conf = [s[1] for s in statuses]
+    s_colors = [palette[4], palette[5], palette[6], palette[7], palette[3]]
+
+    bars2 = ax2.barh(
+        np.arange(len(s_labels)),
+        s_conf,
+        color=s_colors,
+        alpha=ALPHA,
+        edgecolor="#333",
+        linewidth=0.6,
+    )
+    for bar, c in zip(bars2, s_conf, strict=True):
+        ax2.text(
+            bar.get_width() + 0.01,
+            bar.get_y() + bar.get_height() / 2,
+            f"{c:.1f}" if c > 0 else "0.0",
+            va="center",
+            fontsize=10,
+            fontweight="bold",
+        )
+
+    ax2.set_yticks(np.arange(len(s_labels)))
+    ax2.set_yticklabels(s_labels, fontsize=10, family="monospace")
+    ax2.invert_yaxis()
+    ax2.set_xlabel("Confidence value (returned to caller)", fontsize=11)
+    ax2.set_title(
+        "Resolution status  ·  written by build.py, surfaced at query time", fontsize=11.5, pad=10
+    )
+    ax2.set_xlim(0, 1.15)
+    sns.despine(ax=ax2, left=True)
+
+    fig.tight_layout()
+    fig.savefig(OUT_DIR / "13_harmonization_stats.png")
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------
 
@@ -1326,6 +1542,8 @@ def main() -> None:
     fig_session_bug_count()
     fig_backend_harmonization()
     fig_user_facing_workflow()
+    fig_accuracy_thresholds()
+    fig_harmonization_stats()
     print("Figures written to", OUT_DIR)
     for p in sorted(OUT_DIR.glob("*.png")):
         print(f"  {p.name}: {p.stat().st_size // 1024} KB")

@@ -179,7 +179,7 @@ def slide_title(prs):
     )
 
 
-def slide_agenda(prs, total):
+def slide_agenda(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "Agenda", "What this deck covers")
     items = [
@@ -191,13 +191,14 @@ def slide_agenda(prs, total):
         "Trigger-cascade primitive (added 2026-05-05 to nanobrain)",
         "Mapping & resolution strategy — fast / ancestor / slow / miss",
         "Ontologies, MCP tool surface, test surface",
+        "Data quality — CI-enforced accuracy floors & harmonization statistics",
         "Things that will surprise you (silent-failure shapes)",
     ]
     _add_bullets(s, Inches(0.8), Inches(1.3), Inches(12.0), Inches(5.5), items, fontsize=20)
-    _add_footer(s, 2, total)
+    _add_footer(s, page, total)
 
 
-def slide_purpose(prs, total):
+def slide_purpose(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "System Purpose", "One-paragraph definition")
     _add_text_block(
@@ -230,10 +231,10 @@ def slide_purpose(prs, total):
         ),
         fontsize=17,
     )
-    _add_footer(s, 3, total)
+    _add_footer(s, page, total)
 
 
-def slide_two_lifecycles(prs, total):
+def slide_two_lifecycles(prs, page, total):
     """The orienting slide: this system has two distinct lifecycles
     and confusing them is the #1 onboarding mistake."""
     s = _new_slide(prs)
@@ -315,10 +316,10 @@ def slide_two_lifecycles(prs, total):
         bold=True,
         color=BODY_TXT,
     )
-    _add_footer(s, 4, total)
+    _add_footer(s, page, total)
 
 
-def slide_backend_pipeline(prs, total):
+def slide_backend_pipeline(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -328,10 +329,10 @@ def slide_backend_pipeline(prs, total):
     _add_image(
         s, FIG_DIR / "10_backend_harmonization.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 5, total)
+    _add_footer(s, page, total)
 
 
-def slide_user_facing_pipeline(prs, total):
+def slide_user_facing_pipeline(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -341,10 +342,10 @@ def slide_user_facing_pipeline(prs, total):
     _add_image(
         s, FIG_DIR / "11_user_facing_workflow.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 6, total)
+    _add_footer(s, page, total)
 
 
-def slide_topology(prs, total):
+def slide_topology(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -354,10 +355,10 @@ def slide_topology(prs, total):
     _add_image(
         s, FIG_DIR / "01_three_tier_topology.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 7, total)
+    _add_footer(s, page, total)
 
 
-def slide_synthesis(prs, total):
+def slide_synthesis(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -367,17 +368,17 @@ def slide_synthesis(prs, total):
     _add_image(
         s, FIG_DIR / "02_synthesis_pipeline.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 8, total)
+    _add_footer(s, page, total)
 
 
-def slide_invocation(prs, total):
+def slide_invocation(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "Three Invocation Paths", "Pick one based on the calling context")
     _add_image(s, FIG_DIR / "03_invocation_paths.png", Inches(0.4), Inches(1.0), width=Inches(12.6))
-    _add_footer(s, 9, total)
+    _add_footer(s, page, total)
 
 
-def slide_trigger_cascade(prs, total):
+def slide_trigger_cascade(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -387,10 +388,10 @@ def slide_trigger_cascade(prs, total):
     _add_image(
         s, FIG_DIR / "08_trigger_cascade_timeline.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 10, total)
+    _add_footer(s, page, total)
 
 
-def slide_resolution(prs, total):
+def slide_resolution(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -400,28 +401,28 @@ def slide_resolution(prs, total):
     _add_image(
         s, FIG_DIR / "04_resolution_decision_tree.png", Inches(2.0), Inches(1.0), width=Inches(9.5)
     )
-    _add_footer(s, 11, total)
+    _add_footer(s, page, total)
 
 
-def slide_ontologies(prs, total):
+def slide_ontologies(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "Ontologies", "Authoritative sources tracked in DictionaryEntry.ontology")
     _add_image(
         s, FIG_DIR / "06_ontologies_coverage.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
     )
-    _add_footer(s, 12, total)
+    _add_footer(s, page, total)
 
 
-def slide_mcp_tools(prs, total):
+def slide_mcp_tools(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "MCP Tool Surface", "23 tools across 8 groups")
     _add_image(
         s, FIG_DIR / "07_mcp_tool_distribution.png", Inches(0.7), Inches(1.0), width=Inches(11.9)
     )
-    _add_footer(s, 13, total)
+    _add_footer(s, page, total)
 
 
-def slide_tests(prs, total):
+def slide_tests(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s,
@@ -429,10 +430,91 @@ def slide_tests(prs, total):
         "504 unit tests · 7 workflow YAML · 1 cascade runtime — auto-skip when external deps missing",
     )
     _add_image(s, FIG_DIR / "05_test_surface.png", Inches(0.4), Inches(1.0), width=Inches(12.6))
-    _add_footer(s, 14, total)
+    _add_footer(s, page, total)
 
 
-def slide_session_bugs(prs, total):
+def slide_accuracy_methodology(prs, page, total):
+    s = _new_slide(prs)
+    _add_title_bar(
+        s,
+        "Data Quality Assessment",
+        "Three-test pattern · CI-enforced floors · live-OLS gating, no mocks",
+    )
+    items = [
+        "AccuracyMetrics — recall + precision + F1 from confusion-matrix counts (correct / incorrect / ground-truth total)",
+        "Three-test pattern: slice baseline (60-row deterministic sample, fast feedback) → "
+        "full corpus (all 13,238 rows, gated by APECX_SYNONYM_DICT_FULL_CORPUS=1) → "
+        "probe-batch sampling (50 / 300 spot-checks at the boundary)",
+        "Live OLS gating — APECX_SYNONYM_DICT_LIVE_OLS=1 required; tests auto-skip when "
+        "the resolver is unreachable rather than mocking it (workspace mocks-only-for-smoke rule)",
+        "Per-class enforcement: Pathogen (R≥0.90, P≥0.95, F1≥0.92), Vaccine (R≥0.75, P≥0.85), "
+        "Gene (R≥0.65, P≥0.95), Disease (search-only — no recall floor)",
+        "Floors are LOWER BOUNDS, not target observed values — a build that misses any floor fails CI",
+        "Source of truth: tests/integration/test_synonym_accuracy.py "
+        "(behavior pinned by tests/unit/test_metrics_invariants.py)",
+    ]
+    _add_bullets(
+        s,
+        Inches(0.7),
+        Inches(1.25),
+        Inches(12.0),
+        Inches(5.6),
+        items,
+        fontsize=15,
+        line_spacing=1.3,
+    )
+    _add_footer(s, page, total)
+
+
+def slide_accuracy_floors(prs, page, total):
+    s = _new_slide(prs)
+    _add_title_bar(
+        s,
+        "Accuracy Floors per Entity Class",
+        "Slice baseline (60 rows) vs. full-corpus floor — both CI-enforced; bars are lower bounds, not observed values",
+    )
+    _add_image(
+        s, FIG_DIR / "12_accuracy_thresholds.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
+    )
+    _add_text_block(
+        s,
+        Inches(0.7),
+        Inches(6.5),
+        Inches(12.0),
+        Inches(0.6),
+        "A reading of 0.95 means the test enforces ≥95% — the actual run is at-or-above. "
+        "Source: tests/integration/test_synonym_accuracy.py.",
+        fontsize=12,
+        color=SUBTLE,
+    )
+    _add_footer(s, page, total)
+
+
+def slide_harmonization_stats(prs, page, total):
+    s = _new_slide(prs)
+    _add_title_bar(
+        s,
+        "Harmonization Statistics",
+        "Source corpus rows · resolution-status confidence · 13,238 total rows verified 2026-05-05",
+    )
+    _add_image(
+        s, FIG_DIR / "13_harmonization_stats.png", Inches(0.4), Inches(1.0), width=Inches(12.6)
+    )
+    _add_text_block(
+        s,
+        Inches(0.7),
+        Inches(6.5),
+        Inches(12.0),
+        Inches(0.6),
+        "Status taxonomy from synonym_dictionary/enums.py — every resolution result carries (status, confidence) "
+        "to the caller, so downstream code can filter by quality.",
+        fontsize=12,
+        color=SUBTLE,
+    )
+    _add_footer(s, page, total)
+
+
+def slide_session_bugs(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s, "Session Outcome", "12 bugs / drifts uncovered, all fixed and pinned by tests"
@@ -440,10 +522,10 @@ def slide_session_bugs(prs, total):
     _add_image(
         s, FIG_DIR / "09_session_bug_count.png", Inches(0.7), Inches(1.0), width=Inches(11.9)
     )
-    _add_footer(s, 15, total)
+    _add_footer(s, page, total)
 
 
-def slide_brutal_truth(prs, total):
+def slide_brutal_truth(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(
         s, "Things That Will Surprise You", "Silent-failure shapes you'll hit if you don't know"
@@ -468,10 +550,10 @@ def slide_brutal_truth(prs, total):
         fontsize=18,
         line_spacing=1.25,
     )
-    _add_footer(s, 16, total)
+    _add_footer(s, page, total)
 
 
-def slide_failure_contract(prs, total):
+def slide_failure_contract(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "Failure Contract Per Branch", "Branch failures degrade; all-empty raises")
     rows = [
@@ -534,10 +616,10 @@ def slide_failure_contract(prs, total):
                 cell.fill.fore_color.rgb = (
                     RGBColor(0xF5, 0xF5, 0xF8) if ri % 2 == 1 else RGBColor(0xFF, 0xFF, 0xFF)
                 )
-    _add_footer(s, 17, total)
+    _add_footer(s, page, total)
 
 
-def slide_close(prs, total):
+def slide_close(prs, page, total):
     s = _new_slide(prs)
     _add_title_bar(s, "References", "Where to read more")
     items = [
@@ -561,7 +643,7 @@ def slide_close(prs, total):
         bold=True,
         color=ACCENT,
     )
-    _add_footer(s, total, total)
+    _add_footer(s, page, total)
 
 
 def main() -> None:
@@ -583,6 +665,9 @@ def main() -> None:
         slide_ontologies,
         slide_mcp_tools,
         slide_tests,
+        slide_accuracy_methodology,
+        slide_accuracy_floors,
+        slide_harmonization_stats,
         slide_session_bugs,
         slide_brutal_truth,
         slide_failure_contract,
@@ -591,8 +676,8 @@ def main() -> None:
     total = len(builders)
     # Title slide doesn't take a count
     builders[0](prs)
-    for _i, b in enumerate(builders[1:], start=2):
-        b(prs, total)
+    for page_num, b in enumerate(builders[1:], start=2):
+        b(prs, page_num, total)
     prs.save(str(OUT_PATH))
     print(f"Slides written to {OUT_PATH}")
     print(f"  {OUT_PATH.stat().st_size // 1024} KB · {total} slides")

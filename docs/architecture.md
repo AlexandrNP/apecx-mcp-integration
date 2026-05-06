@@ -585,7 +585,114 @@ Ollama is reachable. The trigger-cascade runtime test alone takes
 
 ---
 
-## 11. Configuration flow
+## 11. Data quality assessment
+
+The harmonization pipeline produces a synonym dictionary; the user-facing
+workflow consumes it. Both ends need a yardstick — "how often does the
+mapping return the right canonical IRI?" — that is meaningful, fast to
+run, and honest about its limits. The answer in this repo is a
+**three-test pattern** backed by an `AccuracyMetrics` dataclass and
+enforced as CI floors.
+
+### 11.1 The `AccuracyMetrics` dataclass
+
+`src/apecx_integration/synonym_dictionary/metrics.py` defines a single
+dataclass that all accuracy tests roll up to:
+
+| Field | Meaning |
+|---|---|
+| `total_rows` | rows examined in the slice or full corpus |
+| `rows_with_ground_truth` | rows where a canonical IRI is known a-priori |
+| `fast_count` / `ancestor_count` / `slow_count` / `miss_count` | which lookup path each row resolved through |
+| `correct` / `incorrect` | matched-vs-expected canonical IRI |
+| `recall()` | `correct / rows_with_ground_truth` |
+| `precision()` | `correct / (correct + incorrect)` |
+| `f1()` | harmonic mean |
+| `summary()` | one-line printable string used in pytest assertion messages |
+
+Per-class wrappers exist for Pathogen, Vaccine, Gene, and Disease.
+Behavior is pinned by `tests/unit/test_metrics_invariants.py` (recall
+denominators include misses; precision denominators do not include
+unresolved rows).
+
+### 11.2 Three-test pattern
+
+| Stage | Sample size | Wall-clock budget | Gate |
+|---|---|---|---|
+| **Slice baseline** | 60 deterministic rows per class | Seconds | `APECX_SYNONYM_DICT_LIVE_OLS=1` |
+| **Full corpus** | 13,238 rows total (218 / 3,507 / 4,063 / 5,450) | Minutes | `APECX_SYNONYM_DICT_LIVE_OLS=1` AND `APECX_SYNONYM_DICT_FULL_CORPUS=1` |
+| **Probe-batch sampling** | 50 / 300 spot-checks at decision boundaries | Seconds | `APECX_SYNONYM_DICT_LIVE_OLS=1` |
+
+The slice stays green on every commit; the full corpus runs nightly /
+on release. Probe batches catch regressions in specific decision
+boundaries (e.g. ancestor-walk depth limits) without paying the
+full-corpus cost.
+
+### 11.3 CI-enforced floors (lower bounds)
+
+Source of truth: `tests/integration/test_synonym_accuracy.py`.
+
+| Class | Slice (60 rows) | Full corpus | F1 floor |
+|---|---|---|---|
+| Pathogen | recall ≥ 0.95, precision ≥ 0.95 | recall ≥ 0.90, precision ≥ 0.95 | slice ≥ 0.95, full ≥ 0.92 |
+| Vaccine | recall ≥ 0.80, precision ≥ 0.80 | recall ≥ 0.75, precision ≥ 0.85 | not separately enforced |
+| Gene | recall ≥ 0.70, precision ≥ 0.95 | recall ≥ 0.65, precision ≥ 0.95 | not separately enforced |
+| Disease | search-only | search-only | n/a — no recall floor |
+
+These are **lower bounds**, not target observed values. A build that
+misses any floor fails CI; the actual observed numbers are typically
+above the floor by 2–10 percentage points. We deliberately do not
+publish the observed numbers in this doc — they drift with every OLS
+update and ontology release, and a stale "we hit 97% recall last
+quarter" claim is more harmful than the floor.
+
+Disease has no recall floor by design: the ontology surface
+(DOID + cross-refs) is open-ended and recall is not the right metric
+for an open-vocabulary search target. Vaccine and Gene F1 floors are
+omitted because recall + precision floors mathematically constrain F1
+already.
+
+### 11.4 Mocks-only-for-smoke (workspace policy applied)
+
+The accuracy tests do not mock OLS. When `APECX_SYNONYM_DICT_LIVE_OLS=1`
+is unset they auto-skip; this matches the workspace rule that mocks are
+only allowed when they back a smoke test, never when they substitute for
+a real integration. A passing accuracy test always implies a real OLS
+round-trip happened.
+
+### 11.5 Harmonization statistics (verified 2026-05-05)
+
+Source corpus row counts (from `wc -l` on the data files):
+
+| Dataset | Rows | Source |
+|---|---|---|
+| VIOLIN Pathogens | 218 | `data/violin/Pathogen_Information.csv` |
+| VIOLIN Vaccines | 3,507 | `data/violin/Vaccine_Information.csv` |
+| VIOLIN Genes | 4,063 | `data/violin/Gene_Information.csv` |
+| BV-BRC Genomes | 5,450 | `data/bvbrc/genomes.tsv` |
+| **Total** | **13,238** | |
+
+Resolution status taxonomy (from
+`src/apecx_integration/synonym_dictionary/enums.py`). Every dictionary
+row carries one status value and one confidence value; the synthesis
+pipeline surfaces both to the caller so downstream code can filter by
+quality:
+
+| Status | Confidence | Meaning |
+|---|---|---|
+| `id_anchored` | 1.0 | NCBI Taxon / VO ID / etc. resolved by ID, not name |
+| `ols_exact` | 0.9 | OLS returned an exact label match |
+| `ols_fuzzy` | < 0.9 | OLS fuzzy match (similarity < 1.0) |
+| `project_local` | 0.5 | apecx_local IRI; lab-private entity |
+| `unresolved` | 0.0 | No mapping; row stays in dictionary with `canonical_iri = None` |
+
+See `docs/figures/12_accuracy_thresholds.png` and
+`docs/figures/13_harmonization_stats.png` for the visualizations
+embedded in `architecture_slides.pptx`.
+
+---
+
+## 12. Configuration flow
 
 ```mermaid
 flowchart TB
@@ -622,7 +729,7 @@ flowchart TB
 
 ---
 
-## 12. Things that will surprise you (brutal-truth section)
+## 13. Things that will surprise you (brutal-truth section)
 
 1. **`Workflow.process(input_data)` is fire-and-forget. Use
    `wait_for_cascade` to await completion.** Process returns
@@ -697,14 +804,14 @@ flowchart TB
 
 ---
 
-## 13. Backend vs. user-facing — two pipelines, one bridge
+## 14. Backend vs. user-facing — two pipelines, one bridge
 
 Two distinct lifecycles converge on the same data. Calling them out
 separately is the only way to keep the operator's mental model
 straight: **one runs periodically and offline, the other runs every
 time a scientist asks a question.**
 
-### 13.1 Backend harmonization (offline, periodic)
+### 14.1 Backend harmonization (offline, periodic)
 
 See `docs/figures/10_backend_harmonization.png`.
 
@@ -738,7 +845,7 @@ build time, surfaced at query time as `confidence`):
 | `project_local` | varies | private IRI in `apecx_local` namespace |
 | `unresolved` | 0.0 | no mapping; row stays with `canonical_iri = None` (surfaced explicitly) |
 
-### 13.2 User-facing workflow (online, per-query)
+### 14.2 User-facing workflow (online, per-query)
 
 See `docs/figures/11_user_facing_workflow.png`.
 
@@ -768,7 +875,7 @@ Three vertical bands:
 Total wall-clock budget: ~5–10 s retrieval (mostly PubMed) +
 ~30–60 s LLM = **~70 s end-to-end** on local Ollama.
 
-### 13.3 Bridge between the two
+### 14.3 Bridge between the two
 
 Every artifact the backend writes, the user-facing workflow reads —
 and **never** writes to. This is the load-bearing rule that lets the
@@ -784,7 +891,7 @@ to per-query latency:
 
 ---
 
-## 14. References
+## 15. References
 
 | Topic | File |
 |---|---|
