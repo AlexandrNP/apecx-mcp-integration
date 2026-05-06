@@ -1,7 +1,8 @@
 """P3.9 precision-path integration test.
 
 Verifies the full fast-path wiring:
-  1. apecx-build-dictionary builds a real OLS dictionary from a VIOLIN row.
+  1. The dictionary-build workflow steps build a real OLS dictionary from
+     a VIOLIN row (driven via ``build_dictionary_for_test``).
   2. The process singleton is configured with that dictionary.
   3. An MCP database tool call (query_pathogens) hits lookup_entity() on the
      fast path and uses the extracted NCBITaxon ID as a precision filter.
@@ -65,25 +66,15 @@ def eeev_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
         "Ensure the workspace data/ directory is populated."
     )
 
-    from apecx_integration.synonym_dictionary.cli import main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("p39_dict")
-    ret = main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-p3.9",
-            "--max-rows",
-            "60",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-p3.9",
+        max_rows=60,
+        violin_pathogens=VIOLIN_PATHOGENS,
     )
-    assert ret == 0, f"apecx-build-dictionary exited with code {ret}"
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists(), f"dictionary.sqlite missing at {db_path}"
     return db_path
 
@@ -125,7 +116,7 @@ def test_p39_query_pathogens_fast_path_injects_resolution():
         "The dictionary may not contain EEEV (row 50 / NCBITaxon_11021)."
     )
     assert EEEV_IRI in resolution["canonical_iri"], (
-        f"Expected EEEV IRI {EEEV_IRI!r} in canonical_iri; " f"got {resolution['canonical_iri']!r}"
+        f"Expected EEEV IRI {EEEV_IRI!r} in canonical_iri; got {resolution['canonical_iri']!r}"
     )
     assert resolution["confidence"] == 1.0
 

@@ -24,7 +24,8 @@ What these tests cover
 Gates
 -----
 - ``APECX_SYNONYM_DICT_LIVE_OLS=1`` — the fast-path test uses a real
-  apecx-build-dictionary build over EBI OLS, same fixture as
+  workflow-driven dictionary build over EBI OLS (via
+  ``build_dictionary_for_test``), same fixture as
   test_p39_precision_path_with_dict.
 - The miss-path tests run unconditionally (no external state needed).
 
@@ -291,25 +292,15 @@ def eeev_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
         pytest.skip("Set APECX_SYNONYM_DICT_LIVE_OLS=1 to build a real dictionary.")
     assert VIOLIN_PATHOGENS.exists(), f"VIOLIN data missing at {VIOLIN_PATHOGENS}"
 
-    from apecx_integration.synonym_dictionary.cli import main as build_main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("workflow_iri_dict")
-    ret = build_main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-iri-workflow",
-            "--max-rows",
-            "60",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-iri-workflow",
+        max_rows=60,
+        violin_pathogens=VIOLIN_PATHOGENS,
     )
-    assert ret == 0, f"apecx-build-dictionary exited with code {ret}"
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists()
     return db_path
 
@@ -345,9 +336,9 @@ def test_workflow_fast_path_with_real_dictionary(eeev_dictionary: Path):
             f"Expected fast/ancestor path with EEEV in dict; got {rec['resolution_path']!r}. "
             "Dictionary may not have built EEEV row 50."
         )
-        assert EEEV_IRI in (
-            rec["canonical_iri"] or ""
-        ), f"Expected canonical_iri to contain {EEEV_IRI!r}; got {rec['canonical_iri']!r}"
+        assert EEEV_IRI in (rec["canonical_iri"] or ""), (
+            f"Expected canonical_iri to contain {EEEV_IRI!r}; got {rec['canonical_iri']!r}"
+        )
         assert rec["resolution_confidence"] > 0.0
         assert rec["dictionary_version"] is not None
     finally:

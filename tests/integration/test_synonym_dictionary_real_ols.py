@@ -21,17 +21,23 @@ What each test verifies:
   if OLS isn't returning synonyms, the whole Stage 1 pipeline produces
   empty dictionaries.
 
-- **P2.14** (``test_cli_violin_pathogen_end_to_end``): runs
-  ``apecx-build-dictionary`` against the first 5 rows of
-  ``data/violin/Pathogen_Information.csv``.  Verifies: output directory
-  created, SQLite artifact written, manifest JSON emitted, enriched CSV
-  has the new canonical columns, SQLite reader can look up at least one
-  resolved IRI.
+- **P2.14** (``test_cli_violin_pathogen_end_to_end``): drives the
+  TaxdumpFetchStep + DictionaryBuildStep pair against the first 5 rows
+  of ``data/violin/Pathogen_Information.csv``.  Verifies: output
+  directory created, SQLite artifact written, manifest JSON emitted,
+  enriched CSV has the new canonical columns, SQLite reader can look
+  up at least one resolved IRI.
 
 - **P2.15** (``test_cli_bvbrc_genomes_end_to_end``): same against the
   first 5 rows of ``data/bvbrc_cache/alphavirus_genomes.tsv``.
   BV-BRC rows resolve via implicit NCBITaxon (genome_id prefix) — this
   tests the BV-BRC-specific resolver branch.
+
+Migration note (2026-05-05): the original tests called the deleted
+``apecx-build-dictionary`` console script via its programmatic
+``cli.main`` entry point; they now drive the workflow steps directly
+via the ``build_dictionary_for_test`` helper. Test name prefixes
+(``test_cli_*``) are kept for grep-stability with prior bug reports.
 """
 
 from __future__ import annotations
@@ -43,6 +49,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 import pytest_asyncio  # noqa: F401 — needed for pytest-asyncio plugin discovery
+
 from apecx_integration.synonym_dictionary.enums import OntologyName
 from apecx_integration.synonym_dictionary.ols_client import OLSClient
 from apecx_integration.synonym_dictionary.sqlite_writer import SQLiteDictionaryReader
@@ -136,9 +143,9 @@ async def test_ols_synonyms_for_well_curated_taxon() -> None:
     assert term is not None, f"OLS returned None for HIV-1 IRI {iri}"
 
     label = OLSClient.extract_label(term)
-    assert (
-        label and "immunodeficiency" in label.lower()
-    ), f"Unexpected label for NCBITaxon_11676: {label!r}"
+    assert label and "immunodeficiency" in label.lower(), (
+        f"Unexpected label for NCBITaxon_11676: {label!r}"
+    )
 
     synonyms = OLSClient.extract_synonyms(term)
     assert len(synonyms) >= 5, (
@@ -164,7 +171,7 @@ async def test_ols_resolves_known_vaccine_iri() -> None:
     # VO may or may not return synonyms for every IRI; what matters is that
     # the IRI resolves to a term at all.
     assert term is not None, (
-        f"OLS returned None for {iri}.  Either VO_0000122 is not in OLS " "or OLS is unreachable."
+        f"OLS returned None for {iri}.  Either VO_0000122 is not in OLS or OLS is unreachable."
     )
     label = OLSClient.extract_label(term)
     assert label, f"VO term has no label: {term!r}"
@@ -187,27 +194,17 @@ def test_cli_violin_pathogen_end_to_end(tmp_path: Path) -> None:
     """
     assert VIOLIN_PATHOGENS.exists(), f"VIOLIN pathogen data not found at {VIOLIN_PATHOGENS}"
 
-    from apecx_integration.synonym_dictionary.cli import main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path / "dict_output"
-    ret = main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-p2.14",
-            "--max-rows",
-            "5",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-p2.14",
+        max_rows=5,
+        violin_pathogens=VIOLIN_PATHOGENS,
     )
-    assert ret == 0, f"CLI exited with code {ret}"
 
     # Dictionary artifact
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists(), f"dictionary.sqlite not created at {db_path}"
 
     # Manifest JSON (human-readable copy)
@@ -263,26 +260,15 @@ def test_cli_bvbrc_genomes_end_to_end(tmp_path: Path) -> None:
     """
     assert BVBRC_GENOMES.exists(), f"BV-BRC genome data not found at {BVBRC_GENOMES}"
 
-    from apecx_integration.synonym_dictionary.cli import main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path / "dict_output_bvbrc"
-    ret = main(
-        [
-            "--bvbrc-genomes",
-            str(BVBRC_GENOMES),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-p2.15",
-            "--max-rows",
-            "5",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-p2.15",
+        max_rows=5,
+        bvbrc_genomes=BVBRC_GENOMES,
     )
-    assert ret == 0, f"CLI exited with code {ret}"
-
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists()
 
     manifest_path = out / "manifest.json"
@@ -324,24 +310,15 @@ def test_cli_violin_vaccine_end_to_end(tmp_path: Path) -> None:
     """
     assert VIOLIN_VACCINES.exists(), f"VIOLIN vaccine data not found at {VIOLIN_VACCINES}"
 
-    from apecx_integration.synonym_dictionary.cli import main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path / "dict_output_vaccine"
-    ret = main(
-        [
-            "--violin-vaccines",
-            str(VIOLIN_VACCINES),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-p2.14v",
-            "--max-rows",
-            "5",
-            "--log-level",
-            "WARNING",
-        ]
+    build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-p2.14v",
+        max_rows=5,
+        violin_vaccines=VIOLIN_VACCINES,
     )
-    assert ret == 0
 
     enriched_csv = out / "enriched" / "violin_vaccines_enriched.csv"
     assert enriched_csv.exists()
@@ -367,30 +344,18 @@ def test_cli_combined_pathogens_and_genes(tmp_path: Path) -> None:
     assert VIOLIN_PATHOGENS.exists(), f"VIOLIN pathogen data not found at {VIOLIN_PATHOGENS}"
     assert VIOLIN_GENES.exists(), f"VIOLIN gene data not found at {VIOLIN_GENES}"
 
-    from apecx_integration.synonym_dictionary.cli import main
     from apecx_integration.synonym_dictionary.enums import EntityType
     from apecx_integration.synonym_dictionary.sqlite_writer import SQLiteDictionaryReader
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path / "dict_combined"
-    ret = main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--violin-genes",
-            str(VIOLIN_GENES),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-combined",
-            "--max-rows",
-            "5",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-combined",
+        max_rows=5,
+        violin_pathogens=VIOLIN_PATHOGENS,
+        violin_genes=VIOLIN_GENES,
     )
-    assert ret == 0, f"CLI exited with code {ret}"
-
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists()
     reader = SQLiteDictionaryReader(db_path)
     entries = list(reader.all_entries())
@@ -398,22 +363,22 @@ def test_cli_combined_pathogens_and_genes(tmp_path: Path) -> None:
     pathogen_entries = [e for e in entries if e.entity_type == EntityType.PATHOGEN]
     gene_entries = [e for e in entries if e.entity_type == EntityType.GENE]
 
-    assert (
-        len(pathogen_entries) >= 1
-    ), "Combined build produced no pathogen entries from 5 VIOLIN pathogen rows"
+    assert len(pathogen_entries) >= 1, (
+        "Combined build produced no pathogen entries from 5 VIOLIN pathogen rows"
+    )
     assert len(gene_entries) >= 1, "Combined build produced no gene entries from 5 VIOLIN gene rows"
 
     # Pathogen IRIs must use OBO purl namespace.
     for e in pathogen_entries:
-        assert e.canonical_iri.startswith(
-            "http://purl.obolibrary.org/obo/NCBITaxon_"
-        ), f"Pathogen entry has unexpected IRI: {e.canonical_iri}"
+        assert e.canonical_iri.startswith("http://purl.obolibrary.org/obo/NCBITaxon_"), (
+            f"Pathogen entry has unexpected IRI: {e.canonical_iri}"
+        )
 
     # Gene IRIs must use identifiers.org ncbigene namespace.
     for e in gene_entries:
-        assert e.canonical_iri.startswith(
-            "http://identifiers.org/ncbigene/"
-        ), f"Gene entry has unexpected IRI: {e.canonical_iri}"
+        assert e.canonical_iri.startswith("http://identifiers.org/ncbigene/"), (
+            f"Gene entry has unexpected IRI: {e.canonical_iri}"
+        )
 
     # Manifest must record both entity types.
     manifest = reader.read_manifest()

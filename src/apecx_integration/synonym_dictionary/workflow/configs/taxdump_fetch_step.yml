@@ -1,0 +1,43 @@
+# Step 1 of the dictionary-build workflow — NCBI taxdump fetch.
+#
+# Wraps fetch_taxdump as a nanobrain step. Idempotent: re-uses the
+# downloaded archive + extracted files when present under output_dir.
+#
+# The defaults in `output_dir` etc. are filled in by the step's
+# Pydantic config class at validation time (see
+# taxdump_fetch_step.py::TaxdumpFetchStepConfig._default_taxdump_dir);
+# the YAML omits them so the env-var precedence (APECX_TAXDUMP_DIR)
+# kicks in cleanly without a literal placeholder shadowing it.
+#
+# No top-level ``class:`` field: this YAML is loaded either via the
+# workflow's nested-resolver (which names the class via ``class:`` +
+# ``config:`` in dictionary_build_workflow.yml) or by the explicit
+# ``TaxdumpFetchStep.from_config(...)`` caller. Either path already
+# knows the target class. Adding ``class:`` here would be rejected by
+# TaxdumpFetchStepConfig's ``extra='forbid'`` (workspace policy).
+
+name: taxdump_fetch_step
+description: "Download NCBI taxdump.tar.gz and emit nodes.dmp + merged.dmp paths."
+
+input_data_units:
+  trigger:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: trigger
+    description: >
+      Kick-off port. The step's process() does not read this value;
+      its presence just unblocks the data-driven cascade. Drivers
+      that invoke the workflow synchronously can leave this empty.
+    persistent: false
+
+output_data_units:
+  taxdump_paths:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: taxdump_paths
+    description: >
+      Dict {nodes_path: <str>, merged_path: <str>} pointing at the
+      extracted NCBI taxdump files.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "trigger"

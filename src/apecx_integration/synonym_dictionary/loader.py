@@ -408,8 +408,9 @@ class _ProcessSingleton:
                 if self._path is None:
                     self._error = (
                         "APECX_SYNONYM_DICT_PATH not set; Stage 2 fast path "
-                        "is disabled. Run apecx-build-dictionary to produce "
-                        "a dictionary artifact."
+                        "is disabled. The dictionary is normally produced by "
+                        "the apecx-mcp startup hook (see "
+                        "synonym_dictionary.workflow.bootstrap.ensure_dictionary)."
                     )
                     return None, self._error
                 try:

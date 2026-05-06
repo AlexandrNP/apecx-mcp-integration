@@ -243,6 +243,43 @@ Full operator-facing install + reference: `docs/mcp_integration.md`
 (Claude Desktop config snippet, env vars, per-tool input/output
 shapes, troubleshooting).
 
+## Synonym dictionary build (lazy, at MCP startup)
+
+The synonym dictionary is built by a **nanobrain workflow**, not a
+console script. There is no `apecx-build-dictionary` or
+`apecx-fetch-taxdump` binary — both were removed on the
+`dictionary-build-as-workflow` branch (2026-05-06). The workflow runs
+lazily at `apecx-mcp` startup if the artifact is missing.
+
+Components:
+
+- `synonym_dictionary/workflow/taxdump_fetch_step.py` — `TaxdumpFetchStep`
+  (BaseStep). Wraps `taxdump_fetcher.fetch_taxdump()`.
+- `synonym_dictionary/workflow/dictionary_build_step.py` — `DictionaryBuildStep`
+  (BaseStep). Wraps `build.build_dictionary()`.
+- `synonym_dictionary/workflow/configs/dictionary_build_workflow.yml` —
+  wires the two via DirectLink (auto_transfer=True; the default-False
+  is a silent-failure shape, see "Things that will surprise you").
+- `synonym_dictionary/workflow/bootstrap.py:ensure_dictionary` — the
+  **migration seam**. Both the current trigger (a3 — MCP startup) and
+  the long-term trigger (a1 — apecx-harvesters sink after a harvest run
+  completes) funnel through this function. Migration is purely about
+  *where* it's called from.
+
+`mcp_surface/server.py:_ensure_synonym_dict_or_warn` invokes
+`ensure_dictionary` at startup. Behavior:
+
+1. If the SQLite already exists at the resolved path → skip build, warm the loader singleton.
+2. If `APECX_SKIP_DICT_BUILD=1` → skip with a warning (operator opt-out for fast restarts).
+3. If VIOLIN data is missing under `APECX_DATA_ROOT` → skip with a "run apecx-setup first" warning.
+4. Otherwise → build (10–15 min on first run; subsequent runs <1 s due to idempotency).
+
+Tests that need a custom-shape build (slice with `--max-rows`, arbitrary
+table paths) use `tests/integration/_dict_build_helper.py:build_dictionary_for_test`,
+which drives the two steps directly without going through the workflow
+YAML or the bootstrap. Production code paths (MCP startup, future
+harvester sink) always go through `ensure_dictionary`.
+
 ## E2E RAG synthesis pipeline (Day 2)
 
 `src/apecx_integration/composition/workflows/rag_e2e_synthesis/` is

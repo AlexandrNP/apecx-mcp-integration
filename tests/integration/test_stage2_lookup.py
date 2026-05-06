@@ -62,25 +62,15 @@ def built_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
         "Ensure the workspace data/ directory is populated."
     )
 
-    from apecx_integration.synonym_dictionary.cli import main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("stage2_dict")
-    ret = main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-p3.10",
-            "--max-rows",
-            "5",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-p3.10",
+        max_rows=5,
+        violin_pathogens=VIOLIN_PATHOGENS,
     )
-    assert ret == 0, f"apecx-build-dictionary exited with code {ret}"
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists(), f"dictionary.sqlite missing at {db_path}"
     return db_path
 
@@ -318,7 +308,7 @@ def test_p35_ancestor_traversal_on_real_dictionary(
     try:
         result = lookup_entity(strain_iri)
         assert result.path == "ancestor", (
-            f"Expected path='ancestor' for strain IRI {strain_iri!r}; " f"got path={result.path!r}"
+            f"Expected path='ancestor' for strain IRI {strain_iri!r}; got path={result.path!r}"
         )
         assert result.canonical_iri == species_iri
         assert result.confidence == pytest.approx(ancestor_entry.confidence * 0.9)

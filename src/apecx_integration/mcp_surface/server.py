@@ -418,47 +418,68 @@ def _check_data_root_or_warn() -> None:
     log.warning("=" * 64)
 
 
-def _check_synonym_dict_or_warn() -> None:
-    """Warn at startup when ``APECX_SYNONYM_DICT_PATH`` is absent or stale.
+def _ensure_synonym_dict_or_warn() -> None:
+    """Build the synonym dictionary at startup if it isn't already there.
 
-    The dictionary singleton loads lazily on first lookup, so the server
-    starts without it.  But a missing or mis-configured path causes every
-    ``lookup_entity()`` call to silently fall back to the slow substring
-    path with no log entry unless the operator watches the tool response.
-    Surfacing the gap here gives a single, early signal.
+    Behavior:
+
+    1. If ``APECX_SYNONYM_DICT_PATH`` points at an existing file, pre-warm
+       the singleton and return — same as before.
+    2. Otherwise, invoke the dictionary-build workflow via
+       :func:`ensure_dictionary` (the migration seam — same function that
+       a future apecx-harvesters sink will call). The workflow:
+         - Returns the existing artifact path if one was built earlier.
+         - Returns ``None`` if VIOLIN data is missing (operator must
+           ``apecx-setup`` first) or the operator opted out via
+           ``APECX_SKIP_DICT_BUILD=1``.
+         - Otherwise drives the cascade and writes a fresh SQLite.
+    3. After a successful build, point ``APECX_SYNONYM_DICT_PATH`` at the
+       result and pre-warm the loader singleton.
+
+    The build is 10-15 minutes on first run (live OLS calls). Subsequent
+    starts are <1 s because the artifact is detected and the build is
+    skipped. Operators who want fast startup with degraded resolution
+    can set ``APECX_SKIP_DICT_BUILD=1``.
     """
-    dict_path_env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
-
-    if not dict_path_env:
-        log.warning("=" * 64)
-        log.warning("Synonym dictionary NOT configured.")
-        log.warning("")
-        log.warning("APECX_SYNONYM_DICT_PATH is unset.  Entity resolution tools")
-        log.warning("(query_pathogens, query_bvbrc_genomes, resolve_entity, …)")
-        log.warning("will use the slow substring fallback on every call.")
-        log.warning("")
-        log.warning("To fix: build the dictionary once —")
-        log.warning("  apecx-build-dictionary --violin-pathogens <path> ...")
-        log.warning("then set APECX_SYNONYM_DICT_PATH to the .sqlite output file.")
-        log.warning("=" * 64)
-        return
-
-    dict_path = Path(dict_path_env)
-    if not dict_path.is_file():
-        log.warning("=" * 64)
-        log.warning("Synonym dictionary file not found: %s", dict_path)
-        log.warning("Entity resolution will fall back to slow substring search.")
-        log.warning("=" * 64)
-        return
-
-    # Path is set and file exists — pre-warm the singleton so the first
-    # MCP tool call doesn't pay the SQLite open + manifest validation cost.
     from apecx_integration.synonym_dictionary.loader import (
         configure_dictionary_path,
         get_dictionary_index,
     )
+    from apecx_integration.synonym_dictionary.workflow.bootstrap import (
+        EnsureDictionaryConfig,
+        ensure_dictionary,
+    )
 
-    configure_dictionary_path(dict_path)
+    cfg = EnsureDictionaryConfig().resolve()
+    assert cfg.sqlite_path is not None  # resolve() guarantees this
+
+    if not cfg.sqlite_path.is_file():
+        log.info(
+            "MCP startup: synonym dictionary not found at %s — invoking build workflow",
+            cfg.sqlite_path,
+        )
+        try:
+            built = ensure_dictionary(cfg)
+        except Exception as exc:  # noqa: BLE001 — final user-facing fallback
+            log.warning("=" * 64)
+            log.warning("Synonym dictionary build failed: %s", exc)
+            log.warning("Entity resolution will fall back to slow substring search.")
+            log.warning("=" * 64)
+            return
+        if built is None:
+            log.warning("=" * 64)
+            log.warning("Synonym dictionary not built — entity resolution will use")
+            log.warning("the slow substring fallback. Reasons (check earlier log lines):")
+            log.warning("  - APECX_SKIP_DICT_BUILD=1 was set, OR")
+            log.warning("  - VIOLIN data is missing (run apecx-setup first).")
+            log.warning("=" * 64)
+            return
+        # Re-export the env var so child tool calls see the same path.
+        os.environ["APECX_SYNONYM_DICT_PATH"] = str(built)
+
+    # Pre-warm the loader singleton so the first MCP tool call doesn't pay
+    # the SQLite open + manifest validation cost.
+    configure_dictionary_path(cfg.sqlite_path)
     _, err = get_dictionary_index()
     if err:
         log.warning("=" * 64)
@@ -466,14 +487,18 @@ def _check_synonym_dict_or_warn() -> None:
         log.warning("Entity resolution will fall back to slow substring search.")
         log.warning("=" * 64)
     else:
-        log.info("Synonym dictionary loaded from %s", dict_path)
+        log.info("Synonym dictionary loaded from %s", cfg.sqlite_path)
+
+
+# Backwards-compat alias kept for tests that still import the old name.
+_check_synonym_dict_or_warn = _ensure_synonym_dict_or_warn
 
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
-    _check_synonym_dict_or_warn()
+    _ensure_synonym_dict_or_warn()
     server = build_server()
     server.run()
 

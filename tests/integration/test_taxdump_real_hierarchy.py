@@ -100,33 +100,25 @@ def dict_with_real_hierarchy(
     Returns the path to dictionary.sqlite.
     """
     assert VIOLIN_PATHOGENS.exists(), (
-        f"VIOLIN data not found at {VIOLIN_PATHOGENS}. " "Populate the workspace data/ directory."
+        f"VIOLIN data not found at {VIOLIN_PATHOGENS}. Populate the workspace data/ directory."
     )
     nodes_path, merged_path = real_taxdump
     out = tmp_path_factory.mktemp("real_taxdump_dict")
 
-    from apecx_integration.synonym_dictionary.cli import main as build_main
+    # Migration note (2026-05-05): the deleted CLI accepted explicit
+    # --ncbitaxon-nodes / --ncbitaxon-merged paths; the workflow-driven
+    # helper accepts the same as ``nodes_dmp`` / ``merged_dmp`` kwargs and
+    # bypasses the TaxdumpFetchStep entirely when both are supplied.
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
-    ret = build_main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-real-taxdump",
-            "--max-rows",
-            "60",
-            "--ncbitaxon-nodes",
-            str(nodes_path),
-            "--ncbitaxon-merged",
-            str(merged_path),
-            "--log-level",
-            "WARNING",
-        ]
+    db = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-real-taxdump",
+        max_rows=60,
+        violin_pathogens=VIOLIN_PATHOGENS,
+        nodes_dmp=nodes_path,
+        merged_dmp=merged_path,
     )
-    assert ret == 0, "apecx-build-dictionary returned non-zero"
-    db = out / "dictionary.sqlite"
     assert db.exists(), f"dictionary.sqlite not written to {out}"
     return db
 
@@ -139,12 +131,12 @@ def dict_with_real_hierarchy(
 def test_fetch_taxdump_returns_existing_files(real_taxdump: tuple[Path, Path]) -> None:
     """fetch_taxdump() with force=False on a cached dir returns without re-downloading."""
     nodes_path, merged_path = real_taxdump
-    assert (
-        nodes_path.stat().st_size > 100 * 1024 * 1024
-    ), f"nodes.dmp is suspiciously small: {nodes_path.stat().st_size} bytes"
-    assert (
-        merged_path.stat().st_size > 1 * 1024 * 1024
-    ), f"merged.dmp is suspiciously small: {merged_path.stat().st_size} bytes"
+    assert nodes_path.stat().st_size > 100 * 1024 * 1024, (
+        f"nodes.dmp is suspiciously small: {nodes_path.stat().st_size} bytes"
+    )
+    assert merged_path.stat().st_size > 1 * 1024 * 1024, (
+        f"merged.dmp is suspiciously small: {merged_path.stat().st_size} bytes"
+    )
 
 
 def test_fetch_taxdump_idempotent(real_taxdump: tuple[Path, Path]) -> None:
@@ -173,14 +165,12 @@ def test_nodes_dmp_contains_eeev_strain(real_taxdump: tuple[Path, Path]) -> None
             parent_id = int(parts[1].strip())
             if child_id == EEEV_STRAIN_ID:
                 assert parent_id == EEEV_SPECIES_ID, (
-                    f"NCBITaxon:{EEEV_STRAIN_ID} has parent {parent_id}, "
-                    f"expected {EEEV_SPECIES_ID}"
+                    f"NCBITaxon:{EEEV_STRAIN_ID} has parent {parent_id}, expected {EEEV_SPECIES_ID}"
                 )
                 found_strain = True
                 break
     assert found_strain, (
-        f"NCBITaxon:{EEEV_STRAIN_ID} not found in nodes.dmp — "
-        "NCBI may have retired this taxon ID"
+        f"NCBITaxon:{EEEV_STRAIN_ID} not found in nodes.dmp — NCBI may have retired this taxon ID"
     )
 
 
@@ -232,9 +222,9 @@ def test_index_has_hierarchy_flag(dict_with_real_hierarchy: Path) -> None:
     from apecx_integration.synonym_dictionary.loader import DictionaryIndex
 
     index = DictionaryIndex.load(dict_with_real_hierarchy)
-    assert (
-        index.has_hierarchy
-    ), "has_hierarchy should be True for a dictionary built with --ncbitaxon-nodes"
+    assert index.has_hierarchy, (
+        "has_hierarchy should be True for a dictionary built with --ncbitaxon-nodes"
+    )
 
 
 def test_lookup_ancestor_walks_real_strain_to_species(dict_with_real_hierarchy: Path) -> None:
@@ -247,9 +237,9 @@ def test_lookup_ancestor_walks_real_strain_to_species(dict_with_real_hierarchy: 
         f"lookup_ancestor({EEEV_STRAIN_IRI!r}) returned None. "
         f"EEEV species IRI ({EEEV_SPECIES_IRI}) must be present in the dictionary."
     )
-    assert (
-        ancestor.canonical_iri == EEEV_SPECIES_IRI
-    ), f"Expected ancestor {EEEV_SPECIES_IRI!r}, got {ancestor.canonical_iri!r}"
+    assert ancestor.canonical_iri == EEEV_SPECIES_IRI, (
+        f"Expected ancestor {EEEV_SPECIES_IRI!r}, got {ancestor.canonical_iri!r}"
+    )
 
 
 def test_lookup_entity_ancestor_path_for_real_strain(dict_with_real_hierarchy: Path) -> None:
@@ -265,9 +255,9 @@ def test_lookup_entity_ancestor_path_for_real_strain(dict_with_real_hierarchy: P
     try:
         result = lookup_entity(EEEV_STRAIN_IRI)
         assert result is not None, f"lookup_entity({EEEV_STRAIN_IRI!r}) returned None"
-        assert (
-            result.path == "ancestor"
-        ), f"Expected path='ancestor' for real strain IRI; got path={result.path!r}"
+        assert result.path == "ancestor", (
+            f"Expected path='ancestor' for real strain IRI; got path={result.path!r}"
+        )
         assert result.canonical_iri == EEEV_SPECIES_IRI
     finally:
         _loader._singleton = _orig
@@ -281,9 +271,9 @@ def test_lookup_entity_ancestor_confidence_penalty(dict_with_real_hierarchy: Pat
 
     index = DictionaryIndex.load(dict_with_real_hierarchy)
     species_entry = index.lookup_by_iri(EEEV_SPECIES_IRI)
-    assert (
-        species_entry is not None
-    ), f"EEEV species IRI {EEEV_SPECIES_IRI!r} not found in dictionary"
+    assert species_entry is not None, (
+        f"EEEV species IRI {EEEV_SPECIES_IRI!r} not found in dictionary"
+    )
 
     singleton = _ProcessSingleton()
     singleton.configure(dict_with_real_hierarchy)
@@ -362,5 +352,5 @@ def test_query_pathogens_ancestor_path_with_real_hierarchy(
     )
     # Confidence is species confidence × 0.9 (ancestor penalty).
     assert resolution["confidence"] < 1.0, (
-        f"Ancestor confidence should be <1.0 (penalty applied); " f"got {resolution['confidence']}"
+        f"Ancestor confidence should be <1.0 (penalty applied); got {resolution['confidence']}"
     )

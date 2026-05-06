@@ -5,7 +5,8 @@ APECX_SYNONYM_DICT_LIVE_OLS=1 because GeneResolver makes no OLS calls.
 It builds canonical IRIs from NCBI_Gene_ID source values directly.
 
 What is verified:
-- CLI builds a gene dictionary from VIOLIN Gene_Information.csv
+- The dictionary-build workflow steps build a gene dictionary from
+  VIOLIN Gene_Information.csv (driven via ``build_dictionary_for_test``)
 - Enriched CSV has canonical columns and identifiers.org IRIs
 - At least 73% of rows resolve (M1 fill rate: 73.5%)
 - All resolved entries have confidence=1.0 (anchor mode)
@@ -37,30 +38,24 @@ def gene_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
     Returns the path to the ``dictionary.sqlite`` artifact.
     No OLS calls are made — GeneResolver is source-data-only.
+
+    Migration note (2026-05-05): replaces the deleted
+    ``apecx-build-dictionary`` CLI with the workflow-driven helper
+    ``build_dictionary_for_test``.
     """
     assert VIOLIN_GENES.exists(), (
         f"VIOLIN gene data not found at {VIOLIN_GENES}. "
         "Ensure the workspace data/ directory is populated."
     )
-    from apecx_integration.synonym_dictionary.cli import main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("gene_dict")
-    ret = main(
-        [
-            "--violin-genes",
-            str(VIOLIN_GENES),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-gene-v1",
-            "--max-rows",
-            str(_MAX_ROWS),
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-gene-v1",
+        max_rows=_MAX_ROWS,
+        violin_genes=VIOLIN_GENES,
     )
-    assert ret == 0, f"apecx-build-dictionary exited with code {ret}"
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists(), f"dictionary.sqlite missing at {db_path}"
     return db_path
 
@@ -130,9 +125,9 @@ def test_gene_build_iris_use_identifiers_org(gene_dictionary: Path) -> None:
 
     reader = SQLiteDictionaryReader(gene_dictionary)
     for entry in reader.all_entries():
-        assert entry.canonical_iri.startswith(
-            "http://identifiers.org/ncbigene/"
-        ), f"Gene entry has unexpected IRI format: {entry.canonical_iri}"
+        assert entry.canonical_iri.startswith("http://identifiers.org/ncbigene/"), (
+            f"Gene entry has unexpected IRI format: {entry.canonical_iri}"
+        )
 
 
 def test_gene_build_enriched_csv_has_canonical_columns(gene_dictionary: Path) -> None:
@@ -224,7 +219,7 @@ def test_gene_stage2_lookup_by_iri(gene_dictionary: Path) -> None:
     try:
         result = lookup_entity(any_entry.canonical_iri)
         assert result.path == "fast", (
-            f"IRI shortcut failed for {any_entry.canonical_iri!r}: " f"got path={result.path!r}"
+            f"IRI shortcut failed for {any_entry.canonical_iri!r}: got path={result.path!r}"
         )
         assert result.canonical_iri == any_entry.canonical_iri
     finally:

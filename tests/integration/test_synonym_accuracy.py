@@ -69,31 +69,26 @@ SLICE_SIZE = 60
 
 @pytest.fixture(scope="module")
 def slice_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    """Build a dictionary from the first SLICE_SIZE rows of each VIOLIN table."""
+    """Build a dictionary from the first SLICE_SIZE rows of each VIOLIN table.
+
+    Migration note (2026-05-05): replaces the deleted ``apecx-build-dictionary``
+    CLI with the workflow-driven helper ``build_dictionary_for_test``, which
+    instantiates :class:`TaxdumpFetchStep` + :class:`DictionaryBuildStep`
+    directly via ``from_config`` and runs them in sequence.
+    """
     assert VIOLIN_PATHOGENS.exists(), f"VIOLIN data missing at {VIOLIN_PATHOGENS}"
 
-    from apecx_integration.synonym_dictionary.cli import main as build_main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("slice_accuracy_dict")
-    args = [
-        "--violin-pathogens",
-        str(VIOLIN_PATHOGENS),
-        "--output",
-        str(out),
-        "--dictionary-version",
-        "test-slice-accuracy",
-        "--max-rows",
-        str(SLICE_SIZE),
-        "--log-level",
-        "WARNING",
-    ]
-    if VIOLIN_VACCINES.exists():
-        args[2:2] = ["--violin-vaccines", str(VIOLIN_VACCINES)]
-    if VIOLIN_GENES.exists():
-        args[2:2] = ["--violin-genes", str(VIOLIN_GENES)]
-    ret = build_main(args)
-    assert ret == 0, f"apecx-build-dictionary exited with code {ret}"
-    db = out / "dictionary.sqlite"
+    db = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-slice-accuracy",
+        max_rows=SLICE_SIZE,
+        violin_pathogens=VIOLIN_PATHOGENS,
+        violin_vaccines=VIOLIN_VACCINES if VIOLIN_VACCINES.exists() else None,
+        violin_genes=VIOLIN_GENES if VIOLIN_GENES.exists() else None,
+    )
     assert db.exists()
     return db
 
@@ -105,26 +100,17 @@ def full_corpus_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
         pytest.skip("Set APECX_SYNONYM_DICT_FULL_CORPUS=1 for full-corpus tests.")
     assert VIOLIN_PATHOGENS.exists()
 
-    from apecx_integration.synonym_dictionary.cli import main as build_main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("full_corpus_accuracy_dict")
-    args = [
-        "--violin-pathogens",
-        str(VIOLIN_PATHOGENS),
-        "--output",
-        str(out),
-        "--dictionary-version",
-        "test-full-corpus-accuracy",
-        "--log-level",
-        "WARNING",
-    ]
-    if VIOLIN_VACCINES.exists():
-        args.extend(["--violin-vaccines", str(VIOLIN_VACCINES)])
-    if VIOLIN_GENES.exists():
-        args.extend(["--violin-genes", str(VIOLIN_GENES)])
-    ret = build_main(args)
-    assert ret == 0
-    db = out / "dictionary.sqlite"
+    db = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-full-corpus-accuracy",
+        max_rows=None,
+        violin_pathogens=VIOLIN_PATHOGENS,
+        violin_vaccines=VIOLIN_VACCINES if VIOLIN_VACCINES.exists() else None,
+        violin_genes=VIOLIN_GENES if VIOLIN_GENES.exists() else None,
+    )
     assert db.exists()
     return db
 
@@ -144,9 +130,9 @@ def test_pathogen_slice_metrics(slice_dictionary: Path):
 
     assert metrics.rows_with_ground_truth > 0
     assert metrics.recall >= 0.95, f"Recall {metrics.recall:.3f} < 0.95\n{metrics.summary()}"
-    assert (
-        metrics.precision >= 0.95
-    ), f"Precision {metrics.precision:.3f} < 0.95\n{metrics.summary()}"
+    assert metrics.precision >= 0.95, (
+        f"Precision {metrics.precision:.3f} < 0.95\n{metrics.summary()}"
+    )
     assert metrics.f1 >= 0.95
 
 
@@ -184,9 +170,9 @@ def test_vaccine_slice_metrics(slice_dictionary: Path):
     # Looser floor (0.80) — vaccines have more name-mangling issues than
     # pathogens (long tradenames, manufacturer prefixes, etc.).
     assert metrics.recall >= 0.80, f"Recall {metrics.recall:.3f} < 0.80\n{metrics.summary()}"
-    assert (
-        metrics.precision >= 0.80
-    ), f"Precision {metrics.precision:.3f} < 0.80\n{metrics.summary()}"
+    assert metrics.precision >= 0.80, (
+        f"Precision {metrics.precision:.3f} < 0.80\n{metrics.summary()}"
+    )
 
 
 @pytest.mark.skipif(not _FULL_CORPUS, reason="Full-corpus opt-in (Vaccine: ~3.5K rows, slow).")

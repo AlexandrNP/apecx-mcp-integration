@@ -1,11 +1,19 @@
 """
-Unit tests for the ``_check_synonym_dict_or_warn`` startup gate.
+Unit tests for the ``_ensure_synonym_dict_or_warn`` startup gate.
 
 Scenarios:
-  1. APECX_SYNONYM_DICT_PATH not set → loud banner mentioning the env var
-  2. Path set but file missing       → loud banner mentioning the path
-  3. Path set + file exists but manifest corrupt → load error banner
-  4. Path set + valid SQLite dictionary → silent (INFO log only), singleton warm
+  1. APECX_SYNONYM_DICT_PATH not set, no data    → build attempt skipped,
+     warning that VIOLIN data is missing.
+  2. Path set but file missing, no data          → same as 1, warning at the
+     specific path the operator chose.
+  3. Path set + file exists but manifest corrupt → load error banner.
+  4. Path set + valid SQLite dictionary          → silent success, singleton warm.
+
+The new behavior (Phase 3 of dictionary-build-as-workflow) replaced
+"warn the operator to run apecx-build-dictionary" with "invoke the
+build workflow itself unless inputs are missing or the operator opted
+out." Scenarios 1 and 2 used to assert specific banner content; they
+now assert the workflow-skip-with-reason path.
 """
 
 from __future__ import annotations
@@ -15,7 +23,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
-from apecx_integration.mcp_surface.server import _check_synonym_dict_or_warn
+
+from apecx_integration.mcp_surface.server import _ensure_synonym_dict_or_warn
 from apecx_integration.synonym_dictionary.enums import EntityType, OntologyName
 from apecx_integration.synonym_dictionary.schema import BuildManifest, DictionaryEntry
 from apecx_integration.synonym_dictionary.sqlite_writer import SQLiteDictionaryWriter
@@ -61,31 +70,51 @@ def _write_valid_dict(path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Scenario 1: env var absent
+# Scenario 1: env var absent + no data → build skipped, fallback warning
 # ---------------------------------------------------------------------------
 
 
-def test_no_env_var_logs_banner(caplog):
-    with caplog.at_level(logging.WARNING, logger="apecx_integration.mcp_surface.server"):
-        _check_synonym_dict_or_warn()
-    text = caplog.text
-    assert "APECX_SYNONYM_DICT_PATH" in text
-    assert "slow" in text.lower() or "fallback" in text.lower()
+def test_no_env_var_no_data_skips_build(monkeypatch, tmp_path, caplog):
+    """No APECX_SYNONYM_DICT_PATH and no VIOLIN data: build workflow is invoked
+    but skips immediately because inputs are missing. Fallback warning emitted."""
+    monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path))  # empty dir, no violin/
+    monkeypatch.setenv("APECX_DICT_OUTPUT_DIR", str(tmp_path / "out"))
+    with caplog.at_level(logging.WARNING):
+        _ensure_synonym_dict_or_warn()
+    text = caplog.text.lower()
+    assert "fallback" in text or "slow substring" in text or "not built" in text
 
 
 # ---------------------------------------------------------------------------
-# Scenario 2: env var set but file missing
+# Scenario 1b: APECX_SKIP_DICT_BUILD=1 honored
 # ---------------------------------------------------------------------------
 
 
-def test_missing_file_logs_banner(monkeypatch, tmp_path, caplog):
+def test_skip_dict_build_env_var_honored(monkeypatch, tmp_path, caplog):
+    """APECX_SKIP_DICT_BUILD=1 → no build attempt, fallback warning."""
+    missing = tmp_path / "missing.sqlite"
+    monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(missing))
+    monkeypatch.setenv("APECX_SKIP_DICT_BUILD", "1")
+    with caplog.at_level(logging.WARNING):
+        _ensure_synonym_dict_or_warn()
+    assert "fallback" in caplog.text.lower() or "not built" in caplog.text.lower()
+
+
+# ---------------------------------------------------------------------------
+# Scenario 2: env var set but file missing + no data → build skip + warning
+# ---------------------------------------------------------------------------
+
+
+def test_missing_file_no_data_skips_build(monkeypatch, tmp_path, caplog):
+    """Operator pointed APECX_SYNONYM_DICT_PATH at a non-existent file and
+    has no VIOLIN data either: build attempted, skipped for missing data,
+    fallback warning emitted."""
     missing = tmp_path / "does_not_exist.sqlite"
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(missing))
-    with caplog.at_level(logging.WARNING, logger="apecx_integration.mcp_surface.server"):
-        _check_synonym_dict_or_warn()
-    text = caplog.text
-    assert str(missing) in text
-    assert "not found" in text.lower() or "fallback" in text.lower()
+    monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path / "no_data"))  # not present
+    with caplog.at_level(logging.WARNING):
+        _ensure_synonym_dict_or_warn()
+    assert "fallback" in caplog.text.lower() or "not built" in caplog.text.lower()
 
 
 # ---------------------------------------------------------------------------
@@ -112,7 +141,7 @@ def test_corrupt_dict_logs_load_error(monkeypatch, tmp_path, caplog):
 
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(bad))
     with caplog.at_level(logging.WARNING, logger="apecx_integration.mcp_surface.server"):
-        _check_synonym_dict_or_warn()
+        _ensure_synonym_dict_or_warn()
     assert "failed to load" in caplog.text.lower() or "fallback" in caplog.text.lower()
 
 
@@ -127,7 +156,7 @@ def test_valid_dict_is_silent_and_warms_singleton(monkeypatch, tmp_path, caplog)
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(db))
 
     with caplog.at_level(logging.WARNING, logger="apecx_integration.mcp_surface.server"):
-        _check_synonym_dict_or_warn()
+        _ensure_synonym_dict_or_warn()
     # No warning banner.
     assert "SYNONYM_DICT" not in caplog.text
     assert "not found" not in caplog.text.lower()

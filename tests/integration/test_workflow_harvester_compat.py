@@ -66,11 +66,12 @@ apecx_harvesters = pytest.importorskip(
 )
 
 from apecx_harvesters.loaders.base import DataCite  # noqa: E402
+from pydantic import BaseModel, ConfigDict  # noqa: E402
+
 from apecx_integration.synonym_dictionary.harvester_adapter import (  # noqa: E402
     adapt_workflow_to_harvester_transform,
 )
 from apecx_integration.synonym_dictionary.workflow import IRIResolutionWorkflow  # noqa: E402
-from pydantic import BaseModel, ConfigDict  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # DataCite subclass used by the contract tests
@@ -153,9 +154,9 @@ def test_adapter_signature_matches_harvester_transform_protocol(workflow):
     pos_or_kw = [
         p for p in sig.parameters.values() if p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD)
     ]
-    assert (
-        len(pos_or_kw) == 1
-    ), f"harvester Transform takes exactly one positional arg; got {len(pos_or_kw)}"
+    assert len(pos_or_kw) == 1, (
+        f"harvester Transform takes exactly one positional arg; got {len(pos_or_kw)}"
+    )
 
 
 @pytest.mark.asyncio
@@ -249,25 +250,15 @@ def eeev_dictionary(tmp_path_factory: pytest.TempPathFactory) -> Path:
     if not _LIVE_OLS:
         pytest.skip("Set APECX_SYNONYM_DICT_LIVE_OLS=1 for the live-OLS test.")
 
-    from apecx_integration.synonym_dictionary.cli import main as build_main
+    from tests.integration._dict_build_helper import build_dictionary_for_test
 
     out = tmp_path_factory.mktemp("workflow_harvester_dict")
-    ret = build_main(
-        [
-            "--violin-pathogens",
-            str(VIOLIN_PATHOGENS),
-            "--output",
-            str(out),
-            "--dictionary-version",
-            "test-workflow-harvester",
-            "--max-rows",
-            "60",
-            "--log-level",
-            "WARNING",
-        ]
+    db_path = build_dictionary_for_test(
+        output_dir=out,
+        dictionary_version="test-workflow-harvester",
+        max_rows=60,
+        violin_pathogens=VIOLIN_PATHOGENS,
     )
-    assert ret == 0
-    db_path = out / "dictionary.sqlite"
     assert db_path.exists()
     return db_path
 

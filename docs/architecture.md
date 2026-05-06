@@ -402,10 +402,13 @@ flowchart LR
     SQW --> DICT["apecx_synonym_dict.sqlite"]
 ```
 
-Built by the `apecx-build-dictionary` CLI. The output SQLite carries:
+Built by the internal `dictionary_build_workflow` (nanobrain workflow at
+`synonym_dictionary/workflow/configs/dictionary_build_workflow.yml`,
+driven lazily at apecx-mcp startup by `bootstrap.ensure_dictionary`).
+The output SQLite carries:
 - `dictionary_entries` — one row per `(entity_type, canonical_iri)`
 - `synonym_synonyms_index` — inverse index `(entity_type, normalized) → IRI`
-- `taxon_hierarchy` — parent/child edges for NCBITaxon (only when built with `--ncbitaxon-nodes`)
+- `taxon_hierarchy` — parent/child edges for NCBITaxon (when `TaxdumpFetchStep` ran)
 - `merged_taxons` — old→new ID redirect table for deprecated NCBITaxon IDs
 - `ambiguous_surface_forms` — when two IRIs share a normalized form, the loser is recorded here
 
@@ -463,7 +466,7 @@ This is the **strict hierarchy contract** (user directive 2026-05-05).
 | Domain RAG FAISS index | `<workspace>/data/apecx_domain_rag/{faiss_index.bin, metadata.json}` | `scripts/build_domain_rag_index.py` | YAML override → workspace default |
 | VIOLIN CSVs | `<workspace>/data/violin/Pathogen_Information.csv` etc. | `apecx-setup` (downloads from private repo) | YAML → APECX_DB_DATA_DIR → APECX_WORKSPACE_ROOT |
 | BV-BRC TSV | `<workspace>/data/bvbrc_cache/alphavirus_genomes.tsv` | bundled with `apecx-setup` | YAML → APECX_WORKSPACE_ROOT |
-| Synonym dictionary | `APECX_SYNONYM_DICT_PATH` (no default) | `apecx-build-dictionary` | env var only; missing → fast path disabled |
+| Synonym dictionary | `APECX_SYNONYM_DICT_PATH` (defaults to `~/.apecx/dictionary/dictionary.sqlite`) | `dictionary_build_workflow` (lazy at apecx-mcp startup; `APECX_SKIP_DICT_BUILD=1` to opt out) | env var only; missing → fast path disabled |
 
 `<workspace>` resolves via `apecx_integration._workspace.resolve_workspace_root`
 in this order: `APECX_WORKSPACE_ROOT` env var → marker-walk for
@@ -824,9 +827,15 @@ workflow consumes:
    `scripts/aggregate_gsearch.py` → batch ingestion to the **APECx
    Globus Search index** (UUID `e74bf12a-d0dd-4d19-a965-03f4936db851`,
    public).
-2. **Dictionary builder** (`apecx-mcp-integration`): the
-   `apecx-build-dictionary` CLI invokes `synonym_dictionary/build.py`
-   which harvests entity names from VIOLIN + BV-BRC source rows,
+2. **Dictionary builder** (`apecx-mcp-integration`): the internal
+   `dictionary_build_workflow` (nanobrain workflow at
+   `synonym_dictionary/workflow/configs/dictionary_build_workflow.yml`)
+   wraps `taxdump_fetcher.fetch_taxdump()` and
+   `synonym_dictionary/build.py`. Triggered lazily at apecx-mcp startup
+   via `bootstrap.ensure_dictionary` (long-term: triggered by an
+   apecx-harvesters sink after a harvest run completes — see migration
+   note at the top of `bootstrap.py`). Harvests entity names from VIOLIN
+   + BV-BRC source rows,
    resolves them via the **EBI Ontology Lookup Service**, and writes
    `apecx_synonym_dict.sqlite` plus the `taxon_hierarchy` table built
    from the NCBI taxdump.
@@ -870,7 +879,8 @@ Three vertical bands:
 3. **Artifacts consumed** (read-only): FAISS index (built by
    `scripts/build_domain_rag_index.py`), VIOLIN+BV-BRC files,
    Globus Search index (built by harvester), synonym dictionary
-   (built by `apecx-build-dictionary`).
+   (built by the internal `dictionary_build_workflow` at apecx-mcp
+   startup).
 
 Total wall-clock budget: ~5–10 s retrieval (mostly PubMed) +
 ~30–60 s LLM = **~70 s end-to-end** on local Ollama.
@@ -885,7 +895,7 @@ to per-query latency:
 | Artifact | Written by (backend) | Read by (user-facing) |
 |---|---|---|
 | Globus Search index | harvester `aggregate_gsearch.py` | `query_globus_search` MCP tool, synthesis Globus branch |
-| `synonym_dict.sqlite` | `apecx-build-dictionary` CLI | `resolve_canonical_entity`, fast path of every database tool |
+| `synonym_dict.sqlite` | `dictionary_build_workflow` (lazy at apecx-mcp startup) | `resolve_canonical_entity`, fast path of every database tool |
 | FAISS index | `scripts/build_domain_rag_index.py` | synthesis FAISS branch |
 | VIOLIN/BV-BRC files | `apecx-setup` (download) | synthesis pandas branch + database tools |
 

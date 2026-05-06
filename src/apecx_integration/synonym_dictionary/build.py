@@ -1,8 +1,10 @@
 """Stage 1 build pipeline — orchestrates resolvers + writer to produce
 the dictionary artifact and per-row enriched CSVs.
 
-The CLI in :mod:`apecx_integration.synonym_dictionary.cli` is a thin
-wrapper around this module.
+This module is wrapped by :class:`apecx_integration.synonym_dictionary.workflow.dictionary_build_step.DictionaryBuildStep`.
+End users do not invoke it directly — the build runs as part of the
+nanobrain ``dictionary_build_workflow``, triggered lazily at apecx-mcp
+startup (see ``synonym_dictionary.workflow.bootstrap.ensure_dictionary``).
 
 Pipeline shape:
 

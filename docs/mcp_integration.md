@@ -184,28 +184,25 @@ The synonym dictionary powers fast canonical-IRI matching for all
 with it they also inject `_resolution` metadata and use exact taxon IDs
 as precision filters.
 
-Build the dictionary once:
+The dictionary is **built automatically at apecx-mcp startup** by an
+internal nanobrain workflow — there is no console script to run. On the
+first launch after `apecx-setup` completes, the MCP server invokes the
+`dictionary_build_workflow` (taxdump fetch → OLS resolution → SQLite
+write), which takes ~10–15 minutes against the live OLS API. Subsequent
+launches detect the existing artifact and skip the build (<1 s).
 
-```bash
-apecx-build-dictionary \
-  --violin-pathogens data/violin/Pathogen_Information.csv \
-  --violin-vaccines  data/violin/Vaccine_Catalog.csv \
-  --violin-genes     data/violin/Gene_Information.csv \
-  --output           build/synonym_dict \
-  --dictionary-version $(date +%Y-%m-%d)
-# Optional: ancestor traversal requires NCBI taxdump
-# --ncbitaxon-nodes <taxdump>/nodes.dmp \
-# --ncbitaxon-merged <taxdump>/merged.dmp \
-```
-
-Then set:
+Relevant env vars:
 
 | Variable | Default | What it does |
 |---|---|---|
-| `APECX_SYNONYM_DICT_PATH` | unset | Absolute path to the `.sqlite` file produced by `apecx-build-dictionary`. When set and valid, the server pre-warms the dictionary at startup. |
+| `APECX_SYNONYM_DICT_PATH` | `~/.apecx/dictionary/dictionary.sqlite` | Where the built dictionary is read from / written to. |
+| `APECX_DICT_OUTPUT_DIR` | `~/.apecx/dictionary` | Directory used when `APECX_SYNONYM_DICT_PATH` is unset. |
+| `APECX_TAXDUMP_DIR` | `~/.apecx/taxdump` | Where `nodes.dmp` / `merged.dmp` are cached. |
+| `APECX_SKIP_DICT_BUILD` | unset | Set to `1` to skip the build entirely (entity resolution falls back to slow substring search). Useful for fast restarts when you accept degraded resolution. |
 
-When unset, all entity-resolution paths silently fall back to substring
-search (a WARNING banner appears in the MCP server log at startup).
+When the dictionary is missing AND the build is skipped (operator opt-out
+OR no VIOLIN data present), all entity-resolution paths fall back to
+substring search and a WARNING banner appears in the MCP server log.
 
 ### Workflow-step (only matters if you wire those steps in)
 

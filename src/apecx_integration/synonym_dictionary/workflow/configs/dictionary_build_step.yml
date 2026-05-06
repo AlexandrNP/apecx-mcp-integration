@@ -1,0 +1,48 @@
+# Step 2 of the dictionary-build workflow — synonym-dictionary build.
+#
+# Wraps build_dictionary as a nanobrain step. Consumes the
+# `taxdump_paths` data unit (dict of two file-paths) from the upstream
+# TaxdumpFetchStep, plus its own configuration for input data tables
+# and ontology version pins.
+#
+# All four input-table paths are optional. When all are unset (or the
+# YAML omits them), `process()` raises ValueError — the build is
+# undefined with no input.
+#
+# Defaults for output_dir and dictionary_version are computed by the
+# step's Pydantic config class at validation time, honoring the env
+# vars APECX_DICT_OUTPUT_DIR and (for dictionary_version) the current
+# UTC ISO timestamp. See dictionary_build_step.py.
+#
+# No top-level ``class:`` field: this YAML is loaded either via the
+# workflow's nested-resolver (which names the class via ``class:`` +
+# ``config:`` in dictionary_build_workflow.yml) or by the explicit
+# ``DictionaryBuildStep.from_config(...)`` caller. Adding ``class:``
+# here would be rejected by DictionaryBuildStepConfig's
+# ``extra='forbid'`` (workspace policy).
+
+name: dictionary_build_step
+description: "Build dictionary.sqlite + enriched CSVs from VIOLIN / BV-BRC inputs."
+
+input_data_units:
+  taxdump_paths:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: taxdump_paths
+    description: >
+      Dict {nodes_path: <str>, merged_path: <str>} from the upstream
+      taxdump-fetch step.
+    persistent: false
+
+output_data_units:
+  build_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: build_result
+    description: >
+      Dict {sqlite_path: <str>, manifest: <dict>} describing the built
+      dictionary artifact. ``manifest`` is BuildManifest serialised via
+      .model_dump(mode='json') so the value is JSON-safe.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "taxdump_paths"

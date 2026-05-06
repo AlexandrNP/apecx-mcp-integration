@@ -4,15 +4,11 @@ Downloads ``taxdump.tar.gz`` from the NCBI FTP mirror and extracts only
 ``nodes.dmp`` and ``merged.dmp`` to a local cache directory.  All other
 members of the archive are discarded.
 
-Usage (CLI):
-    apecx-fetch-taxdump --output ~/.cache/apecx/taxdump
-
-Usage (Python):
-    from apecx_integration.synonym_dictionary.taxdump_fetcher import fetch_taxdump
-    nodes_path, merged_path = fetch_taxdump(Path("~/.cache/apecx/taxdump"))
-
-These paths can then be passed to ``apecx-build-dictionary`` via
-``--ncbitaxon-nodes`` / ``--ncbitaxon-merged``.
+This module is wrapped by
+:class:`apecx_integration.synonym_dictionary.workflow.taxdump_fetch_step.TaxdumpFetchStep`.
+End users do not invoke it directly — the fetch runs as the first step
+of the nanobrain ``dictionary_build_workflow``, triggered lazily at
+apecx-mcp startup (see ``synonym_dictionary.workflow.bootstrap.ensure_dictionary``).
 """
 
 from __future__ import annotations
@@ -96,7 +92,7 @@ def _download(url: str, dest: Path, *, show_progress: bool) -> None:
                 downloaded += len(chunk)
                 if show_progress and total:
                     pct = downloaded * 100 // total
-                    print(f"\r  {pct:3d}% ({downloaded // (1024*1024)} MiB)", end="", flush=True)
+                    print(f"\r  {pct:3d}% ({downloaded // (1024 * 1024)} MiB)", end="", flush=True)
         if show_progress:
             print()  # newline after progress bar
     log.info("download complete: %d bytes", dest.stat().st_size)

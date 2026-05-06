@@ -1,0 +1,100 @@
+# End-to-end dictionary-build workflow.
+#
+# Replaces the offline `apecx-fetch-taxdump` + `apecx-build-dictionary`
+# console-script pair with a single nanobrain workflow. Callers drive it
+# via the standard from_config / process / wait_for_cascade pattern:
+#
+#     workflow = Workflow.from_config(
+#         "src/apecx_integration/synonym_dictionary/workflow/configs/"
+#         "dictionary_build_workflow.yml"
+#     )
+#     await workflow.process({"trigger": True})
+#     await workflow.wait_for_cascade()
+#     # build_result available on workflow.step_output_data_units
+#
+# Topology
+# --------
+#   trigger (workflow input)
+#         │ DirectLink
+#         ▼
+#   taxdump_fetch.trigger
+#         │ TaxdumpFetchStep.process()
+#         ▼
+#   taxdump_fetch.taxdump_paths
+#         │ DirectLink (auto_transfer=True)
+#         ▼
+#   dictionary_build.taxdump_paths
+#         │ DictionaryBuildStep.process()
+#         ▼
+#   dictionary_build.build_result
+#         │ DirectLink
+#         ▼
+#   build_result (workflow output)
+#
+# Ownership boundary
+# ------------------
+# Each step owns its own input/output DataUnits and trigger (declared
+# in the per-step YAMLs). The workflow owns only the entry/exit data
+# units and the three DirectLinks below. See the
+# nanobrain-workflow-authoring skill.
+#
+# auto_transfer: True
+# -------------------
+# DirectLink defaults to auto_transfer=False, which is a silent-failure
+# shape (the link registers but does nothing on source-DU change).
+# All three links explicitly set auto_transfer: True so the cascade
+# actually advances.
+
+name: dictionary_build_workflow
+description: "Fetch NCBI taxdump and build the synonym dictionary as a nanobrain cascade."
+version: "0.1.0"
+
+input_data_units:
+  trigger:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: trigger
+    description: "Workflow entry port — kick-off value (any) for the cascade."
+    persistent: false
+
+output_data_units:
+  build_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: build_result
+    description: >
+      Workflow exit port — dict {sqlite_path, manifest} for the built
+      dictionary artifact.
+    persistent: false
+
+steps:
+  taxdump_fetch:
+    class: "apecx_integration.synonym_dictionary.workflow.taxdump_fetch_step.TaxdumpFetchStep"
+    config: "taxdump_fetch_step.yml"
+
+  dictionary_build:
+    class: "apecx_integration.synonym_dictionary.workflow.dictionary_build_step.DictionaryBuildStep"
+    config: "dictionary_build_step.yml"
+
+links:
+  workflow_input_to_taxdump_fetch:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "trigger"
+      target: "taxdump_fetch.trigger"
+      auto_transfer: true
+
+  taxdump_fetch_to_dictionary_build:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "taxdump_fetch.taxdump_paths"
+      target: "dictionary_build.taxdump_paths"
+      auto_transfer: true
+
+  dictionary_build_to_workflow_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "dictionary_build.build_result"
+      target: "build_result"
+      auto_transfer: true

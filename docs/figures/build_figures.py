@@ -976,7 +976,7 @@ def fig_backend_harmonization() -> None:
         fontweight="bold",
         color="#666",
     )
-    ax.text(4.4, 5.6, "CLI: apecx-build-dictionary", fontsize=8.5, color="#666")
+    ax.text(4.4, 5.6, "Workflow: dictionary_build_workflow", fontsize=8.5, color="#666")
     _box(
         ax,
         4.4,
@@ -1281,7 +1281,7 @@ def fig_user_facing_workflow() -> None:
         (0.3, "FAISS index\nbuilt by build_domain_rag_index.py", palette[7]),
         (4.5, "VIOLIN CSVs / BV-BRC TSV\nvendored, refreshed by apecx-setup", palette[7]),
         (8.7, "Globus Search index\nbuilt by harvester pipeline", palette[7]),
-        (12.9, "synonym_dictionary SQLite\nbuilt by apecx-build-dictionary", palette[7]),
+        (12.9, "synonym_dictionary SQLite\nbuilt by dictionary_build_workflow", palette[7]),
     ]
     for x, lbl, c in arts:
         _box(ax, x, 0.7, 4.0, 1.0, lbl, c, 10)
