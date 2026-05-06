@@ -97,25 +97,30 @@ apecx-setup = "apecx_integration.cli.setup_data:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
-# Ship the alembic.ini + migrations/ tree inside the wheel so
-# ``apecx-cp serve`` can run from any install mode (uv tool / pipx /
-# pip --user) without needing the repo root on disk. The two copies
-# (in-package + repo-root) are kept byte-equivalent by a regression
-# test; see ``src/apecx_integration/control_plane/infra/lifecycle.py``
-# ``_find_alembic_root()`` for the runtime lookup contract.
+# Ship every config-shaped resource under apecx_integration/ inside the
+# wheel so ``apecx-mcp`` / ``apecx-cp`` work from any install mode
+# (uv tool / pipx / pip --user) without needing the repo root on disk.
+#
+# Why recursive globs (``**/*.yml`` etc.) instead of per-directory
+# enumeration: every time someone added a new workflow YAML to a fresh
+# subdirectory, the per-directory list silently failed to include it.
+# The wheel built fine; the install copy was missing files; the crash
+# only surfaced at runtime when the missing YAML was actually loaded.
+# That bit us with ``rag_e2e_synthesis/manifest.yml`` (2026-05-06).
+#
+# A regression test (``tests/unit/test_package_data_complete.py``)
+# walks ``src/apecx_integration/`` for YAML/MD/INI files and asserts
+# each one is covered by some pattern below. If you add a new file
+# extension that needs to ship, add it both here AND in the test's
+# ``EXPECTED_RESOURCE_EXTS`` set.
 [tool.setuptools.package-data]
 apecx_integration = [
-    "_alembic/alembic.ini",
-    "_alembic/migrations/*",
+    "**/*.yml",
+    "**/*.yaml",
+    "**/*.md",
+    "**/*.ini",
+    "**/*.txt",
     "_alembic/migrations/versions/*",
-    "_configs/*.yml",
-    "_configs/*.txt",
-    "agents/rag_synthesis/*.yml",
-    "composition/composer_config.yml",
-    "composition/composer_prompts/*.md",
-    "composition/workflows/violin_bvbrc/*.yml",
-    "composition/workflows/violin_bvbrc/steps/*.yml",
-    "composition/workflows/violin_bvbrc/tools/*.yml",
 ]
 
 [tool.ruff]
