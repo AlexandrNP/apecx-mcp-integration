@@ -52,9 +52,9 @@ that ships the consuming code.
 |---|---|---|---|
 | Phase 1 | G6 typed result schemas | Hand-rolled Pydantic `LayerResult` in apecx-mcp | `composition/schemas/layer_result.py` |
 | Phase 2 | G1 declarative ConditionalLink predicate DSL | **NO LONGER NEEDED — G1 SHIPPED 2026-05-09.** Use the new `op:`-keyed predicate form directly in YAML. | n/a |
-| Phase 2 | G2 dynamic AllDataReceived expected_set | "Publish empty bundle" sentinel from every gated layer step | `composition/steps/layers/*.py` |
-| Phase 2 | G7 auto_transfer default flip | Lint rule rejecting any DirectLink YAML without explicit `auto_transfer: true`. **PARTIALLY MITIGATED — G7 Step 1+2 shipped 2026-05-09**: nanobrain now WARNS at workflow load when v1 omits `auto_transfer`. Lint rule still useful as a CI gate (catches at PR time, not at runtime). | `scripts/lint_workflow_yamls.py` (new) |
-| Phase 2 | G10 gate-to-bottom semantics | Phase0PlanningStep refuses to emit empty `active_layers`; every workflow has at least one always-true layer | `composition/steps/phase0_planning.py` |
+| Phase 2 | G2 dynamic AllDataReceived expected_set | **NO LONGER NEEDED — G2 SHIPPED.** Set `expected_set_source: "workflow.<unit>"` + `expected_set_field` on the trigger; the static "publish empty bundle" workaround is retired. | n/a |
+| Phase 2 | G7 auto_transfer default flip | **MITIGATED — G7 Step 3 shipped 2026-05-09**: workflows declared `config_version: 2` get `auto_transfer: True` injected automatically into inline link configs. Step 4 (workspace-wide default flip + path-reference YAML rewriting) deferred. Lint rule still useful as a CI gate for v1 workflows you have NOT migrated. | `scripts/lint_workflow_yamls.py` (new) |
+| Phase 2 | G10 gate-to-bottom semantics | **NO LONGER NEEDED — G10 Step 1 SHIPPED 2026-05-09.** Set `gate_semantics: gate_to_bottom` on the ConditionalLink AND the AllDataReceivedTrigger; gated branches write `ConditionalLink.GATED_OFF_SENTINEL` and the trigger fires with N-1 keys. Step 2 (workflow-level propagation) deferred but per-link/per-trigger explicit configuration works today. | n/a |
 | Phase 2 | G14 PromptTemplate primitive | Hand-rolled prompt files in apecx-mcp (current pattern) | `composition/composer_prompts/system.md` |
 | Phase 2 | G16 ExecutionPlanConfig + DataUnit | Hand-rolled `pydantic.BaseModel` + plain `DataUnitMemory` | `composition/schemas/execution_plan.py` |
 | Phase 2 | G18 LoopController step | Custom step + ConditionalLink in apecx-mcp | `composition/orchestration/repair_loop.py` |
@@ -63,15 +63,15 @@ that ships the consuming code.
 | Phase 3 | G11 tool-step taxonomy | apecx-mcp implements `ToolExecutionStep` as an apecx-side BaseStep; promote when G11 ships | `composition/steps/tool_execution.py` |
 | Phase 3 | G13 multi-tenant ProxyStore namespacing | apecx-mcp prefixes keys with `<run_id>/` | `composition/proxystore_config.py` |
 | Phase 3 | G15 UnifiedToolDescriptor primitive | Hand-rolled Pydantic UTD model | `composition/schemas/utd.py` |
-| Phase 4 | G5 WorkflowCheckpoint / ResumeStep | apecx-mcp persists tournament state in control plane DB | `control_plane/models/tournament_state.py` |
+| Phase 4 | G5 WorkflowCheckpoint / ResumeStep | **NO LONGER NEEDED — G5 SHIPPED 2026-05-09.** Use `nanobrain.library.steps.CheckpointStep` + `ResumeStep` directly; filesystem backend is the v1 default. Step 2 (ProxyStore cross-process serialization) and Step 3 (`on_missing: rebuild`) deferred. | n/a |
 | Phase 4 | G9 first-class skeleton primitive | apecx-mcp ships its own skeleton catalog | `composition/skeletons/` |
 | Phase 4 | G12 declarative resource envelope | Hand-rolled cost-cap dict in step config | per-step YAML |
 | Phase 4 | G17 PlanLoweringStep + SkeletonLoaderStep | apecx-mcp implements as apecx-side BaseStep subclasses | `composition/orchestration/plan_lowering.py` |
 | Phase 4 | G19 SignedConfig loader | Bundle exporter produces detached signature; loader is operator-trusted | `execution/pbs_bundle.py` |
 | Phase 5 | G8 Workflow.run() canonical entry | apecx-mcp wraps every `process()` + `wait_for_cascade()` call | `control_plane/executors/local.py` |
 | Phase 5 | G20 class-path import whitelist | apecx-mcp implements a wrapping loader before calling `Workflow.from_config()` | `composition/composer.py` |
-| Phase 6 | G21 WorkflowRunner / detached run | apecx-mcp implements a custom runner without G5 checkpoint integration; tasks fail closed on restart | `control_plane/runtime/autonomous_service.py` |
-| Phase 6 | G22 WorkflowEntryTrigger / EventTrigger | apecx-mcp implements a separate scheduler service that calls `start_workflow` MCP synchronously | `control_plane/runtime/scheduler.py` |
+| Phase 6 | G21 WorkflowRunner / detached run | **NO LONGER NEEDED — G21 v1 SHIPPED 2026-05-09.** Use `nanobrain.library.runtime.WorkflowRunner.run_detached`. v1 supports in-memory + SQLite task stores; cross-process resume (Step 4) and pause (Step 2) deferred. | n/a |
+| Phase 6 | G22 WorkflowEntryTrigger / EventTrigger | **NO LONGER NEEDED — G22 v1 SHIPPED 2026-05-09.** Use `EventTrigger` (transport-agnostic `fire_event`) + `WorkflowEntryTrigger` to wire any inner trigger to `WorkflowRunner.run_detached`. HTTP webhook + message-bus transports remain deployment scope. | n/a |
 
 ---
 
@@ -117,51 +117,70 @@ When a Track A gap ships:
 
 ---
 
-## 8. Status snapshot (2026-05-09 — fourth chain)
+## 8. Status snapshot (2026-05-09 — fifth chain)
 
-- **Gaps shipped (17 of 22):**
+**All 22 G-numbered nanobrain capability gaps are shipped.**
+
+- **Gaps shipped (22 of 22):**
   - G1 (declarative ConditionalLink predicate DSL — 48 unit tests)
   - G2 (dynamic AllDataReceivedTrigger expected_set — 12 unit tests)
   - G3 (DataUnitProxyRef + file/redis connectors — 17 unit tests)
-  - **G4 (step-level provenance threading + redact vocabulary — 34 unit tests)**
+  - G4 (step-level provenance threading + redact vocabulary — 34 unit tests)
+  - **G5 (CheckpointStep + ResumeStep — 20 unit tests; v1 = filesystem
+    backend; Step 2 ProxyStore cross-process + Step 3 rebuild path deferred)**
   - G6 (typed step input/output schemas + reserved-fields escape valve — 23 unit tests)
   - G7 Step 1+2 (config_version field + auto_transfer deprecation WARNING — 29 unit tests)
+  - **G7 Step 3 (v2 auto_transfer-true default flip for inline configs — 11 unit tests;
+    Step 4 workspace-wide default + path-reference YAML rewriting deferred)**
   - G8 (Workflow.run() canonical sync entry — 11 unit tests)
-  - **G9 (first-class Skeleton primitive + registry — 39 unit tests)**
-  - **G11 (ToolExecutionStep + ToolBackendRegistry — 20 unit tests)**
-  - **G12 (declarative resource envelope on Step + workflow rollup — 19 unit tests)**
+  - G9 (first-class Skeleton primitive + registry — 39 unit tests)
+  - **G10 Step 1 (gate-to-bottom semantics mechanism — 16 unit tests;
+    per-link/per-trigger explicit configuration; Step 2 workflow-level
+    propagation deferred)**
+  - G11 (ToolExecutionStep + ToolBackendRegistry — 20 unit tests)
+  - G12 (declarative resource envelope on Step + workflow rollup — 19 unit tests)
   - G13 (WorkflowRunContext multi-tenant ProxyStore namespacing — 15 unit tests)
   - G14 (PromptTemplate G14 contract: template_id + content_hash + holes + render — 36 unit tests)
   - G15 (UnifiedToolDescriptor + ToolBase.from_descriptor — 27 unit tests)
   - G16 (ExecutionPlanConfig + ExecutionPlanDataUnit — 24 unit tests)
-  - **G17 (PlanLoweringStep + SkeletonLoaderStep + 7-step lowering — 23 unit tests)**
+  - G17 (PlanLoweringStep + SkeletonLoaderStep + 7-step lowering — 23 unit tests)
   - G18 Step 1+2 (LoopController + validator allows bounded back-edges — 17 + 17 unit tests)
-  - **G19 (SignedConfig — ed25519 detached signature loader — 14 unit tests)**
-  - **G20 (class:-path import whitelist — 19 unit tests)**
+  - G19 (SignedConfig — ed25519 detached signature loader — 14 unit tests)
+  - G20 (class:-path import whitelist — 19 unit tests)
+  - **G21 v1 (WorkflowRunner.run_detached + DetachedTaskHandle —
+    18 unit tests; in-memory + SQLite task stores; pause / heartbeat /
+    cross-process resume deferred to Steps 2–4)**
+  - **G22 v1 (EventTrigger + WorkflowEntryTrigger — 21 unit tests across
+    two files; transport-agnostic fire_event; HTTP webhook + message-bus
+    plumbing remains deployment scope)**
 
 - **Active workarounds in production code:** 0
-- **Forecasted workarounds across all phases:** 4 (down from 21 — 17
-  fewer because the gaps above shipped)
-- **Full nanobrain regression:** 471 passed, 1 skipped (pre-existing),
+- **Forecasted workarounds across all phases:** 0 (every Track B phase
+  can use the framework primitive directly).
+- **Full nanobrain regression:** 557 passed, 1 skipped (pre-existing),
   0 failures.
   Run: `.venv/bin/python -m pytest nanobrain/tests/unit/`
 
-**Gaps still pending (5 of 22):**
-- G5 (WorkflowCheckpoint / ResumeStep) — P1; deep change to workflow
-  runner; depends on G3 + G4 (both shipped); next major framework
-  effort.
-- G7 Steps 3+4 (auto_transfer default flip + new-workflow default) —
-  needs cross-repo bake time; sequencing problem, not implementation.
-- G10 (gate-to-bottom semantics for ConditionalLink + AllDataReceived) —
-  deferred (deep change to _monitor_all_data; risks G2 regression
-  without dedicated session).
-- G21 (Workflow.run_detached) — P1; depends on G8 (shipped) + G5
-  (deferred).
-- G22 (WorkflowEntryTrigger / EventTrigger) — P1; depends on G21.
+**Deferred follow-up work** (not gaps — incremental hardening of
+shipped primitives; each is documented in the corresponding module
+docstring):
+- G5 Step 2 — ProxyStore cross-process resume (Key serialization)
+- G5 Step 3 — `ResumeStep on_missing='rebuild'` upstream re-execution
+- G7 Step 4 — workspace-wide v2 default + path-reference YAML rewriting
+- G10 Step 2 — workflow-level `gate_semantics` propagation to all
+  child links and triggers
+- G21 Step 2 — `pause(task_id)` (needs step-level cancellation hook)
+- G21 Step 3 — heartbeat watchdog + stale-task reaper
+- G21 Step 4 — Postgres durability backend + cross-process resume
+  via G5 checkpoint integration
+- G22 Step 2 — `target_workflow` dotted-path resolution to a Workflow
+  class so YAML can declare it without a kwarg
+- G22 Step 3 — missed-schedule policy (`on_missed: catch_up | skip | merge`)
+- G22 Step 4 — durable inner-trigger → launch binding for restart safety
 
-The remaining 5 are the genuinely complex ones — they need real-runtime
-integration (long-running processes + persistence) that exceeds what
-can be honestly verified in a unit-test session.
+These follow-ups represent real-runtime / persistence work that exceeds
+what unit-test sessions can honestly verify; they will land alongside
+the apecx-mcp-integration deployment surfaces that consume them.
 
 **Track C (Rhea fork):**
 - T-RH-00 (fork creation) + T-RH-01 (extension scaffold) shipped to

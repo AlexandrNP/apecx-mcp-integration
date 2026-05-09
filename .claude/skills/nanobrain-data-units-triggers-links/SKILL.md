@@ -5,27 +5,58 @@ description: The event-driven contract — how DataUnits emit change events, how
 
 # nanobrain-data-units-triggers-links
 
-## ⚠️ DOMINANT SILENT-FAILURE WARNING
+## ⚠️ DOMINANT SILENT-FAILURE WARNING (v1 workflows)
 
 **Every `DirectLink` (and `TransformLink` / `ConditionalLink` / `FileLink`)
-MUST declare `auto_transfer: true` in its YAML config.** The framework
-default is `False`. Without the flag the link silently no-ops:
+in a `config_version: 1` workflow MUST declare `auto_transfer: true` in its
+YAML config.** The framework default is `False`. Without the flag the link
+silently no-ops:
 
 - `Workflow.from_config()` succeeds.
 - The trigger cascade fires.
 - `process()` runs on every step.
 - **No data ever transfers.** Downstream consumers see empty inputs.
-- No exception. No log message at WARNING level. The workflow appears to "work".
+- No exception. The workflow appears to "work".
 
 This is the dominant bug in the codebase — `architecture.md §13`
-brutal-truth #3. Gap **G7** (`nanobrain_capability_gaps.md`) proposes
-flipping the default in `config_version: 2`. Until G7 ships, every
-hand-authored link must declare it explicitly.
+brutal-truth #3.
+
+### Status of the cure (2026-05-09)
+
+- **G7 Step 1+2 SHIPPED** — workflow load now emits a WARNING for v1
+  workflows whose inline links omit `auto_transfer`.
+- **G7 Step 3 SHIPPED** — declare `config_version: 2` at the top of
+  the workflow YAML and inline links automatically gain
+  `auto_transfer: True`. Explicit values (True or False) are NEVER
+  overridden. This is the recommended migration today.
+- **Step 4 deferred** — v2 does NOT mutate path-reference link configs
+  (where `config:` is a string YAML path); audit those separately or
+  inline them.
 
 **Detection signal:** the workflow completes "successfully" but downstream
 data units hold their initial value (often `None` or empty list/dict).
 Run `Workflow.wait_for_cascade()` synchronously after `process()`; if no
-state change at downstream units, this is your bug.
+state change at downstream units, this is your bug. Quick fix: add
+`config_version: 2` to the workflow YAML and re-run.
+
+## ⚠️ Second dominant silent-failure: the gate-deadlock
+
+**A `ConditionalLink` whose predicate evaluates False under the legacy
+`gate_semantics: publish_empty` is a no-op.** A downstream
+`AllDataReceivedTrigger` waits indefinitely for the gated-off branch
+and the workflow deadlocks.
+
+### Status of the cure (2026-05-09)
+
+- **G10 Step 1 SHIPPED** — set `gate_semantics: gate_to_bottom` on
+  BOTH the ConditionalLink AND the AllDataReceivedTrigger. The gated
+  branch writes `ConditionalLink.GATED_OFF_SENTINEL` to the target;
+  the trigger counts the sentinel as satisfied and excludes it from
+  the trigger payload (user `process()` never sees the magic string).
+- **Step 2 deferred** — workflow-level propagation of
+  `gate_semantics: gate_to_bottom` to all child links and triggers
+  in one declaration. Today the flag must be set per-link and
+  per-trigger explicitly.
 
 ## Why this skill exists
 
