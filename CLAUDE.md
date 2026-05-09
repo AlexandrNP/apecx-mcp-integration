@@ -324,12 +324,49 @@ checkout layouts. Source: 2026-05-05 audit (Finding #16).
   fires `ValueError`, surfaced as `{"error": "synthesis gate failed: ..."}`
   by `synthesize_query`.
 
+## Authoring guides for nanobrain code
+
+The 9 nanobrain skills live at `.claude/skills/nanobrain-*/SKILL.md`
+(versioned in this repo as of 2026-05-09). Read them in this order
+when authoring framework code:
+
+| Order | Skill | When to read |
+|---|---|---|
+| 1 | `nanobrain-from-config` | FIRST — the mandatory pattern that makes everything else work |
+| 2 | `nanobrain-config-yaml` | Before writing or editing any `*.yml` |
+| 3 | `nanobrain-step-authoring` | Before subclassing `BaseStep` |
+| 4 | `nanobrain-data-units-triggers-links` | Before wiring steps together — **carries the dominant `auto_transfer` silent-failure warning** |
+| 5 | `nanobrain-workflow-authoring` | Before authoring a Workflow YAML |
+| 6 | `nanobrain-agents-tools` | When the work involves an Agent or Tool |
+| 7 | `nanobrain-executors` | Before changing a step's executor |
+| 8 | `nanobrain-testing-debugging` | When writing tests OR debugging silent failures (covers wrong-Python venv pitfall) |
+| 9 | `nanobrain-lightweight` | When you want the WorkflowBuilder ergonomic path instead of hand-authored YAML |
+
+The skills cross-reference each other. Each contains `file:line ground
+truth` tables pointing at the actual nanobrain source. Update the
+relevant skill in the same PR as any framework-side change so the
+skills stay current.
+
+## Design package
+
+The 25-doc design package lives at `docs/`. Master index:
+`docs/_design_index.md`. Implementation plan: `docs/implementation_task_graph.md`
+(165 file-level tasks across 4 tracks with stable IDs).
+
+When implementing a task from the graph, cite the task ID
+(e.g., `NB-G3-02`, `MC-AU-04`, `T-RH-04`) in the PR title or commit
+body so reviewers can cross-check against the DoD.
+
 ## Key reference docs
 
 - `docs/architecture.md` — **canonical end-to-end architecture map**
   (8 Mermaid diagrams, 22 MCP tools, 6 ontologies, 3 invocation paths,
   test surface, failure contract per branch). Start here for any
   architecture-shaped question.
+- `docs/_design_index.md` — master index for the design package
+- `docs/nanobrain_capability_gaps.md` — G1-G22 framework gap proposals.
+  G1 + G7 Step 1+2 SHIPPED 2026-05-09 in nanobrain `b7783a8`. The
+  rest are paired with workarounds in `docs/WORKAROUND_INVENTORY.md`.
 - `../architectural_plan.md` — project-level source of truth.
 - `../implementation_plan.md` — task table + scoreboard.
 - `../_workspace_notes/apecx-mcp-integration_dev_history/composer_task_spec.md`

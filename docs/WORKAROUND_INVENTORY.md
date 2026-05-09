@@ -119,12 +119,26 @@ When a Track A gap ships:
 
 ## 8. Status snapshot (2026-05-09)
 
-- **Gaps shipped:** G1 (declarative ConditionalLink predicate DSL),
-  G7 Step 1+2 (config_version field + auto_transfer deprecation WARNING)
+- **Gaps shipped:**
+  - G1 (declarative ConditionalLink predicate DSL — 48 unit tests)
+  - G2 (dynamic AllDataReceivedTrigger expected_set — 12 unit tests; resolver standalone, full trigger-cascade integration deferred to apecx-mcp consumer code)
+  - G3 (DataUnitProxyRef + file/redis connectors — 17 unit tests; redis path covered with skipif)
+  - G6 (typed step input/output schemas + reserved-fields escape valve — 23 unit tests)
+  - G7 Step 1+2 (config_version field + auto_transfer deprecation WARNING — 29 unit tests)
+  - G18 (LoopController bounded-cycle iteration counter — 17 unit tests; workflow validator extension allowing declared back-edges deferred to G18-Step-2)
 - **Active workarounds in production code:** 0 (no Track B phases have
   shipped yet)
-- **Forecasted workarounds across all phases:** 21 (one per remaining
-  unshipped gap)
+- **Forecasted workarounds across all phases:** 16 (down from 21 — 5
+  fewer because G1, G2, G3, G6, G18 shipped)
+- **Full nanobrain regression:** 173 passed, 1 skipped (pre-existing),
+  0 failures. Run command:
+  `.venv/bin/python -m pytest nanobrain/tests/unit/`
+
+**Track C (Rhea fork):**
+- T-RH-00 (fork creation) + T-RH-01 (extension scaffold) shipped to
+  `AlexandrNP/rhea` `apecx-integration` branch (commit `4ff9493`).
+- T-RH-02..T-RH-09 deferred — need Rhea runtime infrastructure
+  (Postgres + Redis + MinIO + Parsl) to integration-test honestly.
 
 The "0 active workarounds" status is a function of pre-implementation
 design — not a sign that the Track B phases will ship without workarounds.
