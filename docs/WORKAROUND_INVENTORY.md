@@ -210,12 +210,61 @@ inventory.**
 
 **Cumulative (all chains):**
 - Total framework primitives: G1-G22, every Step 1+ follow-up.
-- Test count: 673 passed, 3 skipped (1 pre-existing skip + 2 Postgres
-  integration skips behind `POSTGRES_TEST_DSN`), 0 regressions ever.
+- Test count: 712 passed (with Postgres + Redis up); 1 pre-existing
+  skip; 0 regressions ever.
 - All 22 silent-failure shapes documented in
   `architecture.md §13 brutal-truths` are either CURED BY DEFAULT (v2
-  flip, gate-aware propagation) or have an explicit FAIL-FAST surface
-  with a documented opt-in for legacy behavior.
+  flip, gate-aware propagation, BaseStep auto-pause) or have an
+  explicit FAIL-FAST surface with a documented opt-in for legacy
+  behavior.
+
+**Infrastructure shipped this chain (seventh chain — infra, 2026-05-09):**
+
+- **G21 Step 4 validated** end-to-end against real Postgres 16. The
+  ``test_full_lifecycle_against_real_postgres`` and
+  ``test_runner_with_postgres_backend_via_from_config`` integration
+  tests (previously skipped without ``POSTGRES_TEST_DSN``) now run
+  and pass. Postgres backend SQL DDL is genuinely validated.
+
+- **G5 Step 2 closed for RedisKey.** ProxyStore Redis-backed
+  checkpoints round-trip across processes via the same NamedTuple
+  ``_asdict`` machinery as FileKey, plus new ``redis_host`` /
+  ``redis_port`` connector hints in the manifest. Validated against
+  Redis 7. ``proxystore_connector_kind`` expanded from
+  ``Literal['file']`` to ``Literal['file', 'redis']``. Closes the
+  documented "RedisKey/EndpointKey rebuild" deferral.
+
+- **G21 Step 5 — BaseStep automatic PauseSignal cooperation.**
+  Closes the third documented G21 deferral. ``BaseStep._execute_process``
+  now consults ``current_pause_signal()`` before invoking ``process()``.
+  User step code does NOT need to consult the contextvar manually
+  for pause to work — pause is a framework-level cooperative protocol
+  that gates at step boundaries automatically. Layering: lazy +
+  cached import of the runtime module from core/step.py (preserves
+  the core-doesn't-depend-on-library invariant).
+
+- **GitHub Actions CI.** New ``nanobrain/.github/workflows/tests.yml``
+  runs the full unit suite on push + PR for Python 3.12 with Postgres
+  16 + Redis 7 service containers. The "0 regressions" claim is now
+  CI-enforced rather than asserted-by-hand. The lint job is
+  advisory-only (continue-on-error: true) until the repo is
+  ruff-clean — promoted to gating in a follow-up sweep.
+
+- **Lightweight WorkflowBuilder hardening.** The alternative-to-YAML
+  programmatic path was full of silent-failure shapes: dead
+  ``version: '2.0'`` field (framework reads ``config_version``);
+  discovery only finding DirectLink + zero triggers; no
+  ``add_trigger`` API. All fixed. New ``add_link()`` (full link-type
+  discrimination), ``add_trigger()`` (workflow-level + step-level),
+  ``load()`` (calls ``Workflow.from_config`` so the v2 mutators
+  fire). Framework class paths resolved via a static map; discovery
+  is the fallback for user-defined classes. 22 new unit tests cover
+  the path. Closes "explore multiple legit ways of creating
+  workflows including lightweight nanobrain" from the workspace
+  policy.
+
+**Total this chain: 5 commits + 1 CI workflow + ~37 new tests + 0
+regressions.**
 
 **Track C (Rhea fork):**
 - T-RH-00 (fork creation) + T-RH-01 (extension scaffold) shipped to
