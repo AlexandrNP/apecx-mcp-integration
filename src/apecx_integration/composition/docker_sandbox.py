@@ -25,14 +25,15 @@ API:
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
 import os
 import shutil
 import subprocess
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Sequence
 
 log = logging.getLogger(__name__)
 
@@ -145,22 +146,42 @@ def build_docker_sandbox_command(
     cfg = config or SandboxConfig()
 
     argv: list[str] = [
-        "docker", "run",
+        "docker",
+        "run",
         "--rm",
-        "--network", cfg.network,
+        "--network",
+        cfg.network,
         "--read-only",
-        "--tmpfs", f"/tmp:size={cfg.tmpfs_size},mode=1777",
-        "--memory", f"{cfg.memory_mb}m",
+        "--tmpfs",
+        f"/tmp:size={cfg.tmpfs_size},mode=1777",
+        "--memory",
+        f"{cfg.memory_mb}m",
         # --memory-swap equal to --memory disables swap. Without this,
         # the memory cap is unenforced whenever swap is available.
-        "--memory-swap", f"{cfg.memory_mb}m",
-        "--cpus", str(cfg.cpus),
-        "--pids-limit", str(cfg.pids_limit),
-        "--user", cfg.user,
-        "--cap-drop", "ALL",
-        "--security-opt", "no-new-privileges:true",
-        "--security-opt", "seccomp=default",
-        "--workdir", cfg.workdir,
+        "--memory-swap",
+        f"{cfg.memory_mb}m",
+        "--cpus",
+        str(cfg.cpus),
+        "--pids-limit",
+        str(cfg.pids_limit),
+        "--user",
+        cfg.user,
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges:true",
+        # Seccomp: Docker's built-in default profile applies automatically
+        # when no `--security-opt seccomp=...` flag is passed. The literal
+        # value `seccomp=default` is NOT a Docker keyword — Docker Desktop
+        # on Mac treats it as a file path and the container fails to
+        # start ("opening seccomp profile (default) failed: open default:
+        # no such file"). To DISABLE seccomp, pass `seccomp=unconfined`.
+        # We deliberately do not pass the flag here so the default
+        # profile (~60 syscalls blocked: ptrace, mount, unshare, reboot,
+        # keyctl, etc.) applies. The test_no_seccomp_unconfined test
+        # below verifies we never accidentally use `unconfined`.
+        "--workdir",
+        cfg.workdir,
     ]
 
     if input_host_path is not None:
@@ -262,7 +283,7 @@ class DockerSandboxRunner:
                 proc.communicate(),
                 timeout=self._config.timeout_seconds,
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             killed = True
             kill_succeeded = False
             # Ask the container to die. ``--rm`` takes care of removal.
@@ -284,15 +305,13 @@ class DockerSandboxRunner:
                     kill_succeeded = True
                 except subprocess.TimeoutExpired:
                     log.warning(
-                        "docker kill %s timed out after %.1fs; "
-                        "container may still be running.",
+                        "docker kill %s timed out after %.1fs; container may still be running.",
                         container_name,
                         self._config.kill_timeout_seconds,
                     )
                 except OSError as exc:
                     log.warning(
-                        "docker kill %s failed with OSError (%s); "
-                        "container may still be running.",
+                        "docker kill %s failed with OSError (%s); container may still be running.",
                         container_name,
                         exc,
                     )
@@ -302,10 +321,8 @@ class DockerSandboxRunner:
                 # corruption worth surfacing.
             # Kill the docker-run client process itself, whatever state
             # it's in. Without this, communicate() below can still hang.
-            try:
+            with contextlib.suppress(ProcessLookupError):
                 proc.kill()
-            except ProcessLookupError:
-                pass
             stdout_b, stderr_b = await proc.communicate()
 
         duration = time.monotonic() - start

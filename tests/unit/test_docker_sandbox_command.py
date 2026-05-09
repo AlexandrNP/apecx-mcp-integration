@@ -14,6 +14,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+
 from apecx_integration.composition.docker_sandbox import (
     SandboxConfig,
     build_docker_sandbox_command,
@@ -160,13 +161,28 @@ def test_no_new_privileges():
     assert "no-new-privileges:true" in security_opts
 
 
-def test_seccomp_default_profile():
-    """Docker's default seccomp blocks ~60 syscalls including ptrace,
-    mount, unshare, reboot, keyctl. Explicitly naming it here makes
-    it obvious when a reviewer is dropping the profile."""
+def test_seccomp_default_profile_applied_implicitly():
+    """Docker's default seccomp profile (blocks ~60 syscalls including
+    ptrace, mount, unshare, reboot, keyctl) applies automatically when
+    no ``--security-opt seccomp=...`` flag is passed. We deliberately
+    do NOT pass the flag here because the literal ``seccomp=default``
+    is NOT a Docker keyword — Docker Desktop on Mac treats it as a
+    file path and the container fails to start. The build_docker_sandbox_command
+    must NEVER include ``seccomp=unconfined`` (which would disable the
+    default profile)."""
     argv = build_docker_sandbox_command(["true"], input_host_path=None)
     security_opts = _all_pair_values(argv, "--security-opt")
-    assert "seccomp=default" in security_opts
+    # Must NOT explicitly disable seccomp:
+    assert "seccomp=unconfined" not in security_opts
+    # Should not name the profile explicitly (Docker handles default
+    # automatically; explicit naming is the bug we're guarding against):
+    assert not any(opt.startswith("seccomp=") for opt in security_opts), (
+        f"Sandbox command leaked an explicit seccomp= flag: "
+        f"{[o for o in security_opts if o.startswith('seccomp=')]}. "
+        f"Default profile applies automatically; explicit naming "
+        f"breaks portability across Docker engines (Desktop on Mac "
+        f"vs Docker CE on Linux)."
+    )
 
 
 # ---------------------------------------------------------------------------
