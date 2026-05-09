@@ -117,28 +117,48 @@ When a Track A gap ships:
 
 ---
 
-## 8. Status snapshot (2026-05-09)
+## 8. Status snapshot (2026-05-09 — extended)
 
 - **Gaps shipped:**
   - G1 (declarative ConditionalLink predicate DSL — 48 unit tests)
-  - G2 (dynamic AllDataReceivedTrigger expected_set — 12 unit tests; resolver standalone, full trigger-cascade integration deferred to apecx-mcp consumer code)
-  - G3 (DataUnitProxyRef + file/redis connectors — 17 unit tests; redis path covered with skipif)
+  - G2 (dynamic AllDataReceivedTrigger expected_set — 12 unit tests)
+  - G3 (DataUnitProxyRef + file/redis connectors — 17 unit tests)
   - G6 (typed step input/output schemas + reserved-fields escape valve — 23 unit tests)
   - G7 Step 1+2 (config_version field + auto_transfer deprecation WARNING — 29 unit tests)
-  - G18 (LoopController bounded-cycle iteration counter — 17 unit tests; workflow validator extension allowing declared back-edges deferred to G18-Step-2)
-- **Active workarounds in production code:** 0 (no Track B phases have
-  shipped yet)
-- **Forecasted workarounds across all phases:** 16 (down from 21 — 5
-  fewer because G1, G2, G3, G6, G18 shipped)
-- **Full nanobrain regression:** 173 passed, 1 skipped (pre-existing),
+  - G8 (Workflow.run() canonical sync entry — 11 unit tests)
+  - G13 (WorkflowRunContext multi-tenant ProxyStore namespacing — 15 unit tests)
+  - G14 (PromptTemplate G14 contract: template_id + content_hash + holes + render — 36 unit tests)
+  - G15 (UnifiedToolDescriptor + ToolBase.from_descriptor — 27 unit tests)
+  - G16 (ExecutionPlanConfig + ExecutionPlanDataUnit — 24 unit tests)
+  - G18 Step 1+2 (LoopController + validator allows bounded back-edges — 17 + 17 unit tests)
+- **Active workarounds in production code:** 0
+- **Forecasted workarounds across all phases:** 9 (down from 21 — 12
+  fewer because G1/G2/G3/G6/G7/G8/G13/G14/G15/G16/G18 shipped)
+- **Full nanobrain regression:** 303 passed, 1 skipped (pre-existing),
   0 failures. Run command:
   `.venv/bin/python -m pytest nanobrain/tests/unit/`
+
+**Gaps still pending:**
+- G4 (step-level provenance threading) — P1
+- G5 (WorkflowCheckpoint / ResumeStep) — P1
+- G7 Steps 3+4 (auto_transfer default flip) — needs cross-repo bake time
+- G9 (first-class skeleton primitive) — P0
+- G10 (gate-to-bottom semantics for ConditionalLink + AllDataReceived) — deferred (deep change to _monitor_all_data; risks G2 regression without dedicated session)
+- G11 (tool-step taxonomy) — P1
+- G12 (resource envelope on Step) — P1
+- G17 (PlanLoweringStep + SkeletonLoaderStep) — P0 (depends on G9)
+- G19 (SignedConfig loader) — P2
+- G20 (class: import whitelist) — P2
+- G21 (Workflow.run_detached) — P1
+- G22 (WorkflowEntryTrigger / EventTrigger) — P1
 
 **Track C (Rhea fork):**
 - T-RH-00 (fork creation) + T-RH-01 (extension scaffold) shipped to
   `AlexandrNP/rhea` `apecx-integration` branch (commit `4ff9493`).
 - T-RH-02..T-RH-09 deferred — need Rhea runtime infrastructure
   (Postgres + Redis + MinIO + Parsl) to integration-test honestly.
+  G15 UTD primitive is now shipped, so T-RH-02 (UTD producer) is
+  unblocked from a framework-side standpoint.
 
 The "0 active workarounds" status is a function of pre-implementation
 design — not a sign that the Track B phases will ship without workarounds.
