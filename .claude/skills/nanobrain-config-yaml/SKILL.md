@@ -20,11 +20,30 @@ authoring guide.
 > shape behind the dominant silent-failure (see `nanobrain-data-units-triggers-links`).
 > Workspace policy treats this as a non-negotiable rule.
 
-> **Future framework primitives** (proposed in `nanobrain_capability_gaps.md`)
-> that you may see referenced in design docs but cannot import yet:
-> `PromptTemplate` (G14), `UnifiedToolDescriptor` (G15), `ExecutionPlanConfig`
-> (G16), `WorkflowRunner` (G21), `WorkflowEntryTrigger` / `EventTrigger` (G22).
-> Until they ship, hand-rolled BaseModel + DataUnitMemory is the workaround.
+> **Shipped framework primitives** (per `nanobrain_capability_gaps.md`).
+> Most of the proposed primitives have shipped as of 2026-05-09.
+> Available imports:
+> - `from nanobrain.core.prompt_template_manager import PromptTemplate, PromptHole` (G14)
+> - `from nanobrain.core.tool import UnifiedToolDescriptor, UTDInputSpec, UTDOutputSpec, UTDProvenancePin` (G15)
+> - `from nanobrain.library.orchestration import ExecutionPlanConfig, ExecutionPlanDataUnit, Skeleton, SkeletonRegistry, WorkflowRunContext, SkeletonLoaderStep, PlanLoweringStep` (G9, G13, G16, G17)
+> - `from nanobrain.library.steps import LoopController, ToolExecutionStep, ToolBackendRegistry` (G11, G18)
+> - `from nanobrain.core.signed_config import load_signed_config` (G19)
+> - `from nanobrain.core.import_whitelist import set_class_import_whitelist` (G20)
+> - `from nanobrain.core.provenance import ProvenanceContext, JsonlSink` (G4)
+>
+> **Still pending:** G5 (Checkpoint/Resume), G7 Steps 3+4 (default-flip),
+> G10 (deadlock fix), G21 (run_detached), G22 (EventTrigger). These are
+> the genuinely complex framework changes that need long-running
+> integration testing.
+
+> **Production hardening primitives.** When deploying nanobrain to
+> production, set up these two security primitives:
+> - **G19 SignedConfig:** sign HPC-bundle YAMLs with ed25519 + verify
+>   on replay. `load_signed_config(path, public_key, require_signed=True)`.
+> - **G20 class import whitelist:** restrict which Python classes the
+>   framework loader will instantiate.
+>   `set_class_import_whitelist(["nanobrain.", "apecx_integration."])`.
+>   Defends against rogue `class:` paths in untrusted YAMLs.
 
 ## File:line ground truth
 

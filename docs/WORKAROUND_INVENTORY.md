@@ -117,40 +117,51 @@ When a Track A gap ships:
 
 ---
 
-## 8. Status snapshot (2026-05-09 — extended)
+## 8. Status snapshot (2026-05-09 — fourth chain)
 
-- **Gaps shipped:**
+- **Gaps shipped (17 of 22):**
   - G1 (declarative ConditionalLink predicate DSL — 48 unit tests)
   - G2 (dynamic AllDataReceivedTrigger expected_set — 12 unit tests)
   - G3 (DataUnitProxyRef + file/redis connectors — 17 unit tests)
+  - **G4 (step-level provenance threading + redact vocabulary — 34 unit tests)**
   - G6 (typed step input/output schemas + reserved-fields escape valve — 23 unit tests)
   - G7 Step 1+2 (config_version field + auto_transfer deprecation WARNING — 29 unit tests)
   - G8 (Workflow.run() canonical sync entry — 11 unit tests)
+  - **G9 (first-class Skeleton primitive + registry — 39 unit tests)**
+  - **G11 (ToolExecutionStep + ToolBackendRegistry — 20 unit tests)**
+  - **G12 (declarative resource envelope on Step + workflow rollup — 19 unit tests)**
   - G13 (WorkflowRunContext multi-tenant ProxyStore namespacing — 15 unit tests)
   - G14 (PromptTemplate G14 contract: template_id + content_hash + holes + render — 36 unit tests)
   - G15 (UnifiedToolDescriptor + ToolBase.from_descriptor — 27 unit tests)
   - G16 (ExecutionPlanConfig + ExecutionPlanDataUnit — 24 unit tests)
+  - **G17 (PlanLoweringStep + SkeletonLoaderStep + 7-step lowering — 23 unit tests)**
   - G18 Step 1+2 (LoopController + validator allows bounded back-edges — 17 + 17 unit tests)
-- **Active workarounds in production code:** 0
-- **Forecasted workarounds across all phases:** 9 (down from 21 — 12
-  fewer because G1/G2/G3/G6/G7/G8/G13/G14/G15/G16/G18 shipped)
-- **Full nanobrain regression:** 303 passed, 1 skipped (pre-existing),
-  0 failures. Run command:
-  `.venv/bin/python -m pytest nanobrain/tests/unit/`
+  - **G19 (SignedConfig — ed25519 detached signature loader — 14 unit tests)**
+  - **G20 (class:-path import whitelist — 19 unit tests)**
 
-**Gaps still pending:**
-- G4 (step-level provenance threading) — P1
-- G5 (WorkflowCheckpoint / ResumeStep) — P1
-- G7 Steps 3+4 (auto_transfer default flip) — needs cross-repo bake time
-- G9 (first-class skeleton primitive) — P0
-- G10 (gate-to-bottom semantics for ConditionalLink + AllDataReceived) — deferred (deep change to _monitor_all_data; risks G2 regression without dedicated session)
-- G11 (tool-step taxonomy) — P1
-- G12 (resource envelope on Step) — P1
-- G17 (PlanLoweringStep + SkeletonLoaderStep) — P0 (depends on G9)
-- G19 (SignedConfig loader) — P2
-- G20 (class: import whitelist) — P2
-- G21 (Workflow.run_detached) — P1
-- G22 (WorkflowEntryTrigger / EventTrigger) — P1
+- **Active workarounds in production code:** 0
+- **Forecasted workarounds across all phases:** 4 (down from 21 — 17
+  fewer because the gaps above shipped)
+- **Full nanobrain regression:** 471 passed, 1 skipped (pre-existing),
+  0 failures.
+  Run: `.venv/bin/python -m pytest nanobrain/tests/unit/`
+
+**Gaps still pending (5 of 22):**
+- G5 (WorkflowCheckpoint / ResumeStep) — P1; deep change to workflow
+  runner; depends on G3 + G4 (both shipped); next major framework
+  effort.
+- G7 Steps 3+4 (auto_transfer default flip + new-workflow default) —
+  needs cross-repo bake time; sequencing problem, not implementation.
+- G10 (gate-to-bottom semantics for ConditionalLink + AllDataReceived) —
+  deferred (deep change to _monitor_all_data; risks G2 regression
+  without dedicated session).
+- G21 (Workflow.run_detached) — P1; depends on G8 (shipped) + G5
+  (deferred).
+- G22 (WorkflowEntryTrigger / EventTrigger) — P1; depends on G21.
+
+The remaining 5 are the genuinely complex ones — they need real-runtime
+integration (long-running processes + persistence) that exceeds what
+can be honestly verified in a unit-test session.
 
 **Track C (Rhea fork):**
 - T-RH-00 (fork creation) + T-RH-01 (extension scaffold) shipped to

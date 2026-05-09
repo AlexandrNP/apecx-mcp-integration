@@ -18,13 +18,28 @@ exact contract.
 > name, the value is silently dropped** (no exception, no log warning).
 > Downstream consumers see the data unit's initial value. Always cross-check:
 > the keys you `return` MUST equal the data unit names you declared in the
-> step's YAML `output_data_units:` block. Gap **G6** (typed `step_output_schema`)
-> in `nanobrain_capability_gaps.md` proposes framework-level enforcement.
+> step's YAML `output_data_units:` block. **Gap G6 SHIPPED 2026-05-09** —
+> declare `step_output_schema:` (with G6's SchemaRef) on StepConfig and the
+> framework FAIL-FASTs at runtime on schema mismatch.
 
 > **Validation/repair as Steps, not custom code.** Per
 > `nanobrain_alignment_audit.md` F-2/F-3/F-6: 5-gate validation pipelines and
 > repair loops belong inside the workflow as `BaseStep` chains connected by
 > `ConditionalLink`s, not as imperative Python sitting outside the workflow.
+
+## Available framework primitives (shipped 2026-05-09)
+
+When authoring a step that needs any of the following, the framework
+ships the primitive — DO NOT roll your own:
+
+| Need | Use | Where |
+|---|---|---|
+| Typed input/output validation at the wire boundary | `step_input_schema` / `step_output_schema` field on StepConfig | G6 — `nanobrain.core.step.SchemaRef` |
+| Resource projection for HPC sizing + cost gating | `resource_envelope` field on StepConfig | G12 — `nanobrain.core.step.ResourceEnvelope` |
+| Bounded loops (declared back-edges) | Use `LoopController` step + `ConditionalLink` predicate | G18 — `nanobrain.library.steps.LoopController` |
+| Tool dispatch (Rhea / Galaxy / native) | Subclass or instantiate `ToolExecutionStep` | G11 — `nanobrain.library.steps.ToolExecutionStep` |
+| Tool descriptor (input/output schema, cost, capability) | Inline dict OR `tool_descriptor_path:` in StepConfig | G15 — `nanobrain.core.tool.UnifiedToolDescriptor` |
+| Per-step provenance recording | Activate a `ProvenanceContext` with sink_path | G4 — `nanobrain.core.provenance.ProvenanceContext` |
 
 ## File:line ground truth
 
