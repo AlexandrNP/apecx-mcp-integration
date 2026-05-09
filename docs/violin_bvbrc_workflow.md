@@ -1,6 +1,6 @@
-# VIOLIN × BV-BRC Workflow — Developer Documentation
+# Domain Synonym Gate Workflow — Developer Documentation
 
-This document describes the project's first-release workflow, `violin_bvbrc_synonym_gate`, for developers onboarding to apecx-mcp. It has three sections:
+This document describes the project's first-release workflow, `domain_synonym_gate`, for developers onboarding to apecx-mcp. It has three sections:
 
 1. **Application structure** — what the workflow does, how the manifest organizes it, and what data it touches.
 2. **Nanobrain framework usage** — what nanobrain primitives the workflow depends on, how steps are authored, and how execution is dispatched.
@@ -14,9 +14,9 @@ The diagrams in `diagrams/` (especially `04`, `05`, `09`, `10`, `11`) are the vi
 
 ### What the workflow does
 
-The workflow takes a free-text scientific query — for example, *"find genes related to EEEV vaccine studies"* — and returns a ranked, provenance-annotated set of vaccine / pathogen / gene records that the query maps to. It is a synonym-resolution-and-enrichment pipeline that combines local snapshot data (BV-BRC and VIOLIN), a synonym cache that improves over time, an LLM step for novel terms, and a human-in-the-loop gate for the LLM's proposed synonyms.
+The workflow takes a free-text scientific query — for example, *"find genes related to a given entity"* — and returns a ranked, provenance-annotated set of domain records (therapeutic / entity / gene) that the query maps to. It is a synonym-resolution-and-enrichment pipeline that combines local snapshot data (genomics database and domain database), a synonym cache that improves over time, an LLM step for novel terms, and a human-in-the-loop gate for the LLM's proposed synonyms.
 
-The workflow is registered with the composer under the name `violin_bvbrc_synonym_gate`. Its first-release variant is `hard_only` — fuzzy-match was deliberately deferred per the 2026-04-21 directive recorded in the manifest, on the grounds that cache + LLM + HARD gate covers the use case without the threshold-tuning risk of fuzzy matching.
+The workflow is registered with the composer under the name `domain_synonym_gate`. Its first-release variant is `hard_only` — fuzzy-match was deliberately deferred per the 2026-04-21 directive recorded in the manifest, on the grounds that cache + LLM + HARD gate covers the use case without the threshold-tuning risk of fuzzy matching.
 
 ### The manifest as source of truth
 
@@ -46,7 +46,7 @@ In execution order, with their disposition and what they do:
 Wraps an entity-extraction function from `apecx-db-integration` via `EntityExtractionStep` in `composition/steps/db_integration_wrappers.py`. One LLM call per `process()`. Input DataUnit `user_query_input` (str), output `entity_candidates_output` (list of `{name, type, confidence}`). Reads `APECX_LLM_BASE_URL` for the LLM endpoint via `apecx_db_integration._build_chat_llm`.
 
 **Step 2 · `bvbrc_snapshot_match`** *(deterministic + LLM verification, wrap)*
-Wraps `nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep`. The wrapper YAML injects a `BVBRCSnapshotTool` so the step reads `data/bvbrc_cache/*.tsv` and `*.fasta` instead of the live BV-BRC API. Two species/taxonomic-verification LLM agents are wired through the same `tools:` block; their LLM calls fire at `process()` time, so `from_config` runs without an API key.
+Wraps `nanobrain.library.workflows.viral_protein_analysis.steps.enhanced_bv_brc_data_acquisition_step.EnhancedBVBRCDataAcquisitionStep`. The wrapper YAML injects a `BVBRCSnapshotTool` so the step reads `data/bvbrc_cache/*.tsv` and `*.fasta` instead of the live genomics database API. Two species/taxonomic-verification LLM agents are wired through the same `tools:` block; their LLM calls fire at `process()` time, so `from_config` runs without an API key.
 
 **Step 3a · `synonym_cache_lookup`** *(deterministic, new)*
 `apecx_integration.composition.steps.synonym_cache.SynonymCacheLookupStep`. Batched lookup against the Control Plane's `VerifiedSynonym` table. If every term in the input is already cached, the workflow short-circuits past Steps 3c, 4, and 4p and goes directly to Step 5. Otherwise, only the cache-miss terms (the *novel* ones) flow to Step 3c.
@@ -64,13 +64,13 @@ Uses `nanobrain.library.steps.approval_step.ApprovalStep` with a workflow-specif
 `apecx_integration.composition.steps.synonym_cache.VerifiedSynonymWritebackStep`. Persists approved synonyms to the `VerifiedSynonym` table so future runs short-circuit at Step 3a. Tolerates HTTP 409 (concurrent-run race) by treating the conflict as already-cached.
 
 **Step 5 · `violin_entity_lookup`** *(deterministic, wrap)*
-Wraps `ViolinEntityLookupStep` in `db_integration_wrappers.py`. No LLM calls — pure pandas joins. Input `resolved_matches_input` (list of match dicts). Output `enriched_matches_output` (same dicts plus a `relevant_data` key with VIOLIN/BV-BRC row joins). Reads `APECX_DB_DATA_DIR` for the VIOLIN CSV path or accepts an explicit `data_dir` override.
+Wraps `ViolinEntityLookupStep` in `db_integration_wrappers.py`. No LLM calls — pure pandas joins. Input `resolved_matches_input` (list of match dicts). Output `enriched_matches_output` (same dicts plus a `relevant_data` key with domain/genomics database row joins). Reads `APECX_DB_DATA_DIR` for the domain database CSV path or accepts an explicit `data_dir` override.
 
 **Step 6 · `genomic_annotation`** *(deterministic + LLM, wrap)*
-Wraps `nanobrain.library.workflows.viral_protein_analysis.steps.bv_brc_data_acquisition_step.BVBRCDataAcquisitionStep`. Same `BVBRCSnapshotTool` injection as Step 2 but configured through a different field (`bvbrc_config_file` at the top level rather than `tools.bv_brc_tool`). Pairs with a `SynonymDetectionAgent` wired via `synonym_detection_agent`. Emits canonical protein annotations for matched genome IDs.
+Wraps `nanobrain.library.workflows.viral_protein_analysis.steps.bv_brc_data_acquisition_step.BVBRCDataAcquisitionStep`. Same `BVBRCSnapshotTool` injection as Step 2 but configured through a different field (`bvbrc_config_file` at the top level rather than `tools.bv_brc_tool`). Pairs with a `SynonymDetectionAgent` wired via `synonym_detection_agent`. Emits canonical protein annotations for matched genome IDs from the genomics database.
 
 **Step 7 · `result_ranking`** *(reuse, no wrapper)*
-`nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep`, used unchanged. Final ranking + JSON formatting. Output is keyed by VIOLIN and BV-BRC IDs and includes provenance fields: `run_id`, `model_version`, `approved_synonym_decisions`.
+`nanobrain.library.workflows.viral_protein_analysis.steps.result_collection_step.ResultCollectionStep`, used unchanged. Final ranking + JSON formatting. Output is keyed by domain and genomics database IDs and includes provenance fields: `run_id`, `model_version`, `approved_synonym_decisions`.
 
 ### The cache-hit short-circuit
 
@@ -85,8 +85,8 @@ Over time, as users approve synonyms, the cache grows and the short-circuit fire
 
 The workflow has four data sources, all local:
 
-- **`data/bvbrc_cache/`** — BV-BRC snapshots: `alphavirus_genomes.tsv`, `alphavirus_proteins.tsv`, `chikungunya_virus_genomes.tsv`, plus annotated FASTAs. Read by Steps 2 and 6 via `BVBRCSnapshotTool`. No live BV-BRC API access; per the architectural plan §R3.4, a workflow needing data outside the snapshot fails with a clear error rather than silently falling back to the live API.
-- **`data/violin/`** — VIOLIN tables: `Gene_Information.csv`, `Gene_Vaccine_Pathogen_Information.csv`, `Pathogen_Information.csv`, `Vaccine_Information.csv`, `Vaccine_Pathogen_Information.csv`, `VIOLIN_Curated_References.txt`. Read by Step 5 via pandas joins.
+- **`data/bvbrc_cache/`** — Genomics database snapshots: genome TSVs, protein TSVs, and annotated FASTAs. Read by Steps 2 and 6 via `BVBRCSnapshotTool`. No live external API access; per the architectural plan §R3.4, a workflow needing data outside the snapshot fails with a clear error rather than silently falling back to the live API.
+- **`data/violin/`** — Domain database tables: `Gene_Information.csv`, `Gene_Vaccine_Pathogen_Information.csv`, `Pathogen_Information.csv`, `Vaccine_Information.csv`, `Vaccine_Pathogen_Information.csv`, curated references. Read by Step 5 via pandas joins.
 - **`VerifiedSynonym` table** — apecx-cp database table. Read by Step 3a, written by Step 4p. Persists across runs.
 - **LLM endpoint** — configured via `APECX_LLM_BASE_URL`. Used by Steps 1, 3c, and the inner verification agents in Steps 2 and 6.
 
@@ -106,7 +106,7 @@ For local-default runs this is the final deliverable. For HPC export, the same a
 
 ### Architectural dependence: deep but narrow
 
-Apecx-mcp-integration depends on nanobrain *architecturally* — every workflow runs through nanobrain's Step / Workflow lifecycle — but consumes only a small surface of nanobrain's library. The imports the integration actually uses across the VIOLIN × BV-BRC workflow are:
+Apecx-mcp-integration depends on nanobrain *architecturally* — every workflow runs through nanobrain's Step / Workflow lifecycle — but consumes only a small surface of nanobrain's library. The imports the integration actually uses across the domain synonym gate workflow are:
 
 - `nanobrain.core.step.BaseStep`, `StepConfig` — Step subclassing for new steps (3a, 4p) and for the wrapper classes in `db_integration_wrappers.py` and `composition/steps/synonym_cache.py`.
 - `nanobrain.core.workflow.Workflow` — the entry point: `Workflow.from_config(staged_yaml)` followed by `await workflow.process({})`.
@@ -214,7 +214,7 @@ The workflow is reachable from Claude Desktop entirely through MCP tools. There 
 
 Two read-only tools let the LLM (or the scientist) inspect what the system can do before invoking anything:
 
-- **`list_workflows`** — returns the composer's workflow catalog. The VIOLIN × BV-BRC workflow appears as `violin_bvbrc_synonym_gate`, with its first-release variant flag.
+- **`list_workflows`** — returns the composer's workflow catalog. The domain synonym gate workflow appears as `domain_synonym_gate`, with its first-release variant flag.
 - **`describe_workflow`** — given a workflow ID, returns the step list, expected inputs, and the `rag_description` strings from the manifest. This lets Claude explain the workflow to the scientist before composition.
 
 These tools query the manifest catalog directly; they do not start a run.
@@ -223,8 +223,8 @@ These tools query the manifest catalog directly; they do not start a run.
 
 Three tools handle the compose-then-review loop:
 
-- **`start_workflow`** — given a free-text user description, the composer drafts a YAML referencing this workflow's steps. The composer ranks workflows by RAG similarity over the user's description; for typical VIOLIN × BV-BRC use cases (entity-mapping queries against vaccines / pathogens / genes), the `violin_bvbrc_synonym_gate` workflow is selected.
-- **`show_diff`** — returns the per-step categorization for the proposed run: which are `composed_standard`, which are `composed_parameterized`, etc. For VIOLIN × BV-BRC, the diff is typically all-`composed_standard` (every step uses its registered config unchanged) unless the user asks for parameter overrides.
+- **`start_workflow`** — given a free-text user description, the composer drafts a YAML referencing this workflow's steps. The composer ranks workflows by RAG similarity over the user's description; for typical domain synonym gate use cases (entity-mapping queries against therapeutics / entities / genes), the `domain_synonym_gate` workflow is selected.
+- **`show_diff`** — returns the per-step categorization for the proposed run: which are `composed_standard`, which are `composed_parameterized`, etc. For this workflow, the diff is typically all-`composed_standard` (every step uses its registered config unchanged) unless the user asks for parameter overrides.
 - **`execute_workflow`** — kicks off the local execution.
 
 The differential review machinery (see diagram 04) is what lets Claude explain to the scientist *before* execution exactly what will run, with what risk classification. For this workflow, the diff is short and reassuring: zero `novel` steps means no LLM-generated novel-Python code in the run.
@@ -251,7 +251,7 @@ When the user explicitly asks to export the workflow to HPC instead of running l
 - **`export_hpc_bundle`** — produces a portable submission directory (`submit.pbs`, `run.sh`, `workflow.yml`, `staging_plan.yml`, `provenance_seed.json`, `environment/{container.sif | conda.lock}`, `README.md`). The operator runs `qsub submit.pbs` on Polaris or Aurora.
 - **`ingest_hpc_bundle`** — round-trips the results back into the apecx-cp artifact store after the HPC job completes.
 
-For the VIOLIN × BV-BRC workflow specifically, HPC export is rarely needed at typical query sizes — local execution is adequate. The HPC story exists for larger-scale variants of the workflow (bulk genomic annotation runs that exceed laptop compute) and as a reproducibility artifact (the bundle is a candidate publishable supplementary).
+For this workflow specifically, HPC export is rarely needed at typical query sizes — local execution is adequate. The HPC story exists for larger-scale variants of the workflow (bulk genomic annotation runs that exceed laptop compute) and as a reproducibility artifact (the bundle is a candidate publishable supplementary).
 
 ### Data lookup tools (bypass paths)
 
@@ -262,13 +262,13 @@ Seven additional MCP tools expose direct database queries that bypass the compos
 - `resolve_entity`
 - `database_statistics`
 
-These are useful for one-shot factual questions during conversation — *"how many vaccines are in the snapshot?"*, *"what genes are associated with this pathogen?"* — that do not require running the full workflow. They read the same local data sources as the workflow steps but invoke them directly rather than through the workflow runtime. They are intentionally separate from the orchestration path: they answer questions, not run pipelines.
+These are useful for one-shot factual questions during conversation — *"how many entries are in the snapshot?"*, *"what genes are associated with this entity?"* — that do not require running the full workflow. They read the same local data sources as the workflow steps but invoke them directly rather than through the workflow runtime. They are intentionally separate from the orchestration path: they answer questions, not run pipelines.
 
 These bypass tools are particularly useful for *grounding* the LLM's understanding before composition. Claude can use them to confirm the user's vocabulary matches the database before triggering `start_workflow`, avoiding wasted runs over typos or out-of-snapshot terms.
 
 ### Provenance touchpoints
 
-Every MCP tool call that affects state emits provenance events. For a VIOLIN × BV-BRC run, the recorder's hash chain typically contains (see diagram 09):
+Every MCP tool call that affects state emits provenance events. For a domain synonym gate run, the recorder's hash chain typically contains (see diagram 09):
 
 - `RUN_STARTED` from the system.
 - `WORKFLOW_GENERATED` from `start_workflow` (the composer's draft is hashed with the pinned LLM model version).

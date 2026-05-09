@@ -165,12 +165,12 @@ Most have sensible defaults; you really only need the LLM block.
 
 ### Database tools (`query_*`, `resolve_entity`, `database_statistics`)
 
-These tools require VIOLIN + BV-BRC data on the local filesystem.  Run
-`apecx-setup` once to download it (~1.5 MB snapshot), then set:
+These tools require domain dataset files on the local filesystem.  Run
+`apecx-setup` once to download them (~1.5 MB snapshot), then set:
 
 | Variable | Default | What it does |
 |---|---|---|
-| `APECX_DATA_ROOT` | unset | Root of the local data directory (`data/violin/`, `BVBRC_genome_alphavirus.csv` must exist beneath it). Takes precedence over `APECX_ROOT`. |
+| `APECX_DATA_ROOT` | unset | Root of the local data directory (domain database CSVs and genomics TSV files must exist beneath it). Takes precedence over `APECX_ROOT`. |
 | `APECX_ROOT` | unset | Workspace root; server looks for `<APECX_ROOT>/data/` automatically. Fallback when `APECX_DATA_ROOT` is not set. |
 
 When neither is set the database tools return `{"error": "..."}` on
@@ -201,15 +201,15 @@ Relevant env vars:
 | `APECX_SKIP_DICT_BUILD` | unset | Set to `1` to skip the build entirely (entity resolution falls back to slow substring search). Useful for fast restarts when you accept degraded resolution. |
 
 When the dictionary is missing AND the build is skipped (operator opt-out
-OR no VIOLIN data present), all entity-resolution paths fall back to
+OR no domain data present), all entity-resolution paths fall back to
 substring search and a WARNING banner appears in the MCP server log.
 
 ### Workflow-step (only matters if you wire those steps in)
 
 | Variable | Used by | Notes |
 |---|---|---|
-| `APECX_DB_DATA_DIR` | VIOLIN steps | Path to VIOLIN CSVs |
-| `APECX_BVBRC_CACHE_DIR` | BV-BRC step | Path to BV-BRC TSV snapshots |
+| `APECX_DB_DATA_DIR` | Domain database steps | Path to domain database CSVs |
+| `APECX_BVBRC_CACHE_DIR` | Genomics DB step | Path to genomics database TSV snapshots |
 
 ## Local LLM setup (Ollama)
 
@@ -277,7 +277,7 @@ Returns:
 `status: paused` means the approval policy classified at least one
 step as requiring human review. Use `list_pending_approvals` next.
 
-**Prompt**: *"Compose a workflow that finds EEEV vaccines."*
+**Prompt**: *"Compose a workflow that finds matching entities in the domain database."*
 
 #### `show_diff`
 
@@ -331,7 +331,7 @@ describe_workflow(name: str) -> dict
 Returns the full component manifest for a named workflow or component,
 including required parameters and output schema.
 
-**Prompt**: *"Describe the violin_bvbrc workflow."*
+**Prompt**: *"Describe the domain synonym gate workflow."*
 
 ### Approval lifecycle
 
@@ -428,13 +428,13 @@ query_pathogens(
 ) -> dict
 ```
 
-Returns VIOLIN pathogen rows matching `search_term` (substring on
-Pathogen + Disease columns, or exact NCBITaxon ID when a synonym
+Returns domain database entity rows matching `search_term` (substring on
+Entity + Context columns, or exact NCBITaxon ID when a synonym
 dictionary is loaded and the fast path hits).  When `_resolution` is
 present in the response, the fast path fired and a canonical match was
 found.
 
-**Prompt**: *"What pathogens cause encephalitis?"*
+**Prompt**: *"What entities are associated with a given condition?"*
 
 #### `query_vaccines`
 
@@ -447,10 +447,10 @@ query_vaccines(
 ) -> dict
 ```
 
-Returns VIOLIN vaccine rows. `vaccine_type` filters on
+Returns domain database therapeutic rows. `vaccine_type` filters on
 Vaccine_Type column.
 
-**Prompt**: *"Find licensed vaccines against Alphaviruses."*
+**Prompt**: *"Find licensed therapeutics against a target organism."*
 
 #### `query_genes`
 
@@ -463,10 +463,10 @@ query_genes(
 ) -> dict
 ```
 
-Returns VIOLIN gene/antigen rows.  `gene_function` filters on
+Returns domain database gene/antigen rows.  `gene_function` filters on
 Gene_Function column.
 
-**Prompt**: *"What genes are used in EEEV vaccines?"*
+**Prompt**: *"What genes are used in therapeutics for the target entity?"*
 
 #### `query_bvbrc_genomes`
 
@@ -477,10 +477,10 @@ query_bvbrc_genomes(
 ) -> dict
 ```
 
-Returns BV-BRC genome rows.  The dataset ships as an alphavirus subset
-(5 450 genomes, 60 taxa).
+Returns genomics database genome rows.  The dataset covers the configured
+genomic domain.
 
-**Prompt**: *"How many Chikungunya genomes are in BV-BRC?"*
+**Prompt**: *"How many genomes does the genomics database have for the target organism?"*
 
 #### `get_vaccine_pathogen_genes`
 
@@ -492,10 +492,10 @@ get_vaccine_pathogen_genes(
 ) -> dict
 ```
 
-Cross-table join: returns VIOLIN vaccine + gene rows for a given
-pathogen.
+Cross-table join: returns domain database therapeutic + gene rows for a given
+target entity.
 
-**Prompt**: *"What vaccines and genes does VIOLIN have for EEEV?"*
+**Prompt**: *"What therapeutics and genes does the domain database have for the target entity?"*
 
 #### `resolve_entity`
 
@@ -508,7 +508,7 @@ resolve_entity(
 
 Returns IRIs + confidence across all matching entity types.
 
-**Prompt**: *"What canonical IDs exist for 'Eastern Equine Encephalitis'?"*
+**Prompt**: *"What canonical IDs exist for a given entity name?"*
 
 #### `database_statistics`
 
@@ -518,7 +518,7 @@ database_statistics() -> dict
 
 Returns row counts per table + last-modified timestamps.
 
-**Prompt**: *"How many entries does the VIOLIN database have?"*
+**Prompt**: *"How many entries does the domain database have?"*
 
 ### Entity resolution
 
@@ -536,10 +536,10 @@ Returns:
 ```jsonc
 {
   "path": "fast" | "ancestor" | "slow" | "miss",
-  "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
-  "canonical_label": "Eastern equine encephalomyelitis virus",
+  "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12345",
+  "canonical_label": "Example target organism species",
   "confidence": 1.0,
-  "evidence": "surface_form_normalized='eastern equine encephalitis' matched canonical_label"
+  "evidence": "surface_form_normalized='example organism' matched canonical_label"
 }
 ```
 
@@ -548,14 +548,14 @@ Returns:
 - `ancestor` — the input IRI maps to a strain not in the dictionary;
   the walk found a species-level ancestor. Confidence = ancestor
   confidence × 0.9.
-- `slow` — dictionary miss; fell back to substring search over VIOLIN.
+- `slow` — dictionary miss; fell back to substring search over the domain database.
 - `miss` — no match anywhere.
 
 Requires `APECX_SYNONYM_DICT_PATH` (see Configuration) for `fast` /
 `ancestor` paths.  Always works on `slow` / `miss` without a
 dictionary.
 
-**Prompt**: *"What is the canonical IRI for 'EEEV'?"*
+**Prompt**: *"What is the canonical IRI for a given entity name?"*
 
 ## Other MCP clients
 
@@ -598,7 +598,7 @@ async with stdio_client(params) as (read, write):
         tools = await session.list_tools()
         result = await session.call_tool(
             "start_workflow",
-            arguments={"description": "find EEEV vaccines", "user_id": "alex"},
+            arguments={"description": "find entities matching a query", "user_id": "alex"},
         )
 ```
 

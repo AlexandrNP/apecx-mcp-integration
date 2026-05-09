@@ -55,7 +55,7 @@ See ``CLAUDE.md`` § "Composer prompt engineering is load-bearing."
 
 - Ollama unreachable mid-run (the ``extract_entities_llm`` step
   calls the configured LLM; if it's gone, that step fails).
-- A BV-BRC snapshot file is missing from ``data/bvbrc_cache/``.
+- A genomics database snapshot file is missing from ``data/bvbrc_cache/``.
 - An apecx_db_integration dependency (pandas, langchain) raised.
 
 **Fix**:

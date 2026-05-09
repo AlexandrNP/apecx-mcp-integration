@@ -6,9 +6,9 @@ setup.
 
 ## The scientist prompt
 
-We'll ask the composer to build a workflow that extracts pathogen
+We'll ask the composer to build a workflow that extracts domain
 entity names from a user query and maps them against the local
-BV-BRC snapshot. This is the canonical violin_bvbrc workflow; it's
+genomics database snapshot. This is the canonical domain synonym gate workflow; it's
 in scope of the shipped component catalog.
 
 ## 1. Compose + persist a Run
@@ -17,7 +17,7 @@ in scope of the shipped component catalog.
 curl -s http://localhost:8000/workflows/start \
   -H 'Content-Type: application/json' \
   -d '{
-    "description": "Extract pathogen entity names from a biomedical query and map them to BV-BRC genome ids using the local snapshot.",
+    "description": "Extract entity names from a biomedical query and map them to genomics database genome ids using the local snapshot.",
     "user_id": "alex",
     "preferred_executor": "local"
   }' | jq .

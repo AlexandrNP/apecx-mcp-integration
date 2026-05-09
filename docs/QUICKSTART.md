@@ -17,7 +17,7 @@ For depth on any step, see:
 
 - An OpenAI-compatible LLM running locally (Ollama + mistral-nemo).
 - `apecx-mcp` and `apecx-setup` on your `PATH`.
-- VIOLIN + BV-BRC datasets unpacked in `~/.apecx/data` (~15 MB).
+- Domain datasets unpacked in `~/.apecx/data` (~15 MB).
 - A patched `claude_desktop_config.json` with the `apecx` MCP server
   registered.
 - The 20 apecx tools visible in Claude Desktop's tool picker after
@@ -54,8 +54,8 @@ sudo apt install gh               # Debian/Ubuntu
 gh auth login                     # follow the browser prompt
 ```
 
-`gh` is required because `apecx-setup` downloads VIOLIN + BV-BRC
-data from a private GitHub release; auth piggybacks on `gh`'s
+`gh` is required because `apecx-setup` downloads domain data
+from a private GitHub release; auth piggybacks on `gh`'s
 session, no PAT setup needed.
 
 ---
@@ -125,7 +125,7 @@ apecx-setup
 
 Walks you through:
 1. **Data directory** (default `~/.apecx/data`) — press Enter to accept.
-2. **Download** the VIOLIN + BV-BRC tarball from the private repo
+2. **Download** the domain data tarball from the private repo
    via your `gh` session (~1.5 MB compressed, ~15 MB extracted).
 3. **Claude Desktop config** — auto-detects the standard config
    path; confirms before writing.  On first install (no `apecx`
@@ -176,17 +176,17 @@ The most common failure modes (each prints a clear banner):
 
 In Claude Desktop, with the apecx tools enabled, try:
 
-> *"Use the apecx tools to find all vaccines targeting Eastern Equine
-> Encephalitis Virus."*
+> *"Use the apecx tools to find all entries in the domain database
+> for a given entity name."*
 
-Claude should call `resolve_entity` (to canonicalize the pathogen
-name), then `query_vaccines` with `pathogen="EEEV"` (or similar).
-The response should list ~5–10 vaccines from VIOLIN.
+Claude should call `resolve_entity` (to canonicalize the entity
+name), then `query_vaccines` or `query_pathogens` with a search term.
+The response should list matching database rows.
 
 Other things you can ask:
-- *"How many alphavirus genomes from BV-BRC do we have, broken
-  down by host species?"* — exercises `query_bvbrc_genomes`.
-- *"Show me the gene-vaccine-pathogen relationships for chikungunya."*
+- *"How many genome records does the genomics database have, broken
+  down by organism?"* — exercises `query_bvbrc_genomes`.
+- *"Show me the gene-target relationships for a given entity."*
   — exercises `get_vaccine_pathogen_genes`.
 - *"What's in our database statistically?"* — exercises
   `database_statistics`.

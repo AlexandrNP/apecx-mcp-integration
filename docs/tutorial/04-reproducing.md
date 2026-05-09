@@ -65,7 +65,7 @@ So compose a fresh run, but **do not execute it locally**:
 curl -s http://localhost:8000/workflows/start \
   -H 'Content-Type: application/json' \
   -d '{
-    "description": "Map pathogen names from a query to BV-BRC genome ids.",
+    "description": "Map entity names from a query to genomics database genome ids.",
     "user_id": "alex"
   }' | jq .
 
@@ -186,8 +186,8 @@ Control Plane via the same ``/hpc/ingest`` call.
 
 - ``tests/reproducibility/test_baselines.py`` asserts **10
   placeholder-LLM fixtures** produce their captured baseline
-  hashes every time. Three are virus-domain (the original
-  T12 seeds against the violin × bv_brc workflow); seven are
+  hashes every time. Three are domain-specific (the original
+  T12 seeds against the domain synonym gate workflow); seven are
   generic (1-step empty-links, multi-step chains, novel-Python-
   only, library-plus-novel-Python, etc.) covering the diversity
   matrix in ``tests/reproducibility/README.md``. Baseline hashes

@@ -1,5 +1,20 @@
 # APECx MCP Integration — End-to-End Architecture
 
+**Status:** Current-state map (describes what is built and running today).
+**For target-state design:** see `docs/_design_index.md` — the master index for
+the 17-doc design package that describes the multi-agent + nanobrain target
+system being built. This document and the design package serve different
+purposes:
+
+| | This document (`architecture.md`) | Design package (`_design_index.md` and 17 docs) |
+|---|---|---|
+| **Describes** | What runs today (current 23 MCP tools, three-tier runtime, the violin_bvbrc workflow) | What's being built (four-tier multi-agent architecture, ExecutionPlan-driven workflows, Rhea integration) |
+| **Authoritative for** | Operator onboarding, debugging current behavior, understanding code paths in `src/apecx_integration/` | Implementation planning, framework gap proposals (G1–G20), cross-doc design alignment |
+| **Updated when** | Code lands a behavior change; tests pin the new behavior | Design decisions evolve; new gaps surface; the alignment audit reveals duplicates |
+| **When in doubt** | Read this for "what does the running system do?" | Read the design package for "what are we building toward?" |
+
+---
+
 This document is the canonical map of the apecx-mcp-integration system.
 It covers the three runtime tiers (MCP surface, control plane, executor),
 the synthesis pipeline, all 23 MCP tools, all six ontologies, the
@@ -16,10 +31,10 @@ Markdown viewers (including Claude Desktop's preview).
 ## 1. System purpose in one paragraph
 
 APECx-MCP-integration takes free-text scientist questions about
-viral pathogens, vaccines, genes, and genomes, and turns them into
+pathogens, vaccines, genes, and genomes, and turns them into
 **grounded Markdown answers with inline citations**. It does this by
 fanning out across local FAISS-indexed knowledge (domain RAG),
-local VIOLIN/BV-BRC tabular data (substring lookup), live PubMed
+local domain/genomics tabular data (substring lookup), live PubMed
 publications, and the APECx Globus Search index of harvested records,
 then driving one LLM call to weave the retrieved evidence into a
 structured response. The system is exposed through the Model Context
@@ -58,8 +73,8 @@ flowchart TB
 
     subgraph Data["Data sources"]
         FAISS["domain_rag<br/>FAISS + sentence-transformers"]
-        VIOLIN["VIOLIN CSVs<br/>data/violin/"]
-        BVBRC["BV-BRC TSVs<br/>data/bvbrc_cache/"]
+        DOMAINDB["Domain DB CSVs<br/>data/violin/"]
+        GENOMICSDB["Genomics DB TSVs<br/>data/bvbrc_cache/"]
         PUBMED["NCBI PubMed eUtils<br/>(network)"]
         GLOBUS["Globus Search index<br/>e74bf12a... (network, public)"]
         DICT["synonym_dictionary<br/>SQLite"]
@@ -72,13 +87,13 @@ flowchart TB
     ToolsAp --> CP
     ToolsHpc --> CP
     ToolsW --> Exec
-    ToolsDB --> VIOLIN
-    ToolsDB --> BVBRC
+    ToolsDB --> DOMAINDB
+    ToolsDB --> GENOMICSDB
     ToolsDB --> DICT
     ToolsCE --> DICT
     ToolsGS --> GLOBUS
-    ToolsSy --> FAISS & VIOLIN & BVBRC & PUBMED & GLOBUS & LLM
-    Exec --> FAISS & VIOLIN & BVBRC & PUBMED & GLOBUS & LLM
+    ToolsSy --> FAISS & DOMAINDB & GENOMICSDB & PUBMED & GLOBUS & LLM
+    Exec --> FAISS & DOMAINDB & GENOMICSDB & PUBMED & GLOBUS & LLM
 ```
 
 **Key facts:**
@@ -112,7 +127,7 @@ flowchart LR
         Q --> AS["assembly_input<br/>DataUnitMemory"]
         AS --> Gather["asyncio.gather&lt;br/&gt;return_exceptions=True"]
         Gather --> RAG["DomainRagIndex.search<br/>(FAISS)"]
-        Gather --> VBL["lookup_violin / lookup_bvbrc<br/>(pandas)"]
+        Gather --> VBL["lookup_domain_db / lookup_genomics_db<br/>(pandas)"]
         Gather --> PUB["pubmed eSearch + eFetch<br/>(network, optional)"]
         Gather --> GS["globus_search.search<br/>(network, optional)"]
         RAG --> Bundle
@@ -140,8 +155,8 @@ flowchart LR
 {
     "query":           str,           # the original question
     "rag_chunks":      list[dict],    # FAISS hits: id, text, score, source, metadata
-    "bvbrc_genomes":   list[dict],    # genome_id, genome_name
-    "violin_mappings": list[dict],    # synonym_id, canonical_term, query_term, entity_type, source
+    "genomics_db_genomes":  list[dict],    # genome_id, genome_name
+    "domain_db_mappings":  list[dict],    # synonym_id, canonical_term, query_term, entity_type, source
     "publications":    list[dict],    # doi, title, authors[], year, journal, pmid
     "globus_results":  list[dict],    # subject, content, score (added 2026-05-05)
 }
@@ -152,7 +167,7 @@ flowchart LR
 | Branch | What can fail | Effect | Where caught |
 |---|---|---|---|
 | Domain RAG | Missing FAISS index, corrupted bin file | `rag_chunks=[]`, WARNING logged | `asyncio.gather(return_exceptions=True)` in `synthesis_context_assembly_step.py` |
-| VIOLIN/BV-BRC | Missing CSV, missing required column | both bundles `[]`, WARNING logged | same gather |
+| DomainDB/GenomicsDB | Missing CSV, missing required column | both bundles `[]`, WARNING logged | same gather |
 | PubMed | Network error, eUtils 5xx, timeout | `publications=[]`, WARNING logged | inner try/except in `_pubmed_harvest` + outer gather |
 | Globus Search | SDK missing, network failure, invalid index UUID | `globus_results=[]`, WARNING logged | `GlobusSearchUnavailableError` → outer gather |
 | Synthesis LLM | Endpoint down, model rejects request | `ValueError` raised | caller (synthesize_query MCP tool catches and returns `{"error": ...}`) |
@@ -271,15 +286,15 @@ to the MCP transport.
 | `list_workflows` | Enumerate workflows the composer can build | none | Manifest YAML parse |
 | `describe_workflow` | Per-component view of one workflow | `name` | Manifest YAML parse |
 
-### 4.3 Database tools (7) — direct VIOLIN + BV-BRC lookup
+### 4.3 Database tools (7) — direct DomainDB + GenomicsDB lookup
 
 | Tool | Purpose | Resolution | Backend |
 |---|---|---|---|
-| `query_vaccines` | Search VIOLIN vaccine DB (~3,500 rows) | dict fast → substring slow | DatabaseStore (pandas) |
-| `query_pathogens` | Search VIOLIN pathogen DB (~220 rows) | dict fast → ancestor walk → strict descendant expansion | DatabaseStore + DictionaryIndex |
-| `query_genes` | Search VIOLIN gene DB (~4,000 rows) | dict fast → substring slow | DatabaseStore |
-| `query_bvbrc_genomes` | Search BV-BRC alphavirus genomes (~17,000 rows) | dict fast → substring slow | DatabaseStore |
-| `get_vaccine_pathogen_genes` | Traverse VIOLIN junction tables | direct lookup | DatabaseStore |
+| `query_vaccines` | Search Domain vaccine DB (~3,500 rows) | dict fast → substring slow | DatabaseStore (pandas) |
+| `query_pathogens` | Search Domain pathogen DB (~220 rows) | dict fast → ancestor walk → strict descendant expansion | DatabaseStore + DictionaryIndex |
+| `query_genes` | Search Domain gene DB (~4,000 rows) | dict fast → substring slow | DatabaseStore |
+| `query_bvbrc_genomes` | Search Genomics DB organism genomes (~17,000 rows) | dict fast → substring slow | DatabaseStore |
+| `get_vaccine_pathogen_genes` | Traverse Domain DB junction tables | direct lookup | DatabaseStore |
 | `resolve_entity` | Multi-table substring scan + dict lookup | dict + substring | DatabaseStore + DictionaryIndex |
 | `database_statistics` | Row counts + columns for all loaded tables | none | DatabaseStore metadata |
 
@@ -320,7 +335,7 @@ to the MCP transport.
 | `SynthesisContextAssemblyStep` | `composition/steps/synthesis_context_assembly_step.py` | Fan-in retrieval (3 branches concurrently) | in: `{query, entities?, query_terms?}` → out: bundle dict (5 keys) |
 | `RagSynthesisStep` | `composition/steps/rag_synthesis_step.py` | One LLM call → Markdown with citations | in: bundle dict → out: `{synthesis: str}` |
 | `DomainRagSearchStep` | `composition/steps/domain_rag_step.py` | FAISS semantic search over pre-built index | in: `{query}` → out: `{rag_chunks: [...]}` |
-| `VIOLINBVBRCContextStep` | `composition/steps/violin_bvbrc_context_step.py` | Pure-pandas substring lookup | in: `{entities? \| query_terms?}` → out: `{violin_mappings, bvbrc_genomes}` |
+| `VIOLINBVBRCContextStep` | `composition/steps/violin_bvbrc_context_step.py` | Pure-pandas substring lookup | in: `{entities? \| query_terms?}` → out: `{domain_db_mappings, genomics_db_genomes}` |
 | `PubMedHarvesterStep` | `composition/steps/pubmed_harvester_step.py` | NCBI eSearch + eFetch | in: `{query, entities?}` → out: `{publications: [...]}` |
 
 ### 5.2 Stateless utility modules (extracted 2026-05-05)
@@ -331,7 +346,7 @@ need:
 
 | Module | Provides | Used by |
 |---|---|---|
-| `composition/steps/_violin_bvbrc_lookup.py` | `lookup_violin`, `lookup_bvbrc` | VIOLINBVBRCContextStep + SynthesisContextAssemblyStep |
+| `composition/steps/_violin_bvbrc_lookup.py` | `lookup_violin`, `lookup_bvbrc` | `VIOLINBVBRCContextStep` + `SynthesisContextAssemblyStep` |
 | `composition/steps/_pubmed_helpers.py` | `build_term`, `entity_name`, `container_to_dict`, `harvest` | PubMedHarvesterStep + SynthesisContextAssemblyStep |
 
 Both are pure functions; `owner_name` parameter flows into log
@@ -392,7 +407,7 @@ Source: `src/apecx_integration/synonym_dictionary/enums.py`.
 
 ```mermaid
 flowchart LR
-    VIN["VIOLIN CSVs<br/>(Pathogen / Vaccine / Gene)"] --> XR["resolvers.py<br/>per-entity-type extractors"]
+    VIN["Domain DB CSVs<br/>(Pathogen / Vaccine / Gene)"] --> XR["resolvers.py<br/>per-entity-type extractors"]
     OLS["OLS REST API<br/>(EBI)"] --> XR
     NTAX["NCBI taxdump<br/>(optional, --ncbitaxon-nodes)"] --> HL["hierarchy_loader.py"]
     XR --> ENT["DictionaryEntry<br/>per (entity_type, IRI)"]
@@ -433,16 +448,16 @@ flowchart TB
 **Special case — descendant expansion (NCBITaxon only):**
 
 `query_pathogens` calls `lookup_descendant_taxon_ids(iri)` after a fast
-or ancestor hit. A family-level IRI like Coronaviridae expands to its
-~20+ species; a species-level IRI like SARS-CoV-2 expands to itself
-plus any strain-level children. The pandas filter then matches by
+or ancestor hit. A family-level IRI like a pathogen family expands to its
+~20+ species; a species-level IRI like a target species expands to itself
+plus any variant-level children. The pandas filter then matches by
 `NCBI_Taxonomy_ID.isin(expanded_set)`.
 
 | Query | IRI resolved | Descendant expansion | Filter set |
 |---|---|---|---|
-| `"Coronaviridae"` | `NCBITaxon_11118` (family) | walks down 4 levels | ~20+ species |
-| `"covid-19"` | `NCBITaxon_2697049` (species) | empty (leaf) | just `[2697049]` |
-| `"SARS-CoV-2 strain X"` | `NCBITaxon_2697049` (via ancestor walk from strain) | `[2697049]` | just SARS-CoV-2 |
+| `"pathogen family"` | `NCBITaxon_11118` (family) | walks down 4 levels | ~20+ species |
+| `"pathogen X"` | `NCBITaxon_2697049` (species) | empty (leaf) | just `[2697049]` |
+| `"target species variant X"` | `NCBITaxon_2697049` (via ancestor walk from variant) | `[2697049]` | just target species |
 
 This is the **strict hierarchy contract** (user directive 2026-05-05).
 
@@ -464,8 +479,8 @@ This is the **strict hierarchy contract** (user directive 2026-05-05).
 | Asset | Where | Builder | Resolution order |
 |---|---|---|---|
 | Domain RAG FAISS index | `<workspace>/data/apecx_domain_rag/{faiss_index.bin, metadata.json}` | `scripts/build_domain_rag_index.py` | YAML override → workspace default |
-| VIOLIN CSVs | `<workspace>/data/violin/Pathogen_Information.csv` etc. | `apecx-setup` (downloads from private repo) | YAML → APECX_DB_DATA_DIR → APECX_WORKSPACE_ROOT |
-| BV-BRC TSV | `<workspace>/data/bvbrc_cache/alphavirus_genomes.tsv` | bundled with `apecx-setup` | YAML → APECX_WORKSPACE_ROOT |
+| Domain DB CSVs | `<workspace>/data/violin/Pathogen_Information.csv` etc. | `apecx-setup` (downloads from private repo) | YAML → APECX_DB_DATA_DIR → APECX_WORKSPACE_ROOT |
+| Genomics DB TSV | `<workspace>/data/bvbrc_cache/` (organism genomes TSV) | bundled with `apecx-setup` | YAML → APECX_WORKSPACE_ROOT |
 | Synonym dictionary | `APECX_SYNONYM_DICT_PATH` (defaults to `~/.apecx/dictionary/dictionary.sqlite`) | `dictionary_build_workflow` (lazy at apecx-mcp startup; `APECX_SKIP_DICT_BUILD=1` to opt out) | env var only; missing → fast path disabled |
 
 `<workspace>` resolves via `apecx_integration._workspace.resolve_workspace_root`
@@ -483,7 +498,7 @@ flowchart LR
     ADB["apecx-db-integration<br/>(LLM-driven entity functions)"]
     ARG["apecx-rag<br/>(synthesis prompts/config)"]
 
-    AMI -- "BaseStep, StepConfig, ApprovalStep, viral_protein_analysis steps,<br/>wait_for_cascade (added 2026-05-05)" --> NB
+    AMI -- "BaseStep, StepConfig, ApprovalStep, protein_analysis steps,<br/>wait_for_cascade (added 2026-05-05)" --> NB
     AMI -- "pubmed.search, pubmed.retrieve, DataCite container" --> AH
     AMI -- "extract_entities_llm, get_candidate_terms (via wrappers)" --> ADB
     AMI -- "synthesize_response, SynthesisConfig, prompt files" --> ARG
@@ -513,7 +528,7 @@ All sibling repos must be `pip install -e ../<repo>`'d into the project venv.
 The composer (T-COMP) reads `composition/composer_config.yml`'s
 `component_catalog_paths` list. Two manifests are registered:
 
-### 9.1 `workflows/violin_bvbrc/manifest.yml` — VIOLIN × BV-BRC synonym gate
+### 9.1 `workflows/violin_bvbrc/manifest.yml` — DomainDB × GenomicsDB synonym gate
 
 13 components (1 deferred). The full HARD-synonym workflow plus the
 four Day-2 retrieval/synthesis steps. Verbatim from the manifest:
@@ -669,10 +684,10 @@ Source corpus row counts (from `wc -l` on the data files):
 
 | Dataset | Rows | Source |
 |---|---|---|
-| VIOLIN Pathogens | 218 | `data/violin/Pathogen_Information.csv` |
-| VIOLIN Vaccines | 3,507 | `data/violin/Vaccine_Information.csv` |
-| VIOLIN Genes | 4,063 | `data/violin/Gene_Information.csv` |
-| BV-BRC Genomes | 5,450 | `data/bvbrc/genomes.tsv` |
+| Domain Pathogens | 218 | `data/violin/Pathogen_Information.csv` |
+| Domain Vaccines | 3,507 | `data/violin/Vaccine_Information.csv` |
+| Domain Genes | 4,063 | `data/violin/Gene_Information.csv` |
+| Genomics DB Genomes | 5,450 | `data/bvbrc/genomes.tsv` |
 | **Total** | **13,238** | |
 
 Resolution status taxonomy (from
@@ -715,7 +730,7 @@ flowchart TB
     end
 
     EV1 & EV2 & EV3 & EV4 & EV5 --> LLM["build_chat_llm()<br/>OpenAI-compatible client"]
-    EV6 --> DBS["DatabaseStore<br/>(VIOLIN + BV-BRC)"]
+    EV6 --> DBS["DatabaseStore<br/>(DomainDB + GenomicsDB)"]
     EV7 --> DICT["DictionaryIndex<br/>singleton"]
     EV8 --> CP["ControlPlaneClient"]
     EV9 --> WS["resolve_workspace_root()"]
@@ -726,7 +741,7 @@ flowchart TB
     DBS --> DT["query_* MCP tools, VIOLINBVBRCContextStep"]
     DICT --> RT["resolve_canonical_entity, query_pathogens (descendant)"]
     CP --> WT["start_workflow, approvals, HPC tools"]
-    WS --> DR["DomainRagIndex, VIOLINBVBRCContextStep defaults"]
+    WS --> DR["DomainRagIndex, domain/genomics context step defaults"]
     GS --> GST["query_globus_search MCP tool, SynthesisContextAssemblyStep"]
 ```
 
@@ -798,7 +813,7 @@ flowchart TB
     container).
 
 13. **The slow path does NOT use the synonym dictionary.** It scans
-    the DatabaseStore (VIOLIN + BV-BRC pandas frames) for substring
+    the DatabaseStore (DomainDB + GenomicsDB pandas frames) for substring
     matches. Confidence ≈ 0.3. Only used as last resort.
 
 14. **`_workspace_notes/` is a separate sibling repo.** Friction logs
@@ -834,8 +849,8 @@ workflow consumes:
    `synonym_dictionary/build.py`. Triggered lazily at apecx-mcp startup
    via `bootstrap.ensure_dictionary` (long-term: triggered by an
    apecx-harvesters sink after a harvest run completes — see migration
-   note at the top of `bootstrap.py`). Harvests entity names from VIOLIN
-   + BV-BRC source rows,
+   note at the top of `bootstrap.py`). Harvests entity names from DomainDB
+   + GenomicsDB source rows,
    resolves them via the **EBI Ontology Lookup Service**, and writes
    `apecx_synonym_dict.sqlite` plus the `taxon_hierarchy` table built
    from the NCBI taxdump.
@@ -869,7 +884,7 @@ Three vertical bands:
    | Branch | Source | Latency |
    |---|---|---|
    | FAISS RAG search | in-memory `domain_rag/faiss_index.bin` | ~5 ms |
-   | VIOLIN/BV-BRC pandas | offline CSV/TSV | ~50 ms |
+   | DomainDB/GenomicsDB pandas | offline CSV/TSV | ~50 ms |
    | PubMed eSearch + eFetch | network | 1–3 s |
    | Globus Search | network (harvester index) | ~500 ms |
 
@@ -877,7 +892,7 @@ Three vertical bands:
    on Ollama) → `synthesis_output: {synthesis: <markdown>}`.
 
 3. **Artifacts consumed** (read-only): FAISS index (built by
-   `scripts/build_domain_rag_index.py`), VIOLIN+BV-BRC files,
+   `scripts/build_domain_rag_index.py`), DomainDB+GenomicsDB files,
    Globus Search index (built by harvester), synonym dictionary
    (built by the internal `dictionary_build_workflow` at apecx-mcp
    startup).
@@ -897,7 +912,7 @@ to per-query latency:
 | Globus Search index | harvester `aggregate_gsearch.py` | `query_globus_search` MCP tool, synthesis Globus branch |
 | `synonym_dict.sqlite` | `dictionary_build_workflow` (lazy at apecx-mcp startup) | `resolve_canonical_entity`, fast path of every database tool |
 | FAISS index | `scripts/build_domain_rag_index.py` | synthesis FAISS branch |
-| VIOLIN/BV-BRC files | `apecx-setup` (download) | synthesis pandas branch + database tools |
+| DomainDB/GenomicsDB files | `apecx-setup` (download) | synthesis pandas branch + database tools |
 
 ---
 
@@ -911,7 +926,7 @@ to per-query latency:
 | MCP surface reference | `docs/mcp_surface.md` |
 | Operator quickstart | `docs/QUICKSTART.md` |
 | Tutorial (4 chapters) | `docs/tutorial/` |
-| VIOLIN × BV-BRC workflow | `docs/violin_bvbrc_workflow.md` |
+| DomainDB × GenomicsDB workflow | `docs/domain_workflow.md` |
 | Composer task spec | `../_workspace_notes/.../composer_task_spec.md` |
 | Synonym dictionary contract | `../_workspace_notes/.../synonym_dictionary_contract.md` |
 | Friction log (recurring time-sinks) | `../_workspace_notes/.../session_friction_log.md` |

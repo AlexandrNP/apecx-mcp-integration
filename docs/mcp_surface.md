@@ -6,7 +6,7 @@ This document describes the MCP-facing tier of apecx-mcp from the perspective of
 2. **What it contains** — the code layout, the FastMCP tool-registration pattern, how each tool's schema is derived, what is intentionally not exposed.
 3. **How it interacts with the tool registry** — the call flow from Claude Desktop through the surface into the control plane, plus a clear distinction between the *MCP tool registry* and the *component catalog*.
 
-A companion document, `violin_bvbrc_workflow.md`, describes the workflow that the surface drives. Diagrams `01`, `02`, `03`, and `08` are the visual companions.
+A companion document, `domain_workflow.md`, describes the workflow that the surface drives. Diagrams `01`, `02`, `03`, and `08` are the visual companions.
 
 ---
 
@@ -114,8 +114,40 @@ def build_server() -> FastMCP:
     server.tool()(hpc_tools.export_hpc_bundle)
     server.tool()(hpc_tools.ingest_hpc_bundle)
 
+    # Autonomous-task tools (per autonomous_workflow_agent.md §7).
+    # Available only when composer.allow_autonomous: true.
+    server.tool()(autonomous_tools.start_autonomous_task)
+    server.tool()(autonomous_tools.list_autonomous_tasks)
+    server.tool()(autonomous_tools.pause_autonomous_task)
+    server.tool()(autonomous_tools.cancel_autonomous_task)
+    server.tool()(autonomous_tools.show_autonomous_audit)
+
     return server
 ```
+
+### Autonomous-task tools (conditional registration)
+
+The five autonomous-task tools above are registered only when the
+deployment's `composer.allow_autonomous: true` capability flag is set
+(per `agent_workflow_authoring.md §2.3`). When the flag is `false` (the
+default), `build_server()` skips their registration and they do not
+appear in the MCP client's tool list. This avoids the "tool always errors"
+anti-pattern named earlier in this document — a deployment that does not
+support autonomous tasks should not advertise the tools at all.
+
+| Tool | Purpose | Authorization |
+|---|---|---|
+| `start_autonomous_task` | Initiate a new autonomous task with `task_template`, `autonomy_level`, `cost_envelope` | User must hold `autonomous_creator` capability; `autonomy_level` capped by `composer.max_autonomy_level` |
+| `list_autonomous_tasks` | List the operator's autonomous tasks (filter by status / since) | User sees their own tasks by default; `autonomy_admin` capability widens to all tasks |
+| `pause_autonomous_task` | Soft-pause a running task (in-flight runs complete; no new runs started) | User must hold `autonomous_creator` for tasks they own; `autonomy_admin` for any task |
+| `cancel_autonomous_task` | Hard-cancel (in-flight runs best-effort terminated; transition to `cancelled`) | Same as pause |
+| `show_autonomous_audit` | Return the task's audit trail (state transitions, runs, deferred-HITL decisions, operator commands) | Owner of the task; `audit_admin` capability for `include_redacted: true` |
+
+Cross-reference `autonomous_workflow_agent.md §7` for the full tool
+signatures, payload shapes, and lifecycle interaction. The deferred-HITL
+requests these tasks emit reuse the existing `list_pending_approvals` /
+`approve` / `reject` / `correct` tools — there is no autonomy-specific
+approval surface (per `agent_communication_protocol.md §12.3` A2U design).
 
 The pattern is: one Python function per tool, registered with `server.tool()(<func>)`. FastMCP introspects each function and produces an MCP tool advertisement automatically.
 
@@ -213,7 +245,7 @@ The MCP tool registry is what this document is about. The component catalog is w
 When the scientist asks Claude something that warrants a workflow run, the flow is:
 
 ```
-1. Scientist (chat)              "find genes related to EEEV vaccine studies"
+1. Scientist (chat)              "find genes related to target entity studies"
         ↓
 2. Claude Desktop                  decides to call start_workflow with description=<query>, user_id=<the scientist>
         ↓ stdio MCP tools/call
@@ -295,5 +327,5 @@ If the underlying control-plane endpoint does not exist yet, do not register the
 
 ### Companion documents
 
-- `docs/violin_bvbrc_workflow.md` — the workflow that this surface drives in §3 of that document.
+- `docs/domain_workflow.md` — the workflow that this surface drives in §3 of that document.
 - `architectural_plan.md` (workspace root) — §3 (tier definitions), §4 (data model), §5.1 (vertical slice), and the §R3 Round-3 revisions.
