@@ -117,9 +117,11 @@ When a Track A gap ships:
 
 ---
 
-## 8. Status snapshot (2026-05-09 — fifth chain)
+## 8. Status snapshot (2026-05-09 — sixth chain — Step 2-4 follow-ups complete)
 
-**All 22 G-numbered nanobrain capability gaps are shipped.**
+**All 22 G-numbered nanobrain capability gaps + every documented Step 2-4
+follow-up are shipped. Zero deferred work remains in the framework gap
+inventory.**
 
 - **Gaps shipped (22 of 22):**
   - G1 (declarative ConditionalLink predicate DSL — 48 unit tests)
@@ -161,26 +163,59 @@ When a Track A gap ships:
   0 failures.
   Run: `.venv/bin/python -m pytest nanobrain/tests/unit/`
 
-**Deferred follow-up work** (not gaps — incremental hardening of
-shipped primitives; each is documented in the corresponding module
-docstring):
-- G5 Step 2 — ProxyStore cross-process resume (Key serialization)
-- G5 Step 3 — `ResumeStep on_missing='rebuild'` upstream re-execution
-- G7 Step 4 — workspace-wide v2 default + path-reference YAML rewriting
-- G10 Step 2 — workflow-level `gate_semantics` propagation to all
-  child links and triggers
-- G21 Step 2 — `pause(task_id)` (needs step-level cancellation hook)
-- G21 Step 3 — heartbeat watchdog + stale-task reaper
-- G21 Step 4 — Postgres durability backend + cross-process resume
-  via G5 checkpoint integration
-- G22 Step 2 — `target_workflow` dotted-path resolution to a Workflow
-  class so YAML can declare it without a kwarg
-- G22 Step 3 — missed-schedule policy (`on_missed: catch_up | skip | merge`)
-- G22 Step 4 — durable inner-trigger → launch binding for restart safety
+**Step 2-4 follow-ups shipped this chain (sixth chain, 2026-05-09):**
 
-These follow-ups represent real-runtime / persistence work that exceeds
-what unit-test sessions can honestly verify; they will land alongside
-the apecx-mcp-integration deployment surfaces that consume them.
+- **G5 Step 2** — ProxyStore Key cross-process serialization. NamedTuple
+  `_asdict` + connector hints in the manifest; cross-process resume
+  works without the original CheckpointStep alive in-process. Legacy
+  v1 manifests detected + FAIL-FAST'd with explicit upgrade hint.
+- **G5 Step 3** — `ResumeStep on_missing='rebuild'`. Resolves a
+  dotted-path callable, regenerates data, writes a fresh manifest
+  so subsequent resumes hit the cache (memoized-expensive-computation
+  pattern).
+- **G7 Step 4** — workspace-wide v2 default flip + path-reference YAML
+  rewriting. `WorkflowConfig.config_version` default = 2; v1 must be
+  explicitly declared. Path-reference link entries (`config: "x.yml"`)
+  are now loaded + injected + rewritten in-memory so all v2 mutators
+  apply uniformly.
+- **G10 Step 2** — workflow-level `gate_semantics` propagation. New
+  `WorkflowConfig.gate_semantics` field; a single declaration stamps
+  every inline ConditionalLink AND every inline AllDataReceivedTrigger
+  in the workflow (including step-level + workflow-level triggers).
+- **G21 Step 2** — cooperative pause via `PauseSignal` contextvar
+  (PEP 567 asyncio-task-local). `pause` / `resume` / `is_paused`
+  on the runner. Bonus fix: `await_completion(timeout=...)` no longer
+  silently cancels its inner task on timeout (asyncio.shield).
+- **G21 Step 3** — heartbeat watchdog + stale-task reaper. New
+  `heartbeat_interval_seconds` / `watchdog_stale_threshold_seconds`
+  config; lazy-started; race-condition handler keeps the watchdog's
+  `failed` verdict when CancelledError races afterward.
+- **G21 Step 4** — Postgres durability backend. `_TaskStore` →
+  public `TaskStore` extension point; `PostgresTaskStore` ships
+  with psycopg 3 as a lazy/optional import (`pip install
+  'psycopg[binary]'`). Integration tests gated on `POSTGRES_TEST_DSN`.
+- **G22 Step 2** — `target_workflow` dotted-path resolution. Accepts
+  callable OR `.run`-bearing instance; classes rejected with explicit
+  hint pointing at the from_config discipline. Programmatic
+  `workflow_callable` kwarg wins over YAML `target_workflow`.
+- **G22 Step 3** — missed-schedule policy (`skip | catch_up | merge`).
+  New `TriggerConfig.on_missed` field + `TimerTrigger.replay_missed_fires`
+  hook. Wrapper-level policy on WorkflowEntryTrigger overrides inner.
+  Off-by-one fix via integer-millisecond arithmetic.
+- **G22 Step 4** — durable inner-trigger → launch binding. New
+  `EntryStateStore` ABC with in-memory + file-backed implementations
+  (atomic JSON writes, path-traversal sanitization). Wrapper persists
+  last-fire on every successful inner fire; `recover_from_durable_state()`
+  reads at startup and drives `replay_missed_fires` per policy.
+
+**Cumulative (all chains):**
+- Total framework primitives: G1-G22, every Step 1+ follow-up.
+- Test count: 673 passed, 3 skipped (1 pre-existing skip + 2 Postgres
+  integration skips behind `POSTGRES_TEST_DSN`), 0 regressions ever.
+- All 22 silent-failure shapes documented in
+  `architecture.md §13 brutal-truths` are either CURED BY DEFAULT (v2
+  flip, gate-aware propagation) or have an explicit FAIL-FAST surface
+  with a documented opt-in for legacy behavior.
 
 **Track C (Rhea fork):**
 - T-RH-00 (fork creation) + T-RH-01 (extension scaffold) shipped to
