@@ -33,6 +33,9 @@
 name: iri_resolution_workflow
 description: "Wrap lookup_entity as a multi-step nanobrain workflow with DataUnits, Triggers, and Links."
 version: "0.1.0"
+# G39 (2026-05-09): explicit schema v2 pin (paired with G7 Step 5's
+# auto_transfer-default-True flip in nanobrain).
+config_version: 2
 
 input_data_units:
   entity_records:
@@ -64,6 +67,7 @@ links:
       link_type: "direct"
       source: "entity_records"
       target: "normalize.entity_records"
+      auto_transfer: true
 
   normalize_to_resolve:
     class: "nanobrain.core.link.DirectLink"
@@ -71,6 +75,7 @@ links:
       link_type: "direct"
       source: "normalize.normalized_records"
       target: "resolve.normalized_records"
+      auto_transfer: true
 
   resolve_to_workflow_output:
     class: "nanobrain.core.link.DirectLink"
@@ -78,3 +83,4 @@ links:
       link_type: "direct"
       source: "resolve.resolved_records"
       target: "resolved_records"
+      auto_transfer: true

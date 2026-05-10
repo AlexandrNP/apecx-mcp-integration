@@ -48,6 +48,11 @@
 name: dictionary_build_workflow
 description: "Fetch NCBI taxdump and build the synonym dictionary as a nanobrain cascade."
 version: "0.1.0"
+# G39 (2026-05-09): explicit schema v2 pin (paired with G7 Step 5's
+# auto_transfer-default-True flip in nanobrain). The auto_transfer:true
+# below on every DirectLink is now redundant for v2 but kept as
+# self-documentation against the dominant silent-failure shape.
+config_version: 2
 
 input_data_units:
   trigger:

@@ -43,3 +43,13 @@ repos:
         entry: .venv/bin/python scripts/checks/step_authoring.py src/
         language: system
         pass_filenames: false
+
+      # G39 — workflow YAMLs declare config_version: 2 and every
+      # DirectLink has explicit auto_transfer: true. The dominant
+      # silent-failure shape (auto_transfer=False default) is the
+      # whole reason this lint exists.
+      - id: workflow-yaml-lint
+        name: Workflow YAMLs are v2 + every DirectLink has auto_transfer (G39)
+        entry: .venv/bin/python scripts/lint_workflow_yamls.py --quiet
+        language: system
+        pass_filenames: false

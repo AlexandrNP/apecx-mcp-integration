@@ -38,6 +38,15 @@ description: >
   VIOLIN/BV-BRC tabular lookup, and PubMed publication harvesting into
   a Markdown response with grounded inline citations.
 version: 0.2.0
+# G39 (2026-05-09): explicit pin to schema v2. Combined with G7 Step 5
+# (LinkConfig.auto_transfer field default flipped to True in nanobrain
+# 2026-05-09), v2 also auto-injects auto_transfer=true into inline link
+# configs and rewrites path-reference link YAMLs with the missing
+# auto_transfer key. Even though the explicit auto_transfer: true on
+# every DirectLink below is now redundant for v2, we keep them as
+# self-documenting belt-and-suspenders defense against the dominant
+# silent-failure shape (silent no-op on auto_transfer=false).
+config_version: 2
 
 # Workflow-level data units bracket the step chain. Required by the
 # framework's integrity validator: every step input must have a data

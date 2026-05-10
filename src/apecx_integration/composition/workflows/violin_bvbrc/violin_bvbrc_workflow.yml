@@ -69,6 +69,11 @@
 name: violin_bvbrc_workflow
 description: "VIOLIN × BV-BRC entity-synonym workflow (first-release HARD-synonym variant)."
 version: 0.1.0
+# G39 (2026-05-09): explicit schema v2 pin. v2 + G7 Step 5 (auto_transfer
+# field default = True) eliminates the dominant silent-failure shape on
+# inline DirectLinks; the lint script (scripts/lint_workflow_yamls.py)
+# enforces v2 declaration and explicit auto_transfer per DirectLink.
+config_version: 2
 
 steps:
   # -------- T01 vertical-slice chain (linked) --------
@@ -155,6 +160,7 @@ links:
       link_type: "direct"
       source: "entity_extraction.entity_candidates_output"
       target: "synonym_cache_lookup.query_terms_input"
+      auto_transfer: true
 
   step3a_to_step3c:
     class: "nanobrain.core.link.DirectLink"
@@ -162,6 +168,7 @@ links:
       link_type: "direct"
       source: "synonym_cache_lookup.cache_lookup_output"
       target: "synonym_llm_proposals.novel_terms_input"
+      auto_transfer: true
 
   step3c_to_step4:
     class: "nanobrain.core.link.DirectLink"
@@ -169,6 +176,7 @@ links:
       link_type: "direct"
       source: "synonym_llm_proposals.llm_proposals_output"
       target: "synonym_approval_gate.llm_proposals_input"
+      auto_transfer: true
 
   step4_to_step4p:
     class: "nanobrain.core.link.DirectLink"
@@ -176,6 +184,7 @@ links:
       link_type: "direct"
       source: "synonym_approval_gate.approved_synonyms_output"
       target: "verified_synonym_writeback.approved_mappings_input"
+      auto_transfer: true
 
   step4p_to_step7:
     class: "nanobrain.core.link.DirectLink"
@@ -183,3 +192,4 @@ links:
       link_type: "direct"
       source: "verified_synonym_writeback.writeback_output"
       target: "result_ranking.enriched_results_input"
+      auto_transfer: true
