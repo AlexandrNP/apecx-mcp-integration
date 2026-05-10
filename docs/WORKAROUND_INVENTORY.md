@@ -25,9 +25,22 @@ the workaround.**
 
 ## 2. Active workarounds
 
+eval_03 Round 4 (2026-05-09) caught the prior "(none yet)" headline as
+**actively misleading**: three concrete workarounds existed in production
+code (G33, G35-as-cascade-bypass, G39). G33 has since been retired, G35
+was fixed at the framework level (the bypass is gone), and G39 is
+mitigated by G7 Step 5 (auto_transfer default flipped True under v2)
+plus the lint script. Tier 4 backlog items (G34, G36, G38, G40) are
+*real* active workarounds that remain — listed below.
+
 | ID | Gap | Workaround in apecx-mcp | File(s) | Removal trigger | Cost while active |
 |---|---|---|---|---|---|
-| (none yet — apecx-mcp does not yet have any G1–G22-paired workarounds in production code; the new design package is pre-implementation) | | | | | |
+| G34-WA-1 | G34 (Pydantic str_strip_whitespace) | Named-format enum (`csv` / `tsv` / `raw_tab`) maps to delimiter literals at step-init time; raw `delimiter: '\t'` in YAML arrives as empty string and is rejected. | `composition/steps/file_readers.py:60-65` | per-field opt-out in `StepConfig`'s base Pydantic config | Step authors who want a non-blessed delimiter must extend the enum; cannot pass arbitrary whitespace-significant strings |
+| G36-WA-1 | G36 (whitelist layering) | Static AST-import scanner runs *before* `Workflow.from_config`; a more-aggressive policy than nanobrain's `class:`-path whitelist (bans `importlib.import_module`, `__import__`, `exec`, `eval`, `compile`). | `composition/sandbox.py` | layering doc + framework deduplication (G36 = Tier 4) | Two whitelists drift over time; integration scanner has to track nanobrain's policy by hand |
+| G38-WA-1 | G38 (HTTP backend adapter for ToolExecutionStep) | `SynonymCacheLookupStep` + `VerifiedSynonymWritebackStep` post directly to control-plane HTTP endpoints; bypass `ToolExecutionStep`'s adapter dispatch. | `composition/steps/synonym_cache.py` | LocalParslAdapter has shipped (G11-completion); HTTP adapter is the remaining one | These steps cannot ride the G15 UnifiedToolDescriptor / G28 capability-token surface; HTTP is hardcoded |
+| G40-WA-1 | G40 (workspace-root helper) | `_workspace.py` walks upward looking for canonical workspace markers; replaces a brittle `Path(__file__).parents[5]` assumption. | `_workspace.py` | `nanobrain.runtime.locate_workflow_root(package_name)` ships | One more place to update when adding canonical-marker directories; mostly stable |
+
+**The "Active workarounds: 0" claim was wrong before this update; the truthful count is now 4 (Tier 4 backlog), and G33's retirement has been recorded in §3 below.**
 
 ---
 
@@ -35,7 +48,10 @@ the workaround.**
 
 | ID | Gap (now shipped) | Removal commit | Date | Notes |
 |---|---|---|---|---|
-| (none yet — the package has no historical workarounds to retire) | | | | |
+| G33-WA-1 | G33 (default log directory cwd-relative) | `b3cf87f` (apecx-mcp) + `368cae3` (nanobrain) | 2026-05-09 | nanobrain's `async_logging._default_writable_log_dir` and `logging_system._default_writable_log_dir` resolve `$NANOBRAIN_LOG_DIR` -> `~/.cache/nanobrain/logs/` -> tempdir; the bootstrap-side `os.chdir(~/.apecx)` workaround in `synonym_dictionary/workflow/bootstrap.py:194-227` was retired. The chdir-as-side-effect was a silent-failure source on its own (any caller relying on cwd-relative paths during the workflow saw a different cwd than they expected). |
+| G35-as-cascade-bypass | G35 (LocalExecutor doesn't drive cascade) | `72b3d8d` (apecx-mcp) | 2026-05-09 | `LocalExecutor.execute` previously called `await workflow.process({})` and persisted the trigger-init status dict (`{"status": "data_flow_initiated", ...}`) as the OUTPUT artifact, silently dropping every cascade output. Now calls `workflow.run({}, timeout=..., settle_ms=...)` (G8) which drains the cascade + collects workflow-level outputs. `cascade_timeout` and `no_first_step` statuses are now treated as terminal failures. |
+| G39-as-config-version-mitigation | G39 (config_version: 2 not declared in any integration YAML) | `ff69ac8` (apecx-mcp) + `10d2551` (nanobrain) | 2026-05-09 | All 4 integration workflow YAMLs and 7 framework library workflow YAMLs now declare `config_version: 2`; 19 previously-implicit DirectLinks got explicit `auto_transfer: true`; `scripts/lint_workflow_yamls.py` is a new pre-commit hook that fails CI on (a) any workflow YAML missing v2, (b) any inline DirectLink missing `auto_transfer: true`, (c) any path-reference DirectLink whose target file lacks the field. Combined with G7 Step 5 (field default flipped True in nanobrain) the dominant silent-failure shape is closed at three layers (default + lint + explicit per-link declaration). |
+| G33+G35+G44 (silent-failure trio) | G44 (data_unit unscoped namespace fallback) | `b7a0280` (nanobrain) | 2026-05-09 | `DataUnitProxyRef.namespace()` previously returned `""` silently when no `WorkflowRunContext` was active, leaving multi-tenant isolation effectively off. Now emits a one-time WARNING per instance OR raises under `NANOBRAIN_STRICT_NAMESPACE=1`. Same shape as G7 `auto_transfer=False` — closing one of the three remaining P0 silent-failure shapes the integration depended on. |
 
 ---
 
