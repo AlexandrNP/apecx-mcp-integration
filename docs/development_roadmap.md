@@ -216,8 +216,8 @@ The ProxyStore key must resolve to the output file. No mocks.
 | Gap | Why Phase 3 needs it | Workaround if not yet shipped |
 |---|---|---|
 | **G3** `DataUnitProxyRef` | HPC-scale tool I/O cannot ride a Python dict between steps | apecx-mcp uses link-level `proxystore_enabled: true` for transport (defers full storage-layer fix to G3) |
-| **G4** step-level provenance threading | Every tool invocation must produce a provenance record per `external_tool_integration.md §6.2` | apecx-mcp wraps every tool call in a custom recorder step |
-| **G11** tool-step taxonomy | `ToolExecutionStep` base class with declared cost / capability surface | apecx-mcp implements ToolExecutionStep as an apecx-mcp BaseStep; promote when G11 ships |
+| **G4 (PARTIAL — see §8.7)** step-level provenance threading | Every tool invocation must produce a provenance record per `external_tool_integration.md §6.2`. Recorder primitive shipped 2026-05-09; the `_execute_process` wrap that delivers automatic per-step capture is **deferred** (eval_03 Round 2). Until G4-completion, the recorder is opt-in by hand-call. | apecx-mcp wraps every tool call in a custom recorder step |
+| **G11 (PARTIAL — see §8.7)** tool-step taxonomy | `ToolExecutionStep` base class with declared cost / capability surface. Abstract base shipped; **LocalParslAdapter not in-tree** (eval_03 Round 2). For apecx-mcp Phase 3 the LocalParslAdapter is a hard dependency for non-Rhea tool routing. | apecx-mcp implements ToolExecutionStep as an apecx-mcp BaseStep; promote when G11-completion ships |
 | **G13** multi-tenant ProxyStore namespacing | Per-run namespace isolation in shared ProxyStore Redis | apecx-mcp prefixes keys with `<run_id>/`; promote when G13 ships |
 | **G15** `UnifiedToolDescriptor` primitive | UTD as a framework primitive (per `tool_descriptor_contract.md §2`) | Hand-rolled Pydantic `UTD` model in apecx-mcp |
 
@@ -306,7 +306,7 @@ agent may be modified. Config swap is the only change.
 | Gap | Why Phase 5 needs it | Workaround if not yet shipped |
 |---|---|---|
 | **G8** `Workflow.process()` await semantics clarification | Production deployments need explicit await rather than fire-and-forget | apecx-mcp wraps every `Workflow.process()` call in an explicit `wait_for_cascade()` |
-| **G9** first-class skeleton primitive | Production skeleton catalog needs framework-level versioning + content-addressing | apecx-mcp ships its own skeleton catalog; promote when G9 ships |
+| **G9 (PARTIAL — see §8.7)** first-class skeleton primitive | Production skeleton catalog needs framework-level versioning + content-addressing. Skeleton + SkeletonRegistry shipped; the **`Workflow.from_skeleton(skeleton_path, bindings)` ergonomic loader is absent** (eval_03 Round 2). Without it, agent-authored workflows cannot bind a skeleton in one call — they must hand-assemble PlanLoweringStep + SkeletonLoaderStep YAML. | apecx-mcp ships its own skeleton catalog; promote when G9-completion ships |
 | **G20** `class:` path import whitelist | Production-mode YAML loaders must reject any `class:` outside an operator-approved allowlist (per `security_threat_model.md §5 T-PI-3`) | apecx-mcp implements a wrapping loader that performs the check before calling `Workflow.from_config()` |
 
 **Open question blocking Phase 5:**
@@ -339,8 +339,8 @@ than tool execution for their use case.
 | `autonomous_task` + `autonomous_task_run` tables | Control-plane persistence for multi-session task identity | MC-AU-01 |
 | `apecx-cp serve --role autonomous` service | Long-lived service running the WorkflowRunner | MC-AU-02 |
 | Five autonomy MCP tools | `start_autonomous_task` / `list_autonomous_tasks` / `pause_autonomous_task` / `cancel_autonomous_task` / `show_autonomous_audit` | MC-AU-04 |
-| Cost envelope enforcement + per-deployment-per-day ceiling | Runaway-autonomy protection (T-AU-1 mitigation) | MC-AU-05 |
-| Deferred-HITL fields on `Approval` model | A2U via the existing approvals table | MC-AU-06 |
+| Cost envelope enforcement + per-deployment-per-day ceiling (deployment side) | Runaway-autonomy protection (T-AU-1 mitigation). **Note:** the framework-side cost-envelope enforcement primitive (G26, see §8.8) is the load-bearing piece; deployment ceiling alone cannot stop a single runaway run. | MC-AU-05 |
+| Deferred-HITL fields on `Approval` model (data side) | A2U via the existing approvals table. **Note:** the framework-side suspend-and-resume Step primitive (G27, see §8.8) is required for the approval row to actually pause and resume a run. Without G27, the Approval row exists but the workflow either polls or stalls. | MC-AU-06 |
 
 **Framework gap dependencies (Phase 6):**
 
@@ -364,6 +364,205 @@ full transition record (per `autonomous_workflow_agent.md §10`).
     Resolve before XT-11.
 15. **Missed-schedule trigger replay policy.** Per `autonomous_workflow_agent.md §13 Q5`.
     Resolve before MC-AU-02.
+
+---
+
+## 8.6 Phase 0+ — Adoption-Gap Closure (eval_03 Tier 0)
+
+**Trigger:** `eval_03_nanobrain_gap_inventory.md` (2026-05-09) — Round 4-5 surfaced four
+silent-failure / production-workaround items that cut across Phases 0-6 and must close
+before any new phase work proceeds. Each is a single-PR change.
+
+**Milestone:** Every `Workflow.from_config` ⇒ `process()` path through the canonical
+`LocalExecutor` runs cascades correctly; default log dir works under read-only cwd; the
+two known P0 silent-failure shapes (G7-class `auto_transfer=False` and G44-class unscoped
+namespace fallback) FAIL-FAST or WARN; the framework's published code is free of debug
+print residue.
+
+**Deliverables:**
+
+| Component | Description | Owner | Estimate |
+|---|---|---|---|
+| **G35** — `LocalExecutor.execute` adopts `Workflow.run(...)` (or pairs `process()` + `wait_for_cascade()`) | `apecx-mcp-integration/src/apecx_integration/control_plane/executors/local.py:240-260`; today calls `await workflow.process({})` and returns the first-step value, silently dropping cascade outputs for any composed multi-step workflow | apecx-mcp-integration | 5-line code + 50-line test (1 day) |
+| **G33** — Default log directory under project state dir, not cwd | `nanobrain/core/async_logging.py:103` and `logging_system.py:1051` both default to `Path('logs')`. Crashes when cwd is read-only (Claude Desktop on macOS launches MCP servers with cwd=`/`). Removes the `os.chdir(log_root)` workaround in `synonym_dictionary/workflow/bootstrap.py:194-208`. | nanobrain | 10-line code (0.5 day) |
+| **G44** — `data_unit.py:2199` unscoped namespace fallback emits WARNING + opt-in FAIL-FAST | Same shape as G7's `auto_transfer=False` silent failure. An operator can run for months with namespace isolation effectively off and never know. Gap doc proposed WARNING; not seen in code. | nanobrain | 10-line code (0.5 day) |
+| **G43** — Remove 11 `print(f"DEBUG: ...")` lines from `nanobrain/core/mcp_support.py:833-876` | Code-review hygiene; would fail any review gate that exists. | nanobrain | sed one-liner (15 min) |
+
+**Integration test requirement (Phase 0+ exit criterion):**
+
+1. A two-step composed workflow (e.g., one canonical YAML from
+   `composition/workflows/violin_bvbrc/`) must run via `LocalExecutor.execute` and the
+   *second* step's output must reach the executor return value. This pins G35.
+2. `apecx-mcp` launched from a process whose cwd is `/tmp/readonly` (or an actual
+   read-only mount) must initialize without crashing. This pins G33.
+3. A workflow whose YAML omits `WorkflowRunContext` must emit a WARNING at run-start
+   and (in opt-in strict mode) refuse to load. This pins G44.
+
+**Framework gap dependencies (Phase 0+):** none — all four items ARE the framework
+fixes; nothing further upstream is required.
+
+**Open questions blocking Phase 0+:**
+
+P0+a. **G33 default location.** `nanobrain.log_dir` defaults to `~/.apecx/logs/`,
+`~/.nanobrain/logs/`, or `XDG_STATE_HOME`? Cross-platform discipline matters here
+because the symptom only fires under Claude Desktop on macOS — Linux dev usually
+has writable cwd.
+
+P0+b. **G44 strict-mode rollout.** Default-warning-with-strict-opt-in (proposed) vs.
+default-strict-with-opt-out. Eval_03 takes no position; nanobrain author should
+choose based on whether any existing nanobrain workflow currently relies on the
+unscoped fallback (grep the nanobrain repo before flipping the default).
+
+---
+
+## 8.7 Phase 0++ — Framework Completions (eval_03 Tier 1)
+
+**Trigger:** eval_03 Round 2 — three of the 22 G-shipments are partial; the
+"deliverable's value depends on framework-side wiring that did not happen." Plus the
+integration repo's outstanding `config_version: 2` migration (G39) and the framework's
+own un-audited library workflows (G45).
+
+**Milestone:** All 22 originally-numbered gap-doc items are *fully* shipped (primitive
++ wiring + adoption); the integration repo declares `config_version: 2` everywhere;
+the framework's own library-workflows are migrated to v2 too.
+
+**Deliverables:**
+
+| Component | Description | Owner | Estimate |
+|---|---|---|---|
+| **G4-completion** | Framework wraps `BaseStep._execute_process` so the recorder sees every invocation, including raises (the entire stated value of G4). After this, integration's hand-called recorder steps in Phase 3 collapse to "drop the wrap." | nanobrain | 1-2 days |
+| **G9-completion** | Implement `Workflow.from_skeleton(skeleton_path, bindings)` — the ergonomic loader that lets an agent pick a skeleton + bind holes in one call instead of hand-assembling PlanLoweringStep + SkeletonLoaderStep YAML. **Track B's agent-authored-workflows arc depends on this**. | nanobrain | 1-2 days |
+| **G11-completion** | Ship LocalParslAdapter in-tree (the `LocalExecutor` case). Galaxy adapter stays deferred per `tool_execution_step.py` docstring. Without LocalParslAdapter, every non-Rhea tool call in apecx-mcp Phase 3 routes through a custom adapter shim. | nanobrain | 3-5 days |
+| **G39** — `config_version: 2` migration in apecx-mcp-integration | `grep -rn "config_version: 2" apecx-mcp-integration/src/` returns zero hits today. Every `DirectLink` in every YAML hardcodes `auto_transfer: true` with a 7-line warning comment. Migrate every YAML in `composition/workflows/` and `synonym_dictionary/workflow/configs/`. Retire the warning comments. Ship `scripts/lint_workflow_yamls.py` and add it to CI to fail on any v1 YAML without explicit pin. | apecx-mcp-integration | 1 day |
+| **G45** — Framework `library/workflows/` audited for v2 | The G7 migration plan called this out; commit evidence missing. Audit and pin or migrate ~12 framework example workflows. | nanobrain | 1 day |
+
+**Integration test requirement (Phase 0++ exit criterion):**
+
+1. A step that raises mid-`process()` produces a provenance record. (G4-completion.)
+2. A workflow built via `Workflow.from_skeleton('synthesis_skeleton.yml',
+   bindings={...})` runs end-to-end with the same outputs as the hand-authored
+   equivalent. (G9-completion.)
+3. A `ToolExecutionStep` configured with `backend: local_parsl` invokes a real Parsl
+   `bash_app` and the result reaches `tool_outputs`. (G11-completion.)
+4. `scripts/lint_workflow_yamls.py` returns nonzero if any DirectLink in any YAML in
+   `composition/workflows/` or `synonym_dictionary/workflow/configs/` is missing
+   `auto_transfer: true` OR is on `config_version: 1` without explicit pin. (G39.)
+5. CI re-runs the framework's own library workflows under `config_version: 2` with
+   no behavioral diff. (G45.)
+
+**Framework gap dependencies (Phase 0++):** Phase 0+ (G35, G33, G44, G43).
+
+**Open questions blocking Phase 0++:**
+
+P0++a. **G9-completion API surface.** `from_skeleton(path, bindings)` vs.
+`from_skeleton(skeleton_id, bindings)` (registry-resolved). Eval_03 takes no
+position; nanobrain author should pick the form that pairs with the existing
+SkeletonRegistry.
+
+P0++b. **G11-completion: which Parsl executor preset?** ThreadPool, ProcessPool,
+HighThroughputExecutor, or "follow the workflow's executor: field if compatible"?
+Decide before LocalParslAdapter ships so adapter behavior is predictable.
+
+P0++c. **G39 lint-script CI gate severity.** Warning that breaks build, or warning
+that lands as PR comment but does not block merge? Recommend the former; a
+silent-failure-prevention lint that doesn't block is decoration.
+
+---
+
+## 8.8 Phase 6+ — Autonomy-Mode Preconditions (eval_03 Tier 2)
+
+**Trigger:** eval_03 Round 3 — two autonomy-mode blockers (G26, G27) plus two
+adjacent primitives (G24, G25) that the autonomy doc and the prompt-contracts doc
+each rely on but do not yet have framework support for. Without G26 + G27 the
+autonomous orchestrator cannot run a single long task safely; until they ship, the
+"I'll go to lunch and come back to a result" experience does not exist.
+
+**Milestone:** Phase 6 (autonomous operation, §8.5) can credibly ship — every
+component listed in §8.5's deliverables table has the framework primitive it
+silently depends on.
+
+**Deliverables:**
+
+| Component | Description | Owner | Estimate |
+|---|---|---|---|
+| **G27** — Deferred-HITL approval **Step primitive** | Step type that emits an approval row, suspends the workflow run, and resumes when the approval is resolved (approved / rejected / corrected). Composes with G21 `run_detached`. The Phase 6 `Approval` model fields by themselves cannot pause-and-resume — they only persist data. | nanobrain | 1-2 weeks |
+| **G26** — Workflow-level cost envelope **enforcement primitive** | Framework executors emit cost events; envelope enforcement (the runner halts the task when the cap is hit) is uniformly framework-side. Required by GATE-R1 in `hitl_safety_gates.md §8`. The deployment-side per-day ceiling in §8.5 cannot stop a single runaway long-running call. | nanobrain | 1 week |
+| **G24** — DataSourceRegistry primitive | Versioned data-source manifest with refresh-cadence + content-hash policy. `data_layer_evolution.md §3-4` describes 14 data sources each with custom version pin policy; today every consumer rolls their own. Blocks R2/R3 reproducibility for any RAG/FAISS-consuming workflow. APECx contributes catalog content; primitive itself is domain-neutral. | nanobrain | 1 week |
+| **G25** — `PromptRegressionTestHarness` | Schema-aware regression suite tied to `PromptTemplate` (G14). G14 is the primitive; G25 is the harness that catches the AC1-breaking class of regressions. `llm_prompt_contracts.md §1` lists two AC1-breaking regressions on 2026-04-22 from prose-level edits to `system.md`; without G25, G14 is an incomplete cure. | nanobrain | 3-5 days |
+
+**Integration test requirement (Phase 6+ exit criterion):**
+
+1. An autonomous task pauses at a deferred-HITL gate, the operator approves via the
+   existing `approve` MCP tool, and the same `WorkflowRunner` instance resumes the
+   run from the suspension point. (G27.)
+2. A workflow declared with `cost_envelope: {usd: 1.00, tokens: 1_000_000}` halts
+   mid-run when either cap is reached, with a structured `CostEnvelopeBreach` event
+   in the audit log. (G26.)
+3. A workflow that consumes `viper_v3` (data-source manifest entry) refuses to load
+   if the manifest's `content_hash` does not match the on-disk index. (G24.)
+4. A change to a `PromptTemplate` that breaks the schema of any prompt in
+   `composer_prompts/` produces a structured regression diff under
+   `pytest tests/regression/prompt_contracts/`. (G25.)
+
+**Framework gap dependencies (Phase 6+):** Phase 0++ (G4-completion). G27's
+suspend-resume must thread through whatever provenance recorder G4-completion
+exposes.
+
+**Open questions blocking Phase 6+:**
+
+P6+a. **G27 suspend-state persistence.** Reuses `Run` table or new `SuspendedRun`?
+Affects schema, migration, and recovery semantics on control-plane restart.
+P6+b. **G26 enforcement granularity.** Per-step cost cap, per-workflow cap, both?
+`autonomous_workflow_agent.md §8` implies both; pick one as the primary surface.
+P6+c. **G24 manifest format.** YAML, JSON, or `pyproject.toml`-style TOML? Affects
+authoring ergonomics and toolchain coupling.
+
+---
+
+## 8.9 Phase 4+ / Future — Meta-Workflow Preconditions (eval_03 Tier 3)
+
+**Trigger:** eval_03 Round 3 — three primitives the meta-workflow orchestrator
+design (`meta_workflow_orchestration.md`) and the security threat model
+(`security_threat_model.md`) depend on but that are not yet in framework code.
+
+**Milestone:** The 9-Step meta-workflow orchestrator described in
+`meta_workflow_orchestration.md` can be assembled from framework primitives
+without consumer-side reinvention; Strategy B "skeleton composition" (nested
+workflows) becomes runnable; UTD-G15 capability tokens are enforceable.
+
+**Deliverables:**
+
+| Component | Description | Owner | Estimate |
+|---|---|---|---|
+| **G31** — Workflow-as-substep / nested workflow primitive | Strategy B in `meta_workflow_orchestration.md §9.2` produces a YAML with K skeletons embedded as sub-workflows; framework loader currently has no nested-workflow lifecycle (verified by absence in `nanobrain/core/`). Without it, agent-authored multi-skeleton workflows must flatten or hand-orchestrate. | nanobrain | 1-2 weeks |
+| **G28** — Capability-token verification at framework boundary | The `requires_capability` field on UnifiedToolDescriptor (G15) needs an enforcement hook in the workflow loader / step dispatcher. Per `tool_descriptor_contract.md §6` and `hitl_safety_gates.md §7`. Framework should enforce uniformly so tool authors don't reimplement. | nanobrain | 3-5 days |
+| **G37** — Cascade-aware step-level provenance hook | Surface a hook on `Workflow.run()` so consumers' provenance recorders can subscribe to step-start / step-complete events; framework emits. Cousin of G4-completion: even after `_execute_process` ships the recorder wrap, the integration's executor still needs hooks to subscribe. Required for hash-chained provenance to be granular enough for HPC-bundle audit (Phase 4 PBS bundles). | nanobrain | 3-5 days |
+
+**Integration test requirement (Phase 4+ exit criterion):**
+
+1. A workflow YAML containing `steps: [{class: ..., config: nested_workflow.yml}, ...]`
+   loads, runs, and the nested workflow's data-units namespace correctly under the
+   parent workflow's `WorkflowRunContext`. (G31.)
+2. A step declaring `requires_capability: hpc.submit` refuses to execute when the
+   active execution context lacks that capability token; the refusal is auditable.
+   (G28.)
+3. The integration's `provenance/recorder.py` receives step-start and step-complete
+   events for every nanobrain step inside a multi-step workflow run, without the
+   workflow author wrapping anything by hand. (G37.)
+
+**Framework gap dependencies (Phase 4+):** Phase 0++ (G4-completion as the inside-step
+recorder; G37 is the outside-loop subscriber half).
+
+**Open questions blocking Phase 4+:**
+
+P4+a. **G31 nested-context isolation.** Does the nested workflow inherit the parent's
+data-unit namespace, get its own scoped namespace, or take an explicit
+`namespace_strategy:` field? Affects every multi-skeleton design downstream.
+P4+b. **G28 token transport.** Capability tokens travel via `WorkflowRunContext`,
+env var, or per-step config dict? Affects threat-model surface (`security_threat_model.md §6.5`).
+P4+c. **G37 event schema versioning.** Step-event payloads evolve; freeze v1 schema
+before integration's `provenance/recorder.py` subscribes, or the integration breaks
+on every framework minor.
 
 ---
 
@@ -459,11 +658,36 @@ gap-delivery sequencing with the nanobrain maintainer.
 | G20 | class: path import whitelist                  | P2 | Phase 5 |
 | G21 | WorkflowRunner / detached run                 | P1 | Phase 6 |
 | G22 | WorkflowEntryTrigger + EventTrigger           | P1 | Phase 6 |
+| G24 | DataSourceRegistry primitive                  | P1 | Phase 6+ (§8.8) |
+| G25 | PromptRegressionTestHarness                   | P1 | Phase 6+ (§8.8) |
+| G26 | Workflow cost envelope enforcement primitive  | P0 (autonomy) | Phase 6+ (§8.8) |
+| G27 | Deferred-HITL approval Step primitive         | P0 (autonomy) | Phase 6+ (§8.8) |
+| G28 | Capability-token verification at loader       | P1 | Phase 4+ (§8.9) |
+| G31 | Workflow-as-substep / nested workflow         | P1 (Strategy B) | Phase 4+ (§8.9) |
+| G33 | Default log-dir under project state dir       | P0 (silent failure) | Phase 0+ (§8.6) |
+| G35 | LocalExecutor adopts Workflow.run/cascade     | P0 (silent failure) | Phase 0+ (§8.6) |
+| G37 | Cascade-aware step-level provenance hook      | P1 | Phase 4+ (§8.9) |
+| G39 | config_version: 2 integration migration + lint| P1 | Phase 0++ (§8.7) |
+| G43 | Remove DEBUG print residue (mcp_support.py)   | P2 (CR hygiene) | Phase 0+ (§8.6) |
+| G44 | data_unit unscoped-namespace WARN/strict      | **P0 (silent failure)** | Phase 0+ (§8.6) |
+| G45 | Framework library/workflows v2 audit          | P1 | Phase 0++ (§8.7) |
 
 **Gap-delivery sequencing principle:** Phase N's P0 gaps must ship (or be
 explicitly declared workaround-acceptable) before Phase N starts. P1 and P2
 gaps may arrive concurrently with the consuming phase; their workarounds are
 documented in `nanobrain_capability_gaps.md §5`.
+
+**Phases 0+ / 0++ are gating.** Sections §8.6 (Tier 0, four single-PR fixes)
+and §8.7 (Tier 1, finish the three partials + integration v2 migration) gate
+*all* later phase work. They were added 2026-05-09 in response to
+`eval_03_nanobrain_gap_inventory.md` Round 4-5, which surfaced silent-failure
+shapes and partial-shipment status in items previously listed as "shipped."
+
+**Eval_03 scope note:** This roadmap absorbs eval_03's Tier 0-3 items as
+§§8.6-8.9. Eval_03 Tier 4 (G34, G36, G38, G40, G41, G42, G46, G47) and
+Deferred/v2 (G23, G29, G30, G32) are intentionally NOT pulled into the
+roadmap — they remain in `eval_03_nanobrain_gap_inventory.md` Round 8 and
+should be revisited only after §§8.6-8.9 close.
 
 **Reading the table:** "Consumed in Phase 2" means the gap's delivery unblocks
 optional functionality or eliminates a workaround in that phase. It does NOT
@@ -483,3 +707,73 @@ table above lists the workaround apecx-mcp implements when the gap is absent.
 | Current MCP surface | `docs/architecture.md` |
 | Workspace task table | `../implementation_plan.md` |
 | Session friction log | `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md` |
+| Brutal-truth gap audit | `../eval_03_nanobrain_gap_inventory.md` |
+
+---
+
+## 14. Engineering Process Gaps (eval_03 Round 6)
+
+These are not numbered Gxx items — they are framework-process issues surfaced by
+eval_03 Round 6. Each blocks "third-party-verifiable shipped" claims regardless of
+which G-id is on disk. They are listed here because the roadmap is the canonical
+sequencing artifact and process work belongs in the same place as code work.
+
+| ID | Discipline | What it fixes | Owner | Estimate |
+|---|---|---|---|---|
+| **PROC-1** | **PR review with cool-off** | Single-author single-machine attestation: every commit signed by one author, no second reviewer, no PR record. Even self-PR with a 24-hour cool-off and a fresh re-read closes the most-common kind of one-author bug. Without it the "0 regressions ever" claim is what one author saw on one machine on one date. | nanobrain | process change, ongoing |
+| **PROC-2** | **Per-gap commit boundary** | Megacommits like `78b67cb` (G4 + G9 + G11 + G12 + G17 + G19 + G20 — 168 tests) cannot be reverted per-gap. If G19 SignedConfig has a vulnerability tomorrow, you cannot revert just G19 without taking down G4, G9, G11, G12, G17, G20. Bisect-friendly history requires one G-id per commit (or one logical change-set per commit at most). Workspace `CLAUDE.md` Non-Negotiable Rule #8 already requires this; megacommit `78b67cb` violates it. | nanobrain | process change, ongoing |
+| **PROC-3** | **Public CI green badge** | `nanobrain/.github/workflows/tests.yml` was added in commit `55fbcc1` *during* the gap-shipment chain — the CI didn't gate the deliveries it was meant to evidence. Required for "0 regressions" to be third-party-verifiable. CI must run on PR with both Postgres + Redis up. | nanobrain | 1-2 days |
+| **PROC-4** | **Gap doc as contract; symbol drift forbidden** | Gap doc proposed `ToolStep`; framework shipped `ToolExecutionStep`. Gap doc proposed `Workflow.from_skeleton`; framework shipped nothing. Gap doc proposed G13 location `core/`; actual is `library/orchestration/`. When code lands, the gap doc updates in the same commit (or the next). Symbol renames are forbidden silently — they require a migration note. | nanobrain | process change, ongoing |
+| **PROC-5** | **`make verify` reproducible-green recipe** | Today the "557 / 712 / 1132 unit tests" counts in `nanobrain/CLAUDE.md` are local. A reviewer cannot reproduce them in one command. `make verify` must bring up the required environment (Postgres + Redis), run the full suite, and exit 0 only if all tests pass. | nanobrain | 1 day |
+
+**Why these matter at all (brutal-truth note from eval_03 Round 6):** the
+framework's self-graded "all 22 shipped" claim is in conflict with three concrete
+findings (G4 partial, G9 partial, G11 partial). The conflict is detectable by any
+reader who reads commit messages alongside `nanobrain/CLAUDE.md`. PROC-1 through
+PROC-5 are the disciplines that prevent the next round of self-grading from drifting
+again. They are cheaper than they look.
+
+---
+
+## 15. Coverage Matrix — Eval_03 Tier 0-3 ⇒ Roadmap Section
+
+Verification that every in-scope item from `eval_03_nanobrain_gap_inventory.md`
+Round 8 (Tier 0-3 + process gaps) is mapped to a roadmap section. Out-of-scope
+items (Tier 4 + Deferred/v2) are intentionally not pulled in; they remain in
+eval_03 itself.
+
+| Eval_03 Item | Tier | Severity | Roadmap section | Task / row |
+|---|---|---|---|---|
+| G35 | 0 | P0 silent-failure | §8.6 | LocalExecutor.execute adopts Workflow.run |
+| G33 | 0 | P0 silent-failure | §8.6 | Default log directory under project state dir |
+| G44 | 0 | P0 silent-failure | §8.6 | data_unit unscoped-namespace WARN/strict |
+| G43 | 0 | P2 CR hygiene | §8.6 | Remove DEBUG print residue |
+| G4-completion | 1 | P1 | §6 row updated + §8.7 | _execute_process recorder wrap |
+| G9-completion | 1 | P0 | §8 row updated + §8.7 | Workflow.from_skeleton loader |
+| G11-completion | 1 | P1 | §6 row updated + §8.7 | LocalParslAdapter in-tree |
+| G39 | 1 | P1 | §8.7 | config_version:2 migration + lint |
+| G45 | 1 | P1 | §8.7 | Framework library/workflows v2 audit |
+| G27 | 2 | P0 (autonomy) | §8.5 row updated + §8.8 | Deferred-HITL Step primitive |
+| G26 | 2 | P0 (autonomy) | §8.5 row updated + §8.8 | Cost envelope enforcement |
+| G24 | 2 | P1 | §8.8 | DataSourceRegistry primitive |
+| G25 | 2 | P1 | §8.8 | PromptRegressionTestHarness |
+| G31 | 3 | P1 (Strategy B) | §8.9 | Workflow-as-substep / nested workflow |
+| G28 | 3 | P1 | §8.9 | Capability-token verification at loader |
+| G37 | 3 | P1 | §8.9 | Cascade-aware step provenance hook |
+| Process: PR review with cool-off | — | — | §14 | PROC-1 |
+| Process: per-gap commit boundary | — | — | §14 | PROC-2 |
+| Process: public CI green badge | — | — | §14 | PROC-3 |
+| Process: gap doc as contract | — | — | §14 | PROC-4 |
+| Process: `make verify` recipe | — | — | §14 | PROC-5 |
+
+**Coverage: 21/21 in-scope items mapped.** Out-of-scope (Tier 4 + Deferred/v2):
+G34, G36, G38, G40, G41, G42, G46, G47, G23, G29, G30, G32 — see
+`eval_03_nanobrain_gap_inventory.md` Round 8 (intentionally excluded per user's
+2026-05-09 scope-reduction).
+
+**Honest caveat (per `CLAUDE.md` direct/critical-output rule):** This roadmap
+update covers the gaps in the *plan*. None of the gaps are covered in *code*.
+Per eval_03 Round 7 + Round 8 + Closing: the highest-value next action is one
+PR shipping G35, not another planning increment. The roadmap is now consistent
+with the eval_03 gap inventory; "consistent plan" is a precondition for shipping,
+not a substitute for it.
