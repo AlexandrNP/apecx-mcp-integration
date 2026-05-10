@@ -333,3 +333,54 @@ executor:
 - [ ] `class:` import paths verified with a quick Python import.
 - [ ] If you used `class:` at the top, the auto-delegation behavior is what you
       want.
+
+## Recent silent-failure closures (2026-05-09)
+
+### G34 — whitespace preserved in string fields
+
+Pre-G34 ``ConfigBase`` had ``str_strip_whitespace=True`` which
+silently dropped meaningful-whitespace string values like
+``delimiter: "\t"`` (the field arrived as empty string).
+
+Post-G34: ``str_strip_whitespace=False`` is the ConfigBase default
+(``config_base.py:684``). Whitespace is preserved end-to-end —
+``delimiter: "\t"``, multi-character separators, leading/trailing
+spaces all survive. Library subclasses that explicitly OVERRIDE
+this with ``str_strip_whitespace=True`` (e.g.,
+``WebInterfaceStepConfig``) are localized exceptions; if you author
+a new ``StepConfig`` subclass and want whitespace stripping, set it
+explicitly.
+
+### G39 — config_version: 2 + lint script
+
+```yaml
+name: my_workflow
+description: "..."
+version: "0.1.0"
+config_version: 2  # REQUIRED by the apecx-mcp-integration lint
+```
+
+The lint at ``apecx-mcp-integration/scripts/lint_workflow_yamls.py``
+enforces v2 declaration on every workflow YAML AND explicit
+``auto_transfer: true`` on every DirectLink (inline + path-reference).
+Combined with G7 Step 5 (auto_transfer field default flipped True),
+the dominant silent-failure shape is closed at three layers (default
++ lint + explicit per-link declaration).
+
+### G40 — workspace-root locator
+
+Use the framework helper instead of brittle ``Path(__file__).parents[N]``:
+
+```python
+from nanobrain.library.runtime.workspace_root import (
+    locate_workflow_root,
+    require_workflow_root,
+)
+
+root = locate_workflow_root()  # walks upward; None if not found
+root = require_workflow_root()  # FAIL-FAST with diagnostic if not found
+```
+
+Default markers: ``pyproject.toml``, ``.git``, ``setup.py``,
+``CLAUDE.md``, ``apecx-mcp-integration``. Override via
+``markers=[...]`` kwarg or ``$NANOBRAIN_WORKSPACE_ROOT`` env var.

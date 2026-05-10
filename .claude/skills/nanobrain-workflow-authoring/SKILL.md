@@ -376,3 +376,98 @@ infinite trigger loops and prevent proper workflow execution.
 - [ ] Executor names referenced by steps exist in `executors:` block.
 - [ ] Smoke test loads the workflow without error; integration test against
       real data is recorded.
+
+## New primitives (2026-05-09 — eval_03 Tier 1-3 chain)
+
+Two ergonomic additions to ``Workflow``:
+
+### ``Workflow.from_skeleton(skeleton, bindings)`` — G9-completion
+
+A *parameterized* workflow loader. The skeleton declares typed holes;
+the caller binds them; the framework lowers + loads. Use when the same
+workflow shape runs against many parameter sets (or when an LLM agent
+picks a skeleton from a registry).
+
+```python
+wf = Workflow.from_skeleton(
+    "configs/skeletons/rag_pipeline.yml",
+    bindings={"corpus": "pubmed_2025_q1", "min_evidence": 5},
+)
+```
+
+Skeleton input may be a Path/str (YAML file), a Skeleton instance, or
+an inline dict. Missing required holes FAIL-FAST; extra binding keys
+not declared in skeleton.holes FAIL-FAST. Optional holes get their
+declared default. See ``nanobrain/library/orchestration/skeleton.py``
+for the Skeleton schema and ``nanobrain/docs/workflow_authoring_paths.md``
+for the multi-path picker.
+
+### ``Workflow.run(..., nest_under_active_context=True)`` — G31 runner-side
+
+When invoking a workflow as a **nested sub-workflow** of another
+workflow, set ``nest_under_active_context=True`` on the inner ``run()``
+call. The framework auto-installs a nested ``WorkflowRunContext`` whose
+namespace derives from the outer parent via ``derive_nested_namespace``
+(strategy: ``"scoped"`` default, ``"inherit"`` opt-in via
+``WorkflowConfig.namespace_strategy``).
+
+```python
+# Inside a parent step that invokes a child workflow:
+result = await child_workflow.run(
+    {"query": "..."},
+    nest_under_active_context=True,
+)
+# child_workflow's data units, capability checks, and provenance
+# all key off "<parent_namespace>.<child_workflow_name>" automatically.
+```
+
+When False (default): no behavior change; existing top-level callers
+unaffected. When True without an outer context: warns + falls through
+to non-nested run.
+
+### Capability-token enforcement (G28)
+
+Workflows that load tools with ``requires_capability: [...]`` now have
+those tokens enforced at ``ToolExecutionStep.process()`` time. The
+runner / caller populates ``WorkflowRunContext.capability_tokens`` on
+the active context BEFORE invoking the workflow:
+
+```python
+ctx = WorkflowRunContext.from_config({
+    "run_id": "abc",
+    "capability_tokens": ["hpc.submit", "data.read"],
+})
+with ctx.activate():
+    await workflow.run(...)
+```
+
+Missing tokens → ``CapabilityNotGranted`` workflow-terminal exception.
+
+### Cost envelope enforcement (G26)
+
+Long workflows can declare cumulative cost caps via ``CostEnvelope`` +
+``CostTracker``. Cost-emitting code paths (LLM client, tool dispatch)
+call ``record_cost(kind, amount)`` which checks against the active
+tracker's caps:
+
+```python
+from nanobrain.core.cost_envelope import CostEnvelope, CostTracker
+
+tracker = CostTracker(CostEnvelope(usd=10.0, tokens=1_000_000))
+with tracker.activate():
+    await workflow.run(...)  # any record_cost call past the cap raises
+```
+
+### Step-level events (G37)
+
+Subscribe to live step lifecycle events (``step_start`` / ``step_complete``
+/ ``step_failed``) for dashboards / log shippers / provenance recorders:
+
+```python
+from nanobrain.core.step_events import subscribe_to_step_events
+
+events = []
+with subscribe_to_step_events(events.append):
+    await workflow.run(...)
+# events is now a list[StepEvent] with one event per step boundary
+```

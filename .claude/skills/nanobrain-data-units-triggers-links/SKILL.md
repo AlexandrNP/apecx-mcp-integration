@@ -444,3 +444,44 @@ then await `workflow.output_data_units['result'].get()` (with a timeout).
 - [ ] If you used a cycle, you set `allow_cycles: true` AND configured `debounce_ms` on the trigger.
 - [ ] No data unit instance is shared across two steps (each step owns its own).
 - [ ] Smoke test verifies the wiring loads; integration test against real data is recorded.
+
+## Recent silent-failure closures (2026-05-09)
+
+### G44 — DataUnitProxyRef unscoped namespace warning
+
+Pre-G44 ``DataUnitProxyRef.namespace()`` silently returned ``""`` when no
+``WorkflowRunContext`` was active, leaving the proxystore key under a
+GLOBAL identity instead of per-run isolation. Multi-tenant runs
+sharing a Redis-backed ProxyStore could collide on equality / hashing
+without any visible signal — same shape as G7's
+``auto_transfer=False`` silent failure.
+
+Post-G44:
+- Default mode: emits a one-time ``WARNING`` per ``DataUnitProxyRef``
+  instance, naming the data unit + reason (no run context vs.
+  library import failure).
+- ``NANOBRAIN_STRICT_NAMESPACE=1`` flips the WARNING into a
+  ``ComponentConfigurationError`` so deployments where multi-tenant
+  isolation MUST hold (HPC bundles, shared-Redis ProxyStore) FAIL-FAST.
+
+You don't need to do anything new — the framework catches you. To
+suppress the warning, EITHER set
+``DataUnitProxyRef.proxystore_namespace_prefix`` explicitly OR run
+inside a ``WorkflowRunContext.activate()``.
+
+### G39 — config_version: 2 lint enforcement
+
+The lint script
+``apecx-mcp-integration/scripts/lint_workflow_yamls.py`` (wired as a
+pre-commit hook) now fails CI when:
+
+  R1. A workflow YAML (file under canonical roots WITH a ``links:``
+      block) lacks ``config_version: 2``.
+  R2. An inline ``DirectLink`` config block omits ``auto_transfer: true``.
+  R3. A path-reference ``DirectLink`` (``config: "<path>.yml"``) points
+      at a YAML that lacks ``auto_transfer: true``.
+
+Both ``config_version: 2`` AND explicit ``auto_transfer: true``
+on every DirectLink are now required. Even though G7 Step 5 made
+True the field default, the explicit declaration is the
+lint-detectable signal that protects against regressions.

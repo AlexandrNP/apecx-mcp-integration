@@ -11,6 +11,17 @@ The Phase-2 Docker-container sandbox (T13b) is where runtime isolation
 actually lands. Until then, the scanner + the human review gate
 (Step 4 HITL) + operator review are the only safety controls.
 
+## Layering with nanobrain G20 (G36 closure, 2026-05-09)
+
+This scanner is **Stage 1** of a two-layer whitelist. Stage 2 is
+nanobrain's ``core/import_whitelist.py`` (G20) which gates ``class:``
+paths at YAML load time. The two are intentionally complementary —
+see ``docs/whitelist_layering.md`` for the full contract. Tl;dr:
+Stage 1 catches LLM-emitted dynamic-import escapes in PYTHON SOURCE;
+Stage 2 catches malicious YAML class-path attacks that bypass the
+LLM-emit pipeline. Both stay; folding them into one would leave
+attack surfaces open at one of the two entry points.
+
 ## What the scanner catches
 
 Static imports via Python's ``import`` statement, in every form:
@@ -80,30 +91,35 @@ from pathlib import Path
 # Banned dynamic-import constructs (always rejected)
 # ---------------------------------------------------------------------------
 
-BANNED_CALLS: frozenset[str] = frozenset({
-    "__import__",
-    "exec",
-    "eval",
-    "compile",
-})
+BANNED_CALLS: frozenset[str] = frozenset(
+    {
+        "__import__",
+        "exec",
+        "eval",
+        "compile",
+    }
+)
 
-BANNED_ATTRIBUTE_CALLS: frozenset[tuple[str, str]] = frozenset({
-    ("importlib", "import_module"),
-    ("importlib", "__import__"),
-})
+BANNED_ATTRIBUTE_CALLS: frozenset[tuple[str, str]] = frozenset(
+    {
+        ("importlib", "import_module"),
+        ("importlib", "__import__"),
+    }
+)
 
 
 # ---------------------------------------------------------------------------
 # Result types
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Import:
     """One import as detected by the scanner."""
 
-    module: str      # top-level package name, e.g. 'pandas' for 'pandas.DataFrame'
-    full_path: str   # the full dotted name, e.g. 'pandas.DataFrame'
-    lineno: int      # 1-based line number for diagnostics
+    module: str  # top-level package name, e.g. 'pandas' for 'pandas.DataFrame'
+    full_path: str  # the full dotted name, e.g. 'pandas.DataFrame'
+    lineno: int  # 1-based line number for diagnostics
 
 
 @dataclass
@@ -141,16 +157,14 @@ class ScanViolation(ValueError):
         self.suggestions = suggestions
         body = "import-scan rejected:\n  " + "\n  ".join(result.violations)
         if suggestions:
-            body += (
-                "\nClosest matches in component library:\n  "
-                + "\n  ".join(suggestions)
-            )
+            body += "\nClosest matches in component library:\n  " + "\n  ".join(suggestions)
         super().__init__(body)
 
 
 # ---------------------------------------------------------------------------
 # Scanner
 # ---------------------------------------------------------------------------
+
 
 class _ImportVisitor(ast.NodeVisitor):
     def __init__(self) -> None:
@@ -176,9 +190,7 @@ class _ImportVisitor(ast.NodeVisitor):
         top = full.split(".", 1)[0] if full else ""
         for alias in node.names:
             child_full = f"{full}.{alias.name}" if full else alias.name
-            self.imports.append(
-                Import(module=top, full_path=child_full, lineno=node.lineno)
-            )
+            self.imports.append(Import(module=top, full_path=child_full, lineno=node.lineno))
         self.generic_visit(node)
 
     def visit_Call(self, node: ast.Call) -> None:
@@ -231,6 +243,7 @@ class ImportScanner:
 # Whitelist loader
 # ---------------------------------------------------------------------------
 
+
 def load_whitelist(path: str | Path) -> frozenset[str]:
     """Load a newline-delimited whitelist file.
 
@@ -257,6 +270,7 @@ def load_whitelist(path: str | Path) -> frozenset[str]:
 # ---------------------------------------------------------------------------
 # Convenience entry point
 # ---------------------------------------------------------------------------
+
 
 def scan_python_source(source: str, *, whitelist: frozenset[str] | None = None) -> ScanResult:
     """Top-level scan: parse, detect imports + dynamic-code constructs,

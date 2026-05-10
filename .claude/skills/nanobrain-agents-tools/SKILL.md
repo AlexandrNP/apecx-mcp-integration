@@ -384,3 +384,52 @@ Failed to load MCP configuration: {e}
 - [ ] If using MCP, `aiohttp` is installed and the server URL is real (not `mock://`).
 - [ ] Smoke test loads the agent + at least one tool; integration test against
       real LLM call recorded.
+
+## Tool-backend adapters (2026-05-09 — eval_03 Tier 1+4)
+
+### Available concrete adapters (BACKEND_NAME → location)
+
+| Backend | Adapter | Location | Use case |
+|---|---|---|---|
+| ``rhea`` | ``RheaMCPDispatcher`` | ``nanobrain/library/tools/rhea_mcp_dispatcher.py`` | Remote MCP tool over HTTP+SSE (Rhea fork) |
+| ``local_parsl`` | ``LocalParslAdapter`` | ``nanobrain/library/tools/local_parsl_adapter.py`` | Local Python-callable dispatch via Parsl |
+| ``http`` | ``HTTPBackendAdapter`` | ``nanobrain/library/tools/http_backend_adapter.py`` | Generic HTTP POST/GET to a configured base_url |
+
+Pick by use case:
+- Remote MCP service with rich tool surface (Rhea, etc): ``rhea``.
+- Single-host development OR small deployments where the tool is a
+  Python callable: ``local_parsl`` (G11-completion). Default executor
+  preset is ThreadPoolExecutor (lowest-overhead, fork-safe);
+  ``executor_kind="process"`` for HighThroughputExecutor.
+- Existing HTTP endpoint (control plane, third-party REST API):
+  ``http`` (G38). Pass endpoint per-call via ``invoke(..., endpoint=...)``;
+  default falls back to ``f"/{utd.descriptor_id}"``.
+
+All three implement the same ``ToolBackendAdapter.invoke(utd, inputs,
+**kwargs)`` protocol. Register via ``ToolBackendRegistry.register(adapter)``.
+
+### Capability-token enforcement (G28)
+
+Any UTD with ``requires_capability: [...]`` is enforced at
+``ToolExecutionStep.process()`` time, BEFORE the adapter is touched:
+
+```python
+utd = UnifiedToolDescriptor(
+    descriptor_id="rhea:hpc.run_alphafold@1.0.0",
+    requires_capability=["hpc.submit"],
+    ...
+)
+```
+
+The runner / driver populates ``WorkflowRunContext.capability_tokens``
+with the caller's granted set BEFORE invoking. Missing tokens raise
+``CapabilityNotGranted`` (workflow-terminal). Strict default: no run
+context active = no granted tokens.
+
+### Tool invocation cost recording (G26)
+
+Tools that emit cost (LLM calls, HPC time, paid APIs) call
+``nanobrain.core.cost_envelope.record_cost(kind, amount)`` from
+their adapter's ``invoke(...)`` body. The active ``CostTracker``
+checks against the envelope; ``CostEnvelopeBreach`` raises when a
+record would exceed the cap.

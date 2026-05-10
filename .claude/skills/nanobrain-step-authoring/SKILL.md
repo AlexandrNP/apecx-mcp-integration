@@ -357,3 +357,78 @@ ComponentConfigurationError: Data unit configuration missing 'class' field
 - [ ] Declared `input_data_units`, `output_data_units`, and `triggers` in YAML.
 - [ ] Returned dict from `process` whose keys exactly match `output_data_units` names.
 - [ ] Smoke test exists; integration test against real (small) data is recorded.
+
+## New step-level primitives (2026-05-09 — eval_03 Tier 1-3 chain)
+
+### Provenance auto-recording (G4-completion)
+
+Pre-G4-completion: step authors who wanted provenance had to wrap
+every ``process()`` call by hand; exceptions silently disappeared.
+Post-G4-completion: ``BaseStep._execute_process`` consults
+``current_provenance_context()`` and records inputs / outputs /
+exception / timing on every ``process()`` call automatically.
+
+**Step authors do nothing.** Just write ``async def process(...)``;
+when a ``ProvenanceContext`` is active the framework records each
+invocation. Recorder errors are swallowed (observability never
+masks the step's real exception or return value).
+
+### Step-event publishing (G37)
+
+Same wrap also publishes step-lifecycle events. Subscribers receive
+``step_start`` / ``step_complete`` / ``step_failed`` synchronously.
+Step authors do nothing — the events fire from
+``_execute_process``. See ``nanobrain/core/step_events.py``.
+
+### Suspend semantics (G27 — DeferredHITLStep)
+
+For "the step needs to wait for human approval, possibly minutes or
+hours, possibly across process restarts":
+
+```python
+from nanobrain.library.steps.deferred_hitl_step import DeferredHITLStep
+
+# In your workflow YAML:
+# steps:
+#   approval_gate:
+#     class: nanobrain.library.steps.deferred_hitl_step.DeferredHITLStep
+#     config:
+#       name: approval_gate
+#       prompt_template: "Approve {input.action} on {input.target}?"
+```
+
+Construction: ``DeferredHITLStep.from_config(path, approval_store=...)``.
+Storage backends ship: ``InMemoryApprovalStore`` (tests),
+``FileApprovalStore`` (production single-process; survives restart).
+
+The step is idempotent + stateless: first call submits an Approval
+and raises ``ApprovalPendingError``; retry finds the existing record
+via deterministic ``approval_id`` and re-raises (or returns the
+resolved decision payload). ``rejected`` decision raises
+``ApprovalRejectedError`` (workflow-terminal).
+
+### Capability-required tools (G28)
+
+If your step dispatches a tool whose UTD declares
+``requires_capability: [...]``, the framework now enforces that
+list against the active ``WorkflowRunContext.capability_tokens``
+BEFORE invoking the adapter. ``CapabilityNotGranted`` raises;
+your ``process()`` does not need to check by hand.
+
+### Cost recording (G26)
+
+Cost-emitting steps (LLM clients, expensive tool calls) call
+``record_cost(kind, amount)`` to charge against the active tracker:
+
+```python
+from nanobrain.core.cost_envelope import record_cost
+
+async def process(self, input_data, **kwargs):
+    response = await self._llm.complete(prompt)
+    record_cost("tokens", response.usage.total_tokens)
+    record_cost("usd", response.usage.cost_usd)
+    return {"answer": response.content}
+```
+
+When no tracker is active, ``record_cost`` is a fast no-op.
+``CostEnvelopeBreach`` raises when a record would exceed the cap.
