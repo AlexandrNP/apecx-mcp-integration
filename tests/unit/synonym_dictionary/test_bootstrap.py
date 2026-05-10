@@ -161,21 +161,29 @@ async def test_async_entrypoint_idempotent(isolated_paths: Path) -> None:
     assert result == sqlite
 
 
-def test_drive_workflow_chdirs_to_writable_dir_and_restores(
+def test_drive_workflow_does_not_chdir_post_g33(
     isolated_paths: Path,
 ) -> None:
-    """Regression test for the nanobrain logs/ cwd bug (2026-05-06).
+    """G33 (2026-05-09) — pin that bootstrap does NOT chdir.
 
-    nanobrain's async_logging falls back to ``Path("logs")`` (cwd-relative).
-    If apecx-mcp is launched with cwd=`/` (read-only on macOS), the workflow
-    instantiation crashes with ``[Errno 30] Read-only file system: 'logs'``.
-    ``_drive_workflow`` must chdir to a writable dir BEFORE
-    ``Workflow.from_config`` is called, and restore the original cwd in
-    ``finally`` — even if the workflow raises.
+    Pre-G33 ``_drive_workflow`` did ``os.chdir(~/.apecx)`` before
+    ``Workflow.from_config`` to work around nanobrain's
+    ``Path("logs")`` cwd-relative log default. That default is gone:
+    ``async_logging._default_writable_log_dir`` and
+    ``logging_system._default_writable_log_dir`` now resolve to
+    ``$NANOBRAIN_LOG_DIR`` -> ``~/.cache/nanobrain/logs/`` -> tempdir.
 
-    Strategy: stub ``Workflow.from_config`` itself to capture cwd at call
-    time, then raise. The real chdir/restore code in bootstrap is what's
-    being verified.
+    The chdir hack was a *cwd-changing side effect* in a library
+    function — itself a silent-failure source for any caller that
+    expects relative paths to resolve against their original cwd.
+    G33 retires it.
+
+    This test pins the post-G33 contract: bootstrap leaves cwd
+    untouched. If somebody re-introduces an os.chdir to "be safe,"
+    this test fires.
+
+    Source: ``eval_03_nanobrain_gap_inventory.md`` Round 4 G33;
+    ``apecx-mcp-integration/docs/development_roadmap.md`` 8.6.
     """
     sqlite = isolated_paths / "out" / "dictionary.sqlite"
     data_root = isolated_paths / "data"
@@ -197,28 +205,32 @@ def test_drive_workflow_chdirs_to_writable_dir_and_restores(
 
     cfg = EnsureDictionaryConfig(sqlite_path=sqlite, data_root=data_root)
 
-    # ensure_dictionary lets the underlying exception propagate; we only
-    # care about cwd state at the call site and after.
     with (
         mock.patch("nanobrain.core.workflow.Workflow", fake_workflow_cls),
         contextlib.suppress(_StubFromConfig),
     ):
         ensure_dictionary(cfg)
 
-    # 1. cwd was changed BEFORE Workflow.from_config was called
+    # 1. Workflow.from_config was reached.
     assert cwd_at_workflow_call, "Workflow.from_config was never reached"
     drive_cwd = cwd_at_workflow_call[0]
-    assert drive_cwd != prev_cwd, (
-        f"_drive_workflow should chdir to a writable apecx state dir before "
-        f"calling Workflow.from_config; cwd stayed at {drive_cwd!r}"
+
+    # 2. Post-G33 contract: cwd at Workflow.from_config call time MUST
+    #    equal the caller's cwd. The framework's
+    #    _default_writable_log_dir handles read-only-cwd scenarios on
+    #    its own, anchored to $HOME/.cache or $TMPDIR — no chdir hack
+    #    needed in the bootstrap layer.
+    assert drive_cwd == prev_cwd, (
+        f"bootstrap chdir'd to {drive_cwd!r} before "
+        f"Workflow.from_config; G33 retired the chdir workaround. "
+        f"If the framework regressed to cwd-relative log defaults, "
+        f"fix _default_writable_log_dir, not the bootstrap layer."
     )
 
-    # 2. The chosen cwd is writable — the whole point of the fix
-    assert os.access(drive_cwd, os.W_OK), f"chosen cwd is not writable: {drive_cwd}"
-
-    # 3. cwd was restored after the exception, via the finally clause
+    # 3. cwd is unchanged after bootstrap (it never changed at all,
+    #    but the assertion remains as a regression-detector).
     assert os.getcwd() == prev_cwd, (
-        f"cwd not restored after exception; now at {os.getcwd()!r}, expected {prev_cwd!r}"
+        f"cwd changed across bootstrap call; now at {os.getcwd()!r}, was {prev_cwd!r}"
     )
 
 
