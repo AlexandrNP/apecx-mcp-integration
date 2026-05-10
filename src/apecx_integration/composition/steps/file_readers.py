@@ -58,11 +58,14 @@ from pydantic import Field
 
 log = logging.getLogger(__name__)
 
-# Nanobrain's config loader (via Pydantic) strips whitespace from
-# string fields — passing ``delimiter: "\t"`` in YAML arrives at the
-# step as an empty string. We sidestep that with a named-format enum
-# and map to the real delimiter internally. Logged as a framework-
-# level finding in ``docs/future_work.md``.
+# G34 (closed 2026-05-09): nanobrain's ConfigBase now sets
+# ``str_strip_whitespace=False`` (config_base.py:684), so passing
+# ``delimiter: "\t"`` in YAML arrives intact. The named-format enum
+# below is preserved for backward compatibility with existing YAMLs
+# that already use ``format: csv|tsv``, but new authors can also
+# pass ``delimiter`` directly with arbitrary whitespace-significant
+# characters. Regression-pinned at
+# ``nanobrain/tests/unit/test_g34_strip_whitespace_off.py``.
 _FORMAT_TO_DELIMITER: dict[str, str] = {
     "csv": ",",
     "tsv": "\t",
@@ -72,6 +75,17 @@ _FORMAT_TO_DELIMITER: dict[str, str] = {
 class DelimitedFileReaderStepConfig(StepConfig):
     file_path: str
     format: Literal["csv", "tsv"] = "csv"
+    # G34 — explicit ``delimiter`` overrides ``format`` when both are
+    # set. None preserves backward compat (format-derived).
+    delimiter: str | None = Field(
+        default=None,
+        description=(
+            "Optional explicit delimiter. When set, overrides ``format``. "
+            "Whitespace-significant chars (\\t, multi-char separators) are "
+            "preserved as of G34 (str_strip_whitespace=False). When None, "
+            "the delimiter is derived from ``format``."
+        ),
+    )
     encoding: str = "utf-8"
     required_columns: list[str] = Field(default_factory=list)
 
@@ -99,6 +113,7 @@ class DelimitedFileReaderStep(BaseStep):
             **base,
             "file_path": config.file_path,
             "format": getattr(config, "format", "csv"),
+            "delimiter": getattr(config, "delimiter", None),
             "encoding": getattr(config, "encoding", "utf-8"),
             "required_columns": list(getattr(config, "required_columns", []) or []),
         }
@@ -118,7 +133,14 @@ class DelimitedFileReaderStep(BaseStep):
                 f"{sorted(_FORMAT_TO_DELIMITER)}, got {format_name!r}."
             )
         self._format: str = format_name
-        self._delimiter: str = _FORMAT_TO_DELIMITER[format_name]
+        # G34 — explicit delimiter overrides format-derived. Whitespace-
+        # significant chars are now preserved end-to-end.
+        explicit_delimiter = component_config.get("delimiter")
+        self._delimiter: str = (
+            explicit_delimiter
+            if explicit_delimiter is not None
+            else _FORMAT_TO_DELIMITER[format_name]
+        )
         self._encoding: str = component_config.get("encoding") or "utf-8"
         self._required_columns: list[str] = component_config["required_columns"]
 
