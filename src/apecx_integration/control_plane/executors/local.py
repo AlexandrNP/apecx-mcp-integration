@@ -2,9 +2,19 @@
 
 Takes a Run whose status is RUNNING (or PENDING auto-advanced), loads
 the generated workflow YAML via ``nanobrain.core.workflow.Workflow.
-from_config``, runs ``workflow.process({})``, persists the result as
-an OUTPUT Artifact, and updates ``run.status`` + emits the
-corresponding provenance event.
+from_config``, drives it via ``workflow.run({})`` (G8 cascade-aware
+entry point), persists the resolved workflow-output dict as an OUTPUT
+Artifact, and updates ``run.status`` + emits the corresponding
+provenance event.
+
+G35 (2026-05-09): the executor previously called
+``workflow.process({})`` which only deposits input into the first
+step's data unit and returns immediately while the cascade fires in
+background tasks; the persisted artifact then carried the trigger-
+init status dict (``{"status": "data_flow_initiated", ...}``)
+instead of the workflow's actual output. Every multi-step composed
+workflow run through the canonical executor was silently dropping
+its outputs. Source: ``eval_03_nanobrain_gap_inventory.md`` Round 4 G35.
 
 Failure contract
 ----------------
@@ -100,12 +110,21 @@ class LocalExecutor:
         recorder: ProvenanceRecorder,
         workflow_base_dir: Path,
         actor: str = "local_executor",
+        cascade_timeout_seconds: float = 600.0,
+        cascade_settle_ms: int = 200,
     ) -> None:
         self._session_factory = session_factory
         self._artifact_store = artifact_store
         self._recorder = recorder
         self._workflow_base_dir = Path(workflow_base_dir).resolve()
         self._actor = actor
+        # G35 — cascade-drain knobs for ``Workflow.run``. The default
+        # 600s/200ms pair is chosen to match the synonym-dictionary
+        # bootstrap (long-running build) AND typical LLM-bound composed
+        # workflows. Lower the timeout for pure-compute test runs; raise
+        # it for workflows that legitimately exceed 10 minutes.
+        self._cascade_timeout_seconds = cascade_timeout_seconds
+        self._cascade_settle_ms = cascade_settle_ms
 
     async def execute(self, run_id: UUID) -> ExecutionResult:
         yaml_path = self._validate_and_fetch(run_id)
@@ -197,13 +216,12 @@ class LocalExecutor:
                 # Lazy import — nanobrain is heavy; don't pay for it
                 # in modules that only import LocalExecutor for typing.
                 from nanobrain.core.workflow import Workflow
+
                 workflow = Workflow.from_config(str(staged_yaml))
             except Exception as exc:
                 reason = f"workflow load failed: {type(exc).__name__}: {exc}"
                 log.warning("Run %s: %s", run_id, reason)
-                transitioned = self._mark_failed(
-                    run_id, reason, failure_class="load_failed"
-                )
+                transitioned = self._mark_failed(run_id, reason, failure_class="load_failed")
                 return self._terminal_result(
                     run_id=run_id,
                     intended_status=RunStatus.FAILED,
@@ -213,15 +231,56 @@ class LocalExecutor:
                 )
 
             try:
-                raw_result = await workflow.process({})
+                # G35 — adopt Workflow.run (G8) so the cascade is awaited
+                # and workflow-level output data units are collected. Pre-G35
+                # the executor called ``workflow.process({})`` and persisted
+                # whatever process() returned in data-driven mode — which
+                # is the load-bearing trigger-init status dict
+                # ``{"status": "data_flow_initiated", ...}``, NOT the
+                # workflow's actual outputs. Every multi-step composed
+                # workflow that ran through this executor was silently
+                # dropping its real outputs into the artifact's status
+                # field while the cascade fired in the background and its
+                # results vanished. Source: eval_03_nanobrain_gap_inventory.md
+                # Round 4 G35 (2026-05-09).
+                raw_result = await workflow.run(
+                    {},
+                    timeout=self._cascade_timeout_seconds,
+                    settle_ms=self._cascade_settle_ms,
+                    raise_on_cascade_timeout=False,
+                )
             except Exception as exc:
+                reason = f"workflow execution failed: {type(exc).__name__}: {exc}"
+                log.warning("Run %s: %s", run_id, reason)
+                transitioned = self._mark_failed(run_id, reason, failure_class="execute_failed")
+                return self._terminal_result(
+                    run_id=run_id,
+                    intended_status=RunStatus.FAILED,
+                    transitioned=transitioned,
+                    intended_reason=reason,
+                    output_artifact_id=None,
+                )
+
+            # G35 — Workflow.run() can return a non-completed status
+            # without raising. Treat ``cascade_timeout`` and
+            # ``no_first_step`` as terminal failures rather than letting
+            # them slip through to RUN_COMPLETED with a misleading payload.
+            # The "fire-and-forget then claim COMPLETED" shape is exactly
+            # the silent-failure class this executor exists to prevent.
+            run_status = raw_result.get("status") if isinstance(raw_result, dict) else None
+            if run_status in ("cascade_timeout", "no_first_step"):
+                output_keys = (
+                    [k for k in raw_result if not k.startswith("_") and k != "status"]
+                    if isinstance(raw_result, dict)
+                    else []
+                )
                 reason = (
-                    f"workflow execution failed: {type(exc).__name__}: {exc}"
+                    f"workflow returned non-completed status="
+                    f"{run_status!r}; cascade did not drain cleanly. "
+                    f"Partial output keys: {output_keys}"
                 )
                 log.warning("Run %s: %s", run_id, reason)
-                transitioned = self._mark_failed(
-                    run_id, reason, failure_class="execute_failed"
-                )
+                transitioned = self._mark_failed(run_id, reason, failure_class="execute_failed")
                 return self._terminal_result(
                     run_id=run_id,
                     intended_status=RunStatus.FAILED,
@@ -241,13 +300,10 @@ class LocalExecutor:
             output_artifact_id = self._persist_output(run_id, raw_result)
         except Exception as exc:
             reason = (
-                f"workflow succeeded but output persistence failed: "
-                f"{type(exc).__name__}: {exc}"
+                f"workflow succeeded but output persistence failed: {type(exc).__name__}: {exc}"
             )
             log.warning("Run %s: %s", run_id, reason)
-            transitioned = self._mark_failed(
-                run_id, reason, failure_class="persist_failed"
-            )
+            transitioned = self._mark_failed(run_id, reason, failure_class="persist_failed")
             return self._terminal_result(
                 run_id=run_id,
                 intended_status=RunStatus.FAILED,
@@ -378,9 +434,7 @@ class LocalExecutor:
         return staged
 
     def _persist_output(self, run_id: UUID, raw_result: object) -> UUID:
-        payload_bytes = json.dumps(
-            raw_result, default=str, indent=2
-        ).encode("utf-8")
+        payload_bytes = json.dumps(raw_result, default=str, indent=2).encode("utf-8")
         artifact = self._artifact_store.store(
             content=payload_bytes,
             kind=ArtifactKind.OUTPUT,
@@ -413,9 +467,7 @@ class LocalExecutor:
         RunStatus.PAUSED,
     )
 
-    def _mark_completed(
-        self, run_id: UUID, output_artifact_id: UUID
-    ) -> bool:
+    def _mark_completed(self, run_id: UUID, output_artifact_id: UUID) -> bool:
         """Transition run to COMPLETED + emit RUN_COMPLETED.
 
         Returns True if THIS call performed the transition (the
