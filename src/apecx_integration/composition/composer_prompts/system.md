@@ -64,6 +64,42 @@ The workflow YAML must:
 - If a library component's shipped wrapper YAML is wrong for this
   task, the correct answer is to pick a different component or to
   author a novel Python step — not to override with inline config.
+
+**Recognize this exact framework error — it means you violated the
+rule above.** When you emit a Step subclass with an inline ``config:
+{ ... }``, ``nanobrain.core.config.config_base`` raises:
+
+```
+❌ FRAMEWORK VIOLATION: Inline dict configuration not supported for <ClassPath>
+   SUPPORTED CLASSES: DataUnit, Link, Trigger and their subclasses only
+   REQUIRED: Use file path for config field
+   EXAMPLE: config: 'path/to/<classname>.yml'
+   CURRENT: config: { ... }
+```
+
+The composer's pre-execution validator surfaces this BEFORE runtime
+so you see it as a structured violation in the retry feedback. To
+fix:
+
+```yaml
+# ❌ WRONG — inline dict on a Step
+steps:
+  entity_extraction:
+    class: apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep
+    config:
+      target_entities: ['customer', 'product']   # FRAMEWORK VIOLATION
+      max_candidates: 10
+
+# ✅ CORRECT — file path to the canonical wrapper
+steps:
+  entity_extraction:
+    class: apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep
+    config: "steps/entity_extraction.yml"
+```
+
+If you need different parameters than what the canonical wrapper
+supplies, the correct answer is to pick a different component or
+author a novel Python step — NOT to override via inline dict.
 - Under ``links:``, each link is a ``<link_id>: { class:
   "nanobrain.core.link.DirectLink", config: { link_type: direct,
   source: "<source>", target: "<target>", auto_transfer: true } }``

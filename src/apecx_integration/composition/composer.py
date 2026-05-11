@@ -806,7 +806,18 @@ def _parse_response(content: str) -> tuple[str, dict[str, str]]:
 
 
 def _render_candidates(hits: list[SearchHit]) -> str:
-    """Render retrieval hits as a compact, LLM-consumable block."""
+    """Render retrieval hits as a compact, LLM-consumable block.
+
+    B1 (2026-05-11): each candidate with a wrapper YAML now carries
+    an ``emit_step`` block that shows the LLM exactly what to paste
+    into ``steps:`` for that component. The block is YAML-formatted
+    and uses the canonical class path + canonical config path, so the
+    "what should I literally write?" answer is two lines below the
+    description. This addresses the recurring drift pattern where
+    the LLM saw ``yaml: steps/foo.yml`` but still synthesized an
+    inline dict because it had to assemble the step shape itself
+    from prose rules.
+    """
     lines: list[str] = []
     for hit in hits:
         c = hit.component
@@ -818,6 +829,17 @@ def _render_candidates(hits: list[SearchHit]) -> str:
         lines.append(f"  description: {c.description}")
         if c.examples:
             lines.append(f"  examples: {list(c.examples)}")
+        if c.yaml_path:
+            # Ready-to-paste step shape using a short, semantic
+            # step_id derived from the component name. The LLM is
+            # expected to swap the step_id for a task-appropriate
+            # one — the literal strings to copy are the class path
+            # and the config path.
+            stub_id = c.name.lower().replace(" ", "_").replace("-", "_")
+            lines.append("  emit_step: |")
+            lines.append(f"    {stub_id}:")
+            lines.append(f"      class: {c.class_path}")
+            lines.append(f'      config: "{c.yaml_path}"')
         lines.append("")
     return "\n".join(lines).rstrip()
 
