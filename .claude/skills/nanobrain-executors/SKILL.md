@@ -318,3 +318,20 @@ Install with: pip install 'nanobrain[academy]' or pip install proxystore
 - [ ] If using `enable_fallback: true`, you've tested both the Parsl path
       AND the fallback path.
 - [ ] Distributed execution tested against real cluster on small real data, recorded.
+
+## Tool-backend adapters (2026-05-09 -> 2026-05-11)
+
+Distinct from step ``executor:`` (which controls how the Step itself
+runs — local / thread / process / Parsl), tool-backend adapters
+control how individual TOOL CALLS dispatch. Three concrete adapters
+ship in-tree:
+
+  * ``rhea`` — Rhea fork's RheaMCPDispatcher (remote MCP)
+  * ``local_parsl`` — G11-completion LocalParslAdapter (local Python
+    callables via Parsl). Default preset is ThreadPoolExecutor (P0++b).
+  * ``http`` — G38 HTTPBackendAdapter (generic HTTP)
+
+Adapters live at ``nanobrain.library.tools.*`` and register via
+``ToolBackendRegistry.register(adapter)``. ``ToolExecutionStep``
+consults the registry by ``BACKEND_NAME`` derived from the UTD's
+descriptor_id prefix. See ``nanobrain-agents-tools`` skill for picker.

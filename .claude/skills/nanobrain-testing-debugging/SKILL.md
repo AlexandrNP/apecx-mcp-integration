@@ -262,3 +262,78 @@ Three legitimate next moves:
   step. The default is fail-loudly.
 - "Replace the failing real-data call with a synthetic dataset for now." →
   No. Synthetic data hides bugs. Use a smaller real subset.
+
+## New testing primitives (2026-05-09 -> 2026-05-11)
+
+### PromptRegressionHarness (G25)
+
+For G14 PromptTemplate-backed prompts, the framework ships a
+regression harness at ``nanobrain.library.testing.prompt_regression``:
+
+```python
+from nanobrain.library.testing.prompt_regression import (
+    PromptRegressionHarness,
+)
+
+harness = PromptRegressionHarness(
+    template=my_g14_template,
+    llm_callable=my_llm_wrapper,  # async def llm(*, system, user) -> str
+    snapshot_path=Path("snapshots/"),
+)
+report = await harness.run()
+assert report.all_passed, report.failures_summary()
+```
+
+Reads ``regression_fixtures`` off the PromptTemplate; supports
+contains / not_contains / regex / json_schema / equals assertions;
+snapshot mode content-addresses by template_id + fixture_index +
+content_hash so a body change auto-invalidates.
+
+### Step-event capture for assertion (G37)
+
+To assert on what a Workflow did internally without inspecting
+DataUnits:
+
+```python
+from nanobrain.core.step_events import (
+    StepEvent, subscribe_to_step_events,
+)
+
+events: list[StepEvent] = []
+with subscribe_to_step_events(events.append):
+    await workflow.run(input_data)
+# Now `events` is a list of step_start / step_complete / step_failed
+# with payload + timing + run_id.
+```
+
+### Approval lifecycle harness (G27)
+
+To exercise a DeferredHITLStep without an external approval system:
+
+```python
+from nanobrain.library.runtime.approval_store import (
+    InMemoryApprovalStore,
+)
+
+store = InMemoryApprovalStore()
+step = DeferredHITLStep.from_config(yaml, approval_store=store)
+# First call raises:
+with pytest.raises(ApprovalPendingError) as excinfo:
+    await step.process(input_data)
+# Resolve externally:
+store.resolve(excinfo.value.approval_id, decision="approved", ...)
+# Second call returns the decision:
+result = await step.process(input_data)
+```
+
+The ``test_g27_g21_wiring.py`` test fixtures show the runner-side
+soft-suspend + resume integration pattern.
+
+### Cross-references
+
+| Need | Skill |
+|---|---|
+| Pick a workflow-authoring path | ``nanobrain-workflow-authoring`` |
+| Write a step that publishes events | ``nanobrain-step-authoring`` |
+| Build a tool adapter for tests | ``nanobrain-agents-tools`` |
+| Verify YAML doesn't strip whitespace | G34 in ``nanobrain-config-yaml`` |

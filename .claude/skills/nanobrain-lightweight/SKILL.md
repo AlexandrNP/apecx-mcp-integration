@@ -132,3 +132,22 @@ asyncio.run(main())
   builder targets
 - `agent_workflow_authoring.md` (apecx design package) — the
   composer-driven path that operates above the lightweight builder
+
+## Companion path: Workflow.from_skeleton (G9-completion)
+
+Lightweight ``WorkflowBuilder`` is the IN-PYTHON programmatic path
+(build a workflow object directly). For PARAMETERIZED workflows where
+the shape is fixed and the holes get filled per-call, prefer
+``Workflow.from_skeleton(skeleton, bindings)`` (G9-completion). Both
+converge on the same ``from_config`` runtime; see
+``nanobrain/docs/workflow_authoring_paths.md`` for the picker matrix.
+
+Three legitimate paths, picked by use case:
+  1. Hand-written YAML — ``Workflow.from_config(path)``
+  2. Skeleton + bindings — ``Workflow.from_skeleton(...)``
+  3. Lightweight WorkflowBuilder — programmatic in-Python
+
+The eval_03 Tier 0-4 chain (2026-05-09 -> 2026-05-11) ships
+``Workflow.from_skeleton`` as the agent-authoring ergonomic;
+``WorkflowBuilder`` remains the dynamic-DAG path for runtime-computed
+shapes.

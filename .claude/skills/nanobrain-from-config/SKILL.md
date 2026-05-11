@@ -263,3 +263,29 @@ to specify which config class to use.
       tests run from a different cwd, prefer the class-directory strategy
       (place configs next to the class).
 - [ ] No `_allow_direct_instantiation` set to `True` on your code.
+
+## New from_config-compatible primitives (2026-05-09 -> 2026-05-11)
+
+The eval_03 Tier 0-4 chain shipped 14+ new framework primitives that
+all follow the standard ``from_config`` pattern. Quick reference:
+
+| Need | Class | Module |
+|---|---|---|
+| Per-run provenance recorder | ``ProvenanceContext`` | ``nanobrain.core.provenance`` |
+| Skeleton → runnable workflow | ``Workflow.from_skeleton`` (G9-completion classmethod) | ``nanobrain.core.workflow`` |
+| Local Python-callable tool dispatch | ``LocalParslAdapter`` (G11-completion) | ``nanobrain.library.tools.local_parsl_adapter`` |
+| Generic HTTP tool dispatch | ``HTTPBackendAdapter`` (G38) | ``nanobrain.library.tools.http_backend_adapter`` |
+| Deferred human approval gate | ``DeferredHITLStep`` (G27) | ``nanobrain.library.steps.deferred_hitl_step`` |
+| Approval persistence | ``InMemoryApprovalStore`` / ``FileApprovalStore`` (G27) | ``nanobrain.library.runtime.approval_store`` |
+| Workflow cost cap enforcement | ``CostTracker`` (G26) | ``nanobrain.core.cost_envelope`` |
+| Versioned data-source manifest | ``DataSourceRegistry`` (G24) | ``nanobrain.library.runtime.data_source_registry`` |
+| Prompt regression harness | ``PromptRegressionHarness`` (G25) | ``nanobrain.library.testing.prompt_regression`` |
+| Per-run scope (run_id + tokens + namespace) | ``WorkflowRunContext`` (G13+G28) | ``nanobrain.library.orchestration.run_context`` |
+| Workspace-root locator | ``locate_workflow_root`` (G40) | ``nanobrain.library.runtime.workspace_root`` |
+
+Each follows the standard pattern:
+``Component.from_config(path)`` OR ``Component.from_config(dict)``
+(when the class permits inline-dict admission). Specialized primitives
+override ``from_config`` to admit pluggable runtime kwargs
+(e.g., ``ApprovalStore``, ``http_callable``) that cannot be loaded
+from YAML alone — these are passed as ``from_config(path, kwarg=...)``.
