@@ -100,7 +100,13 @@ def test_step_with_config_referencing_novel_is_wrapped():
     assert cats["rogue"] is StepCategory.NOVEL
 
 
-def test_step_whose_class_is_unknown_is_novel_orphan():
+def test_step_whose_class_is_unknown_is_novel_with_precise_reason():
+    """A2 (2026-05-11) tightened this case: when retrieval misses the
+    class AND import fails, the verdict stays NOVEL but the reason
+    explicitly cites the import failure rather than the generic
+    "orphan" wording — distinguishes typo / hallucination from
+    retrieval-recall.
+    """
     wf = {
         "steps": {
             "s1": {"class": "made.up.Class", "config": "steps/x.yml"},
@@ -112,8 +118,10 @@ def test_step_whose_class_is_unknown_is_novel_orphan():
         retrieved_class_paths=RETRIEVED,
         catalog_yaml_paths=YAML_PATHS,
     )
-    assert result.categorizations[0].category is StepCategory.NOVEL
-    assert "orphan" in result.categorizations[0].reason
+    cat = result.categorizations[0]
+    assert cat.category is StepCategory.NOVEL
+    assert cat.retrieval_gap is False
+    assert "typo or hallucinated" in cat.reason
 
 
 def test_step_id_in_novel_python_always_overrides_class_match():
@@ -139,10 +147,10 @@ def test_mixed_workflow_produces_one_row_per_step_ac1():
     """AP §5.6 AC1: one entry per step, mixed categorization."""
     wf = {
         "steps": {
-            "std":   {"class": "pkg.library.A", "config": "steps/a.yml"},
+            "std": {"class": "pkg.library.A", "config": "steps/a.yml"},
             "param": {"class": "pkg.library.B", "config": {"k": 3}},
-            "wrap":  {"class": "pkg.library.C", "config": {"p": "rogue"}},
-            "nov":   {"class": "generated.X", "config": {}},
+            "wrap": {"class": "pkg.library.C", "config": {"p": "rogue"}},
+            "nov": {"class": "generated.X", "config": {}},
             "rogue": {"class": "generated.Rogue", "config": {}},
         }
     }
@@ -154,10 +162,10 @@ def test_mixed_workflow_produces_one_row_per_step_ac1():
     )
     assert len(result.categorizations) == 5  # one per step — AC1
     cats = {c.step_id: c.category for c in result.categorizations}
-    assert cats["std"]   is StepCategory.COMPOSED_STANDARD
+    assert cats["std"] is StepCategory.COMPOSED_STANDARD
     assert cats["param"] is StepCategory.COMPOSED_PARAMETERIZED
-    assert cats["wrap"]  is StepCategory.COMPOSED_WRAPPED
-    assert cats["nov"]   is StepCategory.NOVEL
+    assert cats["wrap"] is StepCategory.COMPOSED_WRAPPED
+    assert cats["nov"] is StepCategory.NOVEL
     assert cats["rogue"] is StepCategory.NOVEL
 
 
