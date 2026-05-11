@@ -518,18 +518,40 @@ class Composer:
     ) -> tuple[str, dict[str, str], dict[str, Any]]:
         """One LLM round-trip: invoke → parse → safe_load.
 
-        Raises:
-            ComposerResponseError: empty content, missing yaml fence,
-                YAML syntax error, or non-mapping top level.
-            ScanViolation: novel-Python step violated the import
-                whitelist (T13).
-
-        Returns:
-            ``(yaml_text, novel_python, workflow_dict)`` — the parsed
-            workflow ready for framework validation.
+        B2 (2026-05-11): wraps the actual ``llm.invoke`` call in a
+        try/except so a provider 5xx surfaces with full diagnostic
+        context (model, message lengths, exception type + body)
+        instead of an opaque traceback. The provider's HTTP response
+        body — when LangChain attaches one — is logged AS-IS so
+        operators have everything they need to file a backend bug.
+        The exception re-raises unchanged so callers see the original
+        failure class.
         """
-        response = llm.invoke(messages)
+        import time
+
+        start = time.monotonic()
+        total_chars = sum(len(getattr(m, "content", "")) for m in messages)
+        try:
+            response = llm.invoke(messages)
+        except Exception as exc:
+            elapsed_ms = int((time.monotonic() - start) * 1000)
+            self._log_llm_failure(
+                exc=exc,
+                elapsed_ms=elapsed_ms,
+                message_count=len(messages),
+                total_chars=total_chars,
+            )
+            raise
+        elapsed_ms = int((time.monotonic() - start) * 1000)
         raw_content = getattr(response, "content", str(response))
+        log.debug(
+            "Composer LLM call: model=%s msgs=%d in_chars=%d out_chars=%d elapsed_ms=%d",
+            self._config.llm_model,
+            len(messages),
+            total_chars,
+            len(raw_content) if isinstance(raw_content, str) else -1,
+            elapsed_ms,
+        )
         if not isinstance(raw_content, str) or not raw_content.strip():
             raise ComposerResponseError(
                 "LLM response content was empty or non-string "
@@ -564,6 +586,58 @@ class Composer:
                 f"level, got {type(workflow_dict).__name__}"
             )
         return yaml_text, novel_python, workflow_dict
+
+    def _log_llm_failure(
+        self,
+        *,
+        exc: BaseException,
+        elapsed_ms: int,
+        message_count: int,
+        total_chars: int,
+    ) -> None:
+        """Surface full LLM-call diagnostics on failure (B2).
+
+        Captures:
+          - exception type + message
+          - any HTTP response body LangChain attached (response /
+            body / json attrs are common shapes across SDKs)
+          - elapsed time and message volumes
+          - the actual model + base_url so a misrouted call (wrong
+            endpoint, wrong model name) shows up immediately
+
+        The intent is operator self-service: a single WARNING line
+        carries everything needed to file a backend bug without
+        re-running with debug logging.
+        """
+        provider_body = None
+        for attr in ("response", "body", "json"):
+            candidate = getattr(exc, attr, None)
+            if candidate is not None:
+                # Best-effort string-ify; provider SDKs differ wildly
+                # on whether response is a requests.Response, an
+                # httpx.Response, or a dict.
+                try:
+                    text_attr = getattr(candidate, "text", None)
+                    if isinstance(text_attr, str):
+                        provider_body = text_attr[:4000]
+                        break
+                    provider_body = str(candidate)[:4000]
+                    break
+                except Exception:
+                    continue
+        log.warning(
+            "Composer LLM call FAILED: model=%s base_url=%s "
+            "exc_type=%s exc_msg=%s elapsed_ms=%d msgs=%d "
+            "total_in_chars=%d provider_body=%s",
+            self._config.llm_model,
+            self._config.llm_base_url,
+            type(exc).__name__,
+            str(exc)[:1000],
+            elapsed_ms,
+            message_count,
+            total_chars,
+            provider_body if provider_body else "(none captured)",
+        )
 
     def _validate_or_raise(
         self,
