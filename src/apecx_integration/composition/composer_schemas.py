@@ -78,7 +78,12 @@ class ComposerConfig(BaseModel):
 
     # Phase-2 additions — retrieval + sandbox integration.
     component_catalog_paths: list[Path] = Field(default_factory=list)
-    retrieval_k: int = Field(default=10, ge=1)
+    # Retrieval depth. B3 (2026-05-11) bumped the default from 10 to
+    # 20 after the issues-doc reported a real-world miss: a Step
+    # subclass present on disk was outside the top-10 FAISS hits and
+    # got mis-labeled NOVEL/orphan. Bigger k costs token budget on the
+    # candidate block but improves LLM access to long-tail components.
+    retrieval_k: int = Field(default=20, ge=1)
     sandbox_whitelist_path: Path | None = None
 
     # C1 (2026-05-11): how many times compose() will re-prompt the
