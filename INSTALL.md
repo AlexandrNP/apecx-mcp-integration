@@ -1,254 +1,100 @@
-# Install — apecx-mcp
+# Install — alternatives + maintenance
 
-> **Looking for a single linear walkthrough from fresh machine to
-> first query?** → [`docs/QUICKSTART.md`](docs/QUICKSTART.md).
-> This file is the deeper install reference (alternative installers,
-> developer-mode editable install, post-install verification).
+The canonical install lives in [`README.md`](README.md): three
+commands and `apecx-setup`. This file covers the alternatives + the
+update / uninstall flows.
 
-## The one-liner
-
-```bash
-uv tool install --python 3.12 git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-```
-
-That's the entire install. It pulls `apecx-mcp-integration` plus the
-two sibling repos (`nanobrain @ academy-integration`,
-`apecx-harvesters @ main`) from git in one shot, builds them, and
-exposes `apecx-mcp` + `apecx-cp` on your `PATH`.
-
-Don't have `uv` yet? Add it first:
+## Install alternatives
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# Option A — uv (canonical; fastest)
+uv tool install --python 3.12 \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git
+
+# Option B — pipx
+pipx install \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git
+
+# Option C — pip --user (does NOT isolate; last resort)
+python3.12 -m pip install --user \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git
+
+# Option D — bundled installer script (picks the best installer
+#            for your machine + prints the Claude Desktop block)
+curl -fsSL \
+  https://raw.githubusercontent.com/AlexandrNP/apecx-mcp-integration/main/scripts/install.sh \
+  | bash
 ```
 
-After install, find the binary path with `which apecx-mcp` and paste
-it into Claude Desktop (snippet below).
+All four pull the two sibling repos
+(`nanobrain @ academy-integration`, `apecx-harvesters @ main`) from
+git automatically — no manual clones.
 
-## Prerequisites
-
-- **Python ≥ 3.12** on your `PATH`.
-- **Ollama** running on `localhost:11434` with `mistral-nemo:latest`
-  pulled. (Or any other OpenAI-compatible endpoint — see
-  `docs/mcp_integration.md` for alternatives.)
-- **Docker is OPTIONAL.** The autostart backend uses SQLite by
-  default. Set `APECX_CP_POSTGRES_URL` only if you want Postgres.
-
-## Alternative installers
-
-If you don't want to use `uv`:
+## Verify
 
 ```bash
-# Option B: pipx
-pipx install git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-
-# Option C: pip --user (does NOT isolate; use only as a last resort)
-python3.12 -m pip install --user git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
+which apecx-mcp           # /Users/<you>/.local/bin/apecx-mcp (uv default)
+which apecx-setup
+apecx-mcp --help          # FastMCP help banner
+apecx-setup --help        # argparse banner with --reconfigure-llm
 ```
 
-After install, verify:
+If `which` returns nothing, add `~/.local/bin` (or your installer's
+shim dir) to `PATH` in your shell rc.
+
+## Developer mode (editable)
 
 ```bash
-which apecx-mcp                # /Users/<you>/.local/bin/apecx-mcp (uv) or similar
-apecx-mcp --help               # FastMCP help banner
+git clone --recurse-submodules \
+  https://github.com/AlexandrNP/apecx-mcp-integration.git
+cd apecx-mcp-integration
+uv venv --python 3.12
+source .venv/bin/activate
+uv pip install -e '.[dev]'
 ```
 
-## Or: the bundled installer script
+The `[dev]` extra includes pytest + ruff + pre-commit. Run tests via
+`scripts/run_tests.sh` (sets `PYTHONPATH=src` + uses `.venv/bin/python`
+explicitly — anaconda Python on PATH bites otherwise).
 
-Equivalent to running the one-liner yourself, plus it picks the
-right installer for your machine and prints the Claude Desktop
-config block ready to paste:
+## Update
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AlexandrNP/apecx-mcp-integration/day2-rag-synthesis-agent/scripts/install.sh | bash
+uv tool install --reinstall --python 3.12 \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git
 ```
 
-## Connect Claude Desktop
-
-Edit your Claude Desktop config:
-
-| OS | Path |
-|---|---|
-| macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
-| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
-| Linux | `~/.config/Claude/claude_desktop_config.json` |
-
-If the file already has an `mcpServers` key, add the `apecx` entry as
-a **child** of that key (not a sibling — Claude Desktop only scans
-inside `mcpServers`).
-
-```jsonc
-{
-  "mcpServers": {
-    "apecx": {
-      "command": "/Users/<you>/.local/bin/apecx-mcp",
-      "args": [],
-      "env": {
-        "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
-        "APECX_LLM_MODEL": "mistral-nemo:latest",
-        "APECX_LLM_API_KEY": "unused"
-      }
-    }
-  }
-}
-```
-
-**Use the absolute path** to the binary (find it with
-`which apecx-mcp`). Tilde and `$PATH` are not expanded by Claude
-Desktop's spawner.
-
-Fully quit and relaunch Claude Desktop. The 20 apecx tools appear
-in the tool picker.
-
-## What just happened
-
-1. The installer pulled `apecx-mcp-integration` from GitHub.
-2. It also pulled `nanobrain @ academy-integration` and
-   `apecx-harvesters @ main` (declared as git dependencies in
-   `pyproject.toml`).
-3. It built and installed both into an isolated environment, exposing
-   `apecx-mcp` and `apecx-cp` on your PATH.
-4. When Claude Desktop spawns `apecx-mcp`, it probes the local
-   Control Plane on `localhost:8000`. If absent, it spawns
-   `apecx-cp serve` as a child process, polls `/healthz` until ready
-   (~5–15 s on a cold first run while SQLite migrations run), then
-   serves MCP tools to Claude.
-5. On exit, the autostarted backend is terminated cleanly.
-
-State (runs, approvals, artifacts, provenance events) lives in
-`apecx_cp.db` in whatever directory Claude Desktop spawned the
-binary from.
-
-## Updating
+Or, if installed with pipx:
 
 ```bash
-uv tool upgrade apecx-integration --reinstall   # uv
-pipx upgrade apecx-integration --force          # pipx
+pipx upgrade apecx-mcp-integration
 ```
 
-The reinstall pulls the latest commits from the same branch you
-installed from. Fully quit and relaunch Claude Desktop.
+`apecx-setup --reconfigure-llm` rewrites just the LLM env vars in
+`claude_desktop_config.json` (preserves `APECX_DATA_ROOT`, command,
+args, and any unrelated MCP servers).
 
-## Uninstalling
+## Uninstall
 
 ```bash
-uv tool uninstall apecx-integration             # uv
-pipx uninstall apecx-integration                # pipx
+uv tool uninstall apecx-mcp-integration       # uv
+pipx uninstall apecx-mcp-integration          # pipx
+pip uninstall apecx-mcp-integration           # pip --user
 ```
 
-Then remove the `apecx` block from
-`claude_desktop_config.json` and relaunch Claude Desktop.
+Manual cleanup (only if needed):
+- Remove the `apecx` block from `claude_desktop_config.json`.
+- Delete `~/.apecx/` (data + control-plane SQLite) if you don't want
+  to keep it for a future reinstall.
 
 ## Troubleshooting
 
-### Tools don't appear in Claude Desktop
+| Symptom | Likely cause |
+|---|---|
+| `apecx-mcp: command not found` | `~/.local/bin` not on PATH. Add to shell rc. |
+| `ModuleNotFoundError: No module named 'nanobrain'` from a test | Wrong-Python pitfall. Use `.venv/bin/python` explicitly (see [`scripts/run_tests.sh`](scripts/run_tests.sh)). |
+| `gh: unrecognized command` during `apecx-setup` | `gh` not installed. `brew install gh && gh auth login`. |
+| Tools missing in Claude Desktop after restart | See [`README.md`](README.md) — "two pitfalls" + tail the log. |
 
-Tail the log:
-
-```bash
-# macOS
-tail -f ~/Library/Logs/Claude/mcp-server-apecx.log
-```
-
-Two pitfalls cause empty tool lists:
-
-1. The `apecx` block is OUTSIDE `mcpServers` (sibling, not child).
-2. The `command` path doesn't point at the installed binary. Run
-   `which apecx-mcp` and use that exact path.
-
-### `apecx-cp serve` startup fails with "alembic.ini not found"
-
-You're on a pre-2026-04-27 install. Reinstall with `--reinstall` /
-`--force` to pick up the bundled migrations:
-
-```bash
-uv tool install --reinstall git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-```
-
-### Ollama unreachable
-
-If `APECX_LLM_BASE_URL` points at Ollama and the daemon isn't
-running, the composer's first invocation fails with a connection
-error. Confirm Ollama is up: `ollama ps` (should list at least one
-running model) or `curl -s http://localhost:11434/api/tags`.
-
-## Developer setup
-
-Skip this section if you are only running `apecx-mcp` from a
-released install. This is for contributors editing the source.
-
-### One-time install: pre-commit hooks
-
-`.pre-commit-config.yaml` declares ruff + ruff-format hooks but they
-are inert until you wire them into `.git/hooks/`. Without this step,
-lint findings (import order, unused imports, formatting) silently
-land in commits — even though the same checks fail in CI.
-
-```bash
-.venv/bin/pip install pre-commit       # if not already present
-.venv/bin/pre-commit install            # writes .git/hooks/pre-commit
-```
-
-This is genuinely a one-time install per **clone**, not per worktree.
-Git worktrees share the main repo's `.git/hooks/` by default
-(`git rev-parse --git-path hooks` from any worktree resolves to the
-main checkout's hooks dir), so installing once in the main checkout
-covers every existing and future worktree on the same clone. Verify
-with: `git rev-parse --git-path hooks` from the worktree — if it
-prints a path under `apecx-mcp-integration/.git/hooks` rather than
-`worktrees/<name>/hooks`, the main hook fires for your commits.
-
-If you forget to install at all, the symptom is "I ran ruff manually
-after the fact and found violations that should have been blocked
-at commit time." That happened during the 2026-04-27 MCP discovery
-+ DB-tools rollout (commits e3372a2, 9e26e82) and required a
-follow-up cleanup commit (d184f5b).
-
-### Per-worktree gotcha: symlink `.venv`
-
-Hooks are shared across worktrees — but the venv is not.
-`.pre-commit-config.yaml`'s local hooks (`imports-resolve`,
-`step-authoring-compliance`) invoke `.venv/bin/python` as a
-**relative** path, so a worktree without a `.venv/` at its root
-fails the hook with:
-
-```
-Executable `.venv/bin/python` not found
-```
-
-Fix once per worktree, after `git worktree add`:
-
-```bash
-ln -s ../apecx-mcp-integration/.venv ../wt-my-task/.venv
-# or, from inside the worktree:
-ln -s /absolute/path/to/apecx-mcp-integration/.venv .venv
-```
-
-Symlinking is correct here — the worktree shares the repo and the
-dependency tree with main, so it should share the interpreter too.
-A separate per-worktree venv would re-pip-install the entire dep
-tree for no benefit.
-
-### Running the test suite
-
-The canonical runner sets `PYTHONPATH=src`, uses `.venv/bin/python`,
-and runs from the repo root — use it instead of `pytest` directly:
-
-```bash
-scripts/run_tests.sh                    # full suite
-scripts/run_tests.sh tests/unit         # subset
-APECX_DATA_ROOT=/path/to/data \
-  scripts/run_tests.sh tests/integration/test_db_tools_real_data.py
-```
-
-Database integration tests auto-skip when `APECX_DATA_ROOT` (or
-`APECX_ROOT/data`) doesn't contain `violin/Vaccine_Information.csv`.
-
-## Reference
-
-- `docs/mcp_integration.md` — full per-tool reference, env vars,
-  architecture, security notes
-- `pyproject.toml` — git dependencies on nanobrain + apecx-harvesters
-- `scripts/install.sh` — the one-shot installer this doc describes
-- `.pre-commit-config.yaml` — ruff + ruff-format hooks (developer
-  only; not required for end users running the released binary)
+Deeper per-tool / per-env-var reference:
+[`docs/mcp_integration.md`](docs/mcp_integration.md).

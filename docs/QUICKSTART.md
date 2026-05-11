@@ -11,7 +11,7 @@ At the end you'll have:
 - Domain datasets unpacked in `~/.apecx/data` (~15 MB).
 - A patched `claude_desktop_config.json` with the `apecx` MCP server
   registered.
-- 20 apecx tools visible in Claude Desktop's tool picker after a
+- 23 apecx tools visible in Claude Desktop's tool picker after a
   relaunch.
 
 You will NOT need: Docker, Postgres, root/admin, GPU.

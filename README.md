@@ -1,100 +1,96 @@
 # apecx-mcp-integration
 
-MCP server for the APECx scientific platform. Exposes 20 scientist-facing
-tools to Claude Desktop (or any MCP client) over stdio: query VIOLIN +
-BV-BRC databases directly, compose workflows from natural-language
-descriptions, review diffs, execute locally, and export to HPC.
-
-> **Fresh laptop to first query in ~15 min: see [`docs/QUICKSTART.md`](docs/QUICKSTART.md).**
-> Deeper install options: [`INSTALL.md`](INSTALL.md);
-> per-tool reference + troubleshooting: [`docs/mcp_integration.md`](docs/mcp_integration.md).
+MCP server for the APECx scientific platform. Exposes **23
+scientist-facing tools** to Claude Desktop (or any MCP client): query
+VIOLIN + BV-BRC + Globus Search databases, compose workflows from
+natural-language descriptions, review diffs, execute locally, export
+to HPC.
 
 > **License: All Rights Reserved (proprietary, source-available).**
-> See [`LICENSE`](LICENSE). Public for transparency; reuse, redistribution,
-> and derivative works require explicit written permission.
+> Public for transparency; reuse, redistribution, and derivative
+> works require explicit written permission. See [`LICENSE`](LICENSE).
 
-## Install
-
-```bash
-uv tool install --python 3.12 git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-```
-
-That single command pulls this repo + the two required sibling repos
-([`nanobrain @ academy-integration`](https://github.com/AlexandrNP/nanobrain/tree/academy-integration) and
-[`apecx-harvesters @ main`](https://github.com/abought/apecx-harvesters)) directly from git, builds them, and exposes
-the `apecx-mcp` and `apecx-cp` binaries on your `PATH` (typically `~/.local/bin/`).
-No manual clones, no Docker required (SQLite default).
-
-Don't have `uv`?
+## Install in three commands
 
 ```bash
+# 1. install uv (skip if you already have it)
 curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 2. install apecx-mcp + its two sibling repos in one shot
+uv tool install --python 3.12 \
+  git+https://github.com/AlexandrNP/apecx-mcp-integration.git
+
+# 3. configure Claude Desktop, download datasets, restart Claude
+apecx-setup
 ```
 
-Prerequisites: Python ≥ 3.12 and Ollama running on `localhost:11434`
-with a model pulled (default: `mistral-nemo:latest`).
+`apecx-setup` is interactive (~30 seconds): it confirms the data
+directory, downloads ~15 MB of domain CSVs via your `gh` session,
+and patches `claude_desktop_config.json` with the right paths and
+LLM env vars.
 
-Alternative installers (`pipx`, `pip --user`) and the full troubleshooting
-flow are in [`INSTALL.md`](INSTALL.md).
+After it finishes, **fully quit Claude Desktop** (Cmd-Q on macOS —
+closing the window is not enough) and reopen. The 23 apecx tools
+appear in the tool picker after 2–5 seconds.
 
-## Connect to Claude Desktop
+## Prerequisites
 
-Open the Claude Desktop config:
-
-| OS | Path |
+| Tool | Why |
 |---|---|
-| macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
-| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
-| Linux | `~/.config/Claude/claude_desktop_config.json` |
+| **Python ≥ 3.12** | `pyproject.toml` minimum. |
+| **`gh` (authenticated)** | `apecx-setup` pulls domain data from a private GitHub release; auth piggybacks on `gh`'s session — no PAT setup. |
+| **Ollama with `mistral-nemo:latest`** (or any OpenAI-compatible endpoint) | The composer + the synthesis pipeline need an LLM. `brew install ollama && ollama pull mistral-nemo:latest`. |
 
-Add the `apecx` block as a child of `mcpServers` (not a sibling — Claude
-Desktop only scans inside `mcpServers`). Use the **absolute path** to
-`apecx-mcp` from `which apecx-mcp` (tilde and `$PATH` are not expanded
-by Claude Desktop's spawner):
+You will **NOT** need: Docker, Postgres, root/admin, GPU. The
+control-plane backend autostarts as a child process and persists
+state to SQLite under your CWD.
 
-```jsonc
-{
-  "mcpServers": {
-    "apecx": {
-      "command": "/Users/<you>/.local/bin/apecx-mcp",
-      "args": [],
-      "env": {
-        "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
-        "APECX_LLM_MODEL": "mistral-nemo:latest",
-        "APECX_LLM_API_KEY": "unused"
-      }
-    }
-  }
-}
-```
+## First query
 
-Fully quit and relaunch Claude Desktop. The 11 apecx tools appear in the
-tool picker. The first launch takes ~5–15 s while the Control Plane
-backend autostarts and runs SQLite migrations; subsequent launches are
-< 1 s.
+In Claude Desktop after restart, try:
 
-If tools don't appear, tail the Claude Desktop log:
+> *Use the apecx tools to find all VIOLIN entries for entity "EEEV".*
+
+Claude calls `resolve_entity` to canonicalize, then `query_vaccines`
+/ `query_pathogens` with the canonical name. Other working prompts:
+
+- *How many genome records by organism?* → `query_bvbrc_genomes`.
+- *Compose a workflow that fetches BV-BRC genomes for VEEV and
+  exports an HPC bundle.* → `start_workflow` → `show_diff` →
+  `execute_workflow` → `export_hpc_bundle`.
+
+## When something doesn't work
 
 ```bash
-# macOS
-tail -f ~/Library/Logs/Claude/mcp-server-apecx.log
+tail -50 ~/Library/Logs/Claude/mcp-server-apecx.log
 ```
 
-Two pitfalls cause silent failure (Claude Desktop shows no error):
+The two pitfalls that cause silent failure in Claude Desktop (no
+visible error — just an empty tool picker):
 
-1. The `apecx` block placed OUTSIDE `mcpServers`.
-2. The `command` path pointing at the venv directory rather than the
-   binary itself.
+1. The `apecx` block placed OUTSIDE `mcpServers` in
+   `claude_desktop_config.json`. Indent it as a child.
+2. The `command` path pointing at the venv directory rather than
+   the binary itself. Use the absolute path to `apecx-mcp` from
+   `which apecx-mcp` (typically `~/.local/bin/apecx-mcp`).
 
-Both are documented in [`docs/mcp_integration.md`](docs/mcp_integration.md).
+For more on Claude Desktop wiring, env vars, per-tool inputs/outputs,
+or troubleshooting: [`docs/mcp_integration.md`](docs/mcp_integration.md).
 
-## Pointers
+## Deeper pointers
 
-- [`INSTALL.md`](INSTALL.md) — install one-liner + alternatives + update / uninstall flow + troubleshooting.
-- [`docs/mcp_integration.md`](docs/mcp_integration.md) — full MCP integration reference: per-tool input/output, env vars, architecture, security notes.
-- [`docs/tutorial/`](docs/tutorial/README.md) — 5-chapter walkthrough from clean laptop to reproducible run.
-- [`LICENSE`](LICENSE) — proprietary, source-available terms.
-- `../architectural_plan.md` — architectural source of truth (workspace-local).
-- `../implementation_plan.md` — task table + scoreboard (workspace-local).
-- [`AlexandrNP/nanobrain` (academy-integration)](https://github.com/AlexandrNP/nanobrain/tree/academy-integration) — required sibling: framework (Steps, Workflows, Agents, Triggers, Links, Executors).
-- [`abought/apecx-harvesters`](https://github.com/abought/apecx-harvesters) — required sibling: DataCite-shaped publication metadata loaders.
+| Doc | When to read |
+|---|---|
+| [`docs/QUICKSTART.md`](docs/QUICKSTART.md) | Step-by-step walkthrough with verification commands at each stage. |
+| [`docs/mcp_integration.md`](docs/mcp_integration.md) | Per-tool reference, env-var matrix, advanced troubleshooting. |
+| [`docs/tutorial/`](docs/tutorial/README.md) | Multi-chapter walkthrough from install to reproducible run. |
+| [`INSTALL.md`](INSTALL.md) | Alternative installers (pipx, pip --user, bundled script), update / uninstall flows. |
+| [`docs/architecture.md`](docs/architecture.md) | Canonical end-to-end architecture map. |
+| [`docs/CONTRACTS.md`](docs/CONTRACTS.md) | Design contracts cited from source docstrings (anchored sections). |
+
+## Required sibling repos (pulled automatically by `uv tool install`)
+
+- [`AlexandrNP/nanobrain` (academy-integration)](https://github.com/AlexandrNP/nanobrain/tree/academy-integration)
+  — framework: Steps, Workflows, Agents, Triggers, Links, Executors.
+- [`abought/apecx-harvesters`](https://github.com/abought/apecx-harvesters)
+  — DataCite-shaped publication metadata loaders.

@@ -1,4 +1,4 @@
-# apecx-mcp — MCP Integration Guide
+# apecx-mcp — MCP Integration Guide (advanced reference)
 
 The `apecx-mcp` server exposes the apecx workflow platform to any
 [Model Context Protocol](https://modelcontextprotocol.io) client —
@@ -6,92 +6,15 @@ Claude Desktop, the `mcp` CLI, custom MCP clients, etc. Scientists
 ask questions or describe workflows in natural language; the server
 composes, surfaces a diff for review, executes, and reports.
 
-## TL;DR — Claude Desktop in 3 steps
+The server registers **23 tools** with the connected MCP client (see
+"Tool reference" below for the per-tool input/output contracts).
 
-After a one-time `pip install` (see "Install" below), the entire
-config is **one block in `claude_desktop_config.json`**. The MCP
-server **autostarts the Control Plane backend** if it isn't already
-running, so you do not need a separate terminal, docker compose, or
-manual `apecx-cp serve`.
+> **For install + first-run, see [`README.md`](../README.md) or
+> [`QUICKSTART.md`](QUICKSTART.md).** This file is the advanced
+> reference: per-tool input/output shapes, env-var matrix, autostart
+> internals, Other MCP clients, secrets handling, honest limitations.
 
-```jsonc
-{
-  "mcpServers": {
-    "apecx": {
-      "command": "/ABSOLUTE/PATH/TO/apecx-mcp-integration/.venv/bin/apecx-mcp",
-      "args": [],
-      "env": {
-        "APECX_LLM_BASE_URL": "http://localhost:11434/v1",
-        "APECX_LLM_MODEL": "mistral-nemo:latest",
-        "APECX_LLM_API_KEY": "unused"
-      }
-    }
-  }
-}
-```
-
-Restart Claude Desktop. The 21 apecx tools appear in the tool
-picker. The first launch takes ~5–15 s while the backend boots and
-runs SQLite migrations; subsequent launches are <1 s.
-
-## Two pitfalls that cause silent failure in Claude Desktop
-
-If the tools don't appear, the cause is almost always one of these.
-Claude Desktop **does not surface a user-visible error** for either —
-it just shows the empty tool list — so check both before debugging
-anything else.
-
-| Pitfall | Symptom | Fix |
-|---|---|---|
-| Server block placed OUTSIDE `mcpServers` | Tools never appear; no log | Indent the `apecx` block as a child of `mcpServers`, not a sibling |
-| `command` points at the venv directory, not the binary | Process exits instantly with exec error; no user-visible log | Use the **absolute** path to `.venv/bin/apecx-mcp` (not `.venv`) |
-
-The Claude Desktop logs that capture the actual stderr live at:
-
-| OS | Log file |
-|---|---|
-| macOS | `~/Library/Logs/Claude/mcp-server-apecx.log` |
-| Windows | `%LOCALAPPDATA%\Claude\Logs\mcp-server-apecx.log` |
-
-Tail that file when in doubt:
-
-```bash
-tail -f ~/Library/Logs/Claude/mcp-server-apecx.log
-```
-
-If the log is **empty**, the binary couldn't even be exec'd — almost
-always pitfall #2 (wrong `command` path).
-
-## Install (one command)
-
-`pyproject.toml` declares `nanobrain` and `apecx-harvesters` as git
-dependencies, so a single install command pulls the entire tree —
-no manual clones.
-
-```bash
-# uv (recommended; fastest)
-uv tool install --python 3.12 \
-  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-
-# Or pipx
-pipx install \
-  git+https://github.com/AlexandrNP/apecx-mcp-integration.git@day2-rag-synthesis-agent
-```
-
-Don't have `uv` yet? One line:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-After install, `apecx-mcp` and `apecx-cp` are on your PATH (typically
-`~/.local/bin/`). Find the absolute path with `which apecx-mcp` —
-that's what you'll paste into the Claude Desktop config above.
-
-Full install reference (script wrapper, troubleshooting, update flow):
-**[INSTALL.md](../INSTALL.md)** at the repo root.
-
-### After install, what actually runs?
+## After install, what actually runs?
 
 When Claude Desktop spawns `apecx-mcp`:
 
@@ -244,8 +167,10 @@ spawns the backend, the backend uses Postgres.
 
 ## Tool reference
 
-The server exposes 21 tools across four areas. Each entry shows the
-signature, JSON return shape, and an example natural-language prompt.
+The server exposes 23 tools across six areas (workflow lifecycle,
+discovery, approvals, HPC, database, entity resolution, RAG synthesis,
+Globus Search). Each entry shows the signature, JSON return shape,
+and an example natural-language prompt.
 
 ### Workflow lifecycle
 
@@ -556,6 +481,73 @@ Requires `APECX_SYNONYM_DICT_PATH` (see Configuration) for `fast` /
 dictionary.
 
 **Prompt**: *"What is the canonical IRI for a given entity name?"*
+
+### RAG synthesis
+
+#### `synthesize_query`
+
+```python
+synthesize_query(query: str) -> dict
+```
+
+End-to-end "ask a question, get a grounded Markdown answer" pipeline.
+Bypasses the Composer — one call, one Markdown response with inline
+citations grounded in three retrieval branches run concurrently:
+domain-RAG (FAISS), VIOLIN/BV-BRC tabular lookup, PubMed eSearch +
+eFetch. Branch failures degrade to empty bundles; the synthesizer
+fails closed only when all branches are empty.
+
+Returns:
+
+```jsonc
+{
+  "synthesis": "Markdown body with inline [BV-BRC ...] / [VIOLIN ...] / [10.x/...] / [Globus ...] citations.",
+  "bundle_summary": {
+    "rag_chunks": 4,
+    "bvbrc_genomes": 2,
+    "violin_mappings": 3,
+    "publications": 1,
+    "globus_results": 2
+  }
+}
+```
+
+On contract violation (size / grounded-citation / empty-retrieval):
+`{"error": "synthesis gate failed: <reason>"}`.
+
+**Prompt**: *"Summarize what we know about EEEV vaccines from the
+domain databases."*
+
+### Globus Search
+
+#### `query_globus_search`
+
+```python
+query_globus_search(query: str, limit: int = 10) -> dict
+```
+
+Read-only consumer of the APECx harvested-corpus Globus Search index.
+DataCite-shaped publication metadata. Used standalone OR as one of
+the synthesis fan-in branches.
+
+Returns:
+
+```jsonc
+{
+  "results": [
+    {
+      "doi": "10.x/abc",
+      "title": "Paper title",
+      "authors": ["..."],
+      "year": "2024",
+      "snippet": "..."
+    }
+  ]
+}
+```
+
+**Prompt**: *"Search the harvested literature corpus for recent
+papers on alphavirus vaccines."*
 
 ## Other MCP clients
 
