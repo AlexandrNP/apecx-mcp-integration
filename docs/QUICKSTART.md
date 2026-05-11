@@ -35,7 +35,14 @@ setup needed.
 
 ---
 
-## Step 1 — Install Ollama + pull a model (~3 min, ~7 GB)
+## Step 1 — (optional, recommended) pre-install Ollama
+
+You can skip this step entirely: `apecx-setup` (Step 3) offers to
+install Ollama for you with a y/N prompt before running `brew
+install` (macOS) or the official `curl | sh` installer (Linux).
+This pre-install path is for users who'd rather install it
+themselves OR want to be sure the daemon is fully warmed up
+before `apecx-setup` runs:
 
 ```bash
 brew install ollama                                  # macOS
@@ -46,8 +53,9 @@ curl -fsS http://localhost:11434/api/tags | head -1  # verify
 ```
 
 **Any OpenAI-compatible endpoint works** (vLLM, llama.cpp's server,
-OpenAI proper, Anthropic via a proxy). Note the base URL + model
-name for Step 3.
+OpenAI proper, Anthropic via a proxy). Set `APECX_LLM_BASE_URL` +
+`APECX_LLM_MODEL` before running `apecx-setup` and decline the
+Ollama install prompt.
 
 **Why no Docker?** apecx-mcp's Control Plane backend autostarts as a
 child process and persists state to SQLite. Docker is only useful for
@@ -83,15 +91,27 @@ shell rc file.
 apecx-setup
 ```
 
-Walks you through:
-1. **Data directory** (default `~/.apecx/data`) — press Enter to
-   accept.
-2. **Download** the domain data tarball via your `gh` session
-   (~1.5 MB compressed, ~15 MB extracted).
-3. **Claude Desktop config** — shows the proposed `apecx` block and
-   prompts for the three LLM env vars (URL, model, API key). Press
-   Enter to accept the Ollama defaults from Step 1, or paste your
-   own endpoint.
+Walks you through (each step prints what it will do; consent
+prompts gate any system-touching action):
+
+1. **`data`** — confirms the data directory (default
+   `~/.apecx/data`), downloads the domain tarball via your `gh`
+   session (~1.5 MB compressed, ~15 MB extracted), AND patches
+   `claude_desktop_config.json` with the `apecx` MCP server block
+   (prompts for the three LLM env vars on first install).
+2. **`infra`** — starts Postgres + Redis Docker containers if
+   Docker is available; skipped if not (SQLite is the default
+   backend, so this is purely optional).
+3. **`llm`** — if `ollama` is not on PATH, prompts to install via
+   `brew install ollama` (macOS) or `curl -fsSL
+   https://ollama.ai/install.sh | sh` (Linux). The exact command
+   is printed BEFORE the prompt. If the CLI is present but the
+   daemon isn't responding, prompts to start it in the background.
+   Pulls `mistral-nemo:latest` (or whatever `APECX_LLM_MODEL` is
+   set to) if it's not already there.
+4. **`rag`** — builds the FAISS index from the downloaded data.
+5. **`verify`** — health-checks every component; prints a summary
+   table.
 
 ---
 

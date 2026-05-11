@@ -136,21 +136,26 @@ substring search and a WARNING banner appears in the MCP server log.
 
 ## Local LLM setup (Ollama)
 
-Default profile. Install Ollama, pull a model, and the env vars
-above will Just Work:
+Default profile. **`apecx-setup llm` handles install + daemon
+startup + model pull automatically** (interactive, with consent
+prompts before each system-touching command). If you'd rather do
+it yourself:
 
 ```bash
-# 1. Install (https://ollama.ai/) and pull a model.
-ollama pull mistral-nemo:latest
+# macOS:
+brew install ollama
+# Linux (the official installer; sets up a systemd service):
+curl -fsSL https://ollama.ai/install.sh | sh
 
-# 2. Confirm reachability.
-curl -s http://localhost:11434/api/tags | jq '.models[].name'
+ollama serve &    # macOS only; Linux installer registers a systemd service
+ollama pull mistral-nemo:latest
+curl -s http://localhost:11434/api/tags | jq '.models[].name'   # verify
 ```
 
 Other endpoints work — vLLM, llama.cpp's OpenAI mode, hosted OpenAI
 proper. Anything that speaks the OpenAI v1 chat completions API.
-Set `APECX_LLM_BASE_URL` accordingly. For hosted OpenAI, set a real
-API key.
+Set `APECX_LLM_BASE_URL` accordingly + decline the `apecx-setup`
+install prompt. For hosted OpenAI, set a real API key.
 
 ## Optional: Postgres backend
 

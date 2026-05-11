@@ -24,10 +24,13 @@ uv tool install --python 3.12 \
 apecx-setup
 ```
 
-`apecx-setup` is interactive (~30 seconds): it confirms the data
-directory, downloads ~15 MB of domain CSVs via your `gh` session,
-and patches `claude_desktop_config.json` with the right paths and
-LLM env vars.
+`apecx-setup` is interactive: it confirms the data directory,
+downloads ~15 MB of domain CSVs via your `gh` session, **offers to
+install Ollama if missing** (Homebrew on macOS / the official
+install script on Linux — every command printed before a y/N
+prompt), starts the daemon, pulls the configured model
+(`mistral-nemo:latest` by default), and patches
+`claude_desktop_config.json` with the right paths and LLM env vars.
 
 After it finishes, **fully quit Claude Desktop** (Cmd-Q on macOS —
 closing the window is not enough) and reopen. The 23 apecx tools
@@ -39,11 +42,15 @@ appear in the tool picker after 2–5 seconds.
 |---|---|
 | **Python ≥ 3.12** | `pyproject.toml` minimum. |
 | **`gh` (authenticated)** | `apecx-setup` pulls domain data from a private GitHub release; auth piggybacks on `gh`'s session — no PAT setup. |
-| **Ollama with `mistral-nemo:latest`** (or any OpenAI-compatible endpoint) | The composer + the synthesis pipeline need an LLM. `brew install ollama && ollama pull mistral-nemo:latest`. |
+| **Homebrew (macOS) OR the ability to `curl \| sh` (Linux)** | `apecx-setup` uses these to install Ollama for you. Decline the prompt and install yourself if you'd rather. |
 
 You will **NOT** need: Docker, Postgres, root/admin, GPU. The
 control-plane backend autostarts as a child process and persists
-state to SQLite under your CWD.
+state to SQLite under your CWD. **You also don't need to install
+Ollama yourself** — `apecx-setup` handles it (asks first) unless
+you prefer to use a remote OpenAI-compatible endpoint (vLLM,
+OpenAI, hosted Anthropic-proxy), in which case set
+`APECX_LLM_BASE_URL` and decline the install prompt.
 
 ## First query
 

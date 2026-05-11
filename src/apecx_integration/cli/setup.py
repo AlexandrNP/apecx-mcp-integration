@@ -15,20 +15,29 @@ Each subcommand is idempotent + safe to re-run. The default
 (``apecx-setup``) runs every step in dependency order:
     1. ``data``  — download apecx-data tarball (VIOLIN, BV-BRC, FAISS seed)
     2. ``infra`` — start Postgres + Redis containers if Docker is available
-    3. ``llm``   — pull the configured Ollama model if missing
+    3. ``llm``   — install Ollama if missing (interactive); start daemon;
+                   pull the configured model
     4. ``rag``   — build the FAISS RAG index if absent or older than data
     5. ``verify`` — smoke-check every component reports healthy
 
 Brutal-truth design notes:
 
 - Every step gracefully degrades when the underlying optional
-  capability is absent (no Docker, no Ollama, no gh-CLI). The exit
-  code captures whether the FULL setup succeeded — partial-success
-  is reported via a summary table at the end.
+  capability is absent. The exit code captures whether the FULL
+  setup succeeded — partial-success is reported via a summary
+  table at the end.
 
-- We DO NOT install Docker, Ollama, or gh ourselves — those need
-  the user's package manager / system installer. The setup tells
-  the user EXACTLY what's missing and how to install it.
+- ``llm`` step CAN install Ollama interactively (2026-05-11 — was
+  previously deferred to the user; the friction was real enough
+  to justify the integration). The install is opt-in: the exact
+  command is printed and a y/N prompt requires consent before any
+  ``brew install`` or ``curl | sh`` runs. ``--non-interactive``
+  mode SKIPS the install offer entirely (CI / scripted runs must
+  install Ollama out-of-band).
+
+- We still DO NOT install Docker or gh ourselves — those need
+  the user's package manager. The setup tells the user EXACTLY
+  what's missing and how to install it.
 
 - ``apecx-setup verify`` is the most important subcommand for
   adoption: a single check that says "your stack is ready" vs.
@@ -292,31 +301,197 @@ def _ollama_model() -> str:
     return os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
 
 
-def _step_llm() -> StepResult:
-    _print_header("Step 3 of 5 — LLM (Ollama model pull)")
-    if shutil.which("ollama") is None:
-        return StepResult(
-            "llm",
-            "skipped",
-            "`ollama` CLI not found. Install from https://ollama.com/download "
-            "(or set APECX_LLM_BASE_URL to a remote OpenAI-compatible endpoint).",
-        )
+def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:
+    """Probe Ollama's /api/tags endpoint.
 
-    # Check daemon is responsive
+    Returns True when the daemon responds. Caller is responsible for
+    deciding whether to start the daemon or report skipped.
+    """
     import urllib.error
     import urllib.request
 
-    api_url = _ollama_url() + "/api/tags"
     try:
-        with urllib.request.urlopen(api_url, timeout=5) as resp:
-            tags = json.loads(resp.read())
-    except (urllib.error.URLError, OSError, json.JSONDecodeError):
+        with urllib.request.urlopen(_ollama_url() + "/api/tags", timeout=timeout) as resp:
+            resp.read()
+        return True
+    except (urllib.error.URLError, OSError):
+        return False
+
+
+def _prompt_yes(question: str, default: bool = True) -> bool:
+    """Prompt user for y/N. Returns the default on empty input."""
+    suffix = "[Y/n]" if default else "[y/N]"
+    try:
+        ans = input(f"  ▶  {question} {suffix} ").strip().lower()
+    except EOFError:
+        return default
+    if not ans:
+        return default
+    return ans in ("y", "yes")
+
+
+def _offer_install_ollama(*, interactive: bool) -> bool:
+    """Offer to install Ollama via the platform's documented installer.
+
+    Returns True when ``ollama`` is on PATH after this call (already
+    was, or just installed). Returns False when install was declined,
+    impossible, or non-interactive.
+
+    Platform-specific install commands (matching the official
+    Ollama docs):
+
+    - macOS: ``brew install ollama`` (preferred; clean uninstall path)
+    - Linux: ``curl -fsSL https://ollama.ai/install.sh | sh``
+      (the official Linux installer; sets up a systemd service)
+
+    The exact command is printed BEFORE the y/N prompt so the
+    operator sees what we're about to run. We never auto-install in
+    ``--non-interactive`` mode — that mode is for CI / scripted runs
+    where ``curl | sh`` and ``brew install`` are not the right
+    surface; CI environments install Ollama out-of-band.
+    """
+    if shutil.which("ollama") is not None:
+        return True
+
+    if not interactive:
+        return False
+
+    import platform
+
+    system = platform.system()
+    print("\n  ⚠️  ``ollama`` CLI not found.")
+    print("      The composer + RAG synthesis pipelines need an OpenAI-compatible LLM.")
+    print(
+        "      Skip this if you intend to use a remote endpoint "
+        "(set ``APECX_LLM_BASE_URL`` to vLLM / OpenAI / Anthropic-proxy)."
+    )
+    print()
+
+    if system == "Darwin":
+        if shutil.which("brew") is None:
+            print(
+                "  ❌  Homebrew not found. Install brew from https://brew.sh "
+                "first, then re-run ``apecx-setup llm``."
+            )
+            return False
+        cmd: list[str] = ["brew", "install", "ollama"]
+        print(f"  Proposed install command: {' '.join(cmd)}")
+        if not _prompt_yes("Install Ollama via Homebrew?", default=True):
+            return False
+        result = subprocess.run(cmd, timeout=600)
+        if result.returncode != 0:
+            print(f"  ❌  ``{' '.join(cmd)}`` exited with {result.returncode}")
+            return False
+        return shutil.which("ollama") is not None
+
+    if system == "Linux":
+        # The Linux installer is `curl | sh` — print explicitly so
+        # the operator sees the command before consenting. The URL
+        # is hardcoded; no user-controlled interpolation.
+        install_cmd = "curl -fsSL https://ollama.ai/install.sh | sh"
+        print("  Proposed install command (runs `curl | sh` against the")
+        print("  official Ollama installer):")
+        print(f"    {install_cmd}")
+        print(
+            "  This downloads + executes a shell script. If you'd "
+            "prefer to install manually, decline here and follow "
+            "https://ollama.com/download"
+        )
+        if not _prompt_yes("Run the official Ollama install script?", default=False):
+            return False
+        result = subprocess.run(["sh", "-c", install_cmd], timeout=600)
+        if result.returncode != 0:
+            print(f"  ❌  Ollama install script exited with {result.returncode}")
+            return False
+        return shutil.which("ollama") is not None
+
+    # Other platforms (Windows, BSD, etc.) — point at the manual installer.
+    print(
+        f"  ⚠️  Automatic install not supported on {system}. "
+        f"Install manually from https://ollama.com/download "
+        f"and re-run ``apecx-setup llm``."
+    )
+    return False
+
+
+def _offer_start_ollama_daemon(*, interactive: bool) -> bool:
+    """Start the Ollama daemon in the background.
+
+    On Linux the official installer registers a systemd service that
+    auto-starts; the daemon is usually already up after install. On
+    macOS (Homebrew install) the daemon is NOT auto-started; we
+    background ``ollama serve`` and poll for readiness.
+
+    Returns True when the daemon is reachable after the attempt.
+    """
+    if _ollama_daemon_reachable():
+        return True
+    if not interactive:
+        return False
+
+    print("  ⚠️  Ollama daemon is not responding.")
+    if not _prompt_yes("Start it in the background (`ollama serve &`)?", default=True):
+        return False
+
+    log_path = Path("/tmp/apecx-ollama-serve.log")
+    try:
+        # Detached background daemon. stdout/stderr -> log file so
+        # the user can debug if the daemon fails to bind.
+        with log_path.open("ab") as fp:
+            subprocess.Popen(
+                ["ollama", "serve"],
+                stdout=fp,
+                stderr=subprocess.STDOUT,
+                stdin=subprocess.DEVNULL,
+                start_new_session=True,  # detach from this terminal
+            )
+    except OSError as exc:
+        print(f"  ❌  Failed to spawn `ollama serve`: {exc}")
+        return False
+
+    # Poll for readiness — Ollama takes 1-3 s to bind on a fresh start.
+    deadline = time.monotonic() + 15.0
+    while time.monotonic() < deadline:
+        if _ollama_daemon_reachable(timeout=1.0):
+            print(f"  ✅  Ollama daemon up. Log: {log_path}")
+            return True
+        time.sleep(0.5)
+    print(
+        f"  ❌  Ollama daemon did not become reachable within 15s. "
+        f"Check {log_path} for the daemon's stderr."
+    )
+    return False
+
+
+def _step_llm(*, interactive: bool = True) -> StepResult:
+    _print_header("Step 3 of 5 — LLM (Ollama install + check + model pull)")
+
+    # 1. Ensure the CLI is installed (offer to install when missing).
+    if not _offer_install_ollama(interactive=interactive):
+        return StepResult(
+            "llm",
+            "skipped",
+            "`ollama` CLI not found and install declined / not "
+            "possible. Install from https://ollama.com/download (or "
+            "set APECX_LLM_BASE_URL to a remote OpenAI-compatible "
+            "endpoint to use vLLM / OpenAI / a hosted Anthropic-proxy).",
+        )
+
+    # 2. Ensure the daemon is reachable (offer to start when not).
+    if not _offer_start_ollama_daemon(interactive=interactive):
+        api_url = _ollama_url() + "/api/tags"
         return StepResult(
             "llm",
             "skipped",
             f"ollama daemon unreachable at {api_url}. Start with: ollama serve",
         )
 
+    # 3. Ensure the model is pulled.
+    import urllib.request
+
+    api_url = _ollama_url() + "/api/tags"
+    with urllib.request.urlopen(api_url, timeout=5) as resp:
+        tags = json.loads(resp.read())
     model = _ollama_model()
     installed = {m.get("name") for m in tags.get("models") or []}
     if model in installed:
@@ -510,11 +685,11 @@ def _step_verify() -> StepResult:
 # Subcommand dispatch
 # ---------------------------------------------------------------------------
 
-_SUBCOMMANDS: dict[str, Callable[[], StepResult]] = {
-    "infra": _step_infra,
+_SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
+    "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
-    "rag": _step_rag,
-    "verify": _step_verify,
+    "rag": lambda **_: _step_rag(),
+    "verify": lambda **_: _step_verify(),
 }
 
 
@@ -525,7 +700,7 @@ def _run_all(*, interactive: bool = True) -> int:
     results: list[StepResult] = []
     results.append(_step_data(interactive=interactive))
     results.append(_step_infra())
-    results.append(_step_llm())
+    results.append(_step_llm(interactive=interactive))
     results.append(_step_rag())
     results.append(_step_verify())
 
@@ -570,7 +745,9 @@ def main(argv: list[str] | None = None) -> None:
     elif args.subcommand == "data":
         result = _step_data(interactive=not args.non_interactive)
     else:
-        result = _SUBCOMMANDS[args.subcommand]()
+        result = _SUBCOMMANDS[args.subcommand](
+            interactive=not args.non_interactive,
+        )
 
     sys.exit(_print_summary([result]))
 
