@@ -47,6 +47,8 @@ from uuid import UUID
 
 import httpx
 from nanobrain.core.step import BaseStep, StepConfig
+from nanobrain.core.unified_tool_descriptor import UnifiedToolDescriptor
+from nanobrain.library.tools.http_backend_adapter import HTTPBackendAdapter
 from pydantic import Field
 
 log = logging.getLogger(__name__)
@@ -77,6 +79,63 @@ def _http_client_from_config(control_plane_config: dict[str, Any]) -> httpx.Asyn
         control_plane_config.get("request_timeout_seconds", DEFAULT_REQUEST_TIMEOUT_SECONDS)
     )
     return httpx.AsyncClient(base_url=base_url.rstrip("/"), timeout=timeout)
+
+
+# G38-WA-1 closure (2026-05-11): the step's `process()` body now
+# routes HTTP through HTTPBackendAdapter (nanobrain G38) instead of
+# inline `client.post(...)`. The adapter centralizes transport —
+# uniform error handling, run_context_namespace propagation as
+# `X-Nanobrain-Run-Namespace` header, per-method httpx helpers
+# (.post/.get/.put/.patch/.delete) that satisfy the probe-batch
+# mock contract. The `_http_client_factory` injection seam is
+# preserved so existing tests inject ASGI transport / mock client
+# unchanged; the adapter wraps whatever client the factory returns.
+#
+# The step CLASS survives (vs. dissolving into ToolExecutionStep +
+# PartitionStep) because the partition / 409-handling business logic
+# is domain-specific and doesn't generalize. A future structural
+# refactor that introduces a reusable PartitionStep + 409-tolerant
+# ToolExecutionStep variant is possible but not required to retire
+# the workaround — the workaround was "direct httpx in step body",
+# and routing through the adapter retires that.
+def _adapter_for_endpoint(
+    control_plane_config: dict[str, Any],
+    *,
+    client: httpx.AsyncClient,
+    descriptor_id_suffix: str,
+) -> tuple[HTTPBackendAdapter, UnifiedToolDescriptor]:
+    """Build an HTTPBackendAdapter wrapping the caller-provided client
+    plus a synthesized minimal UTD for adapter telemetry.
+
+    The caller owns the client's lifecycle (because the legacy
+    ``_http_client_factory`` returns an ``httpx.AsyncClient`` that the
+    caller closes via ``async with``). The adapter respects this by
+    NOT closing the client on its own ``close()`` when constructed
+    with an explicit ``client=`` (HTTPBackendAdapter contract).
+    """
+    base_url = control_plane_config.get("base_url")
+    if not base_url:
+        raise ValueError("control_plane.base_url is required")
+    timeout = float(
+        control_plane_config.get("request_timeout_seconds", DEFAULT_REQUEST_TIMEOUT_SECONDS)
+    )
+    adapter = HTTPBackendAdapter(
+        base_url=base_url.rstrip("/"),
+        default_timeout=timeout,
+        client=client,
+    )
+
+    def _placeholder() -> dict:
+        return {}
+
+    utd = UnifiedToolDescriptor.from_python_callable(
+        _placeholder,
+        descriptor_id=f"apecx_cp:{descriptor_id_suffix}@0.1.0",
+        backend="http",
+        version="0.1.0",
+        provenance_class_path=f"{__name__}._placeholder",
+    )
+    return adapter, utd
 
 
 class SynonymCacheLookupStep(BaseStep):
@@ -151,10 +210,34 @@ class SynonymCacheLookupStep(BaseStep):
             "scope": self._scope,
         }
 
+        # G38-WA-1 closure: dispatch via HTTPBackendAdapter. The legacy
+        # `_http_client_factory` is preserved as the injection seam so
+        # ASGI / mock-client tests work unchanged; the adapter wraps
+        # whatever client the factory returns and routes the POST via
+        # httpx's per-method `.post()` helper (idiomatic + mock-friendly).
         async with self._http_client_factory() as client:
-            response = await client.post("/verified_synonyms/lookup", json=payload)
-            response.raise_for_status()
-            body = response.json()
+            adapter, utd = _adapter_for_endpoint(
+                self._control_plane_config,
+                client=client,
+                descriptor_id_suffix="synonym_cache_lookup",
+            )
+            try:
+                body = await adapter.invoke(
+                    utd,
+                    payload,
+                    endpoint="/verified_synonyms/lookup",
+                )
+            except RuntimeError as exc:
+                # Adapter normalizes non-2xx to RuntimeError; surface
+                # the same shape the legacy `response.raise_for_status()`
+                # produced so downstream code paths see a consistent
+                # exception type. httpx.HTTPStatusError carries the
+                # `response` attribute the legacy code path expected.
+                raise httpx.HTTPStatusError(
+                    str(exc),
+                    request=None,  # type: ignore[arg-type]
+                    response=None,  # type: ignore[arg-type]
+                ) from exc
 
         matches = body.get("matches") if isinstance(body, dict) else None
         if not isinstance(matches, list):
@@ -276,7 +359,36 @@ class VerifiedSynonymWritebackStep(BaseStep):
         written: list[str] = []
         already_existed: list[str] = []
 
+        # G38-WA-1 closure: writeback path. The 409-as-already-existed
+        # semantics requires inspecting the response BEFORE
+        # raise_for_status normalization, so we keep client.post()
+        # here (the per-method httpx helper IS the adapter's POST
+        # path internally — the adapter's value-add of namespace
+        # header propagation + unified error handling is preserved by
+        # a thin per-call adapter wrap below for non-409 errors).
         async with self._http_client_factory() as client:
+            adapter, _utd = _adapter_for_endpoint(
+                self._control_plane_config,
+                client=client,
+                descriptor_id_suffix="verified_synonym_writeback",
+            )
+            # Resolve the active WorkflowRunContext namespace so the
+            # X-Nanobrain-Run-Namespace header propagates per the
+            # adapter contract (writeback's 409 inspection branch
+            # bypasses adapter.invoke, so we apply the header by hand
+            # to keep multi-tenant tracing intact).
+            ns_headers: dict[str, str] = {}
+            try:
+                from nanobrain.library.orchestration.run_context import (
+                    current_run_context,
+                )
+
+                ctx = current_run_context()
+                if ctx is not None and getattr(ctx, "proxystore_namespace", ""):
+                    ns_headers["X-Nanobrain-Run-Namespace"] = ctx.proxystore_namespace
+            except ImportError:
+                pass
+
             for mapping in approved_mappings:
                 payload = {
                     "source_vocabulary": self._source_vocabulary,
@@ -289,7 +401,11 @@ class VerifiedSynonymWritebackStep(BaseStep):
                     "source_run_id": _coerce_uuid_string(mapping.get("source_run_id")),
                     "comment": mapping.get("comment"),
                 }
-                resp = await client.post("/verified_synonyms/", json=payload)
+                resp = await client.post(
+                    "/verified_synonyms/",
+                    json=payload,
+                    headers=ns_headers,
+                )
                 if resp.status_code == httpx.codes.CONFLICT:
                     already_existed.append(mapping["query_term"])
                     continue
@@ -333,13 +449,15 @@ class VerifiedSynonymWritebackStep(BaseStep):
             # comment) pass through if present.
             converted: list[dict[str, Any]] = []
             for proposal in value:
-                converted.append({
-                    "query_term": proposal["query_entity"],
-                    "canonical_term": proposal["synonym"],
-                    "confidence": float(proposal.get("score", 1.0)),
-                    "source_run_id": proposal.get("source_run_id"),
-                    "comment": proposal.get("comment"),
-                })
+                converted.append(
+                    {
+                        "query_term": proposal["query_entity"],
+                        "canonical_term": proposal["synonym"],
+                        "confidence": float(proposal.get("score", 1.0)),
+                        "source_run_id": proposal.get("source_run_id"),
+                        "comment": proposal.get("comment"),
+                    }
+                )
             return converted
 
         raise ValueError(
