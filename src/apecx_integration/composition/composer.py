@@ -78,6 +78,41 @@ from apecx_integration.composition._errors import (  # noqa: E402
     ComposerResponseError,
 )
 
+# Substrings used to recognize ``ComposerResponseError`` variants the
+# compose-validate-retry loop can plausibly repair. Kept frozen so a
+# future rewording of the parser's error messages forces an explicit
+# update here (and a corresponding test) instead of silently widening
+# / narrowing the retry surface.
+_REPAIRABLE_PARSE_MARKERS: tuple[str, ...] = ("must be a mapping at top level",)
+
+
+def _is_repairable_parse_error(exc: ComposerResponseError) -> bool:
+    """True iff the parse failure has a shape the LLM can correct
+    given feedback. Empty-content / no-yaml-fence errors are NOT
+    repairable — the retry would just re-elicit the same shape."""
+    text = str(exc)
+    return any(marker in text for marker in _REPAIRABLE_PARSE_MARKERS)
+
+
+def _format_parse_feedback(exc: ComposerResponseError) -> str:
+    """User-turn message for the parse-error retry path.
+
+    Tells the LLM exactly what went wrong shape-wise plus a brief
+    example of the expected shape. Kept short — the system prompt
+    already carries the full schema; this is just a correction hint.
+    """
+    return (
+        "Your previous response could not be parsed as a workflow "
+        "YAML mapping. The composer surfaced this error:\n\n"
+        f"    {exc}\n\n"
+        "Emit exactly ONE fenced ```yaml``` block whose top level "
+        "is a MAPPING with keys like `name:`, `description:`, "
+        "`steps:`, `links:`. Do not emit a list, a string, or "
+        "multiple yaml blocks. If you intended to provide novel "
+        "Python, put it in a separate ```novel_python``` fence "
+        "exactly once."
+    )
+
 
 class _RetryableValidationError(Exception):
     """Internal wrapper around ``WorkflowValidationError`` for the
@@ -417,10 +452,50 @@ class Composer:
         max_retries = self._config.max_validation_retries
 
         while True:
-            yaml_text, novel_python, workflow_dict = self._invoke_and_parse(
-                llm,
-                messages,
-            )
+            # The compose-validate-retry loop covers TWO repairable
+            # failure shapes:
+            #
+            #   1. ``WorkflowValidationError`` — A1 caught a
+            #      framework-rule violation; feed structured
+            #      violations back to the LLM.
+            #   2. ``ComposerResponseError`` whose message names a
+            #      shape mistake the LLM can plausibly correct
+            #      (top-level-not-mapping, multiple-yaml-blocks-with-
+            #      a-list-first). Surfaced by the real-ollama E2E
+            #      run 2026-05-11: mistral-nemo emitted three yaml
+            #      blocks, the first one a bare list — the parser
+            #      raised, the retry was never reached, the user
+            #      saw an opaque parse failure.
+            #
+            # Other ComposerResponseError variants (empty content,
+            # unparseable YAML) still bypass — those are not
+            # repairable failure modes a retry would help with.
+            try:
+                yaml_text, novel_python, workflow_dict = self._invoke_and_parse(
+                    llm,
+                    messages,
+                )
+            except ComposerResponseError as exc:
+                if not _is_repairable_parse_error(exc):
+                    raise
+                if compose_retries >= max_retries:
+                    raise
+                compose_retries += 1
+                feedback = _format_parse_feedback(exc)
+                log.warning(
+                    "Composer parse failed on attempt %d/%d: %s; "
+                    "retrying with shape-correction feedback.",
+                    compose_retries,
+                    max_retries + 1,
+                    exc,
+                )
+                # No prior YAML to thread back — the parse failed
+                # before we had a clean yaml_text. Just append the
+                # correction as the next user turn so the LLM sees
+                # the diagnostic.
+                messages.append(HumanMessage(content=feedback))
+                continue
+
             try:
                 self._validate_or_raise(workflow_dict, yaml_text, yaml_paths)
                 break

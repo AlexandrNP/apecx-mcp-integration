@@ -261,10 +261,27 @@ def _validate_steps_block(
 ) -> list[WorkflowViolation]:
     violations: list[WorkflowViolation] = []
     steps = workflow_dict.get("steps")
-    if steps is None:
-        # A workflow with no steps is degenerate but not necessarily
-        # framework-illegal; the framework will surface a different
-        # error at init time. Don't add a violation here.
+    if steps is None or (isinstance(steps, dict) and not steps):
+        # Empty / missing steps surfaced as a real silent-failure
+        # shape via the ollama E2E run (2026-05-11): the LLM emitted
+        # a workflow with no steps and the validator passed it. The
+        # workflow loads cleanly but does nothing — exactly the
+        # class of failure A1 exists to prevent.
+        violations.append(
+            WorkflowViolation(
+                rule_id="workflow_has_no_steps",
+                path="steps",
+                message=(
+                    "workflow has no `steps:` — a degenerate workflow "
+                    "that loads cleanly but does nothing at runtime."
+                ),
+                suggested_fix=(
+                    "Add at least one step under `steps:` that performs "
+                    "the requested task. Pick a class from the retrieved "
+                    "candidates block."
+                ),
+            )
+        )
         return violations
     if not isinstance(steps, dict):
         violations.append(

@@ -450,6 +450,26 @@ def test_top_level_not_mapping_short_circuits():
     assert ids == ["workflow_not_mapping"]
 
 
+def test_empty_steps_dict_flagged_as_workflow_has_no_steps():
+    """Real ollama E2E run on 2026-05-11 caught the LLM emitting a
+    workflow with ``steps: {}``. Previous validator behavior: pass.
+    New behavior: flag as a workflow_has_no_steps violation so the
+    C1 retry loop gets a chance to repair it.
+    """
+    violations = validate_workflow_against_framework(
+        {"name": "empty_workflow", "steps": {}, "links": {}}
+    )
+    assert "workflow_has_no_steps" in _violation_ids(violations)
+
+
+def test_missing_steps_key_also_flagged_as_no_steps():
+    """Same rule fires when ``steps:`` is omitted entirely — the
+    framework's runtime check might surface this too, but A1 should
+    catch it at compose-time so the C1 retry loop applies."""
+    violations = validate_workflow_against_framework({"name": "no_steps_key_at_all"})
+    assert "workflow_has_no_steps" in _violation_ids(violations)
+
+
 def test_steps_block_not_mapping():
     workflow_dict = {"steps": ["a", "b"]}
     violations = validate_workflow_against_framework(workflow_dict)
