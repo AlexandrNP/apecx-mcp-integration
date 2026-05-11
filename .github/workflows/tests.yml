@@ -1,0 +1,57 @@
+name: tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  unit:
+    name: unit tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install build deps
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install apecx-integration[dev]
+        # ``dev`` extra includes pytest + pytest-asyncio + ruff +
+        # pre-commit + aiosmtpd. The git deps in pyproject.toml
+        # (nanobrain @ academy-integration, apecx-harvesters @ main)
+        # pull as part of the editable install — both are public
+        # repos, no auth required.
+        run: |
+          pip install -e '.[dev]'
+
+      - name: Run unit tests
+        env:
+          # tests/unit/ doesn't require APECX_DATA_ROOT but several
+          # tests check the warning emitted when it's unset.
+          # Leaving it unset lets those tests verify the warning.
+          PYTHONPATH: src
+        run: |
+          pytest tests/unit/ -v --tb=short --no-header
+
+  # Ruff gating intentionally NOT in this initial CI workflow.
+  # The repo has ~510 pre-existing ruff errors (most auto-fixable but
+  # touching many files); adding a gating ruff job would be red on day
+  # 1 and would block any new work. The cleanup is a separate
+  # tracked commit; ruff is added to this workflow AFTER the cleanup
+  # commit. Until then, local pre-commit (.pre-commit-config.yaml)
+  # catches issues at commit time.
