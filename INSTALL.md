@@ -33,11 +33,18 @@ git automatically — no manual clones.
 ## Verify
 
 ```bash
-which apecx-mcp           # /Users/<you>/.local/bin/apecx-mcp (uv default)
-which apecx-setup
-apecx-mcp --help          # FastMCP help banner
-apecx-setup --help        # argparse banner with --reconfigure-llm
+which apecx-mcp apecx-cp apecx-setup
+# all three resolve under your installer's shim dir, e.g.
+#   /Users/<you>/.local/bin/apecx-mcp (uv default)
+
+apecx-setup --help                     # argparse banner with --reconfigure-llm
+apecx-cp --help                        # argparse banner: serve | teardown
 ```
+
+**Don't run `apecx-mcp --help`.** The binary has no argparse layer
+— ANY invocation, including `--help` and `--version`, boots the
+MCP server immediately. Use `which apecx-mcp` to verify it's on
+PATH, then let Claude Desktop spawn it for real exec.
 
 If `which` returns nothing, add `~/.local/bin` (or your installer's
 shim dir) to `PATH` in your shell rc.
@@ -45,13 +52,17 @@ shim dir) to `PATH` in your shell rc.
 ## Developer mode (editable)
 
 ```bash
-git clone --recurse-submodules \
-  https://github.com/AlexandrNP/apecx-mcp-integration.git
+git clone https://github.com/AlexandrNP/apecx-mcp-integration.git
 cd apecx-mcp-integration
 uv venv --python 3.12
 source .venv/bin/activate
 uv pip install -e '.[dev]'
 ```
+
+The sibling repos (`nanobrain @ academy-integration`,
+`apecx-harvesters @ main`) are declared as git deps in
+`pyproject.toml`, NOT as submodules — `uv pip install` pulls them
+during the editable install. No `--recurse-submodules` needed.
 
 The `[dev]` extra includes pytest + ruff + pre-commit. Run tests via
 `scripts/run_tests.sh` (sets `PYTHONPATH=src` + uses `.venv/bin/python`
