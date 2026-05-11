@@ -93,6 +93,12 @@ academy = [
 apecx-cp = "apecx_integration.control_plane.app:main"
 apecx-mcp = "apecx_integration.mcp_surface.server:main"
 apecx-setup = "apecx_integration.cli.setup:main"
+# Regression metric reporting for the reliability arc shipped
+# 2026-05-11 (C1 compose_retries, C2 runtime_violations, A2
+# retrieval_gap). Reads the control-plane DB and prints a table or
+# JSON; designed for ad-hoc operator use AND for scripted regression
+# tracking.
+apecx-regression-metrics = "apecx_integration.cli.regression_metrics:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
