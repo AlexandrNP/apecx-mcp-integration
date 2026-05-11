@@ -46,6 +46,37 @@ to ship. Use the lightweight builder when you're in the "what should this
 workflow even look like" phase. Use the composer when the user's request is
 framed as natural language and you don't already know which skeleton to pick.
 
+### Pre-execution validation bridge (LW, 2026-05-11)
+
+The LLM composer pipeline runs `validate_workflow_against_framework()`
+after `yaml.safe_load` and BEFORE `Workflow.from_config`, surfacing
+inline-dict / unresolvable-class / TransformLink / dangling-link
+violations as a structured payload. The lightweight builder didn't
+get that surface for free — `WorkflowBuilder.load()` delegates
+straight to `Workflow.from_config(self.workflow_config)` and any
+framework violation falls out as a raw exception.
+
+Use the bridge module to get the same structured surface for
+programmatic builds:
+
+```python
+from nanobrain.lightweight.workflow_builder import WorkflowBuilder
+from apecx_integration.composition.lightweight_validator import (
+    validate_and_load,
+)
+
+builder = WorkflowBuilder(...)
+builder.add_step(...)
+workflow = validate_and_load(builder)   # raises WorkflowValidationError
+                                        # with structured violations
+                                        # on framework-rule misses
+```
+
+Pure validation (no load) is also available via
+`validate_lightweight_builder(builder)`. The bridge duck-types on
+`.get_config()`, so a future `EnhancedWorkflowBuilder` or custom
+subclass works without code changes here.
+
 ## Discovery — what the lightweight builder finds
 
 `nanobrain/lightweight/__init__.py` exposes:

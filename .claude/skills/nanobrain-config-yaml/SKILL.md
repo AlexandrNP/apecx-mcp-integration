@@ -45,6 +45,22 @@ authoring guide.
 >   `set_class_import_whitelist(["nanobrain.", "apecx_integration."])`.
 >   Defends against rogue `class:` paths in untrusted YAMLs.
 
+> **Composer-side pre-execution validator (A1, 2026-05-11).** Workflows
+> generated through `apecx_integration.composition.composer.Composer.compose()`
+> now pass through `validate_workflow_against_framework()` BEFORE the
+> ComposedWorkflow is returned — so the verbatim framework error you
+> see at `config_base.py:947` (`❌ FRAMEWORK VIOLATION: Inline dict
+> configuration not supported`) surfaces as a structured
+> `WorkflowViolation(rule_id="step_inline_config_forbidden", ...)`
+> with a paste-back-to-LLM feedback payload instead of an opaque
+> traceback. The validator imports `ConfigBase._is_inline_config_supported`
+> as the single source of truth — re-implementing the rule in the
+> validator would silently drift; importing the function ensures both
+> paths agree by construction. The same validator is reachable from
+> the **programmatic** path via
+> `apecx_integration.composition.lightweight_validator.validate_and_load(builder)`
+> for `nanobrain.lightweight.WorkflowBuilder` consumers.
+
 ## File:line ground truth
 
 | Concern | File | Approx. line |

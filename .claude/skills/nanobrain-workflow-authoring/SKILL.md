@@ -33,6 +33,21 @@ synchronously after `process()` and assert the workflow-level outputs
 actually carry your expected payload — don't trust trigger-cascade
 "completion" without checking the data.
 
+### Pre-execution validation across all three authoring paths (2026-05-11)
+
+CLAUDE.md describes three legit workflow-authoring paths. All three
+now route through the same framework-rule validator before runtime:
+
+| Path | Validator entry point | Surfaces violations as |
+|---|---|---|
+| Hand-authored YAML | `Workflow.from_config(path)` | Framework `ValueError` / `ComponentConfigurationError` |
+| LLM composer | `Composer.compose(prompt)` | Structured `WorkflowValidationError` with per-rule `WorkflowViolation` records; retries once with feedback payload (C1) |
+| Lightweight `WorkflowBuilder` | `validate_and_load(builder)` from `apecx_integration.composition.lightweight_validator` | Structured `WorkflowValidationError` (same payload as composer) |
+
+The structured surface (`rule_id`, `path`, `message`,
+`suggested_fix`) is the same across paths so retry / repair logic
+can be reused.
+
 ## Alignment-audit findings — author validation/repair as Steps, not pseudocode
 
 Per `nanobrain_alignment_audit.md` F-2, F-3, F-6: the 5-gate validation
