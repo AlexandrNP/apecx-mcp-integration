@@ -45,6 +45,13 @@ class StartWorkflowRequest(_APIBase):
 class StartWorkflowResponse(_APIBase):
     run: Run
     generated_workflow_artifact_id: UUID
+    # A3 (2026-05-11): when ``run.status == PAUSED`` this carries a
+    # one-sentence rationale naming the categories + step_ids that
+    # drove the pause. ``None`` when the run was auto-approved. Fixes
+    # the issues-doc framing where status=PAUSED + empty
+    # novel_python_by_step looked like a contradiction because no
+    # other review-driver was named anywhere in the response.
+    pause_reason: str | None = None
 
 
 # --- generate_plan ---------------------------------------------------------

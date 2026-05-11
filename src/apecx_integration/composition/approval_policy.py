@@ -50,10 +50,7 @@ class ApprovalDecision:
 
     @property
     def blocks(self) -> bool:
-        return bool(
-            self.review_required_steps
-            or self.expert_review_required_steps
-        )
+        return bool(self.review_required_steps or self.expert_review_required_steps)
 
     @property
     def strongest_required_action(self) -> ApprovalAction:
@@ -62,6 +59,84 @@ class ApprovalDecision:
         if self.review_required_steps:
             return ApprovalAction.REQUIRE_REVIEW
         return ApprovalAction.AUTO
+
+    @property
+    def pause_reason(self) -> str | None:
+        """One-sentence rationale for why the workflow is paused.
+
+        Returns ``None`` when the decision did not block — i.e., no
+        review was required. When non-None, the sentence names the
+        strongest required review action AND lists which step
+        categories drove it, so the reviewer can route attention
+        precisely. The bug this fixes is the
+        Automated_Workflow_Generation_Issues.md report's framing
+        confusion: status=PAUSED with novel_python_by_step={} reads
+        as a contradiction because the only review-driver mentioned
+        anywhere is "novel python." The pause-reason names the
+        actual driver (parameterized config, wrapped, novel) so
+        "PAUSED with no novel python" no longer looks like a bug.
+
+        A2 (2026-05-11) retrieval-gap interaction: when a step is
+        ``COMPOSED_PARAMETERIZED`` only because A2 rescued it via
+        disk-import fallback, the reason includes that hint so the
+        reviewer knows the pause might be a retrieval-quality
+        false-positive rather than a real bespoke wrapper.
+        """
+        if not self.blocks:
+            return None
+
+        # Build a per-action breakdown — categories + step_ids for each.
+        def _summarize(label: str, steps: tuple[StepCategorization, ...]) -> str:
+            if not steps:
+                return ""
+            by_cat: dict[StepCategory, list[str]] = {}
+            for s in steps:
+                by_cat.setdefault(s.category, []).append(s.step_id)
+            parts: list[str] = []
+            for cat, ids in by_cat.items():
+                # Mark retrieval-gap-rescued steps so reviewers can
+                # spot them at a glance.
+                ids_marked: list[str] = []
+                ids_by_step = {s.step_id: s for s in steps}
+                for sid in ids:
+                    if ids_by_step[sid].retrieval_gap:
+                        ids_marked.append(f"{sid}*")
+                    else:
+                        ids_marked.append(sid)
+                parts.append(f"{cat.value}={','.join(sorted(ids_marked))}")
+            return f"{label}: {'; '.join(sorted(parts))}"
+
+        segments: list[str] = []
+        if self.expert_review_required_steps:
+            segments.append(
+                _summarize(
+                    "expert review",
+                    self.expert_review_required_steps,
+                )
+            )
+        if self.review_required_steps:
+            segments.append(
+                _summarize(
+                    "review",
+                    self.review_required_steps,
+                )
+            )
+        sentence = "Workflow paused: " + " | ".join(segments) + "."
+        has_marked = any(
+            s.retrieval_gap
+            for s in (
+                *self.review_required_steps,
+                *self.expert_review_required_steps,
+            )
+        )
+        if has_marked:
+            sentence += (
+                " Steps marked with `*` were classified via the A2 "
+                "disk-import fallback (retrieval missed them) — the "
+                "pause may be a retrieval-recall artifact rather than "
+                "a real bespoke wrapper."
+            )
+        return sentence
 
 
 class ApprovalPolicy:
@@ -82,8 +157,7 @@ class ApprovalPolicy:
         raw = yaml.safe_load(path.read_text(encoding="utf-8"))
         if not isinstance(raw, dict):
             raise ValueError(
-                f"approval policy at {path} must be a YAML mapping; "
-                f"got {type(raw).__name__}"
+                f"approval policy at {path} must be a YAML mapping; got {type(raw).__name__}"
             )
         mapping: dict[StepCategory, ApprovalAction] = {}
         allowed_cats = {c.value for c in StepCategory}
@@ -105,9 +179,7 @@ class ApprovalPolicy:
     def action_for(self, category: StepCategory) -> ApprovalAction:
         return self._mapping[category]
 
-    def evaluate(
-        self, categorized: CategorizedWorkflow
-    ) -> ApprovalDecision:
+    def evaluate(self, categorized: CategorizedWorkflow) -> ApprovalDecision:
         auto: list[StepCategorization] = []
         review: list[StepCategorization] = []
         expert: list[StepCategorization] = []

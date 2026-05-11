@@ -70,9 +70,7 @@ def _not_implemented(task_ref: str) -> HTTPException:
 @router.post("/start", response_model=StartWorkflowResponse)
 async def start_workflow(
     body: StartWorkflowRequest,
-    session_factory: Annotated[
-        sessionmaker[Session], Depends(get_session_factory)
-    ],
+    session_factory: Annotated[sessionmaker[Session], Depends(get_session_factory)],
     # Probe batch 4 (2026-04-26) — use _or_none variants so that a
     # malformed body (missing fields, extra fields) gets a clean
     # 422 from Pydantic, not 503 from the service-availability
@@ -80,9 +78,7 @@ async def start_workflow(
     # parameter is in scope, so 503 only fires when the body was
     # well-formed.
     composer: Annotated[Composer | None, Depends(get_composer_or_none)] = None,
-    policy: Annotated[
-        ApprovalPolicy | None, Depends(get_approval_policy_or_none)
-    ] = None,
+    policy: Annotated[ApprovalPolicy | None, Depends(get_approval_policy_or_none)] = None,
 ) -> StartWorkflowResponse:
     """T01 P1: compose a workflow, persist it, return the Run.
 
@@ -197,9 +193,14 @@ async def start_workflow(
             # False in db.py:make_session_factory), so this is safe in
             # principle, but explicit serialization here makes the
             # boundary obvious.
+            #
+            # A3 (2026-05-11): pause_reason names the actual review
+            # driver — fixes the issues-doc framing where a PAUSED
+            # run with empty novel_python looked like a contradiction.
             response = StartWorkflowResponse(
                 run=RunSchema.model_validate(run),
                 generated_workflow_artifact_id=composed.artifact_id,
+                pause_reason=decision.pause_reason,
             )
     except HTTPException:
         # The "run disappeared" case — no row to flip; let FastAPI
@@ -245,9 +246,7 @@ async def start_workflow(
 @router.post("/plan", response_model=GeneratePlanResponse)
 async def generate_plan(
     body: GeneratePlanRequest,
-    session_factory: Annotated[
-        sessionmaker[Session], Depends(get_session_factory)
-    ],
+    session_factory: Annotated[sessionmaker[Session], Depends(get_session_factory)],
     composer: Annotated[Composer | None, Depends(get_composer_or_none)] = None,
 ) -> GeneratePlanResponse:
     """Preview-mode composition — same composer flow as
@@ -289,9 +288,7 @@ async def generate_plan(
     # a discoverability hack, which compounds: orphans there are
     # harder to spot.
     try:
-        composed = await composer.compose(
-            body.description, context={"run_id": run_id}
-        )
+        composed = await composer.compose(body.description, context={"run_id": run_id})
     except Exception:
         with session_factory() as session:
             run_row = session.get(RunORM, run_id)
@@ -371,9 +368,7 @@ async def generate_plan(
 @router.post("/execute", response_model=ExecuteWorkflowResponse)
 async def execute_workflow(
     body: ExecuteWorkflowRequest,
-    executor: Annotated[
-        LocalExecutor | None, Depends(get_local_executor_or_none)
-    ] = None,
+    executor: Annotated[LocalExecutor | None, Depends(get_local_executor_or_none)] = None,
 ) -> ExecuteWorkflowResponse:
     """T01 P2 HTTP surface — run a composed workflow to terminal state.
 
@@ -430,10 +425,7 @@ async def show_yaml_diff(
     if run.workflow_config_id is None:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=(
-                f"Run {body.run_id} has no workflow_config_id — "
-                "nothing to diff."
-            ),
+            detail=(f"Run {body.run_id} has no workflow_config_id — nothing to diff."),
         )
     artifact = session.get(ArtifactORM, run.workflow_config_id)
     if artifact is None:
@@ -494,9 +486,7 @@ async def show_yaml_diff(
                 step_id=row.get("step_id", ""),
                 step_name=row.get("step_id", ""),
                 category=category,
-                reference_component_id=(
-                    row.get("step_class") or None
-                ),
+                reference_component_id=(row.get("step_class") or None),
                 rationale=row.get("reason", ""),
             )
         )
