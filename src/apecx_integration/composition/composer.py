@@ -69,17 +69,14 @@ REQUIRED_PROMPT_FILES: tuple[str, ...] = (
 _INTERNAL_CONTEXT_KEYS: frozenset[str] = frozenset({"run_id"})
 
 
-class ComposerConfigurationError(ValueError):
-    """Raised when a composer config is structurally wrong."""
-
-
-class ComposerResponseError(ValueError):
-    """Raised when the LLM response can't be parsed into a workflow.
-
-    Separate from ComposerConfigurationError so callers can
-    distinguish "operator misconfigured the composer" from "LLM
-    emitted unparseable output."
-    """
+# Error classes live in ``_errors.py`` to break the circular import
+# between this module and ``workflow_validator.py``; they are
+# re-exported here for backward compatibility with existing callers
+# that import them from this module.
+from apecx_integration.composition._errors import (  # noqa: E402
+    ComposerConfigurationError,
+    ComposerResponseError,
+)
 
 
 class Composer:
@@ -123,9 +120,7 @@ class Composer:
         """
         self._config = config
         self._prompts: dict[str, str] = self._load_prompts(config.prompt_dir)
-        self._catalog = ComponentCatalog.from_manifests(
-            list(config.component_catalog_paths)
-        )
+        self._catalog = ComponentCatalog.from_manifests(list(config.component_catalog_paths))
         self._llm_factory = llm_factory or _default_llm_factory
         self._artifact_store = artifact_store
 
@@ -147,9 +142,10 @@ class Composer:
                     f"importable: {exc}"
                 ) from exc
             index_dir = Path(config.rag_index_dir)
-            if not (index_dir / "faiss.bin").is_file() or not (
-                index_dir / "metadata.json"
-            ).is_file():
+            if (
+                not (index_dir / "faiss.bin").is_file()
+                or not (index_dir / "metadata.json").is_file()
+            ):
                 raise ComposerConfigurationError(
                     f"rag_index_dir={index_dir} is missing faiss.bin "
                     "or metadata.json. Run scripts/build_rag_index.py "
@@ -168,9 +164,7 @@ class Composer:
         log.info(
             "Composer initialized (Phase %s): library=%s llm=%s prompts=%d "
             "components=%d retrieval=%s persist=%s",
-            "4" if self._rag_index is not None
-            else "3" if artifact_store is not None
-            else "2",
+            "4" if self._rag_index is not None else "3" if artifact_store is not None else "2",
             config.library_version,
             config.llm_model,
             len(self._prompts),
@@ -184,22 +178,17 @@ class Composer:
         """Load a ``ComposerConfig`` from YAML and build the composer."""
         path = Path(config_path)
         if not path.is_file():
-            raise ComposerConfigurationError(
-                f"composer config not found at {path}"
-            )
+            raise ComposerConfigurationError(f"composer config not found at {path}")
         raw: dict[str, Any] = yaml.safe_load(path.read_text(encoding="utf-8"))
         if not isinstance(raw, dict):
             raise ComposerConfigurationError(
-                f"composer config at {path} must be a YAML mapping, got "
-                f"{type(raw).__name__}"
+                f"composer config at {path} must be a YAML mapping, got {type(raw).__name__}"
             )
 
         # Resolve prompt_dir relative to the config file if it's not absolute.
         prompt_dir_raw = raw.get("prompt_dir")
         if prompt_dir_raw is None:
-            raise ComposerConfigurationError(
-                "composer config missing required 'prompt_dir'"
-            )
+            raise ComposerConfigurationError("composer config missing required 'prompt_dir'")
         prompt_dir = Path(prompt_dir_raw)
         if not prompt_dir.is_absolute():
             prompt_dir = (path.parent / prompt_dir).resolve()
@@ -263,9 +252,7 @@ class Composer:
     def catalog(self) -> ComponentCatalog:
         return self._catalog
 
-    def _suggest_for_violation(
-        self, source: str, *, k: int = 3
-    ) -> tuple[str, ...]:
+    def _suggest_for_violation(self, source: str, *, k: int = 3) -> tuple[str, ...]:
         """Pick ``k`` components from the active retrieval backend that
         best match the rejected novel-Python source.
 
@@ -351,8 +338,7 @@ class Composer:
         """
         if not isinstance(prompt, str) or not prompt.strip():
             raise ValueError(
-                f"compose() requires a non-empty prompt string; got "
-                f"{type(prompt).__name__}"
+                f"compose() requires a non-empty prompt string; got {type(prompt).__name__}"
             )
 
         # 1. Retrieve candidate components (RAG if configured, else linear-scan)
@@ -369,16 +355,19 @@ class Composer:
 
         # 3. Call LLM via the injected factory
         from langchain_core.messages import HumanMessage, SystemMessage
+
         llm = self._llm_factory(
             temperature=self._config.temperature,
             max_tokens=self._config.max_tokens,
             model=self._config.llm_model,
             base_url=self._config.llm_base_url,
         )
-        response = llm.invoke([
-            SystemMessage(content=system_prompt),
-            HumanMessage(content=user_prompt),
-        ])
+        response = llm.invoke(
+            [
+                SystemMessage(content=system_prompt),
+                HumanMessage(content=user_prompt),
+            ]
+        )
         raw_content = getattr(response, "content", str(response))
 
         # Audit §1.2: validate the LLM produced a non-empty string
@@ -427,6 +416,34 @@ class Composer:
                 f"got {type(workflow_dict).__name__}"
             )
 
+        # Precompute the catalog map — used by both the framework-rule
+        # validator (next) and the differ's categorization (below).
+        retrieved_class_paths = {h.component.class_path for h in hits}
+        yaml_paths = {
+            h.component.class_path: h.component.yaml_path for h in hits if h.component.yaml_path
+        }
+
+        # 6b. Framework-rule pre-execution validation (A1). Catches
+        # inline-dict configs on Steps, unresolvable class paths,
+        # TransformLink usage, auto_transfer=false, and dangling link
+        # references BEFORE the executor sees the workflow. On
+        # violation, raise WorkflowValidationError whose
+        # ``to_feedback_payload()`` feeds the C1 retry loop.
+        from apecx_integration.composition.workflow_validator import (
+            WorkflowValidationError,
+            validate_workflow_against_framework,
+        )
+
+        violations = validate_workflow_against_framework(
+            workflow_dict,
+            catalog_yaml_paths=yaml_paths,
+        )
+        if violations:
+            raise WorkflowValidationError(
+                violations=violations,
+                yaml_text=yaml_text,
+            )
+
         # 7. Assemble ComposedWorkflow.
         yaml_bytes = yaml_text.encode("utf-8")
 
@@ -435,12 +452,6 @@ class Composer:
         # + canonical wrapper-YAML map; each step gets one row in
         # ``step_categorizations``. The resulting summary_sentence is
         # what the MCP UI / diff endpoint surfaces to the reviewer.
-        retrieved_class_paths = {h.component.class_path for h in hits}
-        yaml_paths = {
-            h.component.class_path: h.component.yaml_path
-            for h in hits
-            if h.component.yaml_path
-        }
         categorized = categorize_workflow(
             workflow_dict=workflow_dict,
             novel_python=novel_python,
@@ -462,14 +473,10 @@ class Composer:
             steps_generated=len(novel_python),
             steps_swapped=0,
             summary_sentence=categorized.summary_sentence,
-            review_notes=tuple(
-                f"novel Python step: {k}" for k in novel_python
-            ),
+            review_notes=tuple(f"novel Python step: {k}" for k in novel_python),
             step_categorizations=categorized.categorizations,
         )
-        llm_model_version_hash = hashlib.sha256(
-            self._config.llm_model.encode("utf-8")
-        ).hexdigest()
+        llm_model_version_hash = hashlib.sha256(self._config.llm_model.encode("utf-8")).hexdigest()
 
         # 8. Persist via ArtifactStore when both an injected store AND a
         # run_id context are available. Otherwise stay on the Phase-2
@@ -605,9 +612,13 @@ class Composer:
         """Compose the user-facing message: library candidates +
         user task + optional context.
         """
-        candidates_block = _render_candidates(hits) if hits else (
-            "(no matching library components — you may need to emit "
-            "novel Python; see the novel_python_flagging rules above)"
+        candidates_block = (
+            _render_candidates(hits)
+            if hits
+            else (
+                "(no matching library components — you may need to emit "
+                "novel Python; see the novel_python_flagging rules above)"
+            )
         )
         parts = [
             "## Available library components",
@@ -623,25 +634,24 @@ class Composer:
         # a UUID anyway. Anything in ``_INTERNAL_CONTEXT_KEYS`` is
         # composer plumbing, not LLM-visible context.
         if context:
-            llm_visible = {
-                k: v for k, v in context.items()
-                if k not in _INTERNAL_CONTEXT_KEYS
-            }
+            llm_visible = {k: v for k, v in context.items() if k not in _INTERNAL_CONTEXT_KEYS}
             if llm_visible:
                 parts.append("")
                 parts.append("## Additional context")
                 parts.append("")
-                parts.append(yaml.safe_dump(
-                    llm_visible, sort_keys=True, default_flow_style=False,
-                ).strip())
+                parts.append(
+                    yaml.safe_dump(
+                        llm_visible,
+                        sort_keys=True,
+                        default_flow_style=False,
+                    ).strip()
+                )
         return "\n".join(parts)
 
     @classmethod
     def _load_prompts(cls, prompt_dir: Path) -> dict[str, str]:
         if not prompt_dir.is_dir():
-            raise ComposerConfigurationError(
-                f"prompt_dir {prompt_dir} is not a directory"
-            )
+            raise ComposerConfigurationError(f"prompt_dir {prompt_dir} is not a directory")
         prompts: dict[str, str] = {}
         missing: list[str] = []
         for filename in REQUIRED_PROMPT_FILES:
@@ -652,8 +662,7 @@ class Composer:
             prompts[p.stem] = p.read_text(encoding="utf-8")
         if missing:
             raise ComposerConfigurationError(
-                f"prompt_dir {prompt_dir} missing required prompt files: "
-                f"{sorted(missing)}"
+                f"prompt_dir {prompt_dir} missing required prompt files: {sorted(missing)}"
             )
         return prompts
 
@@ -661,6 +670,7 @@ class Composer:
 # ---------------------------------------------------------------------------
 # Module-level helpers
 # ---------------------------------------------------------------------------
+
 
 def _default_llm_factory(**kwargs: Any):
     """Default LLM client builder — imports lazily so a missing
@@ -679,6 +689,7 @@ def _default_llm_factory(**kwargs: Any):
     an OpenAI-compatible chat-completions endpoint.
     """
     from apecx_integration.agents._llm_factory import build_chat_llm
+
     return build_chat_llm(**kwargs)
 
 
@@ -758,8 +769,7 @@ def _parse_response(content: str) -> tuple[str, dict[str, str]]:
     yaml_blocks = blocks.get("yaml", [])
     if not yaml_blocks:
         raise ComposerResponseError(
-            "LLM response has no ```yaml fenced block. First 500 chars: "
-            f"{content[:500]!r}"
+            f"LLM response has no ```yaml fenced block. First 500 chars: {content[:500]!r}"
         )
     if len(yaml_blocks) > 1:
         log.warning(
@@ -788,8 +798,7 @@ def _parse_response(content: str) -> tuple[str, dict[str, str]]:
         for k, v in parsed.items():
             if not isinstance(v, str):
                 raise ComposerResponseError(
-                    f"novel_python[{k!r}] must be a source string; got "
-                    f"{type(v).__name__}"
+                    f"novel_python[{k!r}] must be a source string; got {type(v).__name__}"
                 )
             novel_python[str(k)] = v
 
