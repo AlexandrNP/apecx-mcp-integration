@@ -89,9 +89,9 @@ def test_probe_906_real_violin_genes_count_exceeds_100() -> None:
 
     p = _require(_VIOLIN_DIR / "Gene_Information.csv")
     df = pd.read_csv(p)
-    assert (
-        df["Gene_Name"].nunique(dropna=True) > 100
-    ), "PROBE 906: VIOLIN Gene_Information.Gene_Name count <= 100"
+    assert df["Gene_Name"].nunique(dropna=True) > 100, (
+        "PROBE 906: VIOLIN Gene_Information.Gene_Name count <= 100"
+    )
 
 
 def test_probe_907_consolidated_synonym_uses_named_constant_post_fix() -> None:
@@ -106,12 +106,12 @@ def test_probe_907_consolidated_synonym_uses_named_constant_post_fix() -> None:
     except ImportError:
         pytest.skip("apecx_db_integration not importable")
     src = inspect.getsource(agent_mod.consolidated_synonym_search)
-    assert (
-        "MAX_CANDIDATES_PER_CATEGORY" in src
-    ), "PROBE 907: post-fix shape regressed — named constant missing"
-    assert (
-        "filter_candidates_by_similarity" in src
-    ), "PROBE 907: post-fix shape regressed — similarity filter missing"
+    assert "MAX_CANDIDATES_PER_CATEGORY" in src, (
+        "PROBE 907: post-fix shape regressed — named constant missing"
+    )
+    assert "filter_candidates_by_similarity" in src, (
+        "PROBE 907: post-fix shape regressed — similarity filter missing"
+    )
 
 
 def test_probe_908_get_candidate_terms_returns_full_list_no_truncation() -> None:
@@ -209,14 +209,24 @@ def test_probe_912_truncation_cap_constant_named_post_fix() -> None:
 
 
 def test_probe_913_apecx_harvesters_imported_only_at_seam() -> None:
-    """apecx_harvesters imports are restricted to the documented seam.
+    """apecx_harvesters imports are restricted to the documented seams.
 
     2026-05-04: original probe locked "no imports anywhere"; the
-    boundary now permits ONE seam file (``synonym_dictionary/harvester_adapter.py``)
-    that imports DataCite under TYPE_CHECKING for the
-    ``adapt_workflow_to_harvester_transform`` contract. Any *other*
-    file importing apecx_harvesters indicates the integration sprawled
-    beyond the seam — fail.
+    boundary now permits seam files that integrate with apecx-harvesters
+    deliberately. Any *other* file importing apecx_harvesters indicates
+    the integration sprawled beyond the seam — fail.
+
+    Seam files (each justified in-place):
+      * ``synonym_dictionary/harvester_adapter.py`` — DataCite
+        Transform contract for synonym ingest stage.
+      * ``agents/rag_synthesis/harvester_adapter.py`` — rag_synthesis-
+        side adapter for publication metadata rendering.
+      * ``composition/steps/_pubmed_helpers.py`` — extracted from
+        PubMedHarvesterStep (2026-05-09 ``cb74d05``) to avoid the
+        ``object.__new__`` corner cut. The helpers wrap apecx_harvesters'
+        PubMed loader for the SynthesisContextAssemblyStep fan-in
+        branch; the imports are function-scope (lazy). Co-equal seam
+        with the original harvester step.
     """
     src_root = _WORKSPACE_ROOT / "apecx-mcp-integration" / "src" / "apecx_integration"
     if not src_root.is_dir():
@@ -224,6 +234,7 @@ def test_probe_913_apecx_harvesters_imported_only_at_seam() -> None:
     SEAM_ALLOWLIST = (
         "synonym_dictionary/harvester_adapter.py",
         "agents/rag_synthesis/harvester_adapter.py",
+        "composition/steps/_pubmed_helpers.py",
     )
     # Match real import statements (line-anchored), not docstring or
     # comment mentions — a coarser grep gave false positives on
@@ -274,7 +285,7 @@ def test_probe_914_no_harvester_step_in_violin_workflow() -> None:
         classes.append(cls)
     harvester_classes = [c for c in classes if "harvester" in c.lower()]
     assert not harvester_classes, (
-        f"PROBE 914: harvester step found in violin_bvbrc workflow: " f"{harvester_classes}"
+        f"PROBE 914: harvester step found in violin_bvbrc workflow: {harvester_classes}"
     )
 
 
@@ -342,11 +353,30 @@ def test_probe_916_datacite_references_only_in_rag_synthesis() -> None:
     # mention is in TYPE_CHECKING blocks + docstrings, not runtime imports;
     # the boundary invariant the original probe protected (DataCite is a
     # renderer-local concept) holds for `db_integration` / `control_plane`.
+    #
+    # Allowlist extended 2026-05-11 (Globus Search + PubMed integration):
+    # the original "DataCite is renderer-local" invariant was a transitional
+    # state — when the only consumer of DataCite-shaped publications was
+    # ``_render_publications`` in rag_synthesis. The 2026-05-09 Globus
+    # Search integration (``e14fb2d``) AND the PubMed harvester landing
+    # made DataCite the canonical publication-metadata shape at the
+    # ingest boundary. The probe converts from "renderer-local lock" to
+    # "ingest-boundary lock": DataCite is allowed in rag_synthesis +
+    # synonym seams + the ingest-boundary modules that produce it.
+    # ``db_integration`` and ``control_plane`` are still off-limits.
     allowed_prefixes = (
         "agents/rag_synthesis/",
         "synonym_dictionary/harvester_adapter.py",
         "synonym_dictionary/transform.py",
         "synonym_dictionary/workflow/resolve_step.py",
+        # 2026-05-11 — Globus Search ingest boundary (e14fb2d).
+        "mcp_surface/tools/globus_search.py",
+        "agents/globus_search/",
+        # 2026-05-11 — PubMed harvester ingest boundary
+        # (_pubmed_helpers extracted from PubMedHarvesterStep).
+        "composition/steps/pubmed_harvester_step.py",
+        "composition/steps/synthesis_context_assembly_step.py",
+        "composition/steps/_pubmed_helpers.py",
     )
     offenders = []
     for py in src_root.rglob("*.py"):
@@ -506,7 +536,7 @@ def test_probe_922_apecx_rag_prototype_not_integrated() -> None:
         if "RAGAgentTeam" in text:
             offenders.append(str(py.relative_to(src_root)))
     assert not offenders, (
-        f"PROBE 922: apecx-rag integrated via {offenders} — verify " "and update this probe."
+        f"PROBE 922: apecx-rag integrated via {offenders} — verify and update this probe."
     )
 
 

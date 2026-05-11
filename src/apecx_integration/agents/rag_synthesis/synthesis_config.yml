@@ -55,6 +55,9 @@ citation_marker_patterns:
   - '\[VIOLIN [^\]\s\[]+\]'
   - '\[RAG chunk #\d+\]'
   - '\[10\.[0-9]+/[^\]\s\[]+\]'
+  # 2026-05-11 — Globus Search citation pattern (matches the Python
+  # schema default; probe 1052 pins yaml↔python parity).
+  - '\[Globus [^\]\s\[]+\]'
 
 # Minimum length of the LLM response. Below this floor the
 # response is rejected as curtailed (per user directive

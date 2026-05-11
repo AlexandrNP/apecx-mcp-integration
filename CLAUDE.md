@@ -1,380 +1,236 @@
 # apecx-mcp-integration — repo-local Claude instructions
 
-Workspace-root `../CLAUDE.md` carries the cross-repo rules (git
-discipline, mocks policy, nanobrain framework constraints, session
-distillation directive). This file carries repo-specific details
-that a fresh Claude session needs to skip friction already paid for.
+Workspace-root `../CLAUDE.md` carries cross-repo rules (git discipline,
+mocks policy, nanobrain constraints, session distillation). This file
+is repo-specific imperatives + pointers — keep it lean (probe 230 caps
+at 16 KB).
 
-## Python interpreter — use the venv
+## Python interpreter — MUST use the venv
 
 **`.venv/bin/python` is authoritative. `/opt/anaconda3/bin/python`
-is NOT.** The project's editable installs live in the venv:
+is NOT.** Editable installs in the venv: `apecx_integration`,
+`apecx_db_integration`, `nanobrain`.
 
-- `apecx_integration`        (this repo)
-- `apecx_db_integration`     (sibling repo `../apecx-db-integration`)
-- `nanobrain`                (sibling repo `../nanobrain`)
-
-Running `python -m pytest ...` from the shell picks up whichever
-interpreter is first on `PATH`. On this laptop that is the system
-anaconda, which does not see any of the editable installs. Symptoms:
-`ModuleNotFoundError: No module named 'apecx_db_integration'` or
-`... 'nanobrain'` on a test file that clearly imports them.
-
-**Always invoke pytest via the venv explicitly:**
-
+Run pytest as:
 ```bash
 PYTHONPATH=src .venv/bin/python -m pytest tests/...
+# or the canonical runner:
+scripts/run_tests.sh [path]
 ```
 
-Or — easier — use the canonical runner:
-
-```bash
-scripts/run_tests.sh              # full suite
-scripts/run_tests.sh tests/unit   # a subset
-```
-
-It sets ``PYTHONPATH=src``, uses ``.venv/bin/python``, and runs from
-the repo root. Pass any pytest args after the path.
-
-See `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md` #14, #15.
+A `ModuleNotFoundError` for a sibling repo is almost always wrong-Python,
+not a real missing dep. See `../_workspace_notes/.../session_friction_log.md`
+#14, #15.
 
 ## Live-LLM test recipe
 
-Three test files are gated on a reachable Ollama (auto-skip when it
-isn't). Recipe:
+Ollama-gated tests (auto-skip when unreachable): see
+`tests/integration/test_composer_*_against_ollama.py` and
+`tests/integration/test_t01_ac1_against_ollama.py`. Env vars
+(`APECX_LLM_BASE_URL`, `APECX_LLM_MODEL`, `APECX_LLM_TEMPERATURE`,
+`APECX_LLM_MAX_TOKENS`, `APECX_LLM_API_KEY`) override
+`composer_config.yml` at load — see
+`composition/composer.py::_apply_llm_env_overrides`.
 
-```bash
-# Ollama must be running + mistral-nemo:latest pulled.
-APECX_LLM_BASE_URL=http://localhost:11434/v1 \
-APECX_LLM_MODEL=mistral-nemo:latest \
-APECX_LLM_TEMPERATURE=0.0 \
-APECX_LLM_MAX_TOKENS=2048 \
-APECX_LLM_API_KEY=unused \
-PYTHONPATH=src .venv/bin/python -m pytest \
-  tests/integration/test_composer_phase2_against_ollama.py \
-  tests/integration/test_composer_ac7_composition_bias.py \
-  tests/integration/test_t01_ac1_against_ollama.py \
-  tests/integration/test_composer_ac8_walltime.py -v
-```
+## Composer prompt is load-bearing
 
-The env vars override `composer_config.yml` at load time — see
-`src/apecx_integration/composition/composer.py::_apply_llm_env_overrides`.
+`composition/composer_prompts/system.md` makes T01 AC1 pass/fail.
+Two locked-in constraints (drift pattern, 2026-04-22):
+- **No TransformLink** — LLMs hallucinate `transform_function` paths.
+  Use DirectLink + novel Python for shape-bridging.
+- **Path-reference `config:`** for library components — inline
+  `config: {...}` forces hallucinated `input_data_units` /
+  `output_data_units` / `triggers` / class paths.
 
-## Composer prompt engineering is load-bearing
-
-`src/apecx_integration/composition/composer_prompts/system.md` is
-not documentation — it's the file that makes T01 AC1 pass or fail.
-Two drift patterns broke AC1 during development (2026-04-22) and
-are now explicitly constrained:
-
-1. **No TransformLink.** LLMs hallucinate `transform_function`
-   import paths. The prompt forbids TransformLink; use DirectLink
-   + novel Python when shape-bridging is required.
-2. **Path-reference `config:` for library components.** Inline
-   `config: {...}` forces the LLM to reproduce `input_data_units`
-   / `output_data_units` / `triggers` blocks and hallucinate their
-   class paths. The prompt mandates `config: "<wrapper_yaml>"`.
-
-If AC1 starts flapping again, check this file BEFORE blaming the
-LLM or the executor.
+If AC1 flaps: check this file BEFORE blaming LLM/executor.
 
 ## FAISS / sentence-transformers import order
 
-`nanobrain/nanobrain/lightweight/component_index.py` imports
-`sentence_transformers` BEFORE `faiss`. Load-bearing — reversing
-the order causes a silent segfault on macOS ARM. The file carries
-a `# ruff: noqa: I001, E402` + a comment explaining why. Do not
-let an auto-sort "fix" that. See `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md` #13.
+`nanobrain/lightweight/component_index.py` MUST import
+`sentence_transformers` BEFORE `faiss` (macOS-ARM segfault otherwise).
+File carries `# ruff: noqa: I001, E402` — don't let auto-sort "fix" it.
+Session friction log #13.
 
 ## RAG index build
-
-The composer's RAG backend loads from `rag_index_dir` if set. Build
-the index out-of-band:
 
 ```bash
 PYTHONPATH=../nanobrain:src .venv/bin/python \
   scripts/build_rag_index.py \
   src/apecx_integration/composition/composer_config.yml
 ```
-
-Output is `<config_dir>/rag_index/{faiss.bin,metadata.json}` by
-default (override with `--out`). Without a built index, the
-composer falls back to the Phase-2 linear-scan ComponentCatalog.
+Output: `<config_dir>/rag_index/{faiss.bin,metadata.json}`. Without
+built index, composer falls back to Phase-2 linear-scan
+ComponentCatalog.
 
 ## PBS bundle export
 
-`/hpc/export` writes a full qsub-able bundle to disk for a Run. The
-bundle layout matches AP §5.5 exactly (submit.pbs / run.sh /
-workflow.yml / staging_plan.yml / provenance_seed.json / README.md).
-The route does NOT submit via qsub — scientist runs qsub manually.
-Tier-2 ingest on completion consumes `provenance_seed.json`
-(consumer route is T05 follow-up scoped when an operator exercises
-the AC2 round-trip on Polaris / Aurora).
+`/hpc/export` → qsub-able bundle to disk matching AP §5.5. Route does
+NOT submit qsub (scientist runs it). Source:
+`execution/pbs_bundle.py`. Tier-2 ingest consumes `provenance_seed.json`
+(T05 follow-up).
 
-See `src/apecx_integration/execution/pbs_bundle.py`.
+## Academy integration (real, G5 — 2026-04-24)
 
-## Academy integration (real, as of G5 — 2026-04-24)
+Install: `.venv/bin/pip install -e '.[academy]'`. Canonical accessor:
+`AcademyIntegration.setup_academy_manager()` returns the process
+singleton.
 
-`nanobrain/core/academy_integration.py` now has a working real
-Academy path. Before G5, ``AcademyAgentHandle.__call__`` raised
-``AcademyNotImplementedError`` in the non-demo branch; today it
-dispatches through a real ``academy.handle.Handle`` via a
-process-level ``AcademyManagerWrapper`` that owns the
-``academy.manager.Manager`` async context.
+**Lifecycle rules** (load-bearing):
+1. First dispatch enters Manager context; held until
+   `shutdown_academy_manager()`.
+2. Tests touching Academy MUST call `shutdown_academy_manager()` in
+   teardown (see `academy_manager` fixture in
+   `tests/integration/test_academy_real_integration.py`).
+3. `ACADEMY_DEMO_MODE=1` → mock responses + warning log on every call.
+4. `register_agent(name, instance)` was removed; use
+   `register_agent_class(name, Cls)` or `register_agent_handle(name,
+   real_handle)`.
 
-**Use the ``academy`` extra:**
+Coverage: `tests/integration/test_academy_real_integration.py` —
+6 tests, real local agent, no mocks.
 
-```bash
-.venv/bin/pip install -e '.[academy]'
-# or, if the venv already exists and you just want to add it:
-.venv/bin/pip install academy-py
-```
+## T13b Docker sandbox (scaffold, NOT wired into composer yet)
 
-**Lifecycle rules:**
-
-1. First call to any dispatched action enters the Manager context.
-   The context is held process-wide until ``shutdown_academy_manager()``
-   is called.
-2. Tests that touch Academy MUST call ``shutdown_academy_manager()``
-   in teardown (see the ``academy_manager`` fixture in
-   ``tests/integration/test_academy_real_integration.py``) —
-   leaving the singleton entered bleeds state across tests.
-3. ``ACADEMY_DEMO_MODE=1`` preserved: the aurora demo
-   (``demos/academylink_aurora_demo``) still gets synthesized
-   mock responses. A warning log line is emitted on every call so
-   operators cannot miss that they are on the demo path.
-4. Direct instantiation of ``AcademyManagerWrapper`` is supported
-   for tests but the canonical accessor is
-   ``AcademyIntegration.setup_academy_manager()`` — it returns the
-   process singleton.
-
-**Registration API:**
-
-- ``await mgr.register_agent_class(name, Cls)`` — launches a fresh
-  Academy agent and stores its real Handle under ``name``.
-- ``mgr.register_agent_handle(name, real_handle)`` — registers a
-  pre-launched ``academy.handle.Handle`` under ``name`` (use when
-  the agent was launched by another process).
-- ``mgr.register_agent(name, instance)`` — removed. Academy owns
-  agent lifecycle; the old inline-instance API made no sense. Calls
-  now raise ``AcademyNotImplementedError`` with a migration hint.
-
-Positive-path coverage:
-``tests/integration/test_academy_real_integration.py`` —
-six tests launching a real local Academy agent, no mocks, clean
-shutdown.
-
-nanobrain is not a git repo on this workspace, so the integration
-test is the durable artifact: a re-fetch of nanobrain that reverts
-``core/academy_integration.py`` turns every test in that file red.
-
-## T13b Docker sandbox (scaffold only)
-
-`src/apecx_integration/composition/docker_sandbox.py` is the
-Phase-2 runtime-isolation scaffold that backstops T13's static
-import-whitelist scanner. **It is not yet wired into the composer's
-execution path — that is Phase-3 work.**
-
-- `build_docker_sandbox_command(...)` — pure argv construction.
-  Every hardening flag (`--network=none`, `--read-only`,
-  `--cap-drop=ALL`, seccomp default, memory / cpus / pids caps,
-  read-only bind mount) is pinned by
-  `tests/unit/test_docker_sandbox_command.py`. Weakening a flag
-  there requires updating the threat-model table in the design
-  doc in lockstep.
-- `DockerSandboxRunner.run(...)` — real `docker run` invoker. Refuses
-  to execute unless `APECX_T13B_SANDBOX_EXECUTE=1` is set, so CI
-  runs of the full test suite do NOT shell out to Docker.
-- Live-sandbox tests in `tests/integration/test_docker_sandbox_runtime.py`
-  are double-gated (env var + Docker daemon reachable) and skip by
-  default.
-
-Design doc: `../_workspace_notes/apecx-mcp-integration_dev_history/t13b_sandbox_design.md`
-(threat model, flag rationale, open Phase-3 design questions).
+Source: `composition/docker_sandbox.py`. `build_docker_sandbox_command(...)`
+pins hardening flags (`--network=none`, `--read-only`, `--cap-drop=ALL`,
+memory / cpus / pids caps, ro bind mount) via
+`tests/unit/test_docker_sandbox_command.py`. **Note**:
+`--security-opt seccomp=default` was REMOVED — Docker Desktop on Mac
+parses it as a file path; we keep only `--security-opt
+no-new-privileges`. `DockerSandboxRunner.run(...)` refuses unless
+`APECX_T13B_SANDBOX_EXECUTE=1`. Design doc:
+`../_workspace_notes/apecx-mcp-integration_dev_history/t13b_sandbox_design.md`.
 
 ## MCP surface (Tier 1)
 
-`src/apecx_integration/mcp_surface/server.py` is a FastMCP server
-exposing 23 scientist-facing tools. Entry point:
-
+`mcp_surface/server.py` — FastMCP, 24 scientist-facing tools. Entry:
 ```bash
-apecx-mcp                                        # stdio transport
-APECX_CONTROL_PLANE_URL=http://.../  apecx-mcp   # override CP URL
-APECX_DATA_ROOT=/path/to/data apecx-mcp          # enable DB tools
-APECX_SYNONYM_DICT_PATH=/path/to/dict.sqlite apecx-mcp  # enable fast lookup
+apecx-mcp                                       # stdio
+APECX_CONTROL_PLANE_URL=... apecx-mcp           # override CP URL
+APECX_DATA_ROOT=/path apecx-mcp                 # enable DB tools
+APECX_SYNONYM_DICT_PATH=/path apecx-mcp         # enable fast lookup
 ```
 
-Tools by module:
+Tools by module: workflows (3) / discovery (2) /
+database_tools (7 — pure pandas, no LLM) / canonical_entity (1) /
+synthesis (1) / globus_search (1) / approvals (4) / hpc (4).
 
-- `tools/workflows.py` (3): start_workflow, show_diff, execute_workflow
-- `tools/discovery.py` (2): list_workflows, describe_workflow
-- `tools/database_tools.py` (7): query_vaccines, query_pathogens,
-  query_genes, query_bvbrc_genomes, get_vaccine_pathogen_genes,
-  resolve_entity, database_statistics
-- `tools/canonical_entity.py` (1): resolve_canonical_entity (Stage 2
-  fast path — dictionary lookup → ancestor walk → slow substring fallback)
-- `tools/synthesis.py` (1): synthesize_query (E2E RAG synthesis pipeline,
-  bypasses the Composer)
-- `tools/globus_search.py` (1): query_globus_search (APECx harvested-corpus
-  index, read-only consumer at the ingest boundary)
-- `tools/approvals.py` (4): list_pending_approvals, approve, reject, correct
-- `tools/hpc.py` (4): estimate_cost, confirm_allocation, export_hpc_bundle,
-  ingest_hpc_bundle
+`list_workflows` / `describe_workflow` read
+`composer_config.component_catalog_paths` so the model sees buildable
+workflows before `start_workflow`. Direct-lookup tools require
+`APECX_DATA_ROOT` (return `{"error": ...}` when unset, never raise).
 
-`list_workflows` / `describe_workflow` are the discovery surface
-(2026-04-27): they read the composer config's
-`component_catalog_paths` so the model can see which workflows /
-components the composer can build BEFORE calling start_workflow.
+Deliberately NOT exposed: `/hpc/submit` (501), `create_approval`
+(internal — nanobrain ApprovalStep).
 
-`query_vaccines`, `query_pathogens`, `query_genes`,
-`query_bvbrc_genomes`, `get_vaccine_pathogen_genes`, `resolve_entity`,
-`database_statistics` are direct-lookup tools (2026-04-27, B-1
-vendor): bypass the composer for one-shot VIOLIN + BV-BRC queries.
-Data layer is vendored from `apecx-mcp/src/apecx_mcp/database.py`
-into `mcp_surface/data/database.py` (pure pandas, no LLM). Requires
-APECX_DATA_ROOT or APECX_ROOT to point at the workspace data dir;
-when unset the tools return `{"error": "..."}` rather than raising.
+Full operator reference: `docs/mcp_integration.md`.
 
-Deliberately NOT exposed: `/hpc/submit` (still 501),
-`create_approval` (internal — called by nanobrain's ApprovalStep
-during execution).
+## Synonym dictionary — nanobrain workflow, lazy at startup
 
-Full operator-facing install + reference: `docs/mcp_integration.md`
-(Claude Desktop config snippet, env vars, per-tool input/output
-shapes, troubleshooting).
+NO console scripts (`apecx-build-dictionary`,
+`apecx-fetch-taxdump` removed 2026-05-06). Workflow runs lazily at
+`apecx-mcp` startup if artifact missing.
 
-## Synonym dictionary build (lazy, at MCP startup)
+Components: `synonym_dictionary/workflow/{taxdump_fetch_step,
+dictionary_build_step}.py` wired by `configs/dictionary_build_workflow.yml`
+(DirectLink, `auto_transfer=true`).
+`synonym_dictionary/workflow/bootstrap.py:ensure_dictionary` is the
+**migration seam** — both MCP startup (a3, current) and future
+harvester sink (a1) funnel through it.
 
-The synonym dictionary is built by a **nanobrain workflow**, not a
-console script. There is no `apecx-build-dictionary` or
-`apecx-fetch-taxdump` binary — both were removed on the
-`dictionary-build-as-workflow` branch (2026-05-06). The workflow runs
-lazily at `apecx-mcp` startup if the artifact is missing.
+`mcp_surface/server.py:_ensure_synonym_dict_or_warn` behavior:
+- SQLite exists → skip + warm loader singleton.
+- `APECX_SKIP_DICT_BUILD=1` → skip with warning.
+- VIOLIN missing under `APECX_DATA_ROOT` → skip with "run apecx-setup".
+- Else build (10–15 min first run; <1 s thereafter, idempotent).
 
-Components:
+Custom-shape tests use
+`tests/integration/_dict_build_helper.py:build_dictionary_for_test`.
 
-- `synonym_dictionary/workflow/taxdump_fetch_step.py` — `TaxdumpFetchStep`
-  (BaseStep). Wraps `taxdump_fetcher.fetch_taxdump()`.
-- `synonym_dictionary/workflow/dictionary_build_step.py` — `DictionaryBuildStep`
-  (BaseStep). Wraps `build.build_dictionary()`.
-- `synonym_dictionary/workflow/configs/dictionary_build_workflow.yml` —
-  wires the two via DirectLink (auto_transfer=True; the default-False
-  is a silent-failure shape, see "Things that will surprise you").
-- `synonym_dictionary/workflow/bootstrap.py:ensure_dictionary` — the
-  **migration seam**. Both the current trigger (a3 — MCP startup) and
-  the long-term trigger (a1 — apecx-harvesters sink after a harvest run
-  completes) funnel through this function. Migration is purely about
-  *where* it's called from.
+## E2E RAG synthesis (Day 2)
 
-`mcp_surface/server.py:_ensure_synonym_dict_or_warn` invokes
-`ensure_dictionary` at startup. Behavior:
+`composition/workflows/rag_e2e_synthesis/` — two-step "ask question →
+grounded Markdown" pipeline.
 
-1. If the SQLite already exists at the resolved path → skip build, warm the loader singleton.
-2. If `APECX_SKIP_DICT_BUILD=1` → skip with a warning (operator opt-out for fast restarts).
-3. If VIOLIN data is missing under `APECX_DATA_ROOT` → skip with a "run apecx-setup first" warning.
-4. Otherwise → build (10–15 min on first run; subsequent runs <1 s due to idempotency).
+- `SynthesisContextAssemblyStep` — `asyncio.gather` over 3 branches
+  (FAISS / VIOLIN+BV-BRC / PubMed); branch failures degrade to empty
+  bundles (test:
+  `tests/unit/test_synthesis_assembly_branch_failures.py`).
+- `RagSynthesisStep` — single LLM call (`APECX_LLM_*`). Gates
+  (size / grounded-citation / empty-retrieval) raise `ValueError`.
 
-Tests that need a custom-shape build (slice with `--max-rows`, arbitrary
-table paths) use `tests/integration/_dict_build_helper.py:build_dictionary_for_test`,
-which drives the two steps directly without going through the workflow
-YAML or the bootstrap. Production code paths (MCP startup, future
-harvester sink) always go through `ensure_dictionary`.
+Three invocation paths:
+1. `synthesize_query` MCP tool (canonical, cached process-wide).
+2. `Workflow.from_config(rag_e2e_synthesis_workflow.yml)` —
+   nanobrain triggers + links runtime
+   (test: `tests/integration/test_rag_e2e_workflow_yaml.py`).
+3. Direct step `from_config` + `process()` calls (test:
+   `tests/integration/test_rag_e2e_pipeline.py`).
 
-## E2E RAG synthesis pipeline (Day 2)
+Workspace-root resolution: `APECX_WORKSPACE_ROOT` env first, else
+upward walk for markers. Source: 2026-05-05 audit Finding #16; now
+delegated to `nanobrain.library.runtime.workspace_root.locate_workflow_root`
+(G40-WA-1 retired).
 
-`src/apecx_integration/composition/workflows/rag_e2e_synthesis/` is
-the two-step "ask a question, get a grounded Markdown answer" pipeline:
+Failure contract per branch: warning + empty list. All-empty →
+synthesizer's `fail_on_empty_retrieval` ValueError → MCP tool returns
+`{"error": "synthesis gate failed: ..."}`.
 
-1. **`SynthesisContextAssemblyStep`** — fan-in retrieval. Concurrently
-   runs domain-RAG semantic search (FAISS), VIOLIN/BV-BRC tabular
-   substring lookup (pure pandas), and PubMed eSearch+eFetch. Output:
-   a single bundle dict with five keys (query, rag_chunks, bvbrc_genomes,
-   violin_mappings, publications). asyncio.gather runs all three
-   branches in parallel; **branch failures degrade to empty bundles**
-   (regression-tested in `tests/unit/test_synthesis_assembly_branch_failures.py`).
-2. **`RagSynthesisStep`** — single LLM call (via APECX_LLM_*) that
-   produces Markdown with inline citations grounded in the bundle.
-   The synthesizer's gates (size, grounded-citation, empty-retrieval)
-   raise `ValueError` on contract violations.
+## Authoring nanobrain code — skills
 
-Three ways to invoke:
+9 skills at `.claude/skills/nanobrain-*/SKILL.md` (versioned here).
+Load order:
 
-- **`synthesize_query` MCP tool** (canonical). One call, one Markdown
-  answer. Step instances are cached process-wide so the FAISS index is
-  loaded once. Use this from Claude Desktop or any MCP client.
-- **`Workflow.from_config(rag_e2e_synthesis_workflow.yml)`** — drives
-  the same chain through the nanobrain workflow runtime (triggers + links).
-  Loadability is pinned by `tests/integration/test_rag_e2e_workflow_yaml.py`.
-- **Direct step instantiation** — instantiate both steps via
-  `BaseStep.from_config()` and call `process()` manually. Used by the
-  E2E test suite (`tests/integration/test_rag_e2e_pipeline.py`).
-
-**Workspace-root resolution** for the VIOLIN/BV-BRC step now honors
-`APECX_WORKSPACE_ROOT` env var first, then walks upward looking for
-canonical workspace markers (apecx-mcp-integration + nanobrain /
-_workspace_notes / data siblings). This replaced an earlier brittle
-`Path(__file__).parents[5]` assumption that broke in non-standard
-checkout layouts. Source: 2026-05-05 audit (Finding #16).
-
-**Failure contract per branch:**
-- Domain RAG missing/corrupted → log WARNING, `rag_chunks=[]`.
-- VIOLIN/BV-BRC CSVs missing/wrong shape → log WARNING, both bundles `[]`.
-- PubMed network error → log WARNING, `publications=[]`.
-- All branches empty → synthesizer's `fail_on_empty_retrieval` gate
-  fires `ValueError`, surfaced as `{"error": "synthesis gate failed: ..."}`
-  by `synthesize_query`.
-
-## Authoring guides for nanobrain code
-
-The 9 nanobrain skills live at `.claude/skills/nanobrain-*/SKILL.md`
-(versioned in this repo as of 2026-05-09). Read them in this order
-when authoring framework code:
-
-| Order | Skill | When to read |
+| # | Skill | When |
 |---|---|---|
-| 1 | `nanobrain-from-config` | FIRST — the mandatory pattern that makes everything else work |
-| 2 | `nanobrain-config-yaml` | Before writing or editing any `*.yml` |
-| 3 | `nanobrain-step-authoring` | Before subclassing `BaseStep` |
-| 4 | `nanobrain-data-units-triggers-links` | Before wiring steps together — **carries the dominant `auto_transfer` silent-failure warning** |
+| 1 | `nanobrain-from-config` | FIRST — mandatory pattern |
+| 2 | `nanobrain-config-yaml` | Before writing any `*.yml` |
+| 3 | `nanobrain-step-authoring` | Before subclassing BaseStep |
+| 4 | `nanobrain-data-units-triggers-links` | **carries dominant `auto_transfer` silent-failure warning** |
 | 5 | `nanobrain-workflow-authoring` | Before authoring a Workflow YAML |
-| 6 | `nanobrain-agents-tools` | When the work involves an Agent or Tool |
-| 7 | `nanobrain-executors` | Before changing a step's executor |
-| 8 | `nanobrain-testing-debugging` | When writing tests OR debugging silent failures (covers wrong-Python venv pitfall) |
-| 9 | `nanobrain-lightweight` | When you want the WorkflowBuilder ergonomic path instead of hand-authored YAML |
+| 6 | `nanobrain-agents-tools` | Agent/Tool work |
+| 7 | `nanobrain-executors` | Changing a step's executor |
+| 8 | `nanobrain-testing-debugging` | Writing tests / debugging silent failures |
+| 9 | `nanobrain-lightweight` | WorkflowBuilder ergonomic path |
 
-The skills cross-reference each other. Each contains `file:line ground
-truth` tables pointing at the actual nanobrain source. Update the
-relevant skill in the same PR as any framework-side change so the
-skills stay current.
+Skills cross-reference; each carries `file:line ground truth` tables.
+Update the relevant skill in the same PR as any framework-side change.
+
+## Multiple workflow-authoring paths
+
+Three legit ways to construct workflows (use whichever fits the
+task; all are framework-native):
+
+1. **Hand-authored YAML** + `Workflow.from_config(path)` — full
+   control over data units / triggers / links. Verbose; required
+   when authoring nontrivial DAGs.
+2. **`Workflow.from_skeleton(skeleton, bindings)`** (G9) — skeleton
+   carries the topology with typed `{{name: type}}` placeholders;
+   bindings provide concrete components. Collapses
+   PlanLoweringStep + SkeletonLoaderStep into one call.
+3. **Lightweight `WorkflowBuilder`** (`nanobrain.lightweight`) —
+   programmatic API: `.add_step(name, ...)`, `.add_link(...)`,
+   `.add_trigger(...)`, `.load()`. Best for code-generated / agent-
+   composed workflows where the LLM produces Python, not YAML.
 
 ## Design package
 
-The 25-doc design package lives at `docs/`. Master index:
-`docs/_design_index.md`. Implementation plan: `docs/implementation_task_graph.md`
-(165 file-level tasks across 4 tracks with stable IDs).
-
-When implementing a task from the graph, cite the task ID
-(e.g., `NB-G3-02`, `MC-AU-04`, `T-RH-04`) in the PR title or commit
-body so reviewers can cross-check against the DoD.
+Index: `docs/_design_index.md`. Implementation plan:
+`docs/implementation_task_graph.md` (165 file-level tasks across 4
+tracks with stable IDs). Cite task ID in PR/commit body.
 
 ## Key reference docs
 
-- `docs/architecture.md` — **canonical end-to-end architecture map**
-  (8 Mermaid diagrams, 22 MCP tools, 6 ontologies, 3 invocation paths,
-  test surface, failure contract per branch). Start here for any
-  architecture-shaped question.
-- `docs/_design_index.md` — master index for the design package
-- `docs/nanobrain_capability_gaps.md` — G1-G22 framework gap proposals.
-  G1 + G7 Step 1+2 SHIPPED 2026-05-09 in nanobrain `b7783a8`. The
-  rest are paired with workarounds in `docs/WORKAROUND_INVENTORY.md`.
-- `../architectural_plan.md` — project-level source of truth.
-- `../implementation_plan.md` — task table + scoreboard.
-- `../_workspace_notes/apecx-mcp-integration_dev_history/composer_task_spec.md`
-  — T-COMP phased delivery + ACs (moved out of repo 2026-04-28).
-- `../_workspace_notes/apecx-mcp-integration_dev_history/workflow_spec.md`
-  — the VIOLIN × BV-BRC workflow definition (moved out of repo 2026-04-28).
-- `../_workspace_notes/apecx-mcp-integration_dev_history/session_friction_log.md`
-  — what burned time before (moved out of repo 2026-04-28; see workspace
-  `_workspace_notes/README.md` for the move rationale + git-history caveat).
-- `../_workspace_notes/apecx-mcp-integration_dev_history/nanobrain_mock_audit.md`
-  — T14 audit + fix rows.
+- `docs/architecture.md` — canonical end-to-end map (8 Mermaid
+  diagrams, MCP tools, ontologies, invocation paths, test surface,
+  failure contract).
+- `docs/_design_index.md` — design master index.
+- `docs/nanobrain_capability_gaps.md` — G1-G45 framework gap
+  proposals (most shipped; rest paired with `docs/WORKAROUND_INVENTORY.md`).
+- `docs/mcp_integration.md` — operator-facing MCP install/reference.
+- `../architectural_plan.md` / `../implementation_plan.md` —
+  project-level sources of truth.
+- `../_workspace_notes/apecx-mcp-integration_dev_history/` —
+  `composer_task_spec.md`, `workflow_spec.md`,
+  `session_friction_log.md`, `nanobrain_mock_audit.md`,
+  `t13b_sandbox_design.md` (moved out of repo 2026-04-28).

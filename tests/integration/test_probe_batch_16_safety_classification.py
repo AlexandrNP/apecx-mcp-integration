@@ -14,10 +14,7 @@ pure-Python; no DB / no FastAPI / no Docker invocation.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
-
 
 pytestmark = pytest.mark.integration
 
@@ -31,6 +28,7 @@ def _argv() -> list[str]:
     from apecx_integration.composition.docker_sandbox import (
         build_docker_sandbox_command,
     )
+
     return build_docker_sandbox_command(["python", "x.py"], input_host_path=None)
 
 
@@ -91,15 +89,39 @@ def test_probe_411_docker_argv_pids_limit() -> None:
 
 
 def test_probe_412_docker_argv_security_opts() -> None:
-    """no-new-privileges blocks setuid escalation. seccomp=default
-    blocks the syscall surface that historically enabled container
-    breakouts."""
+    """no-new-privileges blocks setuid escalation.
+
+    2026-05-11: the original probe required BOTH
+    ``no-new-privileges:true`` AND ``seccomp=default``. The latter was
+    REMOVED from ``docker_sandbox.py`` (nanobrain CLAUDE.md
+    "deployment-validation chain"):
+
+      'Real bug surfaced + fixed in apecx-mcp-integration
+      (--security-opt seccomp=default is not a Docker keyword;
+      Docker Desktop on Mac treats it as a file path).'
+
+    The container still runs with Docker's default seccomp profile
+    implicitly — passing the flag explicitly is what broke on Mac.
+    Probe relaxed to lock no-new-privileges only; seccomp coverage
+    is integration-tested via ``test_docker_sandbox_runtime.py`` when
+    ``APECX_T13B_SANDBOX_EXECUTE=1`` is set against a real daemon."""
     argv = _argv()
     sec_indices = [i for i, a in enumerate(argv) if a == "--security-opt"]
-    assert len(sec_indices) >= 2
+    assert len(sec_indices) >= 1, f"expected at least one --security-opt; argv={argv!r}"
     sec_values = {argv[i + 1] for i in sec_indices}
     assert "no-new-privileges:true" in sec_values
-    assert "seccomp=default" in sec_values
+    # Defensive: if seccomp=default is ever re-introduced, the
+    # probe pin documents that the Docker-Desktop-Mac path-treat
+    # surprise is back. Allow it but don't require it.
+    assert (
+        "seccomp=default" not in sec_values
+        or sec_values - {"no-new-privileges:true", "seccomp=default"} == set()
+    ), (
+        "seccomp=default was deliberately removed (Docker Desktop "
+        "on Mac parses it as a file path). If you re-introduced it, "
+        "verify the Mac path-resolution surprise is fixed upstream "
+        "before merging."
+    )
 
 
 def test_probe_413_docker_argv_no_mount_when_no_input() -> None:
@@ -115,9 +137,10 @@ def test_probe_414_docker_argv_command_after_image(tmp_path) -> None:
     before. Reversing them silently runs the image's entrypoint
     against arbitrary args, not the intended command."""
     from apecx_integration.composition.docker_sandbox import (
-        build_docker_sandbox_command,
         SandboxConfig,
+        build_docker_sandbox_command,
     )
+
     cfg = SandboxConfig(image="python:3.12-slim")
     argv = build_docker_sandbox_command(
         ["python", "-c", "print('hi')"],
@@ -141,6 +164,7 @@ def test_probe_415_entities_passthrough_query_terms() -> None:
     from apecx_integration.composition.transforms import (
         entities_to_query_terms,
     )
+
     out = entities_to_query_terms({"query_terms": ["a", "b", "c"]})
     assert out == {"query_terms": ["a", "b", "c"]}
 
@@ -149,12 +173,15 @@ def test_probe_416_entities_extract_names() -> None:
     from apecx_integration.composition.transforms import (
         entities_to_query_terms,
     )
-    out = entities_to_query_terms({
-        "entities": [
-            {"name": "EEEV", "type": "virus", "confidence": 0.95},
-            {"name": "VEEV", "type": "virus", "confidence": 0.90},
-        ]
-    })
+
+    out = entities_to_query_terms(
+        {
+            "entities": [
+                {"name": "EEEV", "type": "virus", "confidence": 0.95},
+                {"name": "VEEV", "type": "virus", "confidence": 0.90},
+            ]
+        }
+    )
     assert out == {"query_terms": ["EEEV", "VEEV"]}
 
 
@@ -165,29 +192,37 @@ def test_probe_417_entities_empty_input_safe() -> None:
     from apecx_integration.composition.transforms import (
         entities_to_query_terms,
     )
+
     assert entities_to_query_terms({}) == {"query_terms": []}
     # Entities present but malformed (missing 'name') → skipped
-    assert entities_to_query_terms({
-        "entities": [{"type": "x"}, "not-a-dict", {"name": "kept"}]
-    }) == {"query_terms": ["kept"]}
+    assert entities_to_query_terms(
+        {"entities": [{"type": "x"}, "not-a-dict", {"name": "kept"}]}
+    ) == {"query_terms": ["kept"]}
 
 
 def test_probe_418_proposals_rename_keys() -> None:
     from apecx_integration.composition.transforms import (
         llm_proposals_to_approved_mappings,
     )
-    out = llm_proposals_to_approved_mappings({
-        "llm_proposals": [
-            {"query_entity": "EEEV", "synonym": "Eastern Equine", "score": 0.9},
+
+    out = llm_proposals_to_approved_mappings(
+        {
+            "llm_proposals": [
+                {"query_entity": "EEEV", "synonym": "Eastern Equine", "score": 0.9},
+            ]
+        }
+    )
+    assert out == {
+        "approved_mappings": [
+            {
+                "query_term": "EEEV",
+                "canonical_term": "Eastern Equine",
+                "confidence": 0.9,
+                "source_run_id": None,
+                "comment": None,
+            }
         ]
-    })
-    assert out == {"approved_mappings": [{
-        "query_term": "EEEV",
-        "canonical_term": "Eastern Equine",
-        "confidence": 0.9,
-        "source_run_id": None,
-        "comment": None,
-    }]}
+    }
 
 
 def test_probe_419_proposals_preserve_reviewer_fields() -> None:
@@ -196,17 +231,20 @@ def test_probe_419_proposals_preserve_reviewer_fields() -> None:
     from apecx_integration.composition.transforms import (
         llm_proposals_to_approved_mappings,
     )
-    out = llm_proposals_to_approved_mappings({
-        "llm_proposals": [
-            {
-                "query_entity": "EEEV",
-                "synonym": "Eastern Equine",
-                "score": 0.9,
-                "source_run_id": "run-xyz",
-                "comment": "verified by reviewer",
-            },
-        ]
-    })
+
+    out = llm_proposals_to_approved_mappings(
+        {
+            "llm_proposals": [
+                {
+                    "query_entity": "EEEV",
+                    "synonym": "Eastern Equine",
+                    "score": 0.9,
+                    "source_run_id": "run-xyz",
+                    "comment": "verified by reviewer",
+                },
+            ]
+        }
+    )
     assert out["approved_mappings"][0]["source_run_id"] == "run-xyz"
     assert out["approved_mappings"][0]["comment"] == "verified by reviewer"
 
@@ -221,8 +259,10 @@ def test_probe_420_differ_novel_python_step() -> None:
     declared class. Treating it as composed would mean "review-
     required" gets bypassed for novel code."""
     from apecx_integration.composition.differ import (
-        StepCategory, categorize_workflow,
+        StepCategory,
+        categorize_workflow,
     )
+
     wf = {"steps": {"s1": {"class": "library.SomeStep"}}}
     result = categorize_workflow(
         workflow_dict=wf,
@@ -237,8 +277,10 @@ def test_probe_421_differ_orphan_class_is_novel() -> None:
     correct failure mode. Treating an unknown class as composed
     would let mis-spelled or hallucinated paths bypass review."""
     from apecx_integration.composition.differ import (
-        StepCategory, categorize_workflow,
+        StepCategory,
+        categorize_workflow,
     )
+
     wf = {"steps": {"s1": {"class": "made.Up.Class"}}}
     result = categorize_workflow(
         workflow_dict=wf,
@@ -250,11 +292,11 @@ def test_probe_421_differ_orphan_class_is_novel() -> None:
 
 def test_probe_422_differ_canonical_yaml_is_standard() -> None:
     from apecx_integration.composition.differ import (
-        StepCategory, categorize_workflow,
+        StepCategory,
+        categorize_workflow,
     )
-    wf = {"steps": {
-        "s1": {"class": "library.X", "config": "library/x.yml"}
-    }}
+
+    wf = {"steps": {"s1": {"class": "library.X", "config": "library/x.yml"}}}
     result = categorize_workflow(
         workflow_dict=wf,
         novel_python={},
@@ -266,11 +308,11 @@ def test_probe_422_differ_canonical_yaml_is_standard() -> None:
 
 def test_probe_423_differ_inline_config_is_parameterized() -> None:
     from apecx_integration.composition.differ import (
-        StepCategory, categorize_workflow,
+        StepCategory,
+        categorize_workflow,
     )
-    wf = {"steps": {
-        "s1": {"class": "library.X", "config": {"k": 1}}
-    }}
+
+    wf = {"steps": {"s1": {"class": "library.X", "config": {"k": 1}}}}
     result = categorize_workflow(
         workflow_dict=wf,
         novel_python={},
@@ -285,15 +327,19 @@ def test_probe_424_differ_config_refs_novel_is_wrapped() -> None:
     is COMPOSED_WRAPPED — needs review even though its top-level
     class is library."""
     from apecx_integration.composition.differ import (
-        StepCategory, categorize_workflow,
+        StepCategory,
+        categorize_workflow,
     )
-    wf = {"steps": {
-        "wrapper": {
-            "class": "library.X",
-            "config": {"preprocessor": "rogue_extractor"},
-        },
-        "rogue_extractor": {"class": "novel.Code"},
-    }}
+
+    wf = {
+        "steps": {
+            "wrapper": {
+                "class": "library.X",
+                "config": {"preprocessor": "rogue_extractor"},
+            },
+            "rogue_extractor": {"class": "novel.Code"},
+        }
+    }
     result = categorize_workflow(
         workflow_dict=wf,
         novel_python={"rogue_extractor": "def run(): pass"},
@@ -314,42 +360,60 @@ def test_probe_425_policy_rejects_incomplete_mapping() -> None:
     KeyError later when an unmapped category appeared. Constructor
     must reject."""
     from apecx_integration.composition.approval_policy import (
-        ApprovalAction, ApprovalPolicy,
+        ApprovalAction,
+        ApprovalPolicy,
     )
     from apecx_integration.composition.differ import StepCategory
+
     with pytest.raises(ValueError, match="missing"):
-        ApprovalPolicy(mapping={
-            StepCategory.NOVEL: ApprovalAction.REQUIRE_REVIEW,
-        })  # missing other categories
+        ApprovalPolicy(
+            mapping={
+                StepCategory.NOVEL: ApprovalAction.REQUIRE_REVIEW,
+            }
+        )  # missing other categories
 
 
 def test_probe_426_policy_load_rejects_unknown_category(tmp_path) -> None:
     """A typo in category name (e.g. 'composed_stnadard') must
     fail at load, not silently get ignored."""
     import yaml
+
     from apecx_integration.composition.approval_policy import ApprovalPolicy
+
     p = tmp_path / "policy.yml"
-    p.write_text(yaml.safe_dump({
-        "composed_stnadard": "auto",  # typo
-        "composed_standard": "auto",
-        "composed_parameterized": "require_review",
-        "composed_wrapped": "require_review",
-        "novel": "require_review",
-    }), encoding="utf-8")
+    p.write_text(
+        yaml.safe_dump(
+            {
+                "composed_stnadard": "auto",  # typo
+                "composed_standard": "auto",
+                "composed_parameterized": "require_review",
+                "composed_wrapped": "require_review",
+                "novel": "require_review",
+            }
+        ),
+        encoding="utf-8",
+    )
     with pytest.raises(ValueError, match="unknown category"):
         ApprovalPolicy.load(p)
 
 
 def test_probe_427_policy_load_rejects_unknown_action(tmp_path) -> None:
     import yaml
+
     from apecx_integration.composition.approval_policy import ApprovalPolicy
+
     p = tmp_path / "policy.yml"
-    p.write_text(yaml.safe_dump({
-        "composed_standard": "approve_immediately",  # not a real action
-        "composed_parameterized": "require_review",
-        "composed_wrapped": "require_review",
-        "novel": "require_review",
-    }), encoding="utf-8")
+    p.write_text(
+        yaml.safe_dump(
+            {
+                "composed_standard": "approve_immediately",  # not a real action
+                "composed_parameterized": "require_review",
+                "composed_wrapped": "require_review",
+                "novel": "require_review",
+            }
+        ),
+        encoding="utf-8",
+    )
     with pytest.raises(ValueError, match="unknown action"):
         ApprovalPolicy.load(p)
 
@@ -358,22 +422,39 @@ def test_probe_428_policy_evaluate_partitions_steps() -> None:
     """auto + review + expert must form a partition of all
     categorizations — every step lands in exactly one bucket."""
     from apecx_integration.composition.approval_policy import (
-        ApprovalAction, ApprovalPolicy,
+        ApprovalAction,
+        ApprovalPolicy,
     )
     from apecx_integration.composition.differ import (
-        CategorizedWorkflow, StepCategorization, StepCategory,
+        CategorizedWorkflow,
+        StepCategorization,
+        StepCategory,
     )
-    pol = ApprovalPolicy(mapping={
-        StepCategory.COMPOSED_STANDARD: ApprovalAction.AUTO,
-        StepCategory.COMPOSED_PARAMETERIZED: ApprovalAction.REQUIRE_REVIEW,
-        StepCategory.COMPOSED_WRAPPED: ApprovalAction.REQUIRE_REVIEW,
-        StepCategory.NOVEL: ApprovalAction.REQUIRE_EXPERT_REVIEW,
-    })
-    cats = CategorizedWorkflow(categorizations=(
-        StepCategorization(step_id="a", step_class="x", category=StepCategory.COMPOSED_STANDARD, reason="r"),
-        StepCategorization(step_id="b", step_class="x", category=StepCategory.COMPOSED_PARAMETERIZED, reason="r"),
-        StepCategorization(step_id="c", step_class="x", category=StepCategory.NOVEL, reason="r"),
-    ))
+
+    pol = ApprovalPolicy(
+        mapping={
+            StepCategory.COMPOSED_STANDARD: ApprovalAction.AUTO,
+            StepCategory.COMPOSED_PARAMETERIZED: ApprovalAction.REQUIRE_REVIEW,
+            StepCategory.COMPOSED_WRAPPED: ApprovalAction.REQUIRE_REVIEW,
+            StepCategory.NOVEL: ApprovalAction.REQUIRE_EXPERT_REVIEW,
+        }
+    )
+    cats = CategorizedWorkflow(
+        categorizations=(
+            StepCategorization(
+                step_id="a", step_class="x", category=StepCategory.COMPOSED_STANDARD, reason="r"
+            ),
+            StepCategorization(
+                step_id="b",
+                step_class="x",
+                category=StepCategory.COMPOSED_PARAMETERIZED,
+                reason="r",
+            ),
+            StepCategorization(
+                step_id="c", step_class="x", category=StepCategory.NOVEL, reason="r"
+            ),
+        )
+    )
     decision = pol.evaluate(cats)
     auto_ids = {s.step_id for s in decision.auto_approved_steps}
     review_ids = {s.step_id for s in decision.review_required_steps}
@@ -392,30 +473,49 @@ def test_probe_429_policy_blocks_iff_human_required() -> None:
     or expert). All-auto must NOT block; presence of either
     review-tier MUST block."""
     from apecx_integration.composition.approval_policy import (
-        ApprovalAction, ApprovalPolicy,
+        ApprovalAction,
+        ApprovalPolicy,
     )
     from apecx_integration.composition.differ import (
-        CategorizedWorkflow, StepCategorization, StepCategory,
+        CategorizedWorkflow,
+        StepCategorization,
+        StepCategory,
     )
-    pol_auto = ApprovalPolicy(mapping={
-        StepCategory.COMPOSED_STANDARD: ApprovalAction.AUTO,
-        StepCategory.COMPOSED_PARAMETERIZED: ApprovalAction.AUTO,
-        StepCategory.COMPOSED_WRAPPED: ApprovalAction.AUTO,
-        StepCategory.NOVEL: ApprovalAction.AUTO,
-    })
-    pol_block = ApprovalPolicy(mapping={
-        StepCategory.COMPOSED_STANDARD: ApprovalAction.AUTO,
-        StepCategory.COMPOSED_PARAMETERIZED: ApprovalAction.AUTO,
-        StepCategory.COMPOSED_WRAPPED: ApprovalAction.AUTO,
-        StepCategory.NOVEL: ApprovalAction.REQUIRE_REVIEW,
-    })
-    cats_no_novel = CategorizedWorkflow(categorizations=(
-        StepCategorization(step_id="a", step_class="x", category=StepCategory.COMPOSED_STANDARD, reason="r"),
-    ))
-    cats_with_novel = CategorizedWorkflow(categorizations=(
-        StepCategorization(step_id="a", step_class="x", category=StepCategory.NOVEL, reason="r"),
-    ))
+
+    pol_auto = ApprovalPolicy(
+        mapping={
+            StepCategory.COMPOSED_STANDARD: ApprovalAction.AUTO,
+            StepCategory.COMPOSED_PARAMETERIZED: ApprovalAction.AUTO,
+            StepCategory.COMPOSED_WRAPPED: ApprovalAction.AUTO,
+            StepCategory.NOVEL: ApprovalAction.AUTO,
+        }
+    )
+    pol_block = ApprovalPolicy(
+        mapping={
+            StepCategory.COMPOSED_STANDARD: ApprovalAction.AUTO,
+            StepCategory.COMPOSED_PARAMETERIZED: ApprovalAction.AUTO,
+            StepCategory.COMPOSED_WRAPPED: ApprovalAction.AUTO,
+            StepCategory.NOVEL: ApprovalAction.REQUIRE_REVIEW,
+        }
+    )
+    cats_no_novel = CategorizedWorkflow(
+        categorizations=(
+            StepCategorization(
+                step_id="a", step_class="x", category=StepCategory.COMPOSED_STANDARD, reason="r"
+            ),
+        )
+    )
+    cats_with_novel = CategorizedWorkflow(
+        categorizations=(
+            StepCategorization(
+                step_id="a", step_class="x", category=StepCategory.NOVEL, reason="r"
+            ),
+        )
+    )
     assert pol_auto.evaluate(cats_no_novel).blocks is False
     assert pol_auto.evaluate(cats_with_novel).blocks is False  # all AUTO
     assert pol_block.evaluate(cats_with_novel).blocks is True
-    assert pol_block.evaluate(cats_with_novel).strongest_required_action is ApprovalAction.REQUIRE_REVIEW
+    assert (
+        pol_block.evaluate(cats_with_novel).strongest_required_action
+        is ApprovalAction.REQUIRE_REVIEW
+    )

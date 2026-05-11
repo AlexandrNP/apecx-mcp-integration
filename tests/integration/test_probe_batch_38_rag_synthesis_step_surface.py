@@ -12,27 +12,28 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-import os
 from pathlib import Path
-from typing import Any
-from unittest.mock import patch
 
 import pytest
-from langchain_core.messages import AIMessage
 
 from apecx_integration.composition.steps.rag_synthesis_step import (
     RagSynthesisStep,
     RagSynthesisStepConfig,
 )
 
-
 pytestmark = pytest.mark.integration
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WRAPPER_YAML = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition"
-    / "workflows" / "violin_bvbrc" / "steps" / "rag_synthesis.yml"
+    REPO_ROOT
+    / "src"
+    / "apecx_integration"
+    / "composition"
+    / "workflows"
+    / "violin_bvbrc"
+    / "steps"
+    / "rag_synthesis.yml"
 )
 
 
@@ -41,8 +42,9 @@ WRAPPER_YAML = (
 # --------------------------------------------------------------------------- #
 
 
-def _patch_synth(monkeypatch, captured: dict | None = None,
-                 content: str = "fake markdown synthesis " * 20):
+def _patch_synth(
+    monkeypatch, captured: dict | None = None, content: str = "fake markdown synthesis " * 20
+):
     """Replace synthesize_response inside the step module with a stub
     that captures inputs. Returns the captured dict for assertions."""
     captured = captured if captured is not None else {}
@@ -53,6 +55,7 @@ def _patch_synth(monkeypatch, captured: dict | None = None,
         return content
 
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _fake)
     return captured
 
@@ -70,19 +73,32 @@ def test_probe_1005_step_input_data_extra_keys_silently_ignored_or_propagated(mo
     must be deterministic."""
     captured = _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "Q",
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-        "conversation_history": ["prior turn"],  # NEW key — drops?
-        "user_id": "alice",
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+                "conversation_history": ["prior turn"],  # NEW key — drops?
+                "user_id": "alice",
+            }
+        )
+    )
     # Confirm the unknown keys did NOT leak to synthesize_response.
     kw_keys = set(captured["kwargs"].keys())
     assert "conversation_history" not in kw_keys
     assert "user_id" not in kw_keys
+    # 2026-05-11: ``globus_results`` was added to the synthesizer's
+    # forwarded kwargs when Globus Search joined the ingest boundary
+    # (e14fb2d). The probe's "deterministic forward set" contract
+    # holds — we just have to keep the expected set in sync with
+    # the synthesizer signature.
     assert kw_keys == {
-        "rag_chunks", "bvbrc_genomes", "violin_mappings",
-        "publications", "config",
+        "rag_chunks",
+        "bvbrc_genomes",
+        "violin_mappings",
+        "publications",
+        "globus_results",
+        "config",
     }
 
 
@@ -101,11 +117,15 @@ def test_probe_1007_step_publications_none_treated_as_empty_list(monkeypatch):
     step substitutes empty list — semantically equivalent."""
     captured = _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "Q",
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-        "publications": None,
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+                "publications": None,
+            }
+        )
+    )
     assert captured["kwargs"]["publications"] == []
 
 
@@ -119,10 +139,14 @@ def test_probe_1008_step_rag_chunks_string_not_silently_iterated(monkeypatch):
     # The default config has strict_input_validation=True, which
     # raises on non-dict rows.
     with pytest.raises(ValueError, match="expected dict"):
-        asyncio.run(step.process({
-            "query": "Q",
-            "rag_chunks": "raw string chunk",
-        }))
+        asyncio.run(
+            step.process(
+                {
+                    "query": "Q",
+                    "rag_chunks": "raw string chunk",
+                }
+            )
+        )
 
 
 def test_probe_1009_step_returns_dict_with_only_synthesis_key(monkeypatch):
@@ -132,13 +156,15 @@ def test_probe_1009_step_returns_dict_with_only_synthesis_key(monkeypatch):
     shape; this probe pins the contract."""
     _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    out = asyncio.run(step.process({
-        "query": "Q",
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-    }))
-    assert set(out.keys()) == {"synthesis"}, (
-        f"output dict has unexpected keys: {set(out.keys())!r}"
+    out = asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+            }
+        )
     )
+    assert set(out.keys()) == {"synthesis"}, f"output dict has unexpected keys: {set(out.keys())!r}"
 
 
 def test_probe_1010_step_synthesis_value_is_str(monkeypatch):
@@ -147,10 +173,14 @@ def test_probe_1010_step_synthesis_value_is_str(monkeypatch):
     silently leak the LLM's raw response object."""
     _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    out = asyncio.run(step.process({
-        "query": "Q",
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-    }))
+    out = asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+            }
+        )
+    )
     assert isinstance(out["synthesis"], str)
 
 
@@ -165,18 +195,15 @@ def test_probe_1011_step_concurrent_calls_use_independent_state(monkeypatch):
         return "synth body. " * 30
 
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _fake)
 
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
 
     async def _run():
         return await asyncio.gather(
-            step.process({"query": "Q1", "bvbrc_genomes": [
-                {"genome_id": "G1", "name": "n"}
-            ]}),
-            step.process({"query": "Q2", "bvbrc_genomes": [
-                {"genome_id": "G2", "name": "n"}
-            ]}),
+            step.process({"query": "Q1", "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}]}),
+            step.process({"query": "Q2", "bvbrc_genomes": [{"genome_id": "G2", "name": "n"}]}),
         )
 
     out1, out2 = asyncio.run(_run())
@@ -289,10 +316,14 @@ def test_probe_1019_step_rejects_query_with_only_punctuation(monkeypatch):
     LLM does whatever the LLM does). Pin current behavior."""
     captured = _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "?",
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "?",
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+            }
+        )
+    )
     assert captured["query"] == "?"
 
 
@@ -318,11 +349,12 @@ def test_probe_1022_step_propagates_synthesizer_value_error_verbatim(monkeypatch
     """If the synthesizer raises (e.g. all-empty retrieval), the step's
     process() must propagate the original error — not wrap or swallow.
     Operators read synthesizer error messages to fix root causes."""
+
     def _raising(query, **kwargs):
-        raise ValueError(
-            "synthesize_response: every retrieval input is empty"
-        )
+        raise ValueError("synthesize_response: every retrieval input is empty")
+
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _raising)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
     with pytest.raises(ValueError, match="every retrieval input is empty"):
@@ -340,22 +372,22 @@ def test_probe_1023_step_logging_includes_source_counts(monkeypatch, caplog):
         logger="apecx_integration.composition.steps.rag_synthesis_step",
     )
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "Q",
-        "rag_chunks": [{"text": "x"}],
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-        "violin_mappings": [],
-        "publications": [],
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "rag_chunks": [{"text": "x"}],
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+                "violin_mappings": [],
+                "publications": [],
+            }
+        )
+    )
     log_msgs = [r.message for r in caplog.records]
     matches = [
-        m for m in log_msgs
-        if "rag=" in m and "bvbrc=" in m
-        and "violin=" in m and "pubs=" in m
+        m for m in log_msgs if "rag=" in m and "bvbrc=" in m and "violin=" in m and "pubs=" in m
     ]
-    assert matches, (
-        f"per-source-count log line missing; got messages: {log_msgs!r}"
-    )
+    assert matches, f"per-source-count log line missing; got messages: {log_msgs!r}"
 
 
 def test_probe_1024_synthesis_config_path_with_yaml_having_only_required_field(tmp_path):
@@ -367,6 +399,7 @@ def test_probe_1024_synthesis_config_path_with_yaml_having_only_required_field(t
     synth_yaml.write_text("system_prompt: 'minimal'\n")
 
     from apecx_integration.agents.rag_synthesis import SynthesisConfig
+
     cfg = SynthesisConfig.model_validate({"system_prompt": "minimal"})
     assert cfg.max_rag_chunks == 8  # default
 
@@ -424,14 +457,25 @@ def test_probe_1026_step_does_not_keep_old_synthesis_in_memory_between_calls(mon
         return f"call-{counter['n']} body. " * 30
 
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _fake)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    out1 = asyncio.run(step.process({
-        "query": "Q1", "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
-    }))
-    out2 = asyncio.run(step.process({
-        "query": "Q2", "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
-    }))
+    out1 = asyncio.run(
+        step.process(
+            {
+                "query": "Q1",
+                "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
+            }
+        )
+    )
+    out2 = asyncio.run(
+        step.process(
+            {
+                "query": "Q2",
+                "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
+            }
+        )
+    )
     assert out1["synthesis"] != out2["synthesis"]
 
 
@@ -440,6 +484,7 @@ def test_probe_1027_step_invokes_synthesize_via_to_thread_offload(monkeypatch):
     the LLM runs on a worker thread. Verify by capturing the thread
     ident inside the stub; main thread != worker thread."""
     import threading
+
     main_thread = threading.get_ident()
     worker_thread_seen = []
 
@@ -448,12 +493,17 @@ def test_probe_1027_step_invokes_synthesize_via_to_thread_offload(monkeypatch):
         return "body " * 30
 
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _fake)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "Q",
-        "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
+            }
+        )
+    )
     assert worker_thread_seen, "stub never called"
     assert worker_thread_seen[0] != main_thread, (
         "synthesize_response ran on the main thread; the to_thread "
@@ -469,10 +519,14 @@ def test_probe_1028_step_query_with_leading_trailing_whitespace_passed_through(m
     its own .strip() in the user prompt)."""
     captured = _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "  what is sindbis?  \n\n",
-        "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "  what is sindbis?  \n\n",
+                "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
+            }
+        )
+    )
     # The step does not strip — that's the synthesizer's job.
     assert captured["query"] == "  what is sindbis?  \n\n"
 
@@ -484,8 +538,12 @@ def test_probe_1029_step_handles_unicode_in_query(monkeypatch):
     captured = _patch_synth(monkeypatch)
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
     q = "How does β-carotene 抗病毒 work? 🦠"
-    asyncio.run(step.process({
-        "query": q,
-        "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": q,
+                "bvbrc_genomes": [{"genome_id": "G", "name": "n"}],
+            }
+        )
+    )
     assert captured["query"] == q
