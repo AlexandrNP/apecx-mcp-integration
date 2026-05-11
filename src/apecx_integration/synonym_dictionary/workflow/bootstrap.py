@@ -191,7 +191,7 @@ async def _drive_workflow(cfg: EnsureDictionaryConfig) -> Path:
     # ``$NANOBRAIN_LOG_DIR`` -> ``~/.cache/nanobrain/logs/`` ->
     # tempdir, so a read-only cwd no longer breaks the logger. See
     # eval_03_nanobrain_gap_inventory.md Round 4 G33 and
-    # docs/development_roadmap.md 8.6.
+    # docs/CONTRACTS.md#decision-p0+a.
 
     try:
         for key, value in env_overrides.items():
