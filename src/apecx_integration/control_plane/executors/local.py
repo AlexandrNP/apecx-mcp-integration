@@ -221,6 +221,18 @@ class LocalExecutor:
             except Exception as exc:
                 reason = f"workflow load failed: {type(exc).__name__}: {exc}"
                 log.warning("Run %s: %s", run_id, reason)
+                # C2 (2026-05-11): mirror the framework violation back
+                # onto the composition record so the composer can be
+                # held to account. Any violation that lands here is a
+                # case the A1 compose-time validator did NOT catch —
+                # that's a coverage gap worth measuring. The structured
+                # record is stored on the GeneratedArtifact's
+                # composition_summary JSON for later querying.
+                self._record_runtime_violation(
+                    run_id=run_id,
+                    exc=exc,
+                    failure_class="load_failed",
+                )
                 transitioned = self._mark_failed(run_id, reason, failure_class="load_failed")
                 return self._terminal_result(
                     run_id=run_id,
@@ -594,6 +606,142 @@ class LocalExecutor:
         with self._session_factory() as session:
             run = session.get(RunORM, run_id)
             return run.status if run is not None else None
+
+    # ------------------------------------------------------------------
+    # C2 — runtime-violation feedback channel
+    # ------------------------------------------------------------------
+
+    # Heuristic markers that classify a runtime exception's text into
+    # a rule_id that mirrors A1's vocabulary. Frozen at module level
+    # so a future framework re-wording surfaces here as a missed
+    # match (the regression metric would silently flatline otherwise).
+    _RUNTIME_VIOLATION_MARKERS: tuple[tuple[str, str], ...] = (
+        (
+            "FRAMEWORK VIOLATION: Inline dict configuration not supported",
+            "step_inline_config_forbidden",
+        ),
+        (
+            "FRAMEWORK VIOLATION",
+            "framework_violation_unclassified",
+        ),
+        (
+            "FAILED TO INSTANTIATE",
+            "from_config_failed",
+        ),
+        (
+            "ComponentConfigurationError",
+            "component_configuration_error",
+        ),
+        (
+            "ModuleNotFoundError",
+            "module_not_found",
+        ),
+        (
+            "AttributeError",
+            "attribute_error",
+        ),
+    )
+
+    @classmethod
+    def _classify_runtime_violation(cls, exc: BaseException) -> str:
+        """Map an exception's text onto an A1-style rule_id.
+
+        Class-bound so unit tests can call it without instantiating
+        a full executor (which requires a session_factory + recorder).
+        """
+        text = f"{type(exc).__name__}: {exc!s}"
+        for marker, rule_id in cls._RUNTIME_VIOLATION_MARKERS:
+            if marker in text:
+                return rule_id
+        return "runtime_other"
+
+    def _record_runtime_violation(
+        self,
+        *,
+        run_id: UUID,
+        exc: BaseException,
+        failure_class: str,
+    ) -> None:
+        """Persist a structured runtime violation onto the run's
+        GeneratedArtifact.composition_summary JSON.
+
+        This is the C2 feedback channel: every exception that lands
+        in the executor's load_failed branch is a case A1 did NOT
+        catch at compose-time. Operators / regression queries:
+
+            SELECT
+              ga.artifact_id,
+              ga.composition_summary->>'runtime_violations' AS rv
+            FROM generated_artifact ga
+            WHERE ga.composition_summary->>'runtime_violations' IS NOT NULL;
+
+        The persisted record carries the rule_id, the failure_class,
+        the truncated exception text, and a UTC timestamp.
+
+        Persistence failures here MUST NOT mask the original error.
+        We swallow exceptions from the DB path so the caller's
+        ``_mark_failed`` / ``_terminal_result`` continues to run.
+        """
+        from datetime import UTC, datetime
+
+        from sqlalchemy.orm.attributes import flag_modified
+
+        rule_id = self._classify_runtime_violation(exc)
+        record = {
+            "rule_id": rule_id,
+            "failure_class": failure_class,
+            "exception_type": type(exc).__name__,
+            "exception_message": (str(exc)[:2000]),
+            "recorded_at": datetime.now(UTC).isoformat(),
+        }
+        try:
+            with self._session_factory() as session:
+                run = session.get(RunORM, run_id)
+                if run is None or run.workflow_config_id is None:
+                    log.debug(
+                        "Run %s has no workflow_config_id; cannot record runtime violation %s",
+                        run_id,
+                        rule_id,
+                    )
+                    return
+                # Lazy import to avoid pulling GeneratedArtifactORM
+                # into the typing-only import path.
+                from apecx_integration.control_plane.models.entities import (
+                    GeneratedArtifact as GeneratedArtifactORM,
+                )
+
+                ga = session.get(GeneratedArtifactORM, run.workflow_config_id)
+                if ga is None:
+                    log.debug(
+                        "GeneratedArtifact missing for run %s; cannot record runtime violation %s",
+                        run_id,
+                        rule_id,
+                    )
+                    return
+                summary = dict(ga.composition_summary or {})
+                violations = list(summary.get("runtime_violations") or [])
+                violations.append(record)
+                summary["runtime_violations"] = violations
+                ga.composition_summary = summary
+                # JSON columns are mutated in place; SQLAlchemy needs
+                # a flag to know it changed. Without this, the
+                # commit() below silently no-ops on the JSON.
+                flag_modified(ga, "composition_summary")
+                session.commit()
+                log.info(
+                    "Recorded runtime violation %s on artifact %s for run %s",
+                    rule_id,
+                    run.workflow_config_id,
+                    run_id,
+                )
+        except Exception as persist_exc:  # don't mask the original failure
+            log.warning(
+                "Failed to persist runtime violation for run %s (rule_id=%s): %s: %s",
+                run_id,
+                rule_id,
+                type(persist_exc).__name__,
+                persist_exc,
+            )
 
 
 def run_sync(executor: LocalExecutor, run_id: UUID) -> ExecutionResult:

@@ -32,6 +32,7 @@ if TYPE_CHECKING:
 # Config
 # ---------------------------------------------------------------------------
 
+
 class ComposerConfig(BaseModel):
     """Composer configuration loaded from YAML by ``Composer.from_config``.
 
@@ -80,6 +81,13 @@ class ComposerConfig(BaseModel):
     retrieval_k: int = Field(default=10, ge=1)
     sandbox_whitelist_path: Path | None = None
 
+    # C1 (2026-05-11): how many times compose() will re-prompt the
+    # LLM after a WorkflowValidationError. Default 1 — one repair
+    # round is the right tradeoff between recovering from LLM drift
+    # and not burning budget on a stuck model. 0 disables retries
+    # (useful for cheap regression tests).
+    max_validation_retries: int = Field(default=1, ge=0)
+
     # Phase-4 addition — RAG retrieval swap-in. When set, the composer
     # loads ``ComponentIndex.load(rag_index_dir)`` instead of running
     # the Phase-2 linear-scan ``ComponentCatalog``. When None, falls
@@ -96,6 +104,7 @@ class ComposerConfig(BaseModel):
 # ---------------------------------------------------------------------------
 # Output shapes
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True, kw_only=True)
 class CompositionSummary:
@@ -116,6 +125,13 @@ class CompositionSummary:
     # the composer via ``apecx_integration.composition.differ``.
     # Empty tuple when no steps (backward-compat default).
     step_categorizations: tuple[StepCategorization, ...] = ()
+    # C1 (2026-05-11) — how many compose-validate-retry rounds were
+    # needed to produce this workflow. 0 means the first LLM
+    # response passed the framework validator. > 0 means the LLM
+    # emitted at least one framework-illegal workflow and the
+    # composer recovered via the structured-feedback retry loop.
+    # Used as a regression metric for prompt-quality work (B1+).
+    compose_retries: int = 0
 
 
 @dataclass(frozen=True, kw_only=True)

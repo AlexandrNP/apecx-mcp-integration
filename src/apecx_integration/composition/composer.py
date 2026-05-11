@@ -79,6 +79,24 @@ from apecx_integration.composition._errors import (  # noqa: E402
 )
 
 
+class _RetryableValidationError(Exception):
+    """Internal wrapper around ``WorkflowValidationError`` for the
+    compose-validate-retry loop.
+
+    Carrying the underlying error as an attribute (instead of
+    inheriting from it) keeps the public exception hierarchy stable:
+    callers that catch ``WorkflowValidationError`` still see it after
+    the retry loop unwraps. The wrapper exists so the loop's
+    "should I retry?" branch is a single ``except`` clause that
+    doesn't accidentally swallow other ``WorkflowValidationError``s
+    raised elsewhere in the call stack.
+    """
+
+    def __init__(self, workflow_validation_error) -> None:  # type: ignore[no-untyped-def]
+        self.workflow_validation_error = workflow_validation_error
+        super().__init__(str(workflow_validation_error))
+
+
 class Composer:
     """LLM-backed workflow composer (T-COMP).
 
@@ -353,8 +371,28 @@ class Composer:
         system_prompt = self._build_system_prompt()
         user_prompt = self._build_user_prompt(prompt, hits, context)
 
-        # 3. Call LLM via the injected factory
-        from langchain_core.messages import HumanMessage, SystemMessage
+        # Precompute the catalog map — used by the validator and the
+        # differ (below) on every attempt. Catalog doesn't change
+        # between retries.
+        retrieved_class_paths = {h.component.class_path for h in hits}
+        yaml_paths = {
+            h.component.class_path: h.component.yaml_path for h in hits if h.component.yaml_path
+        }
+
+        # 3-6b. LLM call + parse + scanner + validate. Wrapped in a
+        # compose-validate-retry loop (C1): on WorkflowValidationError,
+        # re-prompt the LLM with the prior YAML + structured violations
+        # so the next attempt has a precise correction signal.
+        # ``max_validation_retries`` caps the budget (default 1). Other
+        # error classes (ScanViolation, ComposerResponseError variants
+        # like empty content or unparseable YAML) bypass the retry —
+        # they are not the failure shape this loop is designed to
+        # repair.
+        from langchain_core.messages import (  # noqa: PLC0415
+            AIMessage,
+            HumanMessage,
+            SystemMessage,
+        )
 
         llm = self._llm_factory(
             temperature=self._config.temperature,
@@ -362,87 +400,48 @@ class Composer:
             model=self._config.llm_model,
             base_url=self._config.llm_base_url,
         )
-        response = llm.invoke(
-            [
-                SystemMessage(content=system_prompt),
-                HumanMessage(content=user_prompt),
-            ]
-        )
-        raw_content = getattr(response, "content", str(response))
 
-        # Audit §1.2: validate the LLM produced a non-empty string
-        # response. Pre-fix `getattr(response, "content", str(response))`
-        # would return None if a future LangChain version made
-        # content=None legal — `_parse_response` then crashed on
-        # `_FENCE_RE.finditer(None)` with a TypeError instead of a
-        # clear "empty response" error. The `str(response)` fallback
-        # is also worthless (object repr never contains a yaml fence).
-        if not isinstance(raw_content, str) or not raw_content.strip():
-            raise ComposerResponseError(
-                "LLM response content was empty or non-string "
-                f"(got {type(raw_content).__name__}={raw_content!r}). "
-                "The composer expected a yaml-fenced block; nothing "
-                "to parse."
+        messages: list[Any] = [
+            SystemMessage(content=system_prompt),
+            HumanMessage(content=user_prompt),
+        ]
+        compose_retries = 0
+        max_retries = self._config.max_validation_retries
+
+        while True:
+            yaml_text, novel_python, workflow_dict = self._invoke_and_parse(
+                llm,
+                messages,
             )
-
-        # 4. Parse fenced blocks
-        yaml_text, novel_python = _parse_response(raw_content)
-
-        # 5. T13 scanner over novel Python (if any). On violation,
-        # enrich the exception with "closest matches in component
-        # library" suggestions (T13 step 3) — the message should
-        # steer the LLM / reviewer back toward composition instead
-        # of fighting the whitelist.
-        if novel_python and self._whitelist is not None:
-            scanner = ImportScanner(whitelist=self._whitelist)
-            for _step_id, source in novel_python.items():
-                result = scanner.scan(source)
-                if not result.ok:
-                    suggestions = self._suggest_for_violation(source)
-                    raise ScanViolation(result, suggestions=suggestions)
-
-        # 6. Sanity-parse the YAML so we catch obviously-broken output
-        #    before returning. If the LLM emitted un-parseable YAML, that's
-        #    a composer-response error, not a caller's problem.
-        try:
-            workflow_dict = yaml.safe_load(yaml_text)
-        except yaml.YAMLError as exc:
-            raise ComposerResponseError(
-                f"LLM response's yaml block failed to parse: {exc}"
-            ) from exc
-        if not isinstance(workflow_dict, dict):
-            raise ComposerResponseError(
-                f"LLM response's yaml block must be a mapping at top level, "
-                f"got {type(workflow_dict).__name__}"
-            )
-
-        # Precompute the catalog map — used by both the framework-rule
-        # validator (next) and the differ's categorization (below).
-        retrieved_class_paths = {h.component.class_path for h in hits}
-        yaml_paths = {
-            h.component.class_path: h.component.yaml_path for h in hits if h.component.yaml_path
-        }
-
-        # 6b. Framework-rule pre-execution validation (A1). Catches
-        # inline-dict configs on Steps, unresolvable class paths,
-        # TransformLink usage, auto_transfer=false, and dangling link
-        # references BEFORE the executor sees the workflow. On
-        # violation, raise WorkflowValidationError whose
-        # ``to_feedback_payload()`` feeds the C1 retry loop.
-        from apecx_integration.composition.workflow_validator import (
-            WorkflowValidationError,
-            validate_workflow_against_framework,
-        )
-
-        violations = validate_workflow_against_framework(
-            workflow_dict,
-            catalog_yaml_paths=yaml_paths,
-        )
-        if violations:
-            raise WorkflowValidationError(
-                violations=violations,
-                yaml_text=yaml_text,
-            )
+            try:
+                self._validate_or_raise(workflow_dict, yaml_text, yaml_paths)
+                break
+            except _RetryableValidationError as exc:
+                if compose_retries >= max_retries:
+                    # Budget exhausted — raise the structured error so
+                    # the caller (control plane route) marks the run
+                    # FAILED with the violation payload visible.
+                    raise exc.workflow_validation_error from exc
+                compose_retries += 1
+                log.warning(
+                    "Composer validation failed on attempt %d/%d: %d "
+                    "violation(s); retrying with structured feedback. "
+                    "rule_ids=%s",
+                    compose_retries,
+                    max_retries + 1,
+                    len(exc.workflow_validation_error.violations),
+                    [v.rule_id for v in exc.workflow_validation_error.violations],
+                )
+                # Append the prior (invalid) YAML as the assistant turn
+                # plus the structured-feedback payload as the next
+                # user turn. The LLM sees its own response and a
+                # precise diff list, not a vague "try again."
+                messages.append(AIMessage(content=yaml_text))
+                messages.append(
+                    HumanMessage(
+                        content=exc.workflow_validation_error.to_feedback_payload(),
+                    )
+                )
 
         # 7. Assemble ComposedWorkflow.
         yaml_bytes = yaml_text.encode("utf-8")
@@ -475,6 +474,7 @@ class Composer:
             summary_sentence=categorized.summary_sentence,
             review_notes=tuple(f"novel Python step: {k}" for k in novel_python),
             step_categorizations=categorized.categorizations,
+            compose_retries=compose_retries,
         )
         llm_model_version_hash = hashlib.sha256(self._config.llm_model.encode("utf-8")).hexdigest()
 
@@ -502,6 +502,91 @@ class Composer:
         )
 
     # ---- internals ---------------------------------------------------------
+
+    def _invoke_and_parse(
+        self,
+        llm: Any,
+        messages: list[Any],
+    ) -> tuple[str, dict[str, str], dict[str, Any]]:
+        """One LLM round-trip: invoke → parse → safe_load.
+
+        Raises:
+            ComposerResponseError: empty content, missing yaml fence,
+                YAML syntax error, or non-mapping top level.
+            ScanViolation: novel-Python step violated the import
+                whitelist (T13).
+
+        Returns:
+            ``(yaml_text, novel_python, workflow_dict)`` — the parsed
+            workflow ready for framework validation.
+        """
+        response = llm.invoke(messages)
+        raw_content = getattr(response, "content", str(response))
+        if not isinstance(raw_content, str) or not raw_content.strip():
+            raise ComposerResponseError(
+                "LLM response content was empty or non-string "
+                f"(got {type(raw_content).__name__}={raw_content!r}). "
+                "The composer expected a yaml-fenced block; nothing "
+                "to parse."
+            )
+
+        yaml_text, novel_python = _parse_response(raw_content)
+
+        # T13 scanner over novel Python (if any). On violation,
+        # enrich the exception with "closest matches in component
+        # library" suggestions so the message steers toward
+        # composition instead of fighting the whitelist.
+        if novel_python and self._whitelist is not None:
+            scanner = ImportScanner(whitelist=self._whitelist)
+            for _step_id, source in novel_python.items():
+                result = scanner.scan(source)
+                if not result.ok:
+                    suggestions = self._suggest_for_violation(source)
+                    raise ScanViolation(result, suggestions=suggestions)
+
+        try:
+            workflow_dict = yaml.safe_load(yaml_text)
+        except yaml.YAMLError as exc:
+            raise ComposerResponseError(
+                f"LLM response's yaml block failed to parse: {exc}"
+            ) from exc
+        if not isinstance(workflow_dict, dict):
+            raise ComposerResponseError(
+                f"LLM response's yaml block must be a mapping at top "
+                f"level, got {type(workflow_dict).__name__}"
+            )
+        return yaml_text, novel_python, workflow_dict
+
+    def _validate_or_raise(
+        self,
+        workflow_dict: dict[str, Any],
+        yaml_text: str,
+        yaml_paths: dict[str, str],
+    ) -> None:
+        """Run framework-rule validation on a parsed workflow.
+
+        Raises ``_RetryableValidationError`` wrapping the underlying
+        ``WorkflowValidationError`` when the workflow is framework-
+        illegal. The wrapping is internal — callers that catch the
+        underlying error continue to work because the wrapper carries
+        it as an attribute, and the compose() retry loop unwraps and
+        re-raises.
+        """
+        from apecx_integration.composition.workflow_validator import (
+            WorkflowValidationError,
+            validate_workflow_against_framework,
+        )
+
+        violations = validate_workflow_against_framework(
+            workflow_dict,
+            catalog_yaml_paths=yaml_paths,
+        )
+        if violations:
+            err = WorkflowValidationError(
+                violations=violations,
+                yaml_text=yaml_text,
+            )
+            raise _RetryableValidationError(err)
 
     def _persist_or_synthesize(
         self,
@@ -571,11 +656,17 @@ class Composer:
                         "step_class": s.step_class,
                         "category": s.category.value,
                         "reason": s.reason,
+                        "retrieval_gap": s.retrieval_gap,
                     }
                     for s in composition_summary.step_categorizations
                 ],
                 "review_notes": list(composition_summary.review_notes),
                 "novel_python_by_step": dict(novel_python),
+                # C1 (2026-05-11): how many compose-validate-retry
+                # rounds were needed. Operators / regression-tracking
+                # queries SELECT this to measure LLM prompt drift over
+                # time.
+                "compose_retries": composition_summary.compose_retries,
             },
         )
         artifact = self._artifact_store.store(
