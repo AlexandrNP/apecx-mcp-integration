@@ -103,6 +103,21 @@ class RetrievalGapStats:
 
 
 @dataclass(frozen=True, kw_only=True)
+class ClassPathRepairStats:
+    """CPR (2026-05-11) auto-repair frequency.
+
+    Each repair is one LLM hallucination of the suffix-drop shape
+    that the catalog-grounded resolver fixed automatically. A
+    sustained high rate is good news (the resolver is earning its
+    keep) AND bad news (the LLM keeps making the same mistake — B1
+    prompt work could try to reduce it at the source).
+    """
+
+    total_repairs: int = 0
+    artifacts_with_repairs: int = 0
+
+
+@dataclass(frozen=True, kw_only=True)
 class RegressionMetricsReport:
     """The full picture an operator wants at a glance."""
 
@@ -110,6 +125,7 @@ class RegressionMetricsReport:
     compose_retries: ComposeRetryStats
     runtime_violations: RuntimeViolationStats
     retrieval_gap: RetrievalGapStats
+    class_path_repairs: ClassPathRepairStats
     since: datetime | None = None
     computed_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
@@ -170,6 +186,14 @@ class RegressionMetricsReport:
             f"{rg.retrieval_gap_steps}/{rg.total_steps} step(s) "
             f"({rg.rate:.1%}) classified via disk-import fallback"
         )
+        # CPR — class_path_repairs
+        cpr = self.class_path_repairs
+        lines.append("")
+        lines.append(
+            f"Class-path repairs (CPR): {cpr.total_repairs} auto-corrected "
+            f"across {cpr.artifacts_with_repairs} artifact(s) "
+            "(LLM hallucinated suffix-drop on class paths)"
+        )
         return "\n".join(lines)
 
 
@@ -205,6 +229,8 @@ def compute_regression_metrics(
     rv_by_class: dict[str, int] = {}
     rg_total_steps = 0
     rg_gap_steps = 0
+    cpr_total = 0
+    cpr_artifacts = 0
     total_artifacts = 0
 
     with session_factory() as session:
@@ -243,6 +269,12 @@ def compute_regression_metrics(
                     if cat.get("retrieval_gap") is True:
                         rg_gap_steps += 1
 
+            # CPR — class_path_repairs
+            cpr_list = summary.get("class_path_repairs") or []
+            if isinstance(cpr_list, list) and cpr_list:
+                cpr_artifacts += 1
+                cpr_total += sum(1 for c in cpr_list if isinstance(c, dict))
+
     return RegressionMetricsReport(
         total_artifacts=total_artifacts,
         compose_retries=ComposeRetryStats(
@@ -259,6 +291,10 @@ def compute_regression_metrics(
         retrieval_gap=RetrievalGapStats(
             total_steps=rg_total_steps,
             retrieval_gap_steps=rg_gap_steps,
+        ),
+        class_path_repairs=ClassPathRepairStats(
+            total_repairs=cpr_total,
+            artifacts_with_repairs=cpr_artifacts,
         ),
         since=since,
     )
@@ -295,6 +331,7 @@ def report_as_json(report: RegressionMetricsReport, *, indent: int = 2) -> str:
 
 
 __all__ = [
+    "ClassPathRepairStats",
     "ComposeRetryStats",
     "RegressionMetricsReport",
     "RetrievalGapStats",

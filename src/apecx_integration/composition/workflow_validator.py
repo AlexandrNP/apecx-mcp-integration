@@ -216,6 +216,7 @@ def validate_workflow_against_framework(
     workflow_dict: dict[str, Any],
     *,
     catalog_yaml_paths: dict[str, str] | None = None,
+    catalog_class_paths: set[str] | None = None,
 ) -> tuple[WorkflowViolation, ...]:
     """Run the framework-rule pass over a parsed composed workflow.
 
@@ -228,6 +229,11 @@ def validate_workflow_against_framework(
             (``step_config_non_canonical_path``) — the reviewer can
             confirm or correct. When None, the canonical-path check
             is skipped.
+        catalog_class_paths: optional set of every known catalog
+            class path. CPR (2026-05-11) uses this to add
+            "did you mean X?" hints to ``step_class_unresolvable``
+            violations. When None, the hint is omitted (the rule
+            still fires, just with the generic suggested_fix).
 
     Returns:
         Tuple of violations, empty when the workflow is framework-legal.
@@ -250,7 +256,7 @@ def validate_workflow_against_framework(
         )
         return tuple(violations)
 
-    violations.extend(_validate_steps_block(workflow_dict, catalog_yaml_paths))
+    violations.extend(_validate_steps_block(workflow_dict, catalog_yaml_paths, catalog_class_paths))
     violations.extend(_validate_links_block(workflow_dict))
     return tuple(violations)
 
@@ -258,6 +264,7 @@ def validate_workflow_against_framework(
 def _validate_steps_block(
     workflow_dict: dict[str, Any],
     catalog_yaml_paths: dict[str, str] | None,
+    catalog_class_paths: set[str] | None = None,
 ) -> list[WorkflowViolation]:
     violations: list[WorkflowViolation] = []
     steps = workflow_dict.get("steps")
@@ -334,6 +341,22 @@ def _validate_steps_block(
 
         target_class, import_err = _import_class(str(class_path))
         if target_class is None:
+            # CPR (2026-05-11): build a "did you mean X?" hint from
+            # the catalog. Useful for both the LLM (via retry feedback)
+            # and the human reviewer.
+            extra_hint: str | None = None
+            if catalog_class_paths is not None:
+                from apecx_integration.composition.class_path_resolver import (  # noqa: PLC0415
+                    hint_for_step_violation,
+                )
+
+                extra_hint = hint_for_step_violation(str(class_path), catalog_class_paths)
+            base_fix = (
+                "Pick a class path from the retrieved candidates "
+                "block (the prompt lists them verbatim). Do NOT "
+                "invent class paths."
+            )
+            suggested_fix = f"{base_fix} {extra_hint}" if extra_hint else base_fix
             violations.append(
                 WorkflowViolation(
                     rule_id="step_class_unresolvable",
@@ -343,11 +366,7 @@ def _validate_steps_block(
                         f"({import_err}). The composer likely hallucinated "
                         "this path."
                     ),
-                    suggested_fix=(
-                        "Pick a class path from the retrieved candidates "
-                        "block (the prompt lists them verbatim). Do NOT "
-                        "invent class paths."
-                    ),
+                    suggested_fix=suggested_fix,
                 )
             )
             # Without the class, the inline-dict check is also impossible

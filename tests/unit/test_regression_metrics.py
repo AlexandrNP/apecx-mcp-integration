@@ -267,7 +267,41 @@ def test_json_output_roundtrips(tmp_path):
     assert "rate" in parsed["retrieval_gap"]
 
 
-def test_table_output_mentions_all_three_signals(tmp_path):
+def test_class_path_repairs_counted_per_artifact(tmp_path):
+    """CPR (2026-05-11): artifacts with class_path_repairs populated
+    contribute to the auto-repair-rate metric. Repairs are LLM
+    hallucinations the resolver fixed silently — operators watching
+    this number get an early warning when the prompt drifts."""
+    engine = _migrated_engine(tmp_path)
+    session_factory = make_session_factory(engine)
+    _insert_artifact(
+        engine,
+        artifact_id=uuid4(),
+        composition_summary={
+            "compose_retries": 0,
+            "class_path_repairs": [
+                {
+                    "step_id": "rag_synth",
+                    "emitted": "pkg.x.RagSynthesisStep",
+                    "resolved": "pkg.x_step.RagSynthesisStep",
+                },
+                {
+                    "step_id": "extract",
+                    "emitted": "pkg.entity_extraction.EntityExtractionStep",
+                    "resolved": "pkg.entity_extraction_step.EntityExtractionStep",
+                },
+            ],
+        },
+    )
+    _insert_artifact(engine, artifact_id=uuid4(), composition_summary={"compose_retries": 0})
+
+    report = compute_regression_metrics(session_factory)
+    cpr = report.class_path_repairs
+    assert cpr.total_repairs == 2
+    assert cpr.artifacts_with_repairs == 1
+
+
+def test_table_output_mentions_all_four_signals(tmp_path):
     engine = _migrated_engine(tmp_path)
     session_factory = make_session_factory(engine)
     _insert_artifact(
@@ -283,6 +317,7 @@ def test_table_output_mentions_all_three_signals(tmp_path):
     assert "Compose retries (C1)" in text_out
     assert "Runtime violations (C2)" in text_out
     assert "Retrieval gap (A2)" in text_out
+    assert "Class-path repairs (CPR)" in text_out
 
 
 def test_malformed_runtime_violations_are_skipped(tmp_path):

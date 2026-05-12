@@ -61,6 +61,26 @@ authoring guide.
 > `apecx_integration.composition.lightweight_validator.validate_and_load(builder)`
 > for `nanobrain.lightweight.WorkflowBuilder` consumers.
 
+> **Catalog-grounded class-path resolver (CPR, 2026-05-11).** Before
+> A1 fires its `step_class_unresolvable` rule, the composer runs a
+> deterministic post-LLM repair pass. The dominant LLM hallucination
+> on this task is "leaf class name correct, module path drifted"
+> (e.g., `pkg.steps.rag_synthesis.RagSynthesisStep` instead of the
+> real `pkg.steps.rag_synthesis_step.RagSynthesisStep`). The resolver
+> at `apecx_integration.composition.class_path_resolver` looks up the
+> emitted leaf class name in the full catalog: if exactly one entry
+> matches, the workflow_dict's `class:` value gets auto-rewritten
+> in place AND the repair is recorded in
+> `composition_summary.class_path_repairs` so reviewers see it.
+> Ambiguous and truly-novel cases fall through to A1's rule, which
+> then adds a "Did you mean X?" hint via `hint_for_step_violation`.
+> The resolver does NOT do Levenshtein fuzzy matching across module
+> paths — the cost of a silent wrong substitution is far worse than
+> one extra retry. Operators track the repair rate via
+> `apecx-regression-metrics` (the CPR column). A sustained nonzero
+> rate is a B1-prompt-work signal AND evidence the resolver is
+> earning its keep.
+
 ## File:line ground truth
 
 | Concern | File | Approx. line |

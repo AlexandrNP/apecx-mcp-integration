@@ -137,6 +137,14 @@ class CompositionSummary:
     # composer recovered via the structured-feedback retry loop.
     # Used as a regression metric for prompt-quality work (B1+).
     compose_retries: int = 0
+    # CPR (2026-05-11) — class-path repairs the deterministic
+    # resolver applied between parse and validate. Each tuple
+    # entry is (step_id, emitted, resolved) — the LLM emitted a
+    # class path whose leaf class name uniquely matched a catalog
+    # entry, so we auto-rewrote the module path. Sustained nonzero
+    # counts mean the LLM keeps hallucinating the suffix-drop shape;
+    # B1+ prompt work could target this specifically.
+    class_path_repairs: tuple[tuple[str, str, str], ...] = ()
 
 
 @dataclass(frozen=True, kw_only=True)

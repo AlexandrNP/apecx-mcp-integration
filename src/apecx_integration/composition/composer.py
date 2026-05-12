@@ -496,8 +496,48 @@ class Composer:
                 messages.append(HumanMessage(content=feedback))
                 continue
 
+            # CPR (2026-05-11): catalog-grounded class-path repair.
+            # Auto-corrects the dominant LLM hallucination shape
+            # (leaf class name correct, module path drifted —
+            # e.g. ``rag_synthesis.RagSynthesisStep`` →
+            # ``rag_synthesis_step.RagSynthesisStep``). Only repairs
+            # when the leaf class name has EXACTLY one match in the
+            # catalog; ambiguous matches are left for the validator
+            # to surface as ``step_class_unresolvable`` with a
+            # "did you mean?" hint built from the same resolver.
+            from apecx_integration.composition.class_path_resolver import (  # noqa: PLC0415
+                repair_workflow_class_paths,
+            )
+
+            full_catalog_paths = {
+                c.class_path for c in self._catalog.components
+            } | retrieved_class_paths
+            repairs = repair_workflow_class_paths(workflow_dict, full_catalog_paths)
+            if repairs:
+                # Re-encode the YAML so the persisted artifact carries
+                # the corrected class paths. Otherwise the artifact
+                # would silently disagree with the runtime workflow.
+                yaml_text = yaml.safe_dump(workflow_dict, sort_keys=False, default_flow_style=False)
+                for r in repairs:
+                    log.warning(
+                        "Auto-corrected class path on step %s: %s -> %s",
+                        r.step_id,
+                        r.emitted,
+                        r.resolved,
+                    )
+
             try:
-                self._validate_or_raise(workflow_dict, yaml_text, yaml_paths)
+                self._validate_or_raise(
+                    workflow_dict,
+                    yaml_text,
+                    yaml_paths,
+                    catalog_class_paths=full_catalog_paths,
+                )
+                # Stash the repairs onto the workflow_dict so the
+                # caller can read them when building CompositionSummary.
+                workflow_dict["_apecx_class_path_repairs"] = [
+                    (r.step_id, r.emitted, r.resolved) for r in repairs
+                ]
                 break
             except _RetryableValidationError as exc:
                 if compose_retries >= max_retries:
@@ -550,6 +590,12 @@ class Composer:
             + categorized.count(StepCategory.COMPOSED_PARAMETERIZED)
             + categorized.count(StepCategory.COMPOSED_WRAPPED)
         )
+        # CPR (2026-05-11): pop the resolver's repair record off the
+        # workflow_dict and thread it into the summary. Lives on the
+        # workflow_dict during the validate-loop to avoid an extra
+        # parameter on _validate_or_raise.
+        repairs_raw = workflow_dict.pop("_apecx_class_path_repairs", []) or []
+        class_path_repairs = tuple((str(sid), str(emt), str(res)) for sid, emt, res in repairs_raw)
         summary = CompositionSummary(
             steps_reused=steps_reused,
             steps_generated=len(novel_python),
@@ -558,6 +604,7 @@ class Composer:
             review_notes=tuple(f"novel Python step: {k}" for k in novel_python),
             step_categorizations=categorized.categorizations,
             compose_retries=compose_retries,
+            class_path_repairs=class_path_repairs,
         )
         llm_model_version_hash = hashlib.sha256(self._config.llm_model.encode("utf-8")).hexdigest()
 
@@ -719,6 +766,8 @@ class Composer:
         workflow_dict: dict[str, Any],
         yaml_text: str,
         yaml_paths: dict[str, str],
+        *,
+        catalog_class_paths: set[str] | None = None,
     ) -> None:
         """Run framework-rule validation on a parsed workflow.
 
@@ -728,6 +777,11 @@ class Composer:
         underlying error continue to work because the wrapper carries
         it as an attribute, and the compose() retry loop unwraps and
         re-raises.
+
+        ``catalog_class_paths`` enables CPR's "did you mean X?" hints
+        on ``step_class_unresolvable`` violations. Passing the full
+        catalog (not just retrieval hits) lets the validator suggest
+        components A2 would have rescued.
         """
         from apecx_integration.composition.workflow_validator import (
             WorkflowValidationError,
@@ -737,6 +791,7 @@ class Composer:
         violations = validate_workflow_against_framework(
             workflow_dict,
             catalog_yaml_paths=yaml_paths,
+            catalog_class_paths=catalog_class_paths,
         )
         if violations:
             err = WorkflowValidationError(
@@ -824,6 +879,18 @@ class Composer:
                 # queries SELECT this to measure LLM prompt drift over
                 # time.
                 "compose_retries": composition_summary.compose_retries,
+                # CPR (2026-05-11): class-path auto-repairs applied
+                # by the catalog-grounded resolver. Persisted so
+                # apecx-regression-metrics can surface a "leaf-match
+                # repair rate" without re-running the composer.
+                "class_path_repairs": [
+                    {
+                        "step_id": s,
+                        "emitted": e,
+                        "resolved": r,
+                    }
+                    for s, e, r in composition_summary.class_path_repairs
+                ],
             },
         )
         artifact = self._artifact_store.store(
