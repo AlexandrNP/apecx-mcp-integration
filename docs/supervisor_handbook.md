@@ -257,7 +257,8 @@ counts mean the LLM keeps drifting — that's a prompt-quality signal.
 | Process()-not-execute() | n/a (Python-level) | every step subclass | pre-commit hook TX5 AC3 |
 | Imports resolve | n/a | every Python file | pre-commit hook TX5 AC2 |
 | No `unittest.mock` in src/ | n/a | src/ tree | pre-commit hook |
-| Composer system prompt budget | `<16 KB` | composer_prompts/system.md | manual probe (`Composer.from_config + len`) |
+| Composer system prompt soft cap | 14 KB (default) | `composer_config.yml.prompt_soft_cap_kb` | `test_prompt_budget.py::test_current_system_md_is_within_soft_cap_regression` (warn log on breach) |
+| Composer system prompt hard cap | 16 KB (default) | `composer_config.yml.prompt_hard_cap_kb` | `test_prompt_budget.py::test_hard_cap_breach_raises_at_composer_load` (FAIL-FAST raise on breach) |
 | Reuse ratio threshold | `0.8` (default) | `CompositionSummary.is_reuse_dominated()` | `test_composition_summary_reuse_ratio.py` |
 
 **How to add a new rule:**
@@ -401,7 +402,16 @@ Read them.
 - **Squeezing a new rule into `system.md` past the 16 KB cap.**
   At ≥ 14 KB the 12B model starts dropping later-prompt instructions.
   Future rule additions should consolidate existing rule blocks
-  rather than appending.
+  rather than appending. The `PromptBudget` machinery
+  (composer_schemas.PromptBudget + Composer._enforce_prompt_budgets)
+  raises at load when system.md exceeds the hard cap; a regression
+  test fails the PR before merge if system.md exceeds the soft cap.
+- **Putting "Why this is non-negotiable" rationale in the LLM-facing
+  prompt.** The LLM acts on imperatives, not rationale. Rationale
+  prose costs tokens without changing behavior. Lesson from CW-CO1
+  consolidation (2026-05-12): trimming 1.18 KB of "why" prose from
+  the CLOSED-CLASS + REUSE-FIRST blocks had zero effect on T01 AC1.
+  Rationale belongs in CLAUDE.md + SKILL.md where humans read it.
 
 ---
 
@@ -439,6 +449,8 @@ earn a rule but are worth knowing.
   system prompt.** Past ~12 KB of system prompt, instruction
   drop-off becomes measurable (model emits inline dicts despite the
   rule against them). The 16 KB cap is a real ceiling for this model.
+  The `PromptBudget` machinery now enforces this at composer load
+  (soft cap at 14 KB warn, hard cap at 16 KB raise).
 - **The composer's RAG matcher works well enough that the LLM rarely
   needs to invent class paths from scratch** — but it inflicts
   drift via suffix-drops (D8). The deterministic `ClassPathResolver`

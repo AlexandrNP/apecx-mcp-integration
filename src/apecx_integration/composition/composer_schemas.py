@@ -131,6 +131,20 @@ class ComposerConfig(BaseModel):
     # download + ~1s embedding pass on every cold start.
     rag_index_dir: Path | None = None
 
+    # PB (2026-05-12): prompt-budget caps. The 12B local model
+    # (mistral-nemo) starts dropping later-prompt instructions past
+    # ~12-13 KB of system prompt; we cap at 14 KB soft / 16 KB hard
+    # so a future "let me add another rule" PR sees a structural
+    # alarm BEFORE the regression shows up as silent quality drift.
+    # Soft cap exceeded → warning log at Composer.from_config.
+    # Hard cap exceeded → ComposerConfigurationError raise (FAIL-FAST
+    # per nanobrain). Bigger models (e.g., Llama-3-70B, Claude-Sonnet)
+    # can tolerate larger prompts — operators override these per
+    # deployment. The defaults are tuned for mistral-nemo, the
+    # workspace baseline.
+    prompt_soft_cap_kb: float = Field(default=14.0, gt=0.0)
+    prompt_hard_cap_kb: float = Field(default=16.0, gt=0.0)
+
 
 # ---------------------------------------------------------------------------
 # Output shapes
@@ -241,8 +255,61 @@ class ComposedWorkflow:
     llm_model_version_hash: str
 
 
+@dataclass(frozen=True, kw_only=True)
+class PromptBudget:
+    """Per-prompt size accounting + cap predicates.
+
+    Constructed by ``Composer.from_config`` for each loaded prompt
+    file so a future "let me add another rule" PR sees a structural
+    alarm before the regression shows up as silent quality drift in
+    the LLM (the 12B local model starts dropping later-prompt
+    instructions past ~12-13 KB of system prompt).
+
+    Frozen + kw_only so callers cannot mutate the recorded snapshot —
+    the budget reflects the prompt's size AT LOAD TIME, and any
+    subsequent edit to the prompt file requires reloading the
+    composer.
+
+    Operators read ``Composer.prompt_budgets`` (read-only view) to
+    audit prompt sizes pre-deployment. Telemetry consumers serialize
+    via ``dataclasses.asdict`` — no JSON-incompatible types in the
+    schema.
+    """
+
+    name: str
+    size_bytes: int
+    soft_cap_bytes: int
+    hard_cap_bytes: int
+
+    @property
+    def fraction_of_hard_cap(self) -> float:
+        """``size_bytes / hard_cap_bytes`` — the headline utilization
+        number an operator reads to decide "can I add another rule
+        without risk?". A value > 1.0 means the prompt exceeded the
+        hard cap (the composer raised at load — this object only
+        exists for diagnostic introspection in that case)."""
+        return self.size_bytes / self.hard_cap_bytes
+
+    @property
+    def is_within_soft_cap(self) -> bool:
+        """True when the prompt fits inside the soft cap. False
+        triggers a warning log at composer load — the composer still
+        starts but the operator should plan a consolidation pass."""
+        return self.size_bytes <= self.soft_cap_bytes
+
+    @property
+    def is_within_hard_cap(self) -> bool:
+        """True when the prompt fits inside the hard cap. False
+        triggers ``ComposerConfigurationError`` at composer load —
+        FAIL-FAST per nanobrain framework discipline. The composer
+        does NOT start with a prompt past the hard cap; the operator
+        must trim or raise the cap explicitly via config."""
+        return self.size_bytes <= self.hard_cap_bytes
+
+
 __all__ = [
     "ComposedWorkflow",
     "CompositionSummary",
     "ComposerConfig",
+    "PromptBudget",
 ]

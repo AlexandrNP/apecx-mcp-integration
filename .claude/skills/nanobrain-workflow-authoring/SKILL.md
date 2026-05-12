@@ -747,3 +747,23 @@ monitor, termination conditions, and the session-end distillation
 policy. It is pinned by
 `tests/unit/test_supervisor_handbook_pinned.py` against silent
 section removal.
+
+### Rule-authoring asymmetry (2026-05-12, CW-CO1)
+
+When authoring an LLM-facing rule:
+
+* The **prompt** carries imperatives + remedies only ("DO X, DO NOT Y, when X fails do Z").
+* The **human-facing docs** (CLAUDE.md, this SKILL) carry rationale ("why this is non-negotiable", adoption signal).
+
+Mixing rationale into the prompt costs tokens without changing LLM
+behavior — measured 1.18 KB of "why this is non-negotiable" prose
+trimmed from `system.md` (CLOSED-CLASS + REUSE-FIRST blocks) had
+zero effect on T01 AC1 in a real-Ollama check.
+
+The composer enforces a prompt-budget cap at load time via
+`composer_schemas.PromptBudget` + `Composer._enforce_prompt_budgets`.
+Defaults: soft cap 14 KB (warn), hard cap 16 KB (FAIL-FAST raise).
+Operators override via `composer_config.yml` (`prompt_soft_cap_kb`,
+`prompt_hard_cap_kb`) when shipping with a larger model. A
+regression test (`tests/unit/test_prompt_budget.py::test_current_system_md_is_within_soft_cap_regression`)
+fails a future PR that pushes system.md past 14 KB before merge.

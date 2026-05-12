@@ -78,6 +78,35 @@ Three locked-in constraints (drift patterns, 2026-04-22 + 2026-05-12):
   reviewer prompt, future quality gates) can read the adoption
   signal without re-deriving it.
 
+**Prompt-budget caps (2026-05-12) — silent-failure guard**
+
+``composer_config.yml`` carries ``prompt_soft_cap_kb`` (default 14.0)
+and ``prompt_hard_cap_kb`` (default 16.0). ``Composer.from_config``
+applies them to ``system.md`` at load time:
+
+- Hard cap exceeded → ``ComposerConfigurationError`` raise (FAIL-FAST
+  per nanobrain discipline). The composer does NOT start.
+- Soft cap exceeded → ``log.warning`` + composer starts. Operator
+  schedules a consolidation pass.
+
+Defaults are tuned for mistral-nemo (12B), the workspace baseline.
+Bigger models (Llama-3-70B, Claude-Sonnet) tolerate larger prompts;
+operators override per deployment. ``Composer.prompt_budgets`` is a
+read-only dict of ``PromptBudget`` snapshots for telemetry. Regression
+catch: ``tests/unit/test_prompt_budget.py::test_current_system_md_is_within_soft_cap_regression``
+fails a future PR that pushes system.md past 14 KB BEFORE that PR
+lands in main — the silent-failure mode this guards against is "PR
+adds a rule, T01 AC1 still passes on a single sample, multi-step
+reasoning degrades in production".
+
+**Rule-content asymmetry (2026-05-12, lesson from CW-CO1 consolidation):**
+
+LLM-facing prompts carry imperatives + remedies only. Human-facing
+docs (CLAUDE.md, SKILL.md) carry rationale. Adding "Why this is
+non-negotiable" prose to a system prompt costs tokens without
+changing LLM behavior. Trimmed system.md by 1.18 KB across the
+CLOSED-CLASS + REUSE-FIRST blocks; T01 AC1 unaffected.
+
 If AC1 flaps: check this file BEFORE blaming LLM/executor.
 
 ## FAISS / sentence-transformers import order

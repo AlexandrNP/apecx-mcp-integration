@@ -42,6 +42,7 @@ from apecx_integration.composition.composer_schemas import (
     ComposedWorkflow,
     ComposerConfig,
     CompositionSummary,
+    PromptBudget,
 )
 from apecx_integration.composition.differ import (
     StepCategory,
@@ -181,6 +182,12 @@ class Composer:
         """
         self._config = config
         self._prompts: dict[str, str] = self._load_prompts(config.prompt_dir)
+        self._prompt_budgets: dict[str, PromptBudget] = self._build_prompt_budgets(
+            self._prompts,
+            soft_cap_kb=config.prompt_soft_cap_kb,
+            hard_cap_kb=config.prompt_hard_cap_kb,
+        )
+        self._enforce_prompt_budgets(self._prompt_budgets)
         self._catalog = ComponentCatalog.from_manifests(list(config.component_catalog_paths))
         self._llm_factory = llm_factory or _default_llm_factory
         self._artifact_store = artifact_store
@@ -1210,6 +1217,104 @@ class Composer:
             if p.is_file():
                 prompts[p.stem] = p.read_text(encoding="utf-8")
         return prompts
+
+    @property
+    def prompt_budgets(self) -> dict[str, PromptBudget]:
+        """Read-only view of the per-prompt size accounting computed
+        at composer load time.
+
+        Operators audit this pre-deployment to decide "can I add
+        another rule without risk?". Telemetry consumers serialize
+        via ``dataclasses.asdict`` on each value. Read-only copy
+        prevents callers from mutating the snapshot in flight."""
+        return dict(self._prompt_budgets)
+
+    @staticmethod
+    def _build_prompt_budgets(
+        prompts: dict[str, str],
+        *,
+        soft_cap_kb: float,
+        hard_cap_kb: float,
+    ) -> dict[str, PromptBudget]:
+        """Compute a ``PromptBudget`` for every loaded prompt.
+
+        Sizes are UTF-8 byte counts (the wire size the LLM gateway
+        sees), not character counts — multi-byte glyphs in a prompt
+        would otherwise under-report against caps tuned for byte
+        budgets."""
+        soft_cap_bytes = int(soft_cap_kb * 1024)
+        hard_cap_bytes = int(hard_cap_kb * 1024)
+        return {
+            name: PromptBudget(
+                name=name,
+                size_bytes=len(body.encode("utf-8")),
+                soft_cap_bytes=soft_cap_bytes,
+                hard_cap_bytes=hard_cap_bytes,
+            )
+            for name, body in prompts.items()
+        }
+
+    @staticmethod
+    def _enforce_prompt_budgets(budgets: dict[str, PromptBudget]) -> None:
+        """Apply soft/hard caps to ``system.md`` specifically.
+
+        ``system.md`` is the only prompt the LLM sees verbatim at
+        every compose; the other prompts (composition_bias, etc.)
+        get concatenated AFTER and contribute additional budget
+        pressure but are individually smaller. The hard-cap raise
+        targets ``system.md`` because that's where the 12B-model
+        instruction-drop-off problem manifests first.
+
+        Other prompts get a soft-cap warning if they breach their
+        own soft cap, but no hard-cap raise — they're rarely large
+        enough to be at risk individually, and an operator may
+        legitimately ship a long sub-prompt for a specialized
+        deployment.
+        """
+        system = budgets.get("system")
+        if system is None:
+            # No system prompt loaded — the composer is unusable
+            # for compose() calls, but the missing-file error is
+            # already raised by ``_load_prompts``. Defensive no-op.
+            return
+        if not system.is_within_hard_cap:
+            raise ComposerConfigurationError(
+                f"system.md is {system.size_bytes} bytes "
+                f"({system.size_bytes / 1024:.2f} KB), exceeding the "
+                f"hard cap of {system.hard_cap_bytes} bytes "
+                f"({system.hard_cap_bytes / 1024:.2f} KB). The 12B "
+                f"local model (mistral-nemo) starts dropping later-"
+                f"prompt instructions past this size — silent quality "
+                f"drift, not a runtime crash. Trim the prompt or "
+                f"raise ``prompt_hard_cap_kb`` in composer config "
+                f"(only if your deployment uses a model that tolerates "
+                f"larger prompts)."
+            )
+        if not system.is_within_soft_cap:
+            log.warning(
+                "system.md is %d bytes (%.2f KB), exceeding the soft "
+                "cap of %d bytes (%.2f KB). The composer still starts, "
+                "but a future rule addition risks crossing the hard "
+                "cap. Plan a consolidation pass.",
+                system.size_bytes,
+                system.size_bytes / 1024,
+                system.soft_cap_bytes,
+                system.soft_cap_bytes / 1024,
+            )
+        for name, budget in budgets.items():
+            if name == "system":
+                continue
+            if not budget.is_within_soft_cap:
+                log.info(
+                    "prompt %r is %d bytes (%.2f KB), above its soft "
+                    "cap of %.2f KB. Not raising — only system.md "
+                    "is hard-capped — but worth noting for future "
+                    "consolidation.",
+                    name,
+                    budget.size_bytes,
+                    budget.size_bytes / 1024,
+                    budget.soft_cap_bytes / 1024,
+                )
 
 
 # ---------------------------------------------------------------------------

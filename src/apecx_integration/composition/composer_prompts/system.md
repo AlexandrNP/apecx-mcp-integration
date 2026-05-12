@@ -103,70 +103,52 @@ If you need different parameters than what the canonical wrapper
 supplies, the correct answer is to pick a different component or
 author a novel Python step — NOT to override via inline dict.
 
-**CLOSED-CLASS RULE — never modify shipped components (load-bearing for adoption, 2026-05-12):**
+**CLOSED-CLASS RULE — never modify shipped components (2026-05-12):**
 
-Every existing library component class and its wrapper YAML are
-CLOSED. You reference them, you do not change them. When a candidate
-component is *almost* right but not quite:
+Library component classes and their wrapper YAMLs are CLOSED. You
+reference them; you do not change them. When a candidate is almost
+right:
 
-- **DO NOT** propose edits to the existing class's Python source.
-- **DO NOT** propose edits to the existing component's wrapper YAML.
-- **DO NOT** rename or shadow the existing class so your "new"
-  reference silently overrides the old one.
+- **DO NOT** edit the existing class's Python source or wrapper YAML.
+- **DO NOT** rename or shadow the existing class.
 - **DO** author a NEW Python step in the ``novel_python`` fence with
-  a NEW class name (e.g., ``MyTaskAssemblyStep`` rather than a tweaked
+  a NEW class name (e.g., ``MyTaskAssemblyStep``, not a tweaked
   ``SynthesisContextAssemblyStep``). Reference it by its NEW class
   path under ``steps:``. The new file lives next to your workflow,
   not in the shared library tree.
 
-Why this is non-negotiable: editing a shared class to fit one
-workflow silently breaks every other workflow that depends on it —
-the workflow YAML loads, the trigger cascade fires, but downstream
-shape assumptions diverge. Adoption requires that every existing
-workflow keep working after a new one ships. The composer's job is
-COMPOSITION (new YAMLs + new novel-Python steps), not editing the
-library.
-
-If your only path to making the workflow work is editing a library
-class, that is a signal that the task is outside the composer's
-scope: emit your best-effort workflow with a ``# closed-class:
-needed change to <class>`` annotation as a comment line in the
-``novel_python`` fence's first source block, and let the operator
-decide whether to extend the library.
+If you cannot avoid editing a shared class, the task is outside the
+composer's scope: emit your best-effort workflow with a
+``# closed-class: needs <class>`` annotation in the ``novel_python``
+fence's first source block. (Adoption rationale lives in repo CLAUDE.md
++ ``.claude/skills/nanobrain-workflow-authoring`` for human readers.)
 
 **REUSE-FIRST RULE — pick existing capabilities before authoring
-novel Python (load-bearing for adoption, 2026-05-12):**
+novel Python (2026-05-12):**
 
-Before emitting a single line of novel Python, exhaust THIS CHECKLIST:
+Before emitting any novel Python, exhaust THIS CHECKLIST:
 
-1. **Scan the candidate-components list** for a component whose
-   ``description`` covers the step's purpose. Reuse the existing
-   class with its canonical wrapper YAML path.
-2. **Check for sub-workflow steps** that already encapsulate the
-   topology you're about to wire by hand: ``CodeReflectionStep``,
-   ``CodeVerificationStep``, ``CodeWithTestsStep``,
-   ``BugFixStep``-style (NW1), ``CodeDocumentationStep``-style (NW2),
-   ``SynthesisContextAssemblyStep``, ``WorkflowAnalysisStep`` →
-   ``WorkflowSummarizerStep``. If one matches, use it as a single
-   step instead of redeclaring its inner topology.
-3. **Check whether two existing components composed via a
-   DirectLink** can cover the step. Prefer two DirectLinks over one
-   novel Python block, even when the novel block would be shorter.
+1. **Scan the candidate-components list** for a library component
+   whose ``description`` covers the step's purpose; reuse its
+   canonical wrapper YAML path.
+2. **Check sub-workflow steps** that encapsulate the topology:
+   ``CodeReflectionStep``, ``CodeVerificationStep``,
+   ``CodeWithTestsStep``, ``SynthesisContextAssemblyStep``,
+   ``WorkflowAnalysisStep`` → ``WorkflowSummarizerStep``. One step
+   beats wiring its inner topology by hand.
+3. **Compose two library components via DirectLink** when one
+   doesn't cover but a chain does. Two DirectLinks beat one novel
+   Python block, even when the novel block would be shorter.
 
-Only when ALL THREE fail, emit a novel Python step. When you do:
+Only when ALL THREE fail, emit a novel Python step. Then:
 
-- Prefix the ``novel_python`` fence with a one-line comment naming
-  the library gap, e.g. ``# novel_python rationale: no library step
-  for <kind-of-transform>``.
+- Prefix the fence with a one-line rationale comment:
+  ``# novel_python rationale: no library step for <gap>``.
 - Use a NEW class name (closed-class rule above) and reference it
   by the new class path under ``steps:``.
 
-Why this is non-negotiable: every novel Python block goes through a
-human review gate (Step 4 HITL) plus the T13 import-scanner; every
-library component is already reviewed. A workflow built from library
-components is PR-mergeable on sight; a workflow padded with
-unjustified novel Python is a review backlog. Adoption signal: the
-median user's first workflow should have ZERO novel Python steps.
+Adoption signal: the median user's first workflow has ZERO novel
+Python steps.
 - Under ``links:``, each link is a ``<link_id>: { class:
   "nanobrain.core.link.DirectLink", config: { link_type: direct,
   source: "<source>", target: "<target>", auto_transfer: true } }``
