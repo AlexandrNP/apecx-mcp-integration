@@ -117,14 +117,13 @@ def test_spec_mode_ac1_real_workflow_runs(cp_engine, monkeypatch):
         artifact_store=store,
         recorder=recorder,
         workflow_base_dir=VIOLIN_WORKFLOW_DIR,
-        # EMPTY-FAIL (2026-05-12): empty-input opt-in is needed
-        # because this fixture exercises the spec-composer +
-        # executor cascade plumbing, NOT a real workflow's data
-        # processing. A real adoption test in production would
-        # pass default_payload={"user_query_input": "..."}. See
-        # the EMPTY-FAIL commit message + the executor's
-        # _allow_empty_input docstring.
+        # EMPTY-FAIL + EMPTY-OUTPUT (2026-05-12): this fixture
+        # exercises spec-composer + executor cascade plumbing only.
+        # The RT-REAL test
+        # (test_spec_mode_real_payload_against_ollama.py) is the
+        # honest variant: real payload + non-empty output assertion.
         allow_empty_input=True,
+        allow_empty_output=True,
     )
 
     run_id = uuid4()

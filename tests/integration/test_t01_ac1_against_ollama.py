@@ -140,13 +140,15 @@ def test_t01_ac1_real_violin_bvbrc_workflow_runs(cp_engine):
         artifact_store=store,
         recorder=recorder,
         workflow_base_dir=VIOLIN_WORKFLOW_DIR,
-        # EMPTY-FAIL (2026-05-12): this AC1 fixture deliberately
-        # exercises the empty-input branch — it pins the executor's
-        # cascade + persistence path, not any real workflow logic.
-        # Operators running a REAL workflow must provide a real
-        # default_payload OR pass it per-execute via an upstream
-        # API; the opt-in here documents the test's intent.
+        # EMPTY-FAIL + EMPTY-OUTPUT (2026-05-12): this AC1 fixture
+        # deliberately exercises both empty-input AND empty-output
+        # branches — it pins the executor's cascade + persistence
+        # plumbing, NOT real workflow logic. The RT-REAL test
+        # (test_spec_mode_real_payload_against_ollama.py) is the
+        # honest variant with real payload + non-empty output
+        # assertion.
         allow_empty_input=True,
+        allow_empty_output=True,
     )
 
     run_id = uuid4()

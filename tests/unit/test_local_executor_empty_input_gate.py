@@ -116,7 +116,13 @@ def _seed_run_with_minimal_artifact(
     return artifact.id
 
 
-def _executor(tmp_path, *, allow_empty_input: bool, default_payload: dict | None = None):
+def _executor(
+    tmp_path,
+    *,
+    allow_empty_input: bool,
+    default_payload: dict | None = None,
+    allow_empty_output: bool = True,
+):
     engine = _migrated_engine(tmp_path)
     session_factory = make_session_factory(engine)
     recorder = ProvenanceRecorder(session_factory)
@@ -132,6 +138,7 @@ def _executor(tmp_path, *, allow_empty_input: bool, default_payload: dict | None
         workflow_base_dir=workflow_base,
         allow_empty_input=allow_empty_input,
         default_payload=default_payload,
+        allow_empty_output=allow_empty_output,
         actor="empty_fail_test",
     )
     return executor, engine, store, session_factory
@@ -188,3 +195,52 @@ def test_non_empty_default_payload_bypasses_gate(tmp_path):
     # The executor reaches past the gate; whether downstream
     # workflow.run succeeds is workflow-implementation-dependent.
     assert result.reason is None or "executor refused" not in result.reason
+
+
+def test_empty_output_refused_by_default(tmp_path):
+    """EMPTY-OUTPUT (2026-05-12): symmetric gate on the output side.
+    The RT-REAL integration test surfaced the shape where
+    workflow.run() returns
+    ``{"workflow_output": null, "status": "completed"}`` —
+    the cascade drained cleanly but the workflow's actual output
+    was never populated. Default-fail unless the caller opts in
+    via ``allow_empty_output=True``.
+
+    Test strategy: opt in to empty input (so we reach the cascade);
+    the minimal 1-step workflow has no triggers wired for empty
+    input → workflow.run returns a trivial result with no
+    populated output keys → empty-output gate fires.
+    """
+    executor, engine, store, _ = _executor(
+        tmp_path,
+        allow_empty_input=True,
+        allow_empty_output=False,  # the gate under test
+    )
+    run_id = uuid4()
+    _seed_run_with_minimal_artifact(engine, store, run_id)
+    result = asyncio.run(executor.execute(run_id))
+    # Either the cascade fails earlier (cascade_timeout / no_first_step
+    # / load_failed) OR the empty-output gate fires. Both are
+    # legitimate FAILED outcomes. What we MUST NOT see is
+    # status=COMPLETED with an empty payload — that's the silent
+    # failure we're closing.
+    assert result.status is RunStatus.FAILED
+    assert result.reason is not None
+
+
+def test_empty_output_allowed_when_explicitly_opted_in(tmp_path):
+    """The opt-in path mirrors empty-input: callers that genuinely
+    test the empty-cascade plumbing set allow_empty_output=True and
+    proceed."""
+    executor, engine, store, _ = _executor(
+        tmp_path,
+        allow_empty_input=True,
+        allow_empty_output=True,
+    )
+    run_id = uuid4()
+    _seed_run_with_minimal_artifact(engine, store, run_id)
+    result = asyncio.run(executor.execute(run_id))
+    # The result may be COMPLETED (empty output now tolerated) or
+    # FAILED for OTHER reasons (cascade_timeout, no_first_step).
+    # The empty-output gate's reason MUST NOT appear.
+    assert result.reason is None or "no meaningful output" not in result.reason

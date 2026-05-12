@@ -300,7 +300,12 @@ def _build_components_from_env(
         # the env-var override. Operators who want to keep the
         # pre-EMPTY-FAIL "run with {} and accept whatever happens"
         # behavior set APECX_EXECUTOR_ALLOW_EMPTY_INPUT=1.
-        allow_empty_env = os.environ.get("APECX_EXECUTOR_ALLOW_EMPTY_INPUT", "").lower() in (
+        allow_empty_in_env = os.environ.get("APECX_EXECUTOR_ALLOW_EMPTY_INPUT", "").lower() in (
+            "1",
+            "true",
+            "yes",
+        )
+        allow_empty_out_env = os.environ.get("APECX_EXECUTOR_ALLOW_EMPTY_OUTPUT", "").lower() in (
             "1",
             "true",
             "yes",
@@ -310,11 +315,13 @@ def _build_components_from_env(
             artifact_store=store,
             recorder=recorder,
             workflow_base_dir=workflow_dir,
-            allow_empty_input=allow_empty_env,
+            allow_empty_input=allow_empty_in_env,
+            allow_empty_output=allow_empty_out_env,
         )
         _banner(
             f"local executor wired against workflow_base_dir={workflow_dir} "
-            f"(allow_empty_input={allow_empty_env})"
+            f"(allow_empty_input={allow_empty_in_env} "
+            f"allow_empty_output={allow_empty_out_env})"
         )
     else:
         _banner(

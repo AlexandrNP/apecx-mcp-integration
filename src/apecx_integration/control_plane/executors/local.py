@@ -115,6 +115,7 @@ class LocalExecutor:
         cascade_settle_ms: int = 200,
         default_payload: dict[str, Any] | None = None,
         allow_empty_input: bool = False,
+        allow_empty_output: bool = False,
     ) -> None:
         self._session_factory = session_factory
         self._artifact_store = artifact_store
@@ -138,6 +139,17 @@ class LocalExecutor:
         # AND document why in their test.
         self._default_payload: dict[str, Any] = default_payload or {}
         self._allow_empty_input: bool = allow_empty_input
+        # EMPTY-OUTPUT (2026-05-12): symmetric gate on the OUTPUT
+        # side. The RT-REAL integration test surfaced the shape
+        # where workflow.run() returns
+        # ``{"workflow_output": null, "status": "completed"}`` —
+        # cascade drained cleanly, executor marked COMPLETED, but
+        # the workflow's actual output was never populated. Tests
+        # passing on this shape are false positives. Default-fail;
+        # opt in via ``allow_empty_output=True`` for callers that
+        # genuinely test the empty-output branch (fixture-driven
+        # smoke tests where the workflow is intentionally inert).
+        self._allow_empty_output: bool = allow_empty_output
 
     async def execute(self, run_id: UUID) -> ExecutionResult:
         yaml_path = self._validate_and_fetch(run_id)
@@ -342,6 +354,45 @@ class LocalExecutor:
                     intended_reason=reason,
                     output_artifact_id=None,
                 )
+
+            # EMPTY-OUTPUT gate (2026-05-12): symmetric with the
+            # EMPTY-FAIL input gate. If workflow.run() returned a
+            # status=completed dict but every non-metadata output
+            # value is None/empty, the cascade drained without
+            # populating the workflow's outputs. Mark FAILED unless
+            # the caller explicitly opted in.
+            if not self._allow_empty_output and isinstance(raw_result, dict):
+                meaningful_outputs = {
+                    k: v
+                    for k, v in raw_result.items()
+                    if not k.startswith("_")
+                    and k != "status"
+                    and v is not None
+                    and v != []
+                    and v != {}
+                    and v != ""
+                }
+                if not meaningful_outputs:
+                    reason = (
+                        "workflow returned no meaningful output. "
+                        f"raw_result keys: {sorted(raw_result.keys())}, "
+                        "all non-status values were None / empty. "
+                        "Pass allow_empty_output=True to opt in, OR "
+                        "investigate the workflow's link wiring + "
+                        "trigger semantics (the cascade fired but no "
+                        "data reached the workflow-level output)."
+                    )
+                    log.warning("Run %s: %s", run_id, reason)
+                    transitioned = self._mark_failed(
+                        run_id, reason, failure_class="empty_output_refused"
+                    )
+                    return self._terminal_result(
+                        run_id=run_id,
+                        intended_status=RunStatus.FAILED,
+                        transitioned=transitioned,
+                        intended_reason=reason,
+                        output_artifact_id=None,
+                    )
 
         # The workflow succeeded; persist the output artifact and
         # mark the run completed. If persistence fails (disk full,
