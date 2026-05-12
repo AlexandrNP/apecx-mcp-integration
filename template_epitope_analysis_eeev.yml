@@ -1,0 +1,7 @@
+name: template_epitope_analysis_eeev
+description: Systematic epitope analysis for Eastern Equine Encephalitis Virus
+config_version: 2
+steps:
+  rag_search:
+    class: apecx_integration.composition.steps.domain_rag_search_step.DomainRagSearchStep
+    config: steps/domain_rag_search.yml

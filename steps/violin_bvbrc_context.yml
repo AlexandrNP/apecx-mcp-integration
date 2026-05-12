@@ -1,0 +1,64 @@
+# Workflow spec retrieval branch — violin_bvbrc_context
+#
+# Pure-pandas substring lookup over VIOLIN CSVs +
+# BV-BRC alphavirus genomes TSV. One of the four retrieval branches
+# feeding rag_synthesis.
+#
+# Wraps the lookup logic in
+# ``src/apecx_integration/composition/steps/violin_bvbrc_context_step.py``.
+#
+# NO LLM. The match is substring-only — fast, deterministic, cheap
+# to run on every query. Distinct from violin_entity_lookup.yml
+# (Step 5) which enriches already-resolved matches; this step
+# operates directly on extracted entities to surface candidate
+# context for synthesis.
+#
+# Path resolution order:
+#   1. violin_data_dir / bvbrc_cache_dir from this YAML (if non-null)
+#   2. APECX_DB_DATA_DIR env var (VIOLIN only)
+#   3. workspace-relative data/violin/ and data/bvbrc_cache/
+
+class: "apecx_integration.composition.steps.violin_bvbrc_context_step.VIOLINBVBRCContextStep"
+name: violin_bvbrc_context
+description: >
+  Substring-match extracted entities against VIOLIN
+  Pathogen/Vaccine CSVs and BV-BRC alphavirus genomes — produce
+  violin_mappings + bvbrc_genomes for the synthesis stage. NO LLM.
+
+# Path overrides. Null = use APECX_DB_DATA_DIR (VIOLIN only) or the
+# workspace-relative defaults.
+violin_data_dir: null
+bvbrc_cache_dir: null
+
+# Caps applied after substring matching. Wide queries (e.g. just
+# "virus") can match thousands of rows; the cap protects the
+# downstream LLM context budget.
+max_violin_mappings: 10
+max_bvbrc_genomes: 10
+
+input_data_units:
+  context_query_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: context_query_input
+    description: >
+      ``{entities: list[dict|str] | None, query_terms: list[str] |
+      None}`` — extracted entities (preferred, from
+      EntityExtractionStep) and/or raw query terms. At least one
+      must be present and non-empty to produce results.
+    persistent: false
+
+output_data_units:
+  context_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: context_output
+    description: >
+      ``{violin_mappings: list[dict], bvbrc_genomes: list[dict]}``
+      — VIOLIN mappings carry ``synonym_id``, ``canonical_term``,
+      ``query_term``, ``entity_type``, ``source``; BV-BRC genomes
+      carry ``genome_id``, ``genome_name``. Consumed by the
+      downstream RagSynthesisStep.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "context_query_input"

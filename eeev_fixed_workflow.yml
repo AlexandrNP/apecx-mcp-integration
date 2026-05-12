@@ -1,0 +1,46 @@
+name: eeev_epitope_analysis_fixed
+description: Fixed end-to-end EEEV epitope analysis with proper trigger configuration
+version: 0.1.0
+config_version: 2
+
+steps:
+  assembly:
+    class: apecx_integration.composition.steps.synthesis_context_assembly_step.SynthesisContextAssemblyStep
+    config: steps/synthesis_context_assembly.yml
+  synthesis:
+    class: apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep
+    config: steps/rag_synthesis.yml
+
+links:
+  workflow_input_to_assembly:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: workflow_input
+      target: assembly.assembly_input
+      auto_transfer: true
+  assembly_to_synthesis:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: assembly.synthesis_bundle_output
+      target: synthesis.synthesis_input
+      auto_transfer: true
+  synthesis_to_output:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: synthesis.synthesis_output
+      target: workflow_output
+      auto_transfer: true
+
+input_data_units:
+  workflow_input:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_input
+    description: "EEEV epitope analysis query input"
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_output
+    description: "EEEV epitope analysis synthesis output"
+    persistent: false

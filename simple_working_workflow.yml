@@ -1,0 +1,36 @@
+name: simple_rvfv_epitope_analysis
+description: Basic epitope analysis for Rift Valley Fever Virus glycoprotein Gn
+version: 0.1.0
+config_version: 2
+steps:
+  synthesis:
+    class: apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep
+    config: steps/rag_synthesis.yml
+links:
+  input_to_synthesis:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: workflow_input
+      target: synthesis.synthesis_input
+      auto_transfer: true
+  synthesis_to_output:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: synthesis.synthesis_output
+      target: workflow_output
+      auto_transfer: true
+triggers:
+  workflow_input_trigger:
+    class: nanobrain.core.trigger.DataUnitChangeTrigger
+    config:
+      data_unit: workflow_input
+input_data_units:
+  workflow_input:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_input
+    persistent: false
+output_data_units:
+  workflow_output:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_output
+    persistent: false

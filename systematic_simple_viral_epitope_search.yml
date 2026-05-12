@@ -1,0 +1,34 @@
+name: simple_viral_epitope_search
+description: Basic epitope identification using RAG synthesis only
+version: 0.1.0
+config_version: 2
+
+steps:
+  synthesis:
+    class: apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep
+    config: steps/rag_synthesis.yml
+
+links:
+  input_to_synthesis:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: workflow_input
+      target: synthesis.synthesis_input
+      auto_transfer: true
+
+  synthesis_to_output:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: synthesis.synthesis_output
+      target: workflow_output
+      auto_transfer: true
+
+input_data_units:
+  workflow_input:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_input
+
+output_data_units:
+  workflow_output:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_output

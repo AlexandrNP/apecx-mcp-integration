@@ -1,0 +1,31 @@
+name: minimal_eeev_test
+description: Minimal test workflow for Eastern Equine Encephalitis Virus
+version: 0.1.0
+config_version: 2
+steps:
+  test_step:
+    class: apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep
+    config: steps/rag_synthesis.yml
+links:
+  input_to_test:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: workflow_input
+      target: test_step.synthesis_input
+      auto_transfer: true
+  test_to_output:
+    class: nanobrain.core.link.DirectLink
+    config:
+      source: test_step.synthesis_output
+      target: workflow_output
+      auto_transfer: true
+input_data_units:
+  workflow_input:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_input
+    persistent: false
+output_data_units:
+  workflow_output:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_output
+    persistent: false

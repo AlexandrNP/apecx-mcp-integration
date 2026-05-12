@@ -83,6 +83,30 @@ def _default_dictionary_version() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H%M%SZ")
 
 
+def _default_data_file_path(relative_path: str) -> str | None:
+    """Resolve data file path from APECX_DATA_ROOT environment variable."""
+    data_root = os.environ.get("APECX_DATA_ROOT")
+    if data_root:
+        return str(Path(data_root) / relative_path)
+    return None
+
+
+def _default_violin_pathogens_path() -> str | None:
+    return _default_data_file_path("violin/Pathogen_Information.csv")
+
+
+def _default_violin_vaccines_path() -> str | None:
+    return _default_data_file_path("violin/Vaccine_Information.csv")
+
+
+def _default_violin_genes_path() -> str | None:
+    return _default_data_file_path("violin/Gene_Information.csv")
+
+
+def _default_bvbrc_genomes_path() -> str | None:
+    return _default_data_file_path("BVBRC_genome_alphavirus.csv")
+
+
 class DictionaryBuildStepConfig(StepConfig):
     """Config for :class:`DictionaryBuildStep`.
 
@@ -117,20 +141,20 @@ class DictionaryBuildStepConfig(StepConfig):
     )
 
     violin_pathogens_path: str | None = Field(
-        default=None,
-        description="Path to VIOLIN Pathogen_Information.csv. Optional.",
+        default_factory=_default_violin_pathogens_path,
+        description="Path to VIOLIN Pathogen_Information.csv. Defaults from APECX_DATA_ROOT/violin/Pathogen_Information.csv.",
     )
     violin_vaccines_path: str | None = Field(
-        default=None,
-        description="Path to VIOLIN Vaccine_Information.csv. Optional.",
+        default_factory=_default_violin_vaccines_path,
+        description="Path to VIOLIN Vaccine_Information.csv. Defaults from APECX_DATA_ROOT/violin/Vaccine_Information.csv.",
     )
     violin_genes_path: str | None = Field(
-        default=None,
-        description="Path to VIOLIN Gene_Information.csv. Optional.",
+        default_factory=_default_violin_genes_path,
+        description="Path to VIOLIN Gene_Information.csv. Defaults from APECX_DATA_ROOT/violin/Gene_Information.csv.",
     )
     bvbrc_genomes_path: str | None = Field(
-        default=None,
-        description="Path to a BV-BRC genomes TSV. Optional.",
+        default_factory=_default_bvbrc_genomes_path,
+        description="Path to a BV-BRC genomes TSV. Defaults from APECX_DATA_ROOT/BVBRC_genome_alphavirus.csv.",
     )
     output_dir: str = Field(
         default_factory=_default_dict_output_dir,
@@ -169,6 +193,14 @@ class DictionaryBuildStepConfig(StepConfig):
             "Optional cap on rows-per-table. Useful for smoke-testing "
             "against live OLS without doing a full build. "
             "When None, all rows are processed."
+        ),
+    )
+    execution_timeout: int = Field(
+        default=300,
+        description=(
+            "Step execution timeout in seconds. Dictionary build requires "
+            "10-15 minutes for ontology API calls. Default 300s (5min) is "
+            "too short; recommend 1200s (20min) for production builds."
         ),
     )
 

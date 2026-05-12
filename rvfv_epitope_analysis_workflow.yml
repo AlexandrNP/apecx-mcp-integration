@@ -1,0 +1,45 @@
+name: rift_valley_fever_virus_epitope_analysis
+description: Perform comprehensive epitope analysis on Rift Valley Fever Virus glycoprotein
+  Gn using multi-source retrieval, conservation analysis, structural accessibility
+  assessment, and experimental validation.
+version: 0.1.0
+config_version: 2
+steps:
+  assembly:
+    class: apecx_integration.composition.steps.synthesis_context_assembly_step.SynthesisContextAssemblyStep
+    config: steps/synthesis_context_assembly.yml
+  rag_synthesis:
+    class: apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep
+    config: steps/rag_synthesis.yml
+links:
+  workflow_input_to_assembly_assembly_input_0:
+    class: nanobrain.core.link.DirectLink
+    config:
+      link_type: direct
+      source: workflow_input
+      target: assembly.assembly_input
+      auto_transfer: true
+  assembly_synthesis_bundle_output_to_rag_synthesis_synthesis_input_1:
+    class: nanobrain.core.link.DirectLink
+    config:
+      link_type: direct
+      source: assembly.synthesis_bundle_output
+      target: rag_synthesis.synthesis_input
+      auto_transfer: true
+  rag_synthesis_synthesis_output_to_workflow_output_2:
+    class: nanobrain.core.link.DirectLink
+    config:
+      link_type: direct
+      source: rag_synthesis.synthesis_output
+      target: workflow_output
+      auto_transfer: true
+input_data_units:
+  workflow_input:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_input
+    persistent: false
+output_data_units:
+  workflow_output:
+    class: nanobrain.core.data_unit.DataUnitMemory
+    name: workflow_output
+    persistent: false
