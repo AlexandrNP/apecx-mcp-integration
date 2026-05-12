@@ -298,6 +298,35 @@ def _ollama_url() -> str:
 
 
 def _ollama_model() -> str:
+    """Resolve the configured Ollama model.
+
+    Default is ``mistral-nemo:latest`` because it has the longest
+    track record on the composer's structured-YAML task in this
+    workspace (T01 AC1 strict path, 3/3 consecutive RUN_COMPLETED).
+
+    Other models we have a reason to mention:
+
+      - ``mistral-small:latest`` (23B) — what composer_config.yml
+        declares as its own default. Better instruction-following on
+        long candidate blocks; ~14GB on disk.
+      - ``gemma4:latest`` (8B) — Gemma 4 family (2026 release).
+        Drop-in size with mistral-nemo (~9.6GB). **MEASURED 2026-05-11
+        TO BE WORSE THAN mistral-nemo FOR THIS TASK**: 2×→4× more
+        framework-rule violations on the diagnostic E2E test, 1.7×
+        slower per inference. Stick with mistral-nemo as the
+        composer default unless a future Gemma 4 fine-tune fixes the
+        gap. Increase ``APECX_LLM_MAX_VALIDATION_RETRIES=2`` if you
+        choose gemma4 anyway.
+      - ``gemma4:26b`` — Mixture-of-Experts with 4B active params.
+        Compute profile similar to gemma4:latest but with broader
+        knowledge; ~16GB on disk. Not measured here.
+
+    Override via ``APECX_LLM_MODEL`` env var. ``apecx-setup llm``
+    pulls whatever you named. The diagnostic E2E test
+    (``test_composer_validator_e2e_against_ollama.py``) is the
+    regression gate when swapping models — verifies the
+    structured-feedback machinery works regardless of LLM quality.
+    """
     return os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
 
 

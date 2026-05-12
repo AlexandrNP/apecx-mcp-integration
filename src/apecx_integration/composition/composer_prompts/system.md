@@ -43,7 +43,9 @@ The workflow YAML must:
 
 - Under ``steps:``, each step is a mapping ``<step_id>: { class: ...,
   config: ... }`` where ``class`` is the fully-qualified Python class
-  path (use the library's ``implementation_path`` verbatim).
+  path (use the library's ``implementation_path`` verbatim — copy
+  the ``class:`` line from the candidate block character for
+  character; do NOT paraphrase or drop the ``_step`` suffix).
 
 **Step config rules — hard constraints, no exceptions:**
 

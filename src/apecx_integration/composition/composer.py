@@ -967,14 +967,22 @@ def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
     validation runs.
 
     Mapping (env → config key):
-        APECX_LLM_MODEL       → llm_model
-        APECX_LLM_BASE_URL    → llm_base_url
-        APECX_LLM_TEMPERATURE → temperature (float)
-        APECX_LLM_MAX_TOKENS  → max_tokens  (int)
+        APECX_LLM_MODEL                  → llm_model
+        APECX_LLM_BASE_URL               → llm_base_url
+        APECX_LLM_TEMPERATURE            → temperature (float)
+        APECX_LLM_MAX_TOKENS             → max_tokens  (int)
+        APECX_LLM_MAX_VALIDATION_RETRIES → max_validation_retries (int, C1)
 
     Unset env vars leave the YAML value untouched. Invalid numeric
     values raise ValueError at pydantic validation; the composer
     surfaces that as ``ComposerConfigurationError``.
+
+    The ``APECX_LLM_MAX_VALIDATION_RETRIES`` knob (2026-05-11) lets
+    operators dial up the C1 retry budget per-model. mistral-nemo
+    repairs reliably with the default 1; gemma4 (from observation)
+    benefits from 2 because it hallucinates class paths more often
+    on the first attempt. Without an env-var hook, operators would
+    have to edit the YAML to experiment — a real friction point.
     """
     str_pairs = (
         ("APECX_LLM_MODEL", "llm_model"),
@@ -988,6 +996,11 @@ def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
     numeric_pairs = (
         ("APECX_LLM_TEMPERATURE", "temperature", float),
         ("APECX_LLM_MAX_TOKENS", "max_tokens", int),
+        (
+            "APECX_LLM_MAX_VALIDATION_RETRIES",
+            "max_validation_retries",
+            int,
+        ),
     )
     for env, key, caster in numeric_pairs:
         value = os.environ.get(env)
