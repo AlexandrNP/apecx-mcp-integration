@@ -54,3 +54,27 @@ output to the minimal NEW function that fulfills the spec; the
 operator wires it in via a NEW class file later. Editing a shared
 class to fit one workflow silently breaks every other workflow that
 depends on it — adoption requires the existing surface keeps working.
+
+**REUSE-FIRST RULE — prefer stdlib over hand-rolled (load-bearing
+for adoption, 2026-05-12):**
+
+Before authoring control flow or data manipulation BY HAND, ask
+whether the stdlib already does this. Common reuses, by category:
+
+- **Aggregation / reduction**: `sum`, `max`, `min`, `any`, `all`,
+  `functools.reduce`, `statistics.mean`/`median`/`stdev`.
+- **Iteration / grouping**: `itertools.chain`, `itertools.groupby`,
+  `itertools.islice`, `itertools.product`, `itertools.combinations`.
+- **Collections**: `collections.Counter`, `collections.defaultdict`,
+  `collections.deque`, `collections.OrderedDict`.
+- **Strings / regex**: `re.match`, `re.findall`, `str.translate`,
+  `str.maketrans`, `string.punctuation`.
+- **I/O**: `pathlib.Path`, `json.dump`/`load`, `csv.DictReader`,
+  `tempfile.NamedTemporaryFile`.
+
+When stdlib covers the task, USE stdlib. Hand-rolled re-implementations
+of stdlib functions are a CONCERN, not a feature — the reviewer
+will flag them with a suggested replacement. Exception: when the
+spec explicitly forbids stdlib for that operation (rare). Adoption
+signal: a function that fits on one screen using stdlib idioms is
+faster to review + maintain than a hand-rolled equivalent twice as long.

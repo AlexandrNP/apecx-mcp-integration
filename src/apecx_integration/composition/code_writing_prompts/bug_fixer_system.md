@@ -92,3 +92,23 @@ review``. The wrapper records this as an ``out_of_scope`` reason in
 the next memory write so an operator can extend the library
 intentionally (a NEW class in a NEW file, never an edit to the
 existing one).
+
+**REUSE-FIRST RULE — fix via stdlib reuse when applicable (load-bearing
+for adoption, 2026-05-12):**
+
+When the broken code re-implements a stdlib idiom AND the
+re-implementation IS the bug, the minimal fix is "replace the
+broken hand-roll with the stdlib call". Examples:
+
+- Manual accumulator with an off-by-one → `sum(items)` /
+  `max(items)`.
+- Hand-rolled grouping with the wrong key → `itertools.groupby`
+  with the correct key function.
+- Custom counter that miscounts duplicates → `collections.Counter`.
+- Manual sort with reversed comparator → `sorted(key=..., reverse=True)`.
+
+Replacing 8 lines of buggy hand-rolled iteration with 1 line of
+stdlib is BOTH the smaller diff and the more correct fix. Do not
+preserve broken hand-rolled patterns out of misplaced respect for
+the previous attempt — the spec is the contract, not the previous
+code shape.

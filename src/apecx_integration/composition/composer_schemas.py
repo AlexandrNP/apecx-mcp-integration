@@ -178,6 +178,47 @@ class CompositionSummary:
     # many composes did the reviewer reject?" as a quality signal.
     review_verdict: dict | None = None
 
+    @property
+    def reuse_ratio(self) -> float:
+        """Adoption signal — fraction of steps drawn from the library.
+
+        Derived from existing counts so callers cannot get a stale
+        value: ``steps_reused / (steps_reused + steps_generated)``.
+
+        Semantics:
+          * ``1.0`` — every step came from a library component
+            (ideal adoption signal; PR-mergeable on sight).
+          * ``0.0`` — every step is novel_python (worst signal;
+            heavy review burden + T13 sandbox gate).
+          * ``NaN`` would imply zero steps; we return ``1.0`` instead
+            (a vacuous workflow is not novel_python by definition).
+
+        ``steps_swapped`` is INTENTIONALLY excluded from the
+        denominator — it counts differ-mode swaps during recompose,
+        not the original authorship split. Including it would
+        muddle the "reuse vs generate" signal this property exists
+        to surface.
+        """
+        denom = self.steps_reused + self.steps_generated
+        if denom == 0:
+            return 1.0
+        return self.steps_reused / denom
+
+    def is_reuse_dominated(self, threshold: float = 0.8) -> bool:
+        """Adoption-signal predicate: ``reuse_ratio >= threshold``.
+
+        Default threshold ``0.8`` matches the composer's prompt-level
+        adoption signal ("median user's first workflow should have
+        ZERO novel_python steps") with one-step slack for cases
+        where the library legitimately lacks the needed primitive.
+
+        Used by the composer's reviewer prompt + telemetry + future
+        quality gates as a single-number authorial-discipline check.
+        Operators MAY relax the threshold per-workflow if their task
+        is genuinely novel; the default biases toward strict reuse.
+        """
+        return self.reuse_ratio >= threshold
+
 
 @dataclass(frozen=True, kw_only=True)
 class ComposedWorkflow:

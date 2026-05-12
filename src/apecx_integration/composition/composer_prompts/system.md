@@ -133,6 +133,40 @@ scope: emit your best-effort workflow with a ``# closed-class:
 needed change to <class>`` annotation as a comment line in the
 ``novel_python`` fence's first source block, and let the operator
 decide whether to extend the library.
+
+**REUSE-FIRST RULE — pick existing capabilities before authoring
+novel Python (load-bearing for adoption, 2026-05-12):**
+
+Before emitting a single line of novel Python, exhaust THIS CHECKLIST:
+
+1. **Scan the candidate-components list** for a component whose
+   ``description`` covers the step's purpose. Reuse the existing
+   class with its canonical wrapper YAML path.
+2. **Check for sub-workflow steps** that already encapsulate the
+   topology you're about to wire by hand: ``CodeReflectionStep``,
+   ``CodeVerificationStep``, ``CodeWithTestsStep``,
+   ``BugFixStep``-style (NW1), ``CodeDocumentationStep``-style (NW2),
+   ``SynthesisContextAssemblyStep``, ``WorkflowAnalysisStep`` →
+   ``WorkflowSummarizerStep``. If one matches, use it as a single
+   step instead of redeclaring its inner topology.
+3. **Check whether two existing components composed via a
+   DirectLink** can cover the step. Prefer two DirectLinks over one
+   novel Python block, even when the novel block would be shorter.
+
+Only when ALL THREE fail, emit a novel Python step. When you do:
+
+- Prefix the ``novel_python`` fence with a one-line comment naming
+  the library gap, e.g. ``# novel_python rationale: no library step
+  for <kind-of-transform>``.
+- Use a NEW class name (closed-class rule above) and reference it
+  by the new class path under ``steps:``.
+
+Why this is non-negotiable: every novel Python block goes through a
+human review gate (Step 4 HITL) plus the T13 import-scanner; every
+library component is already reviewed. A workflow built from library
+components is PR-mergeable on sight; a workflow padded with
+unjustified novel Python is a review backlog. Adoption signal: the
+median user's first workflow should have ZERO novel Python steps.
 - Under ``links:``, each link is a ``<link_id>: { class:
   "nanobrain.core.link.DirectLink", config: { link_type: direct,
   source: "<source>", target: "<target>", auto_transfer: true } }``

@@ -692,3 +692,46 @@ a shared class is unbounded breakage across the consumer surface.
 
 Pinned by `tests/unit/test_closed_class_rule_pinned_in_prompts.py`
 (8 assertions, marker + remedy stem in 7 authoring-side prompts).
+
+### Reuse-first authoring (2026-05-12) — applies to all 3 paths
+
+Companion to closed-class. Before authoring NEW code in ANY of the
+three workflow construction paths, check whether existing
+capabilities already cover the task. Strict priority order:
+
+1. **Existing library component** → cheapest. Reviewable on sight, no
+   T13b sandbox gate, no novel-Python HITL review.
+2. **Composition of existing components via DirectLink** → two
+   library components stitched is still 100% library-grade.
+3. **Existing sub-workflow step** (``CodeReflectionStep``,
+   ``CodeVerificationStep``, ``CodeWithTestsStep``,
+   ``SynthesisContextAssemblyStep``, etc.) → encapsulates common
+   topologies so callers do not redeclare them.
+4. **Existing skeleton via ``Workflow.from_skeleton``** → use when
+   topology is reusable but steps differ by domain.
+5. **Novel Python step** → last resort. Justify with a one-line
+   rationale comment; goes through HITL + T13b.
+
+Per-path consequences:
+
+| Path | Reuse-first practice |
+|---|---|
+| Hand-authored YAML | Search the manifest before authoring a new step file. |
+| `Workflow.from_skeleton` | Bind to existing classes; skeleton is the reuse vehicle. |
+| `WorkflowBuilder.add_step` | Import existing step class; only define new class when no candidate fits. |
+
+Inside a code-writing prompt context (the `CodeWriteStep` family,
+not workflow composition): reuse means stdlib over hand-rolled —
+`sum`/`max`/`Counter`/`itertools.groupby`/`pytest.raises` etc.
+The reviewer prompt explicitly flags re-implementations.
+
+Framework-native enforcement consumer:
+`CompositionSummary.reuse_ratio` (composer_schemas.py) — derived
+from `steps_reused / (steps_reused + steps_generated)`. The
+`is_reuse_dominated(threshold=0.8)` predicate is the default-policy
+adoption check. Used by telemetry + the composer reviewer prompt.
+
+Pinned by `tests/unit/test_reuse_first_rule_pinned_in_prompts.py`
+(9 assertions, marker + concrete-target list in 8 prompts) and
+`tests/unit/test_composition_summary_reuse_ratio.py` (9 assertions
+on the derived field's correctness + frozen-dataclass invariant).

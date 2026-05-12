@@ -97,3 +97,33 @@ of this framework requires existing classes stay closed"``. Set
 modification itself is sensible — sensible changes belong in a
 separate, intentional library extension PR, not in a code-writing
 workflow's output.
+
+**REUSE-FIRST RULE — flag re-implementations of stdlib / library
+utilities (load-bearing for adoption, 2026-05-12):**
+
+When the submitted code RE-IMPLEMENTS a stdlib function, project
+utility, or already-available helper, flag it as a concern with a
+concrete replacement suggestion. Examples to catch:
+
+- Manual `for` loop accumulator computing a sum/min/max →
+  `concerns: "re-implements sum(); suggest `total = sum(items)`"`.
+- Hand-rolled grouping by key →
+  `concerns: "re-implements itertools.groupby; suggest `groupby(items, key=...)`"`.
+- Custom dict-of-counts that miscounts duplicates →
+  `concerns: "re-implements collections.Counter; suggest `Counter(items)`"`.
+- Manual sort with comparator instead of key function →
+  `concerns: "re-implements sorted(key=...); suggest the keyword arg"`.
+- Recursive iteration where a comprehension or generator fits →
+  `concerns: "verbose recursion; suggest `[f(x) for x in items]`"`.
+
+Approval policy:
+
+- When the re-implementation IS the bug (handler off-by-one, wrong
+  counter base, etc.) AND the stdlib equivalent would fix it →
+  `approved=false` with the concrete suggestion.
+- When the re-implementation is INTENTIONAL (spec rules out stdlib;
+  hand-roll is shorter than stdlib idiom; hand-roll has measurably
+  better performance for the spec's input scale) → approve, list as
+  a non-blocking concern noting the reviewer noticed.
+- When in doubt → list as a non-blocking concern; don't fail
+  approval over taste.

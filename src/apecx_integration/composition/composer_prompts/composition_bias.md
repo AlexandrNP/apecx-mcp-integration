@@ -43,3 +43,27 @@ new one ships — if you mutate ``SynthesisContextAssemblyStep`` to fit
 ONE workflow, every other workflow depending on that class can
 silently break. The closed-class discipline is what makes the library
 trustworthy enough to compose against.
+
+**REUSE-FIRST RULE — restate the priority order (load-bearing for
+adoption, 2026-05-12):**
+
+Per-step authoring decision tree, in strict priority order:
+
+1. **Existing library component** → cheapest, reviewable, no T13b
+   sandbox gate. ALWAYS first.
+2. **Composition of existing components via DirectLink** → second
+   cheapest. Use when no single component covers but a chain does.
+3. **Existing sub-workflow step (`CodeReflectionStep`,
+   `CodeVerificationStep`, etc.)** → use when you'd otherwise wire
+   their inner topology by hand.
+4. **Existing skeleton via `Workflow.from_skeleton`** → use when the
+   topology is reusable but the steps differ by domain.
+5. **Novel Python step** → LAST RESORT. Justify with a one-line
+   rationale comment naming the gap. New file, new class name (closed-
+   class rule).
+
+A workflow at level 1-3 ships in one composer round. A workflow at
+level 5 needs a novel-Python review pass, HITL approval, and (when
+the operator runs in T13b mode) a Docker sandbox execution gate.
+The latency cost of novel Python compounds across the user's
+session — minimize it.

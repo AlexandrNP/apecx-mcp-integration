@@ -54,3 +54,25 @@ The remedy: your new test functions ARE the new artifact. You do
 not need to create a new class or modify any existing code —
 authoring fresh `test_*` functions that reference the original
 function is the closed-class-compliant path.
+
+**REUSE-FIRST RULE — use pytest features over hand-rolled assertions
+(load-bearing for adoption, 2026-05-12):**
+
+pytest already provides utilities your tests should reuse:
+
+- **Error-path tests** → `with pytest.raises(ValueError, match="..."):`
+  Do NOT try/except + `assert exc.args[0] == ...`. The `match=`
+  kwarg pins the message via regex, which is more robust than
+  string equality.
+- **Float comparisons** → `assert result == pytest.approx(0.333,
+  rel=1e-3)`. Do NOT compute `abs(a - b) < eps` manually.
+- **Repeated test bodies (3+ cases)** → `@pytest.mark.parametrize`
+  with a list of (input, expected) tuples. Do NOT copy-paste the
+  same `def test_*` body four times with different inputs.
+- **Stdlib reuse from the writer prompt applies inside test
+  assertions too**: prefer `sorted(...)` / `Counter(...)` /
+  `set(...)` over hand-rolled comparison helpers.
+
+Use plain `assert` for happy-path equality checks (`assert add(2, 3)
+== 5`). The reuse rule is about the COMPLICATED assertions, not the
+simple ones.

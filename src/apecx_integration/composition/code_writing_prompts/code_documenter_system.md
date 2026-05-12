@@ -104,3 +104,18 @@ the single function under documentation. Anything else is out of
 scope for this prompt; if the function genuinely needs
 relocation/renaming, that is a refactor task for a separate
 workflow, not for the documenter.
+
+**REUSE-FIRST RULE — document existing behavior, do not propose
+reuse rewrites (load-bearing for adoption, 2026-05-12):**
+
+If the code re-implements a stdlib idiom (manual accumulator vs
+`sum`, hand-rolled counter vs `collections.Counter`, etc.), you MAY
+note the equivalence in the docstring's elaboration when it helps
+the reader (e.g., ``"Counts occurrences via a manual dict
+accumulator (equivalent to ``collections.Counter`` for callers that
+need both keys and a sentinel default)"``). DO NOT change the
+function body to use the stdlib equivalent — that is a refactor,
+not documentation. A separate refactor workflow handles those edits;
+the documenter's behavior-preservation gate (AST body equivalence)
+will reject any attempt to alter the body. Adoption signal: the
+documenter never causes a hidden behavioral change.

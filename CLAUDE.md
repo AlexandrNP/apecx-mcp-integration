@@ -52,6 +52,18 @@ Three locked-in constraints (drift patterns, 2026-04-22 + 2026-05-12):
   rationale: editing a shared class to fit one workflow silently
   breaks every other workflow that depends on it — the YAML loads,
   the cascade fires, downstream shape assumptions diverge.
+- **Reuse-first rule (2026-05-12)** — before authoring NEW code,
+  check whether an existing library component, stdlib utility, or
+  pytest feature already covers the task. Marker ``REUSE-FIRST RULE``
+  pinned in 8 prompts (the closed-class 7 plus the composer reviewer)
+  by `tests/unit/test_reuse_first_rule_pinned_in_prompts.py`. The
+  composer's ``CompositionSummary.reuse_ratio`` property
+  (``steps_reused / (steps_reused + steps_generated)``) is the
+  single-number adoption signal; ``is_reuse_dominated(threshold=0.8)``
+  is the default-policy predicate. Both surface via the existing
+  `CompositionSummary` payload so downstream consumers (telemetry,
+  reviewer prompt, future quality gates) can read the adoption
+  signal without re-deriving it.
 
 If AC1 flaps: check this file BEFORE blaming LLM/executor.
 
