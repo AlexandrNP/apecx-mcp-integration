@@ -17,11 +17,11 @@ workflow YAML.
 
 from __future__ import annotations
 
-import os
 import re
 from collections.abc import Callable
 from typing import Any
 
+from tests.benchmarks.model_roles import resolve_role
 from tests.benchmarks.types import BenchmarkProblem
 
 _FENCE_PATTERN = re.compile(
@@ -68,10 +68,15 @@ def make_direct_codegen(
     raises on LLM failure (the runner buckets that as
     ``codegen_<ExceptionType>``).
 
-    Resolution: explicit kwargs > APECX_LLM_* env > built-in defaults.
+    Resolution: delegated to ``resolve_role("drafter", ...)`` —
+    explicit kwargs > APECX_LLM_MODEL_DRAFTER > composer_config.yml
+    model_roles.drafter > APECX_LLM_MODEL > hardcoded default.
     """
-    resolved_model = model or os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
-    resolved_base = base_url or os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
+    resolved_model, resolved_base = resolve_role(
+        "drafter",
+        kwarg_model=model,
+        kwarg_base_url=base_url,
+    )
 
     def _codegen(problem: BenchmarkProblem) -> str:
         if llm_factory is not None:

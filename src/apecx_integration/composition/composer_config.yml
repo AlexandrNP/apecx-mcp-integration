@@ -42,3 +42,31 @@ sandbox_whitelist_path: "../_configs/import_whitelist.txt"
 # How many catalog hits to surface to the LLM. Tight bound to keep
 # the prompt readable — bumping past ~10 tends to confuse mistral-nemo.
 retrieval_k: 10
+
+# Per-role LLM endpoint bindings (CGU-P0, 2026-05-12).
+#
+# The composer codegen-uplift effort runs multi-stage scaffolds where
+# different roles call different models — e.g. nemotron-3-nano (4B,
+# thinking tokens) plans, mistral-nemo (12B) drafts. Each entry binds
+# a role name to a model and optional base_url. ``base_url`` is
+# inherited from ``llm_base_url`` when omitted.
+#
+# Roles consumed by the benchmark codegens (see
+# tests/benchmarks/codegen/* and docs/composer_codegen_uplift_plan.md):
+#   - ``drafter``  : emits the final code artifact
+#   - ``planner``  : emits a numbered plan before drafting
+#   - ``reviewer`` : critiques the drafter's output for review-revise
+#
+# Resolution order (per role, narrowest-wins):
+#   1. explicit Python kwarg            (test override)
+#   2. APECX_LLM_MODEL_<ROLE> env var   (operator override)
+#   3. ``model_roles.<role>`` entry     (this file)
+#   4. APECX_LLM_MODEL env var          (single-model fallback)
+#   5. hardcoded role default           (codegen module)
+model_roles:
+  drafter:
+    model: "mistral-nemo:latest"
+  planner:
+    model: "nemotron-3-nano:4b"
+  reviewer:
+    model: "nemotron-3-nano:4b"

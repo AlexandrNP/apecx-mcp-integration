@@ -25,11 +25,11 @@ intervention measured against the direct-codegen baseline.
 
 from __future__ import annotations
 
-import os
 import re
 from collections.abc import Callable
 
 from tests.benchmarks.codegen.direct import _default_llm_for, _extract_code
+from tests.benchmarks.model_roles import resolve_role
 from tests.benchmarks.types import BenchmarkProblem
 
 # Strip the nemotron / qwen / deepseek-style <think>...</think>
@@ -49,25 +49,30 @@ def make_plan_then_code_codegen(
 ) -> Callable[[BenchmarkProblem], str]:
     """Build the plan-then-code codegen.
 
-    Resolution: explicit kwargs > role-specific env (``APECX_LLM_MODEL_PLANNER``,
-    ``APECX_LLM_MODEL_DRAFTER``) > generic env (``APECX_LLM_MODEL``)
-    > built-in defaults (nemotron-3-nano:4b planner, mistral-nemo
-    drafter).
+    Resolution: delegated to ``resolve_role(...)`` per stage —
+    explicit kwarg > APECX_LLM_MODEL_<ROLE> > composer_config.yml
+    model_roles.<role> > APECX_LLM_MODEL > hardcoded default.
+    Each stage resolves its own base_url so an operator can route
+    planner to a different Ollama host than drafter if needed.
     """
-    planner_resolved = (
-        planner_model or os.environ.get("APECX_LLM_MODEL_PLANNER") or "nemotron-3-nano:4b"
+    planner_resolved, planner_base = resolve_role(
+        "planner",
+        kwarg_model=planner_model,
+        kwarg_base_url=base_url,
     )
-    drafter_resolved = (
-        drafter_model
-        or os.environ.get("APECX_LLM_MODEL_DRAFTER")
-        or os.environ.get("APECX_LLM_MODEL")
-        or "mistral-nemo:latest"
+    drafter_resolved, drafter_base = resolve_role(
+        "drafter",
+        kwarg_model=drafter_model,
+        kwarg_base_url=base_url,
     )
-    base = base_url or os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
 
     def _codegen(problem: BenchmarkProblem) -> str:
-        plan = _run_planner(problem, planner_resolved, base, planner_temperature, max_tokens)
-        return _run_drafter(problem, plan, drafter_resolved, base, drafter_temperature, max_tokens)
+        plan = _run_planner(
+            problem, planner_resolved, planner_base, planner_temperature, max_tokens
+        )
+        return _run_drafter(
+            problem, plan, drafter_resolved, drafter_base, drafter_temperature, max_tokens
+        )
 
     return _codegen
 
