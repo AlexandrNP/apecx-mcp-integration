@@ -115,6 +115,21 @@ step classes (`CodeReflectionStep` for write+review;
   `apecx_integration.composition.docker_sandbox` (T13b, gated by
   `APECX_T13B_SANDBOX_EXECUTE=1`) for that posture.
 
+### Verified end-to-end against real LLM (2026-05-12)
+
+The self-improvement loop has been proven against real Ollama:
+
+  * **Attempt 1** (empty memory): code_write generates source from spec
+    alone; code_review approves with concerns; memory_write captures a
+    127-char lesson on disk.
+  * **Attempt 2** (same spec_id): memory_read surfaces the prior
+    lesson; CodeWriteStep receives it as `critique` input; second
+    attempt's review approves; memory_write SKIPS (restatement
+    detection fires — the lesson would have been a duplicate).
+
+Total wall time: ~32s for both attempts on mistral-nemo. See
+`tests/integration/test_self_improvement_against_ollama.py`.
+
 ### Self-improving code-writing with git-tracked memory — SHIPPED (2026-05-12)
 
 The Reflexion verbal-memory pattern (Shinn et al., NeurIPS 2023,

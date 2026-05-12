@@ -278,20 +278,16 @@ def test_code_reflection_workflow_end_to_end():
 @pytest.mark.xfail(
     strict=True,
     reason=(
-        "Nested-SubworkflowStep cascade has a multi-layered framework "
-        "gap that resists single-fix mitigation. Sub-problems "
-        "identified + partially mitigated 2026-05-12: (a) singleton "
-        "AsyncTriggerExecutor causes wait_for_cascade re-entrance "
-        "deadlock (mitigated by polling in SubworkflowStep + here in "
-        "the test); (b) input routing double-wraps the framework's "
-        "step-input-DU envelope (fixed in nanobrain 3c7a725); (c) "
-        "output collection used last-step only, missing workflow-"
-        "level outputs (fixed in same commit). After all three fixes "
-        "the outer cascade STILL hangs — additional unknown layer "
-        "below. Documented in friction-log #29. Single-level "
-        "SubworkflowStep usage works (inner reflection cascade runs "
-        "end-to-end in 30s); nested two-level usage is the remaining "
-        "blocker. xfail-strict so a future fix surfaces."
+        "Update 2026-05-12 (later): the no-LLM nested-SubworkflowStep "
+        "reproducer (tests/integration/test_nested_subworkflow_reproducer.py) "
+        "PASSES end-to-end in 0.46s with the data_unit + SubworkflowStep "
+        "fixes — framework wiring is functional for nested cascades. "
+        "This LLM-bound apecx outer test still hangs, so the residual "
+        "issue is specific to LLM-step timing OR a data-shape mismatch "
+        "between code_reflection's multi-key output and "
+        "code_verification's expected single-key envelope. Tracked as "
+        "an apecx-side YAML / data-shape issue rather than a framework "
+        "gap. xfail-strict so a future fix surfaces."
     ),
 )
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
