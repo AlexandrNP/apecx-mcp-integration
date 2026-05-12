@@ -66,6 +66,7 @@ import logging
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 from uuid import UUID
 
 from sqlalchemy import update
@@ -112,6 +113,8 @@ class LocalExecutor:
         actor: str = "local_executor",
         cascade_timeout_seconds: float = 600.0,
         cascade_settle_ms: int = 200,
+        default_payload: dict[str, Any] | None = None,
+        allow_empty_input: bool = False,
     ) -> None:
         self._session_factory = session_factory
         self._artifact_store = artifact_store
@@ -125,6 +128,16 @@ class LocalExecutor:
         # it for workflows that legitimately exceed 10 minutes.
         self._cascade_timeout_seconds = cascade_timeout_seconds
         self._cascade_settle_ms = cascade_settle_ms
+        # EMPTY-FAIL (2026-05-12): close the silent-failure shape where
+        # the executor passed `{}` to ``workflow.run`` and treated the
+        # trigger-init status dict as success. Empty input now FAILS
+        # unless the caller opts in via ``allow_empty_input=True``.
+        # Callers that need real input pass it via ``default_payload``.
+        # Operators who intentionally test the empty-input branch
+        # (e.g., the AC1 fixtures) set ``allow_empty_input=True``
+        # AND document why in their test.
+        self._default_payload: dict[str, Any] = default_payload or {}
+        self._allow_empty_input: bool = allow_empty_input
 
     async def execute(self, run_id: UUID) -> ExecutionResult:
         yaml_path = self._validate_and_fetch(run_id)
@@ -242,6 +255,35 @@ class LocalExecutor:
                     output_artifact_id=None,
                 )
 
+            # EMPTY-FAIL gate: reject empty input unless explicitly
+            # opted in. The earlier silent-failure shape was: pass
+            # {} → workflow runs with no input → cascade fires
+            # against empty data units → trigger-init dict gets
+            # marked COMPLETED. Tests passed, product produced no
+            # output. Now: empty + no opt-in = FAILED with a clear
+            # reason that operators can act on.
+            payload = self._default_payload
+            if not payload and not self._allow_empty_input:
+                reason = (
+                    "executor refused to run with empty input. Pass "
+                    "default_payload={...} when constructing LocalExecutor "
+                    "OR set allow_empty_input=True to explicitly opt in. "
+                    "Empty input previously masked silent failures: the "
+                    "workflow loaded + the cascade fired but no real "
+                    "data flowed; RUN_COMPLETED was misleading."
+                )
+                log.warning("Run %s: %s", run_id, reason)
+                transitioned = self._mark_failed(
+                    run_id, reason, failure_class="empty_input_refused"
+                )
+                return self._terminal_result(
+                    run_id=run_id,
+                    intended_status=RunStatus.FAILED,
+                    transitioned=transitioned,
+                    intended_reason=reason,
+                    output_artifact_id=None,
+                )
+
             try:
                 # G35 — adopt Workflow.run (G8) so the cascade is awaited
                 # and workflow-level output data units are collected. Pre-G35
@@ -256,7 +298,7 @@ class LocalExecutor:
                 # results vanished. Source: eval_03_nanobrain_gap_inventory.md
                 # Round 4 G35 (2026-05-09).
                 raw_result = await workflow.run(
-                    {},
+                    payload,
                     timeout=self._cascade_timeout_seconds,
                     settle_ms=self._cascade_settle_ms,
                     raise_on_cascade_timeout=False,

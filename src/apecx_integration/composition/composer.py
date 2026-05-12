@@ -198,6 +198,33 @@ class Composer:
         skeletons_dir = Path(__file__).parent / "skeletons"
         self._skeleton_library = SkeletonLibrary.from_dir(skeletons_dir)
 
+        # REVIEW-AGENT (2026-05-12): build the semantic reviewer when
+        # enabled. The reviewer uses the SAME llm_factory the composer
+        # uses, so operators only configure one LLM provider. Disabled
+        # by default — flip on via APECX_COMPOSER_REVIEW=1 when
+        # adoption / quality is at stake; redundant on the trusted-
+        # skeleton path.
+        self._reviewer = None
+        if config.enable_review:
+            from apecx_integration.composition.reviewer import (  # noqa: PLC0415
+                WorkflowReviewer,
+            )
+
+            self._reviewer = WorkflowReviewer.from_prompt_dir(
+                config.prompt_dir,
+                llm_factory=self._llm_factory,
+                model=config.llm_model,
+                base_url=config.llm_base_url,
+                temperature=config.temperature,
+                max_tokens=min(1024, config.max_tokens),
+            )
+            if self._reviewer is None:
+                raise ComposerConfigurationError(
+                    "enable_review=True but reviewer_system.md not "
+                    "found in prompt_dir. Ship the file or set "
+                    "enable_review=False (APECX_COMPOSER_REVIEW=0)."
+                )
+
         # Phase-4 RAG swap-in. Loaded lazily: when ``rag_index_dir`` is
         # set we deserialize the pre-built FAISS index; when it's None
         # we keep the Phase-2 linear-scan catalog as the retrieval
@@ -617,15 +644,55 @@ class Composer:
         # parameter on _validate_or_raise.
         repairs_raw = workflow_dict.pop("_apecx_class_path_repairs", []) or []
         class_path_repairs = tuple((str(sid), str(emt), str(res)) for sid, emt, res in repairs_raw)
+
+        # REVIEW-AGENT (2026-05-12): second-pass semantic reviewer.
+        # Runs AFTER the structural validator + CPR repairs but
+        # BEFORE the composer returns. The reviewer's verdict goes
+        # into CompositionSummary; rejections add concerns to
+        # review_notes so the human reviewer at the approval UI
+        # sees them. We do NOT trigger another compose retry on
+        # reject — at this point the workflow is structurally OK
+        # and a retry would just re-elicit the same semantic
+        # mismatch from the LLM. Better to surface the verdict +
+        # let the human reviewer decide.
+        review_verdict_dict: dict | None = None
+        extra_review_notes: tuple[str, ...] = ()
+        if self._reviewer is not None:
+            verdict = await self._reviewer.review(
+                user_prompt=prompt,
+                yaml_text=yaml_text,
+                summary_sentence=categorized.summary_sentence,
+                candidates_block=_render_candidates(hits),
+            )
+            review_verdict_dict = {
+                "approved": verdict.approved,
+                "reasoning": verdict.reasoning,
+                "concerns": list(verdict.concerns),
+                "review_used": verdict.review_used,
+            }
+            log.info(
+                "Composer review: approved=%s reasoning=%s concerns=%d",
+                verdict.approved,
+                verdict.reasoning[:160],
+                len(verdict.concerns),
+            )
+            if not verdict.approved:
+                extra_review_notes = (
+                    f"reviewer rejected: {verdict.reasoning}",
+                    *(f"reviewer concern: {c}" for c in verdict.concerns),
+                )
+
         summary = CompositionSummary(
             steps_reused=steps_reused,
             steps_generated=len(novel_python),
             steps_swapped=0,
             summary_sentence=categorized.summary_sentence,
-            review_notes=tuple(f"novel Python step: {k}" for k in novel_python),
+            review_notes=tuple(f"novel Python step: {k}" for k in novel_python)
+            + extra_review_notes,
             step_categorizations=categorized.categorizations,
             compose_retries=compose_retries,
             class_path_repairs=class_path_repairs,
+            review_verdict=review_verdict_dict,
         )
         llm_model_version_hash = hashlib.sha256(self._config.llm_model.encode("utf-8")).hexdigest()
 
@@ -1239,6 +1306,14 @@ def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
         value = os.environ.get(env)
         if value is not None and value != "":
             raw[key] = caster(value)
+
+    # REVIEW-AGENT (2026-05-12): APECX_COMPOSER_REVIEW flips the
+    # second-pass reviewer on without YAML edits.
+    review_env = os.environ.get("APECX_COMPOSER_REVIEW", "").lower()
+    if review_env in ("1", "true", "yes"):
+        raw["enable_review"] = True
+    elif review_env in ("0", "false", "no"):
+        raw["enable_review"] = False
 
 
 def _parse_response(content: str) -> tuple[str, dict[str, str]]:

@@ -68,6 +68,7 @@ try:
     # nanobrain + apecx-harvesters; gating on the legacy import would
     # falsely skip the test on a clean venv.
     import nanobrain.core.workflow  # noqa: F401
+
     _DEPS_OK = True
 except ImportError:
     _DEPS_OK = False
@@ -76,9 +77,7 @@ pytestmark = pytest.mark.integration
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-COMPOSER_CONFIG = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
-)
+COMPOSER_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
 VIOLIN_WORKFLOW_DIR = (
     REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "violin_bvbrc"
 )
@@ -88,10 +87,7 @@ def _llm_reachable() -> bool:
     base = os.environ.get("APECX_LLM_BASE_URL") or "http://localhost:11434/v1"
     # Ollama's tags endpoint is at .../api/tags (one level above the OpenAI
     # -compatible /v1 prefix).
-    if base.endswith("/v1"):
-        probe = base[:-3] + "/api/tags"
-    else:
-        probe = base.rstrip("/") + "/api/tags"
+    probe = base[:-3] + "/api/tags" if base.endswith("/v1") else base.rstrip("/") + "/api/tags"
     try:
         r = httpx.get(probe, timeout=2.0)
         return r.status_code == 200
@@ -101,8 +97,7 @@ def _llm_reachable() -> bool:
 
 SKIP_DEPS = "apecx_db_integration / nanobrain not importable — run under the venv"
 SKIP_LLM = (
-    "LLM not reachable — set APECX_LLM_BASE_URL and make sure ollama "
-    "serves the requested model"
+    "LLM not reachable — set APECX_LLM_BASE_URL and make sure ollama serves the requested model"
 )
 
 
@@ -145,6 +140,13 @@ def test_t01_ac1_real_violin_bvbrc_workflow_runs(cp_engine):
         artifact_store=store,
         recorder=recorder,
         workflow_base_dir=VIOLIN_WORKFLOW_DIR,
+        # EMPTY-FAIL (2026-05-12): this AC1 fixture deliberately
+        # exercises the empty-input branch — it pins the executor's
+        # cascade + persistence path, not any real workflow logic.
+        # Operators running a REAL workflow must provide a real
+        # default_payload OR pass it per-execute via an upstream
+        # API; the opt-in here documents the test's intent.
+        allow_empty_input=True,
     )
 
     run_id = uuid4()
@@ -179,8 +181,7 @@ def test_t01_ac1_real_violin_bvbrc_workflow_runs(cp_engine):
     # first suspect is prompt drift — refer to the module docstring
     # for the specific constraints the system prompt enforces.
     assert result.status is RunStatus.COMPLETED, (
-        f"AC1 violation: expected RUN_COMPLETED; got {result.status} "
-        f"reason={result.reason}"
+        f"AC1 violation: expected RUN_COMPLETED; got {result.status} reason={result.reason}"
     )
     assert result.output_artifact_id is not None
 

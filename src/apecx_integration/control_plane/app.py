@@ -63,13 +63,9 @@ log = logging.getLogger(__name__)
 # wheel; see ``_configs/`` directory and the byte-equivalence
 # regression test (``tests/integration/test_alembic_bundled_in_package.py``).
 _PKG_ROOT = Path(__file__).resolve().parent.parent
-_DEFAULT_COMPOSER_CONFIG = (
-    _PKG_ROOT / "composition" / "composer_config.yml"
-)
+_DEFAULT_COMPOSER_CONFIG = _PKG_ROOT / "composition" / "composer_config.yml"
 _DEFAULT_APPROVAL_POLICY = _PKG_ROOT / "_configs" / "approval_policy.yml"
-_DEFAULT_WORKFLOW_BASE_DIR = (
-    _PKG_ROOT / "composition" / "workflows" / "violin_bvbrc"
-)
+_DEFAULT_WORKFLOW_BASE_DIR = _PKG_ROOT / "composition" / "workflows" / "violin_bvbrc"
 
 
 def create_app(
@@ -171,9 +167,7 @@ def create_app(
         return repr(value)
 
     @app.exception_handler(_RVE)
-    async def _request_validation_handler(
-        request: _FastAPIRequest, exc: _RVE
-    ) -> _JSONResponse:
+    async def _request_validation_handler(request: _FastAPIRequest, exc: _RVE) -> _JSONResponse:
         # Scrub the error list so JSON serialization can't crash on
         # non-finite floats nested in the input context.
         scrubbed = _scrub(exc.errors())
@@ -255,11 +249,7 @@ def _build_components_from_env(
 
     composer = None
     composer_path_env = os.environ.get("APECX_COMPOSER_CONFIG_PATH")
-    composer_path = (
-        Path(composer_path_env)
-        if composer_path_env
-        else _DEFAULT_COMPOSER_CONFIG
-    )
+    composer_path = Path(composer_path_env) if composer_path_env else _DEFAULT_COMPOSER_CONFIG
     if composer_path_env == "":
         _banner(
             "APECX_COMPOSER_CONFIG_PATH set to empty string; composer "
@@ -278,11 +268,7 @@ def _build_components_from_env(
 
     approval_policy = None
     policy_path_env = os.environ.get("APECX_APPROVAL_POLICY_PATH")
-    policy_path = (
-        Path(policy_path_env)
-        if policy_path_env
-        else _DEFAULT_APPROVAL_POLICY
-    )
+    policy_path = Path(policy_path_env) if policy_path_env else _DEFAULT_APPROVAL_POLICY
     if policy_path_env == "":
         _banner(
             "APECX_APPROVAL_POLICY_PATH set to empty string; approval "
@@ -300,25 +286,35 @@ def _build_components_from_env(
 
     local_executor = None
     workflow_dir_env = os.environ.get("APECX_WORKFLOW_BASE_DIR")
-    workflow_dir = (
-        Path(workflow_dir_env)
-        if workflow_dir_env
-        else _DEFAULT_WORKFLOW_BASE_DIR
-    )
+    workflow_dir = Path(workflow_dir_env) if workflow_dir_env else _DEFAULT_WORKFLOW_BASE_DIR
     if workflow_dir_env == "":
         _banner(
             "APECX_WORKFLOW_BASE_DIR set to empty string; local executor "
             "disabled, /workflows/execute will 503."
         )
     elif workflow_dir.is_dir():
+        # EMPTY-FAIL (2026-05-12): the executor now rejects empty
+        # input by default. Production usage flows REAL payloads
+        # through ``/workflows/execute`` (the request body carries
+        # the workflow input) — TODO when that route lands, drop
+        # the env-var override. Operators who want to keep the
+        # pre-EMPTY-FAIL "run with {} and accept whatever happens"
+        # behavior set APECX_EXECUTOR_ALLOW_EMPTY_INPUT=1.
+        allow_empty_env = os.environ.get("APECX_EXECUTOR_ALLOW_EMPTY_INPUT", "").lower() in (
+            "1",
+            "true",
+            "yes",
+        )
         local_executor = LocalExecutor(
             session_factory=session_factory,
             artifact_store=store,
             recorder=recorder,
             workflow_base_dir=workflow_dir,
+            allow_empty_input=allow_empty_env,
         )
         _banner(
-            f"local executor wired against workflow_base_dir={workflow_dir}"
+            f"local executor wired against workflow_base_dir={workflow_dir} "
+            f"(allow_empty_input={allow_empty_env})"
         )
     else:
         _banner(
@@ -350,9 +346,7 @@ def _serve(args: argparse.Namespace) -> int:
     # the route handlers don't fork the chain (cluster AD).
     serve_session_factory = make_session_factory(engine)
     serve_recorder = ProvenanceRecorder(serve_session_factory)
-    composer, policy, executor = _build_components_from_env(
-        engine, recorder=serve_recorder
-    )
+    composer, policy, executor = _build_components_from_env(engine, recorder=serve_recorder)
     wired_app = create_app(
         engine=engine,
         composer=composer,
@@ -405,7 +399,7 @@ def _teardown(args: argparse.Namespace) -> int:
             else:
                 # Docker: we drop the named volume, not a host path.
                 target = (
-                    "docker volume rm apecx_cp_postgres_data (all Postgres " "state; unrecoverable)"
+                    "docker volume rm apecx_cp_postgres_data (all Postgres state; unrecoverable)"
                 )
             print(f"--remove-data is DESTRUCTIVE. It will run:\n  {target}")
             answer = input("Proceed? [type 'yes' to confirm]: ").strip().lower()

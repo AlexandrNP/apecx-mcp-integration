@@ -108,6 +108,17 @@ class ComposerConfig(BaseModel):
     # Override via APECX_COMPOSER_MODE env var.
     composer_mode: str = Field(default="spec", pattern="^(monolithic|spec)$")
 
+    # REVIEW-AGENT (2026-05-12): opt-in second-pass semantic reviewer.
+    # When enabled, the composer asks a separate LLM call to judge
+    # whether the generated workflow plausibly addresses the user's
+    # task. Catches the failure shape where compose succeeds
+    # structurally but the LLM picked semantically-wrong components
+    # (e.g., synthesis steps for a pathogen prompt). Adds an LLM
+    # round-trip per compose — useful when adoption is at stake;
+    # redundant when an operator is running a curated skeleton set.
+    # Override via APECX_COMPOSER_REVIEW env var (1/true/yes).
+    enable_review: bool = Field(default=False)
+
     # Phase-4 addition — RAG retrieval swap-in. When set, the composer
     # loads ``ComponentIndex.load(rag_index_dir)`` instead of running
     # the Phase-2 linear-scan ``ComponentCatalog``. When None, falls
@@ -160,6 +171,12 @@ class CompositionSummary:
     # counts mean the LLM keeps hallucinating the suffix-drop shape;
     # B1+ prompt work could target this specifically.
     class_path_repairs: tuple[tuple[str, str, str], ...] = ()
+    # REVIEW-AGENT (2026-05-12) — second-pass semantic reviewer
+    # verdict, when enabled. ``None`` means review was disabled or
+    # short-circuited (e.g., reviewer LLM unreachable; pass-through
+    # rather than block). Operators query the field to count "how
+    # many composes did the reviewer reject?" as a quality signal.
+    review_verdict: dict | None = None
 
 
 @dataclass(frozen=True, kw_only=True)

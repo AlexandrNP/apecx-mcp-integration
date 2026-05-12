@@ -173,6 +173,10 @@ def test_c2_runtime_violation_persisted_to_generated_artifact(tmp_path):
         artifact_store=store,
         workflow_base_dir=workflow_base_dir,
         actor="c2_test",
+        # EMPTY-FAIL: this test pins the load_failed path — the
+        # workflow YAML doesn't even import — so we never reach the
+        # cascade. Opt-in is safe.
+        allow_empty_input=True,
     )
     import asyncio
 
