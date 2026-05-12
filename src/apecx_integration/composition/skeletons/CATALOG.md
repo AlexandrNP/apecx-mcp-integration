@@ -17,6 +17,7 @@ LLM can pick by name.
 | `violin_bvbrc_context_only` | `VIOLINBVBRCContextStep` | Pure pandas lookup against VIOLIN/BV-BRC. |
 | `code_write_and_review` | `CodeReflectionStep` | Generate Python code + critique it against the spec. |
 | `code_write_review_and_run` | `CodeReflectionStep` → `CodeVerificationStep` | Generate + critique + run in isolated subprocess (requires `APECX_CODE_EXEC=1`). |
+| `generic/reflection_skeleton` (G9 typed bindings) | `<generator>` → `<critic>` | Cross-domain reflection — bind any generator + critic step pair via `Workflow.from_skeleton`. |
 
 ## Web-research-informed patterns the catalog does NOT yet ship (deferred)
 
@@ -113,7 +114,63 @@ step classes (`CodeReflectionStep` for write+review;
   `apecx_integration.composition.docker_sandbox` (T13b, gated by
   `APECX_T13B_SANDBOX_EXECUTE=1`) for that posture.
 
-### Cross-domain reflection — DEFERRED to G9 skeletons
+### Code-authoring + test-writing + verification — SHIPPED (2026-05-12)
+
+Beyond the basic reflection pattern, the catalog now ships:
+
+  * `TestWriteStep` (CW6) — LLM-backed pytest authoring.
+  * `CodeWithTestsStep` (CW7) — embeds `code_write → test_write`.
+    Output dict matches `IsolatedPyExecStep`'s input shape, so an
+    outer workflow can chain `CodeWithTestsStep → CodeVerificationStep`
+    for "write + tests + run-tests" in three composed steps.
+  * `WorkflowAnalysisStep` (CW8) — pure-Python deterministic structural
+    analyzer. No LLM. Emits a stable dict (workflow_name, steps,
+    links, topology, issues). Use as: (a) input to
+    `WorkflowSummarizerStep` for grounded explanations; (b) CI
+    pre-flight gate; (c) debugging tool when `wf.run()` "completes"
+    with unexpected outputs.
+  * `WorkflowSummarizerStep` (CW9) — LLM-backed plain-English
+    explainer for a domain expert. Consumes the analysis dict +
+    emits Markdown with 5 required sections (default
+    `require_all_sections=True`). Grounded — LLM sees only the
+    analysis, not raw YAML, so structural claims can't drift.
+
+The composer's RAG matcher picks any of these when the user's prompt
+semantically aligns (e.g., "explain this workflow" → `workflow_summarize`,
+"write code with tests" → `code_with_tests`).
+
+### Cross-domain reflection — SHIPPED via G9 typed-bindings skeleton (2026-05-12)
+
+Previously deferred, now real:
+``src/apecx_integration/composition/skeletons/generic/reflection_skeleton.yml``
+ships a 8-hole skeleton (4 holes per side: class, config, input_du,
+output_du for both generator and critic).
+
+Usage::
+
+    from nanobrain.core.workflow import Workflow
+    wf = Workflow.from_skeleton(
+        "src/.../skeletons/generic/reflection_skeleton.yml",
+        bindings={
+            "generator_class":     "...CodeWriteStep",
+            "generator_config":    "...code_write.yml",
+            "generator_input_du":  "code_write_input",
+            "generator_output_du": "code_write_output",
+            "critic_class":        "...CodeReviewStep",
+            "critic_config":       "...code_review.yml",
+            "critic_input_du":     "code_review_input",
+            "critic_output_du":    "code_review_output",
+        },
+    )
+
+Swap in text-domain generator+critic steps for prose reflection,
+query-refinement steps for retrieval reflection, etc. The skeleton
+trusts the binding shapes; pair generator+critic classes whose I/O
+contracts are compatible (generator's output dict carries everything
+critic's input expects via passthrough — same pattern
+`CodeWriteStep` ships).
+
+### Cross-domain reflection — legacy deferred-to-G9 note
 
 The current `CodeReflectionStep` hardcodes its inner workflow path
 (`code_reflection_workflow.yml`), which itself names

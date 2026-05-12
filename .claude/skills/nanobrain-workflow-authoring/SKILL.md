@@ -536,3 +536,53 @@ Silent-failure discipline (built in, opt-out per-step):
   gate from apecx-mcp-integration's executor `7471b0a`).
 * Operators opt out with ``allow_empty_inner_output: true`` per
   step config when side-effect-only inner workflows are intentional.
+
+### Cross-domain reflection via `Workflow.from_skeleton` (2026-05-12)
+
+When the same workflow topology (generate → critique, decompose →
+solve → integrate, etc.) needs to be reused across domains with
+DIFFERENT concrete step classes, the right tool is G9's typed-
+bindings skeleton:
+
+```python
+from nanobrain.core.workflow import Workflow
+wf = Workflow.from_skeleton(
+    "path/to/reflection_skeleton.yml",
+    bindings={
+        "generator_class":     "my.domain.SourceGenerator",
+        "generator_config":    "path/to/generator_wrapper.yml",
+        "generator_input_du":  "src_input",
+        "generator_output_du": "src_output",
+        "critic_class":        "my.domain.SourceCritic",
+        "critic_config":       "path/to/critic_wrapper.yml",
+        "critic_input_du":     "critic_in",
+        "critic_output_du":    "critic_verdict",
+    },
+)
+```
+
+The skeleton body uses `{{<hole_name>: <hole_type>}}` tokens that the
+framework's lowering pipeline (G17) substitutes at load time. Each
+hole's type is one of {string, integer, number, boolean, array,
+object, any, tool_descriptor_ref}.
+
+Required-vs-default + extra-binding-name validation is enforced by
+`Workflow.from_skeleton` — bindings that miss a required hole OR
+provide an undeclared name FAIL-FAST. Use this primitive instead of
+hand-writing per-domain copies of the same topology.
+
+### Workflow inspection: `WorkflowAnalysisStep` + `WorkflowSummarizerStep`
+
+For "explain this workflow to a domain expert" or "is the generated
+workflow structurally sound" prompts, prefer the two-step:
+
+  1. `WorkflowAnalysisStep` (pure-Python) parses a YAML and emits a
+     stable dict — workflow_name, steps[], links[], topology_summary,
+     issues[]. Deterministic; safe to use as a CI pre-flight gate.
+  2. `WorkflowSummarizerStep` (LLM-backed, grounded) consumes the
+     analysis dict and emits Markdown with 5 required sections (What
+     this workflow does / Steps / Data flow / Issues / Honest caveats).
+
+This split matters: the analyzer's deterministic output is the
+LLM summarizer's source-of-truth, so the LLM can't hallucinate
+structural claims (it never sees the raw YAML).

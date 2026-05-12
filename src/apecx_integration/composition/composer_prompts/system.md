@@ -209,3 +209,17 @@ write→review pattern, use the sub-workflow step.
 The two skeletons ``code_write_and_review`` and
 ``code_write_review_and_run`` are the canonical picks for these
 prompts. Honor them when the user's query matches.
+
+Additional code-writing components shipped 2026-05-12:
+
+- ``TestWriteStep`` / ``CodeWithTestsStep`` — when the user asks
+  for "write code with tests", "generate unit tests", or "TDD",
+  pick ``CodeWithTestsStep`` (embeds write→tests). Pair with
+  ``CodeVerificationStep`` if the user also asks for "verify the
+  tests pass".
+- ``WorkflowAnalysisStep`` / ``WorkflowSummarizerStep`` — when the
+  user asks "explain this workflow", "describe what it does to a
+  domain expert", or "what's the structure of this workflow",
+  use ``WorkflowAnalysisStep → WorkflowSummarizerStep``. The first
+  is deterministic (pure-Python YAML inspection); the second is
+  LLM-backed and grounded on the analysis dict.
