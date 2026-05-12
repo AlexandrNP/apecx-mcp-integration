@@ -93,6 +93,18 @@ class ComposerConfig(BaseModel):
     # (useful for cheap regression tests).
     max_validation_retries: int = Field(default=1, ge=0)
 
+    # SPEC2 (2026-05-11): composer authoring mode.
+    #   "monolithic" — LLM emits full workflow YAML (the original
+    #     path). Validator + CPR + retry handle hallucinations.
+    #   "spec" — LLM emits a tiny JSON MinimalWorkflowSpec; the
+    #     deterministic expander produces the full workflow YAML.
+    #     Hallucination surface shrinks because the LLM doesn't
+    #     write framework boilerplate (class paths, auto_transfer,
+    #     link IDs, workflow-level data unit blocks).
+    # Default monolithic preserves backward compatibility.
+    # Override via APECX_COMPOSER_MODE env var.
+    composer_mode: str = Field(default="monolithic", pattern="^(monolithic|spec)$")
+
     # Phase-4 addition — RAG retrieval swap-in. When set, the composer
     # loads ``ComponentIndex.load(rag_index_dir)`` instead of running
     # the Phase-2 linear-scan ``ComponentCatalog``. When None, falls

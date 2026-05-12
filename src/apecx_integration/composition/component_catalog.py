@@ -60,13 +60,21 @@ class CatalogComponent:
     composer's callers don't have to import anything T02-specific.
     """
 
-    id: str                         # stable identifier; e.g. "entity_extraction"
-    name: str                       # human label; often == id
-    description: str                # rag_description from the manifest
-    class_path: str                 # fully-qualified Python class path
-    yaml_path: str | None           # wrapper YAML path (None for bare-function reuse)
+    id: str  # stable identifier; e.g. "entity_extraction"
+    name: str  # human label; often == id
+    description: str  # rag_description from the manifest
+    class_path: str  # fully-qualified Python class path
+    yaml_path: str | None  # wrapper YAML path (None for bare-function reuse)
     examples: tuple[str, ...] = ()  # rag_examples from the manifest
     domain: str = "generic"
+    # SPEC2 (2026-05-11): absolute path to the wrapper YAML on disk,
+    # resolved at catalog-load from manifest_dir + yaml_path. Used
+    # by the spec-mode candidate renderer to extract input/output
+    # data unit names (so the LLM gets exact link-endpoint names
+    # instead of guessing). Default ``None`` for backward compat —
+    # legacy callers that hand-construct CatalogComponent (tests)
+    # don't need to set it.
+    yaml_path_absolute: str | None = None
 
 
 @dataclass
@@ -74,7 +82,7 @@ class SearchHit:
     """One ranked retrieval result."""
 
     component: CatalogComponent
-    score: int                      # raw match count; higher = better
+    score: int  # raw match count; higher = better
 
 
 @dataclass
@@ -136,11 +144,13 @@ class ComponentCatalog:
 
         hits: list[SearchHit] = []
         for component in self.components:
-            corpus = " ".join([
-                component.name,
-                component.description,
-                *component.examples,
-            ]).lower()
+            corpus = " ".join(
+                [
+                    component.name,
+                    component.description,
+                    *component.examples,
+                ]
+            ).lower()
             score = sum(1 for t in tokens if t in corpus)
             if score > 0:
                 hits.append(SearchHit(component=component, score=score))
@@ -156,6 +166,7 @@ class ComponentCatalog:
 # Manifest loader
 # ---------------------------------------------------------------------------
 
+
 def _load_manifest(path: Path) -> list[CatalogComponent]:
     """Parse one manifest YAML into a list of CatalogComponent.
 
@@ -167,19 +178,13 @@ def _load_manifest(path: Path) -> list[CatalogComponent]:
     not available for composition.
     """
     if not path.is_file():
-        raise FileNotFoundError(
-            f"ComponentCatalog manifest not found at {path}"
-        )
+        raise FileNotFoundError(f"ComponentCatalog manifest not found at {path}")
     raw = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(raw, dict):
-        raise ValueError(
-            f"Manifest at {path} must be a YAML mapping at the top level"
-        )
+        raise ValueError(f"Manifest at {path} must be a YAML mapping at the top level")
     entries = raw.get("components") or []
     if not isinstance(entries, list):
-        raise ValueError(
-            f"Manifest at {path} must have 'components:' as a list"
-        )
+        raise ValueError(f"Manifest at {path} must have 'components:' as a list")
 
     out: list[CatalogComponent] = []
     for entry in entries:
@@ -198,10 +203,7 @@ def _load_manifest(path: Path) -> list[CatalogComponent]:
             # surface in logs rather than pollute the catalog.
             continue
         examples_raw = entry.get("rag_examples") or []
-        examples = tuple(
-            _strip_multiline(e) for e in examples_raw
-            if isinstance(e, str)
-        )
+        examples = tuple(_strip_multiline(e) for e in examples_raw if isinstance(e, str))
         # Rich id format — matches
         # ``nanobrain.lightweight.component_index.ComponentMatch.id`` so
         # both retrieval backends (linear-scan here, FAISS there) emit
@@ -209,15 +211,28 @@ def _load_manifest(path: Path) -> list[CatalogComponent]:
         # regression surfaced the mismatch.
         workflow_slug = path.parent.name
         rich_id = f"{workflow_slug}/{name}:{step_id}"
-        out.append(CatalogComponent(
-            id=rich_id,
-            name=str(name),
-            description=description,
-            class_path=str(entry.get("class") or ""),
-            yaml_path=entry.get("yaml") if isinstance(entry.get("yaml"), str) else None,
-            examples=examples,
-            domain=str(entry.get("domain", "generic")),
-        ))
+        yaml_path = entry.get("yaml") if isinstance(entry.get("yaml"), str) else None
+        # SPEC2: resolve absolute path so spec-mode candidate
+        # rendering can load the wrapper YAML and extract its
+        # input/output data unit names. Manifest paths are relative
+        # to the manifest's own directory.
+        yaml_path_absolute = None
+        if yaml_path:
+            resolved = (path.parent / yaml_path).resolve()
+            if resolved.is_file():
+                yaml_path_absolute = str(resolved)
+        out.append(
+            CatalogComponent(
+                id=rich_id,
+                name=str(name),
+                description=description,
+                class_path=str(entry.get("class") or ""),
+                yaml_path=yaml_path,
+                examples=examples,
+                domain=str(entry.get("domain", "generic")),
+                yaml_path_absolute=yaml_path_absolute,
+            )
+        )
     return out
 
 

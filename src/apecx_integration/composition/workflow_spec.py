@@ -157,7 +157,17 @@ def expand_spec(
     warnings: list[str] = []
     by_leaf: dict[str, list[CatalogComponent]] = {}
     by_full: dict[str, CatalogComponent] = {}
+    # Dedup by class_path BEFORE the leaf index — the same class can
+    # appear in multiple workflow manifests with different ``id``s
+    # (e.g., RagSynthesisStep used by both violin_bvbrc and
+    # rag_e2e_synthesis). Without dedup, the leaf map sees two
+    # entries with identical class paths and flags every reference
+    # as ambiguous.
+    seen_class_paths: set[str] = set()
     for c in catalog:
+        if c.class_path in seen_class_paths:
+            continue
+        seen_class_paths.add(c.class_path)
         by_full[c.class_path] = c
         leaf = c.class_path.rsplit(".", 1)[-1]
         by_leaf.setdefault(leaf, []).append(c)

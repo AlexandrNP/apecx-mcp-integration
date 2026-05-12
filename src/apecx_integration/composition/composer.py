@@ -83,7 +83,15 @@ from apecx_integration.composition._errors import (  # noqa: E402
 # future rewording of the parser's error messages forces an explicit
 # update here (and a corresponding test) instead of silently widening
 # / narrowing the retry surface.
-_REPAIRABLE_PARSE_MARKERS: tuple[str, ...] = ("must be a mapping at top level",)
+_REPAIRABLE_PARSE_MARKERS: tuple[str, ...] = (
+    "must be a mapping at top level",
+    # SPEC2 (2026-05-11): spec-mode parse errors — JSON shape / schema
+    # / expander failures are all repairable when the LLM sees the
+    # actual error message.
+    "spec mode: emitted JSON did not match",
+    "spec mode: JSON in the fenced block did not parse",
+    "spec mode: expander could not realize the spec",
+)
 
 
 def _is_repairable_parse_error(exc: ComposerResponseError) -> bool:
@@ -682,6 +690,13 @@ class Composer:
                 "to parse."
             )
 
+        # SPEC2 (2026-05-11): in spec mode, the LLM emits a JSON
+        # MinimalWorkflowSpec; parse it + expand to workflow_dict via
+        # the deterministic template expander. The rest of the
+        # pipeline (CPR + A1 + C1) is unchanged.
+        if self._config.composer_mode == "spec":
+            return self._parse_spec_response(raw_content)
+
         yaml_text, novel_python = _parse_response(raw_content)
 
         # T13 scanner over novel Python (if any). On violation,
@@ -707,6 +722,72 @@ class Composer:
                 f"LLM response's yaml block must be a mapping at top "
                 f"level, got {type(workflow_dict).__name__}"
             )
+        return yaml_text, novel_python, workflow_dict
+
+    def _parse_spec_response(self, raw_content: str) -> tuple[str, dict[str, str], dict[str, Any]]:
+        """SPEC2: parse a JSON MinimalWorkflowSpec → workflow_dict.
+
+        Three failure modes — all raised as ``ComposerResponseError``
+        so the existing C1 parse-retry path can engage:
+
+          1. No ``json`` fenced block in the response.
+          2. JSON syntax invalid.
+          3. Spec doesn't match the MinimalWorkflowSpec schema
+             (Pydantic raises ValidationError). The error message
+             names the offending field so the retry feedback can
+             point the LLM precisely.
+          4. Spec is structurally valid but references an unknown
+             or ambiguous class_name — SpecExpansionError surfaces.
+        """
+        import json
+        import re as _re
+
+        from apecx_integration.composition.workflow_spec import (  # noqa: PLC0415
+            MinimalWorkflowSpec,
+            SpecExpansionError,
+            expand_spec,
+        )
+
+        fence = _re.search(
+            r"```(?:json)?\s*\n(.*?)\n```",
+            raw_content,
+            flags=_re.DOTALL,
+        )
+        if not fence:
+            raise ComposerResponseError(
+                "spec mode: LLM response has no ```json fenced block. "
+                "Emit exactly one fenced JSON block containing the "
+                "MinimalWorkflowSpec object."
+            )
+        try:
+            raw_spec = json.loads(fence.group(1))
+        except json.JSONDecodeError as exc:
+            raise ComposerResponseError(
+                f"spec mode: JSON in the fenced block did not parse: {exc}"
+            ) from exc
+        try:
+            spec = MinimalWorkflowSpec.model_validate(raw_spec)
+        except Exception as exc:
+            raise ComposerResponseError(
+                f"spec mode: emitted JSON did not match MinimalWorkflowSpec: {exc}"
+            ) from exc
+
+        try:
+            workflow_dict, _warnings = expand_spec(spec, list(self._catalog.components))
+        except SpecExpansionError as exc:
+            raise ComposerResponseError(
+                f"spec mode: expander could not realize the spec: {exc}"
+            ) from exc
+
+        # Carry over the novel_python fence the spec emitted via its
+        # private ``_apecx_novel_python_by_step`` key so the existing
+        # downstream code (sandbox scanner, generated_metadata) sees
+        # the same shape as the monolithic path.
+        novel_python: dict[str, str] = workflow_dict.pop("_apecx_novel_python_by_step", None) or {}
+
+        # Re-encode as YAML for downstream artifact persistence +
+        # validator feedback (it expects a yaml_text companion).
+        yaml_text = yaml.safe_dump(workflow_dict, sort_keys=False, default_flow_style=False)
         return yaml_text, novel_python, workflow_dict
 
     def _log_llm_failure(
@@ -909,7 +990,23 @@ class Composer:
         return artifact.id
 
     def _build_system_prompt(self) -> str:
-        """Concatenate the three prompt files with section separators."""
+        """Build the system prompt for the active composer mode.
+
+        SPEC2 (2026-05-11): when ``composer_mode == "spec"``, return
+        only the distilled spec_system.md cheat sheet (~2k tokens).
+        The candidate block format is also different — see
+        ``_build_user_prompt``. The monolithic mode keeps its 3-file
+        concatenation so the existing test surface is unchanged.
+        """
+        if self._config.composer_mode == "spec":
+            spec_prompt = self._prompts.get("spec_system")
+            if spec_prompt is None:
+                raise ComposerConfigurationError(
+                    "composer_mode=spec requires spec_system.md in "
+                    "prompt_dir; not found. Ship the file or switch to "
+                    "composer_mode=monolithic."
+                )
+            return spec_prompt
         return (
             self._prompts["system"]
             + "\n\n---\n\n"
@@ -926,15 +1023,23 @@ class Composer:
     ) -> str:
         """Compose the user-facing message: library candidates +
         user task + optional context.
+
+        SPEC2 (2026-05-11): when ``composer_mode == "spec"``, the
+        candidate block uses a compact "leaf class + I/O data unit
+        names" format the spec_system.md prompt expects. Monolithic
+        mode keeps its richer block.
         """
-        candidates_block = (
-            _render_candidates(hits)
-            if hits
-            else (
+        if hits:
+            candidates_block = (
+                _render_candidates_spec(hits)
+                if self._config.composer_mode == "spec"
+                else _render_candidates(hits)
+            )
+        else:
+            candidates_block = (
                 "(no matching library components — you may need to emit "
                 "novel Python; see the novel_python_flagging rules above)"
             )
-        )
         parts = [
             "## Available library components",
             "",
@@ -979,6 +1084,15 @@ class Composer:
             raise ComposerConfigurationError(
                 f"prompt_dir {prompt_dir} missing required prompt files: {sorted(missing)}"
             )
+        # SPEC2 (2026-05-11): optionally load the spec-mode cheat sheet.
+        # Treat as optional so older composer_config.yml files that
+        # don't have spec_system.md still load. The composer raises
+        # ComposerConfigurationError later if the operator sets
+        # composer_mode=spec but the file is missing.
+        for optional_name in ("spec_system.md",):
+            p = prompt_dir / optional_name
+            if p.is_file():
+                prompts[p.stem] = p.read_text(encoding="utf-8")
         return prompts
 
 
@@ -1054,6 +1168,9 @@ def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
     str_pairs = (
         ("APECX_LLM_MODEL", "llm_model"),
         ("APECX_LLM_BASE_URL", "llm_base_url"),
+        # SPEC2 (2026-05-11): operators flip the composer mode
+        # without editing YAML. Valid values: "monolithic" | "spec".
+        ("APECX_COMPOSER_MODE", "composer_mode"),
     )
     for env, key in str_pairs:
         value = os.environ.get(env)
@@ -1189,6 +1306,68 @@ def _rerank_by_class_name_match(
         return (match_count, hit.score)
 
     return sorted(hits, key=_score, reverse=True)
+
+
+def _load_step_io_names(absolute_yaml_path: str | None) -> tuple[list[str], list[str]]:
+    """Read a wrapper YAML and return its input/output data unit names.
+
+    SPEC2 (2026-05-11): the spec-mode candidate block surfaces these
+    names so the LLM can use them as link endpoints WITHOUT having
+    to guess. Without this, link endpoints are the second-largest
+    hallucination surface after class paths.
+
+    The path comes from ``CatalogComponent.yaml_path_absolute``
+    (resolved at catalog-load from manifest_dir + relative yaml).
+    Returns ``([], [])`` when the file isn't readable or doesn't
+    have the standard blocks.
+    """
+    if not absolute_yaml_path:
+        return ([], [])
+    p = Path(absolute_yaml_path)
+    if not p.is_file():
+        return ([], [])
+    try:
+        raw = yaml.safe_load(p.read_text(encoding="utf-8"))
+    except Exception:
+        return ([], [])
+    if not isinstance(raw, dict):
+        return ([], [])
+    inputs = list((raw.get("input_data_units") or {}).keys())
+    outputs = list((raw.get("output_data_units") or {}).keys())
+    return (inputs, outputs)
+
+
+def _render_candidates_spec(hits: list[SearchHit]) -> str:
+    """Render retrieval hits in the compact spec-mode format.
+
+    Each candidate is reduced to:
+
+        - class_name: LeafName              # the LLM emits this verbatim
+          class_path: full.dotted.LeafName  # for the reviewer's eye
+          description: ...
+          inputs: [data_unit_name_a, ...]   # link endpoints
+          outputs: [data_unit_name_b, ...]
+
+    The expander rebuilds full YAML; the LLM does NOT see the
+    framework's boilerplate fields. Fewer fields = smaller
+    hallucination surface.
+    """
+    lines: list[str] = []
+    for hit in hits:
+        c = hit.component
+        leaf = c.class_path.rsplit(".", 1)[-1] if c.class_path else c.id
+        lines.append(f"- class_name: {leaf}")
+        if c.class_path:
+            lines.append(f"  class_path: {c.class_path}")
+        if c.description:
+            lines.append(f"  description: {c.description}")
+        inputs, outputs = _load_step_io_names(c.yaml_path_absolute)
+        if inputs:
+            lines.append(f"  inputs:  {inputs}")
+        if outputs:
+            lines.append(f"  outputs: {outputs}")
+        lines.append("")
+    return "\n".join(lines).rstrip()
 
 
 def _render_candidates(hits: list[SearchHit]) -> str:
