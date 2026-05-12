@@ -84,6 +84,28 @@ bounded by retrieval policy, not by storage size). Operators can
 prune by hand via `git rm reflexions/<spec_id>/*` and commit; the
 review surfaces the deletion just like any other diff.
 
+## Operator commands
+
+  - **Inspect entries**: `find memory/code_writing/reflexions -name '*.json' | xargs jq -r '.lesson'`
+    Quick browse of all accumulated lessons.
+  - **Count by spec_id**: `ls memory/code_writing/reflexions | xargs -I{} sh -c 'echo "$(ls memory/code_writing/reflexions/{} | wc -l) {}"'`
+  - **Drop a spec_id**: `git rm -r memory/code_writing/reflexions/<spec_id>` then commit
+    (this is the eviction surface — reviewable per the
+    git-tracked-by-design contract).
+  - **Replay**: `git log -- memory/code_writing/reflexions/<spec_id>/`
+    walks every commit that touched a given spec's memory.
+
+## Verified end-to-end (2026-05-12)
+
+`tests/integration/test_self_improvement_against_ollama.py` exercises
+the full Reflexion loop against real mistral-nemo:
+
+  - Attempt 1 (empty memory): 15.1s wall; review_approved=True;
+    memory_written=True (lesson 127 chars after format).
+  - Attempt 2 (same spec_id): 17.0s wall; prior_lessons=1; critique
+    threaded into CodeWriteStep prompt; memory_written=False
+    (restatement skip — same lesson, gate fired correctly).
+
 ## Cross-references
 
 - `composition/steps/memory_store.py` — the pure-Python store.

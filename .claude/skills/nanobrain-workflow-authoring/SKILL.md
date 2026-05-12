@@ -586,3 +586,40 @@ workflow structurally sound" prompts, prefer the two-step:
 This split matters: the analyzer's deterministic output is the
 LLM summarizer's source-of-truth, so the LLM can't hallucinate
 structural claims (it never sees the raw YAML).
+
+### Self-improving workflows via git-tracked memory (2026-05-12)
+
+The Reflexion verbal-memory loop (Shinn et al., NeurIPS 2023,
+arXiv:2303.11366) is shipping as a composable pattern in apecx:
+
+  memory_read → code_write (consumes critique) → code_review → memory_write
+
+Use `MemoryReadStep` + `MemoryWriteStep` (apecx
+`composition/steps/memory_*_step.py`) when the workflow's output
+quality depends on learning from prior attempts. The memory store
+is a flat directory of JSON files (one per cycle), git-tracked, so
+agent-accumulated lessons surface in PR diffs.
+
+Key gates (set in step config):
+
+  - `MemoryReadStep.limit` — Reflexion's Ω=1–3 cap; default 3.
+  - `MemoryWriteStep.min_lesson_chars` — drop low-signal lessons.
+  - `MemoryWriteStep.skip_if_restatement` — keyword + lesson Jaccard
+    > 0.7 vs newest entry for the same spec_id → skip.
+
+Verified end-to-end against real Ollama
+(`test_self_improvement_against_ollama.py`): 32s total for two
+attempts; second attempt receives a 127-char critique formatted from
+the first attempt's lesson.
+
+### Nested-cascade pattern verified (2026-05-12)
+
+The deterministic no-LLM reproducer
+(`tests/integration/test_nested_subworkflow_reproducer.py`) PASSES
+in 0.46s. Two `SubworkflowStep` instances chained at workflow level
+correctly fire both inner cascades and propagate data.
+
+**Don't** retry the "framework can't do nested cascades" myth —
+it can. When you see a nested-cascade test hang, the cause is
+specific to the inner-step contracts (LLM timing, data-shape
+mismatch), not the framework's task-set bookkeeping.
