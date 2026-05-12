@@ -735,3 +735,15 @@ Pinned by `tests/unit/test_reuse_first_rule_pinned_in_prompts.py`
 (9 assertions, marker + concrete-target list in 8 prompts) and
 `tests/unit/test_composition_summary_reuse_ratio.py` (9 assertions
 on the derived field's correctness + frozen-dataclass invariant).
+
+### Supervisor onboarding (2026-05-12)
+
+A new supervisor of LLM-authored apecx work should start at
+`docs/supervisor_handbook.md`. The handbook covers scope (what
+supervision IS / IS NOT), a day-one checklist, drift patterns
+D1-D8 observed in real sessions, the rules currently shipped
+(closed-class, reuse-first, plus framework-level gates), signals to
+monitor, termination conditions, and the session-end distillation
+policy. It is pinned by
+`tests/unit/test_supervisor_handbook_pinned.py` against silent
+section removal.

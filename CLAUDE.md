@@ -32,6 +32,19 @@ Ollama-gated tests (auto-skip when unreachable): see
 `composer_config.yml` at load — see
 `composition/composer.py::_apply_llm_env_overrides`.
 
+## New supervisor onboarding
+
+If you are taking over apecx-composer supervision from a previous
+agent or human, start at `docs/supervisor_handbook.md` (marker:
+`SUPERVISOR HANDBOOK`). The handbook captures: scope, day-one
+checklist, drift patterns D1-D8 observed in real sessions, gates and
+rules currently shipped, signals to monitor (`reuse_ratio`,
+`compose_retries`, T01 AC1 wall time), termination conditions, and
+session-end distillation policy. Pinned by
+`tests/unit/test_supervisor_handbook_pinned.py` (28 structural
+assertions). DO NOT silently remove sections — see the pin file's
+docstring for the right way to retire a section.
+
 ## Composer prompt is load-bearing
 
 `composition/composer_prompts/system.md` makes T01 AC1 pass/fail.

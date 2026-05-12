@@ -26,6 +26,7 @@ Navigation aid. For deeper context: `README.md` (user-facing),
 |---|---|
 | `WORKAROUND_INVENTORY.md` | Active workarounds awaiting framework fixes; updated per ship. |
 | `implementation_task_graph.md` | 165 file-level tasks across 4 tracks with stable IDs. Cite the task ID in commits. |
+| `supervisor_handbook.md` | Knowledge-transfer artifact for new external supervisors of the apecx composer: scope, day-one checklist, drift patterns D1-D8, gates/rules currently shipped, signals to monitor, distillation policy. Pinned by `tests/unit/test_supervisor_handbook_pinned.py`. |
 
 ## Assets
 
