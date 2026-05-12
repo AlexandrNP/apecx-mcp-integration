@@ -53,6 +53,7 @@ REQUIRED_DRIFT_PATTERNS = (
     "D6 — Nested-cascade hang",
     "D7 — Composer hallucinates inline",
     "D8 — Composer hallucinates class-path suffixes",
+    "D9 — Cross-repo push order race",
 )
 
 REQUIRED_CROSS_REFS = (

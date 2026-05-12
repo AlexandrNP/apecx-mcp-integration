@@ -247,6 +247,38 @@ counts mean the LLM keeps drifting — that's a prompt-quality signal.
 
 ---
 
+### D9 — Cross-repo push order race (2026-05-12)
+
+**Behavior:** consumer-repo CI fails with
+`ModuleNotFoundError: No module named 'nanobrain.library.steps.<name>'`
+(or similar) immediately after a push, where the missing module was
+authored locally and committed but the *producer* repo has not yet
+been pushed to its branch on origin.
+
+**Detection signal:** CI passes locally (your venv has both repos
+editable-installed), but the same test fails on the runner with a
+sibling-repo `ModuleNotFoundError`. The producer repo (e.g. nanobrain
+`academy-integration`) was pushed less than a few minutes after the
+consumer repo (e.g. apecx-mcp-integration `main`), or not yet at all.
+
+**Gate:** none currently. The repo's CI installs deps from
+`pyproject.toml` which pins `nanobrain @ git+...@academy-integration` —
+CI resolves that to whatever HEAD is on the producer branch at install
+time, not at the consumer commit time.
+
+**Mitigation:** producer-first push ordering. Push the producer repo,
+wait for its remote HEAD to advance, THEN push the consumer repo. If
+you got the order wrong, `gh run rerun <id> --failed` after both
+pushes are live recovers the situation.
+
+**Structural fix (not shipped):** either version-tag-pin
+(`...@v1.2.3` instead of `...@academy-integration`) so the consumer
+commit names a specific producer commit, or monorepo. Both are
+workspace-wide decisions outside this handbook's scope; record this
+drift in the session friction log every time it bites until the
+structural fix lands.
+
+
 ## Gates and rules currently shipped
 
 | Rule | Marker phrase | Pinned in | Test |
@@ -414,6 +446,17 @@ Read them.
   Rationale belongs in CLAUDE.md + SKILL.md where humans read it.
 
 ---
+
+- **Pushing the consumer repo before the producer repo on a
+  cross-repo-coupled change.** Lesson from 2026-05-12: pushed
+  apecx-mcp-integration `main` first, then nanobrain
+  `academy-integration` ~30s later. CI install step ran in the gap
+  and pulled stale nanobrain that didn't yet have
+  `nanobrain.library.steps.subworkflow_step`, breaking 10 unit
+  tests. Fix was a CI rerun after both pushes landed; the lesson
+  is **producer-first push ordering** when `pyproject.toml` pins a
+  sibling repo via `git+...@<branch>`. See drift pattern D9 for the
+  detection/mitigation detail.
 
 ## Cross-references
 
