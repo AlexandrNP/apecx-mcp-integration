@@ -135,3 +135,76 @@ components:
       - "verify the generated code actually executes"
       - "run tests against authored code"
       - "smoke-test LLM-generated Python in a subprocess"
+
+  - step_id: "CW6"
+    step_name: test_write
+    disposition: new
+    class: "apecx_integration.composition.steps.test_write_step.TestWriteStep"
+    yaml: "workflows/code_writing/steps/test_write.yml"
+    status: ready
+    rag_description: >
+      Author pytest test cases for a given Python function via LLM.
+      AST gate rejects non-Python output; min_tests gate rejects
+      responses with fewer than the configured number of test_*
+      functions. Output passes through the code_source so a
+      downstream IsolatedPyExecStep can run code + tests in one
+      subprocess.
+    rag_examples:
+      - "write pytest tests for this function"
+      - "generate unit tests for the generated code"
+      - "test_* functions covering happy path + edge cases"
+
+  - step_id: "CW7"
+    step_name: code_with_tests
+    disposition: new
+    class: "apecx_integration.composition.steps.code_with_tests_step.CodeWithTestsStep"
+    yaml: "workflows/code_writing/steps/code_with_tests.yml"
+    status: ready
+    rag_description: >
+      Generate Python code AND its tests in one step. Composes
+      CodeWriteStep → TestWriteStep via the code_with_tests
+      sub-workflow. Output dict contains both code_source and
+      test_code in the shape IsolatedPyExecStep accepts, so an
+      outer workflow can compose: CodeWithTestsStep →
+      CodeVerificationStep for "write + tests + run-tests".
+    rag_examples:
+      - "write code with tests"
+      - "generate Python function plus unit tests"
+      - "test-driven code authoring"
+
+  - step_id: "CW8"
+    step_name: workflow_analysis
+    disposition: new
+    class: "apecx_integration.composition.steps.workflow_analysis_step.WorkflowAnalysisStep"
+    yaml: "workflows/code_writing/steps/workflow_analysis.yml"
+    status: ready
+    rag_description: >
+      Pure-Python structural analyzer for a workflow YAML. Emits a
+      stable dict with step + link + topology + issues fields. No
+      LLM. Used as deterministic input to WorkflowSummarizerStep,
+      or as a CI gate that pre-flights authored workflows before
+      commit. Flags missing auto_transfer on v1 DirectLinks and
+      links referencing nonexistent steps.
+    rag_examples:
+      - "analyze the structure of this workflow"
+      - "inspect a workflow YAML for issues"
+      - "extract step + link topology from a workflow"
+
+  - step_id: "CW9"
+    step_name: workflow_summarize
+    disposition: new
+    class: "apecx_integration.composition.steps.workflow_summarizer_step.WorkflowSummarizerStep"
+    yaml: "workflows/code_writing/steps/workflow_summarize.yml"
+    status: ready
+    rag_description: >
+      LLM-backed plain-English explainer for a workflow. Consumes
+      the structured dict from WorkflowAnalysisStep and produces
+      Markdown with 5 required sections: What this workflow does,
+      Steps, Data flow, Issues to know about, Honest caveats.
+      Grounded — the LLM sees only the analysis dict, not raw YAML.
+      Pair with WorkflowAnalysisStep for the canonical "explain
+      this generated workflow to a domain expert" flow.
+    rag_examples:
+      - "explain what this workflow does"
+      - "describe the workflow to a domain expert"
+      - "summarize a generated workflow in plain English"

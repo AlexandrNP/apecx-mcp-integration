@@ -1,0 +1,106 @@
+# code_with_tests sub-workflow — generate code AND its tests.
+#
+# Topology:
+#
+#   workflow_input ({code_spec, function_name, function_signature})
+#       │
+#       ▼ (DirectLink)
+#   code_write                       ← LLM produces source + AST gate
+#       │
+#       │ {code_source, function_name_verified, code_spec, function_name, function_signature}
+#       ▼ (DirectLink — test_write reads the passthrough fields)
+#   test_write                       ← LLM produces pytest tests
+#       │
+#       │ {test_code, test_function_count, code_source, ...}
+#       ▼
+#   workflow_output
+#
+# Adopters who also want to RUN the produced tests should compose
+# this sub-workflow with code_verification (which wraps
+# IsolatedPyExecStep): the test_write_output dict contains BOTH
+# code_source and test_code, which IsolatedPyExecStep accepts via
+# its {code_source, test_code} input.
+
+name: code_with_tests_workflow
+description: >
+  Generate Python code AND pytest tests for it. The test writer reads
+  the code source + spec produced by CodeWriteStep (passthrough fields)
+  and authors at least min_tests test_* functions. The output exposes
+  the generated code, the tests, and a function-count diagnostic.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {code_spec: str, function_name?: str, function_signature?: str}.
+      Forwarded to code_write.
+    persistent: false
+
+output_data_units:
+  code_source:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_source
+    description: "Generated Python source."
+    persistent: false
+  test_code:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: test_code
+    description: "Generated pytest test source."
+    persistent: false
+  test_function_count:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: test_function_count
+    description: "Number of test_* functions in test_code."
+    persistent: false
+
+steps:
+  code_write:
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    config: "steps/code_write.yml"
+  test_write:
+    class: "apecx_integration.composition.steps.test_write_step.TestWriteStep"
+    config: "steps/test_write.yml"
+
+links:
+  input_to_write:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: code_write.code_write_input
+      auto_transfer: true
+
+  write_to_test_write:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_write.code_write_output
+      target: test_write.test_write_input
+      auto_transfer: true
+
+  test_write_to_code_source_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: test_write.test_write_output
+      target: code_source
+      auto_transfer: true
+
+  test_write_to_test_code_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: test_write.test_write_output
+      target: test_code
+      auto_transfer: true
+
+  test_write_to_count_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: test_write.test_write_output
+      target: test_function_count
+      auto_transfer: true

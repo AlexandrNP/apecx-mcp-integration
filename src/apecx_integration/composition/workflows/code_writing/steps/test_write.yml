@@ -1,0 +1,36 @@
+# TestWriteStep wrapper — LLM-backed pytest authoring.
+#
+# Pairs with CodeWriteStep: consumes code_source + code_spec, emits
+# test_code + the passthrough fields so a downstream IsolatedPyExecStep
+# can run code + tests in one subprocess.
+
+class: "apecx_integration.composition.steps.test_write_step.TestWriteStep"
+name: test_write
+description: "Author pytest tests for a given function via LLM."
+
+temperature: 0.0
+max_tokens: 1024
+min_tests: 2
+
+input_data_units:
+  test_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: test_write_input
+    description: >
+      Dict {code_source: str, code_spec: str, function_name?: str}.
+      Typically supplied by CodeWriteStep's passthrough output.
+    persistent: false
+
+output_data_units:
+  test_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: test_write_output
+    description: >
+      Dict {test_code: str, test_function_count: int, code_source: str,
+      code_spec: str, function_name: str | None}. Passthrough of
+      code_source so the runner can concatenate code + tests.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "test_write_input"

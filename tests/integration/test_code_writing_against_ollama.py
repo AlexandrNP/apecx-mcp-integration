@@ -214,28 +214,18 @@ def test_code_review_flags_wrong_code_with_concerns():
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "Framework gap (2026-05-12): wf.process(input) deposits into "
-        "first-step input DU but the step's DataUnitChangeTrigger "
-        "shows '0 change listeners' — the trigger object is created "
-        "but never wired to listen for input-DU changes at runtime. "
-        "Cascade therefore never fires. Affects both the inner-only "
-        "and outer-workflow paths. Pin marked xfail-strict so a "
-        "future framework fix surfaces immediately. See "
-        "_workspace_notes/.../session_friction_log.md for the "
-        "investigation trail. Per-step tests above DO work because "
-        "they call step.process() directly, sidestepping the "
-        "trigger-cascade entirely."
-    ),
-)
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
 def test_code_reflection_workflow_end_to_end():
     """Run the inner reflection workflow via the established
     apecx pattern: deposit into the first step's input data unit
     directly, drain the cascade, read from the last step's output
-    data unit. Currently xfail-strict (see decorator).
+    data unit.
+
+    Pre-2026-05-12 this test was xfail-strict: the framework's
+    ``Workflow.process`` did not auto-initialize, so triggers stayed
+    unbound and the cascade silently no-op'd. Fixed at nanobrain side
+    in ``Workflow.process`` (auto-init when a first step is present);
+    this test now exercises the full write → review cascade end-to-end.
     """
     from nanobrain.core.workflow import Workflow
 
@@ -288,12 +278,17 @@ def test_code_reflection_workflow_end_to_end():
 @pytest.mark.xfail(
     strict=True,
     reason=(
-        "Same framework trigger-binding gap as the inner-workflow "
-        "test above. The outer workflow's cascade fails to fire for "
-        "the same root cause (DataUnitChangeTrigger listener never "
-        "binds to its declared input DU). The standalone steps and "
-        "the SubworkflowStep unit tests pass; this end-to-end pin "
-        "stays xfail-strict until the framework fix lands."
+        "Nested-SubworkflowStep deadlock (distinct from the original "
+        "trigger-binding gap fixed 2026-05-12 in Workflow.process "
+        "auto-init). The inner reflection workflow now runs end-to-end "
+        "(30s wall) but the outer workflow that EMBEDS code_reflection "
+        "+ code_verification via two SubworkflowStep instances hangs "
+        "indefinitely: outer cascade fires the inner SubworkflowStep, "
+        "the inner workflow's process+wait_for_cascade pattern blocks "
+        "on something the outer cascade is also holding. Likely a "
+        "shared AsyncTriggerExecutor or contextvar pollution between "
+        "parent/child workflow runs. Tracked as a separate framework "
+        "gap; xfail-strict so a future fix surfaces immediately."
     ),
 )
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)

@@ -1,0 +1,32 @@
+# CodeWithTestsStep wrapper — composer-facing surface.
+
+class: "apecx_integration.composition.steps.code_with_tests_step.CodeWithTestsStep"
+name: code_with_tests
+description: >
+  Generate Python code AND pytest tests in one step. Embeds the
+  code_with_tests sub-workflow (CodeWriteStep → TestWriteStep).
+
+timeout_seconds: 240.0
+
+input_data_units:
+  code_with_tests_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_with_tests_input
+    description: >
+      Dict {code_spec, function_name, function_signature?}.
+      function_name required because the AST gate inside the inner
+      code_write step verifies it.
+    persistent: false
+
+output_data_units:
+  code_with_tests_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_with_tests_output
+    description: >
+      Dict {code_source, test_code, test_function_count, ...
+      passthrough fields from the inner workflow's last step}.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_with_tests_input"

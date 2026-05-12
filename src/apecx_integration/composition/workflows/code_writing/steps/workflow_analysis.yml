@@ -1,0 +1,30 @@
+# WorkflowAnalysisStep wrapper — pure-Python structural analyzer.
+
+class: "apecx_integration.composition.steps.workflow_analysis_step.WorkflowAnalysisStep"
+name: workflow_analysis
+description: "Analyze a workflow YAML and emit structured topology + issues."
+
+flag_v1_links_missing_auto_transfer: true
+
+input_data_units:
+  analysis_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: analysis_input
+    description: >
+      Dict {workflow_path: str} OR {workflow_dict: dict}. The step
+      loads and parses the YAML if a path is given.
+    persistent: false
+
+output_data_units:
+  analysis_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: analysis_output
+    description: >
+      Stable analysis dict: workflow_name, description, config_version,
+      steps[], links[], input_data_units[], output_data_units[],
+      topology_summary, issues[], summary_line.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "analysis_input"

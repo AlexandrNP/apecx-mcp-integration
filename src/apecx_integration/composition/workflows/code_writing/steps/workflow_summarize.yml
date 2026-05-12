@@ -1,0 +1,33 @@
+# WorkflowSummarizerStep wrapper — LLM-backed plain-English explainer.
+
+class: "apecx_integration.composition.steps.workflow_summarizer_step.WorkflowSummarizerStep"
+name: workflow_summarize
+description: "Explain a workflow analysis as Markdown for a domain expert."
+
+temperature: 0.0
+max_tokens: 1024
+require_all_sections: true
+
+input_data_units:
+  summarizer_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: summarizer_input
+    description: >
+      Dict {analysis: <dict produced by WorkflowAnalysisStep>}. The
+      analysis MUST contain workflow_name, steps, links, and issues
+      fields (validated by the step).
+    persistent: false
+
+output_data_units:
+  summarizer_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: summarizer_output
+    description: >
+      Dict {summary_markdown: str, raw_response: str}. summary_markdown
+      contains 5 required sections: What this workflow does, Steps,
+      Data flow, Issues to know about, Honest caveats.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "summarizer_input"

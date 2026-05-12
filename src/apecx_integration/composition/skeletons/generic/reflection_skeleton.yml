@@ -1,0 +1,163 @@
+# Generic reflection skeleton (G9) — cross-domain generate→critique pattern.
+#
+# Adopters bind concrete classes for "generator" and "critic" to get a
+# runnable Workflow that implements the reflection reasoning pattern
+# (Wang et al. 2022) for any domain — code, prose, query refinement,
+# configuration generation, anything where output quality benefits from
+# self-critique.
+#
+# Usage (Python):
+#
+#     from nanobrain.core.workflow import Workflow
+#     wf = Workflow.from_skeleton(
+#         "src/apecx_integration/composition/skeletons/generic/reflection_skeleton.yml",
+#         bindings={
+#             "generator_class":     "apecx_integration.composition.steps.code_write_step.CodeWriteStep",
+#             "generator_config":    "src/.../workflows/code_writing/steps/code_write.yml",
+#             "generator_input_du":  "code_write_input",
+#             "generator_output_du": "code_write_output",
+#             "critic_class":        "apecx_integration.composition.steps.code_review_step.CodeReviewStep",
+#             "critic_config":       "src/.../workflows/code_writing/steps/code_review.yml",
+#             "critic_input_du":     "code_review_input",
+#             "critic_output_du":    "code_review_output",
+#         },
+#     )
+#     # Then: await wf.run({"workflow_input": {...}}) OR
+#     #       await wf.process({"<generator_input_du>": {...}}) + wait_for_cascade.
+#
+# Contract:
+#  - The bound generator class MUST emit, in its output dict, a payload
+#    that the bound critic class can consume from a single DirectLink.
+#    For the code-writing pair this works because CodeWriteStep passes
+#    its inputs through alongside `code_source`; if you bind classes
+#    that don't satisfy this, build a small adapter step between them.
+#  - Both wrapper YAMLs must declare the data unit names you bind into
+#    {generator,critic}_{input,output}_du fields — the skeleton substitutes
+#    these literally into the link source/target strings.
+
+skeleton_id: generic_reflection
+skeleton_version: "0.1.0"
+description: >
+  Generic reflection (generate → critique) workflow. Cross-domain;
+  caller binds the generator and critic step classes + their wrapper
+  YAMLs + their input/output data unit names. Produces a runnable
+  Workflow whose first-step deposit (matching {generator_input_du})
+  fires the cascade.
+
+holes:
+  generator_class:
+    type: string
+    required: true
+    description: >
+      Fully-qualified import path for the generator step class
+      (e.g., "apecx_integration.composition.steps.code_write_step.CodeWriteStep").
+  generator_config:
+    type: string
+    required: true
+    description: >
+      Absolute (or workspace-relative) path to the generator wrapper YAML.
+      That YAML declares the generator's input/output data units, triggers,
+      and any step-specific config (system_prompt_file, temperature, etc.).
+  generator_input_du:
+    type: string
+    required: true
+    description: >
+      Name of the generator's input data unit (declared in the wrapper
+      YAML's input_data_units block). Substituted into the workflow_input
+      → generator link target.
+  generator_output_du:
+    type: string
+    required: true
+    description: >
+      Name of the generator's output data unit. Substituted into the
+      generator → critic link source AND the workflow's output data unit.
+  critic_class:
+    type: string
+    required: true
+    description: >
+      Fully-qualified import path for the critic step class.
+  critic_config:
+    type: string
+    required: true
+    description: >
+      Path to the critic wrapper YAML.
+  critic_input_du:
+    type: string
+    required: true
+    description: >
+      Name of the critic's input data unit; substituted into the
+      generator → critic link target.
+  critic_output_du:
+    type: string
+    required: true
+    description: >
+      Name of the critic's output data unit; substituted into the
+      critic → workflow_output link source.
+
+body: |
+  name: generic_reflection_workflow
+  description: >
+    Generic generate → critique reflection pattern. Lowered from
+    generic_reflection skeleton with concrete generator/critic bindings.
+  version: "0.1.0"
+  config_version: 2
+
+  input_data_units:
+    workflow_input:
+      class: "nanobrain.core.data_unit.DataUnitMemory"
+      name: workflow_input
+      description: "Input forwarded to the generator step."
+      persistent: false
+
+  output_data_units:
+    generator_output:
+      class: "nanobrain.core.data_unit.DataUnitMemory"
+      name: generator_output
+      description: "Generator's output (e.g., the generated artifact)."
+      persistent: false
+    critic_verdict:
+      class: "nanobrain.core.data_unit.DataUnitMemory"
+      name: critic_verdict
+      description: "Critic's structured verdict over the generator output."
+      persistent: false
+
+  steps:
+    generator:
+      class: {{generator_class: string}}
+      config: {{generator_config: string}}
+    critic:
+      class: {{critic_class: string}}
+      config: {{critic_config: string}}
+
+  links:
+    input_to_generator:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: workflow_input
+        target: generator.{{generator_input_du: string}}
+        auto_transfer: true
+
+    generator_to_critic:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: generator.{{generator_output_du: string}}
+        target: critic.{{critic_input_du: string}}
+        auto_transfer: true
+
+    generator_to_output:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: generator.{{generator_output_du: string}}
+        target: generator_output
+        auto_transfer: true
+
+    critic_to_verdict:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: critic.{{critic_output_du: string}}
+        target: critic_verdict
+        auto_transfer: true

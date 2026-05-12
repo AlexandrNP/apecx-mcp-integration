@@ -113,18 +113,26 @@ def test_manifest_is_discoverable_via_mcp_surface():
         "composer_config.yml::component_catalog_paths"
     )
     components = code_manifests[0].components
-    assert len(components) == 5, (
-        f"expected 5 documented components (CW1-CW5), got {len(components)}"
+    assert len(components) >= 9, (
+        f"expected at least 9 documented components "
+        f"(CW1-CW9; growing additively), got {len(components)}"
     )
 
     step_names = {c["step_name"] for c in components}
-    assert step_names == {
+    # These must all be present; future additions are tolerated.
+    required = {
         "code_write",
         "code_review",
         "isolated_py_exec",
         "code_reflection",
         "code_verification",
+        "test_write",
+        "code_with_tests",
+        "workflow_analysis",
+        "workflow_summarize",
     }
+    missing = required - step_names
+    assert not missing, f"manifest missing required components: {sorted(missing)}"
 
 
 def test_every_component_has_a_nonempty_rag_description():
