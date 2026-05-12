@@ -25,6 +25,7 @@ from pathlib import Path
 from tests.benchmarks.codegen.direct import make_direct_codegen
 from tests.benchmarks.codegen.plan_then_code import make_plan_then_code_codegen
 from tests.benchmarks.datasets.mbpp import load_mbpp
+from tests.benchmarks.datasets.scicode import load_scicode
 from tests.benchmarks.exclusions import (
     load_blocklist_from_results,
     merge_exclusions,
@@ -35,10 +36,19 @@ from tests.benchmarks.types import BenchmarkProblem, RunResult
 
 
 def _load_dataset(
-    name: str, limit: int | None, exclude: set[str] | None = None
+    name: str,
+    limit: int | None,
+    exclude: set[str] | None = None,
+    *,
+    split: str | None = None,
 ) -> Iterable[BenchmarkProblem]:
     if name == "mbpp":
-        return load_mbpp(split="test", limit=limit, exclude=exclude)
+        return load_mbpp(split=split or "test", limit=limit, exclude=exclude)
+    if name == "scicode":
+        # Default split is 'validation' — the only one usable without
+        # the gated test_data.h5 artifact. Operators with the file
+        # pass --split test plus SCICODE_TEST_DATA_H5_PATH.
+        return load_scicode(split=split or "validation", limit=limit, exclude=exclude)
     raise SystemExit(f"unknown dataset: {name!r}")
 
 
@@ -69,7 +79,15 @@ def _results_to_json(results: list[RunResult]) -> list[dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset", choices=["mbpp"])
+    parser.add_argument("dataset", choices=["mbpp", "scicode"])
+    parser.add_argument(
+        "--split",
+        default=None,
+        help=(
+            "Dataset split override (mbpp default: test, scicode default: validation). "
+            "SciCode test split requires SCICODE_TEST_DATA_H5_PATH."
+        ),
+    )
     parser.add_argument(
         "--codegen",
         default="direct",
@@ -124,7 +142,7 @@ def main() -> int:
             print(f"Excluding {len(derived_exclude)} problems from {args.exclude_from}")
     exclude_set = merge_exclusions(set(args.exclude), derived_exclude)
 
-    problems = list(_load_dataset(args.dataset, args.limit, exclude=exclude_set))
+    problems = list(_load_dataset(args.dataset, args.limit, exclude=exclude_set, split=args.split))
     codegen = _build_codegen(args.codegen, args.model, args.base_url)
 
     print(

@@ -85,9 +85,17 @@ def run_in_subprocess(
         env = dict(os.environ)
         env.update(extra_env)
 
+    # IMPORTANT: pipe the script via stdin rather than `python -c`.
+    # The `-c` path is bounded by OS ARG_MAX (~256 KB on macOS), and
+    # benchmark setup_code can blow past it once a dataset inlines
+    # serialized fixtures (e.g. SciCode's base64-encoded pickled
+    # numpy ``target`` arrays). Stdin has no such limit. Source:
+    # 2026-05-12 SciCode sweep crashed with ``OSError: [Errno 7]
+    # Argument list too long`` on an n=20 mistral-nemo run.
     try:
         completed = subprocess.run(
-            [sys.executable, "-c", script],
+            [sys.executable, "-"],
+            input=script,
             capture_output=True,
             text=True,
             timeout=timeout_seconds,

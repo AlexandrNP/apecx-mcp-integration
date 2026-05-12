@@ -29,7 +29,57 @@ is ~20pp — that's the iteration target for the scaffolds.
 
 ## SciCode (subproblems)
 
-Not yet measured. Plan: P1c.
+| Codegen | Model(s) | Split | n | Pass@1 | Wall (s/problem) | Notes |
+|---|---|---|---:|---:|---:|---|
+| direct | mistral-nemo:latest | validation | 35 | **20.0%** | 24.4 | First baseline (CGU-P1-T1). 7 pass, 15 AssertionError, 13 fail_other (~3 shape-mismatch ValueError, 1 ImportError for hallucinated `scipy.linalg.tensor`, syntax errors). No timeouts. |
+
+### Published reference points (NOT measured here, for orientation only)
+
+| Source | Model | Split | Pass@1 |
+|---|---|---|---:|
+| SciCode paper | Claude 3.5 Sonnet | test | ~26% |
+| SciCode paper | GPT-4o | test | ~25% |
+| SciCode paper | Llama-3.1-405B | test | ~20% |
+| SciCode paper | DeepSeek-Coder-V2 | test | ~21% |
+
+**Honest caveat — our 20% is not directly comparable to those 25–26%.**
+Published numbers are on the **test split** (65 main problems, 291
+subproblems). Our number is on the **validation split** (15 main, 50
+subproblems; 35 yielded by our self-compute path), which the SciCode
+authors release for prompt-iteration WITH gold solutions. The test split
+is held out: gold solutions are redacted on HuggingFace and the
+``target`` reference values for hidden tests ship only as
+``test_data.h5`` via Google Drive, gated. Our test-split path is
+implemented up to the env-var hook (``SCICODE_TEST_DATA_H5_PATH``) and
+raises ``NotImplementedError`` past that point. Future work (CGU-P1-T1
+follow-up): wire the HDF5-target path.
+
+A reasonable extrapolation: expect ~5–10pp drop validation → test
+split. So mistral-nemo 12B on SciCode test ≈ **mid-teens**, consistent
+with the plan's realistic-floor projection (``composer_codegen_uplift_plan.md``
+§0).
+
+### Failure pattern (35-problem direct baseline)
+
+15 ``AssertionError`` = parseable Python that returns the wrong value
+on at least one hidden test. This is the failure shape scaffolds
+target: plan-then-code may catch logic mistakes upstream; self-test
+should iterate on shape/edge-case bugs.
+
+13 fail_other:
+- ~3 ``ValueError`` ("operands could not be broadcast together") —
+  shape mismatches. ReAct-style sandbox feedback (Z5) should fix these.
+- 1 ``ImportError`` (``scipy.linalg.tensor``) — hallucinated API.
+  Retrieval-grounded codegen (Z6) is the canonical fix.
+- Several ``NonZeroExit`` with numpy ufunc errors — type-coercion bugs
+  that oracle-grounded codegen (Z7) catches at compile-with-types time.
+
+The failure spectrum here is rich enough that the scaffold zoo (CGU-P5-T1)
+should produce measurable, distinguishable lift per pattern.
+
+## Nanobrain-native (hand-crafted)
+
+Not yet built. Plan: P1d.
 
 ## Nanobrain-native (hand-crafted)
 
