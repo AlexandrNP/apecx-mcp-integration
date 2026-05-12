@@ -81,6 +81,39 @@ authoring guide.
 > rate is a B1-prompt-work signal AND evidence the resolver is
 > earning its keep.
 
+> **Spec-mode composer (SPEC2, 2026-05-11).**
+> `APECX_COMPOSER_MODE=spec` swaps `compose()` to a JSON-spec
+> path. Instead of asking the LLM to emit ~25 lines of YAML with
+> 8 field types (one for every hallucination shape we've measured),
+> the LLM emits a tiny `MinimalWorkflowSpec`:
+>
+> ```json
+> {
+>   "name": "synthesize_grounded_answer",
+>   "steps": [{"id": "rag", "class_name": "RagSynthesisStep"}],
+>   "links": [{"source": "workflow_input", "target": "rag.synthesis_input"}]
+> }
+> ```
+>
+> The deterministic expander in
+> `apecx_integration.composition.workflow_spec.expand_spec` writes
+> all framework boilerplate (full class paths, `auto_transfer: true`,
+> link IDs, workflow-level data unit blocks, `config_version: 2`).
+> The LLM-side leverage: ~5 JSON fields per step instead of ~10
+> YAML fields with nested types. Hallucination surface shrinks
+> proportionally.
+>
+> **Measured impact (real mistral-nemo, 2026-05-11)**: monolithic
+> mode failed test 2 (invented `CustomerRetrievalStep`) and ran
+> 196s with 1 retry on test 1. Spec mode succeeded on BOTH tests
+> with zero retries in 47s — a 4× speedup AND a 100% success rate
+> on the diagnostic E2E.
+>
+> When writing or editing the composer prompt: prefer extending
+> `spec_system.md` (the distilled ~2k-token cheat sheet) over the
+> monolithic `system.md`. Smaller prompts on smaller-surface tasks
+> ARE the prompt-engineering win.
+
 ## File:line ground truth
 
 | Concern | File | Approx. line |
