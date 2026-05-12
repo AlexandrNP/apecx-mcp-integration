@@ -623,3 +623,32 @@ correctly fire both inner cascades and propagate data.
 it can. When you see a nested-cascade test hang, the cause is
 specific to the inner-step contracts (LLM timing, data-shape
 mismatch), not the framework's task-set bookkeeping.
+
+### Picking a code-writing nested workflow (2026-05-12)
+
+Five LLM-backed code-writing workflows ship under
+`composition/workflows/code_writing/`. They are non-overlapping by
+**input shape** + **verification gate** — pick by what the caller
+has on hand and what proof of correctness is needed:
+
+| Workflow | Required inputs | Gate | Use when |
+|---|---|---|---|
+| `code_writing_workflow` | `code_spec` | AST + reviewer rubric | Greenfield: spec → reviewed code. |
+| `code_with_tests_workflow` | `code_spec` | AST + test_code authored alongside | The caller wants both source and a smoke test in one pass. |
+| `code_verification_workflow` | `code_source` + `test_code` | `IsolatedPyExecStep` subprocess result | Caller already has code; wants exec proof. |
+| `code_reflection_workflow` | `code_spec` | AST + reviewer + reflection memo | Caller wants a self-critique trace alongside the code. |
+| `self_improving_code_writing_workflow` | `code_spec` + `spec_id` | AST + reviewer + git-tracked memory | Recurring task where prior failures should inform the next attempt (Reflexion arXiv:2303.11366). |
+| **`iterative_bug_fix_workflow`** (NW1) | `code_spec` + **`previous_attempt`** + **`critique`** (error trace) + `test_code` | `IsolatedPyExecStep` re-run on the patch | Caller has BROKEN code + failure trace; needs the FIX verified (Self-Debug arXiv:2304.05128, SWE-agent arXiv:2405.15793). |
+| **`code_documentation_workflow`** (NW2) | `code_source` (bare, no docstring) | AST-equivalence at function-body level + reviewer rubric | Caller has working code; wants Google-style docstring without behavior change (DocAgent arXiv:2504.08725). |
+
+Decision shortcut:
+- Got a **spec only** → `code_writing` / `code_with_tests` /
+  `code_reflection` / `self_improving` depending on how much critique
+  / persistence is needed.
+- Got **broken code + a trace** → `iterative_bug_fix`.
+- Got **bare code, want docs** → `code_documentation`.
+- Got **code + a test, want exec proof** → `code_verification`.
+
+All six (post-NW1, NW2) are concrete `SubworkflowStep` subclasses,
+manifest-listed (CW01–CW13), and each ships with a real-Ollama
+integration test under `tests/integration/test_*_against_ollama.py`.
