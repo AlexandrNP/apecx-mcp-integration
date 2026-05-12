@@ -23,22 +23,57 @@ HF_REPO = "google-research-datasets/mbpp"
 HF_CONFIG = "sanitized"
 
 
+# Hardcoded blocklist for MBPP problems known to cause issues in
+# the sandbox. Each entry is one-line-justified inline.
+#
+# Curation rule: only add an ID after it has caused a hang, OOM,
+# or other session-affecting behavior on >=2 separate runs. The
+# subprocess sandbox + timeout is the primary defense; this list
+# is for problems we'd rather not bother re-confirming each sweep.
+#
+# Format: problem_id string (matches what ``_to_problem`` produces).
+MBPP_BLOCKLIST: frozenset[str] = frozenset(
+    {
+        # No persistent entries yet. The 50-problem mistral-nemo
+        # baseline (2026-05-12) completed with zero Timeout / zero
+        # session-affecting failures. Populate from prior-run JSON
+        # via the CLI's --exclude-from flag rather than hardcoding
+        # case-by-case.
+    }
+)
+
+
 def load_mbpp(
     split: str = "test",
     limit: int | None = None,
+    exclude: set[str] | None = None,
 ) -> Iterator[BenchmarkProblem]:
     """Stream MBPP problems as ``BenchmarkProblem`` instances.
 
     ``limit`` caps how many problems we yield — useful for fast
     smoke runs (e.g., ``limit=20``) vs. full sweeps (``limit=None``).
+
+    ``exclude`` is a set of problem_ids to skip in addition to
+    ``MBPP_BLOCKLIST``. Pass user-curated IDs or auto-derived
+    ones from a prior run via ``exclusions.load_blocklist_from_results``.
+
+    The combined exclusion does NOT count against ``limit`` — we
+    skip the row and keep walking until ``limit`` problems are
+    yielded, so callers get the expected sample size.
     """
     from datasets import load_dataset  # noqa: PLC0415
 
+    skip = MBPP_BLOCKLIST | (exclude or set())
     ds = load_dataset(HF_REPO, HF_CONFIG, split=split)
-    for i, row in enumerate(ds):
-        if limit is not None and i >= limit:
+    yielded = 0
+    for row in ds:
+        if limit is not None and yielded >= limit:
             return
-        yield _to_problem(row)
+        problem = _to_problem(row)
+        if problem.problem_id in skip:
+            continue
+        yielded += 1
+        yield problem
 
 
 def _to_problem(row: dict) -> BenchmarkProblem:

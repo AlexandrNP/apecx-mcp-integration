@@ -25,14 +25,20 @@ from pathlib import Path
 from tests.benchmarks.codegen.direct import make_direct_codegen
 from tests.benchmarks.codegen.plan_then_code import make_plan_then_code_codegen
 from tests.benchmarks.datasets.mbpp import load_mbpp
+from tests.benchmarks.exclusions import (
+    load_blocklist_from_results,
+    merge_exclusions,
+)
 from tests.benchmarks.runner import run_one
 from tests.benchmarks.scorer import format_summary, summarize
 from tests.benchmarks.types import BenchmarkProblem, RunResult
 
 
-def _load_dataset(name: str, limit: int | None) -> Iterable[BenchmarkProblem]:
+def _load_dataset(
+    name: str, limit: int | None, exclude: set[str] | None = None
+) -> Iterable[BenchmarkProblem]:
     if name == "mbpp":
-        return load_mbpp(split="test", limit=limit)
+        return load_mbpp(split="test", limit=limit, exclude=exclude)
     raise SystemExit(f"unknown dataset: {name!r}")
 
 
@@ -90,9 +96,35 @@ def main() -> int:
         action="store_true",
         help="suppress per-problem progress lines",
     )
+    parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        help=(
+            "Problem ID to exclude. Repeatable. Skips in addition to "
+            "the dataset's hardcoded blocklist."
+        ),
+    )
+    parser.add_argument(
+        "--exclude-from",
+        type=Path,
+        default=None,
+        help=(
+            "Path to a prior sweep's JSON output. Problems that failed "
+            "with Timeout or codegen_* (LLM-side) errors will be skipped. "
+            "AssertionError failures are NOT excluded (they're cleanly-failed)."
+        ),
+    )
     args = parser.parse_args()
 
-    problems = list(_load_dataset(args.dataset, args.limit))
+    derived_exclude: set[str] = set()
+    if args.exclude_from is not None:
+        derived_exclude = load_blocklist_from_results(args.exclude_from)
+        if derived_exclude:
+            print(f"Excluding {len(derived_exclude)} problems from {args.exclude_from}")
+    exclude_set = merge_exclusions(set(args.exclude), derived_exclude)
+
+    problems = list(_load_dataset(args.dataset, args.limit, exclude=exclude_set))
     codegen = _build_codegen(args.codegen, args.model, args.base_url)
 
     print(
