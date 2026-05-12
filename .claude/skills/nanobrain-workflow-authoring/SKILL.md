@@ -486,3 +486,53 @@ with subscribe_to_step_events(events.append):
     await workflow.run(...)
 # events is now a list[StepEvent] with one event per step boundary
 ```
+
+### Embedding a workflow as a step — ``SubworkflowStep`` (2026-05-12)
+
+When one workflow is naturally a reusable reasoning pattern (write
+→ review, decompose → solve → integrate, verify, etc.), embed it
+as a single step in a larger workflow rather than redeclaring its
+topology each time.
+
+Two usage shapes:
+
+**1. Concrete subclass per pattern (recommended for composer use).**
+The composer's RAG matcher sees a concrete step class with a rich
+``rag_description``; the workflow-embedding mechanism is invisible.
+
+```python
+from nanobrain.library.steps.subworkflow_step import SubworkflowStep
+
+class CodeReflectionStep(SubworkflowStep):
+    COMPONENT_TYPE = "code_reflection_step"
+
+    @classmethod
+    def _default_inner_workflow_path(cls):
+        return "workflows/code_writing/code_reflection_workflow.yml"
+
+    async def process(self, input_data, **kwargs):
+        # Explicit override delegates to super(); subclass surface
+        # documents its specific input/output shape.
+        return await super().process(input_data, **kwargs)
+```
+
+**2. Direct config (advanced).** Use ``SubworkflowStep`` directly
+with ``inner_workflow_path`` in the step YAML. Do NOT let the
+composer author this shape — the path field is a hallucination
+surface. Reserved for hand-written workflows.
+
+Both paths run the inner workflow via
+``inner.process(routed_input) + inner.wait_for_cascade()`` — NOT
+``inner.run()``. The wrapper auto-routes ``input_data`` to the
+inner workflow's first-step input data unit when there's exactly
+one (sidesteps the framework's workflow-level-DU routing gap that
+``test_rag_e2e_workflow_yaml.py`` also works around).
+
+Silent-failure discipline (built in, opt-out per-step):
+
+* Cascade timeout → ``TimeoutError`` (not the lenient
+  ``status: cascade_timeout`` shape of ``Workflow.run`` defaults).
+* Empty inner output → ``RuntimeError`` (matches the EMPTY-OUTPUT
+  gate from apecx-mcp-integration's executor `7471b0a`).
+* Operators opt out with ``allow_empty_inner_output: true`` per
+  step config when side-effect-only inner workflows are intentional.

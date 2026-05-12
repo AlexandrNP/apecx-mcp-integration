@@ -15,6 +15,8 @@ LLM can pick by name.
 | `pubmed_only_literature_search` | `PubMedHarvesterStep` | Raw citations + abstracts, no synthesis. |
 | `rag_domain_search_only` | `DomainRagSearchStep` | Top-k semantic chunks, no LLM. |
 | `violin_bvbrc_context_only` | `VIOLINBVBRCContextStep` | Pure pandas lookup against VIOLIN/BV-BRC. |
+| `code_write_and_review` | `CodeReflectionStep` | Generate Python code + critique it against the spec. |
+| `code_write_review_and_run` | `CodeReflectionStep` → `CodeVerificationStep` | Generate + critique + run in isolated subprocess (requires `APECX_CODE_EXEC=1`). |
 
 ## Web-research-informed patterns the catalog does NOT yet ship (deferred)
 
@@ -67,16 +69,84 @@ instances + N links + the aggregator. A skeleton wrapping that
 hand-wired pattern would be 4× the YAML of the simpler skeletons
 and brittle to N changes; deferred until `BroadcastStep` exists.
 
-### Code-writing flow
+### Code-writing flow — SHIPPED (2026-05-12)
 
-Cycle: `RequirementsParseStep → TestGenerationStep → CodeWriteStep →
-TestRunStep → Refine`. Different audience from the current apecx
-biological-corpus stack; would require a dedicated coding-agent
-component family.
+Cycle: `CodeWriteStep → CodeReviewStep → IsolatedPyExecStep (opt-in)`.
+Single LLM round-trip per leg. Surfaces to the composer as concrete
+step classes (`CodeReflectionStep` for write+review;
+`CodeVerificationStep` for isolated exec); the embedding via
+`SubworkflowStep` is invisible at compose time.
 
-**To ship**: out of scope for the apecx biological-research stack
-in this version. Document as a non-goal unless the product scope
-expands to code generation.
+**Shipped primitives**:
+- `CodeWriteStep` (`composition/steps/code_write_step.py`): LLM →
+  Python source with AST gate, function-name gate, fence-strip.
+- `CodeReviewStep` (`composition/steps/code_review_step.py`):
+  structured JSON verdict; grounded-rejection gate; biased toward
+  rejection.
+- `IsolatedPyExecStep` (`composition/steps/isolated_py_exec_step.py`):
+  subprocess-isolated exec; refuse-by-default via APECX_CODE_EXEC=1;
+  scrubbed env; **NOT a security sandbox**.
+- `CodeReflectionStep` (`composition/steps/code_reflection_step.py`):
+  SubworkflowStep wrapping the write+review pattern.
+- `CodeVerificationStep` (`composition/steps/code_verification_step.py`):
+  SubworkflowStep wrapping isolated exec.
+
+**Shipped skeletons**:
+- `code_write_and_review` — single-step reflection.
+- `code_write_review_and_run` — reflection + isolated exec.
+
+**Adoption caveats** (honest):
+- The composer's existing RAG matcher is biased toward biological
+  prompts (manifest entries for VIOLIN/BV-BRC, PubMed, etc.). When
+  a user asks "write fizzbuzz", retrieval still surfaces the
+  bio-domain steps as candidates. The code-writing steps' rich
+  rag_descriptions help, but a domain-router primitive would be the
+  cleaner long-term fix.
+- The framework's trigger-binding silent-failure shape (2026-05-12)
+  blocks the end-to-end workflow YAML path; the SubworkflowStep
+  itself routes inputs correctly because it uses
+  `wf.process + wait_for_cascade` directly. See
+  `_workspace_notes/.../session_friction_log.md` for the
+  investigation trail.
+- "NOT a security sandbox" is loadbearing — running LLM-authored
+  code via this stack on adversarial input is unsafe. Use
+  `apecx_integration.composition.docker_sandbox` (T13b, gated by
+  `APECX_T13B_SANDBOX_EXECUTE=1`) for that posture.
+
+### Cross-domain reflection — DEFERRED to G9 skeletons
+
+The current `CodeReflectionStep` hardcodes its inner workflow path
+(`code_reflection_workflow.yml`), which itself names
+`CodeWriteStep` + `CodeReviewStep` concretely. This is code-specific.
+
+A *generic* reflection pattern that works across domains (code,
+prose, query refinement, configurations) needs typed bindings:
+the generator and critic are PARAMETERS, not hardcoded classes.
+
+**Recipe via G9 `Workflow.from_skeleton(skeleton, bindings)`**:
+
+```python
+from nanobrain.core.workflow import Workflow
+wf = Workflow.from_skeleton(
+    "reflection_skeleton.yml",  # generic write→review topology
+    bindings={
+        "generator": CodeWriteStep,   # or TextGenStep, or QueryRefinementStep, ...
+        "critic": CodeReviewStep,     # or TextReviewStep, ...
+    },
+)
+```
+
+The `reflection_skeleton.yml` would carry `{{generator: Step}}` /
+`{{critic: Step}}` placeholders; G9's binding validator enforces
+shape match. Operators who need the generic pattern build it
+themselves with the bindings of their choice.
+
+**Why deferred**: the concrete `CodeReflectionStep` covers the
+code-writing case shipped today. A generic skeleton is a small
+authoring task (one YAML file + a bindings test) but adds API
+surface that wants its own design pass for the placeholder syntax
+across step/link/trigger types. Tracked as future work; the recipe
+above is sufficient for adopters who need it immediately.
 
 ## Authoring guidance for future skeletons
 

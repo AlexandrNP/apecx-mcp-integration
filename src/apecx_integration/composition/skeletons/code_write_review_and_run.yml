@@ -1,0 +1,32 @@
+# Skeleton: code authoring with self-critique AND runtime verification.
+#
+# Picked when the user asks for code that should be verified by
+# actually running it. Composes CodeReflectionStep (write → review)
+# THEN CodeVerificationStep (isolated subprocess exec). Requires
+# APECX_CODE_EXEC=1 — refuses without it.
+
+name: code_write_review_and_run
+description: >
+  Generate Python code, critique it for spec match, then run it in
+  an isolated subprocess to verify it executes cleanly. Workflow
+  output exposes the full exec_result {stdout, stderr, returncode,
+  exec_succeeded}. Refuses to execute without APECX_CODE_EXEC=1
+  (operator opt-in; not a security sandbox).
+when_to_use: >
+  User asks to "write code and verify it works", "test the generated
+  code", "run the function and check the output". Avoid when the
+  user only wants the source (no execution side effects allowed) —
+  pick code_write_and_review instead.
+spec:
+  name: code_write_review_and_run
+  description: Code authoring + critique + isolated-subprocess execution.
+  version: "0.1.0"
+  steps:
+    - id: code_reflection
+      class_name: CodeReflectionStep
+    - id: code_verification
+      class_name: CodeVerificationStep
+  links:
+    - {source: workflow_input,                              target: code_reflection.code_reflection_input}
+    - {source: code_reflection.code_reflection_output,      target: code_verification.code_verification_input}
+    - {source: code_verification.code_verification_output,  target: workflow_output}

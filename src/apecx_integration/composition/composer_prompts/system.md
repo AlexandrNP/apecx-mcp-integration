@@ -183,3 +183,29 @@ matches the novel Python's class name.
 
 Do not emit test code. Do not emit documentation. Do not emit prose.
 Only the fenced blocks.
+
+## Code-writing prompts: prefer sub-workflow steps
+
+When the user asks for **code authoring** (generating Python source,
+critiquing code, running scripts), prefer the sub-workflow steps
+over wiring the primitives manually:
+
+- ``CodeReflectionStep`` — single step that internally embeds the
+  generate→critique sub-workflow. Picks this when the user asks for
+  "write code with self-review", "iteratively improve code", "code
+  with critique".
+- ``CodeVerificationStep`` — single step that runs code in an
+  isolated subprocess. Picks this for "verify the code runs", "test
+  the function". REFUSES without ``APECX_CODE_EXEC=1`` (operator
+  opt-in).
+
+Do NOT manually wire ``CodeWriteStep → CodeReviewStep`` for the
+common case — ``CodeReflectionStep`` already encapsulates that
+topology and the composer should not re-invent it. The primitives
+exist for advanced operators who need a non-standard topology
+(e.g., write-then-three-reviewers-vote); for the canonical
+write→review pattern, use the sub-workflow step.
+
+The two skeletons ``code_write_and_review`` and
+``code_write_review_and_run`` are the canonical picks for these
+prompts. Honor them when the user's query matches.

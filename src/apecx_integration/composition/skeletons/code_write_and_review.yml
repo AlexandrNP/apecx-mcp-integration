@@ -1,0 +1,26 @@
+# Skeleton: code authoring with self-critique.
+#
+# Picked when the user asks for Python code and wants the LLM to
+# critique its own output before shipping. Composes CodeReflectionStep
+# (a SubworkflowStep wrapping write → review) as a single step.
+
+name: code_write_and_review
+description: >
+  Generate Python code from a spec, then critique it against the
+  same spec. Emits both the generated source AND a structured
+  verdict (approved / concerns / suggestions).
+when_to_use: >
+  User asks to "write Python code with review", "generate code and
+  critique it", "self-correcting code", or any prompt where output
+  quality matters more than raw generation speed. Pairs with a
+  human-in-the-loop reviewer downstream when approved=False.
+spec:
+  name: code_write_and_review
+  description: Single-step code authoring with built-in critique.
+  version: "0.1.0"
+  steps:
+    - id: code_reflection
+      class_name: CodeReflectionStep
+  links:
+    - {source: workflow_input,                          target: code_reflection.code_reflection_input}
+    - {source: code_reflection.code_reflection_output,  target: workflow_output}
