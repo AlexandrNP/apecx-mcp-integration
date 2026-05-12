@@ -292,9 +292,18 @@ class CodeWriteStep(BaseStep):
             self._max_tokens,
         )
 
+        # Passthrough fields: include code_spec, function_name, and
+        # function_signature in the output so downstream review/exec
+        # steps wired via a single DirectLink can read both the
+        # generated code AND the original spec. Avoids inventing a
+        # "code-writing context assembly" step purely for plumbing
+        # (DirectLink is 1:1; downstream steps need both inputs).
         return {
             "code_source": code_source,
             "function_name_verified": verified_name,
+            "code_spec": spec,
+            "function_name": function_name,
+            "function_signature": input_data.get("function_signature"),
         }
 
     def _invoke_llm(self, *, user_message: str) -> str:

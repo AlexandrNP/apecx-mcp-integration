@@ -1,0 +1,110 @@
+# Outer demo: workflow-of-workflow-of-workflows for code authoring.
+#
+# Demonstrates two reusable sub-workflows composed as steps in an
+# outer workflow. The nesting depth is 3 — this outer workflow uses
+# CodeReflectionStep (which embeds code_reflection_workflow.yml) and
+# CodeVerificationStep (which embeds code_verification_workflow.yml).
+#
+# Step topology:
+#
+#   workflow_input ({code_spec, function_name, function_signature})
+#       │
+#       ▼ (DirectLink)
+#   code_reflection           ← SubworkflowStep embedding write → review
+#       │
+#       │ {code_source, function_name_verified, review_verdict}
+#       ▼ (DirectLink — code_verification reads code_source, ignores
+#                       the extra reflection-output keys)
+#   code_verification         ← SubworkflowStep embedding isolated exec
+#       │
+#       │ {exec_result: {stdout, stderr, returncode, exec_succeeded, ...}}
+#       ▼ (DirectLink)
+#   workflow_output
+#
+# The verification step REFUSES to execute unless APECX_CODE_EXEC=1
+# is set in the operator environment — that gate is inside the
+# embedded IsolatedPyExecStep and cannot be bypassed by the outer
+# workflow YAML. When the env isn't set, the workflow fails fast with
+# a clear refusal message rather than silently skipping verification.
+# To run the workflow without verification, use the standalone
+# code_reflection_workflow.yml (or a workflow that uses only
+# CodeReflectionStep).
+#
+# Adoption-friendly knobs:
+#   - APECX_LLM_MODEL: which Ollama (or other OpenAI-compatible) model
+#     to use for both the writer AND the reviewer. Defaults to
+#     mistral-nemo:latest. Code-capable models work better; smaller
+#     models will produce more rejections by the reviewer.
+#   - APECX_CODE_EXEC=1: opt in to subprocess code execution. Without
+#     this, the outer workflow fails at the verification step.
+
+name: code_authoring_with_reflection_and_verification
+description: >
+  Generate Python code from a spec, critique it, then run it through
+  an isolated subprocess for runtime verification. Composes the
+  code_reflection and code_verification sub-workflows as steps —
+  demonstrates the workflow-of-workflows pattern at depth 3
+  (outer → sub-workflow-step → inner workflow). Requires
+  APECX_CODE_EXEC=1 for the verification step; the inner LLM calls
+  use APECX_LLM_* env vars.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {code_spec: str, function_name: str, function_signature?: str}.
+      function_name is required because the inner code_write step
+      verifies the AST defines it.
+    persistent: false
+
+output_data_units:
+  exec_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_result
+    description: >
+      Final exec result dict from the verification sub-workflow:
+      {stdout, stderr, returncode, exec_succeeded, elapsed_seconds}.
+    persistent: false
+
+steps:
+  code_reflection:
+    class: "apecx_integration.composition.steps.code_reflection_step.CodeReflectionStep"
+    config: "steps/code_reflection.yml"
+
+  code_verification:
+    class: "apecx_integration.composition.steps.code_verification_step.CodeVerificationStep"
+    config: "steps/code_verification.yml"
+
+links:
+  input_to_reflection:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "code_reflection.code_reflection_input"
+      auto_transfer: true
+
+  # The reflection output dict includes code_source plus extra keys
+  # (function_name_verified, review_verdict). IsolatedPyExecStep's
+  # input only reads code_source / test_code / entrypoint and ignores
+  # the rest, so a single DirectLink suffices.
+  reflection_to_verification:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "code_reflection.code_reflection_output"
+      target: "code_verification.code_verification_input"
+      auto_transfer: true
+
+  # The verification step emits a dict {exec_result: {...}}; we
+  # surface exec_result as a workflow-level output.
+  verification_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "code_verification.code_verification_output"
+      target: "exec_result"
+      auto_transfer: true

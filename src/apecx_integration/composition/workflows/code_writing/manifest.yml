@@ -1,0 +1,137 @@
+# Code-writing workflow — component manifest.
+#
+# Covers the demo workflow at code_authoring_with_reflection_and_verification.yml
+# and exposes the reusable sub-workflow steps + primitives the
+# composer can pick when the user asks for code-related work.
+#
+# Three layers of components are registered:
+#   1. Primitive steps  — CodeWriteStep, CodeReviewStep,
+#                         IsolatedPyExecStep (the building blocks).
+#   2. Sub-workflow steps — CodeReflectionStep, CodeVerificationStep
+#                           (concrete SubworkflowStep subclasses that
+#                           embed an inner workflow; appear to the
+#                           composer as ordinary step classes).
+#   3. Outer workflow   — code_authoring_with_reflection_and_verification
+#                         (demonstrates workflow-of-workflows nesting).
+#
+# Honest caveat: this manifest exists in a biological-research stack
+# (apecx-mcp-integration). The code-writing flow is OFF-DOMAIN for
+# the core product, shipped as a framework-capability demo. The
+# primitives (CodeWriteStep, CodeReviewStep, IsolatedPyExecStep) are
+# domain-agnostic and reusable; the sub-workflow steps are tuned for
+# Python authoring. Adopters in non-biological domains will likely
+# replace the sub-workflows but keep the primitives.
+
+workflow:
+  name: code_authoring_with_reflection_and_verification
+  spec: workflows/code_writing/code_authoring_with_reflection_and_verification.yml
+  description: >
+    Generate Python code via LLM, critique it for spec match,
+    optionally run it in an isolated subprocess for runtime
+    verification. Demonstrates the workflow-of-workflows pattern
+    (outer workflow uses sub-workflow steps that themselves embed
+    inner workflows).
+
+components:
+
+  - step_id: "CW1"
+    step_name: code_write
+    disposition: new
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    yaml: "workflows/code_writing/steps/code_write.yml"
+    status: ready
+    rag_description: >
+      Author Python source from a natural-language spec via an LLM.
+      Strict AST gate on the output: prose-only responses, syntax
+      errors, or output missing the required function name are
+      rejected with a ValueError (NOT silently passed downstream).
+      Strips ``` ```python fences once if the LLM ignores the
+      "no fences" rule. Use this when the user asks for code
+      generation directly and you want raw source as output.
+      Pair with CodeReviewStep for a critique pass, or use
+      CodeReflectionStep to get both in one sub-workflow.
+    rag_examples:
+      - "write a Python function that computes Fibonacci numbers"
+      - "generate Python code for parsing a CSV with given columns"
+      - "author a function with a specific signature from a spec"
+
+  - step_id: "CW2"
+    step_name: code_review
+    disposition: new
+    class: "apecx_integration.composition.steps.code_review_step.CodeReviewStep"
+    yaml: "workflows/code_writing/steps/code_review.yml"
+    status: ready
+    rag_description: >
+      Review Python code against a spec; emit a structured JSON
+      verdict {approved: bool, reasoning, concerns: list[str],
+      suggestions: list[str]}. System prompt biases toward rejection
+      (false-positive rewrites cost less than false-negative bad
+      ships). Refuses unactionable rejections (approved=false with
+      empty concerns) by default. Use this when the user asks for
+      a code critique without wanting the code regenerated.
+    rag_examples:
+      - "review this Python function and tell me what's wrong"
+      - "critique generated code for correctness and edge cases"
+      - "structured verdict on whether code matches the spec"
+
+  - step_id: "CW3"
+    step_name: isolated_py_exec
+    disposition: new
+    class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
+    yaml: "workflows/code_writing/steps/isolated_py_exec.yml"
+    status: ready
+    rag_description: >
+      Run Python source in an isolated subprocess; capture stdout,
+      stderr, return code, and elapsed time. REFUSES TO EXECUTE
+      unless APECX_CODE_EXEC=1 is set in the operator environment.
+      NOT a security sandbox — defends against accidental side
+      effects, not malicious code. Use this only on trusted input
+      (e.g. LLM-generated code that has already passed a review
+      step) and only when the operator has opted into execution.
+      For untrusted code, use the Docker sandbox (T13b) instead.
+    rag_examples:
+      - "run this Python snippet and capture stdout"
+      - "execute generated code to verify it at least runs"
+      - "smoke-test a function definition by invoking it"
+
+  - step_id: "CW4"
+    step_name: code_reflection
+    disposition: new
+    class: "apecx_integration.composition.steps.code_reflection_step.CodeReflectionStep"
+    yaml: "workflows/code_writing/steps/code_reflection.yml"
+    status: ready
+    rag_description: >
+      Self-improving code authoring as a single composable step:
+      embeds the code_reflection sub-workflow which generates Python
+      source AND critiques it against the spec. Output includes
+      both the code AND a structured review verdict (approved,
+      reasoning, concerns, suggestions). Pick this over raw
+      code_write when the user wants confidence the code matches
+      the spec or asks for "iteratively improved" code. Surrounding
+      workflows can act on the verdict (approved=False → retry with
+      the critique fed back as input via a follow-up call).
+    rag_examples:
+      - "write Python code with critique and self-improvement"
+      - "generate code and review it for spec match"
+      - "iteratively improve code via reflection pattern"
+      - "self-correcting code authoring"
+
+  - step_id: "CW5"
+    step_name: code_verification
+    disposition: new
+    class: "apecx_integration.composition.steps.code_verification_step.CodeVerificationStep"
+    yaml: "workflows/code_writing/steps/code_verification.yml"
+    status: ready
+    rag_description: >
+      Runtime verification of Python code as a single composable
+      step: embeds the code_verification sub-workflow which runs
+      code_source in an isolated subprocess. Output includes the
+      full structured exec_result {stdout, stderr, returncode,
+      exec_succeeded}. REFUSES TO EXECUTE without APECX_CODE_EXEC=1
+      (operator opt-in; not a security sandbox). Pair with
+      code_reflection in an outer workflow to get generate →
+      critique → verify in three composed steps.
+    rag_examples:
+      - "verify the generated code actually executes"
+      - "run tests against authored code"
+      - "smoke-test LLM-generated Python in a subprocess"

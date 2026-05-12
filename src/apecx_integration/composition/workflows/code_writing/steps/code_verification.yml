@@ -1,0 +1,42 @@
+# CodeVerificationStep wrapper — composer-facing surface.
+#
+# Surfaces the runtime-verification sub-workflow as an ordinary step.
+# When the user asks for "verify the generated code works", "run
+# tests on the code", or similar, RAG match pulls this in.
+#
+# REFUSES TO EXECUTE unless APECX_CODE_EXEC=1; the env gate fires
+# inside the embedded IsolatedPyExecStep. NOT a security sandbox.
+
+class: "apecx_integration.composition.steps.code_verification_step.CodeVerificationStep"
+name: code_verification
+description: >
+  Run Python code in an isolated subprocess and capture stdout,
+  stderr, return code, and elapsed time. Suitable for verifying that
+  LLM-authored code at least executes; pair with code_reflection to
+  iterate on failures. Refuses to execute without APECX_CODE_EXEC=1
+  in the operator environment — not a security sandbox; do not run
+  on untrusted input.
+
+timeout_seconds: 30.0
+
+input_data_units:
+  code_verification_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_verification_input
+    description: >
+      Dict {code_source: str, test_code?: str, entrypoint?: str}.
+      Forwarded to the inner workflow's workflow_input data unit.
+    persistent: false
+
+output_data_units:
+  code_verification_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_verification_output
+    description: >
+      Dict {exec_result: {stdout, stderr, returncode, exec_succeeded,
+      elapsed_seconds}}.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_verification_input"

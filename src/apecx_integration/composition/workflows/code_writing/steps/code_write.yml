@@ -1,0 +1,45 @@
+# CodeWriteStep wrapper — LLM-backed Python authoring.
+#
+# This wrapper YAML is referenced from the code_reflection_workflow
+# and code_verification_workflow as a normal pipeline step. The
+# step's input is a dict containing {code_spec, function_name?,
+# function_signature?, previous_attempt?, critique?}; output adds
+# code_source + function_name_verified and passes the input fields
+# through (so a downstream review step can read both from a single
+# DirectLink).
+
+class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+name: code_write
+description: "Author Python source from a natural-language spec; AST-validates output."
+
+# Use the bundled default prompt at
+# ../../../code_writing_prompts/code_writer_system.md.
+# Operators with stronger / weaker models can override.
+temperature: 0.0
+max_tokens: 1024
+require_function_name: true
+
+input_data_units:
+  code_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_write_input
+    description: >
+      Dict {code_spec: str, function_name?: str, function_signature?: str,
+      previous_attempt?: str, critique?: str}. function_name is required
+      unless require_function_name is False.
+    persistent: false
+
+output_data_units:
+  code_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_write_output
+    description: >
+      Dict {code_source: str, function_name_verified: str | None,
+      code_spec: str, function_name: str, function_signature: str | None}.
+      Passes spec/name/signature through alongside the generated source
+      so a single DirectLink can feed the review step.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_write_input"

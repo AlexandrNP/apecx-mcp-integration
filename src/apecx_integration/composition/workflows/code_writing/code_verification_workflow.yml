@@ -1,0 +1,69 @@
+# Code-verification sub-workflow.
+#
+# Pairs runtime verification with structured review:
+#
+#   workflow_input ({code_source, test_code, code_spec})
+#       │
+#       ▼
+#   isolated_py_exec   ← run code+tests in scrubbed subprocess
+#       │
+#       │ {stdout, stderr, returncode, exec_succeeded, elapsed_seconds}
+#       ▼
+#   workflow_output
+#
+# REFUSES TO RUN unless APECX_CODE_EXEC=1 is set; the operator opts
+# in deliberately. Not a security sandbox.
+#
+# Composes with code_reflection_workflow: an outer workflow can
+# embed BOTH (reflection produces code → verification runs it →
+# orchestration step inspects exec_succeeded and decides to ship
+# or to loop back).
+
+name: code_verification_workflow
+description: >
+  Runtime verification for Python code: pipe code_source + optional
+  test_code through a scrubbed subprocess and emit the structured
+  execution result. Requires APECX_CODE_EXEC=1 — refuses by default.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {code_source: str, test_code?: str, entrypoint?: str}.
+      Forwarded to isolated_py_exec via the input_to_exec link.
+    persistent: false
+
+output_data_units:
+  exec_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_result
+    description: >
+      Dict {stdout, stderr, returncode, exec_succeeded,
+      elapsed_seconds}. exec_succeeded=False on non-zero returncode
+      or timeout; the result dict carries the diagnostics either way.
+    persistent: false
+
+steps:
+  isolated_py_exec:
+    class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
+    config: "steps/isolated_py_exec.yml"
+
+links:
+  input_to_exec:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "isolated_py_exec.exec_input"
+      auto_transfer: true
+
+  exec_to_result:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "isolated_py_exec.exec_output"
+      target: "exec_result"
+      auto_transfer: true

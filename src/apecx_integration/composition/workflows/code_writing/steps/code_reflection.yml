@@ -1,0 +1,47 @@
+# CodeReflectionStep wrapper — the composer-facing surface.
+#
+# This is what the composer's RAG matcher sees. The rich description
+# steers selection: when the user asks for "iteratively improve
+# code", "self-correct Python", "write and critique", or similar,
+# this step is the natural pick.
+#
+# Internally, the step embeds code_reflection_workflow.yml (write →
+# review) via nanobrain's SubworkflowStep mechanism. The composer
+# treats it like an ordinary step.
+
+class: "apecx_integration.composition.steps.code_reflection_step.CodeReflectionStep"
+name: code_reflection
+description: >
+  Self-improving code authoring: generates Python source from a
+  natural-language spec, then critiques the output against the spec.
+  Emits both the generated code AND a structured verdict (approved,
+  concerns, suggestions). Pairs well with a retry policy that
+  re-invokes with the critique fed back as input.
+
+# SubworkflowStep config defaults are honored. We tighten the
+# timeout for code-writing (LLM call ~30-60s typically):
+timeout_seconds: 180.0
+
+input_data_units:
+  code_reflection_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_reflection_input
+    description: >
+      Dict {code_spec: str, function_name?: str, function_signature?: str,
+      previous_attempt?: str, critique?: str}. Forwarded to the inner
+      workflow's workflow_input data unit.
+    persistent: false
+
+output_data_units:
+  code_reflection_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_reflection_output
+    description: >
+      Dict containing keys produced by the inner workflow:
+      code_source, function_name_verified, review_verdict (with
+      approved/reasoning/concerns/suggestions/raw_response).
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_reflection_input"

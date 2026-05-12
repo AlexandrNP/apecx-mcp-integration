@@ -187,6 +187,28 @@ def test_require_function_name_false_skips_check(tmp_path, monkeypatch):
     assert result["function_name_verified"] is None
 
 
+def test_output_passes_through_spec_and_name_for_downstream_review(tmp_path, monkeypatch):
+    """The output dict includes code_spec, function_name, and
+    function_signature so a single DirectLink can wire write→review
+    without an intermediate plumbing step. (DirectLink is 1:1; the
+    reviewer needs both the generated code AND the original spec.)"""
+    step = _stage_step(tmp_path)
+    src = "def add(a: int, b: int) -> int:\n    return a + b\n"
+    _patch_llm(monkeypatch, src)
+    result = asyncio.run(
+        step.process(
+            {
+                "code_spec": "add two ints",
+                "function_name": "add",
+                "function_signature": "def add(a: int, b: int) -> int",
+            }
+        )
+    )
+    assert result["code_spec"] == "add two ints"
+    assert result["function_name"] == "add"
+    assert result["function_signature"] == "def add(a: int, b: int) -> int"
+
+
 def test_default_function_name_is_honored(tmp_path, monkeypatch):
     step = _stage_step(tmp_path, yaml_extras="default_function_name: fib\n")
     src = "def fib(n: int) -> int:\n    return n\n"

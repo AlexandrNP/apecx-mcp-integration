@@ -1,0 +1,128 @@
+# Code-reflection sub-workflow.
+#
+# The "reflection" reasoning pattern (Wang et al. 2022; surveyed in
+# 2026 agentic literature as the canonical generate→critique loop)
+# applied to Python code authoring.
+#
+# Two-step topology:
+#
+#   workflow_input ({code_spec, function_name, signature})
+#       │
+#       ▼
+#   code_write          ← LLM generates source; AST-validated
+#       │
+#       │ {code_source, function_name_verified, code_spec passthrough}
+#       ▼
+#   code_review         ← LLM critique; structured verdict
+#       │
+#       ▼
+#   workflow_output ({code_source, function_name_verified,
+#                     approved, reasoning, concerns, suggestions, ...})
+#
+# v1 ships the generate→critique single pass. The full reflection
+# loop (write → review → IF rejected refine → review again) is a
+# v2 enhancement; the composer's outer workflow can act on the
+# `approved` verdict to retry by re-invoking this sub-workflow with
+# critique as input.
+
+name: code_reflection_workflow
+description: >
+  Reflection pattern over Python code: generate via CodeWriteStep,
+  critique via CodeReviewStep. Emits the generated code AND the
+  structured verdict so the surrounding workflow can refine, retry,
+  or escalate based on the approved/concerns fields.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {code_spec: str, function_name?: str, function_signature?: str,
+      previous_attempt?: str, critique?: str}. Forwarded to code_write
+      via the input_to_write DirectLink.
+    persistent: false
+
+output_data_units:
+  code_source:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_source
+    description: "Generated Python source (str)."
+    persistent: false
+  function_name_verified:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: function_name_verified
+    description: "Function name confirmed defined in the AST (str | None)."
+    persistent: false
+  review_verdict:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: review_verdict
+    description: >
+      Dict {approved, reasoning, concerns, suggestions, raw_response}
+      from the reviewer.
+    persistent: false
+
+steps:
+  code_write:
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    config: "steps/code_write.yml"
+
+  code_review:
+    class: "apecx_integration.composition.steps.code_review_step.CodeReviewStep"
+    config: "steps/code_review.yml"
+
+links:
+  # ──────────────────────────────────────────────────────────────────
+  # auto_transfer: true on every DirectLink. Without it, the workflow
+  # loads cleanly but turns into a no-op at runtime (dominant silent-
+  # failure shape per workspace CLAUDE.md).
+  # ──────────────────────────────────────────────────────────────────
+
+  input_to_write:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "code_write.code_write_input"
+      auto_transfer: true
+
+  # code_write's output carries BOTH the generated code AND the
+  # passthrough spec/name/signature, so a single link feeds the
+  # reviewer (no intermediate plumbing step needed).
+  write_to_review:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "code_write.code_write_output"
+      target: "code_review.code_review_input"
+      auto_transfer: true
+
+  # The write step's output also surfaces directly as workflow output
+  # — operators consuming the sub-workflow get the source even if the
+  # review hasn't completed yet (await_cascade in SubworkflowStep
+  # ensures the review IS complete on return, but the parallel link
+  # keeps the topology simple).
+  write_to_code_source_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "code_write.code_write_output"
+      target: "code_source"
+      auto_transfer: true
+
+  write_to_name_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "code_write.code_write_output"
+      target: "function_name_verified"
+      auto_transfer: true
+
+  review_to_verdict_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "code_review.code_review_output"
+      target: "review_verdict"
+      auto_transfer: true

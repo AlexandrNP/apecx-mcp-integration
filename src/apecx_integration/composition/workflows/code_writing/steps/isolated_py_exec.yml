@@ -1,0 +1,37 @@
+# IsolatedPyExecStep wrapper — subprocess-isolated execution.
+#
+# REFUSES TO EXECUTE unless APECX_CODE_EXEC=1 is set in the operator
+# environment. This is an opt-in gate — the workflow YAML alone
+# cannot trigger execution. NOT a security sandbox; see the step's
+# module docstring for the threat model.
+
+class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
+name: isolated_py_exec
+description: "Run code_source in a subprocess; capture stdout/stderr/returncode."
+
+timeout_seconds: 5.0
+raise_on_nonzero_returncode: false
+
+input_data_units:
+  exec_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_input
+    description: >
+      Dict {code_source: str, test_code?: str, entrypoint?: str}.
+      When test_code is supplied it is appended after code_source;
+      when entrypoint is set (and test_code is not), print(<entry>())
+      is appended for invocation; otherwise code runs as-is.
+    persistent: false
+
+output_data_units:
+  exec_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_output
+    description: >
+      Dict {stdout: str, stderr: str, returncode: int,
+      exec_succeeded: bool, elapsed_seconds: float}.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "exec_input"
