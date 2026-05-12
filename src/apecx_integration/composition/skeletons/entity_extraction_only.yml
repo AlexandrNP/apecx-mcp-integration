@@ -1,0 +1,23 @@
+# Skeleton: single-step entity extraction.
+#
+# Picked when the user wants ONLY to surface entities from a free-text
+# query, without further mapping or synthesis. Useful as a building
+# block when composing larger workflows manually.
+name: entity_extraction_only
+description: >
+  Extract named entities from a free-text query and return the
+  candidate list.
+when_to_use: >
+  User asks to "extract entities", "find named entities", "identify
+  organisms / pathogens / compounds in this text" without a downstream
+  mapping or synthesis step.
+spec:
+  name: entity_extraction_only
+  description: Single-step entity extraction.
+  version: "0.1.0"
+  steps:
+    - id: entity_extraction
+      class_name: EntityExtractionStep
+  links:
+    - {source: workflow_input,                          target: entity_extraction.user_query_input}
+    - {source: entity_extraction.entity_candidates_output, target: workflow_output}

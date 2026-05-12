@@ -185,6 +185,19 @@ class Composer:
         self._llm_factory = llm_factory or _default_llm_factory
         self._artifact_store = artifact_store
 
+        # SKEL (2026-05-12): load the skeleton library so spec-mode
+        # callers can emit ``{"skeleton": "name"}`` instead of
+        # assembling a full spec. Skeletons live alongside the
+        # composer module under ``composition/skeletons/*.yml``.
+        # An empty library is a valid state — the composer simply
+        # doesn't advertise any skeletons in its prompt.
+        from apecx_integration.composition.skeletons import (  # noqa: PLC0415
+            SkeletonLibrary,
+        )
+
+        skeletons_dir = Path(__file__).parent / "skeletons"
+        self._skeleton_library = SkeletonLibrary.from_dir(skeletons_dir)
+
         # Phase-4 RAG swap-in. Loaded lazily: when ``rag_index_dir`` is
         # set we deserialize the pre-built FAISS index; when it's None
         # we keep the Phase-2 linear-scan catalog as the retrieval
@@ -765,12 +778,30 @@ class Composer:
             raise ComposerResponseError(
                 f"spec mode: JSON in the fenced block did not parse: {exc}"
             ) from exc
-        try:
-            spec = MinimalWorkflowSpec.model_validate(raw_spec)
-        except Exception as exc:
-            raise ComposerResponseError(
-                f"spec mode: emitted JSON did not match MinimalWorkflowSpec: {exc}"
-            ) from exc
+
+        # SKEL (2026-05-12): {"skeleton": "name"} shorthand.
+        # When the LLM emits a top-level mapping with a ``skeleton``
+        # key, look up the pre-authored Skeleton and use its
+        # embedded spec verbatim. This is the smallest possible LLM
+        # output for the N most common workflow shapes.
+        if isinstance(raw_spec, dict) and "skeleton" in raw_spec:
+            skel_name = str(raw_spec["skeleton"])
+            skel = self._skeleton_library.get(skel_name)
+            if skel is None:
+                names = ", ".join(self._skeleton_library.names()) or "(none)"
+                raise ComposerResponseError(
+                    f"spec mode: skeleton {skel_name!r} not found in the "
+                    f"library. Available: {names}. Either pick a listed "
+                    "skeleton or emit a full MinimalWorkflowSpec object."
+                )
+            spec = skel.spec
+        else:
+            try:
+                spec = MinimalWorkflowSpec.model_validate(raw_spec)
+            except Exception as exc:
+                raise ComposerResponseError(
+                    f"spec mode: emitted JSON did not match MinimalWorkflowSpec: {exc}"
+                ) from exc
 
         try:
             workflow_dict, _warnings = expand_spec(spec, list(self._catalog.components))
@@ -1005,6 +1036,24 @@ class Composer:
                     "composer_mode=spec requires spec_system.md in "
                     "prompt_dir; not found. Ship the file or switch to "
                     "composer_mode=monolithic."
+                )
+            # SKEL (2026-05-12): append the skeleton library so the
+            # LLM can pick a pre-authored shape by name. Empty
+            # library = empty block; no change to the LLM contract.
+            skeleton_block = self._skeleton_library.render_prompt_block()
+            if skeleton_block:
+                spec_prompt = (
+                    spec_prompt
+                    + "\n\n---\n\n"
+                    + skeleton_block
+                    + "\n\n"
+                    + "If one of the skeletons fits the user's task "
+                    "exactly, emit:\n\n"
+                    "```json\n"
+                    '{"skeleton": "<name>"}\n'
+                    "```\n\n"
+                    "Otherwise, emit the full MinimalWorkflowSpec as "
+                    "described above."
                 )
             return spec_prompt
         return (

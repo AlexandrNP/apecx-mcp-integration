@@ -1,0 +1,27 @@
+# Skeleton: two-step retrieval-context assembly + RAG synthesis.
+#
+# Picked when the user wants a grounded markdown answer to a question
+# that benefits from cross-source retrieval (FAISS + VIOLIN/BV-BRC +
+# PubMed + Globus). The assembler fans-out concurrently across
+# branches and produces a single bundle; the synthesizer turns it
+# into a grounded answer with inline citations.
+name: synthesis_pipeline
+description: >
+  Multi-source retrieval + RAG synthesis. Best when the user asks
+  a question that requires cross-corpus context.
+when_to_use: >
+  User wants a grounded answer ("explain X", "what does the
+  literature say about Y", "summarize information on Z").
+spec:
+  name: synthesis_pipeline
+  description: Retrieve from multiple sources, then synthesize a markdown answer.
+  version: "0.1.0"
+  steps:
+    - id: assemble
+      class_name: SynthesisContextAssemblyStep
+    - id: rag_synth
+      class_name: RagSynthesisStep
+  links:
+    - {source: workflow_input,                              target: assemble.assembly_input}
+    - {source: assemble.synthesis_bundle_output,            target: rag_synth.synthesis_input}
+    - {source: rag_synth.synthesis_markdown_output,         target: workflow_output}
