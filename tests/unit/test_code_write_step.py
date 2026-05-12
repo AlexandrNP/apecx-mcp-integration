@@ -145,6 +145,30 @@ def test_fence_stripped_once_when_llm_wraps_output(tmp_path, monkeypatch):
     assert result["function_name_verified"] == "fib"
 
 
+def test_leading_prose_paragraph_is_stripped_to_recover_valid_code(tmp_path, monkeypatch):
+    """LLM drift on bug-fix prompt: emits a paragraph of explanation
+    BEFORE the actual code. The pre-AST recovery strips the prose
+    and the AST gate passes."""
+    step = _stage_step(tmp_path)
+    drifted = (
+        "Here's the bug analysis: the previous attempt checked "
+        "n % 4 == 0 instead of n % 3 == 0. Below is the corrected "
+        "version which addresses this issue:\n"
+        "def fizzbuzz(n: int) -> str:\n"
+        "    if n % 3 == 0:\n"
+        "        return 'Fizz'\n"
+        "    return str(n)\n"
+    )
+    _patch_llm(monkeypatch, drifted)
+    result = asyncio.run(step.process({"code_spec": "fizzbuzz", "function_name": "fizzbuzz"}))
+    # The prose prefix must be GONE from the stored code_source.
+    assert result["code_source"].startswith("def fizzbuzz"), (
+        f"prose strip failed; code_source still starts with prose: {result['code_source'][:100]!r}"
+    )
+    # And the function name was verified.
+    assert result["function_name_verified"] == "fizzbuzz"
+
+
 def test_unparseable_after_strip_still_raises(tmp_path, monkeypatch):
     """Output that remains unparseable after one fence-strip pass
     must raise — we do NOT try multiple parsing heuristics."""

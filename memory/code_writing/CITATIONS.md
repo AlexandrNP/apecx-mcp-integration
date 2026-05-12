@@ -102,6 +102,110 @@ trace adoption decisions.
 
 ---
 
+---
+
+## Bug-fix workflow citations (2026-05-12 — iterative_bug_fix_workflow)
+
+### Self-Debug (Chen et al., 2023) — **PRIMARY adoption**
+
+- **arXiv**: [arXiv:2304.05128](https://arxiv.org/abs/2304.05128)
+- **Title**: "Teaching Large Language Models to Self-Debug"
+- **Quote**: "*…without any human feedback on the code correctness or
+  error messages, the model is able to identify its mistakes by
+  investigating the execution results and explaining the generated
+  code in natural language*"
+- **What we adopt**: the **explain-then-fix** protocol baked into
+  `bug_fixer_system.md` — the model first names the root cause in
+  its private reasoning, then patches. The "rubber duck" step
+  surfaces latent reasoning so the model can spot its own bug.
+- **Non-adoption**: their few-shot Codex/GPT-3.5 setup uses
+  multiple example-traces in context; we run zero-shot on local
+  12B mistral-nemo, accepting lower per-iteration success and
+  relying on the surrounding Reflexion memory loop for cross-run
+  learning.
+
+### AutoCodeRover (Zhang et al., 2024)
+
+- **arXiv**: [arXiv:2404.05427](https://arxiv.org/abs/2404.05427)
+- **Quote**: "*Our code search exploits the program structure in
+  the form of classes/methods to enhance LLM's understanding of
+  the issue's root cause.*"
+- **What we adopt**: **context-first** ordering in the prompt —
+  the function under test + the failing assertion are presented
+  BEFORE the fix request. The model sees the minimal relevant
+  surface, not a fabricated whole repo.
+- **Non-adoption**: their class/method graph traversal across a
+  real multi-file repo. Our `bug_fix_write` operates on a single
+  in-memory function snippet.
+
+### SWE-agent (Yang et al., 2024)
+
+- **arXiv**: [arXiv:2405.15793](https://arxiv.org/abs/2405.15793)
+- **Quote**: "*SWE-agent's custom agent-computer interface (ACI)
+  significantly enhances an agent's ability to create and edit
+  code files, navigate entire repositories, and execute tests and
+  other programs.*"
+- **What we adopt**: the **verification gate** discipline. The
+  fix is only accepted if `IsolatedPyExecStep` reports
+  `exec_succeeded=True` on the test assertion. Patches are never
+  trusted on the model's word.
+- **Non-adoption**: their open/scroll/find_file/edit action set
+  and repo navigation — overkill for a single-function snippet;
+  would burn our 30-120s budget.
+
+### CodeR (Chen et al., 2024) — deferred
+
+- **arXiv**: [arXiv:2406.01304](https://arxiv.org/abs/2406.01304)
+- **Quote**: "*CodeR adopts a multi-agent framework and pre-defined
+  task graphs to Repair & Resolve reported bugs.*"
+- **What we'd adopt** (future iteration): role separation into
+  `ReproducerStep` → `LocatorStep` → `EditorStep`. v1 collapses to
+  one step (bug_fix_write) because 4 separate LLM calls per fix
+  exceed our budget on local 12B.
+
+---
+
+## Documentation workflow citations (2026-05-12 — code_documentation_workflow)
+
+### DocAgent (Yang et al., 2025) — **PRIMARY adoption**
+
+- **arXiv**: [arXiv:2504.08725](https://arxiv.org/abs/2504.08725)
+- **Quote**: "*…a multi-faceted evaluation framework assessing
+  Completeness, Helpfulness, and Truthfulness.*"
+- **What we adopt**: the **three-criterion rubric**
+  (Completeness, Helpfulness, Truthfulness) baked directly into
+  `code_documenter_system.md`. Also surfaced in `CodeReviewStep`
+  prompt for the rubric review pass.
+- **Non-adoption**: the 5-agent decomposition (Reader / Searcher /
+  Writer / Verifier / Orchestrator) and topological code
+  traversal. We document one function at a time; the multi-agent
+  overhead isn't justified.
+
+### Khan et al. 2023 — Comparative Analysis
+
+- **arXiv**: [arXiv:2312.10349](https://arxiv.org/abs/2312.10349)
+- **Quote**: "*Closed-source models GPT-3.5, GPT-4, and Bard
+  exhibit superior performance … compared to open-source LLMs,
+  namely Llama 2 and StarChat.*"
+- **What we adopt**: the **six-criterion checklist** (Accuracy,
+  Completeness, Relevance, Understandability, Readability,
+  Conciseness) referenced in our documenter prompt. Defensible
+  scoring sheet that maps cleanly onto a reviewer rubric.
+- **Non-adoption**: their conclusion that closed APIs win on this
+  task. We deliberately accept the open-source quality gap and
+  amortize it via the Reflexion memory store + multiple
+  iterations.
+
+### ShortenDoc (2024)
+
+- **arXiv**: [arXiv:2410.22793](https://arxiv.org/abs/2410.22793)
+- **What we adopt**: **terseness preference** — 3-6 line
+  docstrings for simple functions, no verbose narrative.
+  Documented in our prompt + matched to mistral-nemo's stronger
+  short-form output.
+
+---
+
 ## Honest non-adoptions
 
 We deliberately did NOT adopt:

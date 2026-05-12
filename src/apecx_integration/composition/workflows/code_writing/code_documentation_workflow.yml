@@ -1,0 +1,92 @@
+# Code documentation workflow.
+#
+# Pattern: DocAgent (arXiv:2504.08725) rubric for documentation
+# quality (Completeness / Helpfulness / Truthfulness) + Khan et al.
+# (arXiv:2312.10349) six-criterion checklist enforced via
+# CodeReviewStep + ShortenDoc (arXiv:2410.22793) terseness guidance.
+#
+# Differentiator vs other shipped workflows:
+#   - code_reflection_workflow: writes NEW code from spec.
+#   - code_with_tests_workflow: writes code + tests from spec.
+#   - **code_documentation_workflow (this one)**: takes EXISTING
+#     code (bare, undocumented) and adds Google-style docstrings +
+#     type hints. AST-equivalence at the function-body level is
+#     verified (we don't change behavior). No subprocess execution
+#     because doc-only changes don't need runtime verification.
+#
+# Topology:
+#
+#   workflow_input ({code_spec, function_name, bare_code})
+#       │
+#       ▼ (DirectLink)
+#   code_document_write   ← LLM emits documented code; AST gate
+#       │ {code_source: <documented code>, passthrough fields}
+#       ▼ (DirectLink)
+#   code_review           ← reviews against the DocAgent + Khan rubric
+#       │ {approved, reasoning, concerns, suggestions, passthrough}
+#       ▼ (DirectLink → single workflow-level output)
+#   documentation_result
+
+name: code_documentation_workflow
+description: >
+  Add Google-style docstrings + type hints to existing Python code
+  WITHOUT changing behavior. Reviewed against DocAgent's
+  Completeness/Helpfulness/Truthfulness rubric + Khan et al.'s
+  six-criterion checklist. No subprocess execution — doc-only
+  changes are statically verified by AST-equivalence.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {code_spec, function_name, function_signature?,
+      previous_attempt (the bare undocumented code)}. Keyed by
+      CodeWriteStep's standard input shape so the existing prompt-
+      grounding works.
+    persistent: false
+
+output_data_units:
+  documentation_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: documentation_result
+    description: >
+      Dict from CodeReviewStep (with passthrough): {approved,
+      reasoning, concerns, suggestions, code_source: <documented>,
+      code_spec, function_name, function_signature, review_verdict}.
+    persistent: false
+
+steps:
+  code_document_write:
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    config: "steps/code_document_write.yml"
+  code_review:
+    class: "apecx_integration.composition.steps.code_review_step.CodeReviewStep"
+    config: "steps/code_review.yml"
+
+links:
+  input_to_document:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: code_document_write.code_document_write_input
+      auto_transfer: true
+
+  document_to_review:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_document_write.code_document_write_output
+      target: code_review.code_review_input
+      auto_transfer: true
+
+  review_to_result:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_review.code_review_output
+      target: documentation_result
+      auto_transfer: true

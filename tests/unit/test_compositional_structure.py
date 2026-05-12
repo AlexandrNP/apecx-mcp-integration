@@ -66,6 +66,26 @@ def test_code_with_tests_workflow_topology():
     assert len(wf.step_links) == 5
 
 
+def test_iterative_bug_fix_workflow_topology(code_exec_enabled):
+    wf = _load_workflow("iterative_bug_fix_workflow.yml")
+    assert wf.name == "iterative_bug_fix_workflow"
+    assert sorted(wf.child_steps.keys()) == [
+        "bug_fix_write",
+        "isolated_py_exec",
+    ]
+    assert len(wf.step_links) == 3
+
+
+def test_code_documentation_workflow_topology():
+    wf = _load_workflow("code_documentation_workflow.yml")
+    assert wf.name == "code_documentation_workflow"
+    assert sorted(wf.child_steps.keys()) == [
+        "code_document_write",
+        "code_review",
+    ]
+    assert len(wf.step_links) == 3
+
+
 # ---------------------------------------------------------------------------
 # Outer / self-improving workflows
 # ---------------------------------------------------------------------------
@@ -104,8 +124,10 @@ def test_self_improving_workflow_topology():
         ("code_reflection_workflow.yml", False),
         ("code_with_tests_workflow.yml", False),
         ("self_improving_code_writing.yml", False),
+        ("code_documentation_workflow.yml", False),
         ("code_verification_workflow.yml", True),
         ("code_authoring_with_reflection_and_verification.yml", True),
+        ("iterative_bug_fix_workflow.yml", True),
     ],
 )
 def test_all_directlinks_have_auto_transfer_true(

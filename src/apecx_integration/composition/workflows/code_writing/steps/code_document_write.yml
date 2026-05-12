@@ -1,0 +1,40 @@
+# CodeDocumentWriteStep wrapper — CodeWriteStep variant with the
+# documentation system prompt (DocAgent rubric arXiv:2504.08725,
+# Khan et al. arXiv:2312.10349 checklist, ShortenDoc terseness
+# guidance arXiv:2410.22793).
+
+class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+name: code_document_write
+description: >
+  Add Google-style docstring + type hints to existing Python code
+  WITHOUT changing behavior. Scored against DocAgent's
+  Completeness/Helpfulness/Truthfulness rubric.
+
+system_prompt_file: "../../../code_writing_prompts/code_documenter_system.md"
+temperature: 0.0
+max_tokens: 1024
+require_function_name: true
+
+input_data_units:
+  code_document_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_document_write_input
+    description: >
+      Dict {code_spec (authoritative function purpose), function_name,
+      function_signature?, previous_attempt (the bare undocumented
+      code)}. ``critique`` is unused for documentation but
+      preserved for the prompt template.
+    persistent: false
+
+output_data_units:
+  code_document_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_document_write_output
+    description: >
+      Dict {code_source: <documented code>, function_name_verified,
+      code_spec, function_name, function_signature}.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_document_write_input"

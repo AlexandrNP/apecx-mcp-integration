@@ -19,6 +19,8 @@ LLM can pick by name.
 | `code_write_review_and_run` | `CodeReflectionStep` → `CodeVerificationStep` | Generate + critique + run in isolated subprocess (requires `APECX_CODE_EXEC=1`). |
 | `generic/reflection_skeleton` (G9 typed bindings) | `<generator>` → `<critic>` | Cross-domain reflection — bind any generator + critic step pair via `Workflow.from_skeleton`. |
 | `self_improving_code_writing_workflow` (real-time) | `MemoryReadStep` → `CodeWriteStep` → `CodeReviewStep` → `MemoryWriteStep` | Reflexion-style memory loop. Each cycle reads prior lessons, generates code, critiques it, persists a new lesson to `memory/code_writing/reflexions/<spec_id>/`. Git-tracked. |
+| `iterative_bug_fix_workflow` | `CodeWriteStep`(bug_fixer prompt) → `IsolatedPyExecStep` | Self-Debug explain-then-fix patch loop. Takes broken code + failure trace, emits a patched version, runs the test in subprocess for verification. Requires `APECX_CODE_EXEC=1`. |
+| `code_documentation_workflow` | `CodeWriteStep`(documenter prompt) → `CodeReviewStep` | DocAgent + Khan rubric: adds Google-style docstrings + type hints to existing code WITHOUT changing behavior. AST-equivalence at function-body level is the strict gate. |
 
 ## Web-research-informed patterns the catalog does NOT yet ship (deferred)
 
@@ -167,6 +169,42 @@ How adopters use it:
 Cited papers in `memory/code_writing/README.md`:
 arXiv:2303.11366 (Reflexion), arXiv:2303.17651 (SELF-REFINE),
 arXiv:2305.16291 (Voyager), arXiv:2304.03442 (Generative Agents).
+
+### Bug-fix + Documentation workflows — SHIPPED (2026-05-12)
+
+**WF-A: `iterative_bug_fix_workflow`** — Self-Debug
+explain-then-fix loop (Chen et al. 2023, arXiv:2304.05128) +
+AutoCodeRover context-first ordering (Zhang et al. 2024,
+arXiv:2404.05427) + SWE-agent verification gate (Yang et al.
+2024, arXiv:2405.15793). Topology: `bug_fix_write` →
+`isolated_py_exec`. Takes broken code + failure trace, emits a
+patched version verified by re-running the test in a subprocess.
+
+**WF-B: `code_documentation_workflow`** — DocAgent
+three-criterion rubric (Completeness / Helpfulness / Truthfulness;
+Yang et al. 2025, arXiv:2504.08725) + Khan et al. six-criterion
+checklist (arXiv:2312.10349) + ShortenDoc terseness
+(arXiv:2410.22793). Topology: `code_document_write` →
+`code_review`. Takes bare code, adds Google-style docstrings +
+type hints WITHOUT changing behavior. AST-equivalence on the
+function body is the strict gate.
+
+**Verified against real Ollama** (`tests/integration/test_bug_fix_and_documentation_against_ollama.py`):
+  - Bug-fix: Ollama wrote `n % 4 == 0` (deliberate bug),
+    `IsolatedPyExecStep` caught the AssertionError, `bug_fix_write`
+    emitted explanation-prefixed code, the prose-strip recovery
+    cleaned it, fixed code passed all 4 fizzbuzz assertions. ~25s.
+  - Documentation: Ollama wrote bare `add()` with TypeError guards,
+    documenter added a full Google-style docstring with
+    Args/Returns/Raises, AST body preserved. ~15s.
+
+**Framework expansion** in this chain: `CodeWriteStep` gained a
+**single-pass leading-prose strip** recovery. Common LLM drift on
+the bug-fix prompt: the model prefixes its code with "The bug
+is... Here's the fix:" — my recovery scans for the first line
+starting with `def`/`class`/`import`/`from`/`@`/`async def` and
+strips everything before it. Idempotent for already-clean output;
+single-pass per the framework's drift-masking discipline.
 
 ### Code-authoring + test-writing + verification — SHIPPED (2026-05-12)
 

@@ -131,9 +131,9 @@ def test_manifest_is_discoverable_via_mcp_surface():
         "composer_config.yml::component_catalog_paths"
     )
     components = code_manifests[0].components
-    assert len(components) >= 9, (
-        f"expected at least 9 documented components "
-        f"(CW1-CW9; growing additively), got {len(components)}"
+    assert len(components) >= 13, (
+        f"expected at least 13 documented components "
+        f"(CW1-CW13; growing additively), got {len(components)}"
     )
 
     step_names = {c["step_name"] for c in components}
@@ -148,6 +148,10 @@ def test_manifest_is_discoverable_via_mcp_surface():
         "code_with_tests",
         "workflow_analysis",
         "workflow_summarize",
+        "memory_read",
+        "memory_write",
+        "bug_fix_write",
+        "code_document_write",
     }
     missing = required - step_names
     assert not missing, f"manifest missing required components: {sorted(missing)}"

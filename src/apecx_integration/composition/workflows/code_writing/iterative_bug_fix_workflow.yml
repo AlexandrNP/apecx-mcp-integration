@@ -1,0 +1,111 @@
+# Iterative bug-fix workflow.
+#
+# Pattern: Self-Debug explain-then-fix loop (Chen et al. 2023,
+# arXiv:2304.05128) + SWE-agent verification gate (Yang et al. 2024,
+# arXiv:2405.15793, implemented via IsolatedPyExecStep) +
+# AutoCodeRover context-first ordering (Zhang et al. 2024,
+# arXiv:2404.05427).
+#
+# Differentiator vs other shipped workflows:
+#   - code_reflection_workflow: writes from SPEC (no prior code).
+#   - code_with_tests_workflow: writes code + tests from SPEC.
+#   - code_authoring_with_reflection_and_verification: outer demo
+#     using code_reflection + code_verification.
+#   - self_improving_code_writing_workflow: Reflexion memory loop
+#     across separate attempts (cross-run).
+#   - **iterative_bug_fix_workflow (this one)**: takes EXISTING
+#     broken code + a failure trace and emits a patched version
+#     verified by re-running the test in IsolatedPyExecStep. The
+#     differentiator is the input shape (broken_code is required,
+#     not optional) and the output gate (exec passing on the
+#     PATCHED code, not the original).
+#
+# Topology:
+#
+#   workflow_input ({code_spec, function_name, broken_code,
+#                    error_trace, test_code})
+#       │
+#       ▼ (DirectLink, with shape adaptation: workflow_input shape
+#         maps to bug_fix_write's expected previous_attempt + critique)
+#   bug_fix_write       ← LLM emits fixed code; AST + name gate
+#       │ {code_source: <fixed code>, function_name_verified,
+#       │  passthrough fields}
+#       ▼ (DirectLink)
+#   isolated_py_exec    ← runs fixed code + test_code; verification gate
+#       │ {stdout, stderr, returncode, exec_succeeded, elapsed_seconds}
+#       ▼ (DirectLink → workflow-level single output)
+#   fix_result
+#
+# Single workflow-level output (per 2026-05-12 single-output
+# convention so SubworkflowStep nesting works).
+
+name: iterative_bug_fix_workflow
+description: >
+  Self-Debug-style bug-fix loop: LLM reads broken code + failure
+  trace, emits a patched version, and the patched code is verified
+  by re-running the test in an isolated subprocess. Single-pass v1
+  (caller drives multi-pass iteration via the surrounding
+  self-improvement loop).
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {code_spec, function_name, function_signature?,
+      previous_attempt (broken code as 'previous_attempt'),
+      critique (failure trace), test_code}. The shape mirrors
+      CodeWriteStep input + adds test_code for the exec gate.
+    persistent: false
+
+output_data_units:
+  fix_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: fix_result
+    description: >
+      Dict from IsolatedPyExecStep: {stdout, stderr, returncode,
+      exec_succeeded, elapsed_seconds}. exec_succeeded=True means
+      the patched code passed the test_code assertion.
+    persistent: false
+
+steps:
+  bug_fix_write:
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    config: "steps/bug_fix_write.yml"
+  isolated_py_exec:
+    class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
+    config: "steps/isolated_py_exec.yml"
+
+links:
+  input_to_bug_fix:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: bug_fix_write.bug_fix_write_input
+      auto_transfer: true
+
+  # bug_fix_write's output has code_source. IsolatedPyExecStep's
+  # input expects {code_source, test_code?}. The passthrough on
+  # CodeWriteStep means code_source carries through; test_code
+  # was in the original workflow_input but is now lost. We rely
+  # on the operator-side wrapper to either pre-bake the test_code
+  # into the spec OR use a follow-up adapter (next workflow design
+  # iteration).
+  fix_to_exec:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: bug_fix_write.bug_fix_write_output
+      target: isolated_py_exec.exec_input
+      auto_transfer: true
+
+  exec_to_result:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: isolated_py_exec.exec_output
+      target: fix_result
+      auto_transfer: true

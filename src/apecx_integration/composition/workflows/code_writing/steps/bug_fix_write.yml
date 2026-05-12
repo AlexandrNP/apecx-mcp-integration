@@ -1,0 +1,43 @@
+# BugFixWriteStep wrapper — CodeWriteStep variant with the
+# bug-fixer system prompt (Self-Debug "explain-then-fix" pattern,
+# Chen et al. 2023, arXiv:2304.05128).
+#
+# Same class as the canonical CodeWriteStep — the differentiator
+# is the system prompt and the way the inputs are framed
+# (previous_attempt + critique are mandatory inputs rather than
+# optional refinement signals).
+
+class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+name: bug_fix_write
+description: >
+  Patch broken Python code given a failure trace, following the
+  Self-Debug explain-then-fix protocol (arXiv:2304.05128).
+
+system_prompt_file: "../../../code_writing_prompts/bug_fixer_system.md"
+temperature: 0.0
+max_tokens: 1024
+require_function_name: true
+
+input_data_units:
+  bug_fix_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: bug_fix_write_input
+    description: >
+      Dict {code_spec, function_name, function_signature?,
+      previous_attempt (broken code), critique (error trace or
+      reviewer feedback)}.
+    persistent: false
+
+output_data_units:
+  bug_fix_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: bug_fix_write_output
+    description: >
+      Dict {code_source: <fixed code>, function_name_verified,
+      code_spec, function_name, function_signature}. Same shape as
+      CodeWriteStep output (uses the same class).
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "bug_fix_write_input"

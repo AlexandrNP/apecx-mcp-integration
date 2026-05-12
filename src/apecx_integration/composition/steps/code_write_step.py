@@ -280,6 +280,13 @@ class CodeWriteStep(BaseStep):
         raw = await asyncio.to_thread(self._invoke_llm, user_message=user_message)
 
         code_source = self._strip_fences(raw)
+        # Pre-validation recovery: strip a leading prose paragraph
+        # IF the raw output doesn't already start with a Python
+        # top-level keyword. Handles a common LLM drift on the
+        # bug-fix prompt where the model prefixes its code with
+        # "Here's the fix: ..." despite the system rules. Idempotent
+        # for code that already starts with `def`/`class`/`import`.
+        code_source = self._strip_leading_prose(code_source)
         verified_name = self._validate_ast(code_source, expected_function_name=function_name)
 
         log.info(
@@ -361,6 +368,35 @@ class CodeWriteStep(BaseStep):
         s = _FENCE_CLOSE_PATTERN.sub("", s, count=1)
         return s.strip() + "\n"
 
+    @staticmethod
+    def _strip_leading_prose(source: str) -> str:
+        """Recovery for the common LLM drift: emitting a prose
+        explanation paragraph BEFORE the actual code.
+
+        We look for the first line that starts with a real Python
+        top-level keyword (``def``, ``async def``, ``class``,
+        ``import``, ``from``, ``@``, or an unindented assignment
+        like ``x = ...``). Everything before that line is dropped.
+
+        Done ONCE; if the result still doesn't parse, we raise
+        rather than try yet more heuristics (matches the
+        single-recovery discipline of fence-strip).
+        """
+        import re as _re
+
+        lines = source.splitlines()
+        # Pattern: an unindented top-level Python construct OR an
+        # unindented bare assignment / expression. We keep this
+        # tight to avoid false positives on prose like "def foo
+        # works like this".
+        code_start = _re.compile(r"^(?:def\s|async\s+def\s|class\s|import\s|from\s|@)")
+        for i, line in enumerate(lines):
+            if code_start.match(line):
+                if i == 0:
+                    return source  # Already starts with code.
+                return "\n".join(lines[i:]) + ("\n" if not source.endswith("\n") else "")
+        return source
+
     def _validate_ast(self, code_source: str, *, expected_function_name: str | None) -> str | None:
         """Parse + check function definition. Return the matched name
         (or None when require_function_name=False and no name supplied)."""
@@ -375,10 +411,14 @@ class CodeWriteStep(BaseStep):
         try:
             tree = ast.parse(code_source)
         except SyntaxError as e:
+            # The caller has already applied ``_strip_leading_prose``
+            # before this method. If we still can't parse, the output
+            # is genuinely unparseable — fail loudly rather than try
+            # more heuristics (cf. CLAUDE.md drift-masking rule).
             raise ValueError(
-                f"CodeWriteStep {self.name!r}: LLM output is not valid "
-                f"Python (line {e.lineno}: {e.msg!r}). Likely prose "
-                f"output or partial code. Output snippet:\n"
+                f"CodeWriteStep {self.name!r}: LLM output is not "
+                f"valid Python (line {e.lineno}: {e.msg!r}). Likely "
+                f"prose output or partial code. Output snippet:\n"
                 f"{code_source[:500]!r}"
             ) from e
 

@@ -245,3 +245,40 @@ components:
       - "persist a learning lesson after a code-writing cycle"
       - "record what failed in the reflexion memory"
       - "save a verdict for future retries"
+
+  - step_id: "CW12"
+    step_name: bug_fix_write
+    disposition: new
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    yaml: "workflows/code_writing/steps/bug_fix_write.yml"
+    status: ready
+    rag_description: >
+      Patch broken Python given a failure trace, following the
+      Self-Debug "explain-then-fix" protocol (Chen et al. 2023,
+      arXiv:2304.05128). Input: code_spec + broken previous_attempt
+      + critique (the error trace). Output: AST-validated fixed
+      Python source. The bundled iterative_bug_fix_workflow chains
+      this with IsolatedPyExecStep for verification.
+    rag_examples:
+      - "fix this broken Python function given the error trace"
+      - "patch the bug shown in this traceback"
+      - "self-debug this failing fizzbuzz implementation"
+
+  - step_id: "CW13"
+    step_name: code_document_write
+    disposition: new
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    yaml: "workflows/code_writing/steps/code_document_write.yml"
+    status: ready
+    rag_description: >
+      Add Google-style docstring + type hints to existing Python
+      WITHOUT changing behavior. Uses DocAgent's three-criterion
+      rubric (Completeness, Helpfulness, Truthfulness — Yang et al.
+      2025, arXiv:2504.08725) + Khan et al.'s six-criterion
+      checklist (arXiv:2312.10349) + ShortenDoc terseness
+      (arXiv:2410.22793). The bundled code_documentation_workflow
+      chains this with CodeReviewStep for the rubric review.
+    rag_examples:
+      - "add docstrings to this function"
+      - "annotate this code with type hints and Google-style docstrings"
+      - "document this Python without changing its behavior"
