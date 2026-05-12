@@ -1,0 +1,140 @@
+# Self-improving code-writing workflow.
+#
+# Implements the Reflexion-style verbal-memory loop (Shinn et al.,
+# NeurIPS 2023, arXiv:2303.11366) for Python code authoring:
+#
+#   workflow_input ({spec_id, code_spec, function_name, spec_keywords, ...})
+#       ↓
+#   memory_read   — load up to K=3 prior lessons for this spec_id
+#       ↓ {critique = formatted lessons, passthrough fields}
+#   code_write    — LLM generates source, conditioned on `critique`
+#       ↓ {code_source, function_name_verified, passthrough fields}
+#   code_review   — LLM critiques; emits structured verdict + passthrough
+#       ↓ {approved, reasoning, concerns, suggestions, spec_id, ...}
+#   memory_write  — derive a new lesson + persist (gated for restatements)
+#       ↓
+#   workflow_output ({written, entry_path, status_classified, ...})
+#
+# Adoption surface:
+#  - First-time runs: memory_read returns empty critique; the LLM
+#    works from spec alone. memory_write records the outcome.
+#  - Second runs against the same spec_id: memory_read injects up to
+#    3 prior lessons into the prompt. If the prior was a failure,
+#    the LLM can see what went wrong and avoid repeating.
+#  - The directory `memory/code_writing/reflexions/<spec_id>/` lives
+#    in git — diffs review the agent's accumulated lessons.
+#
+# Single-level cascade (NO SubworkflowStep nesting), so it works
+# end-to-end despite the open outer-workflow nested-cascade gap
+# (friction-log #29).
+
+name: self_improving_code_writing_workflow
+description: >
+  Reflexion-style memory loop: read prior lessons → LLM generates
+  code conditioned on them → LLM critiques → persist a new lesson.
+  Memory lives at memory/code_writing/reflexions/<spec_id>/ in git.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Dict {spec_id: str, code_spec: str, function_name: str,
+      function_signature?: str, spec_keywords?: list[str]}.
+      ``spec_id`` is the memory-bucket identifier; stable across
+      attempts for the same task.
+    persistent: false
+
+output_data_units:
+  code_source:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_source
+    description: "Generated Python source (final attempt)."
+    persistent: false
+  review_verdict:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: review_verdict
+    description: "Structured critique of the final code."
+    persistent: false
+  memory_outcome:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_outcome
+    description: >
+      Dict {written, reason, entry_path, lesson_used,
+      status_classified} — what memory_write decided.
+    persistent: false
+
+steps:
+  memory_read:
+    class: "apecx_integration.composition.steps.memory_read_step.MemoryReadStep"
+    config: "steps/memory_read.yml"
+  code_write:
+    class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+    config: "steps/code_write.yml"
+  code_review:
+    class: "apecx_integration.composition.steps.code_review_step.CodeReviewStep"
+    config: "steps/code_review.yml"
+  memory_write:
+    class: "apecx_integration.composition.steps.memory_write_step.MemoryWriteStep"
+    config: "steps/memory_write.yml"
+
+links:
+  input_to_memory_read:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: memory_read.memory_read_input
+      auto_transfer: true
+
+  memory_read_to_code_write:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_read.memory_read_output
+      target: code_write.code_write_input
+      auto_transfer: true
+
+  code_write_to_code_review:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_write.code_write_output
+      target: code_review.code_review_input
+      auto_transfer: true
+
+  code_review_to_memory_write:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_review.code_review_output
+      target: memory_write.memory_write_input
+      auto_transfer: true
+
+  # Workflow-level output surfacing (parallel links from steps to
+  # the workflow-level output_data_units).
+  code_write_to_workflow_code_source:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_write.code_write_output
+      target: code_source
+      auto_transfer: true
+
+  code_review_to_workflow_verdict:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: code_review.code_review_output
+      target: review_verdict
+      auto_transfer: true
+
+  memory_write_to_workflow_outcome:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_write.memory_write_output
+      target: memory_outcome
+      auto_transfer: true

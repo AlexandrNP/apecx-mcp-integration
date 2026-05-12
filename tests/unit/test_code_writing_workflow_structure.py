@@ -86,6 +86,20 @@ def test_inner_reflection_workflow_loads_with_write_and_review_steps():
     assert step_names == ["code_review", "code_write"], step_names
 
 
+def test_self_improving_workflow_loads(tmp_path):
+    """The Reflexion-style memory loop workflow loads with all 4
+    steps (memory_read, code_write, code_review, memory_write) and
+    7 DirectLinks (4 cascade + 3 workflow-output)."""
+    from nanobrain.core.workflow import Workflow
+
+    workflow_path = CODE_WRITING_DIR / "self_improving_code_writing.yml"
+    workflow = Workflow.from_config(str(workflow_path))
+    assert workflow.name == "self_improving_code_writing_workflow"
+    step_names = sorted(workflow.child_steps.keys())
+    assert step_names == ["code_review", "code_write", "memory_read", "memory_write"]
+    assert len(workflow.step_links) == 7
+
+
 def test_inner_verification_workflow_loads_with_exec_step(code_exec_enabled):
     from nanobrain.core.workflow import Workflow
 

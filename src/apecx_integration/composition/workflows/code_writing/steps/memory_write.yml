@@ -1,0 +1,36 @@
+# MemoryWriteStep wrapper — persist a reflexion-style lesson.
+
+class: "apecx_integration.composition.steps.memory_write_step.MemoryWriteStep"
+name: memory_write
+description: >
+  Write a memory entry derived from a review verdict + (optional)
+  verifier result. Gated to skip restatements + low-signal lessons
+  by default.
+
+memory_dir: "../../../../../memory/code_writing"
+skip_if_restatement: true
+min_lesson_chars: 40
+
+input_data_units:
+  memory_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_write_input
+    description: >
+      Dict {spec_id, attempt_n?, code_source?, code_spec?,
+      function_name?, function_signature?, spec_keywords?,
+      review_verdict?, exec_result?, lesson?}. Typically supplied
+      by CodeReviewStep's passthrough output.
+    persistent: false
+
+output_data_units:
+  memory_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_write_output
+    description: >
+      Dict {written: bool, reason: str, entry_path: str | None,
+      lesson_used: str, status_classified: str}.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "memory_write_input"

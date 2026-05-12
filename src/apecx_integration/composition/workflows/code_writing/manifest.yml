@@ -208,3 +208,40 @@ components:
       - "explain what this workflow does"
       - "describe the workflow to a domain expert"
       - "summarize a generated workflow in plain English"
+
+  - step_id: "CW10"
+    step_name: memory_read
+    disposition: new
+    class: "apecx_integration.composition.steps.memory_read_step.MemoryReadStep"
+    yaml: "workflows/code_writing/steps/memory_read.yml"
+    status: ready
+    rag_description: >
+      Read prior reflexion-style lessons from a git-tracked memory
+      store. Returns the last K (default 3) entries for a given
+      spec_id, formatted as a critique string ready for
+      CodeWriteStep's prompt. Falls back to keyword-Jaccard
+      retrieval when no spec_id match. Pure-Python; no LLM. Pair
+      with MemoryWriteStep for the canonical Reflexion loop
+      (Shinn et al. 2023, arXiv:2303.11366).
+    rag_examples:
+      - "look up past lessons for this code spec"
+      - "load prior reflexion memory for a retry"
+      - "retrieve K most recent learning entries for a project"
+
+  - step_id: "CW11"
+    step_name: memory_write
+    disposition: new
+    class: "apecx_integration.composition.steps.memory_write_step.MemoryWriteStep"
+    yaml: "workflows/code_writing/steps/memory_write.yml"
+    status: ready
+    rag_description: >
+      Write a reflexion-style memory entry derived from a review
+      verdict and/or verifier result. Gates: skip restatements
+      (lesson Jaccard > 0.7 with newest), skip lessons shorter than
+      min_lesson_chars. Entries land at memory/code_writing/reflexions/
+      <spec_id>/<id>.json — atomic write, git-diffable. Status
+      classified from review_verdict + exec_result signals.
+    rag_examples:
+      - "persist a learning lesson after a code-writing cycle"
+      - "record what failed in the reflexion memory"
+      - "save a verdict for future retries"

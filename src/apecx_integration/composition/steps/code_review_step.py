@@ -251,7 +251,23 @@ class CodeReviewStep(BaseStep):
             len(raw),
         )
 
-        return verdict
+        # Passthrough fields — same convention CodeWriteStep ships
+        # so a single DirectLink can wire review → memory_write
+        # without an intermediate plumbing step (DirectLink is 1:1;
+        # memory_write needs spec_id which originates in workflow_input).
+        # ``review_verdict`` is the structured dict alias that
+        # MemoryWriteStep specifically looks for.
+        return {
+            **verdict,
+            "review_verdict": verdict,
+            "code_source": code,
+            "code_spec": spec,
+            "function_name": input_data.get("function_name"),
+            "function_signature": input_data.get("function_signature"),
+            "spec_id": input_data.get("spec_id"),
+            "spec_keywords": input_data.get("spec_keywords") or [],
+            "attempt_n": input_data.get("attempt_n"),
+        }
 
     def _invoke_llm(self, *, user_message: str) -> str:
         llm = build_chat_llm(temperature=self._temperature, max_tokens=self._max_tokens)

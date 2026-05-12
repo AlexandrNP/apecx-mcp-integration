@@ -18,6 +18,7 @@ LLM can pick by name.
 | `code_write_and_review` | `CodeReflectionStep` | Generate Python code + critique it against the spec. |
 | `code_write_review_and_run` | `CodeReflectionStep` → `CodeVerificationStep` | Generate + critique + run in isolated subprocess (requires `APECX_CODE_EXEC=1`). |
 | `generic/reflection_skeleton` (G9 typed bindings) | `<generator>` → `<critic>` | Cross-domain reflection — bind any generator + critic step pair via `Workflow.from_skeleton`. |
+| `self_improving_code_writing_workflow` (real-time) | `MemoryReadStep` → `CodeWriteStep` → `CodeReviewStep` → `MemoryWriteStep` | Reflexion-style memory loop. Each cycle reads prior lessons, generates code, critiques it, persists a new lesson to `memory/code_writing/reflexions/<spec_id>/`. Git-tracked. |
 
 ## Web-research-informed patterns the catalog does NOT yet ship (deferred)
 
@@ -113,6 +114,44 @@ step classes (`CodeReflectionStep` for write+review;
   code via this stack on adversarial input is unsafe. Use
   `apecx_integration.composition.docker_sandbox` (T13b, gated by
   `APECX_T13B_SANDBOX_EXECUTE=1`) for that posture.
+
+### Self-improving code-writing with git-tracked memory — SHIPPED (2026-05-12)
+
+The Reflexion verbal-memory pattern (Shinn et al., NeurIPS 2023,
+arXiv:2303.11366) applied to Python code authoring. Three new
+components + one workflow:
+
+  * `MemoryStore` (`composition/steps/memory_store.py`) — pure-Python
+    file-based, atomic-write store. One JSON file per cycle under
+    `memory/code_writing/reflexions/<spec_id>/<id>.json`. Reviewable
+    diffs.
+  * `MemoryReadStep` (`composition/steps/memory_read_step.py`) —
+    reads up to K=3 most-recent entries (default), formats them as
+    a critique string ready for `CodeWriteStep`. Keyword-Jaccard
+    fallback when no spec_id match. No LLM.
+  * `MemoryWriteStep` (`composition/steps/memory_write_step.py`) —
+    derives a lesson from the cycle's `review_verdict` (+ optional
+    `exec_result`), classifies status (pass/fail/partial), and
+    writes atomically. Gates: skip restatements (lesson Jaccard >
+    0.7), skip lessons shorter than `min_lesson_chars`.
+  * Workflow: `self_improving_code_writing.yml` — composes the four
+    steps into a single-level cascade. NO `SubworkflowStep`
+    nesting, so it works around the open outer-cascade gap.
+
+How adopters use it:
+
+  1. First run for a new `spec_id`: memory_read returns empty
+     critique; LLM works from spec alone. memory_write records
+     the outcome (pass / fail with concerns).
+  2. Subsequent runs: memory_read injects up to 3 prior lessons
+     into the prompt. If priors were failures, the LLM sees the
+     mistakes to avoid.
+  3. The accumulated lessons live in git; PR reviewers see exactly
+     what the agent learned.
+
+Cited papers in `memory/code_writing/README.md`:
+arXiv:2303.11366 (Reflexion), arXiv:2303.17651 (SELF-REFINE),
+arXiv:2305.16291 (Voyager), arXiv:2304.03442 (Generative Agents).
 
 ### Code-authoring + test-writing + verification — SHIPPED (2026-05-12)
 

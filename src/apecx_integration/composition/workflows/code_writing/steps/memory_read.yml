@@ -1,0 +1,40 @@
+# MemoryReadStep wrapper — read prior reflexion-style lessons.
+#
+# The memory_dir is workspace-relative; resolved against this YAML's
+# directory (which is workflows/code_writing/steps/) so the canonical
+# memory directory is at ../../../../memory/code_writing.
+
+class: "apecx_integration.composition.steps.memory_read_step.MemoryReadStep"
+name: memory_read
+description: >
+  Read up to ``limit`` prior memory entries for the current spec_id
+  (or keyword fallback). Output dict carries a ``critique`` field
+  formatted for CodeWriteStep's prompt-input.
+
+memory_dir: "../../../../../memory/code_writing"
+limit: 3
+fallback_to_keywords: true
+
+input_data_units:
+  memory_read_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_read_input
+    description: >
+      Dict {spec_id, spec_keywords?, code_spec, function_name?,
+      function_signature?}.
+    persistent: false
+
+output_data_units:
+  memory_read_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_read_output
+    description: >
+      Dict {lessons_count, lessons_text, critique, spec_id,
+      spec_keywords, code_spec, function_name, function_signature}.
+      ``critique`` is an alias for ``lessons_text`` so a single
+      DirectLink can wire memory_read → code_write.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "memory_read_input"
