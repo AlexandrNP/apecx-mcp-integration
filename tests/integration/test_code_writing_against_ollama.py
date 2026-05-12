@@ -278,17 +278,20 @@ def test_code_reflection_workflow_end_to_end():
 @pytest.mark.xfail(
     strict=True,
     reason=(
-        "Nested-SubworkflowStep deadlock (distinct from the original "
-        "trigger-binding gap fixed 2026-05-12 in Workflow.process "
-        "auto-init). The inner reflection workflow now runs end-to-end "
-        "(30s wall) but the outer workflow that EMBEDS code_reflection "
-        "+ code_verification via two SubworkflowStep instances hangs "
-        "indefinitely: outer cascade fires the inner SubworkflowStep, "
-        "the inner workflow's process+wait_for_cascade pattern blocks "
-        "on something the outer cascade is also holding. Likely a "
-        "shared AsyncTriggerExecutor or contextvar pollution between "
-        "parent/child workflow runs. Tracked as a separate framework "
-        "gap; xfail-strict so a future fix surfaces immediately."
+        "Nested-SubworkflowStep cascade has a multi-layered framework "
+        "gap that resists single-fix mitigation. Sub-problems "
+        "identified + partially mitigated 2026-05-12: (a) singleton "
+        "AsyncTriggerExecutor causes wait_for_cascade re-entrance "
+        "deadlock (mitigated by polling in SubworkflowStep + here in "
+        "the test); (b) input routing double-wraps the framework's "
+        "step-input-DU envelope (fixed in nanobrain 3c7a725); (c) "
+        "output collection used last-step only, missing workflow-"
+        "level outputs (fixed in same commit). After all three fixes "
+        "the outer cascade STILL hangs — additional unknown layer "
+        "below. Documented in friction-log #29. Single-level "
+        "SubworkflowStep usage works (inner reflection cascade runs "
+        "end-to-end in 30s); nested two-level usage is the remaining "
+        "blocker. xfail-strict so a future fix surfaces."
     ),
 )
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
@@ -313,10 +316,27 @@ def test_outer_workflow_with_reflection_and_verification():
                 }
             }
         )
-        drained = await wf.wait_for_cascade(timeout=240.0, settle_ms=200)
-        assert drained, "outer cascade did not drain within 240s"
+        # CANNOT call wf.wait_for_cascade here: same re-entrance
+        # deadlock as the SubworkflowStep itself faced — the
+        # AsyncTriggerExecutor is a process-wide singleton, and the
+        # SubworkflowStep tasks driving the inner cascades are in
+        # its task list. wait_for_cascade would wait for those tasks
+        # to drain while the tasks themselves are polling output
+        # data units. Workaround: poll the final output DU here
+        # (matches the SubworkflowStep internal pattern; see
+        # friction-log #29).
         verification_step = wf.child_steps["code_verification"]
         out_du = verification_step.step_output_data_units["code_verification_output"]
+        deadline = asyncio.get_event_loop().time() + 240.0
+        while True:
+            val_check = await out_du.get()
+            if val_check is not None:
+                break
+            if asyncio.get_event_loop().time() >= deadline:
+                raise TimeoutError(
+                    "outer cascade did not populate code_verification_output within 240s"
+                )
+            await asyncio.sleep(0.25)
         return await out_du.get()
 
     start = time.monotonic()
