@@ -652,3 +652,43 @@ Decision shortcut:
 All six (post-NW1, NW2) are concrete `SubworkflowStep` subclasses,
 manifest-listed (CW01–CW13), and each ships with a real-Ollama
 integration test under `tests/integration/test_*_against_ollama.py`.
+
+### Closed-class authoring (2026-05-12) — applies to all 3 paths
+
+When authoring a NEW workflow (whether via hand-authored YAML,
+`Workflow.from_skeleton`, or the lightweight `WorkflowBuilder`), the
+rule is: **do not modify an existing library class to make your
+workflow work.** If you need behavior the existing class doesn't
+provide, author a NEW Python class in a NEW file and reference it
+from your workflow.
+
+Concrete consequences per path:
+
+1. **Hand-authored YAML** — `class:` strings point at existing or
+   NEW Python class paths. Never edit `composition/steps/*.py` (or
+   any other shared step file) to add a parameter that only your
+   workflow needs. Author `your_workflow/your_step.py` with a new
+   class and point at that.
+
+2. **`Workflow.from_skeleton`** — skeleton holes accept class paths
+   via bindings. The closed-class rule applies to the binding
+   targets: bind to existing classes verbatim or to NEW classes
+   you authored alongside your skeleton. Never bind to a "patched
+   fork" of an existing library class.
+
+3. **Lightweight `WorkflowBuilder`** — `.add_step(name, step_cls,
+   config=...)` accepts a class object. Pass the existing class as
+   imported, or pass a NEW class you defined. Do not monkey-patch
+   the imported class's methods before passing it; the framework
+   treats the class object as a stable identity.
+
+Why this rule is load-bearing for adoption: every existing workflow
+keeps working only if shared classes stay stable. The "I'll just
+edit `CodeWriteStep.process` to take one extra kwarg" path silently
+breaks 6 other code-writing workflows (5 nested code-writing + 1
+self-improving) and 13 manifest entries. The cost of inventing a new
+class is small (one file, one YAML reference); the cost of mutating
+a shared class is unbounded breakage across the consumer surface.
+
+Pinned by `tests/unit/test_closed_class_rule_pinned_in_prompts.py`
+(8 assertions, marker + remedy stem in 7 authoring-side prompts).

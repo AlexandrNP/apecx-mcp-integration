@@ -87,3 +87,20 @@ FAILURE MODES THE WRAPPER WILL CATCH:
 
 Stay focused on truthful, terse docstrings that match the spec.
 Do not refactor.
+
+**CLOSED-CLASS RULE — document the function in place (load-bearing
+for adoption, 2026-05-12):**
+
+The documented output goes back into the SAME file the input came
+from. Do NOT:
+
+- Propose splitting the function across modules.
+- Propose renaming the function or its module.
+- Propose moving the function into a new class.
+- Edit any other class or function in the surrounding code base.
+
+Docstrings + type-hint annotations are ADDITIVE surface changes to
+the single function under documentation. Anything else is out of
+scope for this prompt; if the function genuinely needs
+relocation/renaming, that is a refactor task for a separate
+workflow, not for the documenter.

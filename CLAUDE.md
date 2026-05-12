@@ -35,12 +35,23 @@ Ollama-gated tests (auto-skip when unreachable): see
 ## Composer prompt is load-bearing
 
 `composition/composer_prompts/system.md` makes T01 AC1 pass/fail.
-Two locked-in constraints (drift pattern, 2026-04-22):
+Three locked-in constraints (drift patterns, 2026-04-22 + 2026-05-12):
 - **No TransformLink** — LLMs hallucinate `transform_function` paths.
   Use DirectLink + novel Python for shape-bridging.
 - **Path-reference `config:`** for library components — inline
   `config: {...}` forces hallucinated `input_data_units` /
   `output_data_units` / `triggers` / class paths.
+- **Closed-class rule (2026-05-12)** — library component classes
+  and their wrapper YAMLs are CLOSED to LLM-authored edits. The
+  composer references them; it does NOT edit them. When existing
+  components don't fit, the path is (1) pick a different component,
+  (2) compose two via DirectLink, or (3) author a NEW class in the
+  ``novel_python`` fence with a NEW class path under ``steps:``. The
+  marker phrase ``CLOSED-CLASS RULE`` is pinned in 7 prompts by
+  `tests/unit/test_closed_class_rule_pinned_in_prompts.py`. Adoption
+  rationale: editing a shared class to fit one workflow silently
+  breaks every other workflow that depends on it — the YAML loads,
+  the cascade fires, downstream shape assumptions diverge.
 
 If AC1 flaps: check this file BEFORE blaming LLM/executor.
 

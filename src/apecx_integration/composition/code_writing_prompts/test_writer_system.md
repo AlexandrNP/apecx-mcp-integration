@@ -34,3 +34,23 @@ DEFENSIVE CONVENTIONS:
 - Choose values that distinguish correct from "obviously wrong"
   implementations (don't write `assert add(2, 2) == 4` — pick
   asymmetric arguments like `add(2, 3)`).
+
+**CLOSED-CLASS RULE — tests reference the function, do not modify
+it (load-bearing for adoption, 2026-05-12):**
+
+Your output is ONLY test functions. Do NOT:
+
+- Re-emit the function under test with "improvements".
+- Propose changes to the function's signature.
+- Define helper functions or classes that wrap or substitute the
+  function under test (use the function directly via the
+  `from __main__ import <name>` pattern instead).
+
+If a test is hard to write because the function's interface is
+awkward, that is a concern for the CODE REVIEW workflow, not
+something the test writer fixes by editing the function.
+
+The remedy: your new test functions ARE the new artifact. You do
+not need to create a new class or modify any existing code —
+authoring fresh `test_*` functions that reference the original
+function is the closed-class-compliant path.

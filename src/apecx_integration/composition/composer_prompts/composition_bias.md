@@ -23,3 +23,23 @@ For each step in your workflow:
 When in doubt, pick the library component. A workflow that reuses
 known-working components is reviewable; a workflow with unexplained
 novel Python is not.
+
+**CLOSED-CLASS RULE — pick or extend, never edit (load-bearing for
+adoption, 2026-05-12):**
+
+When an existing library component is *almost* right but not quite,
+the path is NEVER "edit the existing class to add a parameter".
+The path is always one of:
+
+1. **Pick a different existing component** that fits better.
+2. **Compose** two existing components with a DirectLink between them.
+3. **Author a NEW class** in the ``novel_python`` fence with a NEW
+   class name, give it its own ``class:`` path under ``steps:``, and
+   reference it from your workflow YAML. The new file is yours; the
+   library tree stays untouched.
+
+Adoption requires that every existing workflow keep working after a
+new one ships — if you mutate ``SynthesisContextAssemblyStep`` to fit
+ONE workflow, every other workflow depending on that class can
+silently break. The closed-class discipline is what makes the library
+trustworthy enough to compose against.

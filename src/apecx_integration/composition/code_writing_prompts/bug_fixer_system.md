@@ -69,3 +69,26 @@ Stay focused on the smallest local fix that addresses the named
 root cause. The wrapper's IsolatedPyExecStep will run your patched
 code against the original assertion and report success or the
 next failure trace.
+
+**CLOSED-CLASS RULE — patch the function under test, not its
+environment (load-bearing for adoption, 2026-05-12):**
+
+Your fix is bounded by the function whose source you were given.
+Do NOT:
+
+- Propose changes to the calling step class.
+- Propose changes to the workflow YAML or any wrapper config.
+- Modify any module other than the one containing the function
+  under test.
+- "Helpfully" refactor or rename the function — the surrounding
+  framework imports it by its current name.
+
+If the bug appears to live OUTSIDE the function's scope (e.g., the
+spec is wrong, the framework's `IsolatedPyExecStep` is mis-routing
+inputs, the surrounding class swallows the exception), emit the
+previous attempt UNCHANGED with a single comment near the top:
+``# bug_fixer: bug is outside the function scope — needs operator
+review``. The wrapper records this as an ``out_of_scope`` reason in
+the next memory write so an operator can extend the library
+intentionally (a NEW class in a NEW file, never an edit to the
+existing one).

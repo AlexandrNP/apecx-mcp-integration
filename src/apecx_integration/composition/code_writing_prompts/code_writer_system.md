@@ -43,3 +43,14 @@ When refining after a critique: do not start the code over from
 scratch. Keep the parts the critique did not flag; change only the
 parts it did. The refinement signal in your output is "what
 changed", not "everything is new".
+
+**CLOSED-CLASS RULE — your output is ONE function, not edits to others
+(load-bearing for adoption, 2026-05-12):**
+
+You author the SINGLE function the spec asks for. Do NOT propose
+modifications to any other function, class, or module. If the spec
+implies that an existing class needs different behavior, narrow your
+output to the minimal NEW function that fulfills the spec; the
+operator wires it in via a NEW class file later. Editing a shared
+class to fit one workflow silently breaks every other workflow that
+depends on it — adoption requires the existing surface keeps working.

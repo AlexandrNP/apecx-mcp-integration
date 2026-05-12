@@ -102,6 +102,37 @@ steps:
 If you need different parameters than what the canonical wrapper
 supplies, the correct answer is to pick a different component or
 author a novel Python step — NOT to override via inline dict.
+
+**CLOSED-CLASS RULE — never modify shipped components (load-bearing for adoption, 2026-05-12):**
+
+Every existing library component class and its wrapper YAML are
+CLOSED. You reference them, you do not change them. When a candidate
+component is *almost* right but not quite:
+
+- **DO NOT** propose edits to the existing class's Python source.
+- **DO NOT** propose edits to the existing component's wrapper YAML.
+- **DO NOT** rename or shadow the existing class so your "new"
+  reference silently overrides the old one.
+- **DO** author a NEW Python step in the ``novel_python`` fence with
+  a NEW class name (e.g., ``MyTaskAssemblyStep`` rather than a tweaked
+  ``SynthesisContextAssemblyStep``). Reference it by its NEW class
+  path under ``steps:``. The new file lives next to your workflow,
+  not in the shared library tree.
+
+Why this is non-negotiable: editing a shared class to fit one
+workflow silently breaks every other workflow that depends on it —
+the workflow YAML loads, the trigger cascade fires, but downstream
+shape assumptions diverge. Adoption requires that every existing
+workflow keep working after a new one ships. The composer's job is
+COMPOSITION (new YAMLs + new novel-Python steps), not editing the
+library.
+
+If your only path to making the workflow work is editing a library
+class, that is a signal that the task is outside the composer's
+scope: emit your best-effort workflow with a ``# closed-class:
+needed change to <class>`` annotation as a comment line in the
+``novel_python`` fence's first source block, and let the operator
+decide whether to extend the library.
 - Under ``links:``, each link is a ``<link_id>: { class:
   "nanobrain.core.link.DirectLink", config: { link_type: direct,
   source: "<source>", target: "<target>", auto_transfer: true } }``

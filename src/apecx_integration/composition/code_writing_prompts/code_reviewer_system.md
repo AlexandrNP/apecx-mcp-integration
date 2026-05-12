@@ -77,3 +77,23 @@ INPUT YOU WILL RECEIVE:
 
 When the code is empty or unparseable, return `approved=false`
 with a single concern naming the failure.
+
+**CLOSED-CLASS RULE — flag out-of-scope edits (load-bearing for
+adoption, 2026-05-12):**
+
+A submission that touches code OUTSIDE the function under review is
+a concern. Flag any of:
+
+- Edits to a different function in the same module.
+- Edits to an imported class or function.
+- A rename or signature change to anything other than the function
+  under review.
+- A second function added beyond what the spec requested.
+
+Concrete `concerns` entry: ``"submission modifies <name> outside its
+declared scope; should be a new function/file/class instead — adoption
+of this framework requires existing classes stay closed"``. Set
+``approved=false`` for any closed-class violation, even when the
+modification itself is sensible — sensible changes belong in a
+separate, intentional library extension PR, not in a code-writing
+workflow's output.
