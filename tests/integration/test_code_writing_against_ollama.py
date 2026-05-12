@@ -275,21 +275,6 @@ def test_code_reflection_workflow_end_to_end():
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason=(
-        "Update 2026-05-12 (later): the no-LLM nested-SubworkflowStep "
-        "reproducer (tests/integration/test_nested_subworkflow_reproducer.py) "
-        "PASSES end-to-end in 0.46s with the data_unit + SubworkflowStep "
-        "fixes — framework wiring is functional for nested cascades. "
-        "This LLM-bound apecx outer test still hangs, so the residual "
-        "issue is specific to LLM-step timing OR a data-shape mismatch "
-        "between code_reflection's multi-key output and "
-        "code_verification's expected single-key envelope. Tracked as "
-        "an apecx-side YAML / data-shape issue rather than a framework "
-        "gap. xfail-strict so a future fix surfaces."
-    ),
-)
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
 @pytest.mark.skipif(os.environ.get("APECX_CODE_EXEC") != "1", reason=SKIP_EXEC)
 def test_outer_workflow_with_reflection_and_verification():

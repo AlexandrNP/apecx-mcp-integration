@@ -47,7 +47,9 @@ def test_code_reflection_workflow_topology():
     wf = _load_workflow("code_reflection_workflow.yml")
     assert wf.name == "code_reflection_workflow"
     assert sorted(wf.child_steps.keys()) == ["code_review", "code_write"]
-    assert len(wf.step_links) == 5
+    # 3 links after the single-output refactor:
+    # input → write, write → review, review → reflection_result
+    assert len(wf.step_links) == 3
 
 
 def test_code_verification_workflow_topology(code_exec_enabled):

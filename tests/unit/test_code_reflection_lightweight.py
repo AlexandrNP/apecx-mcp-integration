@@ -50,7 +50,8 @@ def test_lightweight_build_registers_both_steps():
 
 
 def test_lightweight_build_registers_all_links():
-    """All 5 DirectLinks must be wired — same as the YAML version.
+    """All 3 DirectLinks must be wired — same as the YAML version
+    (post-2026-05-12 single-output refactor).
 
     A workflow with 0 links is the dominant silent-failure shape
     (per workspace CLAUDE.md). Without this assertion a regression
@@ -59,8 +60,8 @@ def test_lightweight_build_registers_all_links():
     wf = build_code_reflection_workflow()
     assert hasattr(wf, "step_links"), "Workflow should expose step_links"
     links = wf.step_links or {}
-    assert len(links) == 5, (
-        f"expected 5 DirectLinks (matching the YAML topology), got "
+    assert len(links) == 3, (
+        f"expected 3 DirectLinks (matching the YAML topology), got "
         f"{len(links)}: {list(links.keys())}"
     )
 

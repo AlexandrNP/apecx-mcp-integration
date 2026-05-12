@@ -104,9 +104,12 @@ def build_code_reflection_workflow(
     builder.add_step("code_review", CODE_REVIEW_STEP_CLASS, **review_step_extras)
 
     builder.add_input("workflow_input")
-    builder.add_output("code_source")
-    builder.add_output("function_name_verified")
-    builder.add_output("review_verdict")
+    # Mirrors the 2026-05-12 YAML refactor: ONE workflow-level output
+    # ("reflection_result"). Three links total (was 5 with parallel
+    # links to multiple outputs). Single-output design lets the
+    # SubworkflowStep single-output flatten apply when this workflow
+    # is embedded in a parent.
+    builder.add_output("reflection_result")
 
     builder.add_link(
         "workflow_input",
@@ -121,20 +124,8 @@ def build_code_reflection_workflow(
         auto_transfer=True,
     )
     builder.add_link(
-        "code_write.code_write_output",
-        "code_source",
-        link_type="direct",
-        auto_transfer=True,
-    )
-    builder.add_link(
-        "code_write.code_write_output",
-        "function_name_verified",
-        link_type="direct",
-        auto_transfer=True,
-    )
-    builder.add_link(
         "code_review.code_review_output",
-        "review_verdict",
+        "reflection_result",
         link_type="direct",
         auto_transfer=True,
     )

@@ -84,6 +84,10 @@ def test_inner_reflection_workflow_loads_with_write_and_review_steps():
     assert workflow.name == "code_reflection_workflow"
     step_names = sorted(workflow.child_steps.keys())
     assert step_names == ["code_review", "code_write"], step_names
+    # After 2026-05-12 refactor: 3 links (was 5 with parallel
+    # workflow-level outputs). Single-output design lets
+    # SubworkflowStep single-output flatten apply.
+    assert len(workflow.step_links) == 3
 
 
 def test_self_improving_workflow_loads(tmp_path):

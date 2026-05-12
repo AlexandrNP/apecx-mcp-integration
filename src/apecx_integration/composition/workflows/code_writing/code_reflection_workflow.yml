@@ -45,22 +45,18 @@ input_data_units:
     persistent: false
 
 output_data_units:
-  code_source:
+  reflection_result:
     class: "nanobrain.core.data_unit.DataUnitMemory"
-    name: code_source
-    description: "Generated Python source (str)."
-    persistent: false
-  function_name_verified:
-    class: "nanobrain.core.data_unit.DataUnitMemory"
-    name: function_name_verified
-    description: "Function name confirmed defined in the AST (str | None)."
-    persistent: false
-  review_verdict:
-    class: "nanobrain.core.data_unit.DataUnitMemory"
-    name: review_verdict
+    name: reflection_result
     description: >
-      Dict {approved, reasoning, concerns, suggestions, raw_response}
-      from the reviewer.
+      Single-output bundle from CodeReviewStep's full passthrough
+      output: ``{code_source, function_name_verified, code_spec,
+      function_name, function_signature, review_verdict (alias),
+      approved, reasoning, concerns, suggestions, raw_response,
+      spec_id, spec_keywords, attempt_n}``. Single-output (vs the
+      earlier parallel-link design with three outputs) so the
+      SubworkflowStep single-output flatten applies and downstream
+      steps see a flat dict rather than a doubly-wrapped envelope.
     persistent: false
 
 steps:
@@ -98,31 +94,16 @@ links:
       target: "code_review.code_review_input"
       auto_transfer: true
 
-  # The write step's output also surfaces directly as workflow output
-  # — operators consuming the sub-workflow get the source even if the
-  # review hasn't completed yet (await_cascade in SubworkflowStep
-  # ensures the review IS complete on return, but the parallel link
-  # keeps the topology simple).
-  write_to_code_source_output:
-    class: "nanobrain.core.link.DirectLink"
-    config:
-      link_type: "direct"
-      source: "code_write.code_write_output"
-      target: "code_source"
-      auto_transfer: true
-
-  write_to_name_output:
-    class: "nanobrain.core.link.DirectLink"
-    config:
-      link_type: "direct"
-      source: "code_write.code_write_output"
-      target: "function_name_verified"
-      auto_transfer: true
-
-  review_to_verdict_output:
+  # Single workflow-level output is populated from code_review's
+  # passthrough output (which carries BOTH the review verdict AND
+  # the upstream code_source/function_name/spec from code_write).
+  # Replaces the earlier three-parallel-link design that produced
+  # ambiguous data (multiple workflow-level outputs receiving the
+  # SAME source value via different links).
+  review_to_reflection_result:
     class: "nanobrain.core.link.DirectLink"
     config:
       link_type: "direct"
       source: "code_review.code_review_output"
-      target: "review_verdict"
+      target: "reflection_result"
       auto_transfer: true
