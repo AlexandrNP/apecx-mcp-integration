@@ -47,15 +47,25 @@ arxiv.org/abs/2506.00054 (RAG comprehensive survey, 2026) §4.1.
 **To ship**: needs a `QueryRefinementStep` that takes the first-pass
 retrieval output + the original prompt and produces a refined query.
 
-### Self-consistency / N-best voting
+### Self-consistency / N-best voting — PARTIALLY SHIPPED (2026-05-12)
 
 Generate `N` independent answers, vote / aggregate. See the
 deeplearning.ai post on agentic design patterns.
 
-**To ship**: needs a `MultiAnswerAggregationStep` that takes a
-list of candidate answers and picks / merges. Could also be done
-at the framework level via parallel `RagSynthesisStep` instances
-fan-in via a custom aggregator.
+**Shipped piece**: `MultiAnswerAggregationStep`
+(`composition/steps/multi_answer_aggregation_step.py`) — pure-Python
+aggregator with four strategies (most_frequent / longest / first /
+concatenate). Pairs with the wrapper at
+`workflows/violin_bvbrc/steps/multi_answer_aggregation.yml`.
+Manifest entry under step_id `AGG`.
+
+**Still missing for a full skeleton**: a `BroadcastStep` or
+framework primitive that fans out one input to N independent
+downstream invocations. `DirectLink` is 1:1. Until fan-out lands,
+operators wire self-consistency by hand: N RagSynthesisStep
+instances + N links + the aggregator. A skeleton wrapping that
+hand-wired pattern would be 4× the YAML of the simpler skeletons
+and brittle to N changes; deferred until `BroadcastStep` exists.
 
 ### Code-writing flow
 

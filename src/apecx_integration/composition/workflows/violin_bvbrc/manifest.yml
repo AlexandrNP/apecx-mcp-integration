@@ -269,6 +269,26 @@ components:
       - "synthesize a Markdown answer to a vaccine-efficacy question with citations"
       - "produce an LLM response grounded in VIOLIN + BV-BRC + RAG context"
 
+  # STEP-AGG (2026-05-12): MultiAnswerAggregationStep — pure-Python
+  # self-consistency aggregator. First realized component of the
+  # SKEL-PLUS deferred patterns. No LLM call; deterministic.
+  - step_id: "AGG"
+    step_name: multi_answer_aggregation
+    disposition: new
+    class: "apecx_integration.composition.steps.multi_answer_aggregation_step.MultiAnswerAggregationStep"
+    yaml: "steps/multi_answer_aggregation.yml"
+    status: ready
+    rag_description: >
+      Aggregate a list of candidate answer strings into a single
+      answer using one of four strategies (most_frequent / longest /
+      first / concatenate). Pure-Python self-consistency aggregator;
+      no LLM call. Best paired with an upstream fan-out that produces
+      N independent candidates.
+    rag_examples:
+      - "aggregate N RagSynthesisStep outputs by majority vote"
+      - "self-consistency vote across multiple LLM samples"
+      - "concatenate parallel candidate answers into one bundle"
+
 coverage_target:
   # T02 AC4: the entire T00.1b workflow composes using ≥80% existing
   # or minimally-wrapped assets. Each component counts as 1 unit;
