@@ -60,6 +60,11 @@ class _StubLLM:
 def _composer_with(llm: _StubLLM) -> Composer:
     composer = Composer.from_config(DEFAULT_CONFIG)
     composer._llm_factory = lambda **_kw: llm  # noqa: SLF001
+    # Pin monolithic — CPR is wired into the monolithic parse path
+    # (spec-mode doesn't need leaf-match repair because the LLM
+    # only emits leaf names anyway). After the SPEC2 default-flip,
+    # these tests must explicitly request monolithic mode.
+    composer._config = composer._config.model_copy(update={"composer_mode": "monolithic"})
     return composer
 
 

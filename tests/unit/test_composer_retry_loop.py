@@ -102,8 +102,14 @@ class _SequencedStubLLM:
 def _composer_with(llm: _SequencedStubLLM, *, max_retries: int = 1) -> Composer:
     composer = Composer.from_config(DEFAULT_CONFIG)
     composer._llm_factory = lambda **_kw: llm  # noqa: SLF001
+    # These tests exercise the MONOLITHIC retry path; pin the mode
+    # explicitly so they keep passing after the SPEC2 default-flip
+    # (composer_mode=spec is now the project default).
     composer._config = composer._config.model_copy(  # type: ignore[attr-defined]
-        update={"max_validation_retries": max_retries}
+        update={
+            "max_validation_retries": max_retries,
+            "composer_mode": "monolithic",
+        }
     )
     return composer
 

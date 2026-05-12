@@ -87,7 +87,14 @@ class _SequencedStubLLM:
 def _composer_with(llm, *, max_retries: int = 1) -> Composer:
     composer = Composer.from_config(DEFAULT_CONFIG)
     composer._llm_factory = lambda **_kw: llm  # noqa: SLF001
-    composer._config = composer._config.model_copy(update={"max_validation_retries": max_retries})
+    # Pin monolithic mode — these tests use YAML responses, which
+    # the spec-mode parser (now default) would reject as JSON.
+    composer._config = composer._config.model_copy(
+        update={
+            "max_validation_retries": max_retries,
+            "composer_mode": "monolithic",
+        }
+    )
     return composer
 
 

@@ -163,12 +163,13 @@ def test_spec_mode_unknown_class_falls_through_to_retry():
         asyncio.run(composer.compose("ghost prompt"))
 
 
-def test_default_mode_remains_monolithic():
-    """Existing operators who don't set composer_mode keep their
-    behavior. This pin prevents an accidental flip of the default
-    from breaking every existing deployment."""
+def test_default_mode_is_spec_after_adoption_flip():
+    """ADOPT (2026-05-12): spec mode became the project default
+    after the EXPT-RT roundtrip test reached RUN_COMPLETED on real
+    Ollama. This pin documents the new default + catches any
+    accidental flip back to monolithic."""
     composer = Composer.from_config(DEFAULT_CONFIG)
-    assert composer._config.composer_mode == "monolithic"
+    assert composer._config.composer_mode == "spec"
 
 
 def test_env_var_override_flips_mode_to_spec(monkeypatch):
