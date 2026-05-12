@@ -1,0 +1,40 @@
+# Viral Immunology Query Classifier Step Configuration
+#
+# Intelligent classification of viral immunology research queries.
+# Replaces hardcoded virus detection with configurable ontology.
+#
+# Usage:
+#   step = ViralImmunologyQueryClassifierStep.from_config("configs/viral_immunology_query_classifier.yml")
+
+class: "apecx_integration.composition.steps.viral_immunology_query_classifier_step.ViralImmunologyQueryClassifierStep"
+
+name: "viral_immunology_query_classifier"
+description: "Classifies queries for viral immunology research intent using configurable ontology"
+
+# Classification configuration
+minimum_confidence: 0.3  # Threshold for viral immunology detection
+enable_fuzzy_matching: true
+ontology_config_path: null  # Use embedded default ontology
+
+# Framework configuration
+auto_initialize: true
+debug_mode: false
+enable_logging: true
+
+# Data units
+input_data_units:
+  classifier_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: "classifier_input"
+    description: "Input query for viral immunology classification"
+
+output_data_units:
+  classifier_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: "classifier_output"
+    description: "Classification result with virus detection and research type"
+
+# Triggers - fire when input query is received
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "classifier_input"

@@ -76,6 +76,9 @@ from apecx_integration.mcp_surface.tools import (
     synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    viral_immunology_analysis as viral_immunology_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
 
@@ -129,6 +132,16 @@ def build_server() -> FastMCP:
     # cached as module-level singletons so a long-running server
     # doesn't pay the FAISS load cost on every call.
     server.tool()(synthesis_tools.synthesize_query)
+
+    # Viral Immunology Analysis — comprehensive framework for any viral
+    # immunology research. Automatically detects virus + immunology queries
+    # (COVID-19, influenza, EEEV, etc.) and provides unlimited multi-source
+    # analysis with ontology-driven classification and quality filtering.
+    # Replaces hardcoded EEEV-only approach with extensible architecture.
+    server.tool()(viral_immunology_tools.analyze_viral_immunology)
+
+    # Backward compatibility for existing EEEV-specific queries
+    server.tool()(viral_immunology_tools.analyze_eeev_epitopes)
 
     # Globus Search — query the APECx harvested-corpus index. Read-only;
     # the harvester runs as a stand-alone process and writes to this

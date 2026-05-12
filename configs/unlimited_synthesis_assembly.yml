@@ -1,0 +1,45 @@
+# Unlimited Synthesis Assembly Step Configuration
+#
+# Enhanced assembly that retrieves ALL relevant data instead of applying
+# arbitrary caps. Critical for comprehensive scientific analysis.
+
+class: "apecx_integration.composition.steps.unlimited_synthesis_assembly_step.UnlimitedSynthesisAssemblyStep"
+
+name: "unlimited_synthesis_assembly"
+description: "Unlimited multi-source assembly - retrieves ALL relevant VIOLIN/BV-BRC/PubMed/Globus data"
+
+# Enhanced data retrieval limits (no arbitrary caps)
+k_rag: 20  # Increased from 5
+max_publications: 50  # Increased from 5, respects PubMed API limits
+max_globus_hits: 100  # Increased from 10
+
+# Quality filters instead of arbitrary caps
+min_violin_relevance_score: 0.1
+min_bvbrc_relevance_score: 0.1
+
+# Performance controls
+enable_streaming: false
+batch_size: 1000
+
+# Framework configuration
+auto_initialize: true
+debug_mode: false
+enable_logging: true
+
+# Data units
+input_data_units:
+  assembly_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: "assembly_input"
+    description: "Input for unlimited synthesis assembly"
+
+output_data_units:
+  synthesis_bundle_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: "synthesis_bundle_output"
+    description: "Complete synthesis input bundle with unlimited data"
+
+# Triggers
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "assembly_input"
