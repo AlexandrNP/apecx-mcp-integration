@@ -11,7 +11,8 @@ numbers as accurate to ±3pp at n=50, ±1pp at n>200).
 
 | Codegen | Model(s) | n | Pass@1 | Wall (s/problem) | Notes |
 |---|---|---:|---:|---:|---|
-| direct | mistral-nemo:latest | 50 | **64.0%** | 2.8 | First baseline. 15 AssertionError, 3 fail_other. No syntax errors, no timeouts. |
+| direct (procedural) | mistral-nemo:latest | 50 | **64.0%** | 2.8 | First baseline. 15 AssertionError, 3 fail_other. No syntax errors, no timeouts. |
+| nanobrain_direct (workflow) | mistral-nemo:latest | 50 | **68.0%** | 8.3 | CGU-P1-T6. Same prompt, routed through `Workflow.from_config` + DataUnitChangeTrigger cascade. +4pp delta is within n=50 noise (±3pp); not yet validated as a framework lift. Histogram: 11 AssertionError, 5 fail_other. Framework overhead: ~5.5s/problem (3× procedural). |
 
 ### Published reference points (NOT measured here, for orientation only)
 

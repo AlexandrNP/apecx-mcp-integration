@@ -23,6 +23,7 @@ from collections.abc import Iterable
 from pathlib import Path
 
 from tests.benchmarks.codegen.direct import make_direct_codegen
+from tests.benchmarks.codegen.nanobrain_workflow import make_nanobrain_workflow_codegen
 from tests.benchmarks.codegen.plan_then_code import make_plan_then_code_codegen
 from tests.benchmarks.datasets.mbpp import load_mbpp
 from tests.benchmarks.datasets.scicode import load_scicode
@@ -59,6 +60,25 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         # ``--model`` controls the drafter; planner is resolved from
         # APECX_LLM_MODEL_PLANNER env or defaults to nemotron-3-nano:4b.
         return make_plan_then_code_codegen(drafter_model=model, base_url=base_url)
+    if name == "nanobrain_direct":
+        # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
+        # Same prompt + model as ``direct`` but routed through a real
+        # Workflow.from_config + DataUnitChangeTrigger cascade. The
+        # wrap should land within ±5pp of the procedural direct at
+        # n=50 (per plan AC); larger drift indicates a wrap bug, not
+        # framework overhead.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_direct_codegen"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(yaml_path)
     raise SystemExit(f"unknown codegen: {name!r}")
 
 
@@ -91,8 +111,12 @@ def main() -> int:
     parser.add_argument(
         "--codegen",
         default="direct",
-        choices=["direct", "plan_then_code"],
-        help="codegen strategy",
+        choices=["direct", "plan_then_code", "nanobrain_direct"],
+        help=(
+            "codegen strategy. ``direct`` / ``plan_then_code`` are "
+            "procedural; ``nanobrain_direct`` is the framework-native "
+            "Workflow.from_config wrap of direct (CGU-P1-T6)."
+        ),
     )
     parser.add_argument("--model", default=None, help="LLM model name")
     parser.add_argument("--base-url", default=None, help="LLM endpoint base URL")

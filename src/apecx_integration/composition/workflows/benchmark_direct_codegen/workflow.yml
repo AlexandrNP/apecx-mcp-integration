@@ -1,0 +1,74 @@
+# benchmark_direct_codegen — single-LLM-call code generation, wrapped
+# in a nanobrain workflow (CGU-P1-T6).
+#
+# This is the framework-native equivalent of
+# tests/benchmarks/codegen/direct.py (procedural). It exists so that
+# every scaffold the benchmark sweep measures is itself a nanobrain
+# workflow — the user's directive ("Use Nanobrain workflow structure
+# to solve all problems") and the plan's §0 rule 3 forbid measuring
+# scaffold improvements through a procedural codegen, since that
+# would confound "the framework helped correctness" with "LangChain
+# helped correctness".
+#
+# Topology:
+#
+#   workflow_input ({code_spec, entry_point, test_hint, function_signature})
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   drafter (BenchmarkDrafterStep, role: drafter)
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   workflow_output ({code_source: str})
+#
+# The runner-side adapter (tests/benchmarks/codegen/nanobrain_workflow.py)
+# packages a BenchmarkProblem into the workflow_input dict, drives the
+# cascade via Workflow.process + wait_for_cascade, and extracts
+# code_source from the workflow_output DU.
+
+name: benchmark_direct_codegen
+description: >
+  Single-LLM-call code generation for benchmark problems. Same prompt
+  shape as tests/benchmarks/codegen/direct.py's procedural baseline,
+  routed through a nanobrain workflow so scaffold measurements are
+  end-to-end framework-native.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Benchmark problem packaged as a dict {code_spec, entry_point?,
+      test_hint?, function_signature?}. Forwarded to drafter.drafter_input
+      verbatim.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: "Dict {code_source: str} produced by the drafter step."
+    persistent: false
+
+steps:
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

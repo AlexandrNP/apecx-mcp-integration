@@ -1,0 +1,467 @@
+{
+  "dataset": "mbpp",
+  "codegen": "nanobrain_direct",
+  "model": null,
+  "limit": 50,
+  "pass_at_1": 0.68,
+  "passed": 34,
+  "total": 50,
+  "status_histogram": {
+    "fail_assertion": 11,
+    "pass": 34,
+    "fail_other": 5
+  },
+  "elapsed_seconds": 414.09907837503124,
+  "results": [
+    {
+      "problem_id": "mbpp/11",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 9, in <module>\nAssertionError\n",
+      "wall_seconds": 17.696473375021014,
+      "generated_code": "def remove_Occ(s, c):\n    return s.replace(c, '', 2)\n\n# Test cases\nassert remove_Occ(\"hello\", \"l\") == \"heo\"\nassert remove_Occ(\"mississippi\", \"i\") == \"msssp\""
+    },
+    {
+      "problem_id": "mbpp/12",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.067294833017513,
+      "generated_code": "from typing import List\n\ndef sort_matrix(matrix: List[List[int]]) -> List[List[int]]:\n    return sorted(matrix, key=sum)"
+    },
+    {
+      "problem_id": "mbpp/14",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.083621750003658,
+      "generated_code": "from math import sqrt\n\ndef find_Volume(base, height, side):\n    return (base * height * side) / 2"
+    },
+    {
+      "problem_id": "mbpp/16",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 9, in <module>\nAssertionError\n",
+      "wall_seconds": 7.01556279201759,
+      "generated_code": "import re\n\ndef text_lowercase_underscore(s):\n    return bool(re.match(r'^[\\w_]+$', s))"
+    },
+    {
+      "problem_id": "mbpp/17",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.739916375023313,
+      "generated_code": "def square_perimeter(side):\n    return 4 * side\n\nassert square_perimeter(10) == 40"
+    },
+    {
+      "problem_id": "mbpp/18",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 10.443386207974982,
+      "generated_code": "def remove_dirty_chars(s, chars):\n    return ''.join(c for c in s if c not in chars)\n\nassert remove_dirty_chars(\"probasscurve\", \"pros\") == 'bacuve'"
+    },
+    {
+      "problem_id": "mbpp/19",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.778393541986588,
+      "generated_code": "from collections import Counter\n\ndef test_duplicate(arr):\n    return len(arr) != len(set(arr))"
+    },
+    {
+      "problem_id": "mbpp/20",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 10.630072250030935,
+      "generated_code": "import math\n\ndef is_woodall(n):\n    return n == 1 or (n % 2 == 0 and is_woodall(n // 2)) or (math.isqrt(n) ** 2 == n)"
+    },
+    {
+      "problem_id": "mbpp/56",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.865027458989061,
+      "generated_code": "def check(n):\n    return n == 2 * int(str(n)[::-1]) - 1\n\nassert check(70) == False"
+    },
+    {
+      "problem_id": "mbpp/57",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.797570958966389,
+      "generated_code": "from functools import reduce\n\ndef find_Max_Num(digits):\n    return int(''.join(map(str, sorted(digits, reverse=True))))"
+    },
+    {
+      "problem_id": "mbpp/58",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nNameError: name 'opposite_Signs' is not defined. Did you mean: 'opposite_signs'?\n",
+      "wall_seconds": 7.900697042001411,
+      "generated_code": "def opposite_signs(a, b):\n    return (a * b) < 0\n\nassert opposite_signs(1, -2) == True"
+    },
+    {
+      "problem_id": "mbpp/59",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 8.304455042001791,
+      "generated_code": "from math import sqrt\n\ndef is_octagonal(n):\n    return int((3 * sqrt(2 * n + 1/2)) / 2)"
+    },
+    {
+      "problem_id": "mbpp/61",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.807079833000898,
+      "generated_code": "def count_Substrings(s):\n    def has_sum_equal_length(sub):\n        return sum(int(d) for d in sub) == len(sub)\n\n    return sum(has_sum_equal_length(s[i:j]) for i in range(len(s)) for j in range(i+1, len(s)+1))\n\nassert count_Substrings('112112') == 6"
+    },
+    {
+      "problem_id": "mbpp/62",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.019180917006452,
+      "generated_code": "def smallest_num(lst):\n    return min(lst)"
+    },
+    {
+      "problem_id": "mbpp/63",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"<stdin>\", line 7, in max_difference\nTypeError: 'int' object is not iterable\n",
+      "wall_seconds": 9.909852665965445,
+      "generated_code": "from typing import Tuple\n\ndef max_difference(pairs: Tuple[Tuple[int, int]]) -> int:\n    return max(max(b-a for a,b in pairs) - min(a-b for a,b in pairs))"
+    },
+    {
+      "problem_id": "mbpp/64",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.335858542006463,
+      "generated_code": "def subject_marks(tuples_list):\n    return sorted(tuples_list, key=lambda x: x[1])\n\nassert subject_marks([('English', 88), ('Science', 90), ('Maths', 97), ('Social sciences', 82)])==[('Social sciences', 82), ('English', 88), ('Science', 90), ('Maths', 97)]"
+    },
+    {
+      "problem_id": "mbpp/65",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 9.540390374953859,
+      "generated_code": "from typing import Union\n\ndef recursive_list_sum(lst: Union[int, list]) -> int:\n    if isinstance(lst, int):\n        return lst\n    else:\n        return sum(recursive_list_sum(i) for i in lst)"
+    },
+    {
+      "problem_id": "mbpp/66",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.162970667006448,
+      "generated_code": "def pos_count(lst):\n    return len([x for x in lst if x > 0])"
+    },
+    {
+      "problem_id": "mbpp/67",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 7.938272416999098,
+      "generated_code": "from math import comb\n\ndef bell_number(n):\n    return sum(comb(n, k) * comb(k, j) for k in range(n+1) for j in range(k+1))"
+    },
+    {
+      "problem_id": "mbpp/68",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 10.819872124993708,
+      "generated_code": "from typing import List\n\ndef is_Monotonic(arr: List[int]) -> bool:\n    return all(x >= y for x, y in zip(arr, arr[1:])) or all(x <= y for x, y in zip(arr, arr[1:]))"
+    },
+    {
+      "problem_id": "mbpp/69",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 7.078227624995634,
+      "generated_code": "from typing import List\n\ndef is_sublist(main: List[int], sub: List[int]) -> bool:\n    return all(x in main for x in sub)"
+    },
+    {
+      "problem_id": "mbpp/70",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.221240958024282,
+      "generated_code": "def get_equal(tuples):\n    return len(set(len(t) for t in tuples)) <= 1\n\nassert get_equal([(11, 22, 33), (44, 55, 66)]) == True"
+    },
+    {
+      "problem_id": "mbpp/71",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 20.15688195900293,
+      "generated_code": "def comb_sort(lst):\n    def merge(left, right):\n        result = []\n        while left and right:\n            if left[0] < right[0]:\n                result.append(left.pop(0))\n            else:\n                result.append(right.pop(0))\n        return result + left + right\n\n    def split(lst):\n        if len(lst) <= 1:\n            return lst\n        mid = len(lst) // 2\n        return merge(split(lst[:mid]), split(lst[mid:]))\n\n    return split(lst)"
+    },
+    {
+      "problem_id": "mbpp/72",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 7.783469375048298,
+      "generated_code": "import math\n\ndef dif_Square(n):\n    return any(x**2 - y**2 == n for x in range(int(math.sqrt(n)) + 1) for y in range(x))"
+    },
+    {
+      "problem_id": "mbpp/74",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "SyntaxError",
+      "error_message": "  File \"<stdin>\", line 4\n    ```python\n    ^\nSyntaxError: invalid syntax\n",
+      "wall_seconds": 8.167426083004102,
+      "generated_code": "```python\ndef is_same_patterns(patterns, seq):\n    return patterns == seq\n\nassert is_same_patterns([\"red\",\"green\",\"green\"], [\"a\", \"b\", \"b\"]) == True"
+    },
+    {
+      "problem_id": "mbpp/75",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 9.797080333984923,
+      "generated_code": "from typing import List\n\ndef find_tuples(tuples: List[tuple], k: int) -> List[tuple]:\n    return [t for t in tuples if all(x % k == 0 for x in t)]"
+    },
+    {
+      "problem_id": "mbpp/77",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.442479790945072,
+      "generated_code": "def is_Diff(n):\n    return n % 11 == 0"
+    },
+    {
+      "problem_id": "mbpp/79",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.02578441699734,
+      "generated_code": "def word_len(word):\n    return len(word) % 2 != 0\n\nassert word_len(\"Hadoop\") == False"
+    },
+    {
+      "problem_id": "mbpp/80",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.10288841696456,
+      "generated_code": "def tetrahedral_number(n):\n    return n * (n + 1) * (n + 2) // 6\n\nassert tetrahedral_number(5) == 35"
+    },
+    {
+      "problem_id": "mbpp/82",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.729411834036,
+      "generated_code": "import math\n\ndef volume_sphere(radius):\n    return (4/3) * math.pi * radius**3"
+    },
+    {
+      "problem_id": "mbpp/83",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 5.443532374978531,
+      "generated_code": "def get_Char(s):\n    return chr(sum(ord(c) for c in s) % 26)"
+    },
+    {
+      "problem_id": "mbpp/84",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "SyntaxError",
+      "error_message": "  File \"<stdin>\", line 4\n    ```python\n    ^\nSyntaxError: invalid syntax\n",
+      "wall_seconds": 10.409591874980833,
+      "generated_code": "```python\nfrom sympy import nextprime\n\ndef sequence(n):\n    seq = [2]\n    while len(seq) < n:\n        seq.append(nextprime(sum(seq[-2:])))\n    return seq[n-1]\n\nassert sequence(10) == 6"
+    },
+    {
+      "problem_id": "mbpp/85",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.193251124990638,
+      "generated_code": "import math\n\ndef surfacearea_sphere(radius):\n    return 4 * math.pi * radius**2"
+    },
+    {
+      "problem_id": "mbpp/86",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 6.8934890840318985,
+      "generated_code": "import math\n\ndef centered_hexagonal_number(n):\n    return int((math.sqrt(8*n + 1) - 1) / 2)"
+    },
+    {
+      "problem_id": "mbpp/87",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.33167229196988,
+      "generated_code": "from collections import ChainMap\n\ndef merge_dictionaries_three(dict1, dict2, dict3):\n    return dict(ChainMap(dict1, dict2, dict3))"
+    },
+    {
+      "problem_id": "mbpp/88",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.372136958991177,
+      "generated_code": "from collections import Counter\n\ndef freq_count(lst):\n    return dict(Counter(lst))"
+    },
+    {
+      "problem_id": "mbpp/89",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.833608458051458,
+      "generated_code": "def closest_num(n):\n    return max(x for x in range(n) if x < n)"
+    },
+    {
+      "problem_id": "mbpp/90",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.155436582979746,
+      "generated_code": "def len_log(words):\n    return max(len(word) for word in words)"
+    },
+    {
+      "problem_id": "mbpp/91",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.264846417005174,
+      "generated_code": "from typing import List\n\ndef find_substring(strings: List[str], substring: str) -> bool:\n    return any(substring in s for s in strings)"
+    },
+    {
+      "problem_id": "mbpp/92",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 10.463888833008241,
+      "generated_code": "def is_undulating(n):\n    prev = None\n    for digit in str(n):\n        if prev is not None and int(digit) % 2 != prev % 2:\n            return False\n        prev = int(digit)\n    return True"
+    },
+    {
+      "problem_id": "mbpp/93",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.4749117919709533,
+      "generated_code": "def power(a, b):\n    return a ** b"
+    },
+    {
+      "problem_id": "mbpp/94",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.150514832988847,
+      "generated_code": "def index_minimum(tuples):\n    return next((name for name, _ in tuples if _ == min(_ for _, _ in tuples)) or None)"
+    },
+    {
+      "problem_id": "mbpp/95",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.874045707983896,
+      "generated_code": "def Find_Min_Length(lst):\n    return min(len(x) for x in lst)"
+    },
+    {
+      "problem_id": "mbpp/96",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 8.029317374981474,
+      "generated_code": "from math import sqrt\n\ndef divisor(n):\n    return len([i for i in range(1, int(sqrt(n)) + 1) if n % i == 0])"
+    },
+    {
+      "problem_id": "mbpp/97",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.6343242090079,
+      "generated_code": "from collections import Counter\n\ndef frequency_lists(lst):\n    flattened = [item for sublist in lst for item in sublist]\n    return dict(Counter(flattened))"
+    },
+    {
+      "problem_id": "mbpp/98",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.7245572920073755,
+      "generated_code": "from functools import reduce\nimport operator\n\ndef multiply_num(lst):\n    return reduce(operator.mul, lst) / len(lst)"
+    },
+    {
+      "problem_id": "mbpp/99",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.6876603339915164,
+      "generated_code": "def decimal_to_binary(n):\n    return bin(n)[2:]"
+    },
+    {
+      "problem_id": "mbpp/100",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "SystemExit",
+      "error_message": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"<stdin>\", line 17, in <module>\n  File \"/opt/anaconda3/lib/python3.12/unittest/main.py\", line 105, in __init__\n    self.runTests()\n  File \"/opt/anaconda3/lib/python3.12/unittest/main.py\", line 286, in runTests\n    sys.exit(0)\nSystemExit: 0\n",
+      "wall_seconds": 17.50633237499278,
+      "generated_code": "def next_smallest_palindrome(n):\n    n += 1\n    while str(n) != str(n)[::-1]:\n        n += 1\n    return n\n\nimport unittest\n\nclass TestNextSmallestPalindrome(unittest.TestCase):\n    def test_next_smallest_palindrome(self):\n        self.assertEqual(next_smallest_palindrome(99), 101)\n\nif __name__ == '__main__':\n    unittest.main()"
+    },
+    {
+      "problem_id": "mbpp/101",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.0338965419796295,
+      "generated_code": "def kth_element(arr, k):\n    return arr[k-1]"
+    },
+    {
+      "problem_id": "mbpp/102",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.25752870796714,
+      "generated_code": "def snake_to_camel(s):\n    return ''.join(x.title() for x in s.split('_'))\n\nassert snake_to_camel('python_program') == 'PythonProgram'"
+    }
+  ]
+}
