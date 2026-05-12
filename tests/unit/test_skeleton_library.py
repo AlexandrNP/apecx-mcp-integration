@@ -45,10 +45,50 @@ SHIPPED_SKELETONS = REPO_ROOT / "src" / "apecx_integration" / "composition" / "s
 def test_skeleton_library_loads_shipped_files():
     lib = SkeletonLibrary.from_dir(SHIPPED_SKELETONS)
     names = lib.names()
-    # Three skeletons authored as the SKEL starter set.
+    # Starter set (SKEL, 2026-05-11).
     assert "synthesis_pipeline" in names
     assert "entity_extraction_only" in names
     assert "pathogen_bvbrc_match" in names
+    # Single-source patterns added in SKEL-PLUS (2026-05-12) after
+    # web-research surveyed 2026 RAG/agentic literature. Each one
+    # composes existing apecx components in a new way.
+    assert "pubmed_only_literature_search" in names
+    assert "rag_domain_search_only" in names
+    assert "violin_bvbrc_context_only" in names
+
+
+def test_each_shipped_skeleton_has_at_least_one_step():
+    """Sanity gate on the skeletons themselves: a 0-step skeleton
+    would silently produce empty workflows — exactly the
+    workflow_has_no_steps shape A1 catches at compose time. Pin
+    that every shipped skeleton has structure."""
+    lib = SkeletonLibrary.from_dir(SHIPPED_SKELETONS)
+    for name in lib.names():
+        skel = lib.get(name)
+        assert skel is not None
+        assert len(skel.spec.steps) >= 1, (
+            f"shipped skeleton {name!r} has zero steps; either delete it or fix the spec block."
+        )
+
+
+def test_each_skeleton_links_reference_defined_steps():
+    """Every link's dotted-name endpoint (`step_id.du_name`) must
+    name a step that's actually defined in the skeleton. Catches
+    typos at test time, not at compose time."""
+    lib = SkeletonLibrary.from_dir(SHIPPED_SKELETONS)
+    for name in lib.names():
+        skel = lib.get(name)
+        assert skel is not None
+        step_ids = {s.id for s in skel.spec.steps}
+        for link in skel.spec.links:
+            for endpoint in (link.source, link.target):
+                if "." in endpoint:
+                    step_id = endpoint.split(".", 1)[0]
+                    assert step_id in step_ids, (
+                        f"skeleton {name!r} link endpoint {endpoint!r} "
+                        f"references unknown step {step_id!r}; defined "
+                        f"steps: {sorted(step_ids)}"
+                    )
 
 
 def test_skeleton_library_validates_embedded_spec(tmp_path):

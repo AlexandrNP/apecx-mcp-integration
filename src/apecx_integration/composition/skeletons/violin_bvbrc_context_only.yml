@@ -1,0 +1,25 @@
+# Skeleton: VIOLIN + BV-BRC tabular context lookup, no LLM.
+#
+# Inspired by the "GraphRAG / structured-data retrieval" patterns
+# surveyed in 2026 RAG surveys — when the answer lives entirely in
+# a structured tabular source, a pure-pandas lookup is faster, more
+# reliable, and cheaper than wrapping the source in a synthesis step.
+name: violin_bvbrc_context_only
+description: >
+  Single-step VIOLIN + BV-BRC tabular substring lookup. Returns the
+  matched rows without LLM synthesis.
+when_to_use: >
+  User asks a question whose answer is directly in the VIOLIN +
+  BV-BRC tabular sources ("what genome ids does BV-BRC have for X",
+  "what VIOLIN vaccine records mention Y"). No LLM call → cheap +
+  deterministic + auditable.
+spec:
+  name: violin_bvbrc_context_only
+  description: Single-source VIOLIN/BV-BRC tabular lookup.
+  version: "0.1.0"
+  steps:
+    - id: context
+      class_name: VIOLINBVBRCContextStep
+  links:
+    - {source: workflow_input,         target: context.context_query_input}
+    - {source: context.context_output, target: workflow_output}

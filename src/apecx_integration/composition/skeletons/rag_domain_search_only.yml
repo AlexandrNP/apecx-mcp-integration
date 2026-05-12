@@ -1,0 +1,25 @@
+# Skeleton: domain-FAISS-RAG retrieval only (no synthesis).
+#
+# Inspired by the "retrieve-only" pattern noted in the agentic-RAG
+# survey (arxiv.org/abs/2501.09136, 2026) — sometimes downstream
+# consumers want the raw chunks, not a synthesized narrative. Useful
+# as a building block for non-LLM downstream processing (manual
+# review, structured-data extraction, embedding-based clustering).
+name: rag_domain_search_only
+description: >
+  Single-step semantic retrieval over the domain FAISS index.
+  Returns the top-k chunks without any synthesis step.
+when_to_use: >
+  User wants ONLY the retrieved snippets / chunks for downstream
+  manual review or non-LLM analysis. Skips RagSynthesisStep so no
+  generation cost, no hallucination surface.
+spec:
+  name: rag_domain_search_only
+  description: Single-source domain-FAISS retrieval.
+  version: "0.1.0"
+  steps:
+    - id: domain_rag
+      class_name: DomainRagSearchStep
+  links:
+    - {source: workflow_input,                target: domain_rag.rag_query_input}
+    - {source: domain_rag.rag_chunks_output,  target: workflow_output}

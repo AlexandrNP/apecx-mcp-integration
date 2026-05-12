@@ -1,0 +1,26 @@
+# Skeleton: PubMed-only literature search.
+#
+# Inspired by the "single-source retrieval base pattern" surveyed in
+# arxiv.org/abs/2506.00054 (RAG comprehensive survey, 2026). When the
+# user wants citations + abstracts WITHOUT cross-corpus synthesis,
+# this skeleton skips assembly + RAG synthesis entirely — returns
+# the raw publication list.
+name: pubmed_only_literature_search
+description: >
+  Single-step PubMed eSearch + eFetch. Returns the raw publication
+  list without further synthesis.
+when_to_use: >
+  User wants ONLY citations / abstracts ("find me papers about X",
+  "what's been published on Y") and does NOT want a synthesized
+  narrative answer. Faster + cheaper than the full synthesis
+  pipeline; no LLM call after retrieval.
+spec:
+  name: pubmed_only_literature_search
+  description: Single-source PubMed harvest.
+  version: "0.1.0"
+  steps:
+    - id: pubmed_harvest
+      class_name: PubMedHarvesterStep
+  links:
+    - {source: workflow_input,                    target: pubmed_harvest.pubmed_query_input}
+    - {source: pubmed_harvest.publications_output, target: workflow_output}
