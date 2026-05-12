@@ -281,6 +281,37 @@ class Composer:
             artifact_store is not None,
         )
 
+    def llm_for_role(self, role: str, **overrides: Any) -> Any:
+        """Build a chat LLM bound to the model assigned to ``role``.
+
+        BENCH-P0 (2026-05-12). When ``role`` is registered in
+        ``config.model_roles`` (either via YAML or via the
+        ``APECX_LLM_MODEL_<ROLE>`` env override), the returned LLM
+        uses that role's ``(model, base_url)``. Otherwise it falls
+        back to the composer's default single-model binding
+        (``config.llm_model`` / ``config.llm_base_url``). This
+        preserves T01 AC1 strict-path behavior: an existing config
+        without ``model_roles`` is unaffected.
+
+        ``overrides`` are forwarded to the LLM factory verbatim —
+        callers typically pass ``temperature``, ``max_tokens``, etc.
+        """
+        role_cfg = self._config.model_roles.get(role)
+        if role_cfg is not None:
+            model = role_cfg.model
+            base_url = role_cfg.base_url or self._config.llm_base_url
+        else:
+            model = self._config.llm_model
+            base_url = self._config.llm_base_url
+        kwargs: dict[str, Any] = {
+            "temperature": self._config.temperature,
+            "max_tokens": self._config.max_tokens,
+            "model": model,
+            "base_url": base_url,
+        }
+        kwargs.update(overrides)
+        return self._llm_factory(**kwargs)
+
     @classmethod
     def from_config(cls, config_path: str | Path) -> Composer:
         """Load a ``ComposerConfig`` from YAML and build the composer."""
@@ -1419,6 +1450,37 @@ def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
         raw["enable_review"] = True
     elif review_env in ("0", "false", "no"):
         raw["enable_review"] = False
+
+    # BENCH-P0 (2026-05-12): per-role overrides.
+    # APECX_LLM_MODEL_<ROLE_UPPER>    → model_roles.<role>.model
+    # APECX_LLM_BASE_URL_<ROLE_UPPER> → model_roles.<role>.base_url
+    #
+    # We deliberately scan os.environ (rather than checking a fixed
+    # role list) so operators can add a role like "critic" or
+    # "explainer" without a code change. The role name is lower-cased
+    # from the env-var suffix; the YAML model_roles dict (if present)
+    # is merged keyword-by-keyword so env wins on conflict.
+    role_models: dict[str, dict[str, str]] = {}
+    for env_key, env_val in os.environ.items():
+        if not env_val:
+            continue
+        if env_key.startswith("APECX_LLM_MODEL_"):
+            role = env_key.removeprefix("APECX_LLM_MODEL_").lower()
+            role_models.setdefault(role, {})["model"] = env_val
+        elif env_key.startswith("APECX_LLM_BASE_URL_"):
+            role = env_key.removeprefix("APECX_LLM_BASE_URL_").lower()
+            role_models.setdefault(role, {})["base_url"] = env_val
+    if role_models:
+        merged = dict(raw.get("model_roles") or {})
+        for role, fields in role_models.items():
+            existing = dict(merged.get(role) or {})
+            existing.update(fields)
+            # An env-only role MUST carry a model field — base_url
+            # without a model is meaningless. Skip if missing.
+            if "model" not in existing:
+                continue
+            merged[role] = existing
+        raw["model_roles"] = merged
 
 
 def _parse_response(content: str) -> tuple[str, dict[str, str]]:

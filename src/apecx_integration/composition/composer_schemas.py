@@ -33,6 +33,30 @@ if TYPE_CHECKING:
 # ---------------------------------------------------------------------------
 
 
+class ModelRoleConfig(BaseModel):
+    """Per-role LLM endpoint binding (BENCH-P0, 2026-05-12).
+
+    The composer's benchmark-iteration plan
+    (``docs/composer_benchmark_plan.md``) introduces multi-model
+    scaffolds where different stages of code generation use
+    different LLMs — e.g., nemotron with thinking tokens for the
+    planner role, mistral-nemo for the drafter role. ``ModelRoleConfig``
+    is the YAML-loaded binding for a single role.
+
+    ``base_url`` is optional: when omitted, the composer falls back
+    to ``ComposerConfig.llm_base_url`` so operators only need to
+    name the model in the common Ollama-on-localhost case.
+
+    ``extra='forbid'`` matches the parent config — a typo in a role
+    name fails loud at config-load, not silently as a default later.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    model: str
+    base_url: str | None = None
+
+
 class ComposerConfig(BaseModel):
     """Composer configuration loaded from YAML by ``Composer.from_config``.
 
@@ -144,6 +168,23 @@ class ComposerConfig(BaseModel):
     # workspace baseline.
     prompt_soft_cap_kb: float = Field(default=14.0, gt=0.0)
     prompt_hard_cap_kb: float = Field(default=16.0, gt=0.0)
+
+    # BENCH-P0 (2026-05-12): role-keyed model bindings for the
+    # multi-model scaffolds described in
+    # ``docs/composer_benchmark_plan.md``. Empty dict (the default)
+    # means "all roles use llm_model / llm_base_url" — i.e.,
+    # backward-compatible single-model behavior. Populate per role to
+    # route specific stages of code generation to specific models.
+    #
+    # Conventional role names (the scaffolds use these, but they are
+    # not validated — operators can add their own):
+    #   drafter   — produces the workflow YAML or code body
+    #   planner   — produces the structured plan / chain-of-thought
+    #   reviewer  — judges a drafted artifact (pass / needs_revision)
+    #
+    # Override per role via env: APECX_LLM_MODEL_<ROLE_UPPER> and
+    # APECX_LLM_BASE_URL_<ROLE_UPPER>.
+    model_roles: dict[str, ModelRoleConfig] = Field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
