@@ -95,6 +95,29 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_retrieval_grounded":
+        # Retrieval-grounded + per-task-class scaffold for nanobrain-
+        # native. Deterministic classifier + per-category worked
+        # example -> drafter. Targets F15's "per-task-class curated
+        # prompts" direction-change.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_retrieval_grounded"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="drafter",
+            code_source_du_name="drafter_output",
+            cascade_timeout_seconds=120.0,
+        )
     if name == "nanobrain_edge_case_then_code":
         # MB-1 from composer_scaffold_designs_per_benchmark.md.
         # Edge-case enumerator (small LLM) -> drafter (large LLM).
@@ -264,6 +287,7 @@ def main() -> int:
             "nanobrain_ast_gated_review_revise",
             "nanobrain_runtime_gated_review_revise",
             "nanobrain_edge_case_then_code",
+            "nanobrain_retrieval_grounded",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

@@ -1,0 +1,72 @@
+# benchmark_retrieval_grounded — retrieval-grounded + per-task-class
+# scaffold for nanobrain-native.
+#
+#   workflow_input ({code_spec, entry_point, ...})
+#       → TaskCategoryRouterStep (deterministic; classifies + enriches)
+#       → drafter (LLM)
+#       → workflow_output
+#
+# The router classifies the prompt into one of 5 categories (step,
+# tool, config, builder, default) using simple keyword matching on
+# entry_point + spec. For each category, a hand-curated worked
+# example (example_<cat>.md) is appended to code_spec. The drafter
+# then sees a positive pattern to imitate, not just rules to honor.
+#
+# This is the "retrieval-grounded codegen" (Z6 in the plan zoo) +
+# "per-task-class curated prompts" (one of the F15 break-the-ceiling
+# direction-changes) merged because the categories are few and
+# discrete (no embedding store needed).
+
+name: benchmark_retrieval_grounded
+description: >
+  Deterministic per-category classifier + LLM drafter. The classifier
+  reads the prompt + entry_point and selects one of 5 worked-example
+  files to append to code_spec. The drafter imitates the example
+  rather than inventing the structural shape from scratch.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router.router_input
+      auto_transfer: true
+
+  router_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router.router_output
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

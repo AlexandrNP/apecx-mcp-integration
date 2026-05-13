@@ -1,0 +1,198 @@
+{
+  "dataset": "mbpp",
+  "codegen": "nanobrain_retrieval_grounded",
+  "model": null,
+  "limit": 20,
+  "pass_at_1": 0.65,
+  "passed": 13,
+  "total": 20,
+  "status_histogram": {
+    "pass": 13,
+    "fail_assertion": 4,
+    "fail_other": 2,
+    "timeout": 1
+  },
+  "elapsed_seconds": 273.29369858297287,
+  "results": [
+    {
+      "problem_id": "mbpp/11",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.459239332994912,
+      "generated_code": "def remove_Occ(s, c):\n    return s.replace(c, '', 1).replace(c, '', -1)"
+    },
+    {
+      "problem_id": "mbpp/12",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.601278625021223,
+      "generated_code": "import numpy as np\n\ndef sort_matrix(matrix):\n    sums = np.sum(matrix, axis=1)\n    sorted_indices = np.argsort(sums)\n    return [matrix[i] for i in sorted_indices]"
+    },
+    {
+      "problem_id": "mbpp/14",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 9.535733124997932,
+      "generated_code": "def find_Volume(base, height, length):\n    return (base * height * length) / 2"
+    },
+    {
+      "problem_id": "mbpp/16",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 10.612114707997534,
+      "generated_code": "import re\n\ndef text_lowercase_underscore(text: str) -> bool:\n    return bool(re.match(r'^[a-z0-9]+(_[a-z0-9]+)*$', text))"
+    },
+    {
+      "problem_id": "mbpp/17",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.031694667006377,
+      "generated_code": "def square_perimeter(side_length):\n    return 4 * side_length"
+    },
+    {
+      "problem_id": "mbpp/18",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.357882665994111,
+      "generated_code": "def remove_dirty_chars(str1, str2):\n    return ''.join([char for char in str1 if char not in str2])"
+    },
+    {
+      "problem_id": "mbpp/19",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.944496292038821,
+      "generated_code": "def test_duplicate(arr):\n    return len(set(arr)) != len(arr)"
+    },
+    {
+      "problem_id": "mbpp/20",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 9.147090166981798,
+      "generated_code": "def is_woodall(n):\n    while n % 2 == 0:\n        n //= 2\n    return n == 1 or n == 7"
+    },
+    {
+      "problem_id": "mbpp/56",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.89921195799252,
+      "generated_code": "def check(n):\n    return n == 2 * int(str(n)[::-1]) - 1"
+    },
+    {
+      "problem_id": "mbpp/57",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nNameError: name 'find_Max_Num' is not defined. Did you mean: 'find_max_num'?\n",
+      "wall_seconds": 7.905727749981452,
+      "generated_code": "def find_max_num(digits):\n    return int(''.join(sorted(map(str, digits), reverse=True)))"
+    },
+    {
+      "problem_id": "mbpp/58",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nNameError: name 'opposite_Signs' is not defined. Did you mean: 'opposite_signs'?\n",
+      "wall_seconds": 7.933863750018645,
+      "generated_code": "def opposite_signs(a, b):\n    return (a < 0) != (b < 0)"
+    },
+    {
+      "problem_id": "mbpp/59",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 7.943982333003078,
+      "generated_code": "def is_octagonal(n):\n    return n * (3*n - 1) // 2 + 1"
+    },
+    {
+      "problem_id": "mbpp/61",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 10.401657291979063,
+      "generated_code": "def count_Substrings(s):\n    return sum(1 for i in range(len(s)) if s[i:].isdigit() and len(s[i:]) == sum(int(d) for d in s[i:]))"
+    },
+    {
+      "problem_id": "mbpp/62",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.573552582995035,
+      "generated_code": "def smallest_num(lst):\n    return min(lst)"
+    },
+    {
+      "problem_id": "mbpp/63",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 7.851361832988914,
+      "generated_code": "def max_difference(tuples):\n    return max(b - a for a, b in tuples) if tuples else None"
+    },
+    {
+      "problem_id": "mbpp/64",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.237998874974437,
+      "generated_code": "def subject_marks(marks):\n    return sorted(marks, key=lambda x: x[1])"
+    },
+    {
+      "problem_id": "mbpp/65",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 10.22346358402865,
+      "generated_code": "def recursive_list_sum(lst):\n    total = 0\n    for i in lst:\n        if isinstance(i, list):\n            total += recursive_list_sum(i)\n        else:\n            total += i\n    return total"
+    },
+    {
+      "problem_id": "mbpp/66",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.590289833024144,
+      "generated_code": "def pos_count(lst):\n    return len([x for x in lst if x > 0])"
+    },
+    {
+      "problem_id": "mbpp/67",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": false,
+      "error_class": "Timeout",
+      "error_message": "exceeded 90.0s",
+      "wall_seconds": 99.85975100001087,
+      "generated_code": "import math\n\ndef bell_number(n):\n    if n == 0:\n        return 1\n    else:\n        return sum(bell_number(k) * math.comb(n - 1, k) for k in range(n))"
+    },
+    {
+      "problem_id": "mbpp/68",
+      "codegen_name": "nanobrain_retrieval_grounded",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.181328667036723,
+      "generated_code": "def is_Monotonic(arr):\n    return all(x >= y for x, y in zip(arr, arr[1:])) or all(x <= y for x, y in zip(arr, arr[1:]))"
+    }
+  ]
+}
