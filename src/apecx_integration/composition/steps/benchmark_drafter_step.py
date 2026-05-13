@@ -162,6 +162,18 @@ class BenchmarkDrafterStepConfig(StepConfig):
         ),
     )
 
+    rules_file: str | None = Field(
+        default=None,
+        description=(
+            "Optional path to a supplementary rules file (e.g., "
+            "``nanobrain_rules.md``) that is appended to the system "
+            "prompt at step-load time. Use when the task domain "
+            "(framework-native code) has conventions the bare "
+            "system prompt does not encode. Resolved like "
+            "``system_prompt_file`` (relative to wrapper YAML)."
+        ),
+    )
+
     role: str = Field(
         default="drafter",
         description=(
@@ -231,6 +243,7 @@ class BenchmarkDrafterStep(BaseStep):
         return {
             **base,
             "system_prompt_file": config.system_prompt_file,
+            "rules_file": config.rules_file,
             "role": config.role,
             "temperature": config.temperature,
             "max_tokens": config.max_tokens,
@@ -264,6 +277,29 @@ class BenchmarkDrafterStep(BaseStep):
                 f"with no instructions"
             )
 
+        # Optional rules-file append. Use case: nanobrain-native problems
+        # need framework-specific guidance (don't override from_config,
+        # correct imports, etc.) that would bloat MBPP/SciCode prompts
+        # without helping. Per-workflow choice via wrapper YAML.
+        rules_path = self._resolve_rules_path(
+            component_config.get("rules_file"),
+            component_config.get("source_path"),
+        )
+        if rules_path is not None:
+            try:
+                rules_text = rules_path.read_text(encoding="utf-8")
+            except OSError as e:
+                raise ValueError(
+                    f"BenchmarkDrafterStep {self.name!r}: failed to read "
+                    f"rules file at {rules_path}: {e}"
+                ) from e
+            if rules_text.strip():
+                # Append with a clear delimiter so the LLM treats it as
+                # additional instructions, not a continuation.
+                self._system_prompt = (
+                    self._system_prompt.rstrip() + "\n\n---\n\n" + rules_text.strip() + "\n"
+                )
+
         self._role: str = component_config["role"]
         self._temperature: float = float(component_config["temperature"])
         self._max_tokens: int = int(component_config["max_tokens"])
@@ -273,6 +309,22 @@ class BenchmarkDrafterStep(BaseStep):
     def _resolve_prompt_path(configured: str | None, source_path: str | None) -> Path:
         if configured is None:
             return _DEFAULT_PROMPT_PATH
+        p = Path(configured)
+        if p.is_absolute():
+            return p
+        if source_path:
+            return (Path(source_path).resolve().parent / p).resolve()
+        return (Path.cwd() / p).resolve()
+
+    @staticmethod
+    def _resolve_rules_path(configured: str | None, source_path: str | None) -> Path | None:
+        """Mirror of ``_resolve_prompt_path`` for the optional rules file.
+
+        Returns None when ``configured`` is None (no rules to append).
+        Otherwise resolves the path the same way as the prompt file.
+        """
+        if configured is None:
+            return None
         p = Path(configured)
         if p.is_absolute():
             return p

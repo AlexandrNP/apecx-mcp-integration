@@ -1,43 +1,29 @@
-# Nanobrain framework rules — LLM-facing condensate
+# Nanobrain framework rules — LLM-facing condensate (v2, positive-only)
 
 Apply these rules when the task involves any nanobrain class
-(`BaseStep`, `ToolBase`, `Workflow`, `BaseAgent`, `DataUnit*`,
-`Trigger*`, `Link*`). Each rule states the behavior the framework
-enforces and the canonical pattern to follow. Imperatives only —
-no rationale, no examples beyond the minimal one needed.
+(`BaseStep`, `ToolBase`, `Workflow`, `BaseAgent`).
 
-## 1. Use the inherited `from_config` — do NOT define your own
+## 1. Inherit `from_config` — do not define one
 
-`BaseStep`, `ToolBase`, `Workflow`, `BaseAgent` all inherit
-`from_config(config_or_path)` from `FromConfigBase`. Calling
-`cls(...)` directly raises `RuntimeError: Direct instantiation
-of <Class> is prohibited`. If your subclass overrides `from_config`
-and calls `cls(...)`, you trigger the same error.
+`BaseStep`, `ToolBase`, `Workflow`, and `BaseAgent` already inherit
+`from_config(config_or_path)`. Your subclass should NOT define a
+`from_config` method. Loading happens via `BaseStep.from_config(path)`
+called from outside the class.
 
-```python
-# ✅ CORRECT — inherit from_config
-class MyStep(BaseStep):
-    async def process(self, input_data, **kwargs):
-        return {...}
-
-# ❌ FORBIDDEN — calling cls() inside a custom from_config
-class MyStep(BaseStep):
-    @classmethod
-    def from_config(cls, path):
-        return cls(path)  # raises RuntimeError
-```
-
-## 2. Implement `process()`, never `execute()`
+## 2. Implement `process()`
 
 ```python
 class MyStep(BaseStep):
+    COMPONENT_TYPE = "my_step"
+
     async def process(self, input_data: dict, **kwargs) -> dict:
-        # business logic here
-        return {...}
+        # business logic
+        return {"output": ...}
 ```
 
-Overriding `execute()` raises `ComponentConfigurationError` at
-step initialization (FAIL-FAST).
+`process` is the only method to implement. No constructor, no
+`from_config`, no `execute`. The method signature is
+`async def process(self, input_data: dict, **kwargs) -> dict`.
 
 ## 3. Imports
 
@@ -49,14 +35,14 @@ from nanobrain.core.agent import BaseAgent
 from nanobrain.core.data_unit import DataUnitMemory
 from nanobrain.core.trigger import DataUnitChangeTrigger
 from nanobrain.core.link import DirectLink, ConditionalLink
-from nanobrain.lightweight import WorkflowBuilder  # only when building programmatically
+from nanobrain.lightweight import WorkflowBuilder  # programmatic only
 ```
 
-There is no `nanobrain.utils`, no `nanobrain.helpers`. The
-`nanobrain.lightweight` package contains only `WorkflowBuilder` and
-discovery helpers — NOT core classes.
+These are the canonical import paths. There is no `nanobrain.utils`
+or `nanobrain.helpers`. The `nanobrain.lightweight` package contains
+`WorkflowBuilder` and discovery helpers.
 
-## 4. StepConfig subclass shape (when adding custom fields)
+## 4. StepConfig subclass with a custom field
 
 ```python
 from typing import Any
@@ -76,9 +62,9 @@ class MyStepConfig(StepConfig):
         return data
 ```
 
-`extra="forbid"` is the workspace rule. The `_strip_framework_keys`
-validator is required to drop the `class:` field the framework
-injects at load time.
+The `_strip_framework_keys` validator removes the `class:` key that
+the framework injects at load time. The `source_path` field is
+populated by the loader.
 
 ## 5. Wiring custom config into a step
 
@@ -99,10 +85,10 @@ class MyStep(BaseStep):
         self._threshold = component_config["threshold"]
 
     async def process(self, input_data, **kwargs):
-        return {...}
+        return {"above": [x for x in input_data["items"] if x > self._threshold]}
 ```
 
-## 6. Workflow YAML — DirectLink MUST set `auto_transfer: true`
+## 6. Workflow YAML — every DirectLink declares `auto_transfer: true`
 
 ```yaml
 links:
@@ -112,30 +98,32 @@ links:
       link_type: direct
       source: step_a.out
       target: step_b.in
-      auto_transfer: true   # mandatory; without it the link silently no-ops
+      auto_transfer: true
 ```
 
-## 7. Workflow YAML — step config must be a FILE PATH, not inline
+Without `auto_transfer: true`, the link does not move data.
+
+## 7. Workflow YAML — step config is a file path
 
 ```yaml
 steps:
   s1:
     class: "my_module.MyStep"
-    config: "configs/my_step.yml"   # path, not a dict
+    config: "configs/my_step.yml"
 ```
 
-Inline `config: { ... }` raises `❌ FRAMEWORK VIOLATION: Inline dict
-configuration not supported for <class>`. Library exceptions:
-DataUnit, Link, Trigger configs can be inline.
+The step's `config:` value is a path to a YAML file. DataUnit, Link,
+and Trigger configs may be inline; step configs must be file paths.
 
-## 8. Tool subclass shape
+## 8. Tool subclass
 
 ```python
 from nanobrain.core.tool import ToolBase
 
 class MyTool(ToolBase):
     async def execute(self, **kwargs) -> dict:
-        return {...}
+        return {"result": ...}
 ```
 
-Same `from_config` inheritance rule applies. Do not redefine it.
+Same inheritance pattern as steps: implement `execute`, inherit
+`from_config`.

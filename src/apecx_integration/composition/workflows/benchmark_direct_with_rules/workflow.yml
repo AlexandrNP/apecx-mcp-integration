@@ -1,0 +1,47 @@
+# E3 — wrapped direct codegen with nanobrain_rules.md condensate
+# wired into the drafter's system prompt. Used to measure whether
+# framework-specific LLM guidance lifts pass@1 on nanobrain-native.
+#
+# Identical topology to benchmark_direct_codegen/workflow.yml; the
+# ONLY difference is the drafter step's rules_file field.
+
+name: benchmark_direct_with_rules
+description: >
+  Direct codegen with the nanobrain_rules.md condensate appended to
+  the drafter's system prompt. Single LLM call.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true
