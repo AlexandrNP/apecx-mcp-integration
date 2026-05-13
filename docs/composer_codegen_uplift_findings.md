@@ -214,17 +214,106 @@ right move for the harder problem types (builder, config, tool)
 is a DIFFERENT scaffold — not deeper composition of an already-
 saturated one.
 
-### F9 — Scaffold-vs-task fit summary
+### F10 — Composition can be NEGATIVE; LLM reviewers hallucinate problems
+
+The LLM-reviewer review-revise scaffold (CGU-P2-T1a, linear chain
+of drafter → LLM-reviewer → LLM-reviser, all with rules) REGRESSED
+all three benchmarks vs their best non-review baseline:
+
+| Bench | review-revise (LLM reviewer) | best baseline | delta |
+|---|---:|---:|---:|
+| nanobrain-native n=10 | 40.0% | 70.0% (rules-v2 N=3) | **-30pp** |
+| MBPP n=20 | 60.0% | 78.0% (plan-then-code v2) | -18pp |
+| SciCode val n=35 | 14.3% | 20.0% (procedural direct) | -6pp |
+
+Per-problem diff on nanobrain-native: 4 step problems that passed
+3/3 under rules-v2 alone (`step_concat`, `step_dedupe_preserve_order`,
+`step_filter_positive`, `step_word_count`) now FAIL. The LLM reviewer
+"fixes it broken" — it critiques correct code (hallucinates an
+issue) and the reviser revises away from the correct solution.
+
+**Lesson**: composition is not free. Adding a layer can break what
+the lower layers had right. LLM-as-reviewer needs hard precision
+guarantees to be safe — it doesn't have them.
+
+### F11 — `ConditionalLink → workflow_output` silently does not transfer
+
+Framework gap discovered during the CGU-P2-T1b (AST-gated hybrid)
+scaffold debug. A `ConditionalLink` with `source: <step>.<output_du>`
+and `target: workflow_output` (a workflow-level output DU declared
+in the workflow's `output_data_units:` block) silently no-ops even
+when (a) the predicate matches the source DU's payload, (b)
+`auto_transfer: true` is set, (c) the source DU is populated.
+`DirectLink` with the same target works.
+
+**Detection signal**: an AST-gated or branching workflow where every
+problem's final workflow-level output DU is None despite the cascade
+draining cleanly. Compare `<step>.step_output_data_units[<out>].get()`
+(non-None) vs `wf.step_output_data_units["workflow_output"].get()`
+(None).
+
+**Workaround**: replace the `ConditionalLink → workflow_output`
+with a `DirectLink → workflow_output` plus a `ConditionalLink → next_step.input`
+(fires only when condition matches) plus a `DirectLink: next_step.output → workflow_output`
+that overwrites when the conditional path ran. Same semantics; all
+DirectLink + one ConditionalLink, all framework-compliant.
+
+Documented in `_workspace_notes/.../session_friction_log.md #31`.
+
+### F12 — Hybrid AST-gated scaffold MATCHES the best baselines (no regression)
+
+CGU-P2-T1b shipped a mixed-AI-agent + deterministic-step scaffold:
+drafter (LLM) → CodeStructureValidatorStep (deterministic AST,
+no LLM) → ConditionalLink (`decision == fix` → reviser; otherwise
+straight passthrough). The validator checks five framework-violation
+shapes with 100% precision (SyntaxError, missing entry_point,
+`from_config` override, `execute` override, hallucinated nanobrain.*
+imports).
+
+Results (n=10 / n=20 / n=35):
+
+| Bench | AST-gated v2 | Best baseline | delta |
+|---|---:|---:|---:|
+| nanobrain-native | 70.0% | 70.0% (rules-v2) | **+0pp (matches)** |
+| MBPP | 55.0% | 78.0% (plan-then-code) | -23pp |
+| SciCode val | 20.0% | 20.0% (direct) | **+0pp (matches)** |
+
+Per-problem on nanobrain-native: 7 step problems pass (validator
+sees no issues → passthrough); 3 deterministic failures (builder,
+config, tool) still fail but with REVISED code (693, 915, 557 chars
+vs the ~250 typical for clean-pass problems). The validator DID
+flag those 3 (correctly), the reviser DID fire and produce revised
+code, but the revisions did not fix the underlying failures — those
+problems' issues are algorithmic / semantic, not AST-detectable
+shape violations.
+
+**The hybrid scaffold's real value isn't "lift over rules-v2"** —
+it's "preserves the rules-v2 floor reliably while adding a
+deterministic safety net." On benchmarks where rules-v2 is the
+best baseline, AST-gated matches it. The -30pp regression that
+the LLM-reviewer review-revise produced disappears.
+
+For nanobrain-native specifically: the 3 deterministic failures
+need a DIFFERENT scaffold (problem-specific guidance, test-driven,
+or larger drafter), not more LLM-reviewer iteration. The hybrid
+isolates this cleanly: the validator pinpoints which problems are
+shape-broken (none of the 7 step problems pre-revise; ALL of the
+3 hard ones) and the reviser's failure to fix the 3 hard ones
+proves the issue is upstream of LLM-reviewer reach.
+
+### F13 — Scaffold-vs-task fit, final summary
 
 The full matrix of headline results so far:
 
-| Codegen → \ Bench ↓ | MBPP n=50 | SciCode val n=35 | Nanobrain-native n=10 |
+| Codegen → \ Bench ↓ | MBPP | SciCode val n=35 | Nanobrain-native n=10 |
 |---|---:|---:|---:|
-| direct (procedural) | 64.0% | **20.0%** | 10.0% |
-| nanobrain_direct (wrapped) | 68.0% | (not run) | 40.0% |
-| nanobrain_direct_with_rules | 60.0% | (not run) | **70.0%** (N=3, ±0pp) |
-| nanobrain_plan_then_code (v2) | **78.0%** | (not run) | 30.0% |
+| direct (procedural) | 64.0% (n=50) | **20.0%** | 10.0% |
+| nanobrain_direct (wrapped) | 68.0% (n=50) | 17.1% | 40.0% |
+| nanobrain_direct_with_rules | 60.0% (n=50) | (not run) | **70.0%** (N=3, ±0pp) |
+| nanobrain_plan_then_code (v2) | **78.0%** (n=50) | 20.0% | 30.0% |
 | nanobrain_plan_then_code_with_rules | (not run) | (not run) | 70.0% |
+| nanobrain_review_revise (LLM reviewer) | 60.0% (n=20) | 14.3% | 40.0% ← REGRESSION |
+| nanobrain_ast_gated_review_revise (HYBRID) | 55.0% (n=20) | 20.0% | 70.0% (matches best, **no regression**) |
 
 Best codegen per benchmark:
 

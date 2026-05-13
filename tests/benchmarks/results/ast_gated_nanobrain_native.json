@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "nanobrain_ast_gated_review_revise",
+  "model": null,
+  "limit": 10,
+  "pass_at_1": 0.7,
+  "passed": 7,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 3,
+    "pass": 7
+  },
+  "elapsed_seconds": 127.19808704196475,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/base_events.py\", line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 30, in _drive\n  File \"<stdin>\", line 19, in build_workflow\nTypeError: WorkflowBuilder.__init__() missing 1 required positional argument: 'name'\n",
+      "wall_seconds": 26.31578400003491,
+      "generated_code": "from nanobrain.lightweight import WorkflowBuilder\n\nclass UpperStep:\n    COMPONENT_TYPE = \"upper\"\n\n    async def process(self, input_data):\n        return {\"text\": input_data[\"text\"].upper()}\n\nclass ReverseStep:\n    COMPONENT_TYPE = \"reverse\"\n\n    async def process(self, input_data):\n        return {\"text\": input_data[\"text\"][::-1]}\n\ndef build_workflow():\n    builder = WorkflowBuilder()\n    builder.add_step(\"upper\", \"__main__.UpperStep\", input_data_units={\"in\": \"text\"}, output_data_units={\"out\": \"text\"}, triggers=[{\"class\": \"nanobrain.core.trigger.DataUnitChangeTrigger\", \"data_unit\": \"out\"}]),\n    builder.add_link(\"upper.out\", \"reverse.in\", link_type=\"direct\")\n    return builder.load()"
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": false,
+      "error_class": "SOLUTION",
+      "error_message": "rgs)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/config/config_base.py\", line 857, in from_config\n    raise ValueError(\nValueError: \u274c CONFIGURATION LOADING FAILED: /var/folders/zm/vp65vmrj6pq9fglzhqrcm7j80000gn/T/tmp3nwuhapw/s.yml\n   ERROR: \"ThresholdStepConfig\" object has no field \"source_path\"\n   CONFIG_CLASS: ThresholdStepConfig\n   SOLUTION: Check YAML syntax, file permissions, and recursive references\n",
+      "wall_seconds": 25.59183704102179,
+      "generated_code": "from typing import Any\nfrom pydantic import ConfigDict, Field, model_validator\nfrom nanobrain.core.step import BaseStep, StepConfig\n\nclass ThresholdStepConfig(StepConfig):\n    model_config = ConfigDict(extra=\"forbid\", validate_assignment=False)\n    threshold: float = Field(default=0.0)\n\n    @model_validator(mode=\"before\")\n    @classmethod\n    def _strip_framework_keys(cls, data: Any) -> Any:\n        if isinstance(data, dict):\n            data.pop(\"class\", None)\n        return data\n\nclass ThresholdStep(BaseStep):\n    COMPONENT_TYPE = \"threshold_step\"\n\n    @classmethod\n    def _get_config_class(cls):\n        return ThresholdStepConfig\n\n    def __init__(self, config: ThresholdStepConfig):\n        self._threshold = config.threshold\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        return {\"above\": [x for x in items if x > self._threshold]}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.174105292011518,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass ConcatStep(BaseStep):\n    COMPONENT_TYPE = \"concat_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts = input_data[\"parts\"]\n        sep = input_data.get(\"sep\", \"\")\n        joined = sep.join(parts)\n        return {\"joined\": joined}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.514050249999855,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DedupePreserveOrderStep(BaseStep):\n    COMPONENT_TYPE = \"dedupe_preserve_order\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        seen = set()\n        unique_items = []\n        for item in input_data[\"items\"]:\n            if item not in seen:\n                seen.add(item)\n                unique_items.append(item)\n        return {\"unique\": unique_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.548641917004716,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DoubleStep(BaseStep):\n    COMPONENT_TYPE = \"double_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        n = input_data[\"n\"]\n        return {\"doubled\": n * 2}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.82579920894932,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass FilterPositiveStep(BaseStep):\n    COMPONENT_TYPE = \"filter_positive\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        positive_items = [x for x in items if x > 0]\n        return {\"positive\": positive_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.791690332989674,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass SumListStep(BaseStep):\n    COMPONENT_TYPE = \"sum_list_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        values = input_data.get(\"values\", [])\n        return {\"total\": sum(values)}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.543649667000864,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass UpperStep(BaseStep):\n    COMPONENT_TYPE = \"upper_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"output\": input_data[\"text\"].upper()}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 8.822754541004542,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass WordCountStep(BaseStep):\n    COMPONENT_TYPE = \"word_count_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        words = len(text.split())\n        return {\"count\": words}"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "nanobrain_ast_gated_review_revise",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "e 194, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/base_events.py\", line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 16, in execute\nValueError: Invalid arithmetic expression: Invalid arithmetic expression\n",
+      "wall_seconds": 14.069094541016966,
+      "generated_code": "from nanobrain.core.tool import ToolBase\nimport ast\n\nclass CalculatorTool(ToolBase):\n    async def execute(self, expression: str) -> dict:\n        try:\n            tree = ast.parse(expression, mode='eval')\n            if not all(isinstance(node, (ast.Num, ast.BinOp, ast.UnaryOp)) for node in ast.walk(tree)):\n                raise ValueError(\"Invalid arithmetic expression\")\n            result = eval(compile(tree), {})\n            return {\"result\": result}\n        except Exception as e:\n            raise ValueError(f\"Invalid arithmetic expression: {e}\")"
+    }
+  ]
+}
