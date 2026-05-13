@@ -373,7 +373,89 @@ code → direct (20%, no scaffold help available with current model).
 risk) at the cost of one extra LLM call; appropriate when
 adoption-reliability matters more than wall-time.
 
-### F16 — Scaffold-vs-task fit, final summary
+### F17 — Per-task-class worked examples (retrieval-grounded codegen) break the 70% nanobrain-native ceiling
+
+`TaskCategoryRouterStep` classifies prompt + entry_point into 5
+categories (step/tool/config/builder/default), reads the
+corresponding worked-example file, enriches code_spec.
+
+Result on nanobrain-native: **80% pass@1** (+10pp over F14
+ceiling). `config_threshold_step` newly passes. F14 was a local
+maximum of the validator→reviser pattern; the
+classifier→drafter-with-example pattern goes higher because
+mistral-nemo IMITATES examples reliably even though it IGNORES
+critique.
+
+### F18 — Multi-sample structural consensus DOES NOT replicate SGDe's +26pp on mistral-nemo 12B
+
+Post-F17 backlog item 2 (SGDe-style fan-out/fan-in):
+`MultiSampleDrafterStep` (N=3 @ T=0.5) → `ConsensusAggregatorStep`
+(AST-validator voter).
+
+Result on nanobrain-native: **70% pass@1** (-10pp from F17 80%)
+at **2.5× wall time** (50s/problem vs F17's 18s/problem). Lost
+`step_concat` to a temperature-induced NameError; 3 hard
+problems (builder, tool, plus newly-broken step_concat) consume
+the multi-sample variance without producing correct candidates.
+
+Result on MBPP: 65% (-13pp vs plan-then-code v2). The AST voter
+has no framework structure to score in MBPP code; aggregator
+falls through to "first non-empty by length" — equivalent to
+single-shot with multi-sample overhead.
+
+SGDe reports +26-34pp from structural consensus on GSM-Hard;
+that doesn't replicate here because mistral-nemo's T=0.5 sample
+distribution doesn't cover the correct shape for our hard
+problem types.
+
+### F19 — MBPP-specific worked examples weaker than plan-then-code's reasoning depth
+
+`fallback_mode='mbpp'` routes MBPP prompts to string/list/math/
+default sub-categories. Result on MBPP n=20: **55% pass@1**
+(-23pp vs plan-then-code v2 78%).
+
+Why: plan-then-code generates a multi-step plan that exercises
+the model's step-by-step reasoning. A single worked example
+surfaces a pattern but doesn't force step-by-step reasoning.
+For algorithmic problems, **reasoning depth > pattern imitation**.
+
+For framework-shape problems (nanobrain-native), the opposite
+holds (F17): **pattern imitation > reasoning depth**, because
+framework shape is rigid + well-specified.
+
+This is a triple-confirmation of F1: the SAME scaffold class
+(per-task-class examples) lifts nanobrain-native +10pp AND
+regresses MBPP -23pp. Scaffold-task fit dominates scaffold depth.
+
+### F20 — SolutionMemoryStep: production infrastructure shipped, low benchmark lift expected
+
+Backlog item 3: file-backed JSON store keyed by `task_category`,
+two modes (`read` enriches with cached examples; `record` writes
+passing solutions). FIFO-bounded; silent-failure-tolerant.
+
+Honest framing: low expected benchmark lift on n=10/n=20 (cache
+doesn't amortize). High expected adoption value (composer
+accumulates passing solutions over real user requests). 10 unit
+tests; benchmark validation deferred to real-traffic deployment.
+
+### F21 — Backlog items 4 + 5 deferred with rationale
+
+* **Item 4 (constrained decoding)**: Ollama doesn't support
+  grammar-constrained output natively. Would require swapping
+  the serving stack (vLLM/SGLang/TGI) or implementing
+  validator-with-retry (functionally equivalent to what AST-gated
+  already does). Defer until a stronger adoption motivation
+  justifies the infrastructure swap.
+
+* **Item 5 (meta-agent build-test-improve loop)**: Confucius
+  Code Agent's pattern requires a teacher LLM that iterates the
+  scaffold. F18's finding (multi-sample variance doesn't help)
+  suggests the meta-agent on local 12B would converge to the
+  scaffolds we've already manually authored. Defer until either
+  a bigger drafter or real adoption traffic reveals scaffold
+  weaknesses we haven't documented.
+
+### F22 — Scaffold-vs-task fit, final summary
 
 The full matrix of headline results so far:
 

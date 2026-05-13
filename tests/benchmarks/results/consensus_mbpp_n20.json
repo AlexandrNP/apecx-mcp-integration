@@ -1,0 +1,197 @@
+{
+  "dataset": "mbpp",
+  "codegen": "nanobrain_structural_consensus",
+  "model": null,
+  "limit": 20,
+  "pass_at_1": 0.65,
+  "passed": 13,
+  "total": 20,
+  "status_histogram": {
+    "fail_assertion": 5,
+    "pass": 13,
+    "fail_other": 2
+  },
+  "elapsed_seconds": 291.2787392910104,
+  "results": [
+    {
+      "problem_id": "mbpp/11",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 21.753085915988777,
+      "generated_code": "def remove_Occ(s, c):\n    return s.replace(c, '', 1).rstrip(c)"
+    },
+    {
+      "problem_id": "mbpp/12",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.246249916031957,
+      "generated_code": "import numpy as np\n\ndef sort_matrix(matrix):\n    sums = np.sum(matrix, axis=1)\n    sorted_indices = np.argsort(sums)\n    return [matrix[i] for i in sorted_indices]"
+    },
+    {
+      "problem_id": "mbpp/14",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 12.549846708017867,
+      "generated_code": "def find_Volume(base, height, length):\n    return (base * height * length) / 3"
+    },
+    {
+      "problem_id": "mbpp/16",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 9, in <module>\nAssertionError\n",
+      "wall_seconds": 15.104423499957193,
+      "generated_code": "import re\n\ndef text_lowercase_underscore(text: str) -> bool:\n    return bool(re.match(r'^[\\w_]+$', text))"
+    },
+    {
+      "problem_id": "mbpp/17",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 10.114136583986692,
+      "generated_code": "def square_perimeter(side_length):\n    return 4 * side_length"
+    },
+    {
+      "problem_id": "mbpp/18",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 14.305075915995985,
+      "generated_code": "def remove_dirty_chars(s1, s2):\n    return ''.join(c for c in s1 if c not in s2)"
+    },
+    {
+      "problem_id": "mbpp/19",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 10.796794541995041,
+      "generated_code": "def test_duplicate(arr):\n    return len(arr) != len(set(arr))"
+    },
+    {
+      "problem_id": "mbpp/20",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 18.531398834020365,
+      "generated_code": "def is_woodall(n):\n    i = 2\n    while i * i <= n:\n        if n % i == 0:\n            return False\n        i += 1\n    return True"
+    },
+    {
+      "problem_id": "mbpp/56",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.10899795894511,
+      "generated_code": "def check(n):\n    return n == 2 * int(str(n)[::-1]) - 1"
+    },
+    {
+      "problem_id": "mbpp/57",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nNameError: name 'find_Max_Num' is not defined. Did you mean: 'find_max_num'?\n",
+      "wall_seconds": 12.505456209008116,
+      "generated_code": "def find_max_num(digits):\n    return int(''.join(sorted(map(str, digits), reverse=True)))"
+    },
+    {
+      "problem_id": "mbpp/58",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nNameError: name 'opposite_Signs' is not defined. Did you mean: 'opposite_signs'?\n",
+      "wall_seconds": 13.12488650000887,
+      "generated_code": "def opposite_signs(a, b):\n    return (a < 0 and b > 0) or (a > 0 and b < 0)"
+    },
+    {
+      "problem_id": "mbpp/59",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.36278654198395,
+      "generated_code": "def is_octagonal(n):\n    return n * (3*n - 2)"
+    },
+    {
+      "problem_id": "mbpp/61",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.453500292031094,
+      "generated_code": "def count_Substrings(s):\n    return sum(1 for i in range(len(s)) for j in range(i+1, len(s)+1) if sum(int(x) for x in s[i:j]) == j-i)"
+    },
+    {
+      "problem_id": "mbpp/62",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 9.005202916043345,
+      "generated_code": "def smallest_num(lst):\n    return min(lst)"
+    },
+    {
+      "problem_id": "mbpp/63",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 13.308430332981516,
+      "generated_code": "def max_difference(pairs):\n    return max(b-a for a, b in pairs)"
+    },
+    {
+      "problem_id": "mbpp/64",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 13.619251124968287,
+      "generated_code": "def subject_marks(marks):\n    return sorted(marks, key=lambda x: x[1])"
+    },
+    {
+      "problem_id": "mbpp/65",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.07565125002293,
+      "generated_code": "def recursive_list_sum(lst):\n    total = 0\n    for i in lst:\n        if isinstance(i, list):\n            total += recursive_list_sum(i)\n        else:\n            total += i\n    return total"
+    },
+    {
+      "problem_id": "mbpp/66",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.079261542006861,
+      "generated_code": "def pos_count(lst):\n    return len([x for x in lst if x > 0])"
+    },
+    {
+      "problem_id": "mbpp/67",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\nAssertionError\n",
+      "wall_seconds": 21.591887291986495,
+      "generated_code": "import math\n\ndef bell_number(n):\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    elif n == 0 or n == 1:\n        return 1\n    else:\n        return sum(math.comb(n + k, k) for k in range(n))"
+    },
+    {
+      "problem_id": "mbpp/68",
+      "codegen_name": "nanobrain_structural_consensus",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 18.64125841698842,
+      "generated_code": "def is_Monotonic(arr):\n    return all(x >= y for x, y in zip(arr, arr[1:])) or all(x <= y for x, y in zip(arr, arr[1:]))"
+    }
+  ]
+}
