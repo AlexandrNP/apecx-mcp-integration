@@ -1,0 +1,81 @@
+# benchmark_structural_consensus -- SGDe-style fan-out/fan-in scaffold.
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep (deterministic: classify + enrich)
+#       -> MultiSampleDrafterStep (LLM, N samples at temp > 0)
+#       -> ConsensusAggregatorStep (deterministic: pick winner by AST validator)
+#       -> workflow_output
+#
+# The fan-out happens INSIDE MultiSampleDrafterStep (asyncio.gather
+# over N LLM calls). The fan-in happens INSIDE ConsensusAggregator
+# (per-candidate AST validate, pick first PASS, fall back to fewest-
+# issues if none pass). This matches the topology described in
+# SGDe (Section II.E "Structural Consensus Patterns") but uses
+# deterministic AST checks as the voter instead of a learned reward
+# model.
+#
+# Per-task-class examples (F17) compose cleanly with structural
+# consensus: each sample sees the same enriched code_spec, so the
+# variance is in HOW each sample uses the example, not WHETHER it
+# sees the example.
+
+name: benchmark_structural_consensus
+description: >
+  Fan-out/fan-in scaffold: deterministic router enriches the prompt
+  with a worked example, multi-sample drafter draws N candidates at
+  temp > 0, aggregator picks the one that passes the AST validator.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router_consensus:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  multi_drafter:
+    class: "apecx_integration.composition.steps.multi_sample_drafter_step.MultiSampleDrafterStep"
+    config: "steps/multi_drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "steps/aggregator.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_consensus.router_input
+      auto_transfer: true
+  router_to_multi_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_consensus.router_output
+      target: multi_drafter.multi_drafter_input
+      auto_transfer: true
+  multi_drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: multi_drafter.multi_drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true

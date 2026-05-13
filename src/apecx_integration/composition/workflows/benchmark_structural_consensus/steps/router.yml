@@ -1,0 +1,21 @@
+class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+name: task_router_consensus
+description: "Router for the structural-consensus scaffold (nanobrain mode)."
+
+fallback_mode: nanobrain
+
+input_data_units:
+  router_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: router_input
+    persistent: false
+
+output_data_units:
+  router_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: router_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "router_input"

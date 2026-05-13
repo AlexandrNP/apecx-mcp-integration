@@ -95,6 +95,48 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_retrieval_grounded_mbpp":
+        # F17 extended: router with MBPP sub-categories (string /
+        # list / math / default).
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_retrieval_grounded_mbpp"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="drafter",
+            code_source_du_name="drafter_output",
+            cascade_timeout_seconds=120.0,
+        )
+    if name == "nanobrain_structural_consensus":
+        # SGDe-style fan-out/fan-in scaffold: N samples at temp > 0
+        # -> deterministic AST voter.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_structural_consensus"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="aggregator",
+            code_source_du_name="aggregator_output",
+            cascade_timeout_seconds=240.0,  # N=3 samples in parallel; ~30-60s typical
+        )
     if name == "nanobrain_retrieval_grounded":
         # Retrieval-grounded + per-task-class scaffold for nanobrain-
         # native. Deterministic classifier + per-category worked
@@ -288,6 +330,8 @@ def main() -> int:
             "nanobrain_runtime_gated_review_revise",
             "nanobrain_edge_case_then_code",
             "nanobrain_retrieval_grounded",
+            "nanobrain_retrieval_grounded_mbpp",
+            "nanobrain_structural_consensus",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

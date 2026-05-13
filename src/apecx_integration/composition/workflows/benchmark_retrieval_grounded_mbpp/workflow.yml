@@ -1,0 +1,55 @@
+# Variant of benchmark_retrieval_grounded with fallback_mode=mbpp.
+# Same topology; the router's fallback path uses MBPP sub-categories
+# (string/list/math/default) instead of nanobrain_rules.md.
+
+name: benchmark_retrieval_grounded_mbpp
+description: >
+  Retrieval-grounded scaffold tuned for MBPP-class algorithmic
+  problems. Router has fallback_mode=mbpp; non-framework prompts get
+  per-shape worked examples (string/list/math/default) instead of
+  the framework rules condensate.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router_mbpp:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_mbpp.router_input
+      auto_transfer: true
+  router_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_mbpp.router_output
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

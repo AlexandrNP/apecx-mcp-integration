@@ -1,0 +1,27 @@
+class: "apecx_integration.composition.steps.multi_sample_drafter_step.MultiSampleDrafterStep"
+name: multi_drafter
+description: "Fan-out drafter (N samples at temp > 0)."
+
+system_prompt_file: "../../../code_writing_prompts/benchmark_drafter_system.md"
+
+role: drafter
+n_samples: 3
+temperature: 0.5
+max_tokens: 1024
+request_timeout_seconds: 60.0
+
+input_data_units:
+  multi_drafter_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: multi_drafter_input
+    persistent: false
+
+output_data_units:
+  multi_drafter_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: multi_drafter_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "multi_drafter_input"

@@ -83,10 +83,18 @@ log = logging.getLogger(__name__)
 _PROMPTS_DIR = Path(__file__).resolve().parent.parent / "code_writing_prompts"
 
 _CATEGORY_FILES: dict[str, str] = {
+    # Nanobrain framework categories (entry_point signals which).
     "step": "example_step.md",
     "tool": "example_tool.md",
     "config": "example_config.md",
     "builder": "example_builder.md",
+    # MBPP-style algorithmic categories (no framework keywords).
+    "mbpp_string": "example_mbpp_string.md",
+    "mbpp_list": "example_mbpp_list.md",
+    "mbpp_math": "example_mbpp_math.md",
+    "mbpp_default": "example_mbpp_default.md",
+    # Original fallback (kept for backward compat with the
+    # retrieval_grounded scaffold that doesn't enable MBPP routing).
     "default": "nanobrain_rules.md",
 }
 
@@ -104,6 +112,16 @@ class TaskCategoryRouterStepConfig(StepConfig):
             "Override the directory containing example_*.md + "
             "nanobrain_rules.md. Defaults to "
             "``composition/code_writing_prompts/``."
+        ),
+    )
+
+    fallback_mode: str = Field(
+        default="nanobrain",
+        description=(
+            "What to do when no framework category matches. "
+            "``nanobrain`` (default): use nanobrain_rules.md (preserves "
+            "F17 behavior). ``mbpp``: route through MBPP sub-categories "
+            "(string/list/math/default) based on prompt keywords."
         ),
     )
 
@@ -131,6 +149,7 @@ class TaskCategoryRouterStep(BaseStep):
         return {
             **base,
             "examples_dir": config.examples_dir,
+            "fallback_mode": config.fallback_mode,
             "source_path": getattr(config, "source_path", None),
         }
 
@@ -146,6 +165,13 @@ class TaskCategoryRouterStep(BaseStep):
             component_config.get("examples_dir"),
             component_config.get("source_path"),
         )
+
+        self._fallback_mode: str = component_config.get("fallback_mode", "nanobrain")
+        if self._fallback_mode not in ("nanobrain", "mbpp"):
+            raise ValueError(
+                f"TaskCategoryRouterStep {self.name!r}: fallback_mode must be "
+                f"'nanobrain' or 'mbpp', got {self._fallback_mode!r}"
+            )
 
         # FAIL-FAST: read all category files at init. A missing file
         # would surface here, not on first process() call.
@@ -195,7 +221,9 @@ class TaskCategoryRouterStep(BaseStep):
             raise ValueError(f"TaskCategoryRouterStep {self.name!r}: empty code_spec")
 
         entry_point = input_data.get("entry_point") or ""
-        category = self._classify(spec=spec, entry_point=entry_point)
+        category = self._classify(
+            spec=spec, entry_point=entry_point, fallback_mode=self._fallback_mode
+        )
         example = self._examples[category]
 
         enriched_spec = f"{spec.strip()}\n\n{example.strip()}\n"
@@ -216,33 +244,76 @@ class TaskCategoryRouterStep(BaseStep):
         }
 
     @staticmethod
-    def _classify(*, spec: str, entry_point: str) -> str:
+    def _classify(*, spec: str, entry_point: str, fallback_mode: str = "nanobrain") -> str:
         """First-match-wins keyword classification.
 
         Order matters: ``config`` must be checked BEFORE ``step``
         because ``ThresholdStepConfig`` should route to config even
         though it contains ``Step``.
+
+        When no framework category matches AND fallback_mode='mbpp',
+        attempts MBPP sub-categorization (string / list / math /
+        mbpp_default).
         """
         spec_lower = spec.lower()
 
-        # 1. builder
+        # Nanobrain framework categories — must precede MBPP fallback.
         if entry_point == "build_workflow" or "workflowbuilder" in spec_lower:
             return "builder"
-        # 2. config (must precede step — ThresholdStepConfig)
         if (
             entry_point.endswith("Config")
             or re.search(r"\bStepConfig\b", spec)
             or re.search(r"\b(?:Sub|extend|subclass)\b.*\bStepConfig\b", spec, re.IGNORECASE)
         ):
             return "config"
-        # 3. tool
         if "tool" in entry_point.lower() or "toolbase" in spec_lower:
             return "tool"
-        # 4. step
         if "step" in entry_point.lower() or re.search(r"\bBaseStep\b", spec):
             return "step"
-        # 5. default
+
+        # No framework match — fallback.
+        if fallback_mode == "mbpp":
+            return TaskCategoryRouterStep._classify_mbpp(spec_lower)
         return "default"
+
+    @staticmethod
+    def _classify_mbpp(spec_lower: str) -> str:
+        """MBPP sub-category classification by keyword (not exhaustive;
+        best-effort categorization for the common algorithmic shapes).
+
+        Order: most-specific first. A problem mentioning both 'list'
+        and 'string' (e.g., 'list of substrings') routes to string
+        because the string handling is the operative concern.
+        """
+        # String handling.
+        if any(k in spec_lower for k in ("string", "character", "letter", "substring", "word")):
+            return "mbpp_string"
+        # Math / numeric.
+        if any(
+            k in spec_lower
+            for k in (
+                "prime",
+                "factor",
+                "divis",
+                "multiple of",
+                "sum of digits",
+                "octagonal",
+                "polygon",
+                "fibonacci",
+                "factorial",
+                "even",
+                "odd",
+                "perimeter",
+                "volume",
+                "area",
+            )
+        ):
+            return "mbpp_math"
+        # Lists / sequences (broader category — checked last for
+        # MBPP-specific routing).
+        if any(k in spec_lower for k in ("list", "array", "sort", "tuple", "sequence", "sublist")):
+            return "mbpp_list"
+        return "mbpp_default"
 
 
 __all__ = ["TaskCategoryRouterStep", "TaskCategoryRouterStepConfig"]
