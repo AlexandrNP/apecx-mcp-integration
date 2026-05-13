@@ -95,13 +95,31 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_runtime_gated_review_revise":
+        # NN-1: hybrid scaffold with RUNTIME compliance probe (no
+        # LLM in the validator). Catches runtime failure shapes
+        # (from_config exceptions, RuntimeError, ImportError) that
+        # the AST validator misses.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_runtime_gated_review_revise"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="drafter_input",
+            code_source_du_name="workflow_output",
+            read_from_workflow_output=True,
+            cascade_timeout_seconds=180.0,
+        )
     if name == "nanobrain_ast_gated_review_revise":
-        # CGU-P2-T1b — hybrid LLM + deterministic scaffold.
-        # drafter → AST validator → ConditionalLink (pass | fix)
-        #   pass → workflow_output (skip reviser entirely)
-        #   fix  → reviser → workflow_output
-        # Reads from the workflow-level output DU (both ConditionalLink
-        # paths converge there).
+        # CGU-P2-T1b — hybrid LLM + AST-deterministic scaffold.
         from pathlib import Path  # noqa: PLC0415
 
         yaml_path = (
@@ -222,6 +240,7 @@ def main() -> int:
             "nanobrain_plan_then_code_with_rules",
             "nanobrain_review_revise",
             "nanobrain_ast_gated_review_revise",
+            "nanobrain_runtime_gated_review_revise",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

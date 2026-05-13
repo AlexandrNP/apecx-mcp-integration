@@ -1,0 +1,107 @@
+# benchmark_runtime_gated_review_revise — NN-1 from
+# composer_scaffold_designs_per_benchmark.md.
+#
+# Mixes an AI Agent (drafter, reviser) with a DETERMINISTIC RUNTIME
+# step (FrameworkComplianceRunnerStep). The runtime validator
+# subprocess-loads each candidate class via from_config and invokes
+# process() to surface RUNTIME framework-compliance failures with
+# specific exception classes + tracebacks.
+#
+# Predicted lift on nanobrain-native: the 3 deterministic failures
+# under AST-gated (builder, config, tool) had AST-PASS but
+# fail-at-runtime. This scaffold catches those at the validator
+# stage and feeds the actual traceback to the reviser, which has
+# a better chance of fixing them than a generic AST critique.
+#
+# Topology:
+#
+#   workflow_input
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   drafter (LLM + rules)
+#       │ (DirectLink)
+#       ▼
+#   runtime_validator (DETERMINISTIC — subprocess from_config + invoke)
+#       │ (DirectLink, ALWAYS) → workflow_output
+#       │ (ConditionalLink, decision == fix) → reviser
+#       │     (DirectLink) → workflow_output [overwrites]
+#
+# The DirectLink+ConditionalLink pattern (not two ConditionalLinks)
+# avoids the F11 silent-no-op shape — see friction log #31.
+
+name: benchmark_runtime_gated_review_revise
+description: >
+  Hybrid LLM + deterministic-RUNTIME scaffold. Drafter emits code;
+  runtime validator subprocess-loads each candidate class via
+  from_config and invokes process(); reviser fires only on actual
+  runtime failures.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+  runtime_validator:
+    class: "apecx_integration.composition.steps.framework_compliance_runner_step.FrameworkComplianceRunnerStep"
+    config: "steps/runtime_validator.yml"
+  reviser:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/reviser.yml"
+
+links:
+  input_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_validator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: runtime_validator.runtime_validator_input
+      auto_transfer: true
+
+  validator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: runtime_validator.runtime_validator_output
+      target: workflow_output
+      auto_transfer: true
+
+  validator_fix_to_reviser:
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: runtime_validator.runtime_validator_output
+      target: reviser.drafter_input
+      condition:
+        op: eq
+        field: decision
+        value: fix
+      auto_transfer: true
+
+  reviser_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: reviser.drafter_output
+      target: workflow_output
+      auto_transfer: true

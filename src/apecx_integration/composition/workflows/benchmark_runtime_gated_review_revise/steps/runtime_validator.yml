@@ -1,0 +1,21 @@
+class: "apecx_integration.composition.steps.framework_compliance_runner_step.FrameworkComplianceRunnerStep"
+name: runtime_validator
+description: "Deterministic runtime compliance probe (subprocess from_config + invoke)."
+
+probe_timeout_seconds: 15.0
+
+input_data_units:
+  runtime_validator_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: runtime_validator_input
+    persistent: false
+
+output_data_units:
+  runtime_validator_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: runtime_validator_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "runtime_validator_input"
