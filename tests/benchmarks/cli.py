@@ -26,6 +26,7 @@ from tests.benchmarks.codegen.direct import make_direct_codegen
 from tests.benchmarks.codegen.nanobrain_workflow import make_nanobrain_workflow_codegen
 from tests.benchmarks.codegen.plan_then_code import make_plan_then_code_codegen
 from tests.benchmarks.datasets.mbpp import load_mbpp
+from tests.benchmarks.datasets.nanobrain_native import load_nanobrain_native
 from tests.benchmarks.datasets.scicode import load_scicode
 from tests.benchmarks.exclusions import (
     load_blocklist_from_results,
@@ -50,6 +51,10 @@ def _load_dataset(
         # the gated test_data.h5 artifact. Operators with the file
         # pass --split test plus SCICODE_TEST_DATA_H5_PATH.
         return load_scicode(split=split or "validation", limit=limit, exclude=exclude)
+    if name == "nanobrain_native":
+        # CGU-P1-T5: hand-crafted problems exercising framework
+        # competencies. Doesn't use --split — there is only one set.
+        return load_nanobrain_native(limit=limit, exclude=exclude)
     raise SystemExit(f"unknown dataset: {name!r}")
 
 
@@ -117,7 +122,7 @@ def _results_to_json(results: list[RunResult]) -> list[dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset", choices=["mbpp", "scicode"])
+    parser.add_argument("dataset", choices=["mbpp", "scicode", "nanobrain_native"])
     parser.add_argument(
         "--split",
         default=None,

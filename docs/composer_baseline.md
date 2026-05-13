@@ -80,13 +80,46 @@ should iterate on shape/edge-case bugs.
 The failure spectrum here is rich enough that the scaffold zoo (CGU-P5-T1)
 should produce measurable, distinguishable lift per pattern.
 
-## Nanobrain-native (hand-crafted)
+## Nanobrain-native (hand-crafted, CGU-P1-T5)
 
-Not yet built. Plan: P1d.
+v0: 10 problems across 4 categories (`step`: 7, `builder`: 1, `config`: 1, `tool`: 1).
 
-## Nanobrain-native (hand-crafted)
+| Codegen | Model(s) | n | Pass@1 | Wall (s/problem) | Notes |
+|---|---|---|---:|---:|---|
+| direct (procedural) | mistral-nemo:latest | 10 | **10.0%** | 8.3 | 1 PASS (step_dedupe_preserve_order). 6 of 9 failures are `RuntimeError: Direct instantiation prohibited` — LLM defines a custom `from_config` and calls `cls(...)` inside it, hitting the framework's `FromConfigBase` guard. Plus 1 ImportError (`from nanobrain.lightweight import BaseStep` — wrong subpackage), 1 ModuleNotFoundError (`nanobrain.utils` — hallucinated), 1 TypeError. |
+| nanobrain_direct (wrapped) | mistral-nemo:latest | 10 | **40.0%** | 15.6 | 4 PASS (step_uppercase, step_dedupe_preserve_order, step_filter_positive, step_sum_list). **0 RuntimeError** — the `from_config` override failure pattern is gone. Likely cause: the wrapped prompt's "If the user supplies a function signature or entry-point name, use them exactly" sentence + entry-point hint nudges the LLM away from custom `from_config`. Remaining failures: 1 ImportError (builder), 1 AttributeError (config), 1 RecursionError (concat), 1 NonZeroExit (double), 1 TypeError (word_count), 1 RuntimeError (tool — Tool subclass tripped a different framework guard). |
+| nanobrain_plan_then_code | nemotron-3-nano:4b planner + mistral-nemo drafter | 10 | **0.0%** | 37.2 | **Total collapse.** All 10 `generated_code` fields are empty. Root cause: the planner hits its 45s `request_timeout` while still inside the `<think>` block (nanobrain-native prompts are long+technical; nemotron's thinking-token blow-up bites worse here than on MBPP). Planner raises `ValueError: LLM returned empty plan` → the framework's cascade marks the step as errored but `wait_for_cascade` returns `True` (cascade settled, no pending work); drafter never fires; adapter reads `drafter_output` (empty); sandbox runs `setup + "" + test_code` → every `assert "<Class>" in globals()` fails. **Another framework silent-failure shape**: `wait_for_cascade` does not propagate step errors. |
 
-Not yet built. Plan: P1d.
+### Failure-shape patterns (3 codegens × 10 problems)
+
+1. **Procedural direct** (10%): the model freely invents framework APIs.
+   Dominant failure: `Direct instantiation prohibited` after the LLM
+   hallucinates a custom `from_config`. The procedural prompt does not
+   hint at framework conventions.
+2. **Workflow-wrapped direct** (40%): same model, +30pp lift. Two
+   differences from procedural: (a) prompt has paragraph breaks + an
+   explicit "use the entry-point name" instruction, which changes which
+   alternatives the model considers; (b) routing through the workflow
+   cascade, which adds latency but doesn't directly help correctness.
+   The lift is almost certainly (a), not (b).
+3. **Plan-then-code**: collapses to 0%. A small-model planner with
+   thinking tokens is the wrong fit for long technical prompts on tight
+   timeouts. Worse, the framework's `wait_for_cascade` swallows the
+   planner's `ValueError`, so the failure presents as "empty code"
+   rather than "scaffold failed."
+
+### Iteration plan (analysis follow-up)
+
+- **E1** — Raise planner `request_timeout` to 90s, re-run plan-then-code.
+  Hypothesis: ≥30% of problems recover.
+- **E2** — Use mistral-nemo as planner (same model both stages).
+  Hypothesis: no think tokens → consistent plans → pass@1 in the
+  40-60% range.
+- **E3** — Wire `nanobrain_rules.md` (the 4.2 KB LLM-facing condensate)
+  into the BenchmarkDrafterStep system prompt. Re-run wrapped direct.
+  Hypothesis: ≥60%.
+- **E4** — N=3 repeats of the best cell to firm up the headline number
+  per Definition of Done #1.
 
 ## Calibration notes
 
