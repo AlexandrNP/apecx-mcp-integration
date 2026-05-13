@@ -1,0 +1,25 @@
+# Deterministic AST validator. No LLM, no prompt. Emits
+# {decision: pass|fix, critique, code_source passthrough, ...}.
+
+class: "apecx_integration.composition.steps.code_structure_validator_step.CodeStructureValidatorStep"
+name: validator
+description: "AST-based structural validator (deterministic; no LLM)."
+
+strict_imports: true
+require_process_on_step_subclasses: false
+
+input_data_units:
+  validator_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: validator_input
+    persistent: false
+
+output_data_units:
+  validator_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: validator_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "validator_input"

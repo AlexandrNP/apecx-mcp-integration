@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "nanobrain_review_revise",
+  "model": null,
+  "limit": 10,
+  "pass_at_1": 0.4,
+  "passed": 4,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 6,
+    "pass": 4
+  },
+  "elapsed_seconds": 854.659201500006,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 207.98346412501996,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 133.88163508300204,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\n  File \"<stdin>\", line 7, in ConcatStepConfig\nNameError: name 'ConfigDict' is not defined\n",
+      "wall_seconds": 57.613290290988516,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\n\nclass ConcatStepConfig(StepConfig):\n    model_config = ConfigDict(extra=\"forbid\", validate_assignment=False)\n    sep: str | None = Field(default=None)\n\nclass ConcatStep(BaseStep):\n    COMPONENT_TYPE = \"concat_step\"\n\n    @classmethod\n    def _get_config_class(cls):\n        return ConcatStepConfig\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts = input_data[\"parts\"]\n        sep = kwargs.get(\"sep\", self._config.sep)\n        joined = sep.join(parts)\n        return {\"joined\": joined}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "SOLUTION",
+      "error_message": "ror: \u274c CONFIGURATION LOADING FAILED: /var/folders/zm/vp65vmrj6pq9fglzhqrcm7j80000gn/T/tmpzcr03s0s/s.yml\n   ERROR: 1 validation error for DedupePreserveOrderStepConfig\nclass\n  Extra inputs are not permitted [type=extra_forbidden, input_value='__main__.DedupePreserveOrderStep', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden\n   CONFIG_CLASS: DedupePreserveOrderStepConfig\n   SOLUTION: Check YAML syntax, file permissions, and recursive references\n",
+      "wall_seconds": 65.07867045799503,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\nfrom typing import Any\nfrom pydantic import ConfigDict, Field, model_validator\n\nclass DedupePreserveOrderStepConfig(StepConfig):\n    model_config = ConfigDict(extra=\"forbid\", validate_assignment=False)\n\nclass DedupePreserveOrderStep(BaseStep):\n    COMPONENT_TYPE = \"dedupe_preserve_order\"\n\n    @classmethod\n    def _get_config_class(cls):\n        return DedupePreserveOrderStepConfig\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        seen = set()\n        unique_items = []\n        for item in input_data[\"items\"]:\n            if item not in seen:\n                seen.add(item)\n                unique_items.append(item)\n        return {\"unique\": unique_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 48.032026915985625,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DoubleStep(BaseStep):\n    COMPONENT_TYPE = \"double_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        n = input_data.get(\"n\", 0)\n        return {\"doubled\": n * 2}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\n  File \"<stdin>\", line 7, in FilterPositiveStepConfig\nNameError: name 'ConfigDict' is not defined\n",
+      "wall_seconds": 49.137585999967996,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\n\nclass FilterPositiveStepConfig(StepConfig):\n    model_config = ConfigDict(extra=\"forbid\", validate_assignment=False)\n\nclass FilterPositiveStep(BaseStep):\n    COMPONENT_TYPE = \"filter_positive\"\n\n    @classmethod\n    def _get_config_class(cls):\n        return FilterPositiveStepConfig\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        positive_items = [x for x in items if x > 0]\n        return {\"positive\": positive_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 62.369901709025726,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass SumListStep(BaseStep):\n    COMPONENT_TYPE = \"sum_list_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        values = input_data.get(\"values\", [])\n        return {\"total\": sum(values)}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 69.40312195802107,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass UpperStep(BaseStep):\n    COMPONENT_TYPE = \"upper_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"output\": input_data[\"text\"].upper()}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\n  File \"<stdin>\", line 7, in WordCountStepConfig\nNameError: name 'ConfigDict' is not defined\n",
+      "wall_seconds": 65.52726970799267,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\n\nclass WordCountStepConfig(StepConfig):\n    model_config = ConfigDict(extra=\"forbid\", validate_assignment=False)\n\nclass WordCountStep(BaseStep):\n    COMPONENT_TYPE = \"word_count_step\"\n\n    @classmethod\n    def _get_config_class(cls):\n        return WordCountStepConfig\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        words = len(text.split())\n        return {\"count\": words}"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 95.63146820798283,
+      "generated_code": "from nanobrain.core.tool import ToolBase\nimport ast\n\nclass CalculatorTool(ToolBase):\n    async def execute(self, expression: str) -> dict:\n        try:\n            result = eval(expression, {})\n            return {\"result\": result}\n        except Exception as e:\n            raise ValueError(f\"Invalid arithmetic expression: {e}\")"
+    }
+  ]
+}

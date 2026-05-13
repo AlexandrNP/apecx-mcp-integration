@@ -1,0 +1,125 @@
+# benchmark_ast_gated_review_revise — hybrid LLM + deterministic
+# scaffold (CGU-P2-T1b).
+#
+# This workflow demonstrates the nanobrain pattern the user
+# specifically asked for: mixing AI Agents (drafter, reviser) with
+# deterministic steps (validator) in one composition.
+#
+# Topology:
+#
+#   workflow_input ({code_spec, entry_point, test_hint, ...})
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   drafter (BenchmarkDrafterStep with rules — LLM)
+#       │ output: {code_source, code_spec, ...}
+#       │ (DirectLink)
+#       ▼
+#   validator (CodeStructureValidatorStep — DETERMINISTIC, no LLM)
+#       │ output: {decision: pass|fix, critique, code_source, ...}
+#       │
+#       ├── (ConditionalLink: decision == 'pass') ──▶ workflow_output
+#       │
+#       └── (ConditionalLink: decision == 'fix') ──▶ reviser
+#                                                       │ (DirectLink)
+#                                                       ▼
+#                                                  workflow_output
+#
+# Why this beats the linear review-revise (which regressed 30pp on
+# nanobrain-native): the validator is DETERMINISTIC. It never
+# hallucinates problems with correct code. The reviser ONLY fires
+# when the validator caught a real framework violation (from_config
+# override, missing entry point, syntax error, hallucinated import).
+# Correct candidates short-circuit straight to workflow_output via
+# the pass ConditionalLink — preserving the rules-v2 floor exactly.
+#
+# Framework primitives used:
+# - DirectLink (auto_transfer: true) for non-conditional transfers.
+# - ConditionalLink with G1 PredicateConfig {op: eq, field: decision}.
+# - Workflow-level output_data_units as the convergence point.
+
+name: benchmark_ast_gated_review_revise
+description: >
+  Hybrid LLM-and-deterministic review-revise scaffold. The validator
+  is an AST-based step (no LLM); the drafter and reviser are LLM
+  agents; ConditionalLink routes pass-through-vs-revise based on
+  the validator's decision.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+  validator:
+    class: "apecx_integration.composition.steps.code_structure_validator_step.CodeStructureValidatorStep"
+    config: "steps/validator.yml"
+  reviser:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/reviser.yml"
+
+links:
+  input_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_validator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: validator.validator_input
+      auto_transfer: true
+
+  # Conditional pass: validator says decision == 'pass' → straight
+  # to workflow_output. The candidate is already correct; reviser
+  # NEVER fires for these problems (preserving the rules-v2 floor).
+  validator_pass_to_output:
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: validator.validator_output
+      target: workflow_output
+      condition:
+        op: eq
+        field: decision
+        value: pass
+      auto_transfer: true
+
+  # Conditional fix: validator says decision == 'fix' → route to
+  # reviser. The reviser sees the drafter's previous_attempt + the
+  # validator's deterministic critique.
+  validator_fix_to_reviser:
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: validator.validator_output
+      target: reviser.drafter_input
+      condition:
+        op: eq
+        field: decision
+        value: fix
+      auto_transfer: true
+
+  reviser_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: reviser.drafter_output
+      target: workflow_output
+      auto_transfer: true

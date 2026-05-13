@@ -95,6 +95,30 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_ast_gated_review_revise":
+        # CGU-P2-T1b — hybrid LLM + deterministic scaffold.
+        # drafter → AST validator → ConditionalLink (pass | fix)
+        #   pass → workflow_output (skip reviser entirely)
+        #   fix  → reviser → workflow_output
+        # Reads from the workflow-level output DU (both ConditionalLink
+        # paths converge there).
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_ast_gated_review_revise"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="drafter_input",
+            code_source_du_name="workflow_output",
+            read_from_workflow_output=True,
+        )
     if name == "nanobrain_review_revise":
         # CGU-P2-T1 — drafter -> reviewer -> reviser linear chain.
         # All three stages use nanobrain_rules.md.
@@ -197,6 +221,7 @@ def main() -> int:
             "nanobrain_plan_then_code",
             "nanobrain_plan_then_code_with_rules",
             "nanobrain_review_revise",
+            "nanobrain_ast_gated_review_revise",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

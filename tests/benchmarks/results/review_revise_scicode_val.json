@@ -1,0 +1,332 @@
+{
+  "dataset": "scicode",
+  "codegen": "nanobrain_review_revise",
+  "model": null,
+  "limit": 35,
+  "pass_at_1": 0.14285714285714285,
+  "passed": 5,
+  "total": 35,
+  "status_histogram": {
+    "fail_other": 28,
+    "fail_assertion": 2,
+    "pass": 5
+  },
+  "elapsed_seconds": 5591.682986458007,
+  "results": [
+    {
+      "problem_id": "scicode/10/10.6",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 215.65517612500116,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/1/1.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 213.60533033398679,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/3/3.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 209.81132020801306,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/4/4.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 217.4483164169942,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/6/6.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 194.9591365000233,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/19/19.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 171.51640591595788,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/19/19.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 204.93434774997877,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/78/78.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 230.3380712919752,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/29/29.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 18, in <module>\nAssertionError\n",
+      "wall_seconds": 76.10094704199582,
+      "generated_code": "import numpy as np\n\ndef normalize(v):\n    norm = np.linalg.norm(v, ord=2)\n    if norm == 0:\n        raise ValueError(\"Zero norm vector\")\n    return v / norm"
+    },
+    {
+      "problem_id": "scicode/29/29.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 69.50250183400931,
+      "generated_code": "import numpy as np\n\ndef inner_product(u, v):\n    '''Calculates the inner product of two vectors.\n    Input:\n    u (numpy array): Vector 1.\n    v (numpy array): Vector 2.\n    Output:\n    p (float): Inner product of the vectors.\n    '''\n    return np.dot(u, v)"
+    },
+    {
+      "problem_id": "scicode/29/29.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 138.1208320420119,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/38/38.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 112.40876729099546,
+      "generated_code": "import numpy as np\n\ndef cross(a, b):\n    '''Calculates the cross product of the input vectors.\n    Input:\n    a (numpy array): Vector a.\n    b (numpy array): Vector b.\n    Output:\n    t (numpy array): The cross product of a and b.\n    '''\n    return np.array([\n        a[1] * b[2] - a[2] * b[1],\n        a[2] * b[0] - a[0] * b[2],\n        a[0] * b[1] - a[1] * b[0]\n    ])"
+    },
+    {
+      "problem_id": "scicode/38/38.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 185.42319233401213,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/38/38.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 211.1121774589992,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/44/44.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 194.1024450410041,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/44/44.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 200.47719279205194,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/44/44.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 193.31444233399816,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/47/47.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 41.0523379999795,
+      "generated_code": "def U_ij(r, sigma, epsilon):\n    '''Lennard Jones Potential between pair of atoms with distance r'''\n    U = 4 * epsilon * ((sigma/r)**12 - (sigma/r)**6)\n    return U\n\n# Test the function with given value of r\nr = 0.5\nprint(U_ij(r, sigma=1.0, epsilon=1.0))"
+    },
+    {
+      "problem_id": "scicode/47/47.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 72.55250220798189,
+      "generated_code": "import numpy as np\n\ndef U_i(r_i: np.ndarray, i: int, positions: np.ndarray, sigma: float, epsilon: float) -> float:\n    U_i = 0.0\n    for j in range(len(positions)):\n        if j != i:\n            r_ij = positions[j] - r_i\n            U_ij = 4 * epsilon * ((sigma / np.linalg.norm(r_ij)) ** 12 - (sigma / np.linalg.norm(r_ij)) ** 6)\n            U_i += U_ij\n    return U_i"
+    },
+    {
+      "problem_id": "scicode/47/47.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 64.7003140419838,
+      "generated_code": "import numpy as np\n\ndef U_ij(r, sigma, epsilon):\n    return 4 * epsilon * ((sigma/r)**12 - (sigma/r)**6)\n\ndef U_system(positions, sigma, epsilon):\n    N = positions.shape[0]\n    U = 0.0\n    for i in range(N):\n        for j in range(i+1, N):  # Only calculate the upper triangle of the matrix to avoid double-counting\n            r = np.linalg.norm(positions[i] - positions[j])\n            U += U_ij(r, sigma, epsilon)\n    return U\n\n# Test with provided positions\npositions = np.array([[0.0, 0.0, 0.0], [1.2, 0.0, 0.0]])\nsigma = 1.0\nepsilon = 1.0\nprint(U_system(positions, sigma, epsilon))  # Output should be a float representing the total energy of the system"
+    },
+    {
+      "problem_id": "scicode/47/47.4",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 149.2919580829912,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/49/49.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 130.25537175004138,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/49/49.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 128.072380291007,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/49/49.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 182.8724797090399,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/49/49.4",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 189.54028079198906,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/51/51.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 192.9047778340173,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/51/51.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 47, in <module>\nAssertionError\n",
+      "wall_seconds": 66.8735184999532,
+      "generated_code": "import numpy as np\n\ndef aggregate_forces(sigma, epsilon, positions):\n    N = len(positions)\n    forces = np.zeros((N, 3))\n\n    for i in range(N):\n        for j in range(i+1, N):\n            force_i_j = calculate_lj_force(sigma, epsilon, positions[i], positions[j])\n            forces[i] -= force_i_j\n            forces[j] += force_i_j\n\n    return forces\n\ndef calculate_lj_force(sigma, epsilon, pos_i, pos_j):\n    r = np.linalg.norm(pos_i - pos_j)\n    if r > sigma:\n        return 0.0\n    else:\n        f = 24 * epsilon / (sigma ** 13) * ((sigma/r)**12 - 1) * (pos_i - pos_j) / r\n        return f"
+    },
+    {
+      "problem_id": "scicode/51/51.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 208.9091893340228,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/70/70.1",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 182.5461092919577,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/70/70.2",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 129.71246091701323,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/70/70.3",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 81, in <module>\n  File \"<stdin>\", line 62, in hamiltonian_3nu_su3_coefficients\nTypeError: cannot unpack non-iterable numpy.complex128 object\n",
+      "wall_seconds": 92.9220755000133,
+      "generated_code": "import cmath\n\ndef hamiltonian_3nu_su3_coefficients(hamiltonian):\n    H = [[complex(x, y) for x, y in inner] for inner in hamiltonian]\n    hks = [\n        H[0][1].real,\n        -H[0][1].imag,\n        (H[0][0] - H[1][1]) / 2,\n        H[0][2].real,\n        -H[0][2].imag,\n        H[1][2].real,\n        -H[1][2].imag,\n        cmath.sqrt(3) * (H[0][0] + H[1][1] - 2*H[2][2]) / 6\n    ]\n    return hks"
+    },
+    {
+      "problem_id": "scicode/70/70.4",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 140.03959904098883,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/70/70.5",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 129.58829691598658,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/70/70.7",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 227.08653475000756,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "scicode/70/70.8",
+      "codegen_name": "nanobrain_review_revise",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 223.92601999995532,
+      "generated_code": ""
+    }
+  ]
+}

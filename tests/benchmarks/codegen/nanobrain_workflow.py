@@ -48,6 +48,7 @@ def make_nanobrain_workflow_codegen(
     code_source_step_name: str = "drafter",
     code_source_du_name: str = "drafter_output",
     cascade_timeout_seconds: float = 120.0,
+    read_from_workflow_output: bool = False,
 ) -> Callable[[BenchmarkProblem], str]:
     """Build a benchmark codegen that runs through a nanobrain workflow.
 
@@ -127,27 +128,46 @@ def make_nanobrain_workflow_codegen(
                 f"LLM call exceeded budget"
             )
 
-        children = (
-            getattr(wf, "child_steps", None)
-            or getattr(wf, "_child_steps", None)
-            or getattr(wf, "steps", None)
-            or {}
-        )
-        step = children.get(code_source_step_name)
-        if step is None:
-            raise RuntimeError(
-                f"workflow {workflow_yaml.name}: step "
-                f"{code_source_step_name!r} not found; available={list(children)}"
+        # Two-mode read path:
+        # - default: read from a SPECIFIC step's output DU (the
+        #   workflow's convergence is at one step).
+        # - read_from_workflow_output: read from the WORKFLOW-LEVEL
+        #   output DU (the workflow's convergence is at the workflow
+        #   boundary, e.g., ConditionalLink-routed paths that may
+        #   skip some steps).
+        if read_from_workflow_output:
+            # Workflow IS a Step, so its workflow-level output_data_units
+            # are stored as the workflow's own step_output_data_units.
+            wf_out_dus = wf.step_output_data_units
+            out_du = wf_out_dus.get(code_source_du_name)
+            if out_du is None:
+                raise RuntimeError(
+                    f"workflow {workflow_yaml.name}: workflow-level output DU "
+                    f"{code_source_du_name!r} not found; "
+                    f"available={list(wf_out_dus.keys())}"
+                )
+        else:
+            children = (
+                getattr(wf, "child_steps", None)
+                or getattr(wf, "_child_steps", None)
+                or getattr(wf, "steps", None)
+                or {}
             )
+            step = children.get(code_source_step_name)
+            if step is None:
+                raise RuntimeError(
+                    f"workflow {workflow_yaml.name}: step "
+                    f"{code_source_step_name!r} not found; available={list(children)}"
+                )
 
-        out_dus = step.step_output_data_units
-        out_du = out_dus.get(code_source_du_name)
-        if out_du is None:
-            raise RuntimeError(
-                f"workflow {workflow_yaml.name}: step output DU "
-                f"{code_source_du_name!r} not found; "
-                f"available={list(out_dus.keys())}"
-            )
+            out_dus = step.step_output_data_units
+            out_du = out_dus.get(code_source_du_name)
+            if out_du is None:
+                raise RuntimeError(
+                    f"workflow {workflow_yaml.name}: step output DU "
+                    f"{code_source_du_name!r} not found; "
+                    f"available={list(out_dus.keys())}"
+                )
 
         value = await out_du.get()
         # Step output DUs hold the dict the step's process() returned.
