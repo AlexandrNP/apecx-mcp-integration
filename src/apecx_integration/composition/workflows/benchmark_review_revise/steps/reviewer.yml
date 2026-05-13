@@ -1,0 +1,26 @@
+class: "apecx_integration.composition.steps.benchmark_reviewer_step.BenchmarkReviewerStep"
+name: reviewer
+description: "Reviewer — critiques the drafter's candidate code."
+
+system_prompt_file: "../../../code_writing_prompts/benchmark_reviewer_system.md"
+rules_file: "../../../code_writing_prompts/nanobrain_rules.md"
+
+role: reviewer
+temperature: 0.0
+max_tokens: 512
+
+input_data_units:
+  reviewer_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: reviewer_input
+    persistent: false
+
+output_data_units:
+  reviewer_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: reviewer_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "reviewer_input"

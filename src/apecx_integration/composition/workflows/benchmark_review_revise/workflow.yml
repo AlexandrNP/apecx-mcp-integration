@@ -1,0 +1,90 @@
+# benchmark_review_revise — review-revise scaffold (CGU-P2-T1).
+#
+# Three-step linear chain: drafter -> reviewer -> reviser.
+# All three use the nanobrain_rules.md condensate. The reviewer's
+# critique flows to the reviser via DirectLinks with auto_transfer.
+#
+# Linear (no conditional loop) for v0 simplicity; if the reviewer
+# returns "PASS", the reviser's prompt tells it to output the previous
+# attempt unchanged. Cost: 1 extra LLM call per "already correct"
+# problem. Benefit: simple, framework-native, no ConditionalLink
+# overhead.
+#
+# Topology:
+#
+#   workflow_input ({code_spec, entry_point, test_hint, ...})
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   drafter (BenchmarkDrafterStep + rules)
+#       │ output: {code_source, code_spec passthrough, ...}
+#       │ (DirectLink)
+#       ▼
+#   reviewer (BenchmarkReviewerStep + rules)
+#       │ output: {code_spec, previous_attempt, critique, ...}
+#       │ (DirectLink)
+#       ▼
+#   reviser (BenchmarkDrafterStep with reviser prompt + rules)
+#       │ output: {code_source}
+#       │ (DirectLink)
+#       ▼
+#   workflow_output
+
+name: benchmark_review_revise
+description: >
+  Three-step review-revise scaffold: drafter -> reviewer -> reviser.
+  All stages share the nanobrain_rules.md condensate.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+  reviewer:
+    class: "apecx_integration.composition.steps.benchmark_reviewer_step.BenchmarkReviewerStep"
+    config: "steps/reviewer.yml"
+  reviser:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/reviser.yml"
+
+links:
+  input_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_reviewer:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: reviewer.reviewer_input
+      auto_transfer: true
+  reviewer_to_reviser:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: reviewer.reviewer_output
+      target: reviser.drafter_input
+      auto_transfer: true
+  reviser_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: reviser.drafter_output
+      target: workflow_output
+      auto_transfer: true

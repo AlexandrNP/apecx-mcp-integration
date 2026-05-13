@@ -95,6 +95,26 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_review_revise":
+        # CGU-P2-T1 — drafter -> reviewer -> reviser linear chain.
+        # All three stages use nanobrain_rules.md.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_review_revise"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="drafter_input",
+            code_source_step_name="reviser",
+            code_source_du_name="drafter_output",
+        )
     if name == "nanobrain_plan_then_code_with_rules":
         # E5 — plan-then-code with nanobrain_rules.md on the drafter.
         from pathlib import Path  # noqa: PLC0415
@@ -176,6 +196,7 @@ def main() -> int:
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",
             "nanobrain_plan_then_code_with_rules",
+            "nanobrain_review_revise",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

@@ -1,0 +1,332 @@
+{
+  "dataset": "scicode",
+  "codegen": "nanobrain_direct",
+  "model": null,
+  "limit": 35,
+  "pass_at_1": 0.17142857142857143,
+  "passed": 6,
+  "total": 35,
+  "status_histogram": {
+    "fail_assertion": 17,
+    "pass": 6,
+    "fail_other": 12
+  },
+  "elapsed_seconds": 764.5031234159833,
+  "results": [
+    {
+      "problem_id": "scicode/10/10.6",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 131, in <module>\nAssertionError\n",
+      "wall_seconds": 39.99613283399958,
+      "generated_code": "import numpy as np\n\ndef generate_gpoints(recvec, gmax):\n    gpoints = []\n    for i in range(-gmax, gmax+1):\n        for j in range(-gmax, gmax+1):\n            for k in range(0, gmax+1):\n                if i == 0 and j < 0:\n                    continue\n                elif i == 0 and j == 0:\n                    continue\n                elif i > 0 or j > 0 or k > 0:\n                    gpoints.append(np.array([i, j, k]))\n    return np.array(gpoints)\n\ndef isin(coord_test, coords):\n    return np.any(np.all(coords == coord_test, axis=1))"
+    },
+    {
+      "problem_id": "scicode/1/1.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 44, in <module>\nAssertionError\n",
+      "wall_seconds": 26.53003120800713,
+      "generated_code": "import numpy as np\n\ndef cg(A, b, x0, tol):\n    A = np.array(A)\n    b = np.array(b)\n    x0 = np.array(x0)\n\n    r = b - np.dot(A, x0)\n    p = r.copy()\n    rsold = np.dot(r, r)\n    x = x0.copy()\n\n    for i in range(7):\n        Ap = np.dot(A, p)\n        alpha = rsold / np.dot(p, Ap)\n        x += alpha * p\n        r -= alpha * Ap\n        rsnew = np.dot(r, r)\n\n        if rsnew < tol:\n            break\n\n        beta = rsnew / rsold\n        p = r + beta * (p - np.dot(A, beta * p))\n        rsold = rsnew\n\n    return x"
+    },
+    {
+      "problem_id": "scicode/3/3.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 41, in <module>\nAssertionError\n",
+      "wall_seconds": 25.29521091701463,
+      "generated_code": "import numpy as np\n\ndef GS(A, b, eps, x_true, x0):\n    n = len(b)\n    x = x0.copy()\n    while True:\n        x_new = np.zeros(n)\n        for i in range(n):\n            s1 = sum(A[i][j]*x[j] for j in range(i))\n            s2 = sum(A[i][j]*x_new[j] for j in range(i+1, n))\n            x_new[i] = (b[i] - s1 - s2) / A[i][i]\n        if np.linalg.norm(x_new - x, 2) < eps:\n            break\n        x = x_new\n    residual = np.linalg.norm(np.dot(A, x) - b, 2)\n    error = np.linalg.norm(x - x_true, 2)\n    return residual, error"
+    },
+    {
+      "problem_id": "scicode/4/4.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "<stdin>:18: RuntimeWarning: divide by zero encountered in scalar divide\n<stdin>:18: RuntimeWarning: invalid value encountered in scalar divide\nTraceback (most recent call last):\n  File \"<stdin>\", line 26, in <module>\nAssertionError\n",
+      "wall_seconds": 15.816472042002715,
+      "generated_code": "import numpy as np\n\ndef ichol(A):\n    n = len(A)\n    L = np.zeros((n,n))\n    for i in range(n):\n        for j in range(i+1):\n            s1 = sum(L[i,k]*L[j,k] for k in range(j))\n            L[i,j] = A[i,j] - s1\n            if i > j:\n                L[i,j] /= np.sqrt(L[i,i])\n    return L"
+    },
+    {
+      "problem_id": "scicode/6/6.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 27, in <module>\nAssertionError\n",
+      "wall_seconds": 19.742194165999535,
+      "generated_code": "import numpy as np\nfrom scipy.fftpack import fft2, ifft2\n\ndef apply_low_pass_filter(image_array, frequency_threshold):\n    T = np.zeros_like(image_array)\n    rows, cols = image_array.shape\n    center_row, center_col = rows // 2, cols // 2\n    for i in range(rows):\n        for j in range(cols):\n            if (i - center_row)**2 + (j - center_col)**2 <= frequency_threshold**2:\n                T[i, j] = 1\n\n    filtered_image = np.abs(ifft2(T * fft2(image_array)))\n    return T, filtered_image"
+    },
+    {
+      "problem_id": "scicode/19/19.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.9755740410182625,
+      "generated_code": "import numpy as np\n\ndef tensor(*args):\n    M = args[0]\n    for A in args[1:]:\n        M = np.kron(M, A)\n    return M"
+    },
+    {
+      "problem_id": "scicode/19/19.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "ImportError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 30, in <module>\nImportError: cannot import name 'tensor' from 'scipy.linalg' (/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/scipy/linalg/__init__.py)\n",
+      "wall_seconds": 17.364940166997258,
+      "generated_code": "import numpy as np\nfrom scipy.linalg import tensor\n\ndef tensor_product(*args):\n    return tensor(args)\n\ndef n_tangle(psi):\n    sigma_y = np.array([[0, -1j], [1j, 0]])\n    psi_conj = np.conjugate(psi)\n    tangle = np.abs(np.dot(psi, tensor_product(*[sigma_y] * len(psi)) @ psi_conj)) ** 2\n    return tangle\n\n# Test with MaxEnt state\nMaxEnt = np.array([1, 0, 0, 1]) / np.sqrt(2)\nprint(n_tangle(MaxEnt))"
+    },
+    {
+      "problem_id": "scicode/78/78.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 100, in <module>\n  File \"<stdin>\", line 78, in pendulum_analysis\nValueError: operands could not be broadcast together with shapes (5001,2) (20001,2) \n",
+      "wall_seconds": 41.726230125001166,
+      "generated_code": "import numpy as np\nfrom scipy.integrate import odeint\n\ndef pendulum_analysis(g, L, beta, A, alpha, initial_state, t0, tf, min_dt, max_dt, num_timesteps):\n    def pendulum_eq(y, t):\n        theta, omega = y\n        dydt = [omega, (-g/L * np.sin(theta) - beta*omega + A*np.cos(alpha*t)) / (1.0)]\n        return dydt\n\n    dt_array = np.linspace(min_dt, max_dt, num_timesteps)\n    optimized_trajectory = None\n    min_metric = float('inf')\n\n    for dt in dt_array:\n        t = np.arange(t0, tf + dt/2, dt)\n        y = odeint(pendulum_eq, initial_state, t)\n\n        # Estimate GTE using step-doubling method\n        h = dt / 2\n        t_h = np.arange(t0, tf + h, h)\n        y_h = odeint(pendulum_eq, initial_state, t_h)\n        E_2h = np.linalg.norm(y[::2] - y_h) * (2**4 - 1)\n\n        # Compute metric\n        time = len(y) / dt\n        metric = E_2h * np.sqrt(time)\n\n        if metric < min_metric:\n            optimized_trajectory = y\n            min_metric = metric\n\n    return optimized_trajectory"
+    },
+    {
+      "problem_id": "scicode/29/29.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.173975290963426,
+      "generated_code": "import numpy as np\n\ndef normalize(v):\n    norm = np.linalg.norm(v)\n    return v / norm if norm != 0 else v"
+    },
+    {
+      "problem_id": "scicode/29/29.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.162945082993247,
+      "generated_code": "import numpy as np\n\ndef inner_product(u, v):\n    return np.dot(u, v)"
+    },
+    {
+      "problem_id": "scicode/29/29.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "NonZeroExit",
+      "error_message": "<stdin>:38: RuntimeWarning: invalid value encountered in scalar divide\nTraceback (most recent call last):\n  File \"<stdin>\", line 45, in <module>\n  File \"<stdin>\", line 39, in orthogonalize\nnumpy._core._exceptions._UFuncOutputCastingError: Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'\n",
+      "wall_seconds": 18.284336999990046,
+      "generated_code": "import numpy as np\n\ndef orthogonalize(A):\n    B = np.zeros_like(A)\n    for i in range(A.shape[1]):\n        v = A[:, i]\n        for j in range(i):\n            projection = np.dot(v, B[:, j]) / np.dot(B[:, j], B[:, j])\n            v -= projection * B[:, j]\n        norm = np.linalg.norm(v)\n        B[:, i] = v / norm\n    return B\n\nA = np.array([[0, 1, 1, -1], [1, 0, -1, 1], [1, -1, 0, 1], [-1, 1, -1, 0]]).T\northogonalize(A)"
+    },
+    {
+      "problem_id": "scicode/38/38.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.023923041997477,
+      "generated_code": "import numpy as np\n\ndef cross(a, b):\n    return np.array([\n        a[1] * b[2] - a[2] * b[1],\n        a[2] * b[0] - a[0] * b[2],\n        a[0] * b[1] - a[1] * b[0]\n    ])"
+    },
+    {
+      "problem_id": "scicode/38/38.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "<stdin>:28: RuntimeWarning: divide by zero encountered in divide\n<stdin>:32: RuntimeWarning: divide by zero encountered in divide\nTraceback (most recent call last):\n  File \"<stdin>\", line 36, in <module>\nAssertionError\n",
+      "wall_seconds": 16.057013875048142,
+      "generated_code": "import numpy as np\n\ndef reciprocal_3D(a1, a2, a3):\n    cross_product = np.cross(a2, a3)\n    dot_product = np.dot(a1, cross_product)\n    b1 = 2 * np.pi * cross_product / dot_product\n\n    cross_product = np.cross(a3, a1)\n    dot_product = np.dot(a1, cross_product)\n    b2 = 2 * np.pi * cross_product / dot_product\n\n    cross_product = np.cross(a1, a2)\n    dot_product = np.dot(a1, cross_product)\n    b3 = 2 * np.pi * cross_product / dot_product\n\n    return [b1, b2, b3]"
+    },
+    {
+      "problem_id": "scicode/38/38.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 59, in <module>\n  File \"<stdin>\", line 51, in reciprocal\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/numpy/_core/numeric.py\", line 1694, in cross\n    raise ValueError(\"At least one array has zero dimension\")\nValueError: At least one array has zero dimension\n",
+      "wall_seconds": 29.373847000009846,
+      "generated_code": "import numpy as np\n\ndef reciprocal(*args):\n    rec = []\n    for vec in args:\n        if len(vec) == 1:\n            rec.append(np.array([2 * np.pi / vec[0]]))\n        elif len(vec) == 2:\n            a1, a2 = vec\n            cross_product = np.cross(a1, a2)\n            dot_product = np.dot(a1, cross_product)\n            b1 = 2 * np.pi * cross_product / dot_product\n            rec.append(b1)\n        elif len(vec) == 3:\n            a1, a2, a3 = vec\n            dot_product = np.dot(a1, np.cross(a2, a3))\n            b1 = 2 * np.pi * np.cross(a2, a3) / dot_product\n            b2 = 2 * np.pi * np.cross(a3, a1) / dot_product\n            b3 = 2 * np.pi * np.cross(a1, a2) / dot_product\n            rec.extend([b1, b2, b3])\n    return rec\n\na1, a2, a3 = (np.array([1, 1, 0]), np.array([1, -1, 0]), np.array([1, 0, 2]))\nprint(reciprocal(a1, a2, a3))"
+    },
+    {
+      "problem_id": "scicode/44/44.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 21, in <module>\nAssertionError\n",
+      "wall_seconds": 12.174349083041307,
+      "generated_code": "import numpy as np\n\ndef GetComp(d):\n    Z = len(d)\n    dcomp = np.zeros((Z, Z))\n    for i in range(Z//2):\n        for j in range(Z//2):\n            dcomp[i, j] = d[j + Z//2, i]\n            dcomp[i + Z//2, j + Z//2] = d[Z//2 + j, Z//2 + i]\n    return dcomp"
+    },
+    {
+      "problem_id": "scicode/44/44.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 37, in <module>\nAssertionError\n",
+      "wall_seconds": 11.30503258301178,
+      "generated_code": "import numpy as np\n\ndef step(t, y, c, lig):\n    Z = int(np.sqrt(len(y)))\n    d = y.reshape(Z, Z)\n    r = c - np.sum(d, axis=1)\n    l = c - np.sum(d, axis=0)\n    ystep = lig * r[:, None] * l[None, :] * d.T - d\n    return ystep.flatten()"
+    },
+    {
+      "problem_id": "scicode/44/44.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "<stdin>:54: RuntimeWarning: divide by zero encountered in log\n<stdin>:54: RuntimeWarning: invalid value encountered in multiply\nTraceback (most recent call last):\n  File \"<stdin>\", line 63, in <module>\nAssertionError\n",
+      "wall_seconds": 12.32387129199924,
+      "generated_code": "import numpy as np\n\ndef entropies(c0, d0, lig, tf, nsteps):\n    dt = tf / nsteps\n    d = d0.copy()\n    entropy_list = []\n\n    for t in range(nsteps):\n        d += lig * dt\n        d[d < 0] = 0\n        tilde_d = d / np.sum(d)\n        S = -np.sum(tilde_d * np.log(tilde_d))\n        entropy_list.append(S)\n\n    return np.array(entropy_list)"
+    },
+    {
+      "problem_id": "scicode/47/47.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.3294947080430575,
+      "generated_code": "import numpy as np\n\ndef U_ij(r, sigma, epsilon):\n    return 4 * epsilon * ((sigma/r)**12 - (sigma/r)**6)"
+    },
+    {
+      "problem_id": "scicode/47/47.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "IndexError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 38, in <module>\n  File \"<stdin>\", line 30, in U_i\nIndexError: only integers, slices (`:`), ellipsis (`...`), numpy.newaxis (`None`) and integer or boolean arrays are valid indices\n",
+      "wall_seconds": 13.183317792019807,
+      "generated_code": "import numpy as np\n\ndef U_i(r_i, i, positions, sigma, epsilon):\n    U_i = 0.0\n    for j in range(len(positions)):\n        if j != i:\n            r_ij = positions[j] - r_i\n            U_ij = 4 * epsilon * ((sigma/r_ij[np.linalg.norm(r_ij)])**12 - (sigma/r_ij[np.linalg.norm(r_ij)])**6)\n            U_i += U_ij\n    return U_i"
+    },
+    {
+      "problem_id": "scicode/47/47.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.600636875024065,
+      "generated_code": "import numpy as np\n\ndef U_ij(r, sigma, epsilon):\n    return 4 * epsilon * ((sigma/r)**12 - (sigma/r)**6)\n\ndef U_system(positions, sigma, epsilon):\n    N = positions.shape[0]\n    U = 0.0\n    for i in range(N):\n        for j in range(i+1, N):\n            r = np.linalg.norm(positions[i] - positions[j])\n            U += U_ij(r, sigma, epsilon)\n    return U"
+    },
+    {
+      "problem_id": "scicode/47/47.4",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "IndexError",
+      "error_message": "<stdin>:65: RuntimeWarning: divide by zero encountered in scalar divide\n<stdin>:65: RuntimeWarning: invalid value encountered in scalar subtract\nTraceback (most recent call last):\n  File \"<stdin>\", line 103, in <module>\n  File \"<stdin>\", line 82, in MC\nIndexError: list index out of range\n",
+      "wall_seconds": 28.87745454197284,
+      "generated_code": "import numpy as np\n\ndef U_i(positions, sigma, epsilon):\n    return 4 * epsilon * ((sigma / np.linalg.norm(positions)) ** 12 - (sigma / np.linalg.norm(positions)) ** 6)\n\ndef U_system(positions, sigma, epsilon):\n    total_energy = 0\n    for i in range(len(positions)):\n        for j in range(i+1, len(positions)):\n            total_energy += U_i(positions[i] - positions[j], sigma, epsilon)\n    return total_energy\n\ndef MC(sigma, epsilon, T, init_positions, MC_steps, dispSize):\n    beta = 1 / T\n    E_trace = []\n    current_positions = init_positions.copy()\n    for _ in range(MC_steps):\n        i = np.random.randint(0, len(current_positions))\n        new_position = current_positions[i] + np.random.normal(0, dispSize)\n        new_energy = U_system(new_position, sigma, epsilon)\n        acceptance_ratio = min(1, np.exp(-beta * (new_energy - E_trace[-1])))\n        if np.random.rand() < acceptance_ratio:\n            current_positions[i] = new_position\n        E_trace.append(U_system(current_positions, sigma, epsilon))\n    return np.array(E_trace)"
+    },
+    {
+      "problem_id": "scicode/49/49.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 22, in <module>\nAssertionError\n",
+      "wall_seconds": 15.832856499997433,
+      "generated_code": "import numpy as np\n\ndef Nbody_Fij(xin, mass):\n    G = 6.67430e-11\n    N = len(mass)\n    f = np.zeros((N, 3))\n    for i in range(N):\n        for j in range(i+1, N):\n            r = np.linalg.norm(xin[j] - xin[i])\n            f[i] += -G * mass[i] * mass[j] / (r**2) * (xin[j] - xin[i]) / r\n            f[j] -= f[i]\n    return f"
+    },
+    {
+      "problem_id": "scicode/49/49.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 46, in <module>\nAssertionError\n",
+      "wall_seconds": 18.79196583299199,
+      "generated_code": "import numpy as np\n\ndef Nbody_RHS(uin, mass):\n    N = len(mass)\n    rhs = np.zeros((N, 6))\n    for i in range(N):\n        pos = uin[i][:3]\n        vel = uin[i][3:]\n        acc = np.array([0., 0., 0.])\n        for j in range(N):\n            if i != j:\n                r_ij = pos - uin[j][:3]\n                F_ij = mass[i] * mass[j] / (np.linalg.norm(r_ij) ** 2)\n                acc += F_ij * r_ij / np.linalg.norm(r_ij)\n        rhs[i][:3] = vel\n        rhs[i][3:] = acc\n    return rhs"
+    },
+    {
+      "problem_id": "scicode/49/49.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 71, in <module>\n  File \"<stdin>\", line 60, in Nbody_RK4\n  File \"<stdin>\", line 52, in Nbody_RHS\nNameError: name 'mj' is not defined\n",
+      "wall_seconds": 34.896735374990385,
+      "generated_code": "import numpy as np\n\ndef Nbody_RK4(uin, mass, dt):\n    def Nbody_RHS(u, t):\n        N = len(mass)\n        u = np.reshape(u, (N, 6))\n        x, y, z, vx, vy, vz = u.T\n        ax = sum(mj * ((xi - x) / r**3 for xi, mj, ri in zip(xs, ms, rs))) / mi\n        ay = sum(mj * ((yi - y) / r**3 for yi, mj, ri in zip(ys, ms, rs))) / mi\n        az = sum(mj * ((zi - z) / r**3 for zi, mj, ri in zip(zs, ms, rs))) / mi\n        return np.array([vx, vy, vz, ax, ay, az])\n\n    N = len(uin)\n    uout = np.zeros_like(uin)\n\n    k1 = Nbody_RHS(uin, 0) * dt\n    k2 = Nbody_RHS(uin + k1 / 2, dt / 2) * dt\n    k3 = Nbody_RHS(uin + k2 / 2, dt / 2) * dt\n    k4 = Nbody_RHS(uin + k3 * dt, dt) * dt\n\n    uout = uin + (k1 + 2 * k2 + 2 * k3 + k4) / 6\n\n    return uout"
+    },
+    {
+      "problem_id": "scicode/49/49.4",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 106, in <module>\nAssertionError\n",
+      "wall_seconds": 53.53546154202195,
+      "generated_code": "import numpy as np\n\ndef Nbody(uin, mass, dt, t0, t1):\n    def force(u):\n        N = len(mass)\n        F = np.zeros((N, 6))\n        for i in range(N):\n            for j in range(i+1, N):\n                dx, dy, dz = u[j][:3] - u[i][:3]\n                r = np.hypot(dx, np.hypot(dy, dz))\n                F[i] -= mass[j] * dx / (r ** 3)\n                F[j] += mass[i] * dx / (r ** 3)\n                F[i] -= mass[j] * dy / (r ** 3)\n                F[j] += mass[i] * dy / (r ** 3)\n                F[i] -= mass[j] * dz / (r ** 3)\n                F[j] += mass[i] * dz / (r ** 3)\n        return F\n\n    def rk4(u, dt):\n        k1 = force(u)\n        k2 = force(u + dt/2 * k1)\n        k3 = force(u + dt/2 * k2)\n        k4 = force(u + dt * k3)\n        return u + dt/6 * (k1 + 2*k2 + 2*k3 + k4)\n\n    N, _ = uin.shape\n    t = np.arange(t0, t1, dt)\n    u = uin.copy()\n    for i in range(1, len(t)):\n        u += rk4(u, dt)\n    return u\n\nuin = np.array([[0.6033556, 0.44387186, 0.48004678, 0.88844753, 0.20850049, 0.94458146], [0.07347004, 0.59515246, 0.03115107, 0.66525743, 0.6373855, 0.86246516]])\nmass = np.array([1., 1.])\ndt = 0.01\nt0 = 0.\nt1 = 1.\n\nNbody(uin, mass, dt, t0, t1)"
+    },
+    {
+      "problem_id": "scicode/51/51.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 25, in <module>\nAssertionError\n",
+      "wall_seconds": 19.290704834042117,
+      "generated_code": "import numpy as np\n\ndef f_ij(sigma, epsilon, r):\n    '''This function computes the force between two particles interacting through Lennard Jones Potantial\n    Inputs:\n    sigma: the distance at which potential reaches zero, float\n    epsilon: potential well depth, float\n    r: 3D displacement between two particles, 1d array of float with shape (3,)\n    Outputs:\n    f: force, 1d array of float with shape (3,)\n    '''\n    r_mag = np.linalg.norm(r)\n    f = 24 * epsilon / sigma**6 * ((2 * sigma/r_mag)**12 - (sigma/r_mag)**6) * r / r_mag\n    return f"
+    },
+    {
+      "problem_id": "scicode/51/51.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 39, in <module>\nAssertionError\n",
+      "wall_seconds": 14.13096937496448,
+      "generated_code": "import numpy as np\n\ndef aggregate_forces(sigma, epsilon, positions):\n    N = len(positions)\n    forces = np.zeros((N, 3))\n    for i in range(N):\n        for j in range(i+1, N):\n            r_ij = positions[i] - positions[j]\n            r_mag = np.linalg.norm(r_ij)\n            force_ij = 24 * epsilon / sigma**6 * (2 * ((sigma/r_mag)**12) - (sigma/r_mag)**6) * r_ij\n            forces[i] += force_ij\n            forces[j] -= force_ij\n    return forces"
+    },
+    {
+      "problem_id": "scicode/51/51.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 77, in <module>\nAssertionError\n",
+      "wall_seconds": 25.168483124987688,
+      "generated_code": "import numpy as np\n\ndef velocity_verlet(sigma, epsilon, positions, velocities, dt, m):\n    forces = calculate_forces(positions, sigma, epsilon)\n    new_positions = positions + velocities * dt + 0.5 * forces * dt**2 / m\n    new_velocities = velocities + forces * dt / (2*m)\n    return new_positions, new_velocities\n\ndef calculate_forces(positions, sigma, epsilon):\n    N = len(positions)\n    forces = np.zeros((N, 3))\n    for i in range(N):\n        for j in range(i+1, N):\n            r = positions[i] - positions[j]\n            r_mag = np.linalg.norm(r)\n            force = (48 * epsilon / sigma**6) * ((sigma/r_mag)**12 - 0.5*(sigma/r_mag)**6)\n            forces[i] += force * r / r_mag\n    return forces"
+    },
+    {
+      "problem_id": "scicode/51/51.4",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 112, in <module>\nAssertionError\n",
+      "wall_seconds": 29.187759375025053,
+      "generated_code": "import numpy as np\n\ndef MD(init_positions, init_velocities, sigma, epsilon, m, dt, num_steps):\n    N = init_positions.shape[0]\n    curr_positions = init_positions.copy()\n    curr_velocities = init_velocities.copy()\n\n    for _ in range(num_steps):\n        forces = np.zeros((N, 3))\n        for i, j in itertools.combinations(range(N), 2):\n            r_ij = curr_positions[i] - curr_positions[j]\n            r_mag = np.linalg.norm(r_ij)\n            if r_mag > sigma:\n                continue\n            force = (48 * epsilon / sigma**12) * ((sigma/r_mag)**12 - 0.5*(sigma/r_mag)**6)\n            forces[i] += force * r_ij / r_mag\n            forces[j] -= force * r_ij / r_mag\n\n        curr_velocities += forces * dt / (2*m)\n        curr_positions += curr_velocities * dt\n        curr_velocities += forces * dt / (2*m)\n\n    return curr_positions, curr_velocities"
+    },
+    {
+      "problem_id": "scicode/70/70.1",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 23, in <module>\nAssertionError\n",
+      "wall_seconds": 30.43731129099615,
+      "generated_code": "import cmath\n\ndef pmns_mixing_matrix(s12, s23, s13, dCP):\n    U = [\n        [cmath.cos(s12)*cmath.cos(s13), cmath.sin(s12)*cmath.cos(s13), cmath.sin(s13)*cmath.exp(-dCP*1j)],\n        [-cmath.sin(s23)*cmath.sin(s13) - cmath.cos(s23)*cmath.cos(s13)*cmath.sin(s12)*cmath.exp(dCP*1j),\n         cmath.cos(s23)*cmath.cos(s13) + cmath.sin(s23)*cmath.sin(s13)*cmath.sin(s12)*cmath.exp(dCP*1j), cmath.sin(s23)*cmath.cos(s13)],\n        [cmath.sin(s23)*cmath.cos(s13) - cmath.cos(s23)*cmath.sin(s13)*cmath.sin(s12)*cmath.exp(dCP*1j),\n         -cmath.cos(s23)*cmath.cos(s13)*cmath.sin(s12) + cmath.sin(s23)*cmath.sin(s13)*cmath.sin(s12)*cmath.exp(dCP*1j), cmath.cos(s23)*cmath.cos(s13)]\n    ]\n    return U"
+    },
+    {
+      "problem_id": "scicode/70/70.2",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 59, in <module>\n  File \"<stdin>\", line 43, in hamiltonian_3nu\nTypeError: must be real number, not str\n",
+      "wall_seconds": 23.262818459013943,
+      "generated_code": "import cmath\n\ndef hamiltonian_3nu(s12, s23, s13, dCP, D21, D31):\n    U = [\n        [cmath.cos('theta12'), cmath.sin('theta12')*cmath.exp(cmath.j*dCP), 0],\n        [-cmath.sin('theta12')*cmath.exp(-cmath.j*dCP), cmath.cos('theta12'), s13*cmath.exp(cmath.j*dCP)],\n        [0, -s13*cmath.exp(-cmath.j*dCP), cmath.cos('theta23')]\n    ]\n    H = [\n        [0, 0, 0],\n        [0, D21/2, 0],\n        [0, 0, D31/2]\n    ]\n    return [(U[i][j]*H[j][k] + U[k][j]*H[i][k]) for i in range(3) for j in range(3) for k in range(3)]"
+    },
+    {
+      "problem_id": "scicode/70/70.3",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "IndexError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 81, in <module>\n  File \"<stdin>\", line 64, in hamiltonian_3nu_su3_coefficients\nIndexError: list index out of range\n",
+      "wall_seconds": 21.57275654101977,
+      "generated_code": "import cmath\n\ndef hamiltonian_3nu_su3_coefficients(hamiltonian):\n    H = [[complex(x, y) for x, y in zip(row[::2], row[1::2])] for row in hamiltonian]\n    hks = [\n        H[0][1].real,\n        -H[0][1].imag,\n        (H[0][0] - H[1][1]) / 2,\n        H[0][2].real,\n        -H[0][2].imag,\n        H[1][2].real,\n        -H[1][2].imag,\n        ((H[0][0] + H[1][1] - 2 * H[2][2]) / 6) * cmath.sqrt(3)\n    ]\n    return hks"
+    },
+    {
+      "problem_id": "scicode/70/70.4",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "AttributeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 100, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/numpy/__init__.py\", line 792, in __getattr__\n    raise AttributeError(f\"module {__name__!r} has no attribute {attr!r}\")\nAttributeError: module 'numpy' has no attribute 'anticommutator'\n",
+      "wall_seconds": 25.499398415966425,
+      "generated_code": "import numpy as np\n\ndef tensor_d(i, j, k):\n    lambda_matrices = np.array([[1, 0, 0], [0, 1, 0], [0, 0, -2/3]])\n    for n in range(1, 8):\n        lambda_matrices = np.append(lambda_matrices, [[0]*(n+1) + [1/(np.sqrt(2*n))]*2 + [0]*(7-n)], axis=0)\n    d_ijk = np.real(np.trace(np.anticommutator(lambda_matrices[i-1], lambda_matrices[j-1]) * lambda_matrices[k-1])) / 4\n    return d_ijk\n\n# Helper function to compute anticommutator\ndef anticommutator(a, b):\n    return (a @ b + b @ a) / 2\n\n# Test the function with given indices\n_target_0_0 = np.real(np.trace(np.anticommutator(lambda_matrices[7], lambda_matrices[7]) * lambda_matrices[7])) / 4\nassert np.allclose(tensor_d(8, 8, 8), _target_0_0)"
+    },
+    {
+      "problem_id": "scicode/70/70.5",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "SyntaxError",
+      "error_message": "  File \"<stdin>\", line 126\n    [0, 1/2, -1/2sqrt(3), 0, 0, 0, 0, 0],\n                ^\nSyntaxError: invalid decimal literal\n",
+      "wall_seconds": 29.212821958004497,
+      "generated_code": "import cmath\n\ndef star_product(i, h):\n    d_ijk = [\n        [0, 1/2, -1/2sqrt(3), 0, 0, 0, 0, 0],\n        [1/2, 0, 1/2, 0, 0, 0, 0, 0],\n        [-1/2sqrt(3), 1/2, 0, 0, 0, 0, 0, 0],\n        [0, 0, 0, 1/2, -1/2, 0, 0, 0],\n        [0, 0, 0, -1/2, 0, 1/2sqrt(3), 0, 0],\n        [0, 0, 0, 0, 1/2sqrt(3), 0, -1/2, 0],\n        [0, 0, 0, 0, 0, -1/2, 0, 1/2sqrt(3)],\n        [0, 0, 0, 0, 0, 0, 1/2sqrt(3), 0]\n    ]\n    product = sum(d_ijk[i][j] * h[j] * h[k] for j in range(8) for k in range(j+1, 8))\n    return product"
+    },
+    {
+      "problem_id": "scicode/70/70.7",
+      "codegen_name": "nanobrain_direct",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 184, in <module>\n  File \"<stdin>\", line 155, in evolution_operator_3nu_su3_coefficients\nValueError: not enough values to unpack (expected 9, got 3)\n",
+      "wall_seconds": 49.363574791990686,
+      "generated_code": "import numpy as np\nimport cmath\n\ndef evolution_operator_3nu_su3_coefficients(hamiltonian, L):\n    h0, h1, h2, h3, h4, h5, h6, h7, h8 = hamiltonian\n    u_list = []\n\n    # Calculate invariants\n    L2_h2 = L**2 * (h0**2 + h1**2 + h2**2 + h3**2 + h4**2 + h5**2 + h6**2 + h7**2 + h8**2)\n    L3_hijk = -L**3 * np.einsum('i,j,k,l->', hamiltonian, hamiltonian, hamiltonian, np.array([1, 0, 0, 0, 1, 0, 0, 0, 1]))\n\n    # Calculate eigenvalues\n    psi_m = [2*cmath.sqrt(h0**2 + h1**2 + h2**2) / 3 * cmath.cos((np.arccos(h8 / (h0**2 + h1**2 + h2**2)) + 2*m*np.pi)/3) for m in range(1, 4)]\n\n    # Calculate expansion coefficients\n    u0 = sum(cmath.exp(complex(0, L * psi_m)) for psi_m in psi_m) / 3\n    u_list.append(u0)\n\n    for k in range(8):\n        h_k = np.array([h0, h1, h2, h3, h4, h5, h6, h7, h8])[k]\n        h_h_k = np.einsum('i,j,k->', hamiltonian, hamiltonian, np.array([1, 0, 0, 0, 1, 0, 0, 0, 1]))[k]\n        u_k = sum(cmath.exp(complex(0, L * psi_m)) * (psi_m * h_k - h_h_k) / (3*psi_m**2 - h0**2 - h1**2 - h2**2) for psi_m in psi_m)\n        u_list.append(u_k)\n\n    return u_list"
+    }
+  ]
+}

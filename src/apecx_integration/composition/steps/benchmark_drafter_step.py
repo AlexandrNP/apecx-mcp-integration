@@ -369,6 +369,8 @@ class BenchmarkDrafterStep(BaseStep):
             entry_point=input_data.get("entry_point"),
             test_hint=input_data.get("test_hint"),
             function_signature=input_data.get("function_signature"),
+            previous_attempt=input_data.get("previous_attempt"),
+            critique=input_data.get("critique"),
         )
 
         model, base_url = _resolve_role_model(self._role)
@@ -398,7 +400,17 @@ class BenchmarkDrafterStep(BaseStep):
             self._max_tokens,
         )
 
-        return {"code_source": code_source}
+        # Passthrough fields: include inputs verbatim alongside
+        # ``code_source`` so a downstream reviewer/reviser step wired
+        # via a single DirectLink can read BOTH the generated code AND
+        # the original spec. Avoids inventing a context-assembly step.
+        return {
+            "code_source": code_source,
+            "code_spec": spec,
+            "entry_point": input_data.get("entry_point"),
+            "test_hint": input_data.get("test_hint"),
+            "function_signature": input_data.get("function_signature"),
+        }
 
     def _invoke_llm(self, *, user_message: str, model: str, base_url: str) -> str:
         llm = build_chat_llm(
@@ -431,6 +443,8 @@ class BenchmarkDrafterStep(BaseStep):
         entry_point: str | None,
         test_hint: str | None,
         function_signature: str | None,
+        previous_attempt: str | None = None,
+        critique: str | None = None,
     ) -> str:
         parts: list[str] = [spec.strip()]
         if function_signature:
@@ -439,6 +453,15 @@ class BenchmarkDrafterStep(BaseStep):
             parts.append(f"Define a function named ``{entry_point}``.")
         if test_hint:
             parts.append(f"Your code must satisfy:\n{test_hint.strip()}")
+        if previous_attempt:
+            parts.append(
+                "Your previous attempt (revise it; do NOT rewrite from "
+                "scratch):\n```python\n" + previous_attempt.strip() + "\n```"
+            )
+        if critique:
+            parts.append(
+                "Reviewer critique — address every point in your revision:\n" + critique.strip()
+            )
         return "\n\n".join(parts)
 
     @staticmethod
