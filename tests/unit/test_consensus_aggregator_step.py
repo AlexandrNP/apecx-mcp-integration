@@ -175,3 +175,21 @@ def test_output_schema(tmp_path):
     assert "n_samples" in out
     assert "voting_strategy" in out
     assert out["code_spec"] == "Write f"
+
+
+def test_task_category_passthrough(tmp_path):
+    # Regression pin: the integrated workflow depends on task_category
+    # surviving aggregator fan-in so a downstream memory recorder can
+    # write to the correct per-category bucket.
+    step = _stage(tmp_path)
+    out = asyncio.run(
+        step.process(
+            {
+                "candidates": [{"code_source": "def f(): return 1"}],
+                "code_spec": "Write f",
+                "entry_point": "f",
+                "task_category": "step",
+            }
+        )
+    )
+    assert out["task_category"] == "step"

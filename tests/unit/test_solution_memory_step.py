@@ -118,3 +118,42 @@ def test_examples_on_read_zero_disables_enrichment(tmp_path):
     out = asyncio.run(step.process({"code_spec": "x", "task_category": "step"}))
     assert out["memory_hit"] is False  # examples_on_read=0 means hit reported as False
     assert "CachedStep" not in out["code_spec"]
+
+
+def test_record_only_if_pass_blocks_when_no_consensus_pass(tmp_path):
+    """Integrated-workflow gate: with the flag on AND voted_passes==0,
+    the recorder MUST NOT persist (memory would accumulate noise)."""
+    step = _stage(tmp_path, yaml_extras="mode: record\nrecord_only_if_pass: true\n")
+    out = asyncio.run(
+        step.process(
+            {
+                "code_source": "def f(): pass",
+                "task_category": "step",
+                "voted_passes": 0,
+            }
+        )
+    )
+    assert out["recorded"] is False
+
+
+def test_record_only_if_pass_writes_when_consensus_passes(tmp_path):
+    """Gate-open path: voted_passes>=1 → recorder writes the solution."""
+    step = _stage(tmp_path, yaml_extras="mode: record\nrecord_only_if_pass: true\n")
+    out = asyncio.run(
+        step.process(
+            {
+                "code_source": "def f(): return 1",
+                "task_category": "step",
+                "voted_passes": 1,
+            }
+        )
+    )
+    assert out["recorded"] is True
+
+
+def test_record_only_if_pass_bypassed_when_signal_absent(tmp_path):
+    """Single-shot drafter compatibility: when voted_passes is not in
+    the input at all, the gate is bypassed (upstream presumed authoritative)."""
+    step = _stage(tmp_path, yaml_extras="mode: record\nrecord_only_if_pass: true\n")
+    out = asyncio.run(step.process({"code_source": "def f(): return 1", "task_category": "step"}))
+    assert out["recorded"] is True

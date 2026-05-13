@@ -116,6 +116,31 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             code_source_du_name="drafter_output",
             cascade_timeout_seconds=120.0,
         )
+    if name == "nanobrain_integrated_full":
+        # All three post-F17 components composed: router (worked
+        # examples) -> memory_reader -> multi_drafter (N=3, T=0.5)
+        # -> aggregator (AST voter) -> memory_recorder. Predicted to
+        # under-perform F17 on pass@1 (F18: multi_drafter regresses);
+        # useful for cross-run memory build-up + trigger-cascade
+        # stress + adoption demo.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_integrated_full"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="aggregator",
+            code_source_du_name="aggregator_output",
+            cascade_timeout_seconds=300.0,  # 6-node cascade w/ N=3 fan-out
+        )
     if name == "nanobrain_structural_consensus":
         # SGDe-style fan-out/fan-in scaffold: N samples at temp > 0
         # -> deterministic AST voter.
@@ -332,6 +357,7 @@ def main() -> int:
             "nanobrain_retrieval_grounded",
             "nanobrain_retrieval_grounded_mbpp",
             "nanobrain_structural_consensus",
+            "nanobrain_integrated_full",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

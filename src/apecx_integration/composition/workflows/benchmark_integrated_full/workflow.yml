@@ -1,0 +1,133 @@
+# benchmark_integrated_full -- combination of all three post-F17 components.
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep   (deterministic: classify + enrich)
+#       -> SolutionMemoryStep:read  (deterministic: lookup cached PASS, append to spec)
+#       -> MultiSampleDrafterStep   (LLM, N=3 at T=0.5)
+#       -> ConsensusAggregatorStep  (deterministic: AST validator vote)
+#       -> SolutionMemoryStep:record (deterministic: write winner if voted_passes>=1)
+#       -> workflow_output
+#
+# This workflow combines all three components shipped this session-arc:
+# the F17 router-with-worked-examples, structural consensus (SGDe-style
+# fan-out + deterministic vote), and persistent cross-problem memory
+# (MemFlow-style read+record bucketing per task category).
+#
+# Brutal-truth prediction
+# -----------------------
+# F18 showed multi_drafter at T=0.5 REGRESSES nanobrain-native by -10pp
+# vs F17 single-drafter at T=0. The integrated workflow's headline metric
+# is therefore unlikely to exceed F17's 80% on n=10 — the multi_drafter
+# remains the weak link. The memory component is a long-tail upgrade
+# (cache amortization needs >>n=10 problems per category to pay off).
+#
+# What this workflow IS useful for:
+#   * Stress-testing the framework's trigger cascade across 6 nodes.
+#   * Demonstrating that all three new components compose cleanly under
+#     `auto_transfer: true` discipline (no F11-style silent no-ops).
+#   * Producing real memory artifacts (the recorder writes; the next
+#     run reads — first cross-run benefit measurable at n>=20).
+#   * Adoption pitch: a single YAML that shows "router + memory +
+#     consensus + recorder" is one trigger-cascade away.
+#
+# Use `benchmark_retrieval_grounded` (the F17 winner) for the actual
+# 80% nanobrain-native operating point. This file is the COMBINATION
+# experiment, not the optimum.
+
+name: benchmark_integrated_full
+description: >
+  Full integrated scaffold: router -> memory_reader -> multi_drafter
+  -> aggregator -> memory_recorder. Predicted to underperform F17 on
+  pass@1; useful for trigger-cascade stress, cross-run memory build-up,
+  and adoption demonstration of component composability.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+  # The memory_recorder is a side-effect step; its status (recorded/
+  # category/store_size_after) is surfaced via this secondary port so
+  # the framework's data-flow integrity validator doesn't see an
+  # orphaned output. Benchmark sweeps can ignore this port; observability
+  # consumers (telemetry, tests) can read it.
+  workflow_recorder_status:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_recorder_status
+    persistent: false
+
+steps:
+  task_router_integrated:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  memory_reader:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_reader.yml"
+  multi_drafter:
+    class: "apecx_integration.composition.steps.multi_sample_drafter_step.MultiSampleDrafterStep"
+    config: "steps/multi_drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "steps/aggregator.yml"
+  memory_recorder:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_recorder.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_integrated.router_input
+      auto_transfer: true
+  router_to_memory_reader:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_integrated.router_output
+      target: memory_reader.memory_reader_input
+      auto_transfer: true
+  memory_reader_to_multi_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_reader.memory_reader_output
+      target: multi_drafter.multi_drafter_input
+      auto_transfer: true
+  multi_drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: multi_drafter.multi_drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_memory_recorder:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: memory_recorder.memory_recorder_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true
+  memory_recorder_to_status:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_recorder.memory_recorder_output
+      target: workflow_recorder_status
+      auto_transfer: true

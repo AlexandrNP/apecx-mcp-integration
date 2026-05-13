@@ -194,6 +194,8 @@ class ConsensusAggregatorStep(BaseStep):
             "entry_point": entry_point or None,
             "test_hint": input_data.get("test_hint"),
             "function_signature": input_data.get("function_signature"),
+            # Preserve routing context for downstream memory recorders.
+            "task_category": input_data.get("task_category"),
         }
 
     def _score_candidates(

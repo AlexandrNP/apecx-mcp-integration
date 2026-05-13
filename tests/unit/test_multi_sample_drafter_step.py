@@ -118,3 +118,13 @@ def test_output_schema(tmp_path, monkeypatch):
     assert out["code_spec"] == "Write f"
     assert out["entry_point"] == "f"
     assert out["test_hint"] == "assert f() == 1"
+
+
+def test_task_category_passthrough(tmp_path, monkeypatch):
+    # Regression pin: integrated workflow depends on task_category
+    # surviving the drafter fan-out -> aggregator fan-in -> recorder
+    # chain. A silent drop here defeats the per-category memory bucket.
+    step = _stage(tmp_path, yaml_extras="n_samples: 1\n")
+    _patch_llm(monkeypatch, ["```python\ndef a(): pass\n```"])
+    out = asyncio.run(step.process({"code_spec": "Write a step", "task_category": "step"}))
+    assert out["task_category"] == "step"

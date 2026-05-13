@@ -122,6 +122,21 @@ class SolutionMemoryStepConfig(StepConfig):
         ),
     )
 
+    record_only_if_pass: bool = Field(
+        default=False,
+        description=(
+            "In record mode, only persist when upstream signals at least "
+            "one passing candidate (``voted_passes >= 1``). When True and "
+            "``voted_passes`` is 0 in the input, the record is skipped with "
+            "``recorded=False`` (no warning — this is the explicit gate). "
+            "If ``voted_passes`` is absent from the input (e.g., upstream "
+            "is a single-shot drafter without the consensus signal), the "
+            "gate is bypassed (the upstream is presumed authoritative) — "
+            "this lets the recorder compose with both single and multi-"
+            "sample drafters."
+        ),
+    )
+
     @model_validator(mode="before")
     @classmethod
     def _strip_framework_keys(cls, data: Any) -> Any:
@@ -157,6 +172,7 @@ class SolutionMemoryStep(BaseStep):
             "store_path": config.store_path,
             "max_per_category": config.max_per_category,
             "examples_on_read": config.examples_on_read,
+            "record_only_if_pass": config.record_only_if_pass,
             "source_path": getattr(config, "source_path", None),
         }
 
@@ -170,6 +186,7 @@ class SolutionMemoryStep(BaseStep):
         self._mode: str = component_config["mode"]
         self._max_per_category: int = int(component_config["max_per_category"])
         self._examples_on_read: int = int(component_config["examples_on_read"])
+        self._record_only_if_pass: bool = bool(component_config["record_only_if_pass"])
 
         path_str = component_config.get("store_path")
         if path_str is None:
@@ -233,6 +250,18 @@ class SolutionMemoryStep(BaseStep):
                 self.name,
             )
             return {"recorded": False, "category": category, "store_size_after": 0}
+
+        # Optional gate: only record when upstream consensus signals a pass.
+        # ``voted_passes`` is emitted by ConsensusAggregatorStep. When absent
+        # (single-shot drafter), the gate is bypassed — see field docstring.
+        if self._record_only_if_pass and "voted_passes" in input_data:
+            voted = input_data.get("voted_passes") or 0
+            if int(voted) < 1:
+                return {
+                    "recorded": False,
+                    "category": category,
+                    "store_size_after": len((self._load_store_safe()).get(category, [])),
+                }
 
         store = self._load_store_safe()
         bucket = store.setdefault(category, [])
