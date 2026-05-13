@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "nanobrain_edge_case_then_code",
+  "model": null,
+  "limit": 10,
+  "pass_at_1": 0.1,
+  "passed": 1,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 9,
+    "pass": 1
+  },
+  "elapsed_seconds": 807.9039686250035,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 141.54192241700366,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "ModuleNotFoundError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 5, in <module>\nModuleNotFoundError: No module named 'nanobrain.utils'\n",
+      "wall_seconds": 90.34423262503697,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\nfrom nanobrain.utils.yaml import load_yaml\n\nclass ThresholdStepConfig(StepConfig):\n    threshold: float = 0.0\n\nclass ThresholdStep(BaseStep):\n    _config_class = ThresholdStepConfig\n\n    def __init__(self, config_path=None):\n        super().__init__(config_path)\n        self._threshold = self.config.threshold\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        return {\"above\": [x for x in items if x > self._threshold]}\n\n@BaseStep.register\nclass ThresholdStepLoader(BaseStep.Loader):\n    async def load(self, yaml_path: str) -> ThresholdStep:\n        config = load_yaml(yaml_path)\n        step_config = ThresholdStepConfig(**config.get(\"step\", {}))\n        return ThresholdStep(config=step_config)"
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 23, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of ConcatStep is prohibited. Use: ConcatStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 63.43743433302734,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass ConcatStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts = input_data.get(\"parts\", [])\n        sep = input_data.get(\"sep\", \"\")\n\n        if not isinstance(sep, str):\n            sep = \"\"\n\n        joined = sep.join(parts)\n        return {\"joined\": joined}\n\n    @classmethod\n    def from_config(cls, yaml_path: str) -> 'ConcatStep':\n        with open(yaml_path, 'r') as f:\n            config = yaml.safe_load(f)\n\n        step = cls(**config)\n        return step"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 68.71437658398645,
+      "generated_code": "from nanobrain.core.step import BaseStep\nfrom typing import Dict, List\n\nclass DedupePreserveOrderStep(BaseStep):\n    async def process(self, input_data: Dict[str, List], **kwargs) -> Dict[str, List]:\n        seen = set()\n        unique_items = []\n        for item in input_data[\"items\"]:\n            if item not in seen:\n                seen.add(item)\n                unique_items.append(item)\n        return {\"unique\": unique_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 29, in <module>\nNameError: name 'asyncio' is not defined. Did you forget to import 'asyncio'\n",
+      "wall_seconds": 71.09338849998312,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass DoubleStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        if not isinstance(input_data, dict) or 'n' not in input_data or not isinstance(input_data['n'], int):\n            return {\"error\": \"Invalid input. Expected {'n': int}\"}\n        doubled = input_data['n'] * 2\n        return {\"doubled\": doubled}\n\n    @classmethod\n    def from_config(cls, yaml_path: str) -> 'DoubleStep':\n        with open(yaml_path, 'r') as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n# Test cases\nasync def test_double_step():\n    ds = DoubleStep()\n    assert await ds.process({\"n\": 5}) == {\"doubled\": 10}\n    assert await ds.process({}) == {\"error\": \"Invalid input. Expected {'n': int}\"}\n    assert await ds.process(None) == {\"error\": \"Invalid input. Expected {'n': int}\"}\n    assert await ds.process({\"n\": \"five\"}) == {\"error\": \"Invalid input. Expected {'n': int}\"}\n    assert await ds.process({\"n\": 10**100}) == {\"doubled\": 2*(10**100)}\n\nasyncio.run(test_double_step())"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 25, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: <lambda>() missing 1 required positional argument: 'yaml_path'\n",
+      "wall_seconds": 40.191787541960366,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass FilterPositiveStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        positive_items = [x for x in items if isinstance(x, int) and x > 0]\n        return {\"positive\": positive_items}\n\nFilterPositiveStep.from_config = lambda self, yaml_path: FilterPositiveStep(yaml.safe_load(open(yaml_path)))"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 25, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: <lambda>() missing 1 required positional argument: 'yaml_path'\n",
+      "wall_seconds": 82.37795429199468,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass SumListStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        values = input_data.get(\"values\", [])\n        total = sum(values)\n        return {\"total\": float(total)}\n\nSumListStep.from_config = lambda cls, yaml_path: cls.load(yaml.safe_load(open(yaml_path)))"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 34, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: <lambda>() missing 1 required positional argument: 'yaml_path'\n",
+      "wall_seconds": 35.32939529197756,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass UpperStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        if 'text' not in input_data or not isinstance(input_data['text'], str):\n            return {\"output\": \"\"}\n        return {\"output\": input_data['text'].upper()}\n\nUpperStep.from_config = lambda self, yaml_path: UpperStep(yaml.safe_load(open(yaml_path)))"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of WordCountStep is prohibited. Use: WordCountStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 82.37487362499814,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass WordCountStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        count = len(text.split())\n        return {\"count\": count}"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 132.49797149997903,
+      "generated_code": ""
+    }
+  ]
+}

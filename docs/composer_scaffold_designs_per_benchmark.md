@@ -242,6 +242,35 @@ add the medium-priority alternatives.
 
 ---
 
+## Update after NN-1 + F14 — SC-1 likely diminishing returns
+
+NN-1 (runtime compliance) on nanobrain-native produced byte-for-byte
+identical revised code as the AST validator on the 3 hard problems
+— F14: the 70% ceiling is model-bound, not scaffold-bound. The
+analogous prediction for SC-1 (deps cheatsheet) on SciCode:
+
+* SciCode val failure breakdown (n=35): ~50% AssertionError
+  (correct shape, wrong values — scaffolds don't fix these);
+  ~30% numpy/scipy errors; ~20% other.
+* SC-1 targets the hallucinated-API subset of the ~30%
+  numpy/scipy bucket. Upper bound ~3pp absolute lift on n=35
+  (±9pp noise band) → within noise.
+* F14 strongly implies the reviser would IGNORE the cheatsheet
+  for AssertionError problems regardless.
+
+**Recommendation**: defer SC-1. The honest next plays are:
+
+1. Expand nanobrain-native from 10 → 20-25 problems with harder
+   categories so scaffolds can differentiate.
+2. N=3 on MBPP plan-then-code to firm up 78%.
+3. Test-driven scaffold v2 with problem-specific tests in
+   `meta.yml` (NOT the hidden `test_code`). Tests whether
+   executable feedback breaks F14's "model-bound" claim.
+4. Bigger drafter experiment (`nemotron-3-nano:30b-a3b` or
+   similar) to validate F14 against a larger model.
+
+---
+
 ## Brutal-truth open questions
 
 * Will NN-1 actually fix the 3 hard nanobrain-native problems? The

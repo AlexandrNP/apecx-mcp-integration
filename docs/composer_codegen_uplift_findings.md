@@ -301,7 +301,79 @@ shape-broken (none of the 7 step problems pre-revise; ALL of the
 3 hard ones) and the reviser's failure to fix the 3 hard ones
 proves the issue is upstream of LLM-reviewer reach.
 
-### F13 — Scaffold-vs-task fit, final summary
+### F14 — The 70% nanobrain-native ceiling is MODEL-bound, not scaffold-bound
+
+Three architecturally-different validators (LLM reviewer, AST static,
+runtime subprocess) all converge to 70% on nanobrain-native with
+byte-for-byte identical revised code on the 3 hard problems
+(builder, config, tool: 693c / 915c / 557c respectively under both
+AST-gated and runtime-gated). Same model, temp 0, same code_spec
+→ identical output regardless of critique source. The reviser
+**ignores** the critique on these problems.
+
+Implication: to break the 70% ceiling we need EITHER (a) bigger
+drafter, (b) problem-class-specific guidance with worked examples,
+OR (c) execution feedback (cheating on hidden test_code unless we
+author SEPARATE fixture tests).
+
+Adding more validators in series compounds latency without lifting
+the ceiling.
+
+### F15 — MB-1 (edge-case-then-code) regresses across all 3 benchmarks
+
+Confirms the F14 pattern AND adds a task-misfit example:
+
+| Bench | MB-1 | Best baseline | Δ |
+|---|---:|---:|---:|
+| MBPP n=20 | 65.0% | 78.0% (plan-then-code) | **-13pp** |
+| Nanobrain-native n=10 | 10.0% | 70.0% (rules-v2) | **-60pp** (catastrophic) |
+| SciCode val n=35 | 14.3% | 20.0% (direct) | -5.7pp |
+
+Why MBPP -13pp: edge-case enumeration is a WEAKER reasoning signal
+than full plan-then-code's step-by-step decomposition. Less work
+per problem = less lift.
+
+Why nanobrain-native -60pp: edge cases for "write UpperStep" are
+framework-irrelevant ("- empty string", "- non-ASCII characters").
+MB-1 omits rules-v2 by design (it was MBPP-tuned); without rules
+the drafter regresses to procedural-direct's 10% baseline.
+
+Why SciCode -5.7pp: edge cases are RIGHT direction for scientific
+code but don't compensate for missing domain knowledge of the
+specific numpy/scipy APIs the problem needs.
+
+**Joint implication of F14 + F15**: on mistral-nemo 12B at temp=0,
+**the scaffold space is essentially explored.** 7 scaffolds × 3
+benchmarks = 21 cells measured. None beat the per-benchmark
+best baseline:
+
+| Best operating point | Pass@1 | Status |
+|---|---:|---|
+| MBPP: nanobrain_plan_then_code v2 | **78.0%** | n=1 sweep |
+| SciCode validation: direct | **20.0%** | n=35, all scaffolds within ±3pp noise |
+| Nanobrain-native: nanobrain_direct_with_rules | **70.0%** | N=3 reproducible, spread 0.0pp |
+
+To break these ceilings the workspace would need ONE of:
+1. **Bigger drafter** (workspace policy says local-only; nemotron-
+   3-nano:30b-a3b-q4 is downloadable and is the natural test).
+2. **Retrieval-grounded codegen** (Z6 in the plan zoo) — bring in
+   API docs / framework code examples / curated similar-problem
+   solutions.
+3. **Multi-sample voting** (sample N candidates at temp > 0, score
+   each via hidden test, pick passing one — costs Nx compute).
+4. **Per-task-class curated prompts** (separate prompts for step
+   authoring vs tool authoring vs workflow YAML vs algorithmic
+   MBPP, each with worked examples).
+
+The adoption-relevant message: **ship task-routed scaffolds**.
+Direct nanobrain prompts → rules-v2 (70% reproducible). MBPP-style
+algorithmic prompts → plan-then-code (78%). SciCode-style domain
+code → direct (20%, no scaffold help available with current model).
+**Hybrid AST-gated** provides the reliability floor (no regression
+risk) at the cost of one extra LLM call; appropriate when
+adoption-reliability matters more than wall-time.
+
+### F16 — Scaffold-vs-task fit, final summary
 
 The full matrix of headline results so far:
 

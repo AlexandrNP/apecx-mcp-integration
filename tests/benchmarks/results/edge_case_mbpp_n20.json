@@ -1,0 +1,197 @@
+{
+  "dataset": "mbpp",
+  "codegen": "nanobrain_edge_case_then_code",
+  "model": null,
+  "limit": 20,
+  "pass_at_1": 0.65,
+  "passed": 13,
+  "total": 20,
+  "status_histogram": {
+    "pass": 13,
+    "fail_assertion": 5,
+    "fail_other": 2
+  },
+  "elapsed_seconds": 349.5062196670333,
+  "results": [
+    {
+      "problem_id": "mbpp/11",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 27.224418084020726,
+      "generated_code": "def remove_Occ(s, c):\n    if len(s) < 2 or s.count(c) < 2:\n        return s\n    return s.replace(c, '', 1).replace(c, '', -1)"
+    },
+    {
+      "problem_id": "mbpp/12",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 23.20143262500642,
+      "generated_code": "from typing import List\n\ndef sort_matrix(matrix: List[List[int]]) -> List[List[int]]:\n    if not matrix or all(not row for row in matrix):\n        return []\n    sums = [(sum(row), idx) for idx, row in enumerate(matrix)]\n    sums.sort()\n    sorted_matrix = [matrix[idx] for _, idx in sums]\n    return sorted_matrix"
+    },
+    {
+      "problem_id": "mbpp/14",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 20.538120249984786,
+      "generated_code": "import math\n\ndef find_Volume(base, height, length):\n    if not all(isinstance(i, (int, float)) for i in [base, height, length]) or any(i <= 0 for i in [base, height, length]):\n        return \"Invalid input\"\n    area = 0.5 * base * height\n    volume = area * length\n    return volume"
+    },
+    {
+      "problem_id": "mbpp/16",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 15.666884707985446,
+      "generated_code": "import re\n\ndef text_lowercase_underscore(s):\n    return bool(re.match(r'^[\\w_]+$', s)) and all(c.islower() for c in s)"
+    },
+    {
+      "problem_id": "mbpp/17",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 14.520309666986577,
+      "generated_code": "def square_perimeter(side):\n    if not isinstance(side, (int, float)) or side <= 0:\n        raise ValueError(\"Side length must be a positive number\")\n    return 4 * side"
+    },
+    {
+      "problem_id": "mbpp/18",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 18.066390125022735,
+      "generated_code": "def remove_dirty_chars(s, chars):\n    return ''.join(c for c in s if c not in chars)"
+    },
+    {
+      "problem_id": "mbpp/19",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.835298291989602,
+      "generated_code": "def test_duplicate(arr):\n    return len(set(arr)) != len(arr)"
+    },
+    {
+      "problem_id": "mbpp/20",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\nAssertionError\n",
+      "wall_seconds": 15.203607958042994,
+      "generated_code": "import math\n\ndef is_woodall(n):\n    if n <= 0 or not isinstance(n, int):\n        return False\n    return math.isqrt(n)**2 == n"
+    },
+    {
+      "problem_id": "mbpp/56",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.055561416957062,
+      "generated_code": "def check(n):\n    if isinstance(n, int) and n >= 0:\n        str_n = str(n)\n        reverse_str_n = str_n[::-1]\n        return n + 1 == 2 * int(reverse_str_n)\n    else:\n        return False"
+    },
+    {
+      "problem_id": "mbpp/57",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.97837620798964,
+      "generated_code": "from functools import reduce\n\ndef find_Max_Num(digits):\n    if not digits: return 0\n    return int(''.join(sorted(map(str, digits), reverse=True)))"
+    },
+    {
+      "problem_id": "mbpp/58",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\nNameError: name 'opposite_Signs' is not defined. Did you mean: 'opposite_signs'?\n",
+      "wall_seconds": 17.957677666970994,
+      "generated_code": "def opposite_signs(a, b):\n    return (a * b) < 0\n\n# Test cases\nassert opposite_signs(1, -2) == True\nassert opposite_signs(-3, 4) == True\nassert opposite_signs(0, 5) == False\nassert opposite_signs(-6, -7) == False\nassert opposite_signs(0, 0) == False"
+    },
+    {
+      "problem_id": "mbpp/59",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\nAssertionError\n",
+      "wall_seconds": 20.25280933297472,
+      "generated_code": "from math import floor\n\ndef is_octagonal(n):\n    if not isinstance(n, int) or n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    return floor((n * (3*n - 1)) / 2)"
+    },
+    {
+      "problem_id": "mbpp/61",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 18.69453129102476,
+      "generated_code": "def count_Substrings(s):\n    if not s: return 0\n    count = 0\n    for i in range(len(s)):\n        for j in range(i+1, len(s)+1):\n            substring = s[i:j]\n            if substring.isdigit() and sum(int(d) for d in substring) == len(substring):\n                count += 1\n    return count\n\nassert count_Substrings('112112') == 6"
+    },
+    {
+      "problem_id": "mbpp/62",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 13.023484499950428,
+      "generated_code": "def smallest_num(lst):\n    if not lst or not isinstance(lst[0], (int, float)):\n        return None\n    return min(lst)"
+    },
+    {
+      "problem_id": "mbpp/63",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 12, in <module>\n  File \"<stdin>\", line 9, in max_difference\n  File \"<stdin>\", line 9, in <genexpr>\nTypeError: can only concatenate tuple (not \"int\") to tuple\n",
+      "wall_seconds": 20.613173499994446,
+      "generated_code": "from typing import Tuple, List\n\ndef max_difference(tuples: List[Tuple[int]]) -> int:\n    if not tuples or len(tuples) < 2:\n        return 0\n    nums = sorted(set(sum(tup, ()) for tup in tuples))\n    return max(nums[i+1]-nums[i] for i in range(len(nums)-1)) if nums else 0\n\nassert max_difference([(3, 5), (1, 7), (10, 3), (1, 2)]) == 7"
+    },
+    {
+      "problem_id": "mbpp/64",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.34062858397374,
+      "generated_code": "def subject_marks(tuples_list):\n    return sorted(tuples_list, key=lambda x: x[1] if x[1] is not None else float('inf'))"
+    },
+    {
+      "problem_id": "mbpp/65",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 21.613652542000636,
+      "generated_code": "from typing import Union, List\n\ndef recursive_list_sum(lst: Union[int, float, str, List]) -> int:\n    if isinstance(lst, list):\n        return sum(recursive_list_sum(x) for x in lst)\n    elif isinstance(lst, (int, float)):\n        return lst\n    else:\n        raise TypeError(f\"Unsupported type {type(lst).__name__}\")"
+    },
+    {
+      "problem_id": "mbpp/66",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.656609957979526,
+      "generated_code": "def pos_count(lst):\n    return sum(1 for x in lst if x is not None and x > 0)"
+    },
+    {
+      "problem_id": "mbpp/67",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\nAssertionError\n",
+      "wall_seconds": 18.07943154097302,
+      "generated_code": "from math import comb\n\ndef bell_number(n):\n    if n < 0:\n        raise ValueError(\"Input cannot be negative\")\n    elif n == 0:\n        return 1\n    else:\n        return sum(comb(n, k) * comb(k + n - 1, k) for k in range(n))"
+    },
+    {
+      "problem_id": "mbpp/68",
+      "codegen_name": "nanobrain_edge_case_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 14, in <module>\nAssertionError\n",
+      "wall_seconds": 16.98225070902845,
+      "generated_code": "from typing import List\n\ndef is_Monotonic(arr: List[int]) -> bool:\n    if len(arr) < 2:\n        return True\n    direction = arr[1] - arr[0]\n    for i in range(2, len(arr)):\n        if (arr[i] - arr[i-1]) != direction and direction != 0:\n            return False\n    return True"
+    }
+  ]
+}
