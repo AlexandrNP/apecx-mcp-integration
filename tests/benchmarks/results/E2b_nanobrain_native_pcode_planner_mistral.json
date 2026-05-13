@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "nanobrain_plan_then_code",
+  "model": null,
+  "limit": 10,
+  "pass_at_1": 0.3,
+  "passed": 3,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 7,
+    "pass": 3
+  },
+  "elapsed_seconds": 229.85865883302176,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "ImportError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nImportError: cannot import name 'DataUnitChangeTrigger' from 'nanobrain.lightweight' (/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/lightweight/__init__.py)\n",
+      "wall_seconds": 47.66347433399642,
+      "generated_code": "from nanobrain.lightweight import WorkflowBuilder, DataUnitChangeTrigger, DirectLink\n\nclass UpperStep(BaseStep):\n    input_data_units = {\"text\": str}\n    output_data_units = {\"upper_text\": str}\n\n    async def process(self, data):\n        return {\"upper_text\": data[\"text\"].upper()}\n\nclass ReverseStep(BaseStep):\n    input_data_units = {\"reverse_text\": str}\n    output_data_units = {\"reversed_text\": str}\n\n    async def process(self, data):\n        return {\"reversed_text\": data[\"reverse_text\"][::-1]}\n\ndef build_workflow():\n    builder = WorkflowBuilder()\n    builder.add_step(\"upper\", \"__main__.UpperStep\")\n    builder.add_step(\"reverse\", \"__main__.ReverseStep\")\n    builder.add_link(\"upper.upper_output\", \"reverse.reverse_input\", link_type=\"direct\")\n    return builder.load()\n\nif __name__ == \"__main__\":\n    workflow = build_workflow()\n    asyncio.run(workflow.run({\"text\": \"hello\"}))"
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "NonZeroExit",
+      "error_message": "s/pydantic/_internal/_model_construction.py\", line 494, in inspect_namespace\n    raise PydanticUserError(\npydantic.errors.PydanticUserError: A non-annotated attribute was detected: `threshold = 0.0`. All model fields require a type annotation; if `threshold` is not meant to be a field, you may be able to resolve this error by annotating it as a `ClassVar` or updating `model_config['ignored_types']`.\n\nFor further information visit https://errors.pydantic.dev/2.13/u/model-field-missing-annotation\n",
+      "wall_seconds": 26.016289749997668,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\n\nclass ThresholdStepConfig(StepConfig):\n    threshold = float(0.0)\n\nclass ThresholdStep(BaseStep):\n    _config_class = ThresholdStepConfig\n\n    def __init__(self, config: dict):\n        super().__init__(config)\n        self._threshold = self.config.get('threshold', 0.0)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data['items']\n        return {'above': [x for x in items if x > self._threshold]}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of ConcatStep is prohibited. Use: ConcatStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 23.183340416988358,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass ConcatStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts, sep = input_data[\"parts\"], input_data[\"sep\"]\n        joined = sep.join(parts)\n        return {\"joined\": joined}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of DedupePreserveOrderStep is prohibited. Use: DedupePreserveOrderStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 23.77082941698609,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass DedupePreserveOrderStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data[\"items\"]\n        unique_items = list(dict.fromkeys(items))\n        return {\"unique\": unique_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 13.5490695409826,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DoubleStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        n = input_data[\"n\"]\n        return {\"doubled\": n * 2}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.074238749977667,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass FilterPositiveStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        return {\"positive\": [x for x in items if x > 0]}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "s/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of SumListStep is prohibited. Use: SumListStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 22.39140733302338,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass SumListStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        values = input_data.get(\"values\", [])\n        total = sum(values)\n        return {\"total\": total}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.520483875006903,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass UpperStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"output\": input_data[\"text\"].upper()}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of WordCountStep is prohibited. Use: WordCountStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 22.690724459011108,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass WordCountStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        count = len(text.split())\n        return {\"count\": count}"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "x-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 19, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of CalculatorTool is prohibited. Use: CalculatorTool.from_config(config_file_or_object)\n",
+      "wall_seconds": 22.998108458996285,
+      "generated_code": "from nanobrain.core.tool import ToolBase\nimport ast\n\nclass CalculatorTool(ToolBase):\n    async def execute(self, expression: str) -> dict:\n        try:\n            result = eval(expression, {}, {})\n            if not isinstance(result, (int, float)):\n                raise ValueError(\"Invalid arithmetic expression\")\n            return {\"result\": result}\n        except Exception as e:\n            raise ValueError(f\"Invalid arithmetic expression: {e}\")\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        return cls()"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "nanobrain_plan_then_code_with_rules",
+  "model": null,
+  "limit": 10,
+  "pass_at_1": 0.7,
+  "passed": 7,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 3,
+    "pass": 7
+  },
+  "elapsed_seconds": 425.86989937501494,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": false,
+      "error_class": "ImportError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nImportError: cannot import name 'BaseStep' from 'nanobrain.lightweight' (/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/lightweight/__init__.py)\n",
+      "wall_seconds": 84.07645383296767,
+      "generated_code": "from nanobrain.lightweight import WorkflowBuilder, BaseStep\n\nclass UpperStep(BaseStep):\n    COMPONENT_TYPE = \"upper\"\n\n    async def process(self, input_data: dict) -> dict:\n        return {\"text\": input_data[\"text\"].upper()}\n\nclass ReverseStep(BaseStep):\n    COMPONENT_TYPE = \"reverse\"\n\n    async def process(self, input_data: dict) -> dict:\n        return {\"text\": input_data[\"text\"][::-1]}\n\ndef build_workflow():\n    builder = WorkflowBuilder()\n    builder.add_step(\n        \"upper\",\n        \"__main__.UpperStep\",\n        input_data_units={\"text\": \"str\"},\n        output_data_units={\"text\": \"str\"},\n        triggers=[{\"type\": \"DataUnitChange\", \"du\": \"upper.text\"}]\n    )\n    builder.add_step(\n        \"reverse\",\n        \"__main__.ReverseStep\",\n        input_data_units={\"text\": \"str\"},\n        output_data_units={\"text\": \"str\"},\n        triggers=[{\"type\": \"DataUnitChange\", \"du\": \"reverse.text\"}]\n    )\n    builder.add_link(\"upper.text\", \"reverse.text\", link_type=\"direct\")\n    return builder.load()"
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 70.86277341697132,
+      "generated_code": "from nanobrain.core.step import StepConfig, BaseStep\n\nclass ThresholdStepConfig(StepConfig):\n    threshold: float = 0.0\n\nclass ThresholdStep(BaseStep):\n    COMPONENT_TYPE = \"threshold_step\"\n\n    @classmethod\n    def _get_config_class(cls):\n        return ThresholdStepConfig\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        above = [x for x in items if x > self.config.threshold]\n        return {\"above\": above}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 28.858222707989626,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass ConcatStep(BaseStep):\n    COMPONENT_TYPE = \"concat_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts = input_data[\"parts\"]\n        sep = input_data[\"sep\"]\n        return {\"joined\": sep.join(parts)}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 36.726278832997195,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DedupePreserveOrderStep(BaseStep):\n    COMPONENT_TYPE = \"dedupe_preserve_order\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        seen = set()\n        unique = []\n        for item in items:\n            if item not in seen:\n                seen.add(item)\n                unique.append(item)\n        return {\"unique\": unique}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 34.33738129097037,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DoubleStep(BaseStep):\n    COMPONENT_TYPE = \"double_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        n = input_data[\"n\"]\n        return {\"doubled\": n * 2}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 38.71702645800542,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass FilterPositiveStep(BaseStep):\n    COMPONENT_TYPE = \"filter_positive\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"positive\": [x for x in input_data[\"items\"] if x > 0]}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nNameError: name 'BaseStep' is not defined\n",
+      "wall_seconds": 24.450464666995686,
+      "generated_code": "from typing import Dict, List, Any\n\nclass SumListStep(BaseStep):\n    COMPONENT_TYPE = \"sum_list_step\"\n\n    async def process(self, input_data: Dict[str, Any], **kwargs) -> Dict[str, Any]:\n        values = input_data.get(\"values\", [])\n        total = sum(values)\n        return {\"total\": total}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 32.66596529097296,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass UpperStep(BaseStep):\n    COMPONENT_TYPE = \"upper_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\")\n        if not isinstance(text, str):\n            raise ValueError(\"text must be a string\")\n        return {\"output\": text.upper()}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 34.48221183300484,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass WordCountStep(BaseStep):\n    COMPONENT_TYPE = \"word_count_step\"\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        words = text.split()\n        return {\"count\": len(words)}"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "nanobrain_plan_then_code_with_rules",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "da3/lib/python3.12/asyncio/runners.py\", line 194, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/base_events.py\", line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in execute\nValueError: Invalid character\n",
+      "wall_seconds": 40.69255199999316,
+      "generated_code": "from nanobrain.core.tool import ToolBase\n\nclass CalculatorTool(ToolBase):\n    async def execute(self, expression: str) -> dict:\n        if not expression:\n            raise ValueError(\"Empty expression\")\n        allowed = set('+-*/() ')\n        if any(c not in allowed for c in expression):\n            raise ValueError(\"Invalid character\")\n        result = eval(expression, {}, {})\n        if not isinstance(result, (int, float)):\n            raise ValueError(\"Result not numeric\")\n        return {\"result\": result}"
+    }
+  ]
+}

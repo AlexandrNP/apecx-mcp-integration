@@ -1,0 +1,54 @@
+# E5 — plan-then-code + nanobrain_rules.md on the drafter.
+# Identical to benchmark_plan_then_code/workflow.yml; the only
+# difference is the drafter step's rules_file binding.
+
+name: benchmark_plan_then_code_with_rules
+description: >
+  E5: plan-then-code scaffold with nanobrain_rules.md appended to
+  the drafter's system prompt. Tests whether rules-v2 saturates
+  the lift or composes additively with plan-then-code.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  planner:
+    class: "apecx_integration.composition.steps.benchmark_planner_step.BenchmarkPlannerStep"
+    config: "steps/planner.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_planner:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: planner.planner_input
+      auto_transfer: true
+  planner_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: planner.planner_output
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

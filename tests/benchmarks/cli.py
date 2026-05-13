@@ -95,6 +95,25 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_plan_then_code_with_rules":
+        # E5 — plan-then-code with nanobrain_rules.md on the drafter.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_plan_then_code_with_rules"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="planner_input",
+            code_source_step_name="drafter",
+            code_source_du_name="drafter_output",
+        )
     if name == "nanobrain_plan_then_code":
         # CGU-P1-T6 second wrap: planner (nemotron-3-nano:4b) ->
         # drafter (mistral-nemo:latest). Two-stage scaffold via
@@ -156,6 +175,7 @@ def main() -> int:
             "nanobrain_direct",
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",
+            "nanobrain_plan_then_code_with_rules",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

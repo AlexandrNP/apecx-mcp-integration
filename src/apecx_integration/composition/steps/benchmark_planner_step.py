@@ -299,11 +299,21 @@ class BenchmarkPlannerStep(BaseStep):
 
     @staticmethod
     def _extract_plan(raw: str) -> str:
-        """Strip think blocks + any code fences (the drafter writes code,
-        not the planner; if the planner emits code it's noise)."""
+        """Strip think blocks from planner output.
+
+        We deliberately do NOT strip code fences here. 2026-05-13 E2
+        sweep proved that aggressive fence-stripping is a silent-
+        failure shape: when mistral-nemo (a code-trained model) sees
+        a programming task, it sometimes emits a code fence as its
+        "plan" even when the system prompt asks for prose. The old
+        implementation stripped the fence and returned ``""``, which
+        flowed into the framework's
+        ``ValueError: LLM returned empty plan`` path and then the
+        drafter never fired. Better to pass through whatever the
+        planner produced — even if it's code-shaped — than to lose
+        the whole problem to a silent settle-quiet cascade.
+        """
         cleaned = _THINK_BLOCK.sub("", raw)
-        # Remove any fenced blocks — planner output should be text only.
-        cleaned = _FENCE_PATTERN.sub("", cleaned)
         return cleaned.strip()
 
 

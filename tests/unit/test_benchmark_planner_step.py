@@ -88,14 +88,18 @@ def test_strips_think_blocks(tmp_path, monkeypatch):
     assert "1. Read input." in out["plan"]
 
 
-def test_strips_code_fences(tmp_path, monkeypatch):
-    """If the planner accidentally emits a code fence, we strip it.
-    The planner's job is plain text; fences are LLM drift."""
+def test_does_not_strip_code_fences(tmp_path, monkeypatch):
+    """Regression pin (2026-05-13): the planner used to strip code
+    fences, which silently emptied the plan when mistral-nemo (a
+    code-trained model) emitted a fence as its "plan". The new
+    contract: fences are passed through. Better to let the drafter
+    decide than to lose the whole problem to an empty-plan exception
+    that the framework's wait_for_cascade swallows."""
     step = _stage(tmp_path)
     response = "1. Parse.\n2. Process.\n3. Return.\n\n```python\ndef sample():\n    pass\n```\n"
     _patch_llm(monkeypatch, response)
     out = asyncio.run(step.process({"code_spec": "Sample task"}))
-    assert "def sample" not in out["plan"]
+    assert "def sample" in out["plan"], "regression: planner must NOT strip code fences"
     assert "1. Parse." in out["plan"]
 
 

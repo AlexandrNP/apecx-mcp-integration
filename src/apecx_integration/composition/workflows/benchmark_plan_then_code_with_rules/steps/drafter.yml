@@ -1,0 +1,28 @@
+# E5 — drafter stage WITH nanobrain_rules.md appended.
+
+class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+name: drafter
+description: "Drafter stage of E5 (rules + plan-then-code)."
+
+system_prompt_file: "../../../code_writing_prompts/benchmark_drafter_system.md"
+rules_file: "../../../code_writing_prompts/nanobrain_rules.md"
+
+role: drafter
+temperature: 0.0
+max_tokens: 1024
+
+input_data_units:
+  drafter_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: drafter_input
+    persistent: false
+
+output_data_units:
+  drafter_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: drafter_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "drafter_input"

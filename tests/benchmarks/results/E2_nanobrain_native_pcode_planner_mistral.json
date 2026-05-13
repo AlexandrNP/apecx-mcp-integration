@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "nanobrain_plan_then_code",
+  "model": null,
+  "limit": 10,
+  "pass_at_1": 0.1,
+  "passed": 1,
+  "total": 10,
+  "status_histogram": {
+    "fail_assertion": 9,
+    "pass": 1
+  },
+  "elapsed_seconds": 125.64346070896136,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 7, in <module>\nAssertionError: candidate did not define build_workflow()\n",
+      "wall_seconds": 29.007751458964776,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 16.58635866700206,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 11.368845374963712,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 11.08331520901993,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError: candidate did not define DoubleStep\n",
+      "wall_seconds": 5.570104916987475,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 6.337751417013351,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 10.035193459014408,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.680828250013292,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass UpperStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"output\": input_data[\"text\"].upper()}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 11.51053333299933,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 11, in <module>\nAssertionError\n",
+      "wall_seconds": 11.461993292032275,
+      "generated_code": ""
+    }
+  ]
+}
