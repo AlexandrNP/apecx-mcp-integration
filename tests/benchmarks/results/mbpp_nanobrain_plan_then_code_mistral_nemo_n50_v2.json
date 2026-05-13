@@ -1,0 +1,467 @@
+{
+  "dataset": "mbpp",
+  "codegen": "nanobrain_plan_then_code",
+  "model": null,
+  "limit": 50,
+  "pass_at_1": 0.78,
+  "passed": 39,
+  "total": 50,
+  "status_histogram": {
+    "fail_assertion": 8,
+    "pass": 39,
+    "fail_other": 3
+  },
+  "elapsed_seconds": 1158.773800458992,
+  "results": [
+    {
+      "problem_id": "mbpp/11",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 7, in <module>\nAssertionError\n",
+      "wall_seconds": 26.456059832999017,
+      "generated_code": "def remove_Occ(s, c):\n    return s[:s.index(c)] + s[s.rindex(c)+1:]"
+    },
+    {
+      "problem_id": "mbpp/12",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 16.151686208031606,
+      "generated_code": "from typing import List\n\ndef sort_matrix(matrix: List[List[int]]) -> List[List[int]]:\n    return sorted(matrix, key=sum)"
+    },
+    {
+      "problem_id": "mbpp/14",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 22.169821166957263,
+      "generated_code": "def find_Volume(base, height, prism_height):\n    from math import sqrt\n    return (base * height / 2) * prism_height\n\nassert find_Volume(10,8,6) == 240"
+    },
+    {
+      "problem_id": "mbpp/16",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 27.46013237501029,
+      "generated_code": "import re\n\ndef text_lowercase_underscore(s):\n    if not s or not re.match(r'^[a-z0-9_]+$', s):\n        return False\n    return bool(re.search(r'_([a-z])', s)) and '_' not in s[:2] and '_' != s[-1]"
+    },
+    {
+      "problem_id": "mbpp/17",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 18.823468291026074,
+      "generated_code": "def square_perimeter(side):\n    return 4 * side\n\nassert square_perimeter(10) == 40"
+    },
+    {
+      "problem_id": "mbpp/18",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 20.17748841602588,
+      "generated_code": "def remove_dirty_chars(s1, s2):\n    dirty = set(s2)\n    return ''.join(c for c in s1 if c not in dirty)\n\nassert remove_dirty_chars(\"probasscurve\", \"pros\") == 'bacuve'"
+    },
+    {
+      "problem_id": "mbpp/19",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 27.835643291007727,
+      "generated_code": "def test_duplicate(arr):\n    seen = set()\n    for num in arr:\n        if num in seen:\n            return True\n        seen.add(num)\n    return False"
+    },
+    {
+      "problem_id": "mbpp/20",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 42.01108058297541,
+      "generated_code": "import math\n\ndef is_woodall(x):\n    n = 0\n    while (n * pow(2, n)) - 1 <= x:\n        if (n * pow(2, n)) - 1 == x:\n            return True\n        n += 1\n    return False"
+    },
+    {
+      "problem_id": "mbpp/56",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 15.91790724999737,
+      "generated_code": "def check(n):\n    def reverse(n):\n        return int(str(n)[::-1])\n    return n == 2 * reverse(n) - 1\n\nassert check(70) == False"
+    },
+    {
+      "problem_id": "mbpp/57",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nNameError: name 'find_Max_Num' is not defined. Did you mean: 'find_max_num'?\n",
+      "wall_seconds": 12.655569584050681,
+      "generated_code": "from typing import List\n\ndef find_max_num(digits: List[int]) -> int:\n    return int(''.join(map(str, sorted(digits, reverse=True))))"
+    },
+    {
+      "problem_id": "mbpp/58",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.388279290986247,
+      "generated_code": "def opposite_Signs(a, b):\n    return a * b < 0"
+    },
+    {
+      "problem_id": "mbpp/59",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\nAssertionError\n",
+      "wall_seconds": 28.41389662498841,
+      "generated_code": "import math\n\ndef is_octagonal(k):\n    delta = 25 + 28 * k\n    if math.isqrt(delta)**2 != delta:\n        return False\n    n = (5 + math.isqrt(delta)) / 14\n    return isinstance(n, int) and n > 0\n\nassert is_octagonal(5) == True"
+    },
+    {
+      "problem_id": "mbpp/61",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 21.119160750007723,
+      "generated_code": "def count_Substrings(s):\n    s = list(map(int, str(s)))\n    count = 0\n    for i in range(len(s)):\n        for j in range(i+1, len(s)+1):\n            if sum(s[i:j]) == j-i:\n                count += 1\n    return count\n\nassert count_Substrings('112112') == 6"
+    },
+    {
+      "problem_id": "mbpp/62",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.630803500011098,
+      "generated_code": "def smallest_num(lst):\n    min_val = lst[0]\n    for num in lst[1:]:\n        if num < min_val:\n            min_val = num\n    return min_val\n\nassert smallest_num([10, 20, 1, 45, 99]) == 1"
+    },
+    {
+      "problem_id": "mbpp/63",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 28.60027487500338,
+      "generated_code": "def max_difference(tuples):\n    max_diff = 0\n    for t in tuples:\n        diff = max(t) - min(t)\n        max_diff = max(max_diff, diff)\n    return max_diff"
+    },
+    {
+      "problem_id": "mbpp/64",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 16.57447916601086,
+      "generated_code": "def subject_marks(tuples_list):\n    return sorted(tuples_list, key=lambda x: x[1])"
+    },
+    {
+      "problem_id": "mbpp/65",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.50519825000083,
+      "generated_code": "def recursive_list_sum(lst):\n    if not isinstance(lst, list):\n        return lst\n    else:\n        return sum(recursive_list_sum(x) for x in lst)"
+    },
+    {
+      "problem_id": "mbpp/66",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 14.160188957990613,
+      "generated_code": "def pos_count(lst):\n    count = 0\n    for num in lst:\n        if num > 0:\n            count += 1\n    return count"
+    },
+    {
+      "problem_id": "mbpp/67",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 25.46194283402292,
+      "generated_code": "from math import comb\n\ndef bell_number(n):\n    bells = [1]\n    for i in range(1, n+1):\n        bells.append(sum(comb(i-1, k) * bells[k] for k in range(i)))\n    return bells[n]"
+    },
+    {
+      "problem_id": "mbpp/68",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 25.417248208017554,
+      "generated_code": "def is_Monotonic(arr):\n    increasing = decreasing = True\n    for i in range(1, len(arr)):\n        if arr[i] < arr[i-1]:\n            increasing = False\n        if arr[i] > arr[i-1]:\n            decreasing = False\n        if not increasing and not decreasing:\n            return False\n    return True"
+    },
+    {
+      "problem_id": "mbpp/69",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 30.700000957993325,
+      "generated_code": "def is_sublist(list_a, sublist_b):\n    if not sublist_b:\n        return True\n    for i in range(len(list_a) - len(sublist_b) + 1):\n        if list_a[i:i+len(sublist_b)] == sublist_b:\n            return True\n    return False"
+    },
+    {
+      "problem_id": "mbpp/70",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 21.137682542030234,
+      "generated_code": "def get_equal(tuples):\n    return len(tuples) == 0 or all(len(t) == len(tuples[0]) for t in tuples)"
+    },
+    {
+      "problem_id": "mbpp/71",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 18, in <module>\nAssertionError\n",
+      "wall_seconds": 24.833738416957203,
+      "generated_code": "def comb_sort(lst):\n    gap = len(lst) // 2 + 1\n    swapped = True\n\n    while gap > 0 or swapped:\n        swapped = False\n        for i in range(len(lst) - gap):\n            if lst[i] > lst[i + gap]:\n                lst[i], lst[i + gap] = lst[i + gap], lst[i]\n                swapped = True\n        gap //= 2\n\n    return lst"
+    },
+    {
+      "problem_id": "mbpp/72",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 35.85591508296784,
+      "generated_code": "def dif_Square(n):\n    return n % 4 != 2\n\nassert dif_Square(5) == True"
+    },
+    {
+      "problem_id": "mbpp/74",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nNameError: name 'is_samepatterns' is not defined. Did you mean: 'is_same_patterns'?\n",
+      "wall_seconds": 25.374747166992165,
+      "generated_code": "from typing import List\n\ndef is_same_patterns(patterns: List[str], sequence: List[str]) -> bool:\n    return patterns == sequence"
+    },
+    {
+      "problem_id": "mbpp/75",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 19.78595391701674,
+      "generated_code": "from typing import List, Tuple\n\ndef find_tuples(tuples: List[Tuple[int]], k: int) -> List[Tuple[int]]:\n    return [t for t in tuples if all(e % k == 0 for e in t)]"
+    },
+    {
+      "problem_id": "mbpp/77",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 19.23077991703758,
+      "generated_code": "def is_Diff(n):\n    return n % 11 == 0"
+    },
+    {
+      "problem_id": "mbpp/79",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 20.30312125000637,
+      "generated_code": "def word_len(word):\n    return len(word) % 2 == 0"
+    },
+    {
+      "problem_id": "mbpp/80",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.296140040969476,
+      "generated_code": "def tetrahedral_number(n):\n    import math\n    if not isinstance(n, int) or n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    return n * (n + 1) * (n + 2) // 6\n\nassert tetrahedral_number(5) == 35"
+    },
+    {
+      "problem_id": "mbpp/82",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.660516750009265,
+      "generated_code": "import math\n\ndef volume_sphere(r):\n    return (4/3) * math.pi * r**3"
+    },
+    {
+      "problem_id": "mbpp/83",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 13.509599666984286,
+      "generated_code": "def get_Char(s):\n    return chr(sum(ord(c) for c in s) % 26)"
+    },
+    {
+      "problem_id": "mbpp/84",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "codegen_RuntimeError",
+      "error_message": "workflow workflow.yml: cascade did not drain within 120.0s \u2014 trigger hang or LLM call exceeded budget",
+      "wall_seconds": 136.5443247500225,
+      "generated_code": ""
+    },
+    {
+      "problem_id": "mbpp/85",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 21.780324333056342,
+      "generated_code": "import math\n\ndef surfacearea_sphere(r):\n    return 4 * math.pi * r ** 2\n\nassert math.isclose(surfacearea_sphere(10), 1256.6370614359173, rel_tol=0.001)"
+    },
+    {
+      "problem_id": "mbpp/86",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 19.26443354098592,
+      "generated_code": "def centered_hexagonal_number(n):\n    return 3 * n * (n - 1) + 1\n\nassert centered_hexagonal_number(10) == 271"
+    },
+    {
+      "problem_id": "mbpp/87",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\nAssertionError\n",
+      "wall_seconds": 19.580690792005043,
+      "generated_code": "def merge_dictionaries_three(dict1, dict2, dict3):\n    result = {}\n    for d in (dict1, dict2, dict3):\n        result.update(d)\n    return result"
+    },
+    {
+      "problem_id": "mbpp/88",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 11.527231250016484,
+      "generated_code": "from collections import Counter\n\ndef freq_count(lst):\n    return dict(Counter(lst))"
+    },
+    {
+      "problem_id": "mbpp/89",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 22.971623833000194,
+      "generated_code": "def closest_num(n):\n    return n - 1\n\nassert closest_num(11) == 10"
+    },
+    {
+      "problem_id": "mbpp/90",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 14.549282707972452,
+      "generated_code": "def len_log(words):\n    max_len = 0\n    for word in words:\n        max_len = max(max_len, len(word))\n    return max_len"
+    },
+    {
+      "problem_id": "mbpp/91",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 20.250858124985825,
+      "generated_code": "def find_substring(strings, substring):\n    for s in strings:\n        if substring in s:\n            return True\n    return False\n\nassert find_substring([\"red\", \"black\", \"white\", \"green\", \"orange\"], \"ack\") == True"
+    },
+    {
+      "problem_id": "mbpp/92",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 19.270167458977085,
+      "generated_code": "def is_undulating(n):\n    s = str(n)\n    return len(s) >= 2 and all(x == y or x != y for x, y in zip(s, s[1:]))"
+    },
+    {
+      "problem_id": "mbpp/93",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.32200795802055,
+      "generated_code": "def power(a, b):\n    return a ** b\n\nassert power(3, 4) == 81"
+    },
+    {
+      "problem_id": "mbpp/94",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 22.03811299998779,
+      "generated_code": "def index_minimum(tuples):\n    return min(tuples, key=lambda t: t[1])[0]"
+    },
+    {
+      "problem_id": "mbpp/95",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.088932790968101,
+      "generated_code": "def Find_Min_Length(lst):\n    return min(len(x) for x in lst)"
+    },
+    {
+      "problem_id": "mbpp/96",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 20.910920082998928,
+      "generated_code": "import math\n\ndef divisor(n):\n    count = 0\n    for i in range(1, int(math.sqrt(n)) + 1):\n        if n % i == 0:\n            count += 1\n            if i != math.sqrt(n):\n                count += 1\n    return count"
+    },
+    {
+      "problem_id": "mbpp/97",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 12.663740957970731,
+      "generated_code": "from collections import Counter\n\ndef frequency_lists(lst):\n    flattened = [item for sublist in lst for item in sublist]\n    return dict(Counter(flattened))"
+    },
+    {
+      "problem_id": "mbpp/98",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 26.302905125019606,
+      "generated_code": "from functools import reduce\nimport operator\n\ndef multiply_num(numbers):\n    product = reduce(operator.mul, numbers)\n    return product / len(numbers)\n\nassert abs(multiply_num((8, 2, 3, -1, 7)) - (-67.2)) < 0.001"
+    },
+    {
+      "problem_id": "mbpp/99",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 17.93961333396146,
+      "generated_code": "def decimal_to_binary(n):\n    if n == 0:\n        return '0'\n    elif n > 0:\n        binary = ''\n        while n > 0:\n            binary = str(n % 2) + binary\n            n //= 2\n        return binary.lstrip('0') or '0'"
+    },
+    {
+      "problem_id": "mbpp/100",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 17, in <module>\nAssertionError\n",
+      "wall_seconds": 27.593624708009884,
+      "generated_code": "def next_smallest_palindrome(n):\n    s = str(n)\n    l, r = 0, len(s) - 1\n    while r > l:\n        if s[l] < s[r]:\n            break\n        l += 1\n        r -= 1\n    else:\n        return int(s)\n    res = [s[i] for i in range(l + 1)] + [s[l]] + [s[-i - 1] for i in range(r, l - 1, -1)]\n    res[l] = str(int(res[l]) + 1)\n    return int(''.join(res))"
+    },
+    {
+      "problem_id": "mbpp/101",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 16.955206124985125,
+      "generated_code": "def kth_element(arr, k):\n    if not arr or k < 1 or k > len(arr):\n        return None\n    return arr[k - 1]"
+    },
+    {
+      "problem_id": "mbpp/102",
+      "codegen_name": "nanobrain_plan_then_code",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 16.59813141700579,
+      "generated_code": "def snake_to_camel(s):\n    return ''.join(word.capitalize() for word in s.split('_'))\n\n# assert snake_to_camel('python_program') == 'PythonProgram'"
+    }
+  ]
+}

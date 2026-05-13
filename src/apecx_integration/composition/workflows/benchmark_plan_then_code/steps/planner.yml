@@ -1,0 +1,39 @@
+# BenchmarkPlannerStep wrapper for the benchmark_plan_then_code workflow.
+#
+# Reads {code_spec, entry_point?, test_hint?, function_signature?},
+# emits {code_spec: <enriched>, plan, ...passthrough}.
+#
+# role: planner -> nemotron-3-nano:4b by default (model_roles.planner
+# in composer_config.yml).
+
+class: "apecx_integration.composition.steps.benchmark_planner_step.BenchmarkPlannerStep"
+name: planner
+description: "Numbered-plan stage of the plan-then-code scaffold."
+
+system_prompt_file: "../../../code_writing_prompts/benchmark_planner_system.md"
+
+role: planner
+temperature: 0.0
+max_tokens: 1024
+
+input_data_units:
+  planner_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: planner_input
+    description: >
+      Dict {code_spec: str, entry_point?: str, test_hint?: str,
+      function_signature?: str}. Mirrors the BenchmarkProblem shape.
+    persistent: false
+
+output_data_units:
+  planner_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: planner_output
+    description: >
+      Dict {code_spec: <original + plan>, plan, entry_point,
+      test_hint, function_signature}. Consumed by drafter.drafter_input.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "planner_input"

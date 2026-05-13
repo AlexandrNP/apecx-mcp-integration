@@ -103,6 +103,14 @@ def make_nanobrain_workflow_codegen(
             "data_flow_initiated",
             "completed",
         ):
+            # Cache poisoned — drop it so the NEXT problem rebuilds.
+            # 2026-05-12 plan-then-code n=50 sweep: a single hang at
+            # mbpp/84 poisoned the cached workflow's cascade state,
+            # causing mbpp/85-94 to all hang the same way (12/50
+            # codegen_RuntimeError cluster). Without cache reset, one
+            # bad LLM call would cascade-fail the entire sweep tail.
+            state["wf"] = None
+            state["loop"] = None
             raise RuntimeError(
                 f"workflow {workflow_yaml.name}: process() returned unexpected "
                 f"envelope {init_result!r}"
@@ -110,6 +118,9 @@ def make_nanobrain_workflow_codegen(
 
         drained = await wf.wait_for_cascade(timeout=cascade_timeout_seconds, settle_ms=100)
         if not drained:
+            # Same cache-poisoning guard — see comment above.
+            state["wf"] = None
+            state["loop"] = None
             raise RuntimeError(
                 f"workflow {workflow_yaml.name}: cascade did not drain "
                 f"within {cascade_timeout_seconds}s — trigger hang or "

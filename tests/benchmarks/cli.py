@@ -62,11 +62,6 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         return make_plan_then_code_codegen(drafter_model=model, base_url=base_url)
     if name == "nanobrain_direct":
         # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
-        # Same prompt + model as ``direct`` but routed through a real
-        # Workflow.from_config + DataUnitChangeTrigger cascade. The
-        # wrap should land within ±5pp of the procedural direct at
-        # n=50 (per plan AC); larger drift indicates a wrap bug, not
-        # framework overhead.
         from pathlib import Path  # noqa: PLC0415
 
         yaml_path = (
@@ -79,6 +74,29 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_plan_then_code":
+        # CGU-P1-T6 second wrap: planner (nemotron-3-nano:4b) ->
+        # drafter (mistral-nemo:latest). Two-stage scaffold via
+        # nanobrain DirectLink chain. The first step's input DU is
+        # ``planner_input``; the final code lives in
+        # ``drafter.drafter_output``.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_plan_then_code"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="planner_input",
+            code_source_step_name="drafter",
+            code_source_du_name="drafter_output",
+        )
     raise SystemExit(f"unknown codegen: {name!r}")
 
 
@@ -111,7 +129,12 @@ def main() -> int:
     parser.add_argument(
         "--codegen",
         default="direct",
-        choices=["direct", "plan_then_code", "nanobrain_direct"],
+        choices=[
+            "direct",
+            "plan_then_code",
+            "nanobrain_direct",
+            "nanobrain_plan_then_code",
+        ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "
             "procedural; ``nanobrain_direct`` is the framework-native "

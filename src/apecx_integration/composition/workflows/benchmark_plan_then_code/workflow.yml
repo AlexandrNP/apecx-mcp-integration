@@ -1,0 +1,80 @@
+# benchmark_plan_then_code — two-stage scaffold (CGU-P1-T6 second wrap).
+#
+# planner (nemotron-3-nano:4b) emits a numbered plan; drafter
+# (mistral-nemo:latest) reads the original prompt + the plan and
+# emits code. The plan-then-code scaffold is intervention A in the
+# §4 plan; this YAML is the framework-native equivalent of the
+# procedural tests/benchmarks/codegen/plan_then_code.py.
+#
+# Topology:
+#
+#   planner_input ({code_spec, entry_point, test_hint, function_signature})
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   planner (BenchmarkPlannerStep, role: planner)
+#       │ output: {code_spec: <enriched with plan>, plan, ...}
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   drafter (BenchmarkDrafterStep, role: drafter)
+#       │ (DirectLink, auto_transfer: true)
+#       ▼
+#   workflow_output ({code_source: str})
+
+name: benchmark_plan_then_code
+description: >
+  Plan-then-code scaffold: nemotron-3-nano:4b emits a short numbered
+  plan, then mistral-nemo:latest reads the enriched spec and emits
+  the final code. Framework-native counterpart of the procedural
+  tests/benchmarks/codegen/plan_then_code.py.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Benchmark problem dict; required by the framework integrity
+      validator. Runtime-side, Workflow.process writes to planner_input
+      directly (see tests/benchmarks/codegen/nanobrain_workflow.py).
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: "Dict {code_source: str} from the drafter stage."
+    persistent: false
+
+steps:
+  planner:
+    class: "apecx_integration.composition.steps.benchmark_planner_step.BenchmarkPlannerStep"
+    config: "steps/planner.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_planner:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: planner.planner_input
+      auto_transfer: true
+
+  planner_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: planner.planner_output
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

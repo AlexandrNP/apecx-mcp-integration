@@ -173,6 +173,22 @@ class BenchmarkDrafterStepConfig(StepConfig):
     temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     max_tokens: int = Field(default=1024, ge=64)
 
+    request_timeout_seconds: float = Field(
+        default=60.0,
+        ge=1.0,
+        description=(
+            "Hard wall-clock cap on a single LLM HTTP call. The framework's "
+            "Workflow.wait_for_cascade does NOT hard-cap LLM calls — its "
+            "timeout is a settle-quiet probe, not a request budget. Without "
+            "a request-level timeout, a thinking-token model (nemotron, "
+            "deepseek-r1) emitting endless ``<think>`` blocks can hang a "
+            "sweep for 5+ minutes per problem. 60s default is generous for "
+            "drafters; planners on small thinking models should drop this "
+            "to 45s. Source: 2026-05-12 plan-then-code n=50 sweep, where "
+            "mbpp/84-94 each hung ~420s under the 120s cascade timeout."
+        ),
+    )
+
     @model_validator(mode="before")
     @classmethod
     def _strip_framework_keys(cls, data: Any) -> Any:
@@ -218,6 +234,7 @@ class BenchmarkDrafterStep(BaseStep):
             "role": config.role,
             "temperature": config.temperature,
             "max_tokens": config.max_tokens,
+            "request_timeout_seconds": config.request_timeout_seconds,
             "source_path": getattr(config, "source_path", None),
         }
 
@@ -250,6 +267,7 @@ class BenchmarkDrafterStep(BaseStep):
         self._role: str = component_config["role"]
         self._temperature: float = float(component_config["temperature"])
         self._max_tokens: int = int(component_config["max_tokens"])
+        self._request_timeout_seconds: float = float(component_config["request_timeout_seconds"])
 
     @staticmethod
     def _resolve_prompt_path(configured: str | None, source_path: str | None) -> Path:
@@ -336,6 +354,7 @@ class BenchmarkDrafterStep(BaseStep):
             max_tokens=self._max_tokens,
             model=model,
             base_url=base_url,
+            request_timeout=self._request_timeout_seconds,
         )
         from langchain_core.messages import HumanMessage, SystemMessage  # noqa: PLC0415
 
