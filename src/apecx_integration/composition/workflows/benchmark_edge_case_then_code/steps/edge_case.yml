@@ -1,0 +1,26 @@
+class: "apecx_integration.composition.steps.benchmark_edge_case_step.BenchmarkEdgeCaseStep"
+name: edge_case_agent
+description: "Edge-case enumerator stage (planner-class model)."
+
+system_prompt_file: "../../../code_writing_prompts/benchmark_edge_case_system.md"
+
+role: planner
+temperature: 0.0
+max_tokens: 512
+request_timeout_seconds: 45.0
+
+input_data_units:
+  edge_case_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: edge_case_input
+    persistent: false
+
+output_data_units:
+  edge_case_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: edge_case_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "edge_case_input"

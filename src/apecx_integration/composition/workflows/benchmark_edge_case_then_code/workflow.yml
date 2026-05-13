@@ -1,0 +1,67 @@
+# benchmark_edge_case_then_code — MB-1 from
+# composer_scaffold_designs_per_benchmark.md.
+#
+# Two-step scaffold tuned for MBPP-class algorithmic problems:
+#   edge_case_agent (LLM, small model)
+#       → drafter (LLM, large model)
+#       → workflow_output
+#
+# The edge-case agent enumerates 2-5 edge cases. Its output enriches
+# the drafter's code_spec (same pattern as the planner stage in
+# benchmark_plan_then_code).
+#
+# Predicted lift on MBPP: +2-5pp over wrapped direct by reducing the
+# "model handled happy path, missed edge case" failure shape.
+
+name: benchmark_edge_case_then_code
+description: >
+  Edge-case enumerator + drafter. The edge-case agent enriches the
+  drafter's prompt with 2-5 edge cases derived from the problem
+  statement.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  edge_case_agent:
+    class: "apecx_integration.composition.steps.benchmark_edge_case_step.BenchmarkEdgeCaseStep"
+    config: "steps/edge_case.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_edge_case:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: edge_case_agent.edge_case_input
+      auto_transfer: true
+
+  edge_case_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: edge_case_agent.edge_case_output
+      target: drafter.drafter_input
+      auto_transfer: true
+
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

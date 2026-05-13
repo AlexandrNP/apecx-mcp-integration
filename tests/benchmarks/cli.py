@@ -95,6 +95,28 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             / "workflow.yml"
         )
         return make_nanobrain_workflow_codegen(yaml_path)
+    if name == "nanobrain_edge_case_then_code":
+        # MB-1 from composer_scaffold_designs_per_benchmark.md.
+        # Edge-case enumerator (small LLM) -> drafter (large LLM).
+        # Tuned for MBPP-class algorithmic problems.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_edge_case_then_code"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="edge_case_input",
+            code_source_step_name="drafter",
+            code_source_du_name="drafter_output",
+            cascade_timeout_seconds=120.0,
+        )
     if name == "nanobrain_runtime_gated_review_revise":
         # NN-1: hybrid scaffold with RUNTIME compliance probe (no
         # LLM in the validator). Catches runtime failure shapes
@@ -241,6 +263,7 @@ def main() -> int:
             "nanobrain_review_revise",
             "nanobrain_ast_gated_review_revise",
             "nanobrain_runtime_gated_review_revise",
+            "nanobrain_edge_case_then_code",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "
