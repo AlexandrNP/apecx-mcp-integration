@@ -86,24 +86,31 @@ links:
       target: validator.validator_input
       auto_transfer: true
 
-  # Conditional pass: validator says decision == 'pass' → straight
-  # to workflow_output. The candidate is already correct; reviser
-  # NEVER fires for these problems (preserving the rules-v2 floor).
-  validator_pass_to_output:
-    class: "nanobrain.core.link.ConditionalLink"
+  # ALWAYS transfer validator output to workflow_output. This gives
+  # us the "pass" path for free -- when the validator decides pass,
+  # workflow_output holds the validator's dict (which includes
+  # code_source = original drafter candidate). When the validator
+  # decides fix, this write still fires first but then gets
+  # OVERWRITTEN by reviser_to_output below.
+  #
+  # We use DirectLink (not ConditionalLink) here because the
+  # ConditionalLink-to-workflow-level-DU path silently no-ops in
+  # the current framework (2026-05-13 discovery: workflow_output
+  # stays None even when the predicate matches and auto_transfer
+  # is true). DirectLink-to-workflow-level-DU is the proven path
+  # (rag_e2e_synthesis uses it).
+  validator_to_output:
+    class: "nanobrain.core.link.DirectLink"
     config:
-      link_type: conditional
+      link_type: direct
       source: validator.validator_output
       target: workflow_output
-      condition:
-        op: eq
-        field: decision
-        value: pass
       auto_transfer: true
 
-  # Conditional fix: validator says decision == 'fix' → route to
-  # reviser. The reviser sees the drafter's previous_attempt + the
-  # validator's deterministic critique.
+  # Conditional: only invoke the reviser when decision == 'fix'.
+  # The reviser sees the drafter's previous_attempt + the validator's
+  # deterministic critique. When decision == 'pass', this link does
+  # not fire and the reviser never runs (LLM cost saved).
   validator_fix_to_reviser:
     class: "nanobrain.core.link.ConditionalLink"
     config:
@@ -116,6 +123,7 @@ links:
         value: fix
       auto_transfer: true
 
+  # Reviser output overwrites workflow_output when the reviser ran.
   reviser_to_output:
     class: "nanobrain.core.link.DirectLink"
     config:
