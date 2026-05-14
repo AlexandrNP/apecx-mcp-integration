@@ -1,0 +1,54 @@
+# alignment_report_aurora — the "use the result" step of
+# rhea_muscle_alignment_aurora.
+#
+# This is a copy of ../../rhea_muscle_alignment/steps/alignment_report.yml
+# with ONE addition: an `executor_config:` block that binds this step to a
+# GlobusComputeExecutor so its process() runs on an Aurora-hosted Globus
+# Compute endpoint instead of locally.
+#
+# The `executor_config:` uses the `class:` + `config:` indirection pattern
+# (NOT an inline dict) because StepConfig.executor_config is typed
+# Optional[ExecutorConfig], and ExecutorConfig — a ConfigBase subclass —
+# forbids inline-dict construction. The referenced ExecutorConfig file
+# carries the ${AURORA_GC_ENDPOINT_ID:-unset} env interpolation.
+#
+# Step owns its data units + trigger; the workflow owns the links.
+
+class: "apecx_integration.composition.steps.alignment_report_step.AlignmentReportStep"
+name: alignment_report
+description: >
+  Parse the MUSCLE alignment and produce a summary with sequence count,
+  alignment length, and per-sequence gap fractions. Runs on an Aurora
+  Globus Compute endpoint via the step-level executor_config binding.
+
+# MUSCLE's FASTA alignment output file is named 'out_align'.
+alignment_file_key: "out_align"
+
+# Step-level executor binding (framework feature: BaseStep.resolve_dependencies
+# precedence #2). Builds a GlobusComputeExecutor and dispatches this step's
+# process() to the configured Aurora endpoint.
+executor_config:
+  class: "nanobrain.core.executor.ExecutorConfig"
+  config: "alignment_report_aurora_executor.yml"
+
+input_data_units:
+  alignment_report_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: alignment_report_input
+    description: >
+      The RheaFileToolStep output ``{tool_name, return_code, stdout,
+      stderr, output_files}``.
+    persistent: false
+
+output_data_units:
+  alignment_report_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: alignment_report_output
+    description: >
+      ``{summary: str, n_sequences: int, alignment_length: int,
+      alignment_fasta: str, per_sequence: list[dict]}``.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "alignment_report_input"

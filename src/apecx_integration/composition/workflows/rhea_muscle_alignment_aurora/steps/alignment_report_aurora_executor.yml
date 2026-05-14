@@ -1,0 +1,31 @@
+# alignment_report_aurora_executor — the ExecutorConfig referenced by
+# steps/alignment_report_aurora.yml's `executor_config:` block.
+#
+# WHY A SEPARATE FILE: StepConfig.executor_config is typed
+# Optional[ExecutorConfig], and ExecutorConfig is a ConfigBase subclass that
+# FORBIDS inline-dict construction. A step YAML therefore CANNOT carry an
+# inline `executor_config: {executor_type: ...}` block — it must reference a
+# separate ExecutorConfig YAML via the `class:` + `config:` indirection
+# pattern. This is that file.
+#
+# ENV INTERPOLATION: nanobrain's ConfigBase._load_yaml_file interpolates
+# ${VAR} at load time. A bare `${AURORA_GC_ENDPOINT_ID}` would FAIL-LOUD at
+# workflow LOAD time when the var is unset — but we want the workflow to LOAD
+# even without Globus configured (the GlobusComputeExecutor object builds at
+# load; it only reaches the network at run time). So we use the
+# `${AURORA_GC_ENDPOINT_ID:-unset}` default form: load always succeeds; a real
+# run with endpoint_id == "unset" FAILS LOUD inside GlobusComputeExecutor when
+# it tries to construct the globus_compute_sdk.Executor.
+
+executor_type: globus_compute
+name: alignment_report_aurora_executor
+
+globus_compute:
+  # The Aurora-hosted Globus Compute endpoint UUID. Defaults to the literal
+  # "unset" so the workflow loads without $AURORA_GC_ENDPOINT_ID — a real run
+  # against "unset" FAIL-LOUDs at executor initialize() time, never silently.
+  endpoint_id: "${AURORA_GC_ENDPOINT_ID:-unset}"
+  # client_credentials reads $GLOBUS_COMPUTE_CLIENT_ID / _SECRET (see runbook).
+  auth_mode: client_credentials
+  # HPC endpoints can be slow to schedule; 1h wall cap before raising.
+  task_timeout_seconds: 3600

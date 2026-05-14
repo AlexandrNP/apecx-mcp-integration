@@ -1,0 +1,54 @@
+# Globus Compute endpoint config for ALCF Aurora — TEMPLATE.
+#
+# Copy this to an Aurora login node as
+#   ~/.globus_compute/aurora-nanobrain/config.yaml
+# after `globus-compute-endpoint configure aurora-nanobrain`.
+#
+# BRUTAL-TRUTH DISCLAIMER: the Aurora-specific values here are derived
+# from ALCF documentation, NOT from a verified run. Verify every line
+# marked `# VERIFY` / `<FILL IN>` against the current ALCF Aurora user
+# guide before `globus-compute-endpoint start`.
+#
+# See docs/globus_compute_aurora_runbook.md for the full procedure.
+
+display_name: aurora-nanobrain
+
+engine:
+  type: GlobusComputeEngine
+
+  provider:
+    type: PBSProProvider
+
+    # --- allocation + queue (ALCF-specific) ---
+    account: <YOUR_ALCF_PROJECT>          # <FILL IN> the PBS -A allocation
+    queue: debug                          # VERIFY: debug | prod | ... per ALCF
+    walltime: "01:00:00"
+
+    # --- node shape ---
+    cpus_per_node: 208                    # VERIFY against current Aurora node spec
+    nodes_per_block: 1
+    init_blocks: 0                        # 0 = scale on demand, no idle allocation
+    min_blocks: 0
+    max_blocks: 1                         # raise for more concurrent capacity
+
+    # --- PBS directives ---
+    scheduler_options: "#PBS -l filesystems=home:flare"   # VERIFY filesystem labels
+    select_options: ""                                     # VERIFY any -l select extras
+
+    # --- worker bootstrap — THE LOAD-BEARING LINE ---
+    # Runs on every compute node before workers start. MUST leave
+    # `python` able to `import nanobrain` + the dispatched step's
+    # package + its deps. Adjust to your Aurora env EXACTLY.
+    worker_init: >-
+      module load <python-module> ;
+      conda activate /lus/flare/projects/<YOUR_ALCF_PROJECT>/<you>/envs/gce ;
+      export PYTHONPATH=/lus/flare/projects/<YOUR_ALCF_PROJECT>/<you>/nanobrain:$PYTHONPATH
+
+    # --- launcher ---
+    launcher:
+      type: MpiExecLauncher              # VERIFY: Aurora's recommended launcher
+
+# Optional: restrict who/what may submit. Add the confidential-client
+# identity from runbook §1 to the endpoint's access policy. The exact
+# schema key depends on the globus-compute-endpoint version — VERIFY.
+# allowed_functions: []

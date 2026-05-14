@@ -1,6 +1,6 @@
 ---
 name: nanobrain-executors
-description: Choosing and configuring an Executor (Local, Thread, Process, Parsl). Covers the async contract (`process()` must be async), executor-specific deadlock risks, the Parsl/HPC code path (Aurora PBS, ProxyStore, dynamic scaling), and verbatim error messages. Read whenever you set or change a step's `executor:` field, especially before declaring distributed execution "working".
+description: Choosing and configuring an Executor (Local, Thread, Process, Parsl, GlobusCompute). Covers the async contract (`process()` must be async), executor-specific deadlock risks, the Parsl/HPC code path (Aurora PBS, ProxyStore, dynamic scaling), the Globus Compute remote-endpoint path (dispatch a step to Aurora via Globus Compute + Globus Auth), per-step `executor_config:` binding, and verbatim error messages. Read whenever you set or change a step's `executor:` field, especially before declaring distributed execution "working".
 ---
 
 # nanobrain-executors
@@ -49,6 +49,11 @@ Several "distributed" features are mocks. Verify before claiming they work.
 | `ParslExecutor` | `nanobrain/nanobrain/core/executor.py` | 936–1459 |
 | Parsl execution context detection | `nanobrain/nanobrain/core/executor.py` | 1003–1127 |
 | Parsl app for step execution | `nanobrain/nanobrain/core/executor.py` | 822–905 |
+| `build_executor_from_config` (shared dispatch) | `nanobrain/nanobrain/core/executor.py` | 1978+ |
+| `GlobusComputeExecutor` + `GlobusComputeConfig` | `nanobrain/nanobrain/core/distributed/globus_compute_executor.py` | full file |
+| `build_globus_app` (shared Globus Auth helper) | `nanobrain/nanobrain/core/distributed/globus_auth.py` | full file |
+| `GlobusTransferStep` (data staging) | `nanobrain/nanobrain/library/steps/globus_transfer_step.py` | full file |
+| Per-step `executor_config:` binding | `nanobrain/nanobrain/core/step.py` | `resolve_dependencies` ~820 |
 | `DynamicExecutorConfigGenerator` | `nanobrain/nanobrain/core/dynamic_executor_config.py` | 30–248 |
 | `PBSResourceManager` | `nanobrain/nanobrain/core/pbs_resource_manager.py` | 66–340 |
 | `DistributedResourceRegistry` | `nanobrain/nanobrain/core/distributed_resource_registry.py` | full file |
@@ -63,17 +68,19 @@ Several "distributed" features are mocks. Verify before claiming they work.
 | Single-threaded async work, dev/testing, integration tests | `LocalExecutor` |
 | I/O-bound work (API calls, disk, network), &lt; 10 workers | `ThreadExecutor` |
 | CPU-bound, **pickleable** state, no shared memory | `ProcessExecutor` |
-| HPC cluster (Aurora, PBS) with parallel nodes | `ParslExecutor` (with caveats below) |
+| HPC cluster (Aurora, PBS) with parallel nodes, you control the Parsl config | `ParslExecutor` (with caveats below) |
+| Dispatch a step to a remote Globus Compute endpoint (e.g. a managed endpoint on Aurora), no SSH, Globus Auth | `GlobusComputeExecutor` (see below) |
 | Anything that includes `mock://` URLs or claims to mock distributed exec | **Stop and verify** |
 
 ## ExecutorConfig common fields
 
 ```yaml
-executor_type: local                          # local | thread | process | parsl
+executor_type: local                          # local | thread | process | parsl | globus_compute
 name: my_executor
 max_workers: 4
 timeout: 60                                   # seconds
 parsl_config: { ... }                         # Parsl only
+globus_compute: { ... }                       # GlobusCompute only (see below)
 default_resource_specification: { ... }       # Parsl only
 ```
 
@@ -212,6 +219,109 @@ runs an event loop and uses `asyncio.run_until_complete()`. So
 - `proxystore` installed (for cross-node resource sharing).
 - Shared filesystem (e.g., `/lus/flare`) for ProxyStore file connector.
 
+## GlobusComputeExecutor
+
+Dispatches a step's `process()` to a **remote Globus Compute endpoint**
+(e.g. a managed endpoint on Aurora). Unlike `ParslExecutor` — which needs
+you to author a Parsl config and, for PBS, to be on a login node — the
+endpoint owns the Parsl/PBS config; the client only needs the endpoint
+UUID + Globus Auth. Works from anywhere (no SSH).
+
+```yaml
+class: "nanobrain.core.executor.ExecutorConfig"     # the config class
+config:
+  executor_type: globus_compute
+  globus_compute:
+    endpoint_id: "${AURORA_GC_ENDPOINT_ID}"          # YOUR endpoint UUID
+    auth_mode: client_credentials                    # client_credentials | native
+    # client_credentials reads $GLOBUS_COMPUTE_CLIENT_ID / _SECRET
+    # (or pass client_id / client_secret here explicitly)
+    task_timeout_seconds: 3600                        # HPC queue waits are slow
+    resource_specification: { ... }                   # optional, endpoint-dependent
+    user_endpoint_config: { ... }                     # optional, multi-user endpoints
+```
+
+**Dispatch contract (approach B — same as `ParslExecutor`):** the executor
+introspects the step's `execute_wrapper` closure, extracts
+`(step_config_path, step_class_name, input_data)`, and ships ONLY those —
+a module-level `_run_step_on_endpoint` function on the worker does
+`importlib` → `step_class.from_config(path)` → `process()`. No live
+nanobrain object is pickled across the wire. **Therefore the remote
+endpoint MUST have**: the same `nanobrain` (pin the commit — version skew
+is a silent-failure risk), the step's package + deps, and the step's
+config YAML resolvable on its filesystem. The step must be loaded from a
+YAML file (it needs `_config_path` or `config.source_path`) — not an
+inline dict.
+
+**Globus Auth** is via the shared `build_globus_app` helper
+(`core/distributed/globus_auth.py`). `client_credentials` (a confidential
+client) is the default and the headless/automation mode; `native` is an
+interactive browser login. A confidential client is **never silently
+downgraded** to interactive — missing `client_id`/`client_secret`
+FAIL-LOUDs.
+
+**FAIL-LOUD, no silent fallback:** missing `globus_compute_sdk`, missing
+`endpoint_id`, auth failure, a remote exception on the endpoint (re-raised
+locally with the endpoint's traceback), and a timeout all raise. A
+"successful" dispatch that produced no usable result raises.
+
+**Route 2 (also valid):** `parsl 2026.5.4` ships
+`parsl.executors.GlobusComputeExecutor`. A `parsl_config` whose executor
+class is that makes the existing `ParslExecutor` dispatch through Globus
+Compute with zero new code — but auth + endpoint config get buried in the
+Parsl config dict. Prefer `GlobusComputeExecutor` (Route 1) for explicit
+auth + FAIL-LOUD control.
+
+Setup runbook for an Aurora endpoint:
+`apecx-mcp-integration/docs/globus_compute_aurora_runbook.md`. Companion
+data-staging step: `GlobusTransferStep` (below).
+
+### GlobusTransferStep — data staging
+
+`GlobusComputeExecutor` moves *code execution*; it does not move *files*.
+For a step whose inputs/outputs are large files on a remote filesystem,
+stage them with `GlobusTransferStep`
+(`nanobrain.library.steps.globus_transfer_step.GlobusTransferStep`) before
+/ after the compute step — it wraps `globus_sdk.TransferClient`, polls the
+transfer task to completion, and FAIL-LOUDs on a failed/timed-out
+transfer. It shares the same `build_globus_app` auth helper, so one
+confidential client authorizes both Compute and Transfer.
+
+## Per-step `executor_config:` binding
+
+A step YAML can bind itself to a non-local executor via `executor_config:`
+— this is how you put **one** step of a workflow on a remote executor
+while the others run locally. Because `ExecutorConfig` is a `ConfigBase`
+(no inline-dict construction), use the `class:` + `config:` indirection:
+
+```yaml
+# my_step.yml
+class: "my_project.steps.MyStep"
+name: my_step
+# ... the step's own data units / triggers ...
+executor_config:
+  class: "nanobrain.core.executor.ExecutorConfig"
+  config: "my_step_executor.yml"      # a separate ExecutorConfig YAML
+```
+
+```yaml
+# my_step_executor.yml
+executor_type: globus_compute
+globus_compute:
+  endpoint_id: "${AURORA_GC_ENDPOINT_ID:-unset}"
+  auth_mode: client_credentials
+```
+
+Executor precedence in `BaseStep.resolve_dependencies` (highest first):
+1. a pre-built `executor` object passed programmatically;
+2. **the step's own `executor_config:`** (this path — built via the shared
+   `build_executor_from_config` dispatch);
+3. the workflow-level executor (inherited);
+4. default `LocalExecutor`.
+
+An unknown `executor_type`, or an invalid `globus_compute` block, FAIL-LOUDs
+at step-build time — it never silently falls back to Local.
+
 ## Resource management subsystems
 
 | Component | Role |
@@ -277,6 +387,28 @@ PARSL error: {original}, Fallback error: {fallback}
 ```
 > Both paths broken. Inspect both errors; usually the original Parsl error
 > is the one to fix.
+
+```
+FAIL-FAST: GlobusComputeExecutor requires the 'globus_compute_sdk' package
+```
+> `pip install globus-compute-sdk` in the client-side venv. The dependency
+> is only needed when a workflow actually selects `executor_type: globus_compute`.
+
+```
+FAIL-FAST: build_globus_app auth_mode='client_credentials' requires
+confidential-client credentials. Missing: ...
+```
+> Export `$GLOBUS_COMPUTE_CLIENT_ID` / `$GLOBUS_COMPUTE_CLIENT_SECRET` (or
+> pass `client_id` / `client_secret` in the config). A confidential client
+> is never silently downgraded to interactive login.
+
+```
+GlobusComputeExecutor: step execution FAILED on endpoint ... Remote traceback: ...
+```
+> The endpoint worker raised. Common: `ModuleNotFoundError: nanobrain` (the
+> endpoint's `worker_init` did not activate an env with nanobrain), or
+> `FileNotFoundError` on the step config path (stage it to the endpoint's
+> filesystem — see the Aurora runbook + `GlobusTransferStep`).
 
 ```
 ValueError: Invalid config type: {type}. Expected str or ExecutorConfig

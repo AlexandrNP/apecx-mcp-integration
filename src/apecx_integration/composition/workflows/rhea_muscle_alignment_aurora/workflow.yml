@@ -1,0 +1,117 @@
+# rhea_muscle_alignment_aurora — the MINIMAL DEMO of the
+# GlobusComputeExecutor step-level binding.
+#
+# Topology is IDENTICAL to ../rhea_muscle_alignment/workflow.yml (the same
+# 3-step pipeline: fasta_collection -> muscle_alignment -> alignment_report).
+# The ONLY difference: the `alignment_report` step is bound — via its own
+# step-level `executor_config:` block — to a GlobusComputeExecutor that
+# dispatches its process() to an Aurora-hosted Globus Compute endpoint.
+# `fasta_collection` and `muscle_alignment` reuse the EXISTING (unchanged)
+# step configs from ../rhea_muscle_alignment/steps/ and run LOCALLY.
+#
+# WHY alignment_report IS THE DEMO STEP (and why this is a MECHANISM demo,
+# not a workload demo): `alignment_report` is a small, pure transform — it
+# parses a FASTA string and computes gap statistics. Dispatching it to
+# Aurora demonstrates the *mechanism* (a step's YAML declares an
+# executor_config, the framework builds + binds a GlobusComputeExecutor, the
+# step's process() runs on the remote endpoint) — NOT a heavy HPC workload.
+# A genuine HPC workload would put a compute-bound step (e.g. a large MSA or
+# a PSSM build) behind globus_compute; this workflow keeps the workload
+# trivial on purpose so the demo is about the wiring.
+#
+# RUN PREREQUISITES (a real run, NOT a load):
+#   - $AURORA_GC_ENDPOINT_ID  — the Aurora Globus Compute endpoint UUID.
+#     UNSET is fine for LOADING: the executor config defaults endpoint_id to
+#     the literal "unset" (see steps/alignment_report_aurora_executor.yml),
+#     so Workflow.from_config succeeds; a real run then FAIL-LOUDs inside
+#     GlobusComputeExecutor.initialize() when it cannot reach endpoint
+#     "unset".
+#   - $GLOBUS_COMPUTE_CLIENT_ID / $GLOBUS_COMPUTE_CLIENT_SECRET — the
+#     confidential-client credentials for auth_mode: client_credentials.
+#   - nanobrain (and apecx_integration) importable on the Aurora worker, and
+#     the alignment_report_aurora.yml step config resolvable on the worker's
+#     filesystem — the GlobusComputeExecutor reconstructs the step via
+#     step_class.from_config(<path>) on the endpoint (dispatch approach B).
+#   - the same Rhea-MCP / Redis prerequisites as rhea_muscle_alignment for
+#     the (local) muscle_alignment step.
+#   See docs/globus_compute_aurora_runbook.md for the full Aurora bring-up.
+#
+# When the prerequisites are absent the workflow LOADS + VALIDATES fine (no
+# Globus / Rhea work at load time); a run FAILS LOUDLY at the first step that
+# needs an unavailable backend — never a silent no-op.
+
+name: rhea_muscle_alignment_aurora
+description: >
+  Minimal demo of the nanobrain GlobusComputeExecutor: the same 3-step
+  MUSCLE-alignment pipeline as rhea_muscle_alignment, but the
+  alignment_report step is dispatched to an Aurora Globus Compute endpoint
+  via a step-level executor_config binding.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Optional ``{fasta_path: str}`` or ``{fasta_text: str}``. An empty
+      payload uses the bundled rhea_muscle_alignment data/seqtest.fasta.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: >
+      The AlignmentReportStep result: ``{summary, n_sequences,
+      alignment_length, alignment_fasta, per_sequence}``.
+    persistent: false
+
+steps:
+  # Reuses the EXISTING, UNCHANGED fasta_collection step config — runs locally.
+  fasta_collection:
+    class: "apecx_integration.composition.steps.fasta_collection_step.FastaCollectionStep"
+    config: "../rhea_muscle_alignment/steps/fasta_collection.yml"
+
+  # Reuses the EXISTING, UNCHANGED muscle_alignment step config — runs locally.
+  muscle_alignment:
+    class: "nanobrain.library.steps.rhea_file_tool_step.RheaFileToolStep"
+    config: "../rhea_muscle_alignment/steps/muscle_alignment.yml"
+
+  # The Aurora-dispatched step: its config carries the executor_config block.
+  alignment_report:
+    class: "apecx_integration.composition.steps.alignment_report_step.AlignmentReportStep"
+    config: "steps/alignment_report_aurora.yml"
+
+links:
+  input_to_collection:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: fasta_collection.fasta_collection_input
+      auto_transfer: true
+
+  collection_to_muscle:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: fasta_collection.fasta_collection_output
+      target: muscle_alignment.muscle_alignment_input
+      auto_transfer: true
+
+  muscle_to_report:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: muscle_alignment.muscle_alignment_output
+      target: alignment_report.alignment_report_input
+      auto_transfer: true
+
+  report_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: alignment_report.alignment_report_output
+      target: workflow_output
+      auto_transfer: true
