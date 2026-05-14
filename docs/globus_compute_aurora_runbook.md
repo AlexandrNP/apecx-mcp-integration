@@ -44,14 +44,37 @@ can dispatch step execution to Aurora compute nodes.
    bite you — a `client_credentials` identity that is not on the
    endpoint's allow-list gets an auth error at submit time.
 
-These two values are read by **both** the nanobrain executor and the
-`globus_compute_sdk` itself. On the **client side** (wherever the
-nanobrain workflow runs), export:
+### Store the credentials securely (recommended)
+
+On the **client side** (wherever the nanobrain workflow runs), store
+the pair in the OS keychain — do NOT leave secrets in shell history or
+plaintext dotfiles:
+
+```bash
+apecx-globus-setup store        # interactive; secret prompt is not echoed
+apecx-globus-setup status       # confirms what's stored — never prints the secret
+```
+
+`apecx-globus-setup store` writes to the OS secure store (macOS
+Keychain / Linux Secret Service / Windows Credential Locker) via
+`keyring`. If the environment has **no secure backend** (e.g. a
+headless Linux box with no Secret Service), `store` **refuses and
+FAIL-LOUDs** rather than silently writing plaintext — on such hosts use
+the environment-variable fallback below.
+
+The nanobrain Globus auth helper resolves credentials in this order:
+explicit config args → environment variables → keyring. So once
+stored, you set nothing else.
+
+**Environment-variable fallback** (headless / CI, or if you prefer):
 
 ```bash
 export GLOBUS_COMPUTE_CLIENT_ID=<client-uuid>
 export GLOBUS_COMPUTE_CLIENT_SECRET=<client-secret>
 ```
+
+These names are read by **both** the nanobrain executor and
+`globus_compute_sdk` itself.
 
 ---
 
@@ -240,19 +263,32 @@ A complete Aurora workflow is then:
 
 ## 8. Verify
 
-From the client side, with `AURORA_GC_ENDPOINT_ID` +
-`GLOBUS_COMPUTE_CLIENT_ID` + `GLOBUS_COMPUTE_CLIENT_SECRET` exported:
+The primary verification tool is the `apecx-globus-setup test`
+subcommand. With credentials stored (§1) and the endpoint UUID known:
 
 ```bash
-# the gated integration test points at whatever endpoint the env var names
+# auth + endpoint-status check
+apecx-globus-setup test --endpoint-id $AURORA_GC_ENDPOINT_ID
+
+# the full round-trip: dispatches a trivial nanobrain step THROUGH the
+# real GlobusComputeExecutor to the endpoint and checks the result
+apecx-globus-setup test --endpoint-id $AURORA_GC_ENDPOINT_ID --round-trip
+```
+
+Each step prints `PASS` / `FAIL`; any failure exits non-zero — there
+is no misleading "ok". A green `--round-trip` is the real-data
+verification the workspace mocks policy requires.
+
+Equivalently, the gated pytest integration test:
+
+```bash
 cd apecx-mcp-integration   # or the nanobrain repo
 GLOBUS_COMPUTE_ENDPOINT_ID=$AURORA_GC_ENDPOINT_ID \
   PYTHONPATH=. .venv/bin/python -m pytest \
   ../nanobrain/tests/integration/test_globus_compute_executor_local.py -q
 ```
 
-A green run here is the real-data verification the workspace mocks
-policy requires. Until it runs green against Aurora, the
+Until one of these runs green against Aurora, the
 `GlobusComputeExecutor` is "built + unit-tested" but **not** "verified
 on Aurora" — be honest about that distinction in any status report.
 

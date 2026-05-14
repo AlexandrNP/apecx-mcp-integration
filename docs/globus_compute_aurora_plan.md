@@ -292,16 +292,62 @@ venv (which carries `globus_compute_sdk` 4.11.0, `globus_sdk` 4.5.0).
   pointing at a separate `ExecutorConfig` YAML. The skill documents
   the working shape.
 
-### Known adjacent gap (NOT fixed — out of scope, documented honestly)
+### Adjacent silent-failure — FIXED (was flagged here, now closed)
 
 `workflow.py`'s **workflow-level** executor factory
-(`resolve_dependencies`, ~line 2235) wraps executor construction in a
-`try/except` that **falls back to `LocalExecutor` on any failure**. A
-workflow-level `executor_config:` pointing at a `globus_compute`
-executor that fails to build would silently become Local — a
-silent-failure shape. The new **step-level** path
-(`build_executor_from_config`) is FAIL-LOUD and does not have this
-problem; the demo uses the step-level path, so it is not affected. The
-workflow-level fallback was left untouched deliberately: changing it
-risks regressions in unrelated workflows and is a separate, bounded
-fix. Flagged here so it is not forgotten.
+(`resolve_dependencies`) used to wrap executor construction in a
+`try/except` that **fell back to `LocalExecutor` on any failure** — a
+workflow-level `executor_config:` pointing at a `globus_compute` or
+`parsl` executor that failed to build would silently become Local
+(catastrophic for remote execution: the user thinks their code ran on
+Aurora; it ran on their laptop). **Fixed**: the factory now uses the
+shared `build_executor_from_config` dispatch and **re-raises**
+`ComponentConfigurationError` when a declared `executor_config` cannot
+be built — it never silently relocates the work. The no-`executor_config`
+path still correctly defaults to Local. Regression: 419 workflow/
+executor/step tests pass, **0 depended on the silent fallback** (it was
+hiding nothing — but it *could* have, on any future broken config).
+New test: `nanobrain/tests/unit/test_workflow_executor_config_binding.py`.
+
+## Secure credential storage + `apecx-globus-setup` CLI
+
+The confidential-client `client_id` / `client_secret` are secrets. The
+plan's original "export the env vars" guidance is the *fallback*, not
+the recommended path. Shipped this session:
+
+- **`nanobrain/core/distributed/globus_credentials.py`** — a
+  keyring-backed secure store. `store_credentials` /
+  `load_credentials` / `clear_credentials` / `credential_status`,
+  service name `nanobrain-globus`. Uses the OS keychain (macOS
+  Keychain, Linux Secret Service, Windows Credential Locker) via the
+  `keyring` library. **Insecure-backend guard**: if the active keyring
+  backend is `fail.Keyring` (no usable secure store) or a known
+  plaintext backend, `store_credentials` **FAIL-LOUDs** — it never
+  silently writes the secret to a plaintext store. That guard is the
+  anti-silent-failure discipline applied to the credential store
+  itself.
+- **`build_globus_app` credential precedence** is now 3-tier:
+  explicit args → environment variables → keyring. So a workstation
+  user stores once with the CLI and never sets an env var again; CI
+  still uses env vars; an explicit arg always wins.
+- **`apecx-globus-setup`** — a CLI executable
+  (`apecx_integration/cli/globus_setup.py`, `[project.scripts]` entry).
+  Subcommands:
+  - `store` — interactive prompt (`getpass` for the secret), stores
+    via the keyring helper; refuses + FAIL-LOUDs on an insecure
+    backend.
+  - `status` — shows what's configured (client_id, secret set/not-set —
+    **never the value**, keyring backend + whether it's secure,
+    `$AURORA_GC_ENDPOINT_ID`).
+  - `test [--endpoint-id UUID] [--round-trip]` — the verification
+    tool: loads credentials, builds + authenticates a `GlobusApp`,
+    queries the endpoint's status, and (with `--round-trip`) dispatches
+    a trivial nanobrain step through the real `GlobusComputeExecutor`
+    and checks the result. Each step prints PASS/FAIL; a failure exits
+    non-zero — no misleading "ok".
+  - `endpoint-config [--project NAME] [--output PATH]` — renders the
+    Aurora endpoint config template with the project substituted.
+  - `clear` — removes stored credentials.
+
+The `test` subcommand is the operator's path to the real-data
+verification this whole arc still needs — see the runbook.

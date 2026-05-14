@@ -73,6 +73,13 @@ rag = [
 hpc = [
     "globus-compute-sdk>=2.20",
     "globus-sdk>=3.40",
+    # keyring — the `apecx-globus-setup` CLI HARD-requires it (it is the
+    # backing store for the `store` / `status` / `clear` subcommands and
+    # the lowest credential-resolution tier for `test`). nanobrain's
+    # core/distributed/globus_credentials.py lazy-imports it FAIL-LOUD;
+    # bundling it in `hpc` means installing the Globus path also
+    # provisions the secure credential store the CLI depends on.
+    "keyring>=24.0",
 ]
 # G5 (2026-04-24): academy-py is the Academy agent framework that
 # nanobrain's AcademyManagerWrapper / AcademyLink / AcademyAgentStep
@@ -99,6 +106,11 @@ apecx-setup = "apecx_integration.cli.setup:main"
 # JSON; designed for ad-hoc operator use AND for scripted regression
 # tracking.
 apecx-regression-metrics = "apecx_integration.cli.regression_metrics:main"
+# G31: Globus credential store + endpoint setup/test CLI. Stores Globus
+# confidential-client credentials in the OS secure store (nanobrain's
+# G30 keyring-backed globus_credentials), tests endpoint configuration
+# end-to-end, and renders the Aurora endpoint-config template.
+apecx-globus-setup = "apecx_integration.cli.globus_setup:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

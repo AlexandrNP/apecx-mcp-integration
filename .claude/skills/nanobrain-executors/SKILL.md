@@ -51,7 +51,9 @@ Several "distributed" features are mocks. Verify before claiming they work.
 | Parsl app for step execution | `nanobrain/nanobrain/core/executor.py` | 822–905 |
 | `build_executor_from_config` (shared dispatch) | `nanobrain/nanobrain/core/executor.py` | 1978+ |
 | `GlobusComputeExecutor` + `GlobusComputeConfig` | `nanobrain/nanobrain/core/distributed/globus_compute_executor.py` | full file |
-| `build_globus_app` (shared Globus Auth helper) | `nanobrain/nanobrain/core/distributed/globus_auth.py` | full file |
+| `build_globus_app` (shared Globus Auth helper, 3-tier creds) | `nanobrain/nanobrain/core/distributed/globus_auth.py` | full file |
+| `globus_credentials` (keyring secure store + insecure-backend guard) | `nanobrain/nanobrain/core/distributed/globus_credentials.py` | full file |
+| `apecx-globus-setup` CLI (store / status / test / endpoint-config / clear) | `apecx-mcp-integration/src/apecx_integration/cli/globus_setup.py` | full file |
 | `GlobusTransferStep` (data staging) | `nanobrain/nanobrain/library/steps/globus_transfer_step.py` | full file |
 | Per-step `executor_config:` binding | `nanobrain/nanobrain/core/step.py` | `resolve_dependencies` ~820 |
 | `DynamicExecutorConfigGenerator` | `nanobrain/nanobrain/core/dynamic_executor_config.py` | 30–248 |
@@ -259,6 +261,19 @@ client) is the default and the headless/automation mode; `native` is an
 interactive browser login. A confidential client is **never silently
 downgraded** to interactive — missing `client_id`/`client_secret`
 FAIL-LOUDs.
+
+**Credential resolution is 3-tier**: explicit config args → environment
+variables (`$GLOBUS_COMPUTE_CLIENT_ID` / `_SECRET`) → the OS keychain
+(via `core/distributed/globus_credentials.py`, `keyring`-backed). Store
+once with the `apecx-globus-setup store` CLI and you set nothing else;
+CI uses env vars; an explicit arg always wins. `globus_credentials.py`
+has an **insecure-backend guard** — `store_credentials` FAIL-LOUDs if
+the active keyring backend is `fail.Keyring` or a plaintext backend
+rather than silently writing the secret in the clear. The
+`apecx-globus-setup` CLI (`apecx_integration/cli/globus_setup.py`) also
+has `status`, `test [--endpoint-id] [--round-trip]` (the real
+auth + endpoint + dispatch verification), `endpoint-config`, and
+`clear`.
 
 **FAIL-LOUD, no silent fallback:** missing `globus_compute_sdk`, missing
 `endpoint_id`, auth failure, a remote exception on the endpoint (re-raised
