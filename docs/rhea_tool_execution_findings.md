@@ -10,9 +10,16 @@ tool's own expected test data.
 
 This documents the arc from the directive *"fix the ingestion path …
 fetch and use correctly a tool, receive an appropriate non-null
-result"* and the follow-up *"test muscle tool … get test data for it
+result"*, the follow-up *"test muscle tool … get test data for it
 and ensure that you can successfully run it, get the results, and use
-them"* (2026-05-14).
+them"*, and the final directive *"what we need to demonstrate is a
+sample nanobrain workflow that goes from collecting data … this
+workflow should be able to run in a standalone manner or via MCP
+calls"* (2026-05-14).
+
+The proof script `rhea/scripts/run_muscle_e2e.py` (section 5) is now
+superseded by a proper **nanobrain workflow**, `rhea_muscle_alignment`
+(section 6) — the actual deliverable.
 
 ## Acceptance-criterion status — honest, clause by clause
 
@@ -226,18 +233,80 @@ The conda env (`muscle` from bioconda) builds locally, the local
 Parsl worker runs MUSCLE 3.8.1551, and the FASTA alignment is
 non-null and correct.
 
+## 6. The nanobrain workflow — `rhea_muscle_alignment`
+
+`run_muscle_e2e.py` was a standalone proof script — useful to drive
+the Rhea side to working, but not the deliverable. The deliverable is
+a **nanobrain workflow** that consumes Rhea as an MCP server, runnable
+both standalone and via MCP. That workflow now exists:
+`src/apecx_integration/composition/workflows/rhea_muscle_alignment/`.
+
+### Shape — collect data → run tool over MCP → use the result
+
+Three nanobrain steps, wired by DirectLinks (`config_version: 2`, every
+link `auto_transfer: true`):
+
+1. **`FastaCollectionStep`** (`apecx_integration/composition/steps/`)
+   — the "collect data" step. Reads a FASTA from `{fasta_path}` or
+   `{fasta_text}`, or falls back to the bundled `data/seqtest.fasta`
+   (the MUSCLE tool's own 5-sequence test data). Emits
+   `{fasta_name, fasta_bytes, n_sequences}`.
+2. **`RheaFileToolStep`** (`nanobrain/library/steps/rhea_file_tool_step.py`)
+   — the framework-capacity expansion. A general-purpose `BaseStep`
+   that runs *any* Rhea file-input Galaxy tool over MCP: stages the
+   file into Rhea's `rhea-input` ProxyStore (`RheaFileProxy`), calls
+   `find_tools` + `tools/call` via the shared `MCPTransport`, fetches
+   output files back from the `rhea-output` ProxyStore. It lazy-imports
+   the genuine `rhea.utils.proxy.RheaFileProxy` (cloudpickle pickles by
+   module reference — a vendored copy would deserialize to the wrong
+   class on the server) and FAIL-LOUDs if `rhea` is not importable.
+   This is the piece the Explore audit found missing — nanobrain had
+   `RheaAdapter`/`ToolExecutionStep` for plain `tools/call`, but
+   nothing for Rhea's file-input protocol.
+3. **`AlignmentReportStep`** (`apecx_integration/composition/steps/`)
+   — the "use the result" step. Parses the `out_align` FASTA, computes
+   alignment length + per-sequence gap fraction, emits a human-readable
+   summary.
+
+### Three invocation paths — all verified end-to-end against live Rhea
+
+| Path | Entry point | Verified by |
+|---|---|---|
+| **Standalone — workflow YAML** | `Workflow.from_config(rhea_muscle_alignment/workflow.yml)` → `process()` → trigger cascade | `test_workflow_from_config_against_live_rhea` |
+| **Standalone — direct steps** | `BaseStep.from_config(...)` per step, chain `process()` | `test_direct_step_chain_against_live_rhea` |
+| **Via MCP** | `align_sequences_with_muscle` MCP-surface tool (`mcp_surface/tools/muscle_alignment.py`, registered in `mcp_surface/server.py`) | manual smoke against live Rhea |
+
+`tests/integration/test_rhea_muscle_alignment_workflow.py`: **14 passed**
+(12 unconditional load + pure-transform tests; 2 gated on `$RHEA_MCP_URL`
+hitting a live Rhea server). The gated run drives real MUSCLE in ~19 s.
+The MCP-tool smoke returned a 5-sequence, 374-column alignment with
+mean gap fraction 0.0374.
+
+### Run prerequisites
+The `muscle_alignment` step needs, at `process()` time: the `rhea` repo
+on `PYTHONPATH` (`rhea/__init__.py` + `rhea/utils/__init__.py` are
+empty, so this pulls in only `proxystore`/`redis`/`cloudpickle`/`filetype`
+— not Rhea's heavy academy/parsl/sqlalchemy tree); a reachable Rhea MCP
+server hosting `muscle`; and a reachable Redis backing the ProxyStores.
+Absent those, the workflow LOADS + VALIDATES fine but a run FAILS LOUDLY
+at the `muscle_alignment` step — never a silent no-op.
+
 ## Brutal-truth assessment
 
 **What's genuinely done and verified**: the entire chain. The
 ingestion path (the named directive) — real tools ingested;
 `find_tools` semantic search; the `call_tool` session-lookup bug fix;
 the Parsl `backend="local"` fix (the named "Parsl issue"); the
-file-input ProxyStore protocol; and a real Galaxy tool (MUSCLE)
+file-input ProxyStore protocol; a real Galaxy tool (MUSCLE)
 fetched → discovered → called with a real file input → executed →
 producing a non-null, *correct* alignment output that matches the
-tool's own expected test data. Every blocker between "MCP call" and
-"correct tool output" was found and fixed. The acceptance criterion
-is met.
+tool's own expected test data; and — the actual deliverable — a
+**nanobrain workflow** (`rhea_muscle_alignment`) that consumes Rhea as
+an MCP server, runnable standalone (workflow YAML + direct steps) and
+via an MCP-surface tool, all three paths verified end-to-end against a
+live Rhea server (14/14 tests pass). Every blocker between "MCP call"
+and "correct tool output" was found and fixed. The acceptance
+criterion is met.
 
 **Scope honestly not covered** (out of scope for this directive, not
 a blocker): Galaxy's `<repeat>` input element and the

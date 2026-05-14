@@ -73,6 +73,9 @@ from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    muscle_alignment as muscle_alignment_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -132,6 +135,15 @@ def build_server() -> FastMCP:
     # cached as module-level singletons so a long-running server
     # doesn't pay the FAISS load cost on every call.
     server.tool()(synthesis_tools.synthesize_query)
+
+    # MUSCLE multiple-sequence alignment via Rhea — drives the
+    # rhea_muscle_alignment workflow directly (collect FASTA → run
+    # MUSCLE on Rhea over MCP → report). Demonstrates a nanobrain
+    # workflow consuming Rhea as an MCP server for a real
+    # bioinformatics tool. Returns {"error": ...} (never a silent
+    # empty result) when the rhea repo / Rhea MCP server / Redis are
+    # unreachable.
+    server.tool()(muscle_alignment_tools.align_sequences_with_muscle)
 
     # Viral Immunology Analysis — comprehensive framework for any viral
     # immunology research. Automatically detects virus + immunology queries

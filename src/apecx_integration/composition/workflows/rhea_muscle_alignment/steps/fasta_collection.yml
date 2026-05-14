@@ -1,0 +1,39 @@
+# fasta_collection — the "collect data" step of rhea_muscle_alignment.
+#
+# Resolves the input FASTA (per-call fasta_path / fasta_text, else the
+# bundled default) and emits {fasta_name, fasta_bytes, n_sequences} for
+# the downstream RheaFileToolStep.
+#
+# Step owns its data units + trigger; the workflow owns the links.
+
+class: "apecx_integration.composition.steps.fasta_collection_step.FastaCollectionStep"
+name: fasta_collection
+description: >
+  Resolve the input FASTA from a per-call path/text or the bundled
+  example, and emit the staged-file payload for the Rhea MUSCLE tool.
+
+# Relative path — resolved against THIS YAML's directory by the step's
+# _resolve_default_path (config.source_path). Works from any cwd.
+default_fasta_path: "../data/seqtest.fasta"
+
+input_data_units:
+  fasta_collection_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: fasta_collection_input
+    description: >
+      Optional ``{fasta_path: str}`` or ``{fasta_text: str}``. An empty
+      payload falls back to default_fasta_path.
+    persistent: false
+
+output_data_units:
+  fasta_collection_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: fasta_collection_output
+    description: >
+      ``{fasta_name: str, fasta_bytes: bytes, n_sequences: int}`` —
+      the staged-file payload consumed by RheaFileToolStep.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "fasta_collection_input"

@@ -1,0 +1,111 @@
+# rhea_muscle_alignment — a nanobrain workflow that uses Rhea as an MCP
+# server to run a real bioinformatics tool (MUSCLE multiple-sequence
+# alignment) on a FASTA file.
+#
+#   workflow_input ({} | {fasta_path: ...} | {fasta_text: ...})
+#       -> fasta_collection  (FastaCollectionStep)
+#            resolves the FASTA (per-call or bundled default) ->
+#            {fasta_name, fasta_bytes, n_sequences}
+#       -> muscle_alignment  (RheaFileToolStep, tool=muscle)
+#            stages the FASTA into Rhea's rhea-input ProxyStore, calls
+#            the MUSCLE tool over MCP (find_tools -> tools/call), fetches
+#            the alignment output files back from rhea-output ->
+#            {tool_name, return_code, stdout, stderr, output_files}
+#       -> alignment_report  (AlignmentReportStep)
+#            parses the out_align FASTA, computes alignment stats ->
+#            {summary, n_sequences, alignment_length, alignment_fasta,
+#             per_sequence}
+#       -> workflow_output
+#
+# This is the proper nanobrain workflow that replaces the ad-hoc proof
+# script rhea/scripts/run_muscle_e2e.py. It is runnable BOTH standalone
+# via Workflow.from_config(workflow.yml) AND via the MCP-surface tool
+# apecx_integration.mcp_surface.tools.muscle_alignment.align_sequences_with_muscle.
+#
+# RUN PREREQUISITE: the muscle_alignment step (RheaFileToolStep) needs,
+# at process() time:
+#   - the `rhea` repo on PYTHONPATH (cloudpickle pickles RheaFileProxy
+#     by module reference — the genuine class must be importable);
+#   - a reachable Rhea MCP server hosting the `muscle` tool (default
+#     http://localhost:3001/mcp/);
+#   - a reachable Redis (default localhost:6379) backing Rhea's
+#     rhea-input / rhea-output ProxyStores.
+# When those are absent the workflow LOADS + VALIDATES fine (no Rhea
+# work at load time) but a run FAILS LOUDLY at the muscle_alignment
+# step with a clear error — never a silent no-op.
+#
+# See wt-cgu-codegen-uplift/docs/rhea_tool_execution_findings.md for the
+# full Rhea-side bring-up and the verified end-to-end result.
+
+name: rhea_muscle_alignment
+description: >
+  Run the MUSCLE multiple-sequence-alignment tool on a FASTA file by
+  dispatching it to Rhea over MCP, then report the alignment statistics.
+  Demonstrates a nanobrain workflow consuming Rhea as an MCP server for
+  a real bioinformatics tool.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Optional ``{fasta_path: str}`` or ``{fasta_text: str}``. An empty
+      payload uses the bundled data/seqtest.fasta example.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: >
+      The AlignmentReportStep result: ``{summary, n_sequences,
+      alignment_length, alignment_fasta, per_sequence}``.
+    persistent: false
+
+steps:
+  fasta_collection:
+    class: "apecx_integration.composition.steps.fasta_collection_step.FastaCollectionStep"
+    config: "steps/fasta_collection.yml"
+
+  muscle_alignment:
+    class: "nanobrain.library.steps.rhea_file_tool_step.RheaFileToolStep"
+    config: "steps/muscle_alignment.yml"
+
+  alignment_report:
+    class: "apecx_integration.composition.steps.alignment_report_step.AlignmentReportStep"
+    config: "steps/alignment_report.yml"
+
+links:
+  input_to_collection:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: fasta_collection.fasta_collection_input
+      auto_transfer: true
+
+  collection_to_muscle:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: fasta_collection.fasta_collection_output
+      target: muscle_alignment.muscle_alignment_input
+      auto_transfer: true
+
+  muscle_to_report:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: muscle_alignment.muscle_alignment_output
+      target: alignment_report.alignment_report_input
+      auto_transfer: true
+
+  report_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: alignment_report.alignment_report_output
+      target: workflow_output
+      auto_transfer: true

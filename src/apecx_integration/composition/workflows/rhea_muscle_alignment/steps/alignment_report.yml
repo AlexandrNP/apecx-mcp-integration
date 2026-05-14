@@ -1,0 +1,39 @@
+# alignment_report — the "use the result" step of rhea_muscle_alignment.
+#
+# Wraps AlignmentReportStep
+# (apecx_integration.composition.steps.alignment_report_step): parses
+# the out_align FASTA from the RheaFileToolStep output and computes
+# alignment statistics + a human-readable summary.
+#
+# Step owns its data units + trigger; the workflow owns the links.
+
+class: "apecx_integration.composition.steps.alignment_report_step.AlignmentReportStep"
+name: alignment_report
+description: >
+  Parse the MUSCLE alignment and produce a summary with sequence count,
+  alignment length, and per-sequence gap fractions.
+
+# MUSCLE's FASTA alignment output file is named 'out_align'.
+alignment_file_key: "out_align"
+
+input_data_units:
+  alignment_report_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: alignment_report_input
+    description: >
+      The RheaFileToolStep output ``{tool_name, return_code, stdout,
+      stderr, output_files}``.
+    persistent: false
+
+output_data_units:
+  alignment_report_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: alignment_report_output
+    description: >
+      ``{summary: str, n_sequences: int, alignment_length: int,
+      alignment_fasta: str, per_sequence: list[dict]}``.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "alignment_report_input"
