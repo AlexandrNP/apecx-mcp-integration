@@ -186,7 +186,36 @@ entry into the top-level `actionable` list, so an operator polling
 `infrastructure_status` from Claude Desktop sees the remediation step
 at startup — not at first user call.
 
-#### Validation outcome (2026-05-15)
+#### Conda-pack on the critical path (2026-05-15, follow-up fix)
+
+Rhea's `install_conda_env` was fire-and-forgetting `pack_conda_env`
+via `loop.run_in_executor(...)` + `asyncio.ensure_future(...)` —
+returning to the caller while the conda-pack thread was still writing
+the tar.zst archive into Redis. Two real failure shapes flowed from
+that race:
+
+1. **Short-lived caller race.** Pre-warm runs inside an asyncio-driven
+   subprocess. When `install_conda_env` returns, `asyncio.run()`
+   closes the loop and Python exits — the pack thread may be mid-
+   `pipe.execute()` and the Redis cache lands either empty or with a
+   truncated blob. Subsequent consumers see `HEXISTS=1` and unpack a
+   broken archive, restoring no env and failing at first tool call.
+2. **Long-lived actor first-call race.** Even inside the Academy
+   actor's long-lived process, `agent_on_startup` signals
+   ``_startup_done`` as soon as ``install_conda_env`` returns. A
+   second consumer (parallel actor, sibling orchestrator) hitting
+   Redis between actor-ready and pack-complete misses the cache and
+   redundantly re-runs `conda create`, defeating the cache's purpose
+   for that window.
+
+The fix is one line: `await loop.run_in_executor(None, pack_conda_env,
+...)` instead of `ensure_future`. Conda-pack is now ON the critical
+path, the wall-time cost (~1-10 s per env depending on size) is
+moved from "background, race-prone" to "foreground, observable in
+status_report.tools[].latency_seconds." When `install_conda_env`
+returns, the cache is fact, not promise.
+
+#### Validation outcome — single tool (2026-05-15)
 
 End-to-end on a Mac with a freshly-corrupted `/opt/anaconda3`
 (libmamba broken, no `~/.condarc`, classic solver only knows
@@ -201,13 +230,27 @@ End-to-end on a Mac with a freshly-corrupted `/opt/anaconda3`
 | Resolve against default channels only | `PackagesNotFoundError: muscle=3.8.1551` |
 | With `-c bioconda -c conda-forge` baked in | resolved + installed |
 | `install_conda_env` post-install verification chain | passed (`conda list`, `bin/` non-empty, major-version-match) |
-| `conda_pack` archive → Redis cache | persisted (`HEXISTS conda_envs muscle` = 1) |
+| `conda_pack` archive → Redis cache (awaited) | persisted (`HEXISTS conda_envs muscle` = 1, 8.72 MB archive) |
 | Cold install wall time | **55.4 s** |
 | Cache-hit reuse wall time | **0.13 s** (440× faster) |
 | Orchestrator `status()` surfacing | `rhea_tool_prewarm.all_ready = true` |
 | Forced-failure path (unknown tool name) | `state="failed"`, actionable surfaces |
 
-Logs preserved at `/tmp/apecx-prewarm-validation/`.
+#### Validation outcome — multi-tool (2026-05-15)
+
+Same Mac, after clearing the muscle cache, ran the pre-warm against
+two tools serially to validate (a) the per-tool walk works, (b) the
+await fix is honored across non-default-channel tools, (c) different
+archive sizes both land complete:
+
+| Tool | Channel | Wall time | Archive size in Redis |
+|---|---|---|---|
+| `tp_awk_tool` (gawk 5.3.1) | conda-forge | 85.0 s | 814 KB |
+| `muscle` (3.8.1551) | bioconda | 67.7 s | 8.72 MB |
+
+Both archives are non-empty and within ±5 % of the env's on-disk
+`du -sh /opt/anaconda3/envs/<name>` size, confirming no truncation.
+Logs preserved at `/tmp/apecx-prewarm-validation/multi_tool_await.log`.
 
 ## 3. Environment variables
 
