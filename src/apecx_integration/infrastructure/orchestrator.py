@@ -83,12 +83,58 @@ log = logging.getLogger(__name__)
 _AUTOSTART_ENV_VAR = "APECX_MCP_AUTOSTART_INFRA"
 _RHEA_REPO_PATH = "RHEA_REPO_PATH"
 _RHEA_PYTHON_PATH = "RHEA_PYTHON_PATH"
+# Optional. Extra path prepended to the spawned Rhea process's PATH so
+# its downstream conda subprocesses (tool agents that run e.g. MUSCLE
+# via `conda run`) can find the `conda` binary. apecx-mcp is started by
+# Claude Desktop via Popen with NO shell — the operator's interactive
+# PATH is NOT inherited; the operator must declare PATH (or this var)
+# in claude_desktop_config.json's env block.
+_RHEA_CONDA_BIN_ENV = "RHEA_CONDA_BIN"
+# Optional embedding-model name for Rhea (used by the ToolShed catalog
+# embedding step). 1024-dim default matches the Ollama mxbai-embed-large
+# model bundled by apecx-setup; Rhea's bare default is for an HF
+# embedding image that nobody on macOS actually runs.
+_RHEA_EMBEDDING_MODEL_ENV = "RHEA_EMBEDDING_MODEL"
 _OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
 _RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
 
 
 def _autostart_enabled() -> bool:
     return os.environ.get(_AUTOSTART_ENV_VAR, "1") != "0"
+
+
+def _terminate_process_group(pid: int, *, grace_seconds: float) -> None:
+    """SIGTERM the whole process group, then SIGKILL after grace.
+
+    The orchestrator Popen's host processes with
+    ``start_new_session=True`` so each spawned tree is its own session
+    leader. Killing JUST the parent pid leaves the parent's children
+    (uvicorn workers, parsl interchanges, ...) running and bound to
+    their ports — which makes the next orchestrator's probe see
+    ``reused`` against a "shutdown" backend. Group-kill closes that.
+    """
+    import signal as _signal
+
+    try:
+        pgid = os.getpgid(pid)
+    except (OSError, ProcessLookupError):
+        return
+    with contextlib.suppress(ProcessLookupError, PermissionError, OSError):
+        os.killpg(pgid, _signal.SIGTERM)
+    deadline = time.monotonic() + grace_seconds
+    while time.monotonic() < deadline:
+        try:
+            os.killpg(pgid, 0)  # signal 0 = "is anyone in the group still alive?"
+        except (ProcessLookupError, OSError):
+            return  # group is gone — clean exit
+        time.sleep(0.1)
+    # Grace expired; SIGKILL the group.
+    with contextlib.suppress(ProcessLookupError, PermissionError, OSError):
+        log.warning(
+            "InfraOrchestrator: process group %s did not exit on SIGTERM; sending SIGKILL",
+            pgid,
+        )
+        os.killpg(pgid, _signal.SIGKILL)
 
 
 # ---------------------------------------------------------------------------
@@ -202,14 +248,101 @@ def _make_ollama_spec() -> BackendSpec:
     )
 
 
-def _make_rhea_mcp_spec() -> BackendSpec:
+def _compose_rhea_env(
+    *,
+    postgres: ContainerSpec,
+    redis_c: ContainerSpec,
+    minio: ContainerSpec,
+    ollama_base_url: str,
+) -> dict[str, str]:
+    """Derive the env vars Rhea needs, from the orchestrator's own specs.
+
+    Rhea's ``Settings`` defaults DO NOT match the apecx-stack ports /
+    Ollama / Parsl-on-macOS reality. If we just ``Popen`` rhea-server
+    with default Settings, its MCP transport answers ``tools/list`` —
+    making the probe go green — but every actual tool call fails
+    because postgres is at the wrong port, the embedding URL points at
+    a nonexistent TEI server, etc. That is the canonical silent-failure
+    shape this orchestrator exists to refuse. We derive the right env
+    from our backend specs so the spawn produces a *working* Rhea.
+    """
+    pg_host_port = postgres.ports[0][0]
+    pg_env = dict(postgres.env)
+    db_user = "postgres"
+    db_name = pg_env.get("POSTGRES_DB", "rhea")
+    db_password = pg_env.get("POSTGRES_PASSWORD", "postgres")
+    database_url = (
+        f"postgresql+asyncpg://{db_user}:{db_password}@localhost:{pg_host_port}/{db_name}"
+    )
+    redis_host_port = redis_c.ports[0][0]
+    minio_host_port = minio.ports[0][0]
+    minio_env = dict(minio.env)
+    # Ollama base URL: Rhea uses an OpenAI-compatible /v1 endpoint;
+    # APECX_LLM_BASE_URL may already carry /v1 or may not.
+    embedding_url = ollama_base_url
+    if not embedding_url.rstrip("/").endswith("/v1"):
+        embedding_url = embedding_url.rstrip("/") + "/v1"
+    embedding_model = os.environ.get(_RHEA_EMBEDDING_MODEL_ENV, "mxbai-embed-large")
+    return {
+        # Server bind (Rhea's own MCP host:port — not the upstream MCP URL).
+        "HOST": "localhost",
+        "PORT": "3001",
+        # DB / object store / cache.
+        "DATABASE_URL": database_url,
+        "REDIS_HOST": "localhost",
+        "REDIS_PORT": str(redis_host_port),
+        "AGENT_REDIS_HOST": "localhost",
+        "AGENT_REDIS_PORT": str(redis_host_port),
+        "MINIO_ENDPOINT": f"localhost:{minio_host_port}",
+        "MINIO_ACCESS_KEY": minio_env.get("MINIO_ROOT_USER", "minioadmin"),
+        "MINIO_SECRET_KEY": minio_env.get("MINIO_ROOT_PASSWORD", "minioadmin"),
+        # Embedding service (Ollama).
+        "EMBEDDING_URL": embedding_url,
+        "EMBEDDING_KEY": "EMPTY",
+        "MODEL": embedding_model,
+        # Parsl on macOS: the Docker-sibling worker can't reach the
+        # interchange; force the local-process backend. The operator
+        # can override via the env.
+        "PARSL_CONTAINER_BACKEND": os.environ.get("PARSL_CONTAINER_BACKEND", "local"),
+    }
+
+
+def _verify_rhea_python_can_import(python_exec: str) -> tuple[bool, str]:
+    """Sanity-check the configured Python BEFORE spawning rhea-server.
+
+    Without this, a wrong RHEA_PYTHON_PATH (e.g. plain miniconda
+    instead of the rhea uv-venv) leads to a 60-second
+    "did not become healthy" wait followed by an obscure ImportError
+    buried in the child log. With this check, we FAIL-LOUD upfront
+    with an actionable message.
+    """
+    try:
+        result = subprocess.run(
+            [python_exec, "-c", "import rhea; print(rhea.__file__ or 'ns-pkg')"],
+            capture_output=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return False, f"{type(exc).__name__}: {exc}"
+    if result.returncode != 0:
+        stderr = result.stderr.decode("utf-8", "replace")[:400]
+        return False, f"`{python_exec} -c 'import rhea'` exited {result.returncode}: {stderr}"
+    return True, result.stdout.decode("utf-8", "replace").strip()
+
+
+def _make_rhea_mcp_spec(
+    *,
+    postgres_container: ContainerSpec,
+    redis_container: ContainerSpec,
+    minio_container: ContainerSpec,
+    ollama_base_url: str,
+) -> BackendSpec:
     mcp_url = os.environ.get(_RHEA_MCP_URL_ENV, "http://localhost:3001/mcp/")
 
     async def _probe() -> ProbeResult:
         return await rhea_mcp_probe(mcp_url=mcp_url)
 
     def _command_factory(env: dict[str, str]) -> tuple[list[str], dict[str, str]]:
-        # Resolve the Rhea miniconda python (operator-managed).
         rhea_python_bin = env[_RHEA_PYTHON_PATH]
         rhea_repo = env[_RHEA_REPO_PATH]
         python_exec = (
@@ -217,12 +350,63 @@ def _make_rhea_mcp_spec() -> BackendSpec:
             if not rhea_python_bin.endswith("/python")
             else rhea_python_bin
         )
-        # Extend PATH so the spawned process can find the miniconda binaries.
-        env_additions = {
-            "PATH": f"{rhea_python_bin.rstrip('/')}:{env.get('PATH', '')}",
+
+        # Pre-spawn import check. FAIL-LOUD here turns a 60-second
+        # "did not become healthy" wait into an immediate actionable
+        # error naming the exact Python that couldn't import rhea.
+        ok, detail = _verify_rhea_python_can_import(python_exec)
+        if not ok:
+            raise RuntimeError(
+                f"the configured ${_RHEA_PYTHON_PATH}={rhea_python_bin!r} "
+                f"cannot import `rhea`. Most common cause: pointing at a "
+                f"bare miniconda bin/ dir; Rhea is installed in its uv "
+                f"venv. Try ${_RHEA_PYTHON_PATH}={rhea_repo}/.venv/bin. "
+                f"Underlying check: {detail}"
+            )
+
+        # Compose Rhea env from our other backend specs (single source
+        # of truth — no port/host drift between apecx-mcp's view and
+        # Rhea's Settings).
+        rhea_env = _compose_rhea_env(
+            postgres=postgres_container,
+            redis_c=redis_container,
+            minio=minio_container,
+            ollama_base_url=ollama_base_url,
+        )
+        # Extend PATH so:
+        #  1. the spawned rhea process resolves its own python
+        #     (RHEA_PYTHON_PATH bin first).
+        #  2. its downstream conda subprocesses can find `conda`
+        #     (optional RHEA_CONDA_BIN second; if unset, the
+        #     operator's existing PATH is preserved verbatim).
+        path_segments = [rhea_python_bin.rstrip("/")]
+        conda_bin = env.get(_RHEA_CONDA_BIN_ENV)
+        if conda_bin:
+            path_segments.append(conda_bin.rstrip("/"))
+        path_segments.append(env.get("PATH", ""))
+        env_additions: dict[str, str] = {
+            "PATH": ":".join(seg for seg in path_segments if seg),
             "PYTHONUNBUFFERED": "1",
-            # Forward known Rhea env vars if present in our env.
-            **{k: env[k] for k in env if k.startswith("RHEA_")},
+            # Composed Rhea env (overrides any pre-existing values for
+            # determinism — operator who wants a different DB URL can
+            # set DATABASE_URL in claude_desktop_config.json's env
+            # block, but then they should NOT use apecx's postgres at
+            # all).
+            **rhea_env,
+            # Forward known RHEA_* env vars in case the operator wants
+            # to override anything composed above.
+            **{
+                k: env[k]
+                for k in env
+                if k.startswith("RHEA_")
+                and k
+                not in (
+                    _RHEA_REPO_PATH,
+                    _RHEA_PYTHON_PATH,
+                    _RHEA_CONDA_BIN_ENV,
+                    _RHEA_EMBEDDING_MODEL_ENV,
+                )
+            },
         }
         argv = [
             python_exec,
@@ -250,11 +434,16 @@ def _make_rhea_mcp_spec() -> BackendSpec:
         actionable_message=(
             f"Rhea MCP is unreachable at {mcp_url}. To enable autostart, "
             f"set ${_RHEA_REPO_PATH} (path to the Rhea checkout) and "
-            f"${_RHEA_PYTHON_PATH} (path to the miniconda bin/ dir "
-            "carrying its Python). Alternatively, start it manually: "
-            "cd $RHEA_REPO_PATH && python -m rhea.server.mcp_server "
-            "--transport streamable-http. Without Rhea MCP, the "
-            "Rhea-backed tools will return UNAVAILABLE."
+            f"${_RHEA_PYTHON_PATH} (path to Rhea's uv venv bin/ — "
+            "typically $RHEA_REPO_PATH/.venv/bin; NOT a bare miniconda "
+            "bin/ unless miniconda is itself the rhea project venv). "
+            f"Optionally set ${_RHEA_CONDA_BIN_ENV} (miniconda bin/ "
+            "needed for the conda subprocesses Rhea spawns to run "
+            "Galaxy tools like MUSCLE). Alternatively, start it "
+            "manually: cd $RHEA_REPO_PATH && uv run -m "
+            "rhea.server.mcp_server --transport streamable-http. "
+            "Without Rhea MCP, the Rhea-backed catalog tools return "
+            "UNAVAILABLE."
         ),
         process=process_spec,
         tags=("mcp", "rhea"),
@@ -262,14 +451,25 @@ def _make_rhea_mcp_spec() -> BackendSpec:
 
 
 def _default_backend_specs() -> tuple[BackendSpec, ...]:
-    """Build the default 5-backend roster."""
-    return (
-        _make_postgres_spec(),
-        _make_redis_spec(),
-        _make_minio_spec(),
-        _make_ollama_spec(),
-        _make_rhea_mcp_spec(),
+    """Build the default 5-backend roster.
+
+    The Rhea spec is composed *from* the postgres/redis/minio/ollama
+    specs so its spawned environment exactly matches those backends'
+    actual host:port/credentials. Single source of truth — if the
+    postgres host port moves, Rhea's DATABASE_URL moves with it.
+    """
+    pg = _make_postgres_spec()
+    redis_s = _make_redis_spec()
+    minio_s = _make_minio_spec()
+    ollama_s = _make_ollama_spec()
+    ollama_base_url = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1")
+    rhea = _make_rhea_mcp_spec(
+        postgres_container=pg.container,  # type: ignore[arg-type]
+        redis_container=redis_s.container,  # type: ignore[arg-type]
+        minio_container=minio_s.container,  # type: ignore[arg-type]
+        ollama_base_url=ollama_base_url,
     )
+    return (pg, redis_s, minio_s, ollama_s, rhea)
 
 
 # ---------------------------------------------------------------------------
@@ -405,20 +605,19 @@ class InfraOrchestrator:
         followed by ``docker rm -f`` if stop fails. Pre-existing
         containers + processes are never touched.
         """
-        # Spawned host processes.
+        # Spawned host processes. We signal the entire PROCESS GROUP
+        # (not just the leader pid) because rhea-server's uvicorn
+        # parent forks worker children — SIGTERM to the parent alone
+        # leaves the workers serving on the bound port, and the next
+        # orchestrator's probe sees `reused` against a "shutdown" rhea.
+        # We Popen'd with start_new_session=True so each spawned tree
+        # is in its own session/group.
         for proc in list(self._spawned_processes):
             if proc.poll() is not None:
                 continue
             try:
-                proc.terminate()
-                try:
-                    proc.wait(timeout=5.0)
-                except subprocess.TimeoutExpired:
-                    log.warning(
-                        "InfraOrchestrator: child pid=%s did not exit on SIGTERM; sending SIGKILL",
-                        proc.pid,
-                    )
-                    proc.kill()
+                _terminate_process_group(proc.pid, grace_seconds=5.0)
+                with contextlib.suppress(subprocess.TimeoutExpired):
                     proc.wait(timeout=2.0)
             except Exception as exc:  # noqa: BLE001
                 log.warning(
@@ -463,11 +662,12 @@ class InfraOrchestrator:
         for proc in list(self._spawned_processes):
             try:
                 if proc.poll() is None:
-                    proc.terminate()
-                    try:
-                        proc.wait(timeout=5.0)
-                    except subprocess.TimeoutExpired:
-                        proc.kill()
+                    # Kill the whole process group so uvicorn workers
+                    # die along with the rhea-server parent — see the
+                    # same fix in shutdown() above.
+                    _terminate_process_group(proc.pid, grace_seconds=5.0)
+                    with contextlib.suppress(subprocess.TimeoutExpired):
+                        proc.wait(timeout=2.0)
             except Exception:  # noqa: BLE001
                 pass
         self._spawned_processes.clear()

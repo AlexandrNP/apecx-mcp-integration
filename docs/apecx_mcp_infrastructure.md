@@ -102,7 +102,9 @@ matters (`pg_dump` for Postgres, `mc mirror` for MinIO).
 | `APECX_LLM_BASE_URL`        | `http://localhost:11434/v1`      | Where the Ollama probe looks. A trailing `/v1` is stripped (Ollama's REST API is rooted at the host, not under `/v1`).                                                  |
 | `RHEA_MCP_URL`              | `http://localhost:3001/mcp/`     | Where the Rhea MCP probe connects.                                                                                                                                       |
 | `RHEA_REPO_PATH`            | unset                            | Path to the Rhea checkout. Required for the orchestrator to attempt autostart of the Rhea MCP host process. Unset → state is `external_unconfigured`.                  |
-| `RHEA_PYTHON_PATH`          | unset                            | Path to the miniconda `bin/` directory whose Python carries Rhea's dependencies. Required for Rhea autostart. Unset → state is `external_unconfigured`.                  |
+| `RHEA_PYTHON_PATH`          | unset                            | Path to **Rhea's uv venv `bin/`** (`$RHEA_REPO_PATH/.venv/bin`) whose Python carries Rhea + its deps. **NOT a bare miniconda bin** — that lacks `rhea`, `debugpy`, etc. The orchestrator runs an `import rhea` pre-spawn check and FAIL-LOUDs with this guidance in 2-3 s if the Python is wrong. |
+| `RHEA_CONDA_BIN`            | unset                            | Optional. Path to the miniconda `bin/` carrying `conda`. Prepended to the spawned Rhea's PATH so Rhea's downstream tool agents (which run `conda run -n <env>`) find the right `conda`. Without it, the system `conda` is used — if that's a broken Anaconda install, conda subprocesses fail loudly inside Rhea. |
+| `RHEA_EMBEDDING_MODEL`      | `mxbai-embed-large`              | The embedding model Rhea uses for its tool-catalog vector store. 1024-dim default matches the model `apecx-setup` pulls into Ollama. Rhea's bare-install default (`Qwen/Qwen3-Embedding-0.6B`) requires a different embedding server entirely. |
 | `APECX_MCP_SKIP_HEALTHCHECK`| unset (off)                      | Skips the **control-plane** healthcheck (the legacy `_verify_control_plane_reachable` path). Does NOT affect the infrastructure orchestrator; use `APECX_MCP_AUTOSTART_INFRA=0` for that. |
 
 ## 4. Operator prerequisites we can't install
@@ -138,6 +140,57 @@ message. The three things it cannot install for you:
   inside Rhea's checkout.
 - Detection: `RHEA_REPO_PATH` and/or `RHEA_PYTHON_PATH` unset →
   `external_unconfigured`.
+
+#### Verified spawn recipe (this configuration is real-tested, not fake-tested)
+
+```bash
+# in claude_desktop_config.json's "env" block, or your shell:
+export RHEA_REPO_PATH=/path/to/your/rhea-checkout
+export RHEA_PYTHON_PATH=$RHEA_REPO_PATH/.venv/bin     # uv-managed venv with rhea installed
+export RHEA_CONDA_BIN=/path/to/your/miniconda/bin     # optional — for conda subprocesses
+```
+
+The orchestrator then:
+
+1. Probes `$RHEA_MCP_URL`. If reachable → `reused`, no spawn.
+2. Runs `$RHEA_PYTHON_PATH/python -c "import rhea"` as a pre-spawn
+   sanity check. A miniconda Python that doesn't have `rhea` installed
+   fails this in ~2 s with an actionable message naming
+   `$RHEA_REPO_PATH/.venv/bin` as the right value.
+3. Composes Rhea's runtime env from the orchestrator's other backend
+   specs (single source of truth — Rhea's `DATABASE_URL` matches the
+   actual Postgres host:port the orchestrator manages; Rhea's
+   `EMBEDDING_URL` matches Ollama; etc.). Without this composition,
+   Rhea's defaults point at the wrong ports and silently-broken-but-
+   probe-green is the result.
+4. `Popen`s `$RHEA_PYTHON_PATH/python -m rhea.server.mcp_server
+   --transport streamable-http` with `cwd=$RHEA_REPO_PATH` (required —
+   Rhea reads its version from the repo's `pyproject.toml`) and
+   `start_new_session=True` (so the SIGTERM teardown can group-kill
+   uvicorn workers, not just the leader pid).
+5. Polls `tools/list` until ready or the 60 s timeout fires.
+
+Verified on 2026-05-15: the orchestrator brings Rhea up from a clean
+state, the MUSCLE workflow runs end-to-end against the
+orchestrator-spawned Rhea (5-sequence FASTA → MUSCLE alignment), and
+`atexit` cleanly tears the process group down.
+
+#### Bioconda / MUSCLE version pin (operator-side caveat)
+
+Rhea's Galaxy MUSCLE tool is authored against MUSCLE **v3.8.1551**'s
+command-line (`-fastaout`, `-cluster1`, `-maxiters`). Bioconda's
+`muscle` package now ships v5 by default, which has a completely
+different CLI; the tool fails with `Invalid command line / Unknown
+option in`. If you build the muscle conda env fresh today, you'll
+get v5 and the workflow will fail loudly via the `RheaFileToolStep`
+FAIL-LOUD path (not silently). Mitigation on the conda env:
+
+```bash
+$RHEA_CONDA_BIN/conda install -n muscle -c bioconda --yes 'muscle=3.8.1551'
+```
+
+This is a Rhea-side / Galaxy-tool-definition concern; the
+orchestrator faithfully drives whatever Rhea runs.
 
 ## 5. The `infrastructure_status` MCP tool
 
