@@ -64,6 +64,11 @@ from pathlib import Path
 
 # We delegate the data step to the existing setup_data implementation.
 from apecx_integration.cli import setup_data as _setup_data
+from apecx_integration.infrastructure.containers import (
+    APECX_REDIS,
+    APECX_RHEA_MINIO,
+    APECX_RHEA_POSTGRES,
+)
 
 # ---------------------------------------------------------------------------
 # Step result dataclass + summary table
@@ -154,20 +159,76 @@ def _step_data(*, interactive: bool = True) -> StepResult:
 # Step 2 — infra (Docker containers)
 # ---------------------------------------------------------------------------
 
+
+# Container specs are now defined in ``apecx_integration.infrastructure.containers``
+# so the orchestrator (startup-time bring-up) and this CLI (one-shot
+# operator bring-up) share a single source of truth. The legacy
+# ``apecx-postgres`` (postgres:16, port 5432) and ``apecx-redis`` specs
+# from before 2026-05-15 are superseded by the rhea-stack equivalents
+# (``apecx-rhea-postgres`` on port 5435, ``apecx-redis`` on 6379 still,
+# plus ``apecx-rhea-minio``). The ``ready_check`` per-container shell
+# command lives here because it's a CLI concern (docker exec) — the
+# orchestrator uses real-probe paths (psycopg / redis-py / httpx)
+# instead. ``purpose`` is the human-facing description.
+def _spec_to_run_args(spec) -> list[str]:
+    """Translate a ContainerSpec into ``-p H:C / -e K=V / -v SRC:DST`` argv.
+
+    The ``-v`` flag is the load-bearing one for stateful services
+    (Postgres, MinIO): without it apecx-setup would create no-volume
+    containers and the operator's data would silently live in the
+    container's ephemeral layer. Matches the shape emitted by
+    ``apecx_integration.infrastructure.containers.container_run_args``
+    so apecx-setup and the orchestrator produce equivalent containers.
+    """
+    args: list[str] = []
+    for host, container in spec.ports:
+        args.extend(["-p", f"{host}:{container}"])
+    for key, value in spec.env:
+        args.extend(["-e", f"{key}={value}"])
+    for source, container_path in spec.volumes:
+        args.extend(["-v", f"{source}:{container_path}"])
+    return args
+
+
 _DOCKER_CONTAINERS = [
     {
-        "name": "apecx-postgres",
-        "image": "postgres:16",
-        "args": ["-p", "5432:5432", "-e", "POSTGRES_PASSWORD=apecx"],
-        "ready_check": ["pg_isready", "-U", "postgres", "-h", "localhost"],
-        "purpose": "G21 PostgresTaskStore + future durable surfaces",
+        "name": APECX_RHEA_POSTGRES.container_name,
+        "image": APECX_RHEA_POSTGRES.image,
+        "args": _spec_to_run_args(APECX_RHEA_POSTGRES),
+        "command": list(APECX_RHEA_POSTGRES.command),
+        "ready_check": [
+            "pg_isready",
+            "-U",
+            "postgres",
+            "-h",
+            "localhost",
+            "-d",
+            dict(APECX_RHEA_POSTGRES.env).get("POSTGRES_DB", "postgres"),
+        ],
+        "purpose": "pgvector store for Rhea (vector search + caches)",
     },
     {
-        "name": "apecx-redis",
-        "image": "redis:7",
-        "args": ["-p", "6379:6379"],
+        "name": APECX_REDIS.container_name,
+        "image": APECX_REDIS.image,
+        "args": _spec_to_run_args(APECX_REDIS),
+        "command": list(APECX_REDIS.command),
         "ready_check": ["redis-cli", "ping"],
-        "purpose": "G5 Step 2 ProxyStore Redis backend + Academy exchange",
+        "purpose": "Redis cache + task queue (Rhea + apecx-mcp)",
+    },
+    {
+        "name": APECX_RHEA_MINIO.container_name,
+        "image": APECX_RHEA_MINIO.image,
+        "args": _spec_to_run_args(APECX_RHEA_MINIO),
+        "command": list(APECX_RHEA_MINIO.command),
+        # MinIO has no `redis-cli`-style ready check; check the API
+        # health-live endpoint via wget (busybox-style minimal probe).
+        "ready_check": [
+            "wget",
+            "--quiet",
+            "--spider",
+            "http://localhost:9000/minio/health/live",
+        ],
+        "purpose": "MinIO object store for Rhea (S3-compatible)",
     },
 ]
 
@@ -248,6 +309,7 @@ def _step_infra() -> StepResult:
             name,
             *spec["args"],
             spec["image"],
+            *spec.get("command", []),
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
@@ -626,27 +688,39 @@ def _step_verify() -> StepResult:
         )
     )
 
-    # Postgres
-    pg_running = _docker_available() and _container_running("apecx-postgres")
+    # Postgres (apecx-rhea-postgres — pgvector on host port 5435).
+    pg_running = _docker_available() and _container_running(APECX_RHEA_POSTGRES.container_name)
     checks.append(
         (
             "postgres",
             pg_running,
-            "container apecx-postgres responsive"
+            f"container {APECX_RHEA_POSTGRES.container_name} responsive"
             if pg_running
             else "not running — `apecx-setup infra` (or skip if not using PostgresTaskStore)",
         )
     )
 
-    # Redis
-    redis_running = _docker_available() and _container_running("apecx-redis")
+    # Redis (apecx-redis on 6379).
+    redis_running = _docker_available() and _container_running(APECX_REDIS.container_name)
     checks.append(
         (
             "redis",
             redis_running,
-            "container apecx-redis responsive"
+            f"container {APECX_REDIS.container_name} responsive"
             if redis_running
             else "not running — `apecx-setup infra` (or skip if not using Redis backend)",
+        )
+    )
+
+    # MinIO (apecx-rhea-minio on 9000/9001).
+    minio_running = _docker_available() and _container_running(APECX_RHEA_MINIO.container_name)
+    checks.append(
+        (
+            "minio",
+            minio_running,
+            f"container {APECX_RHEA_MINIO.container_name} responsive"
+            if minio_running
+            else "not running — `apecx-setup infra` (or skip if Rhea object-store paths are not used)",
         )
     )
 
@@ -693,9 +767,9 @@ def _step_verify() -> StepResult:
             "ok",
             "every component healthy",
         )
-    # Postgres + Redis are optional for many workflows; reflect that
-    # honestly in the partial-vs-fail distinction.
-    optional = {"postgres", "redis"}
+    # Postgres + Redis + MinIO are optional for many workflows; reflect
+    # that honestly in the partial-vs-fail distinction.
+    optional = {"postgres", "redis", "minio"}
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(

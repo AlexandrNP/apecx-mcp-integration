@@ -172,10 +172,27 @@ spawns the backend, the backend uses Postgres.
 
 ## Tool reference
 
-The server exposes 23 tools across six areas (workflow lifecycle,
+The server exposes 24+ tools across seven areas (workflow lifecycle,
 discovery, approvals, HPC, database, entity resolution, RAG synthesis,
-Globus Search). Each entry shows the signature, JSON return shape,
-and an example natural-language prompt.
+Globus Search, and infrastructure status). Each entry shows the signature,
+JSON return shape, and an example natural-language prompt.
+
+The full enumerated set:
+
+- **Workflow lifecycle (3)**: `start_workflow`, `show_diff`, `execute_workflow`
+- **Discovery (2)**: `list_workflows`, `describe_workflow`
+- **Approvals (4)**: `list_pending_approvals`, `approve`, `reject`, `correct`
+- **HPC (4)**: `estimate_cost`, `confirm_allocation`, `export_hpc_bundle`, `ingest_hpc_bundle`
+- **Database tools (7)**: `query_vaccines`, `query_pathogens`, `query_genes`, `query_bvbrc_genomes`, `get_vaccine_pathogen_genes`, `resolve_entity`, `database_statistics`
+- **Entity resolution (1)**: `resolve_canonical_entity`
+- **RAG synthesis (1)**: `synthesize_query`
+- **Viral immunology (2)**: `analyze_viral_immunology`, `analyze_eeev_epitopes`
+- **Globus Search (1)**: `query_globus_search`
+- **Infrastructure status (1)**: `infrastructure_status` — health of the
+  5 backends apecx-mcp depends on. See `docs/apecx_mcp_infrastructure.md`.
+
+…plus any catalog-registered nanobrain-workflow tools (see
+`docs/running_nanobrain_workflows_via_mcp.md`).
 
 ### Workflow lifecycle
 
@@ -553,6 +570,56 @@ Returns:
 
 **Prompt**: *"Search the harvested literature corpus for recent
 papers on alphavirus vaccines."*
+
+### Infrastructure status
+
+#### `infrastructure_status`
+
+```python
+infrastructure_status() -> dict
+```
+
+Reports the live health of the 5 backends `apecx-mcp` depends on:
+Postgres (`apecx-rhea-postgres`), Redis (`apecx-redis`),
+MinIO (`apecx-rhea-minio`), Ollama, and Rhea MCP. The tool always
+re-probes ready backends on every call (with a short per-probe
+timeout) — it never returns stale green from N minutes ago.
+
+Returns:
+
+```jsonc
+{
+  "overall": "ready" | "starting" | "degraded" | "down" | "disabled",
+  "autostart_enabled": true,
+  "orchestrator_uptime_seconds": 23.4,
+  "start_all_completed": true,
+  "backends": [
+    {
+      "name": "postgres",
+      "display_name": "Postgres (apecx-rhea-postgres / pgvector)",
+      "kind": "docker_container",
+      "required": true,
+      "state": "reused",
+      "detail": "postgres OK on localhost:5435 (db=rhea, user=postgres)",
+      "last_probe_at": 1778824361.46,
+      "latency_ms": 27.4,
+      "spawned_by_us": false,
+      "tags": ["vector-store", "rhea-deps"]
+    }
+    // … 4 more entries
+  ],
+  "actionable": []
+}
+```
+
+The `actionable` field is the operator's checklist — it carries
+one-line remedies for every non-ready backend (install Ollama,
+set `$RHEA_REPO_PATH`, start Docker, etc.).
+
+**Prompt**: *"Check infrastructure status — which backends are
+healthy?"*
+
+Full reference: `docs/apecx_mcp_infrastructure.md`.
 
 ## Other MCP clients
 

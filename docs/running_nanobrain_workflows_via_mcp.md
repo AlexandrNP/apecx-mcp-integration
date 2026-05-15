@@ -375,6 +375,18 @@ apecx-mcp concern, but it's the most common shape of "the
 rhea_muscle_alignment tool used to work, now it returns
 `{"error": "Action ... was cancelled"}`."
 
+### Diagnostic path — call `infrastructure_status` first
+
+Before you start cycling containers, ask Claude to call the
+`infrastructure_status` MCP tool. It returns a per-backend health
+snapshot (Postgres, Redis, MinIO, Ollama, Rhea MCP) with per-probe
+latency and an `actionable` field that names the exact remedy when
+something is wrong. The Rhea-cache-wedge symptom above is one of
+the cases where the tool will report Rhea MCP as `degraded` (an
+MCP `tools/list` round-trip went red) with the live error text in
+`detail`. See `docs/apecx_mcp_infrastructure.md` for the full tool
+reference.
+
 ## 9. Verifying end-to-end
 
 ### 9.1 Catalog parses cleanly

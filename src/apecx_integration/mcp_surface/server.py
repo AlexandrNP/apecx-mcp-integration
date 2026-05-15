@@ -73,6 +73,9 @@ from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    infrastructure_status as infrastructure_status_tool,
+)
+from apecx_integration.mcp_surface.tools import (
     synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -158,6 +161,14 @@ def build_server() -> FastMCP:
     server.tool()(hpc_tools.export_hpc_bundle)
     server.tool()(hpc_tools.ingest_hpc_bundle)
 
+    # Infrastructure-status — reports the health of the 5 backends
+    # apecx-mcp depends on (Postgres, Redis, MinIO, Ollama, Rhea MCP).
+    # The orchestrator runs in the background (scheduled below); this
+    # tool reads its state on every call and re-probes ready backends
+    # so a died-mid-session backend is reported as degraded — never
+    # stale green. See ``infrastructure/orchestrator.py``.
+    server.tool()(infrastructure_status_tool.infrastructure_status)
+
     # Pre-made nanobrain workflows — generalized catalog-driven
     # registration. Each entry in the catalog YAML becomes ONE MCP
     # tool whose name, description, and input schema come from the
@@ -176,6 +187,28 @@ def build_server() -> FastMCP:
     catalog = load_catalog(catalog_path)
     report = register_workflows(server, catalog, logger=log)
     log.info("workflow registry: %s", report.summary_line())
+
+    # Infrastructure orchestrator — fire-and-forget bring-up of the 5
+    # backends (Postgres, Redis, MinIO, Ollama, Rhea MCP). Runs in a
+    # daemon thread so the FastMCP startup is not blocked waiting for
+    # slow probes / spawns. The ``infrastructure_status`` MCP tool
+    # (registered above) reads the orchestrator's state at call time
+    # and re-probes ready backends — there is no stale-green path.
+    #
+    # ``APECX_MCP_AUTOSTART_INFRA=0`` switches the orchestrator into
+    # probe-only mode (read on first construction inside
+    # ``get_orchestrator``); ``start_all`` still runs so the probes
+    # populate state, but no ``docker run`` / ``Popen`` is invoked.
+    from apecx_integration.infrastructure.orchestrator import (
+        start_orchestrator_in_background_thread,
+    )
+
+    start_orchestrator_in_background_thread()
+    autostart = os.environ.get("APECX_MCP_AUTOSTART_INFRA", "1") != "0"
+    log.info(
+        "MCP startup: infrastructure orchestrator launched in background thread (autostart=%s).",
+        autostart,
+    )
 
     return server
 

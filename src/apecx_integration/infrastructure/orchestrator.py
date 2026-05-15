@@ -1,0 +1,929 @@
+"""The process-singleton orchestrator that brings the stack up.
+
+Lifecycle
+---------
+1. ``apecx_integration.mcp_surface.server.build_server`` schedules
+   ``get_orchestrator().start_all()`` as a fire-and-forget asyncio
+   task. The MCP-tool-surface registration finishes immediately so
+   Claude Desktop sees the server respond fast; the orchestrator
+   races in the background.
+2. Per backend, the orchestrator runs the probe. If it succeeds,
+   the backend transitions to ``REUSED`` (we did not spawn it) and
+   we keep its handle. If it fails AND ``APECX_MCP_AUTOSTART_INFRA``
+   is set, we attempt to bring it up — ``docker run`` for containers,
+   ``Popen`` for host processes — then poll the probe until healthy
+   or the timeout fires.
+3. The ``infrastructure_status`` MCP tool reads ``status()`` on each
+   call, which RE-PROBES every ready backend (cheap; <50 ms each).
+   This way a backend that died after startup is reported as
+   ``DEGRADED`` immediately, never as stale-green.
+4. ``atexit`` invokes ``shutdown()``. That tears down ONLY containers
+   / processes the orchestrator spawned (tracked via the ``_spawned``
+   set on each :class:`BackendRuntime`). Operator-pre-existing
+   containers + processes survive — they may want them persistent.
+
+Concurrency model
+-----------------
+``start_all()`` launches per-backend tasks via ``asyncio.gather``.
+Each backend's bring-up is serial within itself (probe → spawn →
+poll). The ``_lock`` guards ``BackendRuntime`` mutation so a status
+re-probe racing against an in-flight bring-up doesn't corrupt state.
+
+Honesty contract
+----------------
+* The status tool ALWAYS re-probes ready backends. We never return
+  stale green.
+* A probe failure on a previously-ready backend flips it to
+  ``DEGRADED`` (not ``DOWN``) — the next status call re-probes; the
+  failure may have been a transient network blip.
+* Idempotence: ``start_all()`` called twice does not double-start.
+  Each backend runtime tracks whether it's been processed; subsequent
+  calls only re-probe.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import atexit
+import contextlib
+import logging
+import os
+import shutil
+import subprocess
+import threading
+import time
+from typing import Any
+
+from apecx_integration.infrastructure.backends import (
+    BackendRuntime,
+    BackendSpec,
+    BackendState,
+    ContainerSpec,
+    HostProcessSpec,
+    Probe,
+    ProbeResult,
+)
+from apecx_integration.infrastructure.containers import (
+    APECX_REDIS,
+    APECX_RHEA_MINIO,
+    APECX_RHEA_POSTGRES,
+    container_run_args,
+)
+from apecx_integration.infrastructure.probes import (
+    minio_probe,
+    ollama_probe,
+    postgres_probe,
+    redis_probe,
+    rhea_mcp_probe,
+)
+
+log = logging.getLogger(__name__)
+
+
+_AUTOSTART_ENV_VAR = "APECX_MCP_AUTOSTART_INFRA"
+_RHEA_REPO_PATH = "RHEA_REPO_PATH"
+_RHEA_PYTHON_PATH = "RHEA_PYTHON_PATH"
+_OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
+_RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
+
+
+def _autostart_enabled() -> bool:
+    return os.environ.get(_AUTOSTART_ENV_VAR, "1") != "0"
+
+
+# ---------------------------------------------------------------------------
+# Default backend roster
+# ---------------------------------------------------------------------------
+
+
+def _make_postgres_spec() -> BackendSpec:
+    container = APECX_RHEA_POSTGRES
+    host = "localhost"
+    host_port = container.ports[0][0]
+    env = dict(container.env)
+    user = "postgres"  # pgvector image default
+    db = env.get("POSTGRES_DB", "postgres")
+    password = env.get("POSTGRES_PASSWORD", "postgres")
+
+    async def _probe() -> ProbeResult:
+        return await postgres_probe(host=host, port=host_port, user=user, db=db, password=password)
+
+    return BackendSpec(
+        name="postgres",
+        display_name="Postgres (apecx-rhea-postgres / pgvector)",
+        kind="docker_container",
+        required=True,
+        probe=Probe(name="postgres", fn=_probe),
+        actionable_message=(
+            "Postgres is unreachable at localhost:5435. The container "
+            f"image is {container.image!r}. If Docker is installed, the "
+            "orchestrator can spawn it; otherwise install Docker Desktop "
+            "from https://www.docker.com/products/docker-desktop/ and "
+            f"start it, then re-run. Manual recovery: docker start "
+            f"{container.container_name}."
+        ),
+        container=container,
+        tags=("vector-store", "rhea-deps"),
+    )
+
+
+def _make_redis_spec() -> BackendSpec:
+    container = APECX_REDIS
+    host = "localhost"
+    host_port = container.ports[0][0]
+
+    async def _probe() -> ProbeResult:
+        return await redis_probe(host=host, port=host_port)
+
+    return BackendSpec(
+        name="redis",
+        display_name="Redis (apecx-redis)",
+        kind="docker_container",
+        required=True,
+        probe=Probe(name="redis", fn=_probe),
+        actionable_message=(
+            "Redis is unreachable at localhost:6379. If Docker is "
+            "available, the orchestrator can spawn it; otherwise install "
+            "Docker Desktop from https://www.docker.com/products/docker-desktop/ "
+            f"and start it. Manual recovery: docker start "
+            f"{container.container_name}."
+        ),
+        container=container,
+        tags=("cache", "task-queue"),
+    )
+
+
+def _make_minio_spec() -> BackendSpec:
+    container = APECX_RHEA_MINIO
+    host = "localhost"
+    host_port = container.ports[0][0]
+
+    async def _probe() -> ProbeResult:
+        return await minio_probe(host=host, port=host_port)
+
+    return BackendSpec(
+        name="minio",
+        display_name="MinIO (apecx-rhea-minio)",
+        kind="docker_container",
+        required=True,
+        probe=Probe(name="minio", fn=_probe),
+        actionable_message=(
+            "MinIO is unreachable at localhost:9000. If Docker is "
+            "available, the orchestrator can spawn it; otherwise install "
+            "Docker Desktop from https://www.docker.com/products/docker-desktop/ "
+            f"and start it. Manual recovery: docker start "
+            f"{container.container_name}."
+        ),
+        container=container,
+        tags=("object-store", "rhea-deps"),
+    )
+
+
+def _make_ollama_spec() -> BackendSpec:
+    base_url = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1")
+
+    async def _probe() -> ProbeResult:
+        return await ollama_probe(base_url=base_url)
+
+    return BackendSpec(
+        name="ollama",
+        display_name="Ollama (host process)",
+        kind="external",
+        required=True,
+        probe=Probe(name="ollama", fn=_probe),
+        actionable_message=(
+            f"Ollama not found at {base_url}. Install Ollama from "
+            "https://ollama.com/download and run `ollama serve` (or "
+            "`brew services start ollama` on macOS). The orchestrator "
+            "cannot install or autostart Ollama — it is an operator "
+            "prerequisite."
+        ),
+        tags=("llm", "operator-prereq"),
+    )
+
+
+def _make_rhea_mcp_spec() -> BackendSpec:
+    mcp_url = os.environ.get(_RHEA_MCP_URL_ENV, "http://localhost:3001/mcp/")
+
+    async def _probe() -> ProbeResult:
+        return await rhea_mcp_probe(mcp_url=mcp_url)
+
+    def _command_factory(env: dict[str, str]) -> tuple[list[str], dict[str, str]]:
+        # Resolve the Rhea miniconda python (operator-managed).
+        rhea_python_bin = env[_RHEA_PYTHON_PATH]
+        rhea_repo = env[_RHEA_REPO_PATH]
+        python_exec = (
+            f"{rhea_python_bin.rstrip('/')}/python"
+            if not rhea_python_bin.endswith("/python")
+            else rhea_python_bin
+        )
+        # Extend PATH so the spawned process can find the miniconda binaries.
+        env_additions = {
+            "PATH": f"{rhea_python_bin.rstrip('/')}:{env.get('PATH', '')}",
+            "PYTHONUNBUFFERED": "1",
+            # Forward known Rhea env vars if present in our env.
+            **{k: env[k] for k in env if k.startswith("RHEA_")},
+        }
+        argv = [
+            python_exec,
+            "-m",
+            "rhea.server.mcp_server",
+            "--transport",
+            "streamable-http",
+        ]
+        # Run from the Rhea repo so any relative configs resolve.
+        env_additions["__CWD__"] = rhea_repo
+        return argv, env_additions
+
+    process_spec = HostProcessSpec(
+        prereq_env_vars=(_RHEA_REPO_PATH, _RHEA_PYTHON_PATH),
+        command_factory=_command_factory,
+        ready_timeout_s=60.0,
+    )
+
+    return BackendSpec(
+        name="rhea_mcp",
+        display_name="Rhea MCP (host process)",
+        kind="host_process",
+        required=True,
+        probe=Probe(name="rhea_mcp", fn=_probe),
+        actionable_message=(
+            f"Rhea MCP is unreachable at {mcp_url}. To enable autostart, "
+            f"set ${_RHEA_REPO_PATH} (path to the Rhea checkout) and "
+            f"${_RHEA_PYTHON_PATH} (path to the miniconda bin/ dir "
+            "carrying its Python). Alternatively, start it manually: "
+            "cd $RHEA_REPO_PATH && python -m rhea.server.mcp_server "
+            "--transport streamable-http. Without Rhea MCP, the "
+            "Rhea-backed tools will return UNAVAILABLE."
+        ),
+        process=process_spec,
+        tags=("mcp", "rhea"),
+    )
+
+
+def _default_backend_specs() -> tuple[BackendSpec, ...]:
+    """Build the default 5-backend roster."""
+    return (
+        _make_postgres_spec(),
+        _make_redis_spec(),
+        _make_minio_spec(),
+        _make_ollama_spec(),
+        _make_rhea_mcp_spec(),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Orchestrator
+# ---------------------------------------------------------------------------
+
+
+class InfraOrchestrator:
+    """Process-singleton infra orchestrator.
+
+    Construction takes a list of :class:`BackendSpec` (defaults to the
+    canonical 5-backend roster) and an optional ``autostart_enabled``
+    override (defaults to reading ``APECX_MCP_AUTOSTART_INFRA``). The
+    orchestrator never reads the env var post-construction — once
+    instantiated, its policy is fixed (test predictability).
+
+    The orchestrator is async-friendly but synchronous-safe to
+    construct. ``start_all()`` must be ``await``-ed.
+    """
+
+    def __init__(
+        self,
+        specs: list[BackendSpec] | None = None,
+        *,
+        autostart_enabled: bool | None = None,
+        docker_binary: str | None = None,
+    ) -> None:
+        roster = specs if specs is not None else list(_default_backend_specs())
+        self._runtimes: dict[str, BackendRuntime] = {
+            spec.name: BackendRuntime(spec=spec) for spec in roster
+        }
+        self._autostart = (
+            autostart_enabled if autostart_enabled is not None else _autostart_enabled()
+        )
+        # The docker binary is resolved at construction so a missing
+        # docker daemon is reported once, not every probe cycle.
+        self._docker = docker_binary if docker_binary is not None else shutil.which("docker")
+        # ``threading.Lock`` (not ``asyncio.Lock``) so the orchestrator
+        # can be touched from any thread / loop. The status tool runs
+        # in FastMCP's loop; ``start_all`` may be driven from a separate
+        # bring-up thread. The lock-held regions are tiny (in-memory
+        # field assignment) so a sync lock is the right tool.
+        self._lock = threading.Lock()
+        self._singleton_loop: asyncio.AbstractEventLoop | None = None
+        self._started_at: float | None = None
+        self._start_all_done = False
+        # Track spawned children for atexit cleanup. We hold direct
+        # references so atexit can still reach them even if all other
+        # references go out of scope.
+        self._spawned_processes: list[subprocess.Popen[bytes]] = []
+        self._spawned_containers: list[str] = []
+        self._atexit_registered = False
+
+    # ---- public API ---------------------------------------------------
+
+    @property
+    def autostart_enabled(self) -> bool:
+        return self._autostart
+
+    @property
+    def uptime_seconds(self) -> float:
+        if self._started_at is None:
+            return 0.0
+        return max(0.0, time.monotonic() - self._started_at)
+
+    def backend_names(self) -> list[str]:
+        return list(self._runtimes.keys())
+
+    def get_runtime(self, name: str) -> BackendRuntime:
+        return self._runtimes[name]
+
+    async def start_all(self) -> dict[str, Any]:
+        """Bring up (or probe-only) every backend in parallel.
+
+        Returns a dict snapshot like :meth:`status` for caller convenience.
+        Idempotent: subsequent calls only re-probe — no double-spawn.
+        """
+        if self._started_at is None:
+            self._started_at = time.monotonic()
+        # Register the atexit hook on first call. We never unregister.
+        if not self._atexit_registered:
+            atexit.register(self._atexit_shutdown)
+            self._atexit_registered = True
+
+        # Launch per-backend bring-up in parallel. We use return_exceptions
+        # so a buggy probe (which would be a programmer bug — probes are
+        # supposed to catch their own exceptions) doesn't take down sibling
+        # bring-ups.
+        await asyncio.gather(
+            *(self._bring_up(rt) for rt in self._runtimes.values()),
+            return_exceptions=True,
+        )
+        self._start_all_done = True
+        return await self.status()
+
+    async def status(self) -> dict[str, Any]:
+        """Snapshot of every backend's current state.
+
+        Re-probes every backend currently in READY / REUSED state with
+        a short timeout. Backends still in STARTING are not re-probed
+        (bring-up is in flight). Operator-prereq states
+        (EXTERNAL_MISSING / EXTERNAL_UNCONFIGURED / EXTERNAL_SKIPPED)
+        are NOT re-probed automatically — they need an operator action
+        to change and constant re-probing would be pointless cost.
+        """
+        # Re-probe any backend whose state is one we re-probe on every
+        # status call. We run these in parallel; mutation is guarded by
+        # _lock per backend.
+        coros = []
+        for rt in self._runtimes.values():
+            if rt.state in (BackendState.READY, BackendState.REUSED, BackendState.DEGRADED):
+                coros.append(self._reprobe(rt))
+        if coros:
+            await asyncio.gather(*coros, return_exceptions=True)
+
+        backends = [rt.snapshot() for rt in self._runtimes.values()]
+        overall = self._compute_overall_state()
+        actionable = self._actionable_messages()
+        return {
+            "overall": overall,
+            "autostart_enabled": self._autostart,
+            "orchestrator_uptime_seconds": self.uptime_seconds,
+            "start_all_completed": self._start_all_done,
+            "backends": backends,
+            "actionable": actionable,
+        }
+
+    async def shutdown(self) -> None:
+        """Tear down ONLY backends we spawned.
+
+        Spawned host processes get SIGTERM with a 5s grace, then
+        SIGKILL. Spawned containers get ``docker stop`` (10s grace)
+        followed by ``docker rm -f`` if stop fails. Pre-existing
+        containers + processes are never touched.
+        """
+        # Spawned host processes.
+        for proc in list(self._spawned_processes):
+            if proc.poll() is not None:
+                continue
+            try:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=5.0)
+                except subprocess.TimeoutExpired:
+                    log.warning(
+                        "InfraOrchestrator: child pid=%s did not exit on SIGTERM; sending SIGKILL",
+                        proc.pid,
+                    )
+                    proc.kill()
+                    proc.wait(timeout=2.0)
+            except Exception as exc:  # noqa: BLE001
+                log.warning(
+                    "InfraOrchestrator: error terminating child pid=%s: %s",
+                    proc.pid,
+                    exc,
+                )
+        self._spawned_processes.clear()
+
+        # Spawned containers.
+        if self._docker is not None:
+            for container_name in list(self._spawned_containers):
+                try:
+                    subprocess.run(
+                        [self._docker, "stop", "-t", "10", container_name],
+                        capture_output=True,
+                        timeout=15,
+                    )
+                except subprocess.TimeoutExpired:
+                    log.warning(
+                        "InfraOrchestrator: `docker stop %s` timed out; forcing rm",
+                        container_name,
+                    )
+                    subprocess.run(
+                        [self._docker, "rm", "-f", container_name],
+                        capture_output=True,
+                        timeout=10,
+                    )
+                except Exception as exc:  # noqa: BLE001
+                    log.warning(
+                        "InfraOrchestrator: error stopping container %s: %s",
+                        container_name,
+                        exc,
+                    )
+        self._spawned_containers.clear()
+
+    # ---- internals ----------------------------------------------------
+
+    def _atexit_shutdown(self) -> None:
+        """atexit hook — sync-only wrapper around ``shutdown``."""
+        # Spawned host processes — terminate without awaiting.
+        for proc in list(self._spawned_processes):
+            try:
+                if proc.poll() is None:
+                    proc.terminate()
+                    try:
+                        proc.wait(timeout=5.0)
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+            except Exception:  # noqa: BLE001
+                pass
+        self._spawned_processes.clear()
+
+        if self._docker is not None:
+            for container_name in list(self._spawned_containers):
+                try:
+                    subprocess.run(
+                        [self._docker, "stop", "-t", "10", container_name],
+                        capture_output=True,
+                        timeout=15,
+                    )
+                except Exception:  # noqa: BLE001
+                    with contextlib.suppress(Exception):
+                        subprocess.run(
+                            [self._docker, "rm", "-f", container_name],
+                            capture_output=True,
+                            timeout=10,
+                        )
+        self._spawned_containers.clear()
+
+    async def _bring_up(self, rt: BackendRuntime) -> None:
+        """Bring up one backend (probe → optional spawn → poll)."""
+        spec = rt.spec
+
+        # First: probe. If healthy, mark REUSED and stop.
+        first = await spec.probe.run()
+        with self._lock:
+            rt.last_probe_at = time.time()
+            rt.last_latency_ms = first.latency_ms
+            if first.healthy:
+                rt.state = BackendState.REUSED
+                rt.detail = first.detail
+                rt.error = None
+                rt.spawned_by_us = False
+                return
+
+        # Not healthy. Decide whether to attempt autostart.
+        if not self._autostart:
+            with self._lock:
+                rt.state = BackendState.EXTERNAL_SKIPPED
+                rt.detail = (
+                    f"{spec.display_name}: not running and "
+                    f"{_AUTOSTART_ENV_VAR}=0 — orchestrator is in probe-only mode."
+                )
+                rt.error = first.error
+            return
+
+        if spec.kind == "external":
+            with self._lock:
+                rt.state = BackendState.EXTERNAL_MISSING
+                rt.detail = spec.actionable_message
+                rt.error = first.error
+            return
+
+        if spec.kind == "docker_container":
+            await self._bring_up_container(rt)
+            return
+
+        if spec.kind == "host_process":
+            await self._bring_up_host_process(rt)
+            return
+
+        with self._lock:
+            rt.state = BackendState.ERROR_STARTING
+            rt.detail = f"unknown backend kind: {spec.kind}"
+            rt.error = f"BackendSpec.kind={spec.kind!r}"
+
+    async def _bring_up_container(self, rt: BackendRuntime) -> None:
+        spec = rt.spec
+        container_spec: ContainerSpec = spec.container  # type: ignore[assignment]
+        if self._docker is None:
+            with self._lock:
+                rt.state = BackendState.EXTERNAL_MISSING
+                rt.detail = (
+                    f"{spec.display_name}: cannot autostart — `docker` CLI "
+                    "not found on PATH. Install Docker Desktop from "
+                    "https://www.docker.com/products/docker-desktop/ and "
+                    "ensure the daemon is running."
+                )
+                rt.error = "docker binary not on PATH"
+            return
+
+        # Check daemon reachability — `docker info` returns non-zero
+        # when the daemon is down. We report the same actionable msg.
+        info = await asyncio.to_thread(
+            subprocess.run,
+            [self._docker, "info"],
+            capture_output=True,
+            timeout=10,
+        )
+        if info.returncode != 0:
+            with self._lock:
+                rt.state = BackendState.EXTERNAL_MISSING
+                rt.detail = (
+                    f"{spec.display_name}: docker daemon unreachable "
+                    "(`docker info` returned non-zero). Start Docker "
+                    "Desktop and re-run."
+                )
+                rt.error = info.stderr.decode("utf-8", "replace")[:300]
+            return
+
+        with self._lock:
+            rt.state = BackendState.STARTING
+            rt.detail = f"spawning container {container_spec.container_name} ..."
+
+        # If a container with that name already exists (stopped), `docker start`
+        # is the right move — it preserves the operator's volume state. If not,
+        # we `docker run`.
+        existing = await asyncio.to_thread(
+            subprocess.run,
+            [self._docker, "ps", "-aq", "-f", f"name=^{container_spec.container_name}$"],
+            capture_output=True,
+            timeout=10,
+        )
+        existing_id = existing.stdout.decode("utf-8", "replace").strip()
+        if existing_id:
+            spawn = await asyncio.to_thread(
+                subprocess.run,
+                [self._docker, "start", container_spec.container_name],
+                capture_output=True,
+                timeout=30,
+            )
+            spawn_action = "docker start"
+        else:
+            cmd = [self._docker] + container_run_args(container_spec)
+            spawn = await asyncio.to_thread(
+                subprocess.run,
+                cmd,
+                capture_output=True,
+                timeout=120,
+            )
+            spawn_action = "docker run"
+
+        if spawn.returncode != 0:
+            err = spawn.stderr.decode("utf-8", "replace")[:300]
+            with self._lock:
+                rt.state = BackendState.ERROR_STARTING
+                rt.detail = (
+                    f"{spec.display_name}: `{spawn_action} "
+                    f"{container_spec.container_name}` exited with "
+                    f"{spawn.returncode}. {spec.actionable_message}"
+                )
+                rt.error = err
+            return
+
+        # Record what we spawned so atexit cleans it up. We register
+        # both newly-run and previously-stopped containers as "spawned
+        # by us" — we want to stop them on shutdown only if WE
+        # transitioned them from stopped to running.
+        with self._lock:
+            rt.spawned_by_us = True
+            rt.spawned_container = container_spec.container_name
+            # Anti-silent-failure: if we just CREATED a container from
+            # scratch (vs starting a previously-stopped one), surface
+            # an actionable warning. With named volumes declared in
+            # ContainerSpec the data persists across respawns; without
+            # them, or if the operator destroyed the volume, the
+            # container starts empty — a probe-green container that
+            # silently lost the operator's prior data is exactly the
+            # silent-failure shape we're guarding against.
+            if spawn_action == "docker run":
+                vol_note = (
+                    f"named volume(s) {[v[0] for v in container_spec.volumes]} "
+                    f"declared — data persists if the volume exists"
+                    if container_spec.volumes
+                    else "NO persistent volume declared — data will be lost when the container is removed"
+                )
+                rt.fresh_create_warning = (
+                    f"container {container_spec.container_name!r} was freshly "
+                    f"created (the operator's prior container, if any, is gone). "
+                    f"{vol_note}. Verify your expected state is present "
+                    f"(e.g. `docker volume ls`, application-level row counts) "
+                    f"before relying on this backend."
+                )
+        self._spawned_containers.append(container_spec.container_name)
+
+        # Poll the probe until healthy or the per-spec timeout fires.
+        ok = await self._poll_until_healthy(rt, container_spec.ready_timeout_s)
+        if ok:
+            with self._lock:
+                rt.state = BackendState.READY
+        else:
+            with self._lock:
+                rt.state = BackendState.ERROR_STARTING
+                rt.detail = (
+                    f"{spec.display_name}: container "
+                    f"{container_spec.container_name} spawned but did not "
+                    f"become healthy within {container_spec.ready_timeout_s}s."
+                )
+
+    async def _bring_up_host_process(self, rt: BackendRuntime) -> None:
+        spec = rt.spec
+        process_spec: HostProcessSpec = spec.process  # type: ignore[assignment]
+
+        # Check that every prereq env var is set. If not, mark
+        # EXTERNAL_UNCONFIGURED — no spawn attempt.
+        missing = [var for var in process_spec.prereq_env_vars if not os.environ.get(var)]
+        if missing:
+            with self._lock:
+                rt.state = BackendState.EXTERNAL_UNCONFIGURED
+                rt.detail = (
+                    f"{spec.display_name}: missing prereq env var(s) "
+                    f"{missing}. {spec.actionable_message}"
+                )
+                rt.error = f"unset env vars: {missing}"
+            return
+
+        with self._lock:
+            rt.state = BackendState.STARTING
+            rt.detail = f"spawning host process for {spec.display_name} ..."
+
+        try:
+            argv, env_additions = process_spec.command_factory(dict(os.environ))
+        except Exception as exc:  # noqa: BLE001
+            with self._lock:
+                rt.state = BackendState.ERROR_STARTING
+                rt.detail = (
+                    f"{spec.display_name}: command_factory raised "
+                    f"{type(exc).__name__}: {exc}. {spec.actionable_message}"
+                )
+                rt.error = f"{type(exc).__name__}: {exc}"
+            return
+
+        cwd = env_additions.pop("__CWD__", None)
+        spawn_env = dict(os.environ)
+        spawn_env.update(env_additions)
+
+        # Tee stdout/stderr to a log file the operator can inspect.
+        try:
+            log_fh = open(process_spec.log_path, "ab")  # noqa: SIM115 — handle lives with the process
+        except OSError as exc:
+            with self._lock:
+                rt.state = BackendState.ERROR_STARTING
+                rt.detail = (
+                    f"{spec.display_name}: could not open log file "
+                    f"{process_spec.log_path}: {exc}. {spec.actionable_message}"
+                )
+                rt.error = str(exc)
+            return
+
+        try:
+            proc = subprocess.Popen(  # noqa: S603 — argv built from operator config
+                argv,
+                stdin=subprocess.DEVNULL,
+                stdout=log_fh,
+                stderr=log_fh,
+                env=spawn_env,
+                cwd=cwd,
+                start_new_session=True,
+            )
+        except OSError as exc:
+            log_fh.close()
+            with self._lock:
+                rt.state = BackendState.ERROR_STARTING
+                rt.detail = (
+                    f"{spec.display_name}: Popen failed with {type(exc).__name__}: "
+                    f"{exc}. {spec.actionable_message}"
+                )
+                rt.error = str(exc)
+            return
+
+        with self._lock:
+            rt.spawned_by_us = True
+            rt.spawned_pid = proc.pid
+        self._spawned_processes.append(proc)
+
+        # Poll the probe.
+        ok = await self._poll_until_healthy(rt, process_spec.ready_timeout_s)
+        if ok:
+            with self._lock:
+                rt.state = BackendState.READY
+            return
+
+        # Child failed to come up. Mark error state but keep the proc
+        # in _spawned_processes so atexit still cleans it up if it
+        # spawned a partial daemon.
+        with self._lock:
+            rt.state = BackendState.ERROR_STARTING
+            rt.detail = (
+                f"{spec.display_name}: process pid={proc.pid} spawned but "
+                f"did not become healthy within {process_spec.ready_timeout_s}s. "
+                f"Check {process_spec.log_path} for the child's stderr. "
+                f"{spec.actionable_message}"
+            )
+
+    async def _poll_until_healthy(
+        self,
+        rt: BackendRuntime,
+        timeout_s: float,
+        *,
+        poll_interval_s: float = 0.5,
+    ) -> bool:
+        """Probe until healthy or timeout. Returns True on success."""
+        deadline = time.monotonic() + timeout_s
+        while time.monotonic() < deadline:
+            result = await rt.spec.probe.run()
+            with self._lock:
+                rt.last_probe_at = time.time()
+                rt.last_latency_ms = result.latency_ms
+                if result.healthy:
+                    rt.detail = result.detail
+                    rt.error = None
+                    return True
+                rt.detail = result.detail
+                rt.error = result.error
+            await asyncio.sleep(poll_interval_s)
+        return False
+
+    async def _reprobe(self, rt: BackendRuntime) -> None:
+        """Re-probe a backend and update its state in place.
+
+        Only state transitions we make here:
+
+        * READY/REUSED + probe-healthy → unchanged (latency refreshed)
+        * READY/REUSED + probe-unhealthy → DEGRADED
+        * DEGRADED + probe-healthy → READY (or REUSED if we didn't spawn it)
+        * DEGRADED + probe-unhealthy → unchanged
+        """
+        result = await rt.spec.probe.run()
+        with self._lock:
+            rt.last_probe_at = time.time()
+            rt.last_latency_ms = result.latency_ms
+            if result.healthy:
+                rt.detail = result.detail
+                rt.error = None
+                if rt.state == BackendState.DEGRADED:
+                    rt.state = BackendState.READY if rt.spawned_by_us else BackendState.REUSED
+            else:
+                rt.detail = result.detail
+                rt.error = result.error
+                if rt.state in (BackendState.READY, BackendState.REUSED):
+                    rt.state = BackendState.DEGRADED
+
+    def _compute_overall_state(self) -> str:
+        """Aggregate per-backend states into a single overall string."""
+        if not self._autostart and not self._start_all_done:
+            return "disabled"
+        states = {rt.state for rt in self._runtimes.values()}
+        # If any required backend is in a hard-failed state, overall is "down".
+        required_failed = any(
+            rt.spec.required and rt.state in (BackendState.DOWN, BackendState.ERROR_STARTING)
+            for rt in self._runtimes.values()
+        )
+        if required_failed:
+            return "down"
+        if BackendState.STARTING in states or not self._start_all_done:
+            return "starting"
+        # Any non-ready required backend → degraded.
+        required_not_ready = any(
+            rt.spec.required and rt.state not in (BackendState.READY, BackendState.REUSED)
+            for rt in self._runtimes.values()
+        )
+        if required_not_ready:
+            return "degraded"
+        return "ready"
+
+    def _actionable_messages(self) -> list[str]:
+        out = []
+        for rt in self._runtimes.values():
+            if rt.state in (
+                BackendState.DEGRADED,
+                BackendState.DOWN,
+                BackendState.EXTERNAL_MISSING,
+                BackendState.EXTERNAL_UNCONFIGURED,
+                BackendState.ERROR_STARTING,
+                BackendState.EXTERNAL_SKIPPED,
+            ):
+                # Prefer the live detail (which carries the latest
+                # error context); fall back to the spec's static
+                # message if detail wasn't populated.
+                msg = rt.detail or rt.spec.actionable_message
+                out.append(f"[{rt.spec.name}] {msg}")
+            # Fresh-create warning surfaces independently of state — a
+            # READY backend that we just freshly created may have lost
+            # the operator's prior data, and they need to know.
+            if rt.fresh_create_warning:
+                out.append(f"[{rt.spec.name}] {rt.fresh_create_warning}")
+        return out
+
+
+# ---------------------------------------------------------------------------
+# Process-singleton accessor
+# ---------------------------------------------------------------------------
+
+
+_SINGLETON: InfraOrchestrator | None = None
+_SINGLETON_LOCK = threading.Lock()
+
+
+def get_orchestrator() -> InfraOrchestrator:
+    """Return the process-singleton orchestrator, constructing on first call.
+
+    This is the accessor the MCP server + ``infrastructure_status``
+    tool both call. Construction is lazy so a test that imports the
+    module without intending to start the orchestrator does not pay
+    the (small) container-spec construction cost.
+
+    Thread-safe via a module-level ``threading.Lock`` — double-checked
+    locking so the fast path (singleton already exists) avoids the
+    lock cost.
+    """
+    global _SINGLETON
+    if _SINGLETON is None:
+        with _SINGLETON_LOCK:
+            if _SINGLETON is None:
+                _SINGLETON = InfraOrchestrator()
+    return _SINGLETON
+
+
+def start_orchestrator_in_background_thread() -> threading.Thread:
+    """Kick off ``orchestrator.start_all()`` in a dedicated daemon thread.
+
+    The orchestrator's per-backend bring-up is async-driven (probes
+    are async). We run that drive inside a fresh asyncio loop owned
+    by a daemon thread so the FastMCP server's startup is not blocked
+    waiting for slow probes (Rhea MCP can take 5-10s if it's spawning).
+
+    The status tool, which runs in FastMCP's loop, is also async and
+    re-probes via its OWN fresh-loop coros — the per-backend mutation
+    surface is guarded by a ``threading.Lock``, so the two loops can
+    not race on field assignment.
+
+    Returns the thread so callers can ``.join`` it in tests; in
+    production it's a daemon thread and will die with the process.
+    """
+    orch = get_orchestrator()
+
+    def _runner() -> None:
+        loop = asyncio.new_event_loop()
+        try:
+            loop.run_until_complete(orch.start_all())
+        except Exception:  # noqa: BLE001
+            log.exception("InfraOrchestrator.start_all raised")
+        finally:
+            loop.close()
+
+    thread = threading.Thread(target=_runner, name="apecx-infra-orchestrator", daemon=True)
+    thread.start()
+    return thread
+
+
+def reset_orchestrator_for_testing() -> None:
+    """Clear the singleton. Tests use this between test functions.
+
+    Production code MUST NOT call this — atexit hooks registered by
+    the previous singleton are not unregistered, which would leak.
+    Test fixtures call this in setup AND teardown.
+    """
+    global _SINGLETON
+    _SINGLETON = None
+
+
+__all__ = [
+    "InfraOrchestrator",
+    "get_orchestrator",
+    "reset_orchestrator_for_testing",
+    "start_orchestrator_in_background_thread",
+]
