@@ -192,6 +192,28 @@ $RHEA_CONDA_BIN/conda install -n muscle -c bioconda --yes 'muscle=3.8.1551'
 This is a Rhea-side / Galaxy-tool-definition concern; the
 orchestrator faithfully drives whatever Rhea runs.
 
+**Update (2026-05-15)** — the Rhea fork now refuses to keep a
+major-version-mismatched env. `rhea/agent/utils.py::install_conda_env`
+verifies after every conda create:
+
+1. The requested package is actually present in the env's `bin/`
+   (catches the `conda create -y` no-op + the conda-libmamba-solver
+   metadata-only-install silent failure).
+2. The installed MAJOR version matches the requested major version
+   (catches the bioconda `>=` fallback silently installing v5 when
+   the Galaxy XML asked for v3).
+
+When either check fails, the env is torn down and `install_conda_env`
+raises with a clear actionable message — the broken state never
+reaches the Redis conda-pack cache, where it would have poisoned
+every subsequent dispatch. The operator's response to the
+major-version-skew error is the `conda install` recipe above.
+
+The orchestrator now also hands Rhea an explicit `CONDA_EXE`
+(`$RHEA_CONDA_BIN/conda`) so its subprocess conda invocations don't
+PATH-resolve through a broken system conda — the apecx-side
+counterpart of the PATH-leakage guard in Rhea's parsl_config.
+
 ## 5. The `infrastructure_status` MCP tool
 
 Returns a JSON dict the model renders back to the operator. Shape:

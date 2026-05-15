@@ -384,9 +384,20 @@ def _make_rhea_mcp_spec(
         if conda_bin:
             path_segments.append(conda_bin.rstrip("/"))
         path_segments.append(env.get("PATH", ""))
+        # Hand Rhea an explicit conda binary via CONDA_EXE (conda's own
+        # canonical env var). Without this, Rhea's subprocess invocations
+        # resolve `conda` via PATH — and a stale Anaconda install at
+        # /opt/anaconda3/bin/conda can win even when miniconda is first,
+        # because some PATH-lookup contexts (parsl workers spawned from
+        # uvicorn) re-resolve through the wider operator env. Setting
+        # CONDA_EXE explicitly is the standard conda-shell convention.
+        conda_exe_env: dict[str, str] = {}
+        if conda_bin:
+            conda_exe_env["CONDA_EXE"] = f"{conda_bin.rstrip('/')}/conda"
         env_additions: dict[str, str] = {
             "PATH": ":".join(seg for seg in path_segments if seg),
             "PYTHONUNBUFFERED": "1",
+            **conda_exe_env,
             # Composed Rhea env (overrides any pre-existing values for
             # determinism — operator who wants a different DB URL can
             # set DATABASE_URL in claude_desktop_config.json's env
