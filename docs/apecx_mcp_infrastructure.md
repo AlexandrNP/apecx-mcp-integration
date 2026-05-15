@@ -94,6 +94,121 @@ orchestrator (or `apecx-setup`) recreate it from the new spec. You
 WILL lose the data inside the old container; export it first if it
 matters (`pg_dump` for Postgres, `mc mirror` for MinIO).
 
+### 2.2 Tool conda env pre-warm phase (2026-05-15)
+
+The orchestrator runs a **pre-warm phase** AFTER `start_all()` returns
+and BEFORE `infrastructure_status` first reports `overall=ready` from a
+cold start. Goal: every Rhea-side conda env a packaged workflow depends
+on is built + conda-pack-cached in Redis at startup — never on the
+first user invocation.
+
+#### Why this exists
+
+Rhea's `agent_on_startup` lazily calls `rhea.agent.utils.install_conda_env`
+the first time a tool is invoked. Two real reliability problems flow
+from that lazy design:
+
+1. The first user invocation pays a 30–90 s install cost. Claude
+   Desktop's MCP timeouts (or the user's patience) often end first,
+   they retry, the install kicks off again, latency compounds.
+2. If `install_conda_env` raises, the Academy actor enters a wedged
+   state and every subsequent `run_tool` returns
+   `"Action 'run_tool' was cancelled by the agent."` for the rest of
+   the rhea-server's lifetime. Operator has no recovery short of
+   restarting Rhea.
+
+Pre-warm sidesteps both: it calls `install_conda_env` **directly** (not
+through the Academy actor) at orchestrator startup. The conda env is
+built, packed, cached BEFORE any MCP tool can be invoked. The first
+real user call hits the Redis cache (`unpack_conda_env` is ~1 s, no
+install) and there is no wedge risk because the slow + fragile install
+already ran where errors propagate cleanly into the status tool.
+
+#### How tools declare a pre-warm dependency
+
+Each `WorkflowCatalogEntry` (in `mcp_workflow_catalog.yml`) carries an
+optional `prewarm_rhea_tools: list[str]` field. The orchestrator unions
+those lists across the catalog (deduped) and pre-installs each tool
+serially (conda's caches don't tolerate concurrent installs in the
+same prefix).
+
+```yaml
+# mcp_workflow_catalog.yml — rhea_muscle_alignment entry
+prewarm_rhea_tools:
+  - muscle
+```
+
+A tool that's already cached in Redis (`HEXISTS conda_envs <tool>` →
+1) returns `state="reused"` in ~150 ms; a cold cache miss runs the
+real install (~55 s wall time for MUSCLE on a clean Mac).
+
+#### Recoverable conda-failure self-heal
+
+`install_conda_env` knows about two families of recoverable failure.
+Each has a distinct recovery action and is gated to run at most once
+per call (so a deeper broken-conda doesn't loop):
+
+| Signature in stderr | Recovery action | Source |
+|---|---|---|
+| `Prefix record`, `already exists`, `Multiple packages found` | `conda clean --all -y` + `conda env remove` + retry strict | metadata corruption between local cache and env metadata |
+| `libmamba`, `libarchive`, `solver backend`, `libmambapy` | Retry with `CONDA_SOLVER=classic` in subprocess env | operator's `~/.condarc` says `solver: libmamba` but the conda install's libarchive/libmamba dyld chain is broken — typical on `/opt/anaconda3` after a homebrew upgrade |
+
+Recovery is per-call only: `CONDA_SOLVER=classic` is set in the
+subprocess env that `_try_create` spawns, never in `os.environ`. The
+operator's intended conda config remains untouched for every other
+process the orchestrator owns.
+
+Additionally, `install_conda_env` now ALWAYS passes
+`-c bioconda -c conda-forge` to `conda create`. Rhea exists to install
+Galaxy tools; Galaxy's `<requirement type="package">` wrappers assume
+bioconda (primary) + conda-forge (deps). Without these channels on the
+command line, a fresh-conda operator with an empty `~/.condarc` gets a
+`PackagesNotFoundError` on the very first tool install and no signpost
+telling them why. Operators with site-specific mirrors prepend extra
+channels via `RHEA_CONDA_EXTRA_CHANNELS` (comma-separated); the
+bioconda+conda-forge canonical pair always lands after them so the
+operator's channels take priority.
+
+#### Failure surfacing
+
+`infrastructure_status` includes the pre-warm report under the
+`rhea_tool_prewarm` key. Each tool's outcome is one of:
+
+| `state` | Meaning | Latency |
+|---|---|---|
+| `ready` | Env built, packed, cached fresh this startup | ~30-90 s |
+| `reused` | Env already in Redis from a prior process; cache hit | ~150 ms |
+| `failed` | Install raised. See `detail` + `error` for actionable text | varies |
+| `skipped` | Reserved (e.g. catalog declares no tools) | — |
+
+Any `state="failed"` tool also lifts a `[prewarm:<tool>] <detail>`
+entry into the top-level `actionable` list, so an operator polling
+`infrastructure_status` from Claude Desktop sees the remediation step
+at startup — not at first user call.
+
+#### Validation outcome (2026-05-15)
+
+End-to-end on a Mac with a freshly-corrupted `/opt/anaconda3`
+(libmamba broken, no `~/.condarc`, classic solver only knows
+`pkgs/main`+`pkgs/r`):
+
+| Step | Result |
+|---|---|
+| `_fetch_tool_requirements` — psycopg JSONB unwrap | extracted 1 `{type, value, version}` dict |
+| Rhea-venv subprocess spawn | succeeded |
+| First `conda create` (libmamba) | failed at solver-init (`libarchive.20.dylib` not found) |
+| Self-heal: retry with `CONDA_SOLVER=classic` | classic solver loaded, ran resolve |
+| Resolve against default channels only | `PackagesNotFoundError: muscle=3.8.1551` |
+| With `-c bioconda -c conda-forge` baked in | resolved + installed |
+| `install_conda_env` post-install verification chain | passed (`conda list`, `bin/` non-empty, major-version-match) |
+| `conda_pack` archive → Redis cache | persisted (`HEXISTS conda_envs muscle` = 1) |
+| Cold install wall time | **55.4 s** |
+| Cache-hit reuse wall time | **0.13 s** (440× faster) |
+| Orchestrator `status()` surfacing | `rhea_tool_prewarm.all_ready = true` |
+| Forced-failure path (unknown tool name) | `state="failed"`, actionable surfaces |
+
+Logs preserved at `/tmp/apecx-prewarm-validation/`.
+
 ## 3. Environment variables
 
 | Variable                    | Default                          | Effect                                                                                                                                                                  |
@@ -104,6 +219,7 @@ matters (`pg_dump` for Postgres, `mc mirror` for MinIO).
 | `RHEA_REPO_PATH`            | unset                            | Path to the Rhea checkout. Required for the orchestrator to attempt autostart of the Rhea MCP host process. Unset → state is `external_unconfigured`.                  |
 | `RHEA_PYTHON_PATH`          | unset                            | Path to **Rhea's uv venv `bin/`** (`$RHEA_REPO_PATH/.venv/bin`) whose Python carries Rhea + its deps. **NOT a bare miniconda bin** — that lacks `rhea`, `debugpy`, etc. The orchestrator runs an `import rhea` pre-spawn check and FAIL-LOUDs with this guidance in 2-3 s if the Python is wrong. |
 | `RHEA_CONDA_BIN`            | unset                            | Optional. Path to the miniconda `bin/` carrying `conda`. Prepended to the spawned Rhea's PATH so Rhea's downstream tool agents (which run `conda run -n <env>`) find the right `conda`. Without it, the system `conda` is used — if that's a broken Anaconda install, conda subprocesses fail loudly inside Rhea. |
+| `RHEA_CONDA_EXTRA_CHANNELS` | unset                            | Optional. Comma-separated list of extra conda channels prepended on every `conda create` the pre-warm + lazy install paths emit. Bioconda + conda-forge are always passed AFTER the operator's extras so site mirrors / private indexes take priority. Empty/unset → just bioconda + conda-forge. |
 | `RHEA_EMBEDDING_MODEL`      | `mxbai-embed-large`              | The embedding model Rhea uses for its tool-catalog vector store. 1024-dim default matches the model `apecx-setup` pulls into Ollama. Rhea's bare-install default (`Qwen/Qwen3-Embedding-0.6B`) requires a different embedding server entirely. |
 | `APECX_MCP_SKIP_HEALTHCHECK`| unset (off)                      | Skips the **control-plane** healthcheck (the legacy `_verify_control_plane_reachable` path). Does NOT affect the infrastructure orchestrator; use `APECX_MCP_AUTOSTART_INFRA=0` for that. |
 
@@ -208,6 +324,14 @@ raises with a clear actionable message — the broken state never
 reaches the Redis conda-pack cache, where it would have poisoned
 every subsequent dispatch. The operator's response to the
 major-version-skew error is the `conda install` recipe above.
+
+**Update (2026-05-15, pre-warm)** — first user invocation no longer
+triggers this code path on a healthy install. The orchestrator's
+pre-warm phase (§2.2) calls `install_conda_env` at startup, so the
+verification + self-heal chain runs in a context where errors land in
+the `infrastructure_status` `actionable` array — not on a user
+waiting on a `tools/call`. The MUSCLE 3.8.1551 strict pin is still
+enforced inside Rhea; the pre-warm just front-loads it.
 
 The orchestrator now also hands Rhea an explicit `CONDA_EXE`
 (`$RHEA_CONDA_BIN/conda`) so its subprocess conda invocations don't

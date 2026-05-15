@@ -67,3 +67,14 @@ workflows:
     # those fields flat (Claude expects flat output; nested-under-DU
     # would be a leaky abstraction).
     output_envelope_key: workflow_output
+    # Pre-install the muscle conda env at orchestrator startup time
+    # (BEFORE apecx-mcp reports ready). Without this, the first
+    # MUSCLE workflow invocation pays the full conda-create cost
+    # (~30-90s on a fresh machine) AND risks wedging Rhea's Academy
+    # actor if the install raises — every subsequent call would
+    # return "Action 'run_tool' was cancelled by the agent" until
+    # the operator restarts Rhea. Pre-warming bypasses the Academy
+    # actor entirely (direct rhea.agent.utils.install_conda_env call)
+    # so install errors are surfaced at startup, not at first call.
+    prewarm_rhea_tools:
+      - muscle

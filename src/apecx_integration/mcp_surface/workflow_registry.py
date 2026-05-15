@@ -166,6 +166,17 @@ class WorkflowCatalogEntry(BaseModel):
     workflow with a single output data unit whose value is itself a
     dict that the MCP client wants to see flat. Default ``None``
     preserves the keyed-by-DU-name shape."""
+    prewarm_rhea_tools: list[str] = Field(default_factory=list)
+    """Optional. Rhea-side tool names whose conda envs must be installed
+    BEFORE the MCP server is reported ready. The orchestrator's
+    pre-warm phase queries each tool's requirements from Rhea's
+    Postgres + invokes ``rhea.agent.utils.install_conda_env`` directly
+    — bypassing the Academy actor (so an install failure doesn't wedge
+    the actor for the whole session) and populating the Redis
+    conda-pack cache so the first user invocation hits the cache.
+    Empty by default; declare for workflows whose first-call latency
+    or wedge risk is unacceptable. E.g. ``["muscle"]`` for the
+    rhea_muscle_alignment workflow."""
 
 
 class WorkflowCatalog(BaseModel):

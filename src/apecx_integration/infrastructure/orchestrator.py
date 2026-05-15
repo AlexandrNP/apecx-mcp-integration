@@ -527,6 +527,11 @@ class InfraOrchestrator:
         self._singleton_loop: asyncio.AbstractEventLoop | None = None
         self._started_at: float | None = None
         self._start_all_done = False
+        # Populated by ``prewarm_workflow_tools()`` after start_all
+        # completes. The status tool surfaces this so an operator
+        # diagnosing slow first-call latency or wedged Rhea actor
+        # state can see which tools are pre-installed.
+        self._prewarm_report: Any | None = None
         # Track spawned children for atexit cleanup. We hold direct
         # references so atexit can still reach them even if all other
         # references go out of scope.
@@ -599,7 +604,7 @@ class InfraOrchestrator:
         backends = [rt.snapshot() for rt in self._runtimes.values()]
         overall = self._compute_overall_state()
         actionable = self._actionable_messages()
-        return {
+        snapshot: dict[str, Any] = {
             "overall": overall,
             "autostart_enabled": self._autostart,
             "orchestrator_uptime_seconds": self.uptime_seconds,
@@ -607,6 +612,78 @@ class InfraOrchestrator:
             "backends": backends,
             "actionable": actionable,
         }
+        if self._prewarm_report is not None:
+            snapshot["rhea_tool_prewarm"] = self._prewarm_report.snapshot()
+            # Lift any per-tool failure into the top-level actionable
+            # list so a wedged pre-warm shows up alongside the backend
+            # actionables. A pre-warm failure does NOT flip ``overall``
+            # to ``down`` — the workflow's UNAVAILABLE marker is the
+            # right surface for per-tool problems; ``overall`` is for
+            # cross-cutting backend state.
+            for tool_result in self._prewarm_report.tools:
+                if tool_result.state == "failed":
+                    snapshot["actionable"].append(
+                        f"[prewarm:{tool_result.tool_name}] {tool_result.detail}"
+                    )
+        return snapshot
+
+    async def prewarm_workflow_tools(self) -> None:
+        """Pre-install every Rhea tool conda env declared by the catalog.
+
+        Runs AFTER ``start_all()`` so Rhea is already up + reachable.
+        Uses the bundled workflow catalog (or
+        ``$APECX_MCP_WORKFLOW_CATALOG``) — pre-warm is a workflow-side
+        concern, not a backend-side one. Result is stashed in
+        ``self._prewarm_report`` and surfaced by ``status()``.
+
+        Safe to call when the catalog declares no pre-warm tools — it
+        records an empty report and returns immediately. Idempotent
+        within a process (Redis cache hit on second call → reused).
+        """
+        # Lazy imports so the orchestrator without prewarm doesn't pull
+        # rhea or the workflow_registry into the import graph.
+        from apecx_integration.infrastructure.rhea_prewarm import (
+            prewarm_workflow_catalog,
+        )
+        from apecx_integration.mcp_surface.workflow_registry import load_catalog
+
+        # Resolve the database_url from the postgres backend spec so
+        # the pre-warm uses the orchestrator's view of the world (no
+        # config drift between Rhea's DATABASE_URL and what we tell
+        # the pre-warm).
+        pg_runtime = self._runtimes.get("postgres")
+        if pg_runtime is None or pg_runtime.spec.container is None:
+            log.warning("rhea_prewarm: no postgres backend in roster; skipping.")
+            return
+        pg_container = pg_runtime.spec.container
+        pg_env = dict(pg_container.env)
+        host_port = pg_container.ports[0][0]
+        database_url = (
+            f"postgresql://postgres:"
+            f"{pg_env.get('POSTGRES_PASSWORD', 'postgres')}"
+            f"@localhost:{host_port}/{pg_env.get('POSTGRES_DB', 'rhea')}"
+        )
+        redis_runtime = self._runtimes.get("redis")
+        if redis_runtime is None or redis_runtime.spec.container is None:
+            log.warning("rhea_prewarm: no redis backend in roster; skipping.")
+            return
+        redis_host_port = redis_runtime.spec.container.ports[0][0]
+
+        try:
+            catalog_path = os.environ.get("APECX_MCP_WORKFLOW_CATALOG")
+            catalog = load_catalog(catalog_path)
+        except Exception as exc:  # noqa: BLE001
+            log.error("rhea_prewarm: could not load catalog: %s", exc)
+            return
+
+        report = await prewarm_workflow_catalog(
+            catalog,
+            database_url=database_url,
+            redis_host="localhost",
+            redis_port=redis_host_port,
+        )
+        with self._lock:
+            self._prewarm_report = report
 
     async def shutdown(self) -> None:
         """Tear down ONLY backends we spawned.
@@ -1113,6 +1190,19 @@ def start_orchestrator_in_background_thread() -> threading.Thread:
             loop.run_until_complete(orch.start_all())
         except Exception:  # noqa: BLE001
             log.exception("InfraOrchestrator.start_all raised")
+            return
+        # After every backend probes/spawns, run the Rhea tool
+        # pre-warm phase. The catalog drives this — if any workflow
+        # declares ``prewarm_rhea_tools``, the conda envs are built
+        # + cached in Redis BEFORE the orchestrator reports
+        # ``all_ready=True``. The pre-warm bypasses the Academy
+        # actor (direct ``rhea.agent.utils.install_conda_env`` call)
+        # so install failures don't wedge the actor for the rest
+        # of the session.
+        try:
+            loop.run_until_complete(orch.prewarm_workflow_tools())
+        except Exception:  # noqa: BLE001
+            log.exception("InfraOrchestrator.prewarm_workflow_tools raised")
         finally:
             loop.close()
 
