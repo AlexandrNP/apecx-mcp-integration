@@ -73,9 +73,6 @@ from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
-    muscle_alignment as muscle_alignment_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -136,15 +133,6 @@ def build_server() -> FastMCP:
     # doesn't pay the FAISS load cost on every call.
     server.tool()(synthesis_tools.synthesize_query)
 
-    # MUSCLE multiple-sequence alignment via Rhea — drives the
-    # rhea_muscle_alignment workflow directly (collect FASTA → run
-    # MUSCLE on Rhea over MCP → report). Demonstrates a nanobrain
-    # workflow consuming Rhea as an MCP server for a real
-    # bioinformatics tool. Returns {"error": ...} (never a silent
-    # empty result) when the rhea repo / Rhea MCP server / Redis are
-    # unreachable.
-    server.tool()(muscle_alignment_tools.align_sequences_with_muscle)
-
     # Viral Immunology Analysis — comprehensive framework for any viral
     # immunology research. Automatically detects virus + immunology queries
     # (COVID-19, influenza, EEEV, etc.) and provides unlimited multi-source
@@ -169,6 +157,25 @@ def build_server() -> FastMCP:
     server.tool()(hpc_tools.confirm_allocation)
     server.tool()(hpc_tools.export_hpc_bundle)
     server.tool()(hpc_tools.ingest_hpc_bundle)
+
+    # Pre-made nanobrain workflows — generalized catalog-driven
+    # registration. Each entry in the catalog YAML becomes ONE MCP
+    # tool whose name, description, and input schema come from the
+    # catalog (NOT from a hand-written Python function). FAIL-LOUD:
+    # a broken catalog raises at startup; an entry whose prereqs are
+    # unmet registers with [UNAVAILABLE: ...] in its description and
+    # returns an actionable error on call. See
+    # ``mcp_surface/workflow_registry.py`` +
+    # ``docs/running_nanobrain_workflows_via_mcp.md``.
+    from apecx_integration.mcp_surface.workflow_registry import (
+        load_catalog,
+        register_workflows,
+    )
+
+    catalog_path = os.environ.get("APECX_MCP_WORKFLOW_CATALOG")
+    catalog = load_catalog(catalog_path)
+    report = register_workflows(server, catalog, logger=log)
+    log.info("workflow registry: %s", report.summary_line())
 
     return server
 

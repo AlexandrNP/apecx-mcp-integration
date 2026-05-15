@@ -19,8 +19,13 @@
 #
 # This is the proper nanobrain workflow that replaces the ad-hoc proof
 # script rhea/scripts/run_muscle_e2e.py. It is runnable BOTH standalone
-# via Workflow.from_config(workflow.yml) AND via the MCP-surface tool
-# apecx_integration.mcp_surface.tools.muscle_alignment.align_sequences_with_muscle.
+# via Workflow.from_config(workflow.yml) AND through the APECx MCP
+# server via the general workflow-via-MCP catalog mechanism —
+# registered as the `rhea_muscle_alignment` MCP tool in
+# src/apecx_integration/mcp_surface/configs/mcp_workflow_catalog.yml.
+# (The demo-specific align_sequences_with_muscle tool was retired in
+# favor of the general catalog-driven mechanism — see
+# docs/running_nanobrain_workflows_via_mcp.md.)
 #
 # RUN PREREQUISITE: the muscle_alignment step (RheaFileToolStep) needs,
 # at process() time:

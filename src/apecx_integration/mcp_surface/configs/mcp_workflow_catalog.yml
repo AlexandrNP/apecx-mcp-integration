@@ -1,0 +1,69 @@
+# mcp_workflow_catalog.yml — packaged default catalog of pre-made
+# nanobrain workflows exposed as MCP tools.
+#
+# Loaded at server startup by `apecx_integration.mcp_surface.server`
+# via `workflow_registry.load_catalog(...)`. Override via the
+# APECX_MCP_WORKFLOW_CATALOG environment variable.
+#
+# Schema: src/apecx_integration/mcp_surface/workflow_registry.py
+#   (Pydantic, extra='forbid' — typos rejected, never silently used)
+#
+# To add a new pre-made workflow, append an entry here. See
+# docs/running_nanobrain_workflows_via_mcp.md for the full guide.
+
+workflows:
+  - tool_name: rhea_muscle_alignment
+    description: |
+      Align FASTA sequences using MUSCLE via Rhea over MCP. Returns the
+      alignment FASTA plus statistics (n_sequences, alignment_length,
+      per-sequence gap fractions, human-readable summary). Accepts either
+      {fasta_path} or {fasta_text}; omit both to use the bundled
+      5-sequence example.
+
+      Requires the Rhea MCP server reachable at $RHEA_MCP_URL and the
+      rhea Python package importable. See
+      docs/running_nanobrain_workflows_via_mcp.md.
+    source:
+      kind: yaml
+      path: composition/workflows/rhea_muscle_alignment/workflow.yml
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        fasta_path:
+          type: string
+          description: "Path to a FASTA file. Optional."
+        fasta_text:
+          type: string
+          description: "Raw FASTA text. Optional. Takes priority over fasta_path."
+      required: []
+    requires:
+      env:
+        - RHEA_MCP_URL
+      modules:
+        - rhea
+        - rhea.utils.proxy
+    timeout_seconds: 900.0
+    # Workflow.run() deposits the input dict by FIRST-STEP input-data-unit
+    # name, NOT by workflow-level input-data-unit name. The
+    # rhea_muscle_alignment workflow's first step is `fasta_collection`
+    # whose input DU is `fasta_collection_input`. The workflow-level
+    # `workflow_input` declaration just documents the entry port; the
+    # DirectLink workflow_input -> fasta_collection_input transfers when
+    # the source changes, but `run` writes into the step input directly.
+    # Mis-keying this field silently populates 0 data units — exactly the
+    # silent-failure shape the input_envelope_key field exists to bridge.
+    input_envelope_key: fasta_collection_input
+    # MUSCLE has a multi-second gap between fasta_collection completing
+    # and muscle_alignment finishing its remote MCP round-trip + the
+    # ProxyStore fetch of the output files. The default 200ms settle is
+    # too short for that quiet period — the cascade-drain detector
+    # would declare drained while alignment_report is still pending and
+    # return a partial result. Bump to 2000ms.
+    settle_ms: 2000
+    # The workflow has a single workflow-level output data unit named
+    # `workflow_output` carrying {summary, n_sequences, alignment_length,
+    # alignment_fasta, per_sequence}. Unwrap it so the MCP tool returns
+    # those fields flat (Claude expects flat output; nested-under-DU
+    # would be a leaky abstraction).
+    output_envelope_key: workflow_output
