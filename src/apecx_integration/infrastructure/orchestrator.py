@@ -304,6 +304,24 @@ def _compose_rhea_env(
         # interchange; force the local-process backend. The operator
         # can override via the env.
         "PARSL_CONTAINER_BACKEND": os.environ.get("PARSL_CONTAINER_BACKEND", "local"),
+        # Rhea's tool actor unpacks the conda-pack archive from Redis
+        # to a host filesystem path. The default (/home/rhea/conda/envs)
+        # is a Linux container path that's structurally inaccessible on
+        # macOS (/home is an autofs read-only mount) — writing there
+        # raises PermissionError, agent_on_startup raises, the Academy
+        # actor wedges, and every subsequent run_tool returns "Action
+        # 'run_tool' was cancelled by the agent" for the rest of the
+        # rhea-server's lifetime. We pin it to a writable scratch
+        # directory under the operator's home so the unpack succeeds
+        # cleanly. ~/.cache/apecx-rhea/conda/envs survives reboots,
+        # is XDG-compliant, and stays out of $TMPDIR (which some
+        # macOS cleanup tools wipe aggressively, defeating the cache).
+        # Operator can override (e.g. point at a faster SSD scratch
+        # mount) via the env var.
+        "RHEA_CONDA_ENVS_DIR": os.environ.get(
+            "RHEA_CONDA_ENVS_DIR",
+            os.path.expanduser("~/.cache/apecx-rhea/conda/envs"),
+        ),
     }
 
 

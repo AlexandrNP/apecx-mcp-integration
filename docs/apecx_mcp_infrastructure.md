@@ -236,6 +236,94 @@ End-to-end on a Mac with a freshly-corrupted `/opt/anaconda3`
 | Orchestrator `status()` surfacing | `rhea_tool_prewarm.all_ready = true` |
 | Forced-failure path (unknown tool name) | `state="failed"`, actionable surfaces |
 
+#### Empty-requirements tools (2026-05-15, latent-bug fix)
+
+`install_conda_env`'s "bin/ contains no package binaries → metadata-only
+silent failure" check used to fire unconditionally — including for
+Galaxy tools whose `<requirement type="package">` list is empty (the
+`tp_cat`/`tp_head_tool`/`nl` family that wraps a system utility and
+needs only a callable conda env, not packages inside it). The check
+now gates on `[r for r in requirements if r.type == "package"]` being
+non-empty, aligning with the per-requirement version check that was
+already correctly type-gated. Without this fix, declaring any
+empty-requirements tool in `prewarm_rhea_tools` (or hitting one via
+Academy actor lazy install) raised RuntimeError with a misleading
+libmambapy/libarchive remediation message; the env was torn down and
+the actor wedged. See rhea fork commit `1e15d97` for the one-line gate.
+
+Validation: `prewarm_tool('tp_cat')` now returns
+`state="ready", 14.4 s, 5.5 KB archive cached` (vs. the old
+`state="failed", 19.8 s, error="bin/ contains no package binaries..."`).
+
+#### macOS unpack-target fix (2026-05-15, wedge-actor follow-up)
+
+Rhea's `agent/tool.py:agent_on_startup` passed
+`target_path="/home/rhea/conda/envs/<tool.id>"` unconditionally to
+`install_conda_env`. That's the canonical path inside Rhea's Linux
+container deployment (where `/home/rhea` is the service user's home).
+On macOS, `/home` is an autofs read-only mount (`mkdir /home/rhea`
+returns `Operation not supported`) — `tar.extractall` raises
+`PermissionError`, `agent_on_startup` raises, the Academy actor enters
+a wedged state, and every subsequent `run_tool` returns
+``"Action 'run_tool' was cancelled by the agent"`` for the rest of the
+rhea-server's lifetime.
+
+Pre-warm DID cache the env in Redis (validated separately), but the
+actor's unpack target was a DIFFERENT (and hostile) filesystem path,
+so the cache hit on `HEXISTS conda_envs muscle = 1` then failed at
+`tar.extractall("/home/rhea/conda/envs/muscle")`. Two-side fix:
+
+| Side | Change | Default |
+|---|---|---|
+| `rhea/agent/tool.py` | read `$RHEA_CONDA_ENVS_DIR` env var; default `/home/rhea/conda/envs` (Linux compat) | unchanged for production |
+| `orchestrator.py::_compose_rhea_env` | set `RHEA_CONDA_ENVS_DIR=~/.cache/apecx-rhea/conda/envs` on spawn | macOS dev now works without override |
+
+`~/.cache/apecx-rhea/conda/envs` is chosen because it survives reboots
+(unlike `$TMPDIR` which macOS purges aggressively), is XDG-compliant,
+and is operator-owned so no sudo needed.
+
+#### Validation outcome — MCP-based muscle workflow execution (2026-05-15)
+
+End-to-end test of the user-facing path (Claude Desktop's MCP tool call
+→ apecx-mcp FastMCP server → workflow_registry's synthesized tool →
+nanobrain Workflow.from_config → trigger cascade → RheaFileToolStep →
+Rhea MCP `tools/call` → Academy muscle actor → conda-pack unpack from
+Redis to `~/.cache/apecx-rhea/conda/envs/muscle` → MUSCLE binary → result
+fetched back through ProxyStore):
+
+| Test | What it pins | Result |
+|---|---|---|
+| `test_direct_step_chain_against_live_rhea` | Direct three-step chain (collect → muscle → report), no cascade | PASS 42.8 s |
+| `test_workflow_from_config_against_live_rhea` | Full Workflow.from_config + trigger cascade with auto_transfer=true DirectLinks | PASS 13.1 s |
+| `test_rhea_tool_call_against_live_rhea` | apecx-mcp FastMCP server's `call_tool("rhea_muscle_alignment", {...})` end-to-end | PASS (in 4-test suite, 7.4 s) |
+
+All three exercise different layers of the user-facing path; they all
+pass on real data (5-sequence MUSCLE alignment) against a live Rhea
+MCP server spawned by the orchestrator.
+
+#### Validation outcome — synonym dictionary harmonization (2026-05-15)
+
+Both the backend (build) and user-end (lookup) paths exercise the
+nanobrain framework natively. The build is a three-step workflow
+(taxdump_fetch → dictionary_build → optional resolve); the lookup is
+the two-step IRIResolutionWorkflow (normalize → resolve).
+
+| Surface | What it pins | Result |
+|---|---|---|
+| `bootstrap.ensure_dictionary()` idempotent cache-hit | Detects existing `~/.apecx/dictionary/dictionary.sqlite`, skips build | 1 ms; "synonym dictionary already present — skipping build" |
+| Live 5-row build via `BaseStep.from_config` on real VIOLIN + taxdump | Steps actually execute against real data | 22.9 s; 75 MB SQLite; 15 entries + 61 synonyms + 2.8M taxon_hierarchy + 99 K merged_taxons; 0 ambiguous_surface_forms |
+| `tests/integration/test_iri_resolution_workflow.py` (8 tests, IRIResolutionWorkflow.from_config + process cascade) | Two-step nanobrain DAG (normalize → resolve) on live dict | 8/8 pass in 6.81 s |
+| Live `resolve_canonical_entity("SARS-CoV-2", "pathogen")` | MCP-tool layer dictionary lookup | `NCBITaxon_2697049 / "Severe acute respiratory syndrome coronavirus 2"`, confidence 1.0, fast path |
+| Live `resolve_canonical_entity("Chikungunya virus", "pathogen")` | Second positive case | `NCBITaxon_37124`, confidence 1.0, fast path |
+| Live `resolve_canonical_entity("completely-bogus-name-12345", "pathogen")` | Negative case — `miss` is reported honestly, not faked | `resolution_path: miss`, confidence 0.0, "no match in dictionary or database" |
+
+The dictionary lookup tools are nanobrain-native: the workflow is
+authored as a `BaseStep`+YAML graph (visible via `Workflow.from_config`);
+the MCP tool surface (`resolve_canonical_entity`) is a thin async wrapper
+that delegates to the same dictionary loader the workflow uses, so the
+"fast" + "slow" + "miss" semantics are identical across the two entry
+points.
+
 #### Validation outcome — multi-tool (2026-05-15)
 
 Same Mac, after clearing the muscle cache, ran the pre-warm against
@@ -263,6 +351,7 @@ Logs preserved at `/tmp/apecx-prewarm-validation/multi_tool_await.log`.
 | `RHEA_PYTHON_PATH`          | unset                            | Path to **Rhea's uv venv `bin/`** (`$RHEA_REPO_PATH/.venv/bin`) whose Python carries Rhea + its deps. **NOT a bare miniconda bin** — that lacks `rhea`, `debugpy`, etc. The orchestrator runs an `import rhea` pre-spawn check and FAIL-LOUDs with this guidance in 2-3 s if the Python is wrong. |
 | `RHEA_CONDA_BIN`            | unset                            | Optional. Path to the miniconda `bin/` carrying `conda`. Prepended to the spawned Rhea's PATH so Rhea's downstream tool agents (which run `conda run -n <env>`) find the right `conda`. Without it, the system `conda` is used — if that's a broken Anaconda install, conda subprocesses fail loudly inside Rhea. |
 | `RHEA_CONDA_EXTRA_CHANNELS` | unset                            | Optional. Comma-separated list of extra conda channels prepended on every `conda create` the pre-warm + lazy install paths emit. Bioconda + conda-forge are always passed AFTER the operator's extras so site mirrors / private indexes take priority. Empty/unset → just bioconda + conda-forge. |
+| `RHEA_CONDA_ENVS_DIR`       | `~/.cache/apecx-rhea/conda/envs` when orchestrator-spawned; `/home/rhea/conda/envs` (Rhea's bare default) otherwise | Where Rhea's Academy tool actor unpacks the conda-pack archive from Redis. The Linux default is structurally inaccessible on macOS (`/home` is autofs read-only) — without an override the actor wedges with `"Action 'run_tool' was cancelled by the agent"`. The orchestrator sets a writable default at spawn time; operators can override (e.g. point at faster SSD scratch) via this env var. |
 | `RHEA_EMBEDDING_MODEL`      | `mxbai-embed-large`              | The embedding model Rhea uses for its tool-catalog vector store. 1024-dim default matches the model `apecx-setup` pulls into Ollama. Rhea's bare-install default (`Qwen/Qwen3-Embedding-0.6B`) requires a different embedding server entirely. |
 | `APECX_MCP_SKIP_HEALTHCHECK`| unset (off)                      | Skips the **control-plane** healthcheck (the legacy `_verify_control_plane_reachable` path). Does NOT affect the infrastructure orchestrator; use `APECX_MCP_AUTOSTART_INFRA=0` for that. |
 
