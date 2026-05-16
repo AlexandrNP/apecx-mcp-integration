@@ -1,5 +1,26 @@
 # Rhea ingestion path + tool execution — findings
 
+> **2026-05-16 update**: Re-verified end-to-end today (apecx-mcp-integration
+> commit `c79c116`, rhea commit `72193f0` on branch `apecx-integration`).
+> Two regressions surfaced + fixed:
+>
+> 1. **`process_worker_pool.py` PATH-leakage** (G86, rhea-side fix):
+>    extended the existing `interchange.py` PATH-leakage override in
+>    `rhea/manager/parsl_config.py` to also cover the worker binary.
+>    The `PATH="$HOME/rhea-miniconda/bin:$PATH"` recipe in §5 below
+>    is now **sufficient on its own** — operators no longer need to
+>    additionally prepend `$PWD/.venv/bin` to PATH at server startup.
+> 2. **academy-py 0.2 → 0.4 version drift** in rhea's venv (rhea's
+>    `pyproject.toml` already pinned `>=0.4,<0.5` but `uv.lock` was
+>    stale). `uv sync` corrected it. Side effect: 3 double-await
+>    call sites needed updating to academy 0.4's single-await
+>    convention. All in rhea commit `72193f0`.
+>
+> Both fixes are in `AlexandrNP/rhea` `apecx-integration` branch.
+> The §5 recipe below works as-is after `cd rhea && uv sync && uv
+> pip install -e .`. See `docs/muscle_workflow_verification_2026-05-16.md`
+> for the layer-by-layer verification matrix.
+
 **Date**: 2026-05-14. **Status**: COMPLETE — the acceptance criterion
 is met end-to-end. Ingestion path FIXED + verified; `find_tools`
 works; the Parsl worker-connectivity issue FIXED; the file-input
