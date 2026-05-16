@@ -50,9 +50,9 @@ from pathlib import Path
 from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
+from nanobrain.library.runtime.workspace_root import locate_workflow_root
 from pydantic import ConfigDict, Field, model_validator
 
-from apecx_integration._workspace import resolve_workspace_root
 from apecx_integration.composition.steps._violin_bvbrc_lookup import (
     lookup_bvbrc,
     lookup_violin,
@@ -61,7 +61,21 @@ from apecx_integration.composition.steps._violin_bvbrc_lookup import (
 log = logging.getLogger(__name__)
 
 
-_WORKSPACE_ROOT = resolve_workspace_root(__file__, fallback_depth=5)
+# Workspace root via nanobrain's G40 helper. ``fallback_depth=5`` is
+# the depth from this file (composition/steps/X.py) to the workspace
+# root in a standard checkout — kept as a last-resort when no marker
+# is found and the env var is unset. The shim that used to wrap this
+# was retired 2026-05-16 (commit retires apecx_integration._workspace).
+_WORKSPACE_ROOT = locate_workflow_root(
+    start=__file__,
+    markers=["apecx-mcp-integration"],
+    env_var="APECX_WORKSPACE_ROOT",
+    fallback_depth=5,
+)
+assert _WORKSPACE_ROOT is not None, (
+    "locate_workflow_root returned None despite fallback_depth=5 — "
+    "this file's parents chain is shorter than 5 levels (broken install?)"
+)
 _DEFAULT_VIOLIN_DIR = _WORKSPACE_ROOT / "data" / "violin"
 _DEFAULT_BVBRC_DIR = _WORKSPACE_ROOT / "data" / "bvbrc_cache"
 
