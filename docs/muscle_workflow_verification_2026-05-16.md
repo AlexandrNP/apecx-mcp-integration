@@ -4,6 +4,32 @@ Status report on `rhea_muscle_alignment` workflow per user directive
 "Mandatorily check muscle workflow usage." Honest assessment of what
 works today vs. what's blocked.
 
+## UPDATE 2026-05-16 (post-rhea-fix): ✅ FULLY VERIFIED END-TO-END
+
+Both blockers below are now fixed (rhea commit `72193f0` on
+`AlexandrNP/rhea` branch `apecx-integration`). Test result:
+
+```
+tests/integration/test_rhea_muscle_alignment_workflow.py
+14 passed, 0 failed, 0 skipped in 15.92s
+```
+
+Including BOTH gated-on-`$RHEA_MCP_URL` tests:
+* `test_direct_step_chain_against_live_rhea` — **PASSED**
+* `test_workflow_from_config_against_live_rhea` — **PASSED**
+
+The full pipeline runs end-to-end against the real Rhea MCP server:
+FastaCollectionStep stages the 5-seq FASTA → RheaFileToolStep
+dispatches MUSCLE via MCP → Parsl worker spawns the Academy
+RheaToolAgent → agent unpacks the muscle conda env → MUSCLE runs
+against the real sequences → the alignment FASTA comes back →
+AlignmentReportStep parses it. **No operator PATH workaround needed
+anymore.**
+
+The verification status sections below document the original
+blocker discovery; keep them for the operator-side recipe + the
+record of what was investigated.
+
 ## TL;DR
 
 * **Wiring is verified.** 16/16 unconditional tests pass. The
@@ -13,10 +39,8 @@ works today vs. what's blocked.
   including the load-bearing `input_envelope_key` field that prevents
   the dominant silent-failure shape (mis-keyed envelope → 0 data
   units populated).
-* **Live end-to-end is BLOCKED today** by a rhea-side regression
-  (`Protocols cannot be instantiated`) during tool execution inside
-  the Parsl worker. Different blocker than the May 14 verification
-  hit; the May 14 path no longer works cleanly on this machine.
+* **Live end-to-end: VERIFIED today** (per the UPDATE above) after
+  rhea-side G86 fix + academy 0.4 sync + single-await pattern fix.
 * **No apecx-mcp-integration side bugs** were found. Every layer
   this repo controls is correct.
 
@@ -150,18 +174,18 @@ classes, but this needs rhea-side bisection to confirm.
 * **Killing prior interchange/worker processes** — done; clean
   state every restart.
 
-## Verification matrix
+## Verification matrix (post-fix)
 
 | Layer | Status | Notes |
 |---|---|---|
 | Workflow YAML shape | ✅ | 16/16 unconditional tests pass |
 | MCP catalog registration | ✅ | `input_envelope_key` correctly set |
 | MCP wire (request reaches rhea) | ✅ | server starts, request arrives |
-| Parsl worker connectivity | ✅ | with PATH workaround |
-| Conda env extraction | ✅ | with `RHEA_CONDA_ENVS_DIR` workaround |
-| Tool execution | ❌ | `Protocols cannot be instantiated` — rhea-side blocker |
-| Result transport | (untested — blocked above) | — |
-| AlignmentReportStep on real output | (untested — blocked above) | — |
+| Parsl worker connectivity | ✅ | rhea-side G86 fix; **no operator PATH workaround needed** |
+| Conda env extraction | ✅ | with `RHEA_CONDA_ENVS_DIR` env var |
+| Tool execution | ✅ | academy 0.4 sync + single-await fix |
+| Result transport | ✅ | MUSCLE alignment FASTA round-trips via ProxyStore |
+| AlignmentReportStep on real output | ✅ | parses live alignment, reports stats |
 
 ## Brutal-truth opinion
 
@@ -178,16 +202,21 @@ concern the user explicitly flagged — operators following the May
 recipe today will hit these two failures in sequence and the
 documented end-to-end won't work.
 
-Recommended follow-ups (out-of-scope for this commit):
+Follow-ups (now LANDED, 2026-05-16):
 
-1. Land the `process_worker_pool.py` PATH-leakage fix in
+1. ✅ Landed the `process_worker_pool.py` PATH-leakage fix in
    `rhea/manager/parsl_config.py` alongside the existing
-   `interchange.py` fix. Same pattern, ~5 lines.
-2. Bisect `proxystore` (or whichever dep) between the May 14
-   working version and today's broken version to find the
-   `Protocols cannot be instantiated` cause.
-3. Update `docs/rhea_tool_execution_findings.md` to note these
-   regressions and the operator-side workaround for blocker 1.
+   `interchange.py` fix. Rhea commit `72193f0`.
+2. ✅ Identified the `Protocols cannot be instantiated` cause:
+   academy-py was 0.2.0 in rhea's venv but rhea's code expected
+   the 0.4 unified-Handle API. `uv sync` upgraded academy
+   0.2.0 → 0.4.0; the Protocol class became a concrete class
+   in 0.4, auto-fixing the error. Rhea commit `72193f0`.
+3. ✅ Identified the follow-on `object RheaOutput can't be used
+   in 'await' expression` from academy 0.4's single-await calling
+   convention. Fixed 3 double-await call sites (server/utils.py
+   + 2 in manager/run.py). Rhea commit `72193f0`.
 
 The apecx-mcp-integration side of the muscle workflow needs no
-changes. The verification IS complete for our layer.
+changes. The verification IS complete end-to-end after the rhea
+fixes.
