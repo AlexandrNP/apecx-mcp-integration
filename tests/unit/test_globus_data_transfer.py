@@ -272,3 +272,86 @@ def test_attempt_returns_unconfigured_when_prereqs_missing(
     assert result.task_id is None
     assert result.items_transferred == 0
     assert "Globus" in result.detail or "skipped" in result.detail.lower()
+
+
+# ---------------------------------------------------------------------------
+# G84: _step_globus first-class install step
+# ---------------------------------------------------------------------------
+
+
+def test_step_globus_skipped_when_prereqs_missing(
+    clean_globus_env: None,
+    capsys: pytest.CaptureFixture,
+) -> None:
+    """``_step_globus`` returns ``skipped`` (NOT ``fail``) when
+    Globus isn't configured. Reason text includes the actionable
+    fallback message ('gh release fallback') so the operator's
+    summary table shows what's happening."""
+    from apecx_integration.cli.setup import _step_globus
+
+    with patch(
+        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
+        return_value=False,
+    ):
+        result = _step_globus(interactive=False)
+
+    assert result.name == "globus"
+    assert result.status == "skipped"
+    assert "gh release fallback" in result.detail
+
+
+def test_step_globus_interactive_prints_actionable_instructions(
+    clean_globus_env: None,
+    capsys: pytest.CaptureFixture,
+) -> None:
+    """Interactive mode must print copy-paste-able instructions for
+    every missing prerequisite. Operators should leave with concrete
+    next steps, not a vague ``not configured`` message."""
+    from apecx_integration.cli.setup import _step_globus
+
+    with patch(
+        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
+        return_value=False,
+    ):
+        _step_globus(interactive=True)
+    captured = capsys.readouterr()
+    out = captured.out
+
+    # Each unmet prerequisite must show an actionable hint.
+    assert "APECX_GLOBUS_SOURCE_ENDPOINT_ID" in out
+    assert "APECX_GLOBUS_DEST_ENDPOINT_ID" in out
+    assert "apecx-globus-setup store" in out
+    # And the fallback path is named so operators know what happens next.
+    assert "gh release" in out
+
+
+def test_step_globus_ok_when_everything_configured(
+    clean_globus_env: None,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """When every prerequisite is satisfied, the step returns 'ok'."""
+    from apecx_integration.cli.setup import _step_globus
+
+    monkeypatch.setenv("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "src-uuid")
+    monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "dst-uuid")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "client-id")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "client-secret")
+
+    result = _step_globus(interactive=False)
+
+    # globus_sdk is installed in this workspace's venv; if for any
+    # reason it isn't, gate the assertion the same way the prereq
+    # status test does.
+    if result.status == "ok":
+        assert result.detail == "SDK + credentials + endpoint UUIDs all present"
+    else:
+        # The only other valid path: SDK not installed in this env.
+        assert "globus_sdk" in result.detail
+
+
+def test_step_globus_is_in_subcommand_registry() -> None:
+    """The ``globus`` CLI subcommand must dispatch to ``_step_globus``."""
+    from apecx_integration.cli.setup import _SUBCOMMANDS, _step_globus
+
+    assert "globus" in _SUBCOMMANDS
+    assert _SUBCOMMANDS["globus"] is _step_globus

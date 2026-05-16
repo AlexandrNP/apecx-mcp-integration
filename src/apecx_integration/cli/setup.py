@@ -5,6 +5,7 @@ Single entry point for the entire APECx deployment recipe:
     pip install apecx-mcp-integration
     apecx-setup            # runs the default chain (no RAG)
     apecx-setup --with-rag # default chain PLUS FAISS index build (~10 min)
+    apecx-setup globus     # only preflight Globus (G84)
     apecx-setup data       # only download VIOLIN + BV-BRC data
     apecx-setup infra      # only start Postgres + Redis containers
     apecx-setup llm        # only check/pull the Ollama model
@@ -14,12 +15,15 @@ Single entry point for the entire APECx deployment recipe:
 
 Each subcommand is idempotent + safe to re-run. The default
 (``apecx-setup``) runs the following in dependency order:
-    1. ``data``   — download VIOLIN + BV-BRC tarball (Globus when
-                    configured; falls back to ``gh release download``)
-    2. ``infra``  — start Postgres + Redis containers if Docker is available
-    3. ``llm``    — install Ollama if missing (interactive); start daemon;
+    1. ``globus`` — preflight Globus SDK + creds + endpoint UUIDs
+                    (skipped cleanly when not configured — operators
+                    who don't use Globus see no extra friction)
+    2. ``data``   — download VIOLIN + BV-BRC files (Globus when the
+                    preflight said OK; falls back to ``gh release``)
+    3. ``infra``  — start Postgres + Redis containers if Docker is available
+    4. ``llm``    — install Ollama if missing (interactive); start daemon;
                     pull the configured model
-    4. ``verify`` — smoke-check every component reports healthy
+    5. ``verify`` — smoke-check every component reports healthy
 
 The ``rag`` step (FAISS index build, 689 MB, ~10 min) is **opt-in**
 since G81 (2026-05-16). The 80%-case (DB queries, MCP tools,
@@ -131,6 +135,92 @@ def _print_summary(results: list[StepResult]) -> int:
 # ---------------------------------------------------------------------------
 
 
+def _step_globus(*, interactive: bool = True) -> StepResult:
+    """Globus install + configuration preflight (G84, 2026-05-16).
+
+    Runs BEFORE ``_step_data`` so the operator sees Globus readiness
+    surfaced as a first-class step in the summary table — not buried
+    inside the data step's silent precondition check.
+
+    Status semantics (per the workspace honesty contract):
+      * ``ok``      — every Globus prerequisite is satisfied; the data
+                      step will transfer via Globus.
+      * ``skipped`` — at least one prerequisite is missing; the data
+                      step will fall back to ``gh release download``.
+                      This is NOT a failure: operators who don't use
+                      Globus see no extra friction.
+      * ``fail``    — preconditions appear met but the step's own
+                      health probe raised. Reserved for the future
+                      (e.g., when the step grows a live endpoint
+                      reachability check). Currently unused.
+
+    Interactive mode prints actionable instructions for each missing
+    prerequisite (which env var to set, which ``apecx-globus-setup``
+    command to run) but does NOT prompt to install/configure — that
+    would turn ``apecx-setup`` into a guided wizard and the Globus
+    setup is its own multi-minute flow with browser-based device
+    auth. Operators run ``apecx-globus-setup`` separately and re-run
+    ``apecx-setup`` when they're ready.
+
+    Why a step (vs. just a check inside _step_data)
+    ------------------------------------------------
+    The user's directive (2026-05-16): "Globus installation and
+    configuration should happen before file download." Surfacing
+    Globus as its own step in the chain meets that directive in the
+    operator-visible install flow. The summary table now reads:
+
+      ✅ globus    SDK + creds + endpoints OK
+      ✅ data      Globus: transferred 6 items (task_id=...)
+
+    instead of the pre-G84 shape where Globus status was invisible
+    until the data step printed its own line.
+    """
+    _print_header("Step 1 of 6 — Globus")
+    from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
+
+    prereqs = check_globus_prerequisites()
+    if prereqs.configured:
+        return StepResult(
+            "globus",
+            "ok",
+            "SDK + credentials + endpoint UUIDs all present",
+        )
+
+    # Print actionable per-prerequisite instructions in interactive mode.
+    # Non-interactive (CI / scripted) mode just returns the structured
+    # reason — the operator's surrounding tooling reads it.
+    if interactive:
+        print("  ▶  Globus preflight: not configured (see below)")
+        if not prereqs.sdk_installed:
+            print("     • globus_sdk missing — install with: pip install globus-sdk")
+        if not prereqs.source_endpoint_set:
+            print("     • APECX_GLOBUS_SOURCE_ENDPOINT_ID not set in env")
+            print("       Ask the data steward for the source endpoint UUID,")
+            print("       then `export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<uuid>`.")
+        if not prereqs.dest_endpoint_set:
+            print("     • APECX_GLOBUS_DEST_ENDPOINT_ID not set in env")
+            print("       Install Globus Connect Personal, grab the endpoint UUID")
+            print(
+                "       from Settings → Endpoints, then `export APECX_GLOBUS_DEST_ENDPOINT_ID=<uuid>`."
+            )
+        if not prereqs.credentials_reachable:
+            print("     • no client credentials in env or keyring")
+            print(
+                "       Create a confidential client at https://app.globus.org/settings/developers"
+            )
+            print("       then store the credentials:")
+            print("         apecx-globus-setup store --client-id <id> --client-secret <secret>")
+        print()
+        print("  ▶  data step will use the gh release download fallback")
+        print("     See docs/globus_data_transfer.md for the full setup recipe.")
+
+    return StepResult(
+        "globus",
+        "skipped",
+        prereqs.reason() + " (data step will use gh release fallback)",
+    )
+
+
 def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> StepResult:
     """Acquire the VIOLIN + BV-BRC dataset. G82 (2026-05-16): Globus-first.
 
@@ -152,7 +242,7 @@ def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> 
     GitHub release with the 6 CSVs in a tarball. Same content; just
     fetched over GitHub instead of Globus.
     """
-    _print_header("Step 1 of 5 — Data")
+    _print_header("Step 2 of 6 — Data")
     if not interactive:
         # Non-interactive mode: skip if data already present at the
         # default location. We can't safely auto-prompt the user for
@@ -326,7 +416,7 @@ def _container_exists(name: str) -> bool:
 
 
 def _step_infra() -> StepResult:
-    _print_header("Step 2 of 5 — Infrastructure (Docker containers)")
+    _print_header("Step 3 of 6 — Infrastructure (Docker containers)")
     if not _docker_available():
         return StepResult(
             "infra",
@@ -615,7 +705,7 @@ def _offer_start_ollama_daemon(*, interactive: bool) -> bool:
 
 
 def _step_llm(*, interactive: bool = True) -> StepResult:
-    _print_header("Step 3 of 5 — LLM (Ollama install + check + model pull)")
+    _print_header("Step 4 of 6 — LLM (Ollama install + check + model pull)")
 
     # 1. Ensure the CLI is installed (offer to install when missing).
     if not _offer_install_ollama(interactive=interactive):
@@ -668,7 +758,7 @@ def _step_llm(*, interactive: bool = True) -> StepResult:
 
 
 def _step_rag() -> StepResult:
-    _print_header("Step 4 of 5 — RAG index (FAISS)")
+    _print_header("Step 5 of 6 — RAG index (FAISS, opt-in)")
     repo_root = Path(__file__).resolve().parents[3]
     workspace_root = repo_root.parent
     domain_rag_dir = workspace_root / "data" / "apecx_domain_rag"
@@ -731,7 +821,7 @@ def _step_rag() -> StepResult:
 
 
 def _step_verify() -> StepResult:
-    _print_header("Step 5 of 5 — Verification")
+    _print_header("Step 6 of 6 — Verification")
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
@@ -849,6 +939,7 @@ def _step_verify() -> StepResult:
 # ---------------------------------------------------------------------------
 
 _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
+    "globus": _step_globus,
     "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
@@ -864,12 +955,16 @@ def _run_all(
 ) -> int:
     """Run the canonical install chain.
 
-    Chain (G81 + G82, 2026-05-16):
-      1. data    — VIOLIN/BV-BRC CSVs (preferred path: Globus when
-                   configured; fallback: ``gh release download``)
-      2. infra   — Docker containers (Postgres, Redis, MinIO)
-      3. llm     — Ollama or remote LLM credentials
-      4. verify  — sanity checks across all installed components
+    Chain (G81 + G82 + G84, 2026-05-16):
+      1. globus  — preflight: SDK + credentials + endpoint UUIDs.
+                   ``skipped`` when not configured (operator gets
+                   actionable instructions); ``ok`` enables Globus
+                   transfer in the data step.
+      2. data    — VIOLIN/BV-BRC CSVs (preferred path: Globus when
+                   globus step said OK; fallback: ``gh release download``)
+      3. infra   — Docker containers (Postgres, Redis, MinIO)
+      4. llm     — Ollama or remote LLM credentials
+      5. verify  — sanity checks across all installed components
 
     The RAG (FAISS) step is **opt-in** as of G81: it's a ~10-minute
     build of a 689 MB index that's only needed by synthesis workflows
@@ -886,6 +981,12 @@ def _run_all(
     print()
 
     results: list[StepResult] = []
+    # G84: globus preflight runs BEFORE data so its status is
+    # surfaced in the summary table. _step_data inspects this result
+    # via its own precondition probe (no need to thread state — they
+    # both call check_globus_prerequisites; the cost is two cheap
+    # stat-only checks, not a network round-trip).
+    results.append(_step_globus(interactive=interactive))
     results.append(_step_data(interactive=interactive, prefer_gh_release=prefer_gh_release))
     results.append(_step_infra())
     results.append(_step_llm(interactive=interactive))
@@ -917,7 +1018,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "subcommand",
         nargs="?",
-        choices=["data", "infra", "llm", "rag", "verify", "all"],
+        choices=["globus", "data", "infra", "llm", "rag", "verify", "all"],
         default="all",
         help="Step to run (default: all).",
     )
