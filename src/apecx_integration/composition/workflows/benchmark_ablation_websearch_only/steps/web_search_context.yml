@@ -1,0 +1,25 @@
+class: "apecx_integration.composition.steps.web_search_context_step.WebSearchContextStep"
+name: web_search_context
+description: "Injects web-search context into the drafter prompt (F17 + websearch ablation)."
+
+# Resolved relative to THIS step config's directory first, then CWD.
+web_search_tool_config: "web_search_tool.yml"
+max_results: 4
+max_query_chars: 200
+snippet_chars: 280
+
+input_data_units:
+  web_search_context_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: web_search_context_input
+    persistent: false
+
+output_data_units:
+  web_search_context_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: web_search_context_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "web_search_context_input"

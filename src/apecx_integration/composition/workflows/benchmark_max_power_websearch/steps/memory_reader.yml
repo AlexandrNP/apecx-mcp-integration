@@ -1,0 +1,24 @@
+class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+name: memory_reader
+description: "MemFlow tier-2 similarity_read mode."
+
+mode: similarity_read
+examples_on_read: 1
+max_per_category: 5
+similarity_threshold: 0.3
+
+input_data_units:
+  memory_reader_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_reader_input
+    persistent: false
+
+output_data_units:
+  memory_reader_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_reader_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "memory_reader_input"

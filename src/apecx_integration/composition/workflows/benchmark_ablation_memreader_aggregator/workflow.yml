@@ -1,0 +1,75 @@
+# Ablation D: F17 + memory_reader + aggregator (no recorder).
+#
+# Tests the 2-of-3 combination: reads memory + AST-wraps drafter output
+# but doesn't write the side effect. If this matches integrated_similarity's
+# +10pp, the recorder is the irrelevant component.
+
+name: benchmark_ablation_memreader_aggregator
+description: >
+  Ablation: F17 + memory_reader + aggregator. Drops the memory_recorder
+  side-effect. Tests whether the recorder is necessary for the lift.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router_ablation:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "../benchmark_retrieval_grounded/steps/router.yml"
+  memory_reader:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "../benchmark_integrated_similarity/steps/memory_reader.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "../benchmark_retrieval_grounded/steps/drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "../benchmark_integrated_similarity/steps/aggregator.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_ablation.router_input
+      auto_transfer: true
+  router_to_memreader:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_ablation.router_output
+      target: memory_reader.memory_reader_input
+      auto_transfer: true
+  memreader_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_reader.memory_reader_output
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true

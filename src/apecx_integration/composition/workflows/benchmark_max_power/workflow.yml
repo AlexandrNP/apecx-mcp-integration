@@ -1,0 +1,116 @@
+# benchmark_max_power -- the kitchen-sink composition of items 1+2+3.
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep        (F17: per-category worked examples)
+#       -> SolutionMemoryStep:similarity_read  (Item 3: MemFlow tier-2)
+#       -> PromptPerturbingDrafterStep   (Item 2: strong-form SGDe)
+#       -> ConsensusAggregatorStep       (deterministic AST voter)
+#       -> SolutionMemoryStep:record     (record_only_if_pass=true)
+#       -> workflow_output
+#       (side-effect): memory_recorder -> workflow_recorder_status
+#
+# Rationale: every framework-native lift mechanism we have, composed
+# into a single pipeline. F17's router-with-worked-examples surfaces
+# the right pattern; tier-2 memory surfaces cross-category prior
+# successes; perturbing fan-out covers the response distribution; the
+# AST voter picks the best candidate; the recorder accumulates passing
+# solutions for future runs.
+#
+# Brutal-truth prediction
+# -----------------------
+# F18 measured weak-form structural consensus at -10pp vs F17. If the
+# strong form (Item 2) recovers any of that gap, even +1pp over F17
+# is a real result. The memory tier additively contributes only on
+# pass 2+ when the cache has content. Pass 1 measurement should
+# closely track Item 2 alone (memory is a no-op miss on first run).
+
+name: benchmark_max_power
+description: >
+  Max-power kitchen-sink composition: router + tier-2 memory + prompt-
+  perturbing fan-out + AST voter + AST-gated memory recorder.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+  workflow_recorder_status:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_recorder_status
+    persistent: false
+
+steps:
+  task_router_max_power:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  memory_reader:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_reader.yml"
+  perturbing_drafter:
+    class: "apecx_integration.composition.steps.prompt_perturbing_drafter_step.PromptPerturbingDrafterStep"
+    config: "steps/perturbing_drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "steps/aggregator.yml"
+  memory_recorder:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_recorder.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_max_power.router_input
+      auto_transfer: true
+  router_to_memory_reader:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_max_power.router_output
+      target: memory_reader.memory_reader_input
+      auto_transfer: true
+  memory_reader_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_reader.memory_reader_output
+      target: perturbing_drafter.perturbing_drafter_input
+      auto_transfer: true
+  drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: perturbing_drafter.perturbing_drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_memory_recorder:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: memory_recorder.memory_recorder_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true
+  memory_recorder_to_status:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_recorder.memory_recorder_output
+      target: workflow_recorder_status
+      auto_transfer: true

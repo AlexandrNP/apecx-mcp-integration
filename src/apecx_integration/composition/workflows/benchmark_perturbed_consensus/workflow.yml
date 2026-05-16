@@ -1,0 +1,81 @@
+# benchmark_perturbed_consensus -- strong-form SGDe (prompt-variance fan-out).
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep      (deterministic; classify + enrich)
+#       -> PromptPerturbingDrafterStep (LLM, N samples each with a
+#                                       DIFFERENT stem phrase at T=0)
+#       -> ConsensusAggregatorStep     (deterministic; AST voter)
+#       -> workflow_output
+#
+# F18 measured the WEAK form of SGDe's structural consensus
+# (temperature-variance fan-out via MultiSampleDrafterStep) at -10pp
+# vs F17 on nanobrain-native n=10. The brutal-truth diagnosis:
+# temperature alone does NOT cover the correct shape distribution for
+# the 3 hard problems on mistral-nemo 12B.
+#
+# This workflow replaces temperature-variance with PROMPT-VARIANCE.
+# Each of N parallel samples sees a different imperative-stem phrase
+# ("Implement" / "Author" / "Write") so the drafter's reasoning
+# trajectory diverges along the perturbation axis even at temperature=0.
+# SGDe's GSM-Hard +26-34pp claim depends on this design.
+
+name: benchmark_perturbed_consensus
+description: >
+  Strong-form SGDe scaffold. Router enriches the prompt with a worked
+  example; perturbing drafter draws N candidates each with a different
+  stem phrasing at temperature=0; AST voter picks the winner.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router_perturbed:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  perturbing_drafter:
+    class: "apecx_integration.composition.steps.prompt_perturbing_drafter_step.PromptPerturbingDrafterStep"
+    config: "steps/perturbing_drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "steps/aggregator.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_perturbed.router_input
+      auto_transfer: true
+  router_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_perturbed.router_output
+      target: perturbing_drafter.perturbing_drafter_input
+      auto_transfer: true
+  drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: perturbing_drafter.perturbing_drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true

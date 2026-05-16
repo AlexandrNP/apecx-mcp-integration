@@ -1,0 +1,31 @@
+class: "apecx_integration.composition.steps.prompt_perturbing_drafter_step.PromptPerturbingDrafterStep"
+name: perturbing_drafter
+description: "Strong-form SGDe drafter: 3 parallel samples with different stem phrases at T=0."
+
+system_prompt_file: "../../../code_writing_prompts/benchmark_drafter_system.md"
+
+role: drafter
+perturbations:
+  - Implement
+  - Author
+  - Write
+n_samples: 0
+temperature: 0.0
+max_tokens: 1024
+request_timeout_seconds: 60.0
+
+input_data_units:
+  perturbing_drafter_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: perturbing_drafter_input
+    persistent: false
+
+output_data_units:
+  perturbing_drafter_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: perturbing_drafter_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "perturbing_drafter_input"

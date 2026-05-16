@@ -1,0 +1,52 @@
+class: "nanobrain.library.steps.tool_execution_step.ToolExecutionStep"
+name: sequence_tool
+description: "Dispatches the OR sequence.analyze tool to Rhea via the rhea backend adapter."
+
+# Inline UTD (ToolExecutionStep supports tool_descriptor inline OR
+# tool_descriptor_path). Inline is used here because ToolExecutionStep
+# resolves tool_descriptor_path relative to CWD, not the config dir —
+# inline keeps the workflow portable. The standalone reference copy
+# lives at ../tool_descriptors/sequence_analyze.yml (kept in sync;
+# the codegen path discovers UTDs live via RheaMCPDiscovery instead).
+#
+# ToolExecutionStep self-unwraps the {sequence_tool_input: {...}}
+# trigger envelope (the input-DU name is not a declared UTD input),
+# so the framework step is used directly — no apecx-side subclass.
+tool_descriptor:
+  descriptor_id: "rhea:sequence.analyze@1.0.0"
+  display_name: "Sequence Analyze"
+  summary: "Analyze a biological sequence: type, length, GC content, translation, reverse complement."
+  long_description: "Open-Rosalind's sequence.analyze skill, hosted via Rhea MCP."
+  inputs:
+    - name: sequence
+      type: string
+      description: "FASTA-style (with header) or bare biological sequence."
+      required: true
+      default: null
+  outputs:
+    - name: return
+      type: object
+      description: "Structured sequence statistics."
+  side_effects: network
+  determinism: R3
+  resource_class: cpu_light
+  provenance_pin:
+    class_path: "nanobrain.library.tools.rhea_adapter.RheaAdapter"
+    mcp_support:
+      rhea_tool_name: "sequence.analyze"
+
+input_data_units:
+  sequence_tool_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: sequence_tool_input
+    persistent: false
+
+output_data_units:
+  sequence_tool_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: sequence_tool_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "sequence_tool_input"

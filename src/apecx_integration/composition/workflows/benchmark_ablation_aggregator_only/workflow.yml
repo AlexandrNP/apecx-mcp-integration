@@ -1,0 +1,65 @@
+# Ablation B: F17 + aggregator ONLY (no memory_reader, no recorder).
+#
+# Isolates whether the single-candidate AST aggregator wrap alone
+# drives the lift. Topology: router → drafter → aggregator → output.
+# 3 steps.
+
+name: benchmark_ablation_aggregator_only
+description: >
+  Ablation: F17 + single-candidate ConsensusAggregatorStep (AST voter).
+  Tests whether the aggregator wrap alone shifts the LLM output.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router_ablation:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "../benchmark_retrieval_grounded/steps/router.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "../benchmark_retrieval_grounded/steps/drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "../benchmark_integrated_similarity/steps/aggregator.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_ablation.router_input
+      auto_transfer: true
+  router_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_ablation.router_output
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true

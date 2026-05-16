@@ -1,0 +1,19 @@
+class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+name: task_router
+description: "Deterministic per-task-class router + example enricher (F17 shape)."
+
+input_data_units:
+  router_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: router_input
+    persistent: false
+
+output_data_units:
+  router_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: router_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "router_input"

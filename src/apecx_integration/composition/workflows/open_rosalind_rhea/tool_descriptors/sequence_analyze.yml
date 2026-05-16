@@ -1,0 +1,37 @@
+# UTD — Open-Rosalind sequence.analyze tool, hosted via Rhea MCP.
+#
+# This is a STATIC reference descriptor for the standalone-case
+# workflow. In the live path, RheaMCPDiscovery generates UTDs like
+# this one by calling Rhea's tools/list — see
+# nanobrain/library/tools/rhea_discovery.py. The static file lets the
+# workflow load + validate WITHOUT a running Rhea worker; the codegen
+# replaces it with discovered UTDs at generation time.
+#
+# descriptor_backend is "rhea" (the prefix of descriptor_id) — that is
+# what ToolExecutionStep uses to look up RheaAdapter in
+# ToolBackendRegistry at process() time.
+
+descriptor_id: "rhea:sequence.analyze@1.0.0"
+display_name: "Sequence Analyze"
+summary: "Analyze a biological sequence: type (DNA/RNA/protein), length, GC content, translation, reverse complement."
+long_description: >
+  Open-Rosalind's sequence.analyze skill, exposed as a Rhea-hosted MCP
+  tool. Pure computation — no external API calls — but classified
+  side_effects=network because it is dispatched over the MCP transport.
+inputs:
+  - name: sequence
+    type: string
+    description: "FASTA-style (with header) or bare biological sequence."
+    required: true
+    default: null
+outputs:
+  - name: return
+    type: object
+    description: "Structured sequence statistics (type, length, gc_content, ...)."
+side_effects: network
+determinism: R3
+resource_class: cpu_light
+provenance_pin:
+  class_path: "nanobrain.library.tools.rhea_adapter.RheaAdapter"
+  mcp_support:
+    rhea_tool_name: "sequence.analyze"

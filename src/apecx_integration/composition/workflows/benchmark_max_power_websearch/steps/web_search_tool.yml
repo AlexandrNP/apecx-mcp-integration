@@ -1,0 +1,17 @@
+name: web_search_max_power
+tool_type: external
+description: "Keyless DuckDuckGo web search for the max-power+websearch codegen composition."
+
+parameters:
+  # backend: duckduckgo (keyless, no cost) | tavily ($TAVILY_API_KEY).
+  backend: duckduckgo
+  max_results: 5
+  # Relative cache_dir -> resolved against the workspace root (G40
+  # locate_workflow_root), so the cache location is stable regardless
+  # of the sweep's CWD. The cache makes re-runs reproducible and dodges
+  # DDG rate limits — each distinct query hits the network once.
+  cache_dir: .web_search_cache
+
+tool_card:
+  capabilities: ["web_search"]
+  description: "General-purpose web search via DuckDuckGo (keyless)."

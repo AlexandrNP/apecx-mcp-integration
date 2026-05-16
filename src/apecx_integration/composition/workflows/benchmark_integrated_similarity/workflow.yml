@@ -1,0 +1,118 @@
+# benchmark_integrated_similarity -- isolates MemFlow tier-2 contribution.
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep   (deterministic; F17 winner pattern)
+#       -> SolutionMemoryStep:similarity_read  (MemFlow tier-2)
+#       -> BenchmarkDrafterStep     (single, T=0; matches F17 drafter)
+#       -> ConsensusAggregatorStep  (single-candidate AST voter so the
+#                                    recorder's record_only_if_pass gate
+#                                    has a voted_passes signal to act on)
+#       -> SolutionMemoryStep:record (record_only_if_pass=true)
+#       -> workflow_output
+#       (and side-effect): memory_recorder -> workflow_recorder_status
+#
+# Why this shape exists
+# ---------------------
+#
+# F17 winner: router -> drafter -> output (80% nanobrain-native).
+# This workflow inserts memory READ between router and drafter (tier-2
+# similarity retrieval) and adds AST-gated memory RECORD after the
+# drafter. The drafter itself is unchanged from F17 — so the ONLY
+# variable between F17 and this workflow is the memory enrichment.
+#
+# On the first pass (empty memory), behavior is identical to F17.
+# On subsequent passes, the memory_reader surfaces similar passing
+# solutions from across categories — testing the MemFlow tier-2
+# cross-pollination hypothesis.
+
+name: benchmark_integrated_similarity
+description: >
+  F17 winner shape + MemFlow tier-2 similarity retrieval + AST-gated
+  memory recording. Isolates the memory variable for diagnostic
+  measurement.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+  workflow_recorder_status:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_recorder_status
+    persistent: false
+
+steps:
+  task_router_similarity:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  memory_reader:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_reader.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "steps/aggregator.yml"
+  memory_recorder:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_recorder.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_similarity.router_input
+      auto_transfer: true
+  router_to_memory_reader:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_similarity.router_output
+      target: memory_reader.memory_reader_input
+      auto_transfer: true
+  memory_reader_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_reader.memory_reader_output
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_memory_recorder:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: memory_recorder.memory_recorder_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true
+  memory_recorder_to_status:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_recorder.memory_recorder_output
+      target: workflow_recorder_status
+      auto_transfer: true

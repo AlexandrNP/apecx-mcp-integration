@@ -1,0 +1,24 @@
+class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+name: aggregator
+description: >
+  Single-candidate AST voter. Wraps the drafter's single output into a
+  1-element candidate list and produces a voted_passes signal so the
+  downstream memory_recorder can gate on record_only_if_pass.
+
+voting_strategy: ast_validator
+
+input_data_units:
+  aggregator_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: aggregator_input
+    persistent: false
+
+output_data_units:
+  aggregator_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: aggregator_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "aggregator_input"

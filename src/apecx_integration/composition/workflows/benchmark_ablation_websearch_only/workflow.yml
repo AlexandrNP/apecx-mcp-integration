@@ -1,0 +1,83 @@
+# benchmark_ablation_websearch_only — F17 retrieval_grounded + ONE node.
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep   (F17: per-category worked examples)
+#       -> WebSearchContextStep     (the ONE added node)
+#       -> BenchmarkDrafterStep     (LLM)
+#       -> workflow_output
+#
+# This is benchmark_retrieval_grounded (the F17 winner shape) with
+# exactly one node added: a WebSearchContextStep between the router
+# and the drafter. The ablation pair is (this) vs
+# benchmark_retrieval_grounded — the delta isolates the MARGINAL
+# effect of web-search context on the F17 baseline, independent of
+# the kitchen-sink (max_power) interactions.
+#
+# Two ablation contexts for web search:
+#   * F17 baseline      vs this (ablation_websearch_only)
+#   * benchmark_max_power vs benchmark_max_power_websearch
+# Two deltas, two contexts — see docs/findings_websearch_ablation.md.
+#
+# Non-determinism: WebSearchContextStep is a non-deterministic node.
+# steps/web_search_tool.yml sets a cache_dir so re-runs against a
+# populated cache are reproducible.
+
+name: benchmark_ablation_websearch_only
+description: >
+  F17 retrieval-grounded scaffold + one web-search context node.
+  Isolates the marginal effect of web search on the F17 baseline.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  task_router:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  web_search_context:
+    class: "apecx_integration.composition.steps.web_search_context_step.WebSearchContextStep"
+    config: "steps/web_search_context.yml"
+  drafter:
+    class: "apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep"
+    config: "steps/drafter.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router.router_input
+      auto_transfer: true
+  router_to_web_search:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router.router_output
+      target: web_search_context.web_search_context_input
+      auto_transfer: true
+  web_search_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: web_search_context.web_search_context_output
+      target: drafter.drafter_input
+      auto_transfer: true
+  drafter_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: drafter.drafter_output
+      target: workflow_output
+      auto_transfer: true

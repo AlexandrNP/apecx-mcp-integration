@@ -1,0 +1,139 @@
+# Skeleton: F17 retrieval-grounded scaffold with drafter + router as bindable holes.
+#
+# Path 3 of 3 of legitimate workflow-creation. Use case: an agent or
+# operator wants to keep the F17 retrieval-grounded topology
+# (router -> drafter -> output) but swap the drafter (or router
+# fallback-mode) for a different combination WITHOUT rewriting the
+# workflow.yml.
+#
+# Holes (filled at Workflow.from_skeleton time):
+#   * drafter_class      - fully-qualified Python class path
+#   * drafter_config     - path string to the drafter's step config YAML
+#   * drafter_input_du   - name of the drafter's input data unit (must
+#                          match the drafter's own step YAML)
+#   * drafter_output_du  - name of the drafter's output data unit
+#   * router_config      - path string to the router's step config YAML
+#                          (canonical files: benchmark_retrieval_grounded/
+#                          steps/router.yml for nanobrain mode, or
+#                          benchmark_retrieval_grounded_mbpp/steps/router.yml
+#                          for mbpp mode).
+#
+# Note on the CLOSED-CLASS rule
+# -----------------------------
+# Skeletons CANNOT inline Step-subclass configs (the framework rejects
+# inline-dict step configs per CLAUDE.md's CLOSED-CLASS RULE). Hence
+# the router config is path-referenced via a hole rather than inlined
+# into the body with a templated fallback_mode token. To pick the
+# router fallback mode, bind router_config to one of the two pre-shipped
+# router YAMLs.
+
+skeleton_id: benchmark_retrieval_grounded_skeleton
+skeleton_version: "0.1.0"
+description: >
+  Retrieval-grounded (router + drafter) scaffold with the drafter +
+  router configs as bindable holes. The topology is fixed; the
+  drafter class + both step configs are the variation points.
+
+holes:
+  router_config:
+    type: string
+    required: true
+    description: >
+      Path to the TaskCategoryRouterStep config YAML. Canonical choices:
+      src/apecx_integration/composition/workflows/benchmark_retrieval_grounded/steps/router.yml
+      (nanobrain fallback, F17 winner shape) OR
+      src/apecx_integration/composition/workflows/benchmark_retrieval_grounded_mbpp/steps/router.yml
+      (MBPP fallback, F19 -23pp regression).
+
+  drafter_class:
+    type: string
+    required: true
+    description: >
+      Fully-qualified Python class path for the drafter step. Examples:
+      apecx_integration.composition.steps.benchmark_drafter_step.BenchmarkDrafterStep
+      (single-shot at T=0 — F17 winner)
+      OR
+      apecx_integration.composition.steps.multi_sample_drafter_step.MultiSampleDrafterStep
+      (fan-out N=3 at T=0.5 — F18 -10pp regression).
+
+  drafter_config:
+    type: string
+    required: true
+    description: >
+      Path to the drafter's config YAML. Must define name +
+      input_data_units + output_data_units + triggers consistent with
+      the drafter class chosen.
+
+  drafter_input_ref:
+    type: string
+    required: false
+    default: drafter.drafter_input
+    description: >
+      Full dotted reference to the drafter's input data unit. Default
+      matches the canonical BenchmarkDrafterStep step YAML. Pass the
+      ENTIRE reference (step.data_unit) not just the data unit name,
+      because skeleton string-hole substitution quotes the value and a
+      partial substitution would break the dotted-reference parse.
+
+  drafter_output_ref:
+    type: string
+    required: false
+    default: drafter.drafter_output
+    description: >
+      Full dotted reference to the drafter's output data unit. See
+      drafter_input_ref for the quoting rationale.
+
+body: |
+  name: benchmark_retrieval_grounded_skeleton_lowered
+  description: >
+    F17 retrieval-grounded scaffold lowered from skeleton. Router +
+    drafter class + drafter config + drafter port names are skeleton-
+    bindable.
+  version: "0.1.0"
+  config_version: 2
+
+  input_data_units:
+    workflow_input:
+      class: "nanobrain.core.data_unit.DataUnitMemory"
+      name: workflow_input
+      persistent: false
+
+  output_data_units:
+    workflow_output:
+      class: "nanobrain.core.data_unit.DataUnitMemory"
+      name: workflow_output
+      persistent: false
+
+  steps:
+    task_router:
+      class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+      config: {{ router_config: string }}
+
+    drafter:
+      class: {{ drafter_class: string }}
+      config: {{ drafter_config: string }}
+
+  links:
+    input_to_router:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: workflow_input
+        target: task_router.router_input
+        auto_transfer: true
+
+    router_to_drafter:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: task_router.router_output
+        target: {{ drafter_input_ref: string }}
+        auto_transfer: true
+
+    drafter_to_output:
+      class: "nanobrain.core.link.DirectLink"
+      config:
+        link_type: direct
+        source: {{ drafter_output_ref: string }}
+        target: workflow_output
+        auto_transfer: true

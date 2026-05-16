@@ -1,0 +1,23 @@
+class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+name: memory_recorder
+description: "Record-mode memory; gated on aggregator's voted_passes >= 1."
+
+mode: record
+max_per_category: 5
+record_only_if_pass: true
+
+input_data_units:
+  memory_recorder_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_recorder_input
+    persistent: false
+
+output_data_units:
+  memory_recorder_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: memory_recorder_output
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "memory_recorder_input"

@@ -1,0 +1,135 @@
+# benchmark_max_power_websearch -- max_power + a web-search context node.
+#
+#   workflow_input
+#       -> TaskCategoryRouterStep        (F17: per-category worked examples)
+#       -> SolutionMemoryStep:similarity_read  (Item 3: MemFlow tier-2)
+#       -> WebSearchContextStep          (NEW: web-search context injection)
+#       -> PromptPerturbingDrafterStep   (Item 2: strong-form SGDe)
+#       -> ConsensusAggregatorStep       (deterministic AST voter)
+#       -> SolutionMemoryStep:record     (record_only_if_pass=true)
+#       -> workflow_output
+#       (side-effect): memory_recorder -> workflow_recorder_status
+#
+# This is benchmark_max_power with exactly one node added: a
+# WebSearchContextStep between the memory reader and the drafter. The
+# ablation pair is (this) vs benchmark_max_power — the delta isolates
+# the marginal effect of web-search context on the kitchen-sink
+# composition.
+#
+# Brutal-truth prediction
+# -----------------------
+# Web search is predicted ~null on accuracy for the codegen-adapted
+# OR/BixBench subsets: OR sequence_basic is pure computation (the
+# answer is an algorithm, not a lookup), and the BixBench drafter
+# still cannot search the capsule data files. The honest value is
+# reliability/coverage in diverse settings, not an accuracy lever —
+# this composition exists to MEASURE that, not to manufacture a lift.
+#
+# Non-determinism note
+# --------------------
+# WebSearchContextStep is a non-deterministic node (live web results
+# drift). The web_search_tool.yml config sets a cache_dir, so a re-run
+# against a populated cache IS reproducible; the first population is
+# live. For reproducible ablation numbers, keep the cache populated.
+
+name: benchmark_max_power_websearch
+description: >
+  Max-power composition plus a web-search context node: router +
+  tier-2 memory + web-search context + prompt-perturbing fan-out +
+  AST voter + AST-gated memory recorder.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+  workflow_recorder_status:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_recorder_status
+    persistent: false
+
+steps:
+  task_router_max_power:
+    class: "apecx_integration.composition.steps.task_category_router_step.TaskCategoryRouterStep"
+    config: "steps/router.yml"
+  memory_reader:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_reader.yml"
+  web_search_context:
+    class: "apecx_integration.composition.steps.web_search_context_step.WebSearchContextStep"
+    config: "steps/web_search_context.yml"
+  perturbing_drafter:
+    class: "apecx_integration.composition.steps.prompt_perturbing_drafter_step.PromptPerturbingDrafterStep"
+    config: "steps/perturbing_drafter.yml"
+  aggregator:
+    class: "apecx_integration.composition.steps.consensus_aggregator_step.ConsensusAggregatorStep"
+    config: "steps/aggregator.yml"
+  memory_recorder:
+    class: "apecx_integration.composition.steps.solution_memory_step.SolutionMemoryStep"
+    config: "steps/memory_recorder.yml"
+
+links:
+  input_to_router:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: task_router_max_power.router_input
+      auto_transfer: true
+  router_to_memory_reader:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: task_router_max_power.router_output
+      target: memory_reader.memory_reader_input
+      auto_transfer: true
+  memory_reader_to_web_search:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_reader.memory_reader_output
+      target: web_search_context.web_search_context_input
+      auto_transfer: true
+  web_search_to_drafter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: web_search_context.web_search_context_output
+      target: perturbing_drafter.perturbing_drafter_input
+      auto_transfer: true
+  drafter_to_aggregator:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: perturbing_drafter.perturbing_drafter_output
+      target: aggregator.aggregator_input
+      auto_transfer: true
+  aggregator_to_memory_recorder:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: memory_recorder.memory_recorder_input
+      auto_transfer: true
+  aggregator_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: aggregator.aggregator_output
+      target: workflow_output
+      auto_transfer: true
+  memory_recorder_to_status:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: memory_recorder.memory_recorder_output
+      target: workflow_recorder_status
+      auto_transfer: true

@@ -1,0 +1,81 @@
+# open_rosalind_rhea — standalone case: workflow generation with Rhea.
+#
+#   workflow_input ({sequence: "..."})
+#       -> sequence_tool (ToolExecutionStep, backend=rhea)
+#            dispatches OR's sequence.analyze tool to a Rhea MCP worker
+#            via the RheaAdapter (BACKEND_NAME="rhea")
+#       -> workflow_output (the tool's structured result)
+#
+# This is the STANDALONE Open-Rosalind case the user requested: not a
+# codegen benchmark cell, but a demonstration of nanobrain workflow
+# generation that consumes Rhea as an MCP server.
+#
+# Open-Rosalind is natively a tool-first bio-agent benchmark — its
+# problems are answered by invoking bioinformatics tools, not by
+# writing code. The honest framework-native shape is therefore a
+# WORKFLOW that wires those tools via ToolExecutionStep, with the
+# tools hosted by Rhea and reached over MCP.
+#
+# Three legitimate ways to construct this workflow:
+#   1. This hand-authored YAML (canonical).
+#   2. The lightweight WorkflowBuilder variant
+#      (open_rosalind_rhea_lightweight_builder.py).
+#   3. Generated per-problem by the rhea_workflow codegen
+#      (tests/benchmarks/codegen/rhea_workflow.py), which discovers
+#      Rhea's tool catalog at generation time via RheaMCPDiscovery.
+#
+# RUN PREREQUISITE: a Rhea MCP worker must be running and reachable at
+# $RHEA_MCP_URL, hosting Open-Rosalind's bio tools. The RheaAdapter
+# must be registered with ToolBackendRegistry before the workflow
+# runs (RheaAdapter.from_env() does both). When Rhea is NOT up, the
+# workflow LOADS + VALIDATES fine (the adapter is resolved at
+# process() time, not load time) but a run FAILS LOUDLY at the
+# ToolExecutionStep with a clear "no rhea adapter registered" /
+# connection error — never a silent no-op.
+#
+# Registering OR's 30 bio tools WITH a Rhea worker is a rhea/-side
+# task (out of apecx-mcp-integration's writable scope). See
+# docs/open_rosalind_rhea_standalone_case.md for the honest
+# blocker analysis.
+
+name: open_rosalind_rhea
+description: >
+  Standalone Open-Rosalind case: a workflow that dispatches a
+  bioinformatics tool to Rhea over MCP via ToolExecutionStep +
+  RheaAdapter. Demonstrates nanobrain workflow generation consuming
+  Rhea as an MCP server.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    persistent: false
+
+steps:
+  sequence_tool:
+    class: "nanobrain.library.steps.tool_execution_step.ToolExecutionStep"
+    config: "steps/sequence_tool.yml"
+
+links:
+  input_to_tool:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: workflow_input
+      target: sequence_tool.sequence_tool_input
+      auto_transfer: true
+  tool_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: sequence_tool.sequence_tool_output
+      target: workflow_output
+      auto_transfer: true

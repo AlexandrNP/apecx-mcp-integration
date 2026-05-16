@@ -1,0 +1,17 @@
+name: web_search_ablation_only
+tool_type: external
+description: "Keyless DuckDuckGo web search for the F17+websearch ablation."
+
+parameters:
+  # backend: duckduckgo (keyless, no cost) | tavily ($TAVILY_API_KEY).
+  backend: duckduckgo
+  max_results: 5
+  # Relative cache_dir -> resolved against the workspace root (G40
+  # locate_workflow_root). Shared cache filename space with the other
+  # web_search tools is fine: the cache key includes the backend +
+  # query + max_results, so distinct queries never collide.
+  cache_dir: .web_search_cache
+
+tool_card:
+  capabilities: ["web_search"]
+  description: "General-purpose web search via DuckDuckGo (keyless)."
