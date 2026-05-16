@@ -410,6 +410,11 @@ class BenchmarkDrafterStep(BaseStep):
             "entry_point": input_data.get("entry_point"),
             "test_hint": input_data.get("test_hint"),
             "function_signature": input_data.get("function_signature"),
+            # Forward routing context so downstream memory_recorder /
+            # aggregator can write to the correct per-category bucket
+            # (matches the passthrough convention in MultiSampleDrafterStep
+            # / PromptPerturbingDrafterStep / ConsensusAggregatorStep).
+            "task_category": input_data.get("task_category"),
         }
 
     def _invoke_llm(self, *, user_message: str, model: str, base_url: str) -> str:

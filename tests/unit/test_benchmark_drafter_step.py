@@ -206,3 +206,15 @@ def test_workflow_yaml_loads_via_framework():
         or {}
     )
     assert "drafter" in children
+
+
+def test_task_category_passthrough(tmp_path, monkeypatch):
+    """Regression pin: BenchmarkDrafterStep must forward task_category so
+    a downstream memory_recorder writes to the correct per-category
+    bucket. Same passthrough convention as MultiSampleDrafterStep +
+    PromptPerturbingDrafterStep + ConsensusAggregatorStep.
+    """
+    step = _stage_step(tmp_path)
+    _patch_llm(monkeypatch, "```python\ndef f(): pass\n```")
+    out = asyncio.run(step.process({"code_spec": "Write f", "task_category": "tool"}))
+    assert out["task_category"] == "tool"

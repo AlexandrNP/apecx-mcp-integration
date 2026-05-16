@@ -25,8 +25,13 @@ from pathlib import Path
 from tests.benchmarks.codegen.direct import make_direct_codegen
 from tests.benchmarks.codegen.nanobrain_workflow import make_nanobrain_workflow_codegen
 from tests.benchmarks.codegen.plan_then_code import make_plan_then_code_codegen
+from tests.benchmarks.codegen.rhea_workflow import make_rhea_workflow_codegen
+from tests.benchmarks.datasets.biomlbench import load_biomlbench
+from tests.benchmarks.datasets.bioprobench import load_bioprobench
+from tests.benchmarks.datasets.bixbench import load_bixbench
 from tests.benchmarks.datasets.mbpp import load_mbpp
 from tests.benchmarks.datasets.nanobrain_native import load_nanobrain_native
+from tests.benchmarks.datasets.open_rosalind import load_open_rosalind
 from tests.benchmarks.datasets.scicode import load_scicode
 from tests.benchmarks.exclusions import (
     load_blocklist_from_results,
@@ -55,12 +60,46 @@ def _load_dataset(
         # CGU-P1-T5: hand-crafted problems exercising framework
         # competencies. Doesn't use --split — there is only one set.
         return load_nanobrain_native(limit=limit, exclude=exclude)
+    if name == "open_rosalind":
+        # Codegen-adapted subset of Open-Rosalind's sequence_basic
+        # category. Open-Rosalind has NO train/val/test — the splits
+        # are release files: v0 (canonical, 32 tasks), v1 (49),
+        # holdout (30). Default split = v0.
+        return load_open_rosalind(split=split or "v0", limit=limit, exclude=exclude)
+    if name == "bixbench":
+        # BixBench codegen-adapted subset. Canonical split is the HF
+        # dataset's single eval split (BixBench is eval-only). The
+        # eval_modes filter restricts to the Python-answerable subset
+        # (str_verifier + range_verifier = 122 questions); llm_verifier
+        # questions need an LLM judge not wired into the subprocess
+        # sandbox. See the loader docstring for the adaptation rationale.
+        return load_bixbench(
+            split=split or "eval",
+            limit=limit,
+            exclude=exclude,
+            eval_modes={"str_verifier", "range_verifier"},
+        )
+    if name == "biomlbench":
+        # CONFIGURED but run-deferred per user instruction. The loader
+        # FAILS LOUDLY if invoked without data — it does not skip.
+        return load_biomlbench(split=split, limit=limit, exclude=exclude)
+    if name == "bioprobench":
+        # CONFIGURED but run-deferred per user instruction. The loader
+        # FAILS LOUDLY if invoked without data — it does not skip.
+        return load_bioprobench(split=split, limit=limit, exclude=exclude)
     raise SystemExit(f"unknown dataset: {name!r}")
 
 
 def _build_codegen(name: str, model: str | None, base_url: str | None):
     if name == "direct":
         return make_direct_codegen(model=model, base_url=base_url)
+    if name == "rhea_workflow":
+        # The code generator uses Rhea as an MCP server: discovers the
+        # Rhea tool catalog at factory time, then GENERATES a workflow
+        # per problem that dispatches the matching tool. FAILS LOUD at
+        # factory time if $RHEA_MCP_URL is unset. Intended for the
+        # open_rosalind dataset (the standalone OR-via-Rhea case).
+        return make_rhea_workflow_codegen()
     if name == "plan_then_code":
         # ``--model`` controls the drafter; planner is resolved from
         # APECX_LLM_MODEL_PLANNER env or defaults to nemotron-3-nano:4b.
@@ -115,6 +154,172 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
             code_source_step_name="drafter",
             code_source_du_name="drafter_output",
             cascade_timeout_seconds=120.0,
+        )
+    # Ablation codegens: isolate which component(s) drive the +10pp
+    # nanobrain-native lift of integrated_similarity. Each ablation
+    # differs from F17 retrieval_grounded by exactly one or two added
+    # nodes (memory_reader, aggregator, memory_recorder).
+    _ablation_specs = {
+        "nanobrain_ablation_memreader_only": (
+            "benchmark_ablation_memreader_only",
+            "drafter",
+            "drafter_output",
+        ),
+        "nanobrain_ablation_aggregator_only": (
+            "benchmark_ablation_aggregator_only",
+            "aggregator",
+            "aggregator_output",
+        ),
+        "nanobrain_ablation_memrecorder_only": (
+            "benchmark_ablation_memrecorder_only",
+            "drafter",
+            "drafter_output",
+        ),
+        "nanobrain_ablation_memreader_aggregator": (
+            "benchmark_ablation_memreader_aggregator",
+            "aggregator",
+            "aggregator_output",
+        ),
+        "nanobrain_ablation_aggregator_memrecorder": (
+            "benchmark_ablation_aggregator_memrecorder",
+            "aggregator",
+            "aggregator_output",
+        ),
+    }
+    if name in _ablation_specs:
+        from pathlib import Path  # noqa: PLC0415
+
+        wf_dir, src_step, src_du = _ablation_specs[name]
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / wf_dir
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name=src_step,
+            code_source_du_name=src_du,
+            cascade_timeout_seconds=120.0,
+        )
+    if name == "nanobrain_max_power":
+        # Kitchen-sink composition: router + similarity-memory +
+        # perturbing drafter + AST voter + AST-gated recorder.
+        # The expected-best scaffold per the user's "max power" framing.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_max_power"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="aggregator",
+            code_source_du_name="aggregator_output",
+            cascade_timeout_seconds=300.0,
+        )
+    if name == "nanobrain_max_power_websearch":
+        # max_power + a WebSearchContextStep node between memory_reader
+        # and the drafter. Ablation pair: this vs nanobrain_max_power.
+        # The web_search_context node is non-deterministic (live web);
+        # its tool config sets a cache_dir for reproducible re-runs.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_max_power_websearch"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="aggregator",
+            code_source_du_name="aggregator_output",
+            # +1 node + per-problem network round-trip vs max_power.
+            cascade_timeout_seconds=360.0,
+        )
+    if name == "nanobrain_ablation_websearch_only":
+        # F17 retrieval_grounded + ONE WebSearchContextStep node.
+        # Ablation pair: this vs nanobrain_retrieval_grounded. Isolates
+        # the marginal effect of web search on the F17 baseline.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_ablation_websearch_only"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="drafter",
+            code_source_du_name="drafter_output",
+            # 3-node cascade + per-problem network round-trip.
+            cascade_timeout_seconds=180.0,
+        )
+    if name == "nanobrain_integrated_similarity":
+        # Item 3 (MemFlow tier-2): F17 winner shape + cross-category
+        # similarity_read mode + AST-gated memory_recorder. Isolates
+        # the memory variable for diagnostic measurement.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_integrated_similarity"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="aggregator",
+            code_source_du_name="aggregator_output",
+            cascade_timeout_seconds=240.0,
+        )
+    if name == "nanobrain_perturbed_consensus":
+        # Item 2 (strong-form SGDe): N samples each with a different
+        # stem-phrase perturbation at temperature=0. The variance is
+        # in the prompt, not the sampler. F18 showed the weak form
+        # (temperature-variance) regresses by -10pp on nanobrain-native;
+        # this is the SGDe-paper-aligned strong form.
+        from pathlib import Path  # noqa: PLC0415
+
+        yaml_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "src"
+            / "apecx_integration"
+            / "composition"
+            / "workflows"
+            / "benchmark_perturbed_consensus"
+            / "workflow.yml"
+        )
+        return make_nanobrain_workflow_codegen(
+            yaml_path,
+            first_step_input_du_name="router_input",
+            code_source_step_name="aggregator",
+            code_source_du_name="aggregator_output",
+            cascade_timeout_seconds=240.0,
         )
     if name == "nanobrain_integrated_full":
         # All three post-F17 components composed: router (worked
@@ -331,7 +536,18 @@ def _results_to_json(results: list[RunResult]) -> list[dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset", choices=["mbpp", "scicode", "nanobrain_native"])
+    parser.add_argument(
+        "dataset",
+        choices=[
+            "mbpp",
+            "scicode",
+            "nanobrain_native",
+            "open_rosalind",
+            "bixbench",
+            "biomlbench",
+            "bioprobench",
+        ],
+    )
     parser.add_argument(
         "--split",
         default=None,
@@ -357,7 +573,18 @@ def main() -> int:
             "nanobrain_retrieval_grounded",
             "nanobrain_retrieval_grounded_mbpp",
             "nanobrain_structural_consensus",
+            "nanobrain_perturbed_consensus",
             "nanobrain_integrated_full",
+            "nanobrain_integrated_similarity",
+            "nanobrain_max_power",
+            "nanobrain_max_power_websearch",
+            "nanobrain_ablation_websearch_only",
+            "nanobrain_ablation_memreader_only",
+            "nanobrain_ablation_aggregator_only",
+            "nanobrain_ablation_memrecorder_only",
+            "nanobrain_ablation_memreader_aggregator",
+            "nanobrain_ablation_aggregator_memrecorder",
+            "rhea_workflow",
         ],
         help=(
             "codegen strategy. ``direct`` / ``plan_then_code`` are "

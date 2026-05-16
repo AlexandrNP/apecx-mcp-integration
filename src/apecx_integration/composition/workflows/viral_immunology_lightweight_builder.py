@@ -1,25 +1,45 @@
-"""Lightweight nanobrain workflow builder for viral immunology analysis.
+"""DEPRECATED / BROKEN — DO NOT CALL ``build_viral_immunology_workflow_lightweight``.
 
-Demonstrates the programmatic WorkflowBuilder approach as an alternative
-to hand-authored YAML workflows. This is one of the three legitimate
-nanobrain workflow creation patterns:
+The function below CRASHES on first invocation. Three compounding bugs
+were identified 2026-05-13 during the cgu-codegen-uplift audit:
 
-1. Hand-authored YAML + Workflow.from_config() [traditional]
-2. WorkflowBuilder programmatic API [lightweight]  ← THIS FILE
-3. Workflow.from_skeleton() with typed placeholders [template-based]
+1. ``builder.add_input_data_unit`` / ``add_output_data_unit`` do not
+   exist on either ``WorkflowBuilder`` or ``EnhancedWorkflowBuilder``.
+   The correct method names are ``add_input`` / ``add_output``.
 
-Key advantages of the lightweight approach:
-- Code generation friendly (LLMs can write Python easier than YAML)
-- Dynamic workflow construction based on runtime conditions
-- IDE support with autocomplete and type checking
-- Easier debugging with Python stack traces
-- Programmatic workflow composition and reuse
+2. ``add_input`` / ``add_output`` take a STRING data-unit-type name
+   (e.g. ``"DataUnitMemory"``), NOT a class object. This file passes
+   ``DataUnitMemory`` (the class) which would TypeError after fix #1.
 
-Framework compliance:
-- Uses nanobrain.lightweight.WorkflowBuilder
-- Proper step configuration and linking
-- Maintains auto_transfer=true throughout
-- Follows nanobrain ownership boundaries
+3. The file passes INLINE-DICT step configs to ``add_step``. The
+   nanobrain framework's CLOSED-CLASS rule forbids inline-dict
+   configs for Step subclasses (only DataUnit / Link / Trigger
+   accept inline). Each ``add_step(..., config={...})`` call would
+   raise ``❌ FRAMEWORK VIOLATION: Inline dict configuration not
+   supported`` after fixes #1 + #2.
+
+**To author the viral_immunology workflow programmatically** the
+correct pattern is the one used by
+``benchmark_structural_consensus_lightweight_builder.py``:
+
+  builder.add_step(
+      step_name=...,
+      component_class=<dotted-path>,
+      config=<path string to a step YAML on disk>,
+  )
+
+The step YAMLs would need to be written first (or generated to a
+tempfile inside the build function).
+
+**For now**, use the canonical YAML at::
+
+    composition/workflows/viral_immunology_analysis/viral_immunology_analysis_workflow.yml
+
+via ``Workflow.from_config(<path>)``.
+
+This file is preserved as a friction-log artifact rather than deleted
+so the next session can see the three-bug compounding pattern as a
+case study of "builder API drift between authoring and execution."
 """
 
 from __future__ import annotations
@@ -32,15 +52,28 @@ log = logging.getLogger(__name__)
 
 
 def build_viral_immunology_workflow_lightweight() -> Any:
-    """Build viral immunology analysis workflow using WorkflowBuilder.
+    """DEPRECATED / BROKEN.
 
-    This creates the exact same workflow as the YAML version but using
-    the lightweight programmatic API. Demonstrates an alternative
-    nanobrain workflow creation pattern.
+    See module docstring for the three compounding bugs that make this
+    function crash on first call. The function body is preserved as a
+    friction-log artifact; calling it raises ``DeprecationWarning`` AND
+    the original ``AttributeError`` from the broken builder call.
 
-    Returns:
-        Configured Workflow instance ready for execution
+    To author the viral_immunology workflow, use the canonical YAML:
+        composition/workflows/viral_immunology_analysis/
+            viral_immunology_analysis_workflow.yml
+    via ``Workflow.from_config(<path>)``.
     """
+    import warnings  # noqa: PLC0415
+
+    warnings.warn(
+        "build_viral_immunology_workflow_lightweight is BROKEN and will "
+        "raise AttributeError. Use Workflow.from_config on "
+        "viral_immunology_analysis/viral_immunology_analysis_workflow.yml "
+        "instead. See module docstring for details.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     from nanobrain.core.data_unit import DataUnitMemory
     from nanobrain.core.link import DirectLink
     from nanobrain.core.trigger import DataUnitChangeTrigger
