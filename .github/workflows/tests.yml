@@ -1,8 +1,12 @@
 name: tests
 
+# Trigger on push to EVERY branch (so feature/topic branches get CI
+# coverage too — before this change only main/master fired, which
+# meant feature work landed unverified and CI surprises bit later at
+# PR-merge time). PR triggers stay scoped to merge-target branches.
 on:
   push:
-    branches: [main, master]
+    branches: ['**']
   pull_request:
     branches: [main, master]
 
