@@ -20,6 +20,16 @@ env/
 .coverage
 htmlcov/
 
+# Runtime / benchmark / cache artifacts produced at execution time
+# (deliberately uncommitted — they're sha256-named JSON blobs from the
+# WebSearchTool query cache, per-run benchmark output trees, and the
+# solution-memory step's in-process state file). Committing them would
+# pollute git history with multi-megabyte regenerable artifacts AND
+# silently mask cache-vs-source drift in PR diffs.
+.web_search_cache/
+_benchmark_runs/
+src/apecx_integration/composition/_runtime/
+
 # Editors
 .vscode/
 .idea/
