@@ -87,6 +87,18 @@ def _port_open(host: str, port: int, timeout: float = 1.0) -> bool:
         return False
 
 
+# Port reachability gates for each live-probe test. Same skipif
+# discipline as test_rhea_mcp_probe_against_live_localhost: a "unit"
+# test that requires a non-docker-compose service to be running is
+# really an integration test (friction-log #37). On a typical dev
+# machine apecx-rhea-{postgres,minio,redis} + Ollama are all up; on
+# CI's bare runner none of them are. Probe-then-skip lets CI run the
+# unit suite cleanly and lets developers see real probe results
+# locally.
+_PG_LIVE = _port_open("localhost", 5435)
+_REDIS_LIVE = _port_open("localhost", 6379)
+_MINIO_LIVE = _port_open("localhost", 9000)
+_OLLAMA_LIVE = _port_open("localhost", 11434)
 _RHEA_MCP_LIVE = _port_open("localhost", 3001)
 
 # ---------------------------------------------------------------------------
@@ -290,6 +302,14 @@ def test_fresh_create_warning_appears_in_snapshot():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.skipif(
+    not _PG_LIVE,
+    reason=(
+        "apecx-rhea-postgres not reachable on localhost:5435. Bring it "
+        "up via `apecx-setup infra` (or any docker compose that maps "
+        "5435->5432 to a postgres container) and re-run."
+    ),
+)
 @pytest.mark.asyncio
 async def test_postgres_probe_against_live_localhost():
     """The dev machine has apecx-rhea-postgres up on 5435."""
@@ -306,6 +326,10 @@ async def test_postgres_probe_against_live_localhost():
     assert result.error is None
 
 
+@pytest.mark.skipif(
+    not _REDIS_LIVE,
+    reason=("apecx-redis not reachable on localhost:6379. Bring it up via `apecx-setup infra`."),
+)
 @pytest.mark.asyncio
 async def test_redis_probe_against_live_localhost():
     result = await redis_probe(host="localhost", port=6379)
@@ -314,6 +338,12 @@ async def test_redis_probe_against_live_localhost():
     assert result.latency_ms > 0
 
 
+@pytest.mark.skipif(
+    not _MINIO_LIVE,
+    reason=(
+        "apecx-rhea-minio not reachable on localhost:9000. Bring it up via `apecx-setup infra`."
+    ),
+)
 @pytest.mark.asyncio
 async def test_minio_probe_against_live_localhost():
     result = await minio_probe(host="localhost", port=9000)
@@ -321,6 +351,15 @@ async def test_minio_probe_against_live_localhost():
     assert "HTTP 200" in result.detail
 
 
+@pytest.mark.skipif(
+    not _OLLAMA_LIVE,
+    reason=(
+        "Ollama not reachable on localhost:11434. Install (Mac: "
+        "`brew install ollama`; Linux: `curl -fsSL https://ollama.ai/"
+        "install.sh | sh`) and start (`ollama serve` or `brew services "
+        "start ollama`)."
+    ),
+)
 @pytest.mark.asyncio
 async def test_ollama_probe_against_live_localhost():
     result = await ollama_probe(base_url="http://localhost:11434")

@@ -33,6 +33,17 @@ dependencies = [
     # deployments never import psycopg at runtime; the dep cost is just
     # ~5MB of wheel on install.
     "psycopg[binary]>=3.1",
+    # redis client — apecx-mcp-integration/src/apecx_integration/
+    # infrastructure/probes.py:redis_probe does `import redis` at
+    # call time (the orchestrator's health-check + the rhea_prewarm
+    # subprocess both rely on it). Previously undeclared — the local
+    # dev venv pulled it transitively via nanobrain[test]'s
+    # proxystore[redis] but a fresh production install (`pip install
+    # apecx-integration`) did not, so the orchestrator's redis probe
+    # raised ModuleNotFoundError at first health check. Surfaced
+    # 2026-05-15 during clean-install verification (CI run
+    # 25952575754 on the cgu-codegen-uplift branch).
+    "redis>=5.0",
     # Migrated from apecx-db-integration (2026-04-27, user directive
     # "this repo should only depend on nanobrain and apecx-harvesters").
     # The violin_bvbrc agents need pandas for VIOLIN dataframe loading
