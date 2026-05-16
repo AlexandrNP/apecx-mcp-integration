@@ -1,0 +1,62 @@
+# GlobusTransferStep wrapper for the VIOLIN + BV-BRC dataset (G82, 2026-05-16)
+#
+# Source-of-truth: the dataset lives on the "APECx Data at Argonne LCF"
+# Globus collection under the ``apecx-joshi-anl-general`` path. The
+# collection's UUID is supplied via the ``APECX_GLOBUS_SOURCE_ENDPOINT_ID``
+# env var — never hardcoded in this file. The destination collection's
+# UUID is supplied via ``APECX_GLOBUS_DEST_ENDPOINT_ID`` (typically the
+# operator's Globus Connect Personal endpoint on their workstation).
+#
+# Why env vars (not the YAML)?
+#   * The test endpoint UUID is operator-specific; checking it in would
+#     leak a per-user identifier into every clone.
+#   * Different operators (dev / CI / production) point at different
+#     endpoints; the wrapper YAML stays identical across deployments.
+#
+# Transfer ITEMS (which files to move) are NOT in this config. They are
+# supplied at runtime via ``process(input_data={"items": [...]})``
+# because the destination paths depend on the operator's chosen data
+# directory (``apecx-setup data`` prompts for it; the default is
+# ``~/.apecx/data``). See ``cli/setup.py:_step_data_globus_attempt``
+# for the items-building logic.
+#
+# Auth: client_credentials by default. Requires a confidential Globus
+# app, set up once via ``apecx-globus-setup store --client-id <id>
+# --client-secret <secret>``. The credentials live in the OS keyring
+# (the apecx-globus-setup CLI gates on a real keyring backend), so
+# this YAML doesn't carry them.
+
+name: violin_bvbrc_globus_transfer
+description: |
+  Transfer the VIOLIN + BV-BRC dataset (6 CSV files) from the
+  "APECx Data at Argonne LCF" Globus collection (apecx-joshi-anl-general
+  path) to the operator's local Globus endpoint.
+class: nanobrain.library.steps.globus_transfer_step.GlobusTransferStep
+
+# Endpoint UUIDs from env vars. Both are REQUIRED at workflow load time;
+# the absence of either fails fast at config validation (rather than at
+# transfer submit time, which would waste the auth round-trip).
+source_endpoint_id: "${APECX_GLOBUS_SOURCE_ENDPOINT_ID}"
+dest_endpoint_id: "${APECX_GLOBUS_DEST_ENDPOINT_ID}"
+
+# Confidential-client auth. apecx-globus-setup writes the credentials to
+# the OS keyring; the GlobusTransferStep's G23 helper
+# (build_globus_app) reads them. If either is unset at runtime the step
+# raises ComponentConfigurationError — silent-failure is impossible.
+auth_mode: client_credentials
+client_id: "${GLOBUS_COMPUTE_CLIENT_ID}"
+client_secret: "${GLOBUS_COMPUTE_CLIENT_SECRET}"
+
+# checksum is the safest sync mode (compares file contents, not just
+# size/mtime). The dataset is small enough (~1.5 MB total CSVs) that
+# the checksum overhead is negligible.
+sync_level: checksum
+verify_checksum: true
+
+# Generous poll timeout because Globus tasks can queue behind other
+# transfers on the source endpoint. Operators on a fresh Globus account
+# typically see <60 s end-to-end.
+poll_timeout_seconds: 600.0
+poll_interval_seconds: 5.0
+
+transfer_label: apecx-setup-violin-bvbrc

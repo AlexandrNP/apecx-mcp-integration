@@ -131,8 +131,27 @@ def _print_summary(results: list[StepResult]) -> int:
 # ---------------------------------------------------------------------------
 
 
-def _step_data(*, interactive: bool = True) -> StepResult:
-    """Delegate to existing setup_data._run_full_setup."""
+def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> StepResult:
+    """Acquire the VIOLIN + BV-BRC dataset. G82 (2026-05-16): Globus-first.
+
+    Path selection
+    --------------
+    1. ``prefer_gh_release=True`` (operator flag): always use the
+       existing ``gh release download`` path; never touch Globus.
+    2. Otherwise: check Globus preconditions
+       (``check_globus_prerequisites``). If they pass, drive
+       ``GlobusTransferStep`` via the wrapper YAML and call it a day.
+       If the transfer fails AT THE NETWORK LAYER (Globus auth error,
+       endpoint unreachable, task failed), fall back to gh release —
+       the user wanted data, not a Globus debugging session.
+    3. If Globus preconditions don't pass (no SDK, no env vars, no
+       credentials), fall back to gh release silently. Operators who
+       never set up Globus see no extra friction.
+
+    The fallback is also the canonical historical path: ``apecx-data``
+    GitHub release with the 6 CSVs in a tarball. Same content; just
+    fetched over GitHub instead of Globus.
+    """
     _print_header("Step 1 of 5 — Data")
     if not interactive:
         # Non-interactive mode: skip if data already present at the
@@ -150,11 +169,42 @@ def _step_data(*, interactive: bool = True) -> StepResult:
             "skipped",
             "non-interactive mode + no existing data; run `apecx-setup data` interactively",
         )
+
+    # ----- Globus-first attempt -----
+    # Skip Globus only if the operator forced it OR if preconditions
+    # are missing. We surface either case in the step result so the
+    # summary table is honest about which path ran.
+    if not prefer_gh_release:
+        from apecx_integration.cli._globus_data_transfer import (
+            attempt_globus_data_transfer,
+            check_globus_prerequisites,
+        )
+
+        prereqs = check_globus_prerequisites()
+        if prereqs.configured:
+            data_dir = _setup_data._DEFAULT_DATA_DIR
+            data_dir.mkdir(parents=True, exist_ok=True)
+            print(f"  ▶  attempting Globus transfer to {data_dir}")
+            result = attempt_globus_data_transfer(data_dir=data_dir)
+            if result.status == "ok":
+                detail = f"Globus: {result.detail}"
+                if result.task_id:
+                    detail += f" (task_id={result.task_id})"
+                return StepResult("data", "ok", detail)
+            # Globus attempted but failed. Tell the operator + try gh.
+            print(f"  ⚠️  Globus transfer failed: {result.detail}")
+            print("     falling back to gh release download")
+        else:
+            # Preconditions unmet — silent fallback to gh.
+            print(f"  ▶  Globus not configured ({prereqs.reason()})")
+            print("     using gh release download instead")
+
+    # ----- gh release fallback -----
     try:
         _setup_data._run_full_setup()
     except SystemExit as exc:
         if exc.code == 0:
-            return StepResult("data", "ok", "downloaded + extracted")
+            return StepResult("data", "ok", "gh release: downloaded + extracted")
         return StepResult(
             "data",
             "fail",
@@ -162,7 +212,7 @@ def _step_data(*, interactive: bool = True) -> StepResult:
         )
     except Exception as exc:  # noqa: BLE001
         return StepResult("data", "fail", f"{type(exc).__name__}: {exc}")
-    return StepResult("data", "ok", "downloaded + extracted")
+    return StepResult("data", "ok", "gh release: downloaded + extracted")
 
 
 # ---------------------------------------------------------------------------
@@ -806,7 +856,12 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
 }
 
 
-def _run_all(*, interactive: bool = True, with_rag: bool = False) -> int:
+def _run_all(
+    *,
+    interactive: bool = True,
+    with_rag: bool = False,
+    prefer_gh_release: bool = False,
+) -> int:
     """Run the canonical install chain.
 
     Chain (G81 + G82, 2026-05-16):
@@ -831,7 +886,7 @@ def _run_all(*, interactive: bool = True, with_rag: bool = False) -> int:
     print()
 
     results: list[StepResult] = []
-    results.append(_step_data(interactive=interactive))
+    results.append(_step_data(interactive=interactive, prefer_gh_release=prefer_gh_release))
     results.append(_step_infra())
     results.append(_step_llm(interactive=interactive))
     if with_rag:
@@ -885,6 +940,17 @@ def main(argv: list[str] | None = None) -> None:
             "Run this when you specifically need the synthesis RAG branch."
         ),
     )
+    parser.add_argument(
+        "--prefer-gh-release",
+        action="store_true",
+        help=(
+            "Skip the Globus-first transfer attempt and use the "
+            "``gh release download`` path immediately (G82: Globus-first "
+            "since 2026-05-16). Useful when Globus IS configured but the "
+            "operator wants the same path that pre-G82 installs took, "
+            "e.g. for reproducing an older install verbatim."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if args.reconfigure_llm:
@@ -896,10 +962,14 @@ def main(argv: list[str] | None = None) -> None:
             _run_all(
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
+                prefer_gh_release=args.prefer_gh_release,
             )
         )
     elif args.subcommand == "data":
-        result = _step_data(interactive=not args.non_interactive)
+        result = _step_data(
+            interactive=not args.non_interactive,
+            prefer_gh_release=args.prefer_gh_release,
+        )
     else:
         result = _SUBCOMMANDS[args.subcommand](
             interactive=not args.non_interactive,
