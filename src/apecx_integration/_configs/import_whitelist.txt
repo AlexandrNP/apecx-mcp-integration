@@ -45,11 +45,13 @@ typing_extensions
 # Nanobrain components are the whole reason the composer exists.
 nanobrain
 
-# Apecx-db-integration is used by the T02 Steps 1 / 3c / 5 wrappers; a
-# composer-generated workflow that reuses one of those Steps needs
-# ``from apecx_db_integration import ...``.
-apecx_db_integration
-
 # Apecx's own integration package — composer-generated code can reference
-# existing wrapper Steps by their qualified path.
+# existing wrapper Steps by their qualified path. The T02 Steps 1 / 3c /
+# 5 wrappers that used to live in ``apecx_db_integration`` were migrated
+# in 2026-04-27 to live under ``apecx_integration`` directly (see
+# composition/steps/db_integration_wrappers.py); the
+# ``apecx_db_integration`` package is no longer a runtime dep of
+# apecx-mcp-integration. Removed from the whitelist 2026-05-16 so
+# composer-generated code can't reference it and explode at execution
+# time on a fresh install where that package isn't pip-installed.
 apecx_integration
