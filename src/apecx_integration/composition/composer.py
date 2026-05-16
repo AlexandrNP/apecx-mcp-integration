@@ -25,8 +25,6 @@ from __future__ import annotations
 
 import hashlib
 import logging
-import os
-import re
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -70,57 +68,32 @@ REQUIRED_PROMPT_FILES: tuple[str, ...] = (
 _INTERNAL_CONTEXT_KEYS: frozenset[str] = frozenset({"run_id"})
 
 
-# Error classes live in ``_errors.py`` to break the circular import
-# between this module and ``workflow_validator.py``; they are
-# re-exported here for backward compatibility with existing callers
-# that import them from this module.
+# G78 (2026-05-16): module-level helpers extracted to focused sibling
+# modules. Re-exported here so existing test imports
+# (``from apecx_integration.composition.composer import _xxx``) keep
+# working without change. The noqa is required because composer.py
+# patches ``sys.path`` near the top of the file BEFORE these imports
+# run.
+from apecx_integration.composition._composer_candidates import (  # noqa: E402
+    _render_candidates,
+    _render_candidates_spec,
+)
+from apecx_integration.composition._composer_llm_factory import (  # noqa: E402
+    _apply_llm_env_overrides,
+    _default_llm_factory,
+)
+from apecx_integration.composition._composer_parsing import (  # noqa: E402
+    _format_parse_feedback,
+    _is_repairable_parse_error,
+    _parse_response,
+)
+from apecx_integration.composition._composer_rerank import (  # noqa: E402
+    _rerank_by_class_name_match,
+)
 from apecx_integration.composition._errors import (  # noqa: E402
     ComposerConfigurationError,
     ComposerResponseError,
 )
-
-# Substrings used to recognize ``ComposerResponseError`` variants the
-# compose-validate-retry loop can plausibly repair. Kept frozen so a
-# future rewording of the parser's error messages forces an explicit
-# update here (and a corresponding test) instead of silently widening
-# / narrowing the retry surface.
-_REPAIRABLE_PARSE_MARKERS: tuple[str, ...] = (
-    "must be a mapping at top level",
-    # SPEC2 (2026-05-11): spec-mode parse errors — JSON shape / schema
-    # / expander failures are all repairable when the LLM sees the
-    # actual error message.
-    "spec mode: emitted JSON did not match",
-    "spec mode: JSON in the fenced block did not parse",
-    "spec mode: expander could not realize the spec",
-)
-
-
-def _is_repairable_parse_error(exc: ComposerResponseError) -> bool:
-    """True iff the parse failure has a shape the LLM can correct
-    given feedback. Empty-content / no-yaml-fence errors are NOT
-    repairable — the retry would just re-elicit the same shape."""
-    text = str(exc)
-    return any(marker in text for marker in _REPAIRABLE_PARSE_MARKERS)
-
-
-def _format_parse_feedback(exc: ComposerResponseError) -> str:
-    """User-turn message for the parse-error retry path.
-
-    Tells the LLM exactly what went wrong shape-wise plus a brief
-    example of the expected shape. Kept short — the system prompt
-    already carries the full schema; this is just a correction hint.
-    """
-    return (
-        "Your previous response could not be parsed as a workflow "
-        "YAML mapping. The composer surfaced this error:\n\n"
-        f"    {exc}\n\n"
-        "Emit exactly ONE fenced ```yaml``` block whose top level "
-        "is a MAPPING with keys like `name:`, `description:`, "
-        "`steps:`, `links:`. Do not emit a list, a string, or "
-        "multiple yaml blocks. If you intended to provide novel "
-        "Python, put it in a separate ```novel_python``` fence "
-        "exactly once."
-    )
 
 
 class _RetryableValidationError(Exception):
@@ -1346,358 +1319,6 @@ class Composer:
                     budget.size_bytes / 1024,
                     budget.soft_cap_bytes / 1024,
                 )
-
-
-# ---------------------------------------------------------------------------
-# Module-level helpers
-# ---------------------------------------------------------------------------
-
-
-def _default_llm_factory(**kwargs: Any):
-    """Default LLM client builder — imports lazily so a missing
-    optional dependency (langchain_openai) does not break composer
-    import for callers that inject their own ``llm_factory``.
-
-    Tests that need a placeholder LLM should pass ``llm_factory=...``
-    to the ``Composer`` constructor — that is the supported seam
-    (see ``tests/integration/test_composer_phase2.py``). Direct
-    monkeypatching of this factory is not supported.
-
-    Implementation lives in ``apecx_integration.agents._llm_factory``.
-    The factory honors APECX_LLM_BASE_URL / APECX_LLM_MODEL /
-    APECX_LLM_API_KEY / APECX_LLM_TEMPERATURE / APECX_LLM_MAX_TOKENS
-    env vars; local LLMs (Ollama, vLLM) are first-class — both expose
-    an OpenAI-compatible chat-completions endpoint.
-    """
-    from apecx_integration.agents._llm_factory import build_chat_llm
-
-    return build_chat_llm(**kwargs)
-
-
-# Matches a fenced block whose label is captured as group 1 and whose
-# body is group 2. Handles both ``` and ~~~ fences per CommonMark
-# (limited to ``` to keep the regex simple). Greedy on the body with
-# a non-greedy-ish trailing fence.
-#
-# Audit §1.3: `\n\s*` before the closing fence (instead of plain
-# `\n```) tolerates trailing whitespace or a blank line between the
-# body and the closing fence — valid CommonMark, occasionally
-# emitted by LLMs whose training distribution includes that pattern.
-# Pre-fix the parser silently failed to match such blocks and the
-# composer raised "no ```yaml fenced block" with no hint that the
-# block existed but had a trailing blank line.
-_FENCE_RE = re.compile(
-    r"```\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\n"
-    r"(.*?)"
-    r"\n\s*```",
-    re.DOTALL,
-)
-
-
-def _apply_llm_env_overrides(raw: dict[str, Any]) -> None:
-    """Honor the ``APECX_LLM_*`` env-var contract the composer_config
-    header promises. In-place edit of the raw mapping before pydantic
-    validation runs.
-
-    Mapping (env → config key):
-        APECX_LLM_MODEL                  → llm_model
-        APECX_LLM_BASE_URL               → llm_base_url
-        APECX_LLM_TEMPERATURE            → temperature (float)
-        APECX_LLM_MAX_TOKENS             → max_tokens  (int)
-        APECX_LLM_MAX_VALIDATION_RETRIES → max_validation_retries (int, C1)
-
-    Unset env vars leave the YAML value untouched. Invalid numeric
-    values raise ValueError at pydantic validation; the composer
-    surfaces that as ``ComposerConfigurationError``.
-
-    The ``APECX_LLM_MAX_VALIDATION_RETRIES`` knob (2026-05-11) lets
-    operators dial up the C1 retry budget per-model. mistral-nemo
-    repairs reliably with the default 1; gemma4 (from observation)
-    benefits from 2 because it hallucinates class paths more often
-    on the first attempt. Without an env-var hook, operators would
-    have to edit the YAML to experiment — a real friction point.
-    """
-    str_pairs = (
-        ("APECX_LLM_MODEL", "llm_model"),
-        ("APECX_LLM_BASE_URL", "llm_base_url"),
-        # SPEC2 (2026-05-11): operators flip the composer mode
-        # without editing YAML. Valid values: "monolithic" | "spec".
-        ("APECX_COMPOSER_MODE", "composer_mode"),
-    )
-    for env, key in str_pairs:
-        value = os.environ.get(env)
-        if value:
-            raw[key] = value
-
-    numeric_pairs = (
-        ("APECX_LLM_TEMPERATURE", "temperature", float),
-        ("APECX_LLM_MAX_TOKENS", "max_tokens", int),
-        (
-            "APECX_LLM_MAX_VALIDATION_RETRIES",
-            "max_validation_retries",
-            int,
-        ),
-    )
-    for env, key, caster in numeric_pairs:
-        value = os.environ.get(env)
-        if value is not None and value != "":
-            raw[key] = caster(value)
-
-    # REVIEW-AGENT (2026-05-12): APECX_COMPOSER_REVIEW flips the
-    # second-pass reviewer on without YAML edits.
-    review_env = os.environ.get("APECX_COMPOSER_REVIEW", "").lower()
-    if review_env in ("1", "true", "yes"):
-        raw["enable_review"] = True
-    elif review_env in ("0", "false", "no"):
-        raw["enable_review"] = False
-
-    # BENCH-P0 (2026-05-12): per-role overrides.
-    # APECX_LLM_MODEL_<ROLE_UPPER>    → model_roles.<role>.model
-    # APECX_LLM_BASE_URL_<ROLE_UPPER> → model_roles.<role>.base_url
-    #
-    # We deliberately scan os.environ (rather than checking a fixed
-    # role list) so operators can add a role like "critic" or
-    # "explainer" without a code change. The role name is lower-cased
-    # from the env-var suffix; the YAML model_roles dict (if present)
-    # is merged keyword-by-keyword so env wins on conflict.
-    role_models: dict[str, dict[str, str]] = {}
-    for env_key, env_val in os.environ.items():
-        if not env_val:
-            continue
-        if env_key.startswith("APECX_LLM_MODEL_"):
-            role = env_key.removeprefix("APECX_LLM_MODEL_").lower()
-            role_models.setdefault(role, {})["model"] = env_val
-        elif env_key.startswith("APECX_LLM_BASE_URL_"):
-            role = env_key.removeprefix("APECX_LLM_BASE_URL_").lower()
-            role_models.setdefault(role, {})["base_url"] = env_val
-    if role_models:
-        merged = dict(raw.get("model_roles") or {})
-        for role, fields in role_models.items():
-            existing = dict(merged.get(role) or {})
-            existing.update(fields)
-            # An env-only role MUST carry a model field — base_url
-            # without a model is meaningless. Skip if missing.
-            if "model" not in existing:
-                continue
-            merged[role] = existing
-        raw["model_roles"] = merged
-
-
-def _parse_response(content: str) -> tuple[str, dict[str, str]]:
-    """Extract the single ``yaml`` fenced block and the optional
-    ``novel_python`` fenced block from the LLM response.
-
-    Returns ``(yaml_text, novel_python_dict)``. Raises
-    ``ComposerResponseError`` if the yaml block is missing.
-
-    Strictness: we accept the LLM emitting prose outside fences
-    (retryable) but reject the absence of ANY yaml fence entirely
-    (unparseable). Multiple yaml fences → first one wins; we log the
-    extras but don't error — LLMs sometimes emit a second yaml as a
-    "preview" and we'd rather take the first than fail.
-    """
-    blocks: dict[str, list[str]] = {}
-    for match in _FENCE_RE.finditer(content):
-        label = match.group(1).lower()
-        body = match.group(2)
-        blocks.setdefault(label, []).append(body)
-
-    yaml_blocks = blocks.get("yaml", [])
-    if not yaml_blocks:
-        raise ComposerResponseError(
-            f"LLM response has no ```yaml fenced block. First 500 chars: {content[:500]!r}"
-        )
-    if len(yaml_blocks) > 1:
-        log.warning(
-            "Composer response has %d yaml blocks; using the first",
-            len(yaml_blocks),
-        )
-    yaml_text = yaml_blocks[0]
-
-    novel_python_raw = blocks.get("novel_python", [])
-    novel_python: dict[str, str] = {}
-    if novel_python_raw:
-        # novel_python is itself a YAML mapping step_id -> source.
-        try:
-            parsed = yaml.safe_load(novel_python_raw[0])
-        except yaml.YAMLError as exc:
-            raise ComposerResponseError(
-                f"LLM response's novel_python block failed to parse: {exc}"
-            ) from exc
-        if parsed is None:
-            parsed = {}
-        if not isinstance(parsed, dict):
-            raise ComposerResponseError(
-                "LLM response's novel_python block must be a mapping "
-                f"<step_id>: <source>; got {type(parsed).__name__}"
-            )
-        for k, v in parsed.items():
-            if not isinstance(v, str):
-                raise ComposerResponseError(
-                    f"novel_python[{k!r}] must be a source string; got {type(v).__name__}"
-                )
-            novel_python[str(k)] = v
-
-    return yaml_text, novel_python
-
-
-def _prompt_tokens(prompt: str) -> set[str]:
-    """Extract lowercase alphanumeric tokens from a prompt for
-    substring-match re-ranking. Tokens < 3 chars are dropped to
-    avoid spurious matches on short pronouns / particles ("a",
-    "of", "to") that match too many components."""
-    return {t.lower() for t in re.findall(r"[A-Za-z][A-Za-z0-9_]+", prompt) if len(t) >= 3}
-
-
-def _class_name_of(class_path: str) -> str:
-    return class_path.rsplit(".", 1)[-1] if class_path else ""
-
-
-def _rerank_by_class_name_match(
-    hits: list[SearchHit],
-    prompt: str,
-) -> list[SearchHit]:
-    """Boost hits whose class_name shares a token with the prompt.
-
-    B3 (2026-05-11): pure post-retrieval re-rank. We do NOT mutate
-    the SearchHit objects; we return a new list ordered by a
-    composite key (token_match_count desc, original_score desc).
-    Hits with no token overlap fall through in their original
-    order — the base retrieval scoring stays authoritative for
-    long-tail components.
-
-    Why this is a net positive even when retrieval already ranks
-    well: FAISS / substring-match retrieval scores semantic
-    similarity, not lexical "the user named this class." When the
-    user writes "use EntityExtractionStep to ...", semantic
-    retrieval may still surface ``MoreGenericSearchStep`` above it
-    because their descriptions share more vocabulary. The re-rank
-    fixes that asymmetry.
-    """
-    tokens = _prompt_tokens(prompt)
-    if not tokens:
-        return hits
-
-    def _score(hit: SearchHit) -> tuple[int, int]:
-        class_name = _class_name_of(hit.component.class_path)
-        # Split CamelCase into lowercase parts so
-        # ``EntityExtractionStep`` → [``entity``, ``extraction``,
-        # ``step``].
-        parts = [p.lower() for p in re.findall(r"[A-Z][a-z0-9]+|[a-z0-9]+", class_name)]
-        # A part matches a prompt token if either is a substring of
-        # the other — catches "extract" ↔ "extraction" and
-        # "entities" ↔ "entity" without pulling in a stemmer.
-        # Filter out the ubiquitous "step" / "tool" / "agent" trailing
-        # parts so they don't boost everything that ends with the
-        # generic suffix.
-        ignored = {"step", "tool", "agent", "workflow"}
-        match_count = sum(
-            1 for p in parts if p not in ignored and any(p in t or t in p for t in tokens)
-        )
-        return (match_count, hit.score)
-
-    return sorted(hits, key=_score, reverse=True)
-
-
-def _load_step_io_names(absolute_yaml_path: str | None) -> tuple[list[str], list[str]]:
-    """Read a wrapper YAML and return its input/output data unit names.
-
-    SPEC2 (2026-05-11): the spec-mode candidate block surfaces these
-    names so the LLM can use them as link endpoints WITHOUT having
-    to guess. Without this, link endpoints are the second-largest
-    hallucination surface after class paths.
-
-    The path comes from ``CatalogComponent.yaml_path_absolute``
-    (resolved at catalog-load from manifest_dir + relative yaml).
-    Returns ``([], [])`` when the file isn't readable or doesn't
-    have the standard blocks.
-    """
-    if not absolute_yaml_path:
-        return ([], [])
-    p = Path(absolute_yaml_path)
-    if not p.is_file():
-        return ([], [])
-    try:
-        raw = yaml.safe_load(p.read_text(encoding="utf-8"))
-    except Exception:
-        return ([], [])
-    if not isinstance(raw, dict):
-        return ([], [])
-    inputs = list((raw.get("input_data_units") or {}).keys())
-    outputs = list((raw.get("output_data_units") or {}).keys())
-    return (inputs, outputs)
-
-
-def _render_candidates_spec(hits: list[SearchHit]) -> str:
-    """Render retrieval hits in the compact spec-mode format.
-
-    Each candidate is reduced to:
-
-        - class_name: LeafName              # the LLM emits this verbatim
-          class_path: full.dotted.LeafName  # for the reviewer's eye
-          description: ...
-          inputs: [data_unit_name_a, ...]   # link endpoints
-          outputs: [data_unit_name_b, ...]
-
-    The expander rebuilds full YAML; the LLM does NOT see the
-    framework's boilerplate fields. Fewer fields = smaller
-    hallucination surface.
-    """
-    lines: list[str] = []
-    for hit in hits:
-        c = hit.component
-        leaf = c.class_path.rsplit(".", 1)[-1] if c.class_path else c.id
-        lines.append(f"- class_name: {leaf}")
-        if c.class_path:
-            lines.append(f"  class_path: {c.class_path}")
-        if c.description:
-            lines.append(f"  description: {c.description}")
-        inputs, outputs = _load_step_io_names(c.yaml_path_absolute)
-        if inputs:
-            lines.append(f"  inputs:  {inputs}")
-        if outputs:
-            lines.append(f"  outputs: {outputs}")
-        lines.append("")
-    return "\n".join(lines).rstrip()
-
-
-def _render_candidates(hits: list[SearchHit]) -> str:
-    """Render retrieval hits as a compact, LLM-consumable block.
-
-    B1 (2026-05-11): each candidate with a wrapper YAML now carries
-    an ``emit_step`` block that shows the LLM exactly what to paste
-    into ``steps:`` for that component. The block is YAML-formatted
-    and uses the canonical class path + canonical config path, so the
-    "what should I literally write?" answer is two lines below the
-    description. This addresses the recurring drift pattern where
-    the LLM saw ``yaml: steps/foo.yml`` but still synthesized an
-    inline dict because it had to assemble the step shape itself
-    from prose rules.
-    """
-    lines: list[str] = []
-    for hit in hits:
-        c = hit.component
-        lines.append(f"- id: {c.id}")
-        lines.append(f"  name: {c.name}")
-        lines.append(f"  class: {c.class_path}")
-        if c.yaml_path:
-            lines.append(f"  yaml: {c.yaml_path}")
-        lines.append(f"  description: {c.description}")
-        if c.examples:
-            lines.append(f"  examples: {list(c.examples)}")
-        if c.yaml_path:
-            # Ready-to-paste step shape using a short, semantic
-            # step_id derived from the component name. The LLM is
-            # expected to swap the step_id for a task-appropriate
-            # one — the literal strings to copy are the class path
-            # and the config path.
-            stub_id = c.name.lower().replace(" ", "_").replace("-", "_")
-            lines.append("  emit_step: |")
-            lines.append(f"    {stub_id}:")
-            lines.append(f"      class: {c.class_path}")
-            lines.append(f'      config: "{c.yaml_path}"')
-        lines.append("")
-    return "\n".join(lines).rstrip()
 
 
 __all__ = [
