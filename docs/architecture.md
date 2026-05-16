@@ -483,10 +483,14 @@ This is the **strict hierarchy contract** (user directive 2026-05-05).
 | Genomics DB TSV | `<workspace>/data/bvbrc_cache/` (organism genomes TSV) | bundled with `apecx-setup` | YAML → APECX_WORKSPACE_ROOT |
 | Synonym dictionary | `APECX_SYNONYM_DICT_PATH` (defaults to `~/.apecx/dictionary/dictionary.sqlite`) | `dictionary_build_workflow` (lazy at apecx-mcp startup; `APECX_SKIP_DICT_BUILD=1` to opt out) | env var only; missing → fast path disabled |
 
-`<workspace>` resolves via `apecx_integration._workspace.resolve_workspace_root`
-in this order: `APECX_WORKSPACE_ROOT` env var → marker-walk for
-`apecx-mcp-integration/` + `nanobrain/_workspace_notes/data` siblings →
-`Path(__file__).parents[N]` fallback for the standard checkout.
+`<workspace>` resolves via `nanobrain.library.runtime.workspace_root.locate_workflow_root`
+(G40) called with apecx-specific kwargs:
+`markers=["apecx-mcp-integration"]`, `env_var="APECX_WORKSPACE_ROOT"`,
+`fallback_depth=5`. Resolution order: env var → marker walk for
+`apecx-mcp-integration/` → `Path(__file__).parents[5]` fallback for the
+standard checkout. (The earlier `apecx_integration._workspace.resolve_workspace_root`
+wrapper was retired 2026-05-16 when the framework helper grew the
+`fallback_depth` knob the wrapper used to add.)
 
 ### 8.3 Cross-repo dependencies
 
@@ -587,7 +591,7 @@ Ollama is reachable. The trigger-cascade runtime test alone takes
 | `tests/unit/test_pubmed_helpers.py` | 26 | Stateless PubMed helpers — entity_name, build_term, container_to_dict, 25-author cap |
 | `tests/unit/test_globus_search.py` | 19 | Globus client, MCP tool, synthesizer renderer, citation pattern |
 | `tests/unit/test_composer_prompt_correctness.py` | 7 | Pin substantive content of composer's system prompt |
-| `tests/unit/test_workspace_root_resolver.py` | 6 | Env var override > marker walk > parents[N] fallback |
+| `nanobrain/tests/unit/test_g40_workspace_root.py` | 16 | Env var override > marker walk > parents[N] fallback; pinned in nanobrain after the apecx-side wrapper retired 2026-05-16 |
 | `tests/unit/test_descendant_traversal.py` | 9 | Strict NCBITaxon hierarchy expansion |
 | `tests/integration/test_rag_e2e_workflow_yaml.py` | 7 | 5 static loadability + 1 imperative-drive + 1 trigger-cascade runtime |
 | `tests/integration/test_rag_e2e_pipeline.py` | 25 | E2E with real Ollama, real FAISS, real CSVs (gated; auto-skip) |
