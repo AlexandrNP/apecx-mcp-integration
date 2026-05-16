@@ -16,6 +16,7 @@ lazy-loaded on first ``search`` to keep import time cheap.
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +24,8 @@ from sentence_transformers import SentenceTransformer  # noqa: I001
 
 import faiss  # noqa: E402
 import numpy as np  # noqa: E402
+
+log = logging.getLogger(__name__)
 
 
 _DEFAULT_MODEL: str = "sentence-transformers/all-mpnet-base-v2"
@@ -60,8 +63,21 @@ class DomainRagIndex:
         hits = idx.search("SARS-CoV-2 vaccine", k=5)
 
     The model and FAISS index are lazy-loaded on the first
-    ``search`` call. If the index directory does not exist, a
-    ``FileNotFoundError`` is raised with the build command to run.
+    ``search`` call.
+
+    Graceful-degradation contract (G81, 2026-05-16)
+    -----------------------------------------------
+    If the index directory does not exist, ``search`` returns ``[]``
+    and emits one WARNING log line per process (subsequent disabled
+    calls go to DEBUG to avoid log flooding). This makes RAG **optional**
+    at runtime: pipelines that wire RAG branches keep running and the
+    operator sees a single loud "RAG disabled" notification rather than
+    a crash. ``is_available`` is the cheap stat-only probe operators
+    should check before deciding whether to skip RAG steps entirely.
+
+    To diagnose missing-index issues at install time use
+    ``apecx-setup rag`` (the opt-in builder) or read
+    ``data/README.md``.
     """
 
     def __init__(
@@ -77,18 +93,44 @@ class DomainRagIndex:
         self._model: SentenceTransformer | None = None
         self._faiss_index: faiss.Index | None = None
         self._metadata: list[dict[str, Any]] | None = None
+        # G81: track whether we've already loud-logged the "RAG
+        # disabled" notice so a workflow that calls search() in a
+        # tight loop doesn't spam WARNING lines. The first miss is
+        # WARNING; subsequent misses go to DEBUG.
+        self._disabled_warning_logged: bool = False
 
     @property
     def index_dir(self) -> Path:
         return self._index_dir
+
+    @property
+    def is_available(self) -> bool:
+        """Cheap stat-only probe: True iff both the FAISS binary and
+        metadata file are present on disk.
+
+        Does NOT load the index, the sentence-transformer model, or
+        validate the index's internal shape. Operators can call this
+        at workflow boot to decide whether to skip RAG steps wholesale.
+        """
+        return (self._index_dir / "faiss_index.bin").is_file() and (
+            self._index_dir / "metadata.json"
+        ).is_file()
 
     def search(self, query: str, k: int = 5) -> list[dict[str, Any]]:
         """Return up to ``k`` nearest chunks for ``query``.
 
         Each hit dict has keys: ``id``, ``text``, ``score``,
         ``source``, ``metadata``.
+
+        Returns ``[]`` when the index is unavailable (graceful
+        degradation per the class docstring). Raises only on real
+        runtime errors (corrupted FAISS file, model-load failure,
+        etc.) — never on a missing index.
         """
         if not query or not query.strip():
+            return []
+        if not self.is_available:
+            self._log_disabled_once()
             return []
         self._ensure_loaded()
         assert self._faiss_index is not None  # for type checker
@@ -128,15 +170,46 @@ class DomainRagIndex:
         faiss_path = self._index_dir / "faiss_index.bin"
         meta_path = self._index_dir / "metadata.json"
         if not faiss_path.is_file() or not meta_path.is_file():
+            # G81: search() pre-checks is_available, so reaching here
+            # means a race (index file deleted between is_available
+            # and _ensure_loaded) — surface it as a hard error so the
+            # operator sees the truth instead of silent empty results.
             raise FileNotFoundError(
                 f"Domain RAG index not found at {self._index_dir}. "
                 "Build it first with:\n"
+                "  apecx-setup rag\n"
+                "or directly:\n"
                 "  PYTHONPATH=src .venv/bin/python "
                 "scripts/build_domain_rag_index.py"
             )
 
         self._metadata = json.loads(meta_path.read_text(encoding="utf-8"))
         self._faiss_index = faiss.read_index(str(faiss_path))
+
+    def _log_disabled_once(self) -> None:
+        """Emit the loud first-time "RAG disabled" notification.
+
+        Idempotent per process — subsequent calls go to DEBUG so a
+        tight loop of search() calls doesn't spam the WARNING channel.
+        The message includes the build command so operators can
+        re-enable RAG with one copy-paste.
+        """
+        if self._disabled_warning_logged:
+            log.debug(
+                "DomainRagIndex.search called but index unavailable at %s; returning []",
+                self._index_dir,
+            )
+            return
+        self._disabled_warning_logged = True
+        log.warning(
+            "RAG DISABLED — domain RAG index not present at %s. "
+            "search() will return empty results until the index is built. "
+            "Build it with: `apecx-setup rag` (interactive) or "
+            "`PYTHONPATH=src .venv/bin/python scripts/build_domain_rag_index.py`. "
+            "Pipelines that wire RAG branches continue to run; downstream "
+            "synthesis steps will report empty RAG bundles in their logs.",
+            self._index_dir,
+        )
 
     def _load_model(self) -> SentenceTransformer:
         if self._model is None:

@@ -497,6 +497,50 @@ def _check_data_root_or_warn() -> None:
     log.warning("=" * 64)
 
 
+def _check_rag_index_or_warn() -> None:
+    """Log a loud banner when the domain RAG index is missing (G81).
+
+    The MCP server boots fine without RAG — synthesis pipelines that
+    wire ``DomainRagSearchStep`` or ``SynthesisContextAssemblyStep``
+    keep running because the leaf ``DomainRagIndex.search`` returns
+    ``[]`` with its own once-per-process warning. But operators who
+    install via ``uv tool install`` (bypassing ``apecx-setup``) have
+    no other signal that RAG is silently disabled until they read
+    their workflow run logs and notice the empty ``rag_chunks``
+    bundles. Surface the missing piece in the MCP server log so it's
+    visible in ``~/Library/Logs/Claude/mcp-server-apecx.log`` at boot.
+
+    Cheap: one stat call per file. Does NOT load FAISS or the
+    sentence-transformer model.
+    """
+    from apecx_integration.agents.domain_rag import DomainRagIndex
+
+    # Default index dir — same resolution as DomainRagIndex's no-arg
+    # constructor. We don't need to know which workflow YAML overrides
+    # this; the default location is what apecx-setup builds into.
+    idx = DomainRagIndex()
+    if idx.is_available:
+        log.info("MCP startup: domain RAG index detected at %s", idx.index_dir)
+        return
+
+    log.warning("=" * 64)
+    log.warning("RAG DISABLED — domain RAG index not present at %s", idx.index_dir)
+    log.warning("")
+    log.warning("Synthesis workflows that wire RAG branches will run, but the")
+    log.warning("RAG branch will return empty chunks for every query.")
+    log.warning("Pipelines do NOT crash — they degrade gracefully.")
+    log.warning("")
+    log.warning("To enable RAG:")
+    log.warning("  apecx-setup rag       # interactive builder (recommended)")
+    log.warning("or, directly:")
+    log.warning("  PYTHONPATH=src .venv/bin/python scripts/build_domain_rag_index.py")
+    log.warning("")
+    log.warning("RAG is OPTIONAL since 2026-05-16 (G81). All non-RAG workflow")
+    log.warning("paths are unaffected — DB queries, MCP tools, composer, HPC")
+    log.warning("execution, synonym dictionary, etc. all work without it.")
+    log.warning("=" * 64)
+
+
 def _ensure_synonym_dict_or_warn() -> None:
     """Build the synonym dictionary at startup if it isn't already there.
 
@@ -693,6 +737,7 @@ def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
+    _check_rag_index_or_warn()
     _ensure_synonym_dict_or_warn()
     server = build_server()
     server.run()

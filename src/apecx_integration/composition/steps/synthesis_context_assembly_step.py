@@ -226,20 +226,24 @@ class SynthesisContextAssemblyStep(BaseStep):
         idx_path = component_config.get("index_path")
         self._rag_index = DomainRagIndex(index_dir=Path(idx_path) if idx_path else None)
         # Boot-time existence check (one stat call; no FAISS or
-        # sentence-transformer load). A WARNING — not an error — so
-        # workflow boot still succeeds when the index hasn't been
-        # built yet; gather(return_exceptions=True) catches the actual
-        # FileNotFoundError at first search() and degrades to
-        # rag_chunks=[].
-        faiss_path = self._rag_index.index_dir / "faiss_index.bin"
-        if not faiss_path.is_file():
+        # sentence-transformer load). Per G81 (2026-05-16), the leaf
+        # ``DomainRagIndex.search`` returns ``[]`` gracefully when the
+        # index is missing — the RAG branch degrades to empty chunks
+        # without any exception being raised. The boot-time WARNING
+        # here surfaces the disabled state at workflow init (earlier
+        # than first query) so operators can re-enable RAG before
+        # queries arrive.
+        if not self._rag_index.is_available:
             log.warning(
-                "%s: domain RAG index not found at %s; "
-                "RAG branch will degrade to empty chunks at runtime. "
-                "Build the index with: PYTHONPATH=src .venv/bin/python "
-                "scripts/build_domain_rag_index.py",
+                "%s: domain RAG index not present at %s — "
+                "RAG branch will return empty chunks for every query. "
+                "RAG is DISABLED until you build the index with: "
+                "`apecx-setup rag` (recommended) or `PYTHONPATH=src "
+                ".venv/bin/python scripts/build_domain_rag_index.py`. "
+                "The other retrieval branches (VIOLIN/BV-BRC, PubMed) "
+                "continue normally; synthesis runs on those alone.",
                 self.name,
-                faiss_path,
+                self._rag_index.index_dir,
             )
         self._k_rag: int = int(component_config.get("k_rag", 5))
 

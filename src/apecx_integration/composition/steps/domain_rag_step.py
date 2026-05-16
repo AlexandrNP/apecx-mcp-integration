@@ -134,20 +134,24 @@ class DomainRagSearchStep(BaseStep):
         )
         # Path-existence check at boot. Cheap (one stat call) — does NOT
         # trigger the sentence-transformer model download or FAISS load,
-        # which both stay lazy until first search(). Logged as a
-        # WARNING so workflow boot still succeeds in environments that
-        # haven't built the index yet (the assembly step's
-        # gather(return_exceptions=True) catches the FileNotFoundError
-        # at first search and degrades to rag_chunks=[]).
-        faiss_path = self._index.index_dir / "faiss_index.bin"
-        if not faiss_path.is_file():
+        # which both stay lazy until first search(). Per G81 (2026-05-16)
+        # the leaf class ``DomainRagIndex.search`` now returns ``[]`` with
+        # a once-per-process WARNING when the index is missing, so the
+        # workflow keeps running and downstream synthesis just sees empty
+        # ``rag_chunks``. The boot-time warning here gives the operator
+        # an earlier signal (workflow init, not first query) so they can
+        # build the index before queries arrive.
+        if not self._index.is_available:
             log.warning(
-                "%s: domain RAG index not found at %s; "
-                "search() will raise FileNotFoundError on first call. "
-                "Build the index with: PYTHONPATH=src .venv/bin/python "
-                "scripts/build_domain_rag_index.py",
+                "%s: domain RAG index not present at %s — "
+                "this step will return {'rag_chunks': []} for every query. "
+                "RAG is DISABLED until you build the index with: "
+                "`apecx-setup rag` (recommended) or `PYTHONPATH=src "
+                ".venv/bin/python scripts/build_domain_rag_index.py`. "
+                "Pipelines that include this step continue to run; "
+                "downstream synthesis will see empty RAG bundles.",
                 self.name,
-                faiss_path,
+                self._index.index_dir,
             )
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:

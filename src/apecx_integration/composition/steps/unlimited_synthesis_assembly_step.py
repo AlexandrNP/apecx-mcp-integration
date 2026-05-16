@@ -139,6 +139,22 @@ class UnlimitedSynthesisAssemblyStep(BaseStep):
         # RAG index setup
         idx_path = component_config.get("index_path")
         self._rag_index = DomainRagIndex(index_dir=Path(idx_path) if idx_path else None)
+        # G81 (2026-05-16): boot-time RAG-disabled warning. The leaf
+        # DomainRagIndex.search now returns [] gracefully when the
+        # index is missing, so this step keeps running on the other
+        # branches (VIOLIN/BV-BRC, PubMed) and surfaces empty RAG
+        # chunks in its logs rather than crashing. The warning here
+        # gives operators an earlier signal at workflow init.
+        if not self._rag_index.is_available:
+            log.warning(
+                "%s: domain RAG index not present at %s — "
+                "RAG branch returns empty chunks for every query. "
+                "RAG is DISABLED until you build the index with: "
+                "`apecx-setup rag` (recommended) or `PYTHONPATH=src "
+                ".venv/bin/python scripts/build_domain_rag_index.py`.",
+                self.name,
+                self._rag_index.index_dir,
+            )
         self._k_rag: int = int(component_config.get("k_rag", 20))
 
         # PubMed config

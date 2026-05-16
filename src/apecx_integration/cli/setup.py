@@ -1,24 +1,34 @@
-"""apecx-setup orchestrator (2026-05-09).
+"""apecx-setup orchestrator (2026-05-09; RAG made opt-in 2026-05-16, G81).
 
 Single entry point for the entire APECx deployment recipe:
 
     pip install apecx-mcp-integration
-    apecx-setup           # runs ALL steps idempotently
-    apecx-setup data      # only download VIOLIN + BV-BRC data
-    apecx-setup infra     # only start Postgres + Redis containers
-    apecx-setup llm       # only check/pull the Ollama model
-    apecx-setup rag       # only build the FAISS RAG index
-    apecx-setup verify    # only run the post-setup verification
+    apecx-setup            # runs the default chain (no RAG)
+    apecx-setup --with-rag # default chain PLUS FAISS index build (~10 min)
+    apecx-setup data       # only download VIOLIN + BV-BRC data
+    apecx-setup infra      # only start Postgres + Redis containers
+    apecx-setup llm        # only check/pull the Ollama model
+    apecx-setup rag        # only build the FAISS RAG index (opt-in)
+    apecx-setup verify     # only run the post-setup verification
     apecx-setup --reconfigure-llm   # change LLM env vars in existing config
 
 Each subcommand is idempotent + safe to re-run. The default
-(``apecx-setup``) runs every step in dependency order:
-    1. ``data``  — download apecx-data tarball (VIOLIN, BV-BRC, FAISS seed)
-    2. ``infra`` — start Postgres + Redis containers if Docker is available
-    3. ``llm``   — install Ollama if missing (interactive); start daemon;
-                   pull the configured model
-    4. ``rag``   — build the FAISS RAG index if absent or older than data
-    5. ``verify`` — smoke-check every component reports healthy
+(``apecx-setup``) runs the following in dependency order:
+    1. ``data``   — download VIOLIN + BV-BRC tarball (Globus when
+                    configured; falls back to ``gh release download``)
+    2. ``infra``  — start Postgres + Redis containers if Docker is available
+    3. ``llm``    — install Ollama if missing (interactive); start daemon;
+                    pull the configured model
+    4. ``verify`` — smoke-check every component reports healthy
+
+The ``rag`` step (FAISS index build, 689 MB, ~10 min) is **opt-in**
+since G81 (2026-05-16). The 80%-case (DB queries, MCP tools,
+composer, HPC execution, synonym dictionary) runs without it; only
+synthesis workflows that wire the domain RAG branch need it.
+Pipelines that include RAG steps degrade gracefully when the index
+is missing — no crashes, just empty RAG bundles + a loud "RAG
+DISABLED" banner. Run ``apecx-setup rag`` or ``apecx-setup
+--with-rag`` when you specifically need it.
 
 Brutal-truth design notes:
 
@@ -796,7 +806,27 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
 }
 
 
-def _run_all(*, interactive: bool = True) -> int:
+def _run_all(*, interactive: bool = True, with_rag: bool = False) -> int:
+    """Run the canonical install chain.
+
+    Chain (G81 + G82, 2026-05-16):
+      1. data    — VIOLIN/BV-BRC CSVs (preferred path: Globus when
+                   configured; fallback: ``gh release download``)
+      2. infra   — Docker containers (Postgres, Redis, MinIO)
+      3. llm     — Ollama or remote LLM credentials
+      4. verify  — sanity checks across all installed components
+
+    The RAG (FAISS) step is **opt-in** as of G81: it's a ~10-minute
+    build of a 689 MB index that's only needed by synthesis workflows
+    that wire the domain RAG branch. Skipped from the default chain
+    so first-time installs are fast and operators see immediate
+    success for the 80%-case (DB queries, MCP tools, composer,
+    HPC execution, synonym dictionary — all run without RAG).
+
+    Pass ``with_rag=True`` (via ``apecx-setup --with-rag`` or run
+    ``apecx-setup rag`` separately) when you specifically need the
+    synthesis RAG branch.
+    """
     print("apecx-setup — orchestrated stack initializer")
     print()
 
@@ -804,7 +834,16 @@ def _run_all(*, interactive: bool = True) -> int:
     results.append(_step_data(interactive=interactive))
     results.append(_step_infra())
     results.append(_step_llm(interactive=interactive))
-    results.append(_step_rag())
+    if with_rag:
+        results.append(_step_rag())
+    else:
+        results.append(
+            StepResult(
+                "rag",
+                "skipped",
+                "opt-in — run `apecx-setup rag` or `apecx-setup --with-rag` to build the FAISS index (~10 min, 689 MB)",
+            )
+        )
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -837,6 +876,15 @@ def main(argv: list[str] | None = None) -> None:
         action="store_true",
         help="Skip prompts (for CI / automation). Data step skips when no existing data.",
     )
+    parser.add_argument(
+        "--with-rag",
+        action="store_true",
+        help=(
+            "Include the FAISS RAG index build in the default chain "
+            "(G81: opt-in since 2026-05-16; ~10 min build, 689 MB index). "
+            "Run this when you specifically need the synthesis RAG branch."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if args.reconfigure_llm:
@@ -844,7 +892,12 @@ def main(argv: list[str] | None = None) -> None:
         return
 
     if args.subcommand in (None, "all"):
-        sys.exit(_run_all(interactive=not args.non_interactive))
+        sys.exit(
+            _run_all(
+                interactive=not args.non_interactive,
+                with_rag=args.with_rag,
+            )
+        )
     elif args.subcommand == "data":
         result = _step_data(interactive=not args.non_interactive)
     else:
