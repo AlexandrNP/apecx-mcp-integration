@@ -133,62 +133,13 @@ def build_code_reflection_workflow(
     builder.add_trigger(step_name="code_write", trigger_type="data_updated")
     builder.add_trigger(step_name="code_review", trigger_type="data_updated")
 
-    # The lightweight builder emits each link entry in FLAT shape:
-    #   link_0: {class, source, target, auto_transfer}
-    # The framework's link loader (LinkBase.from_config) expects the
-    # NESTED shape used by hand-authored YAML:
-    #   link_0: {class, config: {source, target, auto_transfer, ...}}
-    # We rewrap here so the loaded Workflow gets functional links.
-    # When the framework's lightweight builder catches up to the
-    # nested shape this transform becomes a no-op (the same keys).
-    cfg = builder.get_config()
-    cfg["links"] = _rewrap_link_entries_nested(cfg.get("links") or {})
-    return Workflow.from_config(_materialize_config_as_yaml(cfg))
-
-
-def _rewrap_link_entries_nested(
-    links_flat: dict[str, dict[str, Any]],
-) -> dict[str, dict[str, Any]]:
-    """Convert flat-shape link entries to nested config-keyed shape."""
-    rewrapped: dict[str, dict[str, Any]] = {}
-    for name, entry in links_flat.items():
-        if not isinstance(entry, dict):
-            rewrapped[name] = entry
-            continue
-        if "config" in entry:
-            rewrapped[name] = entry
-            continue
-        cls = entry.get("class")
-        nested_config = {k: v for k, v in entry.items() if k not in ("class", "name")}
-        nested_config.setdefault("link_type", "direct")
-        rewrapped[name] = {"name": name, "class": cls, "config": nested_config}
-    return rewrapped
-
-
-def _materialize_config_as_yaml(cfg: dict[str, Any]) -> str:
-    """Write ``cfg`` to a temp YAML file; return the path string."""
-    import contextlib
-    import os
-    import tempfile
-
-    import yaml
-
-    fd, path = tempfile.mkstemp(suffix=".yml", prefix="apecx_lightweight_")
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as fh:
-            yaml.safe_dump(cfg, fh, sort_keys=False)
-    except Exception:
-        with contextlib.suppress(OSError):
-            os.unlink(path)
-        raise
-    # NOTE: the file persists on disk after this call returns. The
-    # caller (Workflow.from_config) reads it synchronously; the
-    # file's content is immutable thereafter, so leaving it for the
-    # OS to clean up in /tmp on reboot is fine — the alternative
-    # (delete after load) would race the Workflow's own re-resolve
-    # paths if the loader keeps the path for resolving relative
-    # references.
-    return path
+    # As of nanobrain 2026-05-15 the lightweight builder emits the
+    # nested-shape link entries the framework's LinkBase.from_config
+    # expects, so ``builder.load()`` is the one-line happy path. The
+    # earlier ``_rewrap_link_entries_nested`` + ``_materialize_config_as_yaml``
+    # workaround for friction-log #26 has been retired now that
+    # ``WorkflowBuilder.add_link`` is fixed at the source.
+    return builder.load()
 
 
 __all__ = ["build_code_reflection_workflow"]

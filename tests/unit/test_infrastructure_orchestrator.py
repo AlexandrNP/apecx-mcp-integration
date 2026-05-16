@@ -38,6 +38,7 @@ always be refused regardless of test environment.
 from __future__ import annotations
 
 import os
+import socket
 
 import pytest
 
@@ -68,6 +69,25 @@ from apecx_integration.infrastructure.probes import (
     redis_probe,
     rhea_mcp_probe,
 )
+
+
+def _port_open(host: str, port: int, timeout: float = 1.0) -> bool:
+    """Return True iff a TCP connection to ``host:port`` succeeds.
+
+    Used by the Rhea-MCP-live-probe test to skip cleanly when Rhea
+    isn't running (the test's prereq is a live host process the
+    orchestrator can spawn but typically isn't running during unit
+    test discovery). Mirrors the shape used by
+    tests/integration/test_prewarm_workflow_live.py.
+    """
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
+_RHEA_MCP_LIVE = _port_open("localhost", 3001)
 
 # ---------------------------------------------------------------------------
 # ProbeResult / BackendSpec contracts
@@ -308,6 +328,18 @@ async def test_ollama_probe_against_live_localhost():
     assert "model" in result.detail.lower()
 
 
+@pytest.mark.skipif(
+    not _RHEA_MCP_LIVE,
+    reason=(
+        "Rhea MCP not reachable on localhost:3001 — Rhea is a host "
+        "process (not a docker container), the orchestrator spawns it "
+        "on demand but it's typically NOT running during unit-test "
+        "discovery. Start it via `apecx-mcp` or the orchestrator's "
+        "background-thread starter, then re-run. Adding this skip "
+        "fixes friction-log #N where this test failed every CI run on "
+        "a machine without a live Rhea."
+    ),
+)
 @pytest.mark.asyncio
 async def test_rhea_mcp_probe_against_live_localhost():
     result = await rhea_mcp_probe(mcp_url="http://localhost:3001/mcp/")

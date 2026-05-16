@@ -109,11 +109,13 @@ def test_builder_workflow_cascades_to_same_report_shape():
     """Drive the WorkflowBuilder-built workflow + assert shape parity.
 
     Proves the two authoring paths (YAML and WorkflowBuilder) produce
-    functionally equivalent workflows. The cache-hit path also
-    validates that the rewrap-link-shapes workaround
-    (``_rewrap_link_entries_nested``) is correctly applied — without
-    it, the workflow would load but no DirectLink would fire, the
-    cascade would never drain, and this test would timeout.
+    functionally equivalent workflows. As of nanobrain 2026-05-15 the
+    builder emits the nested-shape link entries the framework's
+    LinkBase.from_config expects natively, so the cascade fires
+    without the prior ``_rewrap_link_entries_nested`` workaround
+    (friction-log #26). If a future framework regression re-breaks
+    builder-emitted links, this test will timeout-or-drain-empty and
+    fail loudly.
     """
     from apecx_integration.infrastructure.prewarm_workflow.builder import (
         build_prewarm_workflow_via_builder,

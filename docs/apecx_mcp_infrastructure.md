@@ -340,16 +340,18 @@ Both archives are non-empty and within ±5 % of the env's on-disk
 `du -sh /opt/anaconda3/envs/<name>` size, confirming no truncation.
 Logs preserved at `/tmp/apecx-prewarm-validation/multi_tool_await.log`.
 
-### 2.3 Pre-warm phase as a nanobrain workflow (2026-05-15, G56-G58)
+### 2.3 Pre-warm phase as a nanobrain workflow (2026-05-15, G56-G62)
 
-The pre-warm pipeline was refactored from an imperative Python driver
-(``infrastructure/rhea_prewarm.py::prewarm_workflow_catalog``) into a
-real nanobrain :class:`Workflow` at
+The pre-warm pipeline is a nanobrain :class:`Workflow` at
 ``src/apecx_integration/infrastructure/prewarm_workflow/configs/prewarm_workflow.yml``.
-The underlying helpers (cache probe, Postgres query, subprocess
-install) still live in ``rhea_prewarm.py`` — the workflow steps are
-thin nanobrain wrappers around them, so all behavior is preserved
-and the helpers' unit tests remain authoritative.
+The earlier imperative
+``infrastructure/rhea_prewarm.py::prewarm_workflow_catalog`` driver
+was RETIRED on 2026-05-15 (commit ``<see git log for G61>``). There is
+now ONE correct pre-warm path — the workflow. The underlying helpers
+(cache probe, Postgres query, subprocess install) still live in
+``rhea_prewarm.py`` as the per-tool primitives the workflow steps
+wrap; the helpers' unit tests remain authoritative for those
+primitives.
 
 #### Why a workflow instead of a function?
 
@@ -402,14 +404,19 @@ multiple tools at the 60-90 s install cost each.
   assembly via :class:`nanobrain.lightweight.WorkflowBuilder`. Same
   step classes + step config YAMLs; just rewired in Python.
 
-The builder path applies an inline ``_rewrap_link_entries_nested``
-workaround for the known WorkflowBuilder issue (friction-log #26)
-where the lightweight builder emits flat-shape link entries that
-the framework's link loader silently drops. A unit test
+As of nanobrain 2026-05-15 (the framework-side fix paired with this
+chain, G59) the lightweight ``WorkflowBuilder.add_link`` emits the
+nested-shape link entry the framework's ``LinkBase.from_config``
+expects, so the builder path is a one-liner ``builder.load()``.
+The earlier ``_rewrap_link_entries_nested`` apecx-side workaround
+(friction-log #26) was deleted in G60 — both call sites
+(``infrastructure/prewarm_workflow/builder.py`` and
+``composition/lightweight/code_reflection_lightweight.py``) now
+build the workflow directly. A unit test
 (``test_builder_variant_produces_equivalent_workflow``) cross-checks
-that the two paths produce semantically equivalent workflows
-(same step set, same link count, same IO DU names) — so they can't
-drift undetected.
+that the YAML and builder paths produce semantically equivalent
+workflows (same step set, same link count, same IO DU names) — so a
+future regression in either path fails fast and visibly.
 
 #### Tests
 

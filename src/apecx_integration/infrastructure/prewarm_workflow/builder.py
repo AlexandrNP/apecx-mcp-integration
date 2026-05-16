@@ -32,14 +32,9 @@ rather than silently substituting defaults.
 
 from __future__ import annotations
 
-import contextlib
-import os
-import tempfile
 from pathlib import Path
 from typing import Any
 
-import yaml
-from nanobrain.core.workflow import Workflow
 from nanobrain.lightweight.workflow_builder import WorkflowBuilder
 
 _CONFIGS_DIR = Path(__file__).resolve().parent / "configs"
@@ -124,55 +119,13 @@ def build_prewarm_workflow_via_builder():
     )
     builder.connect("aggregate_report.prewarm_report", "prewarm_report")
 
-    # WORKAROUND for friction-log #26: the lightweight builder emits
-    # each link entry in FLAT shape ({class, source, target,
-    # auto_transfer}), but the framework's LinkBase.from_config
-    # expects NESTED shape ({class, config: {source, target,
-    # auto_transfer, ...}}). Without this rewrap the workflow loads
-    # with 0 functional links — a silent-failure shape that lets the
-    # workflow LOAD but never EXECUTE the cascade. When the framework
-    # builder catches up to nested shape, _rewrap_link_entries_nested
-    # becomes a no-op.
-    cfg = builder.get_config()
-    cfg["links"] = _rewrap_link_entries_nested(cfg.get("links") or {})
-    return Workflow.from_config(_materialize_config_as_yaml(cfg))
-
-
-def _rewrap_link_entries_nested(
-    links_flat: dict[str, dict[str, Any]],
-) -> dict[str, dict[str, Any]]:
-    """Convert flat-shape link entries to nested config-keyed shape."""
-    rewrapped: dict[str, dict[str, Any]] = {}
-    for name, entry in links_flat.items():
-        if not isinstance(entry, dict):
-            rewrapped[name] = entry
-            continue
-        if "config" in entry:
-            rewrapped[name] = entry
-            continue
-        cls = entry.get("class")
-        nested_config = {k: v for k, v in entry.items() if k not in ("class", "name")}
-        nested_config.setdefault("link_type", "direct")
-        rewrapped[name] = {"name": name, "class": cls, "config": nested_config}
-    return rewrapped
-
-
-def _materialize_config_as_yaml(cfg: dict[str, Any]) -> str:
-    """Write ``cfg`` to a temp YAML and return the path string.
-
-    The file persists in /tmp until OS cleanup — the loader holds it
-    for relative-path resolution during the cascade init, so deleting
-    it eagerly would race the workflow's late re-reads.
-    """
-    fd, path = tempfile.mkstemp(suffix=".yml", prefix="apecx_prewarm_builder_")
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as fh:
-            yaml.safe_dump(cfg, fh, sort_keys=False)
-    except Exception:
-        with contextlib.suppress(OSError):
-            os.unlink(path)
-        raise
-    return path
+    # As of nanobrain 2026-05-15 the lightweight builder emits the
+    # nested-shape link entries the framework's LinkBase.from_config
+    # expects, so ``builder.load()`` is the one-line happy path. The
+    # earlier ``_rewrap_link_entries_nested`` + ``_materialize_config_as_yaml``
+    # workaround for friction-log #26 has been retired now that
+    # ``WorkflowBuilder.add_link`` is fixed at the source.
+    return builder.load()
 
 
 def builder_workflow_config() -> dict[str, Any]:

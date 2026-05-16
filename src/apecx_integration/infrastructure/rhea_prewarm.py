@@ -1,4 +1,25 @@
-"""Rhea tool-env pre-warm phase for the infrastructure orchestrator.
+"""Per-tool pre-warm helpers — the install + report-shape primitives.
+
+This module ships the low-level building blocks the pre-warm
+NANOBRAIN WORKFLOW (at
+``apecx_integration.infrastructure.prewarm_workflow``) is built from:
+
+* :class:`PrewarmReport`, :class:`ToolPrewarmResult` — the typed
+  shape the orchestrator's :meth:`InfraOrchestrator.status` surfaces
+  under ``rhea_tool_prewarm`` and lifts into ``actionable`` on
+  failures.
+* :func:`prewarm_tool` — single-tool installer (cache probe → fetch
+  requirements from rhea Postgres → spawn rhea-venv subprocess →
+  install_conda_env with await-pack). Called by
+  :class:`InstallToolsStep`.
+* :func:`_collect_tools_from_catalog`, :func:`_fetch_tool_requirements`
+  — catalog walker + Postgres JSONB unwrap. Called by
+  :class:`CollectToolsStep` and :func:`prewarm_tool` respectively.
+
+The imperative ``prewarm_workflow_catalog(...)`` driver this module
+used to ship was retired 2026-05-15 in favor of the nanobrain
+workflow — see ``infrastructure/prewarm_workflow/configs/prewarm_workflow.yml``
+for the single correct entry point.
 
 Why this is its own module + a separate orchestrator phase
 ----------------------------------------------------------
@@ -387,57 +408,8 @@ async def prewarm_tool(
     )
 
 
-async def prewarm_workflow_catalog(
-    catalog: Any,
-    *,
-    database_url: str,
-    redis_host: str = "localhost",
-    redis_port: int = 6379,
-) -> PrewarmReport:
-    """Pre-warm every tool the catalog's workflows declare they need.
-
-    Walks ``catalog.workflows``, collects the dedupe-set of
-    ``prewarm_rhea_tools`` entries, and pre-installs each. Returns a
-    :class:`PrewarmReport` that the orchestrator's status tool
-    surfaces. Pre-warming is intentionally serial (not parallel)
-    because conda's caches don't tolerate concurrent installs in the
-    same prefix.
-    """
-    report = PrewarmReport(started_at=time.time())
-    tool_names = _collect_tools_from_catalog(catalog)
-    if not tool_names:
-        report.completed_at = time.time()
-        return report
-    log.info("rhea_prewarm: pre-warming tool conda envs: %s", tool_names)
-    for tool in tool_names:
-        result = await prewarm_tool(
-            tool,
-            database_url=database_url,
-            redis_host=redis_host,
-            redis_port=redis_port,
-        )
-        report.tools.append(result)
-        if result.state == "failed":
-            log.error(
-                "rhea_prewarm: tool %r FAILED to pre-warm in %.1fs: %s",
-                tool,
-                result.latency_seconds,
-                result.detail,
-            )
-        else:
-            log.info(
-                "rhea_prewarm: tool %r %s in %.1fs",
-                tool,
-                result.state,
-                result.latency_seconds,
-            )
-    report.completed_at = time.time()
-    return report
-
-
 __all__ = [
     "PrewarmReport",
     "ToolPrewarmResult",
     "prewarm_tool",
-    "prewarm_workflow_catalog",
 ]

@@ -21,9 +21,10 @@ nanobrain :class:`Workflow` whose three steps are wired by
 
 Why a workflow and not a function call
 --------------------------------------
-The old ``prewarm_workflow_catalog(...)`` function works correctly,
-but it's an imperative driver outside the nanobrain framework. The
-workflow form:
+This module REPLACED the imperative ``prewarm_workflow_catalog(...)``
+driver in :mod:`apecx_integration.infrastructure.rhea_prewarm` —
+that function was retired 2026-05-15 (single correct pre-warm path).
+The workflow form:
 
 * makes the pipeline visible in nanobrain's DAG (operators can see the
   three stages as named, configurable steps);
