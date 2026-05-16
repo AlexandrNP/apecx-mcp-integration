@@ -45,7 +45,6 @@ import asyncio
 import atexit
 import logging
 import os
-import shutil
 import subprocess
 import sys
 import time
@@ -258,15 +257,32 @@ def _autostart_backend(base_url: str) -> subprocess.Popen[bytes] | None:
         )
         return None
 
-    # Find the apecx-cp entry point. When this module is installed
-    # editable into a venv, the binary lives next to ``apecx-mcp`` in
-    # the same bin dir. ``shutil.which`` finds it on PATH (which
-    # FastMCP's spawned context inherits).
-    cp_binary = shutil.which("apecx-cp")
-    if cp_binary is None:
-        # Fall back to the same Python interpreter + module form. This
-        # works when the venv's bin dir isn't on PATH (rare for
-        # editable installs but happens with isolated launch contexts).
+    # Resolve ``apecx-cp`` relative to THIS process's interpreter
+    # before falling back to anything else. Using ``shutil.which`` as
+    # the first choice was a real cross-environment bug
+    # (2026-05-15 clean-install verification): a user with a stale
+    # `~/.local/bin/apecx-cp` from an older `pipx install` had that
+    # one resolved first by PATH, so the autostarted Control Plane
+    # would run an older version that mismatched the freshly-
+    # installed apecx-mcp's API expectations — silent shape drift.
+    #
+    # ``sys.executable`` is the Python actually running THIS module;
+    # its sibling ``bin/apecx-cp`` is the binary that ships with
+    # the same package install. That's the "use my own venv's
+    # binary, not whatever's on PATH" rule.
+    venv_bin = Path(sys.executable).parent
+    venv_cp = venv_bin / "apecx-cp"
+    if venv_cp.is_file() and os.access(venv_cp, os.X_OK):
+        cp_binary = str(venv_cp)
+        cp_args = ["serve", "--host", host, "--port", str(port)]
+    else:
+        # The venv binary is missing (e.g., the user installed via
+        # ``pip install --no-scripts`` or set ``console_scripts``
+        # off in a custom setup). Fall back to the same Python
+        # interpreter + module form — same package, same code path,
+        # just no shim script. ``shutil.which`` is INTENTIONALLY
+        # NOT consulted: a stale PATH apecx-cp would defeat the
+        # whole point of this fix.
         cp_binary = sys.executable
         cp_args = [
             "-m",
@@ -277,8 +293,6 @@ def _autostart_backend(base_url: str) -> subprocess.Popen[bytes] | None:
             "--port",
             str(port),
         ]
-    else:
-        cp_args = ["serve", "--host", host, "--port", str(port)]
 
     import tempfile
 
@@ -559,7 +573,123 @@ def _ensure_synonym_dict_or_warn() -> None:
 _check_synonym_dict_or_warn = _ensure_synonym_dict_or_warn
 
 
-def main() -> None:
+_HELP_EPILOG = """\
+Environment variables (honored at startup):
+
+  APECX_CONTROL_PLANE_URL      Override the Control Plane base URL.
+                               Default: http://localhost:8000
+
+  APECX_MCP_SKIP_HEALTHCHECK   When set to "1", skip the Control
+                               Plane reachability check at startup.
+
+  APECX_MCP_AUTOSTART_BACKEND  When "0", do NOT auto-spawn the
+                               Control Plane backend if it isn't
+                               already reachable. Default: 1 (auto).
+
+  APECX_MCP_AUTOSTART_INFRA    When "0", run the infra orchestrator
+                               in probe-only mode (no container or
+                               Rhea-MCP autostart). Default: 1.
+
+  APECX_DATA_ROOT              Path to the VIOLIN/BV-BRC data dir
+                               (enables the direct DB lookup tools).
+
+  APECX_SYNONYM_DICT_PATH      Override the synonym dictionary SQLite
+                               path. Default is the one apecx-setup
+                               provisions.
+
+  APECX_MCP_WORKFLOW_CATALOG   Override the packaged catalog of MCP-
+                               exposed workflows. Path to YAML.
+
+  RHEA_MCP_URL                 Where the Rhea MCP probe connects.
+                               Default: http://localhost:3001/mcp/
+
+  RHEA_REPO_PATH, RHEA_PYTHON_PATH, RHEA_CONDA_BIN, RHEA_CONDA_ENVS_DIR
+                               Required (and orchestrator-set) for
+                               Rhea autostart + tool conda env unpack.
+
+  See docs/apecx_mcp_infrastructure.md §3 for the full table.
+"""
+
+
+def _resolve_package_version() -> str:
+    """Return the installed package version, or 'unknown' if unresolvable.
+
+    Uses ``importlib.metadata`` so the version reflects what `pip`
+    actually installed — not a hardcoded string that could drift from
+    the wheel's recorded version.
+    """
+    try:
+        from importlib.metadata import version
+
+        return version("apecx-integration")
+    except Exception:  # noqa: BLE001
+        # importlib.metadata may raise PackageNotFoundError when the
+        # package isn't pip-installed by name (development from-source
+        # via PYTHONPATH only). 'unknown' is honest — better than
+        # fabricating a version.
+        return "unknown"
+
+
+def _build_arg_parser():
+    """Argparse for ``apecx-mcp``.
+
+    Why argparse (not click): the binary is invoked by Claude Desktop
+    over stdio with NO arguments — argparse's zero-arg path is the
+    same hot path as click's, and argparse is stdlib (no extra runtime
+    dep). The flag surface is minimal on purpose: this binary IS the
+    MCP server entry, configuration is env-var-driven (operator
+    workflow uses ``.env`` / docker-compose / Claude Desktop's MCP
+    server config), and the only useful flags are ``--help`` (this
+    function exists for) and ``--version`` (so operators can see what
+    they have installed).
+    """
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        prog="apecx-mcp",
+        description=(
+            "APECX MCP server (stdio transport). Boots the FastMCP "
+            "tool surface (24 tools across workflows / discovery / "
+            "database / canonical entity / synthesis / approvals / "
+            "HPC), runs the Control Plane health check (auto-spawning "
+            "the backend if needed), boots the infra orchestrator, "
+            "and lazy-builds the synonym dictionary on first run. "
+            "Configuration is env-var-driven; see the epilog."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=_HELP_EPILOG,
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"apecx-mcp (apecx-integration {_resolve_package_version()})",
+        help="print the apecx-integration package version and exit",
+    )
+    return parser
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Entry point for the ``apecx-mcp`` console script.
+
+    Behavior:
+
+    * ``apecx-mcp --help`` prints usage + env-var table and exits 0.
+    * ``apecx-mcp --version`` prints the installed package version and
+      exits 0.
+    * ``apecx-mcp`` (no args) runs the server: Control Plane health-
+      check (auto-spawn backend if needed), data-root warn, synonym-
+      dict bootstrap, then ``server.run()`` over stdio.
+
+    Args:
+        argv: Command-line argument list, defaulting to ``sys.argv[1:]``.
+            Tests pass ``[]`` for the default-args case or
+            ``["--help"]`` / ``["--version"]`` to exercise the flag
+            paths. The console-script entry point leaves ``argv=None``
+            so argparse reads ``sys.argv``.
+    """
+    parser = _build_arg_parser()
+    parser.parse_args(argv)  # exits on --help / --version
+
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
