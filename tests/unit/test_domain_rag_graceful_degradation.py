@@ -33,6 +33,33 @@ from pathlib import Path
 
 import pytest
 
+# The whole file tests ``DomainRagIndex`` and its consumers, all of
+# which transitively import ``sentence_transformers`` + ``faiss`` at
+# module load time. CI installs the package without the optional RAG
+# extras, so these deps are absent there. Skip the entire file via
+# the standard pytest gate when they're missing — same pattern as
+# tests/unit/test_globus_setup_cli.py uses for ``keyring``.
+#
+# Operators on the RAG path install with ``pip install -e .[rag]`` or
+# similar; their workspace has both deps and these tests run normally.
+pytest.importorskip(
+    "sentence_transformers",
+    reason=(
+        "sentence_transformers not installed — the domain RAG path "
+        "requires it. Install with `pip install sentence-transformers` "
+        "or `pip install -e apecx-integration[rag]` (when the [rag] "
+        "extra exists)."
+    ),
+)
+pytest.importorskip(
+    "faiss",
+    reason=(
+        "faiss not installed — the domain RAG path requires it. "
+        "Install with `pip install faiss-cpu` (or faiss-gpu on systems "
+        "with CUDA)."
+    ),
+)
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
