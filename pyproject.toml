@@ -100,7 +100,15 @@ hpc = [
 # Pinned to >=0.4 because the canonical
 # ``Manager.from_exchange_factory`` entry point lives there.
 academy = [
-    "academy-py>=0.4",
+    # academy-py 0.4 unified RemoteHandle + UnboundRemoteHandle into
+    # a single Handle class. apecx-side code uses ``academy.agent``
+    # (stable across versions); the rhea fork + nanobrain library
+    # use the unified Handle. Pinned `<0.5` because academy-py breaks
+    # APIs at minor bumps (0.2→0.3 dropped RemoteHandle, 0.3→0.4
+    # introduced the unified ``exchange=`` kwarg). Matches nanobrain
+    # + rhea pins so the whole apecx-cowork stack resolves to the
+    # same academy-py version.
+    "academy-py>=0.4,<0.5",
 ]
 
 [project.scripts]
