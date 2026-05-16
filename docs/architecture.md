@@ -478,9 +478,9 @@ This is the **strict hierarchy contract** (user directive 2026-05-05).
 
 | Asset | Where | Builder | Resolution order |
 |---|---|---|---|
-| Domain RAG FAISS index | `<workspace>/data/apecx_domain_rag/{faiss_index.bin, metadata.json}` | `scripts/build_domain_rag_index.py` | YAML override → workspace default |
-| Domain DB CSVs | `<workspace>/data/violin/Pathogen_Information.csv` etc. | `apecx-setup` (downloads from private repo) | YAML → APECX_DB_DATA_DIR → APECX_WORKSPACE_ROOT |
-| Genomics DB TSV | `<workspace>/data/bvbrc_cache/` (organism genomes TSV) | bundled with `apecx-setup` | YAML → APECX_WORKSPACE_ROOT |
+| Domain RAG FAISS index (OPT-IN since G81 2026-05-16) | `<workspace>/data/apecx_domain_rag/{faiss_index.bin, metadata.json}` | `apecx-setup rag` (interactive) or `scripts/build_domain_rag_index.py` (direct); NOT in default install chain — see `FAISS_SETUP_INSTRUCTIONS.md` | YAML override → workspace default. When missing: `DomainRagIndex.search` returns `[]` + one WARNING/proc; synthesis branch degrades to empty chunks (no crash). |
+| Domain DB CSVs (VIOLIN + BV-BRC) | `<workspace>/data/violin/Pathogen_Information.csv` etc. | `apecx-setup data` — Globus-first since G82 2026-05-16 (preferred when `APECX_GLOBUS_SOURCE_ENDPOINT_ID` + creds set), falls back to `gh release download` from `AlexandrNP/apecx-data` | YAML → APECX_DB_DATA_DIR → APECX_WORKSPACE_ROOT. See `docs/globus_data_transfer.md`. |
+| Genomics DB TSV | `<workspace>/data/bvbrc_cache/` (organism genomes TSV) | bundled with `apecx-setup data` | YAML → APECX_WORKSPACE_ROOT |
 | Synonym dictionary | `APECX_SYNONYM_DICT_PATH` (defaults to `~/.apecx/dictionary/dictionary.sqlite`) | `dictionary_build_workflow` (lazy at apecx-mcp startup; `APECX_SKIP_DICT_BUILD=1` to opt out) | env var only; missing → fast path disabled |
 
 `<workspace>` resolves via `nanobrain.library.runtime.workspace_root.locate_workflow_root`

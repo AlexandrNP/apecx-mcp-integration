@@ -118,6 +118,8 @@ Session friction log #13.
 
 ## RAG index build
 
+### Composer RAG index (small, optional but recommended)
+
 ```bash
 PYTHONPATH=../nanobrain:src .venv/bin/python \
   scripts/build_rag_index.py \
@@ -126,6 +128,49 @@ PYTHONPATH=../nanobrain:src .venv/bin/python \
 Output: `<config_dir>/rag_index/{faiss.bin,metadata.json}`. Without
 built index, composer falls back to Phase-2 linear-scan
 ComponentCatalog.
+
+### Domain RAG index (large, OPT-IN since G81 2026-05-16)
+
+For synthesis workflows that wire the domain RAG branch
+(`SynthesisContextAssemblyStep`, `UnlimitedSynthesisAssemblyStep`,
+`DomainRagSearchStep`):
+
+```bash
+apecx-setup rag         # interactive, ~10 minutes; or
+apecx-setup --with-rag  # include in the full install chain
+```
+
+Output: `data/apecx_domain_rag/{faiss_index.bin,metadata.json}`.
+When missing, `DomainRagIndex.search` returns `[]` with a single
+loud WARNING per process; the synthesis branch degrades to empty
+chunks without crashing. The MCP server prints a `RAG DISABLED`
+banner at startup. See `docs/architecture.md` + `FAISS_SETUP_INSTRUCTIONS.md`.
+
+## Globus-first data transfer (G82, 2026-05-16)
+
+`apecx-setup data` prefers Globus over `gh release download` when
+the operator has credentials configured. Falls back transparently
+when Globus is unconfigured — zero extra friction for operators
+who never set it up.
+
+```bash
+# One-time credential store:
+apecx-globus-setup store --client-id <id> --client-secret <secret>
+
+# Per-shell env vars (see .env.example):
+export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<source-uuid>
+export APECX_GLOBUS_DEST_ENDPOINT_ID=<your-personal-uuid>
+
+# Globus-preferred install:
+apecx-setup
+
+# Force the legacy gh-release path:
+apecx-setup --prefer-gh-release
+```
+
+The transfer primitive is nanobrain's `GlobusTransferStep`; the
+apecx-side wrapper YAML is `configs/globus_transfers/violin_bvbrc_transfer_step.yml`.
+Full operator guide: `docs/globus_data_transfer.md`.
 
 ## PBS bundle export
 
