@@ -27,6 +27,21 @@ from __future__ import annotations
 
 import pytest
 
+# The whole file tests apecx-globus-setup's keyring-touching subcommands
+# via real keyring API (an in-memory test backend, not a mock). Without
+# the ``keyring`` package installed there is no useful test surface —
+# skip the whole file via the standard pytest gate. ``keyring`` is in
+# apecx-integration's ``hpc`` extra; users not on the Globus path don't
+# install it. Same pattern as nanobrain's test_globus_credentials.py.
+pytest.importorskip(
+    "keyring",
+    reason=(
+        "keyring not installed — apecx-globus-setup requires it. "
+        "Install with `pip install keyring` or `pip install -e "
+        "apecx-integration[hpc]` which bundles it."
+    ),
+)
+
 from apecx_integration.cli.globus_setup import _build_parser, main
 
 
