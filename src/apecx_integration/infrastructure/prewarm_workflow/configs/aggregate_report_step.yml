@@ -1,0 +1,30 @@
+# aggregate_report_step — final stage of the pre-warm workflow.
+#
+# Pure data transformation: list[ToolPrewarmResult] → PrewarmReport.
+# Stamps started_at + completed_at and emits the dataclass instance
+# on prewarm_report. The orchestrator's status() reads .snapshot()
+# and iterates .tools to lift failures into actionable.
+
+# No top-level ``class:`` — injected by the workflow YAML's steps: block.
+name: aggregate_report
+description: >
+  Builds the final PrewarmReport dataclass from the per-tool result
+  list emitted by InstallToolsStep.
+
+input_data_units:
+  install_tools_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: install_tools_output
+    description: "{results: list[ToolPrewarmResult]}"
+    persistent: false
+
+output_data_units:
+  prewarm_report:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: prewarm_report
+    description: "PrewarmReport dataclass instance (snapshot-able)."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "install_tools_output"

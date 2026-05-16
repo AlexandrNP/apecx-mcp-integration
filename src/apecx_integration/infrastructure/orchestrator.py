@@ -649,21 +649,44 @@ class InfraOrchestrator:
         """Pre-install every Rhea tool conda env declared by the catalog.
 
         Runs AFTER ``start_all()`` so Rhea is already up + reachable.
-        Uses the bundled workflow catalog (or
-        ``$APECX_MCP_WORKFLOW_CATALOG``) — pre-warm is a workflow-side
-        concern, not a backend-side one. Result is stashed in
-        ``self._prewarm_report`` and surfaced by ``status()``.
+        Drives the nanobrain pre-warm workflow at
+        ``infrastructure/prewarm_workflow/configs/prewarm_workflow.yml``:
+        three steps wired by DirectLinks
+        (collect_tools → install_tools → aggregate_report) emitting a
+        :class:`PrewarmReport` on the workflow's output DU. Result is
+        stashed in ``self._prewarm_report`` and surfaced by
+        ``status()``.
 
-        Safe to call when the catalog declares no pre-warm tools — it
-        records an empty report and returns immediately. Idempotent
+        Safe to call when the catalog declares no pre-warm tools — the
+        workflow emits an empty PrewarmReport in that case. Idempotent
         within a process (Redis cache hit on second call → reused).
+
+        Why a workflow instead of the older imperative driver:
+
+        * The pipeline (catalog walk → per-tool install → aggregate
+          report) is now visible as a nanobrain DAG, not buried inside
+          a single Python function. Operators reading
+          ``prewarm_workflow.yml`` see the three stages by name.
+        * Future extensions (parallel install via ``ParallelStep``,
+          retries via ``LoopController``, per-tool gating via
+          ``ConditionalLink``) are expressible with first-class
+          nanobrain primitives without touching this driver.
+        * The orchestrator now drives pre-warm the same way it drives
+          every other apecx workflow — ``Workflow.from_config(...)`` +
+          ``process()`` + ``wait_for_cascade()``. One pattern, one
+          mental model.
+
+        The pipeline's actual install/Postgres/Redis logic still lives
+        in :mod:`rhea_prewarm` — the workflow steps are thin nanobrain
+        wrappers around those helpers, so the per-tool semantics + the
+        unit tests for the helpers remain authoritative.
         """
         # Lazy imports so the orchestrator without prewarm doesn't pull
-        # rhea or the workflow_registry into the import graph.
-        from apecx_integration.infrastructure.rhea_prewarm import (
-            prewarm_workflow_catalog,
-        )
-        from apecx_integration.mcp_surface.workflow_registry import load_catalog
+        # nanobrain.core.workflow + the prewarm step classes into the
+        # import graph until the pipeline actually runs.
+        from pathlib import Path
+
+        from nanobrain.core.workflow import Workflow
 
         # Resolve the database_url from the postgres backend spec so
         # the pre-warm uses the orchestrator's view of the world (no
@@ -687,19 +710,66 @@ class InfraOrchestrator:
             return
         redis_host_port = redis_runtime.spec.container.ports[0][0]
 
+        # The catalog path can come from the env var override (operator
+        # custom catalog) OR fall back to the packaged default — but
+        # we DON'T pre-load the catalog here. CollectToolsStep does
+        # that, keeping the load-and-walk logic inside the workflow.
+        catalog_path = os.environ.get("APECX_MCP_WORKFLOW_CATALOG")
+        prewarm_request = {
+            "catalog_path": catalog_path,
+            "database_url": database_url,
+            "redis_host": "localhost",
+            "redis_port": redis_host_port,
+            "rhea_python": os.environ.get("RHEA_PYTHON_PATH"),
+        }
+
+        workflow_yaml = (
+            Path(__file__).resolve().parent
+            / "prewarm_workflow"
+            / "configs"
+            / "prewarm_workflow.yml"
+        )
         try:
-            catalog_path = os.environ.get("APECX_MCP_WORKFLOW_CATALOG")
-            catalog = load_catalog(catalog_path)
+            workflow = Workflow.from_config(str(workflow_yaml))
         except Exception as exc:  # noqa: BLE001
-            log.error("rhea_prewarm: could not load catalog: %s", exc)
+            log.error(
+                "rhea_prewarm: could not load workflow YAML at %s: %s",
+                workflow_yaml,
+                exc,
+            )
             return
 
-        report = await prewarm_workflow_catalog(
-            catalog,
-            database_url=database_url,
-            redis_host="localhost",
-            redis_port=redis_host_port,
-        )
+        # Phase 3 — resolve + bind step triggers. Without an explicit
+        # initialize() the trigger graph is half-wired and the cascade
+        # never fires (workspace-known pattern; see rag_e2e workflow-
+        # yaml test for the same dance).
+        await workflow.initialize()
+        await workflow.process({"prewarm_request": prewarm_request})
+
+        # Per-tool install can be 30-90s each; serial walk + room for
+        # the cascade-drain settle puts us in the ~30 minute envelope
+        # for a worst-case catalog. The install_tools step's own
+        # execution_timeout (1800s) bounds any single hung install.
+        drained = await workflow.wait_for_cascade(timeout=1800.0, settle_ms=300)
+        if not drained:
+            log.error(
+                "rhea_prewarm: workflow cascade did not drain within 1800s — "
+                "either a step hung or a DirectLink failed to transfer. "
+                "Check the per-step trigger state."
+            )
+            return
+
+        report_du = workflow.output_data_units.get("prewarm_report")
+        report = await report_du.get() if report_du is not None else None
+        if report is None:
+            log.error(
+                "rhea_prewarm: workflow drained but prewarm_report DU is "
+                "empty — likely the aggregate_report step did not run, or "
+                "its return key did not match the declared output_data_unit "
+                "name 'prewarm_report'."
+            )
+            return
+
         with self._lock:
             self._prewarm_report = report
 

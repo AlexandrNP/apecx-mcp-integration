@@ -340,6 +340,101 @@ Both archives are non-empty and within ±5 % of the env's on-disk
 `du -sh /opt/anaconda3/envs/<name>` size, confirming no truncation.
 Logs preserved at `/tmp/apecx-prewarm-validation/multi_tool_await.log`.
 
+### 2.3 Pre-warm phase as a nanobrain workflow (2026-05-15, G56-G58)
+
+The pre-warm pipeline was refactored from an imperative Python driver
+(``infrastructure/rhea_prewarm.py::prewarm_workflow_catalog``) into a
+real nanobrain :class:`Workflow` at
+``src/apecx_integration/infrastructure/prewarm_workflow/configs/prewarm_workflow.yml``.
+The underlying helpers (cache probe, Postgres query, subprocess
+install) still live in ``rhea_prewarm.py`` — the workflow steps are
+thin nanobrain wrappers around them, so all behavior is preserved
+and the helpers' unit tests remain authoritative.
+
+#### Why a workflow instead of a function?
+
+* **Visibility.** Operators reading the workflow YAML see the three
+  stages (collect_tools → install_tools → aggregate_report) by name;
+  the topology + the per-step trigger + data unit ownership is in one
+  reviewable artifact.
+* **Extensibility.** Future improvements (parallel install via
+  ``ParallelStep``, retries via ``LoopController``, per-tool gating
+  via ``ConditionalLink``) are now expressible with first-class
+  nanobrain primitives. The old imperative driver would need ad-hoc
+  Python branches for each.
+* **One pattern, one mental model.** The orchestrator drives pre-warm
+  the same way it drives every other apecx workflow —
+  ``Workflow.from_config(...)`` + ``process()`` +
+  ``wait_for_cascade()``. No special-case Python in
+  ``InfraOrchestrator``.
+
+#### Topology
+
+```
+prewarm_request (workflow input)
+        │ DirectLink (auto_transfer=true)
+        ▼
+collect_tools          (CollectToolsStep)        — walks catalog, dedupes tool_names
+        │ collect_tools_output: {tool_names, install_config}
+        ▼
+install_tools          (InstallToolsStep)        — serial walk; calls prewarm_tool() per tool
+        │ install_tools_output: {results: list[ToolPrewarmResult]}
+        ▼
+aggregate_report       (AggregateReportStep)     — builds PrewarmReport (started_at, completed_at, all_ready)
+        │ prewarm_report: PrewarmReport
+        ▼
+prewarm_report (workflow output)
+```
+
+Three steps, four DirectLinks (all ``auto_transfer: true`` against
+the dominant silent-failure shape). Each step owns its own
+input/output DUs + DataUnitChangeTrigger; the workflow owns only the
+entry/exit DUs and the four links. Per-step ``execution_timeout`` on
+``install_tools`` is bumped to 1800 s to accommodate catalogs with
+multiple tools at the 60-90 s install cost each.
+
+#### Two authoring paths, one workflow
+
+* **YAML** — ``Workflow.from_config(prewarm_workflow.yml)`` —
+  canonical, reviewable, version-controlled.
+* **WorkflowBuilder** — ``build_prewarm_workflow_via_builder()`` in
+  ``infrastructure/prewarm_workflow/builder.py`` — programmatic
+  assembly via :class:`nanobrain.lightweight.WorkflowBuilder`. Same
+  step classes + step config YAMLs; just rewired in Python.
+
+The builder path applies an inline ``_rewrap_link_entries_nested``
+workaround for the known WorkflowBuilder issue (friction-log #26)
+where the lightweight builder emits flat-shape link entries that
+the framework's link loader silently drops. A unit test
+(``test_builder_variant_produces_equivalent_workflow``) cross-checks
+that the two paths produce semantically equivalent workflows
+(same step set, same link count, same IO DU names) — so they can't
+drift undetected.
+
+#### Tests
+
+| Layer | File | Count | Validates |
+|---|---|---|---|
+| Unit (loadability + step contracts) | ``tests/unit/test_prewarm_workflow.py`` | 10 | YAML loads through ``Workflow.from_config``; per-step ``process()`` FAIL-FASTs at shape boundaries with actionable errors; AggregateReportStep correctly aggregates ``all_ready``; builder + YAML produce equivalent workflows; ``auto_transfer: true`` on every parsed link |
+| Integration (live cascade) | ``tests/integration/test_prewarm_workflow_live.py`` | 3 | YAML workflow drains end-to-end against live Postgres+Redis; builder workflow drains the same way (proves the rewrap workaround works); orchestrator's ``prewarm_workflow_tools`` stashes the report under ``self._prewarm_report`` and ``status()`` surfaces it correctly |
+| Unit (helper module, unchanged) | ``tests/unit/test_rhea_prewarm.py`` | 9 | The underlying helpers (``_fetch_tool_requirements`` JSONB unwrap, ``_collect_tools_from_catalog`` dedupe, ``PrewarmReport.all_ready`` predicate, ``Pydantic extra='forbid'`` on the catalog field) still pass — confirms the refactor preserved their contract |
+
+#### Validation outcome (2026-05-15)
+
+* All 10 prewarm-workflow unit tests pass in 0.70 s.
+* All 3 prewarm-workflow integration tests pass in 2.52 s (cache-hit
+  path; each test is sub-second since the muscle env was already in
+  the Redis cache from prior turns).
+* Broader regression check: 68 / 69 related tests pass (the 1
+  failure is the pre-existing
+  ``test_rhea_mcp_probe_against_live_localhost``, an env-state test
+  that requires Rhea MCP on :3001 to be running; unrelated to this
+  refactor).
+* Smoke probe of the orchestrator's ``prewarm_workflow_tools()``
+  against live infra:
+  ``drained=True, wall_seconds=1.74, all_ready=true``; muscle hit
+  the Redis cache in 6.6 ms.
+
 ## 3. Environment variables
 
 | Variable                    | Default                          | Effect                                                                                                                                                                  |

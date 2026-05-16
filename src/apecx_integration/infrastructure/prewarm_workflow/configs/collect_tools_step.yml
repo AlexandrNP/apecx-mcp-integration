@@ -1,0 +1,35 @@
+# collect_tools_step — first stage of the pre-warm workflow.
+#
+# Reads the workflow catalog, walks every entry's prewarm_rhea_tools
+# list, and emits a deduplicated, order-preserved list of tool names
+# plus a pass-through install config (database_url, redis_host,
+# redis_port, rhea_python). The trigger fires when the upstream
+# prewarm_request data unit changes.
+
+# No top-level ``class:`` field — it's injected by the workflow YAML's
+# ``steps:`` block, and ``CollectToolsStepConfig`` sets ``extra='forbid'``
+# so adding it here would raise a validation error at load time.
+name: collect_tools
+description: >
+  Catalog walker that emits the deduped Rhea tool-name list plus the
+  install-config pass-through bundle for InstallToolsStep.
+
+input_data_units:
+  prewarm_request:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: prewarm_request
+    description: "Bundled pre-warm request dict from the orchestrator."
+    persistent: false
+
+output_data_units:
+  collect_tools_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: collect_tools_output
+    description: >
+      {tool_names: list[str], install_config: {database_url, redis_host,
+      redis_port, rhea_python}}
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "prewarm_request"

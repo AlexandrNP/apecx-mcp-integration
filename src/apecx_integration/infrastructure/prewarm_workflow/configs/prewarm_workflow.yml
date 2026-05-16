@@ -1,0 +1,128 @@
+# prewarm_workflow — Rhea tool-env pre-warm phase as a nanobrain workflow.
+#
+# Replaces the imperative prewarm_workflow_catalog(...) driver. The
+# orchestrator calls this workflow via the standard from_config /
+# process / wait_for_cascade pattern:
+#
+#     wf = Workflow.from_config(<this file>)
+#     await wf.process({"prewarm_request": {
+#         "catalog_path": ...,
+#         "database_url": ...,
+#         "redis_host": ...,
+#         "redis_port": ...,
+#         "rhea_python": ...,
+#     }})
+#     await wf.wait_for_cascade(timeout=1800.0, settle_ms=300)
+#     report = await wf.step_output_data_units["prewarm_report"].get()
+#
+# Topology
+# --------
+#   prewarm_request (workflow input)
+#         │ DirectLink (auto_transfer: true)
+#         ▼
+#   collect_tools.prewarm_request
+#         │ CollectToolsStep.process()
+#         ▼
+#   collect_tools.collect_tools_output
+#         │ DirectLink (auto_transfer: true)
+#         ▼
+#   install_tools.collect_tools_output
+#         │ InstallToolsStep.process() — serial walk per tool
+#         ▼
+#   install_tools.install_tools_output
+#         │ DirectLink (auto_transfer: true)
+#         ▼
+#   aggregate_report.install_tools_output
+#         │ AggregateReportStep.process()
+#         ▼
+#   aggregate_report.prewarm_report
+#         │ DirectLink (auto_transfer: true)
+#         ▼
+#   prewarm_report (workflow output, dataclass instance)
+#
+# Ownership boundary
+# ------------------
+# Each step owns its own input/output DataUnits and trigger. The
+# workflow owns only the entry/exit DUs and the four DirectLinks.
+# See the nanobrain-workflow-authoring skill.
+#
+# auto_transfer: true
+# -------------------
+# DirectLink defaults to auto_transfer=False (silent-failure shape:
+# link registers but never transfers). All four links explicitly
+# set auto_transfer: true; on config_version: 2 this is redundant
+# but kept as self-documentation against the dominant silent-failure
+# shape — see CLAUDE.md "Cross-cutting silent-failure awareness".
+
+name: prewarm_workflow
+description: >
+  Rhea tool-env pre-warm pipeline. Walks the workflow catalog, installs
+  each declared Rhea tool's conda env via Rhea's own venv subprocess,
+  aggregates per-tool outcomes into a PrewarmReport surfaced via the
+  orchestrator's status tool.
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  prewarm_request:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: prewarm_request
+    description: >
+      Bundled pre-warm request from the orchestrator. Dict with keys
+      {catalog_path, database_url, redis_host, redis_port, rhea_python}.
+    persistent: false
+
+output_data_units:
+  prewarm_report:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: prewarm_report
+    description: >
+      Final PrewarmReport dataclass — surfaced by the orchestrator's
+      infrastructure_status MCP tool under rhea_tool_prewarm.
+    persistent: false
+
+steps:
+  collect_tools:
+    class: "apecx_integration.infrastructure.prewarm_workflow.collect_tools_step.CollectToolsStep"
+    config: "collect_tools_step.yml"
+
+  install_tools:
+    class: "apecx_integration.infrastructure.prewarm_workflow.install_tools_step.InstallToolsStep"
+    config: "install_tools_step.yml"
+
+  aggregate_report:
+    class: "apecx_integration.infrastructure.prewarm_workflow.aggregate_report_step.AggregateReportStep"
+    config: "aggregate_report_step.yml"
+
+links:
+  workflow_input_to_collect_tools:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "prewarm_request"
+      target: "collect_tools.prewarm_request"
+      auto_transfer: true
+
+  collect_tools_to_install_tools:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "collect_tools.collect_tools_output"
+      target: "install_tools.collect_tools_output"
+      auto_transfer: true
+
+  install_tools_to_aggregate_report:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "install_tools.install_tools_output"
+      target: "aggregate_report.install_tools_output"
+      auto_transfer: true
+
+  aggregate_report_to_workflow_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "aggregate_report.prewarm_report"
+      target: "prewarm_report"
+      auto_transfer: true

@@ -1,0 +1,39 @@
+# install_tools_step — second stage of the pre-warm workflow.
+#
+# For each tool from the upstream CollectToolsStep, calls
+# prewarm_tool (cache probe → fetch requirements from rhea Postgres →
+# spawn rhea-venv subprocess → install_conda_env with await-pack).
+# Emits the per-tool results list for AggregateReportStep.
+
+# No top-level ``class:`` — injected by the workflow YAML's steps: block.
+name: install_tools
+description: >
+  Per-tool serial installer. One ToolPrewarmResult per tool, ordered
+  by the upstream catalog walk's dedupe order.
+
+# The serial install of a single tool can take 30-90s for a fresh
+# conda create + pack. Bump the per-step execution timeout to
+# accommodate larger catalogs (e.g., 5 tools at ~60s each = 5 min
+# headroom).
+execution_timeout: 1800
+
+input_data_units:
+  collect_tools_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: collect_tools_output
+    description: >
+      Upstream CollectToolsStep payload: {tool_names: list[str],
+      install_config: {database_url, redis_host, redis_port,
+      rhea_python}}.
+    persistent: false
+
+output_data_units:
+  install_tools_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: install_tools_output
+    description: "{results: list[ToolPrewarmResult]}"
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "collect_tools_output"
