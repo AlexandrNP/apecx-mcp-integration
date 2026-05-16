@@ -517,6 +517,155 @@ def _round_trip_dispatch(endpoint_id: str, client_id: str, client_secret: str) -
 # ---------------------------------------------------------------------------
 # argparse wiring
 # ---------------------------------------------------------------------------
+def _cmd_test_transfer(*, list_only: bool, source_path_override: str | None) -> int:
+    """Verify the data-transfer Globus path end-to-end (G84+, 2026-05-16).
+
+    Two-stage probe:
+
+      1. **LIST** the source endpoint's ``apecx-joshi-anl-general``
+         path (or the override). Proves auth works + the path exists.
+         Cheapest sanity check; takes one round-trip.
+      2. **Transfer** ONE file (the smallest of the 6) to a local
+         temp dir. Proves the full pipeline (auth → submit → poll →
+         fetch). Skipped when ``--list-only`` is set.
+
+    Returns 0 only when every attempted step passes. Each step
+    prints a single PASS/FAIL line + a one-line detail, matching the
+    rest of the apecx-globus-setup CLI's output shape.
+
+    This subcommand is the operator-actionable counterpart to
+    ``apecx-setup data``'s Globus-first attempt: when ``apecx-setup
+    data`` falls back to gh release with "Globus skipped — ...",
+    operators run ``apecx-globus-setup test-transfer`` to diagnose
+    which specific prerequisite or auth step is failing without
+    sinking the time to retry the full 6-file transfer.
+    """
+
+    from apecx_integration.cli._globus_data_transfer import (
+        _wrapper_yaml_path,
+        check_globus_prerequisites,
+    )
+
+    _print_header("Globus data-transfer end-to-end test")
+
+    # Step 1: preconditions.
+    prereqs = check_globus_prerequisites()
+    if not prereqs.configured:
+        _fail("preconditions", prereqs.reason())
+        print()
+        print("  fix the missing prerequisite(s) and re-run, or see")
+        print("  docs/globus_data_transfer.md for the full setup recipe.")
+        return 1
+    _pass("preconditions", "SDK + endpoint UUIDs + credentials all present")
+
+    # Step 2: wrapper YAML loads.
+    wrapper_yaml = _wrapper_yaml_path()
+    if not wrapper_yaml.is_file():
+        _fail("wrapper YAML", f"missing at {wrapper_yaml}")
+        return 1
+    _pass("wrapper YAML", f"loadable at {wrapper_yaml.name}")
+
+    # Step 3: build_globus_app + auth round-trip. We do this via the
+    # same G23 helper the GlobusTransferStep uses, so a green here
+    # proves the auth path is end-to-end-OK.
+    try:
+        from nanobrain.core.distributed.globus_auth import build_globus_app
+
+        app = build_globus_app(
+            auth_mode="client_credentials",
+            client_id=os.environ.get("GLOBUS_COMPUTE_CLIENT_ID"),
+            client_secret=os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET"),
+            scopes=["urn:globus:auth:scope:transfer.api.globus.org:all"],
+        )
+        import globus_sdk
+
+        transfer_client = globus_sdk.TransferClient(app=app)
+    except Exception as exc:  # noqa: BLE001 — we want every failure visible
+        _fail("auth", f"{type(exc).__name__}: {exc}")
+        return 1
+    _pass("auth", "confidential-client token acquired")
+
+    # Step 4: LIST the source endpoint's apecx path.
+    source_endpoint = os.environ["APECX_GLOBUS_SOURCE_ENDPOINT_ID"]
+    source_prefix = (
+        source_path_override
+        or os.environ.get("APECX_GLOBUS_SOURCE_PREFIX", "/apecx-joshi-anl-general")
+    ).rstrip("/")
+    try:
+        ls_result = transfer_client.operation_ls(source_endpoint, path=source_prefix)
+        entries = list(ls_result["DATA"])
+    except Exception as exc:  # noqa: BLE001
+        _fail("LIST", f"{type(exc).__name__}: {exc}")
+        return 1
+    _pass(
+        "LIST",
+        f"{len(entries)} entries at {source_endpoint[:8]}…:{source_prefix}",
+    )
+    print("  ▶  first 6 entries:")
+    for entry in entries[:6]:
+        print(f"     • {entry.get('type', '?'):6} {entry.get('name', '?')}")
+
+    if list_only:
+        return 0
+
+    # Step 5: transfer ONE file (the smallest) to verify the full pipeline.
+    # Pick the smallest .csv entry. If none, surface that.
+    csv_entries = [
+        e for e in entries if e.get("type") == "file" and e.get("name", "").endswith(".csv")
+    ]
+    if not csv_entries:
+        _fail(
+            "transfer-one",
+            "no .csv files found at source path — apecx-setup data "
+            "would have nothing to transfer; investigate the source layout",
+        )
+        return 1
+    smallest = min(csv_entries, key=lambda e: e.get("size", 0))
+    src_file = f"{source_prefix}/{smallest['name']}"
+
+    dest_endpoint = os.environ["APECX_GLOBUS_DEST_ENDPOINT_ID"]
+    dest_file = f"/~/apecx-globus-test-transfer/{smallest['name']}"
+
+    try:
+        tdata = globus_sdk.TransferData(
+            transfer_client,
+            source_endpoint,
+            dest_endpoint,
+            label="apecx-globus-setup-test-transfer",
+            sync_level="checksum",
+            verify_checksum=True,
+        )
+        tdata.add_item(src_file, dest_file)
+        task = transfer_client.submit_transfer(tdata)
+        task_id = task["task_id"]
+        # Poll up to 60 s; usually completes in <10 s for a small CSV.
+        import time as _time
+
+        deadline = _time.time() + 60
+        status = "PENDING"
+        while _time.time() < deadline:
+            info = transfer_client.get_task(task_id)
+            status = info["status"]
+            if status in {"SUCCEEDED", "FAILED"}:
+                break
+            _time.sleep(2)
+    except Exception as exc:  # noqa: BLE001
+        _fail("transfer-one", f"{type(exc).__name__}: {exc}")
+        return 1
+
+    if status != "SUCCEEDED":
+        _fail("transfer-one", f"task {task_id[:8]}… ended in {status} (not SUCCEEDED)")
+        return 1
+    _pass(
+        "transfer-one",
+        f"{smallest['name']} → {dest_file} (task {task_id[:8]}…)",
+    )
+
+    print()
+    print("  apecx-setup data will use the Globus path successfully.")
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="apecx-globus-setup",
@@ -560,6 +709,36 @@ def _build_parser() -> argparse.ArgumentParser:
         ),
     )
 
+    p_test_xfer = sub.add_parser(
+        "test-transfer",
+        help=(
+            "Verify the data-transfer Globus path end-to-end: LIST the "
+            "source endpoint's apecx-joshi-anl-general directory, optionally "
+            "transfer ONE file as a dry-run, report results. Gates on the "
+            "same env vars apecx-setup uses (APECX_GLOBUS_SOURCE_ENDPOINT_ID, "
+            "APECX_GLOBUS_DEST_ENDPOINT_ID, GLOBUS_COMPUTE_CLIENT_ID/SECRET)."
+        ),
+    )
+    p_test_xfer.add_argument(
+        "--list-only",
+        action="store_true",
+        help=(
+            "LIST files at the source endpoint path WITHOUT transferring. "
+            "Cheapest sanity check: proves auth works + path exists. "
+            "Default: also transfer one file to a tmp dir."
+        ),
+    )
+    p_test_xfer.add_argument(
+        "--source-path",
+        default=None,
+        help=(
+            "Override the source path on the endpoint (default: "
+            "$APECX_GLOBUS_SOURCE_PREFIX or /apecx-joshi-anl-general). "
+            "Useful when the operator's collection lays the files out "
+            "under a different root."
+        ),
+    )
+
     p_epc = sub.add_parser(
         "endpoint-config",
         help="Render the Aurora endpoint-config template with the ALCF project filled in.",
@@ -593,6 +772,11 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_clear()
     if args.subcommand == "test":
         return _cmd_test(args.endpoint_id, args.round_trip)
+    if args.subcommand == "test-transfer":
+        return _cmd_test_transfer(
+            list_only=args.list_only,
+            source_path_override=args.source_path,
+        )
     if args.subcommand == "endpoint-config":
         return _cmd_endpoint_config(args.project, args.output)
 

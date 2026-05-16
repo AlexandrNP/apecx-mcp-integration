@@ -134,6 +134,48 @@ def test_every_subcommand_parses():
     assert epc_args.project == "MYALLOC"
     assert epc_args.output == "/tmp/x.yml"
 
+    # G84+: test-transfer subcommand (added 2026-05-16).
+    xfer_args = parser.parse_args(["test-transfer"])
+    assert xfer_args.subcommand == "test-transfer"
+    assert xfer_args.list_only is False
+    assert xfer_args.source_path is None
+
+    xfer_args2 = parser.parse_args(["test-transfer", "--list-only", "--source-path", "/foo/bar"])
+    assert xfer_args2.list_only is True
+    assert xfer_args2.source_path == "/foo/bar"
+
+
+def test_test_transfer_fails_loud_on_missing_preconditions(monkeypatch, capsys):
+    """``apecx-globus-setup test-transfer`` exits non-zero with a clear
+    "fix the missing prerequisite" message when preconditions aren't met.
+    This is the operator-facing version of the same check
+    ``apecx-setup data`` does internally — proves the diagnostic path
+    works when an operator hasn't finished Globus setup yet."""
+    # Strip every Globus-related env var so preconditions cannot be met.
+    for var in (
+        "APECX_GLOBUS_SOURCE_ENDPOINT_ID",
+        "APECX_GLOBUS_DEST_ENDPOINT_ID",
+        "GLOBUS_COMPUTE_CLIENT_ID",
+        "GLOBUS_COMPUTE_CLIENT_SECRET",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+    # Patch the keyring probe so we get a deterministic "no creds" answer
+    # regardless of what's in this developer's actual keyring.
+    from unittest.mock import patch
+
+    with patch(
+        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
+        return_value=False,
+    ):
+        rc = main(["test-transfer", "--list-only"])
+
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "preconditions" in out
+    # The operator gets actionable next-steps text.
+    assert "fix the missing prerequisite" in out or "docs/globus_data_transfer.md" in out
+
 
 def test_missing_subcommand_is_an_error():
     parser = _build_parser()
