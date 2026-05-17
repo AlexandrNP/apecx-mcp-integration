@@ -1,6 +1,6 @@
 # Reasoning patterns landscape — comprehensive cross-pattern comparison
 
-**Date**: 2026-05-17 (draft; large-N section populated when G96 sweep completes)
+**Date**: 2026-05-17 (G96 sweep complete; all tables populated)
 **Source data**: `tests/benchmarks/results/*.json` (historical) + `/tmp/bench_*.json` (G96 sweep)
 **Coverage**: every codegen / workflow-driven reasoning pattern benchmarked against `mistral-nemo:latest` on MBPP, SciCode, and nanobrain_native to date.
 
@@ -70,10 +70,12 @@ Two categories of pattern share the benchmark harness: **raw codegen functions**
 | nanobrain_direct_with_rules | 20 | 11 | 0.550 | 4.4 s | 1-stage + rules |
 | nanobrain_ast_gated_review_revise | 20 | 11 | 0.550 | 3.7 s | conditional refine |
 | nanobrain_retrieval_grounded_mbpp | 20 | 11 | 0.550 | 6.9 s | 1-stage + RAG |
-| **tdr (G96, PENDING)** | **100** | TBD | TBD | TBD | iterative |
-| **hd_rss (G96, PENDING)** | **100** | TBD | TBD | TBD | recursive |
+| **tdr (G96, ACTUAL)** | **100** | **68** | **0.680** | **9.3 s** | **iterative** |
+| **hd_rss (G96, ACTUAL)** | **100** | **50** | **0.500** | **3.3 s** | **recursive** |
 
-Earlier-session smoke (n=15): direct 9/15 (0.60), tdr 12/15 (0.80, +20pp), hd_rss 1/2 (0.50, small sample).
+G96 result: TDR +3pp lift vs direct (within noise); HD-RSS -15pp regression (decomposition adds noise on atomic problems). See `docs/g96_pattern_comparison_2026-05-17.md`.
+
+Earlier-session smoke (n=15): direct 9/15 (0.60), tdr 12/15 (0.80, +20pp), hd_rss 1/2 (0.50, small sample). Smoke result did NOT survive scaling — typical regression-to-mean signal.
 
 ### nanobrain_native
 
@@ -95,11 +97,11 @@ Earlier-session smoke (n=15): direct 9/15 (0.60), tdr 12/15 (0.80, +20pp), hd_rs
 | direct | 10 | 1 | 0.100 | 8.3 s | 1-stage |
 | nanobrain_direct_with_rules (v1) | 10 | 1 | 0.100 | 15.8 s | 1-stage + rules |
 | nanobrain_plan_then_code (v1) | 10 | 0 | 0.000 | 37.2 s | 2-stage |
-| **direct (G96, PENDING)** | **10** | TBD | TBD | TBD | 1-stage |
-| **tdr (G96, PENDING)** | **10** | TBD | TBD | TBD | iterative |
-| **hd_rss (G96, PENDING)** | **10** | TBD | TBD | TBD | recursive |
+| **direct (G96, ACTUAL)** | **10** | **1** | **0.100** | **6.9 s** | **1-stage** |
+| **tdr (G96, ACTUAL)** | **10** | **8** | **0.800** | **18.6 s** | **iterative** |
+| **hd_rss (G96, ACTUAL)** | **10** | **2** | **0.200** | **8.7 s** | **recursive** |
 
-Earlier-session smoke (n=5): direct 1/5 (0.20), tdr 3/5 (0.60, +40pp).
+G96 result: TDR delivers **+70pp** on nbnative — ties historical SOTA (`nanobrain_retrieval_grounded` at 0.80) without needing a built RAG index. HD-RSS +10pp. Mechanism: nbnative problems are out-of-distribution for mistral-nemo; execution feedback is the missing signal. See `docs/g96_pattern_comparison_2026-05-17.md`.
 
 ### SciCode
 
@@ -111,11 +113,11 @@ Earlier-session smoke (n=5): direct 1/5 (0.20), tdr 3/5 (0.60, +40pp).
 | nanobrain_direct | 35 | 6 | 0.171 | 21.8 s | 1-stage |
 | nanobrain_edge_case_then_code | 35 | 5 | 0.143 | 38.6 s | 2-stage |
 | nanobrain_review_revise | 35 | 5 | 0.143 | 159.8 s | 2-pass refine |
-| **direct (G96, PENDING)** | **40** | TBD | TBD | TBD | 1-stage |
-| **tdr (G96, PENDING)** | **40** | TBD | TBD | TBD | iterative |
-| **hd_rss (G96, PENDING)** | **40** | TBD | TBD | TBD | recursive |
+| **direct (G96, ACTUAL)** | **36** | **7** | **0.194** | **12.2 s** | **1-stage** |
+| **tdr (G96, ACTUAL)** | **35** | **9** | **0.257** | **51.1 s** | **iterative** |
+| **hd_rss (G96, ACTUAL)** | **36** | **7** | **0.194** | **26.3 s** | **recursive** |
 
-Earlier-session smoke (n=5): direct 0/5 (0.00), tdr 1/5 (0.20, +20pp).
+G96 result: **TDR breaks the historical 0.20 SciCode ceiling** — first reasoning pattern to do so against mistral-nemo. +7pp absolute lift over direct at 4.2× cost. HD-RSS matches direct exactly (decomposition doesn't help on SciCode; LLM-driven composition cancels out any gain). See `docs/g96_pattern_comparison_2026-05-17.md`.
 
 ## Hypotheses to test with G96 sweep results
 
@@ -132,8 +134,9 @@ Earlier-session smoke (n=5): direct 0/5 (0.00), tdr 1/5 (0.20, +20pp).
 
 ## Next steps
 
-1. ⏳ G96 sweep completes (~03:30 EDT) → populate the TDR + HD-RSS rows
-2. ⏳ HD-RSS sweep on same 3 datasets (sequential due to Ollama contention)
-3. ⏳ Per-problem divergence analysis using `compare_codegens.py` — identify which problems each pattern uniquely fixes
-4. 📋 Token-cost instrumentation follow-up (G100 candidate)
-5. 📋 TDR-as-YAML migration end-to-end verification (G99 — blocked on Ollama until sweep done)
+1. ✅ G96 sweep complete; tables populated above
+2. ✅ HD-RSS sweep complete; tables populated above
+3. ✅ Per-problem divergence analysis at `/tmp/comparison_{mbpp,scicode,nbnative}.md` and summarized in `docs/g96_pattern_comparison_2026-05-17.md`
+4. 📋 Token-cost instrumentation follow-up (G100 candidate — proposed in g96 comparison doc)
+5. 📋 TDR-as-YAML migration end-to-end verification (G99 #169 still pending)
+6. 📋 Failure-mode taxonomy across the G96 result JSONs (G101 candidate — proposed in g96 comparison doc)
