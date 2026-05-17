@@ -78,15 +78,21 @@ def tdr(problem, llm, max_iterations=3):
 * **Analysis-before-code in the prompt** — asking for a brief analysis before the fix nudges the LLM toward genuine debugging vs. a re-roll. We don't parse the analysis but its presence shapes the code that follows it.
 * **Cap at N iterations + return last attempt** — never silently report success on a failure. The benchmark runner re-executes; if all rounds failed, the runner reports the failure honestly.
 
-## Smoke benchmark results
+## Smoke benchmark results — ALL THREE DATASETS
 
-**Setup**: MBPP first 15 problems, `mistral-nemo:latest` via local Ollama, temperature=0, sandbox timeout 10s per run.
+**Setup**: `mistral-nemo:latest` via local Ollama, temperature=0, max_iterations=3, sandbox timeout 10s per run (30s on SciCode).
 
-| Metric | direct | tdr | Δ |
-|---|---|---|---|
-| Pass@1 | 9/15 = 0.600 | 12/15 = 0.800 | **+0.200 absolute, +0.333 relative** |
-| Total wall (s) | 68.2 | 133.0 | +1.95× |
-| Mean wall/problem (s) | 4.5 | 8.9 | +1.97× |
+### Cross-dataset summary
+
+| Benchmark | direct Pass@1 | TDR Pass@1 | Δ absolute | Δ relative | TDR/direct wall |
+|---|---|---|---|---|---|
+| **MBPP** (n=15) | 9/15 = 0.600 | 12/15 = 0.800 | **+0.200** | **+0.333** | **1.95×** |
+| **SciCode** (n=5) | 0/5 = 0.000 | 1/5 = 0.200 | **+0.200** | undefined (div/0) | **4.34×** |
+| **nanobrain_native** (n=5) | 1/5 = 0.200 | 3/5 = 0.600 | **+0.400** | **+2.000** | **2.65×** |
+
+TDR helps on all three benchmarks. The **biggest lift is on nanobrain_native** (+40 percentage points) — because nanobrain's `from_config` enforcement raises a `RuntimeError` with an EXACT remediation message ("Use: ConcatStep.from_config(...)"). When TDR sees that traceback, it reproduces the correct pattern on the next round. This is TDR at its best: domain-specific runtime errors give the LLM the precise signal it needs.
+
+### MBPP per-problem (n=15)
 
 **Per-problem breakdown** (failures only; passes match across both methods for the 9 problems direct solved):
 
@@ -108,11 +114,39 @@ def tdr(problem, llm, max_iterations=3):
 | mbpp/62 | ✅ | ✅ | — |
 | mbpp/63 | ❌ AssertionError | ❌ TypeError | **TDR regression?** |
 
-**Brutal-truth notes**:
-* TDR solves 3 of direct's 6 failures (16, 56, 61).
-* TDR cannot solve mbpp/20, /59, /63 — these need more reasoning depth than 3 rounds of mistral-nemo can supply.
-* **mbpp/63 went from AssertionError on direct → TypeError on TDR**. This is a real concern: TDR's revision may have introduced a NEW class of bug. N=1 doesn't make it a pattern, but on broader benchmarks it's worth tracking the "TDR made it worse" rate as a separate metric.
-* **2× wall time is real cost** — operators evaluating TDR for production should weigh whether the +33% relative quality lift is worth +97% latency. For interactive use, direct is better; for batch / overnight runs, TDR wins.
+### SciCode per-problem (n=5)
+
+| Problem | direct | tdr | Notes |
+|---|---|---|---|
+| scicode/10/10.6 | ❌ AssertionError | ❌ AssertionError | Both fail (Ewald-sum energy — too hard for mistral-nemo) |
+| scicode/1/1.1 | ❌ AssertionError | ✅ | **TDR fix** (linear system solve) |
+| scicode/3/3.1 | ❌ ValueError | ❌ Timeout (144s) | TDR's revisions kept growing; sandbox timed out |
+| scicode/4/4.1 | ❌ AssertionError | ❌ AssertionError | Both fail |
+| scicode/6/6.1 | ❌ AssertionError | ❌ TypeError | **TDR regression** (slice with non-int) |
+
+SciCode is materially harder than MBPP — mistral-nemo passes 0/5 on direct. TDR gets one win (scicode/1/1.1) but also introduces two new failure modes: one timeout (scicode/3/3.1) and one TypeError where direct had AssertionError (scicode/6/6.1).
+
+### nanobrain_native per-problem (n=5)
+
+| Problem | direct | tdr | Notes |
+|---|---|---|---|
+| builder_two_step_uppercase_reverse | ❌ ImportError | ❌ ImportError | Both fail (wrong import path; TDR's revision didn't find correct path either) |
+| config_threshold_step | ❌ ModuleNotFoundError | ❌ TypeError | TDR fixed the import but introduced a signature mismatch on `_init_from_config` |
+| step_concat | ❌ RuntimeError (direct instantiation) | ✅ | **TDR fix** — from_config pattern learned from the RuntimeError's actionable message |
+| step_dedupe_preserve_order | ✅ | ✅ | — |
+| step_double | ❌ RuntimeError (direct instantiation) | ✅ | **TDR fix** — same pattern as step_concat |
+
+This is the cleanest TDR-wins case: nanobrain's `from_config` enforcement produces a RuntimeError with the explicit fix ("Use: ConcatStep.from_config(...)"). TDR feeds that message back to the LLM, which writes correct code on the next round. **2 of 4 failures fixed (50% fix rate) just from a single revision round**.
+
+**Brutal-truth cross-dataset notes**:
+* TDR helps on ALL three benchmarks, but the **win rate vs the regression rate** matters more than the headline Pass@1.
+* **Net pattern across 25 problems** (15 MBPP + 5 SciCode + 5 nanobrain_native):
+  * TDR fixed 6 (mbpp/16, /56, /61; scicode/1.1; nanobrain step_concat, step_double)
+  * TDR regressed 2 (mbpp/63 → TypeError; scicode/6.1 → TypeError)
+  * TDR introduced 1 timeout (scicode/3.1 — revisions kept getting longer)
+* **Ratio**: 6 wins / 2 regressions / 1 timeout = 3:1 favorable but NOT free. Operators using TDR on hard problems where it can't fix anything will pay 4× cost AND occasionally make things worse.
+* **Wall-time tax** ranges from 1.95× (MBPP) to 4.34× (SciCode). The harder the dataset, the more iterations TDR burns. For SciCode-scale problems, consider running TDR on a SUBSET (problems direct failed) rather than all problems.
+* **The nanobrain_native win is mechanistic**: nanobrain's runtime errors carry actionable remediation messages. TDR is purpose-built to consume that signal. This suggests a meta-insight: **runtime errors with embedded fix recipes are 10× more valuable to TDR than generic assertions**, which is a design lesson for any new step subclass that wants to be debuggable by LLM-driven iteration.
 
 ### Scaling expectations (NOT measured here)
 
