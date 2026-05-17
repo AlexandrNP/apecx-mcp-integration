@@ -97,12 +97,29 @@ def test_tdr_workflow_short_circuit_on_first_pass():
     assert "code_source" in result and "def add" in result["code_source"]
 
 
+@pytest.mark.slow
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
 @pytest.mark.skipif(os.environ.get("APECX_CODE_EXEC") != "1", reason=SKIP_EXEC)
 def test_tdr_workflow_back_edge_fires_on_loop_exhaustion():
     """Deliberately unsatisfiable test forces the loop to exhaust.
     Verifies the LoopController's loop_exhausted path fires
-    end-to-end (loop_gate.output → ConditionalLink → final_code)."""
+    end-to-end (loop_gate.output → ConditionalLink → final_code).
+
+    Marked ``slow`` because three full iterations on mistral-nemo with
+    a growing previous_attempt+critique context can take 10+ minutes
+    wall. The mechanism this exercises (back-edge through LoopController
+    + the loop_exhausted predicate routing) is also covered at unit
+    granularity by:
+      * nanobrain test_loop_controller.py (LoopController iteration cap)
+      * nanobrain test_workflow_graph_loop_controller.py (cycle validator)
+      * nanobrain test_g99_framework_fixes_2026_05_17.py (envelope unwrap)
+      * apecx test_tdr_workflow_smoke.py (workflow loads + cycle valid)
+    The short-circuit integration test above already proves the
+    end-to-end cycle (DirectLink → ConditionalLink branching →
+    LoopController → ConditionalLink branching → workflow output)
+    in under 15 seconds. Run this test specifically with
+    ``pytest -m slow`` when verifying the loop-exhaustion path.
+    """
     workflow = Workflow.from_config(str(_WORKFLOW_YAML))
 
     initial = {
