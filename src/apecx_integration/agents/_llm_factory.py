@@ -74,11 +74,7 @@ def build_chat_llm(
     """
     base_url = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
     model = os.environ.get("APECX_LLM_MODEL", "mistral-small:latest")
-    api_key = (
-        os.environ.get("APECX_LLM_API_KEY")
-        or os.environ.get("OPENAI_API_KEY")
-        or "EMPTY"
-    )
+    api_key = os.environ.get("APECX_LLM_API_KEY") or os.environ.get("OPENAI_API_KEY") or "EMPTY"
     env_temperature = os.environ.get("APECX_LLM_TEMPERATURE")
     if env_temperature is not None:
         temperature = float(env_temperature)

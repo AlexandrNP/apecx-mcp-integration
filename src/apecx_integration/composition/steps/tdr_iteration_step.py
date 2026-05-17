@@ -103,17 +103,32 @@ class TdrIterationStepConfig(StepConfig):
     mode: str = Field(
         default="tdr",
         description=(
-            "Iteration mode. ``tdr`` (default) passes previous_attempt + "
-            "critique to the writer on revision iterations — the canonical "
-            "Test-Driven Refinement loop. ``best_of_n`` generates each "
-            "iteration FRESH (no revision context, no critique) — same "
-            "topology but the iterations are independent samples instead "
-            "of refined revisions. The downstream ConditionalLink logic "
-            "(short-circuit on exec_succeeded, escalate on loop_exhausted) "
-            "is identical for both modes — the difference is purely in "
-            "what each iteration's writer call sees as input. "
-            "G104 (2026-05-17): added to support framework-native best-of-N "
-            "via the same cycle topology as TDR."
+            "Iteration mode. Three modes supported:\n\n"
+            "* ``tdr`` (default) — passes previous_attempt + critique to the "
+            "writer on revision iterations. Canonical Test-Driven Refinement "
+            "loop.\n"
+            "* ``best_of_n`` — generates each iteration FRESH (no revision "
+            "context). Iterations are independent samples instead of refined "
+            "revisions. G104 (2026-05-17).\n"
+            "* ``tdr_with_rollback`` — same as ``tdr`` but tracks the best "
+            "exec_succeeded=True envelope seen so far; if a later iteration "
+            "fails AND an earlier iteration succeeded, the step emits the "
+            "earlier success rather than the failed revision. G106 "
+            "(2026-05-17). **HONEST CAVEAT**: under the current TDR workflow "
+            "topology this mode is effectively dead code, because the "
+            "``iter_to_final_pass`` ConditionalLink short-circuits to "
+            "final_code on the FIRST passing iteration — no later iteration "
+            "runs to need rolling back. The rollback only becomes meaningful "
+            "in a future non-short-circuiting topology (e.g., 'run all N "
+            "iterations + pick best') where regressions could occur. The "
+            "G101 'uniquely breaks' failures it was designed for actually "
+            "happen on iter1 (where there's no prior to roll back to), so a "
+            "DIFFERENT pattern (direct-prelude) would be needed to close "
+            "them. Kept as forward-looking infrastructure for future patterns.\n\n"
+            "All three modes share the same workflow topology — the difference "
+            "is purely in what each iteration's writer sees and what envelope "
+            "the step emits. Downstream ConditionalLink predicates are mode-"
+            "agnostic."
         ),
     )
 
@@ -126,9 +141,10 @@ class TdrIterationStepConfig(StepConfig):
 
     @model_validator(mode="after")
     def _validate_mode(self) -> TdrIterationStepConfig:
-        if self.mode not in ("tdr", "best_of_n"):
+        if self.mode not in ("tdr", "best_of_n", "tdr_with_rollback"):
             raise ValueError(
-                f"TdrIterationStep mode must be 'tdr' or 'best_of_n', got {self.mode!r}"
+                f"TdrIterationStep mode must be 'tdr', 'best_of_n', or "
+                f"'tdr_with_rollback', got {self.mode!r}"
             )
         return self
 
@@ -221,9 +237,19 @@ class TdrIterationStep(BaseStep):
 
         # G104: ``mode`` controls whether iterations carry forward
         # previous_attempt + critique (tdr) or generate fresh samples
-        # (best_of_n). Cached on the instance for the process() loop
-        # to read without re-resolving the config.
+        # (best_of_n). G106 adds ``tdr_with_rollback`` which tracks
+        # the best success envelope to roll back to on regression.
+        # Cached on the instance for the process() loop to read
+        # without re-resolving the config.
         self._mode: str = component_config.get("mode", "tdr")
+
+        # G106 (2026-05-17): per-instance rollback cache. Only used
+        # in ``tdr_with_rollback`` mode; populated by process() when
+        # an iteration yields exec_succeeded=True. The framework
+        # creates a fresh TdrIterationStep PER WORKFLOW RUN (the YAML
+        # codegen drivers do ``Workflow.from_config(...)`` per problem),
+        # so this cache resets cleanly between problems.
+        self._best_envelope: dict[str, Any] | None = None
 
     @staticmethod
     def _resolve_sibling_path(configured: str, source_path: str | None) -> Path:
@@ -288,11 +314,13 @@ class TdrIterationStep(BaseStep):
             "function_signature": envelope.get("function_signature"),
         }
         # G104: revision-mode context (previous_attempt + critique) is
-        # ONLY set when mode == "tdr". In "best_of_n" mode the
-        # iterations are independent samples — no context carryover.
-        # The downstream cycle topology is identical either way; only
-        # the writer's prompt shape differs.
-        if self._mode == "tdr" and prior_iteration > 0:
+        # set when mode is ``tdr`` or ``tdr_with_rollback``. In
+        # ``best_of_n`` mode the iterations are independent samples
+        # — no context carryover. The downstream cycle topology is
+        # identical for all three modes; only the writer's prompt
+        # shape differs (and, for tdr_with_rollback, the emitted
+        # envelope can be a rolled-back prior-success snapshot).
+        if self._mode in ("tdr", "tdr_with_rollback") and prior_iteration > 0:
             writer_input["previous_attempt"] = envelope.get("code_source")
             writer_input["critique"] = envelope.get("critique")
 
@@ -321,8 +349,8 @@ class TdrIterationStep(BaseStep):
             len(exec_output["stderr"]),
         )
 
-        # 5. Emit envelope — always the same shape, regardless of pass/fail
-        return {
+        # 5. Build the current iteration's envelope.
+        current_envelope = {
             # Persistent context (for next iteration's revision)
             "code_spec": spec,
             "function_name": envelope.get("function_name"),
@@ -343,6 +371,39 @@ class TdrIterationStep(BaseStep):
             # Tracking (1-indexed)
             "iteration": iteration,
         }
+
+        # G106 (2026-05-17): tdr_with_rollback mode emits the BEST
+        # success envelope seen so far rather than a regressed
+        # revision. Three sub-cases:
+        #   (a) current iteration succeeded → cache as best + emit
+        #       current (downstream ConditionalLink short-circuits to
+        #       final_code).
+        #   (b) current iteration failed AND a prior iteration
+        #       succeeded → emit the cached best. The downstream
+        #       ConditionalLink sees exec_succeeded=True (from the
+        #       cached envelope) and routes to final_code — exactly
+        #       the desired "short-circuit on previously-known-good"
+        #       behavior. We bump the iteration counter in the cached
+        #       envelope so observability shows the actual iter count.
+        #   (c) current iteration failed AND no prior success →
+        #       emit current (the regular TDR escalation path).
+        if self._mode == "tdr_with_rollback":
+            if current_envelope["exec_succeeded"]:
+                self._best_envelope = dict(current_envelope)  # cache snapshot
+                return current_envelope
+            if self._best_envelope is not None:
+                rolled_back = dict(self._best_envelope)
+                rolled_back["iteration"] = iteration  # observability
+                log.info(
+                    "TdrIterationStep %r: iteration=%d rolled back to prior "
+                    "success (best from earlier iteration; revision regressed)",
+                    self.name,
+                    iteration,
+                )
+                return rolled_back
+            return current_envelope
+
+        return current_envelope
 
     @staticmethod
     def _unwrap_envelope(input_data: dict[str, Any]) -> tuple[dict[str, Any], int]:

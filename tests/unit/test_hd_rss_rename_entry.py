@@ -81,12 +81,12 @@ class TestEdgeCases:
         assert "@staticmethod" in result
         assert "def bar(x):" in result
 
-    def test_call_sites_within_code_not_renamed(self):
-        """We rename the DEFINITION only. Call sites inside the code
-        (e.g., recursive calls) would break if renamed in mismatch.
-        Document this trade-off — recursive functions whose name is
-        renamed will fail at runtime. For the MBPP / SciCode classes
-        where this rename helps, recursion is rare."""
+    def test_recursive_call_sites_now_rewritten(self):
+        """G105 (2026-05-17): AST rewrite now also rewrites recursive
+        call sites within the entry function's body. Previously only
+        the def line was rewritten and recursive references kept the
+        old name (runtime NameError). After G105, ast.unparse-based
+        rewrite catches self-recursion correctly."""
         code = (
             "def recursive_fn(n):\n"
             "    if n <= 1: return n\n"
@@ -94,9 +94,45 @@ class TestEdgeCases:
         )
         result = _rename_entry_function_if_needed(code, "fibonacci")
         # Definition renamed.
-        assert "def fibonacci(n):" in result
-        # CALL sites preserved (still refer to old name) — caller
-        # gets a NameError at runtime, which is a worse failure than
-        # the original. This test documents the known limitation;
-        # a future enhancement could AST-rewrite call sites too.
-        assert "recursive_fn(n - 1)" in result
+        assert "def fibonacci(n)" in result
+        # CALL sites also renamed (G105 fix). The old name no longer
+        # appears anywhere — runtime no longer hits NameError.
+        assert "recursive_fn" not in result
+        assert "fibonacci(n - 1)" in result
+        assert "fibonacci(n - 2)" in result
+
+
+class TestG105ASTRewriteEdgeCases:
+    """G105 adds AST-based rewriting of recursive call sites. These
+    edge cases pin behavior on shadowing, no-op cases, and
+    deliberately-NOT-rewritten contexts."""
+
+    def test_no_rename_when_no_recursion(self):
+        """Non-recursive function: AST rewrite is a no-op on the body
+        (no self-references) — only the def line changes."""
+        code = "def add(a, b):\n    return a + b\n"
+        result = _rename_entry_function_if_needed(code, "sum_two")
+        assert "def sum_two(a, b)" in result
+        # No spurious modifications to the body.
+        assert "a + b" in result
+
+    def test_helper_function_calls_to_entry_not_rewritten(self):
+        """If a HELPER function (not the entry) references the entry
+        function by name, the AST walker doesn't rewrite those — we
+        only rewrite inside the target function's body. Limitation:
+        complex orchestration patterns where helpers call back to the
+        entry may need the call-site rewritten at module scope too.
+        For now, document the limitation."""
+        code = (
+            "def helper(x):\n"
+            "    return wrong_name(x) + 1\n\n"  # helper calls entry — won't be renamed
+            "def wrong_name(x):\n"
+            "    return x * 2\n"
+        )
+        result = _rename_entry_function_if_needed(code, "correct_name")
+        # Entry function's def renamed.
+        assert "def correct_name(x)" in result
+        # Helper still references the OLD name — known limitation.
+        # If this becomes a real problem, extend the AST walker to
+        # rewrite Name references at module scope too.
+        assert "wrong_name(x) + 1" in result

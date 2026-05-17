@@ -17,6 +17,7 @@ import time
 from collections.abc import Callable
 
 from tests.benchmarks.sandbox import run_in_subprocess
+from tests.benchmarks.token_accountant import count_tokens
 from tests.benchmarks.types import BenchmarkProblem, RunResult
 
 CodegenFn = Callable[[BenchmarkProblem], str]
@@ -41,21 +42,30 @@ def run_one(
     - Sandbox exits nonzero → ``error_class`` parsed from the
       traceback if present, else ``"NonZeroExit"``.
     - Sandbox exits 0 → ``passed=True``.
+
+    G100 (2026-05-17): Wraps the codegen call in ``count_tokens()``
+    so per-problem LLM token usage lands in the RunResult. Counts
+    are best-effort — endpoints that don't surface usage metadata
+    (some Ollama configs) will record n_llm_calls > 0 but tokens = 0.
     """
     started = time.monotonic()
 
-    try:
-        candidate_code = codegen_fn(problem)
-    except BaseException as exc:  # noqa: BLE001
-        return RunResult(
-            problem_id=problem.problem_id,
-            codegen_name=codegen_name,
-            passed=False,
-            error_class=f"codegen_{type(exc).__name__}",
-            error_message=str(exc)[:500],
-            wall_seconds=time.monotonic() - started,
-            generated_code="",
-        )
+    with count_tokens() as tokens:
+        try:
+            candidate_code = codegen_fn(problem)
+        except BaseException as exc:  # noqa: BLE001
+            return RunResult(
+                problem_id=problem.problem_id,
+                codegen_name=codegen_name,
+                passed=False,
+                error_class=f"codegen_{type(exc).__name__}",
+                error_message=str(exc)[:500],
+                wall_seconds=time.monotonic() - started,
+                generated_code="",
+                prompt_tokens=tokens.prompt_tokens,
+                completion_tokens=tokens.completion_tokens,
+                n_llm_calls=tokens.n_calls,
+            )
 
     sandbox_result = run_in_subprocess(
         candidate_code=candidate_code,
@@ -63,6 +73,12 @@ def run_one(
         test_code=problem.test_code,
         timeout_seconds=timeout_seconds,
     )
+
+    common_token_kwargs = {
+        "prompt_tokens": tokens.prompt_tokens,
+        "completion_tokens": tokens.completion_tokens,
+        "n_llm_calls": tokens.n_calls,
+    }
 
     if sandbox_result.timed_out:
         return RunResult(
@@ -73,6 +89,7 @@ def run_one(
             error_message=f"exceeded {timeout_seconds}s",
             wall_seconds=time.monotonic() - started,
             generated_code=candidate_code,
+            **common_token_kwargs,
         )
 
     if sandbox_result.passed:
@@ -84,6 +101,7 @@ def run_one(
             error_message=None,
             wall_seconds=time.monotonic() - started,
             generated_code=candidate_code,
+            **common_token_kwargs,
         )
 
     # Non-zero exit. Try to extract the exception class from the
@@ -98,6 +116,7 @@ def run_one(
         error_message=sandbox_result.stderr[-500:] if sandbox_result.stderr else None,
         wall_seconds=time.monotonic() - started,
         generated_code=candidate_code,
+        **common_token_kwargs,
     )
 
 

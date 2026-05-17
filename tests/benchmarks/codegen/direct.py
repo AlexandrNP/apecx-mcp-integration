@@ -50,6 +50,14 @@ def _default_llm_for(model: str, base_url: str, temperature: float, max_tokens: 
         model=model,
         base_url=base_url,
     )
+    # G100 (2026-05-17): install the token accountant callback at
+    # cache-miss time. Subsequent cache hits return the already-
+    # instrumented instance; the callback's TokenTotals write goes
+    # to the active thread-local scope (set by runner.run_one's
+    # count_tokens() context manager).
+    from tests.benchmarks.token_accountant import install_on_llm  # noqa: PLC0415
+
+    install_on_llm(llm)
     _LLM_CACHE[key] = llm
     return llm
 

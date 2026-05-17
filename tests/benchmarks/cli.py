@@ -139,6 +139,21 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         from tests.benchmarks.codegen.hd_rss import make_hd_rss_codegen  # noqa: PLC0415
 
         return make_hd_rss_codegen(model=model, base_url=base_url, composer_strategy="templated")
+    if name == "hd_rss_v3":
+        # G109 (2026-05-17): HD-RSS with templated composer AND
+        # AST-based atomicity. The atomicity_strategy="ast" path
+        # replaces the LLM "ATOMIC?" judgment with a draft-codegen-
+        # AST-node-count heuristic, fixing the over-decomposition
+        # failure mode (LLM mis-classifies trivial problems as
+        # composite, triggering harmful decomposition).
+        from tests.benchmarks.codegen.hd_rss import make_hd_rss_codegen  # noqa: PLC0415
+
+        return make_hd_rss_codegen(
+            model=model,
+            base_url=base_url,
+            composer_strategy="templated",
+            atomicity_strategy="ast",
+        )
     if name == "best_of_n":
         # G103 (2026-05-17): Best-of-N direct. Generate N independent
         # samples with non-zero temperature; return the first that
@@ -161,6 +176,29 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         )
 
         return make_best_of_n_yaml_codegen(model=model, base_url=base_url)
+    if name == "hybrid_tdr_bon":
+        # G107 (2026-05-17): Hybrid TDR + Best-of-N. Each TDR
+        # iteration is itself a best-of-N inner sample loop. Captures
+        # both mechanisms' wins: sampling diversity (helps on atomic)
+        # AND execution-feedback revision (helps on compositional /
+        # out-of-distribution). Cost worst-case ~9× direct (3 iters *
+        # 3 samples).
+        from tests.benchmarks.codegen.hybrid_tdr_bon import (  # noqa: PLC0415
+            make_hybrid_tdr_bon_codegen,
+        )
+
+        return make_hybrid_tdr_bon_codegen(model=model, base_url=base_url)
+    if name == "self_consistency":
+        # G108 (2026-05-17): Self-consistency vote. N samples; pick
+        # the one with most AST-similar peers. No execution oracle
+        # required — works without test_code. Cheaper than best_of_n
+        # (~N× direct, no sandbox). Lower signal than best_of_n on
+        # datasets with reliable test_code.
+        from tests.benchmarks.codegen.self_consistency_vote import (  # noqa: PLC0415
+            make_self_consistency_codegen,
+        )
+
+        return make_self_consistency_codegen(model=model, base_url=base_url)
     if name == "nanobrain_direct":
         # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
         from pathlib import Path  # noqa: PLC0415
@@ -623,8 +661,11 @@ def main() -> int:
             "hd_rss",  # G98: Hierarchical Decomposition with Recursive Subgoal Solving (2026-05-17)
             "tdr_yaml",  # G99: TDR as framework-native YAML workflow (2026-05-17)
             "hd_rss_v2",  # G102: HD-RSS with templated composer (2026-05-17)
+            "hd_rss_v3",  # G109: HD-RSS templated composer + AST atomicity (2026-05-17)
             "best_of_n",  # G103: Best-of-N direct (consensus sampling) (2026-05-17)
             "best_of_n_yaml",  # G104: Best-of-N as framework-native YAML workflow (2026-05-17)
+            "hybrid_tdr_bon",  # G107: Hybrid TDR + Best-of-N (2026-05-17)
+            "self_consistency",  # G108: Self-consistency vote (AST-majority, no exec) (2026-05-17)
             "nanobrain_direct",
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",

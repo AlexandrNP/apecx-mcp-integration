@@ -71,6 +71,14 @@ class RunResult:
     error_message: str | None = None
     wall_seconds: float = 0.0
     generated_code: str = ""
+    # G100 (2026-05-17): per-problem token usage. Populated by the
+    # runner via tests.benchmarks.token_accountant. When the LLM
+    # endpoint doesn't surface token counts (e.g., some Ollama
+    # configs), counts stay 0 but n_llm_calls is still captured.
+    # Default to 0 so historical result JSONs deserialize cleanly.
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    n_llm_calls: int = 0
 
     @property
     def status(self) -> str:

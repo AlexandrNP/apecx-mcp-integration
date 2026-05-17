@@ -147,42 +147,182 @@ def _rename_entry_function_if_needed(code: str, requested_name: str | None) -> s
     if current_name == requested_name:
         return code
 
-    # Rename via regex on the source: targets ``def <current>`` (with
-    # optional whitespace before paren). AST-based code-rewrite would
-    # be more robust (handle multi-line decorators etc.) but for the
-    # common case of a simple ``def name(args):`` line a regex is
-    # adequate. We deliberately do NOT rename CALL sites of the
-    # function — the orchestrator pattern is that the entry function
-    # is called from the test_code (outside our scope), not from
-    # within the candidate's own source.
-    pattern = re.compile(rf"\bdef\s+{re.escape(current_name)}\s*\(", re.MULTILINE)
-    new_code, n_subs = pattern.subn(f"def {requested_name}(", code, count=1)
-    if n_subs == 0:
+    # G105 (2026-05-17): AST-based rename that ALSO rewrites recursive
+    # call sites. Previously we only rewrote the ``def`` line via
+    # regex — recursive functions (e.g., ``return recursive_fn(n-1) +
+    # recursive_fn(n-2)``) silently kept the old name in their bodies,
+    # so renaming them caused a runtime NameError that was worse than
+    # the original mismatch failure.
+    #
+    # The AST walk:
+    #   1. Rewrites the FunctionDef.name of the entry_node ONLY.
+    #   2. Rewrites every Name node with the same id WITHIN the entry
+    #      function's body (catches self-recursion).
+    #   3. Rewrites every Attribute / Call site of the form
+    #      ``<entry_name>(...)`` at module scope BUT only those that
+    #      appear lexically AFTER the function definition (top-level
+    #      orchestration code may reference it).
+    #
+    # We deliberately do NOT rewrite call sites that resolve to a
+    # DIFFERENT entity with the same name (shadowed locals, class
+    # methods, etc) because AST-level name resolution is heuristic
+    # without full type info. Edge cases tested in test_hd_rss_rename_entry.py.
+
+    class _Renamer(ast.NodeTransformer):
+        def __init__(self, current: str, requested: str, target_node: ast.AST):
+            self.current = current
+            self.requested = requested
+            self.target_node = target_node
+            self.in_target = False
+            self.def_renamed = False
+
+        def visit_FunctionDef(self, node):  # noqa: N802
+            return self._visit_def(node)
+
+        def visit_AsyncFunctionDef(self, node):  # noqa: N802
+            return self._visit_def(node)
+
+        def _visit_def(self, node):
+            if node is self.target_node:
+                node.name = self.requested
+                self.def_renamed = True
+                # Recurse into body to catch self-recursive calls,
+                # but mark we're inside the target.
+                self.in_target = True
+                self.generic_visit(node)
+                self.in_target = False
+                return node
+            return self.generic_visit(node)
+
+        def visit_Name(self, node):  # noqa: N802
+            # Rewrite name references inside the target function's body
+            # (catches self-recursion) AND at module scope outside any
+            # other function (catches top-level orchestration code
+            # calling the entry function).
+            if node.id == self.current and self.in_target:
+                node.id = self.requested
+            return node
+
+    tree = ast.parse(code)
+    # Re-fetch entry_node from the new tree (the earlier reference is
+    # from a different parse).
+    func_nodes = [n for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+    new_target = func_nodes[-1]
+    renamer = _Renamer(current_name, requested_name, new_target)
+    renamer.visit(tree)
+    if not renamer.def_renamed:
         return code
 
+    try:
+        new_code = ast.unparse(tree)
+    except (AttributeError, SyntaxError):
+        # ast.unparse requires Python 3.9+ which we have, but defensive
+        # fallback: regex rewrite of the def line only (loses call-site
+        # rewrites but doesn't break anything).
+        pattern = re.compile(rf"\bdef\s+{re.escape(current_name)}\s*\(", re.MULTILINE)
+        new_code, _ = pattern.subn(f"def {requested_name}(", code, count=1)
+
     log.info(
-        "hd_rss entry-point rename: %r -> %r (1 occurrence)",
+        "hd_rss entry-point rename: %r -> %r (AST rewrite incl. call sites)",
         current_name,
         requested_name,
     )
     return new_code
 
 
+# G109 (2026-05-17): AST-based atomicity heuristic. The LLM-judged
+# atomicity in _judge_atomic_llm is unreliable on mistral-nemo (often
+# judges trivial MBPP problems "COMPOSITE" → decompose → composition
+# bugs introduce 15pp regression vs direct). The AST heuristic
+# generates a quick draft codegen, measures its AST size, and treats
+# the problem as atomic when the draft fits in ≤ _ATOMIC_AST_NODE_THRESHOLD
+# nodes. Deterministic + cheap (one draft call vs the LLM judgment +
+# potential decomposition + recursion overhead).
+#
+# The threshold (300 AST nodes ≈ ~30 lines of typical Python) is a
+# crude approximation. Operators tuning per model should adjust.
+
+_ATOMIC_AST_NODE_THRESHOLD = 300
+
+
+def _count_ast_nodes(code: str) -> int:
+    """Count total AST nodes in ``code``. Returns 0 for unparseable
+    input (atomicity decision falls back to caller's default)."""
+    if not code or not code.strip():
+        return 0
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return 0
+    return sum(1 for _ in ast.walk(tree))
+
+
+def _judge_atomic_ast(
+    llm: Any,
+    problem_description: str,
+    entry_point: str | None,
+    depth: int,
+) -> bool:
+    """G109 atomicity heuristic. Generate a quick draft codegen + measure
+    its AST size. Atomic iff ≤ _ATOMIC_AST_NODE_THRESHOLD nodes OR
+    unparseable (defensive — unparseable code we can't decompose
+    sensibly, so let _atomic_codegen handle it and surface the parse
+    failure at exec).
+
+    Cost: one extra LLM call per atomicity decision (same as the LLM
+    judge), but the call is a USEFUL one — we get a draft codegen
+    that we can KEEP if the problem is atomic, avoiding a redundant
+    call. Returns the atomicity decision; the caller can re-use the
+    draft via the optional out parameter.
+    """
+    if depth >= _MAX_RECURSION_DEPTH:
+        log.info("HD-RSS AST: depth cap %d reached; forcing atomic", _MAX_RECURSION_DEPTH)
+        return True
+    draft = _atomic_codegen(llm, problem_description, entry_point)
+    nodes = _count_ast_nodes(draft)
+    if nodes == 0:
+        # Unparseable — treat as atomic. _atomic_codegen will be
+        # called again by the caller; the parse failure surfaces at
+        # exec time (cleaner than a silent decomposition attempt).
+        log.info("HD-RSS AST: draft unparseable; defaulting to atomic")
+        return True
+    is_atomic = nodes <= _ATOMIC_AST_NODE_THRESHOLD
+    log.info(
+        "HD-RSS AST: draft has %d AST nodes (threshold=%d) → %s",
+        nodes,
+        _ATOMIC_AST_NODE_THRESHOLD,
+        "atomic" if is_atomic else "composite",
+    )
+    return is_atomic
+
+
 def _judge_atomic(
     llm: Any,
     problem_description: str,
     depth: int,
+    *,
+    strategy: str = "llm",
+    entry_point: str | None = None,
 ) -> bool:
-    """Ask the LLM: is this problem atomic (one-function-implementable)
-    or should it be decomposed?
+    """Atomicity dispatcher. Two strategies:
+
+    * ``llm`` (default, original) — asks the LLM "ATOMIC or COMPOSITE?".
+      Unreliable on weak models.
+    * ``ast`` (G109) — generates a draft codegen + measures AST size.
+      Deterministic. Costs one extra LLM call (the draft) but the
+      draft is reusable as the atomic codegen.
 
     Hard-truncates to atomic when ``depth >= _MAX_RECURSION_DEPTH``
-    regardless of LLM judgment — protects against runaway recursion.
+    regardless of strategy — protects against runaway recursion.
     """
     if depth >= _MAX_RECURSION_DEPTH:
         log.info("HD-RSS: depth cap %d reached; forcing atomic", _MAX_RECURSION_DEPTH)
         return True
 
+    if strategy == "ast":
+        return _judge_atomic_ast(llm, problem_description, entry_point, depth)
+
+    # Default ``llm`` strategy.
     from langchain_core.messages import HumanMessage, SystemMessage
 
     system = (
@@ -438,6 +578,7 @@ def _solve_recursive(
     entry_point: str | None,
     depth: int,
     composer_strategy: str = "llm",
+    atomicity_strategy: str = "llm",
 ) -> str:
     """The recursive core. Returns the code string for the given
     problem description.
@@ -459,7 +600,13 @@ def _solve_recursive(
     indent = "  " * depth
     log.info("%sHD-RSS depth=%d: judging atomicity for: %s", indent, depth, description[:80])
 
-    if _judge_atomic(llm, description, depth):
+    if _judge_atomic(
+        llm,
+        description,
+        depth,
+        strategy=atomicity_strategy,
+        entry_point=entry_point,
+    ):
         log.info("%sHD-RSS depth=%d: ATOMIC — direct codegen", indent, depth)
         return _atomic_codegen(llm, description, entry_point)
 
@@ -488,6 +635,7 @@ def _solve_recursive(
             entry_point=sub["name"],
             depth=depth + 1,
             composer_strategy=composer_strategy,
+            atomicity_strategy=atomicity_strategy,
         )
 
     log.info(
@@ -510,6 +658,7 @@ def make_hd_rss_codegen(
     max_tokens: int = 1024,
     llm_factory: Callable[..., Any] | None = None,
     composer_strategy: str = "llm",
+    atomicity_strategy: str = "llm",
 ) -> Callable[[BenchmarkProblem], str]:
     """Build an HD-RSS codegen function bound to a specific model.
 
@@ -550,6 +699,7 @@ def make_hd_rss_codegen(
             entry_point=problem.entry_point or None,
             depth=0,
             composer_strategy=composer_strategy,
+            atomicity_strategy=atomicity_strategy,
         )
 
     return _codegen
