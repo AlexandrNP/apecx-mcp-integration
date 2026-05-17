@@ -205,12 +205,19 @@ def _compose(
     subsolutions: list[dict[str, str]],
     parent_entry_point: str | None,
 ) -> str:
-    """Compose subsolutions into a final top-level function.
+    """Compose subsolutions into a final top-level function (LLM composer).
 
     The composer LLM call sees: the original problem statement, each
     sub-function's code (already generated recursively), and the
     expected top-level entry point. It writes the top-level function
-    that orchestrates the subs.
+    that orchestrates the subs AND re-emits the helpers verbatim.
+
+    Known failure mode (per G101): on weak LLMs (mistral-nemo) the
+    composer drops helper definitions while still referencing them,
+    yielding NameError at runtime. ``_compose_templated`` below
+    eliminates this failure mode by concatenating helpers
+    deterministically and asking the LLM to write ONLY the top-level
+    function — see G102.
     """
     from langchain_core.messages import HumanMessage, SystemMessage
 
@@ -239,11 +246,103 @@ def _compose(
     return _extract_code(response.content)
 
 
+def _compose_templated(
+    llm: Any,
+    original_problem: str,
+    subsolutions: list[dict[str, str]],
+    parent_entry_point: str | None,
+) -> str:
+    """Compose subsolutions via deterministic helper-concat + LLM glue (G102).
+
+    Trade-off vs ``_compose`` (LLM composer):
+      * Helpers are guaranteed present (concatenated verbatim by the
+        codegen wrapper, not re-emitted by the LLM). Eliminates the
+        17 MBPP NameErrors + 4 nbnative AttributeErrors that G101
+        identified as the LLM composer's distinctive failure mode.
+      * The LLM's surface area shrinks: it writes ONE function (the
+        orchestrator) instead of ONE function + N re-emitted helpers.
+        Smaller surface → fewer chances to drop or rename a helper.
+      * Cost: same number of LLM calls per problem as ``_compose``
+        (one); but each call's prompt + response is smaller because
+        the helpers aren't being re-emitted.
+
+    The LLM is told:
+      * Here are the names + signatures + (implicit) bodies of the
+        pre-defined helpers.
+      * Write ONLY ``def <parent>(...)`` that calls these helpers.
+      * Do NOT redefine any helper.
+
+    The wrapper then prepends the helper bodies + appends the LLM's
+    output. Result: helpers always defined; orchestrator is the
+    LLM's only contribution.
+
+    Honest scope limitations:
+      * The LLM still has to figure out the correct CALL pattern
+        (which helper to call with what args, in what order). If the
+        decomposition produced helpers that don't naturally compose
+        for the problem, the LLM's orchestrator will be wrong — that
+        manifests as AssertionError, not NameError. So we've shifted
+        the failure mode from "name missing" to "wrong logic",
+        which is at least debuggable.
+      * The helper bodies are NOT shown in the LLM prompt — only
+        the names + a one-line description (the original subgoal
+        description). This further shrinks the prompt but means the
+        LLM has to trust the helper signatures.
+    """
+    from langchain_core.messages import HumanMessage, SystemMessage
+
+    # Build a short helper INDEX (name + description) for the LLM —
+    # not the full bodies. Bodies will be concatenated in by the
+    # wrapper, not seen by the LLM.
+    helper_index_lines: list[str] = []
+    for sub in subsolutions:
+        desc = sub.get("description", "").strip().replace("\n", " ")
+        # Truncate very long descriptions for prompt economy.
+        if len(desc) > 200:
+            desc = desc[:200] + "..."
+        helper_index_lines.append(f"- ``{sub['name']}`` — {desc}")
+    helper_index = "\n".join(helper_index_lines)
+
+    system = (
+        "You write ONE Python function that orchestrates pre-defined "
+        "helper functions to solve the original problem. The helpers "
+        "are ALREADY defined and will be available in the same module. "
+        "DO NOT redefine them. Output ONLY the top-level function "
+        "definition, in a single ```python fenced block. No prose, "
+        "no helper definitions, no import statements."
+    )
+    user_parts = [
+        f"Original problem:\n{original_problem.strip()}",
+        f"Available helpers (already defined; call them by name):\n{helper_index}",
+    ]
+    if parent_entry_point:
+        user_parts.append(
+            f"Top-level function name: ``{parent_entry_point}``. Output: "
+            f"just ``def {parent_entry_point}(...):`` and its body."
+        )
+    else:
+        user_parts.append(
+            "Top-level function name: pick a sensible one. Output: just the ``def`` and its body."
+        )
+
+    response = llm.invoke(
+        [SystemMessage(content=system), HumanMessage(content="\n\n".join(user_parts))]
+    )
+    orchestrator_code = _extract_code(response.content)
+
+    # Deterministic assembly: helpers (verbatim) + orchestrator.
+    helper_bodies = "\n\n".join(sub["code"].rstrip() for sub in subsolutions)
+    if helper_bodies:
+        return f"{helper_bodies}\n\n{orchestrator_code}"
+    return orchestrator_code
+
+
 def _solve_recursive(
     llm: Any,
     description: str,
     entry_point: str | None,
     depth: int,
+    composer_strategy: str = "llm",
 ) -> str:
     """The recursive core. Returns the code string for the given
     problem description.
@@ -252,6 +351,15 @@ def _solve_recursive(
       * Hard depth cap forces atomic at depth ``_MAX_RECURSION_DEPTH``.
       * Per-level subgoal cap of 4 bounds branching factor.
       * Worst-case calls: 4^3 + 4^2 + 4 = 84 LLM calls at max depth.
+
+    ``composer_strategy`` (G102):
+      * ``"llm"`` (default, original HD-RSS) — LLM composer re-emits
+        helpers + writes orchestrator. Surfaces NameError on weak
+        models when the LLM drops a helper definition.
+      * ``"templated"`` — deterministic helper concat + LLM-written
+        orchestrator only. Eliminates NameErrors at the cost of
+        shifting the failure mode toward "wrong orchestrator logic"
+        (which manifests as AssertionError).
     """
     indent = "  " * depth
     log.info("%sHD-RSS depth=%d: judging atomicity for: %s", indent, depth, description[:80])
@@ -284,9 +392,18 @@ def _solve_recursive(
             description=sub["description"],
             entry_point=sub["name"],
             depth=depth + 1,
+            composer_strategy=composer_strategy,
         )
 
-    log.info("%sHD-RSS depth=%d: composing %d subsolutions", indent, depth, len(subgoals))
+    log.info(
+        "%sHD-RSS depth=%d: composing %d subsolutions via %s",
+        indent,
+        depth,
+        len(subgoals),
+        composer_strategy,
+    )
+    if composer_strategy == "templated":
+        return _compose_templated(llm, description, subgoals, entry_point)
     return _compose(llm, description, subgoals, entry_point)
 
 
@@ -297,6 +414,7 @@ def make_hd_rss_codegen(
     temperature: float = 0.0,
     max_tokens: int = 1024,
     llm_factory: Callable[..., Any] | None = None,
+    composer_strategy: str = "llm",
 ) -> Callable[[BenchmarkProblem], str]:
     """Build an HD-RSS codegen function bound to a specific model.
 
@@ -336,6 +454,7 @@ def make_hd_rss_codegen(
             description=problem.prompt,
             entry_point=problem.entry_point or None,
             depth=0,
+            composer_strategy=composer_strategy,
         )
 
     return _codegen

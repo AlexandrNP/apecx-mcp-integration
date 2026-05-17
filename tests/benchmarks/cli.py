@@ -128,6 +128,26 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         from tests.benchmarks.codegen.tdr_yaml import make_tdr_yaml_codegen  # noqa: PLC0415
 
         return make_tdr_yaml_codegen(model=model, base_url=base_url)
+    if name == "hd_rss_v2":
+        # G102 (2026-05-17): HD-RSS with templated composer.
+        # Helpers concatenated deterministically; LLM writes ONLY the
+        # top-level orchestrator. Targets the 17 MBPP NameErrors +
+        # 4 nbnative AttributeErrors that G101 identified as the LLM
+        # composer's distinctive failure mode. Same recursion depth +
+        # subgoal cap + cost characteristics as `hd_rss`; the only
+        # difference is the composer.
+        from tests.benchmarks.codegen.hd_rss import make_hd_rss_codegen  # noqa: PLC0415
+
+        return make_hd_rss_codegen(model=model, base_url=base_url, composer_strategy="templated")
+    if name == "best_of_n":
+        # G103 (2026-05-17): Best-of-N direct. Generate N independent
+        # samples with non-zero temperature; return the first that
+        # passes test_code in the sandbox, or the last if all fail.
+        # Different mechanism from TDR: sampling diversity (no
+        # revision) vs execution-feedback revision. Cost ~N× direct.
+        from tests.benchmarks.codegen.best_of_n import make_best_of_n_codegen  # noqa: PLC0415
+
+        return make_best_of_n_codegen(model=model, base_url=base_url)
     if name == "nanobrain_direct":
         # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
         from pathlib import Path  # noqa: PLC0415
@@ -589,6 +609,8 @@ def main() -> int:
             "tdr",  # G93: Test-Driven Recursive Refinement (2026-05-17)
             "hd_rss",  # G98: Hierarchical Decomposition with Recursive Subgoal Solving (2026-05-17)
             "tdr_yaml",  # G99: TDR as framework-native YAML workflow (2026-05-17)
+            "hd_rss_v2",  # G102: HD-RSS with templated composer (2026-05-17)
+            "best_of_n",  # G103: Best-of-N direct (consensus sampling) (2026-05-17)
             "nanobrain_direct",
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",
