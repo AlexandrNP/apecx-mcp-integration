@@ -1,0 +1,121 @@
+# Best-of-N as a framework-native YAML workflow (G104, 2026-05-17).
+#
+# Same cycle topology as the G99 TDR workflow — DirectLink for
+# initial input + ConditionalLink branching on exec_succeeded +
+# LoopController back-edge + ConditionalLink emission on either
+# exec_succeeded (early short-circuit) or loop_exhausted (escalate).
+#
+# The ONLY difference from the TDR workflow is the iteration step's
+# config: ``mode: best_of_n`` (no previous_attempt + critique context
+# carried forward) and the writer's temperature is 0.4 (sampling
+# diversity is the whole point — at temp=0 samples would be
+# identical and the loop would add zero value).
+#
+# This file is a real demonstration of "same framework primitives,
+# different reasoning pattern via config tweak alone". The Python
+# TDR codegen + Python best_of_n codegen need two separate modules;
+# the framework-native versions share ONE iteration Step class
+# (TdrIterationStep with mode flag) and ONE cycle topology.
+#
+# Cycle: best_of_n_iter → loop_gate → best_of_n_iter (back-edge
+# through LoopController; allowed by G18 Step 2 validator extension).
+
+name: best_of_n_workflow
+description: >
+  Best-of-N codegen as a framework-native nanobrain workflow.
+  Three independent samples at non-zero temperature; first that
+  passes test_code wins (short-circuit ConditionalLink); else
+  escalate the last failed sample (loop_exhausted ConditionalLink).
+  Same cycle topology as G99 tdr_refine_workflow; the difference
+  is the iteration step's mode (best_of_n vs tdr).
+version: "1.0.0"
+config_version: 2
+
+allow_cycles: false
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Initial envelope: {code_spec, function_name, function_signature?,
+      test_code, entrypoint?}. test_code is REQUIRED — best-of-N's
+      ranking signal is the execution oracle.
+    persistent: false
+
+output_data_units:
+  final_code:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: final_code
+    description: >
+      Final envelope. Either a sample whose exec_succeeded=true
+      (short-circuit path) or the last failed attempt (loop-
+      exhausted path). Consumer reads code_source + exec_succeeded
+      to know the outcome.
+    persistent: false
+
+steps:
+  best_of_n_iter:
+    class: "apecx_integration.composition.steps.tdr_iteration_step.TdrIterationStep"
+    config: "steps/best_of_n_iteration.yml"
+
+  loop_gate:
+    class: "nanobrain.library.steps.loop_controller.LoopController"
+    config: "steps/loop_gate.yml"
+
+links:
+  input_to_iter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "workflow_input"
+      target: "best_of_n_iter.best_of_n_iter_input"
+      auto_transfer: true
+
+  iter_to_final_pass:
+    # exec_succeeded=true → emit immediately (this sample won).
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "best_of_n_iter.best_of_n_iter_output"
+      target: "final_code"
+      condition: {op: eq, field: exec_succeeded, value: true}
+      auto_transfer: true
+
+  iter_to_loop_gate:
+    # exec_succeeded=false → next sample.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "best_of_n_iter.best_of_n_iter_output"
+      target: "loop_gate.loop_gate_input"
+      condition: {op: eq, field: exec_succeeded, value: false}
+      auto_transfer: true
+
+  loop_continue_to_iter:
+    # allow_continue=true → BACK-EDGE; sample again.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "loop_gate.loop_gate_output"
+      target: "best_of_n_iter.best_of_n_iter_input"
+      condition: {op: eq, field: allow_continue, value: true}
+      auto_transfer: true
+
+  loop_exhausted_to_final:
+    # loop_exhausted=true → emit last failed sample so runner records
+    # the real failure class.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "loop_gate.loop_gate_output"
+      target: "final_code"
+      condition: {op: eq, field: loop_exhausted, value: true}
+      auto_transfer: true
+
+execution:
+  # 3 samples × ~30s per sample (1 LLM + 1 subprocess) ≈ 100s, with
+  # generous headroom for trigger overhead + variance.
+  timeout: 300
+  retry_attempts: 0
+  parallel_execution: false

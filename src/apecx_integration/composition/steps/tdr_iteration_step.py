@@ -100,12 +100,37 @@ class TdrIterationStepConfig(StepConfig):
         ),
     )
 
+    mode: str = Field(
+        default="tdr",
+        description=(
+            "Iteration mode. ``tdr`` (default) passes previous_attempt + "
+            "critique to the writer on revision iterations — the canonical "
+            "Test-Driven Refinement loop. ``best_of_n`` generates each "
+            "iteration FRESH (no revision context, no critique) — same "
+            "topology but the iterations are independent samples instead "
+            "of refined revisions. The downstream ConditionalLink logic "
+            "(short-circuit on exec_succeeded, escalate on loop_exhausted) "
+            "is identical for both modes — the difference is purely in "
+            "what each iteration's writer call sees as input. "
+            "G104 (2026-05-17): added to support framework-native best-of-N "
+            "via the same cycle topology as TDR."
+        ),
+    )
+
     @model_validator(mode="before")
     @classmethod
     def _strip_framework_keys(cls, data: Any) -> Any:
         if isinstance(data, dict):
             data.pop("class", None)
         return data
+
+    @model_validator(mode="after")
+    def _validate_mode(self) -> TdrIterationStepConfig:
+        if self.mode not in ("tdr", "best_of_n"):
+            raise ValueError(
+                f"TdrIterationStep mode must be 'tdr' or 'best_of_n', got {self.mode!r}"
+            )
+        return self
 
 
 class TdrIterationStep(BaseStep):
@@ -170,6 +195,7 @@ class TdrIterationStep(BaseStep):
             **base,
             "writer_config_path": config.writer_config_path,
             "executor_config_path": config.executor_config_path,
+            "mode": config.mode,
             "source_path": getattr(config, "source_path", None),
         }
 
@@ -193,6 +219,12 @@ class TdrIterationStep(BaseStep):
         self._writer: CodeWriteStep = CodeWriteStep.from_config(str(writer_path))
         self._executor: IsolatedPyExecStep = IsolatedPyExecStep.from_config(str(executor_path))
 
+        # G104: ``mode`` controls whether iterations carry forward
+        # previous_attempt + critique (tdr) or generate fresh samples
+        # (best_of_n). Cached on the instance for the process() loop
+        # to read without re-resolving the config.
+        self._mode: str = component_config.get("mode", "tdr")
+
     @staticmethod
     def _resolve_sibling_path(configured: str, source_path: str | None) -> Path:
         p = Path(configured)
@@ -209,19 +241,28 @@ class TdrIterationStep(BaseStep):
                 f"got {type(input_data).__name__}"
             )
 
-        # Framework trigger envelope unwrap (per CodeWriteStep precedent):
-        # when invoked through the data-driven trigger cascade the step
-        # sees ``{tdr_iter_input: <actual payload>}`` rather than the
-        # raw payload. Detect + unwrap. Direct ``.process()`` calls (e.g.
-        # from a test) pass the raw envelope and bypass this branch.
+        # Framework trigger envelope unwrap (per CodeWriteStep + G99
+        # LoopController precedent): when invoked through the
+        # data-driven trigger cascade the step sees
+        # ``{<input_data_unit_name>: <actual payload>}``. Detect + unwrap.
+        # We consult ``self.step_input_data_units`` so the unwrap works
+        # for ANY input data unit name (G104: needed because the
+        # best_of_n_loop workflow uses ``best_of_n_iter_input`` while
+        # the TDR workflow uses ``tdr_iter_input``). Direct ``.process()``
+        # calls (e.g. from a test) pass the raw envelope and bypass
+        # this branch.
         if (
-            "tdr_iter_input" in input_data
-            and isinstance(input_data["tdr_iter_input"], dict)
+            isinstance(input_data, dict)
+            and len(input_data) == 1
             and "code_spec" not in input_data
             and "payload" not in input_data
             and "allow_continue" not in input_data
         ):
-            input_data = input_data["tdr_iter_input"]
+            single_key = next(iter(input_data))
+            single_val = input_data[single_key]
+            input_units = getattr(self, "step_input_data_units", {}) or {}
+            if single_key in input_units and isinstance(single_val, dict):
+                input_data = single_val
 
         envelope, prior_iteration = self._unwrap_envelope(input_data)
 
@@ -246,7 +287,12 @@ class TdrIterationStep(BaseStep):
             "function_name": envelope.get("function_name"),
             "function_signature": envelope.get("function_signature"),
         }
-        if prior_iteration > 0:
+        # G104: revision-mode context (previous_attempt + critique) is
+        # ONLY set when mode == "tdr". In "best_of_n" mode the
+        # iterations are independent samples — no context carryover.
+        # The downstream cycle topology is identical either way; only
+        # the writer's prompt shape differs.
+        if self._mode == "tdr" and prior_iteration > 0:
             writer_input["previous_attempt"] = envelope.get("code_source")
             writer_input["critique"] = envelope.get("critique")
 

@@ -1,0 +1,39 @@
+# LoopController wrapper — bounds the best-of-N sample count.
+#
+# Same framework primitive as the TDR workflow's loop_gate; the only
+# different is intent: in best_of_n mode this caps the NUMBER OF
+# INDEPENDENT SAMPLES rather than the NUMBER OF REVISION ITERATIONS.
+# Three samples is the same default as the Python best_of_n codegen
+# (tests/benchmarks/codegen/best_of_n.py).
+
+class: "nanobrain.library.steps.loop_controller.LoopController"
+name: best_of_n_loop_gate
+description: "Sample bound for best-of-N loop (max 3 samples)."
+
+max_iterations: 3
+
+input_data_units:
+  loop_gate_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: loop_gate_input
+    description: >
+      The envelope from a failed sample (exec_succeeded=false). The
+      controller passes it through under ``payload`` so the back-edge
+      can re-feed the iteration step with the persistent context
+      (code_spec, function_name, test_code, entrypoint).
+    persistent: false
+
+output_data_units:
+  loop_gate_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: loop_gate_output
+    description: >
+      Controller envelope: {allow_continue, loop_exhausted, iteration,
+      max_iterations, payload}. Two downstream ConditionalLinks
+      predicate on allow_continue (back-edge to sample again) vs
+      loop_exhausted (emit-final with last failed sample).
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "loop_gate_input"

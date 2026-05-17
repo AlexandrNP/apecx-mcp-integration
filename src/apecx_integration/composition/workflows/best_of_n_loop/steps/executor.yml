@@ -1,0 +1,29 @@
+# IsolatedPyExecStep config used INTERNALLY by TdrIterationStep in
+# best_of_n mode. Same shape + opt-in gate (APECX_CODE_EXEC=1) as
+# the TDR variant — execution is the oracle that decides which
+# sample wins.
+
+class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
+name: best_of_n_internal_executor
+description: "Internal IsolatedPyExecStep used by TdrIterationStep in best_of_n mode."
+
+timeout_seconds: 30.0
+raise_on_nonzero_returncode: false
+
+input_data_units:
+  exec_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_input
+    description: "Inert — TdrIterationStep calls process() directly."
+    persistent: false
+
+output_data_units:
+  exec_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_output
+    description: "Inert — TdrIterationStep reads the process() return value directly."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "exec_input"

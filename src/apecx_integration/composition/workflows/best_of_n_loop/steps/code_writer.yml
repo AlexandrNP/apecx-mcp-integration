@@ -1,0 +1,38 @@
+# CodeWriteStep config used INTERNALLY by TdrIterationStep in
+# best_of_n mode (G104). Higher temperature than the TDR variant —
+# the whole point of best-of-N is sampling diversity. At temp=0 each
+# sample would be identical and the loop adds zero value.
+#
+# The wrapper is referenced from steps/best_of_n_iteration.yml's
+# ``writer_config_path``. As in the TDR variant, the input/output
+# data units + triggers below are inert (Step composition pattern;
+# the calling Step invokes process() directly).
+
+class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+name: best_of_n_internal_writer
+description: "Internal CodeWriteStep used by TdrIterationStep in best_of_n mode."
+
+# Temperature 0.4 — empirically a balance between "samples too
+# similar" (low temp) and "samples are garbage" (high temp).
+# Operators can tune per model.
+temperature: 0.4
+max_tokens: 1024
+require_function_name: true
+
+input_data_units:
+  code_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_write_input
+    description: "Inert — TdrIterationStep calls process() directly."
+    persistent: false
+
+output_data_units:
+  code_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_write_output
+    description: "Inert — TdrIterationStep reads the process() return value directly."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_write_input"

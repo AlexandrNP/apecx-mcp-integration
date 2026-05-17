@@ -148,6 +148,19 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         from tests.benchmarks.codegen.best_of_n import make_best_of_n_codegen  # noqa: PLC0415
 
         return make_best_of_n_codegen(model=model, base_url=base_url)
+    if name == "best_of_n_yaml":
+        # G104 (2026-05-17): Best-of-N as a framework-native nanobrain
+        # workflow. Same cycle topology as G99 tdr_refine_workflow;
+        # the iteration step's ``mode: best_of_n`` config switches it
+        # from "carry forward previous_attempt + critique" (TDR) to
+        # "fresh independent sample" (best-of-N). Demonstrates that
+        # one cycle topology supports multiple reasoning patterns via
+        # config tweak alone.
+        from tests.benchmarks.codegen.best_of_n_yaml import (  # noqa: PLC0415
+            make_best_of_n_yaml_codegen,
+        )
+
+        return make_best_of_n_yaml_codegen(model=model, base_url=base_url)
     if name == "nanobrain_direct":
         # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
         from pathlib import Path  # noqa: PLC0415
@@ -611,6 +624,7 @@ def main() -> int:
             "tdr_yaml",  # G99: TDR as framework-native YAML workflow (2026-05-17)
             "hd_rss_v2",  # G102: HD-RSS with templated composer (2026-05-17)
             "best_of_n",  # G103: Best-of-N direct (consensus sampling) (2026-05-17)
+            "best_of_n_yaml",  # G104: Best-of-N as framework-native YAML workflow (2026-05-17)
             "nanobrain_direct",
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",

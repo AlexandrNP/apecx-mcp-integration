@@ -1,0 +1,46 @@
+# TdrIterationStep in best_of_n MODE (G104).
+#
+# Same Step class as the TDR workflow's tdr_iter, but with
+# ``mode: best_of_n`` set so each iteration generates a FRESH
+# sample without previous_attempt + critique context. The
+# downstream ConditionalLink topology is identical to the TDR
+# workflow (short-circuit on exec_succeeded; route to loop_gate
+# on fail) — what changes is the writer prompt shape.
+#
+# Operators tuning sample count edit steps/loop_gate.yml's
+# max_iterations; tuning sample diversity edits steps/code_writer.yml's
+# temperature.
+
+class: "apecx_integration.composition.steps.tdr_iteration_step.TdrIterationStep"
+name: best_of_n_iter
+description: "One sample of best-of-N (fresh write + exec; no revision context)."
+
+mode: "best_of_n"
+
+# Relative paths — resolved against THIS YAML's directory by
+# TdrIterationStep._resolve_sibling_path.
+writer_config_path: "code_writer.yml"
+executor_config_path: "executor.yml"
+
+input_data_units:
+  best_of_n_iter_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: best_of_n_iter_input
+    description: >
+      Envelope dict. Same shape as the TDR iteration input. Note:
+      previous_attempt + critique fields are IGNORED in best_of_n
+      mode — each iteration is a fresh sample.
+    persistent: false
+
+output_data_units:
+  best_of_n_iter_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: best_of_n_iter_output
+    description: >
+      Same envelope shape as TdrIterationStep emits in tdr mode.
+      Downstream ConditionalLink predicates on exec_succeeded.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "best_of_n_iter_input"
