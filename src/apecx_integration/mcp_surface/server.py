@@ -198,6 +198,33 @@ def build_server() -> FastMCP:
     # probe-only mode (read on first construction inside
     # ``get_orchestrator``); ``start_all`` still runs so the probes
     # populate state, but no ``docker run`` / ``Popen`` is invoked.
+    # G88 (2026-05-16): auto-discover the Rhea checkout + apply
+    # platform-aware defaults to any unset RHEA_* env vars BEFORE the
+    # orchestrator starts. The orchestrator's existing rhea_mcp
+    # auto-spawn logic engages only when RHEA_REPO_PATH +
+    # RHEA_PYTHON_PATH are populated; pre-G88 that was operator-only.
+    # With this hook, an operator who has the rhea checkout next to
+    # apecx-mcp-integration (the standard workspace layout) and ran
+    # `apecx-setup rhea` once gets rhea-server auto-started here.
+    # Opt out via APECX_RHEA_AUTODISCOVER=0.
+    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
+        autodiscover_rhea_env,
+        autodiscovery_enabled,
+    )
+
+    if autodiscovery_enabled():
+        discovered = autodiscover_rhea_env()
+        if discovered:
+            log.info(
+                "MCP startup: rhea env autodiscovery set %d var(s): %s",
+                len(discovered),
+                sorted(discovered.keys()),
+            )
+        else:
+            log.debug(
+                "MCP startup: rhea env autodiscovery — no changes (operator pre-set or no rhea repo found)"
+            )
+
     from apecx_integration.infrastructure.orchestrator import (
         start_orchestrator_in_background_thread,
     )

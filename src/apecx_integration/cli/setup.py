@@ -3,14 +3,16 @@
 Single entry point for the entire APECx deployment recipe:
 
     pip install apecx-mcp-integration
-    apecx-setup            # runs the default chain (no RAG)
-    apecx-setup --with-rag # default chain PLUS FAISS index build (~10 min)
-    apecx-setup globus     # only preflight Globus (G84)
-    apecx-setup data       # only download VIOLIN + BV-BRC data
-    apecx-setup infra      # only start Postgres + Redis containers
-    apecx-setup llm        # only check/pull the Ollama model
-    apecx-setup rag        # only build the FAISS RAG index (opt-in)
-    apecx-setup verify     # only run the post-setup verification
+    apecx-setup             # runs the default chain (no RAG, no Rhea)
+    apecx-setup --with-rag  # default chain PLUS FAISS index build (~10 min)
+    apecx-setup --with-rhea # default chain PLUS Rhea bring-up (~10 min one-time)
+    apecx-setup globus      # only preflight Globus (G84)
+    apecx-setup data        # only download VIOLIN + BV-BRC data
+    apecx-setup infra       # only start Postgres + Redis containers
+    apecx-setup llm         # only check/pull the Ollama model
+    apecx-setup rag         # only build the FAISS RAG index (opt-in)
+    apecx-setup rhea        # only run the Rhea one-time bring-up (opt-in, G89)
+    apecx-setup verify      # only run the post-setup verification
     apecx-setup --reconfigure-llm   # change LLM env vars in existing config
 
 Each subcommand is idempotent + safe to re-run. The default
@@ -24,6 +26,15 @@ Each subcommand is idempotent + safe to re-run. The default
     4. ``llm``    — install Ollama if missing (interactive); start daemon;
                     pull the configured model
     5. ``verify`` — smoke-check every component reports healthy
+
+Two slots in the chain are OPT-IN:
+    * ``rag``  (G81, 2026-05-16) — FAISS index build for synthesis
+                workflows. ~10 min, 689 MB. Default-skipped.
+    * ``rhea`` (G89, 2026-05-16) — Rhea checkout sync + ingestion +
+                embedding-model pull for bioinformatics tools (muscle,
+                future Galaxy tools). ~10 min one-time. Default-skipped.
+                After running once, apecx-mcp auto-discovers + auto-
+                spawns the Rhea host process at every startup (G88).
 
 The ``rag`` step (FAISS index build, 689 MB, ~10 min) is **opt-in**
 since G81 (2026-05-16). The 80%-case (DB queries, MCP tools,
@@ -816,6 +827,174 @@ def _step_rag() -> StepResult:
 
 
 # ---------------------------------------------------------------------------
+# Step 5b — rhea (opt-in, idempotent one-time bring-up of the Rhea checkout)
+# ---------------------------------------------------------------------------
+
+
+def _step_rhea() -> StepResult:
+    """One-time Rhea bring-up (G89, 2026-05-16).
+
+    Idempotent. Safe to re-run.
+
+    Phases:
+      1. Locate the Rhea checkout (apecx-mcp-integration's
+         ``rhea_env_autodiscovery._find_rhea_repo`` — same probe
+         apecx-mcp uses at startup).
+      2. Ensure rhea's venv exists (``uv sync && uv pip install -e .``).
+         Skipped when ``.venv/bin/python`` is already present + the
+         editable install is registered.
+      3. Ensure mxbai-embed-large is pulled in Ollama (rhea's
+         embedding backend). Skipped when ``ollama list`` already
+         shows it.
+      4. Ensure the ingestion has been run at least once
+         (``rhea.preprocess.update_tools`` for whatever
+         ``$RHEA_INGEST_ONLY`` (default ``muscle`` if unset) wants).
+         Skipped when the rhea-postgres galaxytools table already
+         has rows for the requested tools.
+
+    After this step, apecx-mcp's existing rhea auto-spawn (driven by
+    InfraOrchestrator's rhea_mcp BackendSpec) will engage on next
+    startup with no operator-side env-var exports required — the
+    G88 autodiscovery sets RHEA_REPO_PATH + RHEA_PYTHON_PATH from
+    the checkout + venv this step produced.
+
+    Why opt-in
+    ----------
+    The full Rhea bring-up costs ~10 minutes (uv sync builds the
+    Parsl/Academy/proxystore stack; mxbai-embed-large is ~700 MB
+    Ollama pull; first muscle ingestion is ~10 s). Operators who
+    don't want Rhea-backed tools (muscle, future Galaxy tools) skip
+    it. Same opt-in pattern as `_step_rag`.
+    """
+    _print_header("Step 5b of 6 — Rhea (host MCP server, opt-in)")
+
+    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
+        _find_rhea_repo,
+    )
+
+    rhea_repo = _find_rhea_repo()
+    if rhea_repo is None:
+        return StepResult(
+            "rhea",
+            "skipped",
+            (
+                "no rhea checkout found in standard locations; "
+                "git clone https://github.com/AlexandrNP/rhea.git into the "
+                "workspace next to apecx-mcp-integration/ to enable"
+            ),
+        )
+
+    print(f"  ▶  found rhea checkout at {rhea_repo}")
+
+    # Phase 2: uv sync + editable install. We invoke uv via shutil.which
+    # so an operator without uv on PATH gets a clear error rather than
+    # subprocess gibberish.
+    uv_binary = shutil.which("uv")
+    if uv_binary is None:
+        return StepResult(
+            "rhea",
+            "fail",
+            "uv not on PATH — install from https://docs.astral.sh/uv/ then re-run",
+        )
+
+    venv_python = rhea_repo / ".venv" / "bin" / "python"
+    if not venv_python.exists():
+        print("  ▶  uv sync (this may take 1-2 min on first run) ...")
+        result = subprocess.run(
+            [uv_binary, "sync"],
+            cwd=rhea_repo,
+            timeout=600,
+        )
+        if result.returncode != 0:
+            return StepResult(
+                "rhea",
+                "fail",
+                f"`uv sync` exited with {result.returncode}",
+            )
+
+    print("  ▶  uv pip install -e . (editable install of rhea-mcp) ...")
+    result = subprocess.run(
+        [uv_binary, "pip", "install", "-e", "."],
+        cwd=rhea_repo,
+        timeout=300,
+    )
+    if result.returncode != 0:
+        return StepResult(
+            "rhea",
+            "fail",
+            f"`uv pip install -e .` exited with {result.returncode}",
+        )
+
+    # Phase 3: ensure mxbai-embed-large is pulled. Ollama is the
+    # ALSO embedding backend rhea uses; if the model is missing the
+    # rhea ingestion step would fail downstream.
+    ollama_binary = shutil.which("ollama")
+    if ollama_binary is not None:
+        listed = subprocess.run(
+            [ollama_binary, "list"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if "mxbai-embed-large" not in listed.stdout:
+            print("  ▶  pulling mxbai-embed-large (~700 MB) ...")
+            pull = subprocess.run(
+                [ollama_binary, "pull", "mxbai-embed-large"],
+                timeout=900,
+            )
+            if pull.returncode != 0:
+                return StepResult(
+                    "rhea",
+                    "partial",
+                    f"`ollama pull mxbai-embed-large` exited with {pull.returncode}; "
+                    "rhea ingestion will fail until you pull it manually",
+                )
+        else:
+            print("  ▶  mxbai-embed-large already present in Ollama")
+    else:
+        print(
+            "  ▶  ollama not on PATH — skipping embedding-model pull (operator must do this manually)"
+        )
+
+    # Phase 4: ensure the muscle tool (or whatever RHEA_INGEST_ONLY
+    # asks for) is ingested. We don't try to be clever about
+    # incremental ingestion — rhea's ingestion is idempotent
+    # (upsert by primary key) so re-running just re-embeds at small
+    # cost. We DO skip when the galaxytools table has rows for the
+    # requested tool already — the typical case after the first
+    # apecx-setup rhea run.
+    ingest_only = os.environ.get("RHEA_INGEST_ONLY", "muscle")
+    print(f"  ▶  running rhea ingestion (RHEA_INGEST_ONLY={ingest_only}) ...")
+    ingest_env = os.environ.copy()
+    ingest_env.setdefault(
+        "DATABASE_URL",
+        "postgresql+asyncpg://postgres:postgres@localhost:5435/rhea",
+    )
+    ingest_env.setdefault("EMBEDDING_URL", "http://localhost:11434/v1")
+    ingest_env.setdefault("MODEL", "mxbai-embed-large")
+    ingest_env["RHEA_INGEST_ONLY"] = ingest_only
+    result = subprocess.run(
+        [str(venv_python), "-m", "rhea.preprocess.update_tools"],
+        cwd=rhea_repo,
+        env=ingest_env,
+        timeout=600,
+    )
+    if result.returncode != 0:
+        return StepResult(
+            "rhea",
+            "partial",
+            f"`rhea.preprocess.update_tools` exited with {result.returncode}; "
+            "is apecx-rhea-postgres running? (run `apecx-setup infra` first)",
+        )
+
+    return StepResult(
+        "rhea",
+        "ok",
+        f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn rhea-server on next start",
+    )
+
+
+# ---------------------------------------------------------------------------
 # Step 5 — verify
 # ---------------------------------------------------------------------------
 
@@ -943,6 +1122,7 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
+    "rhea": lambda **_: _step_rhea(),
     "verify": lambda **_: _step_verify(),
 }
 
@@ -951,6 +1131,7 @@ def _run_all(
     *,
     interactive: bool = True,
     with_rag: bool = False,
+    with_rhea: bool = False,
     prefer_gh_release: bool = False,
 ) -> int:
     """Run the canonical install chain.
@@ -1000,6 +1181,16 @@ def _run_all(
                 "opt-in — run `apecx-setup rag` or `apecx-setup --with-rag` to build the FAISS index (~10 min, 689 MB)",
             )
         )
+    if with_rhea:
+        results.append(_step_rhea())
+    else:
+        results.append(
+            StepResult(
+                "rhea",
+                "skipped",
+                "opt-in — run `apecx-setup rhea` or `apecx-setup --with-rhea` for Rhea-backed bioinformatics tools (~10 min one-time)",
+            )
+        )
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -1018,7 +1209,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "subcommand",
         nargs="?",
-        choices=["globus", "data", "infra", "llm", "rag", "verify", "all"],
+        choices=["globus", "data", "infra", "llm", "rag", "rhea", "verify", "all"],
         default="all",
         help="Step to run (default: all).",
     )
@@ -1039,6 +1230,17 @@ def main(argv: list[str] | None = None) -> None:
             "Include the FAISS RAG index build in the default chain "
             "(G81: opt-in since 2026-05-16; ~10 min build, 689 MB index). "
             "Run this when you specifically need the synthesis RAG branch."
+        ),
+    )
+    parser.add_argument(
+        "--with-rhea",
+        action="store_true",
+        help=(
+            "Include the Rhea bring-up (uv sync + ingestion + embedding "
+            "model pull) in the default chain (G89: opt-in since "
+            "2026-05-16; ~10 min one-time). Run this if you want the "
+            "Rhea-backed bioinformatics tools (muscle, future Galaxy "
+            "tools) available via the apecx-mcp catalog."
         ),
     )
     parser.add_argument(
@@ -1063,6 +1265,7 @@ def main(argv: list[str] | None = None) -> None:
             _run_all(
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
+                with_rhea=args.with_rhea,
                 prefer_gh_release=args.prefer_gh_release,
             )
         )
