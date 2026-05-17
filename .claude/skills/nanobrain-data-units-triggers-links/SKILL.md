@@ -84,6 +84,82 @@ steps:
         # gate_semantics: gate_to_bottom    ← injected automatically
 ```
 
+### Cycle-bearing workflow silent-failures (G99) — CURED 2026-05-17
+
+Cycle-bearing workflows with `ConditionalLink` branching surfaced
+four real silent-failure shapes during the G99 TDR-as-YAML
+end-to-end testing. ALL FOUR loaded cleanly via `from_config` +
+passed structural smoke tests; only `Workflow.run()` against real
+Ollama exposed them. Pattern: "load passes, runtime appears to
+work, no data ever propagates."
+
+1. **`WorkflowGraph._get_cycles_info` was missing.** Referenced by
+   `validate_graph` on the G18-Step-2 cycle-allowed success branch.
+   Result: `AttributeError` swallowed by `handle_error`, validation
+   reported as `(False, ['Graph validation failed'])`. Every
+   cycle-bearing workflow with LoopController bounding refused to
+   run. **Fixed** — method added.
+
+2. **`ConditionalLink._init_from_config` didn't set
+   `self.auto_transfer`.** `extract_component_config` pulled the
+   value; `_init` never assigned it to `self`. The base class
+   `_setup_automatic_transfer_if_possible` reads
+   `getattr(self, 'auto_transfer', False)` — silent no-op for every
+   ConditionalLink. **Fixed** — `self.auto_transfer = component_config.get('auto_transfer', True)`.
+
+3. **`ConditionalLink.transfer` condition-met branch lacked
+   data-unit `set()` fallback.** Only handled targets with
+   `input_data_units` (list) or `set_input` method. Workflow-level
+   outputs and step input data units accessed by name don't have
+   either — they have `.set()`. The condition matched, the branch
+   ran, no data transferred. The `gate_to_bottom` branch already had
+   the fallback; this is parity. **Fixed** — added
+   `await self.target.set(data)` fallback.
+
+4. **`LoopController.process` didn't unwrap trigger envelope.**
+   Framework delivers `{<input_du_name>: <payload>}` to Step's
+   process; `CodeWriteStep` + `IsolatedPyExecStep` explicitly
+   unwrap; `LoopController` didn't. Result: controller passed the
+   wrapper through under `payload`, downstream back-edge consumers
+   received doubly-wrapped data. **Fixed** — conservative single-key
+   match against `step_input_data_units`.
+
+**Detection signal for any future Step subclass**: if a Step
+consumes payload-keyed input (i.e., its `process()` reads fields off
+`input_data`), it MUST explicitly unwrap `{<input_du_name>: <payload>}`
+shape at the top of `process()` — the framework wraps automatically
+in data-driven mode. Pattern:
+
+```python
+async def process(self, input_data: dict, **kwargs):
+    if (
+        "<expected_input_du_name>" in input_data
+        and isinstance(input_data["<expected_input_du_name>"], dict)
+        and "<inner_key_that_distinguishes>" not in input_data
+    ):
+        input_data = input_data["<expected_input_du_name>"]
+```
+
+**Detection signal for any future Link subclass**: if the link's
+`transfer()` branches on target type (looking for `input_data_units`
+list / `set_input` method / etc), it MUST have the final
+`await self.target.set(data)` fallback for bare data-unit targets.
+Mirror what `gate_to_bottom` does today.
+
+**Regression tests**: `nanobrain/tests/unit/test_g99_framework_fixes_2026_05_17.py` (15 tests).
+
+### Reference cycle-bearing workflow
+
+See `apecx_integration/composition/workflows/tdr_loop/tdr_refine_workflow.yml`
+for the canonical shape of a cycle-bearing workflow:
+* `allow_cycles: false` (cycle ALLOWED via G18 Step 2, not the
+  workspace-wide hammer)
+* DirectLink for initial input
+* Two ConditionalLinks branching on the iteration step's output
+* LoopController with `max_iterations: 3`
+* Two ConditionalLinks on the controller output (continue / exhausted)
+* The cycle: `iter_step → loop_gate → iter_step` (back-edge)
+
 ## Why this skill exists
 
 The event-driven contract is the heart of nanobrain. Every "step never runs"

@@ -38,8 +38,9 @@ from tests.benchmarks.types import BenchmarkProblem
 
 log = logging.getLogger(__name__)
 
+# parents[0]=codegen, [1]=benchmarks, [2]=tests, [3]=repo-root.
 _WORKFLOW_YAML = (
-    Path(__file__).resolve().parents[2]
+    Path(__file__).resolve().parents[3]
     / "src"
     / "apecx_integration"
     / "composition"
