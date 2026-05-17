@@ -63,6 +63,7 @@ docs/hd_rss_pattern_2026-05-17.md.
 
 from __future__ import annotations
 
+import ast
 import logging
 import re
 from collections.abc import Callable
@@ -92,6 +93,79 @@ def _extract_code(text: str) -> str:
     if m:
         return m.group(1).strip()
     return text.strip()
+
+
+def _rename_entry_function_if_needed(code: str, requested_name: str | None) -> str:
+    """If ``code`` defines a function whose name doesn't match
+    ``requested_name``, rename it. AST-based so it's safe across
+    arbitrary indentation / formatting.
+
+    Why this is a separate post-processing pass (G102b, 2026-05-17):
+    The G101 failure-mode analysis attributed HD-RSS's 17 MBPP
+    NameErrors to the LLM composer dropping helpers. The G102 fix
+    (templated composer) didn't move the needle because the actual
+    bug was in ``_atomic_codegen``: the LLM normalizes function names
+    to lowercase snake_case regardless of the requested entry_point.
+    Verified by inspecting failing samples in
+    ``/tmp/bench_mbpp_hd_rss_v2_n100.json`` — every NameError case
+    had a correctly-implemented function defined under the wrong
+    name. The post-hoc rename closes this gap robustly, regardless
+    of whether the LLM honored the entry_point hint in the prompt.
+
+    Heuristic: when the code defines exactly one top-level function,
+    rename it. When it defines multiple, rename the LAST one (which
+    is conventionally the orchestrator/entry point). When the code
+    doesn't parse, return as-is — caller will hit the SyntaxError
+    in the sandbox and the runner will surface the real error class.
+
+    Args:
+        code: candidate source from the LLM.
+        requested_name: the entry point the test_code will call. If
+            None, no rename — return code unchanged.
+
+    Returns:
+        Source with the entry function renamed iff a rename was
+        applied; otherwise the original source.
+    """
+    if not requested_name or not isinstance(code, str) or not code.strip():
+        return code
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return code
+
+    func_nodes = [
+        node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+    ]
+    if not func_nodes:
+        return code
+
+    # The orchestrator/entry function is conventionally last in the
+    # module body. If it already matches, no-op.
+    entry_node = func_nodes[-1]
+    current_name = entry_node.name
+    if current_name == requested_name:
+        return code
+
+    # Rename via regex on the source: targets ``def <current>`` (with
+    # optional whitespace before paren). AST-based code-rewrite would
+    # be more robust (handle multi-line decorators etc.) but for the
+    # common case of a simple ``def name(args):`` line a regex is
+    # adequate. We deliberately do NOT rename CALL sites of the
+    # function — the orchestrator pattern is that the entry function
+    # is called from the test_code (outside our scope), not from
+    # within the candidate's own source.
+    pattern = re.compile(rf"\bdef\s+{re.escape(current_name)}\s*\(", re.MULTILINE)
+    new_code, n_subs = pattern.subn(f"def {requested_name}(", code, count=1)
+    if n_subs == 0:
+        return code
+
+    log.info(
+        "hd_rss entry-point rename: %r -> %r (1 occurrence)",
+        current_name,
+        requested_name,
+    )
+    return new_code
 
 
 def _judge_atomic(
@@ -182,21 +256,35 @@ def _atomic_codegen(
     description: str,
     entry_point: str | None,
 ) -> str:
-    """Generate code for an atomic problem — no decomposition."""
+    """Generate code for an atomic problem — no decomposition.
+
+    G102b (2026-05-17): the result is post-processed via
+    ``_rename_entry_function_if_needed`` so the function defined in
+    the LLM's output ALWAYS matches the requested entry_point. Before
+    this fix, the LLM frequently normalized the function name to
+    lowercase snake_case regardless of the prompt instruction —
+    that was the actual root cause of HD-RSS's 17 MBPP NameErrors
+    (G101 mis-attributed it to the composer).
+    """
     from langchain_core.messages import HumanMessage, SystemMessage
 
     system = (
         "You write a single Python function. Respond with one "
         "```python fenced block. Include any imports inside the "
-        "block. No prose."
+        "block. No prose. The function name MUST match exactly what "
+        "the user requests (case-sensitive, character-for-character)."
     )
     user_parts = [description.strip()]
     if entry_point:
-        user_parts.append(f"Define a function named ``{entry_point}``.")
+        user_parts.append(
+            f"Define a function named EXACTLY ``{entry_point}`` "
+            "(case-sensitive; do not lowercase or rename)."
+        )
     response = llm.invoke(
         [SystemMessage(content=system), HumanMessage(content="\n\n".join(user_parts))]
     )
-    return _extract_code(response.content)
+    code = _extract_code(response.content)
+    return _rename_entry_function_if_needed(code, entry_point)
 
 
 def _compose(
@@ -243,7 +331,9 @@ def _compose(
     response = llm.invoke(
         [SystemMessage(content=system), HumanMessage(content="\n\n".join(user_parts))]
     )
-    return _extract_code(response.content)
+    # G102b: defense-in-depth — if the LLM still renamed the entry,
+    # snap it back to the requested name.
+    return _rename_entry_function_if_needed(_extract_code(response.content), parent_entry_point)
 
 
 def _compose_templated(
@@ -329,6 +419,11 @@ def _compose_templated(
         [SystemMessage(content=system), HumanMessage(content="\n\n".join(user_parts))]
     )
     orchestrator_code = _extract_code(response.content)
+
+    # G102b: snap orchestrator name to requested entry_point if the
+    # LLM renamed it (defense in depth — the prompt asks but the LLM
+    # doesn't always obey).
+    orchestrator_code = _rename_entry_function_if_needed(orchestrator_code, parent_entry_point)
 
     # Deterministic assembly: helpers (verbatim) + orchestrator.
     helper_bodies = "\n\n".join(sub["code"].rstrip() for sub in subsolutions)
