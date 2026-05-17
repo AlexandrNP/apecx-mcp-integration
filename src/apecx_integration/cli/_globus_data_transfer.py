@@ -168,15 +168,30 @@ def check_globus_prerequisites() -> GlobusPrereqStatus:
     source_set = bool(source_endpoint)
     dest_set = bool(dest_endpoint)
 
-    # 3. Credentials reachable via env or keyring. The env-var path is
-    # the CI / container default; the keyring path is the standard
-    # workstation install (apecx-globus-setup store ...).
+    # 3. Credentials reachable. THREE valid paths (G90, 2026-05-16):
+    #
+    #   a. Confidential client via env vars
+    #      ($GLOBUS_COMPUTE_CLIENT_ID + $GLOBUS_COMPUTE_CLIENT_SECRET).
+    #      CI / container default.
+    #   b. Confidential client via OS keyring (apecx-globus-setup store).
+    #      Standard workstation install.
+    #   c. Native client via persisted tokens
+    #      ($APECX_GLOBUS_NATIVE_CLIENT_ID set + a prior
+    #      `apecx-globus-setup login --client-id <UUID>`).
+    #      Dev / interactive path.
+    #
+    # We don't probe the on-disk JSON token file directly — that's
+    # globus_sdk's territory; it knows how to detect expired/missing
+    # tokens and re-prompt. The presence of $APECX_GLOBUS_NATIVE_CLIENT_ID
+    # is the contract that the operator has set up the native path
+    # (whether the tokens are still valid is checked at call time).
     credentials_reachable = bool(
         (
             os.environ.get("GLOBUS_COMPUTE_CLIENT_ID")
             and os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET")
         )
         or _keyring_credentials_present()
+        or os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID")
     )
 
     configured = sdk_installed and source_set and dest_set and credentials_reachable

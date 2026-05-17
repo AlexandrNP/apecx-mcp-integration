@@ -145,6 +145,63 @@ def test_every_subcommand_parses():
     assert xfer_args2.source_path == "/foo/bar"
 
 
+def test_login_subcommand_in_parser():
+    """``apecx-globus-setup login`` parses + carries --client-id."""
+    parser = _build_parser()
+    args = parser.parse_args(["login"])
+    assert args.subcommand == "login"
+    assert args.client_id is None
+
+    args2 = parser.parse_args(["login", "--client-id", "abc-uuid"])
+    assert args2.client_id == "abc-uuid"
+
+
+def test_login_fails_loud_without_client_id(capsys):
+    """`apecx-globus-setup login` (no --client-id) exits non-zero with
+    registration instructions. Operators get a copy-paste-able recipe;
+    nothing is silently fabricated."""
+    rc = main(["login"])
+    assert rc == 1
+    out = capsys.readouterr().out
+    assert "no --client-id supplied" in out
+    assert "https://app.globus.org/settings/developers" in out
+    assert "apecx-globus-setup login --client-id" in out
+
+
+def test_native_auth_recognized_by_check_globus_prerequisites(monkeypatch):
+    """G90: APECX_GLOBUS_NATIVE_CLIENT_ID being set counts as a valid
+    credentials path, not a missing prereq. This is the bridge that
+    lets `apecx-setup data` engage the Globus-first path when the
+    operator uses native auth instead of confidential client."""
+    from unittest.mock import patch
+
+    from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
+
+    for var in (
+        "GLOBUS_COMPUTE_CLIENT_ID",
+        "GLOBUS_COMPUTE_CLIENT_SECRET",
+        "APECX_GLOBUS_SOURCE_ENDPOINT_ID",
+        "APECX_GLOBUS_DEST_ENDPOINT_ID",
+        "APECX_GLOBUS_NATIVE_CLIENT_ID",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+    # Native client_id set; no confidential creds; no keyring.
+    monkeypatch.setenv("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "src-uuid")
+    monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "dst-uuid")
+    monkeypatch.setenv("APECX_GLOBUS_NATIVE_CLIENT_ID", "native-uuid")
+    with patch(
+        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
+        return_value=False,
+    ):
+        status = check_globus_prerequisites()
+
+    # If globus_sdk is installed in this env, every flag should be True.
+    if status.sdk_installed:
+        assert status.credentials_reachable is True
+        assert status.configured is True
+
+
 def test_test_transfer_fails_loud_on_missing_preconditions(monkeypatch, capsys):
     """``apecx-globus-setup test-transfer`` exits non-zero with a clear
     "fix the missing prerequisite" message when preconditions aren't met.

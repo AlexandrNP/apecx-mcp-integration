@@ -241,6 +241,134 @@ def _cmd_endpoint_config(project: str | None, output: str) -> int:
 
 
 # ---------------------------------------------------------------------------
+# subcommand: login — interactive device-code flow for native-app auth (G90)
+# ---------------------------------------------------------------------------
+
+
+def _cmd_login(client_id: str | None) -> int:
+    """Run the Globus device-code login flow + persist tokens.
+
+    Why this exists
+    ---------------
+    The ``store`` subcommand handles confidential-client credentials
+    (client_id + client_secret pair) — the production deployment path
+    (Aurora HPC, automation, etc.). But many dev / one-off workflows
+    don't have a confidential client registered, and registering one
+    requires a per-tenant approval step.
+
+    The ``login`` subcommand is the alternative: an interactive
+    browser-based device-code flow against a **native** Globus app.
+    Native apps are free to register (anyone with a Globus account
+    can do it in 30 seconds at
+    https://app.globus.org/settings/developers) and require NO
+    client_secret. The resulting OAuth tokens are persisted to
+    disk by ``globus_sdk``'s default JSONTokenStorage, keyed by
+    (client_id, app_name) — so the EXACT same tokens are picked up
+    later by ``build_globus_app(auth_mode='native', ...)`` when it
+    constructs a ``UserApp`` with the same key pair.
+
+    Output
+    ------
+    On success, prints PASS + the token-file path. Subsequent
+    ``apecx-globus-setup test-transfer`` calls (or any other code
+    using ``build_globus_app(auth_mode='native')``) will reuse these
+    tokens silently.
+
+    Failure paths
+    -------------
+    * No client_id provided → FAIL with registration instructions.
+    * User cancels the browser flow → FAIL with the underlying error.
+    * Globus declines the consent → FAIL with the auth-side message.
+
+    Operator stays in the loop — NEVER a silent fall-through to a
+    different auth mode.
+    """
+    _print_header("apecx-globus-setup login — Globus device-code flow")
+
+    if not client_id:
+        _fail("login", "no --client-id supplied")
+        print()
+        print("  Native-app client_id required for the device-code flow.")
+        print("  Register a free native app at:")
+        print("    https://app.globus.org/settings/developers")
+        print("  Choose: 'Register a thick client or script that will be")
+        print("           installed and run by users on their devices'")
+        print("  Copy the client_id (a UUID; no secret needed for native apps)")
+        print("  Then run:")
+        print("    apecx-globus-setup login --client-id <UUID>")
+        return 1
+
+    try:
+        globus_sdk = _import_globus_sdk()
+    except ComponentConfigurationError as exc:
+        _fail("login", str(exc))
+        return 1
+
+    # The SAME app_name + scope set ``build_globus_app(auth_mode='native')``
+    # would use later, so the tokens this command writes are picked up
+    # by ``build_globus_app`` without any reconfiguration.
+    app_name = "apecx-mcp-integration"
+    scope_requirements = {
+        "transfer.api.globus.org": ["urn:globus:auth:scope:transfer.api.globus.org:all"],
+    }
+
+    print(f"  Building UserApp(app_name={app_name!r}, client_id={client_id})")
+    print("  Scope: transfer.api.globus.org:all")
+    print()
+    print("  ─" * 30)
+    print("  ▶  About to start the device-code flow.")
+    print("  ▶  globus_sdk will print a URL — open it in your browser,")
+    print("     authenticate with your Globus account, and paste the")
+    print("     resulting authorization code back here when prompted.")
+    print("  ─" * 30)
+    print()
+
+    try:
+        app = globus_sdk.UserApp(
+            app_name=app_name,
+            client_id=client_id,
+            scope_requirements=scope_requirements,
+        )
+        # Touching .login_required + .login() forces the device-code
+        # flow now (instead of lazily on the first auth-needed API
+        # call). Result: a clear PASS/FAIL on this command's exit
+        # instead of "looks fine but blocks 10 min later."
+        app.login()
+    except Exception as exc:  # noqa: BLE001 — surface ANY failure cleanly
+        _fail("login", f"{type(exc).__name__}: {exc}")
+        print()
+        print("  Common causes:")
+        print("    * URL not opened in browser → re-run; copy the URL manually")
+        print("    * Wrong Globus account → cancel + log out + retry")
+        print("    * Network blocked → check connectivity to https://auth.globus.org/")
+        return 1
+
+    _pass("login", f"Globus tokens persisted for client_id {client_id[:8]}…")
+    print()
+    print("  Subsequent `apecx-globus-setup test-transfer` calls will reuse")
+    print("  these tokens silently via build_globus_app(auth_mode='native').")
+    print()
+    print("  To force a fresh login (token rotation, account change, etc.):")
+    print("    apecx-globus-setup login --client-id <UUID>  # re-run")
+    print("  globus_sdk handles token refresh automatically as long as the")
+    print("  refresh token stays valid (typically 6 months of inactivity).")
+    return 0
+
+
+def _import_globus_sdk():
+    """Lazy import + FAIL-LOUD if missing."""
+    try:
+        import globus_sdk  # noqa: PLC0415
+    except ImportError as exc:
+        raise ComponentConfigurationError(
+            "globus_sdk not installed. Install with "
+            "`pip install globus-sdk` (or `pip install -e .[hpc]` "
+            "which bundles it)."
+        ) from exc
+    return globus_sdk
+
+
+# ---------------------------------------------------------------------------
 # subcommand: test — the "tests endpoint configuration" deliverable
 # ---------------------------------------------------------------------------
 def _resolve_credentials() -> tuple[str | None, str | None, str]:
@@ -565,25 +693,58 @@ def _cmd_test_transfer(*, list_only: bool, source_path_override: str | None) -> 
         return 1
     _pass("wrapper YAML", f"loadable at {wrapper_yaml.name}")
 
-    # Step 3: build_globus_app + auth round-trip. We do this via the
-    # same G23 helper the GlobusTransferStep uses, so a green here
-    # proves the auth path is end-to-end-OK.
+    # Step 3: build_globus_app + auth round-trip.
+    #
+    # Auth-mode auto-detect (G90, 2026-05-16):
+    #   * confidential creds present  → auth_mode='client_credentials'
+    #   * APECX_GLOBUS_NATIVE_CLIENT_ID set → auth_mode='native'
+    #     (uses tokens previously persisted by `apecx-globus-setup login`)
+    #   * neither → FAIL with both setup recipes printed.
+    env_client_id = os.environ.get("GLOBUS_COMPUTE_CLIENT_ID")
+    env_client_secret = os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET")
+    native_client_id = os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID")
+
     try:
         from nanobrain.core.distributed.globus_auth import build_globus_app
 
-        app = build_globus_app(
-            auth_mode="client_credentials",
-            client_id=os.environ.get("GLOBUS_COMPUTE_CLIENT_ID"),
-            client_secret=os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET"),
-            scopes=["urn:globus:auth:scope:transfer.api.globus.org:all"],
-        )
+        if env_client_id and env_client_secret:
+            app = build_globus_app(
+                auth_mode="client_credentials",
+                client_id=env_client_id,
+                client_secret=env_client_secret,
+                scopes=["urn:globus:auth:scope:transfer.api.globus.org:all"],
+                app_name="apecx-mcp-integration",
+            )
+            auth_label = "confidential-client token acquired"
+        elif native_client_id:
+            # Native auth via persisted tokens. ``apecx-globus-setup login``
+            # writes them; build_globus_app loads them on construction.
+            # If no tokens exist yet, globus_sdk would attempt the device
+            # flow here — but we want to FAIL with an actionable msg
+            # instead, so the operator runs `login` separately.
+            app = build_globus_app(
+                auth_mode="native",
+                client_id=native_client_id,
+                scopes=["urn:globus:auth:scope:transfer.api.globus.org:all"],
+                app_name="apecx-mcp-integration",
+            )
+            auth_label = "native-app tokens loaded (login persisted earlier)"
+        else:
+            _fail(
+                "auth",
+                "no Globus auth available. EITHER set "
+                "$GLOBUS_COMPUTE_CLIENT_ID+$GLOBUS_COMPUTE_CLIENT_SECRET "
+                "(confidential client) OR set $APECX_GLOBUS_NATIVE_CLIENT_ID "
+                "and run `apecx-globus-setup login --client-id <UUID>` first.",
+            )
+            return 1
         import globus_sdk
 
         transfer_client = globus_sdk.TransferClient(app=app)
     except Exception as exc:  # noqa: BLE001 — we want every failure visible
         _fail("auth", f"{type(exc).__name__}: {exc}")
         return 1
-    _pass("auth", "confidential-client token acquired")
+    _pass("auth", auth_label)
 
     # Step 4: LIST the source endpoint's apecx path.
     source_endpoint = os.environ["APECX_GLOBUS_SOURCE_ENDPOINT_ID"]
@@ -691,6 +852,23 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Delete stored Globus credentials (idempotent).",
     )
 
+    p_login = sub.add_parser(
+        "login",
+        help=(
+            "Interactive Globus device-code login via globus_sdk.UserApp "
+            "(G90). Persists tokens for later use by build_globus_app "
+            "auth_mode='native'. Requires a native-app client_id."
+        ),
+    )
+    p_login.add_argument(
+        "--client-id",
+        default=None,
+        help=(
+            "Native-app client_id (UUID). Register a free native app at "
+            "https://app.globus.org/settings/developers if you don't have one."
+        ),
+    )
+
     p_test = sub.add_parser(
         "test",
         help="Test Globus endpoint configuration end-to-end.",
@@ -770,6 +948,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_status()
     if args.subcommand == "clear":
         return _cmd_clear()
+    if args.subcommand == "login":
+        return _cmd_login(args.client_id)
     if args.subcommand == "test":
         return _cmd_test(args.endpoint_id, args.round_trip)
     if args.subcommand == "test-transfer":
