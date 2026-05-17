@@ -60,27 +60,82 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 # The 6 files that constitute the VIOLIN + BV-BRC dataset. Kept here as
-# the single source of truth for "what gets transferred"; the same list
-# already exists in ``cli/setup_data._EXPECTED_FILES`` but we duplicate
-# the literal here to avoid coupling to the gh-release fallback layout
-# (the Globus source layout and the tarball-extract layout could in
-# principle diverge — the SOURCE path is what's on the Argonne LCF
-# collection; the DEST path is what apecx-setup builds locally).
+# the single source of truth for "what gets transferred".
 #
-# The source paths assume the collection root is the
-# ``apecx-joshi-anl-general`` directory referenced in the user's
-# directive ("The files location is APECx Data at Argonne LCF
-# collection under the path apecx-joshi-anl-general"). Operators with
-# a differently-structured source can override the prefix via env var
-# ``APECX_GLOBUS_SOURCE_PREFIX``.
+# The actual layout on the "APECx Data at Argonne LCF" Globus collection
+# (verified 2026-05-17 via live LIST):
+#
+#   /apecx-joshi-anl-general/
+#     2024_12_17_VIOLIN/         ← VIOLIN CSVs
+#       Vaccine_Information.csv
+#       Pathogen_Information.csv
+#       Gene_Information.csv
+#       Vaccine_Pathogen_Information.csv
+#       Gene_Vaccine_Pathogen_Information.csv
+#       2025_04_28_VIOLIN_Web_Portal_Data_UML.{html,png}  ← skipped
+#     2025_05_05_BVBRC/          ← BV-BRC CSVs
+#       BVBRC_epitope__epitopes.csv
+#       BVBRC_genome.csv         ← closest analog to legacy BVBRC_genome_alphavirus.csv
+#       BVBRC_genome_feature.csv
+#       BVBRC_protein_feature__domains_and_motifs.csv
+#       BVBRC_protein_structure__protein_structures.csv
+#     2025_06_25_ProtaBank/
+#     2025_11_05_PubMed/
+#     2025_11_17_IEDB/
+#     2025_11_18_PDB/
+#
+# The DEST layout this module produces matches what ``cli/setup_data``
+# extracts from the gh-release tarball (``violin/<File>.csv`` +
+# top-level ``BVBRC_genome_alphavirus.csv``), so downstream code that
+# already reads those paths (``apecx_db_integration``, etc.) needs
+# no changes regardless of whether the data arrived via Globus or gh.
+#
+# Two date-stamped directory names are env-overridable so operators
+# pulling from a newer snapshot don't need a code change:
+#   * APECX_GLOBUS_VIOLIN_DIR (default: 2024_12_17_VIOLIN)
+#   * APECX_GLOBUS_BVBRC_DIR  (default: 2025_05_05_BVBRC)
 _DEFAULT_SOURCE_PREFIX = "/apecx-joshi-anl-general"
-_DATASET_FILES = (
-    "violin/Vaccine_Information.csv",
-    "violin/Pathogen_Information.csv",
-    "violin/Gene_Information.csv",
-    "violin/Vaccine_Pathogen_Information.csv",
-    "violin/Gene_Vaccine_Pathogen_Information.csv",
-    "BVBRC_genome_alphavirus.csv",
+_DEFAULT_VIOLIN_DIR = "2024_12_17_VIOLIN"
+_DEFAULT_BVBRC_DIR = "2025_05_05_BVBRC"
+
+# Tuples of (source_relpath, dest_relpath). The source side has the
+# date-stamped layout; the dest side has the legacy flat layout the
+# rest of the codebase expects.
+_DATASET_FILE_MAPPING = (
+    ("{VIOLIN}/Vaccine_Information.csv", "violin/Vaccine_Information.csv"),
+    ("{VIOLIN}/Pathogen_Information.csv", "violin/Pathogen_Information.csv"),
+    ("{VIOLIN}/Gene_Information.csv", "violin/Gene_Information.csv"),
+    ("{VIOLIN}/Vaccine_Pathogen_Information.csv", "violin/Vaccine_Pathogen_Information.csv"),
+    (
+        "{VIOLIN}/Gene_Vaccine_Pathogen_Information.csv",
+        "violin/Gene_Vaccine_Pathogen_Information.csv",
+    ),
+    # ⚠️ BV-BRC content divergence (CRITICAL):
+    #
+    #   Source FILE on Globus: BVBRC_genome.csv (~1.5 GB, ALL genomes)
+    #   Dest FILE on disk:     BVBRC_genome_alphavirus.csv (filename
+    #                          matches the legacy gh-release tarball
+    #                          so downstream code keeps working)
+    #
+    # The rename is for filename-only backwards compatibility — the
+    # CONTENT is different:
+    #
+    #   * Legacy (gh release):     ~MB-scale, alphavirus-curated subset
+    #   * Modern (Globus source):  ~1.5 GB, ALL BV-BRC genomes (every virus,
+    #                              not just alphavirus)
+    #
+    # Downstream code in ``apecx_db_integration`` that reads this file
+    # treating it as alphavirus-only will:
+    #   * Load way more data than expected (1.5 GB pandas DataFrame)
+    #   * Match queries against the full genome catalog, not just
+    #     alphavirus
+    #   * Produce broader (potentially noisier) match results
+    #
+    # If you need alphavirus-only, post-filter in code:
+    #     df[df['Genus'] == 'Alphavirus']
+    # ...or continue using ``apecx-setup --prefer-gh-release`` which
+    # fetches the curated subset from the gh-release tarball.
+    ("{BVBRC}/BVBRC_genome.csv", "BVBRC_genome_alphavirus.csv"),
 )
 
 
@@ -234,12 +289,21 @@ def _keyring_credentials_present() -> bool:
 def build_transfer_items(data_dir: Path) -> list[dict[str, str]]:
     """Build the {source_path, dest_path} list for the 6 dataset files.
 
-    The source prefix is read from ``APECX_GLOBUS_SOURCE_PREFIX``
-    (defaults to ``/apecx-joshi-anl-general`` per the user's directive).
-    Destination paths are anchored at the operator's chosen
-    ``data_dir``.
+    Source layout (post-G91 2026-05-17):
+        ``$APECX_GLOBUS_SOURCE_PREFIX/$APECX_GLOBUS_VIOLIN_DIR/*.csv``
+        ``$APECX_GLOBUS_SOURCE_PREFIX/$APECX_GLOBUS_BVBRC_DIR/BVBRC_genome.csv``
 
-    Items are returned in stable order (matching ``_DATASET_FILES``)
+    Dest layout (unchanged — matches gh-release tarball):
+        ``$data_dir/violin/*.csv``
+        ``$data_dir/BVBRC_genome_alphavirus.csv``
+
+    All three source-side path components are env-overridable so
+    operators pulling from a newer snapshot don't need a code change:
+        * APECX_GLOBUS_SOURCE_PREFIX (default: /apecx-joshi-anl-general)
+        * APECX_GLOBUS_VIOLIN_DIR    (default: 2024_12_17_VIOLIN)
+        * APECX_GLOBUS_BVBRC_DIR     (default: 2025_05_05_BVBRC)
+
+    Items are returned in stable order (matching ``_DATASET_FILE_MAPPING``)
     so retries always hit the same Globus task layout and log lines
     stay diff-friendly.
     """
@@ -247,13 +311,19 @@ def build_transfer_items(data_dir: Path) -> list[dict[str, str]]:
         "APECX_GLOBUS_SOURCE_PREFIX",
         _DEFAULT_SOURCE_PREFIX,
     ).rstrip("/")
-    return [
-        {
-            "source_path": f"{source_prefix}/{relpath}",
-            "dest_path": str(data_dir / relpath),
-        }
-        for relpath in _DATASET_FILES
-    ]
+    violin_dir = os.environ.get("APECX_GLOBUS_VIOLIN_DIR", _DEFAULT_VIOLIN_DIR)
+    bvbrc_dir = os.environ.get("APECX_GLOBUS_BVBRC_DIR", _DEFAULT_BVBRC_DIR)
+
+    items: list[dict[str, str]] = []
+    for src_template, dest_relpath in _DATASET_FILE_MAPPING:
+        src_relpath = src_template.format(VIOLIN=violin_dir, BVBRC=bvbrc_dir)
+        items.append(
+            {
+                "source_path": f"{source_prefix}/{src_relpath}",
+                "dest_path": str(data_dir / dest_relpath),
+            }
+        )
+    return items
 
 
 # ---------------------------------------------------------------------------
@@ -353,6 +423,58 @@ def attempt_globus_data_transfer(
         )
 
 
+def _resolve_auth_env() -> str:
+    """Populate ``APECX_GLOBUS_RESOLVED_*`` env vars based on auth_mode.
+
+    The wrapper YAML reads only the *RESOLVED* env vars (single source
+    of truth — no nested interpolation, which nanobrain doesn't support).
+    This function maps the operator's actual config (confidential creds
+    OR native client_id) into the resolved slot the YAML reads.
+
+    Returns the auth_mode that was resolved ("native" or "client_credentials").
+
+    Precedence:
+      * Confidential creds present in env → client_credentials
+      * Native client_id present in env → native
+      * Operator-set ``APECX_GLOBUS_AUTH_MODE`` overrides the auto-pick
+        (useful for testing the OTHER path when both are configured).
+    """
+    explicit_mode = os.environ.get("APECX_GLOBUS_AUTH_MODE", "").strip().lower()
+    have_confidential = bool(
+        os.environ.get("GLOBUS_COMPUTE_CLIENT_ID")
+        and os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET")
+    )
+    have_native = bool(os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID"))
+
+    if explicit_mode == "native" and have_native:
+        mode = "native"
+    elif explicit_mode == "client_credentials" and have_confidential or have_confidential:
+        mode = "client_credentials"
+    elif have_native:
+        mode = "native"
+    else:
+        # Neither path is configured. _resolve_auth_env still resolves
+        # to client_credentials so the YAML loads, but the downstream
+        # GlobusTransferStep auth will fail-loud (intended — we don't
+        # mask the missing-config state).
+        mode = "client_credentials"
+
+    if mode == "native":
+        os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] = os.environ["APECX_GLOBUS_NATIVE_CLIENT_ID"]
+        os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] = ""
+        os.environ["APECX_GLOBUS_AUTH_MODE"] = "native"
+    else:  # client_credentials
+        os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] = os.environ.get(
+            "GLOBUS_COMPUTE_CLIENT_ID", ""
+        )
+        os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] = os.environ.get(
+            "GLOBUS_COMPUTE_CLIENT_SECRET", ""
+        )
+        os.environ["APECX_GLOBUS_AUTH_MODE"] = "client_credentials"
+
+    return mode
+
+
 async def _attempt_globus_data_transfer_async(
     *,
     data_dir: Path,
@@ -371,6 +493,12 @@ async def _attempt_globus_data_transfer_async(
             ),
         )
 
+    # G90 (2026-05-17): resolve which auth path to use BEFORE loading
+    # the YAML. The YAML reads only ${APECX_GLOBUS_RESOLVED_CLIENT_ID/SECRET}
+    # — this function maps confidential or native config into that slot.
+    auth_mode = _resolve_auth_env()
+    log.info("Globus auth_mode resolved to: %s", auth_mode)
+
     step = GlobusTransferStep.from_config(wrapper_yaml)
     items = build_transfer_items(data_dir)
 
@@ -381,11 +509,25 @@ async def _attempt_globus_data_transfer_async(
         data_dir,
     )
 
-    # Ensure the destination subdirectories exist locally — Globus
-    # Connect Personal writes to the dest path verbatim and won't
-    # create intermediate dirs.
+    # Ensure the destination subdirectories exist on the LOCAL
+    # filesystem. Globus Connect Personal writes to the dest path
+    # verbatim and won't create intermediate dirs — if we pass
+    # ``/Users/.../violin/X.csv`` without ``violin/`` existing, the
+    # transfer fails per-file with "no such file or directory."
+    #
+    # Skip this mkdir step when the operator passed a Globus-side
+    # path with ``/~/`` shorthand (which resolves to the home dir on
+    # the dest endpoint, NOT a literal ``/~`` on the local filesystem).
+    # In that case Globus Connect Personal will resolve ``/~/`` itself
+    # and create intermediate dirs as part of the transfer; the
+    # local-filesystem mkdir would either fail (``/~`` is read-only
+    # under macOS's root namespace) or create a misleading literal
+    # ``~`` directory.
     for item in items:
-        Path(item["dest_path"]).parent.mkdir(parents=True, exist_ok=True)
+        dest_path_str = item["dest_path"]
+        if dest_path_str.startswith("/~/") or dest_path_str.startswith("~/"):
+            continue
+        Path(dest_path_str).parent.mkdir(parents=True, exist_ok=True)
 
     out = await step.process({"items": items})
     return GlobusTransferResult(

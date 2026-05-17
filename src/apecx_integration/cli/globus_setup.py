@@ -304,10 +304,15 @@ def _cmd_login(client_id: str | None) -> int:
         _fail("login", str(exc))
         return 1
 
-    # The SAME app_name + scope set ``build_globus_app(auth_mode='native')``
-    # would use later, so the tokens this command writes are picked up
-    # by ``build_globus_app`` without any reconfiguration.
-    app_name = "apecx-mcp-integration"
+    # CRITICAL: app_name MUST match nanobrain's GlobusTransferStep's
+    # hardcoded ``app_name="nanobrain-globus-transfer-step"`` (per
+    # nanobrain/library/steps/globus_transfer_step.py:294). globus_sdk's
+    # JSONTokenStorage keys tokens by (client_id, app_name). If we use
+    # a different name here, the GlobusTransferStep cannot find the
+    # tokens this command writes and tries to start a fresh device
+    # flow at workflow run time — exactly the silent-failure shape
+    # G90 exists to prevent.
+    app_name = "nanobrain-globus-transfer-step"
     scope_requirements = {
         "transfer.api.globus.org": ["urn:globus:auth:scope:transfer.api.globus.org:all"],
     }
@@ -713,7 +718,7 @@ def _cmd_test_transfer(*, list_only: bool, source_path_override: str | None) -> 
                 client_id=env_client_id,
                 client_secret=env_client_secret,
                 scopes=["urn:globus:auth:scope:transfer.api.globus.org:all"],
-                app_name="apecx-mcp-integration",
+                app_name="nanobrain-globus-transfer-step",
             )
             auth_label = "confidential-client token acquired"
         elif native_client_id:
@@ -726,7 +731,7 @@ def _cmd_test_transfer(*, list_only: bool, source_path_override: str | None) -> 
                 auth_mode="native",
                 client_id=native_client_id,
                 scopes=["urn:globus:auth:scope:transfer.api.globus.org:all"],
-                app_name="apecx-mcp-integration",
+                app_name="nanobrain-globus-transfer-step",
             )
             auth_label = "native-app tokens loaded (login persisted earlier)"
         else:
@@ -788,8 +793,11 @@ def _cmd_test_transfer(*, list_only: bool, source_path_override: str | None) -> 
     dest_file = f"/~/apecx-globus-test-transfer/{smallest['name']}"
 
     try:
+        # globus_sdk 4.x: TransferData takes source + dest as positionals;
+        # the client is implicit (the request goes through whichever
+        # client submits the transfer). The pre-4.x 4-arg form
+        # ``TransferData(transfer_client, src, dest, ...)`` is retired.
         tdata = globus_sdk.TransferData(
-            transfer_client,
             source_endpoint,
             dest_endpoint,
             label="apecx-globus-setup-test-transfer",

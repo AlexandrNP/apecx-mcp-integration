@@ -30,6 +30,7 @@ everything up to (but not including) the network round-trip.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from unittest.mock import patch
 
@@ -178,18 +179,32 @@ def test_prereqs_keyring_internal_failure_is_silent(
 
 
 def test_build_transfer_items_default_layout(clean_globus_env: None, tmp_path: Path) -> None:
-    """Default source prefix, 6 items, stable order, dest paths anchored
-    at data_dir."""
+    """Default source prefix + date-stamped dirs, 6 items, stable order,
+    dest paths anchored at data_dir + flattened to legacy layout.
+
+    Source layout (verified live 2026-05-17, G91):
+      $PREFIX/2024_12_17_VIOLIN/{Vaccine,Pathogen,Gene,...}_Information.csv
+      $PREFIX/2025_05_05_BVBRC/BVBRC_genome.csv
+
+    Dest layout (unchanged from gh-release):
+      $data_dir/violin/{Vaccine,Pathogen,Gene,...}_Information.csv
+      $data_dir/BVBRC_genome_alphavirus.csv  ← renamed from BVBRC_genome.csv
+    """
     from apecx_integration.cli._globus_data_transfer import build_transfer_items
 
     items = build_transfer_items(tmp_path)
 
     assert len(items) == 6
-    # First item is the first VIOLIN CSV.
-    assert items[0]["source_path"] == "/apecx-joshi-anl-general/violin/Vaccine_Information.csv"
+    # First item: VIOLIN CSV from the date-stamped source dir, dest
+    # under violin/.
+    assert (
+        items[0]["source_path"]
+        == "/apecx-joshi-anl-general/2024_12_17_VIOLIN/Vaccine_Information.csv"
+    )
     assert items[0]["dest_path"] == str(tmp_path / "violin/Vaccine_Information.csv")
-    # Last item is the BV-BRC alphavirus CSV at the dataset root.
-    assert items[-1]["source_path"] == "/apecx-joshi-anl-general/BVBRC_genome_alphavirus.csv"
+    # Last item: BV-BRC genome CSV from the date-stamped source, renamed
+    # to the legacy flat filename downstream code expects.
+    assert items[-1]["source_path"] == "/apecx-joshi-anl-general/2025_05_05_BVBRC/BVBRC_genome.csv"
     assert items[-1]["dest_path"] == str(tmp_path / "BVBRC_genome_alphavirus.csv")
     # Every item has exactly the two expected keys.
     for item in items:
@@ -207,11 +222,36 @@ def test_build_transfer_items_honors_source_prefix_override(
     monkeypatch.setenv("APECX_GLOBUS_SOURCE_PREFIX", "/some/other/root")
     items = build_transfer_items(tmp_path)
 
-    assert items[0]["source_path"] == "/some/other/root/violin/Vaccine_Information.csv"
+    assert items[0]["source_path"] == "/some/other/root/2024_12_17_VIOLIN/Vaccine_Information.csv"
     # Trailing slash on the override is stripped.
     monkeypatch.setenv("APECX_GLOBUS_SOURCE_PREFIX", "/some/other/root/")
     items_with_slash = build_transfer_items(tmp_path)
-    assert items_with_slash[0]["source_path"] == "/some/other/root/violin/Vaccine_Information.csv"
+    assert (
+        items_with_slash[0]["source_path"]
+        == "/some/other/root/2024_12_17_VIOLIN/Vaccine_Information.csv"
+    )
+
+
+def test_build_transfer_items_honors_dated_dir_overrides(
+    clean_globus_env: None,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """APECX_GLOBUS_VIOLIN_DIR + APECX_GLOBUS_BVBRC_DIR let operators
+    pull from a newer snapshot without a code change (G91)."""
+    from apecx_integration.cli._globus_data_transfer import build_transfer_items
+
+    monkeypatch.setenv("APECX_GLOBUS_VIOLIN_DIR", "2026_07_01_VIOLIN")
+    monkeypatch.setenv("APECX_GLOBUS_BVBRC_DIR", "2026_08_15_BVBRC")
+    items = build_transfer_items(tmp_path)
+
+    # First VIOLIN item uses the new dir.
+    assert "/2026_07_01_VIOLIN/Vaccine_Information.csv" in items[0]["source_path"]
+    # Last BV-BRC item uses the new dir.
+    assert "/2026_08_15_BVBRC/BVBRC_genome.csv" in items[-1]["source_path"]
+    # Dest layout is unchanged — downstream code keeps working.
+    assert items[0]["dest_path"] == str(tmp_path / "violin/Vaccine_Information.csv")
+    assert items[-1]["dest_path"] == str(tmp_path / "BVBRC_genome_alphavirus.csv")
 
 
 # ---------------------------------------------------------------------------
@@ -228,10 +268,13 @@ def test_wrapper_yaml_loads_with_env_vars_set(monkeypatch: pytest.MonkeyPatch) -
 
     from apecx_integration.cli._globus_data_transfer import _wrapper_yaml_path
 
+    # The YAML reads only the RESOLVED env vars (G90); apecx-side
+    # ``_resolve_auth_env`` maps confidential or native config into them.
     monkeypatch.setenv("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "src-test-uuid")
     monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "dst-test-uuid")
-    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "client-id-test")
-    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "client-secret-test")
+    monkeypatch.setenv("APECX_GLOBUS_RESOLVED_CLIENT_ID", "client-id-test")
+    monkeypatch.setenv("APECX_GLOBUS_RESOLVED_CLIENT_SECRET", "client-secret-test")
+    monkeypatch.setenv("APECX_GLOBUS_AUTH_MODE", "client_credentials")
 
     yaml_path = _wrapper_yaml_path()
     assert yaml_path.is_file(), (
@@ -244,9 +287,59 @@ def test_wrapper_yaml_loads_with_env_vars_set(monkeypatch: pytest.MonkeyPatch) -
     assert cfg.dest_endpoint_id == "dst-test-uuid"
     assert cfg.client_id == "client-id-test"
     assert cfg.client_secret == "client-secret-test"
+    assert cfg.auth_mode == "client_credentials"
     assert cfg.sync_level == "checksum"
     assert cfg.verify_checksum is True
     assert cfg.transfer_label == "apecx-setup-violin-bvbrc"
+
+
+def test_resolve_auth_env_picks_confidential_when_available(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """When both confidential env vars are set, ``_resolve_auth_env``
+    selects client_credentials and populates the RESOLVED slots."""
+    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
+
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cc-id")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "cc-secret")
+
+    mode = _resolve_auth_env()
+    assert mode == "client_credentials"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "cc-id"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] == "cc-secret"
+    assert os.environ["APECX_GLOBUS_AUTH_MODE"] == "client_credentials"
+
+
+def test_resolve_auth_env_picks_native_when_only_native_set(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Native client_id alone selects native auth + empty secret."""
+    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
+
+    monkeypatch.setenv("APECX_GLOBUS_NATIVE_CLIENT_ID", "native-id")
+
+    mode = _resolve_auth_env()
+    assert mode == "native"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "native-id"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] == ""
+    assert os.environ["APECX_GLOBUS_AUTH_MODE"] == "native"
+
+
+def test_resolve_auth_env_honors_explicit_mode_override(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Operator-set APECX_GLOBUS_AUTH_MODE picks the path even when
+    both are available — useful for testing the OTHER path."""
+    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
+
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cc-id")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "cc-secret")
+    monkeypatch.setenv("APECX_GLOBUS_NATIVE_CLIENT_ID", "native-id")
+    monkeypatch.setenv("APECX_GLOBUS_AUTH_MODE", "native")
+
+    mode = _resolve_auth_env()
+    assert mode == "native"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "native-id"
 
 
 # ---------------------------------------------------------------------------
