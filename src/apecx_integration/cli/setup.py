@@ -1083,6 +1083,27 @@ def _step_verify() -> StepResult:
         )
     )
 
+    # Rhea (G89): check that the bring-up has been done. We don't probe
+    # rhea-server reachability here (that's an apecx-mcp startup
+    # concern; `InfraOrchestrator` handles it). We check the static
+    # state apecx-setup rhea would have produced: checkout + venv +
+    # ingestion.
+    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
+        _find_rhea_repo,
+    )
+
+    rhea_repo = _find_rhea_repo()
+    if rhea_repo is None:
+        rhea_ok = False
+        rhea_detail = "no checkout found — `apecx-setup rhea` (opt-in)"
+    elif not (rhea_repo / ".venv" / "bin" / "python").exists():
+        rhea_ok = False
+        rhea_detail = f"checkout at {rhea_repo} but no venv — `apecx-setup rhea`"
+    else:
+        rhea_ok = True
+        rhea_detail = f"checkout + venv ready at {rhea_repo}"
+    checks.append(("rhea", rhea_ok, rhea_detail))
+
     print()
     for name, ok, detail in checks:
         emoji = "✅" if ok else "❌"
@@ -1097,8 +1118,9 @@ def _step_verify() -> StepResult:
             "every component healthy",
         )
     # Postgres + Redis + MinIO are optional for many workflows; reflect
-    # that honestly in the partial-vs-fail distinction.
-    optional = {"postgres", "redis", "minio"}
+    # that honestly in the partial-vs-fail distinction. faiss + rhea
+    # are also optional (opt-in per G81 + G89).
+    optional = {"postgres", "redis", "minio", "faiss", "rhea"}
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(

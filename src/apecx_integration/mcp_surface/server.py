@@ -568,6 +568,62 @@ def _check_rag_index_or_warn() -> None:
     log.warning("=" * 64)
 
 
+def _check_rhea_status_or_warn() -> None:
+    """Log a banner reporting the Rhea bring-up state at MCP startup (G89).
+
+    Cheap stat-only probes — does NOT touch the orchestrator's live
+    rhea-server probe (that runs in the background thread and surfaces
+    via the ``infrastructure_status`` MCP tool). What we surface here
+    is the STATIC state ``apecx-setup rhea`` would have produced, so an
+    operator seeing the boot logs can immediately diagnose why Rhea
+    isn't auto-spawning if they expected it to.
+
+    Three states:
+      * ``Rhea: checkout missing`` — autodiscovery couldn't find the
+        rhea repo. Rhea-backed tools (muscle, future Galaxy tools)
+        will be UNAVAILABLE via the MCP catalog.
+      * ``Rhea: checkout found but venv missing`` — operator hasn't
+        run ``apecx-setup rhea`` yet. Same UNAVAILABLE state.
+      * ``Rhea: ready`` — bring-up done; the orchestrator's
+        background thread will auto-spawn rhea-server.
+    """
+    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
+        _find_rhea_repo,
+    )
+
+    rhea_repo = _find_rhea_repo()
+    if rhea_repo is None:
+        log.warning("=" * 64)
+        log.warning("Rhea: checkout NOT FOUND in standard probe locations")
+        log.warning("")
+        log.warning("Rhea-backed bioinformatics tools (e.g. muscle) will be")
+        log.warning("UNAVAILABLE via the MCP catalog until you:")
+        log.warning("  1. git clone https://github.com/AlexandrNP/rhea.git")
+        log.warning("     (into the workspace next to apecx-mcp-integration/)")
+        log.warning("  2. apecx-setup rhea")
+        log.warning("  3. restart this MCP server")
+        log.warning("")
+        log.warning("If you don't need Rhea-backed tools, this banner is benign.")
+        log.warning("=" * 64)
+        return
+
+    venv = rhea_repo / ".venv" / "bin" / "python"
+    if not venv.exists():
+        log.warning("=" * 64)
+        log.warning("Rhea: checkout at %s but venv NOT BUILT", rhea_repo)
+        log.warning("")
+        log.warning("Rhea-backed bioinformatics tools will be UNAVAILABLE.")
+        log.warning("To enable: `apecx-setup rhea` then restart this MCP server.")
+        log.warning("=" * 64)
+        return
+
+    log.info(
+        "Rhea: ready (checkout=%s, venv=%s) — InfraOrchestrator will auto-spawn rhea-server",
+        rhea_repo,
+        venv.parent,
+    )
+
+
 def _ensure_synonym_dict_or_warn() -> None:
     """Build the synonym dictionary at startup if it isn't already there.
 
@@ -765,6 +821,7 @@ def main(argv: list[str] | None = None) -> None:
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
     _check_rag_index_or_warn()
+    _check_rhea_status_or_warn()
     _ensure_synonym_dict_or_warn()
     server = build_server()
     server.run()
