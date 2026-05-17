@@ -1,0 +1,40 @@
+# IsolatedPyExecStep config used INTERNALLY by TdrIterationStep.
+#
+# Per the parent step's design: TdrIterationStep constructs this from
+# the YAML at workflow-init time and calls its ``.process()`` directly
+# per iteration. The data_units + triggers below are required by
+# StepConfig but are inert at runtime.
+#
+# CRITICAL: This step REFUSES to execute unless APECX_CODE_EXEC=1 is
+# set in the operator environment. The TDR workflow is built around
+# real execution feedback; without the env gate, the iteration loop
+# raises on the first iteration. This is intentional — operators opt
+# in to running LLM-authored code in a subprocess.
+
+class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
+name: tdr_internal_executor
+description: "Internal IsolatedPyExecStep used by TdrIterationStep for each iteration's test run."
+
+# 30s timeout per iteration — long enough for SciCode-style multi-step
+# computations, short enough to catch infinite loops fast. TDR with a
+# 3-iter cap means worst-case 90s of exec time per problem.
+timeout_seconds: 30.0
+raise_on_nonzero_returncode: false
+
+input_data_units:
+  exec_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_input
+    description: "Inert — TdrIterationStep calls process() directly."
+    persistent: false
+
+output_data_units:
+  exec_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: exec_output
+    description: "Inert — TdrIterationStep reads the process() return value directly."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "exec_input"

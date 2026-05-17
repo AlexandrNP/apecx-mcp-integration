@@ -1,0 +1,185 @@
+# TDR refine loop — framework-native YAML workflow.
+#
+# G99: pure-YAML expression of the TDR (Test-Driven Recursive
+# Refinement) reasoning pattern. The Python TDR codegen at
+# tests/benchmarks/codegen/tdr.py drives the same logic
+# imperatively; this YAML proves the framework primitives
+# (LoopController + ConditionalLink + cycle validator) are
+# sufficient to express it declaratively.
+#
+# Topology (cycle through LoopController):
+#
+#     workflow_input
+#         │
+#         │ DirectLink (initial)
+#         ▼
+#     ┌──────────────────────────────────────┐
+#     │ tdr_iter (TdrIterationStep)          │◄──┐
+#     │ * one LLM write/revise               │   │
+#     │ * one subprocess exec                │   │ ConditionalLink
+#     │ * critique format                    │   │ (allow_continue=true)
+#     │ * emits envelope                     │   │
+#     └────────────────┬─────────────────────┘   │
+#                      │                          │
+#         ┌────────────┴───────────────┐          │
+#         │                            │          │
+#  ConditionalLink           ConditionalLink      │
+#  (exec_succeeded=true)     (exec_succeeded=     │
+#         │                   false)              │
+#         │                            │          │
+#         ▼                            ▼          │
+#     ┌──────────┐         ┌───────────────────┐ │
+#     │ final    │         │ loop_gate         │ │
+#     │ _code    │         │ (LoopController)  │ │
+#     └──────────┘         └─────────┬─────────┘ │
+#         ▲                          │            │
+#         │                          ▼            │
+#         │              ┌───────────────────┐    │
+#         └──────────────┤ branch on output  │────┘
+#                        │ allow_continue ▲  │
+#                        │ loop_exhausted │  │
+#                        └───────────────────┘
+#                            │
+#                            ▼  ConditionalLink
+#                       final_code  (loop_exhausted=true)
+#
+# Cycle: tdr_iter → loop_gate → tdr_iter (back-edge).
+# The cycle passes through loop_gate (a LoopController) so the
+# G18-Step-2 validator extension
+# (_all_cycles_pass_through_loop_controller) permits it. Without
+# the validator extension we would need allow_cycles: true at the
+# workflow level; with it, we can keep cycle detection ON for
+# safety while allowing this declared, bounded back-edge.
+
+name: tdr_refine_workflow
+description: >
+  TDR (Test-Driven Recursive Refinement) loop as a framework-native
+  nanobrain workflow. One LLM call + one subprocess exec per
+  iteration; bounded by a LoopController (max 3 iters); short-
+  circuits on exec_succeeded=true via ConditionalLink. Pure YAML
+  expression of the pattern Python-driven at
+  tests/benchmarks/codegen/tdr.py.
+version: "1.0.0"
+config_version: 2
+
+# Cycle detection stays ON. The back-edge is permitted because the
+# cycle includes a LoopController (G18 Step 2 validator extension).
+# Setting allow_cycles: true would be the workspace-wide hammer
+# that disables cycle detection entirely — that's a footgun we
+# avoid.
+allow_cycles: false
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      Initial envelope: {code_spec, function_name, function_signature?,
+      test_code, entrypoint?}. test_code is REQUIRED — TDR's value is
+      execution feedback. See TdrIterationStep docstring.
+    persistent: false
+
+output_data_units:
+  final_code:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: final_code
+    description: >
+      The final TDR envelope. Two paths write here:
+        (a) ConditionalLink iter_to_final_pass — when an iteration
+            exec_succeeded=true (early exit, the desired path).
+        (b) ConditionalLink loop_exhausted_to_final — when the loop
+            hit max_iterations without a passing iteration (escalation
+            path; the last attempt's code_source is emitted along
+            with the failure data).
+      Either way, the consumer reads code_source for the final code +
+      exec_succeeded to know if it actually passed the tests.
+    persistent: false
+
+steps:
+  tdr_iter:
+    class: "apecx_integration.composition.steps.tdr_iteration_step.TdrIterationStep"
+    config: "steps/tdr_iteration.yml"
+
+  loop_gate:
+    class: "nanobrain.library.steps.loop_controller.LoopController"
+    config: "steps/loop_gate.yml"
+
+links:
+  # ──────────────────────────────────────────────────────────────────
+  # 1. Initial input → first iteration.
+  # ──────────────────────────────────────────────────────────────────
+  input_to_iter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: direct
+      source: "workflow_input"
+      target: "tdr_iter.tdr_iter_input"
+      auto_transfer: true
+
+  # ──────────────────────────────────────────────────────────────────
+  # 2. Iteration output branches on exec_succeeded.
+  #    Two ConditionalLinks; mutually exclusive predicates.
+  # ──────────────────────────────────────────────────────────────────
+  iter_to_final_pass:
+    # exec_succeeded=true → emit immediately, short-circuit the loop.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "tdr_iter.tdr_iter_output"
+      target: "final_code"
+      condition: {op: eq, field: exec_succeeded, value: true}
+      auto_transfer: true
+
+  iter_to_loop_gate:
+    # exec_succeeded=false → route to the loop gate which decides
+    # whether to continue or escalate based on the iteration counter.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "tdr_iter.tdr_iter_output"
+      target: "loop_gate.loop_gate_input"
+      condition: {op: eq, field: exec_succeeded, value: false}
+      auto_transfer: true
+
+  # ──────────────────────────────────────────────────────────────────
+  # 3. Loop gate output branches on allow_continue / loop_exhausted.
+  #    These two predicates are mutually exclusive (LoopController
+  #    guarantees exactly one is true per invocation).
+  # ──────────────────────────────────────────────────────────────────
+  loop_continue_to_iter:
+    # allow_continue=true → back-edge into the iteration step. This
+    # is THE cycle. The LoopController wraps the prior envelope in
+    # {allow_continue, loop_exhausted, payload: <envelope>, ...};
+    # TdrIterationStep unwraps the payload via its envelope detector.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "loop_gate.loop_gate_output"
+      target: "tdr_iter.tdr_iter_input"
+      condition: {op: eq, field: allow_continue, value: true}
+      auto_transfer: true
+
+  loop_exhausted_to_final:
+    # loop_exhausted=true → emit the most recent (failed) attempt.
+    # The consumer reads exec_succeeded=false from this and knows
+    # the TDR loop escalated rather than converged.
+    class: "nanobrain.core.link.ConditionalLink"
+    config:
+      link_type: conditional
+      source: "loop_gate.loop_gate_output"
+      target: "final_code"
+      condition: {op: eq, field: loop_exhausted, value: true}
+      auto_transfer: true
+
+execution:
+  # Generous timeout — worst-case 3 iterations on mistral-nemo. Each
+  # iteration is one LLM call + one subprocess. On a 12B local model
+  # serving a code-writing context that grows each iteration with
+  # ``previous_attempt`` + ``critique`` text, single iterations can
+  # hit ~120-150s. 3 iterations + trigger/link overhead can therefore
+  # exceed 7 minutes wall on slower hardware. Set to 600s with the
+  # expectation that operators on a faster model (or GPU-backed
+  # endpoint) will reduce significantly.
+  timeout: 600
+  retry_attempts: 0
+  parallel_execution: false

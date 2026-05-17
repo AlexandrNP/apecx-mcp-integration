@@ -1,0 +1,50 @@
+# TdrIterationStep wrapper — one iteration of the TDR refine loop.
+#
+# This Step is the cycle body in tdr_refine_workflow.yml. Its input
+# is either the initial envelope from workflow_input (first iteration)
+# or the LoopController-wrapped envelope from the back-edge (subsequent
+# iterations). Its output is the iteration envelope consumed by the
+# downstream ConditionalLink branching (pass → emit_final;
+# fail → loop_gate).
+#
+# The step constructs CodeWriteStep + IsolatedPyExecStep internally
+# via from_config (paths below). Operators tuning prompt or timeout
+# edit those sibling YAMLs.
+
+class: "apecx_integration.composition.steps.tdr_iteration_step.TdrIterationStep"
+name: tdr_iter
+description: "One iteration of TDR refine: write/revise + exec + critique format."
+
+# Relative paths — resolved against THIS YAML's directory by
+# TdrIterationStep._resolve_sibling_path. Operators who want to
+# override either with an absolute path can do so without touching
+# the iteration step's code.
+writer_config_path: "code_writer.yml"
+executor_config_path: "executor.yml"
+
+input_data_units:
+  tdr_iter_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: tdr_iter_input
+    description: >
+      Envelope dict. Either the initial workflow_input shape
+      ({code_spec, function_name, function_signature?, test_code,
+      entrypoint?}) OR the LoopController-wrapped back-edge shape
+      ({allow_continue, loop_exhausted, iteration, max_iterations,
+      payload: <prior envelope>}). TdrIterationStep detects which
+      shape it received and unwraps as needed.
+    persistent: false
+
+output_data_units:
+  tdr_iter_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: tdr_iter_output
+    description: >
+      Full iteration envelope. See TdrIterationStep docstring for the
+      exact shape. The downstream ConditionalLink predicates read
+      exec_succeeded from this dict.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "tdr_iter_input"

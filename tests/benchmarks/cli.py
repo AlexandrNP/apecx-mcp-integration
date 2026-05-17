@@ -118,6 +118,16 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         from tests.benchmarks.codegen.hd_rss import make_hd_rss_codegen  # noqa: PLC0415
 
         return make_hd_rss_codegen(model=model, base_url=base_url)
+    if name == "tdr_yaml":
+        # G99 (2026-05-17): TDR-as-YAML — framework-native equivalent
+        # of `tdr`. Drives the same iterative-refinement logic via a
+        # nanobrain workflow with LoopController + ConditionalLink cycle
+        # instead of a Python loop. Output parity with `tdr` is the
+        # explicit design contract; wall time may be slightly higher
+        # due to async trigger overhead per iteration.
+        from tests.benchmarks.codegen.tdr_yaml import make_tdr_yaml_codegen  # noqa: PLC0415
+
+        return make_tdr_yaml_codegen(model=model, base_url=base_url)
     if name == "nanobrain_direct":
         # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
         from pathlib import Path  # noqa: PLC0415
@@ -578,6 +588,7 @@ def main() -> int:
             "plan_then_code",
             "tdr",  # G93: Test-Driven Recursive Refinement (2026-05-17)
             "hd_rss",  # G98: Hierarchical Decomposition with Recursive Subgoal Solving (2026-05-17)
+            "tdr_yaml",  # G99: TDR as framework-native YAML workflow (2026-05-17)
             "nanobrain_direct",
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",

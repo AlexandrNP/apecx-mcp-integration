@@ -1,0 +1,42 @@
+# CodeWriteStep config used INTERNALLY by TdrIterationStep.
+#
+# This wrapper is referenced from tdr_iteration.yml's
+# ``writer_config_path``. TdrIterationStep constructs a CodeWriteStep
+# from this YAML at workflow-init time, then calls its ``.process()``
+# directly per iteration. Because the call path is direct (not through
+# the framework trigger system), the input_data_units / output_data_units
+# / triggers declared here are inert — present only because StepConfig
+# requires them for FromConfigBase validation. They are never written
+# to or fired from.
+#
+# To tune the writer behavior, edit this file: prompt path, temperature,
+# max_tokens, require_function_name. The TdrIterationStep does not
+# layer additional overrides — what you set here is what runs.
+
+class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
+name: tdr_internal_writer
+description: "Internal CodeWriteStep used by TdrIterationStep for each iteration's LLM call."
+
+# Use the bundled default prompt at
+# ../../../code_writing_prompts/code_writer_system.md.
+temperature: 0.0
+max_tokens: 1024
+require_function_name: true
+
+input_data_units:
+  code_write_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_write_input
+    description: "Inert — TdrIterationStep calls process() directly."
+    persistent: false
+
+output_data_units:
+  code_write_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: code_write_output
+    description: "Inert — TdrIterationStep reads the process() return value directly."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "code_write_input"

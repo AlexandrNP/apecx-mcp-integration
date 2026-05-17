@@ -1,0 +1,48 @@
+# LoopController wrapper — bounds the TDR refine loop iteration count.
+#
+# The framework's bounded-cycle relaxation primitive (G18). On each
+# invocation the controller:
+#   * If iteration_count < max_iterations → increments + emits
+#     {allow_continue: true, loop_exhausted: false, payload: <input>}.
+#   * If iteration_count >= max_iterations → emits
+#     {allow_continue: false, loop_exhausted: true, payload: <input>}.
+#
+# In the TDR workflow, this controller is the cycle-validator anchor —
+# every cycle in the workflow graph must include a LoopController node
+# (per G18 Step 2's _all_cycles_pass_through_loop_controller validator).
+# Without it, the workflow validator would reject the back-edge.
+
+class: "nanobrain.library.steps.loop_controller.LoopController"
+name: tdr_loop_gate
+description: "Iteration bound for TDR refine loop (max 3 iterations)."
+
+# Matches the Python TDR's default. Each iteration is ~5-30s on
+# mistral-nemo (1 LLM call + 1 subprocess); 3 iterations = ~15-90s
+# worst case per problem.
+max_iterations: 3
+
+input_data_units:
+  loop_gate_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: loop_gate_input
+    description: >
+      The TDR envelope from a failed iteration (exec_succeeded=false).
+      Passed through to the controller's output as the ``payload`` key
+      under whatever passthrough_key the controller is configured for
+      (default ``payload``).
+    persistent: false
+
+output_data_units:
+  loop_gate_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: loop_gate_output
+    description: >
+      Controller envelope: {allow_continue, loop_exhausted, iteration,
+      max_iterations, payload: <input>}. The two ConditionalLinks
+      downstream predicate on allow_continue (back-edge) vs
+      loop_exhausted (emit-final escalation).
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "loop_gate_input"
