@@ -1,0 +1,333 @@
+{
+  "dataset": "scicode",
+  "codegen": "tdr",
+  "model": "mistral-nemo:latest",
+  "limit": 40,
+  "pass_at_1": 0.2571428571428571,
+  "passed": 9,
+  "total": 35,
+  "status_histogram": {
+    "fail_assertion": 13,
+    "pass": 9,
+    "timeout": 1,
+    "fail_other": 12
+  },
+  "elapsed_seconds": 1788.1697168750688,
+  "results": [
+    {
+      "problem_id": "scicode/10/10.6",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 128, in <module>\nAssertionError\n",
+      "wall_seconds": 51.38678929093294,
+      "generated_code": "import numpy as np\n\ndef generate_gpoints(recvec, gmax):\n    gpoints = []\n    for i in range(-gmax, gmax+1):\n        for j in range(-gmax, gmax+1):\n            for k in range(0, gmax+1):\n                if (i == 0 and j < 0) or (i == 0 and j == 0 and k == 0):\n                    continue\n                elif i == 0:\n                    continue\n                else:\n                    gpoints.append(np.array([i*recvec[0], j*recvec[1], k*recvec[2]]))\n    return np.array(gpoints)"
+    },
+    {
+      "problem_id": "scicode/1/1.1",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 13.548599332920276,
+      "generated_code": "import numpy as np\n\ndef cg(A, b, x0, tol):\n    r = b - A @ x0\n    p = r.copy()\n    rsold = r @ r\n    for i in range(len(b)):\n        Ap = A @ p\n        alpha = rsold / (p @ Ap)\n        x = x0 + alpha * p\n        r = b - A @ x\n        if np.linalg.norm(r) < tol:\n            break\n        beta = (r @ r) / rsold\n        p = r + beta * p\n        rsold = r @ r\n        x0, p = x, p\n    return x"
+    },
+    {
+      "problem_id": "scicode/3/3.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "Timeout",
+      "error_message": "exceeded 30.0s",
+      "wall_seconds": 123.58042858401313,
+      "generated_code": "import numpy as np\n\ndef GS(A, b, eps, x_true, x0):\n    n = len(b)\n    M = np.diag(np.diagonal(A)) - np.tril(A, -1)\n    N = A - M\n    x = x0.copy()\n    while True:\n        x_new = np.zeros(n)\n        for i in range(n):\n            s1 = np.sum(N[i] * x) if i > 0 else 0\n            s2 = np.sum(M[i] * (x_new if i > 0 else x)) if i > 0 else 0\n            x_new[i] = (b[i] - s1 - s2) / A[i,i]\n        if np.linalg.norm(x_new - x, 2) < eps:\n            break\n        x = x_new.copy()\n    residual = np.linalg.norm(np.dot(A, x) - b, 2)\n    error = np.linalg.norm(x - x_true, 2)\n    return residual, error"
+    },
+    {
+      "problem_id": "scicode/4/4.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 27, in <module>\nAssertionError\n",
+      "wall_seconds": 41.3045747919241,
+      "generated_code": "import numpy as np\n\ndef ichol(A):\n    n = len(A)\n    L = np.zeros((n, n))\n    for i in range(n):\n        for j in range(i+1):\n            s = sum(L[i,k]*L[j,k] for k in range(j))\n            if i == j:\n                L[i,i] = np.sqrt(max(A[i,i] - s, 0)) if A[i,i] > 0 else 0\n            else:\n                L[j,i] = (A[j,i] - s) / max(L[i,i], 1e-16)\n    return L"
+    },
+    {
+      "problem_id": "scicode/6/6.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 26, in <module>\n  File \"<stdin>\", line 18, in apply_low_pass_filter\nTypeError: slice indices must be integers or None or have an __index__ method\n",
+      "wall_seconds": 52.28358687495347,
+      "generated_code": "import numpy as np\n\ndef apply_low_pass_filter(image_array, frequency_threshold):\n    f = np.fft.fft2(image_array)\n    rows, cols = image_array.shape\n    crow, ccol = rows//2, cols//2  # Change the calculation of center coordinates\n    h = frequency_threshold / max(rows, cols)\n    mask = np.zeros((rows, cols), dtype=bool)\n    mask[crow-h:crow+h+1, ccol-h:ccol+h+1] = True  # Add +1 to include the center pixel in the mask\n    f_shifted = f * mask\n    filtered_image = np.abs(np.fft.ifft2(f_shifted))\n    T = mask\n    return T, filtered_image"
+    },
+    {
+      "problem_id": "scicode/19/19.1",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.8512473750161007,
+      "generated_code": "import numpy as np\n\ndef tensor(*args):\n    M = args[0]\n    for A in args[1:]:\n        M = np.kron(M, A)\n    return M"
+    },
+    {
+      "problem_id": "scicode/19/19.2",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 44, in <module>\n  File \"<stdin>\", line 40, in n_tangle\nValueError: shapes (4,) and (16,) not aligned: 4 (dim 0) != 16 (dim 0)\n",
+      "wall_seconds": 42.11990504199639,
+      "generated_code": "import numpy as np\n\ndef tensor_product(A, B):\n    return np.kron(A, B)\n\ndef n_tangle(psi):\n    sigma_y = np.array([[0, -1j], [1j, 0]])\n    if len(psi) == 2:\n        return abs(np.dot(psi.conj(), tensor_product(sigma_y, psi)))**2\n    elif len(psi) % 2 == 0:\n        mid = len(psi) // 2\n        return abs(np.dot(psi.conj(), tensor_product(n_tangle(psi[:mid]), n_tangle(psi[mid:]))))**2\n    else:\n        raise ValueError(\"Input size must be even\")"
+    },
+    {
+      "problem_id": "scicode/78/78.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "_ode.py\", line 418, in integrate\n    self._y, self.t = mth(self.f, self.jac or (lambda: None),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/scipy/integrate/_ode.py\", line 1174, in run\n    x, y, istate = self.runner(*((f, t0, y0, t1) +\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 62, in pendulum_eq\nTypeError: cannot unpack non-iterable float object\n",
+      "wall_seconds": 97.91845220793039,
+      "generated_code": "import numpy as np\nfrom scipy.integrate import ode\n\ndef pendulum_analysis(g, L, beta, A, alpha, initial_state, t0, tf, min_dt, max_dt, num_timesteps):\n    def pendulum_eq(y, t):\n        theta, omega = y\n        dydt = [omega, (-g/L * np.sin(theta) - beta*omega + A*np.cos(alpha*t)) / (1.0)]\n        return dydt\n\n    dt_range = np.linspace(min_dt, max_dt, num_timesteps)\n    metric_values = []\n\n    for dt in dt_range:\n        r = ode(pendulum_eq).set_integrator('dopri5')\n        r.set_initial_value(initial_state, t0)\n        t = t0\n        y = []\n        while t < tf:\n            r.integrate(t + dt)\n            y.append(r.y.copy())\n            t += dt\n\n        # Estimate GTE using step-doubling method\n        h = dt / 2.0\n        r.set_initial_value(initial_state, t0)\n        t_h = t0\n        y_h = []\n        while t_h < tf:\n            r.integrate(t_h + h)\n            y_h.append(r.y.copy())\n            t_h += h\n\n        dy = np.array(y[::2]) - np.array(y_h[:len(y)//2])\n        gte = np.linalg.norm(dy) * (dt / h)**4\n\n        # Calculate metric\n        time = len(y) * dt\n        metric = gte * np.sqrt(time)\n\n        metric_values.append(metric)\n\n    optimized_dt = dt_range[np.argmin(metric_values)]\n    t_optimized = np.arange(t0, tf, optimized_dt)\n    r.set_initial_value(initial_state, t0)\n    y_optimized = []\n    while t < tf:\n        r.integrate(t + dt)\n        y_optimized.append(r.y.copy())\n        t += dt\n\n    return np.array(y_optimized)"
+    },
+    {
+      "problem_id": "scicode/29/29.1",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.406113125034608,
+      "generated_code": "import numpy as np\n\ndef normalize(v):\n    norm = np.linalg.norm(v)\n    return v / norm if norm != 0 else v"
+    },
+    {
+      "problem_id": "scicode/29/29.2",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.771777707966976,
+      "generated_code": "import numpy as np\n\ndef inner_product(u, v):\n    return np.dot(u, v)"
+    },
+    {
+      "problem_id": "scicode/29/29.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 62, in <module>\nAssertionError\n",
+      "wall_seconds": 46.923361749970354,
+      "generated_code": "import numpy as np\n\ndef orthogonalize(A):\n    N = A.shape[0]\n    B = np.zeros_like(A)\n    for i in range(N):\n        v = A[:, i].astype(float)  # Convert to float before subtraction\n        for j in range(i):\n            projection = np.dot(v, B[:, j]) / np.linalg.norm(B[:, j])\n            v -= projection * B[:, j]\n        norm = np.linalg.norm(v)\n        B[:, i] = v / norm if norm != 0 else v\n    return B.T\n\n# Add checks to avoid division by zero and invalid operations\ndef orthogonalize(A):\n    N = A.shape[0]\n    B = np.zeros_like(A, dtype=float)  # Use float data type for B\n    for i in range(N):\n        v = A[:, i].astype(float)\n        for j in range(i):\n            projection = np.dot(v, B[:, j]) / np.linalg.norm(B[:, j])\n            v -= projection * B[:, j]\n        norm = np.linalg.norm(v)\n        if norm != 0:\n            B[:, i] = v / norm\n    return B.T"
+    },
+    {
+      "problem_id": "scicode/38/38.1",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.903363541001454,
+      "generated_code": "import numpy as np\n\ndef cross(a, b):\n    return np.array([\n        a[1] * b[2] - a[2] * b[1],\n        a[2] * b[0] - a[0] * b[2],\n        a[0] * b[1] - a[1] * b[0]\n    ])"
+    },
+    {
+      "problem_id": "scicode/38/38.2",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 28.417803415912203,
+      "generated_code": "import numpy as np\n\ndef reciprocal_3D(a1, a2, a3):\n    b1 = 2 * np.pi * np.cross(a2, a3) / np.dot(a1, np.cross(a2, a3))\n    b2 = 2 * np.pi * np.cross(a3, a1) / np.dot(a1, np.cross(a2, a3))\n    b3 = 2 * np.pi * np.cross(a1, a2) / np.dot(a1, np.cross(a2, a3))\n    return [b1, b2, b3]"
+    },
+    {
+      "problem_id": "scicode/38/38.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "<stdin>:49: RuntimeWarning: divide by zero encountered in reciprocal\n<stdin>:49: RuntimeWarning: invalid value encountered in reciprocal\nTraceback (most recent call last):\n  File \"<stdin>\", line 53, in <module>\nAssertionError\n",
+      "wall_seconds": 42.532225458999164,
+      "generated_code": "import numpy as np\n\ndef reciprocal(*args):\n    rec = []\n    for vec in args:\n        if len(vec) == 1:\n            rec.append(np.array([2 * np.pi / vec[0]]))\n        elif len(vec) == 2:\n            a3 = np.cross(vec[0], vec[1])\n            dot = np.dot(a3, a3)\n            rec.append(2 * np.pi * a3 / dot)\n        else:\n            # Calculate the reciprocal lattice vector for three dimensions\n            rec.append(np.reciprocal(vec))\n    return rec"
+    },
+    {
+      "problem_id": "scicode/44/44.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 23, in <module>\nAssertionError\n",
+      "wall_seconds": 42.26085954194423,
+      "generated_code": "import numpy as np\n\ndef GetComp(d):\n    Z = d.shape[0]\n    dcomp = np.zeros_like(d)\n    for i in range(Z):\n        for j in range(Z):\n            if i < Z//2:\n                dcomp[i, j] = d[j, i+Z//2]\n            else:\n                dcomp[i, j] = d[j-Z//2, i]\n    return dcomp"
+    },
+    {
+      "problem_id": "scicode/44/44.2",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 39, in <module>\n  File \"<stdin>\", line 30, in step\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/numpy/_core/fromnumeric.py\", line 2419, in sum\n    raise TypeError(\nTypeError: Calling np.sum(generator) is deprecated.Use np.sum(np.fromiter(generator)) or the python sum builtin instead.\n",
+      "wall_seconds": 45.15329824993387,
+      "generated_code": "import numpy as np\n\ndef step(t, y, c, lig):\n    Z = int(np.sqrt(len(y)))\n    d = y.reshape(Z, Z)\n\n    r = c - np.sum(d[:, i] for i in range(Z))\n    l = c - np.sum(d[i, :] for i in range(Z))\n\n    ystep = lig * r[:, None] * l[None, :] * d.T - d\n    return ystep.flatten()"
+    },
+    {
+      "problem_id": "scicode/44/44.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "<stdin>:52: RuntimeWarning: invalid value encountered in log\nTraceback (most recent call last):\n  File \"<stdin>\", line 61, in <module>\nAssertionError\n",
+      "wall_seconds": 65.8004182500299,
+      "generated_code": "import numpy as np\n\ndef entropies(c0, d0, lig, tf, nsteps):\n    dt = tf / nsteps\n    entropy_list = []\n    d = d0.copy()\n    for t in range(nsteps):\n        tilde_d = d / (np.sum(d) + 1e-9)  # Avoid division by zero\n        non_zero_indices = np.where(tilde_d != 0)\n        S = -np.nansum(tilde_d[non_zero_indices] * np.log(tilde_d[non_zero_indices]))  # Ignore zeros before taking log\n        entropy_list.append(S)\n        d += lig * dt\n    return np.array(entropy_list)"
+    },
+    {
+      "problem_id": "scicode/47/47.1",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.6406483330065385,
+      "generated_code": "import numpy as np\n\ndef U_ij(r, sigma, epsilon):\n    return 4 * epsilon * ((sigma/r)**12 - (sigma/r)**6)"
+    },
+    {
+      "problem_id": "scicode/47/47.2",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.83602708298713,
+      "generated_code": "import numpy as np\n\ndef U_i(r_i, i, positions, sigma, epsilon):\n    U = 0.0\n    for j in range(len(positions)):\n        if j != i:\n            r_jj = positions[j] - r_i\n            r_ij = np.linalg.norm(r_jj)\n            U += 4 * epsilon * ((sigma/r_ij)**12 - (sigma/r_ij)**6)\n    return U"
+    },
+    {
+      "problem_id": "scicode/47/47.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 60, in <module>\nAssertionError\n",
+      "wall_seconds": 42.55466024996713,
+      "generated_code": "import numpy as np\n\ndef U_system(positions, sigma, epsilon):\n    N = positions.shape[0]\n    U = 0.0\n    for i in range(N):  # Loop over all atoms\n        for j in range(i+1, N):  # Only consider interactions with atoms that come after 'i' to avoid double counting\n            r_ij = np.linalg.norm(positions[i] - positions[j])\n            U += 4 * epsilon * ((sigma/r_ij)**12 - (sigma/r_ij)**6)\n    return U\n\n_target_0_0 = 3.57894736842\n_target_1_0 = 14.0\n_target_2_0 = 0.0"
+    },
+    {
+      "problem_id": "scicode/47/47.4",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "c.py\", line 2376, in allclose\n    res = all(isclose(a, b, rtol=rtol, atol=atol, equal_nan=equal_nan))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/numpy/_core/numeric.py\", line 2507, in isclose\n    result = (less_equal(abs(x - y), atol + rtol * abs(y))\n                             ~~^~~\nValueError: operands could not be broadcast together with shapes (1000,) (1001,) \n",
+      "wall_seconds": 81.9468948750291,
+      "generated_code": "import numpy as np\n\ndef U_i(r, sigma, epsilon):\n    return 4 * epsilon * ((sigma / r) ** 12 - (sigma / r) ** 6)\n\ndef U_system(positions, sigma, epsilon):\n    N = len(positions)\n    E = 0.0\n    for i in range(N):\n        for j in range(i+1, N):\n            r = np.linalg.norm(positions[i] - positions[j])\n            E += U_i(r, sigma, epsilon)\n    return E / 2\n\ndef MC(sigma, epsilon, T, init_positions, MC_steps, dispSize):\n    beta = 1.0 / T\n    N = len(init_positions)\n    E_trace = np.zeros(MC_steps + 1)  # Add one to accommodate step 0 energy\n\n    for step in range(MC_steps):\n        i = np.random.randint(N)\n        new_position = init_positions[i] + np.random.normal(0, dispSize, 3)\n        new_energy = U_system(np.vstack([init_positions[:i], new_position]), sigma, epsilon)\n\n        if step == 0 or np.random.rand() < min(1, np.exp(-beta * (new_energy - E_trace[step]))):\n            init_positions[i] = new_position\n            E_trace[step + 1] = new_energy\n\n    return E_trace[1:]  # Remove the initial energy value at index 0"
+    },
+    {
+      "problem_id": "scicode/49/49.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 27, in <module>\nAssertionError\n",
+      "wall_seconds": 51.62526500003878,
+      "generated_code": "import numpy as np\n\nG = 6.67430e-11\n\ndef Nbody_Fij(xin, mass):\n    N = len(mass)\n    f = np.zeros((N, 3))\n\n    for i in range(N):\n        for j in range(i+1, N):  # Only calculate force once per pair\n            r = xin[j] - xin[i]\n            r_mag = np.linalg.norm(r)\n            force = G * mass[i] * mass[j] / (r_mag ** 2) * r / r_mag\n            f[i] -= force\n            f[j] += force\n\n    return f"
+    },
+    {
+      "problem_id": "scicode/49/49.2",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 49, in <module>\n  File \"<stdin>\", line 43, in Nbody_RHS\nTypeError: can't multiply sequence by non-int of type 'numpy.float64'\n",
+      "wall_seconds": 71.55586541595403,
+      "generated_code": "import numpy as np\n\ndef Nbody_Fij(i, j, uin, mass):\n    dx = uin[j][0] - uin[i][0]\n    dy = uin[j][1] - uin[i][1]\n    dz = uin[j][2] - uin[i][2]\n    r = np.sqrt(dx**2 + dy**2 + dz**2)\n    F, ax, ay, az = mass[i] * mass[j] / (r ** 3), dx/r, dy/r, dz/r\n    return F, ax, ay, az\n\ndef Nbody_RHS(uin, mass):\n    N = len(mass)\n    rhs = np.zeros((N, 6))\n    for i in range(N):\n        for j in range(i+1, N):\n            F, ax, ay, az = Nbody_Fij(i, j, uin, mass)\n            rhs[i][3:] += -F * mass[j] * [ax, ay, az]\n            rhs[j][3:] +=  F * mass[i] * [ax, ay, az]\n    rhs[:, :3] = uin[:, 3:]\n    return rhs"
+    },
+    {
+      "problem_id": "scicode/49/49.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "meric.py\", line 2376, in allclose\n    res = all(isclose(a, b, rtol=rtol, atol=atol, equal_nan=equal_nan))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/numpy/_core/numeric.py\", line 2507, in isclose\n    result = (less_equal(abs(x - y), atol + rtol * abs(y))\n                             ~~^~~\nValueError: operands could not be broadcast together with shapes (12,) (2,6) \n",
+      "wall_seconds": 106.52505416690838,
+      "generated_code": "import numpy as np\n\ndef Nbody_RK4(uin, mass, dt):\n    def Nbody_RHS(u, t):\n        N = len(mass)\n        u = u.reshape(N, 6)\n        dx, dy, dz, dvx, dvy, dvz = 0, 0, 0, 0, 0, 0\n        for i in range(N):\n            x, y, z, vx, vy, vz = u[i]\n            for j in range(N):\n                if j != i:\n                    dxj, dyj, dzj = u[j][:3] - u[i][:3]\n                    r = np.sqrt(dxj**2 + dyj**2 + dzj**2)\n                    F = mass[i] * mass[j] / (r ** 3)\n                    dvx += F * dxj / r\n                    dvy += F * dyj / r\n                    dvz += F * dzj / r\n        return np.array([dvx, dvy, dvz, vx, vy, vz])\n\n    N = len(mass)\n    uin = uin.reshape(N, 6)\n    k1 = Nbody_RHS(uin, 0) * dt\n    k2 = Nbody_RHS(uin + k1 / 2, dt / 2) * dt\n    k3 = Nbody_RHS(uin + k2 / 2, dt / 2) * dt\n    k4 = Nbody_RHS(uin + k3 * dt, dt) * dt\n\n    uout = uin + (k1 + 2*k2 + 2*k3 + k4) / 6\n    return uout.flatten()"
+    },
+    {
+      "problem_id": "scicode/49/49.4",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "IndexError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 104, in <module>\n  File \"<stdin>\", line 97, in Nbody\n  File \"<stdin>\", line 87, in rk4\n  File \"<stdin>\", line 70, in force\nIndexError: invalid index to scalar variable.\n",
+      "wall_seconds": 120.39258066704497,
+      "generated_code": "import numpy as np\n\ndef Nbody(uin, mass, dt, t0, t1):\n    def force(u, t):\n        G = 6.6743e-11\n        N = len(mass)\n        F = np.zeros((N, 6))\n        for i in range(N):\n            r_i = u[i][:3]\n            v_i = u[i][3:]\n            F_i = np.zeros(6)\n            for j in range(i+1, N):\n                r_j = u[j][:3]\n                r_ij = r_j - r_i\n                r_mag = np.linalg.norm(r_ij)\n                F_ij = G * mass[i] * mass[j] / (r_mag ** 2) * r_ij / r_mag\n                F_i += F_ij\n            F[i] = F_i\n        return F\n\n    def rk4(u, t):\n        dt = t1 - t0\n        N = len(mass)\n        u_next = np.zeros((N, 6))\n        for i in range(N):\n            k1 = force(u[i], t) * dt / 2\n            k2 = force(u[i] + k1 * dt / 2, t + dt / 2) * dt / 2\n            k3 = force(u[i] + k2 * dt / 2, t + dt / 4) * dt / 2\n            k4 = force(u[i] + k3 * dt / 2, t + dt / 2) * dt / 2\n            u_next[i] = u[i] + (k1 + 2*k2 + 2*k3 + k4) / 6\n        return u_next\n\n    t = np.arange(t0, t1, dt)\n    u = uin.copy()\n    for i in range(1, len(t)):\n        u += rk4(u, t[i-1])\n    return u"
+    },
+    {
+      "problem_id": "scicode/51/51.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 18, in <module>\nAssertionError\n",
+      "wall_seconds": 33.46555099997204,
+      "generated_code": "import numpy as np\n\ndef f_ij(sigma, epsilon, r):\n    '''This function computes the force between two particles interacting through Lennard Jones Potential'''\n    r_mag = np.linalg.norm(r)\n    f = 4 * epsilon / sigma**6 * ((sigma/r_mag)**12 - (sigma/r_mag)**6) * r / r_mag\n    return f"
+    },
+    {
+      "problem_id": "scicode/51/51.2",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 40, in <module>\nAssertionError\n",
+      "wall_seconds": 48.31458791694604,
+      "generated_code": "import numpy as np\n\ndef aggregate_forces(sigma, epsilon, positions):\n    N = len(positions)\n    forces = np.zeros((N, 3))\n    for i in range(N):\n        for j in range(i+1, N):  # Only calculate force once per pair\n            r_ij = positions[i] - positions[j]\n            r_mag = np.linalg.norm(r_ij)\n            if r_mag == 0:\n                continue  # Avoid division by zero\n            force_ij = 24 * epsilon / (sigma ** 12) * ((sigma/r_mag)**12 - (sigma/r_mag)**6) * r_ij / r_mag\n            forces[i] += force_ij\n    return forces"
+    },
+    {
+      "problem_id": "scicode/51/51.3",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 77, in <module>\nAssertionError\n",
+      "wall_seconds": 72.60733599995729,
+      "generated_code": "import numpy as np\n\ndef velocity_verlet(sigma, epsilon, positions, velocities, dt, m):\n    forces = calculate_forces(sigma, epsilon, positions)\n    new_positions = positions + velocities * dt + 0.5 * forces * dt**2 / m\n    new_velocities = velocities + (forces + calculate_forces(sigma, epsilon, new_positions)) * dt / (2 * m)\n    return new_positions, new_velocities\n\ndef calculate_forces(sigma, epsilon, positions):\n    num_atoms = len(positions)\n    forces = np.zeros_like(positions)\n    for i in range(num_atoms):\n        for j in range(i+1, num_atoms):\n            r = positions[i] - positions[j]\n            r_mag = np.linalg.norm(r)\n            force = 24 * epsilon / (sigma**12) * ((2/r_mag**13) - (1/r_mag**7)) * r\n            forces[i] += force\n    return forces"
+    },
+    {
+      "problem_id": "scicode/70/70.1",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 22, in <module>\nAssertionError\n",
+      "wall_seconds": 96.03890329098795,
+      "generated_code": "import numpy as np\nimport cmath\n\ndef pmns_mixing_matrix(s12, s23, s13, dCP):\n    U = np.array([\n        [cmath.cos(cmath.acos(s12))*cmath.cos(cmath.acos(s13)), cmath.sin(cmath.acos(s12))*cmath.cos(cmath.acos(s13)), cmath.sin(cmath.acos(s13))*cmath.exp(-1j*dCP)],\n        [-cmath.sin(cmath.acos(s23))*cmath.cos(cmath.acos(s12))*cmath.cos(cmath.acos(s13)) - cmath.cos(cmath.acos(s23))*cmath.sin(cmath.acos(s12))*s13*cmath.exp(1j*dCP), cmath.cos(cmath.acos(s23))*cmath.cos(cmath.acos(s12))*cmath.cos(cmath.acos(s13)) - cmath.sin(cmath.acos(s23))*cmath.sin(cmath.acos(s12))*s13*cmath.exp(1j*dCP), cmath.sin(cmath.acos(s23))*cmath.cos(cmath.acos(s13))],\n        [cmath.sin(cmath.acos(s23))*cmath.sin(cmath.acos(s12))*cmath.cos(cmath.acos(s13)) - cmath.cos(cmath.acos(s23))*cmath.cos(cmath.acos(s12))*s13*cmath.exp(1j*dCP), -cmath.cos(cmath.acos(s23))*cmath.sin(cmath.acos(s12))*cmath.cos(cmath.acos(s13)) - cmath.sin(cmath.acos(s23))*cmath.cos(cmath.acos(s12))*s13*cmath.exp(1j*dCP), cmath.cos(cmath.acos(s23))*cmath.cos(cmath.acos(s13))]\n    ])\n    return U"
+    },
+    {
+      "problem_id": "scicode/70/70.2",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "ValueError",
+      "error_message": "meric.py\", line 2376, in allclose\n    res = all(isclose(a, b, rtol=rtol, atol=atol, equal_nan=equal_nan))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/numpy/_core/numeric.py\", line 2507, in isclose\n    result = (less_equal(abs(x - y), atol + rtol * abs(y))\n                             ~~^~~\nValueError: operands could not be broadcast together with shapes (81,) (3,3) \n",
+      "wall_seconds": 67.56231562490575,
+      "generated_code": "import cmath\n\ndef hamiltonian_3nu(s12, s23, s13, dCP, D21, D31):\n    U = [\n        [s12*cmath.exp(1j*dCP/2), s12*cmath.exp(-1j*dCP/2), s13],\n        [s23*cmath.exp(1j*dCP/2), -s23*cmath.exp(-1j*dCP/2), s13*s23],\n        [s13*s23, s13*s23, s13**2]\n    ]\n    H = [\n        [0, 0, 0],\n        [0, D21, 0],\n        [0, 0, D31]\n    ]\n    return [(U[i][j]*H[j][k]*(U[k][l].conjugate())) for i in range(3) for j in range(3) for k in range(3) for l in range(3)]"
+    },
+    {
+      "problem_id": "scicode/70/70.3",
+      "codegen_name": "tdr",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 19.265402292017825,
+      "generated_code": "import numpy as np\nimport cmath\n\ndef hamiltonian_3nu_su3_coefficients(hamiltonian):\n    hks = []\n    for k in range(1, 9):\n        if k == 1:\n            hk = np.real(hamiltonian[0][1])\n        elif k == 2:\n            hk = -np.imag(hamiltonian[0][1])\n        elif k == 3:\n            hk = (hamiltonian[0][0] - hamiltonian[1][1]) / 2\n        elif k == 4:\n            hk = np.real(hamiltonian[0][2])\n        elif k == 5:\n            hk = -np.imag(hamiltonian[0][2])\n        elif k == 6:\n            hk = np.real(hamiltonian[1][2])\n        elif k == 7:\n            hk = -np.imag(hamiltonian[1][2])\n        else: # k == 8\n            hk = (hamiltonian[0][0] + hamiltonian[1][1] - 2*hamiltonian[2][2]) * np.sqrt(3) / 6\n        hks.append(hk)\n    return hks"
+    },
+    {
+      "problem_id": "scicode/70/70.4",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "IndexError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 102, in <module>\n  File \"<stdin>\", line 99, in tensor_d\nIndexError: list index out of range\n",
+      "wall_seconds": 57.71082579100039,
+      "generated_code": "import numpy as np\n\ndef tensor_d(i, j, k):\n    lambda_matrices = [\n        np.array([[1, 0], [0, 1]]),\n        np.array([[1, 0], [0, -1]]),\n        np.array([[0, 1], [1, 0]]),\n        np.array([[0, 1j], [-1j, 0]]),\n        np.array([[1, 0], [0, 1]]),\n        np.array([[1, 0], [0, -1]]),\n        np.array([[0, 1], [-1, 0]]),\n        np.array([[0, -1j], [1j, 0]])\n    ]\n    commutator = lambda_matrices[i] @ lambda_matrices[j] + lambda_matrices[j] @ lambda_matrices[i]\n    result = np.real(np.trace(commutator @ lambda_matrices[k]) / 4)\n    return result"
+    },
+    {
+      "problem_id": "scicode/70/70.5",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "IndexError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 141, in <module>\n  File \"<stdin>\", line 130, in star_product\n  File \"<stdin>\", line 130, in <genexpr>\nIndexError: index 3 is out of bounds for axis 1 with size 3\n",
+      "wall_seconds": 47.54011129110586,
+      "generated_code": "import numpy as np\nimport cmath\n\ndef star_product(i, h):\n    d = np.array([[4/3, 0, 0], [0, -1/3, 0], [0, 0, -1/3],\n                  [-1/2, 0, 0], [0, 1/2, 0], [0, 0, 1/2],\n                  [1/2, 0, 0], [0, -1/2, 0]])\n    if isinstance(h, list):\n        return sum(d[i, j] * h[j] * h[k] for j in range(8) for k in range(j+1))\n    else:\n        return sum(d[i, :] * h**2)"
+    },
+    {
+      "problem_id": "scicode/70/70.7",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "SyntaxError",
+      "error_message": "  File \"<stdin>\", line 156\n    |h| = np.sqrt(np.sum(h * np.conjugate(h)))\n    ^\nSyntaxError: invalid syntax\n",
+      "wall_seconds": 59.54893145803362,
+      "generated_code": "import numpy as np\nimport cmath\n\ndef evolution_operator_3nu_su3_coefficients(hamiltonian, L):\n    h = np.array(hamiltonian)\n    |h| = np.sqrt(np.sum(h * np.conjugate(h)))\n    chi = np.arccos(-np.sum(h * h) / (2 * |h|**3))\n    psi_m = 2 * |h| / np.sqrt(3) * cmath.exp(1j * chi / 3)\n    u0 = 1/3 * sum(cmath.exp(1j * L * psi_m) for m in range(1,4))\n    u_k = [sum(cmath.exp(1j * L * psi_m) * (psi_m * h[k] - np.sum(h * h) / |h|**2)) / 3 / psi_m**2 for k in range(8)]\n    return [u0] + u_k"
+    },
+    {
+      "problem_id": "scicode/70/70.8",
+      "codegen_name": "tdr",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 204, in <module>\nAssertionError\n",
+      "wall_seconds": 88.86742704093922,
+      "generated_code": "import numpy as np\nimport cmath\n\ndef probabilities_3nu(hamiltonian, L):\n    # Define Gell-Mann matrices up to i7 (used in the Hamiltonian)\n    lambda_matrices = [\n        np.array([[1, 0, 0], [0, 1, 0], [0, 0, -2]]),\n        np.array([[0, 1, 0], [1, 0, 0], [0, 0, 0]]),\n        np.array([[0, -1j, 0], [1j, 0, 0], [0, 0, 0]])\n    ]\n\n    # Compute evolution operator using Hamiltonian and Gell-Mann matrices\n    U = np.exp(-1j * np.sum([hamiltonian[i][k] * lambda_matrices[k] for i in range(3) for k in range(3)], axis=0) * L)\n\n    # Define neutrino flavors\n    nu_e, nu_mu, nu_tau = np.eye(3)\n\n    # Compute oscillation probabilities\n    probs = [\n        abs(np.dot(nu.conj(), U @ nu))**2 for nu in [nu_e, nu_mu, nu_tau]\n    ] * 3\n\n    return probs"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "hd_rss",
+  "model": "mistral-nemo:latest",
+  "limit": 10,
+  "pass_at_1": 0.2,
+  "passed": 2,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 8,
+    "pass": 2
+  },
+  "elapsed_seconds": 86.91316208301578,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "ImportError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nImportError: cannot import name 'BaseStep' from 'nanobrain.lightweight' (/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/lightweight/__init__.py)\n",
+      "wall_seconds": 18.193578000064008,
+      "generated_code": "from nanobrain.lightweight import WorkflowBuilder, BaseStep, DataUnitChangeTrigger\n\nclass UpperStep(BaseStep):\n    def process(self, data):\n        return {\"text\": data[\"text\"].upper()}\n\nclass ReverseStep(BaseStep):\n    def process(self, data):\n        return {\"text\": data[\"text\"][::-1]}\n\ndef build_workflow():\n    builder = WorkflowBuilder()\n    builder.add_step(\"upper\", \"__main__.UpperStep\",\n                     input_data_units={\"text\": \"string\"},\n                     output_data_units={\"upper_output\": \"string\"},\n                     triggers=[DataUnitChangeTrigger(\"input_text\")])\n    builder.add_step(\"reverse\", \"__main__.ReverseStep\",\n                     input_data_units={\"reverse_input\": \"string\"},\n                     output_data_units={\"reversed_text\": \"string\"},\n                     triggers=[DataUnitChangeTrigger(\"reverse_input\")])\n    builder.add_link(\"upper.upper_output\", \"reverse.reverse_input\")\n    return builder.load()"
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "AttributeError",
+      "error_message": " line 194, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/anaconda3/lib/python3.12/asyncio/base_events.py\", line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 18, in process\nAttributeError: 'ThresholdStep' object has no attribute '_threshold'\n",
+      "wall_seconds": 13.252064000000246,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\n\nclass ThresholdStepConfig(StepConfig):\n    threshold: float = 0.0\n\nclass ThresholdStep(BaseStep):\n    _config_class = ThresholdStepConfig\n\n    def __init__(self, config: dict):\n        super().__init__(config)\n        self._threshold = self.config.threshold\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data[\"items\"]\n        return {\"above\": [x for x in items if x > self._threshold]}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "AttributeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 27, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 15, in from_config\nAttributeError: type object 'ConcatStep' has no attribute 'load'\n",
+      "wall_seconds": 7.062796416925266,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass ConcatStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts = input_data[\"parts\"]\n        sep = input_data.get(\"sep\", \"\")\n        joined = sep.join(parts)\n        return {\"joined\": joined}\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        return cls.load(yaml_path)"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "AttributeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 31, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 19, in from_config\nAttributeError: type object 'DedupePreserveOrderStep' has no attribute 'load'\n",
+      "wall_seconds": 10.875511166988872,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DedupePreserveOrderStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data[\"items\"]\n        seen = set()\n        unique_items = []\n        for item in items:\n            if item not in seen:\n                seen.add(item)\n                unique_items.append(item)\n        return {\"unique\": unique_items}\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        return cls.load(yaml_path)"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "AttributeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 25, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 13, in from_config\nAttributeError: type object 'DoubleStep' has no attribute 'load'\n",
+      "wall_seconds": 5.73921845795121,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass DoubleStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        n = input_data.get(\"n\")\n        return {\"doubled\": n * 2}\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        return cls.load(yaml_path)"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "RecursionError",
+      "error_message": "    line_break = self.scan_line_break()\n                 ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/yaml/scanner.py\", line 1427, in scan_line_break\n    if self.prefix(2) == '\\r\\n':\n       ^^^^^^^^^^^^^^\n  File \"/Users/onarykov/Downloads/apecx-cowork/wt-cgu-codegen-uplift/.venv/lib/python3.12/site-packages/yaml/reader.py\", line 96, in prefix\n    self.update(length)\nRecursionError: maximum recursion depth exceeded\n",
+      "wall_seconds": 5.48860775004141,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass FilterPositiveStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        positive_items = [x for x in items if x > 0]\n        return {\"positive\": positive_items}\n\nFilterPositiveStep.from_config = BaseStep.from_config"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "hd_rss",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.7101210000691935,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass SumListStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        values = input_data.get(\"values\", [])\n        return {\"total\": sum(values)}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "hd_rss",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 6.802128459094092,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass UpperStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"output\": input_data[\"text\"].upper()}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 24, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: <lambda>() missing 1 required positional argument: 'yaml_path'\n",
+      "wall_seconds": 5.726761667057872,
+      "generated_code": "from nanobrain.core.step import BaseStep\n\nclass WordCountStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        count = len(text.split()) if text else 0\n        return {\"count\": count}\n\nWordCountStep.from_config = lambda self, yaml_path: WordCountStep.load(yaml_path)"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "hd_rss",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "x-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 20, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of CalculatorTool is prohibited. Use: CalculatorTool.from_config(config_file_or_object)\n",
+      "wall_seconds": 7.061041209031828,
+      "generated_code": "import ast\nfrom nanobrain.core.tool import ToolBase\n\nclass CalculatorTool(ToolBase):\n    async def execute(self, expression: str) -> dict:\n        try:\n            result = eval(expression, {}, {})\n            if isinstance(result, (int, float)):\n                return {\"result\": result}\n            else:\n                raise ValueError(\"Invalid arithmetic expression\")\n        except Exception as e:\n            raise ValueError(f\"Invalid arithmetic expression: {e}\")\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        return cls()"
+    }
+  ]
+}

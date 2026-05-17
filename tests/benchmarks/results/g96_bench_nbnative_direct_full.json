@@ -1,0 +1,106 @@
+{
+  "dataset": "nanobrain_native",
+  "codegen": "direct",
+  "model": "mistral-nemo:latest",
+  "limit": 10,
+  "pass_at_1": 0.1,
+  "passed": 1,
+  "total": 10,
+  "status_histogram": {
+    "fail_other": 9,
+    "pass": 1
+  },
+  "elapsed_seconds": 68.9981203339994,
+  "results": [
+    {
+      "problem_id": "nanobrain_native/builder_two_step_uppercase_reverse",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "ImportError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nImportError: cannot import name 'BaseStep' from 'nanobrain.lightweight' (/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/lightweight/__init__.py)\n",
+      "wall_seconds": 13.18836770800408,
+      "generated_code": "from nanobrain.lightweight import WorkflowBuilder, BaseStep, DataUnitChangeTrigger, DirectLink\n\nclass UpperStep(BaseStep):\n    def process(self, data):\n        return {\"text\": data[\"text\"].upper()}\n\nclass ReverseStep(BaseStep):\n    def process(self, data):\n        return {\"text\": data[\"text\"][::-1]}\n\ndef build_workflow():\n    builder = WorkflowBuilder()\n    builder.add_step(\"upper\", \"__main__.UpperStep\", input_data_units={\"text\"}, output_data_units={\"text\"})\n    builder.add_link(\"upper.upper_output\", \"reverse.reverse_input\", link_type=\"direct\")\n    builder.add_step(\"reverse\", \"__main__.ReverseStep\", input_data_units={\"text\"}, output_data_units={\"text\"}, triggers=[DataUnitChangeTrigger(\"reverse_input\")])\n    return builder.load()"
+    },
+    {
+      "problem_id": "nanobrain_native/config_threshold_step",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "ModuleNotFoundError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 5, in <module>\nModuleNotFoundError: No module named 'nanobrain.utils'\n",
+      "wall_seconds": 11.75378908298444,
+      "generated_code": "from nanobrain.core.step import BaseStep, StepConfig\nfrom nanobrain.utils.yaml_loader import load_yaml_config\n\nclass ThresholdStepConfig(StepConfig):\n    threshold: float = 0.0\n\nclass ThresholdStep(BaseStep):\n    _config_class = ThresholdStepConfig\n\n    def __init__(self, config_path=None):\n        super().__init__(config_path)\n        self._threshold = self.config.threshold\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        return {\"above\": [x for x in items if x > self._threshold]}\n\n@BaseStep.register\nclass ThresholdStepLoader(BaseStep.Loader):\n    async def load(self, yaml_path):\n        config = await load_yaml_config(yaml_path)\n        step = ThresholdStep(config=config[\"step\"])\n        return step"
+    },
+    {
+      "problem_id": "nanobrain_native/step_concat",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of ConcatStep is prohibited. Use: ConcatStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 7.4684918749844655,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass ConcatStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path: str) -> 'ConcatStep':\n        with open(yaml_path, 'r') as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        parts = input_data[\"parts\"]\n        sep = input_data.get(\"sep\", \"\")\n        joined = sep.join(parts)\n        return {\"joined\": joined}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_dedupe_preserve_order",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.74038637499325,
+      "generated_code": "from nanobrain.core.step import BaseStep\nfrom typing import Dict, List\n\nclass DedupePreserveOrderStep(BaseStep):\n    async def process(self, input_data: Dict[str, List], **kwargs) -> Dict[str, List]:\n        seen = set()\n        unique_items = []\n        for item in input_data[\"items\"]:\n            if item not in seen:\n                seen.add(item)\n                unique_items.append(item)\n        return {\"unique\": unique_items}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_double",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of DoubleStep is prohibited. Use: DoubleStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 5.391126499976963,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass DoubleStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        n = input_data.get(\"n\", 0)\n        return {\"doubled\": n * 2}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_filter_positive",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 24, in <module>\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: <lambda>() missing 1 required positional argument: 'yaml_path'\n",
+      "wall_seconds": 4.724352375022136,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass FilterPositiveStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        items = input_data.get(\"items\", [])\n        return {\"positive\": [x for x in items if x > 0]}\n\nFilterPositiveStep.from_config = lambda cls, yaml_path: cls(yaml.safe_load(open(yaml_path)))"
+    },
+    {
+      "problem_id": "nanobrain_native/step_sum_list",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "s/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of SumListStep is prohibited. Use: SumListStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 5.183215708006173,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass SumListStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        values = input_data.get(\"values\", [])\n        total = sum(values)\n        return {\"total\": total}"
+    },
+    {
+      "problem_id": "nanobrain_native/step_uppercase",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "loads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 15, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of UpperStep is prohibited. Use: UpperStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 4.6150404589716345,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass UpperStep(BaseStep):\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        return {\"output\": input_data[\"text\"].upper()}\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path, 'r') as file:\n            config = yaml.safe_load(file)\n        return cls(**config)"
+    },
+    {
+      "problem_id": "nanobrain_native/step_word_count",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "ecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 12, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of WordCountStep is prohibited. Use: WordCountStep.from_config(config_file_or_object)\n",
+      "wall_seconds": 4.9994415420806035,
+      "generated_code": "from nanobrain.core.step import BaseStep\nimport yaml\n\nclass WordCountStep(BaseStep):\n    @classmethod\n    def from_config(cls, yaml_path):\n        with open(yaml_path) as f:\n            config = yaml.safe_load(f)\n        return cls(**config)\n\n    async def process(self, input_data: dict, **kwargs) -> dict:\n        text = input_data.get(\"text\", \"\")\n        count = len(text.split())\n        return {\"count\": count}"
+    },
+    {
+      "problem_id": "nanobrain_native/tool_calculator",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "RuntimeError",
+      "error_message": "x-cowork/nanobrain/nanobrain/core/component_base.py\", line 603, in from_config\n    return target_class.from_config(config_path, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<stdin>\", line 20, in from_config\n  File \"/Users/onarykov/Downloads/apecx-cowork/nanobrain/nanobrain/core/component_base.py\", line 861, in __init__\n    raise RuntimeError(\nRuntimeError: Direct instantiation of CalculatorTool is prohibited. Use: CalculatorTool.from_config(config_file_or_object)\n",
+      "wall_seconds": 5.932893167017028,
+      "generated_code": "from nanobrain.core.tool import ToolBase\nimport ast\n\nclass CalculatorTool(ToolBase):\n    async def execute(self, expression: str) -> dict:\n        try:\n            result = ast.literal_eval(expression)\n            if isinstance(result, (int, float)):\n                return {\"result\": result}\n            else:\n                raise ValueError(\"Invalid arithmetic expression\")\n        except Exception as e:\n            raise ValueError(f\"Invalid arithmetic expression: {e}\")\n\n    @classmethod\n    def from_config(cls, yaml_path):\n        return cls()"
+    }
+  ]
+}

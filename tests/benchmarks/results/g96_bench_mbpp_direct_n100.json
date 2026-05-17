@@ -1,0 +1,918 @@
+{
+  "dataset": "mbpp",
+  "codegen": "direct",
+  "model": "mistral-nemo:latest",
+  "limit": 100,
+  "pass_at_1": 0.65,
+  "passed": 65,
+  "total": 100,
+  "status_histogram": {
+    "pass": 65,
+    "fail_assertion": 29,
+    "fail_other": 5,
+    "timeout": 1
+  },
+  "elapsed_seconds": 304.5290056669619,
+  "results": [
+    {
+      "problem_id": "mbpp/11",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 19.955072583979927,
+      "generated_code": "def remove_Occ(s, c):\n    return s.replace(c, '', 1).replace(c, '', -1)\n\n# Test cases\nassert remove_Occ(\"hello\", \"l\") == \"heo\""
+    },
+    {
+      "problem_id": "mbpp/12",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.997626917087473,
+      "generated_code": "from typing import List\n\ndef sort_matrix(matrix: List[List[int]]) -> List[List[int]]:\n    return sorted(matrix, key=sum)"
+    },
+    {
+      "problem_id": "mbpp/14",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.886369499959983,
+      "generated_code": "from math import sqrt\n\ndef find_Volume(base, height, side):\n    area = (base * height) / 2\n    return area * side"
+    },
+    {
+      "problem_id": "mbpp/16",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 9, in <module>\nAssertionError\n",
+      "wall_seconds": 2.1202598341042176,
+      "generated_code": "import re\n\ndef text_lowercase_underscore(s):\n    return bool(re.match(r'^[\\w_]+$', s))"
+    },
+    {
+      "problem_id": "mbpp/17",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2033569579944015,
+      "generated_code": "def square_perimeter(side):\n    return 4 * side"
+    },
+    {
+      "problem_id": "mbpp/18",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.4617752499179915,
+      "generated_code": "def remove_dirty_chars(s, chars):\n    return ''.join(c for c in s if c not in chars)\n\nassert remove_dirty_chars(\"probasscurve\", \"pros\") == 'bacuve'"
+    },
+    {
+      "problem_id": "mbpp/19",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.1327403750037774,
+      "generated_code": "def test_duplicate(arr):\n    return len(set(arr)) != len(arr)"
+    },
+    {
+      "problem_id": "mbpp/20",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 5.00609874993097,
+      "generated_code": "import math\n\ndef is_woodall(n):\n    return n == 1 or (n % 2 == 0 and is_woodall(n // 2)) or (math.isqrt(n) ** 2 == n)"
+    },
+    {
+      "problem_id": "mbpp/56",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 1.9462389580439776,
+      "generated_code": "def check(n):\n    return n + 1 == int(str(n)[::-1])"
+    },
+    {
+      "problem_id": "mbpp/57",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.3209451249567792,
+      "generated_code": "from functools import reduce\n\ndef find_Max_Num(digits):\n    return int(''.join(map(str, sorted(digits, reverse=True))))"
+    },
+    {
+      "problem_id": "mbpp/58",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2819254590431228,
+      "generated_code": "def opposite_Signs(a, b):\n    return (a * b) < 0"
+    },
+    {
+      "problem_id": "mbpp/59",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 1.453609541989863,
+      "generated_code": "def is_octagonal(n):\n    return int((n * (3*n - 1)) / 2)"
+    },
+    {
+      "problem_id": "mbpp/61",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 16, in <module>\nAssertionError\n",
+      "wall_seconds": 6.043505416018888,
+      "generated_code": "def count_Substrings(s):\n    def helper(s, i, curr_sum, curr_len):\n        if i == len(s):\n            return curr_len if curr_sum == curr_len else 0\n        elif s[i].isdigit():\n            return helper(s, i + 1, curr_sum + int(s[i]), curr_len) + \\\n                   helper(s, i + 1, curr_sum, curr_len)\n        else:\n            return helper(s, i + 1, curr_sum, curr_len)\n\n    return helper(s, 0, 0, 0)\n\nassert count_Substrings('112112') == 6"
+    },
+    {
+      "problem_id": "mbpp/62",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.0421266669873148,
+      "generated_code": "def smallest_num(lst):\n    return min(lst)"
+    },
+    {
+      "problem_id": "mbpp/63",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 2.601737332995981,
+      "generated_code": "from typing import Tuple, List\n\ndef max_difference(pairs: List[Tuple[int, int]]) -> int:\n    return max(b - a for a, b in pairs)"
+    },
+    {
+      "problem_id": "mbpp/64",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.8698936669388786,
+      "generated_code": "def subject_marks(tuples_list):\n    return sorted(tuples_list, key=lambda x: x[1])"
+    },
+    {
+      "problem_id": "mbpp/65",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.8936134590767324,
+      "generated_code": "from typing import Union\n\ndef recursive_list_sum(lst: Union[int, list]) -> int:\n    if isinstance(lst, int):\n        return lst\n    else:\n        return sum(recursive_list_sum(i) for i in lst)"
+    },
+    {
+      "problem_id": "mbpp/66",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.4578029999975115,
+      "generated_code": "def pos_count(lst):\n    return len([x for x in lst if x > 0])"
+    },
+    {
+      "problem_id": "mbpp/67",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 2.4191434589447454,
+      "generated_code": "from math import comb\n\ndef bell_number(n):\n    return sum(comb(n, k) * comb(k, j) for k in range(n+1) for j in range(k+1))"
+    },
+    {
+      "problem_id": "mbpp/68",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.00219145801384,
+      "generated_code": "from typing import List\n\ndef is_Monotonic(arr: List[int]) -> bool:\n    return all(x >= y for x, y in zip(arr, arr[1:])) or all(x <= y for x, y in zip(arr, arr[1:]))"
+    },
+    {
+      "problem_id": "mbpp/69",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 2.2389369580196217,
+      "generated_code": "from typing import List\n\ndef is_sublist(main_list: List[int], sub_list: List[int]) -> bool:\n    return all(item in main_list for item in sub_list)"
+    },
+    {
+      "problem_id": "mbpp/70",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.5629554159240797,
+      "generated_code": "from typing import List, Tuple\n\ndef get_equal(tuples: List[Tuple]) -> bool:\n    length = len(tuples[0])\n    return all(len(t) == length for t in tuples)"
+    },
+    {
+      "problem_id": "mbpp/71",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 22, in <module>\n  File \"<stdin>\", line 16, in comb_sort\nTypeError: 'float' object cannot be interpreted as an integer\n",
+      "wall_seconds": 5.9121884579071775,
+      "generated_code": "from typing import List\n\ndef comb_sort(arr: List[int]) -> List[int]:\n    n = len(arr)\n    gap = n\n    swapped = True\n\n    while gap > 1 or swapped:\n        gap //= 1.247\n        if gap < 1:\n            gap = 1\n        swapped = False\n        for i in range(0, n - gap):\n            if arr[i] > arr[i + gap]:\n                arr[i], arr[i + gap] = arr[i + gap], arr[i]\n                swapped = True\n\n    return arr"
+    },
+    {
+      "problem_id": "mbpp/72",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 2.1194045830052346,
+      "generated_code": "import math\n\ndef dif_Square(n):\n    return any(x**2 - y**2 == n for x in range(int(math.sqrt(n)) + 1) for y in range(x))"
+    },
+    {
+      "problem_id": "mbpp/74",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 2.1947879580548033,
+      "generated_code": "from typing import List\n\ndef is_samepatterns(patterns: List[str], sequence: List[str]) -> bool:\n    return patterns == sequence[:len(patterns)]"
+    },
+    {
+      "problem_id": "mbpp/75",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.1062186249764636,
+      "generated_code": "from typing import List\n\ndef find_tuples(tuples: List[tuple], k: int) -> List[tuple]:\n    return [t for t in tuples if all(x % k == 0 for x in t)]"
+    },
+    {
+      "problem_id": "mbpp/77",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 7, in <module>\nAssertionError\n",
+      "wall_seconds": 1.9538047090172768,
+      "generated_code": "def is_Diff(n):\n    return sum(int(digit) for digit in str(n)) % 11 == 0"
+    },
+    {
+      "problem_id": "mbpp/79",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AttributeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 7, in <module>\n  File \"<stdin>\", line 6, in word_len\nAttributeError: module 'math' has no attribute 'isodd'\n",
+      "wall_seconds": 1.477862875093706,
+      "generated_code": "def word_len(word):\n    import math\n    return math.isodd(len(word))"
+    },
+    {
+      "problem_id": "mbpp/80",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.707900666981004,
+      "generated_code": "def tetrahedral_number(n):\n    return n * (n + 1) * (n + 2) // 6"
+    },
+    {
+      "problem_id": "mbpp/82",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.682135457987897,
+      "generated_code": "import math\n\ndef volume_sphere(radius):\n    return (4/3) * math.pi * radius**3"
+    },
+    {
+      "problem_id": "mbpp/83",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 2.497630166937597,
+      "generated_code": "def get_Char(s):\n    return chr(sum(ord(c) for c in s) % 26)"
+    },
+    {
+      "problem_id": "mbpp/84",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 5.358609415940009,
+      "generated_code": "from sympy import binomial\n\ndef sequence(n):\n    return sum(binomial(i, j) for i in range(n+1) for j in range(i+1)) + 1"
+    },
+    {
+      "problem_id": "mbpp/85",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "NameError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nNameError: name 'surfacearea_sphere' is not defined. Did you mean: 'surface_area_sphere'?\n",
+      "wall_seconds": 1.2879224580246955,
+      "generated_code": "import math\n\ndef surface_area_sphere(radius):\n    return 4 * math.pi * radius**2"
+    },
+    {
+      "problem_id": "mbpp/86",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 1.8046629580203444,
+      "generated_code": "from math import floor\n\ndef centered_hexagonal_number(n):\n    return floor((3 * (n ** 2)) / 2)"
+    },
+    {
+      "problem_id": "mbpp/87",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.202727667056024,
+      "generated_code": "from collections import ChainMap\n\ndef merge_dictionaries_three(dict1, dict2, dict3):\n    return dict(ChainMap(dict1, dict2, dict3))"
+    },
+    {
+      "problem_id": "mbpp/88",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.0585212090518326,
+      "generated_code": "from collections import Counter\n\ndef freq_count(lst):\n    return dict(Counter(lst))"
+    },
+    {
+      "problem_id": "mbpp/89",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.1755559170851484,
+      "generated_code": "def closest_num(n):\n    return max(x for x in range(n) if x < n)"
+    },
+    {
+      "problem_id": "mbpp/90",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 0.9384147500386462,
+      "generated_code": "def len_log(words):\n    return max(len(word) for word in words)"
+    },
+    {
+      "problem_id": "mbpp/91",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.0021276669576764,
+      "generated_code": "from typing import List\n\ndef find_substring(strings: List[str], substring: str) -> bool:\n    return any(substring in s for s in strings)"
+    },
+    {
+      "problem_id": "mbpp/92",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.8866450000787154,
+      "generated_code": "def is_undulating(n):\n    s = str(n)\n    return all(s[i] != s[i+1] for i in range(len(s)-1))\n\nassert is_undulating(1212121) == True"
+    },
+    {
+      "problem_id": "mbpp/93",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.14624133403413,
+      "generated_code": "def power(a, b):\n    return a ** b"
+    },
+    {
+      "problem_id": "mbpp/94",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.228797208983451,
+      "generated_code": "from typing import List, Tuple\n\ndef index_minimum(tuples: List[Tuple[str, int]]) -> str:\n    return next(t[0] for t in tuples if t[1] == min(t[1] for t in tuples))"
+    },
+    {
+      "problem_id": "mbpp/95",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.451913958066143,
+      "generated_code": "def Find_Min_Length(lst):\n    return min(len(x) for x in lst)"
+    },
+    {
+      "problem_id": "mbpp/96",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 14, in <module>\nAssertionError\n",
+      "wall_seconds": 3.6254996670177206,
+      "generated_code": "from math import sqrt\n\ndef divisor(n):\n    count = 0\n    for i in range(1, int(sqrt(n)) + 1):\n        if n % i == 0:\n            count += 2\n            if i * i != n:\n                count -= 1\n    return count"
+    },
+    {
+      "problem_id": "mbpp/97",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.393623041920364,
+      "generated_code": "from collections import Counter\n\ndef frequency_lists(lst):\n    return dict(Counter([item for sublist in lst for item in sublist]))"
+    },
+    {
+      "problem_id": "mbpp/98",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.010228957980871,
+      "generated_code": "from functools import reduce\nimport operator\n\ndef multiply_num(lst):\n    return reduce(operator.mul, lst, 1) / len(lst)"
+    },
+    {
+      "problem_id": "mbpp/99",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.0505427910247818,
+      "generated_code": "def decimal_to_binary(n):\n    return bin(n)[2:]"
+    },
+    {
+      "problem_id": "mbpp/100",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.55348695802968,
+      "generated_code": "def next_smallest_palindrome(n):\n    n += 1\n    while str(n) != str(n)[::-1]:\n        n += 1\n    return n"
+    },
+    {
+      "problem_id": "mbpp/101",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2712475419975817,
+      "generated_code": "def kth_element(arr, k):\n    return arr[k-1]"
+    },
+    {
+      "problem_id": "mbpp/102",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.196219207951799,
+      "generated_code": "def snake_to_camel(s):\n    return ''.join(x.title() for x in s.split('_'))\n\nassert snake_to_camel('python_program') == 'PythonProgram'"
+    },
+    {
+      "problem_id": "mbpp/103",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 1.9057052499847487,
+      "generated_code": "from math import comb\n\ndef eulerian_num(n, m):\n    return comb(n + m - 1, n - 1)"
+    },
+    {
+      "problem_id": "mbpp/104",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.3132424999494106,
+      "generated_code": "from typing import List\n\ndef sort_sublists(lst: List[List[str]]) -> List[List[str]]:\n    return [sorted(sublist) for sublist in lst]"
+    },
+    {
+      "problem_id": "mbpp/105",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.6569913749117404,
+      "generated_code": "from typing import List\n\ndef count(lst: List[bool]) -> int:\n    return lst.count(True)"
+    },
+    {
+      "problem_id": "mbpp/106",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.3596811250317842,
+      "generated_code": "def add_lists(lst, tpl):\n    return tpl + tuple(lst)"
+    },
+    {
+      "problem_id": "mbpp/108",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.6317565840436146,
+      "generated_code": "from typing import List\n\ndef merge_sorted_list(*lists: List[int]) -> List[int]:\n    return sorted(sum(lists, []))"
+    },
+    {
+      "problem_id": "mbpp/109",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 12, in <module>\nAssertionError\n",
+      "wall_seconds": 4.4753860420314595,
+      "generated_code": "def odd_equivalent(binary_string, rotations):\n    count = 0\n    for _ in range(rotations):\n        if binary_string.count('1') % 2 != 0:\n            count += 1\n        binary_string = binary_string[-1] + binary_string[:-1]\n    return count\n\nassert odd_equivalent(\"011001\",6) == 3"
+    },
+    {
+      "problem_id": "mbpp/111",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.4388242920394987,
+      "generated_code": "from typing import List\n\ndef common_in_nested_lists(lst: List[List[int]]) -> set:\n    return set.intersection(*map(set, lst))"
+    },
+    {
+      "problem_id": "mbpp/113",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.7082948749884963,
+      "generated_code": "import re\n\ndef check_integer(s):\n    return bool(re.match(r'^-?\\d+$', s))"
+    },
+    {
+      "problem_id": "mbpp/115",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.251272749970667,
+      "generated_code": "def empty_dit(lst):\n    return all(not d for d in lst)"
+    },
+    {
+      "problem_id": "mbpp/116",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.3543792919954285,
+      "generated_code": "def tuple_to_int(t):\n    return int(''.join(map(str, t)))"
+    },
+    {
+      "problem_id": "mbpp/117",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.7970867920666933,
+      "generated_code": "import ast\n\ndef list_to_float(lst):\n    return [(float(a) if isinstance(a, str) and a.replace('.', '', 1).isdigit() else a,\n            float(b) if isinstance(b, str) and b.replace('.', '', 1).isdigit() else b)\n           for a, b in lst]"
+    },
+    {
+      "problem_id": "mbpp/118",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.8231922499835491,
+      "generated_code": "def string_to_list(s):\n    return s.split()\n\n# Test cases\nassert string_to_list(\"python programming\") == ['python', 'programming']"
+    },
+    {
+      "problem_id": "mbpp/119",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\nAssertionError\n",
+      "wall_seconds": 2.6346335829002783,
+      "generated_code": "from typing import List\n\ndef search(arr: List[int]) -> int:\n    for i in range(len(arr)):\n        if i == 0 or arr[i] != arr[i-1]:\n            return arr[i]"
+    },
+    {
+      "problem_id": "mbpp/120",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.0334609580459073,
+      "generated_code": "from typing import List, Tuple\n\ndef max_product_tuple(tuples: List[Tuple[int, int]]) -> int:\n    return max(a*b for a, b in tuples)"
+    },
+    {
+      "problem_id": "mbpp/123",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 17, in <module>\nAssertionError\n",
+      "wall_seconds": 7.6232267919695005,
+      "generated_code": "from math import gcd\n\ndef tau(n):\n    return sum(i for i in range(1, n + 1) if n % i == 0)\n\ndef amicable_numbers_sum(n):\n    total = 0\n    for num in range(2, n + 1):\n        sum_divisors = sum(i for i in range(1, num + 1) if num % i == 0)\n        if tau(sum_divisors) == num and sum_divisors != num:\n            total += num\n    return total\n\nassert amicable_numbers_sum(999) == 504"
+    },
+    {
+      "problem_id": "mbpp/124",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 1.9560491250595078,
+      "generated_code": "import cmath\n\ndef angle_complex(x, y):\n    return cmath.phase(complex(x, y))"
+    },
+    {
+      "problem_id": "mbpp/125",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 15, in <module>\nAssertionError\n",
+      "wall_seconds": 4.5991839580237865,
+      "generated_code": "def find_length(binary_string):\n    max_diff = 0\n    curr_diff = 0\n    for char in binary_string:\n        if char == '1':\n            curr_diff += 1\n        else:\n            curr_diff -= 1\n        max_diff = max(max_diff, abs(curr_diff))\n    return max_diff\n\nassert find_length(\"11000010001\") == 6"
+    },
+    {
+      "problem_id": "mbpp/126",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\n  File \"<stdin>\", line 7, in sum\nTypeError: sum() missing 1 required positional argument: 'b'\n",
+      "wall_seconds": 2.732847125036642,
+      "generated_code": "from math import gcd\n\ndef sum(a, b):\n    return sum(i for i in range(1, min(a, b) + 1) if a % i == 0 and b % i == 0)"
+    },
+    {
+      "problem_id": "mbpp/127",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2241462499368936,
+      "generated_code": "def multiply_int(a, b):\n    return a * b"
+    },
+    {
+      "problem_id": "mbpp/128",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.5997338329907507,
+      "generated_code": "def long_words(n, sentence):\n    return [word for word in sentence.split() if len(word) > n]"
+    },
+    {
+      "problem_id": "mbpp/129",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 14, in <module>\nAssertionError\n",
+      "wall_seconds": 6.168356999987736,
+      "generated_code": "import numpy as np\n\ndef magic_square_test(matrix):\n    n = len(matrix)\n    sum_row = sum_col = sum_diag = 0\n    for i in range(n):\n        sum_row += matrix[i][i]\n        sum_col += matrix[i][n - i - 1]\n        sum_diag += matrix[i][i] if i == n - i - 1 else matrix[n - i - 1][i]\n    return sum_row == sum_col == sum_diag and np.all(np.array(matrix) % (sum_row // n) == 0)"
+    },
+    {
+      "problem_id": "mbpp/130",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.453908291994594,
+      "generated_code": "from collections import Counter\n\ndef max_occurrences(lst):\n    return Counter(lst).most_common(1)[0][0]\n\nassert max_occurrences([2,3,8,4,7,9,8,2,6,5,1,6,1,2,3,2,4,6,9,1,2])==2"
+    },
+    {
+      "problem_id": "mbpp/131",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 18, in <module>\nAssertionError\n",
+      "wall_seconds": 6.246762749971822,
+      "generated_code": "def reverse_vowels(s):\n    vowels = 'aeiou'\n    s = list(s)\n    i, j = 0, len(s) - 1\n    while i < j:\n        if s[i] not in vowels:\n            i += 1\n        elif s[j] not in vowels:\n            j -= 1\n        else:\n            s[i], s[j] = s[j], s[i]\n            i, j = i + 1, j - 1\n    return ''.join(s)"
+    },
+    {
+      "problem_id": "mbpp/132",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2807870419928804,
+      "generated_code": "def tup_string(t):\n    return ''.join(t)"
+    },
+    {
+      "problem_id": "mbpp/133",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.4979923750506714,
+      "generated_code": "def sum_negativenum(numbers):\n    return sum(num for num in numbers if num < 0)"
+    },
+    {
+      "problem_id": "mbpp/135",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.1907147499732673,
+      "generated_code": "def hexagonal_num(n):\n    return n * (2*n - 1)"
+    },
+    {
+      "problem_id": "mbpp/137",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 5.534370374982245,
+      "generated_code": "import math\n\ndef zero_count(arr):\n    zeros = sum(1 for x in arr if x == 0)\n    non_zeros = len(arr) - zeros\n    return zeros / non_zeros if non_zeros != 0 else float('inf')"
+    },
+    {
+      "problem_id": "mbpp/138",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "Timeout",
+      "error_message": "exceeded 30.0s",
+      "wall_seconds": 32.842718959087506,
+      "generated_code": "def is_Sum_Of_Powers_Of_Two(n):\n    while n > 0 and (n & -n) != n:\n        n -= n ^ -n\n    return n == 1"
+    },
+    {
+      "problem_id": "mbpp/139",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 7.656318709021434,
+      "generated_code": "import math\n\ndef circle_circumference(radius):\n    return 2 * math.pi * radius"
+    },
+    {
+      "problem_id": "mbpp/140",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2535069580189884,
+      "generated_code": "def extract_singly(lst):\n    return set(item for sublist in lst for item in sublist)"
+    },
+    {
+      "problem_id": "mbpp/141",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 20, in <module>\nAssertionError\n",
+      "wall_seconds": 5.428819290944375,
+      "generated_code": "from typing import List\n\ndef pancake_sort(arr: List[int]) -> List[int]:\n    for i in range(len(arr)):\n        max_idx = find_max_index(arr, i)\n        if max_idx != i:\n            arr[:max_idx+1] = reversed(arr[:max_idx+1])\n            arr[i:] = reversed(arr[i:])\n    return arr\n\ndef find_max_index(arr: List[int], start: int) -> int:\n    max_idx = start\n    for i in range(start, len(arr)):\n        if arr[i] > arr[max_idx]:\n            max_idx = i\n    return max_idx"
+    },
+    {
+      "problem_id": "mbpp/142",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 3.7700646249577403,
+      "generated_code": "from typing import List\n\ndef count_samepair(lst1: List[int], lst2: List[int], lst3: List[int]) -> int:\n    return sum(x == y == z for x, y, z in zip(lst1, lst2, lst3))"
+    },
+    {
+      "problem_id": "mbpp/143",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 1.4202283340273425,
+      "generated_code": "def find_lists(t):\n    return len([x for x in t if isinstance(x, list)])"
+    },
+    {
+      "problem_id": "mbpp/145",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "TypeError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\n  File \"<stdin>\", line 5, in max_Abs_Diff\nTypeError: 'int' object is not iterable\n",
+      "wall_seconds": 1.2704183330060914,
+      "generated_code": "def max_Abs_Diff(arr):\n    return max(max(arr) - min(arr))"
+    },
+    {
+      "problem_id": "mbpp/160",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\nAssertionError\n",
+      "wall_seconds": 3.6566670410102233,
+      "generated_code": "from math import gcd\n\ndef find_solution(a, b, n):\n    g = gcd(a, b)\n    if n % g != 0:\n        return None\n    x = n // g * (b // g) % a\n    y = n // g * (-a // g) % b\n    return x, y"
+    },
+    {
+      "problem_id": "mbpp/161",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.5501572089269757,
+      "generated_code": "from typing import List\n\ndef remove_elements(lst: List[int], to_remove: List[int]) -> List[int]:\n    return [x for x in lst if x not in to_remove]"
+    },
+    {
+      "problem_id": "mbpp/162",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.7785370419733226,
+      "generated_code": "def sum_series(n):\n    return sum((n - 2*i for i in range(n//2 + 1)))"
+    },
+    {
+      "problem_id": "mbpp/163",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n",
+      "wall_seconds": 2.4378051250241697,
+      "generated_code": "import math\n\ndef area_polygon(side_length, num_sides):\n    return (num_sides * side_length ** 2) / (4 * math.tan(math.pi / num_sides))"
+    },
+    {
+      "problem_id": "mbpp/164",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 4.250359750003554,
+      "generated_code": "from math import gcd\n\ndef tau(n):\n    count = 0\n    for i in range(1, int(n**0.5) + 1):\n        if n % i == 0:\n            if i == n // i:\n                count += 1\n            else:\n                count += 2\n    return count\n\ndef are_equivalent(a, b):\n    return tau(a) == tau(b)"
+    },
+    {
+      "problem_id": "mbpp/165",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.320359416073188,
+      "generated_code": "def count_char_position(s):\n    return sum(c.lower() == chr(97 + i) for i, c in enumerate(s))\n\nassert count_char_position(\"xbcefg\") == 2"
+    },
+    {
+      "problem_id": "mbpp/166",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\nAssertionError\n",
+      "wall_seconds": 3.7666010840330273,
+      "generated_code": "from collections import Counter\n\ndef find_even_pair(lst):\n    count = Counter(x ^ y for x in lst for y in lst)\n    return sum(v // 2 for v in count.values() if v % 2 == 0)\n\nassert find_even_pair([5, 4, 7, 2, 1]) == 4"
+    },
+    {
+      "problem_id": "mbpp/167",
+      "codegen_name": "direct",
+      "passed": false,
+      "error_class": "AssertionError",
+      "error_message": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAssertionError\n",
+      "wall_seconds": 1.464886917034164,
+      "generated_code": "def next_power_of_2(n):\n    return 2 ** (n - 1).bit_length()"
+    },
+    {
+      "problem_id": "mbpp/168",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.7016022918978706,
+      "generated_code": "from collections import Counter\n\ndef frequency(lst, num):\n    return Counter(lst)[num] if num in lst else 0"
+    },
+    {
+      "problem_id": "mbpp/170",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.6447360829915851,
+      "generated_code": "def sum_range_list(lst, start, end):\n    return sum(lst[start:end+1])"
+    },
+    {
+      "problem_id": "mbpp/171",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.3657852499745786,
+      "generated_code": "def perimeter_pentagon(side_length):\n    return 5 * side_length"
+    },
+    {
+      "problem_id": "mbpp/172",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 2.105352749931626,
+      "generated_code": "def count_occurance(s):\n    return s.count('std')\n\n# Test case\nassert count_occurance(\"letstdlenstdporstd\") == 3"
+    },
+    {
+      "problem_id": "mbpp/222",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.4854392079869285,
+      "generated_code": "def check_type(t):\n    return all(isinstance(i, type(t[0])) for i in t)"
+    },
+    {
+      "problem_id": "mbpp/223",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.7468067919835448,
+      "generated_code": "def is_majority(arr, n, elem):\n    return arr.count(elem) > n / 2"
+    },
+    {
+      "problem_id": "mbpp/224",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.2526414999738336,
+      "generated_code": "def count_Set_Bits(n):\n    return bin(n).count('1')"
+    },
+    {
+      "problem_id": "mbpp/226",
+      "codegen_name": "direct",
+      "passed": true,
+      "error_class": null,
+      "error_message": null,
+      "wall_seconds": 1.6581403749296442,
+      "generated_code": "def odd_values_string(s):\n    return ''.join([s[i] for i in range(0, len(s), 2)])"
+    }
+  ]
+}
