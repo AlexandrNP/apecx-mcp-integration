@@ -104,6 +104,18 @@ def _build_codegen(name: str, model: str | None, base_url: str | None):
         # ``--model`` controls the drafter; planner is resolved from
         # APECX_LLM_MODEL_PLANNER env or defaults to nemotron-3-nano:4b.
         return make_plan_then_code_codegen(drafter_model=model, base_url=base_url)
+    if name == "tdr":
+        # G93 (2026-05-17): Test-Driven Recursive Refinement.
+        # Multi-round loop with execution-grounded reflection. See
+        # docs/reasoning_patterns_analysis_2026-05-17.md for the
+        # novelty argument vs the project's 25 existing benchmarks +
+        # the 3 surveyed papers. max_iterations defaults to 3 — that's
+        # 1 initial + up to 3 revisions = 4 total LLM calls per
+        # problem (vs 1 for direct). Operators wanting harder budget
+        # caps should pass --max-iterations once that CLI flag lands.
+        from tests.benchmarks.codegen.tdr import make_tdr_codegen  # noqa: PLC0415
+
+        return make_tdr_codegen(model=model, base_url=base_url)
     if name == "nanobrain_direct":
         # CGU-P1-T6: nanobrain-workflow-wrapped direct codegen.
         from pathlib import Path  # noqa: PLC0415
@@ -562,6 +574,7 @@ def main() -> int:
         choices=[
             "direct",
             "plan_then_code",
+            "tdr",  # G93: Test-Driven Recursive Refinement (2026-05-17)
             "nanobrain_direct",
             "nanobrain_direct_with_rules",
             "nanobrain_plan_then_code",
