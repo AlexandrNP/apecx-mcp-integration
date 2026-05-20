@@ -141,12 +141,28 @@ Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
   emits no envelope (not a silent empty one).
 - Test: `tests/integration/test_observed_run.py` — **1 passed**. Full EO suite **41 passed**.
 
+## EO-20 — Local bounded decomposition control structure ✅ 2026-05-20
+
+- `src/apecx_integration/composition/decomposition/local_decomposer.py`
+- `LocalDecomposer.solve(task)`: match-single-workflow-first; else (if decomposable) decompose
+  into sub-workflows + dispatch recursively + integrate; else a loud `WorkflowResult.failed`
+  ("cannot solve"). Bounds: `max_depth` (recursion) + `max_dispatches` (fan-out) as plain
+  counters — **corrected the design's "bounded by LoopController"** (LoopController is for
+  workflow back-edges, not recursion depth). Injectable async matcher/decomposer/dispatcher
+  protocols; the LLM/RAG/runtime parts are the only non-deterministic boundary.
+- Caught + fixed a self-inflicted silent-failure in `_integrate`: a failed child's error message
+  (in `.error`, not `.markdown`) was being dropped from the aggregate — now surfaced as
+  `**ERROR:** ...` and the aggregate is `partial` (never silently `ok`).
+- Tests: `tests/unit/test_local_decomposer.py` — **7 passed** (match-first, decompose,
+  cannot-solve, depth cap, dispatch budget, partial propagation, threshold). Full EO suite **48 passed**.
+
+### Remaining for the full decomposition feature
+- Real `WorkflowMatcher` (RAG over the workflow catalog), real `TaskDecomposer` (local LLM —
+  Ollama-gated integration), real `WorkflowDispatcher` (`run_workflow_observed`). A nanobrain
+  Step wrapper if decomposition must run *inside* a workflow cascade.
+
 ## Next
 
-- EO-03/04/05 (MCP tools): register `run_workflow` (wraps `run_workflow_observed`), `inspect_run`
-  (surfaces `RunSummary`), `inspect_workflow` (wraps the inspector), `apecx_context` into the
-  FastMCP server (`mcp_surface/server.py`); integration via an MCP client loop.
-- EO-01: `list_workflows` catalog reconciliation (`discovery.py` ∪ `workflow_registry`).
-- EO-20: local bounded-decomposition step (architectural centerpiece; LoopController + cost
-  bounds + match-first) — large nanobrain-authoring effort.
-- EO-13c: rag_e2e wiring (Ollama-gated — real blocker if no live LLM).
+- Real decomposition impls (matcher/decomposer/dispatcher) + Ollama-gated integration.
+- EO-03/04/05 MCP-tool registration into the FastMCP server.
+- EO-01 catalog reconciliation; EO-13c rag_e2e wiring (Ollama-gated).
