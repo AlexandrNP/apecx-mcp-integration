@@ -8,6 +8,7 @@ Navigation aid. For deeper context: `README.md` (user-facing),
 | Doc | What it is |
 |---|---|
 | `architecture.md` | **Canonical** end-to-end map (Mermaid diagrams, MCP tools, ontologies, invocation paths, test surface). Start here for any architecture question. |
+| `external_orchestration_design.md` | **Active design (2026-05-19).** External-LLM orchestration surface (frontier LLM orchestrates; deterministic workflow scaffolds; local LLM decomposes only as bounded fallback). Reuse-first. Supersedes the unbuilt server-side multi-agent roadmap in `implementation_task_graph.md`. |
 | `mcp_integration.md` | Operator install + per-tool reference + troubleshooting. |
 | `QUICKSTART.md` | Fresh-laptop walkthrough (referenced from README). |
 | `tutorial/` | Multi-chapter walkthrough from install to reproducible run. |
@@ -25,7 +26,7 @@ Navigation aid. For deeper context: `README.md` (user-facing),
 | Doc | What it is |
 |---|---|
 | `WORKAROUND_INVENTORY.md` | Active workarounds awaiting framework fixes; updated per ship. |
-| `implementation_task_graph.md` | 165 file-level tasks across 4 tracks with stable IDs. Cite the task ID in commits. |
+| `implementation_task_graph.md` | **Rewritten 2026-05-19** for the external-orchestration direction (`EO-*` / `T-RH-*` tasks; reuse-first). The prior multi-agent-orchestrator graph (165 tasks) is preserved in git history. Cite the task ID in commits. |
 | `supervisor_handbook.md` | Knowledge-transfer artifact for new external supervisors of the apecx composer: scope, day-one checklist, drift patterns D1-D8, gates/rules currently shipped, signals to monitor, distillation policy. Pinned by `tests/unit/test_supervisor_handbook_pinned.py`. |
 
 ## Assets
