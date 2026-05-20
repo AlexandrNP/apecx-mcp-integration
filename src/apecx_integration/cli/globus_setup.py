@@ -333,6 +333,14 @@ def _cmd_login(client_id: str | None) -> int:
             app_name=app_name,
             client_id=client_id,
             scope_requirements=scope_requirements,
+            # Request a REFRESH token (offline access). globus_sdk's default
+            # (request_refresh_tokens=False) persists an online-only access
+            # token that expires in ~2 days with no way to renew — forcing a
+            # re-login. That is fatal for a default/unattended install path:
+            # an operator's tokens silently die days after setup. (Root cause
+            # of the 2026-05-20 expired-token blocker.) With a refresh token,
+            # globus_sdk renews automatically while it stays valid.
+            config=globus_sdk.GlobusAppConfig(request_refresh_tokens=True),
         )
         # Touching .login_required + .login() forces the device-code
         # flow now (instead of lazily on the first auth-needed API

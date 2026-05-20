@@ -168,6 +168,38 @@ def test_login_fails_loud_without_client_id(capsys):
     assert "apecx-globus-setup login --client-id" in out
 
 
+def test_login_requests_refresh_tokens(monkeypatch):
+    """Regression (2026-05-20 blocker): login MUST request a refresh token (offline
+    access). globus_sdk's default ``request_refresh_tokens=False`` persists an online-only
+    token that expires in ~2 days with no way to renew — fatal for a default install path.
+    Mocks globus_sdk so the device flow is a no-op and asserts the config was requested.
+    """
+    import types as _types
+
+    captured: dict = {}
+
+    class _FakeUserApp:
+        def __init__(self, **kwargs):
+            captured["userapp_kwargs"] = kwargs
+
+        def login(self):
+            captured["login_called"] = True
+
+    class _FakeConfig:
+        def __init__(self, **kwargs):
+            captured["config_kwargs"] = kwargs
+
+    fake_sdk = _types.SimpleNamespace(UserApp=_FakeUserApp, GlobusAppConfig=_FakeConfig)
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._import_globus_sdk", lambda: fake_sdk)
+
+    rc = main(["login", "--client-id", "abc-uuid"])
+
+    assert rc == 0
+    assert captured.get("login_called") is True
+    assert "config" in captured["userapp_kwargs"], "UserApp must receive a config=..."
+    assert captured["config_kwargs"]["request_refresh_tokens"] is True
+
+
 def test_native_auth_recognized_by_check_globus_prerequisites(monkeypatch):
     """G90: APECX_GLOBUS_NATIVE_CLIENT_ID being set counts as a valid
     credentials path, not a missing prereq. This is the bridge that
