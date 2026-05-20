@@ -117,12 +117,24 @@ Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
   NON-empty (loud guard: a context that activates but records nothing is a silent failure).
 - Full EO suite now **34 passed**.
 
+## EO-02 — Recursive workflow inspector ✅ 2026-05-20
+
+- `src/apecx_integration/composition/inspection/workflow_inspector.py`
+- `inspect_workflow(yaml_path, max_depth=3)` → `WorkflowInspection` tree: name, config_version,
+  workflow-level + per-step data units, steps (class/config_path/DUs), links (class/source/
+  target/condition), recursing into nested-workflow step configs (depth-capped, `truncated`
+  flag). Pure static analysis — no component instantiation. Loud on a dangling step-config
+  reference (FileNotFoundError) and non-mapping YAML (ValueError).
+- Serves "static composition visibility" (design §4/§9): the scientist sees what a workflow is
+  configured to run, recursively, grounded in the YAML.
+- Tests: `tests/unit/test_workflow_inspector.py` — **6 passed** (incl. against the real
+  `tdr_refine_workflow.yml`, recursion, depth cap, loud failures).
+- Full EO suite now **40 passed**.
+
 ## Next
 
-- EO-13c: make the shipped `rag_e2e_synthesis` emit a WorkflowResult by appending EnvelopeStep
-  as its terminal step. Needs a `synthesis`→`markdown` key bridge (configurable input key) +
-  an Ollama-gated integration test (live LLM per the no-mock-only rule — real blocker if
-  Ollama unavailable).
-- EO-01/02 surface (reconcile `discovery.py` + `workflow_registry` catalogs).
-- Wire `run_with_provenance` + `summarize_run` into the MCP `run_workflow`/`inspect_run`
-  tools so the run summary surfaces to the orchestrating LLM (depends on EO-03/04).
+- EO-01: `list_workflows` — reconcile the two catalogs (`discovery.py` composer-manifests vs
+  `workflow_registry` `mcp_workflow_catalog.yml`) into one ranked, maturity-tagged listing.
+- EO-03/04/05: `run_workflow` returning the WorkflowResult envelope, `inspect_run` surfacing
+  `RunSummary` + `inspect_workflow`, `apecx_context`.
+- EO-13c: rag_e2e wiring (Ollama-gated — real blocker if no live LLM).
