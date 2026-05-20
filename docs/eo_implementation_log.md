@@ -171,8 +171,22 @@ Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
 - Tests: `tests/unit/test_workflow_matcher.py` (5) + `tests/integration/test_decomposition_dispatch.py`
   (3, incl. `LocalDecomposer` match→dispatch end-to-end on a real workflow). Full EO suite **56 passed**.
 
+## EO-20 (LLM decomposer) — TaskDecomposer ✅ 2026-05-20
+
+- `decomposition/llm_decomposer.py` `LLMTaskDecomposer` + `prompts/decompose.md` (LLM-guiding
+  file — imperative + schema only, no hardcoded prompt, per the rule-content-asymmetry lesson).
+  Asks a local LLM whether a task is decomposable + for sub-tasks; robust parse (fence-strip +
+  prose-salvage); loud on empty/unparseable response (a parse failure is NOT silently treated as
+  "not decomposable" — that would mask a broken model).
+- **All 3 decomposition boundaries are now real.** Unit/integration parity: stub-LLM unit tests
+  (10, deterministic) + a real-Ollama integration test (`mistral-nemo`, ~16s; asserts a valid
+  shape, not flaky content).
+- Tests: `tests/unit/test_llm_decomposer.py` (10) + `tests/integration/test_llm_decomposer_against_ollama.py`
+  (1, Ollama-gated, auto-skips without Ollama). Full EO suite **67 passed**.
+
 ## Next
 
-- `TaskDecomposer` real impl (local LLM) + Ollama-gated integration — the last decomposition boundary.
-- EO-03/04/05 MCP-tool registration into the FastMCP server (needs MCP-client integration loop).
+- Wire the full decomposition stack into an end-to-end `query_answering`-style entry (catalog
+  matcher + LLM decomposer + observed dispatch over real registered workflows).
+- EO-03/04/05 MCP-tool registration (needs MCP-client integration loop).
 - EO-01 catalog reconciliation; EO-13c rag_e2e wiring (Ollama-gated).
