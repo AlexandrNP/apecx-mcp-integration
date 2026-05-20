@@ -2,7 +2,9 @@
 
 **Date:** 2026-05-20
 **Branch:** `globus-default-data` (worktree `apecx-cowork/wt-globus-default`, off `main` @ `3c3d820`) — **local, unpushed**
-**Status:** root-cause auth fix landed (1 commit); the main refactor + live work are pending.
+**Status:** AUTH RESOLVED + validated (M2M confidential client, non-interactive); `/public`
+structure mapped (§3); full implementation UNBLOCKED. Auth fix landed (`0cc12bf`); the
+gh-deletion/default/prompt-move refactor + the live transfer test are next.
 **Purpose:** self-contained handoff so a clean session resumes this task. Read top-to-bottom.
 
 ---
@@ -34,22 +36,44 @@ days, no refresh) — the root cause of the live blocker below. Fixed:
 
 ---
 
-## 3. BLOCKER — live Globus needs a fresh interactive re-auth
+## 3. AUTH — RESOLVED (2026-05-20): use M2M confidential client, NOT web login
 
-The persisted thick-client tokens at
-`~/.globus/app/8ef2597d-1e4c-43d5-8216-8bac27d727d8/nanobrain-globus-transfer-step/tokens.json`
-are **access-only and expired** (`has_refresh=False`, both `auth.globus.org` + `transfer.api`
-scopes expired `2026-05-18`). No refresh token → no non-interactive renewal → a fresh browser
-login is required, which an agent cannot complete. The live `ls` of `/public`, the file-mapping
-derivation, and the live transfer test all depend on this.
+**Corrected diagnosis.** The earlier "expired web token → re-login in a browser" framing was
+WRONG. The real issue: the intended **machine-to-machine (confidential-client)** creds were not
+configured. Web/native auth is supported but is NOT a requirement.
 
-**Re-auth recipe** (run interactively, e.g. via the `!` prompt prefix; do it AFTER the §2 fix so
-the new token is offline/refreshable — the fix is already committed on this branch):
+**Now configured + validated.** A shared confidential client (team app "apecx-mcp-integration",
+`client_id bbcdba6f-0c71-4fe2-9d6e-72fe95f2d8e7`, identity `…@clients.auth.globus.org`) is stored
+in the OS keyring via `apecx-globus-setup store` — **secret lives in the keyring ONLY, never in
+any file/doc/commit.** The service identity has collection access (granted). Validated live,
+**non-interactively (no browser)**: `build_globus_app(auth_mode="client_credentials",
+app_name="apecx-data-mcp")` → `TransferClient.operation_ls(8d2e71d6…, "/apecx-ramanathan-anl/public")`
+succeeded.
+
+**Live `/public` structure (mapped 2026-05-20):**
 ```
-PYTHONPATH=src .venv/bin/python -m apecx_integration.cli.globus_setup login \
-  --client-id 8ef2597d-1e4c-43d5-8216-8bac27d727d8
+/apecx-ramanathan-anl/public/
+  data/violin/   Gene_Information.csv, Gene_Vaccine_Pathogen_Information.csv,
+                 Pathogen_Information.csv, Vaccine_Information.csv,
+                 Vaccine_Pathogen_Information.csv, VIOLIN_Curated_References.txt
+  data/BV-BRC/   BVBRC_genome_alphavirus.csv  (12 MB)
+  FAISS-Test/FAISS/  index.faiss/{index.faiss,index.pkl}, index.faiss.512/{…}  (domain-RAG index)
 ```
-(open the printed URL, authorize as the Globus user with access to the collection, paste the code).
+
+**Source → dest mapping** (dest = `APECX_DATA_ROOT`; matches `_EXPECTED_FILES`):
+- `data/violin/*` → `violin/*` (5 CSVs + `VIOLIN_Curated_References.txt`)
+- `data/BV-BRC/BVBRC_genome_alphavirus.csv` → `BVBRC_genome_alphavirus.csv` (top-level)
+- `FAISS-Test/FAISS/index.faiss[.512]/…` → domain-RAG index — a SEPARATE concern from core data
+  (the `apecx-setup rag` path); decide whether to also route it via Globus.
+
+**Teammate sharing:** shared confidential app — teammates `apecx-globus-setup store` the same
+client_id+secret (distributed securely) or set `GLOBUS_COMPUTE_CLIENT_ID`/`_SECRET` env (CI). No
+per-user web login.
+
+**No blocker remains** — the full implementation (incl. the live transfer test) can proceed.
+
+The §2 offline-token fix (`0cc12bf`) still stands but is now SECONDARY: it only matters for the
+optional web/native path; the default is M2M.
 
 ---
 
@@ -73,11 +97,12 @@ PYTHONPATH=src .venv/bin/python -m apecx_integration.cli.globus_setup login \
   `/apecx-joshi-anl-general`) → `/apecx-ramanathan-anl/public`. The wrapper YAML
   `configs/globus_transfers/violin_bvbrc_transfer_step.yml` keeps the same
   `source_endpoint_id` (same collection UUID) — only the path changes.
-- **BLOCKED PIECE:** the per-file `_DATASET_FILE_MAPPING` (`_globus_data_transfer.py:104–139`) is
-  hand-tuned for joshi's dated layout (`2024_12_17_VIOLIN`, `2025_05_05_BVBRC`). The correct
-  `/public` mapping needs the **live `ls`** (§3). Until then: repoint the prefix + add a loud
-  pre-transfer `operation_ls` existence check (FAIL-LOUD if a mapped source file is absent — never
-  silently transfer zero files), and derive the real mapping after re-auth.
+- **MAPPING KNOWN (no longer blocked).** Replace the per-file `_DATASET_FILE_MAPPING`
+  (`_globus_data_transfer.py:104–139`, hand-tuned for joshi's dated layout) with the `/public`
+  layout from §3: `data/violin/*` → `violin/*` (5 CSVs + `VIOLIN_Curated_References.txt`);
+  `data/BV-BRC/BVBRC_genome_alphavirus.csv` → top-level `BVBRC_genome_alphavirus.csv`. Keep a loud
+  pre-transfer `operation_ls` existence check (FAIL-LOUD on a missing source file — never silently
+  transfer zero files).
 - The DEST layout must match where tests + the product expect data: `violin/*.csv` (5 files) +
   top-level `BVBRC_genome_alphavirus.csv` under `APECX_DATA_ROOT` (`_EXPECTED_FILES`,
   `setup_data.py:26–33`). The dest side is known; the source side needs the live listing.
@@ -131,14 +156,19 @@ PYTHONPATH=src .venv/bin/python -m apecx_integration.cli.globus_setup login \
 - Key files: `cli/setup.py`, `cli/setup_data.py`, `cli/_globus_data_transfer.py`,
   `cli/globus_setup.py`, `configs/globus_transfers/violin_bvbrc_transfer_step.yml`,
   `docs/globus_data_transfer.md`, `docs/globus_transfer_verification_2026-05-17.md`.
-- Throwaway live-`ls` probe (for after re-auth): `/tmp/globus_token_probe.py` (reads tokens.json
-  + builds a TransferClient + `operation_ls`).
+- M2M live-`ls` probe (validated 2026-05-20, non-interactive): `/tmp/globus_m2m_ls.py`
+  (`build_globus_app(auth_mode="client_credentials")` → `TransferClient` → recursive `operation_ls`).
+  Confidential creds are in the keyring under service `nanobrain-globus` (client_id
+  `bbcdba6f-0c71-4fe2-9d6e-72fe95f2d8e7`; secret in keyring only).
 
 ## 7. Resume order
 
-1. Re-auth (§3) — interactive, only a human can.
-2. Live `ls /apecx-ramanathan-anl/public` (recursive) → record the real layout.
-3. Derive the `/public` source→dest file mapping (dest must match `_EXPECTED_FILES`).
-4. Implement §4A (delete gh + default + prompt-move) and §4B (repoint + loud existence check).
-5. Tests §4C incl. the gated live transfer; docs §4D; the dest-endpoint loud-failure caveat.
-6. Verify with a real `apecx-setup data` run end-to-end.
+1. ✅ DONE — M2M auth configured + validated (non-interactive); `/public` layout + source→dest
+   mapping recorded (§3). No blocker remains.
+2. Implement §4A (delete gh + sole default + relocate the data-dir prompt/config-patch) + the
+   auth-selection fix (M2M-primary, keyring-aware, FAIL-LOUD-never-web — see §1 of the investigation).
+3. Implement §4B (repoint source to `/apecx-ramanathan-anl/public` + the §3 mapping + the loud
+   pre-transfer existence check).
+4. Tests §4C incl. the **gated live transfer test** (now runnable — M2M works); docs §4D incl. the
+   shared-app teammate model + the dest-endpoint loud-failure caveat.
+5. Verify with a real `apecx-setup data` run end-to-end (downloads to the `_EXPECTED_FILES` layout).
