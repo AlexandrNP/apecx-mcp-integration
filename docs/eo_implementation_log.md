@@ -16,6 +16,52 @@ PYTHONPATH="$WT/src" "$MAIN/.venv/bin/python" -m pytest "$WT/tests/..."
 
 ---
 
+## ⭐ RESUME HERE — integration capstone (handoff 2026-05-20)
+
+**State:** branch `eo-mvp-output-surface` (worktree `wt-eo-mvp`), 8 commits, **67 tests green**,
+clean tree. The full deterministic core + the COMPLETE decomposition feature (matcher +
+dispatcher + real-LLM decomposer) are done. Dated sections below give each component's location +
+contract.
+
+**Setup (do first in a fresh context):**
+- The worktree shares the main `.venv` via a gitignored symlink
+  `wt-eo-mvp/.venv -> ../apecx-mcp-integration/.venv` — recreate with `ln -s` if missing.
+- Test: `PYTHONPATH=$WT/src $MAIN/.venv/bin/python -m pytest $WT/tests/...` (PYTHONPATH override
+  resolves to the worktree src — verified).
+- **Commit discipline (learned the hard way):** pre-run `ruff format` + `ruff check --fix` on
+  changed files BEFORE `git add`; then commit; then ALWAYS verify `git log -1` advanced — a
+  pre-commit ruff abort is invisible if you `| tail -N` the commit output. Ollama is up
+  (`mistral-nemo`, `gemma4`, `nemotron-3-nano:4b`).
+
+**Reusable building blocks (committed, tested):**
+`composition/schemas/{workflow_result,data_shapes}.py`, `composition/handles/store.py`,
+`composition/steps/envelope_step.py` (+`.yml`), `composition/inspection/workflow_inspector.py`,
+`composition/runtime/{provenance_wiring,observed_run}.py`, `composition/decomposition/*`
+(`LocalDecomposer` + `KeywordWorkflowMatcher` + `RunWorkflowDispatcher` + `LLMTaskDecomposer` +
+`prompts/decompose.md`).
+
+**Capstone work, in order:**
+1. **End-to-end `query_answering` entry** — wire `LocalDecomposer(matcher, LLMTaskDecomposer,
+   RunWorkflowDispatcher)` where the dispatcher's loader resolves a workflow name → runnable
+   `Workflow` via the existing `workflow_registry` (`load_catalog` + `_load_workflow_for_entry`),
+   and the matcher runs over that catalog. Ollama-gated integration over ≥2 real registered workflows.
+2. **EO-03/04/05 MCP tools** — register `run_workflow` (wraps `run_workflow_observed`),
+   `inspect_run` (surfaces `RunSummary`; needs a run store keyed by `run_id`), `inspect_workflow`
+   (wraps the inspector), `apecx_context` into `mcp_surface/server.py` via `server.tool()(fn)`.
+   Needs an MCP-client test loop.
+3. **EO-13c** — append `EnvelopeStep` to `rag_e2e_synthesis`; needs a `synthesis`→`markdown` key
+   bridge (give `EnvelopeStep` a configurable input key via an `EnvelopeStepConfig(StepConfig)`).
+   Ollama-gated.
+4. **EO-01** — `list_workflows` catalog reconciliation (`discovery.py` ∪ `workflow_registry`).
+
+**Open decisions (need the user):**
+- **EO-30** — generic `mcp` `BackendKind` touches the deliberately-fixed `CONTRACTS.md#td-vocab`
+  (framework version bump). Needs explicit OK.
+- **EO-01** merge shape (which catalog is authoritative + maturity tagging).
+- **`inspect_run`** run-record persistence (in-memory session vs durable store).
+
+---
+
 ## EO-10 — `WorkflowResult` envelope ✅ 2026-05-20
 
 - `src/apecx_integration/composition/schemas/workflow_result.py`
