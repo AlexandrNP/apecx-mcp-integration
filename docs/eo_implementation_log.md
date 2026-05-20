@@ -51,9 +51,27 @@ Combined run: **18 passed in 0.05s**.
 - **EO-30 deferred.** Adding a generic `mcp` `BackendKind` touches the deliberately-fixed
   `CONTRACTS.md#td-vocab` vocabulary — needs explicit confirmation before implementing.
 
+## EO-11 — Handle store ✅ 2026-05-20
+
+- `src/apecx_integration/composition/handles/store.py`
+- `HandleStore.put(DataShape) -> str` / `get(str) -> DataShape` (typed via the `kind`
+  discriminator). `HandleNotFound` raised loudly on an unknown handle (never a silent None).
+- Backend behind a `HandleBackend` Protocol: v1 `InMemoryBackend` (thread-safe, process/
+  session lifetime). ProxyStore (installed — `proxystore 1.0.0`; nanobrain `DataUnitProxyRef`
+  at `core/data_unit.py:2039`) is the documented HPC-scale swap-in — **deferred** (no MVP
+  HPC-scale payloads; `CONTRACTS.md#ext-tool-dispatch` scopes ProxyStore to HPC-scale).
+  Deliberate, documented deviation from the design's "reuse ProxyStore" line.
+- `default_handle_store()` — process-wide singleton shared across MCP tool calls.
+- Tests: `tests/unit/test_handle_store.py` — **7 passed**.
+
+Spine so far: **25 passed** (EO-10 9 + EO-12 9 + EO-11 7).
+
 ## Next
 
-- EO-11 handle store — verify `DataUnitProxyRef`/ProxyStore availability first; a simple
-  content-addressed store may back v1 (ProxyStore is the HPC-scale backend, not MVP-required).
-- EO-13 `WorkflowResultStep` adapter (non-invasive terminal step) + the handle-chaining
-  integration test (A→B via handle, no structured data through the LLM context).
+- EO-13 `WorkflowResultStep` adapter (non-invasive terminal step wrapping a step's output
+  into a WorkflowResult, optionally stashing structured payload via the handle store) +
+  the headline handle-chaining integration test (A→B via handle, no structured data through
+  the LLM context). The deterministic adapter + chaining test does NOT need a live LLM; the
+  rag_e2e wiring (live-LLM, Ollama-gated) is a separate sub-step.
+- EO-01/02 surface (reconcile `discovery.py` + `workflow_registry` catalogs).
+- EO-40/41 provenance wiring (parallel track; verify G4 ProvenanceContext interface first).
