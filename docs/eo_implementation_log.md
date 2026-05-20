@@ -161,8 +161,18 @@ Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
   Ollama-gated integration), real `WorkflowDispatcher` (`run_workflow_observed`). A nanobrain
   Step wrapper if decomposition must run *inside* a workflow cascade.
 
+## EO-20 (real impls) — matcher + dispatcher ✅ 2026-05-20
+
+- `decomposition/matchers.py` `KeywordWorkflowMatcher` (Jaccard token-overlap baseline; semantic
+  RAG is the richer swap-in via the same `WorkflowMatcher` protocol) + `decomposition/dispatchers.py`
+  `RunWorkflowDispatcher` (wraps `run_workflow_observed`; loud on unknown workflow + no-envelope).
+- **2 of 3 decomposition boundaries now REAL + tested without an LLM**; only `TaskDecomposer`
+  remains LLM-gated.
+- Tests: `tests/unit/test_workflow_matcher.py` (5) + `tests/integration/test_decomposition_dispatch.py`
+  (3, incl. `LocalDecomposer` match→dispatch end-to-end on a real workflow). Full EO suite **56 passed**.
+
 ## Next
 
-- Real decomposition impls (matcher/decomposer/dispatcher) + Ollama-gated integration.
-- EO-03/04/05 MCP-tool registration into the FastMCP server.
+- `TaskDecomposer` real impl (local LLM) + Ollama-gated integration — the last decomposition boundary.
+- EO-03/04/05 MCP-tool registration into the FastMCP server (needs MCP-client integration loop).
 - EO-01 catalog reconciliation; EO-13c rag_e2e wiring (Ollama-gated).
