@@ -1,0 +1,30 @@
+# Wrapper YAML for EnvelopeStep (EO-13).
+#
+# Terminal step: wraps upstream output into a WorkflowResult. Append it
+# last in a workflow so the workflow's output is always a WorkflowResult
+# (markdown + optional data_handle). See
+# src/apecx_integration/composition/steps/envelope_step.py.
+
+class: "apecx_integration.composition.steps.envelope_step.EnvelopeStep"
+name: envelope
+description: >
+  Wrap a step's output into a standard WorkflowResult envelope. When the
+  input carries a serialized DataShape under 'data', stash it behind a
+  handle and attach handle + preview, keeping the structured payload out
+  of the markdown channel.
+
+input_data_units:
+  envelope_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: envelope_input
+    description: >
+      Dict with 'markdown' (str, required), optional 'data' (serialized
+      DataShape), optional 'run_id'.
+    persistent: false
+
+output_data_units:
+  workflow_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_result
+    description: "Serialized WorkflowResult (markdown + optional data_handle)."
+    persistent: false

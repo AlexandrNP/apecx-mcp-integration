@@ -66,12 +66,63 @@ Combined run: **18 passed in 0.05s**.
 
 Spine so far: **25 passed** (EO-10 9 + EO-12 9 + EO-11 7).
 
+## EO-13a — EnvelopeStep (nanobrain BaseStep) ✅ 2026-05-20
+
+- `src/apecx_integration/composition/steps/envelope_step.py`
+- Reusable terminal step: wraps a step's output into a `WorkflowResult`. nanobrain-compliant
+  (BaseStep + `_get_config_class`, `async process`, module-level `log` not `self.logger`, no
+  `execute` override). Builds via `from_config` with just `name:`.
+- When the input carries a serialized `DataShape` under `data`, it parses it (loud on bad
+  `kind`), stashes it via the handle store, and attaches `data_handle` + `.preview()` to the
+  envelope — keeping the structured payload OUT of the markdown channel. Missing/empty
+  `markdown` raises loudly.
+- Tests: `tests/unit/test_envelope_step.py` — **7 passed**. The headline test stashes a
+  50-record payload with a sensitive value and asserts that value is **absent from the
+  markdown channel** yet fully retrievable via the handle (channel separation proven).
+
+Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
+
+## EO-13b — Headline chaining integration test ✅ 2026-05-20
+
+- `tests/integration/test_envelope_chaining.py` + `src/.../composition/steps/envelope_step.yml`
+- Builds a real workflow via the lightweight `WorkflowBuilder` (wiring copied from the shipped
+  `tdr_loop_lightweight.py`), runs it through `Workflow.run()` (real trigger/link cascade,
+  ~2s). Demonstrates A→B chaining: a 50-record payload with a sensitive value is stashed
+  behind a handle by workflow A, is **absent from A's markdown channel**, and the full payload
+  round-trips via the handle into workflow B — structured data flows out-of-band while only
+  markdown + preview reach the orchestrating LLM. Exercises the lightweight authoring path.
+- **1 passed.** Full EO suite now **33 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7 + EO-13b 1).
+
+### Noted (deferred, not my code)
+- `Workflow.run()` emits a pydantic `UserWarning` (`validate_graph` field is a function being
+  model_dump'd) — nanobrain-internal `WorkflowConfig` serialization, cosmetic, pre-existing.
+  Candidate framework cleanup; not blocking.
+
+## EO-40/41/42/43 — Provenance + events wiring ✅ 2026-05-20
+
+- `src/apecx_integration/composition/runtime/provenance_wiring.py`
+- **Verified first** (the subagent flagged it as unverified): `BaseStep._execute_process`
+  DOES auto-call `record_step_invocation` (step.py:2032/2080) + `publish_step_event`
+  (2010/2051/2093) when a provenance context is active — so activation actually records, not
+  silently no-op.
+- `run_with_provenance(workflow, input_data, redact=None, **run_kwargs)` — activates a G4
+  `ProvenanceContext` with an injected in-memory `MemorySink` (no built-in in-memory sink
+  exists) + subscribes to G37 step events, around `Workflow.run` (not manual
+  process+wait_for_cascade, per G124/G125). Returns `ProvenanceRun(result, step_records,
+  step_events)`. `redact=None` ⇒ nanobrain default (`prompts` + `executor_env` elided) —
+  EO-43; override per call.
+- `summarize_run()` → `RunSummary` (EO-42): per-step name/status/duration/n_tool_calls/
+  n_llm_calls — the scientist-facing "what ran" view.
+- Test: `tests/integration/test_provenance_wiring.py` — **1 passed**. Asserts records are
+  NON-empty (loud guard: a context that activates but records nothing is a silent failure).
+- Full EO suite now **34 passed**.
+
 ## Next
 
-- EO-13 `WorkflowResultStep` adapter (non-invasive terminal step wrapping a step's output
-  into a WorkflowResult, optionally stashing structured payload via the handle store) +
-  the headline handle-chaining integration test (A→B via handle, no structured data through
-  the LLM context). The deterministic adapter + chaining test does NOT need a live LLM; the
-  rag_e2e wiring (live-LLM, Ollama-gated) is a separate sub-step.
+- EO-13c: make the shipped `rag_e2e_synthesis` emit a WorkflowResult by appending EnvelopeStep
+  as its terminal step. Needs a `synthesis`→`markdown` key bridge (configurable input key) +
+  an Ollama-gated integration test (live LLM per the no-mock-only rule — real blocker if
+  Ollama unavailable).
 - EO-01/02 surface (reconcile `discovery.py` + `workflow_registry` catalogs).
-- EO-40/41 provenance wiring (parallel track; verify G4 ProvenanceContext interface first).
+- Wire `run_with_provenance` + `summarize_run` into the MCP `run_workflow`/`inspect_run`
+  tools so the run summary surfaces to the orchestrating LLM (depends on EO-03/04).
