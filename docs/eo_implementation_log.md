@@ -131,10 +131,22 @@ Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
   `tdr_refine_workflow.yml`, recursion, depth cap, loud failures).
 - Full EO suite now **40 passed**.
 
+## EO-03 (core) — Observed workflow run ✅ 2026-05-20
+
+- `src/apecx_integration/composition/runtime/observed_run.py`
+- `run_workflow_observed(workflow, input_data, ...)` → `WorkflowRunOutcome(raw_result,
+  workflow_result, run_summary)`: composes `run_with_provenance` + `summarize_run` + best-effort
+  `WorkflowResult` extraction. The core the MCP `run_workflow` tool will wrap (tool adds
+  name-lookup + FastMCP registration). Returns `workflow_result=None` honestly when a workflow
+  emits no envelope (not a silent empty one).
+- Test: `tests/integration/test_observed_run.py` — **1 passed**. Full EO suite **41 passed**.
+
 ## Next
 
-- EO-01: `list_workflows` — reconcile the two catalogs (`discovery.py` composer-manifests vs
-  `workflow_registry` `mcp_workflow_catalog.yml`) into one ranked, maturity-tagged listing.
-- EO-03/04/05: `run_workflow` returning the WorkflowResult envelope, `inspect_run` surfacing
-  `RunSummary` + `inspect_workflow`, `apecx_context`.
+- EO-03/04/05 (MCP tools): register `run_workflow` (wraps `run_workflow_observed`), `inspect_run`
+  (surfaces `RunSummary`), `inspect_workflow` (wraps the inspector), `apecx_context` into the
+  FastMCP server (`mcp_surface/server.py`); integration via an MCP client loop.
+- EO-01: `list_workflows` catalog reconciliation (`discovery.py` ∪ `workflow_registry`).
+- EO-20: local bounded-decomposition step (architectural centerpiece; LoopController + cost
+  bounds + match-first) — large nanobrain-authoring effort.
 - EO-13c: rag_e2e wiring (Ollama-gated — real blocker if no live LLM).
