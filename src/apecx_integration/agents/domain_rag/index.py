@@ -18,14 +18,49 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from sentence_transformers import SentenceTransformer  # noqa: I001
-
-import faiss  # noqa: E402
-import numpy as np  # noqa: E402
+if TYPE_CHECKING:  # type-only — never imported at runtime on a clean (no-[rag]) install
+    import faiss
+    import numpy as np
+    from sentence_transformers import SentenceTransformer
 
 log = logging.getLogger(__name__)
+
+
+# Lazy, order-preserving import of the optional 'rag' extra
+# (sentence_transformers + faiss + numpy). These are NOT base deps — RAG is
+# opt-in (G81 / ``pip install -e '.[rag]'``). Importing them at MODULE scope
+# made this module — and every step that references DomainRagIndex by class
+# path (DomainRagSearchStep) — un-importable on a clean install, defeating the
+# opt-in and turning "RAG degrades gracefully" into "RAG crashes on import".
+# Deferring the import to first real use means the module imports anywhere; a
+# missing 'rag' extra degrades ``search`` to ``[]`` + a loud warning, exactly
+# like a missing index file.
+#
+# Order is load-bearing: ``sentence_transformers`` MUST import before ``faiss``
+# (macOS-ARM segfault otherwise — session_friction_log #13). Routing both
+# through this one helper guarantees the order regardless of caller.
+_RAG_LIBS: tuple | bool | None = None  # None=unprobed, False=unavailable, tuple=loaded
+
+
+def _import_rag_libs() -> tuple:
+    """Return ``(SentenceTransformer, faiss, numpy)``, importing them in the
+    load-bearing order on first call (cached). Raises ``ImportError`` (also
+    cached) when the optional 'rag' extra is not installed."""
+    global _RAG_LIBS
+    if _RAG_LIBS is False:
+        raise ImportError("the 'rag' extra (sentence-transformers + faiss) is not installed")
+    if _RAG_LIBS is None:
+        try:
+            from sentence_transformers import SentenceTransformer  # noqa: I001
+            import faiss
+            import numpy as np
+        except ImportError:
+            _RAG_LIBS = False
+            raise
+        _RAG_LIBS = (SentenceTransformer, faiss, np)
+    return _RAG_LIBS
 
 
 _DEFAULT_MODEL: str = "sentence-transformers/all-mpnet-base-v2"
@@ -130,7 +165,15 @@ class DomainRagIndex:
         if not query or not query.strip():
             return []
         if not self.is_available:
-            self._log_disabled_once()
+            self._log_disabled_once(reason="index")
+            return []
+        # Index files exist — now we genuinely need the 'rag' packages. If the
+        # extra isn't installed, degrade the SAME way as a missing index
+        # (loud-once warning + []), so a clean install never crashes here.
+        try:
+            _import_rag_libs()
+        except ImportError:
+            self._log_disabled_once(reason="packages")
             return []
         self._ensure_loaded()
         assert self._faiss_index is not None  # for type checker
@@ -183,24 +226,40 @@ class DomainRagIndex:
                 "scripts/build_domain_rag_index.py"
             )
 
+        _, faiss, _ = _import_rag_libs()
         self._metadata = json.loads(meta_path.read_text(encoding="utf-8"))
         self._faiss_index = faiss.read_index(str(faiss_path))
 
-    def _log_disabled_once(self) -> None:
+    def _log_disabled_once(self, reason: str = "index") -> None:
         """Emit the loud first-time "RAG disabled" notification.
 
-        Idempotent per process — subsequent calls go to DEBUG so a
-        tight loop of search() calls doesn't spam the WARNING channel.
-        The message includes the build command so operators can
-        re-enable RAG with one copy-paste.
+        ``reason`` selects the actionable remedy:
+          * ``"index"``    — the FAISS index/metadata files are missing.
+          * ``"packages"`` — the optional 'rag' extra isn't installed.
+
+        Idempotent per instance — subsequent calls go to DEBUG so a tight loop
+        of search() calls doesn't spam the WARNING channel. Both messages keep
+        the ``RAG DISABLED`` marker so log scrapers match either cause.
         """
         if self._disabled_warning_logged:
             log.debug(
-                "DomainRagIndex.search called but index unavailable at %s; returning []",
+                "DomainRagIndex.search called but RAG unavailable (%s) at %s; returning []",
+                reason,
                 self._index_dir,
             )
             return
         self._disabled_warning_logged = True
+        if reason == "packages":
+            log.warning(
+                "RAG DISABLED — the optional 'rag' extra (sentence-transformers "
+                "+ faiss) is not installed, so the domain RAG index at %s cannot "
+                "be loaded. search() returns empty results. Enable RAG with: "
+                "`pip install -e '.[rag]'` (then build the index with "
+                "`apecx-setup rag`). Pipelines that wire RAG branches continue "
+                "to run with empty RAG bundles.",
+                self._index_dir,
+            )
+            return
         log.warning(
             "RAG DISABLED — domain RAG index not present at %s. "
             "search() will return empty results until the index is built. "
@@ -213,6 +272,7 @@ class DomainRagIndex:
 
     def _load_model(self) -> SentenceTransformer:
         if self._model is None:
+            SentenceTransformer, _, _ = _import_rag_libs()
             self._model = SentenceTransformer(self._model_name, device=self._device)
         return self._model
 
