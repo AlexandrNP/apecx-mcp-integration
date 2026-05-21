@@ -1,146 +1,172 @@
-# Globus-first data transfer (G82, 2026-05-16)
+# Globus data transfer (G82 2026-05-16; G127 sole-path + verify gate 2026-05-21)
 
-Operator-facing guide for the Globus path that `apecx-setup data`
-prefers when configured. Falls back transparently to the legacy
-`gh release download` path when Globus isn't set up.
+Operator-facing guide for the **only** data-acquisition path `apecx-setup`
+uses. The legacy `gh release download` fallback was **retired 2026-05-21** —
+Globus is now required. If Globus isn't configured and the dataset isn't
+already on disk, `apecx-setup data` FAILS LOUD with setup instructions rather
+than silently degrading.
 
 ## TL;DR
 
 ```bash
-# 1. Install Globus Connect Personal (one-time)
-#    Download from https://www.globus.org/globus-connect-personal
-#    During install, sign in and grab your endpoint UUID from
-#    Settings → Endpoints
+# 1. Install Globus Connect Personal (one-time) and start it.
+#    https://www.globus.org/globus-connect-personal
+#    Grab your endpoint UUID from Settings → Endpoints.
 
-# 2. Store your confidential-client credentials in the OS keyring
+# 2. Store your confidential-client credentials in the OS keyring.
+#    (Stored under keyring service "nanobrain-globus" — the same place
+#    the transfer step's auth reads from.)
 apecx-globus-setup store \
     --client-id  '<your-client-id>' \
     --client-secret '<your-client-secret>'
 
-# 3. Set the source + destination endpoint UUIDs in your shell rc
-#    (or in a local .env — see .env.example for the variable names)
-export APECX_GLOBUS_SOURCE_ENDPOINT_ID='<source-endpoint-uuid>'
-export APECX_GLOBUS_DEST_ENDPOINT_ID='<your-personal-endpoint-uuid>'
+# 3. Set the source + destination endpoint UUIDs in your shell rc / .env.
+export APECX_GLOBUS_SOURCE_ENDPOINT_ID='<source-collection-uuid>'
+export APECX_GLOBUS_DEST_ENDPOINT_ID='<your-personal-endpoint-uuid>'   # REQUIRED
 
-# 4. Run the install. Globus is preferred automatically.
+# 4. Run the install. The data step runs the verify→transfer workflow.
 apecx-setup
 ```
 
-## Why Globus
+Headless / CI installs: the confidential-client (M2M) path works
+non-interactively — store the creds (or set `GLOBUS_COMPUTE_CLIENT_ID` /
+`GLOBUS_COMPUTE_CLIENT_SECRET` in the environment) and no browser login is
+needed. The native/browser path (`apecx-globus-setup login`) is supported for
+dev workstations but is NOT required.
 
-* **Faster** for large transfers from ALCF. The dataset is currently
-  small (~1.5 MB of CSVs), but the Globus path also covers future
-  larger datasets that the gh-release path can't size up to.
-* **More resilient.** Globus tasks queue and retry; gh release
-  downloads must complete in one shot.
-* **Auditable.** Each transfer produces a Globus task ID that
-  `apecx-setup`'s summary table surfaces, so operators can debug
-  failed transfers in the Globus web UI.
-* **Closer to how production-scale data flows.** The same path
-  works for synthetic test data, production VIOLIN updates, and any
-  future large dataset additions.
+## How it works — verify→transfer workflow (G127)
+
+`apecx-setup data` loads a two-step nanobrain workflow
+(`configs/globus_transfers/violin_bvbrc_transfer_workflow.yml`) and drives it
+via `Workflow.run`:
+
+```
+workflow_input ({items})
+    │  DirectLink (auto_transfer)
+    ▼
+GlobusManifestVerifyStep   ← operation_ls every source path; FAIL-LOUD if any missing
+    │  DirectLink (auto_transfer) — carries the validated manifest through
+    ▼
+GlobusTransferStep         ← submit + poll to SUCCEEDED
+    │
+    ▼
+workflow_output (transfer_status / task_id / items count)
+```
+
+The verify step is the gate: it refuses to start a transfer when a source file
+is missing (which would otherwise move zero — or a partial subset of — files,
+a silent failure). A wrong/unverified source path therefore produces a loud,
+file-named error at install time, never a quietly-incomplete dataset.
 
 ## What gets transferred
 
-Six files from the source collection's `apecx-joshi-anl-general` path:
+Six files. **VIOLIN and BV-BRC live under different source roots** (re-mapped
+2026-05-21):
 
-```
-violin/Vaccine_Information.csv
-violin/Pathogen_Information.csv
-violin/Gene_Information.csv
-violin/Vaccine_Pathogen_Information.csv
-violin/Gene_Vaccine_Pathogen_Information.csv
-BVBRC_genome_alphavirus.csv
-```
+| Dest (under `APECX_DATA_ROOT`) | Source |
+|---|---|
+| `violin/Vaccine_Information.csv` | `$VIOLIN_ROOT/Vaccine_Information.csv` |
+| `violin/Pathogen_Information.csv` | `$VIOLIN_ROOT/Pathogen_Information.csv` |
+| `violin/Gene_Information.csv` | `$VIOLIN_ROOT/Gene_Information.csv` |
+| `violin/Vaccine_Pathogen_Information.csv` | `$VIOLIN_ROOT/Vaccine_Pathogen_Information.csv` |
+| `violin/Gene_Vaccine_Pathogen_Information.csv` | `$VIOLIN_ROOT/Gene_Vaccine_Pathogen_Information.csv` |
+| `BVBRC_genome_alphavirus.csv` | `$BVBRC_ROOT/BVBRC_genome_alphavirus.csv` |
 
-The source layout matches the `data/violin/` + `data/`
-layout that downstream code (VIOLIN entity lookup, BV-BRC
-queries) expects.
+* `$BVBRC_ROOT` defaults to `/apecx-ramanathan-anl/public/data/BV-BRC`
+  (**live-verified 2026-05-21**: the 12 MB curated alphavirus file). This
+  fixed an earlier content divergence where the source was the ~1.5 GB
+  all-genomes file renamed to the alphavirus name at the destination.
+* `$VIOLIN_ROOT` defaults to `/apecx-ramanathan-anl/apecx-project-all` (per the
+  data steward). **Not yet live-verifiable from the public-collection UUID** —
+  `operation_ls` of `apecx-project-all` returns `500 Path not allowed` (a
+  GridFTP collection path-restriction, not an auth failure). If your install's
+  VIOLIN verify step fails, the files are served by a collection/path that your
+  source UUID's restriction excludes: confirm the serving endpoint + exact
+  layout and set `APECX_GLOBUS_VIOLIN_SOURCE_DIR` accordingly. The verify gate
+  guarantees a wrong path fails loud rather than silently.
 
 ## Environment variables
 
-Documented in `.env.example`. Required for the Globus path:
+Required for the (now mandatory) Globus path:
 
 | Variable | Purpose |
 |---|---|
-| `APECX_GLOBUS_SOURCE_ENDPOINT_ID` | Source collection UUID (the "APECx Data at Argonne LCF" collection). Ask the data steward for the production UUID. |
-| `APECX_GLOBUS_DEST_ENDPOINT_ID` | Your Globus Connect Personal endpoint UUID (or any collection you can write to). |
-| `GLOBUS_COMPUTE_CLIENT_ID` | Confidential client ID. Optional if `apecx-globus-setup store` already wrote it to the keyring. |
-| `GLOBUS_COMPUTE_CLIENT_SECRET` | Confidential client secret. Same keyring fallback applies. |
+| `APECX_GLOBUS_SOURCE_ENDPOINT_ID` | Source collection UUID ("APECx Data at Argonne LCF"). Ask the data steward. |
+| `APECX_GLOBUS_DEST_ENDPOINT_ID` | **Hard requirement.** Your Globus Connect Personal endpoint UUID (must be running). |
+| `GLOBUS_COMPUTE_CLIENT_ID` | Confidential client ID. Optional if `apecx-globus-setup store` wrote it to the keyring. |
+| `GLOBUS_COMPUTE_CLIENT_SECRET` | Confidential client secret. Same keyring fallback. |
 
 Optional:
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `APECX_GLOBUS_SOURCE_PREFIX` | `/apecx-joshi-anl-general` | Override the source path prefix if your collection lays the files out under a different root. |
-| `APECX_DATA_ROOT` | `~/.apecx/data` | Where local copies of the files land. |
+| `APECX_GLOBUS_VIOLIN_SOURCE_DIR` | `/apecx-ramanathan-anl/apecx-project-all` | Source dir holding the 5 VIOLIN CSVs. |
+| `APECX_GLOBUS_BVBRC_SOURCE_DIR` | `/apecx-ramanathan-anl/public/data/BV-BRC` | Source dir holding `BVBRC_genome_alphavirus.csv`. |
+| `APECX_GLOBUS_AUTH_MODE` | `client_credentials` | `client_credentials` (M2M) or `native` (browser). |
+| `APECX_DATA_ROOT` | `~/.apecx/data` | Where local copies land. |
 
-## When the Globus path is skipped
+## When Globus is unconfigured
 
-`apecx-setup` decides per run, checking each of:
+`apecx-setup` checks, in order: `globus_sdk` installed? source endpoint set?
+dest endpoint set? credentials reachable (env vars OR the `nanobrain-globus`
+keyring entry)? If any is "no":
 
-1. Is `globus_sdk` installed? (Yes if you installed via the `[hpc]`
-   extra OR via the full `pip install -e '.[all]'`.)
-2. Is `APECX_GLOBUS_SOURCE_ENDPOINT_ID` set in the env?
-3. Is `APECX_GLOBUS_DEST_ENDPOINT_ID` set in the env?
-4. Are credentials reachable — either both env vars set, OR a
-   keyring entry written by `apecx-globus-setup store`?
+* If the dataset is **already present** locally → the data step is `skipped`
+  (nothing to do).
+* Otherwise → the data step **FAILS LOUD**, printing exactly which prerequisite
+  is missing and how to fix it. There is no `gh` fallback.
 
-If any answer is "no", `apecx-setup` prints the reason and falls back
-to `gh release download` from the `apecx-data` GitHub release. You
-get a working install regardless; the only loss is the speed /
-auditability advantage of the Globus path.
-
-You can force the fallback path explicitly with `--prefer-gh-release`,
-useful for reproducing pre-G82 installs verbatim or for debugging
-the gh path:
-
-```bash
-apecx-setup --prefer-gh-release
-```
+**Adoption trade-off (brutal truth):** removing the universal `gh` fallback
+raised the install floor — a first-time operator now needs Globus Connect
+Personal installed, a personal endpoint UUID, and credentials before they can
+get data. That is the deliberate cost of a single, auditable, scalable data
+path. The loud failure with copy-paste instructions is the mitigation.
 
 ## Diagnosing failures
 
-`apecx-setup`'s summary table tells you which path ran and how it
-ended. Possible verdicts for the `data` step:
+The `data` step verdict in the summary table:
 
-| Verdict | What happened |
+| Verdict | Meaning |
 |---|---|
-| `ok    data    Globus: transferred 6 items (task_id=...)` | Globus path succeeded. |
-| `ok    data    gh release: downloaded + extracted` | gh path succeeded (Globus either skipped or fell back). |
-| `fail  data    setup_data exited with code N` | gh release also failed; check the printed stderr. |
+| `ok    data   Globus: verify→transfer workflow transferred N items (task_id=...)` | Success. |
+| `skipped data  ... already present ...` | Globus unconfigured but data already on disk. |
+| `fail  data   Globus required but not configured: ...` | Prereqs missing + no local data. Follow the printed steps. |
+| `fail  data   Globus transfer failed: workflow step 'violin_bvbrc_verify' failed (...): ... MISSING ...` | The verify gate found missing source files (named in the message). Fix the source paths / endpoint. |
+| `fail  data   Globus transfer failed: ...` | The transfer step failed (auth, dest endpoint down, task non-SUCCEEDED). |
 
-When a Globus transfer fails, the output above the summary table
-shows the underlying error. The most common ones:
+Common transfer errors:
 
-* **`AuthError`**: credentials don't match the source endpoint's
-  ACL. Verify with `apecx-globus-setup status`; re-run the
-  `apecx-globus-setup store` if your client secret was rotated.
-* **`endpoint not active`**: your destination endpoint
-  (typically Globus Connect Personal on your laptop) is not
-  running. Open Globus Personal Connect and click "Connect".
-* **`Task timed out`**: source endpoint queue is full. Re-run;
-  Globus will resume the transfer from where it left off
-  (sync_level checksum).
+* **`AuthError` / credentials**: verify with `apecx-globus-setup status`;
+  re-`store` if the secret was rotated. The preflight reads the same
+  `nanobrain-globus` keyring entry the transfer uses (fixed 2026-05-21 — these
+  used to disagree).
+* **`endpoint not active`**: your Globus Connect Personal endpoint isn't
+  running. Start it.
+* **`Path not allowed` on a source path**: the path is outside the source
+  collection's GridFTP path-restriction (see the VIOLIN note above).
 
 ## Where the code lives
 
 | Concern | File |
 |---|---|
-| Wrapper YAML | `configs/globus_transfers/violin_bvbrc_transfer_step.yml` |
-| Apecx-side glue | `src/apecx_integration/cli/_globus_data_transfer.py` |
+| Workflow (verify→transfer) | `configs/globus_transfers/violin_bvbrc_transfer_workflow.yml` |
+| Verify step wrapper | `configs/globus_transfers/violin_bvbrc_verify_step.yml` |
+| Transfer step wrapper | `configs/globus_transfers/violin_bvbrc_transfer_step.yml` |
+| Apecx-side driver | `src/apecx_integration/cli/_globus_data_transfer.py` |
 | CLI integration | `src/apecx_integration/cli/setup.py:_step_data` |
-| nanobrain primitive | `nanobrain/library/steps/globus_transfer_step.py` (G28) |
-| Auth helper | `nanobrain/core/distributed/globus_auth.py` (G23) |
+| Verify primitive (nanobrain) | `nanobrain/library/steps/globus_manifest_verify_step.py` (G127) |
+| Transfer primitive (nanobrain) | `nanobrain/library/steps/globus_transfer_step.py` (G28) |
+| Auth helper (nanobrain) | `nanobrain/core/distributed/globus_auth.py` (G23) |
 | Credential CLI | `src/apecx_integration/cli/globus_setup.py` (G31) |
-| Tests | `tests/unit/test_globus_data_transfer.py` |
+| Unit tests | `tests/unit/test_globus_data_transfer.py` |
+| Gated live tests | `tests/integration/test_globus_transfer_live.py` |
 
 ## What CAN'T be tested in CI
 
-The end-to-end transfer against the Argonne LCF collection requires
-live credentials, a writable destination endpoint, and network
-access to ALCF. CI verifies everything UP TO the network round-trip:
-wrapper YAML loads, env-var interpolation works, every precondition
-branch behaves as documented, the items builder produces the
-expected layout. The live path is exercised when an operator runs
-`apecx-setup data` with Globus credentials configured.
+A full transfer needs live credentials, a writable destination endpoint, and
+network access to ALCF. The gated live test
+(`tests/integration/test_globus_transfer_live.py`) runs the **missing-source
+gate** against real source auth (proving the verify gate blocks + the driver
+fails loud), and runs the **full transfer** only when
+`APECX_GLOBUS_LIVE_TRANSFER=1` plus a real dest endpoint is set. Unit tests
+cover everything up to the network round-trip.

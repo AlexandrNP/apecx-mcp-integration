@@ -146,30 +146,38 @@ loud WARNING per process; the synthesis branch degrades to empty
 chunks without crashing. The MCP server prints a `RAG DISABLED`
 banner at startup. See `docs/architecture.md` + `FAISS_SETUP_INSTRUCTIONS.md`.
 
-## Globus-first data transfer (G82, 2026-05-16)
+## Globus data transfer — SOLE path (G82 2026-05-16; G127 2026-05-21)
 
-`apecx-setup data` prefers Globus over `gh release download` when
-the operator has credentials configured. Falls back transparently
-when Globus is unconfigured — zero extra friction for operators
-who never set it up.
+`apecx-setup data` acquires the dataset ONLY via Globus. The legacy
+`gh release download` fallback (and `--prefer-gh-release`) were retired
+2026-05-21. When Globus is unconfigured AND no data is already present
+locally, the data step **FAILS LOUD** with setup instructions — no silent
+degradation.
 
 ```bash
-# One-time credential store:
+# One-time credential store (keyring service "nanobrain-globus"):
 apecx-globus-setup store --client-id <id> --client-secret <secret>
 
-# Per-shell env vars (see .env.example):
+# Per-shell env vars (see .env.example). DEST is now a hard requirement:
 export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<source-uuid>
-export APECX_GLOBUS_DEST_ENDPOINT_ID=<your-personal-uuid>
+export APECX_GLOBUS_DEST_ENDPOINT_ID=<your-personal-uuid>   # Globus Connect Personal, running
 
-# Globus-preferred install:
 apecx-setup
-
-# Force the legacy gh-release path:
-apecx-setup --prefer-gh-release
 ```
 
-The transfer primitive is nanobrain's `GlobusTransferStep`; the
-apecx-side wrapper YAML is `configs/globus_transfers/violin_bvbrc_transfer_step.yml`.
+The data step drives a 2-step nanobrain workflow
+(`configs/globus_transfers/violin_bvbrc_transfer_workflow.yml`):
+`GlobusManifestVerifyStep` (G127, fail-loud source-existence gate) →
+`GlobusTransferStep` (G28), via `Workflow.run`. **Honesty contract:**
+`Workflow.run` swallows a step exception (returns `status:'completed'` with
+empty outputs); the driver trusts ONLY `transfer_status=='SUCCEEDED'` and
+reconstructs the error from captured `step_failed` events. **Keyring note:**
+the preflight reads creds via nanobrain's `globus_credentials.load_credentials`
+(service `nanobrain-globus`) — the same place `build_globus_app` resolves them
+(fixed 2026-05-21; the two used to disagree). **Source map:** BV-BRC is
+live-verified at `/apecx-ramanathan-anl/public/data/BV-BRC/`; VIOLIN defaults
+to `/apecx-ramanathan-anl/apecx-project-all/` (steward-stated, not yet
+reachable from the public UUID — the verify gate catches a wrong path).
 Full operator guide: `docs/globus_data_transfer.md`.
 
 ## PBS bundle export
