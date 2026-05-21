@@ -73,7 +73,9 @@ def test_missing_source_gate_fails_loud(tmp_path, monkeypatch):
     monkeypatch.setattr(
         g,
         "build_transfer_items",
-        lambda data_dir: [{"source_path": bogus, "dest_path": str(Path(data_dir) / "x.csv")}],
+        lambda data_dir, datasets=None: [
+            {"source_path": bogus, "dest_path": str(Path(data_dir) / "x.csv")}
+        ],
     )
 
     result = g.attempt_globus_data_transfer(data_dir=tmp_path)

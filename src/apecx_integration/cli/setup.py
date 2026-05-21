@@ -245,17 +245,22 @@ def _step_data(*, interactive: bool = True) -> StepResult:
     requirement: ``globus_sdk`` + credentials + source/dest endpoint UUIDs must
     be set, and Globus Connect Personal must be running on the dest endpoint.
 
+    Datasets split into REQUIRED (BV-BRC, on the public collection — verified,
+    always reachable with the M2M creds) and OPTIONAL (VIOLIN, on the Group-gated
+    `apecx-project-all` collection the transfer identity is not yet a member of).
+
     Flow:
-      1. Non-interactive: skip (can't safely prompt). Reports whether data is
-         already present.
-      2. Globus unconfigured + data already present locally → skipped (no work
-         to do).
-      3. Globus unconfigured + no data → FAIL LOUD with actionable setup
-         instructions (no silent degradation — the whole point of retiring gh).
-      4. Globus configured → prompt for the data dir (relocated here from the
-         old gh path), drive the verify→transfer workflow, then patch the
-         Claude Desktop config (also relocated here). Any transfer failure is a
-         loud step failure.
+      1. Non-interactive: skip (can't safely prompt). Reports whether the
+         REQUIRED data is already present.
+      2. Globus unconfigured + required data already present → skipped.
+      3. Globus unconfigured + no required data → FAIL LOUD with actionable
+         setup instructions (no silent degradation — the point of retiring gh).
+      4. Globus configured → prompt for the data dir, then:
+         - transfer REQUIRED (BV-BRC); any failure → step ``fail``.
+         - transfer OPTIONAL (VIOLIN); failure → LOUD warning + step ``partial``
+           (the install still COMPLETES — partial is exit 0). This is how a
+           clean install succeeds on public data while VIOLIN access is pending.
+         Then patch the Claude Desktop config.
     """
     _print_header("Step 2 of 6 — Data")
     from apecx_integration.cli._globus_data_transfer import (
@@ -264,7 +269,9 @@ def _step_data(*, interactive: bool = True) -> StepResult:
     )
 
     default_data = _setup_data._DEFAULT_DATA_DIR
-    data_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    # "Present" keys on the REQUIRED dataset (BV-BRC). VIOLIN is optional, so a
+    # BV-BRC-only install still counts as "required data present".
+    data_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
 
     if not interactive:
         if data_present:
@@ -308,20 +315,43 @@ def _step_data(*, interactive: bool = True) -> StepResult:
         return StepResult("data", "skipped", "operator aborted at the data-directory prompt")
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"  ▶  running verify→transfer workflow to {data_dir}")
-    result = attempt_globus_data_transfer(data_dir=data_dir)
-    if result.status != "ok":
-        print(f"  ❌  Globus transfer failed: {result.detail}")
-        return StepResult("data", "fail", f"Globus transfer failed: {result.detail}")
+    # REQUIRED — BV-BRC (public collection). Must succeed.
+    print(f"  ▶  transferring REQUIRED data (BV-BRC) to {data_dir}")
+    req = attempt_globus_data_transfer(data_dir=data_dir, datasets={"bvbrc"})
+    if req.status != "ok":
+        print(f"  ❌  Required BV-BRC transfer failed: {req.detail}")
+        return StepResult("data", "fail", f"required BV-BRC transfer failed: {req.detail}")
 
-    # Success: report the layout + patch the Claude Desktop config (relocated
-    # onto the Globus path — the old gh path was the only one that did this).
+    # OPTIONAL — VIOLIN (Group-gated 'apecx-project-all'; membership pending).
+    # A failure here is NOT fatal: warn loudly and complete the install.
+    print("  ▶  transferring OPTIONAL data (VIOLIN)")
+    opt = attempt_globus_data_transfer(data_dir=data_dir, datasets={"violin"})
+
+    # Report layout + patch the Claude Desktop config regardless (BV-BRC is in).
     _setup_data.report_post_transfer_layout(data_dir)
     _setup_data._maybe_update_claude_config(data_dir)
-    detail = f"Globus: {result.detail}"
-    if result.task_id:
-        detail += f" (task_id={result.task_id})"
-    return StepResult("data", "ok", detail)
+
+    if opt.status == "ok":
+        detail = "Globus: BV-BRC + VIOLIN transferred"
+        task_ids = [t for t in (req.task_id, opt.task_id) if t]
+        if task_ids:
+            detail += f" (task_ids={','.join(task_ids)})"
+        return StepResult("data", "ok", detail)
+
+    # VIOLIN unavailable — LOUD warning, but the install COMPLETES (partial =
+    # exit 0). This is the requested "say loudly VIOLIN is missing, but the
+    # entire setup completes successfully" behavior.
+    print()
+    print("  ⚠️  VIOLIN data was NOT transferred — this is OPTIONAL; the install CONTINUES.")
+    print(f"        Reason: {opt.detail}")
+    print("        Most likely the transfer identity is not yet a member of the")
+    print("        'apecx-project-all' Globus Group (an admin grant is pending). BV-BRC")
+    print("        data is installed and the stack is usable; VIOLIN-dependent lookups")
+    print("        return empty until VIOLIN is fetched. Re-run `apecx-setup data` once")
+    print("        Group access is granted.")
+    return StepResult(
+        "data", "partial", f"BV-BRC installed; VIOLIN skipped (optional): {opt.detail[:80]}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1012,16 +1042,28 @@ def _step_verify() -> StepResult:
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
-    # Data
+    # Data — BV-BRC is REQUIRED (public collection); VIOLIN is OPTIONAL
+    # (Group-gated, membership pending). Report them separately so a
+    # VIOLIN-missing install verifies as 'partial', not 'fail'.
     default_data = _setup_data._DEFAULT_DATA_DIR
-    data_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    bvbrc_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
     checks.append(
         (
             "data",
-            data_present,
-            f"VIOLIN data at {default_data}"
-            if data_present
+            bvbrc_present,
+            f"BV-BRC data at {default_data}"
+            if bvbrc_present
             else "missing — run `apecx-setup data`",
+        )
+    )
+    violin_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    checks.append(
+        (
+            "violin",
+            violin_present,
+            f"VIOLIN data at {default_data}/violin"
+            if violin_present
+            else "missing (optional) — pending 'apecx-project-all' Globus Group access",
         )
     )
 
@@ -1128,7 +1170,7 @@ def _step_verify() -> StepResult:
     # Postgres + Redis + MinIO are optional for many workflows; reflect
     # that honestly in the partial-vs-fail distinction. faiss + rhea
     # are also optional (opt-in per G81 + G89).
-    optional = {"postgres", "redis", "minio", "faiss", "rhea"}
+    optional = {"violin", "postgres", "redis", "minio", "faiss", "rhea"}
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(

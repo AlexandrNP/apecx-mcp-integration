@@ -112,6 +112,16 @@ _VIOLIN_FILES = (
 )
 _BVBRC_FILE = "BVBRC_genome_alphavirus.csv"
 
+# Dataset partition (2026-05-21). BV-BRC is on the PUBLIC collection (verified,
+# always reachable with the M2M creds) → REQUIRED. VIOLIN is on a Group-gated
+# collection (`apecx-project-all`) the transfer identity is not yet a member of
+# → OPTIONAL until that membership is granted. The CLI (`cli/setup.py:_step_data`)
+# transfers REQUIRED must-succeed and OPTIONAL warn-on-fail, so a clean install
+# completes (with a loud VIOLIN-missing warning) on public data alone.
+REQUIRED_DATASETS = ("bvbrc",)
+OPTIONAL_DATASETS = ("violin",)
+_ALL_DATASETS = ("violin", "bvbrc")
+
 
 # ---------------------------------------------------------------------------
 # Public result types
@@ -269,8 +279,17 @@ def _keyring_credentials_present() -> bool:
 # ---------------------------------------------------------------------------
 
 
-def build_transfer_items(data_dir: Path) -> list[dict[str, str]]:
-    """Build the {source_path, dest_path} list for the 6 dataset files.
+def build_transfer_items(
+    data_dir: Path, *, datasets: tuple[str, ...] | set[str] | None = None
+) -> list[dict[str, str]]:
+    """Build the {source_path, dest_path} list for the dataset files.
+
+    ``datasets`` selects which dataset groups to include — a subset of
+    ``{"violin", "bvbrc"}``. ``None`` (default) includes BOTH (the full 6-file
+    manifest; keeps backward-compatible behavior). Pass ``{"bvbrc"}`` or
+    ``{"violin"}`` to build a single-dataset manifest — the CLI uses this to
+    transfer REQUIRED (BV-BRC) and OPTIONAL (VIOLIN) groups independently so a
+    VIOLIN failure doesn't abort the public-data install.
 
     Source layout (re-mapped 2026-05-21 — VIOLIN and BV-BRC live under
     DIFFERENT parents, so each has its own env-overridable root):
@@ -278,37 +297,41 @@ def build_transfer_items(data_dir: Path) -> list[dict[str, str]]:
         ``$APECX_GLOBUS_BVBRC_SOURCE_DIR/BVBRC_genome_alphavirus.csv``
 
     Dest layout (unchanged — matches ``_EXPECTED_FILES``):
-        ``$data_dir/violin/*.csv``
-        ``$data_dir/BVBRC_genome_alphavirus.csv``
+        ``$data_dir/violin/*.csv`` + ``$data_dir/BVBRC_genome_alphavirus.csv``
 
-    Env overrides (the BV-BRC default is live-verified; the VIOLIN default
-    is per the data steward and validated at runtime by the verify gate):
-        * APECX_GLOBUS_VIOLIN_SOURCE_DIR (default: /apecx-ramanathan-anl/apecx-project-all)
-        * APECX_GLOBUS_BVBRC_SOURCE_DIR  (default: /apecx-ramanathan-anl/public/data/BV-BRC)
-
-    VIOLIN files are listed first, BV-BRC last, so the order is stable across
+    VIOLIN files are listed first, BV-BRC last, so order is stable across
     retries and log lines stay diff-friendly.
     """
-    violin_root = os.environ.get(
-        "APECX_GLOBUS_VIOLIN_SOURCE_DIR", _DEFAULT_VIOLIN_SOURCE_DIR
-    ).rstrip("/")
-    bvbrc_root = os.environ.get("APECX_GLOBUS_BVBRC_SOURCE_DIR", _DEFAULT_BVBRC_SOURCE_DIR).rstrip(
-        "/"
-    )
+    include = set(datasets) if datasets is not None else set(_ALL_DATASETS)
+    unknown = include - set(_ALL_DATASETS)
+    if unknown:
+        raise ValueError(
+            f"build_transfer_items: unknown dataset(s) {sorted(unknown)}; "
+            f"valid: {sorted(_ALL_DATASETS)}"
+        )
 
-    items: list[dict[str, str]] = [
-        {
-            "source_path": f"{violin_root}/{fn}",
-            "dest_path": str(data_dir / "violin" / fn),
-        }
-        for fn in _VIOLIN_FILES
-    ]
-    items.append(
-        {
-            "source_path": f"{bvbrc_root}/{_BVBRC_FILE}",
-            "dest_path": str(data_dir / _BVBRC_FILE),
-        }
-    )
+    items: list[dict[str, str]] = []
+    if "violin" in include:
+        violin_root = os.environ.get(
+            "APECX_GLOBUS_VIOLIN_SOURCE_DIR", _DEFAULT_VIOLIN_SOURCE_DIR
+        ).rstrip("/")
+        items += [
+            {
+                "source_path": f"{violin_root}/{fn}",
+                "dest_path": str(data_dir / "violin" / fn),
+            }
+            for fn in _VIOLIN_FILES
+        ]
+    if "bvbrc" in include:
+        bvbrc_root = os.environ.get(
+            "APECX_GLOBUS_BVBRC_SOURCE_DIR", _DEFAULT_BVBRC_SOURCE_DIR
+        ).rstrip("/")
+        items.append(
+            {
+                "source_path": f"{bvbrc_root}/{_BVBRC_FILE}",
+                "dest_path": str(data_dir / _BVBRC_FILE),
+            }
+        )
     return items
 
 
@@ -367,21 +390,24 @@ def attempt_globus_data_transfer(
     data_dir: Path,
     *,
     poll_timeout_seconds: float = 600.0,
+    datasets: tuple[str, ...] | set[str] | None = None,
 ) -> GlobusTransferResult:
-    """Try to transfer the dataset via Globus. Return a structured result.
+    """Try to transfer the dataset(s) via Globus. Return a structured result.
+
+    ``datasets`` (subset of ``{"violin", "bvbrc"}``; ``None`` = both) scopes the
+    transfer so the CLI can run REQUIRED (BV-BRC) and OPTIONAL (VIOLIN) groups
+    independently — a VIOLIN failure then doesn't abort the public-data install.
 
     Status flow:
-      * preconditions not met → ``GlobusTransferResult(status='unconfigured')``;
-        caller falls back to gh-release download.
-      * preconditions met → load the wrapper YAML, build items, drive
-        ``GlobusTransferStep.process``. On success → status='ok'.
-        On any exception → status='fail' with ``error`` set.
+      * preconditions not met → ``GlobusTransferResult(status='unconfigured')``.
+      * preconditions met → load the verify→transfer workflow, build items for
+        the requested datasets, drive ``Workflow.run``. Success (all reached
+        SUCCEEDED) → status='ok'; any failure → status='fail' with ``error`` set.
 
-    This function is **synchronous** despite calling an async step:
-    it wraps the await in ``asyncio.run`` because the caller
-    (``cli/setup.py:_step_data``) is sync code (an apecx-setup
-    subcommand handler). Tests that already own a running event loop
-    can drive ``_attempt_globus_data_transfer_async`` directly.
+    This function is **synchronous** despite driving an async workflow: it wraps
+    the await in ``asyncio.run`` because the caller (``cli/setup.py:_step_data``)
+    is sync code. Tests with a running loop can await
+    ``_attempt_globus_data_transfer_async`` directly.
     """
     prereqs = check_globus_prerequisites()
     if not prereqs.configured:
@@ -396,6 +422,7 @@ def attempt_globus_data_transfer(
             _attempt_globus_data_transfer_async(
                 data_dir=data_dir,
                 poll_timeout_seconds=poll_timeout_seconds,
+                datasets=datasets,
             )
         )
     except RuntimeError as exc:
@@ -478,6 +505,7 @@ async def _attempt_globus_data_transfer_async(
     *,
     data_dir: Path,
     poll_timeout_seconds: float,
+    datasets: tuple[str, ...] | set[str] | None = None,
 ) -> GlobusTransferResult:
     """Async core. Drive the verify->transfer nanobrain workflow (G127).
 
@@ -514,7 +542,12 @@ async def _attempt_globus_data_transfer_async(
     auth_mode = _resolve_auth_env()
     log.info("Globus auth_mode resolved to: %s", auth_mode)
 
-    items = build_transfer_items(data_dir)
+    items = build_transfer_items(data_dir, datasets=datasets)
+    if not items:
+        return GlobusTransferResult(
+            status="fail",
+            detail=f"no transfer items for datasets={datasets!r}",
+        )
     log.info(
         "Globus verify->transfer workflow: %d items, source=%s, dest=%s",
         len(items),

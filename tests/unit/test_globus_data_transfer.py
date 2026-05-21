@@ -558,3 +558,111 @@ def test_step_globus_is_in_subcommand_registry() -> None:
 
     assert "globus" in _SUBCOMMANDS
     assert _SUBCOMMANDS["globus"] is _step_globus
+
+
+# ---------------------------------------------------------------------------
+# build_transfer_items dataset filtering (REQUIRED bvbrc / OPTIONAL violin)
+# ---------------------------------------------------------------------------
+def test_build_transfer_items_bvbrc_only(clean_globus_env: None, tmp_path: Path) -> None:
+    from apecx_integration.cli._globus_data_transfer import build_transfer_items
+
+    items = build_transfer_items(tmp_path, datasets={"bvbrc"})
+    assert len(items) == 1
+    assert items[0]["dest_path"] == str(tmp_path / "BVBRC_genome_alphavirus.csv")
+
+
+def test_build_transfer_items_violin_only(clean_globus_env: None, tmp_path: Path) -> None:
+    from apecx_integration.cli._globus_data_transfer import build_transfer_items
+
+    items = build_transfer_items(tmp_path, datasets={"violin"})
+    assert len(items) == 5
+    assert all("/violin/" in it["dest_path"] for it in items)
+
+
+def test_build_transfer_items_unknown_dataset_raises(
+    clean_globus_env: None, tmp_path: Path
+) -> None:
+    from apecx_integration.cli._globus_data_transfer import build_transfer_items
+
+    with pytest.raises(ValueError, match="unknown dataset"):
+        build_transfer_items(tmp_path, datasets={"nope"})
+
+
+# ---------------------------------------------------------------------------
+# _step_data: REQUIRED (BV-BRC) must succeed; OPTIONAL (VIOLIN) warn-on-fail
+# ---------------------------------------------------------------------------
+def _configured_prereqs():
+    from apecx_integration.cli._globus_data_transfer import GlobusPrereqStatus
+
+    return GlobusPrereqStatus(
+        configured=True,
+        sdk_installed=True,
+        source_endpoint_set=True,
+        dest_endpoint_set=True,
+        credentials_reachable=True,
+        detail="ok",
+    )
+
+
+def _patch_step_data(monkeypatch, tmp_path, attempt_fn):
+    """Wire _step_data's dependencies: configured prereqs, a data dir, a fake
+    transfer, and no-op config patch / layout report."""
+    import apecx_integration.cli._globus_data_transfer as gdt
+    import apecx_integration.cli.setup_data as sd
+
+    monkeypatch.setattr(gdt, "check_globus_prerequisites", _configured_prereqs)
+    monkeypatch.setattr(gdt, "attempt_globus_data_transfer", attempt_fn)
+    monkeypatch.setattr(sd, "prompt_for_data_dir", lambda *, interactive=True: tmp_path)
+    monkeypatch.setattr(sd, "report_post_transfer_layout", lambda data_dir: [])
+    monkeypatch.setattr(sd, "_maybe_update_claude_config", lambda data_dir: None)
+
+
+def _result(status, detail="d", task_id=None):
+    from apecx_integration.cli._globus_data_transfer import GlobusTransferResult
+
+    return GlobusTransferResult(status=status, detail=detail, task_id=task_id)
+
+
+def test_step_data_ok_when_both_datasets_transfer(monkeypatch, tmp_path, capsys):
+    from apecx_integration.cli.setup import _step_data
+
+    def attempt(*, data_dir, datasets=None, poll_timeout_seconds=600.0):
+        return _result("ok", "transferred", task_id="t-" + next(iter(datasets)))
+
+    _patch_step_data(monkeypatch, tmp_path, attempt)
+    res = _step_data(interactive=True)
+    assert res.status == "ok"
+    assert "BV-BRC + VIOLIN" in res.detail
+
+
+def test_step_data_partial_when_violin_fails_but_bvbrc_ok(monkeypatch, tmp_path, capsys):
+    """The headline behavior: VIOLIN unavailable → loud warning + 'partial'
+    (install completes), NOT a hard failure."""
+    from apecx_integration.cli.setup import _step_data
+
+    def attempt(*, data_dir, datasets=None, poll_timeout_seconds=600.0):
+        if datasets == {"bvbrc"}:
+            return _result("ok", "bvbrc done", task_id="t1")
+        return _result("fail", "verify gate: not a member of 'apecx-project-all' Group")
+
+    _patch_step_data(monkeypatch, tmp_path, attempt)
+    res = _step_data(interactive=True)
+    assert res.status == "partial"
+    out = capsys.readouterr().out
+    assert "VIOLIN data was NOT transferred" in out
+    assert "OPTIONAL" in out
+    assert "apecx-project-all" in out  # actionable Group hint surfaced
+
+
+def test_step_data_fail_when_required_bvbrc_fails(monkeypatch, tmp_path, capsys):
+    from apecx_integration.cli.setup import _step_data
+
+    def attempt(*, data_dir, datasets=None, poll_timeout_seconds=600.0):
+        if datasets == {"bvbrc"}:
+            return _result("fail", "endpoint not active")
+        return _result("ok")  # should never be reached
+
+    _patch_step_data(monkeypatch, tmp_path, attempt)
+    res = _step_data(interactive=True)
+    assert res.status == "fail"
+    assert "BV-BRC" in res.detail
