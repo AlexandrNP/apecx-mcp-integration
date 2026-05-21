@@ -159,3 +159,39 @@ is known-pending, and (b) the loud warning + the `partial` verdict + the
 VIOLIN simply succeeds and the warning disappears — no code change needed unless
 VIOLIN turns out to be on a different collection (then add the deferred
 per-dataset-endpoint support).
+
+## Follow-up #3 (2026-05-21) — VIOLIN access live + wired
+
+The `apecx-project-all` Group grant landed. Verified via the Groups API: the
+transfer identity `bbcdba6f-…@clients.auth.globus.org` is now a member of both
+`apecx-project-all` and `apecx-ramanathan-anl`. Crucially, that membership
+unlocked `operation_ls` of `/apecx-ramanathan-anl/apecx-project-all` on the
+**same** endpoint `8d2e71d6` — confirming the earlier `500 Path not allowed`
+was an **ACL gate** (presents as a path restriction on a GCSv5 guest
+collection), NOT a separate collection. **No per-dataset-endpoint support was
+needed** — the deferred abstraction stays unbuilt. (Probing-before-building
+paid off a second time: a guessed "different collection" abstraction would now
+be dead code.)
+
+VIOLIN files live at `/apecx-ramanathan-anl/apecx-project-all/violin/`: the 5
+expected CSVs (+ a `VIOLIN_Curated_References.txt` that is present but NOT
+transferred — not in `_EXPECTED_FILES`, not read downstream). The only code
+change was `_DEFAULT_VIOLIN_SOURCE_DIR` gaining the `/violin` suffix (apecx
+`4f792cc`). Live-verified: `GlobusManifestVerifyStep` passes for all 5 VIOLIN
+paths against the real collection; new gated test `test_violin_source_accessible`
+pins this (source creds only, no dest).
+
+**VIOLIN stays OPTIONAL by policy** even though it's now accessible: the
+canonical client (in the Group) fetches both datasets (`ok`); an operator whose
+own identity isn't in the Group still gets a clean `partial` install. That is
+the robust behavior across diverse operator identities.
+
+**What is NOT yet exercised here:** the full end-to-end file MOVEMENT (verify →
+transfer → files on disk) needs a writable dest endpoint (Globus Connect
+Personal); none is available in this environment, and writing test data to a
+shared production collection would be inappropriate. Accessibility is proven
+(verify passes against real data); the transfer leg is covered by nanobrain's
+`GlobusTransferStep` tests + the gated `test_full_transfer_succeeds`
+(`APECX_GLOBUS_LIVE_TRANSFER=1` + a real dest). Honest status: **VIOLIN is
+confirmed READABLE by the client; a full round-trip transfer is unrun here for
+lack of a dest endpoint.**

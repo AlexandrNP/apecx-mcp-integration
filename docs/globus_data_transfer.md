@@ -76,14 +76,15 @@ Six files. **VIOLIN and BV-BRC live under different source roots** (re-mapped
   (**live-verified 2026-05-21**: the 12 MB curated alphavirus file). This
   fixed an earlier content divergence where the source was the ~1.5 GB
   all-genomes file renamed to the alphavirus name at the destination.
-* `$VIOLIN_ROOT` defaults to `/apecx-ramanathan-anl/apecx-project-all` (per the
-  data steward). **Not yet live-verifiable from the public-collection UUID** —
-  `operation_ls` of `apecx-project-all` returns `500 Path not allowed` (a
-  GridFTP collection path-restriction, not an auth failure). If your install's
-  VIOLIN verify step fails, the files are served by a collection/path that your
-  source UUID's restriction excludes: confirm the serving endpoint + exact
-  layout and set `APECX_GLOBUS_VIOLIN_SOURCE_DIR` accordingly. The verify gate
-  guarantees a wrong path fails loud rather than silently.
+* `$VIOLIN_ROOT` defaults to `/apecx-ramanathan-anl/apecx-project-all/violin`
+  (**live-verified 2026-05-21**: the 5 VIOLIN CSVs are present). This path is on
+  the SAME collection as BV-BRC but is **ACL-gated by the `apecx-project-all`
+  Globus Group** — the transfer identity must be a member to read it. (The
+  earlier `500 Path not allowed` was that ACL gate, which presents as a path
+  restriction on a GCSv5 guest collection; Group membership unlocked the same
+  path on the same endpoint.) If your identity is NOT in the Group, the VIOLIN
+  verify step fails LOUD with an "add the identity to the Globus Group" hint and
+  the install completes on BV-BRC alone (VIOLIN is optional — see below).
 
 ## Environment variables
 
@@ -100,25 +101,27 @@ Optional:
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `APECX_GLOBUS_VIOLIN_SOURCE_DIR` | `/apecx-ramanathan-anl/apecx-project-all` | Source dir holding the 5 VIOLIN CSVs. |
+| `APECX_GLOBUS_VIOLIN_SOURCE_DIR` | `/apecx-ramanathan-anl/apecx-project-all/violin` | Source dir holding the 5 VIOLIN CSVs (ACL-gated by the `apecx-project-all` Group). |
 | `APECX_GLOBUS_BVBRC_SOURCE_DIR` | `/apecx-ramanathan-anl/public/data/BV-BRC` | Source dir holding `BVBRC_genome_alphavirus.csv`. |
 | `APECX_GLOBUS_AUTH_MODE` | `client_credentials` | `client_credentials` (M2M) or `native` (browser). |
 | `APECX_DATA_ROOT` | `~/.apecx/data` | Where local copies land. |
 
-## REQUIRED vs OPTIONAL datasets (VIOLIN is currently optional)
+## REQUIRED vs OPTIONAL datasets
 
 The dataset is split:
 
-* **BV-BRC — REQUIRED.** On the public collection; always reachable with valid
-  creds. If the BV-BRC transfer fails, the data step `fail`s.
-* **VIOLIN — OPTIONAL (for now).** On the Group-gated `apecx-project-all`
-  collection. Until the transfer identity is added to that Globus Group (an
-  admin grant — see the outcomes doc), the VIOLIN transfer fails its verify
-  gate. `apecx-setup` then prints a **loud warning** naming the Group and
-  returns the data step as **`partial`** — the install **COMPLETES
-  successfully** (exit 0) on public data. VIOLIN-dependent lookups return empty
-  until VIOLIN is fetched; re-run `apecx-setup data` once Group access is
-  granted. `apecx-setup verify` likewise reports `violin` as an optional check.
+* **BV-BRC — REQUIRED.** On the public path; always reachable with valid creds.
+  If the BV-BRC transfer fails, the data step `fail`s.
+* **VIOLIN — OPTIONAL.** ACL-gated by the `apecx-project-all` Globus Group.
+  **An identity that IS in the Group fetches VIOLIN normally** (the canonical
+  data client is — verified 2026-05-21 — so the default install transfers both
+  datasets, status `ok`). An identity that is NOT in the Group hits the verify
+  gate: `apecx-setup` prints a **loud warning** naming the Group and returns the
+  data step as **`partial`** — the install still **COMPLETES successfully**
+  (exit 0) on public data. This keeps installs robust across operators
+  regardless of their Group membership. VIOLIN-dependent lookups return empty
+  until VIOLIN is fetched; re-run `apecx-setup data` once access is granted.
+  `apecx-setup verify` reports `violin` as an optional check.
 
 ## When Globus is unconfigured
 
