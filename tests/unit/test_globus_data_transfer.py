@@ -211,8 +211,8 @@ def test_build_transfer_items_default_layout(clean_globus_env: None, tmp_path: P
     """Default layout (re-mapped 2026-05-21): 5 VIOLIN CSVs first, then the
     curated BV-BRC file, with VIOLIN and BV-BRC under DIFFERENT source roots.
 
-    Source layout:
-      /apecx-ramanathan-anl/apecx-project-all/<5 VIOLIN CSVs>
+    Source layout (both live-verified on collection 8d2e71d6, 2026-05-21):
+      /apecx-ramanathan-anl/apecx-project-all/violin/<5 VIOLIN CSVs>
       /apecx-ramanathan-anl/public/data/BV-BRC/BVBRC_genome_alphavirus.csv
 
     Dest layout (unchanged — matches _EXPECTED_FILES):
@@ -224,9 +224,10 @@ def test_build_transfer_items_default_layout(clean_globus_env: None, tmp_path: P
     items = build_transfer_items(tmp_path)
 
     assert len(items) == 6
-    # First item: a VIOLIN CSV under the apecx-project-all root.
+    # First item: a VIOLIN CSV under the apecx-project-all/violin/ root.
     assert (
-        items[0]["source_path"] == "/apecx-ramanathan-anl/apecx-project-all/Vaccine_Information.csv"
+        items[0]["source_path"]
+        == "/apecx-ramanathan-anl/apecx-project-all/violin/Vaccine_Information.csv"
     )
     assert items[0]["dest_path"] == str(tmp_path / "violin/Vaccine_Information.csv")
     # Last item: the curated BV-BRC alphavirus file under /public (no rename —

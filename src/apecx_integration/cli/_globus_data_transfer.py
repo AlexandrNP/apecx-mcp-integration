@@ -66,42 +66,42 @@ log = logging.getLogger(__name__)
 # on the "APECx Data at Argonne LCF" collection. Single source of truth for
 # "what gets transferred".
 #
-# Source layout (re-mapped 2026-05-21 against the live collection — the prior
-# /apecx-joshi-anl-general layout is GONE; that path now returns 403 for the
-# data-access identity). VIOLIN and BV-BRC now live under DIFFERENT parent
-# directories, so each has its own independently-overridable source root:
+# Source layout — BOTH live-verified on collection 8d2e71d6 ("APECx Data at
+# Argonne LCF"), 2026-05-21. VIOLIN and BV-BRC live under DIFFERENT parent dirs
+# of the SAME collection, so each has its own env-overridable source root (one
+# endpoint, two roots — no per-dataset endpoint needed):
 #
 #   BV-BRC  — /apecx-ramanathan-anl/public/data/BV-BRC/
-#               BVBRC_genome_alphavirus.csv   (12 MB)   ✅ LIVE-VERIFIED 2026-05-21
+#               BVBRC_genome_alphavirus.csv   (12 MB)        ✅ public path
 #
-#   VIOLIN  — /apecx-ramanathan-anl/apecx-project-all/
-#               Vaccine_Information.csv, Pathogen_Information.csv,
+#   VIOLIN  — /apecx-ramanathan-anl/apecx-project-all/violin/
+#               Vaccine_Information.csv (1.6 MB), Pathogen_Information.csv,
 #               Gene_Information.csv, Vaccine_Pathogen_Information.csv,
 #               Gene_Vaccine_Pathogen_Information.csv
-#             ⚠️ per the data steward (2026-05-21). NOT yet live-verifiable from
-#                the public-collection UUID — operation_ls of apecx-project-all
-#                returns "500 Path not allowed" (a GridFTP collection
-#                path-restriction, NOT an auth failure), so the files are served
-#                by a collection/path this UUID's restriction excludes. Confirm
-#                the serving endpoint + exact layout, then adjust the default
-#                below or set APECX_GLOBUS_VIOLIN_SOURCE_DIR (+ optionally
-#                APECX_GLOBUS_VIOLIN_ENDPOINT_ID once that path is reachable).
+#               (+ VIOLIN_Curated_References.txt — present but NOT transferred;
+#                not in _EXPECTED_FILES / not read downstream)
+#             ✅ ACL-gated by the `apecx-project-all` Globus Group. The earlier
+#                "500 Path not allowed" was that ACL gate (it presents as a path
+#                restriction on a GCSv5 guest collection), NOT a separate
+#                collection. Group membership for the transfer identity
+#                (bbcdba6f-...@clients.auth.globus.org) unlocked the SAME path on
+#                the SAME endpoint — verified 2026-05-21 once the grant landed.
+#                Operators whose identity is NOT in the Group still get a clean
+#                install: VIOLIN is OPTIONAL (warn + 'partial'), see
+#                cli/setup.py:_step_data.
 #
-# Why this is safe despite the unverified VIOLIN default: the verify->transfer
-# workflow runs GlobusManifestVerifyStep (G127) FIRST. If the VIOLIN source
-# paths are wrong, the install FAILS LOUD naming every missing file — it can
-# NEVER silently transfer zero (or a partial subset of) VIOLIN files.
+# Safety: the verify->transfer workflow runs GlobusManifestVerifyStep (G127)
+# FIRST. A wrong VIOLIN path FAILS LOUD naming every missing file — never a
+# silent zero/partial transfer.
 #
-# The content-divergence hack is GONE: the source is now the genuinely
-# alphavirus-curated 12 MB BVBRC_genome_alphavirus.csv, not the ~1.5 GB
-# all-genomes BVBRC_genome.csv renamed at the dest. Source content == what
-# downstream apecx_db_integration expects.
+# The content-divergence hack is GONE: the BV-BRC source is the genuinely
+# alphavirus-curated 12 MB file, not the ~1.5 GB all-genomes file renamed at the
+# dest. Source content == what downstream apecx_db_integration expects.
 #
 # Dest layout is unchanged (``violin/<File>.csv`` + top-level
-# ``BVBRC_genome_alphavirus.csv``) so it matches ``_EXPECTED_FILES`` and
-# downstream readers need no change.
+# ``BVBRC_genome_alphavirus.csv``) so it matches ``_EXPECTED_FILES``.
 _DEFAULT_BVBRC_SOURCE_DIR = "/apecx-ramanathan-anl/public/data/BV-BRC"
-_DEFAULT_VIOLIN_SOURCE_DIR = "/apecx-ramanathan-anl/apecx-project-all"
+_DEFAULT_VIOLIN_SOURCE_DIR = "/apecx-ramanathan-anl/apecx-project-all/violin"
 
 _VIOLIN_FILES = (
     "Vaccine_Information.csv",

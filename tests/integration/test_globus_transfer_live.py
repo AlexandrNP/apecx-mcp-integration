@@ -5,14 +5,17 @@ Real-dependency parity for the mocked unit tests in
 drive the REAL verify→transfer nanobrain workflow against a REAL Globus
 collection — no mocks.
 
-Two independently-gated tests:
+Gated tests (all need SOURCE-side creds; the full transfer also needs a dest):
 
-  * ``test_missing_source_gate_fails_loud`` — needs only SOURCE-side creds. It
-    points the manifest at a bogus source file and asserts the driver returns
-    ``status='fail'`` naming the missing path: the verify gate blocks the
-    transfer (which never runs, so a dummy dest endpoint is fine). This is the
-    real-data proof that ``Workflow.run`` swallowing the verify exception does
-    NOT become a false success.
+  * ``test_missing_source_gate_fails_loud`` — points the manifest at a bogus
+    source file and asserts the driver returns ``status='fail'`` naming the
+    missing path: the verify gate blocks the transfer (which never runs, so a
+    dummy dest endpoint is fine). Real-data proof that ``Workflow.run``
+    swallowing the verify exception does NOT become a false success.
+
+  * ``test_violin_source_accessible`` — runs the verify step against the real
+    VIOLIN source paths and asserts all 5 CSVs are present, proving the transfer
+    identity's `apecx-project-all` Group membership is live (no dest needed).
 
   * ``test_full_transfer_succeeds`` — needs a REAL writable dest endpoint
     (Globus Connect Personal) + ``APECX_GLOBUS_LIVE_TRANSFER=1``. Skips
@@ -25,6 +28,7 @@ vars) to enable the first test.
 
 from __future__ import annotations
 
+import asyncio
 import os
 from pathlib import Path
 
@@ -103,3 +107,33 @@ def test_full_transfer_succeeds(tmp_path):
     assert result.status == "ok", f"transfer failed: {result.detail}"
     missing = [f for f in _EXPECTED_FILES if not (tmp_path / f).exists()]
     assert not missing, f"transfer ok but files missing on disk: {missing}"
+
+
+def test_violin_source_accessible(tmp_path, monkeypatch):
+    """VIOLIN access (Group `apecx-project-all`) is live: the verify step must
+    confirm all 5 VIOLIN CSVs are present at the configured source — proving the
+    transfer identity's Group membership without needing a writable dest.
+
+    Gated by the module-level source-creds skip. If this fails with an
+    authorization hint, the identity has lost / never had the Group membership.
+    """
+    from nanobrain.library.steps.globus_manifest_verify_step import GlobusManifestVerifyStep
+
+    from apecx_integration.cli._globus_data_transfer import (
+        _resolve_auth_env,
+        build_transfer_items,
+    )
+
+    _resolve_auth_env()
+    violin_items = build_transfer_items(tmp_path, datasets={"violin"})
+    assert len(violin_items) == 5
+
+    cfg_path = tmp_path / "violin_access.yml"
+    cfg_path.write_text(
+        f"name: violin_access\nsource_endpoint_id: {_SOURCE_EP}\nauth_mode: client_credentials\n",
+        encoding="utf-8",
+    )
+    step = GlobusManifestVerifyStep.from_config(str(cfg_path))
+
+    out = asyncio.run(step.process({"items": violin_items}))
+    assert len(out["verified_manifest"]["items"]) == 5
