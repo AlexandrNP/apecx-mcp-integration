@@ -32,6 +32,25 @@ Ollama-gated tests (auto-skip when unreachable): see
 `composer_config.yml` at load — see
 `composition/composer.py::_apply_llm_env_overrides`.
 
+## Clean-install: never module-scope-import an optional extra
+
+pytest collection IS import — it imports every `test_*.py` to discover tests,
+**before** marker deselection. So an unguarded module-scope `import` of an
+optional extra (`rag`: faiss/sentence-transformers; `hpc`: globus-sdk/keyring;
+`academy`) in `src/` OR a test module aborts the WHOLE `make unit` run on a
+clean `pip install -e .[dev]` (which has none of those extras) — `-m "not
+integration"` can't save it. **Rule:** lazy-import extras inside the
+function/method that uses them; in tests use `pytest.importorskip` at module
+top. An optional feature must IMPORT without its extra and degrade LOUDLY (e.g.
+`DomainRagIndex.search` → `[]` + a `pip install '.[rag]'` warning), never crash
+on import. A base-dep import can still drift — guard imported *symbols* too
+(`Transform` was removed from `apecx-harvesters`). **Detection:**
+`grep -rnE '^(import|from) (sentence_transformers|faiss|globus_sdk|globus_compute_sdk|keyring|academy)\b' src tests`.
+Eval scaffolding must NOT be named `test_*.py` under `tests/` (the bench
+`problems/**/test_code.py` templates are excluded via a `tests/conftest.py`
+`pytest_ignore_collect` hook). **Source:** 2026-05-21 clean-install audit
+(`docs/clean_install_collection_audit_2026-05-21.md`).
+
 ## New supervisor onboarding
 
 If you are taking over apecx-composer supervision from a previous
