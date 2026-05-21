@@ -178,7 +178,12 @@ the preflight reads creds via nanobrain's `globus_credentials.load_credentials`
 live-verified at `/apecx-ramanathan-anl/public/data/BV-BRC/`; VIOLIN defaults
 to `/apecx-ramanathan-anl/apecx-project-all/` (steward-stated, not yet
 reachable from the public UUID — the verify gate catches a wrong path).
-Full operator guide: `docs/globus_data_transfer.md`.
+**Required vs optional:** BV-BRC is REQUIRED (public); VIOLIN is OPTIONAL —
+it's gated by the `apecx-project-all` Globus Group the transfer identity isn't
+a member of yet, so `_step_data` transfers BV-BRC must-succeed + VIOLIN
+warn-on-fail and returns `partial` (install completes, exit 0) with a loud
+VIOLIN-missing warning. Optionality is an apecx CLI policy layer; the nanobrain
+verify step stays strict. Full operator guide: `docs/globus_data_transfer.md`.
 
 ## PBS bundle export
 

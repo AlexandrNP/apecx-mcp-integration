@@ -117,3 +117,45 @@ before any data lands. That is the deliberate cost of one auditable, scalable
 data path. Mitigation: the data step fails loud with copy-paste setup steps
 rather than silently degrading, and the verify gate guarantees a misconfigured
 source never yields a quietly-incomplete dataset.
+
+## Follow-up #2 (2026-05-21) — VIOLIN made optional + clean-install test fixes
+
+Once the VIOLIN blocker was confirmed admin-side (Group membership pending), the
+directive was: work with public data now, say loudly VIOLIN is missing, but let
+the whole setup COMPLETE successfully. Plus: fix the collection errors other
+users hit on a clean `make unit`.
+
+**VIOLIN optional (apecx `1a7f93f`).** Datasets partitioned into REQUIRED
+(BV-BRC, public) and OPTIONAL (VIOLIN, group-gated). `build_transfer_items(..,
+datasets={...})` scopes the manifest. `_step_data` transfers REQUIRED
+must-succeed, then OPTIONAL warn-on-fail: a VIOLIN failure prints a loud,
+actionable warning (names the `apecx-project-all` Group + "re-run once access
+granted") and returns the data step as **`partial`** → `_print_summary` treats
+partial as exit 0, so the install completes on public data. `_step_verify`
+reports `violin` as a separate OPTIONAL check. The nanobrain verify step stays
+STRICT — optionality is purely an apecx CLI policy layer, so there's still no
+silent zero-file transfer.
+
+**Clean-install pytest collection: 12 errors → 0 (apecx `4536de8`).** All were
+import-time COLLECTION errors (not test failures) that aborted the whole run:
+- 10× `tests/benchmarks/problems/**/test_code.py` — codegen-candidate eval
+  TEMPLATES (a generated candidate is prepended + run in a subprocess by the
+  bench sandbox; standalone they assert-fail at import). Excluded via a
+  `pytest_ignore_collect` hook in `tests/conftest.py`.
+- `test_academy_real_integration.py` — imported the optional `academy` extra at
+  module scope (→ ModuleNotFoundError at collection despite the `integration`
+  marker, since marker deselection happens after import). Now
+  `pytest.importorskip("academy.agent")`.
+- `test_harvester_contract.py` — `importorskip`'d the package but then imported
+  `Transform`, a symbol the installed version lacks. Guarded the symbol imports
+  → module-level skip on API drift.
+Verified: 1733 tests collect with 0 errors.
+
+**Brutal truth on VIOLIN-optional:** making a dataset "optional by policy" is a
+small silent-failure risk — a genuinely mis-set VIOLIN path now degrades to a
+warning instead of a hard stop. Accepted deliberately because (a) VIOLIN access
+is known-pending, and (b) the loud warning + the `partial` verdict + the
+`apecx-setup verify` `violin` line keep it visible. When the Group grant lands,
+VIOLIN simply succeeds and the warning disappears — no code change needed unless
+VIOLIN turns out to be on a different collection (then add the deferred
+per-dataset-endpoint support).

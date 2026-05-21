@@ -105,14 +105,29 @@ Optional:
 | `APECX_GLOBUS_AUTH_MODE` | `client_credentials` | `client_credentials` (M2M) or `native` (browser). |
 | `APECX_DATA_ROOT` | `~/.apecx/data` | Where local copies land. |
 
+## REQUIRED vs OPTIONAL datasets (VIOLIN is currently optional)
+
+The dataset is split:
+
+* **BV-BRC — REQUIRED.** On the public collection; always reachable with valid
+  creds. If the BV-BRC transfer fails, the data step `fail`s.
+* **VIOLIN — OPTIONAL (for now).** On the Group-gated `apecx-project-all`
+  collection. Until the transfer identity is added to that Globus Group (an
+  admin grant — see the outcomes doc), the VIOLIN transfer fails its verify
+  gate. `apecx-setup` then prints a **loud warning** naming the Group and
+  returns the data step as **`partial`** — the install **COMPLETES
+  successfully** (exit 0) on public data. VIOLIN-dependent lookups return empty
+  until VIOLIN is fetched; re-run `apecx-setup data` once Group access is
+  granted. `apecx-setup verify` likewise reports `violin` as an optional check.
+
 ## When Globus is unconfigured
 
 `apecx-setup` checks, in order: `globus_sdk` installed? source endpoint set?
 dest endpoint set? credentials reachable (env vars OR the `nanobrain-globus`
 keyring entry)? If any is "no":
 
-* If the dataset is **already present** locally → the data step is `skipped`
-  (nothing to do).
+* If the **required** dataset (BV-BRC) is **already present** locally → the data
+  step is `skipped` (nothing to do).
 * Otherwise → the data step **FAILS LOUD**, printing exactly which prerequisite
   is missing and how to fix it. There is no `gh` fallback.
 
@@ -128,11 +143,11 @@ The `data` step verdict in the summary table:
 
 | Verdict | Meaning |
 |---|---|
-| `ok    data   Globus: verify→transfer workflow transferred N items (task_id=...)` | Success. |
-| `skipped data  ... already present ...` | Globus unconfigured but data already on disk. |
+| `ok      data   Globus: BV-BRC + VIOLIN transferred (task_ids=...)` | Both datasets transferred. |
+| `⚠️ partial data  BV-BRC installed; VIOLIN skipped (optional): ...` | BV-BRC (required) succeeded; VIOLIN (optional) failed its verify gate — install COMPLETES (exit 0). Usually the identity isn't in the `apecx-project-all` Group yet. |
+| `skipped data  ... already present ...` | Globus unconfigured but the required data is already on disk. |
 | `fail  data   Globus required but not configured: ...` | Prereqs missing + no local data. Follow the printed steps. |
-| `fail  data   Globus transfer failed: workflow step 'violin_bvbrc_verify' failed (...): ... MISSING ...` | The verify gate found missing source files (named in the message). Fix the source paths / endpoint. |
-| `fail  data   Globus transfer failed: ...` | The transfer step failed (auth, dest endpoint down, task non-SUCCEEDED). |
+| `fail  data   required BV-BRC transfer failed: ...` | The REQUIRED dataset failed (auth, dest endpoint down, task non-SUCCEEDED, or its verify gate found it missing). This is a hard failure. |
 
 Common transfer errors:
 
