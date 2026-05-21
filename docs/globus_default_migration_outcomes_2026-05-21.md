@@ -17,6 +17,7 @@ work on branch `academy-integration`.
 | 6 | **gh removal** — deleted `_download_asset` / `_gh_available` / `_gh_authenticated` / `_run_full_setup` / `--prefer-gh-release`; data step FAILS LOUD when Globus unconfigured + no local data. | `cli/setup.py`, `cli/setup_data.py` |
 | 7 | **Prompt + config-patch relocation** — `prompt_for_data_dir` + Claude-config patch now run on the Globus path (previously only on the deleted gh path). | `cli/setup_data.py`, `cli/setup.py` |
 | 8 | **Tests + docs** — see below. | `tests/`, `docs/` |
+| 9 | **Actionable verify-step error classification** (2026-05-21 follow-up, nanobrain `6c04996`) — a non-404 `operation_ls` failure now emits a remediation hint: 403/no-ACL → "authorization; if Group-gated, add the identity to the Globus Group (admin action)"; 500 "Path not allowed" → "a DIFFERENT collection serves this path"; offline → "start the collection". | `nanobrain/library/steps/globus_manifest_verify_step.py` |
 
 ## Live findings (why probing first mattered)
 
@@ -76,11 +77,30 @@ the file; the transfer step never runs.
 ## Open items / honest gaps
 
 1. **VIOLIN source endpoint (BLOCKER for VIOLIN).** `apecx-project-all` is not
-   reachable from the source UUID `8d2e71d6-…` (`Path not allowed`). Need
-   either the collection/endpoint UUID that serves it, or the steward to widen
-   the current collection's path-restriction. Until then the VIOLIN default is
-   a steward-stated best-effort; the verify gate makes a wrong path fail loud
-   (no silent zero-file transfer). BV-BRC is unaffected (verified).
+   reachable from the source UUID `8d2e71d6-…` (`Path not allowed`).
+
+   **Diagnosed precisely 2026-05-21 (Group-UUID follow-up).** The steward
+   pointed at Globus Group `64da2fea-bd98-11ef-8092-178fd5b923bd` (confirmed via
+   the Groups API — its name IS `apecx-project-all`). Findings: that UUID is a
+   **Group, not a collection** (`EndpointNotFound` when addressed as an
+   endpoint); the public Data collection still `Path not allowed`s the path; the
+   "APECx Submission" collection (`a3628510-…`) returns **403 — "No effective
+   ACL rules"** for our identity; and crucially `GroupsClient.get_my_groups()`
+   returns **(none)** — i.e. the confidential client's service identity is **NOT
+   a member** of the `apecx-project-all` Group. Globus gates this data by Group
+   membership, so credentials alone cannot reach it.
+
+   **REMEDIATION (admin action — I cannot do this):** a manager of Group
+   `apecx-project-all` (`64da2fea-bd98-11ef-8092-178fd5b923bd`) must add the
+   service identity **`bbcdba6f-0c71-4fe2-9d6e-72fe95f2d8e7@clients.auth.globus.org`**
+   as a member. After membership propagates, re-probe to find the collection
+   that serves the VIOLIN data (it is NOT the public collection — likely a guest
+   collection the Group has an ACL on, with its own endpoint UUID), then set
+   `APECX_GLOBUS_VIOLIN_SOURCE_DIR` (and add `APECX_GLOBUS_VIOLIN_ENDPOINT_ID` if
+   it's a different collection than BV-BRC — that per-dataset-endpoint support is
+   NOT yet built; deferred deliberately until the real layout is known, to avoid
+   guessing the abstraction). BV-BRC is unaffected (verified, on the public
+   collection). The verify gate keeps a wrong VIOLIN path fail-loud meanwhile.
 2. **Full live transfer not yet run end-to-end** here — no writable dest
    endpoint (Globus Connect Personal) on this machine. The gated test runs it
    when `APECX_GLOBUS_LIVE_TRANSFER=1` + a real dest is set.
