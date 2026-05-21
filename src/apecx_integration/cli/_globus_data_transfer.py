@@ -1,52 +1,55 @@
-"""Apecx-side glue for the Globus-first data transfer (G82, 2026-05-16).
+"""Apecx-side glue for the Globus data transfer (G82 2026-05-16; G127 2026-05-21).
 
-The actual Globus Transfer primitive is nanobrain's
-``GlobusTransferStep`` (``library/steps/globus_transfer_step.py``).
-This module:
+Globus is the SOLE data-acquisition path as of 2026-05-21 — the legacy
+``gh release download`` fallback was retired. This module:
 
   1. Checks operator preconditions (globus_sdk installed, endpoint UUIDs
-     set, credentials reachable) and either reports them as a
-     ``GlobusPrereqStatus`` or attempts the transfer.
-  2. Builds the runtime ``items`` payload — the 6 VIOLIN/BV-BRC CSVs,
-     each mapped from the source ``apecx-joshi-anl-general`` path to
-     the operator's chosen local data directory.
-  3. Materializes the nanobrain ``GlobusTransferStep`` via the wrapper
-     YAML at ``configs/globus_transfers/violin_bvbrc_transfer_step.yml``
-     and ``await``s its ``process()`` to drive the transfer.
+     set, credentials reachable) and reports them as a ``GlobusPrereqStatus``.
+  2. Builds the runtime ``items`` payload — the 5 VIOLIN CSVs + the curated
+     BV-BRC CSV — from independently-overridable source roots (see
+     ``build_transfer_items``), with dest paths under the operator's chosen
+     local data directory.
+  3. Loads the verify→transfer nanobrain workflow
+     (``configs/globus_transfers/violin_bvbrc_transfer_workflow.yml``) and
+     drives it via ``Workflow.run``. The workflow gates the transfer behind
+     ``GlobusManifestVerifyStep`` (fail-loud source-existence check) wired to
+     ``GlobusTransferStep`` by a ``DirectLink``.
 
-The wrapper YAML is the only nanobrain-framework-native config; the
-Python here is a thin orchestrator that picks the right inputs and
-surfaces a structured result to ``cli/setup.py:_step_data``.
+The two step YAMLs + the workflow YAML are the framework-native configs; the
+Python here is a thin orchestrator that picks the right inputs and surfaces a
+structured result to ``cli/setup.py:_step_data``.
 
 Brutal-truth design notes
 -------------------------
 
-* This module **prefers** Globus but does NOT require it. When the
-  preconditions are unmet, ``attempt_globus_data_transfer`` returns
-  a ``GlobusTransferResult(status='unconfigured', ...)`` and the
-  caller (``cli/setup.py:_step_data``) falls back to the existing
-  ``gh release download`` path. Operators who never set up Globus
-  see no extra friction.
+* Globus is REQUIRED. When preconditions are unmet,
+  ``attempt_globus_data_transfer`` returns ``GlobusTransferResult(
+  status='unconfigured', ...)`` and ``cli/setup.py:_step_data`` FAILS LOUD with
+  actionable setup instructions (unless the dataset is already present locally).
+  There is no silent degradation — that is the whole point of retiring gh.
+
+* ``Workflow.run`` SWALLOWS a step exception (it returns ``status='completed'``
+  with empty outputs even when the verify step raised). Trusting that status
+  would be a silent failure. The ONLY success signal trusted here is
+  ``transfer_status == 'SUCCEEDED'``; any other outcome is surfaced FAIL-LOUD
+  using the captured ``step_failed`` event's exception message.
 
 * Endpoint UUIDs come from env vars (``APECX_GLOBUS_SOURCE_ENDPOINT_ID``,
-  ``APECX_GLOBUS_DEST_ENDPOINT_ID``). Hardcoding them in YAML or
-  Python would leak per-operator identifiers into the published repo.
-  ``.env.example`` documents the convention.
+  ``APECX_GLOBUS_DEST_ENDPOINT_ID``). Hardcoding them would leak per-operator
+  identifiers into the published repo. ``.env.example`` documents the convention.
 
 * Transfer items are built here at runtime (not in YAML) because the
-  destination paths depend on the operator's chosen ``data_dir``,
-  which is a runtime user prompt — not a config-time constant.
+  destination paths depend on the operator's chosen ``data_dir`` (a runtime
+  prompt), not a config-time constant.
 
 Where to look for end-to-end testing
 ------------------------------------
 
-This module has unit tests with mocked ``globus_sdk`` at
-``tests/unit/test_globus_data_transfer.py``. A live end-to-end test
-requires (a) ``APECX_GLOBUS_SOURCE_ENDPOINT_ID`` set to a real source
-endpoint, (b) the operator's confidential client credentials in the
-keyring, and (c) a writable destination endpoint — none of those
-can be provided by CI. The live path is exercised by
-``apecx-setup data`` itself when an operator has Globus configured.
+Unit tests: ``tests/unit/test_globus_data_transfer.py`` (logic + workflow load
++ WorkflowBuilder parity). Gated live tests:
+``tests/integration/test_globus_transfer_live.py`` — the missing-source gate
+runs against real source auth; the full transfer needs a real writable dest
+endpoint (Globus Connect Personal) and ``APECX_GLOBUS_LIVE_TRANSFER=1``.
 """
 
 from __future__ import annotations
@@ -59,84 +62,55 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-# The 6 files that constitute the VIOLIN + BV-BRC dataset. Kept here as
-# the single source of truth for "what gets transferred".
+# The 6 files that constitute the VIOLIN + BV-BRC dataset, and WHERE they live
+# on the "APECx Data at Argonne LCF" collection. Single source of truth for
+# "what gets transferred".
 #
-# The actual layout on the "APECx Data at Argonne LCF" Globus collection
-# (verified 2026-05-17 via live LIST):
+# Source layout (re-mapped 2026-05-21 against the live collection — the prior
+# /apecx-joshi-anl-general layout is GONE; that path now returns 403 for the
+# data-access identity). VIOLIN and BV-BRC now live under DIFFERENT parent
+# directories, so each has its own independently-overridable source root:
 #
-#   /apecx-joshi-anl-general/
-#     2024_12_17_VIOLIN/         ← VIOLIN CSVs
-#       Vaccine_Information.csv
-#       Pathogen_Information.csv
-#       Gene_Information.csv
-#       Vaccine_Pathogen_Information.csv
-#       Gene_Vaccine_Pathogen_Information.csv
-#       2025_04_28_VIOLIN_Web_Portal_Data_UML.{html,png}  ← skipped
-#     2025_05_05_BVBRC/          ← BV-BRC CSVs
-#       BVBRC_epitope__epitopes.csv
-#       BVBRC_genome.csv         ← closest analog to legacy BVBRC_genome_alphavirus.csv
-#       BVBRC_genome_feature.csv
-#       BVBRC_protein_feature__domains_and_motifs.csv
-#       BVBRC_protein_structure__protein_structures.csv
-#     2025_06_25_ProtaBank/
-#     2025_11_05_PubMed/
-#     2025_11_17_IEDB/
-#     2025_11_18_PDB/
+#   BV-BRC  — /apecx-ramanathan-anl/public/data/BV-BRC/
+#               BVBRC_genome_alphavirus.csv   (12 MB)   ✅ LIVE-VERIFIED 2026-05-21
 #
-# The DEST layout this module produces matches what ``cli/setup_data``
-# extracts from the gh-release tarball (``violin/<File>.csv`` +
-# top-level ``BVBRC_genome_alphavirus.csv``), so downstream code that
-# already reads those paths (``apecx_db_integration``, etc.) needs
-# no changes regardless of whether the data arrived via Globus or gh.
+#   VIOLIN  — /apecx-ramanathan-anl/apecx-project-all/
+#               Vaccine_Information.csv, Pathogen_Information.csv,
+#               Gene_Information.csv, Vaccine_Pathogen_Information.csv,
+#               Gene_Vaccine_Pathogen_Information.csv
+#             ⚠️ per the data steward (2026-05-21). NOT yet live-verifiable from
+#                the public-collection UUID — operation_ls of apecx-project-all
+#                returns "500 Path not allowed" (a GridFTP collection
+#                path-restriction, NOT an auth failure), so the files are served
+#                by a collection/path this UUID's restriction excludes. Confirm
+#                the serving endpoint + exact layout, then adjust the default
+#                below or set APECX_GLOBUS_VIOLIN_SOURCE_DIR (+ optionally
+#                APECX_GLOBUS_VIOLIN_ENDPOINT_ID once that path is reachable).
 #
-# Two date-stamped directory names are env-overridable so operators
-# pulling from a newer snapshot don't need a code change:
-#   * APECX_GLOBUS_VIOLIN_DIR (default: 2024_12_17_VIOLIN)
-#   * APECX_GLOBUS_BVBRC_DIR  (default: 2025_05_05_BVBRC)
-_DEFAULT_SOURCE_PREFIX = "/apecx-joshi-anl-general"
-_DEFAULT_VIOLIN_DIR = "2024_12_17_VIOLIN"
-_DEFAULT_BVBRC_DIR = "2025_05_05_BVBRC"
+# Why this is safe despite the unverified VIOLIN default: the verify->transfer
+# workflow runs GlobusManifestVerifyStep (G127) FIRST. If the VIOLIN source
+# paths are wrong, the install FAILS LOUD naming every missing file — it can
+# NEVER silently transfer zero (or a partial subset of) VIOLIN files.
+#
+# The content-divergence hack is GONE: the source is now the genuinely
+# alphavirus-curated 12 MB BVBRC_genome_alphavirus.csv, not the ~1.5 GB
+# all-genomes BVBRC_genome.csv renamed at the dest. Source content == what
+# downstream apecx_db_integration expects.
+#
+# Dest layout is unchanged (``violin/<File>.csv`` + top-level
+# ``BVBRC_genome_alphavirus.csv``) so it matches ``_EXPECTED_FILES`` and
+# downstream readers need no change.
+_DEFAULT_BVBRC_SOURCE_DIR = "/apecx-ramanathan-anl/public/data/BV-BRC"
+_DEFAULT_VIOLIN_SOURCE_DIR = "/apecx-ramanathan-anl/apecx-project-all"
 
-# Tuples of (source_relpath, dest_relpath). The source side has the
-# date-stamped layout; the dest side has the legacy flat layout the
-# rest of the codebase expects.
-_DATASET_FILE_MAPPING = (
-    ("{VIOLIN}/Vaccine_Information.csv", "violin/Vaccine_Information.csv"),
-    ("{VIOLIN}/Pathogen_Information.csv", "violin/Pathogen_Information.csv"),
-    ("{VIOLIN}/Gene_Information.csv", "violin/Gene_Information.csv"),
-    ("{VIOLIN}/Vaccine_Pathogen_Information.csv", "violin/Vaccine_Pathogen_Information.csv"),
-    (
-        "{VIOLIN}/Gene_Vaccine_Pathogen_Information.csv",
-        "violin/Gene_Vaccine_Pathogen_Information.csv",
-    ),
-    # ⚠️ BV-BRC content divergence (CRITICAL):
-    #
-    #   Source FILE on Globus: BVBRC_genome.csv (~1.5 GB, ALL genomes)
-    #   Dest FILE on disk:     BVBRC_genome_alphavirus.csv (filename
-    #                          matches the legacy gh-release tarball
-    #                          so downstream code keeps working)
-    #
-    # The rename is for filename-only backwards compatibility — the
-    # CONTENT is different:
-    #
-    #   * Legacy (gh release):     ~MB-scale, alphavirus-curated subset
-    #   * Modern (Globus source):  ~1.5 GB, ALL BV-BRC genomes (every virus,
-    #                              not just alphavirus)
-    #
-    # Downstream code in ``apecx_db_integration`` that reads this file
-    # treating it as alphavirus-only will:
-    #   * Load way more data than expected (1.5 GB pandas DataFrame)
-    #   * Match queries against the full genome catalog, not just
-    #     alphavirus
-    #   * Produce broader (potentially noisier) match results
-    #
-    # If you need alphavirus-only, post-filter in code:
-    #     df[df['Genus'] == 'Alphavirus']
-    # ...or continue using ``apecx-setup --prefer-gh-release`` which
-    # fetches the curated subset from the gh-release tarball.
-    ("{BVBRC}/BVBRC_genome.csv", "BVBRC_genome_alphavirus.csv"),
+_VIOLIN_FILES = (
+    "Vaccine_Information.csv",
+    "Pathogen_Information.csv",
+    "Gene_Information.csv",
+    "Vaccine_Pathogen_Information.csv",
+    "Gene_Vaccine_Pathogen_Information.csv",
 )
+_BVBRC_FILE = "BVBRC_genome_alphavirus.csv"
 
 
 # ---------------------------------------------------------------------------
@@ -267,15 +241,24 @@ def check_globus_prerequisites() -> GlobusPrereqStatus:
 
 
 def _keyring_credentials_present() -> bool:
-    """True iff apecx-globus-setup has stored credentials in the OS
-    keyring. Cheap: one keyring lookup, no network. False on every
-    failure mode (keyring missing, no entries, etc.) — we never raise
-    out of a preflight check."""
-    try:
-        import keyring  # noqa: PLC0415
+    """True iff confidential-client credentials are in the OS keyring.
 
-        client_id = keyring.get_password("apecx-globus-setup", "client_id")
-        client_secret = keyring.get_password("apecx-globus-setup", "client_secret")
+    Delegates to nanobrain's ``globus_credentials.load_credentials`` — the
+    SINGLE source of truth for where the credential pair lives (service
+    ``nanobrain-globus``). This MUST match what ``build_globus_app``'s
+    tier-3 keyring lookup reads; an earlier copy hardcoded the wrong
+    service name (``apecx-globus-setup``), so this preflight reported
+    "not configured" even when ``apecx-globus-setup store`` had written
+    valid creds and ``build_globus_app`` would have found them. With the
+    gh fallback removed that disagreement turns a working setup into a
+    hard install failure. Cheap: one keyring lookup, no network. False on
+    every failure mode (keyring missing, no entries, etc.) — a preflight
+    check never raises.
+    """
+    try:
+        from nanobrain.core.distributed import globus_credentials  # noqa: PLC0415
+
+        client_id, client_secret = globus_credentials.load_credentials()
         return bool(client_id and client_secret)
     except Exception:  # noqa: BLE001 — preflight, must never raise
         return False
@@ -289,40 +272,43 @@ def _keyring_credentials_present() -> bool:
 def build_transfer_items(data_dir: Path) -> list[dict[str, str]]:
     """Build the {source_path, dest_path} list for the 6 dataset files.
 
-    Source layout (post-G91 2026-05-17):
-        ``$APECX_GLOBUS_SOURCE_PREFIX/$APECX_GLOBUS_VIOLIN_DIR/*.csv``
-        ``$APECX_GLOBUS_SOURCE_PREFIX/$APECX_GLOBUS_BVBRC_DIR/BVBRC_genome.csv``
+    Source layout (re-mapped 2026-05-21 — VIOLIN and BV-BRC live under
+    DIFFERENT parents, so each has its own env-overridable root):
+        ``$APECX_GLOBUS_VIOLIN_SOURCE_DIR/<5 VIOLIN CSVs>``
+        ``$APECX_GLOBUS_BVBRC_SOURCE_DIR/BVBRC_genome_alphavirus.csv``
 
-    Dest layout (unchanged — matches gh-release tarball):
+    Dest layout (unchanged — matches ``_EXPECTED_FILES``):
         ``$data_dir/violin/*.csv``
         ``$data_dir/BVBRC_genome_alphavirus.csv``
 
-    All three source-side path components are env-overridable so
-    operators pulling from a newer snapshot don't need a code change:
-        * APECX_GLOBUS_SOURCE_PREFIX (default: /apecx-joshi-anl-general)
-        * APECX_GLOBUS_VIOLIN_DIR    (default: 2024_12_17_VIOLIN)
-        * APECX_GLOBUS_BVBRC_DIR     (default: 2025_05_05_BVBRC)
+    Env overrides (the BV-BRC default is live-verified; the VIOLIN default
+    is per the data steward and validated at runtime by the verify gate):
+        * APECX_GLOBUS_VIOLIN_SOURCE_DIR (default: /apecx-ramanathan-anl/apecx-project-all)
+        * APECX_GLOBUS_BVBRC_SOURCE_DIR  (default: /apecx-ramanathan-anl/public/data/BV-BRC)
 
-    Items are returned in stable order (matching ``_DATASET_FILE_MAPPING``)
-    so retries always hit the same Globus task layout and log lines
-    stay diff-friendly.
+    VIOLIN files are listed first, BV-BRC last, so the order is stable across
+    retries and log lines stay diff-friendly.
     """
-    source_prefix = os.environ.get(
-        "APECX_GLOBUS_SOURCE_PREFIX",
-        _DEFAULT_SOURCE_PREFIX,
+    violin_root = os.environ.get(
+        "APECX_GLOBUS_VIOLIN_SOURCE_DIR", _DEFAULT_VIOLIN_SOURCE_DIR
     ).rstrip("/")
-    violin_dir = os.environ.get("APECX_GLOBUS_VIOLIN_DIR", _DEFAULT_VIOLIN_DIR)
-    bvbrc_dir = os.environ.get("APECX_GLOBUS_BVBRC_DIR", _DEFAULT_BVBRC_DIR)
+    bvbrc_root = os.environ.get("APECX_GLOBUS_BVBRC_SOURCE_DIR", _DEFAULT_BVBRC_SOURCE_DIR).rstrip(
+        "/"
+    )
 
-    items: list[dict[str, str]] = []
-    for src_template, dest_relpath in _DATASET_FILE_MAPPING:
-        src_relpath = src_template.format(VIOLIN=violin_dir, BVBRC=bvbrc_dir)
-        items.append(
-            {
-                "source_path": f"{source_prefix}/{src_relpath}",
-                "dest_path": str(data_dir / dest_relpath),
-            }
-        )
+    items: list[dict[str, str]] = [
+        {
+            "source_path": f"{violin_root}/{fn}",
+            "dest_path": str(data_dir / "violin" / fn),
+        }
+        for fn in _VIOLIN_FILES
+    ]
+    items.append(
+        {
+            "source_path": f"{bvbrc_root}/{_BVBRC_FILE}",
+            "dest_path": str(data_dir / _BVBRC_FILE),
+        }
+    )
     return items
 
 
@@ -357,6 +343,19 @@ def _wrapper_yaml_path() -> Path:
     # parents[3] = <repo>
     repo_root = Path(__file__).resolve().parents[3]
     return repo_root / "configs" / "globus_transfers" / "violin_bvbrc_transfer_step.yml"
+
+
+def _workflow_yaml_path() -> Path:
+    """Resolve the verify->transfer workflow YAML (G127).
+
+    Same repo-anchored resolution as ``_wrapper_yaml_path``. This is the
+    framework-native drive path: a two-step nanobrain workflow that gates the
+    transfer behind ``GlobusManifestVerifyStep`` (fail-loud source existence
+    check). The two step configs it references live beside it in
+    ``configs/globus_transfers/``.
+    """
+    repo_root = Path(__file__).resolve().parents[3]
+    return repo_root / "configs" / "globus_transfers" / "violin_bvbrc_transfer_workflow.yml"
 
 
 # ---------------------------------------------------------------------------
@@ -480,61 +479,123 @@ async def _attempt_globus_data_transfer_async(
     data_dir: Path,
     poll_timeout_seconds: float,
 ) -> GlobusTransferResult:
-    """Async core. Materialize step from YAML, drive process()."""
-    from nanobrain.library.steps.globus_transfer_step import GlobusTransferStep
+    """Async core. Drive the verify->transfer nanobrain workflow (G127).
 
-    wrapper_yaml = _wrapper_yaml_path()
-    if not wrapper_yaml.is_file():
+    Framework-native: instead of calling ``GlobusTransferStep.process`` directly,
+    this loads ``violin_bvbrc_transfer_workflow.yml`` and drives it via
+    ``Workflow.run``. The workflow gates the transfer behind
+    ``GlobusManifestVerifyStep`` — a fail-loud source-existence check wired by a
+    data-dependency link, so the transfer can never run on a missing source.
+
+    Critical honesty contract: ``Workflow.run`` SWALLOWS a step exception (it
+    returns ``status: 'completed'`` with empty outputs even when the verify step
+    raised). Trusting that ``status`` would be a silent failure — "driver reports
+    ok, zero files moved". The ONLY success signal we trust is
+    ``transfer_status == 'SUCCEEDED'`` (the transfer step's terminal status,
+    propagated to a workflow output). Any other outcome is surfaced FAIL-LOUD,
+    using the captured ``step_failed`` event's exception message (e.g. the exact
+    list of missing source files from the verify gate).
+    """
+    from nanobrain.core.step_events import subscribe_to_step_events
+    from nanobrain.core.workflow import Workflow
+
+    workflow_yaml = _workflow_yaml_path()
+    if not workflow_yaml.is_file():
         return GlobusTransferResult(
             status="fail",
             detail=(
-                f"wrapper YAML missing at {wrapper_yaml}. Reinstall "
+                f"workflow YAML missing at {workflow_yaml}. Reinstall "
                 "apecx-mcp-integration to restore it, or report this as a bug."
             ),
         )
 
-    # G90 (2026-05-17): resolve which auth path to use BEFORE loading
-    # the YAML. The YAML reads only ${APECX_GLOBUS_RESOLVED_CLIENT_ID/SECRET}
-    # — this function maps confidential or native config into that slot.
+    # G90 (2026-05-17): resolve which auth path to use BEFORE loading the YAML.
+    # Both step configs read only ${APECX_GLOBUS_RESOLVED_CLIENT_ID/SECRET}.
     auth_mode = _resolve_auth_env()
     log.info("Globus auth_mode resolved to: %s", auth_mode)
 
-    step = GlobusTransferStep.from_config(wrapper_yaml)
     items = build_transfer_items(data_dir)
-
     log.info(
-        "Globus transfer: %d items, source=%s, dest=%s",
+        "Globus verify->transfer workflow: %d items, source=%s, dest=%s",
         len(items),
         items[0]["source_path"].split("/")[1] if items else "(none)",
         data_dir,
     )
 
-    # Ensure the destination subdirectories exist on the LOCAL
-    # filesystem. Globus Connect Personal writes to the dest path
-    # verbatim and won't create intermediate dirs — if we pass
-    # ``/Users/.../violin/X.csv`` without ``violin/`` existing, the
-    # transfer fails per-file with "no such file or directory."
-    #
-    # Skip this mkdir step when the operator passed a Globus-side
-    # path with ``/~/`` shorthand (which resolves to the home dir on
-    # the dest endpoint, NOT a literal ``/~`` on the local filesystem).
-    # In that case Globus Connect Personal will resolve ``/~/`` itself
-    # and create intermediate dirs as part of the transfer; the
-    # local-filesystem mkdir would either fail (``/~`` is read-only
-    # under macOS's root namespace) or create a misleading literal
-    # ``~`` directory.
+    # Ensure the destination subdirectories exist on the LOCAL filesystem.
+    # Globus Connect Personal writes to the dest path verbatim and won't create
+    # intermediate dirs — passing ``/Users/.../violin/X.csv`` without ``violin/``
+    # existing fails per-file with "no such file or directory". Skip the mkdir
+    # for ``/~/`` shorthand (resolves to the dest endpoint's home dir, not a
+    # literal ``/~`` locally).
     for item in items:
         dest_path_str = item["dest_path"]
         if dest_path_str.startswith("/~/") or dest_path_str.startswith("~/"):
             continue
         Path(dest_path_str).parent.mkdir(parents=True, exist_ok=True)
 
-    out = await step.process({"items": items})
+    wf = Workflow.from_config(workflow_yaml)
+
+    # The transfer step's own poll_timeout_seconds (YAML) governs the Globus
+    # poll; the workflow wall-clock timeout must comfortably exceed it.
+    step_poll = float(wf.child_steps["transfer"].transfer_config.poll_timeout_seconds)
+    wf_timeout = max(step_poll, poll_timeout_seconds) + 120.0
+
+    # Capture step_failed events so a swallowed cascade exception (e.g. the
+    # verify gate) becomes an actionable apecx-side failure message.
+    failures: list[tuple[str, str, str]] = []
+
+    def _capture(event) -> None:
+        if getattr(event, "event_type", None) == "step_failed":
+            exc = (getattr(event, "payload", None) or {}).get("exception", {})
+            failures.append((event.step_name, exc.get("type", ""), exc.get("message", "")))
+
+    with subscribe_to_step_events(_capture):
+        outputs = await wf.run(
+            {"workflow_input": {"items": items}},
+            timeout=wf_timeout,
+            settle_ms=500,
+            raise_on_cascade_timeout=False,
+        )
+
+    if not isinstance(outputs, dict):
+        return GlobusTransferResult(
+            status="fail",
+            detail=f"workflow returned non-dict: {type(outputs).__name__}",
+        )
+    if outputs.get("status") == "cascade_timeout":
+        return GlobusTransferResult(
+            status="fail",
+            detail=f"workflow cascade timed out after {wf_timeout:.0f}s",
+        )
+
+    # The ONLY trusted success signal — see the docstring's honesty contract.
+    if outputs.get("transfer_status") == "SUCCEEDED":
+        count = outputs.get("transfer_items_count")
+        count = int(count) if count is not None else len(items)
+        return GlobusTransferResult(
+            status="ok",
+            detail=f"verify->transfer workflow transferred {count} items",
+            items_transferred=count,
+            task_id=outputs.get("transfer_task_id"),
+        )
+
+    # Not SUCCEEDED → a step failed (or the transfer never ran). Surface the
+    # captured failure FAIL-LOUD rather than masking it as success.
+    if failures:
+        step_name, exc_type, exc_msg = failures[0]
+        return GlobusTransferResult(
+            status="fail",
+            detail=f"workflow step {step_name!r} failed ({exc_type}): {exc_msg}",
+            error=exc_msg,
+        )
     return GlobusTransferResult(
-        status="ok",
-        detail=f"transferred {out.get('items_transferred', len(items))} items",
-        items_transferred=int(out.get("items_transferred", len(items))),
-        task_id=out.get("task_id"),
+        status="fail",
+        detail=(
+            "transfer did not reach SUCCEEDED "
+            f"(transfer_status={outputs.get('transfer_status')!r}) and no "
+            "step_failed event was captured"
+        ),
     )
 
 

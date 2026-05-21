@@ -1,31 +1,27 @@
-"""Unit tests for the Globus-first data transfer glue (G82, 2026-05-16).
+"""Unit tests for the Globus data-transfer glue (G82 2026-05-16; G127 2026-05-21).
 
 What's covered
 --------------
 
 * ``check_globus_prerequisites`` correctly identifies every failure
   mode (no SDK, no source endpoint, no dest endpoint, no credentials)
-  and the success case. Each branch's ``reason()`` is asserted
-  human-readable.
-* ``build_transfer_items`` produces the expected source/dest list
-  shape for the 6 dataset files, honors ``APECX_GLOBUS_SOURCE_PREFIX``
-  override, and anchors dest paths at the operator's data_dir.
-* The wrapper YAML at
-  ``configs/globus_transfers/violin_bvbrc_transfer_step.yml`` parses
-  successfully via ``GlobusTransferStepConfig.from_config`` when the
-  env vars are set — proves the env-var interpolation is well-formed.
-* ``attempt_globus_data_transfer`` returns ``unconfigured`` cleanly
-  when preconditions aren't met (no global side effects, no exceptions).
+  and the success case.
+* ``_keyring_credentials_present`` delegates to nanobrain's
+  ``load_credentials`` (the 2026-05-21 service-name fix).
+* ``build_transfer_items`` produces the re-mapped layout (5 VIOLIN CSVs +
+  curated BV-BRC) with independently-overridable source roots.
+* The verify→transfer workflow YAML loads as a ``Workflow`` with both steps
+  and DirectLinks that all carry ``auto_transfer`` (silent-no-op guard).
+* The same topology is expressible via the lightweight ``WorkflowBuilder``.
+* The transfer step wrapper YAML parses via ``GlobusTransferStepConfig``.
 
-What's NOT covered
-------------------
+What's NOT covered here
+-----------------------
 
-End-to-end transfer against a real Globus endpoint is out of scope
-for unit tests — it would require live credentials in CI, a writable
-destination, and network access to Argonne LCF. That path is
-exercised when an operator runs ``apecx-setup data`` with their
-Globus credentials configured. The unit-test layer here exercises
-everything up to (but not including) the network round-trip.
+A live transfer against a real Globus endpoint is in the gated integration
+suite (``tests/integration/test_globus_transfer_live.py``): the missing-source
+gate runs against real source auth; the full transfer needs a real writable
+dest endpoint.
 """
 
 from __future__ import annotations
@@ -49,7 +45,8 @@ def clean_globus_env(monkeypatch: pytest.MonkeyPatch) -> None:
     for var in [
         "APECX_GLOBUS_SOURCE_ENDPOINT_ID",
         "APECX_GLOBUS_DEST_ENDPOINT_ID",
-        "APECX_GLOBUS_SOURCE_PREFIX",
+        "APECX_GLOBUS_VIOLIN_SOURCE_DIR",
+        "APECX_GLOBUS_BVBRC_SOURCE_DIR",
         "GLOBUS_COMPUTE_CLIENT_ID",
         "GLOBUS_COMPUTE_CLIENT_SECRET",
     ]:
@@ -173,83 +170,92 @@ def test_prereqs_keyring_internal_failure_is_silent(
             sys.modules.pop("keyring", None)
 
 
+def test_keyring_present_delegates_to_nanobrain_load_credentials() -> None:
+    """Regression (2026-05-21): the preflight MUST read credentials from the
+    same place ``build_globus_app`` does — nanobrain's
+    ``globus_credentials.load_credentials`` (keyring service ``nanobrain-globus``)
+    — NOT a hardcoded ``apecx-globus-setup`` service name. The old hardcoded
+    name made the preflight report 'not configured' while valid creds existed
+    and build_globus_app would have found them; with gh retired that mismatch
+    turns a working setup into a hard install failure."""
+    from apecx_integration.cli._globus_data_transfer import _keyring_credentials_present
+
+    # Creds present under the nanobrain service → True.
+    with patch(
+        "nanobrain.core.distributed.globus_credentials.load_credentials",
+        return_value=("client-uuid", "secret"),
+    ):
+        assert _keyring_credentials_present() is True
+
+    # Nothing stored → False.
+    with patch(
+        "nanobrain.core.distributed.globus_credentials.load_credentials",
+        return_value=(None, None),
+    ):
+        assert _keyring_credentials_present() is False
+
+    # Loader raising (e.g. keyring not installed) → False, never propagates.
+    with patch(
+        "nanobrain.core.distributed.globus_credentials.load_credentials",
+        side_effect=RuntimeError("keyring missing"),
+    ):
+        assert _keyring_credentials_present() is False
+
+
 # ---------------------------------------------------------------------------
 # build_transfer_items
 # ---------------------------------------------------------------------------
 
 
 def test_build_transfer_items_default_layout(clean_globus_env: None, tmp_path: Path) -> None:
-    """Default source prefix + date-stamped dirs, 6 items, stable order,
-    dest paths anchored at data_dir + flattened to legacy layout.
+    """Default layout (re-mapped 2026-05-21): 5 VIOLIN CSVs first, then the
+    curated BV-BRC file, with VIOLIN and BV-BRC under DIFFERENT source roots.
 
-    Source layout (verified live 2026-05-17, G91):
-      $PREFIX/2024_12_17_VIOLIN/{Vaccine,Pathogen,Gene,...}_Information.csv
-      $PREFIX/2025_05_05_BVBRC/BVBRC_genome.csv
+    Source layout:
+      /apecx-ramanathan-anl/apecx-project-all/<5 VIOLIN CSVs>
+      /apecx-ramanathan-anl/public/data/BV-BRC/BVBRC_genome_alphavirus.csv
 
-    Dest layout (unchanged from gh-release):
-      $data_dir/violin/{Vaccine,Pathogen,Gene,...}_Information.csv
-      $data_dir/BVBRC_genome_alphavirus.csv  ← renamed from BVBRC_genome.csv
+    Dest layout (unchanged — matches _EXPECTED_FILES):
+      $data_dir/violin/<File>.csv
+      $data_dir/BVBRC_genome_alphavirus.csv
     """
     from apecx_integration.cli._globus_data_transfer import build_transfer_items
 
     items = build_transfer_items(tmp_path)
 
     assert len(items) == 6
-    # First item: VIOLIN CSV from the date-stamped source dir, dest
-    # under violin/.
+    # First item: a VIOLIN CSV under the apecx-project-all root.
     assert (
-        items[0]["source_path"]
-        == "/apecx-joshi-anl-general/2024_12_17_VIOLIN/Vaccine_Information.csv"
+        items[0]["source_path"] == "/apecx-ramanathan-anl/apecx-project-all/Vaccine_Information.csv"
     )
     assert items[0]["dest_path"] == str(tmp_path / "violin/Vaccine_Information.csv")
-    # Last item: BV-BRC genome CSV from the date-stamped source, renamed
-    # to the legacy flat filename downstream code expects.
-    assert items[-1]["source_path"] == "/apecx-joshi-anl-general/2025_05_05_BVBRC/BVBRC_genome.csv"
+    # Last item: the curated BV-BRC alphavirus file under /public (no rename —
+    # source filename == dest filename; content divergence fixed).
+    assert (
+        items[-1]["source_path"]
+        == "/apecx-ramanathan-anl/public/data/BV-BRC/BVBRC_genome_alphavirus.csv"
+    )
     assert items[-1]["dest_path"] == str(tmp_path / "BVBRC_genome_alphavirus.csv")
-    # Every item has exactly the two expected keys.
     for item in items:
         assert set(item.keys()) == {"source_path", "dest_path"}
 
 
-def test_build_transfer_items_honors_source_prefix_override(
+def test_build_transfer_items_honors_independent_root_overrides(
     clean_globus_env: None,
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """APECX_GLOBUS_SOURCE_PREFIX shifts every source path."""
+    """VIOLIN and BV-BRC source roots are INDEPENDENTLY overridable (they live
+    under different parents now), and trailing slashes are stripped."""
     from apecx_integration.cli._globus_data_transfer import build_transfer_items
 
-    monkeypatch.setenv("APECX_GLOBUS_SOURCE_PREFIX", "/some/other/root")
+    monkeypatch.setenv("APECX_GLOBUS_VIOLIN_SOURCE_DIR", "/violin/root/")
+    monkeypatch.setenv("APECX_GLOBUS_BVBRC_SOURCE_DIR", "/bvbrc/root/")
     items = build_transfer_items(tmp_path)
 
-    assert items[0]["source_path"] == "/some/other/root/2024_12_17_VIOLIN/Vaccine_Information.csv"
-    # Trailing slash on the override is stripped.
-    monkeypatch.setenv("APECX_GLOBUS_SOURCE_PREFIX", "/some/other/root/")
-    items_with_slash = build_transfer_items(tmp_path)
-    assert (
-        items_with_slash[0]["source_path"]
-        == "/some/other/root/2024_12_17_VIOLIN/Vaccine_Information.csv"
-    )
-
-
-def test_build_transfer_items_honors_dated_dir_overrides(
-    clean_globus_env: None,
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """APECX_GLOBUS_VIOLIN_DIR + APECX_GLOBUS_BVBRC_DIR let operators
-    pull from a newer snapshot without a code change (G91)."""
-    from apecx_integration.cli._globus_data_transfer import build_transfer_items
-
-    monkeypatch.setenv("APECX_GLOBUS_VIOLIN_DIR", "2026_07_01_VIOLIN")
-    monkeypatch.setenv("APECX_GLOBUS_BVBRC_DIR", "2026_08_15_BVBRC")
-    items = build_transfer_items(tmp_path)
-
-    # First VIOLIN item uses the new dir.
-    assert "/2026_07_01_VIOLIN/Vaccine_Information.csv" in items[0]["source_path"]
-    # Last BV-BRC item uses the new dir.
-    assert "/2026_08_15_BVBRC/BVBRC_genome.csv" in items[-1]["source_path"]
-    # Dest layout is unchanged — downstream code keeps working.
+    assert items[0]["source_path"] == "/violin/root/Vaccine_Information.csv"
+    assert items[-1]["source_path"] == "/bvbrc/root/BVBRC_genome_alphavirus.csv"
+    # Dest layout is unchanged — downstream readers keep working.
     assert items[0]["dest_path"] == str(tmp_path / "violin/Vaccine_Information.csv")
     assert items[-1]["dest_path"] == str(tmp_path / "BVBRC_genome_alphavirus.csv")
 
@@ -291,6 +297,109 @@ def test_wrapper_yaml_loads_with_env_vars_set(monkeypatch: pytest.MonkeyPatch) -
     assert cfg.sync_level == "checksum"
     assert cfg.verify_checksum is True
     assert cfg.transfer_label == "apecx-setup-violin-bvbrc"
+
+
+def test_verify_transfer_workflow_loads_and_all_links_auto_transfer(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The verify→transfer workflow YAML must load as a Workflow with both
+    child steps AND every DirectLink declaring auto_transfer:true (the dominant
+    nanobrain silent-no-op shape). Guards against a future edit dropping the
+    flag or mis-wiring the gate."""
+    from nanobrain.core.workflow import Workflow
+
+    from apecx_integration.cli._globus_data_transfer import (
+        _resolve_auth_env,
+        _workflow_yaml_path,
+    )
+
+    monkeypatch.setenv("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "src-test-uuid")
+    monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "dst-test-uuid")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cc-id")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "cc-secret")
+    _resolve_auth_env()  # populate the RESOLVED slots the step YAMLs read
+
+    yaml_path = _workflow_yaml_path()
+    assert yaml_path.is_file(), f"workflow YAML missing at {yaml_path}"
+
+    wf = Workflow.from_config(yaml_path)
+    assert set(wf.child_steps.keys()) == {"verify", "transfer"}
+
+    links = wf.step_links
+    direct_links = [link for link in links.values() if type(link).__name__ == "DirectLink"]
+    assert len(direct_links) == 5, f"expected 5 DirectLinks, got {len(direct_links)}"
+    for link in direct_links:
+        assert getattr(link.config, "auto_transfer", None) is True, (
+            f"DirectLink {getattr(link, 'name', link)!r} must declare "
+            "auto_transfer:true (silent-no-op guard)"
+        )
+
+
+def test_workflow_builder_lightweight_parity() -> None:
+    """The verify→transfer topology is ALSO expressible via the lightweight
+    ``WorkflowBuilder`` (programmatic path), not only hand-authored YAML —
+    demonstrating the multiple framework-native authoring paths.
+
+    Asserts the builder ENCODES the topology faithfully: both steps with the
+    correct class paths, and three ``DirectLink`` entries in the nested shape
+    LinkBase.from_config expects (auto_transfer is injected by the v2
+    model_validator at load time, not stored in the builder config).
+
+    Scope note: this asserts the builder's generated config rather than a full
+    ``.load()`` round-trip. The builder emits FLAT step entries
+    (``{name, class, ...inline_fields}``); steps carrying inline data units do
+    not materialize cleanly through ``Workflow.from_config``'s step loader (an
+    orthogonal builder/loader limitation, documented in the outcomes doc). The
+    runtime equivalence of this topology is proven by the hand-authored YAML
+    path's live test, which uses the same step classes + link shape."""
+    from nanobrain.lightweight.workflow_builder import WorkflowBuilder
+
+    _DU = "nanobrain.core.data_unit.DataUnitMemory"
+    _TRIG = "nanobrain.core.trigger.DataUnitChangeTrigger"
+    verify_cls = "nanobrain.library.steps.globus_manifest_verify_step.GlobusManifestVerifyStep"
+    transfer_cls = "nanobrain.library.steps.globus_transfer_step.GlobusTransferStep"
+
+    builder = WorkflowBuilder("violin_bvbrc_transfer_builder", "verify→transfer (builder)")
+    builder.add_input("workflow_input")
+    builder.add_output("transfer_status")
+    builder.add_step(
+        "verify",
+        verify_cls,
+        source_endpoint_id="src-dummy-uuid",
+        input_data_units={"manifest_in": {"class": _DU, "name": "manifest_in"}},
+        output_data_units={"verified_manifest": {"class": _DU, "name": "verified_manifest"}},
+        triggers=[{"class": _TRIG, "data_unit": "manifest_in"}],
+    )
+    builder.add_step(
+        "transfer",
+        transfer_cls,
+        source_endpoint_id="src-dummy-uuid",
+        dest_endpoint_id="dst-dummy-uuid",
+        input_data_units={"transfer_input": {"class": _DU, "name": "transfer_input"}},
+        output_data_units={"status": {"class": _DU, "name": "status"}},
+        triggers=[{"class": _TRIG, "data_unit": "transfer_input"}],
+    )
+    builder.connect("workflow_input", "verify.manifest_in")
+    builder.connect("verify.verified_manifest", "transfer.transfer_input")
+    builder.connect("transfer.status", "transfer_status")
+
+    cfg = builder.get_config()
+    # Both steps encoded with the right class paths.
+    assert cfg["steps"]["verify"]["class"] == verify_cls
+    assert cfg["steps"]["transfer"]["class"] == transfer_cls
+    # Three DirectLinks in the nested {class, config:{link_type, source, target}}
+    # shape, wiring workflow_input → verify → transfer → workflow_output.
+    links = list(cfg["links"].values())
+    assert len(links) == 3
+    edges = {(link["config"]["source"], link["config"]["target"]) for link in links}
+    assert edges == {
+        ("workflow_input", "verify.manifest_in"),
+        ("verify.verified_manifest", "transfer.transfer_input"),
+        ("transfer.status", "transfer_status"),
+    }
+    for link in links:
+        assert link["class"].endswith("DirectLink")
+        assert link["config"]["link_type"] == "direct"
 
 
 def test_resolve_auth_env_picks_confidential_when_available(
@@ -376,10 +485,10 @@ def test_step_globus_skipped_when_prereqs_missing(
     clean_globus_env: None,
     capsys: pytest.CaptureFixture,
 ) -> None:
-    """``_step_globus`` returns ``skipped`` (NOT ``fail``) when
-    Globus isn't configured. Reason text includes the actionable
-    fallback message ('gh release fallback') so the operator's
-    summary table shows what's happening."""
+    """``_step_globus`` returns ``skipped`` (NOT ``fail``) when Globus isn't
+    configured — the data step is the authoritative gate (it fails loud only
+    if no data is already present). The reason text flags that Globus is now
+    REQUIRED (gh fallback retired) so the summary table is honest."""
     from apecx_integration.cli.setup import _step_globus
 
     with patch(
@@ -390,7 +499,7 @@ def test_step_globus_skipped_when_prereqs_missing(
 
     assert result.name == "globus"
     assert result.status == "skipped"
-    assert "gh release fallback" in result.detail
+    assert "REQUIRED for data" in result.detail
 
 
 def test_step_globus_interactive_prints_actionable_instructions(
@@ -414,8 +523,9 @@ def test_step_globus_interactive_prints_actionable_instructions(
     assert "APECX_GLOBUS_SOURCE_ENDPOINT_ID" in out
     assert "APECX_GLOBUS_DEST_ENDPOINT_ID" in out
     assert "apecx-globus-setup store" in out
-    # And the fallback path is named so operators know what happens next.
-    assert "gh release" in out
+    # And the operator is told Globus is now required (gh fallback retired).
+    assert "REQUIRED" in out
+    assert "retired" in out
 
 
 def test_step_globus_ok_when_everything_configured(

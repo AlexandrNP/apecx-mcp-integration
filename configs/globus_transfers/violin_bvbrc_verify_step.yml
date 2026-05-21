@@ -1,0 +1,58 @@
+# GlobusManifestVerifyStep wrapper — pre-transfer source existence gate (G127)
+#
+# The verify half of the violin_bvbrc_transfer_workflow. It operation_ls-checks
+# that every source path in the runtime ``items`` manifest exists on the source
+# collection BEFORE the GlobusTransferStep downstream submits a transfer. On
+# success it passes the SAME manifest through under the ``verified_manifest``
+# output data unit (the workflow link carries it into the transfer step).
+#
+# Auth + source endpoint come from the same env vars the transfer step reads
+# (single source of truth): the source collection UUID via
+# ${APECX_GLOBUS_SOURCE_ENDPOINT_ID}, and the RESOLVED auth slot that
+# cli/_globus_data_transfer.py:_resolve_auth_env populates before the workflow
+# loads. No per-operator identifiers are checked into the repo.
+#
+# Data units + trigger below are REQUIRED for the workflow cascade (the link
+# targets verify.manifest_in; the trigger fires process() when it arrives).
+
+name: violin_bvbrc_verify
+description: |
+  Verify the VIOLIN + BV-BRC source files exist on the "APECx Data at Argonne
+  LCF" collection before transferring them. FAIL-LOUD (naming every missing
+  path) rather than submitting a transfer that would move zero or a partial
+  subset of files.
+class: nanobrain.library.steps.globus_manifest_verify_step.GlobusManifestVerifyStep
+
+source_endpoint_id: "${APECX_GLOBUS_SOURCE_ENDPOINT_ID}"
+
+# Auth mode + resolved credentials — identical convention to the transfer step
+# wrapper. _resolve_auth_env sets APECX_GLOBUS_RESOLVED_CLIENT_ID/SECRET +
+# APECX_GLOBUS_AUTH_MODE before this YAML is loaded.
+auth_mode: "${APECX_GLOBUS_AUTH_MODE:-client_credentials}"
+client_id: "${APECX_GLOBUS_RESOLVED_CLIENT_ID:-}"
+client_secret: "${APECX_GLOBUS_RESOLVED_CLIENT_SECRET:-}"
+
+input_data_units:
+  manifest_in:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: manifest_in
+    description: >
+      ``{items: [{source_path, dest_path}, ...]}`` — the transfer manifest
+      built at runtime by cli/_globus_data_transfer.py:build_transfer_items.
+      Arrives from the workflow input via the input_to_verify link.
+    persistent: false
+
+output_data_units:
+  verified_manifest:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: verified_manifest
+    description: >
+      ``{items: [...]}`` — the SAME manifest, passed through after every
+      source path is confirmed present. Name MUST equal the step's
+      OUTPUT_MANIFEST_KEY. Carried into the transfer step by the
+      verify_to_transfer link.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "manifest_in"
