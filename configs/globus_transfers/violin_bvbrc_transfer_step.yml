@@ -3,9 +3,12 @@
 #
 # Source-of-truth: the dataset lives on the "APECx Data at Argonne LCF"
 # Globus collection (UUID supplied via $APECX_GLOBUS_SOURCE_ENDPOINT_ID
-# — never hardcoded here). Files are under the apecx-joshi-anl-general
-# path; date-stamped subdirectories
-# (e.g. 2024_12_17_VIOLIN/, 2025_05_05_BVBRC/) hold the actual CSVs.
+# — never hardcoded here). Re-mapped 2026-05-21: BV-BRC under
+# /apecx-ramanathan-anl/public/data/BV-BRC/ (live-verified) and VIOLIN under
+# /apecx-ramanathan-anl/apecx-project-all/ (per the data steward). Both source
+# roots + the per-file paths are built by
+# cli/_globus_data_transfer.py:build_transfer_items and validated by the
+# verify step before transfer — see that module for the authoritative layout.
 #
 # Why env vars (not the YAML)?
 #   * The test endpoint UUID is operator-specific; checking it in would
@@ -20,24 +23,24 @@
 # ``~/.apecx/data``). See ``cli/_globus_data_transfer.py:build_transfer_items``
 # for the items-building logic.
 #
-# Auth modes
-# ----------
+# Auth modes (default flipped 2026-05-21)
+# ---------------------------------------
 # Two supported via the ${APECX_GLOBUS_AUTH_MODE} env var:
 #
-#   client_credentials (default) — confidential-app machine-to-machine
-#     auth. Production-shape (Aurora HPC, automation, CI). Requires
-#     ${GLOBUS_COMPUTE_CLIENT_ID} + ${GLOBUS_COMPUTE_CLIENT_SECRET}
-#     either set in env or stored via ``apecx-globus-setup store``.
-#
-#   native — interactive browser-based device-code flow against a
-#     native app. Dev / one-off workflows. Requires
-#     ${APECX_GLOBUS_NATIVE_CLIENT_ID} (a native-app UUID; no secret).
-#     Tokens are persisted by a prior
-#     ``apecx-globus-setup login --client-id <UUID>`` and loaded by
+#   native (DEFAULT) — interactive browser-based device-code flow against a
+#     native ("thick") app. No secret. The native-app client_id has a built-in
+#     default (override via ${APECX_GLOBUS_NATIVE_CLIENT_ID}); tokens are
+#     persisted by a prior ``apecx-globus-setup login`` and loaded by
 #     globus_sdk.UserApp at workflow run time.
 #
-# The default-form ``${VAR:-}`` for confidential-only fields lets the
-# YAML load when only the native-auth path is configured.
+#   client_credentials (OPT-IN) — confidential ("thin") machine-to-machine
+#     auth. For CI / automation / Aurora HPC / headless installs (the device
+#     flow needs a browser). Select with APECX_GLOBUS_AUTH_MODE=client_credentials;
+#     requires ${GLOBUS_COMPUTE_CLIENT_ID} + ${GLOBUS_COMPUTE_CLIENT_SECRET} in
+#     env or stored via ``apecx-globus-setup store``.
+#
+# The default-form ``${VAR:-}`` for the resolved-credential fields lets the
+# YAML load under either mode.
 
 name: violin_bvbrc_globus_transfer
 description: |
@@ -52,9 +55,9 @@ class: nanobrain.library.steps.globus_transfer_step.GlobusTransferStep
 source_endpoint_id: "${APECX_GLOBUS_SOURCE_ENDPOINT_ID}"
 dest_endpoint_id: "${APECX_GLOBUS_DEST_ENDPOINT_ID}"
 
-# Auth mode selector. Default client_credentials preserves prior
-# behavior; operators using native auth set APECX_GLOBUS_AUTH_MODE=native.
-auth_mode: "${APECX_GLOBUS_AUTH_MODE:-client_credentials}"
+# Auth mode selector. Default is native (web/device-code login); operators
+# opt into the confidential secret path with APECX_GLOBUS_AUTH_MODE=client_credentials.
+auth_mode: "${APECX_GLOBUS_AUTH_MODE:-native}"
 
 # Resolved auth credentials. Apecx-side code populates these
 # (``_globus_data_transfer.py:_resolve_auth_env``) based on which
@@ -68,21 +71,59 @@ client_id: "${APECX_GLOBUS_RESOLVED_CLIENT_ID:-}"
 client_secret: "${APECX_GLOBUS_RESOLVED_CLIENT_SECRET:-}"
 
 # checksum is the safest sync mode (compares file contents, not just
-# size/mtime). The dataset is small enough (~1.5 MB total CSVs) that
-# the checksum overhead is negligible.
+# size/mtime). The dataset is small (the curated BV-BRC alphavirus file is
+# ~12 MB; the VIOLIN CSVs are a few MB total) so the checksum overhead is
+# negligible.
 sync_level: checksum
 verify_checksum: true
 
-# Generous poll timeout because:
-#   1. The full BV-BRC genome file is ~1.5 GB — at 10 MB/s effective
-#      throughput that's 150 s minimum just for the wire transfer,
-#      plus checksum verification adds another minute.
-#   2. Globus tasks can queue behind other transfers on the source
-#      endpoint.
-# 1800 s (30 min) covers the BV-BRC file at typical home-internet
-# throughput. The VIOLIN-only paths complete in <10 s. Operators on
-# fast university backbones (Argonne, etc.) usually see <120 s total.
+# Poll timeout is generous mainly to absorb Globus-side QUEUEING (a transfer
+# can wait behind other tasks on the source endpoint), not raw wire time —
+# the whole dataset is well under 20 MB and transfers in seconds once it
+# starts. 1800 s (30 min) is comfortable headroom; the step FAILS LOUD if a
+# transfer doesn't reach a terminal state within it.
 poll_timeout_seconds: 1800.0
 poll_interval_seconds: 5.0
 
 transfer_label: apecx-setup-violin-bvbrc
+
+# ---------------------------------------------------------------------------
+# Workflow-cascade wiring (G127). These data units + trigger are REQUIRED when
+# this step runs inside violin_bvbrc_transfer_workflow.yml: the verify_to_transfer
+# link targets ``transfer.transfer_input``, and the trigger fires process() when
+# the verified manifest arrives. They are INERT on the direct-call path
+# (``GlobusTransferStep.from_config(...).process({"items": ...})``), which
+# bypasses the trigger system entirely — kept here so a single config serves
+# both the workflow and any direct caller (no duplication).
+# ---------------------------------------------------------------------------
+input_data_units:
+  transfer_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: transfer_input
+    description: >
+      ``{items: [{source_path, dest_path}, ...]}`` — the verified manifest
+      handed over by the verify step via the verify_to_transfer link. The
+      step's envelope-unwrap turns ``{transfer_input: {items: [...]}}`` back
+      into ``{items: [...]}``.
+    persistent: false
+
+output_data_units:
+  status:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: status
+    description: "Globus terminal status string ('SUCCEEDED')."
+    persistent: false
+  task_id:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: task_id
+    description: "Globus transfer task UUID."
+    persistent: false
+  items_transferred:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: items_transferred
+    description: "Count of items transferred."
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "transfer_input"

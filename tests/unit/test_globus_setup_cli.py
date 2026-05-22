@@ -156,16 +156,66 @@ def test_login_subcommand_in_parser():
     assert args2.client_id == "abc-uuid"
 
 
-def test_login_fails_loud_without_client_id(capsys):
-    """`apecx-globus-setup login` (no --client-id) exits non-zero with
-    registration instructions. Operators get a copy-paste-able recipe;
-    nothing is silently fabricated."""
-    rc = main(["login"])
-    assert rc == 1
+def test_login_defaults_client_id_when_unspecified(monkeypatch, capsys):
+    """2026-05-21: web login is the DEFAULT setup path, so `apecx-globus-setup
+    login` with NO --client-id must work — it falls back to the built-in apecx
+    native client_id (a public UUID, no secret) rather than failing. Mocks
+    globus_sdk so the device flow is a no-op."""
+    import types as _types
+
+    from apecx_integration.cli._globus_data_transfer import _DEFAULT_NATIVE_CLIENT_ID
+
+    monkeypatch.delenv("APECX_GLOBUS_NATIVE_CLIENT_ID", raising=False)
+    captured: dict = {}
+
+    class _FakeUserApp:
+        def __init__(self, **kwargs):
+            captured["userapp_kwargs"] = kwargs
+
+        def login(self):
+            captured["login_called"] = True
+
+    fake_sdk = _types.SimpleNamespace(UserApp=_FakeUserApp, GlobusAppConfig=lambda **k: object())
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._import_globus_sdk", lambda: fake_sdk)
+
+    rc = main(["login"])  # no --client-id
+
+    assert rc == 0
+    assert captured["userapp_kwargs"]["client_id"] == _DEFAULT_NATIVE_CLIENT_ID
     out = capsys.readouterr().out
-    assert "no --client-id supplied" in out
-    assert "https://app.globus.org/settings/developers" in out
-    assert "apecx-globus-setup login --client-id" in out
+    assert "built-in apecx native client_id" in out
+
+
+def test_login_requests_refresh_tokens(monkeypatch):
+    """Regression (2026-05-20 blocker): login MUST request a refresh token (offline
+    access). globus_sdk's default ``request_refresh_tokens=False`` persists an online-only
+    token that expires in ~2 days with no way to renew — fatal for a default install path.
+    Mocks globus_sdk so the device flow is a no-op and asserts the config was requested.
+    """
+    import types as _types
+
+    captured: dict = {}
+
+    class _FakeUserApp:
+        def __init__(self, **kwargs):
+            captured["userapp_kwargs"] = kwargs
+
+        def login(self):
+            captured["login_called"] = True
+
+    class _FakeConfig:
+        def __init__(self, **kwargs):
+            captured["config_kwargs"] = kwargs
+
+    fake_sdk = _types.SimpleNamespace(UserApp=_FakeUserApp, GlobusAppConfig=_FakeConfig)
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._import_globus_sdk", lambda: fake_sdk)
+
+    rc = main(["login", "--client-id", "abc-uuid"])
+
+    assert rc == 0
+    assert captured.get("login_called") is True
+    assert "config" in captured["userapp_kwargs"], "UserApp must receive a config=..."
+    assert captured["config_kwargs"]["request_refresh_tokens"] is True
 
 
 def test_native_auth_recognized_by_check_globus_prerequisites(monkeypatch):

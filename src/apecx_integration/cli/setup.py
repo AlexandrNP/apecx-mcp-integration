@@ -18,10 +18,11 @@ Single entry point for the entire APECx deployment recipe:
 Each subcommand is idempotent + safe to re-run. The default
 (``apecx-setup``) runs the following in dependency order:
     1. ``globus`` — preflight Globus SDK + creds + endpoint UUIDs
-                    (skipped cleanly when not configured — operators
-                    who don't use Globus see no extra friction)
-    2. ``data``   — download VIOLIN + BV-BRC files (Globus when the
-                    preflight said OK; falls back to ``gh release``)
+                    (now REQUIRED for the data step; the gh fallback was
+                    retired 2026-05-21)
+    2. ``data``   — transfer VIOLIN + BV-BRC files via the Globus
+                    verify→transfer workflow (sole path; fails loud if
+                    Globus is unconfigured and no data is already local)
     3. ``infra``  — start Postgres + Redis containers if Docker is available
     4. ``llm``    — install Ollama if missing (interactive); start daemon;
                     pull the configured model
@@ -156,10 +157,13 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
     Status semantics (per the workspace honesty contract):
       * ``ok``      — every Globus prerequisite is satisfied; the data
                       step will transfer via Globus.
-      * ``skipped`` — at least one prerequisite is missing; the data
-                      step will fall back to ``gh release download``.
-                      This is NOT a failure: operators who don't use
-                      Globus see no extra friction.
+      * ``skipped`` — at least one prerequisite is missing. Since the gh
+                      fallback was retired (2026-05-21) Globus is now
+                      REQUIRED for data acquisition: the data step will
+                      FAIL unless the dataset is already present locally.
+                      Kept as ``skipped`` (not ``fail``) here so the
+                      preflight doesn't false-fail when data already exists
+                      — the data step is the authoritative gate.
       * ``fail``    — preconditions appear met but the step's own
                       health probe raised. Reserved for the future
                       (e.g., when the step grows a live endpoint
@@ -215,55 +219,73 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
                 "       from Settings → Endpoints, then `export APECX_GLOBUS_DEST_ENDPOINT_ID=<uuid>`."
             )
         if not prereqs.credentials_reachable:
-            print("     • no client credentials in env or keyring")
+            # Only reached in the opt-in secret (client_credentials) mode with
+            # no creds — native default always resolves a client_id.
+            print("     • no confidential client credentials in env or keyring")
             print(
                 "       Create a confidential client at https://app.globus.org/settings/developers"
             )
             print("       then store the credentials:")
             print("         apecx-globus-setup store --client-id <id> --client-secret <secret>")
         print()
-        print("  ▶  data step will use the gh release download fallback")
+        print("  ▶  Authentication (default = web-based, no secret):")
+        print("       apecx-globus-setup login    # opens a browser; log in with your")
+        print("                                   # institutional Globus identity")
+        print("     For headless / CI / automation, use the secret (confidential) path:")
+        print("       export APECX_GLOBUS_AUTH_MODE=client_credentials")
+        print("       apecx-globus-setup store --client-id <id> --client-secret <secret>")
+        print()
+        print("  ▶  Globus is REQUIRED for data acquisition (the gh-release fallback")
+        print("     was retired 2026-05-21). The data step will FAIL unless the")
+        print("     dataset is already present locally.")
         print("     See docs/globus_data_transfer.md for the full setup recipe.")
 
     return StepResult(
         "globus",
         "skipped",
-        prereqs.reason() + " (data step will use gh release fallback)",
+        prereqs.reason() + " (REQUIRED for data — gh fallback retired)",
     )
 
 
-def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> StepResult:
-    """Acquire the VIOLIN + BV-BRC dataset. G82 (2026-05-16): Globus-first.
+def _step_data(*, interactive: bool = True) -> StepResult:
+    """Acquire the VIOLIN + BV-BRC dataset via Globus (sole path since 2026-05-21).
 
-    Path selection
-    --------------
-    1. ``prefer_gh_release=True`` (operator flag): always use the
-       existing ``gh release download`` path; never touch Globus.
-    2. Otherwise: check Globus preconditions
-       (``check_globus_prerequisites``). If they pass, drive
-       ``GlobusTransferStep`` via the wrapper YAML and call it a day.
-       If the transfer fails AT THE NETWORK LAYER (Globus auth error,
-       endpoint unreachable, task failed), fall back to gh release —
-       the user wanted data, not a Globus debugging session.
-    3. If Globus preconditions don't pass (no SDK, no env vars, no
-       credentials), fall back to gh release silently. Operators who
-       never set up Globus see no extra friction.
+    The legacy ``gh release download`` fallback is RETIRED. Globus is now a hard
+    requirement: ``globus_sdk`` + credentials + source/dest endpoint UUIDs must
+    be set, and Globus Connect Personal must be running on the dest endpoint.
 
-    The fallback is also the canonical historical path: ``apecx-data``
-    GitHub release with the 6 CSVs in a tarball. Same content; just
-    fetched over GitHub instead of Globus.
+    Datasets split into REQUIRED (BV-BRC, on the public collection — verified,
+    always reachable with the M2M creds) and OPTIONAL (VIOLIN, on the Group-gated
+    `apecx-project-all` collection the transfer identity is not yet a member of).
+
+    Flow:
+      1. Non-interactive: skip (can't safely prompt). Reports whether the
+         REQUIRED data is already present.
+      2. Globus unconfigured + required data already present → skipped.
+      3. Globus unconfigured + no required data → FAIL LOUD with actionable
+         setup instructions (no silent degradation — the point of retiring gh).
+      4. Globus configured → prompt for the data dir, then:
+         - transfer REQUIRED (BV-BRC); any failure → step ``fail``.
+         - transfer OPTIONAL (VIOLIN); failure → LOUD warning + step ``partial``
+           (the install still COMPLETES — partial is exit 0). This is how a
+           clean install succeeds on public data while VIOLIN access is pending.
+         Then patch the Claude Desktop config.
     """
     _print_header("Step 2 of 6 — Data")
+    from apecx_integration.cli._globus_data_transfer import (
+        attempt_globus_data_transfer,
+        check_globus_prerequisites,
+    )
+
+    default_data = _setup_data._DEFAULT_DATA_DIR
+    # "Present" keys on the REQUIRED dataset (BV-BRC). VIOLIN is optional, so a
+    # BV-BRC-only install still counts as "required data present".
+    data_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
+
     if not interactive:
-        # Non-interactive mode: skip if data already present at the
-        # default location. We can't safely auto-prompt the user for
-        # a directory in non-interactive mode.
-        default_data = _setup_data._DEFAULT_DATA_DIR
-        if (default_data / "violin" / "Vaccine_Information.csv").exists():
+        if data_present:
             return StepResult(
-                "data",
-                "skipped",
-                f"existing data at {default_data}; non-interactive mode",
+                "data", "skipped", f"existing data at {default_data}; non-interactive mode"
             )
         return StepResult(
             "data",
@@ -271,49 +293,74 @@ def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> 
             "non-interactive mode + no existing data; run `apecx-setup data` interactively",
         )
 
-    # ----- Globus-first attempt -----
-    # Skip Globus only if the operator forced it OR if preconditions
-    # are missing. We surface either case in the step result so the
-    # summary table is honest about which path ran.
-    if not prefer_gh_release:
-        from apecx_integration.cli._globus_data_transfer import (
-            attempt_globus_data_transfer,
-            check_globus_prerequisites,
-        )
+    prereqs = check_globus_prerequisites()
+    if not prereqs.configured:
+        if data_present:
+            return StepResult(
+                "data",
+                "skipped",
+                f"Globus not configured, but dataset already present at {default_data}",
+            )
+        # Hard failure: gh fallback retired, Globus required, no data on disk.
+        print(f"  ❌  Globus not configured: {prereqs.reason()}")
+        print("     The gh-release fallback was retired 2026-05-21 — Globus is the")
+        print("     only data-acquisition path now. Set up the missing pieces:")
+        if not prereqs.sdk_installed:
+            print("     • pip install globus-sdk")
+        if not prereqs.source_endpoint_set:
+            print("     • export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<source collection UUID>")
+            print("       (ask the data steward)")
+        if not prereqs.dest_endpoint_set:
+            print("     • Install Globus Connect Personal, then")
+            print("       export APECX_GLOBUS_DEST_ENDPOINT_ID=<your personal endpoint UUID>")
+        if not prereqs.credentials_reachable:
+            print("     • apecx-globus-setup store --client-id <id> --client-secret <secret>")
+        print("     Full recipe: docs/globus_data_transfer.md")
+        return StepResult("data", "fail", f"Globus required but not configured: {prereqs.reason()}")
 
-        prereqs = check_globus_prerequisites()
-        if prereqs.configured:
-            data_dir = _setup_data._DEFAULT_DATA_DIR
-            data_dir.mkdir(parents=True, exist_ok=True)
-            print(f"  ▶  attempting Globus transfer to {data_dir}")
-            result = attempt_globus_data_transfer(data_dir=data_dir)
-            if result.status == "ok":
-                detail = f"Globus: {result.detail}"
-                if result.task_id:
-                    detail += f" (task_id={result.task_id})"
-                return StepResult("data", "ok", detail)
-            # Globus attempted but failed. Tell the operator + try gh.
-            print(f"  ⚠️  Globus transfer failed: {result.detail}")
-            print("     falling back to gh release download")
-        else:
-            # Preconditions unmet — silent fallback to gh.
-            print(f"  ▶  Globus not configured ({prereqs.reason()})")
-            print("     using gh release download instead")
+    # Configured — prompt for the data dir (relocated from the retired gh path).
+    data_dir = _setup_data.prompt_for_data_dir(interactive=interactive)
+    if data_dir is None:
+        return StepResult("data", "skipped", "operator aborted at the data-directory prompt")
+    data_dir.mkdir(parents=True, exist_ok=True)
 
-    # ----- gh release fallback -----
-    try:
-        _setup_data._run_full_setup()
-    except SystemExit as exc:
-        if exc.code == 0:
-            return StepResult("data", "ok", "gh release: downloaded + extracted")
-        return StepResult(
-            "data",
-            "fail",
-            f"setup_data exited with code {exc.code}",
-        )
-    except Exception as exc:  # noqa: BLE001
-        return StepResult("data", "fail", f"{type(exc).__name__}: {exc}")
-    return StepResult("data", "ok", "gh release: downloaded + extracted")
+    # REQUIRED — BV-BRC (public collection). Must succeed.
+    print(f"  ▶  transferring REQUIRED data (BV-BRC) to {data_dir}")
+    req = attempt_globus_data_transfer(data_dir=data_dir, datasets={"bvbrc"})
+    if req.status != "ok":
+        print(f"  ❌  Required BV-BRC transfer failed: {req.detail}")
+        return StepResult("data", "fail", f"required BV-BRC transfer failed: {req.detail}")
+
+    # OPTIONAL — VIOLIN (Group-gated 'apecx-project-all'; membership pending).
+    # A failure here is NOT fatal: warn loudly and complete the install.
+    print("  ▶  transferring OPTIONAL data (VIOLIN)")
+    opt = attempt_globus_data_transfer(data_dir=data_dir, datasets={"violin"})
+
+    # Report layout + patch the Claude Desktop config regardless (BV-BRC is in).
+    _setup_data.report_post_transfer_layout(data_dir)
+    _setup_data._maybe_update_claude_config(data_dir)
+
+    if opt.status == "ok":
+        detail = "Globus: BV-BRC + VIOLIN transferred"
+        task_ids = [t for t in (req.task_id, opt.task_id) if t]
+        if task_ids:
+            detail += f" (task_ids={','.join(task_ids)})"
+        return StepResult("data", "ok", detail)
+
+    # VIOLIN unavailable — LOUD warning, but the install COMPLETES (partial =
+    # exit 0). This is the requested "say loudly VIOLIN is missing, but the
+    # entire setup completes successfully" behavior.
+    print()
+    print("  ⚠️  VIOLIN data was NOT transferred — this is OPTIONAL; the install CONTINUES.")
+    print(f"        Reason: {opt.detail}")
+    print("        Most likely the transfer identity is not yet a member of the")
+    print("        'apecx-project-all' Globus Group (an admin grant is pending). BV-BRC")
+    print("        data is installed and the stack is usable; VIOLIN-dependent lookups")
+    print("        return empty until VIOLIN is fetched. Re-run `apecx-setup data` once")
+    print("        Group access is granted.")
+    return StepResult(
+        "data", "partial", f"BV-BRC installed; VIOLIN skipped (optional): {opt.detail[:80]}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1004,16 +1051,28 @@ def _step_verify() -> StepResult:
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
-    # Data
+    # Data — BV-BRC is REQUIRED (public collection); VIOLIN is OPTIONAL
+    # (Group-gated, membership pending). Report them separately so a
+    # VIOLIN-missing install verifies as 'partial', not 'fail'.
     default_data = _setup_data._DEFAULT_DATA_DIR
-    data_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    bvbrc_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
     checks.append(
         (
             "data",
-            data_present,
-            f"VIOLIN data at {default_data}"
-            if data_present
+            bvbrc_present,
+            f"BV-BRC data at {default_data}"
+            if bvbrc_present
             else "missing — run `apecx-setup data`",
+        )
+    )
+    violin_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    checks.append(
+        (
+            "violin",
+            violin_present,
+            f"VIOLIN data at {default_data}/violin"
+            if violin_present
+            else "missing (optional) — pending 'apecx-project-all' Globus Group access",
         )
     )
 
@@ -1120,7 +1179,7 @@ def _step_verify() -> StepResult:
     # Postgres + Redis + MinIO are optional for many workflows; reflect
     # that honestly in the partial-vs-fail distinction. faiss + rhea
     # are also optional (opt-in per G81 + G89).
-    optional = {"postgres", "redis", "minio", "faiss", "rhea"}
+    optional = {"violin", "postgres", "redis", "minio", "faiss", "rhea"}
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(
@@ -1154,17 +1213,16 @@ def _run_all(
     interactive: bool = True,
     with_rag: bool = False,
     with_rhea: bool = False,
-    prefer_gh_release: bool = False,
 ) -> int:
     """Run the canonical install chain.
 
-    Chain (G81 + G82 + G84, 2026-05-16):
+    Chain (G81 + G82 + G84; gh fallback retired 2026-05-21):
       1. globus  — preflight: SDK + credentials + endpoint UUIDs.
                    ``skipped`` when not configured (operator gets
-                   actionable instructions); ``ok`` enables Globus
-                   transfer in the data step.
-      2. data    — VIOLIN/BV-BRC CSVs (preferred path: Globus when
-                   globus step said OK; fallback: ``gh release download``)
+                   actionable instructions); now REQUIRED for the data step.
+      2. data    — VIOLIN/BV-BRC CSVs via the Globus verify→transfer
+                   workflow (sole path; FAILS LOUD if Globus is unconfigured
+                   and no data is already present locally).
       3. infra   — Docker containers (Postgres, Redis, MinIO)
       4. llm     — Ollama or remote LLM credentials
       5. verify  — sanity checks across all installed components
@@ -1190,7 +1248,7 @@ def _run_all(
     # both call check_globus_prerequisites; the cost is two cheap
     # stat-only checks, not a network round-trip).
     results.append(_step_globus(interactive=interactive))
-    results.append(_step_data(interactive=interactive, prefer_gh_release=prefer_gh_release))
+    results.append(_step_data(interactive=interactive))
     results.append(_step_infra())
     results.append(_step_llm(interactive=interactive))
     if with_rag:
@@ -1265,17 +1323,6 @@ def main(argv: list[str] | None = None) -> None:
             "tools) available via the apecx-mcp catalog."
         ),
     )
-    parser.add_argument(
-        "--prefer-gh-release",
-        action="store_true",
-        help=(
-            "Skip the Globus-first transfer attempt and use the "
-            "``gh release download`` path immediately (G82: Globus-first "
-            "since 2026-05-16). Useful when Globus IS configured but the "
-            "operator wants the same path that pre-G82 installs took, "
-            "e.g. for reproducing an older install verbatim."
-        ),
-    )
     args = parser.parse_args(argv)
 
     if args.reconfigure_llm:
@@ -1288,14 +1335,10 @@ def main(argv: list[str] | None = None) -> None:
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
                 with_rhea=args.with_rhea,
-                prefer_gh_release=args.prefer_gh_release,
             )
         )
     elif args.subcommand == "data":
-        result = _step_data(
-            interactive=not args.non_interactive,
-            prefer_gh_release=args.prefer_gh_release,
-        )
+        result = _step_data(interactive=not args.non_interactive)
     else:
         result = _SUBCOMMANDS[args.subcommand](
             interactive=not args.non_interactive,

@@ -104,7 +104,7 @@ Manual cleanup (only if needed):
 |---|---|
 | `apecx-mcp: command not found` | `~/.local/bin` not on PATH. Add to shell rc. |
 | `ModuleNotFoundError: No module named 'nanobrain'` from a test | Wrong-Python pitfall. Use `.venv/bin/python` explicitly (see [`scripts/run_tests.sh`](scripts/run_tests.sh)). |
-| `gh: unrecognized command` during `apecx-setup` | `gh` not installed. `brew install gh && gh auth login`. |
+| `data` step FAILS / "Globus required but not configured" | Authenticate first: `apecx-globus-setup login` (web, default) and set `APECX_GLOBUS_SOURCE_ENDPOINT_ID` + `APECX_GLOBUS_DEST_ENDPOINT_ID`. Headless/CI: use the secret path (`APECX_GLOBUS_AUTH_MODE=client_credentials` + `apecx-globus-setup store`). See [`docs/globus_data_transfer.md`](docs/globus_data_transfer.md). |
 | Tools missing in Claude Desktop after restart | See [`README.md`](README.md) — "two pitfalls" + tail the log. |
 
 Deeper per-tool / per-env-var reference:
