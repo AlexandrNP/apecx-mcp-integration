@@ -63,6 +63,16 @@ pytestmark = pytest.mark.skipif(
 )
 
 
+@pytest.fixture(autouse=True)
+def _force_secret_auth(monkeypatch):
+    """These live tests run HEADLESS and authenticate via the stored M2M
+    (confidential) credentials. Since the default auth mode is now native
+    (browser device-code — impossible without a browser), pin the secret path
+    for the whole module so ``attempt_globus_data_transfer`` uses the creds the
+    skip-gate already verified."""
+    monkeypatch.setenv("APECX_GLOBUS_AUTH_MODE", "client_credentials")
+
+
 def test_missing_source_gate_fails_loud(tmp_path, monkeypatch):
     """The real verify→transfer workflow, driven through the production entry
     point, must FAIL LOUD when a source file is missing — never report a false
