@@ -52,9 +52,20 @@ The LLM composer pipeline runs `validate_workflow_against_framework()`
 after `yaml.safe_load` and BEFORE `Workflow.from_config`, surfacing
 inline-dict / unresolvable-class / TransformLink / dangling-link
 violations as a structured payload. The lightweight builder didn't
-get that surface for free — `WorkflowBuilder.load()` delegates
-straight to `Workflow.from_config(self.workflow_config)` and any
-framework violation falls out as a raw exception.
+get that surface for free — `WorkflowBuilder.load()` writes the
+accumulated config to temp YAML and calls `Workflow.from_config`, so
+any framework violation falls out as a raw exception.
+
+> **Steps are file-path-only (G121 reverted 2026-05-22).** A Step's
+> `config` must be a file path, never an inline dict
+> (`ConfigBase._is_inline_config_supported` excludes `BaseStep`).
+> `WorkflowBuilder.load()` handles this for you: it writes each step's
+> accumulated fields to its own temp YAML and references it by path.
+> Links and triggers stay inline (they ARE inline-tolerant). You do
+> not author step YAML by hand when using the builder — but if you
+> bypass `load()` and dump `get_config()` to a file yourself, the flat
+> step entries (no `config:` key) will be silently skipped at load
+> (see shape #4 below).
 
 Use the bridge module to get the same structured surface for
 programmatic builds:
@@ -111,6 +122,15 @@ silent-failure shapes — it generates YAML, and the same shapes apply:
 3. **DataUnit name matching.** The names you pass to `add_input()` /
    `add_output()` MUST match the keys your step's `process()` returns. The
    builder cannot verify this — it's a runtime contract.
+4. **Flat step entry → 0 child steps (fixed in `load()`, 2026-05-22).**
+   A step entry that carries `class` but NO `config:` key is silently
+   skipped by `_resolve_nested_objects` (it instantiates only
+   `class`+`config` pairs), so the workflow loads with ZERO child steps,
+   raises nothing, and `run()` returns `{'status':'no_first_step'}`.
+   `WorkflowBuilder.load()` now prevents this by writing per-step temp
+   YAML files. The hazard only bites if you dump `get_config()` to a file
+   and load it directly — don't; use `load()`. Regression coverage:
+   `tests/unit/test_workflow_builder.py::TestBuilderLoadAndRun`.
 
 Cross-reference `nanobrain-data-units-triggers-links` and
 `nanobrain-step-authoring` skills for the underlying warnings.
