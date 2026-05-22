@@ -59,6 +59,7 @@ import dataclasses
 import logging
 import os
 from pathlib import Path
+from typing import Any
 
 log = logging.getLogger(__name__)
 
@@ -119,8 +120,11 @@ _BVBRC_FILE = "BVBRC_genome_alphavirus.csv"
 # transfers REQUIRED must-succeed and OPTIONAL warn-on-fail, so a clean install
 # completes (with a loud VIOLIN-missing warning) on public data alone.
 REQUIRED_DATASETS = ("bvbrc",)
-OPTIONAL_DATASETS = ("violin",)
-_ALL_DATASETS = ("violin", "bvbrc")
+# "extra" = user-registered source directories (apecx-globus-setup --add-dir),
+# fetched recursively. OPTIONAL alongside VIOLIN so a failure (e.g. a typo'd
+# path or an access-gated dir) warns but never aborts the required install.
+OPTIONAL_DATASETS = ("violin", "extra")
+_ALL_DATASETS = ("violin", "bvbrc", "extra")
 
 # Auth model (2026-05-21): the DEFAULT is the NATIVE / "thick client" path —
 # interactive browser device-code login (no secret). The confidential / "thin
@@ -149,6 +153,29 @@ def _resolve_native_client_id() -> str:
     default. Always non-empty, so native auth needs no pre-stored secret — the
     browser login supplies the token at first use."""
     return os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID", "").strip() or _DEFAULT_NATIVE_CLIENT_ID
+
+
+def _config_dest_endpoint() -> str | None:
+    """Destination endpoint persisted by ``apecx-globus-setup`` (or None).
+
+    FAIL-LOUD on a corrupt config rather than silently behaving as "unset" —
+    a user who ran setup expects their endpoint to apply.
+    """
+    from apecx_integration.cli import globus_config
+
+    return globus_config.get_dest_endpoint()
+
+
+def _backfill_dest_endpoint_env() -> None:
+    """If ``APECX_GLOBUS_DEST_ENDPOINT_ID`` is unset, populate it from the
+    persisted config so the workflow YAML's ``${...}`` interpolation resolves.
+    No-op when env already set or no config value exists."""
+    if os.environ.get("APECX_GLOBUS_DEST_ENDPOINT_ID", "").strip():
+        return
+    persisted = (_config_dest_endpoint() or "").strip()
+    if persisted:
+        os.environ["APECX_GLOBUS_DEST_ENDPOINT_ID"] = persisted
+        log.info("Globus dest endpoint resolved from ~/.apecx/globus_config.json")
 
 
 # ---------------------------------------------------------------------------
@@ -229,9 +256,13 @@ def check_globus_prerequisites() -> GlobusPrereqStatus:
     except ImportError:
         sdk_installed = False
 
-    # 2. Endpoint UUIDs.
+    # 2. Endpoint UUIDs. Env wins; the destination endpoint also falls back to
+    #    the persisted config (apecx-globus-setup prompts + stores it once, so a
+    #    new shell doesn't need it re-exported).
     source_endpoint = os.environ.get("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "").strip()
     dest_endpoint = os.environ.get("APECX_GLOBUS_DEST_ENDPOINT_ID", "").strip()
+    if not dest_endpoint:
+        dest_endpoint = (_config_dest_endpoint() or "").strip()
     source_set = bool(source_endpoint)
     dest_set = bool(dest_endpoint)
 
@@ -305,7 +336,7 @@ def _keyring_credentials_present() -> bool:
 
 def build_transfer_items(
     data_dir: Path, *, datasets: tuple[str, ...] | set[str] | None = None
-) -> list[dict[str, str]]:
+) -> list[dict[str, Any]]:
     """Build the {source_path, dest_path} list for the dataset files.
 
     ``datasets`` selects which dataset groups to include — a subset of
@@ -356,6 +387,22 @@ def build_transfer_items(
                 "dest_path": str(data_dir / _BVBRC_FILE),
             }
         )
+    if "extra" in include:
+        # User-registered dirs (apecx-globus-setup --add-dir). Each is fetched
+        # RECURSIVELY ("everything under it") into data_dir/<dest_subdir>/. The
+        # recursive flag is honored by nanobrain's GlobusTransferStep
+        # (add_item(..., recursive=True)) + GlobusManifestVerifyStep carries it
+        # through. Lazy import keeps the dataset-constants module light.
+        from apecx_integration.cli import globus_config
+
+        for entry in globus_config.get_extra_source_dirs():
+            items.append(
+                {
+                    "source_path": entry["remote_path"],
+                    "dest_path": str(data_dir / entry["dest_subdir"]),
+                    "recursive": True,
+                }
+            )
     return items
 
 
@@ -550,6 +597,9 @@ async def _attempt_globus_data_transfer_async(
     # Both step configs read only ${APECX_GLOBUS_RESOLVED_CLIENT_ID/SECRET}.
     auth_mode = _resolve_auth_env()
     log.info("Globus auth_mode resolved to: %s", auth_mode)
+    # Populate the dest-endpoint env from the persisted config (if not already
+    # exported) so the workflow YAML's ${APECX_GLOBUS_DEST_ENDPOINT_ID} resolves.
+    _backfill_dest_endpoint_env()
 
     items = build_transfer_items(data_dir, datasets=datasets)
     if not items:

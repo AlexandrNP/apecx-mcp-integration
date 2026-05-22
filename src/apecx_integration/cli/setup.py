@@ -331,10 +331,12 @@ def _step_data(*, interactive: bool = True) -> StepResult:
         print(f"  ❌  Required BV-BRC transfer failed: {req.detail}")
         return StepResult("data", "fail", f"required BV-BRC transfer failed: {req.detail}")
 
-    # OPTIONAL — VIOLIN (Group-gated 'apecx-project-all'; membership pending).
-    # A failure here is NOT fatal: warn loudly and complete the install.
-    print("  ▶  transferring OPTIONAL data (VIOLIN)")
-    opt = attempt_globus_data_transfer(data_dir=data_dir, datasets={"violin"})
+    # OPTIONAL — VIOLIN (Group-gated 'apecx-project-all'; membership pending) +
+    # any user-registered EXTRA dirs (apecx-globus-setup --add-dir), fetched
+    # recursively. A failure here is NOT fatal: warn loudly and complete the
+    # install (BV-BRC already landed).
+    print("  ▶  transferring OPTIONAL data (VIOLIN + any --add-dir directories)")
+    opt = attempt_globus_data_transfer(data_dir=data_dir, datasets={"violin", "extra"})
 
     # Report layout + patch the Claude Desktop config regardless (BV-BRC is in).
     _setup_data.report_post_transfer_layout(data_dir)
