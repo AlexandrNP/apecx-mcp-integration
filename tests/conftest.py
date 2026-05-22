@@ -6,6 +6,33 @@ and to give per-test-suite fixtures a stable home as the suite grows.
 
 from __future__ import annotations
 
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def _stop_infra_orchestrator_thread():
+    """Stop any orchestrator background drive thread a test spawned.
+
+    ``build_server()`` — and anything that boots the MCP server path —
+    spawns the ``apecx-infra-orchestrator`` daemon thread, which runs
+    ``start_all()`` + (in full mode) the workflow-tool pre-warm. Without
+    teardown that thread outlives the test: it keeps logging into pytest's
+    now-closed capture stream (``--- Logging error --- ValueError: I/O
+    operation on closed file``) and can leak DB / conda-build work into
+    unrelated tests.
+
+    This stops + joins the thread after every test. It is a no-op when no
+    thread was started (the common case) — a single cheap ``is_alive()``
+    check. The import is lazy so the orchestrator module is not pulled into
+    the import graph of tests that never touch it.
+    """
+    yield
+    from apecx_integration.infrastructure.orchestrator import (
+        stop_orchestrator_in_background_thread,
+    )
+
+    stop_orchestrator_in_background_thread(timeout=10.0)
+
 
 def pytest_ignore_collect(collection_path) -> bool | None:
     """Exclude the codegen-benchmark problem TEMPLATES from normal collection.
