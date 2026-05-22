@@ -23,24 +23,24 @@
 # ``~/.apecx/data``). See ``cli/_globus_data_transfer.py:build_transfer_items``
 # for the items-building logic.
 #
-# Auth modes
-# ----------
+# Auth modes (default flipped 2026-05-21)
+# ---------------------------------------
 # Two supported via the ${APECX_GLOBUS_AUTH_MODE} env var:
 #
-#   client_credentials (default) — confidential-app machine-to-machine
-#     auth. Production-shape (Aurora HPC, automation, CI). Requires
-#     ${GLOBUS_COMPUTE_CLIENT_ID} + ${GLOBUS_COMPUTE_CLIENT_SECRET}
-#     either set in env or stored via ``apecx-globus-setup store``.
-#
-#   native — interactive browser-based device-code flow against a
-#     native app. Dev / one-off workflows. Requires
-#     ${APECX_GLOBUS_NATIVE_CLIENT_ID} (a native-app UUID; no secret).
-#     Tokens are persisted by a prior
-#     ``apecx-globus-setup login --client-id <UUID>`` and loaded by
+#   native (DEFAULT) — interactive browser-based device-code flow against a
+#     native ("thick") app. No secret. The native-app client_id has a built-in
+#     default (override via ${APECX_GLOBUS_NATIVE_CLIENT_ID}); tokens are
+#     persisted by a prior ``apecx-globus-setup login`` and loaded by
 #     globus_sdk.UserApp at workflow run time.
 #
-# The default-form ``${VAR:-}`` for confidential-only fields lets the
-# YAML load when only the native-auth path is configured.
+#   client_credentials (OPT-IN) — confidential ("thin") machine-to-machine
+#     auth. For CI / automation / Aurora HPC / headless installs (the device
+#     flow needs a browser). Select with APECX_GLOBUS_AUTH_MODE=client_credentials;
+#     requires ${GLOBUS_COMPUTE_CLIENT_ID} + ${GLOBUS_COMPUTE_CLIENT_SECRET} in
+#     env or stored via ``apecx-globus-setup store``.
+#
+# The default-form ``${VAR:-}`` for the resolved-credential fields lets the
+# YAML load under either mode.
 
 name: violin_bvbrc_globus_transfer
 description: |
@@ -55,9 +55,9 @@ class: nanobrain.library.steps.globus_transfer_step.GlobusTransferStep
 source_endpoint_id: "${APECX_GLOBUS_SOURCE_ENDPOINT_ID}"
 dest_endpoint_id: "${APECX_GLOBUS_DEST_ENDPOINT_ID}"
 
-# Auth mode selector. Default client_credentials preserves prior
-# behavior; operators using native auth set APECX_GLOBUS_AUTH_MODE=native.
-auth_mode: "${APECX_GLOBUS_AUTH_MODE:-client_credentials}"
+# Auth mode selector. Default is native (web/device-code login); operators
+# opt into the confidential secret path with APECX_GLOBUS_AUTH_MODE=client_credentials.
+auth_mode: "${APECX_GLOBUS_AUTH_MODE:-native}"
 
 # Resolved auth credentials. Apecx-side code populates these
 # (``_globus_data_transfer.py:_resolve_auth_env``) based on which

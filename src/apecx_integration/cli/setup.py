@@ -219,16 +219,25 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
                 "       from Settings → Endpoints, then `export APECX_GLOBUS_DEST_ENDPOINT_ID=<uuid>`."
             )
         if not prereqs.credentials_reachable:
-            print("     • no client credentials in env or keyring")
+            # Only reached in the opt-in secret (client_credentials) mode with
+            # no creds — native default always resolves a client_id.
+            print("     • no confidential client credentials in env or keyring")
             print(
                 "       Create a confidential client at https://app.globus.org/settings/developers"
             )
             print("       then store the credentials:")
             print("         apecx-globus-setup store --client-id <id> --client-secret <secret>")
         print()
-        print("  ▶  Globus is now REQUIRED for data acquisition (the gh-release")
-        print("     fallback was retired 2026-05-21). The data step will FAIL")
-        print("     unless the dataset is already present locally.")
+        print("  ▶  Authentication (default = web-based, no secret):")
+        print("       apecx-globus-setup login    # opens a browser; log in with your")
+        print("                                   # institutional Globus identity")
+        print("     For headless / CI / automation, use the secret (confidential) path:")
+        print("       export APECX_GLOBUS_AUTH_MODE=client_credentials")
+        print("       apecx-globus-setup store --client-id <id> --client-secret <secret>")
+        print()
+        print("  ▶  Globus is REQUIRED for data acquisition (the gh-release fallback")
+        print("     was retired 2026-05-21). The data step will FAIL unless the")
+        print("     dataset is already present locally.")
         print("     See docs/globus_data_transfer.md for the full setup recipe.")
 
     return StepResult(

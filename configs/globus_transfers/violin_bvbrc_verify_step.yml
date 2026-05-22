@@ -28,7 +28,7 @@ source_endpoint_id: "${APECX_GLOBUS_SOURCE_ENDPOINT_ID}"
 # Auth mode + resolved credentials — identical convention to the transfer step
 # wrapper. _resolve_auth_env sets APECX_GLOBUS_RESOLVED_CLIENT_ID/SECRET +
 # APECX_GLOBUS_AUTH_MODE before this YAML is loaded.
-auth_mode: "${APECX_GLOBUS_AUTH_MODE:-client_credentials}"
+auth_mode: "${APECX_GLOBUS_AUTH_MODE:-native}"
 client_id: "${APECX_GLOBUS_RESOLVED_CLIENT_ID:-}"
 client_secret: "${APECX_GLOBUS_RESOLVED_CLIENT_SECRET:-}"
 

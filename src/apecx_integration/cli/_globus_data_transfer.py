@@ -122,6 +122,34 @@ REQUIRED_DATASETS = ("bvbrc",)
 OPTIONAL_DATASETS = ("violin",)
 _ALL_DATASETS = ("violin", "bvbrc")
 
+# Auth model (2026-05-21): the DEFAULT is the NATIVE / "thick client" path —
+# interactive browser device-code login (no secret). The confidential / "thin
+# client" path (client_id + secret, M2M, non-interactive) is an explicit
+# OPT-IN via APECX_GLOBUS_AUTH_MODE=client_credentials.
+#
+# Native auth needs a native-app client_id (a PUBLIC UUID — public clients carry
+# no secret, so this is safe to ship). This default is the apecx native app
+# registered for the transfer scope; operators can override it (or point at
+# their own native app) via $APECX_GLOBUS_NATIVE_CLIENT_ID. It MUST be paired
+# with app_name "nanobrain-globus-transfer-step" (nanobrain GlobusTransferStep +
+# apecx-globus-setup login both key the token store on that name).
+_DEFAULT_NATIVE_CLIENT_ID = "8ef2597d-1e4c-43d5-8216-8bac27d727d8"
+
+
+def _effective_auth_mode() -> str:
+    """The auth mode the resolver will use. NATIVE is the default; the
+    confidential (secret) path is opt-in via APECX_GLOBUS_AUTH_MODE."""
+    if os.environ.get("APECX_GLOBUS_AUTH_MODE", "").strip().lower() == "client_credentials":
+        return "client_credentials"
+    return "native"
+
+
+def _resolve_native_client_id() -> str:
+    """The native-app client_id: $APECX_GLOBUS_NATIVE_CLIENT_ID or the built-in
+    default. Always non-empty, so native auth needs no pre-stored secret — the
+    browser login supplies the token at first use."""
+    return os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID", "").strip() or _DEFAULT_NATIVE_CLIENT_ID
+
 
 # ---------------------------------------------------------------------------
 # Public result types
@@ -207,31 +235,27 @@ def check_globus_prerequisites() -> GlobusPrereqStatus:
     source_set = bool(source_endpoint)
     dest_set = bool(dest_endpoint)
 
-    # 3. Credentials reachable. THREE valid paths (G90, 2026-05-16):
-    #
-    #   a. Confidential client via env vars
-    #      ($GLOBUS_COMPUTE_CLIENT_ID + $GLOBUS_COMPUTE_CLIENT_SECRET).
-    #      CI / container default.
-    #   b. Confidential client via OS keyring (apecx-globus-setup store).
-    #      Standard workstation install.
-    #   c. Native client via persisted tokens
-    #      ($APECX_GLOBUS_NATIVE_CLIENT_ID set + a prior
-    #      `apecx-globus-setup login --client-id <UUID>`).
-    #      Dev / interactive path.
-    #
-    # We don't probe the on-disk JSON token file directly — that's
-    # globus_sdk's territory; it knows how to detect expired/missing
-    # tokens and re-prompt. The presence of $APECX_GLOBUS_NATIVE_CLIENT_ID
-    # is the contract that the operator has set up the native path
-    # (whether the tokens are still valid is checked at call time).
-    credentials_reachable = bool(
-        (
-            os.environ.get("GLOBUS_COMPUTE_CLIENT_ID")
-            and os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET")
+    # 3. Credentials reachable — depends on the effective auth mode (2026-05-21:
+    #    NATIVE/web auth is the DEFAULT; confidential/secret is opt-in).
+    if _effective_auth_mode() == "client_credentials":
+        # Confidential ("thin") client — needs a real id+secret pair, from env
+        # ($GLOBUS_COMPUTE_CLIENT_ID/_SECRET, the CI/automation path) OR the OS
+        # keyring (apecx-globus-setup store).
+        credentials_reachable = bool(
+            (
+                os.environ.get("GLOBUS_COMPUTE_CLIENT_ID")
+                and os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET")
+            )
+            or _keyring_credentials_present()
         )
-        or _keyring_credentials_present()
-        or os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID")
-    )
+    else:
+        # Native ("thick") client / web auth — needs only a native-app
+        # client_id, which ALWAYS resolves (built-in default, env-overridable).
+        # The actual token comes from the interactive browser login
+        # (`apecx-globus-setup login`); a not-yet-logged-in operator surfaces at
+        # transfer time via the device-code flow, not here. So the credential
+        # gate never blocks native — the real gates are SDK + endpoint UUIDs.
+        credentials_reachable = bool(_resolve_native_client_id())
 
     configured = sdk_installed and source_set and dest_set and credentials_reachable
 
@@ -459,37 +483,22 @@ def _resolve_auth_env() -> str:
 
     Returns the auth_mode that was resolved ("native" or "client_credentials").
 
-    Precedence:
-      * Confidential creds present in env → client_credentials
-      * Native client_id present in env → native
-      * Operator-set ``APECX_GLOBUS_AUTH_MODE`` overrides the auto-pick
-        (useful for testing the OTHER path when both are configured).
+    Mode selection (2026-05-21): **NATIVE (web/device-code) is the DEFAULT**;
+    the confidential secret path is opt-in via
+    ``APECX_GLOBUS_AUTH_MODE=client_credentials``. Even when confidential creds
+    are present (env or keyring), the default stays native unless explicitly
+    selected — the secret is a separate option, not an auto-pick.
     """
-    explicit_mode = os.environ.get("APECX_GLOBUS_AUTH_MODE", "").strip().lower()
-    have_confidential = bool(
-        os.environ.get("GLOBUS_COMPUTE_CLIENT_ID")
-        and os.environ.get("GLOBUS_COMPUTE_CLIENT_SECRET")
-    )
-    have_native = bool(os.environ.get("APECX_GLOBUS_NATIVE_CLIENT_ID"))
-
-    if explicit_mode == "native" and have_native:
-        mode = "native"
-    elif explicit_mode == "client_credentials" and have_confidential or have_confidential:
-        mode = "client_credentials"
-    elif have_native:
-        mode = "native"
-    else:
-        # Neither path is configured. _resolve_auth_env still resolves
-        # to client_credentials so the YAML loads, but the downstream
-        # GlobusTransferStep auth will fail-loud (intended — we don't
-        # mask the missing-config state).
-        mode = "client_credentials"
+    mode = _effective_auth_mode()
 
     if mode == "native":
-        os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] = os.environ["APECX_GLOBUS_NATIVE_CLIENT_ID"]
+        # Thick client / browser login. Resolve the native-app client_id
+        # (built-in default, env-overridable); the token comes from the
+        # interactive `apecx-globus-setup login`. No secret.
+        os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] = _resolve_native_client_id()
         os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] = ""
         os.environ["APECX_GLOBUS_AUTH_MODE"] = "native"
-    else:  # client_credentials
+    else:  # client_credentials (opt-in secret path)
         os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] = os.environ.get(
             "GLOBUS_COMPUTE_CLIENT_ID", ""
         )

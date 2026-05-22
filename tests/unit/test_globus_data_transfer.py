@@ -47,6 +47,10 @@ def clean_globus_env(monkeypatch: pytest.MonkeyPatch) -> None:
         "APECX_GLOBUS_DEST_ENDPOINT_ID",
         "APECX_GLOBUS_VIOLIN_SOURCE_DIR",
         "APECX_GLOBUS_BVBRC_SOURCE_DIR",
+        "APECX_GLOBUS_AUTH_MODE",
+        "APECX_GLOBUS_NATIVE_CLIENT_ID",
+        "APECX_GLOBUS_RESOLVED_CLIENT_ID",
+        "APECX_GLOBUS_RESOLVED_CLIENT_SECRET",
         "GLOBUS_COMPUTE_CLIENT_ID",
         "GLOBUS_COMPUTE_CLIENT_SECRET",
     ]:
@@ -58,76 +62,79 @@ def clean_globus_env(monkeypatch: pytest.MonkeyPatch) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_prereqs_unconfigured_when_nothing_set(clean_globus_env: None) -> None:
-    """With no env vars and no keyring entries, every flag is False."""
+def test_prereqs_native_default_only_endpoints_gate(clean_globus_env: None) -> None:
+    """NATIVE is the default auth mode (2026-05-21). Native needs no pre-stored
+    secret — the built-in native client_id always resolves and the token comes
+    from the browser login — so credentials_reachable is True even with nothing
+    set; the only gates are SDK + the two endpoint UUIDs."""
     from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
 
-    with patch(
-        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
-        return_value=False,
-    ):
-        status = check_globus_prerequisites()
+    status = check_globus_prerequisites()  # nothing set → native default
 
-    # sdk_installed depends on the test env; the OTHER flags are what
-    # this test pins.
+    assert status.credentials_reachable is True  # native needs no stored creds
     assert status.source_endpoint_set is False
     assert status.dest_endpoint_set is False
-    assert status.credentials_reachable is False
-    assert status.configured is False
-
+    assert status.configured is False  # endpoints missing
     reason = status.reason()
     assert "APECX_GLOBUS_SOURCE_ENDPOINT_ID unset" in reason
     assert "APECX_GLOBUS_DEST_ENDPOINT_ID unset" in reason
-    assert "no client credentials" in reason
 
 
-def test_prereqs_configured_when_everything_set(
-    clean_globus_env: None,
-    monkeypatch: pytest.MonkeyPatch,
+def test_prereqs_native_configured_with_endpoints_only(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """All flags True → status.configured is True, reason() says OK."""
+    """Native default: SDK + both endpoints set → configured, no creds needed."""
     from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
 
     monkeypatch.setenv("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "src-uuid")
     monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "dst-uuid")
-    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "client-id")
-    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "client-secret")
 
-    # Force sdk_installed=True regardless of test env (the dep is
-    # installed in this workspace's venv but absence shouldn't fail).
-    with patch(
-        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
-        return_value=False,
-    ):
-        status = check_globus_prerequisites()
-
-    # If globus_sdk is installed (it is, per pyproject.toml), this is True.
-    # Skip the asserts about sdk_installed to keep the test env-agnostic.
+    status = check_globus_prerequisites()
     if status.sdk_installed:
-        assert status.source_endpoint_set is True
-        assert status.dest_endpoint_set is True
         assert status.credentials_reachable is True
         assert status.configured is True
         assert status.reason() == "Globus prerequisites OK"
 
 
-def test_prereqs_credentials_via_keyring_count_as_present(
-    clean_globus_env: None,
-    monkeypatch: pytest.MonkeyPatch,
+def test_prereqs_client_credentials_optin_requires_creds(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Credentials in the OS keyring are equivalent to env-var credentials."""
+    """The opt-in secret path (APECX_GLOBUS_AUTH_MODE=client_credentials) DOES
+    require a real id+secret — from env or keyring. Missing both → not reachable
+    + the 'no client credentials' reason."""
     from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
 
+    monkeypatch.setenv("APECX_GLOBUS_AUTH_MODE", "client_credentials")
     monkeypatch.setenv("APECX_GLOBUS_SOURCE_ENDPOINT_ID", "src-uuid")
     monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "dst-uuid")
-    # No env credentials, but the keyring lookup succeeds.
+
+    # No env creds + empty keyring → not reachable.
+    with patch(
+        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
+        return_value=False,
+    ):
+        status = check_globus_prerequisites()
+    assert status.credentials_reachable is False
+    assert status.configured is False
+    assert "no client credentials" in status.reason()
+
+    # Env creds → reachable.
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cid")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "secret")
+    with patch(
+        "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
+        return_value=False,
+    ):
+        assert check_globus_prerequisites().credentials_reachable is True
+
+    # Keyring creds (no env) → also reachable.
+    monkeypatch.delenv("GLOBUS_COMPUTE_CLIENT_ID", raising=False)
+    monkeypatch.delenv("GLOBUS_COMPUTE_CLIENT_SECRET", raising=False)
     with patch(
         "apecx_integration.cli._globus_data_transfer._keyring_credentials_present",
         return_value=True,
     ):
-        status = check_globus_prerequisites()
-
-    assert status.credentials_reachable is True
+        assert check_globus_prerequisites().credentials_reachable is True
 
 
 def test_prereqs_keyring_internal_failure_is_silent(
@@ -403,13 +410,59 @@ def test_workflow_builder_lightweight_parity() -> None:
         assert link["config"]["link_type"] == "direct"
 
 
-def test_resolve_auth_env_picks_confidential_when_available(
+def test_resolve_auth_env_defaults_to_native(
     clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """When both confidential env vars are set, ``_resolve_auth_env``
-    selects client_credentials and populates the RESOLVED slots."""
+    """2026-05-21: native (web) is the DEFAULT. With NOTHING set, _resolve_auth_env
+    selects native, resolves the built-in native client_id, and leaves the secret
+    empty."""
+    from apecx_integration.cli._globus_data_transfer import (
+        _DEFAULT_NATIVE_CLIENT_ID,
+        _resolve_auth_env,
+    )
+
+    mode = _resolve_auth_env()
+    assert mode == "native"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == _DEFAULT_NATIVE_CLIENT_ID
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] == ""
+    assert os.environ["APECX_GLOBUS_AUTH_MODE"] == "native"
+
+
+def test_resolve_auth_env_native_default_ignores_confidential_creds(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The secret path is OPT-IN: even when confidential env creds are present,
+    the default stays native unless explicitly selected. (Secret is a separate
+    option, not an auto-pick.)"""
     from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
 
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cc-id")
+    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "cc-secret")
+
+    assert _resolve_auth_env() == "native"
+    assert os.environ["APECX_GLOBUS_AUTH_MODE"] == "native"
+
+
+def test_resolve_auth_env_native_honors_custom_client_id(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A custom native client_id overrides the built-in default."""
+    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
+
+    monkeypatch.setenv("APECX_GLOBUS_NATIVE_CLIENT_ID", "my-native-id")
+    assert _resolve_auth_env() == "native"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "my-native-id"
+    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] == ""
+
+
+def test_resolve_auth_env_client_credentials_optin(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Opt into the secret path with APECX_GLOBUS_AUTH_MODE=client_credentials;
+    the RESOLVED slots get the confidential env creds."""
+    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
+
+    monkeypatch.setenv("APECX_GLOBUS_AUTH_MODE", "client_credentials")
     monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cc-id")
     monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "cc-secret")
 
@@ -417,39 +470,6 @@ def test_resolve_auth_env_picks_confidential_when_available(
     assert mode == "client_credentials"
     assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "cc-id"
     assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] == "cc-secret"
-    assert os.environ["APECX_GLOBUS_AUTH_MODE"] == "client_credentials"
-
-
-def test_resolve_auth_env_picks_native_when_only_native_set(
-    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """Native client_id alone selects native auth + empty secret."""
-    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
-
-    monkeypatch.setenv("APECX_GLOBUS_NATIVE_CLIENT_ID", "native-id")
-
-    mode = _resolve_auth_env()
-    assert mode == "native"
-    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "native-id"
-    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_SECRET"] == ""
-    assert os.environ["APECX_GLOBUS_AUTH_MODE"] == "native"
-
-
-def test_resolve_auth_env_honors_explicit_mode_override(
-    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """Operator-set APECX_GLOBUS_AUTH_MODE picks the path even when
-    both are available — useful for testing the OTHER path."""
-    from apecx_integration.cli._globus_data_transfer import _resolve_auth_env
-
-    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_ID", "cc-id")
-    monkeypatch.setenv("GLOBUS_COMPUTE_CLIENT_SECRET", "cc-secret")
-    monkeypatch.setenv("APECX_GLOBUS_NATIVE_CLIENT_ID", "native-id")
-    monkeypatch.setenv("APECX_GLOBUS_AUTH_MODE", "native")
-
-    mode = _resolve_auth_env()
-    assert mode == "native"
-    assert os.environ["APECX_GLOBUS_RESOLVED_CLIENT_ID"] == "native-id"
 
 
 # ---------------------------------------------------------------------------
@@ -523,6 +543,9 @@ def test_step_globus_interactive_prints_actionable_instructions(
     # Each unmet prerequisite must show an actionable hint.
     assert "APECX_GLOBUS_SOURCE_ENDPOINT_ID" in out
     assert "APECX_GLOBUS_DEST_ENDPOINT_ID" in out
+    # Default auth is web-based (login); the secret path is the opt-in option.
+    assert "apecx-globus-setup login" in out
+    assert "APECX_GLOBUS_AUTH_MODE=client_credentials" in out
     assert "apecx-globus-setup store" in out
     # And the operator is told Globus is now required (gh fallback retired).
     assert "REQUIRED" in out

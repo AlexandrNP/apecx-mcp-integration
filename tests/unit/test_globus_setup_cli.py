@@ -156,16 +156,34 @@ def test_login_subcommand_in_parser():
     assert args2.client_id == "abc-uuid"
 
 
-def test_login_fails_loud_without_client_id(capsys):
-    """`apecx-globus-setup login` (no --client-id) exits non-zero with
-    registration instructions. Operators get a copy-paste-able recipe;
-    nothing is silently fabricated."""
-    rc = main(["login"])
-    assert rc == 1
+def test_login_defaults_client_id_when_unspecified(monkeypatch, capsys):
+    """2026-05-21: web login is the DEFAULT setup path, so `apecx-globus-setup
+    login` with NO --client-id must work — it falls back to the built-in apecx
+    native client_id (a public UUID, no secret) rather than failing. Mocks
+    globus_sdk so the device flow is a no-op."""
+    import types as _types
+
+    from apecx_integration.cli._globus_data_transfer import _DEFAULT_NATIVE_CLIENT_ID
+
+    monkeypatch.delenv("APECX_GLOBUS_NATIVE_CLIENT_ID", raising=False)
+    captured: dict = {}
+
+    class _FakeUserApp:
+        def __init__(self, **kwargs):
+            captured["userapp_kwargs"] = kwargs
+
+        def login(self):
+            captured["login_called"] = True
+
+    fake_sdk = _types.SimpleNamespace(UserApp=_FakeUserApp, GlobusAppConfig=lambda **k: object())
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._import_globus_sdk", lambda: fake_sdk)
+
+    rc = main(["login"])  # no --client-id
+
+    assert rc == 0
+    assert captured["userapp_kwargs"]["client_id"] == _DEFAULT_NATIVE_CLIENT_ID
     out = capsys.readouterr().out
-    assert "no --client-id supplied" in out
-    assert "https://app.globus.org/settings/developers" in out
-    assert "apecx-globus-setup login --client-id" in out
+    assert "built-in apecx native client_id" in out
 
 
 def test_login_requests_refresh_tokens(monkeypatch):

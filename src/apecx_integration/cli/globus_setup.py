@@ -285,18 +285,17 @@ def _cmd_login(client_id: str | None) -> int:
     """
     _print_header("apecx-globus-setup login — Globus device-code flow")
 
+    # client_id defaults to the built-in apecx native app (2026-05-21: web
+    # login is the DEFAULT setup path, so it must work with no args). Operators
+    # can override with --client-id or $APECX_GLOBUS_NATIVE_CLIENT_ID to use
+    # their own native app.
     if not client_id:
-        _fail("login", "no --client-id supplied")
+        from apecx_integration.cli._globus_data_transfer import _resolve_native_client_id
+
+        client_id = _resolve_native_client_id()
+        print(f"  Using the built-in apecx native client_id ({client_id[:8]}…).")
+        print("  Override with --client-id <UUID> or $APECX_GLOBUS_NATIVE_CLIENT_ID.")
         print()
-        print("  Native-app client_id required for the device-code flow.")
-        print("  Register a free native app at:")
-        print("    https://app.globus.org/settings/developers")
-        print("  Choose: 'Register a thick client or script that will be")
-        print("           installed and run by users on their devices'")
-        print("  Copy the client_id (a UUID; no secret needed for native apps)")
-        print("  Then run:")
-        print("    apecx-globus-setup login --client-id <UUID>")
-        return 1
 
     try:
         globus_sdk = _import_globus_sdk()
