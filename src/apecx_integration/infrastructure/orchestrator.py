@@ -673,8 +673,9 @@ class InfraOrchestrator:
           nanobrain primitives without touching this driver.
         * The orchestrator now drives pre-warm the same way it drives
           every other apecx workflow — ``Workflow.from_config(...)`` +
-          ``process()`` + ``wait_for_cascade()``. One pattern, one
-          mental model.
+          ``initialize()`` + ``Workflow.run(...)`` (the canonical
+          G8/G124/G125 entry point that drains the cascade and collects
+          workflow outputs in one call). One pattern, one mental model.
 
         The pipeline's actual install/Postgres/Redis logic still lives
         in :mod:`rhea_prewarm` — the workflow steps are thin nanobrain
@@ -744,14 +745,23 @@ class InfraOrchestrator:
         # never fires (workspace-known pattern; see rag_e2e workflow-
         # yaml test for the same dance).
         await workflow.initialize()
-        await workflow.process({"prewarm_request": prewarm_request})
 
-        # Per-tool install can be 30-90s each; serial walk + room for
-        # the cascade-drain settle puts us in the ~30 minute envelope
-        # for a worst-case catalog. The install_tools step's own
-        # execution_timeout (1800s) bounds any single hung install.
-        drained = await workflow.wait_for_cascade(timeout=1800.0, settle_ms=300)
-        if not drained:
+        # Drive via the canonical ``Workflow.run`` (G8/G124/G125): it
+        # invokes process(), awaits the cascade until quiet, and collects
+        # the workflow-level output data units in one call — closing the
+        # cascade-drain race that the older manual
+        # ``process() + wait_for_cascade()`` pair was prone to. ``run``
+        # does NOT call ``initialize()`` itself, so the explicit call above
+        # stays. Per-tool install can be 30-90s each; the 1800s timeout
+        # bounds a worst-case catalog (the install step's own
+        # execution_timeout also caps any single hung install).
+        outputs = await workflow.run(
+            {"prewarm_request": prewarm_request},
+            timeout=1800.0,
+            settle_ms=500,
+            raise_on_cascade_timeout=False,
+        )
+        if not isinstance(outputs, dict) or outputs.get("status") == "cascade_timeout":
             log.error(
                 "rhea_prewarm: workflow cascade did not drain within 1800s — "
                 "either a step hung or a DirectLink failed to transfer. "
@@ -759,8 +769,7 @@ class InfraOrchestrator:
             )
             return
 
-        report_du = workflow.output_data_units.get("prewarm_report")
-        report = await report_du.get() if report_du is not None else None
+        report = outputs.get("prewarm_report")
         if report is None:
             log.error(
                 "rhea_prewarm: workflow drained but prewarm_report DU is "
@@ -1254,6 +1263,18 @@ def get_orchestrator() -> InfraOrchestrator:
     return _SINGLETON
 
 
+# Background-drive handle. Stored so the drive thread can be stopped
+# (cancelled + joined) on process exit or in test teardown — a daemon
+# thread that keeps running ``prewarm_workflow_tools()`` after its owner
+# is gone logs into a closed stream and, in production, risks being
+# abrupt-killed mid-conda-build. See ``stop_orchestrator_in_background_thread``.
+_BG_THREAD: threading.Thread | None = None
+_BG_LOOP: asyncio.AbstractEventLoop | None = None
+_BG_TASK: asyncio.Future | None = None
+_BG_HANDLE_LOCK = threading.Lock()
+_BG_ATEXIT_REGISTERED = False
+
+
 def start_orchestrator_in_background_thread() -> threading.Thread:
     """Kick off ``orchestrator.start_all()`` in a dedicated daemon thread.
 
@@ -1267,36 +1288,91 @@ def start_orchestrator_in_background_thread() -> threading.Thread:
     surface is guarded by a ``threading.Lock``, so the two loops can
     not race on field assignment.
 
+    The drive (``start_all`` + optional pre-warm) runs as a single
+    cancellable asyncio task; the thread/loop/task handles are stored
+    module-side so ``stop_orchestrator_in_background_thread`` can stop
+    it cleanly. A process-exit ``atexit`` hook is registered once so the
+    drive is *cancelled* (its ``finally`` blocks run) rather than
+    abrupt-killed when the interpreter tears the daemon thread down.
+
     Returns the thread so callers can ``.join`` it in tests; in
     production it's a daemon thread and will die with the process.
     """
     orch = get_orchestrator()
+    loop_ready = threading.Event()
+    holder: dict[str, Any] = {}
+
+    async def _drive() -> None:
+        await orch.start_all()
+        # After backends probe/spawn, run the Rhea tool pre-warm phase
+        # (build + Redis-cache the per-tool conda envs declared in the
+        # catalog). Pre-warm builds conda envs on disk — a system-
+        # touching action — so it is SKIPPED in probe-only mode
+        # (``APECX_MCP_AUTOSTART_INFRA=0``), consistent with that mode's
+        # no-spawn / hands-off contract. The pre-warm bypasses the
+        # Academy actor (direct ``install_conda_env`` call) so install
+        # failures don't wedge the actor for the rest of the session.
+        if orch._autostart:
+            await orch.prewarm_workflow_tools()
+        else:
+            log.info(
+                "InfraOrchestrator: probe-only mode (autostart=0) — "
+                "skipping workflow-tool pre-warm (no conda-env builds)."
+            )
 
     def _runner() -> None:
         loop = asyncio.new_event_loop()
+        task = loop.create_task(_drive())
+        holder["loop"] = loop
+        holder["task"] = task
+        loop_ready.set()
         try:
-            loop.run_until_complete(orch.start_all())
+            loop.run_until_complete(task)
+        except asyncio.CancelledError:
+            log.info("InfraOrchestrator: background drive cancelled (shutdown).")
         except Exception:  # noqa: BLE001
-            log.exception("InfraOrchestrator.start_all raised")
-            return
-        # After every backend probes/spawns, run the Rhea tool
-        # pre-warm phase. The catalog drives this — if any workflow
-        # declares ``prewarm_rhea_tools``, the conda envs are built
-        # + cached in Redis BEFORE the orchestrator reports
-        # ``all_ready=True``. The pre-warm bypasses the Academy
-        # actor (direct ``rhea.agent.utils.install_conda_env`` call)
-        # so install failures don't wedge the actor for the rest
-        # of the session.
-        try:
-            loop.run_until_complete(orch.prewarm_workflow_tools())
-        except Exception:  # noqa: BLE001
-            log.exception("InfraOrchestrator.prewarm_workflow_tools raised")
+            log.exception("InfraOrchestrator background drive raised")
         finally:
             loop.close()
 
     thread = threading.Thread(target=_runner, name="apecx-infra-orchestrator", daemon=True)
     thread.start()
+    # Wait briefly for the loop+task to exist so a stop() that races a
+    # just-started thread has handles to act on.
+    loop_ready.wait(timeout=5.0)
+
+    global _BG_THREAD, _BG_LOOP, _BG_TASK, _BG_ATEXIT_REGISTERED
+    with _BG_HANDLE_LOCK:
+        _BG_THREAD = thread
+        _BG_LOOP = holder.get("loop")
+        _BG_TASK = holder.get("task")
+        if not _BG_ATEXIT_REGISTERED:
+            atexit.register(stop_orchestrator_in_background_thread)
+            _BG_ATEXIT_REGISTERED = True
     return thread
+
+
+def stop_orchestrator_in_background_thread(timeout: float = 5.0) -> None:
+    """Cancel the background drive task and join its thread.
+
+    Idempotent and safe to call when no thread is running. Cancelling the
+    task (rather than killing the thread) lets in-flight ``await`` points —
+    e.g. a conda-env build inside pre-warm — unwind through their
+    ``finally`` blocks. Registered as an ``atexit`` hook by
+    ``start_orchestrator_in_background_thread``; also called by test
+    teardown so the drive does not outlive the test that spawned it (a
+    leaked drive logs into pytest's closed capture stream).
+    """
+    with _BG_HANDLE_LOCK:
+        thread, loop, task = _BG_THREAD, _BG_LOOP, _BG_TASK
+    if thread is None or not thread.is_alive():
+        return
+    if loop is not None and task is not None and not task.done():
+        with contextlib.suppress(RuntimeError):
+            # RuntimeError if the loop already closed between the check
+            # and the call — benign (thread is on its way out).
+            loop.call_soon_threadsafe(task.cancel)
+    thread.join(timeout=timeout)
 
 
 def reset_orchestrator_for_testing() -> None:
@@ -1315,4 +1391,5 @@ __all__ = [
     "get_orchestrator",
     "reset_orchestrator_for_testing",
     "start_orchestrator_in_background_thread",
+    "stop_orchestrator_in_background_thread",
 ]

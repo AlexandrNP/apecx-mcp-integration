@@ -53,6 +53,7 @@ from apecx_integration.infrastructure import (
     get_orchestrator,
     reset_orchestrator_for_testing,
 )
+from apecx_integration.infrastructure import orchestrator as _orch_mod
 from apecx_integration.infrastructure.backends import (
     BackendRuntime,
     HostProcessSpec,
@@ -61,6 +62,10 @@ from apecx_integration.infrastructure.backends import (
 from apecx_integration.infrastructure.containers import (
     all_container_specs,
     container_run_args,
+)
+from apecx_integration.infrastructure.orchestrator import (
+    start_orchestrator_in_background_thread,
+    stop_orchestrator_in_background_thread,
 )
 from apecx_integration.infrastructure.probes import (
     minio_probe,
@@ -741,3 +746,52 @@ def test_reset_orchestrator_clears_singleton():
     b = get_orchestrator()
     assert a is not b
     reset_orchestrator_for_testing()
+
+
+# ---------------------------------------------------------------------------
+# Background-drive thread lifecycle (Fix B) + probe-only prewarm gate (Fix E)
+# ---------------------------------------------------------------------------
+class _FakeDrivenOrch:
+    """Minimal stand-in whose start_all/prewarm are instant + observable."""
+
+    def __init__(self, autostart: bool) -> None:
+        self._autostart = autostart
+        self.start_all_called = False
+        self.prewarm_called = False
+
+    async def start_all(self):
+        self.start_all_called = True
+        return {}
+
+    async def prewarm_workflow_tools(self):
+        self.prewarm_called = True
+
+
+def test_stop_background_thread_is_noop_when_none_running():
+    # Safe + idempotent even if nothing was ever started, or a prior
+    # thread already finished. Must not raise.
+    stop_orchestrator_in_background_thread(timeout=1.0)
+    stop_orchestrator_in_background_thread(timeout=1.0)
+
+
+def test_background_drive_runs_prewarm_in_full_mode(monkeypatch):
+    fake = _FakeDrivenOrch(autostart=True)
+    monkeypatch.setattr(_orch_mod, "get_orchestrator", lambda: fake)
+    thread = start_orchestrator_in_background_thread()
+    # stop() joins; the join is the synchronization point — after it
+    # returns the drive has finished and the flags are settled.
+    stop_orchestrator_in_background_thread(timeout=10.0)
+    assert not thread.is_alive()
+    assert fake.start_all_called is True
+    assert fake.prewarm_called is True
+
+
+def test_background_drive_skips_prewarm_in_probe_only_mode(monkeypatch):
+    fake = _FakeDrivenOrch(autostart=False)
+    monkeypatch.setattr(_orch_mod, "get_orchestrator", lambda: fake)
+    thread = start_orchestrator_in_background_thread()
+    stop_orchestrator_in_background_thread(timeout=10.0)
+    assert not thread.is_alive()
+    assert fake.start_all_called is True
+    # Probe-only must NOT build conda envs.
+    assert fake.prewarm_called is False
