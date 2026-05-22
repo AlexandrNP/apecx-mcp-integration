@@ -6,19 +6,17 @@ Globus is now required. If Globus isn't configured and the dataset isn't
 already on disk, `apecx-setup data` FAILS LOUD with setup instructions rather
 than silently degrading.
 
-## TL;DR
+## TL;DR (default: web-based login, no secret)
 
 ```bash
 # 1. Install Globus Connect Personal (one-time) and start it.
 #    https://www.globus.org/globus-connect-personal
 #    Grab your endpoint UUID from Settings → Endpoints.
 
-# 2. Store your confidential-client credentials in the OS keyring.
-#    (Stored under keyring service "nanobrain-globus" — the same place
-#    the transfer step's auth reads from.)
-apecx-globus-setup store \
-    --client-id  '<your-client-id>' \
-    --client-secret '<your-client-secret>'
+# 2. Authenticate via the browser device-code flow (the DEFAULT — thick client,
+#    no secret to obtain/store; the token auto-refreshes). A built-in public
+#    native-client id is used unless you override $APECX_GLOBUS_NATIVE_CLIENT_ID.
+apecx-globus-setup login
 
 # 3. Set the source + destination endpoint UUIDs in your shell rc / .env.
 export APECX_GLOBUS_SOURCE_ENDPOINT_ID='<source-collection-uuid>'
@@ -28,11 +26,31 @@ export APECX_GLOBUS_DEST_ENDPOINT_ID='<your-personal-endpoint-uuid>'   # REQUIRE
 apecx-setup
 ```
 
-Headless / CI installs: the confidential-client (M2M) path works
-non-interactively — store the creds (or set `GLOBUS_COMPUTE_CLIENT_ID` /
-`GLOBUS_COMPUTE_CLIENT_SECRET` in the environment) and no browser login is
-needed. The native/browser path (`apecx-globus-setup login`) is supported for
-dev workstations but is NOT required.
+## Auth modes — web (default) vs secret (opt-in)
+
+**Native / web (DEFAULT, "thick client").** Interactive browser device-code
+login (`apecx-globus-setup login`), no secret. Best for workstations. Tokens
+persist with offline-refresh, so you log in once. `apecx-setup` uses this with
+no extra config; a built-in public native-client id ships with the tool
+(`$APECX_GLOBUS_NATIVE_CLIENT_ID` overrides it).
+
+**Confidential / secret (OPT-IN, "thin client").** Machine-to-machine, no
+browser — for **headless installs, CI, automation, HPC**:
+
+```bash
+export APECX_GLOBUS_AUTH_MODE=client_credentials
+apecx-globus-setup store --client-id '<id>' --client-secret '<secret>'
+# or in CI: export GLOBUS_COMPUTE_CLIENT_ID / GLOBUS_COMPUTE_CLIENT_SECRET
+```
+
+(Creds are stored under keyring service `nanobrain-globus` — the same place the
+transfer step's auth reads from.) The default stays native even when
+confidential creds are present; you MUST set `APECX_GLOBUS_AUTH_MODE=client_credentials`
+to select the secret path.
+
+**Brutal truth:** the browser device-code flow needs a browser, so a fully
+headless/unattended `apecx-setup` MUST use the secret path. Pick native for
+laptops, the secret path for servers/CI.
 
 ## How it works — verify→transfer workflow (G127)
 
@@ -103,7 +121,8 @@ Optional:
 |---|---|---|
 | `APECX_GLOBUS_VIOLIN_SOURCE_DIR` | `/apecx-ramanathan-anl/apecx-project-all/violin` | Source dir holding the 5 VIOLIN CSVs (ACL-gated by the `apecx-project-all` Group). |
 | `APECX_GLOBUS_BVBRC_SOURCE_DIR` | `/apecx-ramanathan-anl/public/data/BV-BRC` | Source dir holding `BVBRC_genome_alphavirus.csv`. |
-| `APECX_GLOBUS_AUTH_MODE` | `client_credentials` | `client_credentials` (M2M) or `native` (browser). |
+| `APECX_GLOBUS_AUTH_MODE` | `native` | `native` (browser device-code, DEFAULT) or `client_credentials` (secret/M2M, opt-in for headless/CI). |
+| `APECX_GLOBUS_NATIVE_CLIENT_ID` | built-in apecx native app | Override the native-app client_id (public UUID, no secret) used by the browser login. |
 | `APECX_DATA_ROOT` | `~/.apecx/data` | Where local copies land. |
 
 ## REQUIRED vs OPTIONAL datasets

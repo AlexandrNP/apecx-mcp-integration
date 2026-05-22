@@ -195,3 +195,33 @@ shared production collection would be inappropriate. Accessibility is proven
 (`APECX_GLOBUS_LIVE_TRANSFER=1` + a real dest). Honest status: **VIOLIN is
 confirmed READABLE by the client; a full round-trip transfer is unrun here for
 lack of a dest endpoint.**
+
+## Follow-up #4 (2026-05-22) — web-based login is now the DEFAULT auth
+
+Per request, the default Globus auth flipped from confidential/M2M (secret) to
+**native / web-based device-code login (thick client, no secret)**; the secret
+path is now an explicit opt-in.
+
+- nanobrain `build_globus_app` native path now sets
+  `request_refresh_tokens=True` (commit `ae5262d`) — load-bearing once native is
+  the default, else tokens die in ~2 days. (Also fixed a keyring-pollution test
+  isolation bug in `test_globus_auth.py`.)
+- apecx `_resolve_auth_env` defaults to native; `client_credentials` only when
+  `APECX_GLOBUS_AUTH_MODE=client_credentials` (secret is a separate option, not
+  an auto-pick — even when creds are present). A built-in public native client_id
+  (`_DEFAULT_NATIVE_CLIENT_ID`, env-overridable) makes web login zero-config;
+  `apecx-globus-setup login` no longer requires `--client-id`. Wrapper YAMLs
+  default `auth_mode: native`. `check_globus_prerequisites` is mode-aware (native
+  needs no stored secret — gates are SDK + endpoints). Commit `7864cc7`.
+- README.md + docs/globus_data_transfer.md rewritten: web login as the default
+  setup; the secret path documented for headless/CI; the stale gh-download +
+  proprietary-license blurbs corrected (LICENSE is MIT).
+
+**Honest verification status:** the secret (opt-in) path is verified LIVE
+against the real source (verify step passes). The native browser device-code
+flow is **NOT live-verifiable here** (no browser) — it's covered by unit tests
+(default selection, client_id resolution, login defaulting) + the nanobrain
+refresh-token regression. The built-in native client_id (`8ef2597d-…`) is taken
+from the prior session's checkpoint and assumed valid; if Globus rejects it the
+device flow fails LOUD and the operator overrides via
+`$APECX_GLOBUS_NATIVE_CLIENT_ID`. **Headless/CI must still use the secret path.**
