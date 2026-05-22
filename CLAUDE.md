@@ -184,6 +184,15 @@ export APECX_GLOBUS_DEST_ENDPOINT_ID=<your-personal-uuid>   # Globus Connect Per
 apecx-setup
 ```
 
+**Auth (default flipped 2026-05-22):** DEFAULT is NATIVE / web-based
+device-code login (thick client, no secret) — `apecx-globus-setup login`
+(zero-config; built-in public native client_id, override via
+`$APECX_GLOBUS_NATIVE_CLIENT_ID`). The confidential secret path (thin client,
+M2M) is OPT-IN via `APECX_GLOBUS_AUTH_MODE=client_credentials` — required for
+headless/CI (no browser). `_resolve_auth_env` defaults native even when
+confidential creds exist. nanobrain `build_globus_app` native path sets
+`request_refresh_tokens=True` (commit `ae5262d`) so native tokens auto-refresh.
+
 The data step drives a 2-step nanobrain workflow
 (`configs/globus_transfers/violin_bvbrc_transfer_workflow.yml`):
 `GlobusManifestVerifyStep` (G127, fail-loud source-existence gate) →
