@@ -52,6 +52,59 @@ jobs:
         run: |
           pytest tests/unit/ -v --tb=short --no-header
 
+  install-smoke:
+    # Exercises the EXACT command in README/QUICKSTART/INSTALL:
+    #   uv tool install --python 3.12 git+https://github.com/<repo>.git@<ref>
+    # Unlike the `unit` job (which `pip install -e .` from an
+    # actions/checkout with lfs:false — pointers stay as text, never
+    # smudged), this does a real git clone + `git reset --hard`, so any
+    # clone-time data dependency fails HERE instead of in a user's
+    # terminal. This is the path that shipped broken: a committed-but-
+    # missing git-LFS object (data/faiss_indexes/) made the smudge filter
+    # abort the install with exit 128. No DATA is downloaded: the install
+    # ships code + console scripts only; datasets come later via Globus
+    # (`apecx-setup data`), which is deliberately NOT run here — the
+    # default web/native auth needs a browser and the thin-client secret
+    # path needs provisioned M2M creds, neither of which belongs in a
+    # headless smoke test.
+    name: clean install smoke (uv tool install git+)
+    runs-on: ubuntu-latest
+    # push only: on PR events github.sha is a synthetic merge commit that
+    # isn't fetchable via the public git URL by ref. Branch pushes give a
+    # real, fetchable ref_name.
+    if: github.event_name == 'push'
+    steps:
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: uv tool install from git (canonical user path)
+        run: |
+          uv tool install --python 3.12 \
+            "git+https://github.com/${{ github.repository }}.git@${{ github.ref_name }}"
+
+      - name: Verify console scripts resolve + respond (no data needed)
+        run: |
+          set -euo pipefail
+          uv tool list
+          for s in apecx-mcp apecx-cp apecx-setup; do
+            command -v "$s" || { echo "MISSING console script: $s"; exit 1; }
+          done
+          # argparse entry points respond without booting anything.
+          # NEVER run `apecx-mcp --help` — any invocation boots the server.
+          apecx-setup --help
+          apecx-cp --help
+
+      - name: Assert install downloaded NO dataset
+        run: |
+          set -euo pipefail
+          if [ -d "$HOME/.apecx/data" ] && [ -n "$(ls -A "$HOME/.apecx/data" 2>/dev/null)" ]; then
+            echo "FAIL: install populated ~/.apecx/data — datasets must come from Globus at apecx-setup time, not at install."
+            exit 1
+          fi
+          echo "OK: install is data-free (no GitHub data download)."
+
   # Ruff gating intentionally NOT in this initial CI workflow.
   # The repo has ~510 pre-existing ruff errors (most auto-fixable but
   # touching many files); adding a gating ruff job would be red on day

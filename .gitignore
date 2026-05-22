@@ -65,3 +65,11 @@ pbs_bundle_*/
 # Generated figures + presentations (regenerate with docs/figures/build_*.py)
 docs/figures/*.png
 docs/architecture_slides.pptx
+
+# Locally-built search indexes — NEVER commit (a committed LFS index broke
+# `uv tool install`; the repo ships code only, indexes are built via
+# `apecx-setup rag` / scripts/build_*_index.py). See docs/no_github_data_2026-05-22.md.
+data/faiss_indexes/
+data/apecx_domain_rag/
+*.faiss
+*.pkl

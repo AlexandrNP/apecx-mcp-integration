@@ -1,3 +1,9 @@
-*.bin filter=lfs diff=lfs merge=lfs -text
-*.pkl filter=lfs diff=lfs merge=lfs -text
-*.faiss filter=lfs diff=lfs merge=lfs -text
+# Intentionally NO git-LFS rules.
+#
+# This repo ships CODE only. FAISS / pickle indexes are BUILT locally
+# (`apecx-setup rag` / `scripts/build_*_index.py` → `data/apecx_domain_rag/`),
+# never committed. A previously-committed LFS index (`data/faiss_indexes/*`)
+# whose LFS object went missing on the remote broke `uv tool install
+# git+...` (the smudge filter runs on the clone's `git reset --hard`).
+# Removed 2026-05-22. Keep it that way: index/data binaries belong in
+# `.gitignore`, not in git/LFS. See docs/no_github_data_2026-05-22.md.

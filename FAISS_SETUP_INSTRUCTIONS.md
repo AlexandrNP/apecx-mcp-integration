@@ -67,19 +67,15 @@ print(idx.is_available)   # True ⇒ ready to serve search() calls
 `is_available` is a cheap stat probe — it does NOT load the FAISS
 binary or the sentence-transformer model.
 
-## Legacy `data/faiss_indexes/` (being retired)
+## Legacy `data/faiss_indexes/` — REMOVED 2026-05-22
 
-The LFS-tracked `data/faiss_indexes/` directory (committed in early
-May 2026) is **legacy**. Pre-G81, the install required these
-binaries to be present at the LFS-resolved location. Post-G81, the
-index is built locally by `apecx-setup rag`, and the LFS path no
-longer matters for fresh installs.
-
-A future cleanup commit will `git rm --cached` the LFS pointers
-and update `.gitignore` to stop tracking them. Until then, the
-files in `data/faiss_indexes/` are preserved for backwards
-compatibility with operators who built their workspace before the
-G81 + G82 chain.
+The LFS-tracked `data/faiss_indexes/` directory was **deleted** 2026-05-22.
+It was orphan (runtime reads `data/apecx_domain_rag/`) and its
+`faiss_index.bin` LFS object had gone missing on the remote, which broke
+`uv tool install git+...` for everyone (the LFS smudge filter runs during
+the clone's `git reset --hard`). The repo is now LFS-free. Build the index
+locally with `apecx-setup rag`; nothing reads `data/faiss_indexes/` anymore.
+See `docs/no_github_data_2026-05-22.md`.
 
 ## Troubleshooting
 
