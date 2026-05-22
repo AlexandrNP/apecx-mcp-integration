@@ -88,23 +88,33 @@ shell rc file.
 
 ---
 
-## Step 3 — Authenticate to Globus + set endpoints
+## Step 3 — Configure Globus (one command)
 
-Data is transferred over Globus. The default is **web-based login** — no
-secret to manage:
+Data is transferred over Globus. Run the setup with **no arguments** — it does
+the whole thing: web-based login (no secret), applies the default source
+directories silently, and records your destination endpoint (prompts once,
+then remembers it in `~/.apecx/globus_config.json`):
 
 ```bash
-apecx-globus-setup login    # opens your browser; log in with your Globus
-                            # identity. One-time; the token auto-refreshes.
+apecx-globus-setup          # opens your browser; then asks for your
+                            # destination endpoint UUID (one-time).
+```
 
-# Point at the data collection + your local Globus Connect Personal endpoint:
-export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<ask the data steward>
-export APECX_GLOBUS_DEST_ENDPOINT_ID=<your GCP endpoint UUID>   # Settings → Endpoints
+You only need the **destination** endpoint (your local Globus Connect Personal
+UUID, from Settings → Endpoints). The source collection + directories are
+built-in defaults.
+
+Want extra data beyond the BV-BRC/VIOLIN defaults? Register additional source
+directories (fetched recursively):
+
+```bash
+apecx-globus-setup add-dir /apecx-ramanathan-anl/path/to/more-data
 ```
 
 Headless / CI (no browser)? Use the secret path instead:
 `export APECX_GLOBUS_AUTH_MODE=client_credentials` then
-`apecx-globus-setup store --client-id <id> --client-secret <secret>`.
+`apecx-globus-setup store --client-id <id> --client-secret <secret>` and set
+`APECX_GLOBUS_SOURCE_ENDPOINT_ID` / `APECX_GLOBUS_DEST_ENDPOINT_ID` in the env.
 Full details: [`globus_data_transfer.md`](globus_data_transfer.md).
 
 ---

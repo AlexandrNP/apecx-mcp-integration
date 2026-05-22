@@ -284,10 +284,12 @@ def test_test_transfer_fails_loud_on_missing_preconditions(monkeypatch, capsys):
     assert "fix the missing prerequisite" in out or "docs/globus_data_transfer.md" in out
 
 
-def test_missing_subcommand_is_an_error():
+def test_no_subcommand_is_allowed_and_means_setup():
+    """As of 2026-05-22 a bare `apecx-globus-setup` is the one-shot setup, not
+    an error — the subcommand is optional and defaults to None (dispatched to
+    _cmd_setup in main())."""
     parser = _build_parser()
-    with pytest.raises(SystemExit):
-        parser.parse_args([])
+    assert parser.parse_args([]).subcommand is None
 
 
 def test_unknown_subcommand_is_an_error():
@@ -466,3 +468,75 @@ def test_test_resolves_credentials_from_keyring(memory_keyring, monkeypatch, cap
     out = capsys.readouterr().out
     assert "PASS  credentials" in out
     assert "OS secure store" in out
+
+
+# ---------------------------------------------------------------------------
+# No-arg one-shot setup + add-dir (2026-05-22)
+# ---------------------------------------------------------------------------
+
+
+def test_no_arg_subcommand_is_none_and_add_dir_parses():
+    parser = _build_parser()
+    assert parser.parse_args([]).subcommand is None
+    a = parser.parse_args(["add-dir", "/p/q", "--dest-subdir", "qq"])
+    assert a.subcommand == "add-dir"
+    assert a.remote_path == "/p/q"
+    assert a.dest_subdir == "qq"
+
+
+def test_no_arg_runs_full_setup_login_then_dest_from_env(monkeypatch, tmp_path, capsys):
+    """`apecx-globus-setup` (no args) logs in, applies default dirs silently,
+    and uses the env dest endpoint without prompting."""
+    monkeypatch.setenv("APECX_GLOBUS_CONFIG_PATH", str(tmp_path / "gc.json"))
+    monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "env-dest")
+    # Mock the browser login so the device flow is a no-op.
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._cmd_login", lambda cid: 0)
+    # input() must NOT be called (dest comes from env) — make it explode if it is.
+    monkeypatch.setattr(
+        "builtins.input", lambda *a, **k: (_ for _ in ()).throw(AssertionError("should not prompt"))
+    )
+
+    rc = main([])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "configuring Globus in one go" in out
+    assert "from the environment" in out
+
+
+def test_no_arg_setup_prompts_and_persists_dest(monkeypatch, tmp_path):
+    """When no dest endpoint is set, setup prompts once and persists it."""
+    from apecx_integration.cli import globus_config
+
+    monkeypatch.setenv("APECX_GLOBUS_CONFIG_PATH", str(tmp_path / "gc.json"))
+    monkeypatch.delenv("APECX_GLOBUS_DEST_ENDPOINT_ID", raising=False)
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._cmd_login", lambda cid: 0)
+    monkeypatch.setattr("builtins.input", lambda *a, **k: "prompted-dest-uuid")
+
+    rc = main([])
+    assert rc == 0
+    assert globus_config.get_dest_endpoint() == "prompted-dest-uuid"
+
+
+def test_no_arg_setup_aborts_on_login_failure(monkeypatch, tmp_path, capsys):
+    monkeypatch.setenv("APECX_GLOBUS_CONFIG_PATH", str(tmp_path / "gc.json"))
+    monkeypatch.setattr("apecx_integration.cli.globus_setup._cmd_login", lambda cid: 3)
+    rc = main([])
+    assert rc == 3
+    assert "login failed" in capsys.readouterr().err
+
+
+def test_add_dir_persists_recursive_source_dir(monkeypatch, tmp_path, capsys):
+    from apecx_integration.cli import globus_config
+
+    monkeypatch.setenv("APECX_GLOBUS_CONFIG_PATH", str(tmp_path / "gc.json"))
+    rc = main(["add-dir", "/apecx-ramanathan-anl/foo/extra"])
+    assert rc == 0
+    dirs = globus_config.get_extra_source_dirs()
+    assert dirs == [{"remote_path": "/apecx-ramanathan-anl/foo/extra", "dest_subdir": "extra"}]
+    assert "registered source directory" in capsys.readouterr().out
+
+
+def test_add_dir_rejects_empty_path(monkeypatch, tmp_path):
+    monkeypatch.setenv("APECX_GLOBUS_CONFIG_PATH", str(tmp_path / "gc.json"))
+    rc = main(["add-dir", "   "])
+    assert rc == 1

@@ -38,10 +38,13 @@ import pytest
 
 
 @pytest.fixture
-def clean_globus_env(monkeypatch: pytest.MonkeyPatch) -> None:
+def clean_globus_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     """Strip every APECX_GLOBUS_*  / GLOBUS_COMPUTE_* env var so each
     test starts from a known-empty state. Per-test setups then opt
-    into the env they actually want."""
+    into the env they actually want. Also points the persisted Globus
+    config at a non-existent temp path so build_transfer_items /
+    dest-endpoint resolution never read the dev machine's real
+    ~/.apecx/globus_config.json (which could carry extra dirs)."""
     for var in [
         "APECX_GLOBUS_SOURCE_ENDPOINT_ID",
         "APECX_GLOBUS_DEST_ENDPOINT_ID",
@@ -55,6 +58,7 @@ def clean_globus_env(monkeypatch: pytest.MonkeyPatch) -> None:
         "GLOBUS_COMPUTE_CLIENT_SECRET",
     ]:
         monkeypatch.delenv(var, raising=False)
+    monkeypatch.setenv("APECX_GLOBUS_CONFIG_PATH", str(tmp_path / "no_globus_config.json"))
 
 
 # ---------------------------------------------------------------------------
@@ -266,6 +270,72 @@ def test_build_transfer_items_honors_independent_root_overrides(
     # Dest layout is unchanged — downstream readers keep working.
     assert items[0]["dest_path"] == str(tmp_path / "violin/Vaccine_Information.csv")
     assert items[-1]["dest_path"] == str(tmp_path / "BVBRC_genome_alphavirus.csv")
+
+
+def test_build_transfer_items_includes_extra_dirs_recursive(
+    clean_globus_env: None, tmp_path: Path
+) -> None:
+    """A user-registered extra dir appears as a RECURSIVE item (datasets=None
+    includes the 'extra' group)."""
+    from apecx_integration.cli import globus_config
+    from apecx_integration.cli._globus_data_transfer import build_transfer_items
+
+    globus_config.add_source_dir("/apecx-ramanathan-anl/foo/mydata", dest_subdir="mydata")
+    items = build_transfer_items(tmp_path)
+
+    extra = [i for i in items if i.get("recursive")]
+    assert len(extra) == 1
+    assert extra[0]["source_path"] == "/apecx-ramanathan-anl/foo/mydata"
+    assert extra[0]["dest_path"] == str(tmp_path / "mydata")
+    assert extra[0]["recursive"] is True
+    # The 6 built-in items are unchanged (no recursive key).
+    assert sum(1 for i in items if "recursive" not in i) == 6
+
+
+def test_build_transfer_items_extra_excluded_when_dataset_scoped(
+    clean_globus_env: None, tmp_path: Path
+) -> None:
+    """A required-only call (datasets={'bvbrc'}) must NOT pull extra dirs."""
+    from apecx_integration.cli import globus_config
+    from apecx_integration.cli._globus_data_transfer import build_transfer_items
+
+    globus_config.add_source_dir("/x/y")
+    items = build_transfer_items(tmp_path, datasets={"bvbrc"})
+    assert all(not i.get("recursive") for i in items)
+    assert len(items) == 1  # just the BV-BRC file
+
+
+def test_dest_endpoint_falls_back_to_config(clean_globus_env: None) -> None:
+    """check_globus_prerequisites reports dest set when only the persisted
+    config (not the env var) carries it."""
+    from apecx_integration.cli import globus_config
+    from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
+
+    globus_config.set_dest_endpoint("dest-from-config")
+    status = check_globus_prerequisites()
+    assert status.dest_endpoint_set is True
+
+
+def test_backfill_dest_endpoint_env_populates_from_config(clean_globus_env: None) -> None:
+    from apecx_integration.cli import globus_config
+    from apecx_integration.cli._globus_data_transfer import _backfill_dest_endpoint_env
+
+    globus_config.set_dest_endpoint("ep-123")
+    assert "APECX_GLOBUS_DEST_ENDPOINT_ID" not in os.environ
+    _backfill_dest_endpoint_env()
+    assert os.environ["APECX_GLOBUS_DEST_ENDPOINT_ID"] == "ep-123"
+
+
+def test_backfill_dest_endpoint_env_respects_existing(
+    clean_globus_env: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from apecx_integration.cli import globus_config
+    from apecx_integration.cli._globus_data_transfer import _backfill_dest_endpoint_env
+
+    globus_config.set_dest_endpoint("from-config")
+    monkeypatch.setenv("APECX_GLOBUS_DEST_ENDPOINT_ID", "from-env")
+    _backfill_dest_endpoint_env()
+    assert os.environ["APECX_GLOBUS_DEST_ENDPOINT_ID"] == "from-env"  # env wins
 
 
 # ---------------------------------------------------------------------------
