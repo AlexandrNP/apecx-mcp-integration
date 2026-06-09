@@ -18,15 +18,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv tool install --python 3.12 \
   git+https://github.com/AlexandrNP/apecx-mcp-integration.git
 
-# 3. authenticate to Globus (opens your browser — log in with your
-#    institutional identity; no secret to manage). See "Globus data access".
-apecx-globus-setup login
+# 3. initialize Globus
+apecx-globus-setup
 
-# 4. point at the data collection + your local Globus endpoint
-export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<ask the data steward>
-export APECX_GLOBUS_DEST_ENDPOINT_ID=<your Globus Connect Personal endpoint UUID>
-
-# 5. configure Claude Desktop, transfer datasets, restart Claude
+# 4. configure Claude Desktop, transfer datasets, restart Claude
 apecx-setup
 ```
 
