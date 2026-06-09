@@ -8,6 +8,7 @@ Single entry point for the entire APECx deployment recipe:
     apecx-setup --with-rhea # default chain PLUS Rhea bring-up (~10 min one-time)
     apecx-setup globus      # only preflight Globus (G84)
     apecx-setup data        # only download VIOLIN + BV-BRC data
+    apecx-setup dict        # only build the synonym dictionary (~10-15 min first run)
     apecx-setup infra       # only start Postgres + Redis containers
     apecx-setup llm         # only check/pull the Ollama model
     apecx-setup rag         # only build the FAISS RAG index (opt-in)
@@ -23,10 +24,15 @@ Each subcommand is idempotent + safe to re-run. The default
     2. ``data``   — transfer VIOLIN + BV-BRC files via the Globus
                     verify→transfer workflow (sole path; fails loud if
                     Globus is unconfigured and no data is already local)
-    3. ``infra``  — start Postgres + Redis containers if Docker is available
-    4. ``llm``    — install Ollama if missing (interactive); start daemon;
+    3. ``dict``   — pre-build the synonym dictionary to
+                    ``~/.apecx/dictionary/dictionary.sqlite``
+                    (10-15 min first run; idempotent on re-run).
+                    Added 2026-06-09 to close the silent gap where the
+                    first ``apecx-mcp`` startup paid the build cost.
+    4. ``infra``  — start Postgres + Redis containers if Docker is available
+    5. ``llm``    — install Ollama if missing (interactive); start daemon;
                     pull the configured model
-    5. ``verify`` — smoke-check every component reports healthy
+    6. ``verify`` — smoke-check every component reports healthy
 
 Two slots in the chain are OPT-IN:
     * ``rag``  (G81, 2026-05-16) — FAISS index build for synthesis
@@ -190,7 +196,7 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
     instead of the pre-G84 shape where Globus status was invisible
     until the data step printed its own line.
     """
-    _print_header("Step 1 of 6 — Globus")
+    _print_header("Step 1 of 7 — Globus")
     from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
 
     prereqs = check_globus_prerequisites()
@@ -271,7 +277,7 @@ def _step_data(*, interactive: bool = True) -> StepResult:
            clean install succeeds on public data while VIOLIN access is pending.
          Then patch the Claude Desktop config.
     """
-    _print_header("Step 2 of 6 — Data")
+    _print_header("Step 2 of 7 — Data")
     from apecx_integration.cli._globus_data_transfer import (
         attempt_globus_data_transfer,
         check_globus_prerequisites,
@@ -475,8 +481,111 @@ def _container_exists(name: str) -> bool:
     return bool(result.stdout.strip())
 
 
+def _step_dict(*, interactive: bool = True) -> StepResult:
+    """Pre-build the synonym dictionary at the canonical location.
+
+    Closes the gap surfaced 2026-06-09 where ``apecx-setup`` left no
+    dictionary at ``~/.apecx/dictionary/dictionary.sqlite`` and the
+    first ``apecx-mcp`` startup paid the 10-15 minute build cost.
+
+    Idempotency: skips when the dictionary file already exists
+    (matches :func:`ensure_dictionary`'s own check). Re-runs are safe.
+
+    Degradation: when VIOLIN data isn't present, return ``skipped``
+    rather than ``fail`` — the data step is the cause, and the
+    summary table will already surface that.
+
+    Opt-out: ``APECX_SKIP_DICT_BUILD=1`` returns ``skipped`` with a
+    warning. Useful for CI / smoke runs that don't need fast-path
+    entity resolution.
+    """
+    _print_header("Step 3 of 7 — Synonym Dictionary")
+
+    # Lazy-import the bootstrap module so a clean-install
+    # ``import apecx_integration.cli.setup`` doesn't drag in the full
+    # nanobrain workflow runtime when the operator never runs setup.
+    try:
+        from apecx_integration.synonym_dictionary.workflow.bootstrap import (
+            EnsureDictionaryConfig,
+            ensure_dictionary,
+        )
+    except ImportError as exc:  # noqa: BLE001
+        return StepResult(
+            "dict",
+            "fail",
+            f"could not import bootstrap module ({exc!s})",
+        )
+
+    cfg = EnsureDictionaryConfig().resolve()
+    sqlite = cfg.sqlite_path
+    assert sqlite is not None  # resolve() guarantees this
+
+    # Idempotent: already-present is the common case after the first
+    # successful setup run; report it explicitly so the summary table
+    # is honest about which path ran.
+    if sqlite.is_file():
+        size_mb = sqlite.stat().st_size / (1024 * 1024)
+        return StepResult(
+            "dict",
+            "ok",
+            f"existing dictionary at {sqlite} ({size_mb:.0f} MB)",
+        )
+
+    # Opt-out path — surface visibly so the summary table tells the
+    # truth ("dict skipped — fast-path off") rather than green-on-skip.
+    if os.environ.get("APECX_SKIP_DICT_BUILD", "").strip() == "1":
+        return StepResult(
+            "dict",
+            "skipped",
+            ("APECX_SKIP_DICT_BUILD=1 — entity resolution will fall back to slow substring search"),
+        )
+
+    # Need VIOLIN to build a meaningful dictionary; if absent, defer
+    # cleanly to the data step's own warning rather than failing here.
+    data_root = cfg.data_root
+    violin_marker = data_root / "violin" / "Pathogen_Information.csv"
+    if not violin_marker.exists():
+        return StepResult(
+            "dict",
+            "skipped",
+            (
+                f"VIOLIN data not present at {violin_marker.parent} — "
+                f"the data step's warning is the canonical reason. "
+                f"Re-run `apecx-setup data` then `apecx-setup dict`."
+            ),
+        )
+
+    # Build. Honest about wall-time + tell the operator where it
+    # lands so they can SET the env var afterwards if they want.
+    if interactive:
+        print("  ▶  building synonym dictionary (10–15 minutes first run; idempotent on re-run)")
+        print(f"     output: {sqlite}")
+        print("     (the next `apecx-mcp` startup will use this artifact instead of rebuilding)")
+    try:
+        out = ensure_dictionary(cfg)
+    except Exception as exc:  # noqa: BLE001 — surface the cause + degrade
+        return StepResult(
+            "dict",
+            "fail",
+            f"build failed: {type(exc).__name__}: {exc}",
+        )
+
+    if out is None:
+        # ensure_dictionary returns None on skip_if_data_missing or
+        # opt-out — both already caught above, so this is defensive
+        # against future bootstrap changes.
+        return StepResult(
+            "dict",
+            "skipped",
+            "ensure_dictionary returned None (workflow declined to build)",
+        )
+
+    size_mb = out.stat().st_size / (1024 * 1024)
+    return StepResult("dict", "ok", f"built {out} ({size_mb:.0f} MB)")
+
+
 def _step_infra() -> StepResult:
-    _print_header("Step 3 of 6 — Infrastructure (Docker containers)")
+    _print_header("Step 4 of 7 — Infrastructure (Docker containers)")
     if not _docker_available():
         return StepResult(
             "infra",
@@ -765,7 +874,7 @@ def _offer_start_ollama_daemon(*, interactive: bool) -> bool:
 
 
 def _step_llm(*, interactive: bool = True) -> StepResult:
-    _print_header("Step 4 of 6 — LLM (Ollama install + check + model pull)")
+    _print_header("Step 5 of 7 — LLM (Ollama install + check + model pull)")
 
     # 1. Ensure the CLI is installed (offer to install when missing).
     if not _offer_install_ollama(interactive=interactive):
@@ -818,7 +927,7 @@ def _step_llm(*, interactive: bool = True) -> StepResult:
 
 
 def _step_rag() -> StepResult:
-    _print_header("Step 5 of 6 — RAG index (FAISS, opt-in)")
+    _print_header("Step 6 of 7 — RAG index (FAISS, opt-in)")
     repo_root = Path(__file__).resolve().parents[3]
     workspace_root = repo_root.parent
     domain_rag_dir = workspace_root / "data" / "apecx_domain_rag"
@@ -915,7 +1024,7 @@ def _step_rhea() -> StepResult:
     don't want Rhea-backed tools (muscle, future Galaxy tools) skip
     it. Same opt-in pattern as `_step_rag`.
     """
-    _print_header("Step 5b of 6 — Rhea (host MCP server, opt-in)")
+    _print_header("Step 6b of 7 — Rhea (host MCP server, opt-in)")
 
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
@@ -1049,7 +1158,7 @@ def _step_rhea() -> StepResult:
 
 
 def _step_verify() -> StepResult:
-    _print_header("Step 6 of 6 — Verification")
+    _print_header("Step 7 of 7 — Verification")
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
@@ -1077,6 +1186,33 @@ def _step_verify() -> StepResult:
             else "missing (optional) — pending 'apecx-project-all' Globus Group access",
         )
     )
+
+    # Synonym dictionary — the artifact the `dict` step (Step 3) builds.
+    # Closes the silent gap that left `apecx-mcp` paying a 10-15 min
+    # build cost on first startup. Resolution mirrors EnsureDictionaryConfig:
+    # APECX_SYNONYM_DICT_PATH wins, else APECX_DICT_OUTPUT_DIR (default
+    # ~/.apecx/dictionary)/dictionary.sqlite.
+    _dict_env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
+    if _dict_env:
+        dict_path = Path(_dict_env).expanduser()
+    else:
+        _dict_dir_env = os.environ.get("APECX_DICT_OUTPUT_DIR", "").strip()
+        _dict_dir = (
+            Path(_dict_dir_env).expanduser()
+            if _dict_dir_env
+            else Path("~/.apecx/dictionary").expanduser()
+        )
+        dict_path = _dict_dir / "dictionary.sqlite"
+    dict_present = dict_path.is_file()
+    if dict_present:
+        size_mb = dict_path.stat().st_size / (1024 * 1024)
+        dict_detail = f"dictionary at {dict_path} ({size_mb:.0f} MB)"
+    else:
+        dict_detail = (
+            f"missing at {dict_path} — run `apecx-setup dict`. Without it, "
+            f"apecx-mcp pays a 10-15 min build cost on next startup."
+        )
+    checks.append(("dict", dict_present, dict_detail))
 
     # Postgres (apecx-rhea-postgres — pgvector on host port 5435).
     pg_running = _docker_available() and _container_running(APECX_RHEA_POSTGRES.container_name)
@@ -1202,6 +1338,7 @@ def _step_verify() -> StepResult:
 
 _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "globus": _step_globus,
+    "dict": _step_dict,
     "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
@@ -1218,16 +1355,21 @@ def _run_all(
 ) -> int:
     """Run the canonical install chain.
 
-    Chain (G81 + G82 + G84; gh fallback retired 2026-05-21):
+    Chain (G81 + G82 + G84; gh fallback retired 2026-05-21;
+           dict step added 2026-06-09):
       1. globus  — preflight: SDK + credentials + endpoint UUIDs.
                    ``skipped`` when not configured (operator gets
                    actionable instructions); now REQUIRED for the data step.
       2. data    — VIOLIN/BV-BRC CSVs via the Globus verify→transfer
                    workflow (sole path; FAILS LOUD if Globus is unconfigured
                    and no data is already present locally).
-      3. infra   — Docker containers (Postgres, Redis, MinIO)
-      4. llm     — Ollama or remote LLM credentials
-      5. verify  — sanity checks across all installed components
+      3. dict    — synonym dictionary at ~/.apecx/dictionary/dictionary.sqlite
+                   via ensure_dictionary(). 10-15 min first run; idempotent
+                   on re-run. Closes the silent gap where the first apecx-mcp
+                   startup paid the build cost.
+      4. infra   — Docker containers (Postgres, Redis, MinIO)
+      5. llm     — Ollama or remote LLM credentials
+      6. verify  — sanity checks across all installed components
 
     The RAG (FAISS) step is **opt-in** as of G81: it's a ~10-minute
     build of a 689 MB index that's only needed by synthesis workflows
@@ -1251,6 +1393,7 @@ def _run_all(
     # stat-only checks, not a network round-trip).
     results.append(_step_globus(interactive=interactive))
     results.append(_step_data(interactive=interactive))
+    results.append(_step_dict(interactive=interactive))
     results.append(_step_infra())
     results.append(_step_llm(interactive=interactive))
     if with_rag:
@@ -1291,7 +1434,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "subcommand",
         nargs="?",
-        choices=["globus", "data", "infra", "llm", "rag", "rhea", "verify", "all"],
+        choices=["globus", "data", "dict", "infra", "llm", "rag", "rhea", "verify", "all"],
         default="all",
         help="Step to run (default: all).",
     )

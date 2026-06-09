@@ -911,7 +911,11 @@ def _cmd_setup() -> int:
                 "or re-run `apecx-globus-setup` before transferring data."
             )
 
-    print("\n✅ Globus configured. Run `apecx-setup` to transfer the data.")
+    print(
+        "\n✅ Globus configured. Run `apecx-setup` to transfer the data + "
+        "build the synonym dictionary (without the dictionary, the first "
+        "`apecx-mcp` startup pays a 10-15 minute build cost)."
+    )
     return 0
 
 
