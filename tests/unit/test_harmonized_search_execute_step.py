@@ -191,3 +191,158 @@ def test_iri_to_taxon_id_helper():
 
     assert _iri_to_taxon_id("http://purl.obolibrary.org/obo/NCBITaxon_37124") == 37124
     assert _iri_to_taxon_id("not-a-real-iri") is None
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# Harmonization-health verdict matrix
+#
+# Real findings from the 2026-06-09 cross-index probe drove this classifier:
+# - Yellow fever virus → harm=0, raw=1828 (BV-BRC indexed under the new ICTV
+#   binomial 'Orthoflavivirus flavi'; dict still has 'Yellow fever virus').
+# - CHIKV → harm=6684, raw=1162 (synonym expansion to ~6.6k strain names).
+# - Sindbis virus → harm=612, raw=612 (canonical label IS the index value).
+# The verdict matrix is what the LLM consumes to know which number to trust.
+# ─────────────────────────────────────────────────────────────────────────
+
+
+def test_harm_health_broken_yellow_fever_shape():
+    """The exact failure shape that drove this classifier into existence."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, reason = _compute_harmonization_health(
+        raw_total=1828,
+        harm_total=0,
+        filter_field="Species",
+        filter_values_count=4,
+        index="bvbrc_genome",
+        canonical_label="Yellow fever virus",
+        raw_error=None,
+        harm_error=None,
+    )
+    assert verdict == "broken"
+    assert "Species" in reason
+    assert "1828" in reason
+    assert "stale ICTV taxonomy rename" in reason
+
+
+def test_harm_health_helped_chikv_shape():
+    """The canonical win case: synonym expansion reaches 6,684 records."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, reason = _compute_harmonization_health(
+        raw_total=1162,
+        harm_total=6684,
+        filter_field="Species",
+        filter_values_count=6653,
+        index="bvbrc_genome",
+        canonical_label="Chikungunya virus",
+        raw_error=None,
+        harm_error=None,
+    )
+    assert verdict == "harmonization_helped"
+    assert "5522" in reason  # 6684-1162
+
+
+def test_harm_health_healthy_parity():
+    """Within noise floor: |Δ| < 5 AND fraction < 5%."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, _ = _compute_harmonization_health(
+        raw_total=612,
+        harm_total=612,
+        filter_field="Species",
+        filter_values_count=10,
+        index="bvbrc_genome",
+        canonical_label="Sindbis virus",
+        raw_error=None,
+        harm_error=None,
+    )
+    assert verdict == "healthy_parity"
+
+
+def test_harm_health_degraded_real_case():
+    """The CHIKUNGUNYA VIRUS case: raw=6687, harm=6684 — within 5 records
+    but the absolute_diff>=5 OR fraction>=5% threshold has 3<5 AND 0.04%<5%,
+    so it lands in healthy_parity, NOT degraded. This pins the boundary."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, _ = _compute_harmonization_health(
+        raw_total=6687,
+        harm_total=6684,
+        filter_field="Species",
+        filter_values_count=6653,
+        index="bvbrc_genome",
+        canonical_label="Chikungunya virus",
+        raw_error=None,
+        harm_error=None,
+    )
+    # 3 fewer is below the 5-record threshold AND 0.04% < 5% → healthy_parity
+    assert verdict == "healthy_parity"
+
+
+def test_harm_health_degraded_above_threshold():
+    """harm < raw with |Δ| >= 5 → degraded."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, reason = _compute_harmonization_health(
+        raw_total=100,
+        harm_total=80,
+        filter_field="Species",
+        filter_values_count=3,
+        index="bvbrc_genome",
+        canonical_label="Some virus",
+        raw_error=None,
+        harm_error=None,
+    )
+    assert verdict == "degraded"
+    assert "20 additional" in reason
+
+
+def test_harm_health_errored_short_circuits():
+    """A Globus query error short-circuits the verdict to 'errored'."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, reason = _compute_harmonization_health(
+        raw_total=0,
+        harm_total=0,
+        filter_field="Species",
+        filter_values_count=4,
+        index="bvbrc_genome",
+        canonical_label="X",
+        raw_error="GlobusAPIError: 503",
+        harm_error=None,
+    )
+    assert verdict == "errored"
+    assert "503" in reason
+
+
+def test_harm_health_zero_both_is_parity_not_broken():
+    """raw_total=0 AND harm_total=0 must NOT classify as 'broken' —
+    that's a genuine miss, not a stale-dict pathology."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, _ = _compute_harmonization_health(
+        raw_total=0,
+        harm_total=0,
+        filter_field="Species",
+        filter_values_count=1,
+        index="protabank",
+        canonical_label="Rare entity",
+        raw_error=None,
+        harm_error=None,
+    )
+    assert verdict == "healthy_parity"
