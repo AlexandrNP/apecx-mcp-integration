@@ -1,0 +1,104 @@
+# harmonized_search workflow — three-step pipeline producing a uniform
+# WorkflowResult envelope for raw-vs-harmonized Globus comparison.
+#
+# Pipeline:
+#   harmonized_resolve  →  harmonized_search_execute  →  envelope
+#       (resolve term)        (run queries + diverge)      (wrap result)
+#
+# HITL behavior: when the resolution is ambiguous, the execute step
+# emits a paused envelope WITHOUT running Globus queries — the LLM has
+# no harmonized record count to silently mis-attribute. The candidates
+# travel via WorkflowResult.data_handle as a Bundle DataShape.
+#
+# All DirectLinks declare auto_transfer: true explicitly. config_version
+# 2 + G7 makes that the default but explicit declaration survives a
+# future framework rename and pins the silent-failure guard.
+
+name: harmonized_search_workflow
+description: >
+  Resolve a biomedical term against the apecx synonym dictionary, run
+  raw and harmonized Globus Search queries against one of the 9 APECx
+  indices, compute divergence, and emit a uniform WorkflowResult
+  envelope. Ambiguous resolutions are surfaced as paused envelopes
+  (no Globus queries executed) so the LLM can present candidates to
+  the user without silent mis-attribution.
+version: 0.1.0
+config_version: 2
+
+# Workflow-level data units bracket the step chain. The framework's
+# integrity validator (Workflow.initialize) requires every step input
+# to have a data source and every step output to have a consumer. The
+# workflow_input / workflow_output data units are the boundary the
+# caller (run_workflow_observed) feeds into and reads from.
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      ``{term: str, index: str, entity_type?: str}`` — forwarded to
+      harmonized_resolve.resolve_input via input_to_resolve link.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: >
+      Serialized WorkflowResult (markdown + data_handle + status).
+      Receives envelope.workflow_result via envelope_to_output link.
+    persistent: false
+
+steps:
+
+  harmonized_resolve:
+    class: "apecx_integration.composition.steps.harmonized_resolve_step.HarmonizedResolveStep"
+    config: "steps/harmonized_resolve.yml"
+
+  harmonized_search_execute:
+    class: "apecx_integration.composition.steps.harmonized_search_execute_step.HarmonizedSearchExecuteStep"
+    config: "steps/harmonized_search_execute.yml"
+
+  envelope:
+    class: "apecx_integration.composition.steps.envelope_step.EnvelopeStep"
+    config: "../../steps/envelope_step.yml"
+
+links:
+
+  # ──────────────────────────────────────────────────────────────────
+  # Every DirectLink declares auto_transfer: true explicitly. v2 +
+  # G7 makes True the default but explicit declaration is defense-
+  # in-depth against the dominant silent-failure shape (silent no-op
+  # on auto_transfer=false).
+  # ──────────────────────────────────────────────────────────────────
+
+  input_to_resolve:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "harmonized_resolve.resolve_input"
+      auto_transfer: true
+
+  resolve_to_execute:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "harmonized_resolve.plan"
+      target: "harmonized_search_execute.plan"
+      auto_transfer: true
+
+  execute_to_envelope:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "harmonized_search_execute.envelope_input"
+      target: "envelope.envelope_input"
+      auto_transfer: true
+
+  envelope_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "envelope.workflow_result"
+      target: "workflow_output"
+      auto_transfer: true

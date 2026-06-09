@@ -1,0 +1,71 @@
+# harmonized_search workflow — component manifest for discovery
+#
+# Used by the workflow_registry / list_workflows MCP tool. One entry
+# per step in the harmonized_search workflow plus the workflow itself.
+
+workflow:
+  name: harmonized_search
+  description: >
+    Resolve a biomedical term against the apecx synonym dictionary,
+    run raw and harmonized Globus Search queries against one of the 9
+    APECx indices, compute divergence, and emit a uniform
+    WorkflowResult envelope. Ambiguous resolutions are surfaced as
+    paused envelopes (no Globus queries) so the LLM can present
+    candidates to the user without silent mis-attribution.
+  workflow_yaml: harmonized_search_workflow.yml
+  rag_description: >
+    Use this workflow to ask "how many records about X are in BV-BRC
+    genomes / VIOLIN / AntiviralDB / ProtaBank?" or to compare raw
+    text-substring counts vs canonical-IRI-anchored counts on any of
+    the 9 APECx Globus indices. Drives both raw (q=<term>) and
+    harmonized (filter by Species / Organism / Virus / NCBI taxon)
+    queries in one call, computes the symmetric divergence, and
+    reports back. When the term is ambiguous in the dictionary (RSV,
+    HIV, HEV, etc.) it stops cleanly with the candidate list rather
+    than running queries that mix heterogeneous biology.
+  example_prompts:
+    - "How many Chikungunya virus genome records does BV-BRC have?"
+    - "Compare raw and harmonized search counts for MAYV on BV-BRC genome."
+
+components:
+
+  - step_id: "1"
+    step_name: harmonized_resolve
+    disposition: new
+    class: "apecx_integration.composition.steps.harmonized_resolve_step.HarmonizedResolveStep"
+    yaml: "steps/harmonized_resolve.yml"
+    status: ready
+    wrap_notes: >
+      Thin BaseStep wrapper around
+      apecx_integration.synonym_dictionary.lookup.lookup_entity. Input
+      data unit ``resolve_input`` is a dict with 'term' (str), 'index'
+      (one of the 9 short names), and optional 'entity_type'. Output
+      data unit ``plan`` carries the structured LookupResult plus the
+      ``needs_disambiguation`` flag downstream gates on.
+
+  - step_id: "2"
+    step_name: harmonized_search_execute
+    disposition: new
+    class: "apecx_integration.composition.steps.harmonized_search_execute_step.HarmonizedSearchExecuteStep"
+    yaml: "steps/harmonized_search_execute.yml"
+    status: ready
+    wrap_notes: >
+      Carries the per-index filter map (HARMONIZED_FILTER) — which
+      Globus field to filter on for each index, and whether to filter
+      by canonical_label, NCBI_Taxonomy_ID, or (future SC-D) IRI.
+      Runs both raw (q=<term>) and harmonized queries via globus_sdk,
+      computes |raw - harm| divergence, and emits an envelope-shaped
+      dict that EnvelopeStep wraps. Ambiguous + miss resolutions
+      short-circuit: no Globus queries, only the candidate / miss
+      explanation goes in the envelope.
+
+  - step_id: "3"
+    step_name: envelope
+    disposition: reuse
+    class: "apecx_integration.composition.steps.envelope_step.EnvelopeStep"
+    yaml: "../../steps/envelope_step.yml"
+    status: ready
+    wrap_notes: >
+      Reuses the EO-13 terminal step. Wraps the
+      harmonized_search_execute output into a canonical WorkflowResult
+      (markdown + data_handle to a Bundle DataShape).
