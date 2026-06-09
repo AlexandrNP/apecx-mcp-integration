@@ -1,7 +1,0 @@
-name: template_epitope_analysis_sars_cov2
-description: Systematic epitope analysis for SARS-CoV-2
-config_version: 2
-steps:
-  rag_search:
-    class: apecx_integration.composition.steps.domain_rag_search_step.DomainRagSearchStep
-    config: steps/domain_rag_search.yml
