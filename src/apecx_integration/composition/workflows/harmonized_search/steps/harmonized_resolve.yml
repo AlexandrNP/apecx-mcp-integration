@@ -1,0 +1,38 @@
+# Wrapper YAML for HarmonizedResolveStep — first step of the
+# harmonized_search workflow.
+#
+# Resolves the user-supplied term to a canonical IRI via the synonym
+# dictionary and classifies the HITL state. See
+# src/apecx_integration/composition/steps/harmonized_resolve_step.py
+# for the full input/output contract.
+
+class: "apecx_integration.composition.steps.harmonized_resolve_step.HarmonizedResolveStep"
+name: harmonized_resolve
+description: >
+  Resolve a biomedical term to a canonical IRI and classify the HITL
+  state (fast / ambiguous / miss / fuzzy / ancestor / deleted) for
+  downstream gating.
+
+input_data_units:
+  resolve_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: resolve_input
+    description: >
+      Dict with 'term' (str, required), 'index' (str, required — one
+      of the 9 APECx Globus indices), and optional 'entity_type' (str,
+      pathogen/vaccine/disease/gene).
+    persistent: false
+
+output_data_units:
+  plan:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: plan
+    description: >
+      Dict with the resolution result and the harmonized-search plan:
+      term, index, resolution_path, canonical_iri, canonical_label,
+      candidates, synonyms, needs_disambiguation, evidence.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "resolve_input"

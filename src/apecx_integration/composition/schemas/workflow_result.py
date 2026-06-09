@@ -1,0 +1,55 @@
+"""WorkflowResult — the standard envelope a workflow returns through the MCP surface.
+
+Two channels (``external_orchestration_design.md`` §5):
+
+- ``markdown``: human/LLM-facing presentation. The external orchestrating LLM reads
+  this to reason and synthesize the final answer.
+- ``data_handle`` + ``data_preview``: the structured payload, kept OUT of the external
+  LLM's context. Workflows chain by passing the handle to the next workflow; the full
+  payload never round-trips through the LLM. ``data_preview`` is a small peek so the LLM
+  can decide what to do next without ingesting the whole payload.
+
+This is a plain Pydantic model, not a ``from_config`` framework component — it is data,
+not a component. ``extra='forbid'`` (workspace convention) so a typo'd field fails loudly
+instead of being silently dropped.
+"""
+
+from __future__ import annotations
+
+from typing import Any, Literal
+
+from pydantic import BaseModel, ConfigDict, model_validator
+
+WorkflowResultStatus = Literal["ok", "partial", "error"]
+
+
+class WorkflowResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    markdown: str
+    status: WorkflowResultStatus = "ok"
+    data_handle: str | None = None
+    data_preview: dict[str, Any] | None = None
+    run_id: str | None = None
+    error: str | None = None
+
+    @model_validator(mode="after")
+    def _check_consistency(self) -> WorkflowResult:
+        # A status="error" with no message is the silent-failure shape this envelope
+        # exists to prevent: a caller sees "error" but cannot tell what went wrong.
+        if self.status == "error" and not (self.error and self.error.strip()):
+            raise ValueError(
+                "WorkflowResult.status == 'error' requires a non-empty 'error' message"
+            )
+        if self.status != "error" and self.error is not None:
+            raise ValueError(f"WorkflowResult.error must be None when status is {self.status!r}")
+        # A preview is a peek at the handle's payload; a preview with no handle would
+        # mislead the orchestrating LLM into thinking chainable data exists.
+        if self.data_preview is not None and self.data_handle is None:
+            raise ValueError("WorkflowResult.data_preview requires data_handle to be set")
+        return self
+
+    @classmethod
+    def failed(cls, error: str, *, markdown: str = "", run_id: str | None = None) -> WorkflowResult:
+        """Construct a loud-error result. Prefer this over hand-setting ``status``."""
+        return cls(markdown=markdown, status="error", error=error, run_id=run_id)

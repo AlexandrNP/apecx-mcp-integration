@@ -69,6 +69,9 @@ from apecx_integration.mcp_surface.tools import (
     globus_search as globus_search_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    harmonized_search as harmonized_search_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     hpc as hpc_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -149,6 +152,14 @@ def build_server() -> FastMCP:
     # the harvester runs as a stand-alone process and writes to this
     # index. We never write to it from the MCP surface.
     server.tool()(globus_search_tools.query_globus_search)
+
+    # Harmonized search — drives the harmonized_search nanobrain workflow:
+    # term → canonical IRI → per-index filter → raw-vs-harmonized
+    # comparison with HITL gating on ambiguous resolution. Sister to
+    # query_globus_search (which is a raw passthrough); this is the
+    # opinionated harmonization path. See
+    # composition/workflows/harmonized_search/ for the workflow YAML.
+    server.tool()(harmonized_search_tools.harmonized_search)
 
     server.tool()(approvals_tools.list_pending_approvals)
     server.tool()(approvals_tools.approve)

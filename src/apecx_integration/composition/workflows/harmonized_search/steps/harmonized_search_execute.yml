@@ -1,0 +1,38 @@
+# Wrapper YAML for HarmonizedSearchExecuteStep — second step of the
+# harmonized_search workflow.
+#
+# Takes the plan emitted by HarmonizedResolveStep and either runs raw +
+# harmonized Globus queries, OR emits a paused envelope (no Globus
+# queries) when the resolution was ambiguous. See
+# src/apecx_integration/composition/steps/harmonized_search_execute_step.py
+# for the full input/output contract.
+
+class: "apecx_integration.composition.steps.harmonized_search_execute_step.HarmonizedSearchExecuteStep"
+name: harmonized_search_execute
+description: >
+  Execute raw + harmonized Globus queries (or emit a paused envelope on
+  ambiguous resolution). Produces envelope-shaped output (markdown +
+  Bundle) ready for the terminal EnvelopeStep.
+
+input_data_units:
+  plan:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: plan
+    description: >
+      The plan dict emitted by HarmonizedResolveStep — term, index,
+      resolution_path, canonical_iri, candidates, synonyms, etc.
+    persistent: false
+
+output_data_units:
+  envelope_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: envelope_input
+    description: >
+      Dict matching EnvelopeStep's input contract — 'markdown' (str)
+      summarizing what happened + 'data' (serialized Bundle DataShape)
+      carrying resolution / raw_query / harmonized_query / divergence.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "plan"
