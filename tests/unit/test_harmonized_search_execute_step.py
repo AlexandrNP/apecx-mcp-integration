@@ -328,14 +328,22 @@ def test_harm_health_errored_short_circuits():
     assert "503" in reason
 
 
-def test_harm_health_zero_both_is_parity_not_broken():
-    """raw_total=0 AND harm_total=0 must NOT classify as 'broken' —
-    that's a genuine miss, not a stale-dict pathology."""
+def test_harm_health_zero_both_with_filter_is_zero_floor_unclear():
+    """raw=0 AND harm=0 with filter_values_count>=1 must classify as
+    'zero_floor_unclear', NOT 'healthy_parity'.
+
+    The prior verdict 'healthy_parity' was misleadingly confident — it
+    couldn't distinguish a genuine miss from a broken filter at floor.
+    Discovered during the 2026-06-09 Option-A walkthrough: round-2 RSV
+    re-call with the chosen human-RSV IRI returned 0/0 (BV-BRC indexes
+    human RSV under 'Orthopneumovirus hominis', dict has 'human
+    respiratory syncytial virus') and the LLM got a false-confident
+    'parity' signal."""
     from apecx_integration.composition.steps.harmonized_search_execute_step import (
         _compute_harmonization_health,
     )
 
-    verdict, _ = _compute_harmonization_health(
+    verdict, reason = _compute_harmonization_health(
         raw_total=0,
         harm_total=0,
         filter_field="Species",
@@ -345,4 +353,118 @@ def test_harm_health_zero_both_is_parity_not_broken():
         raw_error=None,
         harm_error=None,
     )
+    assert verdict == "zero_floor_unclear"
+    assert "0 records" in reason
+    assert "do not assert" in reason.lower()
+
+
+def test_harm_health_zero_floor_unclear_round2_iri_shape():
+    """The exact failure shape that drove this verdict into existence:
+    user disambiguated to human RSV (NCBITaxon_11250), workflow re-called
+    with the IRI, both raw + harm returned 0 on bvbrc_genome."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, reason = _compute_harmonization_health(
+        raw_total=0,
+        harm_total=0,
+        filter_field="Species",
+        filter_values_count=6,
+        index="bvbrc_genome",
+        canonical_label="human respiratory syncytial virus",
+        raw_error=None,
+        harm_error=None,
+    )
+    assert verdict == "zero_floor_unclear"
+    assert "broader query" in reason.lower()
+    assert "human respiratory syncytial virus" in reason
+
+
+def test_harm_health_zero_zero_no_filter_still_handled_safely():
+    """raw=0, harm=0, filter_values_count=0 — this path is normally
+    short-circuited by harm_error='no filter values built' BEFORE
+    _compute_harmonization_health is called, but the classifier should
+    still cope deterministically if it ever sees this shape directly.
+    Falls through to healthy_parity (no filter was attempted)."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _compute_harmonization_health,
+    )
+
+    verdict, _ = _compute_harmonization_health(
+        raw_total=0,
+        harm_total=0,
+        filter_field="Species",
+        filter_values_count=0,
+        index="protabank",
+        canonical_label="Unobtanium",
+        raw_error=None,
+        harm_error=None,
+    )
     assert verdict == "healthy_parity"
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# IRI-input raw query substitution (fix for the round-2 disambiguation
+# path where term=<IRI> made the raw leg structurally meaningless).
+# ─────────────────────────────────────────────────────────────────────────
+
+
+def test_is_iri_input_helper():
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _is_iri_input,
+    )
+
+    assert _is_iri_input("http://purl.obolibrary.org/obo/NCBITaxon_11250") is True
+    assert _is_iri_input("https://example.org/x") is True
+    assert _is_iri_input("CHIKV") is False
+    assert _is_iri_input("Chikungunya virus") is False
+    assert _is_iri_input("") is False
+
+
+def test_select_raw_query_term_passthrough_for_non_iri():
+    """Plain surface forms pass through unchanged with no substitution."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _select_raw_query_term,
+    )
+
+    q, reason = _select_raw_query_term("CHIKV", "Chikungunya virus")
+    assert q == "CHIKV"
+    assert reason is None
+
+    q, reason = _select_raw_query_term("yellow fever virus", "Yellow fever virus")
+    assert q == "yellow fever virus"
+    assert reason is None
+
+
+def test_select_raw_query_term_iri_substitutes_label():
+    """When term is an IRI AND canonical_label is available, the raw
+    query uses the label instead — searching Globus text for the literal
+    IRI string matches nothing in any APECx-published index."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _select_raw_query_term,
+    )
+
+    q, reason = _select_raw_query_term(
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "human respiratory syncytial virus",
+    )
+    assert q == "human respiratory syncytial virus"
+    assert reason is not None
+    assert "IRI" in reason
+    assert "human respiratory syncytial virus" in reason
+
+
+def test_select_raw_query_term_iri_without_label_falls_through():
+    """If the resolver gave us an IRI but no canonical_label, fall
+    through to the IRI itself and record the limitation honestly."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _select_raw_query_term,
+    )
+
+    iri = "http://purl.obolibrary.org/obo/NCBITaxon_99999999"
+    q, reason = _select_raw_query_term(iri, None)
+    assert q == iri
+    assert reason is not None
+    assert "no canonical_label" in reason
+    assert "not-applicable" in reason

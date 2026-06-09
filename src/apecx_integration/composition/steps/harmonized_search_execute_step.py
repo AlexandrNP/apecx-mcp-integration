@@ -105,6 +105,39 @@ def _iri_to_taxon_id(iri: str) -> int | None:
         return None
 
 
+def _is_iri_input(term: str) -> bool:
+    """True iff ``term`` is an HTTP(S) IRI (a canonical-IRI re-call)."""
+    return isinstance(term, str) and term.startswith(("http://", "https://"))
+
+
+def _select_raw_query_term(term: str, canonical_label: Any) -> tuple[str, str | None]:
+    """Pick what to feed Globus as the raw `q=` query string.
+
+    Returns ``(query_term, substitution_reason)``. When the user passed
+    an IRI (typically the round-2 re-call after a paused-envelope
+    disambiguation), a literal Globus text search for the IRI string
+    matches nothing — BV-BRC and VIOLIN don't store IRIs in any indexed
+    text field. Substitute the resolved canonical_label so the raw leg
+    is a meaningful baseline. When canonical_label is unavailable, fall
+    through to the IRI and record the limitation.
+    """
+    if not _is_iri_input(term):
+        return term, None
+    if isinstance(canonical_label, str) and canonical_label:
+        reason = (
+            f"term was an IRI ({term!r}); a literal Globus text search "
+            f"for the IRI string would match nothing. Substituting the "
+            f"resolved canonical_label {canonical_label!r} as the raw "
+            f"query so the raw leg is a meaningful comparison baseline."
+        )
+        return canonical_label, reason
+    return term, (
+        f"term was an IRI ({term!r}) but resolver returned no "
+        f"canonical_label; raw leg will likely return 0. Treat the raw "
+        f"count as not-applicable for this input."
+    )
+
+
 def _build_filter_values(plan: dict[str, Any]) -> list[Any]:
     """Build the harmonized filter values per the index's shape spec."""
     index = plan["index"]
@@ -160,8 +193,14 @@ def _compute_harmonization_health(
     - ``"harmonization_helped"`` — harm > raw. The synonym expansion
       reaches records that raw substring search missed (the canonical
       win case the workflow was designed to surface).
+    - ``"zero_floor_unclear"`` — both legs returned 0 BUT a filter was
+      actually attempted (``filter_values_count >= 1``). Indistinguishable
+      between (a) genuinely-rare entity not in this index, (b) broken
+      filter at a zero floor (dict labels stale AND raw query happened
+      not to match either). Caller should NOT assert "no records exist"
+      as a confident answer; surface the ambiguity to the user.
     - ``"healthy_parity"`` — |Δ| within noise floor (< 5 records AND
-      < 5%). The two answers agree.
+      < 5%), excluding the zero-floor case above. The two answers agree.
     - ``"errored"`` — raw or harm query raised; caller has the error
       text in raw_error / harm_error.
     """
@@ -181,6 +220,22 @@ def _compute_harmonization_health(
             f"canonical labels for this entity do not match the values "
             f"used by index `{index}` (commonly a stale ICTV taxonomy "
             f"rename). Use the raw query results."
+        )
+    # Zero-floor differentiation: both legs gave 0 but we DID attempt the
+    # harmonized filter with >= 1 value. Surface as inconclusive — the
+    # entity may be genuinely absent OR both surface forms may be stale.
+    if harm_total == 0 and raw_total == 0 and filter_values_count >= 1:
+        return "zero_floor_unclear", (
+            f"both raw substring search AND harmonized filter on "
+            f"`{filter_field}` with {filter_values_count} value(s) "
+            f"returned 0 records on index `{index}`. This is ambiguous: "
+            f"the entity may be genuinely absent from this index, OR the "
+            f"synonym dictionary's canonical labels for "
+            f"{canonical_label!r} may not match what this index uses (a "
+            f"stale-dict pathology that looks identical to a real miss). "
+            f"Do not assert 'no records exist' confidently — recommend "
+            f"the user try a broader query (parent species, a related "
+            f"surface form, or a different index)."
         )
     if harm_total > raw_total:
         return "harmonization_helped", (
@@ -307,7 +362,10 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
     index = plan["index"]
     index_uuid = _INDEX_UUIDS[index]
     spec = _HARMONIZED_FILTER[index]
-    raw_q, was_quoted = _quote_raw_term(plan["term"])
+    raw_q_term, raw_q_substitution_reason = _select_raw_query_term(
+        plan["term"], plan.get("canonical_label")
+    )
+    raw_q, was_quoted = _quote_raw_term(raw_q_term)
     filter_values = _build_filter_values(plan)
 
     client = globus_sdk.SearchClient()
@@ -392,6 +450,11 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
         f"- Divergence: |Δ|={absolute_diff} ({divergence_fraction:.0%} of {larger})",
         f"- Harmonization health: **{harm_health}**",
     ]
+    if raw_q_substitution_reason:
+        md_lines += [
+            "",
+            f"**Note on raw query**: {raw_q_substitution_reason}",
+        ]
     if harm_health == "broken":
         md_lines += [
             "",
@@ -413,6 +476,15 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
             f"**Heads-up**: {harm_health_reason} Present both sides "
             f"(raw={raw_total}, harmonized={harm_total}) to the user.",
         ]
+    elif harm_health == "zero_floor_unclear":
+        md_lines += [
+            "",
+            f"**⚠ Inconclusive zero-floor.** {harm_health_reason} Do NOT "
+            f"assert 'no records exist' as a confident answer; the most "
+            f"honest reply is to surface the ambiguity to the user and "
+            f"suggest a broader query (parent species, a related "
+            f"surface form, or a different index).",
+        ]
     if raw_error:
         md_lines += ["", f"_raw query error_: {raw_error}"]
     if harm_error and harm_health != "broken":
@@ -432,6 +504,7 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
             "total": raw_total,
             "sample": [_summarize_record(r) for r in raw_records[:3]],
             "error": raw_error,
+            "q_substitution_reason": raw_q_substitution_reason,
         },
         "harmonized_query": {
             "filter_field": spec["field"],
@@ -450,7 +523,18 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
         "harmonization_health": {
             "verdict": harm_health,
             "reason": harm_health_reason,
-            "recommended_total": (raw_total if harm_health == "broken" else harm_total),
+            # recommended_total reflects which leg the caller should quote:
+            # - broken: raw is the trustworthy signal (dict labels stale)
+            # - zero_floor_unclear: neither leg gave a confident count;
+            #   surface 0 with explicit caveat
+            # - all other verdicts: harm is the canonical answer
+            "recommended_total": (
+                raw_total
+                if harm_health == "broken"
+                else 0
+                if harm_health == "zero_floor_unclear"
+                else harm_total
+            ),
         },
         "status": "ok",
     }
