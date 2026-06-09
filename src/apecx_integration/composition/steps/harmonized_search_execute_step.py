@@ -135,6 +135,70 @@ def _build_filter_values(plan: dict[str, Any]) -> list[Any]:
     return [iri] if isinstance(iri, str) and iri else []
 
 
+def _compute_harmonization_health(
+    raw_total: int,
+    harm_total: int,
+    filter_field: str,
+    filter_values_count: int,
+    index: str,
+    canonical_label: Any,
+    raw_error: str | None,
+    harm_error: str | None,
+) -> tuple[str, str]:
+    """Classify the harmonization outcome into a structured verdict.
+
+    Pure function — no Globus dependency. Returns ``(verdict, reason)``.
+
+    Verdicts:
+    - ``"broken"`` — harm filter returned 0 records but raw matched some.
+      The dictionary's canonical labels don't match what the index uses
+      (commonly: stale ICTV taxonomy rename, e.g. "Yellow fever virus"
+      vs. "Orthoflavivirus flavi"). Caller should defer to raw results.
+    - ``"degraded"`` — harm < raw but harm > 0. Filter caught the
+      canonical match shape but missed records whose surface form
+      doesn't fit any known synonym. Raw is the broader signal.
+    - ``"harmonization_helped"`` — harm > raw. The synonym expansion
+      reaches records that raw substring search missed (the canonical
+      win case the workflow was designed to surface).
+    - ``"healthy_parity"`` — |Δ| within noise floor (< 5 records AND
+      < 5%). The two answers agree.
+    - ``"errored"`` — raw or harm query raised; caller has the error
+      text in raw_error / harm_error.
+    """
+    if raw_error or harm_error:
+        return "errored", (f"query error: raw_error={raw_error!r}, harm_error={harm_error!r}")
+
+    absolute_diff = abs(raw_total - harm_total)
+    larger = max(raw_total, harm_total) or 1
+    divergence_fraction = absolute_diff / larger
+    diverges = absolute_diff >= 5 or divergence_fraction >= 0.05
+
+    if harm_total == 0 and raw_total > 0:
+        return "broken", (
+            f"harmonized filter on `{filter_field}` with "
+            f"{filter_values_count} value(s) returned 0 records while raw "
+            f"substring matched {raw_total}. The synonym dictionary's "
+            f"canonical labels for this entity do not match the values "
+            f"used by index `{index}` (commonly a stale ICTV taxonomy "
+            f"rename). Use the raw query results."
+        )
+    if harm_total > raw_total:
+        return "harmonization_helped", (
+            f"harmonized filter reached {harm_total - raw_total} additional "
+            f"records the raw substring search missed."
+        )
+    if diverges:
+        return "degraded", (
+            f"harmonized filter caught {harm_total} records; raw caught "
+            f"{raw_total} ({absolute_diff} additional). The raw query "
+            f"may be reaching records whose surface form doesn't match "
+            f"any synonym for {canonical_label!r}."
+        )
+    return "healthy_parity", (
+        f"|Δ|={absolute_diff} within noise floor (5 records, 5%). Raw and harmonized agree."
+    )
+
+
 def _summarize_record(record: dict[str, Any]) -> dict[str, Any]:
     """Project a Globus record to a small preview dict.
 
@@ -306,6 +370,17 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
     divergence_fraction = absolute_diff / larger
     diverges = absolute_diff >= 5 or divergence_fraction >= 0.05
 
+    harm_health, harm_health_reason = _compute_harmonization_health(
+        raw_total=raw_total,
+        harm_total=harm_total,
+        filter_field=spec["field"],
+        filter_values_count=len(filter_values),
+        index=index,
+        canonical_label=plan.get("canonical_label"),
+        raw_error=raw_error,
+        harm_error=harm_error,
+    )
+
     # Markdown summary
     md_lines = [
         f"### Harmonized search: `{plan['term']}` on `{index}`",
@@ -315,19 +390,32 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
         f"- Harmonized (`{spec['field']}` × {len(filter_values)} value(s)): "
         f"**{harm_total}** record(s)",
         f"- Divergence: |Δ|={absolute_diff} ({divergence_fraction:.0%} of {larger})",
+        f"- Harmonization health: **{harm_health}**",
     ]
-    if diverges:
+    if harm_health == "broken":
         md_lines += [
             "",
-            "**Heads-up**: raw and harmonized results diverge meaningfully. "
-            "The harmonized superset reaches records whose surface form "
-            "doesn't contain the literal term, OR raw matched substrings "
-            "the canonical IRI doesn't cover. Present both sides to the "
-            "user before quoting a single number.",
+            f"**⚠ Harmonization broken for this entity.** {harm_health_reason} "
+            f"Quote the raw count ({raw_total}) when answering the user, "
+            f"and flag that the synonym dictionary may need a rebuild "
+            f"against the current index taxonomy.",
+        ]
+    elif harm_health == "harmonization_helped":
+        md_lines += [
+            "",
+            f"**Heads-up**: {harm_health_reason} The harmonized superset is "
+            f"the better answer; raw substring missed records whose surface "
+            f"form doesn't contain `{plan['term']}` literally.",
+        ]
+    elif harm_health == "degraded":
+        md_lines += [
+            "",
+            f"**Heads-up**: {harm_health_reason} Present both sides "
+            f"(raw={raw_total}, harmonized={harm_total}) to the user.",
         ]
     if raw_error:
         md_lines += ["", f"_raw query error_: {raw_error}"]
-    if harm_error:
+    if harm_error and harm_health != "broken":
         md_lines += ["", f"_harmonized query error_: {harm_error}"]
 
     bundle_parts: dict[str, Any] = {
@@ -358,6 +446,11 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
             "absolute_diff": absolute_diff,
             "fraction_of_larger_total": round(divergence_fraction, 4),
             "hitl_recommended": diverges,
+        },
+        "harmonization_health": {
+            "verdict": harm_health,
+            "reason": harm_health_reason,
+            "recommended_total": (raw_total if harm_health == "broken" else harm_total),
         },
         "status": "ok",
     }
