@@ -25,11 +25,31 @@ Output (under ``envelope_input``): the dict shape ``EnvelopeStep``
 consumes — ``{markdown: str, data: dict (serialized DataShape)}``. The
 ``data`` Bundle's parts carry:
 
-- ``resolution`` — path / canonical_iri / candidates / synonyms_count
-- ``raw_query`` — q / was_quoted / total / sample (first 3 records)
-- ``harmonized_query`` — filter_field / filter_shape / filter_values
-  (sample) / total / sample
-- ``divergence`` — absolute_diff / fraction_of_larger_total / hitl_required
+- ``resolution`` — path / canonical_iri / canonical_label / confidence /
+  synonyms_count
+- ``raw_query`` — q / was_quoted / total / sample (first 3 records) /
+  error / ``q_substitution_reason`` (set when ``term`` was an IRI and
+  the workflow substituted the canonical label as the raw query;
+  ``None`` for plain surface-form inputs)
+- ``harmonized_query`` — filter_field / filter_shape /
+  filter_values_count / filter_values_sample (first 5) / total /
+  sample / error
+- ``divergence`` — absolute_diff / fraction_of_larger_total /
+  hitl_recommended
+- ``harmonization_health`` (the structured signal the user-facing LLM
+  consumes to decide which leg to quote):
+  - ``verdict`` ∈ {``"broken"``, ``"degraded"``,
+    ``"harmonization_helped"``, ``"healthy_parity"``,
+    ``"zero_floor_unclear"``, ``"errored"``}
+  - ``reason`` — diagnostic prose describing the bucket
+  - ``recommended_total`` — the count the LLM should quote (raw_total
+    for ``broken``, 0 for ``zero_floor_unclear``, harm_total otherwise)
+
+When the resolution path is ``ambiguous`` (paused envelope), the parts
+shape collapses to ``{resolution, status: "paused_awaiting_disambiguation",
+next_action: {kind, param_name, options}}`` — no Globus queries are
+executed, and there is no ``raw_query`` / ``harmonized_query`` /
+``harmonization_health`` to mis-attribute.
 
 Compliance notes:
 - ``from_config``-only construction; subclass of ``BaseStep``.
