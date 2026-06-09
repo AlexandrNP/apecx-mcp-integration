@@ -57,9 +57,6 @@ from apecx_integration.mcp_surface.tools import (
     approvals as approvals_tools,
 )
 from apecx_integration.mcp_surface.tools import (
-    canonical_entity as canonical_entity_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -117,17 +114,30 @@ def build_server() -> FastMCP:
     # Direct database lookups — bypass the composer for one-shot
     # VIOLIN + BV-BRC queries the model can answer without orchestrating
     # a workflow ("list vaccines targeting EEEV").
-    server.tool()(database_tools.query_vaccines)
-    server.tool()(database_tools.query_pathogens)
-    server.tool()(database_tools.query_genes)
-    server.tool()(database_tools.query_bvbrc_genomes)
-    server.tool()(database_tools.get_vaccine_pathogen_genes)
-    server.tool()(database_tools.resolve_entity)
+    # Database query primitives — DELIBERATELY NOT EXPOSED as MCP tools
+    # (2026-06-09 tier cleanup).
+    #
+    # query_vaccines / query_pathogens / query_genes / query_bvbrc_genomes /
+    # get_vaccine_pathogen_genes / resolve_entity / resolve_canonical_entity
+    # were registered as tier-1 tools but violated the workflow-first
+    # tiered architecture: each one has a specific first-line description
+    # (e.g. "Search the BV-BRC alphavirus genome database (~17,000
+    # genomes)") that LLMs route against in preference to the canonical
+    # ``harmonized_search`` workflow tool. The result was that the LLM
+    # would pick the cheaper-looking primitive — bypassing harmonized
+    # synonym expansion + the verdict surface + (until the 2026-06-09
+    # Path B hotfix) HITL gating on ambiguous terms.
+    #
+    # ``harmonized_search`` (below) is now the canonical entry point for
+    # "find records about X in any APECx Globus index" queries. The
+    # underlying Python functions remain importable and are used
+    # internally by the synthesis pipeline and by the composer.
+    #
+    # ``database_statistics`` STAYS on the wire as a meta/navigation
+    # tool — it doesn't compete with harmonized_search; it tells the LLM
+    # "what tables exist, what columns they have" for composer-driven
+    # workflow generation.
     server.tool()(database_tools.database_statistics)
-
-    # Stage 2 canonical entity resolution — dictionary fast path first,
-    # substring slow path fallback.  Always surfaces path + confidence.
-    server.tool()(canonical_entity_tools.resolve_canonical_entity)
 
     # End-to-end RAG synthesis — drives the rag_e2e_synthesis workflow
     # directly (no composer round-trip). One LLM call total. Steps are
