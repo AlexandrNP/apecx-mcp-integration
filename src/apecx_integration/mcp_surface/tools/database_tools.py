@@ -35,9 +35,10 @@ match was found so the model sees which path was taken.
 from __future__ import annotations
 
 from apecx_integration.mcp_surface.data import database as _db
+from apecx_integration.mcp_surface.tools._hitl_gate import resolve_with_hitl_gate
 from apecx_integration.synonym_dictionary.enums import EntityType
 from apecx_integration.synonym_dictionary.loader import get_dictionary_index
-from apecx_integration.synonym_dictionary.lookup import LookupResult, lookup_entity
+from apecx_integration.synonym_dictionary.lookup import LookupResult
 
 # ---------------------------------------------------------------------------
 # IRI → database-ID helpers
@@ -108,10 +109,19 @@ async def query_vaccines(
     vo_id: str | None = None
     resolution: dict | None = None
     if search_term:
-        lr = lookup_entity(search_term, entity_type=EntityType.VACCINE)
-        if lr.path in ("fast", "ancestor"):
-            vo_id = _vo_local_id(lr.canonical_iri)
-            resolution = _resolution_meta(lr)
+        gate = resolve_with_hitl_gate(
+            term=search_term,
+            entity_type=EntityType.VACCINE,
+            param_name="search_term",
+            tool_name="query_vaccines",
+        )
+        if gate["status"] == "paused_awaiting_disambiguation":
+            return gate
+        if gate["status"] == "resolved":
+            lr: LookupResult = gate["lookup_result"]
+            if lr.path in ("fast", "ancestor"):
+                vo_id = _vo_local_id(lr.canonical_iri)
+                resolution = _resolution_meta(lr)
 
     result = _db.query_vaccines(
         store,
@@ -146,19 +156,28 @@ async def query_pathogens(
     ncbi_ids: list[int] | None = None
     resolution: dict | None = None
     if search_term:
-        lr = lookup_entity(search_term, entity_type=EntityType.PATHOGEN)
-        if lr.path in ("fast", "ancestor"):
-            ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
-            resolution = _resolution_meta(lr)
-            # Strict taxonomy hierarchy: expand family/genus-level IRIs to
-            # include all descendant taxa. A query for "Coronaviridae"
-            # (NCBITaxon_11118) returns every coronavirus species; a query
-            # for "covid-19" (NCBITaxon_2697049) returns only SARS-CoV-2.
-            if ncbi_id is not None and lr.canonical_iri:
-                index, _ = get_dictionary_index()
-                if index is not None:
-                    child_ids = index.lookup_descendant_taxon_ids(lr.canonical_iri)
-                    ncbi_ids = [ncbi_id] + child_ids if child_ids else [ncbi_id]
+        gate = resolve_with_hitl_gate(
+            term=search_term,
+            entity_type=EntityType.PATHOGEN,
+            param_name="search_term",
+            tool_name="query_pathogens",
+        )
+        if gate["status"] == "paused_awaiting_disambiguation":
+            return gate
+        if gate["status"] == "resolved":
+            lr: LookupResult = gate["lookup_result"]
+            if lr.path in ("fast", "ancestor"):
+                ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
+                resolution = _resolution_meta(lr)
+                # Strict taxonomy hierarchy: expand family/genus-level IRIs to
+                # include all descendant taxa. A query for "Coronaviridae"
+                # (NCBITaxon_11118) returns every coronavirus species; a query
+                # for "covid-19" (NCBITaxon_2697049) returns only SARS-CoV-2.
+                if ncbi_id is not None and lr.canonical_iri:
+                    index, _ = get_dictionary_index()
+                    if index is not None:
+                        child_ids = index.lookup_descendant_taxon_ids(lr.canonical_iri)
+                        ncbi_ids = [ncbi_id] + child_ids if child_ids else [ncbi_id]
 
     result = _db.query_pathogens(
         store,
@@ -191,10 +210,19 @@ async def query_genes(
     gene_id: int | None = None
     resolution: dict | None = None
     if search_term:
-        lr = lookup_entity(search_term, entity_type=EntityType.GENE)
-        if lr.path in ("fast", "ancestor"):
-            gene_id = _ncbi_gene_id(lr.canonical_iri)
-            resolution = _resolution_meta(lr)
+        gate = resolve_with_hitl_gate(
+            term=search_term,
+            entity_type=EntityType.GENE,
+            param_name="search_term",
+            tool_name="query_genes",
+        )
+        if gate["status"] == "paused_awaiting_disambiguation":
+            return gate
+        if gate["status"] == "resolved":
+            lr: LookupResult = gate["lookup_result"]
+            if lr.path in ("fast", "ancestor"):
+                gene_id = _ncbi_gene_id(lr.canonical_iri)
+                resolution = _resolution_meta(lr)
 
     result = _db.query_genes(
         store,
@@ -233,10 +261,19 @@ async def query_bvbrc_genomes(
     ncbi_id: int | None = None
     resolution: dict | None = None
     if search_term:
-        lr = lookup_entity(search_term, entity_type=EntityType.PATHOGEN)
-        if lr.path in ("fast", "ancestor"):
-            ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
-            resolution = _resolution_meta(lr)
+        gate = resolve_with_hitl_gate(
+            term=search_term,
+            entity_type=EntityType.PATHOGEN,
+            param_name="search_term",
+            tool_name="query_bvbrc_genomes",
+        )
+        if gate["status"] == "paused_awaiting_disambiguation":
+            return gate
+        if gate["status"] == "resolved":
+            lr: LookupResult = gate["lookup_result"]
+            if lr.path in ("fast", "ancestor"):
+                ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
+                resolution = _resolution_meta(lr)
 
     result = _db.query_bvbrc_genomes(
         store,
@@ -269,10 +306,19 @@ async def get_vaccine_pathogen_genes(pathogen_name: str) -> dict:
     ncbi_id: int | None = None
     resolution: dict | None = None
     if pathogen_name:
-        lr = lookup_entity(pathogen_name, entity_type=EntityType.PATHOGEN)
-        if lr.path in ("fast", "ancestor"):
-            ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
-            resolution = _resolution_meta(lr)
+        gate = resolve_with_hitl_gate(
+            term=pathogen_name,
+            entity_type=EntityType.PATHOGEN,
+            param_name="pathogen_name",
+            tool_name="get_vaccine_pathogen_genes",
+        )
+        if gate["status"] == "paused_awaiting_disambiguation":
+            return gate
+        if gate["status"] == "resolved":
+            lr: LookupResult = gate["lookup_result"]
+            if lr.path in ("fast", "ancestor"):
+                ncbi_id = _ncbi_taxon_id(lr.canonical_iri)
+                resolution = _resolution_meta(lr)
 
     result = _db.get_vaccine_pathogen_genes(store, pathogen_name, ncbi_taxonomy_id=ncbi_id)
     if resolution:
@@ -294,11 +340,24 @@ async def resolve_entity(name: str) -> dict:
     store, err = _db.get_store()
     if store is None:
         return {"error": err or "Database not loaded"}
-    result = _db.resolve_entity(store, name)
-    lr = lookup_entity(name)
-    if lr.path in ("fast", "ancestor"):
-        result["canonical_resolution"] = _resolution_meta(lr)
-    return result
+
+    if name:
+        gate = resolve_with_hitl_gate(
+            term=name,
+            entity_type=None,  # untyped — surface ambiguity across all types
+            param_name="name",
+            tool_name="resolve_entity",
+        )
+        if gate["status"] == "paused_awaiting_disambiguation":
+            return gate
+        result = _db.resolve_entity(store, name)
+        if gate["status"] == "resolved":
+            lr: LookupResult = gate["lookup_result"]
+            if lr.path in ("fast", "ancestor"):
+                result["canonical_resolution"] = _resolution_meta(lr)
+        return result
+
+    return _db.resolve_entity(store, name)
 
 
 async def database_statistics() -> dict:

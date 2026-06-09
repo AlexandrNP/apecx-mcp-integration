@@ -162,6 +162,129 @@ def lookup_entity(
 
 
 # ---------------------------------------------------------------------------
+# Ambiguity-aware lookup (shared by harmonized_search + MCP HITL gate)
+# ---------------------------------------------------------------------------
+
+
+def detect_ambiguity(
+    surface_form: str,
+    *,
+    entity_type: EntityType | None = None,
+) -> tuple[LookupResult, list[dict[str, object]]]:
+    """Resolve a surface form AND detect multi-IRI ambiguity.
+
+    Returns ``(primary, candidates)``. ``primary`` is the
+    :class:`LookupResult` from :func:`lookup_entity` — the first-match
+    optimistic answer. ``candidates`` is a list of distinct canonical
+    entries the surface form maps to:
+
+    - ``len(candidates) <= 1`` — the term is unambiguous; the caller
+      may proceed with ``primary``.
+    - ``len(candidates) > 1`` — the term resolves to multiple distinct
+      canonical IRIs. The caller MUST surface the candidate list to
+      the user and stop (do NOT pick one silently). This is the
+      structural HITL gate the harmonized_search workflow established.
+
+    Ambiguity is detected in two phases:
+
+    1. The dictionary's ``ambiguous_surface_forms`` table — the
+       authoritative source for known multi-IRI conflicts captured at
+       build time (e.g. RSV → 6 candidates).
+    2. Fall-through via :meth:`DictionaryIndex.lookup_any_type` — for
+       conflicts the build pass missed (returns distinct entries
+       across entity types for the same surface form).
+
+    IRI input (``http(s)://...``) is by construction unambiguous; the
+    caller already resolved disambiguation. The ambiguity check is
+    skipped for IRI input.
+
+    When the dictionary index is unavailable, the function degrades
+    gracefully to ``(primary, [])`` rather than raising — the caller
+    proceeds with the optimistic single-match answer (this matches the
+    pre-2026-06-09 behavior for backwards compatibility).
+    """
+    primary = lookup_entity(surface_form, entity_type=entity_type)
+
+    if surface_form.startswith(("http://", "https://")):
+        return primary, []
+
+    try:
+        index_obj, _err = get_dictionary_index()
+    except Exception:  # pragma: no cover — defensive against loader failure
+        return primary, []
+
+    if index_obj is None:
+        return primary, []
+
+    surface_norm = " ".join(surface_form.casefold().split())
+    candidate_iris: list[str] = []
+    seen_iris: set[str] = set()
+
+    try:
+        amb_rows = index_obj.lookup_ambiguous_surface_forms(
+            surface_form=surface_norm,
+            limit=50,
+        )
+    except Exception as exc:  # noqa: BLE001 — best-effort ambiguity check
+        log.warning(
+            "detect_ambiguity: lookup_ambiguous_surface_forms failed: %s",
+            exc,
+        )
+        amb_rows = []
+
+    for row in amb_rows:
+        for iri_key in ("winning_canonical_iri", "alternative_canonical_iri"):
+            iri = row.get(iri_key)
+            if iri and iri not in seen_iris:
+                seen_iris.add(iri)
+                candidate_iris.append(iri)
+
+    if not candidate_iris:
+        try:
+            matches: list[DictionaryEntry] = index_obj.lookup_any_type(surface_form)
+        except Exception as exc:  # noqa: BLE001
+            log.warning(
+                "detect_ambiguity: lookup_any_type failed: %s",
+                exc,
+            )
+            matches = []
+        for entry in matches:
+            if entry.canonical_iri not in seen_iris:
+                seen_iris.add(entry.canonical_iri)
+                candidate_iris.append(entry.canonical_iri)
+
+    if len(candidate_iris) <= 1:
+        return primary, []
+
+    candidates: list[dict[str, object]] = []
+    for iri in candidate_iris:
+        try:
+            entry = index_obj.lookup_by_iri(iri)
+        except Exception:  # noqa: BLE001
+            entry = None
+        if entry is not None:
+            candidates.append(
+                {
+                    "canonical_iri": entry.canonical_iri,
+                    "canonical_label": entry.canonical_label,
+                    "canonical_ontology": entry.ontology.value,
+                    "confidence": entry.confidence,
+                }
+            )
+        else:
+            candidates.append(
+                {
+                    "canonical_iri": iri,
+                    "canonical_label": None,
+                    "canonical_ontology": None,
+                    "confidence": 0.0,
+                }
+            )
+
+    return primary, candidates
+
+
+# ---------------------------------------------------------------------------
 # Internals
 # ---------------------------------------------------------------------------
 
@@ -249,7 +372,7 @@ def _try_slow_path(surface_form: str) -> LookupResult | None:
                 confidence=0.3,
                 resolution_status=ResolutionStatus.OLS_FUZZY,
                 synonyms=(),
-                evidence=(f"database substring match (pathogen); " f"ncbi_ids={ncbi_ids[:3]}"),
+                evidence=(f"database substring match (pathogen); ncbi_ids={ncbi_ids[:3]}"),
             )
 
         # Fall back to vaccine matches.
@@ -266,7 +389,7 @@ def _try_slow_path(surface_form: str) -> LookupResult | None:
                 confidence=0.2,
                 resolution_status=ResolutionStatus.OLS_FUZZY,
                 synonyms=(),
-                evidence=(f"database substring match (vaccine); " f"violin_ids={violin_ids[:3]}"),
+                evidence=(f"database substring match (vaccine); violin_ids={violin_ids[:3]}"),
             )
 
         return None
