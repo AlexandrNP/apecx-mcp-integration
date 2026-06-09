@@ -18,21 +18,35 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv tool install --python 3.12 \
   git+https://github.com/AlexandrNP/apecx-mcp-integration.git
 
-# 3. initialize Globus
-apecx-globus-setup
-
-# 4. configure Claude Desktop, transfer datasets, restart Claude
+# 3. configure Claude Desktop and (optionally) transfer datasets
 apecx-setup
 ```
 
 `apecx-setup` is interactive: it confirms the data directory,
-**transfers the domain datasets over Globus** (BV-BRC is required; VIOLIN is
-optional and skipped with a loud warning if you lack access — the install still
-completes), **offers to install Ollama if missing** (Homebrew on macOS / the
-official install script on Linux — every command printed before a y/N prompt),
+**offers to install Ollama if missing** (Homebrew on macOS / the official
+install script on Linux — every command printed before a y/N prompt),
 starts the daemon, pulls the configured model (`mistral-nemo:latest` by
 default), and patches `claude_desktop_config.json` with the right paths and LLM
 env vars.
+
+**The synonym dictionary auto-downloads anonymously** on first MCP launch
+(~47 MB compressed, ~30 s on a typical home connection) from a public
+Globus HTTPS path. No credentials, no env vars, no `apecx-globus-setup`
+needed for this — it just works.
+
+**Globus authentication is OPTIONAL** and only required when you also want
+to transfer the VIOLIN + BV-BRC genomic datasets via `apecx-setup data`
+(BV-BRC required for that path; VIOLIN optional). To enable that step:
+
+```bash
+apecx-globus-setup login                                            # opens browser
+export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<ask the data steward>
+export APECX_GLOBUS_DEST_ENDPOINT_ID=<your Globus Connect Personal endpoint UUID>
+apecx-setup data
+```
+
+If you skip Globus setup, the MCP server and all dictionary-backed
+lookup tools still work; only the domain-data transfer step is unavailable.
 
 After it finishes, **fully quit Claude Desktop** (Cmd-Q on macOS —
 closing the window is not enough) and reopen. The 23 apecx tools
@@ -43,7 +57,7 @@ appear in the tool picker after 2–5 seconds.
 | Tool | Why |
 |---|---|
 | **Python ≥ 3.12** | `pyproject.toml` minimum. |
-| **A Globus account + [Globus Connect Personal](https://www.globus.org/globus-connect-personal)** | `apecx-setup` transfers domain data over Globus. Log in with your institutional identity via `apecx-globus-setup login` (browser, no secret); GCP gives you the local destination endpoint. See "Globus data access". |
+| **(Optional) Globus account + [Globus Connect Personal](https://www.globus.org/globus-connect-personal)** | Required ONLY for transferring VIOLIN + BV-BRC genomic datasets via `apecx-setup data`. The MCP server, synonym dictionary, and lookup tools work without Globus authentication — the dictionary auto-downloads anonymously from a public Globus HTTPS path on first launch. See "Globus data access" for the data-transfer setup. |
 | **Homebrew (macOS) OR the ability to `curl \| sh` (Linux)** | `apecx-setup` uses these to install Ollama for you. Decline the prompt and install yourself if you'd rather. |
 
 You will **NOT** need: Docker, Postgres, root/admin, GPU. The
@@ -54,9 +68,14 @@ you prefer to use a remote OpenAI-compatible endpoint (vLLM,
 OpenAI, hosted Anthropic-proxy), in which case set
 `APECX_LLM_BASE_URL` and decline the install prompt.
 
-## Globus data access
+## Globus data access (optional — for VIOLIN / BV-BRC datasets)
 
-Domain data is transferred over Globus. There are two ways to authenticate.
+**Skip this section if you only need dictionary lookups, query tools, and
+the synthesis pipeline.** The synonym dictionary downloads anonymously
+on first MCP launch — no Globus credentials required.
+
+Globus authentication is required ONLY when transferring the domain
+genomic datasets via `apecx-setup data`. There are two ways to authenticate.
 
 **Default — web-based login (thick client, no secret).** Recommended for
 workstations:

@@ -76,13 +76,24 @@ def _write_valid_dict(path: Path) -> None:
 
 def test_no_env_var_no_data_skips_build(monkeypatch, tmp_path, caplog):
     """No APECX_SYNONYM_DICT_PATH and no VIOLIN data: build workflow is invoked
-    but skips immediately because inputs are missing. Fallback warning emitted."""
+    but skips immediately because inputs are missing. Fallback warning emitted.
+
+    Scopes to the local-build path via ``APECX_SKIP_DICT_DOWNLOAD=1`` so this
+    test stays offline; the public-download path's clean-install contract
+    is covered by ``test_clean_install_dict_bootstrap.py``.
+    """
+    monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
     monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path))  # empty dir, no violin/
     monkeypatch.setenv("APECX_DICT_OUTPUT_DIR", str(tmp_path / "out"))
     with caplog.at_level(logging.WARNING):
         _ensure_synonym_dict_or_warn()
     text = caplog.text.lower()
-    assert "fallback" in text or "slow substring" in text or "not built" in text
+    assert (
+        "fallback" in text
+        or "slow substring" in text
+        or "not built" in text
+        or "not available" in text
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -91,13 +102,20 @@ def test_no_env_var_no_data_skips_build(monkeypatch, tmp_path, caplog):
 
 
 def test_skip_dict_build_env_var_honored(monkeypatch, tmp_path, caplog):
-    """APECX_SKIP_DICT_BUILD=1 → no build attempt, fallback warning."""
+    """APECX_SKIP_DICT_BUILD=1 → no build attempt, fallback warning.
+
+    Both ``APECX_SKIP_DICT_DOWNLOAD`` and ``APECX_SKIP_DICT_BUILD`` are
+    set so this test asserts the all-paths-declined fallback warning
+    without touching the network.
+    """
     missing = tmp_path / "missing.sqlite"
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(missing))
+    monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
     monkeypatch.setenv("APECX_SKIP_DICT_BUILD", "1")
     with caplog.at_level(logging.WARNING):
         _ensure_synonym_dict_or_warn()
-    assert "fallback" in caplog.text.lower() or "not built" in caplog.text.lower()
+    text = caplog.text.lower()
+    assert "fallback" in text or "not built" in text or "not available" in text
 
 
 # ---------------------------------------------------------------------------
@@ -108,13 +126,20 @@ def test_skip_dict_build_env_var_honored(monkeypatch, tmp_path, caplog):
 def test_missing_file_no_data_skips_build(monkeypatch, tmp_path, caplog):
     """Operator pointed APECX_SYNONYM_DICT_PATH at a non-existent file and
     has no VIOLIN data either: build attempted, skipped for missing data,
-    fallback warning emitted."""
+    fallback warning emitted.
+
+    Public download is suppressed via ``APECX_SKIP_DICT_DOWNLOAD=1`` so
+    this test stays offline; the download-then-build cascade is covered
+    by ``test_clean_install_dict_bootstrap.py``.
+    """
     missing = tmp_path / "does_not_exist.sqlite"
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(missing))
+    monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
     monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path / "no_data"))  # not present
     with caplog.at_level(logging.WARNING):
         _ensure_synonym_dict_or_warn()
-    assert "fallback" in caplog.text.lower() or "not built" in caplog.text.lower()
+    text = caplog.text.lower()
+    assert "fallback" in text or "not built" in text or "not available" in text
 
 
 # ---------------------------------------------------------------------------

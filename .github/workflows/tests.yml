@@ -105,6 +105,48 @@ jobs:
           fi
           echo "OK: install is data-free (no GitHub data download)."
 
+      - name: Assert dictionary auto-downloads on clean MCP startup (zero Globus config)
+        # Pins the clean-install contract: with no APECX_*/GLOBUS_* env vars,
+        # no keyring entries, no ~/.apecx state, the synonym dictionary must
+        # auto-download anonymously from the public Globus HTTPS path. This is
+        # the external-user-facing guarantee that broke before commit 83525af
+        # and would silently regress if the public bootstrap path were removed
+        # or re-gated behind credentials. ~21 s on first run; subsequent CI
+        # runs hit the same path. Networked — Argonne LCF must be reachable.
+        # If Argonne is down, this job fails — that's the intended signal.
+        run: |
+          set -euo pipefail
+          # `env -i` strips every inherited env var so we can prove no leaked
+          # Globus / APECX setting is making the download possible.
+          CLEAN_HOME="$(mktemp -d)"
+          env -i \
+            HOME="$CLEAN_HOME" \
+            PATH="$PATH" \
+            APECX_DICT_OUTPUT_DIR="$CLEAN_HOME/.apecx/dictionary" \
+            python -c "
+          import logging, os, sys
+          logging.basicConfig(level=logging.INFO, format='%(levelname)s %(name)s: %(message)s')
+
+          # Sanity: nothing Globus/APECX leaked past env -i (except the explicit
+          # APECX_DICT_OUTPUT_DIR we set above to redirect output into CLEAN_HOME).
+          leaked = sorted(
+              k for k in os.environ
+              if k.startswith(('APECX_', 'GLOBUS_')) and k != 'APECX_DICT_OUTPUT_DIR'
+          )
+          assert not leaked, f'env leak — clean-install assertion is invalid: {leaked}'
+
+          from apecx_integration.mcp_surface.server import _ensure_synonym_dict_or_warn
+          _ensure_synonym_dict_or_warn()
+
+          sqlite = os.path.expanduser('~/.apecx/dictionary/dictionary.sqlite')
+          if not os.path.exists(sqlite):
+              print(f'FAIL: dictionary did not auto-download to {sqlite}')
+              sys.exit(1)
+          size_mb = os.path.getsize(sqlite) / (1024 * 1024)
+          print(f'OK: dictionary auto-downloaded to {sqlite} ({size_mb:.1f} MB)')
+          "
+          rm -rf "$CLEAN_HOME"
+
   # Ruff gating intentionally NOT in this initial CI workflow.
   # The repo has ~510 pre-existing ruff errors (most auto-fixable but
   # touching many files); adding a gating ruff job would be red on day
