@@ -163,7 +163,7 @@ Output: `data/apecx_domain_rag/{faiss_index.bin,metadata.json}`.
 When missing, `DomainRagIndex.search` returns `[]` with a single
 loud WARNING per process; the synthesis branch degrades to empty
 chunks without crashing. The MCP server prints a `RAG DISABLED`
-banner at startup. See `docs/architecture.md` + `FAISS_SETUP_INSTRUCTIONS.md`.
+banner at startup. See `docs/architecture.md` + `docs/FAISS_SETUP_INSTRUCTIONS.md`.
 
 ## Globus data transfer — SOLE path (G82 2026-05-16; G127 2026-05-21)
 
