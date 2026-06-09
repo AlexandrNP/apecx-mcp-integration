@@ -16,12 +16,14 @@ When ``index`` is invalid the tool raises ``ValueError`` with the
 expected enum echoed back (Audit §3.10) — Pydantic would otherwise
 surface a generic message deep in the step.
 
-Why this lives next to ``query_globus_search`` rather than replacing
-it: ``query_globus_search`` is a raw free-text passthrough useful for
-exploratory Lucene-syntax queries. ``harmonized_search`` is the
-opinionated harmonization path: term → canonical IRI → per-index
-filter → raw-vs-harmonized comparison with HITL gating on ambiguous
-resolution. Both should be on the wire.
+``harmonized_search`` is now the sole entry point on the MCP surface
+for "find records about X in an APECx Globus index". The prior raw
+free-text passthrough ``query_globus_search`` was deregistered from
+the MCP wire on 2026-06-09 because it bypassed the synonym dictionary
++ HITL gate entirely (see ``tools/_hitl_gate.py`` for the
+architectural rationale + ``server.py`` for the deregistration
+comment). The Python function remains importable for internal callers
+(the synthesis pipeline still composes Globus results internally).
 """
 
 from __future__ import annotations

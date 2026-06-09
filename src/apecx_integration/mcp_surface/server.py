@@ -66,9 +66,6 @@ from apecx_integration.mcp_surface.tools import (
     discovery as discovery_tools,
 )
 from apecx_integration.mcp_surface.tools import (
-    globus_search as globus_search_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     harmonized_search as harmonized_search_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -148,17 +145,25 @@ def build_server() -> FastMCP:
     # Backward compatibility for existing EEEV-specific queries
     server.tool()(viral_immunology_tools.analyze_eeev_epitopes)
 
-    # Globus Search — query the APECx harvested-corpus index. Read-only;
-    # the harvester runs as a stand-alone process and writes to this
-    # index. We never write to it from the MCP surface.
-    server.tool()(globus_search_tools.query_globus_search)
+    # Globus Search — DELIBERATELY NOT EXPOSED as an MCP tool.
+    #
+    # query_globus_search was the raw free-text passthrough to the APECx
+    # Globus index — no entity resolution, no HITL gating, no
+    # harmonization. An LLM picking it for "RSV" got a mix of all 6
+    # RSV-disambiguated organisms with no signal that disambiguation was
+    # needed. ``harmonized_search`` (below) supersedes it: same Globus
+    # index, structured verdict surface, HITL gate on ambiguous terms.
+    #
+    # The underlying Python function ``globus_search_tools.query_globus_search``
+    # remains importable and is used internally by the synthesis pipeline.
+    # Removed from the MCP surface on 2026-06-09 — see ``tools/_hitl_gate.py``
+    # for the architectural rationale.
 
     # Harmonized search — drives the harmonized_search nanobrain workflow:
     # term → canonical IRI → per-index filter → raw-vs-harmonized
-    # comparison with HITL gating on ambiguous resolution. Sister to
-    # query_globus_search (which is a raw passthrough); this is the
-    # opinionated harmonization path. See
-    # composition/workflows/harmonized_search/ for the workflow YAML.
+    # comparison with HITL gating on ambiguous resolution. The opinionated
+    # harmonization path. See ``composition/workflows/harmonized_search/``
+    # for the workflow YAML.
     server.tool()(harmonized_search_tools.harmonized_search)
 
     server.tool()(approvals_tools.list_pending_approvals)
