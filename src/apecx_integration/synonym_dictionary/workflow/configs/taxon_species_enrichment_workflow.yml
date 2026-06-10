@@ -1,0 +1,73 @@
+# Strain→species enrichment workflow.
+#
+# A single-step nanobrain workflow that drives TaxonSpeciesMapStep:
+# computes the strain→species ancestor map from nodes.dmp and writes the
+# taxon_species table into an existing dictionary SQLite. Run it as a
+# delta enrichment on a built dictionary, or compose it after
+# dictionary_build in a larger build workflow.
+#
+# Drive via the standard pattern:
+#     wf = Workflow.from_config(".../taxon_species_enrichment_workflow.yml")
+#     result = await wf.run(
+#         {"species_map_input": {"nodes_path": "...", "dictionary_path": "..."}},
+#         timeout=1800, settle_ms=500,
+#     )
+#
+# Topology
+#   species_map_input (workflow input)
+#         │ DirectLink (auto_transfer=True)
+#         ▼
+#   taxon_species_map.species_map_input
+#         │ TaxonSpeciesMapStep.process()
+#         ▼
+#   taxon_species_map.species_map_result
+#         │ DirectLink (auto_transfer=True)
+#         ▼
+#   species_map_result (workflow output)
+#
+# Ownership: the step owns its data units + trigger (per-step YAML); the
+# workflow owns the two DirectLinks below. auto_transfer:true is the v2
+# default but kept explicit against the dominant silent-failure shape.
+
+name: taxon_species_enrichment_workflow
+description: "Compute strain→species ancestors and write taxon_species into the dict."
+version: "0.1.0"
+config_version: 2
+
+input_data_units:
+  species_map_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: species_map_input
+    description: >
+      Workflow entry port — {nodes_path, dictionary_path}.
+    persistent: false
+
+output_data_units:
+  species_map_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: species_map_result
+    description: >
+      Workflow exit port — {dictionary_path, taxa_mapped, species_count}.
+    persistent: false
+
+steps:
+  taxon_species_map:
+    class: "apecx_integration.synonym_dictionary.workflow.taxon_species_map_step.TaxonSpeciesMapStep"
+    config: "taxon_species_map_step.yml"
+
+links:
+  workflow_input_to_step:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "species_map_input"
+      target: "taxon_species_map.species_map_input"
+      auto_transfer: true
+
+  step_to_workflow_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "taxon_species_map.species_map_result"
+      target: "species_map_result"
+      auto_transfer: true

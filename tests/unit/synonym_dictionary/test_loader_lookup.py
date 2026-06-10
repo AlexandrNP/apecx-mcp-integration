@@ -19,6 +19,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
+
 from apecx_integration.synonym_dictionary.enums import EntityType, OntologyName, ResolutionStatus
 from apecx_integration.synonym_dictionary.loader import DictionaryIndex, _ProcessSingleton
 from apecx_integration.synonym_dictionary.lookup import LookupResult, lookup_entity
@@ -538,3 +539,181 @@ def test_lookup_ancestor_handles_merged_deprecated_taxon(tmp_path: Path) -> None
     entry = index.lookup_ancestor("http://purl.obolibrary.org/obo/NCBITaxon_88888")
     assert entry is not None
     assert entry.canonical_iri == "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+
+
+# ---------------------------------------------------------------------------
+# SC-A4b — ambiguity surfacing (2026-06-08)
+#
+# When the same normalized surface form maps to ≥2 distinct canonical IRIs
+# (e.g. "RSV" appears as a synonym on six NCBITaxon entries in the virus
+# subtree build), the runtime MUST NOT pick one silently. The lookup
+# pipeline routes the surface form to ResolutionStatus.AMBIGUOUS with the
+# full candidate list attached.
+# ---------------------------------------------------------------------------
+
+
+def _write_dictionary_with_collision(path: Path) -> None:
+    """Write a dictionary where 'RSV' is a synonym on two distinct entries.
+
+    Mirrors the real NCBI Taxonomy shape that produced the
+    Bovine-orthopneumovirus regression in the 2026-06-08 session:
+    two species both legitimately curate 'RSV' as a synonym.
+    """
+    manifest = BuildManifest(
+        dictionary_version="test-collision-v1",
+        built_at=datetime.now(UTC),
+        ontology_versions={"ncbitaxon": "2026-04-01"},
+        record_counts_per_entity_type={EntityType.PATHOGEN: 2},
+        unresolved_count=0,
+        record_count_total=2,
+    )
+    bovine = DictionaryEntry(
+        entity_type=EntityType.PATHOGEN,
+        canonical_iri="http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        canonical_label="Bovine orthopneumovirus",
+        synonyms=("BRSV", "RSV"),
+        ontology=OntologyName.NCBITAXON,
+        ontology_version="2026-04-01",
+        source_records=("ncbitaxon.species.11246",),
+        confidence=1.0,
+        resolved_at=datetime.now(UTC),
+    )
+    human = DictionaryEntry(
+        entity_type=EntityType.PATHOGEN,
+        canonical_iri="http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        canonical_label="Human orthopneumovirus",
+        synonyms=("HRSV", "RSV"),
+        ontology=OntologyName.NCBITAXON,
+        ontology_version="2026-04-01",
+        source_records=("ncbitaxon.species.11250",),
+        confidence=1.0,
+        resolved_at=datetime.now(UTC),
+    )
+    with SQLiteDictionaryWriter(path) as writer:
+        writer.write_entry(bovine)
+        writer.write_entry(human)
+        writer.write_manifest(manifest)
+
+
+def test_inverse_index_accumulates_all_iris_per_surface(tmp_path: Path) -> None:
+    """The in-memory inverse must hold a TUPLE of all candidate IRIs.
+
+    Pre-SC-A4b the loader silently kept the first-seen IRI
+    (``if key not in inverse``). This regression test pins the new
+    multi-valued shape so a future change can't quietly re-collapse
+    the bucket.
+    """
+    db = tmp_path / "collision.sqlite"
+    _write_dictionary_with_collision(db)
+    index = DictionaryIndex.load(db)
+
+    candidates = index.lookup_all(EntityType.PATHOGEN, "RSV")
+    assert len(candidates) == 2
+    iris = {c.canonical_iri for c in candidates}
+    assert iris == {
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+    }
+
+
+def test_lookup_returns_none_on_ambiguous_surface(tmp_path: Path) -> None:
+    """DictionaryIndex.lookup is single-candidate-only.
+
+    Returning the first/last/random pick would be exactly the
+    silent-disambiguation failure mode SC-A4b is fixing. Callers wanting
+    the full candidate set must use lookup_all().
+    """
+    db = tmp_path / "collision.sqlite"
+    _write_dictionary_with_collision(db)
+    index = DictionaryIndex.load(db)
+
+    assert index.lookup(EntityType.PATHOGEN, "RSV") is None
+
+
+def test_lookup_all_unambiguous_returns_single_tuple(tmp_path: Path) -> None:
+    """Surface forms with exactly one candidate still resolve unambiguously."""
+    db = tmp_path / "collision.sqlite"
+    _write_dictionary_with_collision(db)
+    index = DictionaryIndex.load(db)
+
+    # 'BRSV' appears only on the Bovine entry — single candidate.
+    candidates = index.lookup_all(EntityType.PATHOGEN, "BRSV")
+    assert len(candidates) == 1
+    assert candidates[0].canonical_iri == "http://purl.obolibrary.org/obo/NCBITaxon_11246"
+
+
+def test_lookup_entity_returns_ambiguous_path_with_candidate_list(
+    tmp_path: Path,
+) -> None:
+    """End-to-end: lookup_entity on a collision returns AMBIGUOUS, not last-write-wins.
+
+    This is the SC-A4b acceptance criterion. The single ``canonical_*``
+    fields are None to make any silent consumer fail loudly.
+    """
+    db = tmp_path / "collision.sqlite"
+    _write_dictionary_with_collision(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("RSV", entity_type=EntityType.PATHOGEN)
+    assert result.path == "ambiguous"
+    assert result.resolution_status == ResolutionStatus.AMBIGUOUS
+    assert result.canonical_iri is None
+    assert result.canonical_label is None
+    assert result.canonical_ontology is None
+    assert result.confidence == 0.0
+    assert len(result.candidates) == 2
+    iris = {c.canonical_iri for c in result.candidates}
+    assert iris == {
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+    }
+    labels = {c.canonical_label for c in result.candidates}
+    assert labels == {"Bovine orthopneumovirus", "Human orthopneumovirus"}
+
+
+def test_lookup_entity_ambiguous_path_evidence_quotes_candidate_count(
+    tmp_path: Path,
+) -> None:
+    """The evidence string must surface the candidate count so HITL UIs can render it."""
+    db = tmp_path / "collision.sqlite"
+    _write_dictionary_with_collision(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("RSV", entity_type=EntityType.PATHOGEN)
+    assert "2 candidate" in result.evidence
+    assert "HITL" in result.evidence
+
+
+def test_lookup_entity_unambiguous_path_still_fast(tmp_path: Path) -> None:
+    """SC-A4b regression guard: single-candidate surface forms must still take the fast path."""
+    db = tmp_path / "test.sqlite"
+    _write_test_dictionary(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("Chikungunya virus", entity_type=EntityType.PATHOGEN)
+    assert result.path == "fast"
+    assert result.resolution_status == ResolutionStatus.ID_ANCHORED
+    assert result.candidates == ()  # empty for non-ambiguous results
+
+
+def test_lookup_entity_no_entity_type_also_routes_ambiguous(tmp_path: Path) -> None:
+    """The ``entity_type=None`` branch (lookup_any_type) must surface ambiguity too."""
+    db = tmp_path / "collision.sqlite"
+    _write_dictionary_with_collision(db)
+
+    from apecx_integration.synonym_dictionary import loader as _loader
+
+    _loader._singleton.configure(db)
+
+    result = lookup_entity("RSV")
+    assert result.path == "ambiguous"
+    assert len(result.candidates) == 2

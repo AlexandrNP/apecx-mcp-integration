@@ -96,6 +96,23 @@ _SCHEMA_DDL = (
     CREATE INDEX IF NOT EXISTS idx_ambiguous_by_surface
         ON ambiguous_surface_forms (surface_form_normalized);
     """,
+    # SC-B3: the corpus-mining conflict audit trail. Created at writer
+    # construction (not lazily at ingest) so a freshly-built dictionary
+    # always carries the table — ``mined_ingest`` keeps an idempotent
+    # CREATE IF NOT EXISTS as defense for dictionaries built pre-SC-B3.
+    """
+    CREATE TABLE IF NOT EXISTS mined_conflicts (
+        surface_form_normalized TEXT NOT NULL,
+        candidate_taxon_id      INTEGER NOT NULL,
+        conflict_source         TEXT NOT NULL,
+        source_count_for_pair   INTEGER NOT NULL DEFAULT 1,
+        PRIMARY KEY (surface_form_normalized, candidate_taxon_id, conflict_source)
+    );
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_mined_conflicts_by_surface
+        ON mined_conflicts (surface_form_normalized);
+    """,
 )
 
 
@@ -117,6 +134,27 @@ _HIERARCHY_DDL = (
     CREATE TABLE IF NOT EXISTS merged_taxons (
         old_taxon_id INTEGER NOT NULL PRIMARY KEY,
         new_taxon_id INTEGER NOT NULL
+    );
+    """,
+    # SC-A4 (2026-06-08): one row per NCBI Taxonomy taxon id that has
+    # been removed from the tree.  The synonym-completeness lookup
+    # pipeline (SC-A5) uses this to return a loud
+    # ``ResolutionStatus.UNRESOLVED`` with
+    # ``evidence = "taxon deleted"`` rather than a silent miss when a
+    # user pastes an obsolete IRI.
+    """
+    CREATE TABLE IF NOT EXISTS deleted_taxons (
+        taxon_id INTEGER NOT NULL PRIMARY KEY
+    );
+    """,
+    # Strain→species normalization (2026-06-09): every taxon at-or-below
+    # species rank → its species-rank ancestor. Lets a consumer stamp a
+    # record's strain taxon AND its species, so subjects.valueUri queries
+    # for the species match strain-level records uniformly across sources.
+    """
+    CREATE TABLE IF NOT EXISTS taxon_species (
+        taxon_id         INTEGER NOT NULL PRIMARY KEY,
+        species_taxon_id INTEGER NOT NULL
     );
     """,
 )
@@ -267,6 +305,25 @@ class SQLiteDictionaryWriter(DictionaryWriter):
         log.info("taxon_hierarchy: wrote %d rows", count)
         return count
 
+    def write_taxon_species(self, species_iter: Iterator[tuple[int, int]]) -> int:
+        """Persist the strain→species map.
+
+        ``species_iter`` yields ``(taxon_id, species_taxon_id)`` pairs.
+        Returns the number of rows written. Idempotent (INSERT OR REPLACE).
+        """
+        for ddl in _HIERARCHY_DDL:
+            self._conn.execute(ddl)
+        count = 0
+        for batch in _batched(species_iter, _HIERARCHY_BATCH):
+            self._conn.executemany(
+                "INSERT OR REPLACE INTO taxon_species (taxon_id, species_taxon_id) VALUES (?, ?)",
+                batch,
+            )
+            count += len(batch)
+            self._conn.commit()
+        log.info("taxon_species: wrote %d rows", count)
+        return count
+
     def write_merged_taxons(self, merged_iter: Iterator[tuple[int, int]]) -> int:
         """Persist the NCBITaxon merged-ID table from ``merged.dmp``.
 
@@ -278,8 +335,7 @@ class SQLiteDictionaryWriter(DictionaryWriter):
         count = 0
         for batch in _batched(merged_iter, _HIERARCHY_BATCH):
             self._conn.executemany(
-                "INSERT OR REPLACE INTO merged_taxons "
-                "(old_taxon_id, new_taxon_id) VALUES (?, ?)",
+                "INSERT OR REPLACE INTO merged_taxons (old_taxon_id, new_taxon_id) VALUES (?, ?)",
                 batch,
             )
             count += len(batch)
@@ -294,6 +350,25 @@ class SQLiteDictionaryWriter(DictionaryWriter):
             return bool(row and row[0] > 0)
         except sqlite3.OperationalError:
             return False
+
+    def write_deleted_taxons(self, deleted_iter: Iterator[int]) -> int:
+        """Persist deleted-taxon IDs from ``delnodes.dmp`` (SC-A4 / SC-A5).
+
+        ``deleted_iter`` yields integer taxon ids. Returns the row count.
+        Idempotent: duplicates are silently ignored.
+        """
+        for ddl in _HIERARCHY_DDL:
+            self._conn.execute(ddl)
+        count = 0
+        for batch in _batched(deleted_iter, _HIERARCHY_BATCH):
+            self._conn.executemany(
+                "INSERT OR IGNORE INTO deleted_taxons (taxon_id) VALUES (?)",
+                [(taxon_id,) for taxon_id in batch],
+            )
+            count += len(batch)
+            self._conn.commit()
+        log.info("deleted_taxons: wrote %d rows", count)
+        return count
 
     def close(self) -> None:
         self._conn.commit()
@@ -331,7 +406,7 @@ class SQLiteDictionaryReader(DictionaryReader):
         ).fetchone()
         if row is None:
             raise ValueError(
-                f"dictionary at {self._path} has no manifest row — " "build was incomplete"
+                f"dictionary at {self._path} has no manifest row — build was incomplete"
             )
         return BuildManifest.model_validate_json(row["value"])
 

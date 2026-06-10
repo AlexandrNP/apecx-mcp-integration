@@ -203,6 +203,17 @@ class DictionaryBuildStepConfig(StepConfig):
             "too short; recommend 1200s (20min) for production builds."
         ),
     )
+    taxonomy_subtree_root: int | None = Field(
+        default=10239,
+        description=(
+            "NCBI taxon id used as the root for the names.dmp synthesis "
+            "pass (SC-A4). Default 10239 = Viruses subtree per Q1 of "
+            "SYNONYM_COMPLETENESS_PLAN.md. Set to None to disable the "
+            "synthesis pass entirely (corpus-only build, pre-SC-A4 "
+            "behaviour). Setting to 1 (root of life) would balloon the "
+            "SQLite to ~50x its virus-subtree size — discouraged."
+        ),
+    )
 
 
 class DictionaryBuildStep(BaseStep):
@@ -247,6 +258,7 @@ class DictionaryBuildStep(BaseStep):
             "doid_version": config.doid_version,
             "ncbigene_version": config.ncbigene_version,
             "max_rows": config.max_rows,
+            "taxonomy_subtree_root": config.taxonomy_subtree_root,
         }
 
     def _init_from_config(
@@ -269,6 +281,7 @@ class DictionaryBuildStep(BaseStep):
             OntologyName.NCBIGENE: component_config["ncbigene_version"],
         }
         self._max_rows: int | None = component_config.get("max_rows")
+        self._taxonomy_subtree_root: int | None = component_config.get("taxonomy_subtree_root")
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         taxdump_paths = self._extract_taxdump_paths(input_data)
@@ -296,6 +309,12 @@ class DictionaryBuildStep(BaseStep):
             len(specs),
         )
 
+        # names.dmp / delnodes.dmp are SC-A2 additions; older callers that
+        # haven't refreshed their taxdump cache will omit them. Pass them
+        # through only when present and non-empty.
+        names_path_str = taxdump_paths.get("names_path")
+        delnodes_path_str = taxdump_paths.get("delnodes_path")
+
         manifest = await build_dictionary(
             table_specs=specs,
             output_dictionary=output_dictionary,
@@ -304,6 +323,9 @@ class DictionaryBuildStep(BaseStep):
             writer_factory=SQLiteDictionaryWriter,
             nodes_dmp_path=Path(taxdump_paths["nodes_path"]),
             merged_dmp_path=Path(taxdump_paths["merged_path"]),
+            names_dmp_path=Path(names_path_str) if names_path_str else None,
+            delnodes_dmp_path=Path(delnodes_path_str) if delnodes_path_str else None,
+            taxonomy_subtree_root=(self._taxonomy_subtree_root if names_path_str else None),
         )
 
         # Mirror the legacy CLI: write a JSON copy of the manifest for
@@ -325,7 +347,16 @@ class DictionaryBuildStep(BaseStep):
 
     @staticmethod
     def _extract_taxdump_paths(input_data: dict[str, Any]) -> dict[str, str]:
-        """Pull the {nodes_path, merged_path} dict out of the input.
+        """Pull the four taxdump file paths out of the input.
+
+        Required: ``nodes_path``, ``merged_path``.
+        Optional (SC-A2 additions, 2026-06-08): ``names_path``,
+        ``delnodes_path``. When present, the build runs the names.dmp
+        synthesis pass (SC-A4) and writes the deleted-taxons table.
+        Absent keys are returned simply as missing — the build downgrades
+        to corpus-only behaviour and logs the omission. We do this
+        rather than fail hard so a pre-SC-A2 cached taxdump still
+        produces a working (but smaller-coverage) dictionary.
 
         Accepts both ``input_data["taxdump_paths"]`` (canonical) and a
         bare ``{"nodes_path": ..., "merged_path": ...}`` dict (legacy
@@ -348,7 +379,17 @@ class DictionaryBuildStep(BaseStep):
                 f"nodes_path={type(nodes_path).__name__}, "
                 f"merged_path={type(merged_path).__name__}."
             )
-        return {"nodes_path": nodes_path, "merged_path": merged_path}
+        result: dict[str, str] = {
+            "nodes_path": nodes_path,
+            "merged_path": merged_path,
+        }
+        # Optional SC-A2 additions; type-check defensively to avoid
+        # propagating a non-string through to ``Path(...)``.
+        for key in ("names_path", "delnodes_path"):
+            value = candidate.get(key)
+            if isinstance(value, str) and value:
+                result[key] = value
+        return result
 
     def _make_table_specs(self, *, enriched_dir: Path) -> list[TableSpec]:
         """Equivalent of cli._make_table_specs but driven by step config.
