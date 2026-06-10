@@ -12,16 +12,26 @@ Contract
   to deposit a kick-off value into. The trigger value itself is
   ignored by ``process()``.
 - Output: a single data unit ``taxdump_paths`` whose value is a dict
-  ``{"nodes_path": <str>, "merged_path": <str>}`` — the absolute,
-  resolved string paths to the extracted ``nodes.dmp`` and
-  ``merged.dmp`` files. Strings rather than ``Path`` so the value
-  serialises through any future remote data-unit transport.
+  ``{"nodes_path": <str>, "merged_path": <str>, "names_path": <str>,
+  "delnodes_path": <str>}`` — the absolute, resolved string paths to
+  the four extracted dump files. Strings rather than ``Path`` so the
+  value serialises through any future remote data-unit transport.
+
+  ``names_path`` + ``delnodes_path`` were added 2026-06-08 (SC-A2) when
+  the dictionary build began ingesting all 7 NCBI name classes from
+  ``names.dmp`` and surfacing deleted-taxon lookups via ``delnodes.dmp``.
+  Downstream consumers that pre-date the change continue to work
+  because ``DictionaryBuildStep._extract_taxdump_paths`` reads
+  ``nodes_path`` + ``merged_path`` only and tolerates extra keys.
 
 Idempotency
 -----------
-``fetch_taxdump`` is idempotent — when the two files already exist
+``fetch_taxdump`` is idempotent — when all four files already exist
 under ``output_dir`` and ``force=False``, it skips the download. The
-step inherits that behaviour without further work.
+step inherits that behaviour without further work. A pre-SC-A2 cache
+that contains only ``nodes.dmp`` + ``merged.dmp`` fails the
+all-four-present check and is silently re-extracted from the cached
+tarball (cheap — no re-download).
 
 Framework compliance
 --------------------
@@ -122,8 +132,8 @@ class TaxdumpFetchStepConfig(StepConfig):
     force: bool = Field(
         default=False,
         description=(
-            "Re-download and re-extract even if nodes.dmp and merged.dmp "
-            "are already present under output_dir."
+            "Re-download and re-extract even if the four required dump "
+            "files are already present under output_dir."
         ),
     )
 
@@ -138,8 +148,10 @@ class TaxdumpFetchStep(BaseStep):
     Return shape::
 
         {"taxdump_paths": {
-            "nodes_path": "/abs/path/to/nodes.dmp",
-            "merged_path": "/abs/path/to/merged.dmp",
+            "nodes_path":    "/abs/path/to/nodes.dmp",
+            "merged_path":   "/abs/path/to/merged.dmp",
+            "names_path":    "/abs/path/to/names.dmp",
+            "delnodes_path": "/abs/path/to/delnodes.dmp",
         }}
     """
 
@@ -190,7 +202,7 @@ class TaxdumpFetchStep(BaseStep):
         if self._url is not None:
             kwargs_for_fetch["url"] = self._url
 
-        nodes_path, merged_path = await asyncio.to_thread(
+        nodes_path, merged_path, names_path, delnodes_path = await asyncio.to_thread(
             fetch_taxdump,
             self._output_dir,
             **kwargs_for_fetch,
@@ -199,11 +211,12 @@ class TaxdumpFetchStep(BaseStep):
         result = {
             "nodes_path": str(nodes_path),
             "merged_path": str(merged_path),
+            "names_path": str(names_path),
+            "delnodes_path": str(delnodes_path),
         }
         log.info(
-            "TaxdumpFetchStep %s: emitting nodes_path=%s merged_path=%s",
+            "TaxdumpFetchStep %s: emitting %s",
             self.name,
-            result["nodes_path"],
-            result["merged_path"],
+            sorted(result.keys()),
         )
         return {"taxdump_paths": result}

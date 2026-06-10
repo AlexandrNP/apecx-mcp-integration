@@ -60,6 +60,18 @@ class ResolutionStatus(StrEnum):
     # Per §4.10 of the analysis doc.
     UNRESOLVED = "unresolved"
 
+    # Surface form maps to ≥2 distinct canonical IRIs and we cannot pick
+    # one without user input.  Added 2026-06-08 (SC-A4b follow-up): the
+    # synonym-completeness build legitimately surfaces multiple taxa
+    # carrying the same string (e.g. "RSV" appears on 6 NCBITaxon
+    # entries — Human / Bovine / Avian orthopneumovirus and three
+    # higher clades). Last-write-wins would pick one arbitrarily; this
+    # status routes the conflict to HITL with the full candidate list
+    # attached. Confidence is 0.0 (we have no basis to prefer any one).
+    # The candidate IRIs travel on ``LookupResult.candidates`` rather
+    # than on this enum.
+    AMBIGUOUS = "ambiguous"
+
 
 class OntologyName(StrEnum):
     """Authoritative-source identifier; pinned per dictionary build via the

@@ -88,6 +88,85 @@ def parse_nodes_dmp(path: Path) -> Iterator[tuple[int, int]]:
             yield child_id, parent_id
 
 
+def parse_nodes_dmp_with_rank(path: Path) -> Iterator[tuple[int, int, str]]:
+    """Yield (taxon_id, parent_taxon_id, rank) from ``nodes.dmp``.
+
+    Same parse as :func:`parse_nodes_dmp` but also surfaces the rank
+    column (``species`` / ``strain`` / ``genus`` / ``no rank`` / …),
+    which the strain→species normalization needs.
+    """
+    with path.open(encoding="latin-1") as fh:
+        for line in fh:
+            parts = line.split("\t|\t")
+            if len(parts) < 3:
+                continue
+            try:
+                taxon_id = int(parts[0].strip())
+                parent_id = int(parts[1].strip())
+            except ValueError:
+                continue
+            # In the real nodes.dmp the rank is a middle column (followed by
+            # more ``\t|\t``-separated fields), so it parses clean. But on a
+            # minimal/truncated line where rank is the LAST field, it carries
+            # the row terminator ``\t|``; strip it so rank comparisons hold.
+            rank = parts[2].rstrip("\t|\n\r").strip()
+            yield taxon_id, parent_id, rank
+
+
+def compute_species_ancestors(
+    nodes_dmp_path: Path,
+    *,
+    species_rank: str = "species",
+) -> dict[int, int]:
+    """Map every taxon at-or-below species rank to its species ancestor.
+
+    Walks ``nodes.dmp`` once to build (child→parent) edges + (taxon→rank),
+    then for each taxon walks up to the first ancestor with rank
+    ``species_rank`` (a species maps to itself; a strain/subspecies maps to
+    its enclosing species). Taxa ABOVE species rank (genus, family, …) have
+    no species ancestor and are omitted from the result.
+
+    Memoized so the full ~2.8M-taxon tree resolves in one near-linear pass.
+    This is the build-time heavy lift that lets the runtime be a single
+    table read.
+    """
+    parent: dict[int, int] = {}
+    rank: dict[int, str] = {}
+    for taxon_id, parent_id, taxon_rank in parse_nodes_dmp_with_rank(nodes_dmp_path):
+        parent[taxon_id] = parent_id
+        rank[taxon_id] = taxon_rank
+
+    species_of: dict[int, int | None] = {}
+
+    def _species_ancestor(start: int) -> int | None:
+        chain: list[int] = []
+        cur: int | None = start
+        result: int | None = None
+        while cur is not None:
+            if cur in species_of:
+                result = species_of[cur]
+                break
+            if rank.get(cur) == species_rank:
+                result = cur
+                break
+            chain.append(cur)
+            nxt = parent.get(cur)
+            if nxt is None or nxt == cur:  # root / self-loop
+                result = None
+                break
+            cur = nxt
+        for node in chain:
+            species_of[node] = result
+        return result
+
+    out: dict[int, int] = {}
+    for taxon_id in parent:
+        species = _species_ancestor(taxon_id)
+        if species is not None:
+            out[taxon_id] = species
+    return out
+
+
 def parse_merged_dmp(path: Path) -> Iterator[tuple[int, int]]:
     """Yield (old_taxon_id, new_taxon_id) from ``merged.dmp``.
 
