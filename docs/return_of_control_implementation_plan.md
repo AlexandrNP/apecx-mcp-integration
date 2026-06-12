@@ -7,6 +7,12 @@ Chikungunya), local **MAFFT** (`brew install mafft`, v7.526), and — for EO-54 
 MCP server (`../rhea` `docker compose`).
 
 ## Progress
+- **RoC-3a + RoC-3b + RoC-3c ✅** 2026-06-12 (commit `52269dd`) — two flag-switched decomposer
+  modes (`APECX_EO_DECOMPOSER_MODE`, default `plan_returner`). plan_returner returns
+  `needs_input(decomposition_choice)` with each workflow's required inputs (from RoC-2b) WITHOUT
+  executing; auto_solver unchanged. 19 tests incl. both modes over the real catalog.
+  **RoC CRITICAL PATH (RoC-1 → RoC-2 → RoC-3) COMPLETE + real-data verified.**
+  Remaining: EO-54 (local Rhea + interface-tag substitution; needs Docker), CL-1 (retire dead husks).
 - **RoC-1a + RoC-1b ✅** 2026-06-12 (commit `dc3dab5`) — `WorkflowResult.status='needs_input'` +
   typed `control_transfer` (ParamNeed/WorkflowNeed/NextAction + 4 builders); loud invariant
   needs_input⟺control_transfer; `needs_input()` constructor. 18 unit + 30 consumer regression green.
