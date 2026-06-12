@@ -84,3 +84,39 @@ def test_framework_envelope_unwrap(tmp_path):
     step = _stage(tmp_path)
     out = asyncio.run(step.process({"envelope_input": {"markdown": "# wrapped"}}))
     assert out["workflow_result"]["markdown"] == "# wrapped"
+
+
+def _stage_keyed(tmp_path: Path, **cfg) -> EnvelopeStep:
+    p = tmp_path / "envelope_keyed.yml"
+    lines = ["name: envelope_keyed"] + [f"{k}: {v}" for k, v in cfg.items()]
+    p.write_text("\n".join(lines) + "\n")
+    return EnvelopeStep.from_config(str(p))
+
+
+def test_configurable_markdown_key_reads_alternate_key(tmp_path):
+    # EO-13c: append after rag_synthesis (which emits {"synthesis": "<md>"}).
+    step = _stage_keyed(tmp_path, markdown_input_key="synthesis")
+    out = asyncio.run(step.process({"synthesis": "# answer"}))
+    assert out["workflow_result"]["markdown"] == "# answer"
+    assert out["workflow_result"]["status"] == "ok"
+
+
+def test_configurable_key_unwraps_single_key_link_envelope(tmp_path):
+    # The real rag_e2e shape: a DirectLink delivers the upstream step's WHOLE output dict
+    # ({"synthesis": "<md>"}) into this step's single input DU, so process() sees
+    # {<du_name>: {"synthesis": "<md>"}}. The generic single-key unwrap must descend.
+    step = _stage_keyed(tmp_path, markdown_input_key="synthesis")
+    out = asyncio.run(step.process({"workflow_output": {"synthesis": "# md body"}}))
+    assert out["workflow_result"]["markdown"] == "# md body"
+
+
+def test_configurable_key_missing_is_loud(tmp_path):
+    step = _stage_keyed(tmp_path, markdown_input_key="synthesis")
+    with pytest.raises(ValueError, match="synthesis"):
+        asyncio.run(step.process({"not_synthesis": "x"}))
+
+
+def test_default_markdown_key_unchanged(tmp_path):
+    step = _stage_keyed(tmp_path)  # no markdown_input_key → default "markdown"
+    out = asyncio.run(step.process({"markdown": "x"}))
+    assert out["workflow_result"]["markdown"] == "x"

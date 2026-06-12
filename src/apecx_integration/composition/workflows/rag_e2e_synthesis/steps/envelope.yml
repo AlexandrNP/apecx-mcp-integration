@@ -1,0 +1,40 @@
+# rag_e2e_synthesis terminal step — EnvelopeStep (EO-13c)
+#
+# Wraps the synthesis Markdown into the standard WorkflowResult envelope
+# (external_orchestration_design.md §5) so the workflow returns the uniform
+# {markdown, data_handle, data_preview, run_id, status} shape that the EO
+# `run_workflow` primitive surfaces to the external orchestrating LLM.
+#
+# rag_synthesis emits {"synthesis": "<markdown>"}; markdown_input_key bridges
+# that to the envelope's markdown channel WITHOUT a TransformLink or a
+# shared-class edit (the upstream link delivers the whole dict into this
+# step's single input DU; EnvelopeStep's single-key unwrap descends into it).
+
+class: "apecx_integration.composition.steps.envelope_step.EnvelopeStep"
+name: envelope
+description: >
+  Terminal step — wrap the synthesis Markdown into a WorkflowResult envelope.
+
+# Read the markdown from rag_synthesis's "synthesis" output key.
+markdown_input_key: synthesis
+
+input_data_units:
+  envelope_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: envelope_input
+    description: >
+      Receives rag_synthesis's output ({"synthesis": "<markdown>"}) via the
+      synthesis_to_envelope link.
+    persistent: false
+
+output_data_units:
+  workflow_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_result
+    description: >
+      The standard WorkflowResult dict (markdown + optional data handle/preview).
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "envelope_input"

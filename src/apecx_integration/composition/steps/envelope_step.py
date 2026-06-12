@@ -31,14 +31,32 @@ from apecx_integration.composition.schemas.workflow_result import WorkflowResult
 
 log = logging.getLogger(__name__)
 
-_INPUT_DU = "envelope_input"
 _OUTPUT_KEY = "workflow_result"
+
+
+class EnvelopeStepConfig(StepConfig):
+    """EnvelopeStep config — which input keys carry the markdown / data payload.
+
+    Defaults match a step authored to receive ``{"markdown": ..., "data": ...}`` directly.
+    Appending EnvelopeStep after a step that emits a different key (e.g. ``rag_synthesis``
+    emits ``{"synthesis": "<md>"}``) only needs ``markdown_input_key: synthesis`` — no
+    TransformLink, no shared-class edit (EO-13c).
+    """
+
+    markdown_input_key: str = "markdown"
+    data_input_key: str = "data"
 
 
 class EnvelopeStep(BaseStep):
     @classmethod
     def _get_config_class(cls):
-        return StepConfig
+        return EnvelopeStepConfig
+
+    def _init_from_config(self, config, component_config, dependencies) -> None:
+        super()._init_from_config(config, component_config, dependencies)
+        # Read the configurable keys off the validated config object.
+        self._markdown_key: str = getattr(config, "markdown_input_key", "markdown")
+        self._data_key: str = getattr(config, "data_input_key", "data")
 
     def _handle_store(self) -> HandleStore:
         # Indirection so a test or a deployment can swap the store.
@@ -50,28 +68,33 @@ class EnvelopeStep(BaseStep):
                 f"EnvelopeStep '{self.name}': input_data must be a dict, got "
                 f"{type(input_data).__name__}"
             )
-        # Unwrap the framework trigger envelope ({du_name: payload}) when present.
-        if (
-            _INPUT_DU in input_data
-            and isinstance(input_data[_INPUT_DU], dict)
-            and "markdown" not in input_data
-        ):
-            input_data = input_data[_INPUT_DU]
+        markdown_key = getattr(self, "_markdown_key", "markdown")
+        data_key = getattr(self, "_data_key", "data")
 
-        markdown = input_data.get("markdown")
+        # Unwrap the framework trigger envelope ({du_name: payload}) generically: when the
+        # markdown key is not already at top level and this is a single-key wrapper whose
+        # value is itself a dict, descend into that dict. Covers both a step authored to
+        # take {markdown: ...} directly AND a link that delivers an upstream step's whole
+        # output dict (e.g. {"synthesis": "<md>"}) into this step's single input DU.
+        if markdown_key not in input_data and len(input_data) == 1:
+            only_value = next(iter(input_data.values()))
+            if isinstance(only_value, dict):
+                input_data = only_value
+
+        markdown = input_data.get(markdown_key)
         if not isinstance(markdown, str) or not markdown.strip():
             raise ValueError(
-                f"EnvelopeStep '{self.name}': input must carry a non-empty 'markdown' "
-                f"string; got {type(markdown).__name__}={markdown!r}"
+                f"EnvelopeStep '{self.name}': input must carry a non-empty "
+                f"{markdown_key!r} string; got {type(markdown).__name__}={markdown!r}"
             )
 
         data_handle: str | None = None
         data_preview: dict[str, Any] | None = None
-        raw_data = input_data.get("data")
+        raw_data = input_data.get(data_key)
         if raw_data is not None:
             if not isinstance(raw_data, dict):
                 raise ValueError(
-                    f"EnvelopeStep '{self.name}': 'data' must be a serialized DataShape "
+                    f"EnvelopeStep '{self.name}': {data_key!r} must be a serialized DataShape "
                     f"dict, got {type(raw_data).__name__}"
                 )
             shape = parse_data_shape(raw_data)  # loud on bad/missing kind

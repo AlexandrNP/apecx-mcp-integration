@@ -70,9 +70,10 @@ output_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_output
     description: >
-      ``{synthesis: str}`` — Markdown response with inline citations.
-      Receives the synthesis step's output via the
-      ``synthesis_to_output`` link.
+      A WorkflowResult dict (``{markdown, status, data_handle, data_preview,
+      run_id}``) — the §5 envelope, emitted by the terminal ``envelope`` step
+      (EO-13c) and received via the ``envelope_to_output`` link. The synthesis
+      Markdown is in ``markdown``.
     persistent: false
 
 steps:
@@ -83,6 +84,12 @@ steps:
   rag_synthesis:
     class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
     config: "steps/rag_synthesis.yml"
+
+  # EO-13c — terminal envelope: wrap the synthesis Markdown into the standard
+  # WorkflowResult so this workflow returns the §5 envelope through run_workflow.
+  envelope:
+    class: "apecx_integration.composition.steps.envelope_step.EnvelopeStep"
+    config: "steps/envelope.yml"
 
 links:
   # ──────────────────────────────────────────────────────────────────
@@ -108,10 +115,18 @@ links:
       target: "rag_synthesis.synthesis_input"
       auto_transfer: true
 
-  synthesis_to_output:
+  synthesis_to_envelope:
     class: "nanobrain.core.link.DirectLink"
     config:
       link_type: "direct"
       source: "rag_synthesis.synthesis_output"
+      target: "envelope.envelope_input"
+      auto_transfer: true
+
+  envelope_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "envelope.workflow_result"
       target: "workflow_output"
       auto_transfer: true

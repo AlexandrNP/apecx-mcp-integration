@@ -39,6 +39,20 @@ class _EnvelopeEmitStep(BaseStep):
         return {"emit_out": wr.model_dump(mode="json")}
 
 
+class _SynthEmitStep(BaseStep):
+    """Emits a rag_synthesis-shaped output ({"synthesis": "<md>"}) so we can prove the
+    EO-13c terminal-EnvelopeStep wiring in a real cascade WITHOUT an LLM."""
+
+    COMPONENT_TYPE = "test_eo_synth_emit"
+
+    @classmethod
+    def _get_config_class(cls):
+        return StepConfig
+
+    async def process(self, input_data, **kw):
+        return {"synthesis": "# synthesized answer\nconserved sites: 5"}
+
+
 def _build_test_workflow():
     b = WorkflowBuilder("eo_test_wf", "EO primitive live-run fixture")
     b.add_input("wf_in", "DataUnitMemory")
@@ -220,3 +234,88 @@ def test_build_server_registers_eo_primitives():
 
     names = {t.name for t in asyncio.run(build_server().list_tools())}
     assert {"run_workflow", "inspect_run", "inspect_workflow", "apecx_context"} <= names
+
+
+# --------------------------------------------------------------------------- #
+# EO-13c — a workflow ending in the REAL EnvelopeStep returns a WorkflowResult
+# through run_workflow. This is the rag_e2e wiring pattern (synthesis-emitter →
+# EnvelopeStep(markdown_input_key=synthesis) → output) proven in a real cascade
+# with NO LLM, so it runs unconditionally (not Ollama-gated).
+# --------------------------------------------------------------------------- #
+def test_envelope_terminated_workflow_run_yields_workflow_result(monkeypatch, tmp_path):
+    env_cfg = tmp_path / "env_term.yml"
+    env_cfg.write_text("name: env_term\nmarkdown_input_key: synthesis\n")
+
+    b = WorkflowBuilder("eo13c_wf", "EO-13c envelope-terminated cascade")
+    b.add_input("wf_in", "DataUnitMemory")
+    b.add_output("wf_out", "DataUnitMemory")
+    b.add_step(
+        "synth",
+        f"{__name__}._SynthEmitStep",
+        input_data_units={
+            "synth_in": {"class": "nanobrain.core.data_unit.DataUnitMemory", "name": "synth_in"}
+        },
+        output_data_units={
+            "synth_out": {"class": "nanobrain.core.data_unit.DataUnitMemory", "name": "synth_out"}
+        },
+        triggers=[
+            {"class": "nanobrain.core.trigger.DataUnitChangeTrigger", "data_unit": "synth_in"}
+        ],
+    )
+    b.add_step(
+        "envelope",
+        "apecx_integration.composition.steps.envelope_step.EnvelopeStep",
+        markdown_input_key="synthesis",
+        input_data_units={
+            "envelope_input": {
+                "class": "nanobrain.core.data_unit.DataUnitMemory",
+                "name": "envelope_input",
+            }
+        },
+        output_data_units={
+            "workflow_result": {
+                "class": "nanobrain.core.data_unit.DataUnitMemory",
+                "name": "workflow_result",
+            }
+        },
+        triggers=[
+            {"class": "nanobrain.core.trigger.DataUnitChangeTrigger", "data_unit": "envelope_input"}
+        ],
+    )
+    b.add_link("wf_in", "synth.synth_in", link_type="direct")
+    b.add_link("synth.synth_out", "envelope.envelope_input", link_type="direct")
+    b.add_link("envelope.workflow_result", "wf_out", link_type="direct")
+    wf = b.load()
+
+    monkeypatch.setattr(workflow_registry, "load_catalog", _test_catalog_for("eo13c_wf"))
+    monkeypatch.setattr(workflow_registry, "_load_workflow_for_entry", lambda entry: wf)
+
+    out = asyncio.run(eo_primitives.run_workflow("eo13c_wf", {"q": "EEEV"}))
+    assert out["status"] == "ok", out
+    # The terminal EnvelopeStep wrapped rag_synthesis's "synthesis" output into the envelope.
+    assert "synthesized answer" in out["markdown"]
+    assert "conserved sites: 5" in out["markdown"]
+    assert out["run_id"]
+
+
+def _test_catalog_for(name: str):
+    from apecx_integration.mcp_surface.workflow_registry import (
+        WorkflowCatalog,
+        WorkflowCatalogEntry,
+        WorkflowSourceYAML,
+    )
+
+    def _loader():
+        return WorkflowCatalog(
+            workflows=[
+                WorkflowCatalogEntry(
+                    tool_name=name,
+                    description="fixture",
+                    source=WorkflowSourceYAML(kind="yaml", path="unused.yml"),
+                    input_schema={"type": "object", "properties": {}, "required": []},
+                    input_envelope_key="wf_in",
+                )
+            ]
+        )
+
+    return _loader
