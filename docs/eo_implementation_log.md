@@ -65,13 +65,27 @@ contract.
 **Thin §4 surface now functional:** discover (`list_workflows`) · inspect (`inspect_workflow`)
 · run (`run_workflow`) · inspect_run · context (`apecx_context`) · compose (`start_workflow`).
 
-**NEXT (per the EO-task plan):** the conserved-sites feature is the user's actual goal and the
-thin surface can now host it. Phase 2 — `BvbrcProteinFastaStep` (fetch real AA sequences per
-strain from the BV-BRC data API; the one genuinely-new capability, sequences aren't in the
-Globus metadata indices). Then Phase 3 (ConservationScoreStep), Phase 4 (the
-`viral_conserved_sites` catalog workflow). Capstone item 1 (query_answering decomposition
-entry) + Phase 0 (surface reconciliation / demote confirm_entity_synonym, retire old
-super-tools) remain but are off the conserved-sites critical path.
+**Conserved-sites feature (the user's actual goal) — progress:**
+- **EO-51 (Phase 2)** ✅ DONE 2026-06-12 (commit `fa540d1`) — `BvbrcProteinFastaStep`: real
+  per-strain AA sequences from the live BV-BRC data API (genome_feature → feature_sequence,
+  both probed + test-verified). NO mocks; FAIL-LOUD. 6 tests incl. a live CHIKV-E1 fetch.
+  ⚠ FINDING: `composition/steps/sequence_analysis_step.py` (`SequenceAnalysisStep`, used by
+  the `epitope_analysis` workflow) is mock-laden fake-data scaffolding — it writes
+  `"ATCGATCG"*20` placeholder "sequences" + copies input as a "mock alignment", manufacturing
+  meaningless conserved regions. It is DEAD (the live `eeev_epitope_analysis` tool uses the
+  RAG path, not it). Should be RETIRED, not reused. EO-51 replaces it.
+- **EO-52 (Phase 3)** ← NEXT — `ConservationScoreStep`: deterministic per-column conservation
+  (Shannon entropy / Jensen-Shannon) over an MSA → conserved-site list. ~30 lines, no external
+  dep, unit-testable on a tiny fixture.
+- **EO-53 (Phase 4)** — the `viral_conserved_sites` catalog workflow: resolve virus →
+  BvbrcProteinFastaStep → SubworkflowStep(rhea_muscle_alignment) → ConservationScoreStep →
+  EnvelopeStep. Register in `mcp_workflow_catalog.yml`; discoverable via list_workflows,
+  runnable via run_workflow.
+- **EO-54 (Phase 5)** — pluggable aligners via §8 Tier-1 interface tags (coordinated RHEA).
+
+Off the conserved-sites critical path: capstone item 1 (query_answering decomposition) +
+Phase 0 (surface reconciliation / demote confirm_entity_synonym, retire old super-tools incl.
+the dead SequenceAnalysisStep/epitope_analysis).
 
 **Open decisions (need the user):**
 - **EO-30** — generic `mcp` `BackendKind` touches the deliberately-fixed `CONTRACTS.md#td-vocab`
