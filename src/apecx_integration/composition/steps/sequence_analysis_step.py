@@ -139,47 +139,25 @@ class SequenceAnalysisStep(BaseStep):
         self._temporal_range_years: int = component_config["temporal_range_years"]
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
-        """Perform sequence analysis with BV-BRC integration."""
-        query_data = self._extract_query_data(input_data)
+        """RETIRED — fabricated data; FAIL-LOUD instead of running (2026-06-12).
 
-        virus_name = query_data["virus_name"]
-        protein_target = query_data["protein_target"]
-
-        self.nb_logger.info(
-            f"SequenceAnalysisStep {self.name}: starting analysis for {virus_name} {protein_target}"
+        The original implementation wrote ``"ATCGATCG" * 20`` placeholder "sequences" (nucleotide
+        text, not even amino acids) and copied its input as a "mock alignment" whenever MUSCLE was
+        unavailable — manufacturing plausible-looking but meaningless conservation output. That is
+        a mock-in-production violation: green tests, fake science. The step is dead (no live
+        consumer, not in any catalog). The real, verified replacement is the conserved-sites
+        cascade — ``BvbrcProteinFastaStep`` → ``LocalMafftAlignStep`` → ``ConservationScoreStep``,
+        packaged as the ``viral_conserved_sites`` workflow (real BV-BRC sequences, real MAFFT MSA,
+        real per-column conservation). Rather than ever emit fake results, this step now raises.
+        (The fake-data helper methods below are kept only so this neutralization is a minimal,
+        reviewable diff; they are unreachable.)
+        """
+        raise NotImplementedError(
+            f"SequenceAnalysisStep '{self.name}' is RETIRED: it produced placeholder sequences and "
+            "mock alignments (fake conservation — a mock-in-production violation). Use the "
+            "viral_conserved_sites workflow (BvbrcProteinFastaStep → LocalMafftAlignStep → "
+            "ConservationScoreStep) for real conserved-site analysis."
         )
-
-        # Step 1: Retrieve sequences from BV-BRC
-        sequences = await self._retrieve_bvbrc_sequences(virus_name)
-
-        if not sequences:
-            raise ValueError(f"No sequences found for {virus_name} in BV-BRC database")
-
-        # Step 2: Perform multiple sequence alignment
-        alignment_file = await self._perform_sequence_alignment(sequences)
-
-        # Step 3: Calculate conservation analysis
-        conservation_analysis = await self._calculate_conservation(sequences, alignment_file)
-
-        # Step 4: Compile results
-        result = {
-            "sequences_retrieved": len(sequences),
-            "alignment_file": alignment_file,
-            "conservation_analysis": conservation_analysis,
-            "execution_metadata": {
-                "timestamp": datetime.now().isoformat(),
-                "virus_analyzed": virus_name,
-                "protein_target": protein_target,
-                "conservation_threshold": self._conservation_threshold,
-            },
-        }
-
-        self.nb_logger.info(
-            f"SequenceAnalysisStep {self.name}: analysis complete - {len(sequences)} sequences, "
-            f"{len(conservation_analysis.get('highly_conserved_regions', []))} conserved regions identified"
-        )
-
-        return {"sequence_analysis_result": result}
 
     @staticmethod
     def _extract_query_data(input_data: dict[str, Any]) -> dict[str, Any]:
