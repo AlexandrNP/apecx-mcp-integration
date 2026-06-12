@@ -10,16 +10,20 @@ reads the one key it needs out of the prior step's output dict — no TransformL
 
     workflow_input {taxon_id, protein, feature_type?}
       → fetch     BvbrcProteinFastaStep   → {fasta_text, ...}
-      → align     LocalMafftAlignStep     → {alignment_fasta, ...}
+      → align     <aligner step>          → {alignment_fasta, ...}   # mafft | muscle (EO-54b)
       → conserve  ConservationScoreStep   → conservation result
       → report    ConservationReportStep  → {markdown, data}
       → envelope  EnvelopeStep            → WorkflowResult
       → workflow_output
 
-We use a local-MAFFT aligner (the lightweight path verified end-to-end); the Rhea/Galaxy
-alignment subworkflow is the substitutable heavy path (design §8). The caller resolves a
-virus name to an NCBI ``taxon_id`` first (e.g. via harmonized_search) — keeping ambiguity
-resolution (and its HITL gate) OUT of this deterministic cascade.
+The ``align`` step is PLUGGABLE (EO-54b): ``aligner="mafft"`` (default; local MAFFT binary,
+arm64-native, dependency-light) or ``aligner="muscle"`` (MUSCLE dispatched over the Rhea MCP
+server, the production path). Both emit the same ``{"alignment": {...}}`` shape so the rest of
+the cascade is aligner-agnostic. Each aligner is bound to its own no-arg catalog entry
+(``viral_conserved_sites`` / ``viral_conserved_sites_muscle``) so ``list_workflows`` can report
+each one's real availability. The caller resolves a virus name to an NCBI ``taxon_id`` first
+(e.g. via harmonized_search) — keeping ambiguity resolution (and its HITL gate) OUT of this
+deterministic cascade.
 """
 
 from __future__ import annotations
@@ -70,8 +74,28 @@ def _trig(du: str) -> list[dict[str, Any]]:
     return [{"class": _TRIGGER, "data_unit": du}]
 
 
-def build_viral_conserved_sites_workflow():
-    """Construct + load the viral_conserved_sites workflow (catalog lightweight entry-point)."""
+# The pluggable-aligner seam (EO-54b). Both steps emit the SAME
+# `{"alignment": {alignment_fasta, n_sequences, alignment_length, aligner, ...}}` shape, so the
+# downstream conservation steps are aligner-agnostic. `mafft` = local MAFFT binary (arm64-native,
+# dependency-light); `muscle` = MUSCLE dispatched through the Rhea MCP server (production path,
+# requires a reachable Rhea server + the rhea module). See docs §"EO-54a — VERIFIED".
+_ALIGNER_STEP_CLASSES: dict[str, str] = {
+    "mafft": f"{_STEPS}.local_mafft_align_step.LocalMafftAlignStep",
+    "muscle": f"{_STEPS}.rhea_muscle_align_step.RheaMuscleAlignStep",
+}
+
+
+def build_viral_conserved_sites_workflow(aligner: str = "mafft"):
+    """Construct + load the viral_conserved_sites workflow (catalog lightweight entry-point).
+
+    ``aligner`` selects the MSA backend at the ``align`` step: ``"mafft"`` (local, default) or
+    ``"muscle"`` (Rhea MCP). The choice is build-time (lightweight catalog builders are no-arg);
+    each runnable catalog entry binds one aligner — ``viral_conserved_sites`` (mafft) and
+    ``viral_conserved_sites_muscle`` (muscle) — so ``list_workflows`` reports each one's real
+    availability (the muscle entry declares its Rhea prerequisite; the mafft entry has none).
+    """
+    if aligner not in _ALIGNER_STEP_CLASSES:
+        raise ValueError(f"unknown aligner {aligner!r}; supported: {sorted(_ALIGNER_STEP_CLASSES)}")
     from nanobrain.lightweight.workflow_builder import WorkflowBuilder
 
     b = WorkflowBuilder(
@@ -95,7 +119,7 @@ def build_viral_conserved_sites_workflow():
     )
     b.add_step(
         "align",
-        f"{_STEPS}.local_mafft_align_step.LocalMafftAlignStep",
+        _ALIGNER_STEP_CLASSES[aligner],
         input_data_units=_du("align_in"),
         output_data_units=_du("alignment"),
         triggers=_trig("align_in"),
@@ -133,4 +157,18 @@ def build_viral_conserved_sites_workflow():
     return b.load()
 
 
-__all__ = ["build_viral_conserved_sites_workflow"]
+def build_viral_conserved_sites_muscle_workflow():
+    """No-arg catalog entry-point for the MUSCLE-via-Rhea variant (EO-54b).
+
+    Identical pipeline to ``build_viral_conserved_sites_workflow`` but the ``align`` step is
+    ``RheaMuscleAlignStep`` instead of the local MAFFT step. Registered as the
+    ``viral_conserved_sites_muscle`` catalog entry, whose ``requires`` declares the Rhea
+    prerequisite (so ``list_workflows`` marks it unavailable when Rhea is down — while the
+    default mafft entry stays available)."""
+    return build_viral_conserved_sites_workflow(aligner="muscle")
+
+
+__all__ = [
+    "build_viral_conserved_sites_muscle_workflow",
+    "build_viral_conserved_sites_workflow",
+]

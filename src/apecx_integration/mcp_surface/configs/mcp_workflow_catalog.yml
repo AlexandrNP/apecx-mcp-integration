@@ -121,3 +121,47 @@ workflows:
     output_envelope_key: workflow_output
     # Network (BV-BRC) + subprocess (MAFFT) gaps between steps — give the cascade time to settle.
     settle_ms: 2000
+
+  - tool_name: viral_conserved_sites_muscle
+    description: |
+      Same as viral_conserved_sites but aligns with MUSCLE dispatched through the Rhea MCP
+      server (the production aligner path) instead of a local MAFFT binary. The pluggable-aligner
+      substitution: identical pipeline (BV-BRC fetch → MSA → per-column conservation → conserved
+      sites/regions), only the MSA backend differs. Use this when you want the Rhea-managed MUSCLE
+      aligner; use viral_conserved_sites for the dependency-light local-MAFFT path.
+
+      Resolve the virus name to an NCBI taxon_id FIRST, then call with {taxon_id, protein}.
+      Example: {taxon_id: 37124, protein: "structural polyprotein"} for Chikungunya. Requires a
+      reachable Rhea MCP server ($RHEA_MCP_URL) + the rhea package importable, AND network access
+      to BV-BRC.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.viral_conserved_sites.builder
+      function: build_viral_conserved_sites_muscle_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        taxon_id:
+          type: integer
+          description: "NCBI taxon id (e.g. 37124 for Chikungunya virus)."
+        protein:
+          type: string
+          description: "Protein product name/substring (e.g. 'E1', 'capsid', 'structural polyprotein')."
+        feature_type:
+          type: string
+          description: "BV-BRC feature_type (default CDS; 'mat_peptide' for mature peptides)."
+      required:
+        - taxon_id
+        - protein
+    requires:
+      # MUSCLE runs over Rhea MCP (not a local binary) — same prerequisites as rhea_muscle_alignment.
+      env:
+        - RHEA_MCP_URL
+      modules:
+        - rhea
+    timeout_seconds: 900.0
+    input_envelope_key: fetch_in
+    output_envelope_key: workflow_output
+    # BV-BRC network + Rhea MCP round-trip (+ first-run conda build) — give the cascade headroom.
+    settle_ms: 2000
