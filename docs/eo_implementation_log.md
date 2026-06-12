@@ -105,11 +105,16 @@ contract.
   pointing to viral_conserved_sites). Not deleted (kept minimal). `epitope_analysis` workflow
   YAML still references it — full deletion is a user call.
 
-**NEXT unblocked item:** capstone item 1 — the `query_answering` decomposition entry. Wire
-`LocalDecomposer(KeywordWorkflowMatcher, LLMTaskDecomposer, RunWorkflowDispatcher)` where the
-dispatcher loads workflows via `workflow_registry`; expose it as an MCP tool; Ollama-gated
-integration now has ≥2 real registered workflows (rhea_muscle_alignment + viral_conserved_sites).
-This completes the EO §4 external-orchestration headline.
+- **Capstone item 1 (core) ✅** 2026-06-12 (commit `b737272`) —
+  `decomposition/factory.assemble_local_decomposer()` wires `LocalDecomposer` over the LIVE
+  catalog (matcher + name→Workflow loader + real LLM decomposer). SILENT-FAILURE FIX:
+  `RunWorkflowDispatcher` now applies each entry's `input_envelope_key` (was running raw payload
+  → 0 data units deposited). NOT exposed as a new MCP tool (keeps §4 thin). Real integration:
+  solve() → match → envelope-wrapped dispatch → real viral_conserved_sites run.
+  **DESIGN GAP (needs user decision):** free-text task → structured params (taxon_id/protein)
+  extraction is unsolved — the matcher routes + dispatcher runs, but the caller must supply
+  task.payload. Options: an LLM param-extraction step keyed on the matched workflow's
+  input_schema, or a structured-task contract. Decide before a `query_answering` surface.
 
 **Needs the user (blocked or decisions):** EO-54 (Rhea Tier-1 aligner substitution — no RHEA
 server here + RHEA-repo work); Phase 0 surface reconciliation (which branch is canonical;
