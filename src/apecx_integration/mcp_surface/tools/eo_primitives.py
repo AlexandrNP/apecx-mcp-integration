@@ -79,6 +79,23 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
             error=f"run_workflow: failed to load workflow {name!r}: {type(exc).__name__}: {exc}"
         ).model_dump(mode="json")
 
+    # RoC-2c — return control to the frontier LLM if required params (per the workflow's OWN
+    # step_input_schema) are missing/ill-typed, BEFORE any backend call. This is the param-gap fix:
+    # the deterministic side does not guess values — it states exactly what is needed + how to get it.
+    from apecx_integration.composition.schemas.control_transfer import missing_param_transfer
+    from apecx_integration.mcp_surface.workflow_inputs import (
+        derive_required_inputs,
+        find_param_gaps,
+    )
+
+    gaps = find_param_gaps(params, derive_required_inputs(workflow, entry.input_envelope_key))
+    if gaps:
+        missing = [g.param_name for g in gaps]
+        return WorkflowResult.needs_input(
+            missing_param_transfer(gaps),
+            markdown=f"`{name}` needs more input before it can run: {missing}.",
+        ).model_dump(mode="json")
+
     if entry.input_envelope_key is not None:
         input_data: dict[str, Any] = {entry.input_envelope_key: dict(params)}
     else:

@@ -31,6 +31,37 @@ _TRIGGER = "nanobrain.core.trigger.DataUnitChangeTrigger"
 _STEPS = "apecx_integration.composition.steps"
 
 
+# RoC-2a — the authoritative input contract, declared ON the workflow (G6 step_input_schema).
+# It is the WRAPPED shape G6 validates at the wire boundary: the entry data unit `fetch_in` holds
+# the parameter dict {taxon_id, protein, feature_type?}. The framework FAIL-FASTs at runtime on a
+# malformed payload; RoC-2b derives the required params by unwrapping the `fetch_in` level. This is
+# the single source of truth (no catalog/workflow drift). `obtain_via` is an annotation for the
+# frontier LLM (jsonschema ignores unknown keywords).
+FETCH_INPUT_SCHEMA: dict[str, Any] = {
+    "json_schema": {
+        "type": "object",
+        "properties": {
+            "fetch_in": {
+                "type": "object",
+                "properties": {
+                    "taxon_id": {
+                        "type": "integer",
+                        "obtain_via": "resolve the virus name to an NCBI taxon_id via harmonized_search",
+                    },
+                    "protein": {
+                        "type": "string",
+                        "obtain_via": "the protein product name/substring (e.g. 'E1', 'capsid')",
+                    },
+                    "feature_type": {"type": "string"},
+                },
+                "required": ["taxon_id", "protein"],
+            }
+        },
+        "required": ["fetch_in"],
+    }
+}
+
+
 def _du(name: str) -> dict[str, Any]:
     return {name: {"class": _DU, "name": name}}
 
@@ -56,6 +87,8 @@ def build_viral_conserved_sites_workflow():
         max_sequences=25,
         # Drop partial CDS records (keep ≥80% of the longest) so the MSA isn't gap-blurred.
         min_length_fraction=0.8,
+        # RoC-2a — authoritative input contract (G6, runtime FAIL-FAST + RoC-2b derivation source).
+        step_input_schema=FETCH_INPUT_SCHEMA,
         input_data_units=_du("fetch_in"),
         output_data_units=_du("protein_fasta"),
         triggers=_trig("fetch_in"),

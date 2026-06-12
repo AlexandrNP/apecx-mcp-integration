@@ -36,6 +36,10 @@ needs_deps = pytest.mark.skipif(
     reason="needs MAFFT installed AND BV-BRC reachable",
 )
 
+# RoC-2c needs_input cases need only the mafft prerequisite met (so run_workflow passes its
+# availability gate and reaches the param check) — they return BEFORE any BV-BRC/MAFFT call.
+needs_mafft = pytest.mark.skipif(shutil.which("mafft") is None, reason="needs MAFFT installed")
+
 
 def test_builder_produces_workflow_with_child_steps():
     # No network: just construct. Guards the WorkflowBuilder 0-child-steps silent failure —
@@ -87,3 +91,35 @@ def test_run_workflow_end_to_end():
     assert out["run_id"]
     # The structured conservation result is carried behind a handle, not in the markdown.
     assert out["data_handle"]
+
+
+# --------------------------------------------------------------------------- #
+# RoC-2c — run_workflow returns needs_input on missing/ill-typed params, BEFORE any backend call.
+# (Required params derived from the workflow's OWN step_input_schema, not the catalog.)
+# --------------------------------------------------------------------------- #
+@needs_mafft
+def test_run_workflow_missing_param_returns_needs_input():
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(run_workflow("viral_conserved_sites", {"protein": "E1"}))  # no taxon_id
+    assert out["status"] == "needs_input", out
+    ct = out["control_transfer"]
+    assert ct["reason"] == "missing_param"
+    params = ct["next_action"]["params"]
+    taxon = next(p for p in params if p["param_name"] == "taxon_id")
+    assert taxon["issue"] == "missing"
+    assert "harmonized_search" in (taxon["obtain_via"] or "")
+    # Did NOT run — no result envelope fields from an actual run.
+    assert out["data_handle"] is None
+
+
+@needs_mafft
+def test_run_workflow_illtyped_param_returns_needs_input():
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow("viral_conserved_sites", {"taxon_id": "not-an-int", "protein": "E1"})
+    )
+    assert out["status"] == "needs_input", out
+    params = out["control_transfer"]["next_action"]["params"]
+    assert any(p["param_name"] == "taxon_id" and p["issue"] == "ill_typed" for p in params)
