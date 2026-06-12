@@ -184,7 +184,18 @@ conserved-region count agrees within a small tolerance (real biology, real tools
 **Tests:** `tests/integration/test_aligner_substitution.py` (gated on Rhea + MAFFT). Cross-repo:
 a Rhea-side tag test in `../rhea/tests`.
 
-### CL-1 — retire the dead husks
+### CL-1 — retire dead husks (REUSE AUDIT — scope narrowed)
+**Reuse audit (per direction "check if dead workflows have reuse value"):**
+- `epitope_analysis` — RETIRED ✅ (commit pending). A stray `steps/sequence_analysis.yml` config for
+  the already-neutralized fake `SequenceAnalysisStep`; no catalog/composer/test reference; no reuse
+  value (the real version is `viral_conserved_sites`). Deleted.
+- `viral_immunology_analysis` — **KEEP.** NOT dead: uses real `ViralImmunologyQueryClassifierStep` +
+  `ViralQueryEnhancerStep` and has a lightweight builder. It is the framework-native viral pipeline —
+  a strong candidate to wire into the catalog (connects to the earlier "convert viral to a workflow").
+- `violin_bvbrc` — **KEEP.** A live composer manifest in `composer_config.component_catalog_paths`
+  (buildable-workflow reuse value), not a husk.
+
+### CL-1 (original) — retire the dead husks
 **Scope:** remove `composition/workflows/epitope_analysis/` + `viral_immunology_analysis/` (reuse
 audit: husks — one fake step / empty stub; real version is `viral_conserved_sites`); drop their
 `composer_config.yml` references; the retired `SequenceAnalysisStep` stays fail-loud.
