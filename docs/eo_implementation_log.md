@@ -78,7 +78,20 @@ contract.
   deterministic per-column conservation over an MSA (identity-fraction primary + Shannon
   secondary), conserved sites + contiguous regions with consensus motifs. Pure Python, no
   deps, FAIL-LOUD on malformed alignment. 8 tests on known-conserved fixtures.
-- **EO-53 (Phase 4)** ← NEXT — the `viral_conserved_sites` catalog workflow tying it together:
+- **EO-53 (Phase 4) — scientific cascade CORE ✅ VERIFIED ON REAL DATA** 2026-06-12 (commit
+  `762caf4`). `LocalMafftAlignStep` (real local MAFFT, FAIL-LOUD, no mock fallback — the
+  lightweight aligner path; Rhea is the heavy §8 path). The 3-step cascade is proven
+  end-to-end against real data (`test_conserved_sites_cascade`): BV-BRC (5 real CHIKV
+  polyproteins) → MAFFT (len 2582) → conservation (74 sites / 64 regions). Inter-step bridges
+  hold with NO TransformLink (each step reads its key from the prior output dict). Aligner
+  blocker resolved by `brew install mafft` (v7.526, arm64).
+  **Refinement (TODO):** partial/variable-length CDS records inflate gaps (2582 cols for
+  ~1248aa) → lower apparent identity; add a length-filter to `BvbrcProteinFastaStep`.
+  **Remaining EO-53 (next):** package the cascade as a nanobrain WORKFLOW — a report step
+  (conservation_result → markdown + Bundle data) + EnvelopeStep, wire the YAML, register in
+  `mcp_workflow_catalog.yml` (requires: mafft OR rhea + network) so it's discoverable via
+  list_workflows + runnable via run_workflow. Explore lightweight WorkflowBuilder vs hand-YAML.
+- **EO-53 (Phase 4)** — the `viral_conserved_sites` catalog workflow tying it together:
   resolve virus→taxon_id → BvbrcProteinFastaStep (EO-51) → SubworkflowStep(rhea_muscle_alignment)
   → ConservationScoreStep (EO-52) → EnvelopeStep. Register in `mcp_workflow_catalog.yml`;
   discoverable via list_workflows, runnable via run_workflow. **Design notes for next turn:**
