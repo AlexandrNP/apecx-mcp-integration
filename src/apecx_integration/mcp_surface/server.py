@@ -66,6 +66,9 @@ from apecx_integration.mcp_surface.tools import (
     discovery as discovery_tools,
 )
 from apecx_integration.mcp_surface.tools import (
+    eo_primitives as eo_primitive_tools,
+)
+from apecx_integration.mcp_surface.tools import (
     harmonized_search as harmonized_search_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -113,6 +116,15 @@ def build_server() -> FastMCP:
     # before it calls start_workflow.
     server.tool()(discovery_tools.list_workflows)
     server.tool()(discovery_tools.describe_workflow)
+
+    # EO thin-surface primitives (external_orchestration_design.md §4) —
+    # "workflows as first-class objects": the external LLM discovers a
+    # workflow (list_workflows) then drives ANY of them through this generic
+    # set, instead of one bespoke super-tool per task.
+    server.tool()(eo_primitive_tools.run_workflow)
+    server.tool()(eo_primitive_tools.inspect_run)
+    server.tool()(eo_primitive_tools.inspect_workflow)
+    server.tool()(eo_primitive_tools.apecx_context)
 
     # Direct database lookups — bypass the composer for one-shot
     # VIOLIN + BV-BRC queries the model can answer without orchestrating
