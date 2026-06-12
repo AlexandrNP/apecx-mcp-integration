@@ -100,9 +100,21 @@ contract.
   already proves aligner-flexibility (mafft≠muscle); the Rhea Tier-1 substitution is the
   production path, BLOCKED here (no RHEA server) + needs RHEA-repo work. Flag for the user.
 
-Off the conserved-sites critical path: capstone item 1 (query_answering decomposition) +
-Phase 0 (surface reconciliation / demote confirm_entity_synonym, retire old super-tools incl.
-the dead SequenceAnalysisStep/epitope_analysis).
+- **Reliability cleanup ✅** 2026-06-12 (commit `c614886`) — the dead mock `SequenceAnalysisStep`
+  (placeholder sequences + mock alignment → fake conservation) now FAILS LOUD (NotImplementedError
+  pointing to viral_conserved_sites). Not deleted (kept minimal). `epitope_analysis` workflow
+  YAML still references it — full deletion is a user call.
+
+**NEXT unblocked item:** capstone item 1 — the `query_answering` decomposition entry. Wire
+`LocalDecomposer(KeywordWorkflowMatcher, LLMTaskDecomposer, RunWorkflowDispatcher)` where the
+dispatcher loads workflows via `workflow_registry`; expose it as an MCP tool; Ollama-gated
+integration now has ≥2 real registered workflows (rhea_muscle_alignment + viral_conserved_sites).
+This completes the EO §4 external-orchestration headline.
+
+**Needs the user (blocked or decisions):** EO-54 (Rhea Tier-1 aligner substitution — no RHEA
+server here + RHEA-repo work); Phase 0 surface reconciliation (which branch is canonical;
+demote confirm_entity_synonym — that's on reasoning-agent, not here; port the tier-cleanup);
+full deletion of the dead epitope_analysis workflow.
 
 **Open decisions (need the user):**
 - **EO-30** — generic `mcp` `BackendKind` touches the deliberately-fixed `CONTRACTS.md#td-vocab`
