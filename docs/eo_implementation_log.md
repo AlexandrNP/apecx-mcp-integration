@@ -87,22 +87,18 @@ contract.
   blocker resolved by `brew install mafft` (v7.526, arm64).
   **Refinement (TODO):** partial/variable-length CDS records inflate gaps (2582 cols for
   ~1248aa) → lower apparent identity; add a length-filter to `BvbrcProteinFastaStep`.
-  **Remaining EO-53 (next):** package the cascade as a nanobrain WORKFLOW — a report step
-  (conservation_result → markdown + Bundle data) + EnvelopeStep, wire the YAML, register in
-  `mcp_workflow_catalog.yml` (requires: mafft OR rhea + network) so it's discoverable via
-  list_workflows + runnable via run_workflow. Explore lightweight WorkflowBuilder vs hand-YAML.
-- **EO-53 (Phase 4)** — the `viral_conserved_sites` catalog workflow tying it together:
-  resolve virus→taxon_id → BvbrcProteinFastaStep (EO-51) → SubworkflowStep(rhea_muscle_alignment)
-  → ConservationScoreStep (EO-52) → EnvelopeStep. Register in `mcp_workflow_catalog.yml`;
-  discoverable via list_workflows, runnable via run_workflow. **Design notes for next turn:**
-  (a) virus→taxon_id bridge — extract NNNN from NCBITaxon IRI (`_iri_to_taxon_id` exists in
-  harmonized_search_execute_step); decide whether to resolve in-workflow or take taxon_id as
-  input. (b) Shape bridges (no TransformLink): protein_fasta.fasta_text → rhea
-  fasta_collection_input.fasta_text; rhea alignment_fasta → conservation alignment_fasta —
-  likely need tiny novel-python adapter steps or careful DU naming. (c) `requires`: RHEA_MCP_URL
-  + rhea module + network (BV-BRC). (d) check what resolve capability exists on eo-mvp (the
-  newer HarmonizedResolveStep is on reasoning-agent, may differ here).
-- **EO-54 (Phase 5)** — pluggable aligners via §8 Tier-1 interface tags (coordinated RHEA).
+  **Refinement (TODO):** length-filter in `BvbrcProteinFastaStep` to drop partial CDS records.
+- **EO-53 (Phase 4) — `viral_conserved_sites` catalog workflow ✅ COMPLETE + e2e-VERIFIED**
+  2026-06-12 (commit `c128b8a`). Built the LIGHTWEIGHT way (WorkflowBuilder `kind: lightweight`
+  callable): `run_workflow("viral_conserved_sites", {taxon_id, protein})` → fetch → MAFFT →
+  conserve → report → envelope → WorkflowResult. Discoverable via list_workflows with honest
+  availability (new `WorkflowRequirements.binaries` shutil.which check). Real e2e test drives
+  the full cascade against live BV-BRC + real MAFFT. New `ConservationReportStep` (markdown +
+  Bundle). The caller resolves virus→taxon_id first (e.g. harmonized_search), keeping ambiguity
+  HITL OUT of the deterministic cascade. **CONSERVED-SITES FEATURE DELIVERED + VERIFIED.**
+- **EO-54 (Phase 5)** — pluggable aligners via §8 Tier-1 interface tags. The LOCAL mafft path
+  already proves aligner-flexibility (mafft≠muscle); the Rhea Tier-1 substitution is the
+  production path, BLOCKED here (no RHEA server) + needs RHEA-repo work. Flag for the user.
 
 Off the conserved-sites critical path: capstone item 1 (query_answering decomposition) +
 Phase 0 (surface reconciliation / demote confirm_entity_synonym, retire old super-tools incl.
