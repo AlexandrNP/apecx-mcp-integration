@@ -165,15 +165,39 @@ conserved-sites task)` returns the plan; with `APECX_EO_DECOMPOSER_MODE=auto_sol
 runs the real workflow to `ok`.
 **Tests:** `tests/integration/test_decomposition_factory.py` — both modes end-to-end.
 
-### EO-54 — BLOCKED on operator action (2026-06-12)
-The Rhea stack ships at `../rhea/deploy/docker-compose.yaml` (server + redis + minio +
-pgvector-postgres + a HF text-embeddings-inference service that wants GPU). **Docker is installed
-(v28.1.1) but the daemon is not running** — it must be started by the operator (a GUI app), and the
-stack is a multi-GB pull. The local-MAFFT path already gives the conserved-sites feature aligner
-flexibility (mafft ≠ muscle); EO-54's added value (the Galaxy/Rhea production path + Tier-1
-MUSCLE↔MAFFT interface-tag substitution) needs the running server to be verified honestly. **To
-unblock:** start Docker, then `docker compose -f ../rhea/deploy/docker-compose.yaml up -d` and
-`export RHEA_MCP_URL=http://localhost:3001/mcp/`. (The MCP server already autodiscovers RHEA_REPO_PATH.)
+### EO-54 — BLOCKED on operator provisioning, not just Docker (updated 2026-06-12)
+Docker is now **running** (the operator started it). Triaging the bring-up showed the blocker is
+**deeper than the daemon** — it is the full Rhea provisioning chain (= `apecx-setup rhea` / G89
+territory), NOT a `docker compose up`. Concrete findings this turn:
+1. **`deploy/docker-compose.yaml` `server` is unrunnable as-shipped on this host.** It declares
+   `image: chrisagrams/rhea-server:latest` with a `build: {context: ., dockerfile: Dockerfile}`
+   fallback, but `deploy/Dockerfile` does not exist → `docker compose up` dies with
+   `failed to read dockerfile: open Dockerfile: no such file or directory`. The locally pre-built
+   image is `rhea-server:apecx-integration` (1.69 GB, present) — the compose does NOT reference it.
+   A working bring-up needs an override pinning the server to the local image + dropping `build:`.
+2. **`embedding` (`text-embeddings-inference:1.7`) is amd64-only** → Rosetta emulation on this
+   arm64 Mac (slow; image is present locally at 1.74 GB but extracts under emulation).
+3. **MUSCLE alignment runs INSIDE the `rhea-worker-agent` container via Parsl dispatch** (image
+   `chrisagrams/rhea-worker-agent:0.1.1b5`, 2.77 GB, present) — so a green `rhea_muscle_alignment`
+   needs the conda-env-with-MUSCLE ingested + Parsl `local` backend (macOS) configured. The
+   autodiscovery module (`rhea_env_autodiscovery.py`) **explicitly defers** these "slow one-time
+   operations" to `apecx-setup rhea` and does NOT do them.
+4. **The `rhea` Python module is not importable in the apecx venv** (catalog `requires: modules:
+   [rhea]`), and `RHEA_MCP_URL` is unset — so even with the server up, `list_workflows` correctly
+   marks `rhea_muscle_alignment` unavailable until `rhea` is on the path + the env var is exported.
+
+**Evidence the component itself is complete + honest:** `test_rhea_muscle_alignment_workflow.py`
+runs **12 passed / 2 skipped** — the unconditional surface (YAML composes via `from_config`,
+pure-transform steps verify on fixtures) is green; the 2 live-Rhea surfaces honest-skip on
+`RHEA_MCP_URL` unset and auto-resurrect when it's set. No husk, no mock.
+
+The local-MAFFT path already gives the conserved-sites feature real aligner flexibility (mafft ≠
+muscle); EO-54's *added* value (the Rhea production path + MUSCLE↔MAFFT interface-tag substitution)
+needs the provisioned server to be verified honestly — and the substitution AC requires the live
+`aligner=muscle` half, so building an apecx-side aligner seam now would ship a backend I cannot
+verify (no-husk rule). **Deferred until the operator runs `apecx-setup rhea`** (or provides a
+working compose override + ingested worker-agent env), then `export RHEA_MCP_URL=...` and the gated
+tests verify for free.
 
 Reuse candidate surfaced by CL-1 — **`viral_immunology_analysis`** (classifier → enhancer →
 assembly → synthesis): on probing, it is **STALE + BROKEN, not a quick wiring** — its
