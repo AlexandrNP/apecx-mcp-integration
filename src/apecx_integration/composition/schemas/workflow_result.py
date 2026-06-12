@@ -20,7 +20,9 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, model_validator
 
-WorkflowResultStatus = Literal["ok", "partial", "error"]
+from apecx_integration.composition.schemas.control_transfer import ControlTransfer
+
+WorkflowResultStatus = Literal["ok", "partial", "error", "needs_input"]
 
 
 class WorkflowResult(BaseModel):
@@ -32,6 +34,8 @@ class WorkflowResult(BaseModel):
     data_preview: dict[str, Any] | None = None
     run_id: str | None = None
     error: str | None = None
+    # RoC-1a — return of control to the frontier LLM (set iff status == "needs_input").
+    control_transfer: ControlTransfer | None = None
 
     @model_validator(mode="after")
     def _check_consistency(self) -> WorkflowResult:
@@ -43,6 +47,14 @@ class WorkflowResult(BaseModel):
             )
         if self.status != "error" and self.error is not None:
             raise ValueError(f"WorkflowResult.error must be None when status is {self.status!r}")
+        # needs_input ⟺ a control_transfer: a 'needs_input' with nothing to act on is the same
+        # silent-failure shape as an error with no message — the caller cannot tell what is needed.
+        if self.status == "needs_input" and self.control_transfer is None:
+            raise ValueError("WorkflowResult.status == 'needs_input' requires a 'control_transfer'")
+        if self.status != "needs_input" and self.control_transfer is not None:
+            raise ValueError(
+                f"WorkflowResult.control_transfer must be None when status is {self.status!r}"
+            )
         # A preview is a peek at the handle's payload; a preview with no handle would
         # mislead the orchestrating LLM into thinking chainable data exists.
         if self.data_preview is not None and self.data_handle is None:
@@ -53,3 +65,19 @@ class WorkflowResult(BaseModel):
     def failed(cls, error: str, *, markdown: str = "", run_id: str | None = None) -> WorkflowResult:
         """Construct a loud-error result. Prefer this over hand-setting ``status``."""
         return cls(markdown=markdown, status="error", error=error, run_id=run_id)
+
+    @classmethod
+    def needs_input(
+        cls,
+        control_transfer: ControlTransfer,
+        *,
+        markdown: str = "",
+        run_id: str | None = None,
+    ) -> WorkflowResult:
+        """Construct a return-of-control result. Prefer this over hand-setting ``status``."""
+        return cls(
+            markdown=markdown,
+            status="needs_input",
+            control_transfer=control_transfer,
+            run_id=run_id,
+        )
