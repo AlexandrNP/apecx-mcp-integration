@@ -10,6 +10,12 @@ MCP server (`../rhea` `docker compose`).
 - **RoC-1a + RoC-1b ✅** 2026-06-12 (commit `dc3dab5`) — `WorkflowResult.status='needs_input'` +
   typed `control_transfer` (ParamNeed/WorkflowNeed/NextAction + 4 builders); loud invariant
   needs_input⟺control_transfer; `needs_input()` constructor. 18 unit + 30 consumer regression green.
+- **RoC-2a + RoC-2b + RoC-2c ✅** 2026-06-12 (commit `ccab129`) — the param-gap fix. Declared
+  `step_input_schema` (G6, WRAPPED shape) on the viral_conserved_sites entry step (single source of
+  truth; real e2e still runs — G6 enforcement verified). `workflow_inputs.derive_required_inputs()`
+  reads it from the WORKFLOW + unwraps the entry-DU level; `run_workflow` returns
+  `needs_input(missing_param)` (with obtain_via) on missing/ill-typed params BEFORE any backend
+  call. 10 tests incl. the gated real run staying green. NEXT: RoC-3.
 - **RoC-2a note (G6 `SchemaRef`):** exactly one of `class`(Pydantic path) | `json_schema`(inline);
   G6 validates step input BEFORE process() but the step gets the trigger-wrapped `{fetch_in:{…}}`,
   so G6 in-step shape ≠ the param-dict schema RoC-2b reads. Decision: declare `step_input_schema`
