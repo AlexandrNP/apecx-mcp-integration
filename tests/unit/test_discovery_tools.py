@@ -160,3 +160,41 @@ def test_build_server_registers_discovery_tools():
     names = {t.name for t in tools}
     assert "list_workflows" in names
     assert "describe_workflow" in names
+
+
+# ---------------------------------------------------------------------------
+# EO-01 — list_workflows also surfaces the runnable catalog (run_workflow targets)
+# ---------------------------------------------------------------------------
+
+
+def test_list_workflows_includes_runnable_catalog():
+    out = asyncio.run(discovery.list_workflows())
+    assert "runnable" in out and "runnable_count" in out
+    assert out["runnable_count"] == len(out["runnable"])
+    # The packaged runnable catalog ships rhea_muscle_alignment.
+    names = {r["name"] for r in out["runnable"]}
+    assert "rhea_muscle_alignment" in names
+    # No load error on the packaged catalog.
+    assert "runnable_error" not in out
+
+
+def test_runnable_row_shape_and_availability_flag():
+    out = asyncio.run(discovery.list_workflows())
+    row = next(r for r in out["runnable"] if r["name"] == "rhea_muscle_alignment")
+    assert row["kind"] == "runnable"
+    assert row["invoke_with"] == "run_workflow"
+    assert isinstance(row["description"], str) and row["description"]
+    # availability is computed from prerequisites — a bool + a list, env-dependent value.
+    assert isinstance(row["available"], bool)
+    assert isinstance(row["missing_prerequisites"], list)
+    assert isinstance(row["input_schema"], dict)
+    # When RHEA isn't configured, the row honestly reports WHY it can't run.
+    if not row["available"]:
+        assert row["missing_prerequisites"], "unavailable row must name its missing prereqs"
+
+
+def test_composable_rows_tagged_for_compose_path():
+    out = asyncio.run(discovery.list_workflows())
+    row = next(r for r in out["workflows"] if r["workflow_name"] == "violin_bvbrc_synonym_gate")
+    assert row["kind"] == "composable"
+    assert row["invoke_with"] == "start_workflow"

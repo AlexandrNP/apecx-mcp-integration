@@ -178,23 +178,62 @@ def _load_all_manifests() -> list[_ManifestSummary]:
 # ---------------------------------------------------------------------------
 
 
+def _load_runnable_catalog() -> tuple[list[dict[str, Any]], str | None]:
+    """Rows for the directly-runnable workflow catalog (``run_workflow`` targets).
+
+    Reads the ``workflow_registry`` catalog (``mcp_workflow_catalog.yml``) — the
+    workflows exposed as runnable objects. Each row is tagged ``kind="runnable"`` +
+    ``invoke_with="run_workflow"`` and carries an ``available`` flag (are this
+    workflow's prerequisites met right now?) so the discovering LLM knows which it can
+    run immediately vs. which need configuration first.
+
+    Returns ``(rows, error)``. On a catalog-load failure returns ``([], "<message>")``
+    so composer discovery still works and the failure is surfaced LOUDLY in the
+    response (never a silent empty list).
+    """
+    try:
+        from apecx_integration.mcp_surface.workflow_registry import (
+            check_prerequisites,
+            load_catalog,
+        )
+
+        catalog = load_catalog()
+    except Exception as exc:  # noqa: BLE001 — surface, don't crash discovery
+        return [], f"{type(exc).__name__}: {exc}"
+    rows: list[dict[str, Any]] = []
+    for entry in catalog.workflows:
+        met, missing = check_prerequisites(entry.requires)
+        rows.append(
+            {
+                "name": entry.tool_name,
+                "kind": "runnable",
+                "invoke_with": "run_workflow",
+                "description": _strip(entry.description),
+                "available": met,
+                "missing_prerequisites": missing,
+                "input_schema": entry.input_schema,
+            }
+        )
+    return rows, None
+
+
 async def list_workflows() -> dict:
-    """List the workflows the composer can build from.
+    """Discover every workflow — both runnable now and composer-buildable.
 
-    Returns a structured catalog of every workflow whose manifest
-    is registered in the composer config. Use this BEFORE calling
-    ``start_workflow`` to discover what the integration MCP can
-    actually compose; if your intent doesn't match any listed
-    workflow, ``start_workflow`` will likely produce a workflow
-    that doesn't run.
+    Two distinct kinds, by how you invoke them (external_orchestration_design.md §4):
 
-    Each row carries:
-      - ``workflow_name``: stable id (e.g. "violin_bvbrc_synonym_gate")
-      - ``manifest_path``: absolute path to the manifest YAML
-      - ``spec_doc``: relative path to the workflow spec markdown
-      - ``first_release_variant``: which variant ships in v1
-      - ``num_components`` / ``num_ready`` / ``num_deferred``
-      - ``component_names``: ordered list of step_name strings
+    - ``runnable`` (under the ``runnable`` key): registered catalog workflows you drive
+      directly with ``run_workflow(name, params)``. Each row carries ``name``,
+      ``description``, ``input_schema``, and ``available`` (+ ``missing_prerequisites``
+      when a backend/env is not configured). THIS is the path for "do task X now".
+    - ``composable`` (under the ``workflows`` key): manifests the composer can stitch a
+      NEW workflow from, via ``start_workflow(description)``. Use when no runnable
+      workflow matches and a new one must be composed.
+
+    Composable rows carry: ``workflow_name``, ``manifest_path``, ``spec_doc``,
+    ``first_release_variant``, ``num_components`` / ``num_ready`` / ``num_deferred``,
+    ``component_names``. A ``runnable_error`` key appears only if the runnable catalog
+    failed to load (loud, not silent).
     """
     summaries = _load_all_manifests()
     rows: list[dict[str, Any]] = []
@@ -204,6 +243,8 @@ async def list_workflows() -> dict:
         rows.append(
             {
                 "workflow_name": s.workflow_name,
+                "kind": "composable",
+                "invoke_with": "start_workflow",
                 "manifest_path": str(s.manifest_path),
                 "spec_doc": s.spec_doc,
                 "first_release_variant": s.first_release_variant,
@@ -213,7 +254,16 @@ async def list_workflows() -> dict:
                 "component_names": [c["step_name"] for c in s.components],
             }
         )
-    return {"workflows": rows, "count": len(rows)}
+    runnable, runnable_error = _load_runnable_catalog()
+    out: dict[str, Any] = {
+        "workflows": rows,
+        "runnable": runnable,
+        "count": len(rows),
+        "runnable_count": len(runnable),
+    }
+    if runnable_error is not None:
+        out["runnable_error"] = runnable_error
+    return out
 
 
 async def describe_workflow(name: str) -> dict:
