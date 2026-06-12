@@ -45,6 +45,15 @@ class BvbrcProteinFastaStepConfig(StepConfig):
     )
     max_sequences: int = Field(default=50, ge=2)
     request_timeout_seconds: float = Field(default=60.0, gt=0)
+    min_length_fraction: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=1.0,
+        description="Drop partial records: keep only sequences whose length is at least this "
+        "fraction of the LONGEST fetched sequence (0 = no filter). Partial/fragment CDS records "
+        "are shorter than full-length ones and inflate the alignment with gaps, blurring "
+        "conservation; e.g. 0.8 keeps sequences ≥80% of the longest.",
+    )
 
 
 class BvbrcProteinFastaStep(BaseStep):
@@ -62,6 +71,7 @@ class BvbrcProteinFastaStep(BaseStep):
         self._feature_type: str = getattr(config, "feature_type", "CDS")
         self._max_sequences: int = int(getattr(config, "max_sequences", 50))
         self._timeout: float = float(getattr(config, "request_timeout_seconds", 60.0))
+        self._min_length_fraction: float = float(getattr(config, "min_length_fraction", 0.0))
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         import asyncio
@@ -160,9 +170,40 @@ class BvbrcProteinFastaStep(BaseStep):
                     "sequence": seq,
                 }
             )
-            if len(records) >= self._max_sequences:
-                break
-        return records
+        records = self._apply_length_filter(records)
+        return records[: self._max_sequences]
+
+    def _apply_length_filter(self, records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Drop partial records shorter than ``min_length_fraction`` of the longest sequence.
+
+        Partial/fragment CDS records inflate the alignment with gaps and blur conservation. When
+        the filter would leave fewer than 2 sequences it FAILS LOUD (rather than silently
+        keeping the partials), so the caller can lower the threshold.
+        """
+        if self._min_length_fraction <= 0.0 or not records:
+            return records
+        max_len = max(len(r["sequence"]) for r in records)
+        cutoff = max_len * self._min_length_fraction
+        kept = [r for r in records if len(r["sequence"]) >= cutoff]
+        dropped = len(records) - len(kept)
+        if dropped:
+            self.nb_logger.info(
+                "BvbrcProteinFastaStep %s: length filter (≥%.0f%% of %daa) dropped %d partial "
+                "record(s), kept %d",
+                self.name,
+                self._min_length_fraction * 100,
+                max_len,
+                dropped,
+                len(kept),
+            )
+        if len(kept) < 2:
+            raise ValueError(
+                f"BvbrcProteinFastaStep '{self.name}': length filter "
+                f"(min_length_fraction={self._min_length_fraction}) left {len(kept)} sequence(s) "
+                f"of {len(records)} (longest {max_len}aa); lower min_length_fraction or broaden "
+                f"the protein/feature_type."
+            )
+        return kept
 
     def _get_json(self, path: str, query: str) -> list[dict[str, Any]]:
         url = f"{self._api_base}/{path}/?{query}&http_accept=application/json"

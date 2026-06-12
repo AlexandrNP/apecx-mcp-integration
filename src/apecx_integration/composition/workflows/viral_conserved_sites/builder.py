@@ -54,6 +54,8 @@ def build_viral_conserved_sites_workflow():
         "fetch",
         f"{_STEPS}.bvbrc_protein_fasta_step.BvbrcProteinFastaStep",
         max_sequences=25,
+        # Drop partial CDS records (keep ≥80% of the longest) so the MSA isn't gap-blurred.
+        min_length_fraction=0.8,
         input_data_units=_du("fetch_in"),
         output_data_units=_du("protein_fasta"),
         triggers=_trig("fetch_in"),

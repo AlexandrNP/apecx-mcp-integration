@@ -99,6 +99,38 @@ def test_fetches_real_chikv_e1_sequences(tmp_path):
     assert bundle["fasta_text"].count(">") == bundle["n_sequences"]
 
 
+def test_length_filter_drops_partials(tmp_path):
+    # Network-free: exercise the partial-record filter directly.
+    step = _stage(tmp_path, min_length_fraction="0.8")
+    records = [
+        {"id": "full1", "sequence": "M" * 100, "product": "", "genome_name": ""},
+        {"id": "full2", "sequence": "M" * 95, "product": "", "genome_name": ""},
+        {"id": "partial", "sequence": "M" * 40, "product": "", "genome_name": ""},  # 40% → dropped
+    ]
+    kept = step._apply_length_filter(records)
+    assert {r["id"] for r in kept} == {"full1", "full2"}
+
+
+def test_length_filter_disabled_by_default(tmp_path):
+    step = _stage(tmp_path)  # min_length_fraction default 0.0
+    records = [
+        {"id": "a", "sequence": "M" * 100, "product": "", "genome_name": ""},
+        {"id": "b", "sequence": "M" * 10, "product": "", "genome_name": ""},
+    ]
+    assert len(step._apply_length_filter(records)) == 2  # nothing dropped
+
+
+def test_length_filter_too_aggressive_fails_loud(tmp_path):
+    step = _stage(tmp_path, min_length_fraction="0.95")
+    records = [
+        {"id": "full", "sequence": "M" * 100, "product": "", "genome_name": ""},
+        {"id": "p1", "sequence": "M" * 50, "product": "", "genome_name": ""},
+        {"id": "p2", "sequence": "M" * 60, "product": "", "genome_name": ""},
+    ]
+    with pytest.raises(ValueError, match="length filter"):
+        step._apply_length_filter(records)
+
+
 @needs_bvbrc
 def test_unknown_protein_fails_loud(tmp_path):
     step = _stage(tmp_path)
