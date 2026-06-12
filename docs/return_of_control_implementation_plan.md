@@ -6,6 +6,17 @@ smoke shape of a pure validator). Real backends used: live **BV-BRC** data API (
 Chikungunya), local **MAFFT** (`brew install mafft`, v7.526), and — for EO-54 — a local **Rhea**
 MCP server (`../rhea` `docker compose`).
 
+## Progress
+- **RoC-1a + RoC-1b ✅** 2026-06-12 (commit `dc3dab5`) — `WorkflowResult.status='needs_input'` +
+  typed `control_transfer` (ParamNeed/WorkflowNeed/NextAction + 4 builders); loud invariant
+  needs_input⟺control_transfer; `needs_input()` constructor. 18 unit + 30 consumer regression green.
+- **RoC-2a note (G6 `SchemaRef`):** exactly one of `class`(Pydantic path) | `json_schema`(inline);
+  G6 validates step input BEFORE process() but the step gets the trigger-wrapped `{fetch_in:{…}}`,
+  so G6 in-step shape ≠ the param-dict schema RoC-2b reads. Decision: declare `step_input_schema`
+  as the authoritative PARAM-DICT contract (source of truth for RoC-2b/2c); fail-loud is already
+  guaranteed by `process()` + the RoC-2c pre-run check; G6 in-step is defense-in-depth where the
+  wrapping allows. Verify WorkflowBuilder passes `step_input_schema` through `add_step`.
+
 ## 0. Foundation already shipped (the floor we build on)
 
 The §4 thin surface + the conserved-sites feature are DONE + real-data-verified:
