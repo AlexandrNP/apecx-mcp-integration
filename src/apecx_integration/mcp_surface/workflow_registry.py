@@ -53,6 +53,7 @@ import importlib
 import importlib.util
 import logging
 import os
+import shutil
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -119,6 +120,10 @@ class WorkflowRequirements(BaseModel):
     """Env vars that must be set AND non-empty."""
     modules: list[str] = Field(default_factory=list)
     """Python modules that must be importable."""
+    binaries: list[str] = Field(default_factory=list)
+    """Executables that must be on PATH (checked via ``shutil.which``) — e.g. an external
+    aligner like ``mafft``. Lets a binary-dependent workflow report honest availability via
+    ``list_workflows`` instead of only failing at run time."""
 
 
 class WorkflowCatalogEntry(BaseModel):
@@ -303,6 +308,9 @@ def check_prerequisites(reqs: WorkflowRequirements) -> tuple[bool, list[str]]:
             continue
         if spec is None:
             missing.append(f"module '{module_name}' not importable")
+    for binary in reqs.binaries:
+        if shutil.which(binary) is None:
+            missing.append(f"executable '{binary}' not found on PATH")
     return (len(missing) == 0, missing)
 
 

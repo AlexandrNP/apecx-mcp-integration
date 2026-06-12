@@ -78,3 +78,46 @@ workflows:
     # so install errors are surfaced at startup, not at first call.
     prewarm_rhea_tools:
       - muscle
+
+  - tool_name: viral_conserved_sites
+    description: |
+      Find conserved protein sites across strains of a virus. Fetches real per-strain protein
+      sequences from BV-BRC, builds a multiple-sequence alignment (MAFFT), scores per-column
+      conservation, and returns conserved sites + regions with consensus motifs.
+
+      Resolve the virus name to an NCBI taxon_id FIRST (e.g. via harmonized_search), then call
+      with {taxon_id, protein}. Example: {taxon_id: 37124, protein: "structural polyprotein"}
+      for Chikungunya. Requires a local 'mafft' binary on PATH and network access to BV-BRC.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.viral_conserved_sites.builder
+      function: build_viral_conserved_sites_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        taxon_id:
+          type: integer
+          description: "NCBI taxon id (e.g. 37124 for Chikungunya virus)."
+        protein:
+          type: string
+          description: "Protein product name/substring (e.g. 'E1', 'capsid', 'structural polyprotein')."
+        feature_type:
+          type: string
+          description: "BV-BRC feature_type (default CDS; 'mat_peptide' for mature peptides)."
+      required:
+        - taxon_id
+        - protein
+    requires:
+      # mafft is an external binary (not a python module) — checked via shutil.which so
+      # list_workflows reports honest availability instead of only failing at run time.
+      binaries:
+        - mafft
+    timeout_seconds: 600.0
+    # Workflow.run deposits by FIRST-STEP input-DU name (see rhea note above): the first step
+    # is `fetch` (BvbrcProteinFastaStep) whose input DU is `fetch_in`.
+    input_envelope_key: fetch_in
+    # Terminal EnvelopeStep emits the WorkflowResult into the workflow-level `workflow_output`.
+    output_envelope_key: workflow_output
+    # Network (BV-BRC) + subprocess (MAFFT) gaps between steps — give the cascade time to settle.
+    settle_ms: 2000
