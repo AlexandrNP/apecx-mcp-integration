@@ -28,6 +28,7 @@ Navigation aid. For deeper context: `README.md` (user-facing),
 | `WORKAROUND_INVENTORY.md` | Active workarounds awaiting framework fixes; updated per ship. |
 | `implementation_task_graph.md` | **Rewritten 2026-05-19** for the external-orchestration direction (`EO-*` / `T-RH-*` tasks; reuse-first). The prior multi-agent-orchestrator graph (165 tasks) is preserved in git history. Cite the task ID in commits. |
 | `supervisor_handbook.md` | Knowledge-transfer artifact for new external supervisors of the apecx composer: scope, day-one checklist, drift patterns D1-D8, gates/rules currently shipped, signals to monitor, distillation policy. Pinned by `tests/unit/test_supervisor_handbook_pinned.py`. |
+| `viral_epitope_evidence_workflow_action_plan.md` | Detailed action plan for the new evidence workflow, PDB/EMDB/ProtaBank harmonization through Globus Search, and approval-gated design/optimization outputs. |
 
 ## Assets
 
