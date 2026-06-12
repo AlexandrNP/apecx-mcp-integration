@@ -53,32 +53,41 @@ schema, and how to obtain it (e.g. *"resolve the virus name to an NCBI taxon_id 
 harmonized_search, then re-call"*). The frontier LLM — which has the context and already knows how
 to call `harmonized_search` — fills it and re-invokes. Control crossed the boundary explicitly.
 
-## 3. The decomposer's clarified (narrower) role
+## 3. The decomposer — TWO flag-switched modes (not one)
 
-Previously built as an autonomous solver (match → dispatch → recurse → synthesize via the internal
-LLM). That over-trusts the local LLM and **keeps control inside** when it should hand back. New
-role — a **bounded planner + deterministic executor**, never a free orchestrator:
+The decomposer has **two distinct modes of operation, selected by a flag in MCP settings**
+(env var `APECX_EO_DECOMPOSER_MODE`, read at the boundary — same pattern as the server's existing
+`APECX_MCP_AUTOSTART_*` flags and the reasoning-agent locus flag). Both modes honor return-of-control
+(neither guesses parameter values across the boundary); they differ in **where control returns**:
 
-1. Task maps to **one** workflow with **complete** params → execute it (pure determinism).
-2. Params missing/ambiguous → **`needs_input`** (control returns; frontier LLM supplies them).
-3. Task is compound → propose a decomposition **plan** and return it as
-   **`needs_input(decomposition_choice)`** for the frontier LLM to approve/sequence — it does
-   *not* auto-execute a multi-workflow chain on the local LLM's say-so. (A future, explicitly
-   opted-in "autonomous fallback" may execute a chain, but only under hard depth/cost caps and with
-   a loud `error`("cannot solve") on any dead-end — never a fabricated answer.)
+- **`auto_solver`** (independent auto-solver). Bounded autonomous solving: match → dispatch →
+  recurse → integrate, under hard depth/cost caps, with a loud `error`("cannot solve") on any
+  dead-end (never a fabricated answer). Returns the final result when it can solve deterministically;
+  returns **`needs_input`** the moment it hits a genuine gap (missing/ambiguous param it cannot
+  obtain deterministically). This is the engine already built (`LocalDecomposer`).
+- **`plan_returner`** (return of control to the frontier LLM). Does NOT execute multi-workflow
+  chains. Matches + proposes a decomposition and returns it as **`needs_input(decomposition_choice)`**
+  (which workflows, what each needs) for the frontier LLM to approve, fill, and sequence via
+  `run_workflow`. Control returns at the planning stage.
 
-The local LLM's job shrinks to *proposing structure*, never *choosing values* or *writing the final
-answer* — both of those return control to the frontier LLM.
+In BOTH modes the local LLM's job shrinks to *proposing structure*, never *choosing parameter
+values* or *writing the final answer* — those always return to the frontier LLM. The flag lets a
+deployment choose autonomy (auto_solver) vs. frontier-LLM-driven orchestration (plan_returner).
 
 ## 4. Reprioritized roadmap (supersedes the prior "remaining items")
 
 1. **RoC-1 — control-transfer envelope.** Add `needs_input` status + a typed `control_transfer`
    to `WorkflowResult` (loud-invariant: `needs_input` requires a non-empty `control_transfer`).
    Re-express the disambiguation envelope as `reason: ambiguous_entity`.
-2. **RoC-2 — `run_workflow` returns `needs_input` on missing/ill-typed required params** (validated
-   against the catalog `input_schema`; `obtain_via` hints per param). This is the param-gap fix.
-3. **RoC-3 — reframe the decomposer** per §3 (return a plan as `needs_input(decomposition_choice)`;
-   execute only the single-match-complete-params case).
+2. **RoC-2 — `run_workflow` returns `needs_input` on missing/ill-typed required params.** The input
+   contract is the **nanobrain workflow's**, not the catalog's: declare `step_input_schema` (G6
+   `SchemaRef` on `StepConfig`, runtime FAIL-FAST-enforced) on each workflow's FIRST step; derive the
+   required params from it at run time. The catalog `input_schema` becomes a derived display hint
+   (or is dropped), removing catalog↔workflow drift. `obtain_via` hints (per param) tell the frontier
+   LLM how to get a value (e.g. *resolve virus→taxon_id via harmonized_search*). This is the param-gap fix.
+3. **RoC-3 — two flag-switched decomposer modes** per §3: keep `auto_solver` (the built engine) AND
+   add `plan_returner` (returns `needs_input(decomposition_choice)`), selected by
+   `APECX_EO_DECOMPOSER_MODE`. Neither guesses parameter values.
 4. **EO-54 — Rhea Tier-1 aligner substitution, now UNBLOCKED.** Rhea ships in `../rhea/`
    (`docker compose -f deploy/docker-compose.yaml up -d` → MCP server at `:3001`). Stand it up,
    point `RHEA_MCP_URL` at it, register `rhea_muscle_alignment` as the heavy alignment path
@@ -95,15 +104,22 @@ Deprioritized per direction: branch reconciliation (single vision; build on this
   (run_workflow, EnvelopeStep, dispatcher) and the `_check_consistency` validator. Mitigation:
   additive status + a nested model; the disambiguation envelope maps onto it 1:1 (low risk, but a
   pin-test update).
-- **C2 — required-param detection from JSON-Schema.** Need a small, correct "which `required`
-  fields are missing or ill-typed" check over the catalog `input_schema`. Edge: nested objects,
-  type coercion ("37124" vs 37124). Keep it shallow + explicit; FAIL-LOUD on ambiguity.
+- **C2 — required-param detection derived from the workflow's `step_input_schema` (G6).** Two
+  sub-parts: (a) author `step_input_schema` (`SchemaRef`) on each workflow's first step — and have
+  the lightweight `WorkflowBuilder` pass it through `add_step` (verify it survives `load()`); (b)
+  resolve the `SchemaRef` → JSON Schema and read `required`/types to detect missing/ill-typed params.
+  Edges: `SchemaRef` may be inline-dict OR a `$ref` to a file (must resolve both); type coercion
+  ("37124" vs 37124). Bonus: G6 already FAIL-FASTs at run time on schema mismatch — so declaring it
+  also hardens the step. Keep the missing-required check shallow + explicit.
 - **C3 — `obtain_via` convention.** Encoding *"resolve virus→taxon_id via harmonized_search"* needs
-  a per-param annotation (a custom `obtain_via` key in the schema) — a new, documented convention.
-  Risk: it's advisory text the frontier LLM must honor; keep it precise.
-- **C4 — decomposer behavior change breaks its current tests** (they assume auto-execution). Need
-  to redefine the contract + re-test, and decide the execute-vs-return-plan policy precisely so it
-  isn't a silent half-measure.
+  a per-param annotation (a custom `obtain_via` key in the step_input_schema) — a new, documented
+  convention. Risk: it's advisory text the frontier LLM must honor; keep it precise.
+- **C4 — two decomposer modes + the flag, not a behavior swap.** `auto_solver` already exists and is
+  tested; add `plan_returner` + the `APECX_EO_DECOMPOSER_MODE` switch WITHOUT regressing auto_solver.
+  Risk: a half-defined `plan_returner` (what exactly is "a plan"? the proposed (workflow, params-needed)
+  list) — specify its shape as a `decomposition_choice` control-transfer precisely, and test both
+  modes. The flag must default safely (recommend `plan_returner` — return-of-control is the safer
+  default; auto_solver is opt-in autonomy).
 - **C5 — Rhea stack is operationally heavy.** `docker compose up` brings up Galaxy + embedding +
   redis + per-tool conda envs; first MUSCLE install is slow; GPU is optional but the embedding
   model wants it. Needs Docker running; first-run latency; the §8 interface tags only exist on
