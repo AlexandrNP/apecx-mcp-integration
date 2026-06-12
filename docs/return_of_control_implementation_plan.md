@@ -165,39 +165,46 @@ conserved-sites task)` returns the plan; with `APECX_EO_DECOMPOSER_MODE=auto_sol
 runs the real workflow to `ok`.
 **Tests:** `tests/integration/test_decomposition_factory.py` — both modes end-to-end.
 
-### EO-54 — BLOCKED on operator provisioning, not just Docker (updated 2026-06-12)
-Docker is now **running** (the operator started it). Triaging the bring-up showed the blocker is
-**deeper than the daemon** — it is the full Rhea provisioning chain (= `apecx-setup rhea` / G89
-territory), NOT a `docker compose up`. Concrete findings this turn:
-1. **`deploy/docker-compose.yaml` `server` is unrunnable as-shipped on this host.** It declares
-   `image: chrisagrams/rhea-server:latest` with a `build: {context: ., dockerfile: Dockerfile}`
-   fallback, but `deploy/Dockerfile` does not exist → `docker compose up` dies with
-   `failed to read dockerfile: open Dockerfile: no such file or directory`. The locally pre-built
-   image is `rhea-server:apecx-integration` (1.69 GB, present) — the compose does NOT reference it.
-   A working bring-up needs an override pinning the server to the local image + dropping `build:`.
-2. **`embedding` (`text-embeddings-inference:1.7`) is amd64-only** → Rosetta emulation on this
-   arm64 Mac (slow; image is present locally at 1.74 GB but extracts under emulation).
-3. **MUSCLE alignment runs INSIDE the `rhea-worker-agent` container via Parsl dispatch** (image
-   `chrisagrams/rhea-worker-agent:0.1.1b5`, 2.77 GB, present) — so a green `rhea_muscle_alignment`
-   needs the conda-env-with-MUSCLE ingested + Parsl `local` backend (macOS) configured. The
-   autodiscovery module (`rhea_env_autodiscovery.py`) **explicitly defers** these "slow one-time
-   operations" to `apecx-setup rhea` and does NOT do them.
-4. **The `rhea` Python module is not importable in the apecx venv** (catalog `requires: modules:
-   [rhea]`), and `RHEA_MCP_URL` is unset — so even with the server up, `list_workflows` correctly
-   marks `rhea_muscle_alignment` unavailable until `rhea` is on the path + the env var is exported.
+### EO-54a — ✅ VERIFIED via the supported (non-compose) path (2026-06-12)
+**The `deploy/docker-compose.yaml` path is a red herring — do NOT use it.** It is unrunnable
+as-shipped on this host (server points at upstream `chrisagrams/rhea-server:latest` with a broken
+`build: dockerfile: Dockerfile` fallback that doesn't exist; embedding image is amd64-only). The
+**supported** bring-up is a HOST-process server spawned by the InfraOrchestrator — entirely
+different from compose, and it works. The recipe that verified EO-54a end-to-end:
 
-**Evidence the component itself is complete + honest:** `test_rhea_muscle_alignment_workflow.py`
-runs **12 passed / 2 skipped** — the unconditional surface (YAML composes via `from_config`,
-pure-transform steps verify on fixtures) is green; the 2 live-Rhea surfaces honest-skip on
-`RHEA_MCP_URL` unset and auto-resurrect when it's set. No husk, no mock.
+```bash
+# 1. Support containers (apecx-rhea-postgres:5435 + redis + minio — all arm64-friendly,
+#    via the orchestrator's OWN container mgmt, NOT deploy/docker-compose.yaml):
+apecx-setup infra --non-interactive
+# 2. Rhea provisioning (uv pip install -e rhea into rhea/.venv + ingest the muscle Galaxy
+#    tool into rhea-postgres, embedded via Ollama mxbai-embed-large — NOT the amd64 HF image):
+apecx-setup rhea --non-interactive
+# 3. Env for the spawn + the client step:
+export RHEA_REPO_PATH=../rhea  RHEA_PYTHON_PATH=../rhea/.venv/bin
+export RHEA_CONDA_BIN=/opt/anaconda3/bin              # muscle's conda subprocess
+export RHEA_MCP_URL=http://localhost:3001/mcp/
+# 4. The rhea SERVER runs from rhea/.venv (host process), but the CLIENT step (RheaFileToolStep,
+#    in the apecx process) ALSO needs `rhea` importable — it pickles RheaFileProxy by module ref.
+#    proxystore/redis/cloudpickle are already in the apecx venv; just add the repo to PYTHONPATH:
+PYTHONPATH=src:../rhea .venv/bin/python -m pytest tests/integration/test_rhea_muscle_alignment_workflow.py
+```
 
-The local-MAFFT path already gives the conserved-sites feature real aligner flexibility (mafft ≠
-muscle); EO-54's *added* value (the Rhea production path + MUSCLE↔MAFFT interface-tag substitution)
-needs the provisioned server to be verified honestly — and the substitution AC requires the live
-`aligner=muscle` half, so building an apecx-side aligner seam now would ship a backend I cannot
-verify (no-husk rule). **Deferred until the operator runs `apecx-setup rhea`** (or provides a
-working compose override + ingested worker-agent env), then `export RHEA_MCP_URL=...` and the gated
-tests verify for free.
+**Verified results (2026-06-12, real live Rhea MUSCLE):**
+- `test_rhea_muscle_alignment_workflow.py` = **14 passed** against the live server (was 12p/2skip).
+- `run_workflow("rhea_muscle_alignment", {})` → **status: ok**, real alignment: **5 sequences,
+  374 columns, mean gap 0.0374**, real aligned protein FASTA. First run builds the muscle conda
+  env (~50 s); subsequent runs ~12 s.
+- `test_infrastructure_rhea_spawn.py` = 2 passed (orchestrator spawns the host server + atexit-stops).
+
+**Two-venv boundary (the key lesson):** the rhea SERVER runs in `rhea/.venv` (spawned via
+`RHEA_PYTHON_PATH`); the CLIENT `RheaFileToolStep` runs in the apecx `.venv` and ALSO needs `rhea`
+importable (cloudpickle pickles `RheaFileProxy` by module reference). `apecx-setup rhea` only
+installs into rhea's venv → the apecx side needs `rhea` on `PYTHONPATH` (its deps are already
+present). The catalog `requires: modules: [rhea]` gate exists to catch exactly this client-side gap.
+
+**Minor polish (not a blocker):** `rhea_muscle_alignment` has no terminal `EnvelopeStep`, so
+`run_workflow` returns the data via `data_handle` fallback with a note (status still `ok`). Adding
+an `EnvelopeStep` would give it a §5-standard markdown.
 
 Reuse candidate surfaced by CL-1 — **`viral_immunology_analysis`** (classifier → enhancer →
 assembly → synthesis): on probing, it is **STALE + BROKEN, not a quick wiring** — its
