@@ -74,13 +74,21 @@ contract.
   `"ATCGATCG"*20` placeholder "sequences" + copies input as a "mock alignment", manufacturing
   meaningless conserved regions. It is DEAD (the live `eeev_epitope_analysis` tool uses the
   RAG path, not it). Should be RETIRED, not reused. EO-51 replaces it.
-- **EO-52 (Phase 3)** ← NEXT — `ConservationScoreStep`: deterministic per-column conservation
-  (Shannon entropy / Jensen-Shannon) over an MSA → conserved-site list. ~30 lines, no external
-  dep, unit-testable on a tiny fixture.
-- **EO-53 (Phase 4)** — the `viral_conserved_sites` catalog workflow: resolve virus →
-  BvbrcProteinFastaStep → SubworkflowStep(rhea_muscle_alignment) → ConservationScoreStep →
-  EnvelopeStep. Register in `mcp_workflow_catalog.yml`; discoverable via list_workflows,
-  runnable via run_workflow.
+- **EO-52 (Phase 3)** ✅ DONE 2026-06-12 (commit `00ce03d`) — `ConservationScoreStep`:
+  deterministic per-column conservation over an MSA (identity-fraction primary + Shannon
+  secondary), conserved sites + contiguous regions with consensus motifs. Pure Python, no
+  deps, FAIL-LOUD on malformed alignment. 8 tests on known-conserved fixtures.
+- **EO-53 (Phase 4)** ← NEXT — the `viral_conserved_sites` catalog workflow tying it together:
+  resolve virus→taxon_id → BvbrcProteinFastaStep (EO-51) → SubworkflowStep(rhea_muscle_alignment)
+  → ConservationScoreStep (EO-52) → EnvelopeStep. Register in `mcp_workflow_catalog.yml`;
+  discoverable via list_workflows, runnable via run_workflow. **Design notes for next turn:**
+  (a) virus→taxon_id bridge — extract NNNN from NCBITaxon IRI (`_iri_to_taxon_id` exists in
+  harmonized_search_execute_step); decide whether to resolve in-workflow or take taxon_id as
+  input. (b) Shape bridges (no TransformLink): protein_fasta.fasta_text → rhea
+  fasta_collection_input.fasta_text; rhea alignment_fasta → conservation alignment_fasta —
+  likely need tiny novel-python adapter steps or careful DU naming. (c) `requires`: RHEA_MCP_URL
+  + rhea module + network (BV-BRC). (d) check what resolve capability exists on eo-mvp (the
+  newer HarmonizedResolveStep is on reasoning-agent, may differ here).
 - **EO-54 (Phase 5)** — pluggable aligners via §8 Tier-1 interface tags (coordinated RHEA).
 
 Off the conserved-sites critical path: capstone item 1 (query_answering decomposition) +
