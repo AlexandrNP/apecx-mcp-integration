@@ -165,6 +165,20 @@ conserved-sites task)` returns the plan; with `APECX_EO_DECOMPOSER_MODE=auto_sol
 runs the real workflow to `ok`.
 **Tests:** `tests/integration/test_decomposition_factory.py` — both modes end-to-end.
 
+### EO-54 — BLOCKED on operator action (2026-06-12)
+The Rhea stack ships at `../rhea/deploy/docker-compose.yaml` (server + redis + minio +
+pgvector-postgres + a HF text-embeddings-inference service that wants GPU). **Docker is installed
+(v28.1.1) but the daemon is not running** — it must be started by the operator (a GUI app), and the
+stack is a multi-GB pull. The local-MAFFT path already gives the conserved-sites feature aligner
+flexibility (mafft ≠ muscle); EO-54's added value (the Galaxy/Rhea production path + Tier-1
+MUSCLE↔MAFFT interface-tag substitution) needs the running server to be verified honestly. **To
+unblock:** start Docker, then `docker compose -f ../rhea/deploy/docker-compose.yaml up -d` and
+`export RHEA_MCP_URL=http://localhost:3001/mcp/`. (The MCP server already autodiscovers RHEA_REPO_PATH.)
+
+Reuse candidate surfaced by CL-1: **wire `viral_immunology_analysis` into the catalog** (the
+framework-native viral pipeline — classifier + enhancer + synthesis) is an UNBLOCKED, on-vision
+next task (Ollama, not Docker) that connects to the earlier "convert viral to a workflow".
+
 ### EO-54a — stand up local Rhea + verify `rhea_muscle_alignment`
 **Scope:** `docker compose -f ../rhea/deploy/docker-compose.yaml up -d`; `RHEA_MCP_URL=
 http://localhost:3001/mcp/`; confirm the MCP `tools/list` handshake; run `rhea_muscle_alignment`.
