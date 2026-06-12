@@ -96,9 +96,10 @@ contract.
   polyproteins) → MAFFT (len 2582) → conservation (74 sites / 64 regions). Inter-step bridges
   hold with NO TransformLink (each step reads its key from the prior output dict). Aligner
   blocker resolved by `brew install mafft` (v7.526, arm64).
-  **Refinement (TODO):** partial/variable-length CDS records inflate gaps (2582 cols for
-  ~1248aa) → lower apparent identity; add a length-filter to `BvbrcProteinFastaStep`.
-  **Refinement (TODO):** length-filter in `BvbrcProteinFastaStep` to drop partial CDS records.
+  **Refinement ✅ DONE** (RoC-2a, commit `ccab129`): the length-filter shipped —
+  `BvbrcProteinFastaStep.min_length_fraction` (FAIL-LOUD when it leaves too few sequences),
+  wired as `min_length_fraction=0.8` on the `fetch` step in the builder, so partial/variable-length
+  CDS records are dropped before the MSA.
 - **EO-53 (Phase 4) — `viral_conserved_sites` catalog workflow ✅ COMPLETE + e2e-VERIFIED**
   2026-06-12 (commit `c128b8a`). Built the LIGHTWEIGHT way (WorkflowBuilder `kind: lightweight`
   callable): `run_workflow("viral_conserved_sites", {taxon_id, protein})` → fetch → MAFFT →
@@ -312,6 +313,17 @@ Spine so far: **32 passed** (EO-10 9 + EO-12 9 + EO-11 7 + EO-13a 7).
 
 ## Next
 
+**✅ ALL ITEMS BELOW SINCE COMPLETED (this 2026-05-20 list is superseded by the RoC plan).**
+Verified 2026-06-12 — the whole EO/RoC DAG is implemented + real-data verified; no open tasks
+remain on this branch (see `return_of_control_implementation_plan.md` Progress header). Mapping:
+- decomposition stack → `composition/decomposition/factory.py::assemble_local_decomposer`
+  (+ `test_decomposition_factory.py`, 4 tests). The decomposer is internal, NOT a `query_answering`
+  MCP tool — the §4 surface stays thin (6 primitives).
+- EO-03/04/05 → all 4 primitives registered in `mcp_surface/server.py` (commit `37fdb28`).
+- EO-01 catalog reconciliation (`list_workflows` runnable ∪ manifests) + EO-13c rag_e2e
+  `EnvelopeStep` (`workflows/rag_e2e_synthesis/steps/envelope.yml`) → both shipped.
+
+Original list (historical):
 - Wire the full decomposition stack into an end-to-end `query_answering`-style entry (catalog
   matcher + LLM decomposer + observed dispatch over real registered workflows).
 - EO-03/04/05 MCP-tool registration (needs MCP-client integration loop).
