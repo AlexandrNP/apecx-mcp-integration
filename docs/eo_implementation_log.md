@@ -50,10 +50,14 @@ contract.
    `composition/runtime/run_store.py` is the in-memory session run store (decision below: in-memory
    chosen). 11 tests incl. a live `run_workflow` over a real `WorkflowBuilder` workflow. See the
    dated section "EO-03/04/05" below.
-3. **EO-13c** — append `EnvelopeStep` to `rag_e2e_synthesis`; needs a `synthesis`→`markdown` key
-   bridge (give `EnvelopeStep` a configurable input key via an `EnvelopeStepConfig(StepConfig)`).
-   Ollama-gated.  ← NEXT
+3. **EO-13c** ✅ DONE 2026-06-12 (commit `caf413f`) — `EnvelopeStepConfig` adds
+   `markdown_input_key`/`data_input_key`; rag_e2e_synthesis now ends in an `EnvelopeStep`
+   (rag_synthesis.synthesis_output → envelope → workflow_output, a WorkflowResult). Proven in
+   a real `WorkflowBuilder` cascade (no LLM). Blast-radius audited: `synthesize_query` calls
+   steps directly; the end-to-end test reads the intermediate `synthesis_output` DU — both
+   unaffected.
 4. **EO-01** — `list_workflows` catalog reconciliation (`discovery.py` ∪ `workflow_registry`).
+   ← NEXT
 
 **Open decisions (need the user):**
 - **EO-30** — generic `mcp` `BackendKind` touches the deliberately-fixed `CONTRACTS.md#td-vocab`
