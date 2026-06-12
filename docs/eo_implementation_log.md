@@ -56,8 +56,22 @@ contract.
    a real `WorkflowBuilder` cascade (no LLM). Blast-radius audited: `synthesize_query` calls
    steps directly; the end-to-end test reads the intermediate `synthesis_output` DU — both
    unaffected.
-4. **EO-01** — `list_workflows` catalog reconciliation (`discovery.py` ∪ `workflow_registry`).
-   ← NEXT
+4. **EO-01** ✅ DONE 2026-06-12 (commit `acdf3bb`) — `list_workflows` now returns BOTH the
+   runnable catalog (new `runnable` key: `run_workflow` targets, each with an `available`
+   flag + `missing_prerequisites`) AND the composer manifests (`workflows` key, back-compat).
+   Open decision RESOLVED: the two catalogs stay distinct, tagged by `invoke_with`
+   (run_workflow vs start_workflow) — neither is "authoritative"; they're different roles.
+
+**Thin §4 surface now functional:** discover (`list_workflows`) · inspect (`inspect_workflow`)
+· run (`run_workflow`) · inspect_run · context (`apecx_context`) · compose (`start_workflow`).
+
+**NEXT (per the EO-task plan):** the conserved-sites feature is the user's actual goal and the
+thin surface can now host it. Phase 2 — `BvbrcProteinFastaStep` (fetch real AA sequences per
+strain from the BV-BRC data API; the one genuinely-new capability, sequences aren't in the
+Globus metadata indices). Then Phase 3 (ConservationScoreStep), Phase 4 (the
+`viral_conserved_sites` catalog workflow). Capstone item 1 (query_answering decomposition
+entry) + Phase 0 (surface reconciliation / demote confirm_entity_synonym, retire old
+super-tools) remain but are off the conserved-sites critical path.
 
 **Open decisions (need the user):**
 - **EO-30** — generic `mcp` `BackendKind` touches the deliberately-fixed `CONTRACTS.md#td-vocab`
