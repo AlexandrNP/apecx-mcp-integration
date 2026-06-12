@@ -7,6 +7,11 @@ Chikungunya), local **MAFFT** (`brew install mafft`, v7.526), and — for EO-54 
 MCP server (`../rhea` `docker compose`).
 
 ## Progress
+- **EO-54a + EO-54b ✅** 2026-06-12 (commits `11b0bf3`, `c623deb`) — live Rhea MUSCLE verified via
+  the supported (non-compose) path, then pluggable MAFFT↔MUSCLE substitution in viral_conserved_sites
+  (real CHIKV: counts agree, alignments byte-distinct). **EO-54 + CL-1 + RoC all COMPLETE — the EO/RoC
+  plan is fully implemented + real-data verified. No remaining in-scope tasks (the Rhea-side UTD
+  interface-tag is optional cross-repo polish).** Nothing pushed.
 - **RoC-3a + RoC-3b + RoC-3c ✅** 2026-06-12 (commit `52269dd`) — two flag-switched decomposer
   modes (`APECX_EO_DECOMPOSER_MODE`, default `plan_returner`). plan_returner returns
   `needs_input(decomposition_choice)` with each workflow's required inputs (from RoC-2b) WITHOUT
@@ -234,6 +239,22 @@ polyprotein"`) yields conserved sites with `aligner=mafft` (local) AND `aligner=
 conserved-region count agrees within a small tolerance (real biology, real tools).
 **Tests:** `tests/integration/test_aligner_substitution.py` (gated on Rhea + MAFFT). Cross-repo:
 a Rhea-side tag test in `../rhea/tests`.
+
+**✅ DONE + real-data verified (2026-06-12, commit `c623deb`).** Implemented apecx-side as a
+pluggable align step (the Rhea-UTD interface-tag was NOT needed for the AC — substitution lives in
+the workflow builder, keeping the change in primary writable scope). New `RheaMuscleAlignStep`
+(interface-compatible with `LocalMafftAlignStep`) drives the verified `rhea_muscle_alignment`
+subworkflow; builder parametrized `aligner='mafft'|'muscle'`; second catalog entry
+`viral_conserved_sites_muscle` (its `requires` declares the Rhea prereq → honest per-entry
+availability). **Catalog workflows ≠ MCP tools, so the §4 thin surface stays 6 primitives.**
+Verified on real CHIKV (taxon 37124, structural polyprotein, 25 seqs): both aligners yield conserved
+sites, counts AGREE (2308 cols / 97 regions each), and the two alignments are byte-DISTINCT
+(sha 9208937e vs 987cf8a5 — the silent-failure guard proving muscle really dispatches to Rhea MUSCLE,
+not a shortcut to the mafft result). `test_aligner_substitution.py` = 4 passed; 61 existing
+catalog/decomposition/conserved-sites tests still green. **Deferred (optional polish):** the Rhea-side
+shared-interface UTD tag in `../rhea/.../utd_producer.py` (a cross-repo, read-mostly change) — would
+let the apecx side DISCOVER aligners by capability instead of binding tool names; not required by the
+AC, and out of primary scope.
 
 ### CL-1 — retire dead husks (REUSE AUDIT — scope narrowed)
 **Reuse audit (per direction "check if dead workflows have reuse value"):**
