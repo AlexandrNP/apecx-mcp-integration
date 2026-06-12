@@ -45,20 +45,23 @@ contract.
    RunWorkflowDispatcher)` where the dispatcher's loader resolves a workflow name → runnable
    `Workflow` via the existing `workflow_registry` (`load_catalog` + `_load_workflow_for_entry`),
    and the matcher runs over that catalog. Ollama-gated integration over ≥2 real registered workflows.
-2. **EO-03/04/05 MCP tools** — register `run_workflow` (wraps `run_workflow_observed`),
-   `inspect_run` (surfaces `RunSummary`; needs a run store keyed by `run_id`), `inspect_workflow`
-   (wraps the inspector), `apecx_context` into `mcp_surface/server.py` via `server.tool()(fn)`.
-   Needs an MCP-client test loop.
+2. **EO-03/04/05 MCP tools** ✅ DONE 2026-06-12 (commit `37fdb28`) — `run_workflow` /
+   `inspect_run` / `inspect_workflow` / `apecx_context` registered in `mcp_surface/server.py`;
+   `composition/runtime/run_store.py` is the in-memory session run store (decision below: in-memory
+   chosen). 11 tests incl. a live `run_workflow` over a real `WorkflowBuilder` workflow. See the
+   dated section "EO-03/04/05" below.
 3. **EO-13c** — append `EnvelopeStep` to `rag_e2e_synthesis`; needs a `synthesis`→`markdown` key
    bridge (give `EnvelopeStep` a configurable input key via an `EnvelopeStepConfig(StepConfig)`).
-   Ollama-gated.
+   Ollama-gated.  ← NEXT
 4. **EO-01** — `list_workflows` catalog reconciliation (`discovery.py` ∪ `workflow_registry`).
 
 **Open decisions (need the user):**
 - **EO-30** — generic `mcp` `BackendKind` touches the deliberately-fixed `CONTRACTS.md#td-vocab`
   (framework version bump). Needs explicit OK.
 - **EO-01** merge shape (which catalog is authoritative + maturity tagging).
-- **`inspect_run`** run-record persistence (in-memory session vs durable store).
+- ~~**`inspect_run`** run-record persistence (in-memory session vs durable store).~~ RESOLVED
+  2026-06-12 — **in-memory session** chosen as the default (`run_store.py`); durable backend can
+  replace the singleton later without touching callers. Revisit if cross-process inspect is needed.
 
 ---
 
