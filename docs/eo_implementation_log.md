@@ -16,6 +16,17 @@ PYTHONPATH="$WT/src" "$MAIN/.venv/bin/python" -m pytest "$WT/tests/..."
 
 ---
 
+## ⭐⭐ ACTIVE PLAN (2026-06-12) — Return-of-Control
+
+The conserved-sites feature + §4 thin surface are SHIPPED + real-data-verified (see entries below).
+The current direction is the **return-of-control** redesign. Authoritative docs:
+- `docs/return_of_control_design.md` — the design (two-LLM separation; `needs_input` control-transfer
+  envelope; two flag-switched decomposer modes; input schema from the nanobrain workflow via G6).
+- `docs/return_of_control_implementation_plan.md` — **detailed task DAG (RoC-1a … EO-54b, CL-1) with
+  real-data acceptance criteria + planned tests.** Cite task IDs in commits. START: RoC-1a.
+
+---
+
 ## ⭐ RESUME HERE — integration capstone (handoff 2026-05-20)
 
 **State:** branch `eo-mvp-output-surface` (worktree `wt-eo-mvp`), 8 commits, **67 tests green**,
