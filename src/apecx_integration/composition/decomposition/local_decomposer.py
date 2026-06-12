@@ -24,7 +24,7 @@ loud ``WorkflowResult`` with ``status='error'`` and a message — never a silent
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Protocol
+from typing import Any, Protocol
 
 from apecx_integration.composition.schemas.workflow_result import WorkflowResult
 
@@ -63,6 +63,8 @@ class LocalDecomposer:
         max_depth: int = 3,
         max_dispatches: int = 20,
         match_threshold: float = 0.0,
+        mode: str = "auto_solver",
+        inputs_resolver: Any = None,
     ) -> None:
         self._matcher = matcher
         self._decomposer = decomposer
@@ -71,8 +73,18 @@ class LocalDecomposer:
         self._max_dispatches = max_dispatches
         self._match_threshold = match_threshold
         self._dispatch_count = 0
+        # RoC-3 — mode: "auto_solver" (default; bounded autonomous solving) or "plan_returner"
+        # (return of control: propose a plan as needs_input(decomposition_choice)).
+        self._mode = mode
+        # name -> {required, properties, obtain_via} (RoC-2b derive_required_inputs); lets the
+        # plan name each workflow's required params. None → plan lists workflows without params.
+        self._inputs_resolver = inputs_resolver
 
     async def solve(self, task: Task, *, _depth: int = 0) -> WorkflowResult:
+        # RoC-3b — plan_returner returns control to the frontier LLM at the planning stage; it does
+        # NOT execute. (Only at the top level; nested auto_solver recursion is unaffected.)
+        if self._mode == "plan_returner" and _depth == 0:
+            return await self._plan(task)
         if _depth > self._max_depth:
             return WorkflowResult.failed(
                 f"max_depth {self._max_depth} exceeded while decomposing "
@@ -99,6 +111,49 @@ class LocalDecomposer:
 
         results = [await self.solve(st, _depth=_depth + 1) for st in subtasks]
         return self._integrate(task, subtasks, results)
+
+    async def _plan(self, task: Task) -> WorkflowResult:
+        """plan_returner — match (+ decompose if needed) and return a decomposition_choice control
+        transfer naming the workflow(s) + their required inputs, for the frontier LLM to run."""
+        from apecx_integration.composition.schemas.control_transfer import (
+            WorkflowNeed,
+            decomposition_choice_transfer,
+        )
+
+        match = await self._matcher.match(task)
+        if match is not None and match.score >= self._match_threshold:
+            needs = [self._workflow_need(match.workflow_name, task)]
+        else:
+            subtasks = await self._decomposer.decompose(task)
+            if not subtasks:
+                # Loud "cannot solve" — no fabricated plan.
+                return WorkflowResult.failed(
+                    f"no workflow matches {task.description!r} and it is not decomposable."
+                )
+            needs = []
+            for st in subtasks:
+                m = await self._matcher.match(st)
+                if m is not None and m.score >= self._match_threshold:
+                    needs.append(self._workflow_need(m.workflow_name, st))
+                else:
+                    # Honest: a subtask with no matching workflow is named, not silently dropped.
+                    needs.append(WorkflowNeed(workflow=f"(no workflow matches: {st.description})"))
+        return WorkflowResult.needs_input(
+            decomposition_choice_transfer(needs),
+            markdown=f"Proposed plan for: {task.description}",
+        )
+
+    def _workflow_need(self, name: str, task: Task) -> Any:
+        from apecx_integration.composition.schemas.control_transfer import WorkflowNeed
+
+        derived = self._inputs_resolver(name) if self._inputs_resolver else {}
+        required = list(derived.get("required", []) if isinstance(derived, dict) else [])
+        payload = task.payload or {}
+        provided = [k for k in required if k in payload]
+        missing = [k for k in required if k not in payload]
+        return WorkflowNeed(
+            workflow=name, required_inputs=required, provided=provided, missing=missing
+        )
 
     def _integrate(
         self, task: Task, subtasks: list[Task], results: list[WorkflowResult]

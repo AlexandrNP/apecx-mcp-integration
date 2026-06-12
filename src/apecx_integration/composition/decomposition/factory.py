@@ -22,17 +22,25 @@ from __future__ import annotations
 from typing import Any
 
 
-def assemble_local_decomposer(*, match_threshold: float = 0.0, **run_kwargs: Any):
-    """Build a LocalDecomposer bound to the live catalog + the real LLM decomposer."""
+def assemble_local_decomposer(
+    *, mode: str | None = None, match_threshold: float = 0.0, **run_kwargs: Any
+):
+    """Build a LocalDecomposer bound to the live catalog + the real LLM decomposer.
+
+    ``mode`` defaults to the ``APECX_EO_DECOMPOSER_MODE`` flag (default ``plan_returner``).
+    """
     from apecx_integration.composition.decomposition.dispatchers import RunWorkflowDispatcher
     from apecx_integration.composition.decomposition.llm_decomposer import LLMTaskDecomposer
     from apecx_integration.composition.decomposition.local_decomposer import LocalDecomposer
     from apecx_integration.composition.decomposition.matchers import KeywordWorkflowMatcher
+    from apecx_integration.composition.decomposition.modes import resolve_decomposer_mode
+    from apecx_integration.mcp_surface.workflow_inputs import derive_required_inputs
     from apecx_integration.mcp_surface.workflow_registry import (
         _load_workflow_for_entry,
         load_catalog,
     )
 
+    resolved_mode = resolve_decomposer_mode(mode)
     entries = {e.tool_name: e for e in load_catalog().workflows}
     matcher = KeywordWorkflowMatcher({name: e.description for name, e in entries.items()})
 
@@ -46,9 +54,27 @@ def assemble_local_decomposer(*, match_threshold: float = 0.0, **run_kwargs: Any
         entry = entries.get(name)
         return entry.input_envelope_key if entry else None
 
+    def _inputs_resolver(name: str) -> dict[str, Any]:
+        # name → {required, properties, obtain_via} derived from the WORKFLOW's own schema (RoC-2b);
+        # lets plan_returner name each workflow's required params.
+        entry = entries.get(name)
+        if entry is None:
+            return {}
+        try:
+            return derive_required_inputs(_load_workflow_for_entry(entry), entry.input_envelope_key)
+        except Exception:  # noqa: BLE001 — best-effort; plan still lists the workflow name
+            return {}
+
     dispatcher = RunWorkflowDispatcher(_loader, input_envelope_resolver=_envelope_key, **run_kwargs)
     decomposer = LLMTaskDecomposer()
-    return LocalDecomposer(matcher, decomposer, dispatcher, match_threshold=match_threshold)
+    return LocalDecomposer(
+        matcher,
+        decomposer,
+        dispatcher,
+        match_threshold=match_threshold,
+        mode=resolved_mode,
+        inputs_resolver=_inputs_resolver,
+    )
 
 
 __all__ = ["assemble_local_decomposer"]

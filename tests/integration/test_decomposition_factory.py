@@ -64,7 +64,8 @@ def test_solve_dispatches_real_conserved_sites_workflow():
     from apecx_integration.composition.decomposition.factory import assemble_local_decomposer
     from apecx_integration.composition.decomposition.local_decomposer import Task
 
-    decomposer = assemble_local_decomposer(settle_ms=2000, timeout=600.0)
+    # mode="auto_solver" — autonomy is opt-in (the default is plan_returner, tested below).
+    decomposer = assemble_local_decomposer(mode="auto_solver", settle_ms=2000, timeout=600.0)
     res = asyncio.run(
         decomposer.solve(
             Task(
@@ -77,3 +78,20 @@ def test_solve_dispatches_real_conserved_sites_workflow():
     # payload (input_envelope_key=fetch_in) so the real cascade ran to a conserved-sites result.
     assert res.status == "ok", res
     assert "Conserved sites" in res.markdown
+
+
+def test_plan_returner_default_returns_plan_over_real_catalog(monkeypatch):
+    # Default mode (plan_returner) — network-free: match the real catalog + return the plan, NO run.
+    monkeypatch.delenv("APECX_EO_DECOMPOSER_MODE", raising=False)
+    from apecx_integration.composition.decomposition.factory import assemble_local_decomposer
+    from apecx_integration.composition.decomposition.local_decomposer import Task
+
+    decomposer = assemble_local_decomposer()
+    res = asyncio.run(decomposer.solve(Task("find conserved protein sites across virus strains")))
+    assert res.status == "needs_input", res
+    ct = res.control_transfer
+    assert ct.reason == "decomposition_choice"
+    w = next(w for w in ct.next_action.workflows if w.workflow == "viral_conserved_sites")
+    # Required params derived from the WORKFLOW's own schema (RoC-2b), all missing (none provided).
+    assert set(w.required_inputs) == {"taxon_id", "protein"}
+    assert set(w.missing) == {"taxon_id", "protein"}

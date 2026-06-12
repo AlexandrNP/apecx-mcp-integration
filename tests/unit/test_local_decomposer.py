@@ -128,3 +128,52 @@ def test_match_below_threshold_falls_through_to_decompose():
     # The weak 0.3 match for E is below 0.8 -> decompose; E1's 0.9 match dispatches.
     assert disp.dispatched == ["wfE1"]
     assert r.status == "ok"
+
+
+# --------------------------------------------------------------------------- #
+# RoC-3b — plan_returner mode returns a plan (needs_input), does NOT execute
+# --------------------------------------------------------------------------- #
+def test_plan_returner_returns_plan_without_executing():
+    disp = FakeDispatcher()
+    d = _decomposer(
+        matches={"A": MatchResult("viral_conserved_sites", 1.0)},
+        dispatcher=disp,
+        mode="plan_returner",
+        inputs_resolver=lambda name: {
+            "required": ["taxon_id", "protein"],
+            "properties": {},
+            "obtain_via": {},
+        },
+    )
+    r = asyncio.run(d.solve(Task("A", payload={"protein": "E1"})))
+    assert r.status == "needs_input"
+    ct = r.control_transfer
+    assert ct.reason == "decomposition_choice"
+    w = ct.next_action.workflows[0]
+    assert w.workflow == "viral_conserved_sites"
+    assert w.required_inputs == ["taxon_id", "protein"]
+    assert w.provided == ["protein"]
+    assert w.missing == ["taxon_id"]
+    # CRITICAL: plan_returner did NOT execute the workflow.
+    assert disp.dispatched == []
+
+
+def test_plan_returner_decomposes_when_no_match():
+    d = _decomposer(
+        matches={"sub1": MatchResult("wf1", 1.0)},
+        decomp={"big": ["sub1", "sub2"]},
+        mode="plan_returner",
+        inputs_resolver=lambda name: {"required": [], "properties": {}, "obtain_via": {}},
+    )
+    r = asyncio.run(d.solve(Task("big")))
+    assert r.status == "needs_input"
+    wfs = r.control_transfer.next_action.workflows
+    assert wfs[0].workflow == "wf1"  # sub1 matched
+    assert "no workflow matches" in wfs[1].workflow  # sub2 unmapped, named honestly
+
+
+def test_plan_returner_cannot_solve_is_loud():
+    d = _decomposer(matches={}, decomp={}, mode="plan_returner")
+    r = asyncio.run(d.solve(Task("Z")))
+    assert r.status == "error"
+    assert "not decomposable" in (r.error or "")
