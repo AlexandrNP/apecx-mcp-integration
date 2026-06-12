@@ -175,9 +175,15 @@ MUSCLE↔MAFFT interface-tag substitution) needs the running server to be verifi
 unblock:** start Docker, then `docker compose -f ../rhea/deploy/docker-compose.yaml up -d` and
 `export RHEA_MCP_URL=http://localhost:3001/mcp/`. (The MCP server already autodiscovers RHEA_REPO_PATH.)
 
-Reuse candidate surfaced by CL-1: **wire `viral_immunology_analysis` into the catalog** (the
-framework-native viral pipeline — classifier + enhancer + synthesis) is an UNBLOCKED, on-vision
-next task (Ollama, not Docker) that connects to the earlier "convert viral to a workflow".
+Reuse candidate surfaced by CL-1 — **`viral_immunology_analysis`** (classifier → enhancer →
+assembly → synthesis): on probing, it is **STALE + BROKEN, not a quick wiring** — its
+`rag_synthesis` step has malformed `config: {path:...}` (must be a string) AND references
+`steps/rag_synthesis.yml` which does NOT exist in the dir (no `steps/`). It has *conceptual* reuse
+value (the pipeline shape) but reviving it = recreate the step configs + fix syntax + verify a heavy
+LLM/RAG/data run, and it OVERLAPS existing tools (`eeev_epitope_analysis` + `synthesize_query` use
+the same RagSynthesisStep/UnlimitedSynthesisAssemblyStep). **Decision for the user:** worth reviving
+as a framework-native catalog workflow, or leave it (the RAG-synthesis viral path already exists as a
+tool)? Not auto-revived — it's a real project, not a quick continuation.
 
 ### EO-54a — stand up local Rhea + verify `rhea_muscle_alignment`
 **Scope:** `docker compose -f ../rhea/deploy/docker-compose.yaml up -d`; `RHEA_MCP_URL=
