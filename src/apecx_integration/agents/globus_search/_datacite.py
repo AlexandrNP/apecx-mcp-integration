@@ -76,4 +76,37 @@ def datacite_subjects(content: Any, limit: int = 6) -> list[str]:
     return out
 
 
-__all__ = ["datacite_title", "datacite_description", "datacite_subjects"]
+def datacite_organisms(content: Any) -> list[str]:
+    """Return the deposited organism scientific names of a PDB record (deduped).
+
+    RCSB PDB records in the aggregate index carry the source organism of each
+    polymer chain at ``content["pdb"]["polymer_entities"][i]["scientific_name"]``
+    (e.g. ``"Chikungunya virus"``, plus ``"Homo sapiens"`` for a bound Fab). This
+    is the only taxon-bearing field on a structural record — EMDB records have no
+    equivalent (organism lives only in their title/description), and neither source
+    carries an NCBI taxon id or IRI. Order is preserved (first occurrence wins) so
+    the antigen organism, listed first by RCSB, leads the returned list.
+
+    Returns ``[]`` for an EMDB record, a malformed record, or any non-PDB content.
+    """
+    if not isinstance(content, dict):
+        return []
+    pdb = content.get("pdb")
+    if not isinstance(pdb, dict):
+        return []
+    out: list[str] = []
+    seen: set[str] = set()
+    for entity in pdb.get("polymer_entities") or []:
+        name = entity.get("scientific_name") if isinstance(entity, dict) else None
+        if name and isinstance(name, str) and name not in seen:
+            seen.add(name)
+            out.append(name)
+    return out
+
+
+__all__ = [
+    "datacite_title",
+    "datacite_description",
+    "datacite_subjects",
+    "datacite_organisms",
+]

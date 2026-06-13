@@ -126,29 +126,33 @@ def _load_workflow() -> Any:
 
 
 async def _aggregate_served_search(term: str, index: str) -> dict:
-    """Structural search for an aggregate-served index (pdb/emdb).
+    """Taxon-precise structural search for an aggregate-served index (pdb/emdb).
 
-    Queries the aggregate Globus index (e74bf12a) with a ``publisher.name`` filter
-    scoping to the single structural source, plus the user ``term`` as free text.
-    No synonym/taxon resolution and no raw-vs-harmonized divergence — those are
-    taxonomy concepts that do not apply to structures. Returns a WorkflowResult-
-    shaped dict matching the harmonized_search contract. A no-hit is LOUD
-    (explicit, never a silent empty); a Globus outage is a loud status=error.
+    Drives the SAME ``structural_query.search_one_source`` core as the workflow's
+    ``StructuralEvidenceStep`` (E3-2 lockstep): a facet pre-pass enumerates the
+    organism spellings, then ``match_any`` on ``pdb.polymer_entities.scientific_name``
+    taxon-locks PDB (EMDB via an advanced required-token query). No ``taxon_id`` is
+    available at the MCP boundary, so the species is parsed from ``term`` text;
+    an unresolvable species degrades loud (named ``note``), never a silent dump.
+    Returns a WorkflowResult-shaped dict. A no-hit is LOUD; a Globus outage is a
+    loud status=error.
     """
     import asyncio  # noqa: PLC0415
 
-    from apecx_integration.agents.globus_search import client as globus_client  # noqa: PLC0415
+    from apecx_integration.agents.globus_search import structural_query  # noqa: PLC0415
     from apecx_integration.composition.schemas.workflow_result import (  # noqa: PLC0415
         WorkflowResult,
     )
 
     publisher = _AGGREGATE_SERVED[index]
     try:
-        hits = await asyncio.to_thread(
-            globus_client.search,
+        result = await asyncio.to_thread(
+            structural_query.search_one_source,
             term,
+            index,
+            publisher,
+            taxon_id=None,
             max_results=50,
-            filters=[{"type": "match_any", "field_name": "publisher.name", "values": [publisher]}],
         )
     except Exception as exc:  # GlobusSearchUnavailableError + any SDK/network error
         return WorkflowResult.failed(
@@ -160,28 +164,35 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
             ),
         ).model_dump(mode="json")
 
-    if not hits:
+    if not result.hits:
+        note = result.note or (
+            f"No {publisher} structural records in the APECx aggregate corpus matched `{term}`."
+        )
         md = (
             f"### Structural search: `{term}` on `{index}`\n\n"
-            f"**No records found.** No {publisher} structural records in the APECx "
-            f"aggregate corpus matched `{term}`. (This index is publisher-scoped to "
-            f"{publisher}; it does not use NCBI-taxonomy harmonization.)"
+            f"**No records found.** {note} (This index is publisher-scoped to "
+            f"{publisher}; it taxon-locks on the deposited organism, not "
+            f"NCBI-taxonomy harmonization.)"
         )
         return WorkflowResult(markdown=md).model_dump(mode="json")
 
-    md_lines = [
-        f"### Structural search: `{term}` on `{index}`",
-        "",
-        f"**{len(hits)}** {publisher} structural record(s) (publisher-scoped within the "
-        f"APECx aggregate index):",
-        "",
-    ]
     from apecx_integration.agents.globus_search._datacite import (  # noqa: PLC0415
         datacite_subjects,
         datacite_title,
     )
 
-    for h in hits:
+    md_lines = [
+        f"### Structural search: `{term}` on `{index}`",
+        "",
+        f"**{len(result.hits)}** {publisher} structural record(s) (publisher-scoped within "
+        f"the APECx aggregate index):",
+        "",
+    ]
+    if result.note:
+        # Records present but not taxon-locked — name the caveat (E3-2.5).
+        md_lines.append(f"> {result.note}")
+        md_lines.append("")
+    for h in result.hits:
         subject = h.get("subject") or "(unknown)"
         content = h.get("content") or {}
         # DataCite-shaped records store the title at titles[0].title; reading the

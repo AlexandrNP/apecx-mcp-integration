@@ -45,3 +45,17 @@ def test_pdb_and_emdb_return_source_distinct_records():
     # Source-distinctness: the publisher filter must not bleed sources across.
     assert "emdb:" not in pdb_md, "pdb query leaked EMDB accessions"
     assert "pdb:" not in emdb_md, "emdb query leaked PDB accessions"
+
+
+@needs_globus
+def test_pdb_tool_path_is_taxon_locked_no_cross_virus_leak():
+    """E3-2.3 lockstep: the MCP tool taxon-locks a CHIKV term — West Nile excluded, hits non-empty."""
+    from apecx_integration.mcp_surface.tools.harmonized_search import harmonized_search
+
+    out = asyncio.run(harmonized_search(term="chikungunya envelope", index="pdb"))
+    assert out["status"] == "ok", out
+    md = out["markdown"]
+    # CC-1: non-empty real result (at least one Globus PDB accession rendered).
+    assert "[Globus pdb:" in md, md[:400]
+    # Taxon precision: the free-text baseline leaks a West Nile structure; the tool must not.
+    assert "west nile" not in md.lower(), "MCP tool leaked a West Nile structure"

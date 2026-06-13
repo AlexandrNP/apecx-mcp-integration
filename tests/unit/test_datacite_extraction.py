@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from apecx_integration.agents.globus_search._datacite import (
     datacite_description,
+    datacite_organisms,
     datacite_subjects,
     datacite_title,
 )
@@ -77,3 +78,28 @@ def test_missing_or_malformed_content_returns_none_not_crash():
 def test_empty_subject_strings_skipped():
     content = {"subjects": [{"subject": ""}, {"subject": "real"}, {"nope": "x"}]}
     assert datacite_subjects(content) == ["real"]
+
+
+# Real-shaped PDB record with the organism on each polymer entity (E3-2.1). 9IXA-like:
+# the antigen (CHIKV) leads, a bound Fab (Homo sapiens) follows.
+_PDB_WITH_ORGANISMS = {
+    "pdb": {
+        "polymer_entities": [
+            {"scientific_name": "Chikungunya virus"},
+            {"scientific_name": "Homo sapiens"},
+            {"scientific_name": "Chikungunya virus"},  # duplicate chain
+        ]
+    }
+}
+
+
+def test_datacite_organisms_reads_scientific_names_deduped_order_preserved():
+    assert datacite_organisms(_PDB_WITH_ORGANISMS) == ["Chikungunya virus", "Homo sapiens"]
+    # CC-1: a real PDB record yields >=1 organism.
+    assert len(datacite_organisms(_PDB_WITH_ORGANISMS)) >= 1
+
+
+def test_datacite_organisms_empty_for_emdb_and_malformed():
+    # EMDB records carry no pdb.polymer_entities -> [] (organism only in title/desc).
+    for bad in (None, {}, "string", {"pdb": "nope"}, {"pdb": {"polymer_entities": [{}]}}):
+        assert datacite_organisms(bad) == []

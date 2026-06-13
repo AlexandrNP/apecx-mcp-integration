@@ -151,3 +151,86 @@ def search(
         index_uuid,
     )
     return hits
+
+
+def facet(
+    field_name: str,
+    query: str,
+    *,
+    filters: list[dict[str, Any]] | None = None,
+    size: int = 100,
+) -> list[tuple[str, int]]:
+    """Enumerate the distinct values of one indexed field (a Globus terms facet).
+
+    Used to discover the real spelling set of a nested field — notably
+    ``pdb.polymer_entities.scientific_name``, whose organism values carry
+    strain/case variants ("Chikungunya virus", "CHIKUNGUNYA VIRUS",
+    "Chikungunya virus strain S27-African prototype") that an EXACT,
+    case-sensitive ``match_any`` filter would otherwise under-recall. A facet
+    pre-pass scoped by a species term enumerates every variant present so the
+    caller can build a complete ``match_any`` value set.
+
+    Args:
+        field_name: The (possibly nested) field to facet on.
+        query: Free-text scope for the records aggregated into the facet. Empty /
+            whitespace-only short-circuits to ``[]``.
+        filters: Optional structured filter clauses applied alongside the facet
+            (e.g. ``publisher.name = "RCSB PDB"``). Facets require ``advanced``
+            mode, which is set unconditionally here.
+        size: Bucket cap (Globus enforces its own server-side max).
+
+    Returns:
+        ``[(value, count), ...]`` bucket list, highest-count first as the index
+        returns it. ``[]`` when the field has no values in scope.
+
+    Raises:
+        :class:`GlobusSearchUnavailableError`: same failure shape as :func:`search`
+            — SDK missing, bad index UUID, or a network/HTTP error.
+    """
+    if not isinstance(query, str) or not query.strip():
+        return []
+
+    if _is_disabled():
+        log.debug("globus_search.facet: APECX_GLOBUS_SEARCH_DISABLED=1; returning []")
+        return []
+
+    try:
+        from globus_sdk import SearchClient
+    except ImportError as exc:
+        raise GlobusSearchUnavailableError(
+            "globus_sdk is not installed; run `pip install globus-sdk`"
+        ) from exc
+
+    index_uuid = _resolve_index_uuid()
+    payload: dict[str, Any] = {
+        "q": query.strip(),
+        "limit": 0,
+        "advanced": True,
+        "facets": [{"name": "f", "type": "terms", "field_name": field_name, "size": int(size)}],
+    }
+    if filters:
+        payload["filters"] = filters
+
+    try:
+        client = SearchClient()
+        result = client.post_search(index_uuid, payload)
+    except Exception as exc:
+        raise GlobusSearchUnavailableError(
+            f"Globus Search facet on {field_name!r} failed against index "
+            f"{index_uuid}: {type(exc).__name__}: {exc}"
+        ) from exc
+
+    buckets: list[tuple[str, int]] = []
+    for facet_result in result.get("facet_results", []) or []:
+        for bucket in facet_result.get("buckets", []) or []:
+            value = bucket.get("value")
+            if isinstance(value, str):
+                buckets.append((value, int(bucket.get("count", 0))))
+    log.info(
+        "globus_search.facet: field=%s q=%.60r → %d buckets (index=%s)",
+        field_name,
+        query,
+        len(buckets),
+        index_uuid,
+    )
+    return buckets

@@ -44,6 +44,9 @@ def test_no_hit_is_loud_not_silent(tmp_path, monkeypatch):
     def _empty(*a, **k):
         return []
 
+    # Facet pre-pass finds no organism spelling -> PDB degrades to free-text, which
+    # also returns [] -> genuine no-hit.
+    monkeypatch.setattr("apecx_integration.agents.globus_search.client.facet", _empty)
     monkeypatch.setattr("apecx_integration.agents.globus_search.client.search", _empty)
     out = asyncio.run(step.process(_bundle()))
     assert out["structural_records"] == []
@@ -59,6 +62,9 @@ def test_globus_outage_is_loud_and_distinct_from_no_hit(tmp_path, monkeypatch):
     def _boom(*a, **k):
         raise GlobusSearchUnavailableError("network down")
 
+    # Facet returns nothing -> PDB degrades to free-text, which raises -> the
+    # outage propagates (distinct from a no-hit).
+    monkeypatch.setattr("apecx_integration.agents.globus_search.client.facet", lambda *a, **k: [])
     monkeypatch.setattr("apecx_integration.agents.globus_search.client.search", _boom)
     out = asyncio.run(step.process(_bundle()))
     assert out["structural_records"] == []
@@ -77,6 +83,11 @@ def test_hits_merge_into_globus_results_deduped_and_tagged(tmp_path, monkeypatch
             return [{"subject": "pdb:1I9G", "content": {"title": "X"}, "score": None}]
         return [{"subject": "emdb:EMD-1", "content": {"title": "Y"}, "score": None}]
 
+    # Facet pre-pass enumerates the CHIKV spelling so the PDB query is taxon-locked.
+    monkeypatch.setattr(
+        "apecx_integration.agents.globus_search.client.facet",
+        lambda *a, **k: [("Chikungunya virus", 5)],
+    )
     monkeypatch.setattr("apecx_integration.agents.globus_search.client.search", _fake_search)
     # Pre-seed globus_results with a duplicate pdb:1I9G to prove dedup-by-subject.
     out = asyncio.run(
@@ -94,6 +105,7 @@ def test_hits_merge_into_globus_results_deduped_and_tagged(tmp_path, monkeypatch
 def test_trigger_envelope_unwrap(tmp_path, monkeypatch):
     """process({structural_input: bundle}) behaves like process(bundle)."""
     step = _stage(tmp_path)
+    monkeypatch.setattr("apecx_integration.agents.globus_search.client.facet", lambda *a, **k: [])
     monkeypatch.setattr("apecx_integration.agents.globus_search.client.search", lambda *a, **k: [])
     out = asyncio.run(step.process({"structural_input": _bundle()}))
     assert out["query"] == "chikungunya structural polyprotein"

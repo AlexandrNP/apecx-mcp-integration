@@ -99,21 +99,20 @@ class StructuralEvidenceStep(BaseStep):
         self._max_per_source: int = int(component_config.get("max_per_source", 8))
         self._publishers: dict[str, str] = dict(_DEFAULT_PUBLISHERS)
 
-    def _search_source(self, query: str, source: str, publisher: str) -> list[dict[str, Any]]:
-        """Publisher-filtered structural query for one source. Tags each hit with
-        its source. Lazy import keeps the globus_sdk dependency off the import
-        path for offline/test environments."""
-        from apecx_integration.agents.globus_search import client as globus_client
+    def _search_source(self, query: str, source: str, publisher: str, taxon_id: int | str | None):
+        """Taxon-precise structural query for one source (E3-2). Delegates to the
+        shared ``structural_query.search_one_source`` so the workflow leg and the
+        MCP tool stay in lockstep. Lazy import keeps the globus_sdk dependency off
+        the import path for offline/test environments."""
+        from apecx_integration.agents.globus_search import structural_query
 
-        hits = globus_client.search(
+        return structural_query.search_one_source(
             query,
+            source,
+            publisher,
+            taxon_id=taxon_id,
             max_results=self._max_per_source,
-            filters=[{"type": "match_any", "field_name": "publisher.name", "values": [publisher]}],
         )
-        for h in hits:
-            if isinstance(h, dict):
-                h["structural_source"] = source
-        return hits
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         if not isinstance(input_data, dict):
@@ -138,20 +137,28 @@ class StructuralEvidenceStep(BaseStep):
             )
         query = query.strip()
 
+        # taxon_id rides along on the bundle from the normalize step; it taxon-locks
+        # the structural query (E3-2). Absent/non-taxon queries fall to query-text
+        # parsing inside the shared core, then to a named degrade.
+        taxon_id = input_data.get("taxon_id")
+
         bundle = dict(input_data)  # shallow copy; we extend globus_results + add keys
 
         structural_records: list[dict[str, Any]] = []
         structural_note: str | None = None
+        degrade_notes: list[str] = []
         try:
             # Two independent source queries, concurrently (sync client offloaded).
             results = await asyncio.gather(
                 *(
-                    asyncio.to_thread(self._search_source, query, src, pub)
+                    asyncio.to_thread(self._search_source, query, src, pub, taxon_id)
                     for src, pub in self._publishers.items()
                 )
             )
-            for hits in results:
-                structural_records.extend(hits)
+            for result in results:
+                structural_records.extend(result.hits)
+                if result.note:
+                    degrade_notes.append(result.note)
         except Exception as exc:  # GlobusSearchUnavailableError + any SDK/network error
             # LOUD degrade — distinct from a legitimate no-hit. The lookup did not
             # succeed-with-zero; it failed, and the output says so.
@@ -168,6 +175,11 @@ class StructuralEvidenceStep(BaseStep):
                 f"APECx structural corpus."
             )
             log.info("StructuralEvidenceStep %s: %s", self.name, structural_note)
+        elif structural_note is None and degrade_notes:
+            # Records present, but the query could NOT be taxon-locked — name it,
+            # never a silent unfiltered dump (E3-2.5).
+            structural_note = " ".join(dict.fromkeys(degrade_notes))
+            log.warning("StructuralEvidenceStep %s: %s", self.name, structural_note)
 
         # Merge structural hits into globus_results for native citation, deduped
         # by subject (the assembly step's unfiltered Globus branch may already
