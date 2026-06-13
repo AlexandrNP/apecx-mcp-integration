@@ -74,7 +74,11 @@ def test_appends_structural_records_section(tmp_path, monkeypatch):
     }
     out = asyncio.run(step.process(bundle))
     md = out["markdown"]
-    assert md.startswith("# Evidence")
+    # The contract is now ENFORCED deterministically: the document starts with
+    # `# Answer` regardless of what heading the LLM emitted, and the LLM body is
+    # preserved within. (Was `startswith("# Evidence")` before the contract guarantee.)
+    assert md.startswith("# Answer")
+    assert "Body [Globus pdb:1I9G]" in md
     assert "## Structural evidence" in md
     assert "[Globus pdb:1I9G]" in md and "E1 structure" in md
 

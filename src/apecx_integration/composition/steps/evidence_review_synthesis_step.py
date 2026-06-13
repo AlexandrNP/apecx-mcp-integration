@@ -48,6 +48,7 @@ log = logging.getLogger(__name__)
 _INPUT_KEY = "review_input"
 _STRUCTURAL_HEADING = "## Structural evidence (PDB / EMDB)"
 _ANSWER_HEADING = "# Answer"
+_CROSSDATA_HEADING = "## Cross-data reasoning"
 _SOURCES_HEADING = "## Sources and evidence"
 _FOLLOWUPS_HEADING = "## Follow-up questions"
 _INSIGHT_HEADING = "## Integrated insight"
@@ -311,6 +312,44 @@ def _insert_reasoning_trace(narrative: str, trace_md: str) -> str:
     return f"{narrative.rstrip()}\n\n{block}"
 
 
+def _ensure_contract_headers(narrative: str) -> str:
+    """Deterministically GUARANTEE the three narrative contract headings exist, in
+    order (``# Answer`` → ``## Cross-data reasoning`` → ``## Integrated insight``).
+
+    The LLM is asked to emit these, but a small model sometimes omits one — which
+    would silently violate the output contract. Rather than trust the LLM, we
+    inject any missing heading with a LOUD, honest degrade note (never fabricated
+    reasoning). Combined with the deterministic Sources/Follow-ups/Structural
+    sections, this makes a missing contract section impossible by construction —
+    the contract no longer depends on LLM behavior.
+    """
+    text = narrative.strip()
+    if _ANSWER_HEADING not in text:
+        # No structure at all → the whole body is the answer.
+        text = (
+            f"{_ANSWER_HEADING}\n\n{text}"
+            if text
+            else f"{_ANSWER_HEADING}\n\n_No answer was produced._"
+        )
+    if _CROSSDATA_HEADING not in text:
+        note = (
+            f"{_CROSSDATA_HEADING}\n\n_The model did not emit a distinct cross-data "
+            "reasoning section; see the reasoning trace below and the Sources section._"
+        )
+        insight_idx = text.find(_INSIGHT_HEADING)
+        if insight_idx != -1:
+            text = f"{text[:insight_idx].rstrip()}\n\n{note}\n\n{text[insight_idx:].lstrip()}"
+        else:
+            text = f"{text.rstrip()}\n\n{note}"
+    if _INSIGHT_HEADING not in text:
+        text = (
+            f"{text.rstrip()}\n\n{_INSIGHT_HEADING}\n\n_The model did not emit a distinct "
+            "integrated-insight section; the integrated view is the combination of the "
+            "evidence and reasoning above._"
+        )
+    return text
+
+
 def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str, Any]) -> str:
     """Assemble the full contract-shaped evidence document from a narrative body
     (the LLM output on the success path, or ``render_evidence_fallback`` on degrade).
@@ -326,7 +365,9 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     omitted regardless of LLM behavior — a missing section is impossible by
     construction for them.
     """
-    body = _insert_reasoning_trace(narrative_body, render_stage_reports(bundle))
+    body = _insert_reasoning_trace(
+        _ensure_contract_headers(narrative_body), render_stage_reports(bundle)
+    )
     structural = render_structural_section(
         bundle.get("structural_records"), bundle.get("structural_note")
     )

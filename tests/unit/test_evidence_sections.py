@@ -256,3 +256,44 @@ def test_missing_query_raises(tmp_path):
     step = _stage(tmp_path)
     with pytest.raises(ValueError):
         asyncio.run(step.process({"structural_records": []}))
+
+
+# --- contract-header guarantee (deterministic, LLM-independent) ---
+
+_FIVE = [
+    "# Answer",
+    "## Cross-data reasoning",
+    "## Integrated insight",
+    "## Sources and evidence",
+    "## Follow-up questions",
+]
+
+
+def _assert_five_in_order(md: str):
+    pos = [md.find(h) for h in _FIVE]
+    assert all(p != -1 for p in pos), (pos, md[:500])
+    assert pos == sorted(pos), (pos, md[:500])
+
+
+def test_contract_guaranteed_when_llm_emits_no_headers():
+    """Worst case: the LLM returns unstructured prose. All 5 sections still present + ordered."""
+    md = compose_evidence_markdown("Unstructured prose about chikungunya.", "chikv", {})
+    _assert_five_in_order(md)
+
+
+def test_contract_guaranteed_when_llm_omits_crossdata():
+    md = compose_evidence_markdown("# Answer\n\nFoo.\n\n## Integrated insight\n\nBar.", "chikv", {})
+    _assert_five_in_order(md)
+    # The injected note is honest/degrade-loud, not fabricated reasoning.
+    assert "did not emit a distinct cross-data" in md
+
+
+def test_contract_preserved_when_llm_emits_all_three():
+    md = compose_evidence_markdown(
+        "# Answer\n\nA.\n\n## Cross-data reasoning\n\nB.\n\n## Integrated insight\n\nC.",
+        "chikv",
+        {},
+    )
+    _assert_five_in_order(md)
+    # No spurious duplicate injection.
+    assert md.count("## Cross-data reasoning") == 1
