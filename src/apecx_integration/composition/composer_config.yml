@@ -9,6 +9,12 @@
 # than editing this file.
 
 library_version: "0.1.0-dev"
+# COMPOSER TIER — intentionally separate from the synthesis default
+# (apecx_integration.agents._llm_config.resolve_llm_model). The composer's
+# structured-YAML codegen task was measured-best on these models, so it
+# declares its own here (and per-role bindings below) rather than sharing
+# the synthesis single-default. Operators running the composer pull these
+# explicitly; `apecx-setup`'s single pull targets the synthesis model only.
 llm_model: "mistral-small:latest"
 llm_base_url: "http://localhost:11434/v1"
 

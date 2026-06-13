@@ -37,6 +37,8 @@ from typing import Any
 
 from langchain_openai import ChatOpenAI
 
+from apecx_integration.agents._llm_config import resolve_llm_base_url, resolve_llm_model
+
 
 def build_chat_llm(
     temperature: float = 0.0,
@@ -45,12 +47,13 @@ def build_chat_llm(
 ) -> ChatOpenAI:
     """Build a LangChain ``ChatOpenAI`` against the configured endpoint.
 
-    Defaults to a local Ollama daemon on ``http://localhost:11434/v1``
-    with ``nemotron-3-nano:4b`` — the model the workspace install pulls
-    (``apecx-setup``) — so a freshly cloned repo can run against a
-    developer's local LLM without any env config. Override with
-    ``APECX_LLM_MODEL`` for a larger model (e.g. ``mistral-nemo:latest``)
-    when synthesis quality matters more than latency.
+    The model name and base URL come from ``resolve_llm_model`` /
+    ``resolve_llm_base_url`` (``apecx_integration.agents._llm_config``) —
+    the SINGLE source of truth that ``apecx-setup`` also delegates to, so
+    the installer pulls exactly the model the runtime asks for. Defaults to
+    a local Ollama daemon on ``http://localhost:11434/v1`` with
+    ``nemotron-3-nano:4b``; override either via ``APECX_LLM_MODEL`` /
+    ``APECX_LLM_BASE_URL``.
 
     Resolution order for ``temperature`` and ``max_tokens``:
 
@@ -75,8 +78,8 @@ def build_chat_llm(
     Returns:
         A ``ChatOpenAI`` client targeting the configured endpoint.
     """
-    base_url = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
-    model = os.environ.get("APECX_LLM_MODEL", "nemotron-3-nano:4b")
+    base_url = resolve_llm_base_url()
+    model = resolve_llm_model()
     api_key = os.environ.get("APECX_LLM_API_KEY") or os.environ.get("OPENAI_API_KEY") or "EMPTY"
     env_temperature = os.environ.get("APECX_LLM_TEMPERATURE")
     if env_temperature is not None:

@@ -537,36 +537,25 @@ def _ollama_url() -> str:
 
 
 def _ollama_model() -> str:
-    """Resolve the configured Ollama model.
+    """Resolve the Ollama model the installer pulls.
 
-    Default is ``mistral-nemo:latest`` because it has the longest
-    track record on the composer's structured-YAML task in this
-    workspace (T01 AC1 strict path, 3/3 consecutive RUN_COMPLETED).
+    Delegates to ``resolve_llm_model`` (the SINGLE source of truth in
+    ``apecx_integration.agents._llm_config``) so the installer pulls
+    exactly the model the synthesis runtime later asks for. Before this
+    delegation the installer defaulted to ``mistral-nemo:latest`` while
+    ``build_chat_llm`` asked for ``nemotron-3-nano:4b`` — a fresh install
+    pulled one model and synthesis 404'd on the other. Override both at
+    once via the ``APECX_LLM_MODEL`` env var.
 
-    Other models we have a reason to mention:
-
-      - ``mistral-small:latest`` (23B) — what composer_config.yml
-        declares as its own default. Better instruction-following on
-        long candidate blocks; ~14GB on disk.
-      - ``gemma4:latest`` (8B) — Gemma 4 family (2026 release).
-        Drop-in size with mistral-nemo (~9.6GB). **MEASURED 2026-05-11
-        TO BE WORSE THAN mistral-nemo FOR THIS TASK**: 2×→4× more
-        framework-rule violations on the diagnostic E2E test, 1.7×
-        slower per inference. Stick with mistral-nemo as the
-        composer default unless a future Gemma 4 fine-tune fixes the
-        gap. Increase ``APECX_LLM_MAX_VALIDATION_RETRIES=2`` if you
-        choose gemma4 anyway.
-      - ``gemma4:26b`` — Mixture-of-Experts with 4B active params.
-        Compute profile similar to gemma4:latest but with broader
-        knowledge; ~16GB on disk. Not measured here.
-
-    Override via ``APECX_LLM_MODEL`` env var. ``apecx-setup llm``
-    pulls whatever you named. The diagnostic E2E test
-    (``test_composer_validator_e2e_against_ollama.py``) is the
-    regression gate when swapping models — verifies the
-    structured-feedback machinery works regardless of LLM quality.
+    NOTE: the composer is a SEPARATE tier — ``composer_config.yml``
+    declares ``mistral-small:latest`` plus per-role bindings that were
+    measured-best for its structured-YAML codegen task. Operators who run
+    the composer pull those models explicitly; the installer's single pull
+    targets the synthesis default only.
     """
-    return os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
+    from apecx_integration.agents._llm_config import resolve_llm_model
+
+    return resolve_llm_model()
 
 
 def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:

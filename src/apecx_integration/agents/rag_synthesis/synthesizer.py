@@ -743,8 +743,13 @@ def synthesize_response(
     # the synthesis package import-cheap for callers that always
     # supply their own LLM.
     if llm is None:
+        from apecx_integration.agents._llm_config import preflight_llm_model
         from apecx_integration.agents._llm_factory import build_chat_llm
 
+        # Fail loud + early (once per process) if the synthesis model is not
+        # pulled on a reachable endpoint — clearer than a cryptic Ollama 404
+        # on the LLM call below.
+        preflight_llm_model()
         llm = build_chat_llm()
 
     from langchain_core.messages import HumanMessage, SystemMessage
