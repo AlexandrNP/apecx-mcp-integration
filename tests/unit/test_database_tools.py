@@ -12,6 +12,7 @@ import asyncio
 
 import pandas as pd
 import pytest
+
 from apecx_integration.mcp_surface.data import database as db
 from apecx_integration.mcp_surface.tools import database_tools as tools
 
@@ -353,10 +354,15 @@ def test_database_statistics_shows_all_loaded_tables(small_store):
 
 
 # ---------------------------------------------------------------------------
-# P3.9 — lookup_entity wiring tests
+# P3.9 — entity-resolution precision-filter wiring tests
 # ---------------------------------------------------------------------------
-# These tests verify the fast-path precision filter wiring.  They mock
-# lookup_entity so we control the path without a real synonym dictionary.
+# These tests verify the fast-path precision filter wiring.  The query tools
+# resolve user terms through the shared HITL gate
+# (``_hitl_gate.resolve_with_hitl_gate``), which internally calls
+# ``detect_ambiguity`` (the dictionary boundary).  We mock ``detect_ambiguity``
+# — returning ``(primary, candidates)`` — so we control the resolution path
+# without a real synonym dictionary while still exercising the gate's
+# resolved/paused branching and the tools' precision-filter wiring end to end.
 # Each mock-covered code path has a matching integration test in
 # tests/integration/test_p39_precision_path_with_dict.py
 # (gated on APECX_SYNONYM_DICT_LIVE_OLS=1).
@@ -387,8 +393,11 @@ def _miss(surface_form: str):
 def test_query_pathogens_precision_filter_on_fast_path(monkeypatch, small_store):
     """Fast-path hit → ncbi_taxonomy_id precision filter → exact row returned."""
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (
+            _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+            [],
+        ),
     )
     out = asyncio.run(tools.query_pathogens(search_term="anything"))
     assert out["total_matching"] == 1
@@ -400,8 +409,8 @@ def test_query_pathogens_precision_filter_on_fast_path(monkeypatch, small_store)
 def test_query_pathogens_falls_back_to_substring_on_miss(monkeypatch, small_store):
     """Miss → no precision filter → existing substring behaviour unchanged."""
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _miss(sf),
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (_miss(sf), []),
     )
     out = asyncio.run(tools.query_pathogens(search_term="Influenza"))
     assert out["total_matching"] == 1
@@ -409,11 +418,11 @@ def test_query_pathogens_falls_back_to_substring_on_miss(monkeypatch, small_stor
 
 
 def test_query_pathogens_no_lookup_when_no_search_term(monkeypatch, small_store):
-    """Empty search_term must not call lookup_entity at all."""
+    """Empty search_term must not resolve (gate never called) at all."""
     called = []
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: called.append(sf) or _miss(sf),
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (called.append(sf) or _miss(sf), []),
     )
     asyncio.run(tools.query_pathogens())
     assert called == []
@@ -421,9 +430,10 @@ def test_query_pathogens_no_lookup_when_no_search_term(monkeypatch, small_store)
 
 def test_query_vaccines_precision_filter_on_fast_path(monkeypatch, small_store):
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _fast_hit(
-            sf, "http://purl.obolibrary.org/obo/VO_0000001", "Alpha Vaccine", "vo"
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (
+            _fast_hit(sf, "http://purl.obolibrary.org/obo/VO_0000001", "Alpha Vaccine", "vo"),
+            [],
         ),
     )
     out = asyncio.run(tools.query_vaccines(search_term="anything"))
@@ -434,9 +444,10 @@ def test_query_vaccines_precision_filter_on_fast_path(monkeypatch, small_store):
 
 def test_query_genes_precision_filter_on_fast_path(monkeypatch, small_store):
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _fast_hit(
-            sf, "http://identifiers.org/ncbigene/11041", "E2 glycoprotein", "ncbigene"
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (
+            _fast_hit(sf, "http://identifiers.org/ncbigene/11041", "E2 glycoprotein", "ncbigene"),
+            [],
         ),
     )
     out = asyncio.run(tools.query_genes(search_term="anything"))
@@ -447,8 +458,11 @@ def test_query_genes_precision_filter_on_fast_path(monkeypatch, small_store):
 
 def test_query_bvbrc_precision_filter_on_fast_path(monkeypatch, small_store):
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (
+            _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+            [],
+        ),
     )
     out = asyncio.run(tools.query_bvbrc_genomes(search_term="anything"))
     assert out["total_matching"] == 1
@@ -458,8 +472,11 @@ def test_query_bvbrc_precision_filter_on_fast_path(monkeypatch, small_store):
 
 def test_get_vaccine_pathogen_genes_precision_filter(monkeypatch, small_store):
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (
+            _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+            [],
+        ),
     )
     out = asyncio.run(tools.get_vaccine_pathogen_genes("anything"))
     assert out["total_vaccines"] == 1
@@ -469,8 +486,11 @@ def test_get_vaccine_pathogen_genes_precision_filter(monkeypatch, small_store):
 
 def test_resolve_entity_includes_canonical_on_fast_path(monkeypatch, small_store):
     monkeypatch.setattr(
-        "apecx_integration.mcp_surface.tools.database_tools.lookup_entity",
-        lambda sf, **_: _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+        "apecx_integration.mcp_surface.tools._hitl_gate.detect_ambiguity",
+        lambda sf, **_: (
+            _fast_hit(sf, "http://purl.obolibrary.org/obo/NCBITaxon_11021", "EEEV"),
+            [],
+        ),
     )
     out = asyncio.run(tools.resolve_entity("EEEV"))
     assert "canonical_resolution" in out
