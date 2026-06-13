@@ -262,16 +262,20 @@ def _evidence_workflow_builder():
         output_data_units=_du("reasoning_output"),
         triggers=_trig("reasoning_input"),
     )
-    # FUNCTIONAL-VALIDATION stage (C3): cross-checks the structure-derived candidate epitope
-    # residues + conserved regions against functional/immunological annotation already in the
-    # bundle (VIOLIN immunology mappings, BV-BRC genome features). It NEVER raises (degrade-loud
-    # subclass) so review always fires; pure (no network), so no extra timeout budget needed.
+    # FUNCTIONAL-VALIDATION stage (C3 / E3-3): cross-checks the structure-derived candidate
+    # epitope residues against REAL residue-level annotation — UniProt sequence features via
+    # the SIFTS author-numbering bridge (PDB→UniProt) plus IEDB known epitopes — and against
+    # the VIOLIN/BV-BRC context already in the bundle. It NEVER raises (degrade-loud subclass):
+    # no UniProt xref / network failure becomes a NAMED note and the bundle passes through, so
+    # review always fires. The SIFTS/UniProt/IEDB calls are cached (~/.cache/apecx_functional)
+    # and gated on a resolved PDB+chain; a timeout budget covers the live lookups.
     b.add_step(
         "functional",
         f"{_STEPS}.functional_validation_step.FunctionalValidationStep",
         input_data_units=_du("functional_input"),
         output_data_units=_du("functional_output"),
         triggers=_trig("functional_input"),
+        timeout_seconds=120.0,
     )
     b.add_step(
         "review",

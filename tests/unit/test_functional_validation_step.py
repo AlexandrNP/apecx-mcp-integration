@@ -23,8 +23,11 @@ from apecx_integration.composition.steps.functional_validation_step import (
 
 
 def _step(tmp_path: Path) -> FunctionalValidationStep:
+    # fetch_residue_annotations:false keeps these unit tests hermetic (no network) — they
+    # cover the legacy VIOLIN/BV-BRC scan + degrade contract; the REAL SIFTS/UniProt/IEDB
+    # path has its own network-gated integration tests (test_functional_residue_annotation_*).
     p = tmp_path / "functional.yml"
-    p.write_text("name: functional_test\n")
+    p.write_text("name: functional_test\nfetch_residue_annotations: false\n")
     return FunctionalValidationStep.from_config(str(p))
 
 
