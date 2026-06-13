@@ -7,7 +7,9 @@ result). It is *real structural reasoning*, not retrieval: it picks a candidate 
 structure from ``structural_records``, runs a CONTAINERIZED, headless, open-source
 PyMOL job that
 
-1. loads the (host-pre-fetched) structure,
+1. loads the (host-pre-fetched) structure — the BIOLOGICAL ASSEMBLY (functional
+   oligomer, ``{pdb}.pdb1``) when one is deposited, else the asymmetric unit (named
+   degrade), so accessibility is judged on the oligomer an antibody actually meets,
 2. maps each conserved region's consensus motif onto the structure's chain residues
    (ungapped sliding-window identity — see ``_pymol_sasa.map_motif_to_chain``),
 3. computes PER-RESIDUE SASA with PINNED settings (``dot_solvent=1``,
@@ -38,12 +40,14 @@ rendered into the synthesis ``### Reasoning trace``.
 from __future__ import annotations
 
 import asyncio
+import gzip
 import json
 import logging
 import os
 import re
 import shutil
 import tempfile
+import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -72,6 +76,13 @@ _STRUCTURE_CACHE = Path(
     os.environ.get("APECX_PYMOL_STRUCTURE_CACHE", str(Path.home() / ".cache" / "apecx_pymol"))
 )
 _RCSB_CIF_URL = "https://files.rcsb.org/download/{pdb_id}.cif"
+# Biological assembly 1 (the functional oligomer) in gzipped legacy-PDB format. SASA
+# must be computed over THIS, not the AU .cif — an interface residue reads exposed in
+# the AU but is buried once the assembly's symmetry copies are present. Falls back to
+# the AU .cif on 404 (no biological assembly deposited).
+_RCSB_ASSEMBLY_URL = "https://files.rcsb.org/download/{pdb_id}.pdb1.gz"
+_KIND_ASSEMBLY = "assembly_1"
+_KIND_AU = "asymmetric_unit"
 
 # Structure-relevance ranking (P1). Epitopes sit on SURFACE ANTIGENS, so when the
 # structural corpus returns several records for a virus we must NOT blindly take the
@@ -290,6 +301,9 @@ class StructuralReasoningStep(BaseStep):
             data={
                 "available": bool(result.get("available")),
                 "pdb_id": result.get("pdb_id"),
+                "structure_kind": result.get("structure_kind"),
+                "assembly_id": result.get("assembly_id"),
+                "n_assembly_copies": result.get("n_assembly_copies"),
                 "n_exposed": result.get("n_exposed"),
                 "n_buried": result.get("n_buried"),
                 "selection": result.get("selection"),
@@ -395,26 +409,46 @@ class StructuralReasoningStep(BaseStep):
             }, note
 
         result = {"available": True, "selection": selection, "ranking": ranking_summary, **raw}
-        note = None
+        caveats: list[str] = []
+        if raw.get("structure_kind") == _KIND_AU:
+            # E3-1.3: AU fallback is always NAMED, never silent (CC-2 degrade-loud).
+            caveats.append(
+                f"accessibility computed over the asymmetric unit; no biological assembly "
+                f"available in legacy PDB (pdb1) format for {pdb_id}"
+            )
+            result["assembly_caveat"] = caveats[-1]
         if not raw.get("n_mapped_regions"):
-            note = (
+            caveats.append(
                 raw.get("notes")
                 and "; ".join(raw["notes"])
                 or (f"No conserved region mapped onto chain {raw.get('chain')} of {pdb_id}.")
             )
+        note = "; ".join(c for c in caveats if c) or None
+        if note:
             result["note"] = note
         return result, note
 
     async def _run_container(self, pdb_id: str, regions: list[dict[str, Any]]) -> dict[str, Any]:
-        """Fetch the structure (host), then run the headless PyMOL job in a container."""
-        structure_path = await asyncio.to_thread(_fetch_structure, pdb_id)
+        """Fetch the biological assembly (host), then run the headless PyMOL job."""
+        structure_path, kind = await asyncio.to_thread(_fetch_structure, pdb_id)
+        return await self._run_pymol_on_file(pdb_id, structure_path, kind, regions)
+
+    async def _run_pymol_on_file(
+        self, pdb_id: str, structure_path: Path, kind: str, regions: list[dict[str, Any]]
+    ) -> dict[str, Any]:
+        """Run the headless PyMOL job in a network-isolated container on a host-fetched
+        structure file. ``kind`` (``'assembly_1'`` | ``'asymmetric_unit'``) selects the
+        load format and is recorded in the result. Split from ``_run_container`` so the
+        AU-vs-assembly SASA comparison test can drive the same job on both files."""
+        ext = "pdb1" if kind == _KIND_ASSEMBLY else "cif"
         with tempfile.TemporaryDirectory(prefix="apecx_pymol_") as tmp:
             workdir = Path(tmp)
             shutil.copy2(_JOB_SCRIPT, workdir / "_pymol_job.py")
             shutil.copy2(_SASA_HELPER, workdir / "_pymol_sasa.py")
-            shutil.copy2(structure_path, workdir / f"{pdb_id}.cif")
+            shutil.copy2(structure_path, workdir / f"{pdb_id}.{ext}")
             job = {
-                "structure_path": f"/work/{pdb_id}.cif",
+                "structure_path": f"/work/{pdb_id}.{ext}",
+                "structure_kind": kind,
                 "pdb_id": pdb_id,
                 "conserved_regions": regions,
                 "rsa_threshold": self._rsa_threshold,
@@ -514,14 +548,20 @@ class StructuralReasoningStep(BaseStep):
         resi_list = ", ".join(str(e.get("resi")) for e in exposed[:20])
         more = "" if len(exposed) <= 20 else f" (+{len(exposed) - 20} more)"
         pv = result.get("pymol_version")
+        if result.get("structure_kind") == _KIND_ASSEMBLY:
+            ctx = f"biological assembly 1, {result.get('n_assembly_copies')} copy(ies)"
+        else:
+            ctx = "asymmetric unit — no biological assembly deposited"
         tail = ""
+        if result.get("assembly_caveat"):
+            tail += f" Caveat: {result['assembly_caveat']}."
         if not result.get("n_mapped_regions"):
-            tail = f" No conserved region mapped onto the structure ({note})."
+            tail += f" No conserved region mapped onto the structure ({note})."
         return (
             f"{prefix}Mapped conserved positions onto PDB {pdb_id} chain {chain} "
-            f"(PyMOL {pv}, dot_solvent=1/dot_density=3): {n_mapped} conserved residue(s) "
-            f"mapped, {n_exposed} solvent-exposed (candidate epitope residues): "
-            f"{resi_list}{more}.{tail}"
+            f"({ctx}; PyMOL {pv}, dot_solvent=1/dot_density=3): {n_mapped} conserved "
+            f"residue(s) mapped, {n_exposed} solvent-exposed (candidate epitope "
+            f"residues): {resi_list}{more}.{tail}"
         )
 
 
@@ -545,9 +585,8 @@ def _docker_available(image: str) -> bool:
         return False
 
 
-def _fetch_structure(pdb_id: str) -> Path:
-    """Download (and cache) the immutable RCSB ``.cif`` for ``pdb_id``. Returns the
-    cached path. Raises on a network/HTTP failure (the caller degrades LOUD)."""
+def _fetch_au_cif(pdb_id: str) -> Path:
+    """Download (and cache) the immutable RCSB asymmetric-unit ``.cif`` for ``pdb_id``."""
     _STRUCTURE_CACHE.mkdir(parents=True, exist_ok=True)
     dest = _STRUCTURE_CACHE / f"{pdb_id}.cif"
     if dest.exists() and dest.stat().st_size > 0:
@@ -558,6 +597,37 @@ def _fetch_structure(pdb_id: str) -> Path:
         tmp.write_bytes(resp.read())
     tmp.replace(dest)
     return dest
+
+
+def _fetch_structure(pdb_id: str, *, prefer_assembly: bool = True) -> tuple[Path, str]:
+    """Download (and cache) the immutable RCSB structure for ``pdb_id``.
+
+    With ``prefer_assembly`` (default) fetch BIOLOGICAL ASSEMBLY 1 — the functional
+    oligomer — from ``{pdb}.pdb1.gz`` (decompressed to ``{pdb}.pdb1`` in the cache) so
+    SASA is computed over the oligomer, not the deposited asymmetric unit. On a 404
+    (no assembly deposited) fall back to the AU ``.cif``. Returns ``(path, kind)`` where
+    ``kind`` is ``'assembly_1'`` or ``'asymmetric_unit'`` (recorded in the result).
+    Set ``prefer_assembly=False`` to force the AU (used to compare AU-vs-assembly SASA).
+    Raises on a non-404 network/HTTP failure (the caller degrades LOUD)."""
+    if not prefer_assembly:
+        return _fetch_au_cif(pdb_id), _KIND_AU
+
+    _STRUCTURE_CACHE.mkdir(parents=True, exist_ok=True)
+    dest = _STRUCTURE_CACHE / f"{pdb_id}.pdb1"
+    if dest.exists() and dest.stat().st_size > 0:
+        return dest, _KIND_ASSEMBLY
+    url = _RCSB_ASSEMBLY_URL.format(pdb_id=pdb_id)
+    try:
+        with urllib.request.urlopen(url, timeout=60) as resp:  # noqa: S310 — fixed RCSB host
+            raw = gzip.decompress(resp.read())
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:  # no biological assembly deposited → AU fallback (named upstream)
+            return _fetch_au_cif(pdb_id), _KIND_AU
+        raise
+    tmp = dest.with_suffix(".pdb1.part")
+    tmp.write_bytes(raw)
+    tmp.replace(dest)
+    return dest, _KIND_ASSEMBLY
 
 
 __all__ = [

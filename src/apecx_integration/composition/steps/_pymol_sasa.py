@@ -205,6 +205,36 @@ def classify_sasa(resn: str, sasa: float, *, rsa_threshold: float = 0.25) -> dic
     }
 
 
+def assembly_exposure_flips(
+    au_residues: list[dict[str, Any]], assembly_residues: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Residues whose EXPOSED/BURIED verdict CHANGED between the asymmetric unit and the
+    biological assembly (the load-bearing proof the assembly fix is real, not cosmetic).
+
+    Both arguments are lists of classified residue dicts (``{"resi", "state", ...}`` as
+    produced by ``classify_sasa`` + the PyMOL job) for the SAME residues computed in the
+    two contexts. Returns, sorted deterministically by ``resi``, one
+    ``{"resi", "au_state", "assembly_state"}`` per residue whose state differs (only
+    where both contexts classified the residue — ``unknown`` non-standard residues and
+    residues absent from one side are skipped, never silently counted as a flip).
+
+    Pure (no PyMOL/Docker) so the AU-vs-assembly comparison the integration test asserts
+    is computed by the exact arithmetic this unit test verifies (mock/integration parity).
+    """
+    au_state = {r.get("resi"): r.get("state") for r in au_residues}
+    flips: list[dict[str, Any]] = []
+    for r in assembly_residues:
+        resi = r.get("resi")
+        a_state = au_state.get(resi)
+        b_state = r.get("state")
+        if a_state in (None, "unknown") or b_state in (None, "unknown"):
+            continue
+        if a_state != b_state:
+            flips.append({"resi": resi, "au_state": a_state, "assembly_state": b_state})
+    flips.sort(key=lambda e: (e["resi"] if isinstance(e["resi"], int) else 1 << 30, str(e["resi"])))
+    return flips
+
+
 __all__ = [
     "MAX_ASA_3",
     "THREE_TO_ONE",
@@ -213,4 +243,5 @@ __all__ = [
     "map_motif_to_chain",
     "relative_sasa",
     "classify_sasa",
+    "assembly_exposure_flips",
 ]

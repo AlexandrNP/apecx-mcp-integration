@@ -46,11 +46,12 @@ def _image_present() -> bool:
         return False
 
 
-def _require_rcsb() -> None:
+def _require_rcsb(pdb_id: str = "3N40") -> None:
     """Runtime (not import-time) network check, so a transient blip skips THIS test
     instead of stalling collection of the whole file for the urlopen timeout."""
     try:
-        with urllib.request.urlopen("https://files.rcsb.org/download/3N40.cif", timeout=15) as r:
+        url = f"https://files.rcsb.org/download/{pdb_id}.cif"
+        with urllib.request.urlopen(url, timeout=15) as r:
             if r.status != 200:
                 pytest.skip("RCSB returned non-200")
     except Exception as exc:  # noqa: BLE001
@@ -130,3 +131,111 @@ def test_real_pymol_sasa_is_deterministic():
     assert [e["resi"] for e in a["exposed_residues"]] == [e["resi"] for e in b["exposed_residues"]]
     assert [e["sasa"] for e in a["exposed_residues"]] == [e["sasa"] for e in b["exposed_residues"]]
     assert [e["resi"] for e in a["buried_residues"]] == [e["resi"] for e in b["buried_residues"]]
+
+
+# --------------------------------------------------------------- E3-1: biological assembly SASA
+# 2XFB = CHIKV mature E1/E2 glycoprotein. Its biological assembly 1 is the T=4
+# icosahedral envelope shell (60 MODELs / copies). Residues 298-312 of chain A (E2)
+# include an inter-protomer LATTICE-CONTACT cluster (302/304/305/307) that reads
+# solvent-EXPOSED on the deposited asymmetric unit but is BURIED once the assembly's
+# symmetry-mate copies are present — the exact wrong-accessibility error E3-1 fixes.
+_2XFB_RECORD = {"subject": "pdb:2XFB", "structural_source": "pdb"}
+_2XFB_REGION = {"start": 298, "end": 312, "length": 15, "consensus": "DMSCEVPACTHSSDF"}
+
+
+@_GATE
+def test_assembly_sasa_differs_from_au_on_2xfb():
+    """Load-bearing proof: SASA over the BIOLOGICAL ASSEMBLY changes >=1 residue's
+    exposed/buried verdict vs the asymmetric unit (the fix is real, not cosmetic), and
+    the assembly classification is non-empty (CC-1) + byte-stable across two runs (CC-4)."""
+    _require_rcsb("2XFB")
+    from apecx_integration.composition.steps import _pymol_sasa as sasa
+    from apecx_integration.composition.steps.structural_reasoning_step import _fetch_structure
+
+    step = _step()
+    regions = [dict(_2XFB_REGION)]
+    asm_path, asm_kind = _fetch_structure("2XFB")
+    au_path, au_kind = _fetch_structure("2XFB", prefer_assembly=False)
+    assert asm_kind == "assembly_1"
+    assert au_kind == "asymmetric_unit"
+
+    au = asyncio.run(step._run_pymol_on_file("2XFB", au_path, au_kind, regions))
+    asm = asyncio.run(step._run_pymol_on_file("2XFB", asm_path, asm_kind, regions))
+    asm2 = asyncio.run(step._run_pymol_on_file("2XFB", asm_path, asm_kind, regions))
+
+    assert au["ok"] and asm["ok"], (au.get("note"), asm.get("note"))
+    # CC-1: the assembly run classifies >=1 real residue (non-empty), assembly-tagged.
+    assert asm["structure_kind"] == "assembly_1"
+    assert asm["assembly_id"] == 1
+    assert asm["n_assembly_copies"] == 60
+    assert asm["neighbor_cutoff"] == 10.0
+    assert asm["chain"] == "A"
+    assert asm["n_mapped_residues"] == 15
+    assert asm["n_exposed"] + asm["n_buried"] == asm["n_mapped_residues"]
+    assert asm["n_exposed"] >= 1
+
+    # The load-bearing assertion: at least one residue's verdict CHANGES AU -> assembly,
+    # and it is the known lattice-contact cluster reading exposed (AU) -> buried (assembly).
+    flips = sasa.assembly_exposure_flips(
+        au["exposed_residues"] + au["buried_residues"],
+        asm["exposed_residues"] + asm["buried_residues"],
+    )
+    assert len(flips) >= 1, f"assembly changed NO verdict (cosmetic): au={au} asm={asm}"
+    flipped = {f["resi"] for f in flips}
+    assert flipped & {302, 304, 305, 307}, flipped
+    assert all(f["au_state"] == "exposed" and f["assembly_state"] == "buried" for f in flips), flips
+    # The assembly buries residues the AU calls exposed -> fewer exposed in the assembly.
+    assert asm["n_exposed"] < au["n_exposed"]
+
+    # CC-4: byte-stable assembly SASA across two runs (same residues + same SASA values).
+    assert [e["resi"] for e in asm["exposed_residues"]] == [
+        e["resi"] for e in asm2["exposed_residues"]
+    ]
+    assert [e["sasa"] for e in asm["exposed_residues"]] == [
+        e["sasa"] for e in asm2["exposed_residues"]
+    ]
+    assert [e["sasa"] for e in asm["buried_residues"]] == [
+        e["sasa"] for e in asm2["buried_residues"]
+    ]
+
+
+@_GATE
+def test_no_assembly_degrades_to_au_named_caveat(monkeypatch):
+    """E3-1.3 / CC-2: a real PDB whose biological assembly is NOT available in legacy
+    PDB format (.pdb1.gz 404) falls back to the AU and emits the NAMED caveat. The
+    404 -> AU fetch decision is REAL (7K00, a 70S ribosome whose assembly exceeds legacy
+    PDB limits); the full-step SASA runs over a real (small, cached) AU so the degrade
+    path returns a NON-EMPTY classification (CC-1) carrying the caveat."""
+    _require_rcsb("2XFB")
+    from apecx_integration.composition.steps import structural_reasoning_step as srmod
+    from apecx_integration.composition.steps.structural_reasoning_step import _fetch_structure
+
+    # REAL: RCSB 404 on the legacy assembly -> the fetch returns the AU, kind-tagged.
+    _, kind_7k00 = _fetch_structure("7K00")
+    assert kind_7k00 == "asymmetric_unit"
+
+    # Full step over a real AU: steer the fetch to the cached 2XFB AU (kept small + fast)
+    # tagged as asymmetric_unit, so the AU-classification + caveat wiring runs on real SASA.
+    au_path, _ = _fetch_structure("2XFB", prefer_assembly=False)
+    monkeypatch.setattr(srmod, "_fetch_structure", lambda pdb_id, **k: (au_path, "asymmetric_unit"))
+    step = _step()
+    out = asyncio.run(
+        step.process(
+            {
+                "query": "chikungunya E2 glycoprotein conserved epitopes",
+                "protein": "envelope glycoprotein E2",
+                "conserved_regions": [dict(_2XFB_REGION)],
+                "structural_records": [dict(_2XFB_RECORD)],
+            }
+        )
+    )
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True, sr.get("note")
+    assert sr["structure_kind"] == "asymmetric_unit"
+    assert sr["assembly_id"] is None
+    assert sr["n_mapped_residues"] >= 1  # CC-1: non-empty classification on the AU
+    assert "asymmetric unit" in sr["assembly_caveat"]
+    assert "2XFB" in sr["assembly_caveat"]
+    rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
+    assert "asymmetric unit" in rep["markdown"]
+    assert rep["data"]["structure_kind"] == "asymmetric_unit"

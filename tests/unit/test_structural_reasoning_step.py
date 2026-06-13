@@ -113,6 +113,44 @@ def test_classify_sasa_deterministic():
     assert a == b
 
 
+# ------------------------------------------------- assembly_exposure_flips (E3-1, AU vs ASM)
+
+
+def test_assembly_exposure_flips_detects_real_changes():
+    """A residue that reads EXPOSED on the asymmetric unit but BURIED in the biological
+    assembly is reported as a flip — the load-bearing proof the assembly fix is real."""
+    au = [
+        {"resi": 10, "state": "exposed"},
+        {"resi": 11, "state": "buried"},
+        {"resi": 12, "state": "exposed"},
+    ]
+    asm = [
+        {"resi": 10, "state": "buried"},  # buried by a symmetry-mate in the assembly
+        {"resi": 11, "state": "buried"},  # unchanged
+        {"resi": 12, "state": "exposed"},  # unchanged
+    ]
+    assert sasa.assembly_exposure_flips(au, asm) == [
+        {"resi": 10, "au_state": "exposed", "assembly_state": "buried"}
+    ]
+
+
+def test_assembly_exposure_flips_skips_unknown_and_missing():
+    """``unknown`` residues and residues present on only one side are never counted as
+    flips (no false positive from a non-standard residue or a mapping gap)."""
+    au = [{"resi": 1, "state": "unknown"}, {"resi": 2, "state": "exposed"}]
+    asm = [{"resi": 1, "state": "buried"}, {"resi": 3, "state": "buried"}]
+    assert sasa.assembly_exposure_flips(au, asm) == []
+
+
+def test_assembly_exposure_flips_deterministic_and_sorted():
+    au = [{"resi": 30, "state": "exposed"}, {"resi": 5, "state": "exposed"}]
+    asm = [{"resi": 30, "state": "buried"}, {"resi": 5, "state": "buried"}]
+    a = sasa.assembly_exposure_flips(au, asm)
+    b = sasa.assembly_exposure_flips(au, asm)
+    assert a == b
+    assert [f["resi"] for f in a] == [5, 30]
+
+
 # --------------------------------------------------------------- StructuralReasoningStep
 
 
@@ -173,6 +211,84 @@ def test_degrade_loud_docker_unavailable(tmp_path, monkeypatch):
     assert sr["pdb_id"] == "3N40"
     assert "not available" in sr["note"]
     assert [r for r in out["stage_reports"] if r["stage"] == "structural_reasoning"]
+
+
+def _au_job_result(pdb_id: str) -> dict:
+    """A realistic PyMOL-job result computed over the AU (no assembly available) — a data
+    shape, not a mock of the PyMOL interface (real SASA parity is the 2XFB integration
+    test ``test_no_assembly_degrades_to_au_named_caveat``)."""
+    return {
+        "ok": True,
+        "pymol_version": "3.1.0",
+        "pdb_id": pdb_id,
+        "structure_kind": "asymmetric_unit",
+        "assembly_id": None,
+        "n_assembly_copies": 1,
+        "neighbor_cutoff": None,
+        "chain": "A",
+        "chain_length": 100,
+        "sasa_settings": {"dot_solvent": 1, "dot_density": 3},
+        "n_conserved_regions": 1,
+        "n_mapped_regions": 1,
+        "n_mapped_residues": 1,
+        "n_exposed": 1,
+        "n_buried": 0,
+        "exposed_residues": [
+            {"resi": 50, "resn": "GLU", "state": "exposed", "rsa": 0.4, "sasa": 90.0}
+        ],
+        "buried_residues": [],
+        "mapped_regions": [{"start": 0, "end": 4, "residues": [50]}],
+        "contacts": [],
+        "notes": [],
+    }
+
+
+def test_au_fallback_emits_named_caveat(tmp_path, monkeypatch):
+    """E3-1.3 / CC-2: when SASA ran over the AU (no biological assembly in pdb1 format),
+    the step stays available with a NON-EMPTY classification AND emits a NAMED caveat in
+    both the bundle and the stage report — never a silent AU substitution."""
+    step = _step(tmp_path)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+
+    async def _au(self, pdb_id, regions):
+        return _au_job_result(pdb_id)
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _au)
+    out = asyncio.run(step.process(_bundle()))
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True
+    assert sr["structure_kind"] == "asymmetric_unit"
+    assert sr["n_exposed"] == 1  # CC-1: non-empty real classification
+    assert "asymmetric unit" in sr["assembly_caveat"]
+    assert "3N40" in sr["assembly_caveat"]
+    rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
+    assert "asymmetric unit" in rep["markdown"]
+    assert rep["data"]["structure_kind"] == "asymmetric_unit"
+    assert rep["data"]["assembly_id"] is None
+
+
+def test_assembly_context_named_in_report(tmp_path, monkeypatch):
+    """The happy path (SASA over the biological assembly) names the assembly context in
+    the stage report so the synthesis trace can cite it."""
+    step = _step(tmp_path)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+
+    async def _asm(self, pdb_id, regions):
+        r = _au_job_result(pdb_id)
+        r.update(
+            structure_kind="assembly_1", assembly_id=1, n_assembly_copies=60, neighbor_cutoff=10.0
+        )
+        return r
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _asm)
+    out = asyncio.run(step.process(_bundle()))
+    sr = out["structural_reasoning"]
+    assert sr["structure_kind"] == "assembly_1"
+    assert sr["assembly_id"] == 1
+    assert "assembly_caveat" not in sr
+    rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
+    assert "biological assembly 1" in rep["markdown"]
+    assert rep["data"]["n_assembly_copies"] == 60
 
 
 def test_container_failure_degrades_loud(tmp_path, monkeypatch):
