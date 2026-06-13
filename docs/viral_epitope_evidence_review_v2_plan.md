@@ -347,3 +347,216 @@ integration test (workspace parity rule).
    (and HPC). Confirm it's acceptable as a backend dependency before E2-P.
 5. **Streaming transport.** Desktop surface needs a transport for StepEvents (MCP
    notifications? SSE? websocket?). Decide the desktop app's channel before E2-S.
+
+---
+
+# v2.1 — Follow-up plan (2026-06-13)
+
+## v2 status: SHIPPED (recap)
+The 6-stage redesign shipped on `epitope-evidence-workflow` (~14 commits) + 3 stacked
+nanobrain branches + 1 Rhea branch; nothing pushed. The workflow is now an 11-step
+pipeline (`normalize → assemble → data_readiness → structural → sequence → merge →
+reasoning(PyMOL) → functional → review → gate → envelope`) with: all 6 reasoning
+stages, the deterministically-guaranteed 5-section output contract (+ degrade-path
+header sanitize), the `SubworkflowStep.inner_workflow_builder` nesting capability,
+containerized headless PyMOL SASA with surface-antigen ranking, G37 streaming
+surface, and the Rhea tool→Step synthesizer + determinism wire (unit-proven). 110
+unit tests green; real-data e2e verified. Reliability fixes: model-default 3-way
+divergence, DataCite render, fan-in re-arm, degrade-path. Two real-data gaps remain
+(blocked externally): Rhea live (no worker), real-PyMOL-on-2XFB (docker daemon down).
+
+This v2.1 plan incorporates the four new directives (accessibility, query precision,
+real functional validation, Rhea automation), the desktop/headless verification, and
+all carried-over leftovers. **All findings below are real-data backed (investigated
+2026-06-13).** No code written yet.
+
+## E3-1 — Biological-assembly SASA (accessibility) [scientific correctness]
+**Problem.** SASA is computed over the deposited **asymmetric unit**, not the
+**biological assembly**. An oligomer-interface residue reads as "exposed" when it is
+actually buried in the functional oligomer — a real epitope-accessibility error.
+**Approach.** Host-fetch the RCSB biological assembly
+(`https://files.rcsb.org/download/{PDB}.pdb1.gz`, or the assembly mmCIF) instead of
+the AU `.cif`, OR `cmd.set('assembly','1')` before load in the PyMOL job; compute SASA
+over the assembly; map candidate residues to the correct chain copy (author numbering
+is preserved per copy). **Degrade-loud** when no biological assembly is defined: fall
+back to the AU and NAME that accessibility is AU-based (never silently).
+**Files.** `docker/pymol/_pymol_job.py`, `structural_reasoning_step.py:_fetch_structure`.
+**Tests (real).** 2XFB: assembly-SASA differs from AU-SASA at known interface
+residues; byte-stable across runs; no-assembly degrade note path.
+**AC.** Candidate epitope residues classified exposed/buried in the **biological
+assembly** context, with the assembly id recorded; AU fallback explicitly named.
+
+## E3-2 — Taxon-precise structural Globus query [relevance correctness]
+**Problem.** Free-text `q=<term>` lets a different virus's envelope rank high (real:
+"chikungunya envelope" PDB top-10 includes **West Nile virus**); no taxon constraint.
+**Real findings.** PDB records carry `pdb.polymer_entities[].scientific_name` (the
+organism lever); **EMDB does NOT** (organism only in `titles`/`descriptions`); no
+taxon id/IRI anywhere. Globus supports `@advanced` query_string field-scoping AND
+structured `filters` (match_any) on nested fields — but the match is **EXACT,
+case-sensitive, full-string** (organism has strain-qualified + case variants), so a
+naive single-value filter under-recalls.
+**Approach.**
+- **PDB:** facet pre-pass on `pdb.polymer_entities.scientific_name` scoped by the
+  species term → enumerate every spelling whose value contains the species name →
+  `match_any` filter + `q=<protein/structural keywords>`. (Real: before 1162 w/ West
+  Nile → after **9, all CHIKV**.)
+- **EMDB:** `@advanced` `q` that REQUIRES the taxon token in
+  `titles.title`/`descriptions.description` AND the structural keyword (hard AND, not
+  soft OR), since no organism filter exists there.
+- Consume `normalize`'s `taxon_id`/`protein`: map `taxon_id`→species name strings
+  (reuse the `taxon_species` table / strain→species mapping), `protein`→`q` keywords.
+- Degrade-loud when the taxon can't be resolved (fall back to free-text + a NAMED note
+  that results are not taxon-locked).
+**Files.** `structural_evidence_step.py:_search_source`,
+`harmonized_search.py:_aggregate_served_search` (lockstep twins),
+`agents/globus_search/_datacite.py` (+ `datacite_organisms` helper),
+`agents/globus_search/client.py` (filters already advanced-capable).
+**Tests (real).** before/after relevance (West Nile excluded); CHIKV-precise top-5;
+EMDB required-token path; taxon-unresolvable degrade.
+**AC.** A CHIKV envelope query returns only CHIKV-deposited structures; cross-virus
+false-positives eliminated; the taxon constraint is a hard AND.
+
+## E3-3 — Real functional validation (UniProt features + SIFTS + IEDB) [makes stage 3 real]
+**Problem.** FunctionalValidationStep is an honest "named absence" — the bundle
+carries no residue-level annotation.
+**Real findings (all live-reachable 2026-06-13).**
+- **UniProt REST features** (primary): residue-level features (Glycosylation =
+  epitope-masking, Disulfide, Binding/Active site, Domain) — 33 features for 2XFB's
+  `Q1H8W5`. No "ANTIGEN" feature type (use IEDB for that).
+- **SIFTS** (`ebi.ac.uk/pdbe/api/mappings/uniprot/{pdb}`) — **MANDATORY bridge**: PDB
+  author numbering → UniProt numbering (2XFB chain A resi 1 → UniProt **810**, per-chain
+  offsets). PyMOL emits **author** numbering = SIFTS frame → they align. **RCSB
+  `aligned_regions` uses label/entity numbering → WRONG → a silent off-by-hundreds
+  trap. Use SIFTS for the offset, RCSB only to discover the accession.**
+- **IEDB query-api** (bonus): known epitopes in **UniProt coords** (same frame as
+  UniProt features — free once SIFTS bridges).
+- **BV-BRC**: genome-level only — not useful here.
+**Approach.** chosen PDB → UniProt accession → SIFTS per-chain residue bridge →
+UniProt features + IEDB epitopes → cross-check each candidate epitope residue → emit
+real coincidence ("residue N / UniProt M coincides with glycosylation" / "within IEDB
+epitope X-Y") or honest "no feature at N". Feed via a new annotation helper into the
+step's EXISTING `coincidences` scan seam (output contract unchanged). New small async
+clients (`UniProtClient`/`SiftsClient`/`IedbClient`) modeled on `OLSClient` (httpx +
+cache).
+**Reliability.** Degrade-loud (no xref / network down → named note, never raise —
+preserve G127). Cache PDB/SIFTS (immutable) indefinitely; UniProt by release; IEDB by
+TTL + record query date in provenance. **Lock the SIFTS author-numbering bridge behind
+a real-data fixture (2XFB chain A +809)** — the dominant silent-failure risk is a wrong
+offset producing confident wrong coincidences.
+**Tests (real).** 2XFB → real coincidence (glycosylation at a candidate residue OR
+IEDB overlap); SIFTS offset fixture; degrade paths; IEDB PostgREST `cs.{}` query pinned.
+**AC.** Candidate epitope residues cross-checked against REAL residue-level annotation
+with verified numbering; coincidences reported or honest absence.
+
+## E3-4 — Fully-automated Rhea bring-up in apecx-setup (+ push fork to main) [closes E2-R live gap]
+**Problem.** The Rhea live path needs a running worker; the current `_step_rhea` is a
+host-process path (needs a checkout + `uv` venv), opt-in. The directive: fully
+automated, zero user vars, Docker.
+**Real findings.** Worker = `python -m rhea.server.mcp_server --transport
+streamable-http`, port 3001, `http://localhost:3001/mcp/`. The `synthesize_rhea_step`
+(find_tools) path needs the **FULL stack**: Redis (at import) + Postgres pgvector
+(find_tools RAG) + embedding (apecx uses **Ollama `mxbai-embed-large`**, not TEI — no
+multi-GB pull) + an **ingested catalog**. The 3 sidecars are already started by
+`setup.py:_step_infra`; `DockerMCPWorker` (nanobrain) is the right lifecycle manager
+for the **worker container only** (reuse-probe + MCP-handshake health). `RHEA_MCP_URL`
+already defaults to `http://localhost:3001/mcp/`.
+**Critical risks (data-backed).** (1) **Container HOST-binding** — the server binds
+`settings.host=localhost` → unreachable from host even with `-p`; MUST inject
+`HOST=0.0.0.0` (the published image likely has this bug; the README marks
+streamable-http "WIP"). (2) **Published `chrisagrams/rhea-server` ≠ fork** (lacks the
+ToolShed config, `local` Parsl backend, MUSCLE fixes, rewritten `update_tools`) → MUST
+**build from the fork**. (3) Parsl `local` backend needs conda in-image for tool
+*execution* (discovery/find_tools does NOT). (4) Postgres host port is **5435** + use
+`host.docker.internal`. (5) daemon-down → `StepResult(skipped)`, never raise. (6)
+find_tools cold-catalog → **ingest required** (`update_tools.py`,
+`RHEA_INGEST_ONLY=muscle` ≈ 10s) before the live path works. (7) first-run latency →
+keep opt-in/background.
+**Approach.**
+- **Fork (push to main — authorized):** default `HOST=0.0.0.0` for streamable-http
+  (fix the bind bug); ensure the Dockerfile bakes conda for local Parsl. Push.
+- **apecx-setup:** rewrite `_step_rhea` to a Docker path: `docker build
+  apecx-rhea-server` from the autodiscovered fork; reuse the 3 sidecar specs; run the
+  worker with the orchestrator's env derivation
+  (`DATABASE_URL→host.docker.internal:5435`, `REDIS_HOST`, `EMBEDDING_URL→Ollama`,
+  `PARSL_CONTAINER_BACKEND=local`, **`HOST=0.0.0.0`**); health-check via
+  `DockerMCPWorker.ensure_running()`; ingest via `docker exec … update_tools`
+  (`RHEA_INGEST_ONLY=muscle` fast default); confirm `RHEA_MCP_URL`. Degrade gracefully
+  when docker is down.
+**Files.** `rhea/rhea/server/{schema.py,mcp_server.py}`, `rhea/Dockerfile`;
+`apecx-mcp-integration/src/apecx_integration/cli/setup.py:_step_rhea`,
+`infrastructure/{orchestrator.py,containers.py}`; nanobrain `DockerMCPWorker` (reuse).
+**Tests (real).** post-setup gated integration: `synthesize_rhea_step(<real galaxy
+tool>)` against the live worker resolves + asserts real determinism pins (closes the
+E2-R live gap); setup idempotency.
+**AC.** `apecx-setup` brings up a working Rhea worker with **zero user vars**;
+`synthesize_rhea_step` resolves a real tool end-to-end; the E2-R live test passes.
+
+## E3-5 — Verify the desktop/headless split with a REAL MCP client [honest verification]
+**Honest status: PARTIAL.** The streaming BACKEND works + is real-data verified
+(`run_workflow_streamed` callback + `run_workflow_streaming` FastMCP tool; stages
+stream in order; streamed == headless; streaming failure can't break the run). **But
+no real MCP client has consumed it** — only the test harness with a fake `Context`.
+The "desktop application" is **undefined** (Claude Desktop as the MCP client? a bespoke
+app? none exists). MCP-over-stdio end-to-end delivery to a real client is UNVERIFIED.
+Using `send_log_message` to carry stage CONTENT (not just logs) is also a slight abuse
+of the channel worth revisiting.
+**Approach.** (a) Write a minimal REAL stdio MCP client that connects to `apecx-mcp`,
+calls `run_workflow_streaming` with a `progressToken`, and renders the per-stage
+progress+log — proving end-to-end delivery. (b) Document the "desktop" contract (which
+client, what it renders, the notification schema). (c) Assess `send_log_message` vs a
+cleaner MCP mechanism (a streamed resource / structured notification) and record the
+tradeoff.
+**Tests (real).** a real MCP client receives N stage notifications in order over
+stdio; content matches the headless doc.
+**AC.** A real MCP client demonstrably renders the live per-stage stream; the desktop
+contract is documented; headless one-shot unchanged.
+
+## E3 leftovers / cross-cutting (carried from v2 — the "anything else")
+- **E3-6 (E2-A) single-source model resolver + preflight** — one `resolve_llm_model()`
+  across factory/setup/composer; a LOUD preflight validating the model is pulled before
+  first call (no cryptic Ollama 404). The 3-way divergence symptom is fixed; the root
+  is not. [reliability]
+- **E3-7 PyMOL image build in apecx-setup** — wire `docker build -t apecx-pymol:3.1.0
+  docker/pymol/` into setup (mirror E3-4's Docker step) so structural reasoning has its
+  real path out of the box. Closes the real-PyMOL-on-2XFB verification gap (once docker
+  is up). [reliability/reproducibility]
+- **E3-8 provenance capture** — record per run: chosen structure + ranking rationale,
+  PyMOL version + SASA settings + assembly id, MAFFT version + conservation threshold,
+  the structural query + taxon resolution, UniProt/SIFTS/IEDB query dates. For
+  HPC-determinism reproducibility. [reliability]
+- **E3-9 conserved-sites caching + perf** — content-address the conserved_sites result
+  by (taxon, protein, aligner) so re-runs skip the ~6-min MAFFT; reduces the 480s
+  inner-timeout fragility (margin, not guarantee). [perf/reliability]
+- **E3-10 test-isolation fix** — 4 globus tests fail when run alongside the synthesizer
+  suite (a leaked `SearchClient` mock/env), pass in isolation — masks real failures.
+  Add fixture cleanup. [reliability]
+- **E3-11 EnvelopeStepConfig conformance** — `extra='forbid'` + `COMPONENT_TYPE`
+  (the one step config missing the workspace pydantic guard). [nanobrain conformance]
+- **E3-12 Rhea G130 doc cross-ref** — register G130 in
+  `apecx-mcp-integration/docs/nanobrain_capability_gaps.md` + the `nanobrain-agents-tools`
+  / `nanobrain-lightweight` SKILLs (design already in nanobrain docs). [docs]
+- **E3-13 (optional) multi-structure structural reasoning** — analyze the top-N ranked
+  structures, not just the best, for epitope-surface robustness (different structures
+  reveal different surfaces). [quality]
+- **E3-14 (optional) model quality tier** — document/offer `mistral-nemo` as the
+  quality tier; `nemotron-3-nano:4b` guarantees the contract but reasoning depth is
+  shallow on a 4B model. [quality]
+- **C4-5 split synthesis — DEFERRED** (the contract already does cross-data reasoning +
+  integrated insight in one grounded pass); revisit only if the single-LLM-pass proves
+  limiting in practice.
+
+## Priority + dependencies
+**Scientific-quality core (do first):** E3-2 (query precision — gates the relevance of
+every structural result) → E3-1 (assembly accessibility — correctness of every SASA
+call) → E3-3 (real functional validation). These compound: a precise taxon query
+(E3-2) feeds the right structure, whose assembly SASA (E3-1) yields candidate residues,
+which E3-3 cross-checks against real annotation.
+**Automation/reproducibility:** E3-4 (Rhea, closes the live gap) + E3-7 (PyMOL image)
+make the two externally-blocked paths runnable out of the box; E3-8 (provenance) makes
+runs reproducible.
+**Surface verification:** E3-5 (real MCP client).
+**Reliability/conformance hygiene:** E3-6, E3-9, E3-10, E3-11, E3-12.
+All new components ship from_config + process()-only, degrade-loud (G127), with a
+real-data integration test (no mock-only "done"); every external-API client caches +
+degrades loud. Framework gaps (if any) ship as nanobrain capability + skill +
+regression test.
