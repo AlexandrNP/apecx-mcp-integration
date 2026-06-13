@@ -25,9 +25,32 @@ Step with honest determinism pins, instead of hand-authoring a UTD + step YAML.
 resolves the live tool. Verified live 2026-06-13: `rhea:muscle@3.8.1551+galaxy0`,
 pins real.
 
-## Known gap (tracked separately)
-The synthesized `RheaFileToolStep` currently supplies only the file input, not a
-tool's other required Galaxy params (e.g. muscle rejects with `muscleArguments:
-diags Field required`), so end-to-end tool EXECUTION is not yet proven — only
-synthesis + determinism pins are. Follow-up: map all required non-file params from
-the tool `inputSchema`. See task E3-R-followup.
+## End-to-end tool EXECUTION — CLOSED (E3-R-followup, 2026-06-13)
+The earlier gap (synthesized `RheaFileToolStep` supplied only the file input, so muscle
+rejected the call with `muscleArguments: diags Field required`) is RESOLVED. The
+synthesizer now derives the non-file params **generically from the tool `inputSchema`**:
+schema defaults are auto-mapped into `static_tool_args`; a required param with no schema
+default that the caller did not supply FAILS LOUD (no silent omission — that was the bug);
+caller `static_tool_args={…}` overrides win. The discovered UTD input carries a new
+`has_default` flag (`UTDInputSpec.has_default`) so a required-no-default param is
+distinguishable from one whose declared default is `null`.
+
+Real end-to-end RUN verified live 2026-06-13 against the `apecx-rhea-server` worker
+(`RHEA_MCP_URL=http://localhost:3001/mcp/`, `rhea` repo on client PYTHONPATH):
+`synthesize_rhea_step("muscle", static_tool_args={"diags": false})` →
+`static_tool_args={cluster: upgmb, outputFormat: fasta, run: "16", iterations: 16,
+diags: false}` → `Workflow.run` on a 3-sequence FASTA → a NON-EMPTY aligned FASTA
+(`out_align`, 3 records seqA/seqB/seqC, equal-length aligned columns) + `out_align_html`.
+MUSCLE ran to completion (`return_code=0`).
+
+- nanobrain files: `library/tools/rhea_step_synthesizer.py` (`_map_value_args`),
+  `library/tools/rhea_discovery.py` (`has_default`),
+  `core/unified_tool_descriptor.py` (`UTDInputSpec.has_default`).
+- Tests: unit `tests/unit/test_rhea_step_synthesizer.py` (defaults-mapped /
+  required-no-default FAIL LOUD / override-wins) + `tests/unit/test_rhea_discovery.py`
+  (`has_default` pin); live `tests/integration/test_rhea_synthesize_muscle_run_live.py`
+  (gated on `$RHEA_MCP_URL` + importable `rhea`).
+
+Note: the client process running `RheaFileToolStep` needs the `rhea` package on
+PYTHONPATH (it stages the input via `rhea.utils.proxy.RheaFileProxy`, pickled by module
+reference) plus proxystore/redis/cloudpickle — this is a client-side dep, not worker infra.
