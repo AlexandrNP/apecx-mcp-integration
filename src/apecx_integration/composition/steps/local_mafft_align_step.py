@@ -14,6 +14,21 @@ when MUSCLE was unavailable.
 Input  (after trigger-envelope unwrap): ``{"fasta_text": "<unaligned FASTA>", ...}``.
 Output: ``{"alignment": {alignment_fasta, n_sequences, alignment_length, aligner, ...}}``.
 Any ``taxon_id`` / ``protein`` present on the input are passed through for downstream context.
+
+CONSERVED-SITES ALIGN CACHE (E3-9, Option B): MAFFT on ~25 long polyprotein sequences is the
+~6-minute end-to-end bottleneck. The alignment is deterministic given the same input
+sequences + aligner + params, so it is content-addressed and cached under
+``~/.cache/apecx_conserved_sites`` (override ``$APECX_CONSERVED_SITES_CACHE``). The KEY is a
+sha256 over {aligner, mode, ``--amino``, executable, G24 content-hash of the input FASTA}; the
+sequence-hash means a BV-BRC corpus change (different fetched bytes) MISSES and re-aligns — the
+fetch step always runs live, so the cache never hides new sequences. The conservation threshold
+is NOT in the key (it does not affect the alignment, and the conserve step always re-runs). On a
+HIT, MAFFT is skipped and the stored alignment is returned with the live payload's taxon_id/
+protein re-applied, so a HIT is byte-identical to a FRESH run (CC-4). A read/write failure or a
+corrupt entry degrades to a normal uncached alignment with a warning, never raises (CC-2/G127).
+RESIDUAL STALENESS: the MAFFT *version* is NOT in the key (probing it requires running the
+binary); a MAFFT upgrade that changes the alignment is not auto-invalidated — force a refresh
+with ``$APECX_CONSERVED_SITES_NOCACHE=1`` (see ``_align_cache`` for the full contract).
 """
 
 from __future__ import annotations
@@ -27,6 +42,8 @@ from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import Field
+
+from . import _align_cache
 
 log = logging.getLogger(__name__)
 
@@ -72,6 +89,27 @@ class LocalMafftAlignStep(BaseStep):
                 f"has {fasta_text.count('>')}."
             )
 
+        # E3-9 Option B cache: skip MAFFT (the ~6-min bottleneck) when this exact set of fetched
+        # sequences + aligner params was aligned before. Key includes the G24 content-hash of the
+        # FASTA, so a BV-BRC corpus change MISSES; cache failures degrade loud, never raise (CC-2).
+        cache_key = _align_cache.align_cache_key(
+            aligner="mafft",
+            mode=self._mode,
+            amino=self._amino,
+            executable=self._mafft,
+            fasta_text=fasta_text,
+        )
+        if not _align_cache.nocache_enabled():
+            cached = _align_cache.read_cached(cache_key)
+            if cached is not None:
+                self.nb_logger.info(
+                    "LocalMafftAlignStep %s: conserved-sites align CACHE HIT (key %s…) — "
+                    "skipping MAFFT",
+                    self.name,
+                    cache_key[:12],
+                )
+                return {"alignment": self._with_live_context(cached, payload)}
+
         aligned = await asyncio.to_thread(self._run_mafft, fasta_text)
         n_seqs = aligned.count(">")
         # All aligned records share one length; derive it from the first record.
@@ -92,11 +130,28 @@ class LocalMafftAlignStep(BaseStep):
             # MAFFT versions can produce different alignments → different conserved sites).
             "aligner_version": await asyncio.to_thread(self._mafft_version),
         }
-        # Pass through identifying context for the downstream report.
+        out = self._with_live_context(out, payload)
+        if not _align_cache.nocache_enabled():
+            _align_cache.write_cached(cache_key, out)
+        return {"alignment": out}
+
+    @staticmethod
+    def _with_live_context(alignment: dict[str, Any], payload: dict[str, Any]) -> dict[str, Any]:
+        """Return ``alignment`` with the LIVE payload's taxon_id/protein re-applied.
+
+        The expensive, deterministic parts (alignment_fasta/length/aligner/version) come from
+        the (possibly cached) alignment; the cheap pass-through identifiers are taken from the
+        current payload so a cache HIT is byte-identical to a FRESH run for the same input. The
+        ``aligner_version`` is deliberately NOT re-probed: it describes the alignment that was
+        actually produced (the cached, older one on a post-upgrade HIT — the residual staleness).
+        """
+        out = dict(alignment)
         for key in ("taxon_id", "protein"):
             if key in payload:
                 out[key] = payload[key]
-        return {"alignment": out}
+            else:
+                out.pop(key, None)
+        return out
 
     def _unwrap(self, input_data: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(input_data, dict):

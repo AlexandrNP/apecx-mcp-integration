@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import shutil
+import time
 from pathlib import Path
 
 import pytest
@@ -93,3 +94,55 @@ def test_real_conserved_sites_cascade(tmp_path):
     )
     assert res["conserved_regions"], "expected at least one conserved region"
     assert 0.0 <= res["mean_identity"] <= 1.0
+
+
+@needs_deps
+def test_align_cache_run2_is_fast_and_byte_identical(tmp_path, monkeypatch):
+    """E3-9 Option B: aligning the SAME real CHIKV corpus twice — run-2 HITs the cache.
+
+    Proves the perf win AND correctness: run-2 (cache HIT, MAFFT skipped) is dramatically
+    faster than run-1 (cold MAFFT on ~25 long polyprotein sequences) AND produces a
+    byte-identical non-empty conservation result (CC-1/CC-4). The cache dir is isolated to a
+    tmp dir so run-1 is genuinely cold.
+    """
+    monkeypatch.setenv("APECX_CONSERVED_SITES_CACHE", str(tmp_path / "align_cache"))
+    monkeypatch.delenv("APECX_CONSERVED_SITES_NOCACHE", raising=False)
+
+    fetch = _step(BvbrcProteinFastaStep, tmp_path, "fetch", feature_type="CDS", max_sequences="25")
+    align = _step(LocalMafftAlignStep, tmp_path, "align")
+    score = _step(ConservationScoreStep, tmp_path, "score", conservation_threshold="0.9")
+
+    # Fetch ONCE (the fetch step always runs live in production — only align is cached).
+    payload = asyncio.run(
+        fetch.process(
+            {"taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein", "feature_type": "CDS"}
+        )
+    )["protein_fasta"]
+    assert payload["n_sequences"] >= 5, (
+        "need a real multi-strain corpus to make the timing meaningful"
+    )
+
+    def _align_and_score() -> tuple[dict, float]:
+        t0 = time.perf_counter()
+        alignment = asyncio.run(align.process(dict(payload)))["alignment"]
+        elapsed = time.perf_counter() - t0
+        res = asyncio.run(score.process(alignment))["conservation_result"]
+        return res, elapsed
+
+    res1, t_cold = _align_and_score()  # cold: real MAFFT
+    res2, t_hit = _align_and_score()  # warm: cache HIT, MAFFT skipped
+
+    print(f"\n[E3-9] align run-1 (cold MAFFT, {payload['n_sequences']} seqs): {t_cold:.2f}s")
+    print(f"[E3-9] align run-2 (cache HIT):                 {t_hit:.2f}s")
+    print(f"[E3-9] speedup: {t_cold / max(t_hit, 1e-6):.0f}x")
+
+    # CC-1: a HIT returns the SAME non-empty conservation result (never a silently-cached empty).
+    assert res2["conserved_sites"], "cache HIT must return non-empty conserved sites"
+    assert res2["conserved_regions"], "cache HIT must return non-empty conserved regions"
+    # CC-4: byte-identical to the fresh run.
+    assert res1 == res2, "cache HIT conservation result must be byte-identical to the cold run"
+    # Perf: run-2 is a fast hit (no 6-min MAFFT), and far cheaper than the cold align.
+    assert t_hit < 10.0, f"cache HIT must be fast (<10s), was {t_hit:.2f}s"
+    assert t_hit < t_cold, (
+        f"cache HIT ({t_hit:.2f}s) must be cheaper than cold align ({t_cold:.2f}s)"
+    )
