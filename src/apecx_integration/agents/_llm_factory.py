@@ -46,8 +46,11 @@ def build_chat_llm(
     """Build a LangChain ``ChatOpenAI`` against the configured endpoint.
 
     Defaults to a local Ollama daemon on ``http://localhost:11434/v1``
-    with ``mistral-small:latest`` so a freshly cloned repo can run
-    against a developer's local LLM without any env config.
+    with ``nemotron-3-nano:4b`` — the model the workspace install pulls
+    (``apecx-setup``) — so a freshly cloned repo can run against a
+    developer's local LLM without any env config. Override with
+    ``APECX_LLM_MODEL`` for a larger model (e.g. ``mistral-nemo:latest``)
+    when synthesis quality matters more than latency.
 
     Resolution order for ``temperature`` and ``max_tokens``:
 
@@ -73,7 +76,7 @@ def build_chat_llm(
         A ``ChatOpenAI`` client targeting the configured endpoint.
     """
     base_url = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
-    model = os.environ.get("APECX_LLM_MODEL", "mistral-small:latest")
+    model = os.environ.get("APECX_LLM_MODEL", "nemotron-3-nano:4b")
     api_key = os.environ.get("APECX_LLM_API_KEY") or os.environ.get("OPENAI_API_KEY") or "EMPTY"
     env_temperature = os.environ.get("APECX_LLM_TEMPERATURE")
     if env_temperature is not None:

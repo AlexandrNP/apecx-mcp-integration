@@ -34,7 +34,7 @@ def _llm_reachable() -> bool:
     fail — the model name is resolved exactly as ``build_chat_llm`` resolves it."""
     # Mirror _llm_factory.build_chat_llm's defaults exactly.
     base = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1").rstrip("/")
-    model = os.environ.get("APECX_LLM_MODEL", "mistral-small:latest")
+    model = os.environ.get("APECX_LLM_MODEL", "nemotron-3-nano:4b")
     stem = model.split(":", 1)[0]
     # The openai-compat base ends in /v1; Ollama's native model list is at the ROOT.
     root = base[:-3].rstrip("/") if base.endswith("/v1") else base

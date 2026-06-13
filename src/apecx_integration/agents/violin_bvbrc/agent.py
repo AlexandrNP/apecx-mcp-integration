@@ -8,7 +8,7 @@ CSV tables containing vaccine, pathogen, and gene information.
 LLM backend (env-configurable; defaults target a local Ollama daemon):
     APECX_LLM_BASE_URL    OpenAI-compatible endpoint URL (default
                           ``http://localhost:11434/v1``).
-    APECX_LLM_MODEL       Model name (default ``mistral-small:latest``).
+    APECX_LLM_MODEL       Model name (default ``nemotron-3-nano:4b``).
     APECX_LLM_API_KEY     API key. Falls back to ``OPENAI_API_KEY`` if set,
                           then to ``"EMPTY"`` for local backends that do
                           not validate keys (Ollama, vLLM).
