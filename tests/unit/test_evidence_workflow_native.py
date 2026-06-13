@@ -16,14 +16,25 @@ lightweight builder loads via Workflow.from_config).
 
 from __future__ import annotations
 
-import os
-
-os.environ.setdefault("APECX_GLOBUS_SEARCH_DISABLED", "1")
+import pytest
 
 from apecx_integration.composition.workflows.viral_epitope_evidence_review.builder import (
     _evidence_workflow_builder,
     build_viral_epitope_evidence_review_workflow,
 )
+
+
+@pytest.fixture(autouse=True)
+def _disable_globus_search(monkeypatch):
+    """Keep the workflow build offline without leaking process env.
+
+    Previously a module-level ``os.environ.setdefault`` set this flag and
+    never restored it, polluting every later test in the session (notably
+    test_globus_search.py, whose CapturingClient assertions short-circuited
+    because search() saw the leaked APECX_GLOBUS_SEARCH_DISABLED=1). Scoping
+    it to a monkeypatch fixture restores the env after each test.
+    """
+    monkeypatch.setenv("APECX_GLOBUS_SEARCH_DISABLED", "1")
 
 
 def test_generated_config_is_v2_with_no_auto_transfer_optout():
