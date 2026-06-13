@@ -31,7 +31,9 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 11, f"expected 11 links (incl. both fan-ins), got {len(links)}"
+    assert len(links) == 12, (
+        f"expected 12 links (incl. both fan-ins + the structural-reasoning edge), got {len(links)}"
+    )
     for name, entry in links.items():
         link_cfg = entry["config"]
         assert link_cfg["link_type"] == "direct", f"{name}: only DirectLinks expected"
@@ -54,6 +56,7 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
         "structural",
         "sequence",
         "merge",
+        "reasoning",
         "review",
         "gate",
         "envelope",
@@ -85,7 +88,11 @@ def test_sequence_and_merge_fanin_wired():
     assert ("normalize.normalize_out", "sequence.sequence_params") in link_pairs
     assert ("structural.structural_bundle", "merge.structural_in") in link_pairs
     assert ("sequence.sequence_result", "merge.sequence_in") in link_pairs
-    assert ("merge.merged_bundle", "review.review_input") in link_pairs
+    # E2-P: merge now feeds the structural-reasoning step, which feeds review.
+    assert ("merge.merged_bundle", "reasoning.reasoning_input") in link_pairs
+    assert ("reasoning.reasoning_output", "review.review_input") in link_pairs
+    # The OLD direct merge→review edge must be gone (review now reads the reasoning bundle).
+    assert ("merge.merged_bundle", "review.review_input") not in link_pairs
     # The OLD direct structural→review edge must be gone (review now reads the merged bundle).
     assert ("structural.structural_bundle", "review.review_input") not in link_pairs
     # The design-gate fan-in (#2) is untouched.

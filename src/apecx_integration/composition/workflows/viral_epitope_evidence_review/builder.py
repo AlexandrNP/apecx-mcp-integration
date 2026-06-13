@@ -16,13 +16,30 @@ step's output — no TransformLink, no ConditionalLink, no cycle):
           │            BV-BRC fetch → MAFFT MSA → conservation) → WorkflowResult|degrade ↘   │
           │                                                            merge.sequence_in ┘   │
           │    → merge  SequenceEvidenceMergeStep (FAN-IN #1) → bundle + conserved_sites/regions
-          │            + a sequence_conservation stage report  → review.review_input         │
+          │            + a sequence_conservation stage report  → reasoning.reasoning_input    │
+          │    → reasoning StructuralReasoningStep → bundle + structural_reasoning (containerized │
+          │            headless PyMOL: conserved-motif→residue map, per-residue SASA exposed/  │
+          │            buried, contact map) + a structural_reasoning stage report → review     │
           │    → review EvidenceReviewSynthesisStep → {markdown} (LLM + deterministic structural)
           │                                            ↘ gate.review_in
           └────────────────────────────────────────────→ gate.control_in   (FAN-IN #2 edge)
       → gate        DesignGateStep (FAN-IN #2)     → {markdown, control_transfer?}
       → envelope    EnvelopeStep                   → WorkflowResult (ok | needs_input)
       → workflow_output
+
+    STRUCTURAL-REASONING STAGE (E2-P): the ``reasoning`` step sits AFTER ``merge`` (so it
+    sees BOTH the MSA-derived conserved positions and the PDB/EMDB structural records) and
+    BEFORE ``review`` (so the synthesis can cite it). It is real structural reasoning, not
+    retrieval: it picks a candidate PDB from ``structural_records``, runs a CONTAINERIZED,
+    headless, open-source PyMOL job (``apecx-pymol`` image, ``docker run`` shell-out) that
+    maps each conserved region's consensus motif onto the structure's chain residues,
+    computes PER-RESIDUE SASA (PINNED ``dot_solvent=1``/``dot_density=3``) to classify each
+    conserved residue EXPOSED vs BURIED (the solvent-exposed ones are candidate epitope
+    residues), and computes a CA–CA contact map. It writes ``bundle["structural_reasoning"]``
+    + a ``structural_reasoning`` stage report (order 3). DEGRADE-LOUD (G127): on no candidate
+    structure / Docker-or-image unavailable / fetch or container failure / nothing-maps it
+    NEVER raises — it names the absence in the bundle + stage report and passes the bundle
+    through, so ``merge → reasoning → review`` always reaches synthesis.
 
     SEQUENCE-CONSERVATION STAGE (E2-C1): the ``sequence`` step is a concrete
     ``SubworkflowStep`` that nests the existing ``viral_conserved_sites`` workflow via the
@@ -203,6 +220,19 @@ def _evidence_workflow_builder():
             }
         ],
     )
+    # STRUCTURAL-REASONING leg (E2-P): map conserved positions onto a candidate PDB in a
+    # CONTAINERIZED headless PyMOL (per-residue SASA exposed/buried + contact map). It NEVER
+    # raises (degrade-loud subclass) so the review step downstream always fires; the
+    # containerized job has its own wall-clock budget, generous here for the docker run +
+    # structure fetch + PyMOL SASA pass.
+    b.add_step(
+        "reasoning",
+        f"{_STEPS}.structural_reasoning_step.StructuralReasoningStep",
+        timeout_seconds=360.0,
+        input_data_units=_du("reasoning_input"),
+        output_data_units=_du("reasoning_output"),
+        triggers=_trig("reasoning_input"),
+    )
     b.add_step(
         "review",
         f"{_STEPS}.evidence_review_synthesis_step.EvidenceReviewSynthesisStep",
@@ -255,8 +285,10 @@ def _evidence_workflow_builder():
     b.add_link("structural.structural_bundle", "merge.structural_in", link_type="direct")
     b.add_link("sequence.sequence_result", "merge.sequence_in", link_type="direct")
     # The enriched bundle (now carrying conserved_sites/regions + the sequence stage report)
-    # feeds the synthesis step.
-    b.add_link("merge.merged_bundle", "review.review_input", link_type="direct")
+    # feeds the structural-reasoning step, which maps conserved positions onto a structure and
+    # then feeds the (further-enriched) bundle to the synthesis step.
+    b.add_link("merge.merged_bundle", "reasoning.reasoning_input", link_type="direct")
+    b.add_link("reasoning.reasoning_output", "review.review_input", link_type="direct")
     b.add_link("review.review_output", "gate.review_in", link_type="direct")
     b.add_link("gate.gate_output", "envelope.envelope_input", link_type="direct")
     b.add_link("envelope.workflow_result", "workflow_output", link_type="direct")

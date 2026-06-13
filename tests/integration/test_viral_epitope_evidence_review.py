@@ -76,6 +76,25 @@ needs_llm = pytest.mark.skipif(
 )
 
 
+def _pymol_image_present() -> bool:
+    """True when the version-pinned containerized PyMOL image is built locally (E2-P)."""
+    if shutil.which("docker") is None:
+        return False
+    try:
+        import subprocess
+
+        return (
+            subprocess.run(
+                ["docker", "image", "inspect", "apecx-pymol:3.1.0"],
+                capture_output=True,
+                timeout=20,
+            ).returncode
+            == 0
+        )
+    except Exception:
+        return False
+
+
 def _bvbrc_reachable() -> bool:
     try:
         r = requests.get(
@@ -115,6 +134,7 @@ def test_builder_produces_workflow_with_child_steps():
         "structural",
         "sequence",
         "merge",
+        "reasoning",
         "review",
         "gate",
         "envelope",
@@ -257,6 +277,13 @@ def test_sequence_conservation_stage_e2e():
         seq_line,
     )
     assert "conserved region(s) at" in seq_line, seq_line
+
+    # E2-P: when the containerized PyMOL image is present, the structural-reasoning stage
+    # also surfaces in the trace (real mapped structure or a loud degrade note). It is
+    # additive and must NEVER break the 5-section contract above.
+    if _pymol_image_present():
+        sr_lines = [ln for ln in md.splitlines() if "structural_reasoning" in ln]
+        assert sr_lines, ("no structural_reasoning stage report rendered", md[:4000])
     assert "per-strain sequences" in seq_line, seq_line
 
 
