@@ -10,6 +10,7 @@ step's output — no TransformLink, no ConditionalLink, no cycle):
     workflow_input {query, taxon_id?, protein?, requested_outputs?, design_approval_id?}
       → normalize   EvidenceQueryNormalizeStep     → params (passthrough; the DEPOSIT POINT)
           ├→ assemble  SynthesisContextAssemblyStep → bundle{query, rag, bvbrc, violin, pubs, globus}
+          │    → data_readiness DataReadinessStep    → bundle (passthrough) + coverage summary
           │    → structural StructuralEvidenceStep   → bundle + PDB/EMDB (merged) + structural_note
           │                                          ↘ merge.structural_in ┐
           ├→ sequence  SequenceConservationSubworkflowStep (nests viral_conserved_sites:    │ (FAN-IN #1)
@@ -26,6 +27,13 @@ step's output — no TransformLink, no ConditionalLink, no cycle):
       → gate        DesignGateStep (FAN-IN #2)     → {markdown, control_transfer?}
       → envelope    EnvelopeStep                   → WorkflowResult (ok | needs_input)
       → workflow_output
+
+    DATA-READINESS STAGE (C0): the ``data_readiness`` step sits AFTER ``assemble`` and BEFORE
+    ``structural``. It is PURE (no network): it counts the assembled bundle's per-source records
+    (RAG / BV-BRC / VIOLIN / publications / Globus), NAMES the coverage gaps (branches that
+    returned nothing — "no VIOLIN immunology mapping available for this query"), writes
+    ``bundle["data_readiness"]`` + a ``data_readiness`` stage report (order 0), and passes the
+    bundle through unchanged. DEGRADE-LOUD (G127): never raises.
 
     FUNCTIONAL-VALIDATION STAGE (C3): the ``functional`` step sits AFTER ``reasoning`` and
     BEFORE ``review``. It cross-checks the structure-derived candidate epitope residues +
@@ -190,6 +198,16 @@ def _evidence_workflow_builder():
         output_data_units=_du("synthesis_bundle_output"),
         triggers=_trig("assembly_input"),
     )
+    # DATA-READINESS stage (C0): summarize assembled-bundle COVERAGE (per-source counts +
+    # named gaps) before the structural lookup. Pure (no network), passes the bundle through
+    # unchanged + a data_readiness stage report. Degrade-loud subclass — never raises.
+    b.add_step(
+        "data_readiness",
+        f"{_STEPS}.data_readiness_step.DataReadinessStep",
+        input_data_units=_du("readiness_input"),
+        output_data_units=_du("readiness_output"),
+        triggers=_trig("readiness_input"),
+    )
     b.add_step(
         "structural",
         f"{_STEPS}.structural_evidence_step.StructuralEvidenceStep",
@@ -300,9 +318,12 @@ def _evidence_workflow_builder():
     # Third fan-out edge from normalize_out: feed the query/taxon/protein to the nested
     # conserved-sites subworkflow (the sequence step reads taxon_id + protein).
     b.add_link("normalize.normalize_out", "sequence.sequence_params", link_type="direct")
+    # C0: the assembled bundle flows through the data-readiness coverage summary before
+    # the structural lookup.
     b.add_link(
-        "assemble.synthesis_bundle_output", "structural.structural_input", link_type="direct"
+        "assemble.synthesis_bundle_output", "data_readiness.readiness_input", link_type="direct"
     )
+    b.add_link("data_readiness.readiness_output", "structural.structural_input", link_type="direct")
     # FAN-IN #1 edges into `merge`: the structural bundle + the sequence-conservation result.
     b.add_link("structural.structural_bundle", "merge.structural_in", link_type="direct")
     b.add_link("sequence.sequence_result", "merge.sequence_in", link_type="direct")

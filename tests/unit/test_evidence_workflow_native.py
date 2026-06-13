@@ -31,9 +31,9 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 13, (
-        f"expected 13 links (both fan-ins + structural-reasoning + functional-validation "
-        f"edges), got {len(links)}"
+    assert len(links) == 14, (
+        f"expected 14 links (both fan-ins + data-readiness + structural-reasoning + "
+        f"functional-validation edges), got {len(links)}"
     )
     for name, entry in links.items():
         link_cfg = entry["config"]
@@ -54,6 +54,7 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
     assert set(children) == {
         "normalize",
         "assemble",
+        "data_readiness",
         "structural",
         "sequence",
         "merge",

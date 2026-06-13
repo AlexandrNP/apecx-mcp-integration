@@ -131,6 +131,7 @@ def test_builder_produces_workflow_with_child_steps():
     assert set(children) == {
         "normalize",
         "assemble",
+        "data_readiness",
         "structural",
         "sequence",
         "merge",

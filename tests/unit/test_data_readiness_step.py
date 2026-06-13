@@ -1,0 +1,121 @@
+"""Unit tests for the C0 data-readiness stage.
+
+Contracts:
+
+1. COVERAGE — counts each assembled retrieval branch and reports the per-source totals.
+2. NAMED GAPS — a branch that returned 0 records is named explicitly (not silently empty),
+   so the reader sees the evidence basis is narrower than the full source set.
+3. PASSTHROUGH + DEGRADE-LOUD (G127) — the bundle passes through unchanged apart from the
+   appended report + ``data_readiness`` key; never raises on a content/shape issue.
+"""
+
+from __future__ import annotations
+
+import asyncio
+from pathlib import Path
+
+import pytest
+
+from apecx_integration.composition.steps.data_readiness_step import DataReadinessStep
+
+
+def _step(tmp_path: Path) -> DataReadinessStep:
+    p = tmp_path / "readiness.yml"
+    p.write_text("name: readiness_test\n")
+    return DataReadinessStep.from_config(str(p))
+
+
+def _bundle(**over) -> dict:
+    b = {
+        "query": "chikungunya epitopes",
+        "rag_chunks": [{"id": 1}, {"id": 2}],
+        "bvbrc_genomes": [{"genome_id": "37124.1"}],
+        "violin_mappings": [],
+        "publications": [{"doi": "10.x"}],
+        "globus_results": [{"subject": "pdb:3N40"}],
+    }
+    b.update(over)
+    return b
+
+
+def test_loads_via_from_config(tmp_path):
+    assert _step(tmp_path).name == "readiness_test"
+
+
+def test_counts_and_names_gaps(tmp_path):
+    step = _step(tmp_path)
+    out = asyncio.run(step.process(_bundle()))
+    dr = out["data_readiness"]
+    assert dr["counts"] == {
+        "rag_chunks": 2,
+        "bvbrc_genomes": 1,
+        "violin_mappings": 0,
+        "publications": 1,
+        "globus_results": 1,
+    }
+    assert dr["sources_available"] == 4
+    assert dr["total_records"] == 5
+    # The empty VIOLIN branch is NAMED as a gap, not silently dropped.
+    assert any("VIOLIN" in g for g in dr["gaps"])
+    rep = [r for r in out["stage_reports"] if r["stage"] == "data_readiness"][0]
+    assert rep["order"] == 0
+    assert "Coverage gaps" in rep["markdown"]
+    assert "VIOLIN" in rep["markdown"]
+
+
+def test_passthrough_unchanged(tmp_path):
+    """Every assembled key (and the query) survives unchanged; only data_readiness is added."""
+    step = _step(tmp_path)
+    b = _bundle()
+    out = asyncio.run(step.process(b))
+    for key in ("query", "rag_chunks", "bvbrc_genomes", "publications", "globus_results"):
+        assert out[key] == b[key]
+
+
+def test_no_gaps_when_all_populated(tmp_path):
+    step = _step(tmp_path)
+    out = asyncio.run(step.process(_bundle(violin_mappings=[{"synonym_id": "VO_1"}])))
+    dr = out["data_readiness"]
+    assert dr["gaps"] == []
+    assert dr["sources_available"] == 5
+    rep = [r for r in out["stage_reports"] if r["stage"] == "data_readiness"][0]
+    assert "All retrieval branches returned records" in rep["markdown"]
+
+
+def test_total_absence_is_named(tmp_path):
+    """All branches empty → the report says coverage is NONE (loud), never silent."""
+    step = _step(tmp_path)
+    empty = {
+        "query": "q",
+        "rag_chunks": [],
+        "bvbrc_genomes": [],
+        "violin_mappings": [],
+        "publications": [],
+        "globus_results": [],
+    }
+    out = asyncio.run(step.process(empty))
+    dr = out["data_readiness"]
+    assert dr["sources_available"] == 0
+    rep = [r for r in out["stage_reports"] if r["stage"] == "data_readiness"][0]
+    assert "NONE" in rep["markdown"]
+
+
+def test_envelope_unwrap(tmp_path):
+    step = _step(tmp_path)
+    out = asyncio.run(step.process({"readiness_input": _bundle()}))
+    assert out["query"] == "chikungunya epitopes"
+    assert out["data_readiness"]["sources_available"] == 4
+
+
+def test_non_dict_input_raises(tmp_path):
+    step = _step(tmp_path)
+    with pytest.raises(ValueError):
+        asyncio.run(step.process("not a dict"))
+
+
+def test_never_raises_on_missing_keys(tmp_path):
+    step = _step(tmp_path)
+    out = asyncio.run(step.process({"query": "q"}))
+    dr = out["data_readiness"]
+    assert dr["sources_available"] == 0
+    assert len(dr["gaps"]) == 5
