@@ -24,6 +24,7 @@ import logging
 from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
+from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.composition.handles.store import HandleStore, default_handle_store
 from apecx_integration.composition.schemas.data_shapes import parse_data_shape
@@ -43,11 +44,25 @@ class EnvelopeStepConfig(StepConfig):
     TransformLink, no shared-class edit (EO-13c).
     """
 
+    model_config = ConfigDict(extra="forbid", validate_assignment=False)
+
+    # The framework's ConfigBase sets ``source_path`` on the instance after load;
+    # declare it so ``extra='forbid'`` doesn't reject it (matches sibling configs).
+    source_path: str | None = Field(default=None)
     markdown_input_key: str = "markdown"
     data_input_key: str = "data"
 
+    @model_validator(mode="before")
+    @classmethod
+    def _strip_framework_keys(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            data.pop("class", None)
+        return data
+
 
 class EnvelopeStep(BaseStep):
+    COMPONENT_TYPE: str = "envelope_step"
+
     @classmethod
     def _get_config_class(cls):
         return EnvelopeStepConfig
