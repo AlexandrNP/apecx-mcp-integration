@@ -27,10 +27,21 @@ step's output — no TransformLink, no ConditionalLink, no cycle):
       → envelope    EnvelopeStep                   → WorkflowResult (ok | needs_input)
       → workflow_output
 
+    FUNCTIONAL-VALIDATION STAGE (C3): the ``functional`` step sits AFTER ``reasoning`` and
+    BEFORE ``review``. It cross-checks the structure-derived candidate epitope residues +
+    conserved regions against any functional/immunological annotation already in the bundle
+    (VIOLIN immunology mappings, BV-BRC genome features) and writes
+    ``bundle["functional_validation"]`` + a ``functional_validation`` stage report (order 4).
+    Brutally honest: the current VIOLIN/BV-BRC records carry no residue-level coordinates, so
+    the stage usually names the absence — "candidate epitopes are sequence+structure-derived
+    only" — which is itself the useful signal (it states the evidence basis). DEGRADE-LOUD
+    (G127): pure, never raises, always passes the bundle through to ``review``.
+
     STRUCTURAL-REASONING STAGE (E2-P): the ``reasoning`` step sits AFTER ``merge`` (so it
     sees BOTH the MSA-derived conserved positions and the PDB/EMDB structural records) and
-    BEFORE ``review`` (so the synthesis can cite it). It is real structural reasoning, not
-    retrieval: it picks a candidate PDB from ``structural_records``, runs a CONTAINERIZED,
+    BEFORE ``functional`` (so synthesis can cite both). It RANKS ``structural_records`` for
+    epitope relevance (surface-antigen + query-protein match) before selecting the candidate
+    PDB, then runs a CONTAINERIZED,
     headless, open-source PyMOL job (``apecx-pymol`` image, ``docker run`` shell-out) that
     maps each conserved region's consensus motif onto the structure's chain residues,
     computes PER-RESIDUE SASA (PINNED ``dot_solvent=1``/``dot_density=3``) to classify each
@@ -233,6 +244,17 @@ def _evidence_workflow_builder():
         output_data_units=_du("reasoning_output"),
         triggers=_trig("reasoning_input"),
     )
+    # FUNCTIONAL-VALIDATION stage (C3): cross-checks the structure-derived candidate epitope
+    # residues + conserved regions against functional/immunological annotation already in the
+    # bundle (VIOLIN immunology mappings, BV-BRC genome features). It NEVER raises (degrade-loud
+    # subclass) so review always fires; pure (no network), so no extra timeout budget needed.
+    b.add_step(
+        "functional",
+        f"{_STEPS}.functional_validation_step.FunctionalValidationStep",
+        input_data_units=_du("functional_input"),
+        output_data_units=_du("functional_output"),
+        triggers=_trig("functional_input"),
+    )
     b.add_step(
         "review",
         f"{_STEPS}.evidence_review_synthesis_step.EvidenceReviewSynthesisStep",
@@ -288,7 +310,9 @@ def _evidence_workflow_builder():
     # feeds the structural-reasoning step, which maps conserved positions onto a structure and
     # then feeds the (further-enriched) bundle to the synthesis step.
     b.add_link("merge.merged_bundle", "reasoning.reasoning_input", link_type="direct")
-    b.add_link("reasoning.reasoning_output", "review.review_input", link_type="direct")
+    # C3: the structural-reasoning bundle flows through functional validation before synthesis.
+    b.add_link("reasoning.reasoning_output", "functional.functional_input", link_type="direct")
+    b.add_link("functional.functional_output", "review.review_input", link_type="direct")
     b.add_link("review.review_output", "gate.review_in", link_type="direct")
     b.add_link("gate.gate_output", "envelope.envelope_input", link_type="direct")
     b.add_link("envelope.workflow_result", "workflow_output", link_type="direct")

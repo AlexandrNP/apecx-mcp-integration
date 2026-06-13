@@ -135,6 +135,7 @@ def test_builder_produces_workflow_with_child_steps():
         "sequence",
         "merge",
         "reasoning",
+        "functional",
         "review",
         "gate",
         "envelope",
