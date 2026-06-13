@@ -78,6 +78,18 @@ def render_evidence_fallback(
     path. A citation-gate failure therefore yields a five-section doc with the
     evidence preserved, not a differently-shaped error page.
     """
+    # Sanitize the reason before interpolation: the synthesizer's citation-gate
+    # exception can embed the RAW LLM response (with its own stray `## ` headers +
+    # newlines). Interpolated into the blockquote below, an embedded newline would
+    # escape the `>` prefix and a stray `## Integrated insight` would leak as a
+    # standalone header — breaking the five-section ordering on the degrade path.
+    # Collapse ALL whitespace (incl. newlines) to single spaces, STRIP `#` (so an
+    # echoed `## Integrated insight` cannot survive even as inline text that a
+    # heading scan would mistake for a section), and cap length — so the reason can
+    # never inject document structure. (Surfaced 2026-06-13 by a 4B model emitting
+    # fullwidth brackets that tripped the gate; its raw response, carried in the gate
+    # exception, embedded out-of-order contract headings.)
+    reason = " ".join(str(reason).replace("#", "").split())[:500]
     pubs = publications or []
     lines = [
         _ANSWER_HEADING,

@@ -297,3 +297,17 @@ def test_contract_preserved_when_llm_emits_all_three():
     _assert_five_in_order(md)
     # No spurious duplicate injection.
     assert md.count("## Cross-data reasoning") == 1
+
+
+def test_degrade_path_stray_headers_dont_break_contract_order():
+    """Regression: a citation-gate exception can embed the raw LLM response with
+    out-of-order/stray `## ` headers + newlines. The withheld-narrative fallback
+    must neutralize them so the 5-section ORDER still holds (surfaced 2026-06-13 by
+    a 4B model emitting fullwidth brackets that tripped the gate)."""
+    from apecx_integration.composition.steps.evidence_review_synthesis_step import (
+        render_evidence_fallback,
+    )
+
+    evil = "ValueError: gate failed; response:\n## Integrated insight\nx 【1】\n## Cross-data reasoning\ny"
+    md = compose_evidence_markdown(render_evidence_fallback("chikv", [], evil), "chikv", {})
+    _assert_five_in_order(md)
