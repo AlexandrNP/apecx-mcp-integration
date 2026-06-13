@@ -41,6 +41,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 import shutil
 import tempfile
 import urllib.request
@@ -50,6 +51,7 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration.agents.globus_search._datacite import datacite_subjects, datacite_title
 from apecx_integration.composition.steps import _pymol_sasa as sasa
 from apecx_integration.composition.steps._stage_report import append_stage_report
 
@@ -70,6 +72,122 @@ _STRUCTURE_CACHE = Path(
     os.environ.get("APECX_PYMOL_STRUCTURE_CACHE", str(Path.home() / ".cache" / "apecx_pymol"))
 )
 _RCSB_CIF_URL = "https://files.rcsb.org/download/{pdb_id}.cif"
+
+# Structure-relevance ranking (P1). Epitopes sit on SURFACE ANTIGENS, so when the
+# structural corpus returns several records for a virus we must NOT blindly take the
+# first by search rank — on CHIKV that picked 2CXD (capsid protease), an internal
+# protein, instead of the E1/E2 envelope glycoprotein an epitope map needs. We score
+# each record's DataCite title+subjects: (a) the query's ``protein`` term(s) dominate,
+# (b) surface-antigen vocabulary boosts, (c) internal-protein vocabulary penalizes.
+# Ties keep the upstream search rank (so a no-signal corpus still falls back to "first
+# loadable").
+_PROTEIN_WEIGHT = 5.0
+_SURFACE_WEIGHT = 2.0
+_INTERNAL_WEIGHT = 2.0
+# Generic tokens that, used as a protein term, would match almost every structural
+# title and so carry no discriminating signal.
+_PROTEIN_STOPWORDS = frozenset({"protein", "the", "and", "of"})
+_SURFACE_KEYWORDS = (
+    "envelope",
+    "glycoprotein",
+    "spike",
+    "hemagglutinin",
+    "E1",
+    "E2",
+    "E3",
+    "E protein",
+    "fusion",
+    "surface",
+    "neutralizing",
+    "Fab",
+    "antibody",
+)
+_INTERNAL_KEYWORDS = (
+    "capsid",
+    "protease",
+    "nsP",
+    "polymerase",
+    "methyltransferase",
+    "helicase",
+    "nucleocapsid",
+)
+# Short / ambiguous keywords matched on word boundaries (substring matching would
+# fire spuriously, e.g. "e2" inside "phase2"); the rest match as substrings.
+_WORD_BOUNDARY_KEYWORDS = frozenset({"e1", "e2", "e3", "e protein", "fab", "surface"})
+
+
+def _record_text(rec: dict[str, Any]) -> str:
+    """Lower-cased DataCite title + subjects for a structural record (the relevance
+    haystack). Excludes the bare record id, which carries no semantic signal."""
+    content = rec.get("content") or {}
+    title = datacite_title(content) or ""
+    subjects = datacite_subjects(content, limit=20)
+    return f"{title} {' '.join(subjects)}".lower()
+
+
+def _kw_match(keyword: str, text: str) -> bool:
+    kw = keyword.lower()
+    if kw == "nsp":
+        return re.search(r"\bns[ps]\d*\b", text) is not None
+    if kw in _WORD_BOUNDARY_KEYWORDS:
+        return re.search(r"\b" + re.escape(kw) + r"\b", text) is not None
+    return kw in text
+
+
+def _protein_terms(protein: Any) -> list[str]:
+    if not isinstance(protein, str):
+        return []
+    toks = [t for t in re.split(r"[^a-z0-9]+", protein.lower()) if len(t) >= 2]
+    return [t for t in toks if t not in _PROTEIN_STOPWORDS]
+
+
+def _score_record(rec: dict[str, Any], protein_terms: list[str]) -> tuple[float, list[str]]:
+    text = _record_text(rec)
+    score = 0.0
+    reasons: list[str] = []
+    matched_protein = [t for t in protein_terms if re.search(r"\b" + re.escape(t) + r"\b", text)]
+    if matched_protein:
+        score += _PROTEIN_WEIGHT * len(matched_protein)
+        reasons.append("matches query protein term(s): " + ", ".join(matched_protein))
+    surf = [kw for kw in _SURFACE_KEYWORDS if _kw_match(kw, text)]
+    if surf:
+        score += _SURFACE_WEIGHT * len(surf)
+        reasons.append("surface-antigen signal: " + ", ".join(surf))
+    intern = [kw for kw in _INTERNAL_KEYWORDS if _kw_match(kw, text)]
+    if intern:
+        score -= _INTERNAL_WEIGHT * len(intern)
+        reasons.append("internal-protein signal (deprioritized): " + ", ".join(intern))
+    return score, reasons
+
+
+def rank_structural_records(
+    records: list[dict[str, Any]], protein: Any = None
+) -> list[dict[str, Any]]:
+    """Rank structural records for epitope relevance (highest first).
+
+    Returns a list of ``{subject, pdb_id, score, reasons, title, _idx}`` sorted by
+    descending score, ties broken by the original (search-rank) order — so a corpus
+    with no surface/protein signal degrades to "first loadable by search rank". A
+    ``pdb_id`` of ``None`` marks a non-loadable record (e.g. an EMDB density map).
+    """
+    terms = _protein_terms(protein)
+    ranked: list[dict[str, Any]] = []
+    for idx, rec in enumerate(records or []):
+        if not isinstance(rec, dict):
+            continue
+        score, reasons = _score_record(rec, terms)
+        ranked.append(
+            {
+                "subject": rec.get("subject"),
+                "pdb_id": sasa.extract_pdb_id(rec),
+                "score": score,
+                "reasons": reasons,
+                "title": datacite_title(rec.get("content") or {}),
+                "_idx": idx,
+            }
+        )
+    ranked.sort(key=lambda e: (-e["score"], e["_idx"]))
+    return ranked
 
 
 class StructuralReasoningStepConfig(StepConfig):
@@ -158,8 +276,9 @@ class StructuralReasoningStep(BaseStep):
         bundle = dict(input_data)
         regions = bundle.get("conserved_regions") or []
         records = bundle.get("structural_records") or []
+        protein = bundle.get("protein")
 
-        result, note = await self._reason(regions, records)
+        result, note = await self._reason(regions, records, protein)
         bundle["structural_reasoning"] = result
 
         markdown = self._render_markdown(result, note)
@@ -173,6 +292,7 @@ class StructuralReasoningStep(BaseStep):
                 "pdb_id": result.get("pdb_id"),
                 "n_exposed": result.get("n_exposed"),
                 "n_buried": result.get("n_buried"),
+                "selection": result.get("selection"),
                 "note": note,
             },
         )
@@ -187,27 +307,52 @@ class StructuralReasoningStep(BaseStep):
         return bundle
 
     async def _reason(
-        self, regions: list[dict[str, Any]], records: list[dict[str, Any]]
+        self,
+        regions: list[dict[str, Any]],
+        records: list[dict[str, Any]],
+        protein: Any = None,
     ) -> tuple[dict[str, Any], str | None]:
         """Run the structural reasoning, returning ``(result_dict, degrade_note)``.
 
         ``result_dict`` always carries ``available: bool`` and a ``note`` on degrade.
-        Never raises — every failure mode returns a LOUD named note.
+        Never raises — every failure mode returns a LOUD named note. Records are
+        RELEVANCE-RANKED (P1) before selection: the best-ranked LOADABLE structure
+        wins, so epitope mapping runs on a surface antigen rather than the first
+        record by raw search rank.
         """
-        pdb_id = sasa.select_candidate_pdb_id(records)
-        if pdb_id is None:
+        ranked = rank_structural_records(records, protein)
+        chosen = next((e for e in ranked if e.get("pdb_id")), None)
+        ranking_summary = [
+            {k: e[k] for k in ("subject", "pdb_id", "score", "reasons", "title")}
+            for e in ranked[:5]
+        ]
+        if chosen is None:
             note = (
                 f"No loadable PDB structure among {len(records)} structural record(s); "
                 "structural-level reasoning skipped (EMDB density maps are not loadable as "
                 "atomic coordinates)."
             )
-            return {"available": False, "note": note}, note
+            return {"available": False, "note": note, "ranking": ranking_summary}, note
+        pdb_id = chosen["pdb_id"]
+        selection = {
+            "pdb_id": pdb_id,
+            "score": chosen["score"],
+            "reasons": chosen["reasons"],
+            "title": chosen["title"],
+            "considered": len(ranked),
+        }
         if not regions:
             note = (
                 f"No conserved regions were available to map onto structure {pdb_id}; "
                 "structural-level reasoning skipped."
             )
-            return {"available": False, "pdb_id": pdb_id, "note": note}, note
+            return {
+                "available": False,
+                "pdb_id": pdb_id,
+                "selection": selection,
+                "ranking": ranking_summary,
+                "note": note,
+            }, note
 
         if not _docker_available(self._image):
             note = (
@@ -215,7 +360,13 @@ class StructuralReasoningStep(BaseStep):
                 "(docker missing or image not built); structural-level reasoning skipped. "
                 "Build it with the repo's PyMOL Dockerfile to enable this stage."
             )
-            return {"available": False, "pdb_id": pdb_id, "note": note}, note
+            return {
+                "available": False,
+                "pdb_id": pdb_id,
+                "selection": selection,
+                "ranking": ranking_summary,
+                "note": note,
+            }, note
 
         try:
             raw = await self._run_container(pdb_id, regions)
@@ -225,13 +376,25 @@ class StructuralReasoningStep(BaseStep):
                 f"({type(exc).__name__}: {exc}); other evidence still synthesized."
             )
             log.warning("StructuralReasoningStep %s: %s", self.name, note)
-            return {"available": False, "pdb_id": pdb_id, "note": note}, note
+            return {
+                "available": False,
+                "pdb_id": pdb_id,
+                "selection": selection,
+                "ranking": ranking_summary,
+                "note": note,
+            }, note
 
         if not raw.get("ok"):
             note = raw.get("note") or f"PyMOL job returned no usable result for {pdb_id}."
-            return {"available": False, "pdb_id": pdb_id, "note": note}, note
+            return {
+                "available": False,
+                "pdb_id": pdb_id,
+                "selection": selection,
+                "ranking": ranking_summary,
+                "note": note,
+            }, note
 
-        result = {"available": True, **raw}
+        result = {"available": True, "selection": selection, "ranking": ranking_summary, **raw}
         note = None
         if not raw.get("n_mapped_regions"):
             note = (
@@ -325,9 +488,24 @@ class StructuralReasoningStep(BaseStep):
         ]
 
     @staticmethod
+    def _selection_prefix(result: dict[str, Any]) -> str:
+        """Human-readable structure-selection rationale (P1 relevance ranking)."""
+        sel = result.get("selection")
+        if not isinstance(sel, dict):
+            return ""
+        why = "; ".join(sel.get("reasons") or []) or (
+            "best-ranked loadable structure (no query-protein or surface-antigen keyword "
+            "match — fell back to search rank)"
+        )
+        return (
+            f"Selected PDB {sel.get('pdb_id')} from {sel.get('considered')} candidate(s): {why}. "
+        )
+
+    @staticmethod
     def _render_markdown(result: dict[str, Any], note: str | None) -> str:
+        prefix = StructuralReasoningStep._selection_prefix(result)
         if not result.get("available"):
-            return f"Structural-level reasoning unavailable: {note}"
+            return f"{prefix}Structural-level reasoning unavailable: {note}"
         pdb_id = result.get("pdb_id")
         chain = result.get("chain")
         n_mapped = result.get("n_mapped_residues", 0)
@@ -340,7 +518,7 @@ class StructuralReasoningStep(BaseStep):
         if not result.get("n_mapped_regions"):
             tail = f" No conserved region mapped onto the structure ({note})."
         return (
-            f"Mapped conserved positions onto PDB {pdb_id} chain {chain} "
+            f"{prefix}Mapped conserved positions onto PDB {pdb_id} chain {chain} "
             f"(PyMOL {pv}, dot_solvent=1/dot_density=3): {n_mapped} conserved residue(s) "
             f"mapped, {n_exposed} solvent-exposed (candidate epitope residues): "
             f"{resi_list}{more}.{tail}"
@@ -382,4 +560,8 @@ def _fetch_structure(pdb_id: str) -> Path:
     return dest
 
 
-__all__ = ["StructuralReasoningStep", "StructuralReasoningStepConfig"]
+__all__ = [
+    "StructuralReasoningStep",
+    "StructuralReasoningStepConfig",
+    "rank_structural_records",
+]

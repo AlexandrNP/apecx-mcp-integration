@@ -547,6 +547,15 @@ class SynthesisContextAssemblyStep(BaseStep):
             "publications": publications,
             "globus_results": globus_results,
         }
+        # Thread the query-focus fields downstream. ``protein`` is load-bearing for the
+        # structural-reasoning stage's relevance ranking (it selects the surface-antigen
+        # structure that matches the requested protein, not the first by search rank);
+        # ``taxon_id`` rides along for the functional-validation stage. Both originate at
+        # ``normalize`` and would otherwise be dropped here (this step rebuilds the bundle).
+        for _focus in ("protein", "taxon_id"):
+            _val = input_data.get(_focus)
+            if _val is not None:
+                out[_focus] = _val
         # Stage-report scaffolding (E2-C): contribute a documented sub-report to the
         # bundle's ``stage_reports`` list. Future reasoning stages append their own;
         # the terminal synthesis renders them as a ``### Reasoning trace``.
