@@ -426,25 +426,26 @@ def _container_exists(name: str) -> bool:
     return bool(result.stdout.strip())
 
 
-def _step_infra() -> StepResult:
-    _print_header("Step 3 of 6 — Infrastructure (Docker containers)")
-    if not _docker_available():
-        return StepResult(
-            "infra",
-            "skipped",
-            "docker daemon unreachable. Install Docker Desktop "
-            "(https://docker.com/desktop) and start it.",
-        )
+def _bring_up_containers(
+    specs: list[dict],
+) -> tuple[list[str], list[str], list[str]]:
+    """Idempotently start a set of container specs (the ``_DOCKER_CONTAINERS``
+    shape). Returns ``(started, already_running, failed)``.
 
+    Shared by ``_step_infra`` and ``_step_rhea`` so the sidecar bring-up
+    has a single source of truth — ``_step_rhea`` reuses the SAME three
+    sidecar specs (Postgres/Redis/MinIO) the orchestrator + infra step
+    use; it never re-declares them.
+    """
     started: list[str] = []
-    skipped: list[str] = []
+    already: list[str] = []
     failed: list[str] = []
 
-    for spec in _DOCKER_CONTAINERS:
+    for spec in specs:
         name = spec["name"]
         if _container_running(name):
             print(f"  ⏭  {name} already running ({spec['purpose']})")
-            skipped.append(name)
+            already.append(name)
             continue
         if _container_exists(name):
             # Stopped container with the same name — start it
@@ -491,6 +492,21 @@ def _step_infra() -> StepResult:
             time.sleep(1)
         else:
             failed.append(f"{name}: did not become ready within 30s")
+
+    return started, already, failed
+
+
+def _step_infra() -> StepResult:
+    _print_header("Step 3 of 6 — Infrastructure (Docker containers)")
+    if not _docker_available():
+        return StepResult(
+            "infra",
+            "skipped",
+            "docker daemon unreachable. Install Docker Desktop "
+            "(https://docker.com/desktop) and start it.",
+        )
+
+    started, skipped, failed = _bring_up_containers(_DOCKER_CONTAINERS)
 
     if failed:
         return StepResult(
@@ -831,42 +847,119 @@ def _step_rag() -> StepResult:
 # ---------------------------------------------------------------------------
 
 
-def _step_rhea() -> StepResult:
-    """One-time Rhea bring-up (G89, 2026-05-16).
+_RHEA_IMAGE = "apecx-rhea-server"
+_RHEA_CONTAINER = "apecx-rhea-server"
+_RHEA_HOST_PORT = 3001
 
-    Idempotent. Safe to re-run.
+
+def _rhea_mcp_url() -> str:
+    """The MCP URL consumers (rhea_adapter / discovery / synthesizer
+    ``from_env``) read. Default already correct — confirm/export it."""
+    return os.environ.get("RHEA_MCP_URL", "http://localhost:3001/mcp/")
+
+
+def _compose_rhea_container_env() -> dict[str, str]:
+    """Container-side Rhea env, reusing the orchestrator's single-source
+    derivation and remapping ``localhost`` → ``host.docker.internal``.
+
+    The orchestrator's ``_compose_rhea_env`` derives every value (DB URL,
+    Redis/MinIO endpoints, embedding URL, Parsl backend) from the SAME
+    ContainerSpec objects the sidecars are launched from — so there is no
+    port/host drift. It composes for the HOST-PROCESS path (``localhost``);
+    a worker running INSIDE a container reaches those sidecars on the host
+    via ``host.docker.internal`` instead, so we remap. Ollama (the
+    embedding backend) likewise lives on the host.
+    """
+    from apecx_integration.infrastructure.orchestrator import _compose_rhea_env
+
+    env = _compose_rhea_env(
+        postgres=APECX_RHEA_POSTGRES,
+        redis_c=APECX_REDIS,
+        minio=APECX_RHEA_MINIO,
+        # Ollama lives on the host; the container reaches it via the
+        # host gateway. _compose_rhea_env appends /v1.
+        ollama_base_url="http://host.docker.internal:11434",
+    )
+    # Remap every host-loopback reference to the container→host gateway.
+    for key in ("DATABASE_URL", "REDIS_HOST", "AGENT_REDIS_HOST", "MINIO_ENDPOINT"):
+        if key in env:
+            env[key] = env[key].replace("localhost", "host.docker.internal")
+    # Bind on all interfaces inside the container (also baked into the
+    # image, set here for belt-and-suspenders + host-process parity).
+    env["HOST"] = "0.0.0.0"
+    # Use the image's baked, writable per-tool conda envs dir — NOT the
+    # host-path the orchestrator composes for the host-process backend.
+    env["RHEA_CONDA_ENVS_DIR"] = "/opt/rhea-conda/envs"
+    return env
+
+
+def _call_find_tools(mcp_url: str, query: str) -> int:
+    """Call ``find_tools(query)`` on the worker over MCP; return the tool
+    count it surfaces. The real CC-1 ingest check — a non-empty catalog
+    means the ingestion produced rows the RAG can retrieve."""
+    import asyncio
+
+    from nanobrain.library.tools._mcp_transport import MCPTransport
+
+    async def _run() -> int:
+        transport = MCPTransport(
+            mcp_url=mcp_url, timeout_seconds=30.0, client_name="apecx-setup-rhea"
+        )
+        try:
+            # find_tools populates the session catalog as a side effect; we
+            # read the surfaced set from the follow-up tools/list below.
+            await transport.call(
+                "tools/call", {"name": "find_tools", "arguments": {"query": query}}
+            )
+            # tools/call result: {"content": [...]} where the structured
+            # content carries the MCPTool list. Count via the populated
+            # tools/list delta instead — find_tools populates the session
+            # catalog, so a follow-up tools/list reflects the surfaced set.
+            listed = await transport.call("tools/list", {})
+            names = [t.get("name") for t in listed.get("tools", [])]
+            # Exclude the always-present find_tools entry itself.
+            return len([n for n in names if n and n != "find_tools"])
+        finally:
+            await transport.aclose()
+
+    return asyncio.run(_run())
+
+
+def _step_rhea() -> StepResult:
+    """One-time Rhea bring-up via Docker (E3-4.2/4.3, 2026-06-13).
+
+    Idempotent. Safe to re-run. NEVER raises — degrades to ``skipped``
+    when docker is down so the install chain continues.
 
     Phases:
-      1. Locate the Rhea checkout (apecx-mcp-integration's
-         ``rhea_env_autodiscovery._find_rhea_repo`` — same probe
-         apecx-mcp uses at startup).
-      2. Ensure rhea's venv exists (``uv sync && uv pip install -e .``).
-         Skipped when ``.venv/bin/python`` is already present + the
-         editable install is registered.
-      3. Ensure mxbai-embed-large is pulled in Ollama (rhea's
-         embedding backend). Skipped when ``ollama list`` already
-         shows it.
-      4. Ensure the ingestion has been run at least once
-         (``rhea.preprocess.update_tools`` for whatever
-         ``$RHEA_INGEST_ONLY`` (default ``muscle`` if unset) wants).
-         Skipped when the rhea-postgres galaxytools table already
-         has rows for the requested tools.
+      1. Locate the Rhea checkout (``_find_rhea_repo`` — same probe the
+         orchestrator + autodiscovery use).
+      2. Ensure the 3 sidecars (Postgres 5435 / Redis / MinIO) — REUSES
+         the orchestrator's ContainerSpecs; never re-declares them.
+      3. Ensure mxbai-embed-large is pulled in Ollama (the find_tools RAG
+         embedding backend, via the host Ollama).
+      4. ``docker build apecx-rhea-server`` from the fork checkout (skip
+         when the image is already present unless ``APECX_RHEA_REBUILD=1``).
+      5. Run the worker via nanobrain ``DockerMCPWorker.ensure_running()``
+         (container→host sidecars; HOST=0.0.0.0; PARSL backend ``local``;
+         health-checked by a real MCP handshake).
+      6. Ingest the catalog via ``docker exec … update_tools``
+         (``RHEA_INGEST_ONLY``, default ``muscle``).
+      7. Confirm ``find_tools(query)`` surfaces ≥1 tool (CC-1 non-empty
+         ingested catalog) + confirm ``RHEA_MCP_URL``.
 
-    After this step, apecx-mcp's existing rhea auto-spawn (driven by
-    InfraOrchestrator's rhea_mcp BackendSpec) will engage on next
-    startup with no operator-side env-var exports required — the
-    G88 autodiscovery sets RHEA_REPO_PATH + RHEA_PYTHON_PATH from
-    the checkout + venv this step produced.
-
-    Why opt-in
-    ----------
-    The full Rhea bring-up costs ~10 minutes (uv sync builds the
-    Parsl/Academy/proxystore stack; mxbai-embed-large is ~700 MB
-    Ollama pull; first muscle ingestion is ~10 s). Operators who
-    don't want Rhea-backed tools (muscle, future Galaxy tools) skip
-    it. Same opt-in pattern as `_step_rag`.
+    Zero operator env vars required end-to-end.
     """
-    _print_header("Step 5b of 6 — Rhea (host MCP server, opt-in)")
+    _print_header("Step 5b of 6 — Rhea (Docker MCP worker, opt-in)")
+
+    if not _docker_available():
+        return StepResult(
+            "rhea",
+            "skipped",
+            "docker daemon unreachable — Rhea worker not brought up. "
+            "Install Docker Desktop (https://docker.com/desktop), start it, "
+            "then re-run `apecx-setup rhea`. (Chain continues without Rhea.)",
+        )
 
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
@@ -877,120 +970,238 @@ def _step_rhea() -> StepResult:
         return StepResult(
             "rhea",
             "skipped",
-            (
-                "no rhea checkout found in standard locations; "
-                "git clone https://github.com/AlexandrNP/rhea.git into the "
-                "workspace next to apecx-mcp-integration/ to enable"
-            ),
+            "no rhea checkout found in standard locations; "
+            "git clone https://github.com/AlexandrNP/rhea.git into the "
+            "workspace next to apecx-mcp-integration/ to enable",
         )
-
     print(f"  ▶  found rhea checkout at {rhea_repo}")
 
-    # Phase 2: uv sync + editable install. We invoke uv via shutil.which
-    # so an operator without uv on PATH gets a clear error rather than
-    # subprocess gibberish.
-    uv_binary = shutil.which("uv")
-    if uv_binary is None:
+    # Phase 2: sidecars — reuse the SAME three specs infra/orchestrator use.
+    print("  ▶  ensuring sidecars (Postgres/Redis/MinIO) ...")
+    _started, _already, sidecar_failed = _bring_up_containers(_DOCKER_CONTAINERS)
+    if sidecar_failed:
         return StepResult(
             "rhea",
             "fail",
-            "uv not on PATH — install from https://docs.astral.sh/uv/ then re-run",
+            f"sidecars failed to start: {sidecar_failed}; "
+            "run `apecx-setup infra` and inspect `docker logs`",
         )
 
-    venv_python = rhea_repo / ".venv" / "bin" / "python"
-    if not venv_python.exists():
-        print("  ▶  uv sync (this may take 1-2 min on first run) ...")
-        result = subprocess.run(
-            [uv_binary, "sync"],
-            cwd=rhea_repo,
-            timeout=600,
-        )
-        if result.returncode != 0:
-            return StepResult(
-                "rhea",
-                "fail",
-                f"`uv sync` exited with {result.returncode}",
-            )
-
-    print("  ▶  uv pip install -e . (editable install of rhea-mcp) ...")
-    result = subprocess.run(
-        [uv_binary, "pip", "install", "-e", "."],
-        cwd=rhea_repo,
-        timeout=300,
-    )
-    if result.returncode != 0:
-        return StepResult(
-            "rhea",
-            "fail",
-            f"`uv pip install -e .` exited with {result.returncode}",
-        )
-
-    # Phase 3: ensure mxbai-embed-large is pulled. Ollama is the
-    # ALSO embedding backend rhea uses; if the model is missing the
-    # rhea ingestion step would fail downstream.
+    # Phase 3: ensure mxbai-embed-large (find_tools RAG embedding backend).
     ollama_binary = shutil.which("ollama")
     if ollama_binary is not None:
-        listed = subprocess.run(
-            [ollama_binary, "list"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
+        listed = subprocess.run([ollama_binary, "list"], capture_output=True, text=True, timeout=30)
         if "mxbai-embed-large" not in listed.stdout:
             print("  ▶  pulling mxbai-embed-large (~700 MB) ...")
-            pull = subprocess.run(
-                [ollama_binary, "pull", "mxbai-embed-large"],
-                timeout=900,
-            )
+            pull = subprocess.run([ollama_binary, "pull", "mxbai-embed-large"], timeout=900)
             if pull.returncode != 0:
                 return StepResult(
                     "rhea",
                     "partial",
-                    f"`ollama pull mxbai-embed-large` exited with {pull.returncode}; "
-                    "rhea ingestion will fail until you pull it manually",
+                    f"`ollama pull mxbai-embed-large` exited {pull.returncode}; "
+                    "find_tools ingestion will fail until you pull it manually",
                 )
         else:
             print("  ▶  mxbai-embed-large already present in Ollama")
     else:
         print(
-            "  ▶  ollama not on PATH — skipping embedding-model pull (operator must do this manually)"
+            "  ▶  ollama not on PATH — embedding pull skipped (operator must pull mxbai-embed-large)"
         )
 
-    # Phase 4: ensure the muscle tool (or whatever RHEA_INGEST_ONLY
-    # asks for) is ingested. We don't try to be clever about
-    # incremental ingestion — rhea's ingestion is idempotent
-    # (upsert by primary key) so re-running just re-embeds at small
-    # cost. We DO skip when the galaxytools table has rows for the
-    # requested tool already — the typical case after the first
-    # apecx-setup rhea run.
+    # Phase 4: build the worker image from the fork (idempotent).
+    image_present = (
+        subprocess.run(
+            ["docker", "image", "inspect", _RHEA_IMAGE],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).returncode
+        == 0
+    )
+    if not image_present or os.environ.get("APECX_RHEA_REBUILD") == "1":
+        print(f"  ▶  docker build {_RHEA_IMAGE} from {rhea_repo} (first build ~2-3 min) ...")
+        build = subprocess.run(
+            ["docker", "build", "-t", _RHEA_IMAGE, str(rhea_repo)],
+            timeout=1800,
+        )
+        if build.returncode != 0:
+            return StepResult(
+                "rhea",
+                "fail",
+                f"`docker build {_RHEA_IMAGE}` exited {build.returncode}; "
+                "inspect the build output above",
+            )
+    else:
+        print(f"  ▶  image {_RHEA_IMAGE} already present (APECX_RHEA_REBUILD=1 to rebuild)")
+
+    # Phase 5: run the worker via nanobrain's DockerMCPWorker.
+    mcp_url = _rhea_mcp_url()
+    worker_env = _compose_rhea_container_env()
+    try:
+        import asyncio
+
+        from nanobrain.library.runtime.mcp_worker import DockerMCPWorker
+
+        worker = DockerMCPWorker(
+            image=_RHEA_IMAGE,
+            container_name=_RHEA_CONTAINER,
+            mcp_url=mcp_url,
+            host_port=_RHEA_HOST_PORT,
+            env=worker_env,
+            # host.docker.internal resolves automatically on Docker Desktop;
+            # --add-host makes it work on native-Linux daemons too.
+            extra_run_args=["--add-host", "host.docker.internal:host-gateway"],
+            health_timeout_seconds=180.0,
+        )
+        print("  ▶  starting + health-checking the Rhea worker ...")
+        asyncio.run(worker.ensure_running())
+    except Exception as exc:  # noqa: BLE001 — never raise from a setup step
+        return StepResult(
+            "rhea",
+            "fail",
+            f"Rhea worker did not come up: {type(exc).__name__}: {str(exc)[:300]}",
+        )
+
+    # Phase 6: ingest the catalog INSIDE the worker (zero host venv).
     ingest_only = os.environ.get("RHEA_INGEST_ONLY", "muscle")
-    print(f"  ▶  running rhea ingestion (RHEA_INGEST_ONLY={ingest_only}) ...")
-    ingest_env = os.environ.copy()
-    ingest_env.setdefault(
-        "DATABASE_URL",
-        "postgresql+asyncpg://postgres:postgres@localhost:5435/rhea",
+    print(f"  ▶  ingesting catalog (RHEA_INGEST_ONLY={ingest_only}; ~10s) ...")
+    ingest = subprocess.run(
+        [
+            "docker",
+            "exec",
+            "-e",
+            f"RHEA_INGEST_ONLY={ingest_only}",
+            _RHEA_CONTAINER,
+            "uv",
+            "run",
+            "-m",
+            "rhea.preprocess.update_tools",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=900,
     )
-    ingest_env.setdefault("EMBEDDING_URL", "http://localhost:11434/v1")
-    ingest_env.setdefault("MODEL", "mxbai-embed-large")
-    ingest_env["RHEA_INGEST_ONLY"] = ingest_only
-    result = subprocess.run(
-        [str(venv_python), "-m", "rhea.preprocess.update_tools"],
-        cwd=rhea_repo,
-        env=ingest_env,
-        timeout=600,
-    )
-    if result.returncode != 0:
+    if ingest.returncode != 0:
         return StepResult(
             "rhea",
             "partial",
-            f"`rhea.preprocess.update_tools` exited with {result.returncode}; "
-            "is apecx-rhea-postgres running? (run `apecx-setup infra` first)",
+            f"ingest (`update_tools`) exited {ingest.returncode}: "
+            f"{(ingest.stderr or ingest.stdout)[-300:]}",
         )
 
+    # Phase 7: confirm a non-empty ingested catalog (CC-1) + RHEA_MCP_URL.
+    # Query by the ingested tool's own name (CC-1's `find_tools("muscle")`)
+    # — a semantic query like "sequence alignment" can rank generic Galaxy
+    # text tools above a freshly-ingested tool when the catalog is mixed.
+    query = ingest_only.split(",")[0].strip() or "muscle"
+    try:
+        n_tools = _call_find_tools(mcp_url, query)
+    except Exception as exc:  # noqa: BLE001
+        return StepResult(
+            "rhea",
+            "partial",
+            f"worker up + ingest ran, but find_tools({query!r}) failed: "
+            f"{type(exc).__name__}: {str(exc)[:200]}",
+        )
+    if n_tools < 1:
+        return StepResult(
+            "rhea",
+            "partial",
+            f"worker up + ingest ran, but find_tools({query!r}) surfaced 0 tools "
+            f"— catalog may be empty (check `docker logs {_RHEA_CONTAINER}`)",
+        )
+    os.environ.setdefault("RHEA_MCP_URL", mcp_url)
     return StepResult(
         "rhea",
         "ok",
-        f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn rhea-server on next start",
+        f"worker {_RHEA_CONTAINER} healthy at {mcp_url}; "
+        f"find_tools({query!r}) surfaced {n_tools} tool(s); "
+        f"RHEA_MCP_URL={mcp_url}",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Step 5c — PyMOL image (E3-7)
+# ---------------------------------------------------------------------------
+
+_PYMOL_IMAGE = "apecx-pymol:3.1.0"
+
+
+def _step_pymol() -> StepResult:
+    """Build the version-pinned headless PyMOL image (E3-7, 2026-06-13).
+
+    The structural-reasoning stage (``StructuralReasoningStep``) shells
+    out to ``apecx-pymol:3.1.0`` for real per-residue SASA. Without the
+    image the stage degrades to a named-skip; building it here makes the
+    real structural path run out of the box.
+
+    Idempotent: skips when the image already exists (unless
+    ``APECX_PYMOL_REBUILD=1``). NEVER raises — degrades to ``skipped``
+    when docker is down.
+    """
+    _print_header("Step 5c of 6 — PyMOL image (structural reasoning)")
+
+    if not _docker_available():
+        return StepResult(
+            "pymol",
+            "skipped",
+            "docker daemon unreachable — PyMOL image not built. Install "
+            "Docker Desktop (https://docker.com/desktop), start it, then "
+            "re-run `apecx-setup pymol`. (Chain continues without it.)",
+        )
+
+    image_present = (
+        subprocess.run(
+            ["docker", "image", "inspect", _PYMOL_IMAGE],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).returncode
+        == 0
+    )
+    if image_present and os.environ.get("APECX_PYMOL_REBUILD") != "1":
+        return StepResult(
+            "pymol",
+            "ok",
+            f"image {_PYMOL_IMAGE} already present (APECX_PYMOL_REBUILD=1 to rebuild)",
+        )
+
+    # docker/pymol/ lives at the apecx repo root. This module is at
+    # src/apecx_integration/cli/setup.py → parents[3] is the repo root.
+    repo_root = Path(__file__).resolve().parents[3]
+    pymol_ctx = repo_root / "docker" / "pymol"
+    dockerfile = pymol_ctx / "Dockerfile"
+    if not dockerfile.is_file():
+        return StepResult(
+            "pymol",
+            "fail",
+            f"PyMOL Dockerfile not found at {dockerfile}",
+        )
+
+    print(f"  ▶  docker build {_PYMOL_IMAGE} from {pymol_ctx} (~5 min, conda solve) ...")
+    build = subprocess.run(
+        [
+            "docker",
+            "build",
+            "-t",
+            _PYMOL_IMAGE,
+            "-f",
+            str(dockerfile),
+            str(pymol_ctx),
+        ],
+        timeout=1800,
+    )
+    if build.returncode != 0:
+        return StepResult(
+            "pymol",
+            "fail",
+            f"`docker build {_PYMOL_IMAGE}` exited {build.returncode}; "
+            "inspect the build output above",
+        )
+    return StepResult(
+        "pymol",
+        "ok",
+        f"built {_PYMOL_IMAGE} (headless open-source PyMOL, version-pinned)",
     )
 
 
@@ -1083,26 +1294,55 @@ def _step_verify() -> StepResult:
         )
     )
 
-    # Rhea (G89): check that the bring-up has been done. We don't probe
-    # rhea-server reachability here (that's an apecx-mcp startup
-    # concern; `InfraOrchestrator` handles it). We check the static
-    # state apecx-setup rhea would have produced: checkout + venv +
-    # ingestion.
-    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
-        _find_rhea_repo,
-    )
-
-    rhea_repo = _find_rhea_repo()
-    if rhea_repo is None:
+    # Rhea (E3-4): the Docker path. We check the static state
+    # `apecx-setup rhea` produces: the from-fork worker image built +
+    # (optionally) the worker container running. We don't drive an MCP
+    # round-trip here (cheap stat-only checks only).
+    if not _docker_available():
         rhea_ok = False
-        rhea_detail = "no checkout found — `apecx-setup rhea` (opt-in)"
-    elif not (rhea_repo / ".venv" / "bin" / "python").exists():
-        rhea_ok = False
-        rhea_detail = f"checkout at {rhea_repo} but no venv — `apecx-setup rhea`"
+        rhea_detail = "docker down — `apecx-setup rhea` (opt-in) needs Docker"
     else:
-        rhea_ok = True
-        rhea_detail = f"checkout + venv ready at {rhea_repo}"
+        image_present = (
+            subprocess.run(
+                ["docker", "image", "inspect", _RHEA_IMAGE],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            ).returncode
+            == 0
+        )
+        if not image_present:
+            rhea_ok = False
+            rhea_detail = f"worker image {_RHEA_IMAGE} not built — `apecx-setup rhea`"
+        elif _container_running(_RHEA_CONTAINER):
+            rhea_ok = True
+            rhea_detail = f"worker {_RHEA_CONTAINER} running ({_rhea_mcp_url()})"
+        else:
+            rhea_ok = True
+            rhea_detail = f"image {_RHEA_IMAGE} built (worker not currently running)"
     checks.append(("rhea", rhea_ok, rhea_detail))
+
+    # PyMOL (E3-7): the version-pinned structural-reasoning image.
+    if not _docker_available():
+        pymol_ok = False
+        pymol_detail = "docker down — `apecx-setup pymol` needs Docker"
+    else:
+        pymol_present = (
+            subprocess.run(
+                ["docker", "image", "inspect", _PYMOL_IMAGE],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            ).returncode
+            == 0
+        )
+        pymol_ok = pymol_present
+        pymol_detail = (
+            f"image {_PYMOL_IMAGE} built"
+            if pymol_present
+            else f"image {_PYMOL_IMAGE} not built — `apecx-setup pymol`"
+        )
+    checks.append(("pymol", pymol_ok, pymol_detail))
 
     print()
     for name, ok, detail in checks:
@@ -1120,7 +1360,7 @@ def _step_verify() -> StepResult:
     # Postgres + Redis + MinIO are optional for many workflows; reflect
     # that honestly in the partial-vs-fail distinction. faiss + rhea
     # are also optional (opt-in per G81 + G89).
-    optional = {"postgres", "redis", "minio", "faiss", "rhea"}
+    optional = {"postgres", "redis", "minio", "faiss", "rhea", "pymol"}
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(
@@ -1145,6 +1385,7 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
     "rhea": lambda **_: _step_rhea(),
+    "pymol": lambda **_: _step_pymol(),
     "verify": lambda **_: _step_verify(),
 }
 
@@ -1154,6 +1395,7 @@ def _run_all(
     interactive: bool = True,
     with_rag: bool = False,
     with_rhea: bool = False,
+    with_pymol: bool = False,
     prefer_gh_release: bool = False,
 ) -> int:
     """Run the canonical install chain.
@@ -1213,6 +1455,16 @@ def _run_all(
                 "opt-in — run `apecx-setup rhea` or `apecx-setup --with-rhea` for Rhea-backed bioinformatics tools (~10 min one-time)",
             )
         )
+    if with_pymol:
+        results.append(_step_pymol())
+    else:
+        results.append(
+            StepResult(
+                "pymol",
+                "skipped",
+                "opt-in — run `apecx-setup pymol` or `apecx-setup --with-pymol` to build the headless PyMOL image for the structural-reasoning stage (~5 min one-time)",
+            )
+        )
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -1231,7 +1483,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "subcommand",
         nargs="?",
-        choices=["globus", "data", "infra", "llm", "rag", "rhea", "verify", "all"],
+        choices=["globus", "data", "infra", "llm", "rag", "rhea", "pymol", "verify", "all"],
         default="all",
         help="Step to run (default: all).",
     )
@@ -1266,6 +1518,16 @@ def main(argv: list[str] | None = None) -> None:
         ),
     )
     parser.add_argument(
+        "--with-pymol",
+        action="store_true",
+        help=(
+            "Include the headless PyMOL image build (E3-7: ~5 min one-time, "
+            "version-pinned apecx-pymol:3.1.0) in the default chain. Run this "
+            "when you want the structural-reasoning stage's REAL per-residue "
+            "SASA path (otherwise that stage degrades to a named-skip)."
+        ),
+    )
+    parser.add_argument(
         "--prefer-gh-release",
         action="store_true",
         help=(
@@ -1288,6 +1550,7 @@ def main(argv: list[str] | None = None) -> None:
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
                 with_rhea=args.with_rhea,
+                with_pymol=args.with_pymol,
                 prefer_gh_release=args.prefer_gh_release,
             )
         )
