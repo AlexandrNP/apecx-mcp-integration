@@ -122,6 +122,10 @@ def build_server() -> FastMCP:
     # workflow (list_workflows) then drives ANY of them through this generic
     # set, instead of one bespoke super-tool per task.
     server.tool()(eo_primitive_tools.run_workflow)
+    # Streaming variant: same run as run_workflow, but pushes each reasoning stage's
+    # report to the client as a progress + log notification as it completes (desktop
+    # transport). Headless clients keep using run_workflow (one-shot, unchanged).
+    server.tool()(eo_primitive_tools.run_workflow_streaming)
     server.tool()(eo_primitive_tools.inspect_run)
     server.tool()(eo_primitive_tools.inspect_workflow)
     server.tool()(eo_primitive_tools.apecx_context)

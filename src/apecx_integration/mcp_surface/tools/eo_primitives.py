@@ -18,12 +18,26 @@ markdown says so (its structured output is preserved via a handle, never dropped
 
 from __future__ import annotations
 
+import asyncio
 import logging
-from typing import Any
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any
+
+from mcp.server.fastmcp import Context
+
+if TYPE_CHECKING:
+    from nanobrain.core.step_events import StepEvent
 
 log = logging.getLogger(__name__)
 
 _SUCCESS_STATUSES = {"completed", "completed_no_await"}
+
+# A streamed stage report: the bundle's {stage, order, markdown, data} fields plus the
+# emitting step's identity (step_name, run_id). ``on_stage`` is a SYNCHRONOUS callback —
+# the G37 step-event subscriber fires synchronously inside the run.
+StageReport = dict[str, Any]
+OnStage = Callable[[StageReport], None]
+_STAGE_REPORTS_KEY = "stage_reports"
 
 
 async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -158,6 +172,174 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
     ).model_dump(mode="json")
 
 
+def _make_stage_streamer(on_stage: OnStage) -> Callable[[StepEvent], None]:
+    """Build a G37 step-event subscriber that extracts NEWLY-added stage reports.
+
+    Each reasoning stage appends one ``{stage, order, markdown, data}`` entry to the
+    bundle's ``stage_reports`` list (``composition/steps/_stage_report.py``); the list
+    accumulates step-to-step, so every ``step_complete`` event carries the FULL list so
+    far. The subscriber diffs against what it has already seen by ``(stage, order)`` and
+    invokes ``on_stage`` once per new report, IN ARRIVAL ORDER (= step-completion order,
+    which is NOT the render ``order`` field).
+
+    RELIABILITY (load-bearing — streaming is observability, not correctness): both the
+    extraction and the ``on_stage`` callback are wrapped so NO exception can escape into
+    the framework's ``publish_step_event`` loop and perturb the run. A dropped/late stage
+    is impossible by construction (each event carries the cumulative list, so a re-delivery
+    re-checks ``seen``); a callback failure is caught + LOUDLY logged, never propagated.
+    """
+    seen: set[tuple[Any, Any]] = set()
+
+    def _subscriber(event: StepEvent) -> None:
+        try:
+            if event.event_type != "step_complete":
+                return
+            outputs = event.payload.get("outputs")
+            if not isinstance(outputs, dict):
+                return
+            reports = outputs.get(_STAGE_REPORTS_KEY)
+            if not isinstance(reports, list):
+                return
+            for r in reports:
+                if not isinstance(r, dict):
+                    continue
+                key = (r.get("stage"), r.get("order"))
+                if key in seen:
+                    continue
+                seen.add(key)
+                report: StageReport = {
+                    "stage": r.get("stage"),
+                    "order": r.get("order"),
+                    "markdown": r.get("markdown"),
+                    "data": r.get("data"),
+                    "step_name": event.step_name,
+                    "run_id": event.run_id,
+                }
+                try:
+                    on_stage(report)
+                except Exception:  # noqa: BLE001 — observability MUST NOT break the run
+                    log.exception(
+                        "run_workflow_streamed: on_stage callback raised for stage %r "
+                        "(step %r) — swallowed; the run completes and returns the same result.",
+                        report["stage"],
+                        event.step_name,
+                    )
+        except Exception:  # noqa: BLE001 — an extraction bug MUST NOT break the run either
+            log.exception(
+                "run_workflow_streamed: stage-report extraction raised for a %r event from "
+                "step %r — swallowed.",
+                getattr(event, "event_type", "?"),
+                getattr(event, "step_name", "?"),
+            )
+
+    return _subscriber
+
+
+async def run_workflow_streamed(
+    name: str,
+    params: dict[str, Any] | None = None,
+    on_stage: OnStage | None = None,
+) -> dict[str, Any]:
+    """Run the catalog workflow ``name`` EXACTLY like ``run_workflow``, but push each
+    reasoning stage's report to ``on_stage`` as the producing step completes.
+
+    The return value is the SAME ``WorkflowResult``-shaped dict ``run_workflow`` returns
+    for the same inputs (this function literally ``return``s ``run_workflow``'s value) —
+    the headless one-shot output is unchanged. The streamed reports are exactly the stage
+    reports that compose the final document's ``### Reasoning trace`` (no divergence: both
+    read the same ``stage_reports`` entries).
+
+    Streaming is wired via nanobrain's G37 ``subscribe_to_step_events`` (``step_events.py``):
+    the subscriber stacks on top of the provenance subscriber ``run_workflow`` already
+    installs, so both observe every event. ``on_stage`` is invoked synchronously inside the
+    run; long work should be deferred by the caller (see ``run_workflow_streaming`` for the
+    MCP-notification adapter). A ``None`` ``on_stage`` runs the workflow with no streaming.
+    """
+    from nanobrain.core.step_events import subscribe_to_step_events
+
+    if on_stage is None:
+        return await run_workflow(name, params)
+
+    with subscribe_to_step_events(_make_stage_streamer(on_stage)):
+        return await run_workflow(name, params)
+
+
+async def run_workflow_streaming(
+    name: str,
+    params: dict[str, Any] | None = None,
+    ctx: Context | None = None,
+) -> dict[str, Any]:
+    """Run a catalog workflow and STREAM each reasoning stage to the MCP client as it
+    completes (desktop transport), then return the same result envelope ``run_workflow``
+    returns. Use this instead of ``run_workflow`` when a client wants live per-stage
+    progress (a desktop UI); a headless client should keep calling ``run_workflow``.
+
+    Per completed stage the client receives two MCP notifications: a progress notification
+    (``report_progress`` — increments a counter, ``message`` names the stage) and a
+    structured log notification (``send_log_message`` level=info — carries the full stage
+    ``{stage, order, markdown, data, step_name, run_id}`` so a desktop pane can render the
+    stage's report immediately). Progress notifications no-op cleanly when the client did
+    not request them (no ``progressToken``).
+
+    RELIABILITY: streaming is observability, not correctness. Notification failures are
+    caught + logged and NEVER change the run — the returned ``WorkflowResult`` is identical
+    whether or not the client is listening.
+    """
+    if ctx is None:
+        # No client context to stream to (e.g. a programmatic caller) — run unchanged.
+        return await run_workflow(name, params)
+
+    loop = asyncio.get_running_loop()
+    queue: asyncio.Queue[StageReport | object] = asyncio.Queue()
+    sentinel = object()
+
+    def _on_stage(report: StageReport) -> None:
+        # The G37 subscriber fires synchronously, possibly off the loop thread (a
+        # thread-executed step); hand the report to the loop thread. call_soon_threadsafe
+        # is safe from the loop thread too. Reports are enqueued IN ARRIVAL ORDER and the
+        # single consumer drains them in that order, so notification order == stage order.
+        try:
+            loop.call_soon_threadsafe(queue.put_nowait, report)
+        except Exception:  # noqa: BLE001 — never let an enqueue failure break the run
+            log.exception(
+                "run_workflow_streaming: failed to enqueue stage %r for notification.",
+                report.get("stage"),
+            )
+
+    async def _consume() -> None:
+        n = 0
+        while True:
+            item = await queue.get()
+            if item is sentinel:
+                return
+            report: StageReport = item  # type: ignore[assignment]
+            n += 1
+            try:
+                await ctx.report_progress(
+                    progress=float(n), message=f"stage complete: {report.get('stage')}"
+                )
+                await ctx.session.send_log_message(
+                    level="info",
+                    data={"event": "stage_report", **report},
+                    logger="apecx.eo.streaming",
+                )
+            except Exception:  # noqa: BLE001 — a notification failure must not break the run
+                log.exception(
+                    "run_workflow_streaming: failed to emit MCP notification for stage %r.",
+                    report.get("stage"),
+                )
+
+    consumer = asyncio.create_task(_consume())
+    try:
+        result = await run_workflow_streamed(name, params, on_stage=_on_stage)
+    finally:
+        # Signal end-of-stream and DRAIN: guarantees every stage notification is sent
+        # before the tool result is returned to the client (no lost final stage).
+        loop.call_soon_threadsafe(queue.put_nowait, sentinel)
+        await consumer
+    return result
+
+
 async def inspect_run(run_id: str, detail: bool = False) -> dict[str, Any]:
     """Return the per-step 'what ran' summary (status/timing/tool+LLM call counts) for a run."""
     from apecx_integration.composition.runtime.run_store import get_run_store
@@ -232,4 +414,11 @@ async def apecx_context() -> dict[str, Any]:
     return {"runs": runs, "n_runs": len(runs)}
 
 
-__all__ = ["apecx_context", "inspect_run", "inspect_workflow", "run_workflow"]
+__all__ = [
+    "apecx_context",
+    "inspect_run",
+    "inspect_workflow",
+    "run_workflow",
+    "run_workflow_streamed",
+    "run_workflow_streaming",
+]

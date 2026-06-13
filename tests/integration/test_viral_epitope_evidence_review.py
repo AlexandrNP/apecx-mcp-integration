@@ -289,6 +289,87 @@ def test_sequence_conservation_stage_e2e():
     assert "per-strain sequences" in seq_line, seq_line
 
 
+@needs_llm_seq
+def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
+    """E2-S END-TO-END: ``run_workflow_streamed`` on a real CHIKV query pushes each
+    reasoning stage's report to the desktop callback AS the producing step completes, and:
+
+      (a) the streamed stages arrive in step-completion order and cover the real stages
+          (data_readiness, sequence_conservation, structural_evidence,
+          structural_reasoning, functional_validation);
+      (b) the concatenation of streamed stage reports EQUALS the reasoning-trace content
+          in the final headless document (no divergence: desktop-live == headless-doc);
+      (c) the returned WorkflowResult satisfies the SAME 5-section contract + status=ok
+          that ``run_workflow`` returns — by construction (``run_workflow_streamed``
+          returns ``run_workflow``'s value verbatim).
+    """
+    from apecx_integration.composition.steps._stage_report import render_stage_reports
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow_streamed
+
+    streamed: list[dict] = []
+
+    out = asyncio.run(
+        run_workflow_streamed(
+            "viral_epitope_evidence_review",
+            {"query": _QUERY, "taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein"},
+            streamed.append,
+        )
+    )
+
+    arrival = [r["stage"] for r in streamed]
+    print("\nSTREAMED STAGE ARRIVAL ORDER:", arrival)
+
+    # (a) cover the real stages; the streamed reports arrive in step-completion order.
+    expected = {
+        "data_readiness",
+        "sequence_conservation",
+        "structural_evidence",
+        "structural_reasoning",
+        "functional_validation",
+    }
+    assert expected <= set(arrival), (expected - set(arrival), arrival)
+    # No duplicate stage was streamed.
+    assert len(arrival) == len(set(arrival)), arrival
+    # Step-completion order is monotonic through the DAG.
+    idx = {s: arrival.index(s) for s in expected}
+    assert (
+        idx["data_readiness"]
+        < idx["structural_evidence"]
+        < idx["sequence_conservation"]
+        < idx["structural_reasoning"]
+        < idx["functional_validation"]
+    ), idx
+
+    # (c) the returned envelope satisfies the standard 5-section contract.
+    assert out["status"] == "ok", out
+    assert out["error"] is None
+    assert out["run_id"]
+    md = out["markdown"]
+    headers = [
+        "# Answer",
+        "## Cross-data reasoning",
+        "## Integrated insight",
+        "## Sources and evidence",
+        "## Follow-up questions",
+    ]
+    positions = [md.find(h) for h in headers]
+    assert all(p != -1 for p in positions), (positions, md[:3000])
+    assert positions == sorted(positions), positions
+
+    # (b) streamed == headless: rendering the live-streamed reports reproduces the
+    # reasoning-trace block verbatim in the final document (same stage_reports, same
+    # deterministic render). render_stage_reports sorts by `order`, so both sides agree
+    # regardless of arrival order.
+    rendered = render_stage_reports({"stage_reports": streamed})
+    print("\nRENDERED-FROM-STREAMED TRACE:\n", rendered)
+    assert "### Reasoning trace" in md
+    assert rendered in md, (
+        "streamed stage reports diverge from the headless document's reasoning trace",
+        rendered,
+        md[md.find("### Reasoning trace") : md.find("### Reasoning trace") + 1500],
+    )
+
+
 @needs_llm
 def test_design_without_approval_returns_needs_input_e2e():
     """FAN-IN PROOF: requested_outputs=evidence_plus_design without a design_approval_id

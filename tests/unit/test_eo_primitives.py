@@ -298,6 +298,249 @@ def test_envelope_terminated_workflow_run_yields_workflow_result(monkeypatch, tm
     assert out["run_id"]
 
 
+# --------------------------------------------------------------------------- #
+# run_workflow_streamed — stage-report extraction (E2-S)
+# --------------------------------------------------------------------------- #
+def _step_complete(step_name: str, stage_reports: list[dict]):
+    """A fake G37 step_complete StepEvent carrying an accumulated stage_reports list."""
+    from nanobrain.core.step_events import StepEvent
+
+    return StepEvent(
+        event_type="step_complete",
+        step_name=step_name,
+        run_id="run-xyz",
+        timestamp_iso="2026-06-13T00:00:00+00:00",
+        payload={"outputs": {"stage_reports": stage_reports}, "duration_seconds": 0.1},
+    )
+
+
+def _rep(stage: str, order: int):
+    return {"stage": stage, "order": order, "markdown": f"{stage}-md", "data": {"k": stage}}
+
+
+def test_stage_streamer_emits_each_report_once_in_arrival_order():
+    """The subscriber diffs the accumulating stage_reports list by (stage, order): one
+    on_stage call per NEW report, in arrival order, no dupes — even though every event
+    re-carries the full cumulative list."""
+    received: list[dict] = []
+    sub = eo_primitives._make_stage_streamer(received.append)
+
+    a, b, c = _rep("context_assembly", 1), _rep("data_readiness", 0), _rep("structural_evidence", 2)
+    # Accumulating lists, as the real cascade delivers them (each step re-carries the prior).
+    sub(_step_complete("assemble", [a]))
+    sub(_step_complete("data_readiness", [a, b]))
+    sub(_step_complete("structural", [a, b, c]))
+
+    assert [r["stage"] for r in received] == [
+        "context_assembly",
+        "data_readiness",
+        "structural_evidence",
+    ]
+    # Identity fields are carried through from the emitting event.
+    assert all(r["run_id"] == "run-xyz" for r in received)
+    assert received[0]["step_name"] == "assemble"
+    assert received[1]["step_name"] == "data_readiness"
+    # Markdown + data round-trip verbatim.
+    assert received[0]["markdown"] == "context_assembly-md"
+    assert received[0]["data"] == {"k": "context_assembly"}
+
+
+def test_stage_streamer_ignores_non_complete_and_reportless_events():
+    """step_start / step_failed / a step_complete with no stage_reports → no on_stage call."""
+    from nanobrain.core.step_events import StepEvent
+
+    received: list[dict] = []
+    sub = eo_primitives._make_stage_streamer(received.append)
+
+    sub(StepEvent("step_start", "s", "r", "t", payload={"inputs": {}}))
+    sub(
+        StepEvent(
+            "step_failed", "s", "r", "t", payload={"exception": {"type": "X", "message": "m"}}
+        )
+    )
+    sub(_step_complete("plain", []))  # empty list
+    sub(StepEvent("step_complete", "s", "r", "t", payload={"outputs": {"no_reports": True}}))
+    assert received == []
+
+
+def test_stage_streamer_throwing_on_stage_does_not_propagate():
+    """A throwing on_stage callback is swallowed (observability != correctness): the
+    subscriber returns normally so the framework's publish loop / the run is untouched."""
+
+    def boom(_report):
+        raise RuntimeError("desktop pane crashed")
+
+    sub = eo_primitives._make_stage_streamer(boom)
+    # Must NOT raise — if it did, the framework's step would see a subscriber exception.
+    sub(_step_complete("assemble", [_rep("context_assembly", 1)]))
+
+
+# --------------------------------------------------------------------------- #
+# run_workflow_streamed — live (real cascade, no LLM): streamed == returned
+# --------------------------------------------------------------------------- #
+class _StageEmitStep1(BaseStep):
+    COMPONENT_TYPE = "test_stage_emit_1"
+
+    @classmethod
+    def _get_config_class(cls):
+        return StepConfig
+
+    async def process(self, input_data, **kw):
+        from apecx_integration.composition.steps._stage_report import append_stage_report
+
+        bundle = {"query": "x"}
+        append_stage_report(bundle, stage="alpha", order=0, markdown="alpha contributed")
+        return bundle
+
+
+class _StageEmitStep2(BaseStep):
+    COMPONENT_TYPE = "test_stage_emit_2"
+
+    @classmethod
+    def _get_config_class(cls):
+        return StepConfig
+
+    async def process(self, input_data, **kw):
+        from apecx_integration.composition.steps._stage_report import append_stage_report
+
+        data = input_data
+        if isinstance(data, dict) and set(data) == {"s2_in"} and isinstance(data["s2_in"], dict):
+            data = data["s2_in"]
+        bundle = dict(data)
+        append_stage_report(bundle, stage="beta", order=1, markdown="beta contributed")
+        return bundle
+
+
+def _build_stage_workflow():
+    b = WorkflowBuilder("eo_stage_wf", "stage-report streaming fixture")
+    b.add_input("wf_in", "DataUnitMemory")
+    b.add_output("wf_out", "DataUnitMemory")
+    b.add_step(
+        "s1",
+        f"{__name__}._StageEmitStep1",
+        input_data_units={
+            "s1_in": {"class": "nanobrain.core.data_unit.DataUnitMemory", "name": "s1_in"}
+        },
+        output_data_units={
+            "s1_out": {"class": "nanobrain.core.data_unit.DataUnitMemory", "name": "s1_out"}
+        },
+        triggers=[{"class": "nanobrain.core.trigger.DataUnitChangeTrigger", "data_unit": "s1_in"}],
+    )
+    b.add_step(
+        "s2",
+        f"{__name__}._StageEmitStep2",
+        input_data_units={
+            "s2_in": {"class": "nanobrain.core.data_unit.DataUnitMemory", "name": "s2_in"}
+        },
+        output_data_units={
+            "s2_out": {"class": "nanobrain.core.data_unit.DataUnitMemory", "name": "s2_out"}
+        },
+        triggers=[{"class": "nanobrain.core.trigger.DataUnitChangeTrigger", "data_unit": "s2_in"}],
+    )
+    b.add_link("wf_in", "s1.s1_in", link_type="direct")
+    b.add_link("s1.s1_out", "s2.s2_in", link_type="direct")
+    b.add_link("s2.s2_out", "wf_out", link_type="direct")
+    return b.load()
+
+
+def test_run_workflow_streamed_streams_stages_and_returns_same_result(monkeypatch):
+    """Real cascade (no LLM): run_workflow_streamed pushes alpha then beta in arrival
+    order (no dupes), AND returns the SAME envelope run_workflow returns for the same run."""
+    monkeypatch.setattr(workflow_registry, "load_catalog", _test_catalog_for("eo_stage_wf"))
+    monkeypatch.setattr(
+        workflow_registry, "_load_workflow_for_entry", lambda entry: _build_stage_workflow()
+    )
+
+    streamed: list[dict] = []
+    out_streamed = asyncio.run(
+        eo_primitives.run_workflow_streamed("eo_stage_wf", {"q": "x"}, streamed.append)
+    )
+    out_plain = asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}))
+
+    # Stages streamed live, each once, in arrival (step-completion) order.
+    assert [r["stage"] for r in streamed] == ["alpha", "beta"]
+    assert streamed[0]["step_name"] == "s1" and streamed[1]["step_name"] == "s2"
+
+    # The streamed run's envelope equals the headless run's, modulo the per-run run_id.
+    assert out_streamed["status"] == out_plain["status"] == "ok"
+    assert out_streamed["markdown"] == out_plain["markdown"]
+    assert out_streamed["data_preview"] == out_plain["data_preview"]
+
+
+# --------------------------------------------------------------------------- #
+# run_workflow_streaming — MCP desktop transport (progress + log notifications)
+# --------------------------------------------------------------------------- #
+class _FakeSession:
+    def __init__(self):
+        self.logs: list[dict] = []
+
+    async def send_log_message(self, *, level, data, logger=None, related_request_id=None):
+        self.logs.append({"level": level, "data": data, "logger": logger})
+
+
+class _FakeContext:
+    """Minimal FastMCP-Context stand-in recording the two notification channels."""
+
+    def __init__(self):
+        self.session = _FakeSession()
+        self.progress: list[tuple[float, str | None]] = []
+
+    async def report_progress(self, progress, total=None, message=None):
+        self.progress.append((progress, message))
+
+
+def test_run_workflow_streaming_emits_progress_and_log_per_stage(monkeypatch):
+    """The MCP adapter binds on_stage → ctx.report_progress + ctx.session.send_log_message,
+    once per stage, in order, and returns run_workflow_streamed's result verbatim. The
+    sync-subscriber → async-notification bridge (queue + drain) is exercised end to end."""
+    reports = [_rep("data_readiness", 0), _rep("structural_evidence", 2)]
+    for r in reports:
+        r.update(step_name="step-" + r["stage"], run_id="r1")
+
+    async def _fake_streamed(name, params, on_stage):
+        for r in reports:
+            on_stage(r)  # subscriber fires synchronously, as in the real run
+        return {"status": "ok", "markdown": "final doc", "run_id": "r1", "error": None}
+
+    monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
+
+    ctx = _FakeContext()
+    out = asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, ctx))
+
+    # Result returned verbatim (streaming did not alter the envelope).
+    assert out == {"status": "ok", "markdown": "final doc", "run_id": "r1", "error": None}
+    # One progress notification per stage, increasing counter, naming the stage, in order.
+    assert ctx.progress == [
+        (1.0, "stage complete: data_readiness"),
+        (2.0, "stage complete: structural_evidence"),
+    ]
+    # One structured log notification per stage carrying the full report, in order.
+    assert [lg["data"]["stage"] for lg in ctx.session.logs] == [
+        "data_readiness",
+        "structural_evidence",
+    ]
+    assert all(lg["data"]["event"] == "stage_report" for lg in ctx.session.logs)
+    assert ctx.session.logs[0]["data"]["markdown"] == "data_readiness-md"
+
+
+def test_run_workflow_streaming_without_ctx_runs_unchanged(monkeypatch):
+    """No client context (ctx=None) → no notifications, identical envelope (headless path)."""
+
+    async def _fake_run_workflow(name, params=None):
+        return {"status": "ok", "markdown": "doc", "run_id": "r2", "error": None}
+
+    monkeypatch.setattr(eo_primitives, "run_workflow", _fake_run_workflow)
+    out = asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, None))
+    assert out["status"] == "ok" and out["markdown"] == "doc"
+
+
+def test_build_server_registers_streaming_primitive():
+    from apecx_integration.mcp_surface.server import build_server
+
+    names = {t.name for t in asyncio.run(build_server().list_tools())}
+    assert "run_workflow_streaming" in names
+
+
 def _test_catalog_for(name: str):
     from apecx_integration.mcp_surface.workflow_registry import (
         WorkflowCatalog,
