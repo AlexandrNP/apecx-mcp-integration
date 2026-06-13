@@ -107,6 +107,8 @@ def build_server() -> FastMCP:
     """
     server: FastMCP = FastMCP("apecx-mcp")
 
+    _register_logging_capability(server)
+
     server.tool()(workflow_tools.start_workflow)
     server.tool()(workflow_tools.show_diff)
     server.tool()(workflow_tools.execute_workflow)
@@ -269,6 +271,39 @@ def build_server() -> FastMCP:
     )
 
     return server
+
+
+def _register_logging_capability(server: FastMCP) -> None:
+    """Make ``logging/setLevel`` a real, advertised MCP method.
+
+    FastMCP wires tools/resources/prompts but NOT the ``logging``
+    capability. Without a registered ``SetLevelRequest`` handler, a
+    standards-compliant client (Claude Desktop, or any client that
+    negotiates a log level during/after ``initialize``) gets
+    ``McpError: Method not found`` from ``session.set_logging_level(...)``,
+    which tears down the whole session BEFORE the streaming tool runs.
+
+    Registering a handler on the underlying low-level server — the same
+    ``_mcp_server`` seam FastMCP uses for its own ``list_tools`` /
+    ``call_tool`` handlers — does two things:
+
+    1. ``get_capabilities()`` flips ``logging`` on (it advertises the
+       capability iff a ``SetLevelRequest`` handler exists), so the
+       client's negotiation sees the method as supported.
+    2. ``logging/setLevel`` requests now resolve to this handler and
+       return ``EmptyResult`` (ok) instead of "Method not found".
+
+    The level is accepted-but-ignored: stage delivery rides
+    ``ServerSession.send_log_message``, which does NOT gate on a
+    configured level, so the per-stage streaming contract is unchanged
+    whether or not a client ever sets a level. See
+    ``docs/desktop_streaming_contract.md``.
+    """
+    from mcp.types import LoggingLevel
+
+    @server._mcp_server.set_logging_level()
+    async def _accept_logging_level(level: LoggingLevel) -> None:
+        log.debug("MCP set_logging_level: accepted level=%s (no-op)", level)
 
 
 async def _ping_control_plane(base_url: str) -> bool:

@@ -11,6 +11,15 @@ subprocess, does the MCP handshake, registers a real log handler + progress
 handler, and drives ``run_workflow_streaming`` over the wire. NO MOCK of the MCP
 transport — it is a genuine client↔server stdio round-trip (the whole point).
 
+ROBUSTNESS (E3-S-followup): the reference client now calls
+``session.set_logging_level("info")`` during init — the standards-compliant path
+a real desktop MCP client (Claude Desktop) takes. Before the fix that raised
+``McpError: Method not found`` and tore the session down BEFORE the streaming
+tool ran; the server now advertises + handles the MCP ``logging`` capability, so
+the call succeeds and the full stream still arrives. If the fix regressed, this
+test would not receive any stages (the session would be dead) — so the stage
+assertions below double as the regression guard for the capability fix.
+
 Asserts (CC-1, real data — not "didn't crash"):
   (a) the client receives >=6 stage notifications, IN ORDER, covering the real
       stages (data_readiness, structural_evidence, sequence_conservation,

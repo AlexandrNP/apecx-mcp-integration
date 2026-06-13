@@ -192,15 +192,16 @@ async def stream_workflow(
         ClientSession(read, write, logging_callback=logging_callback) as session,
     ):
         await session.initialize()
-        # NOTE (verified E3-5): we deliberately do NOT call
-        # ``session.set_logging_level("info")`` here. The apecx FastMCP server
-        # does not register the MCP ``logging`` capability, so ``logging/setLevel``
-        # is rejected with "Method not found" — which aborts the whole session.
-        # The server's ``send_log_message`` does NOT gate on a configured level
-        # (mcp/server/session.py just emits the notification), so stage logs are
-        # delivered to ``logging_callback`` regardless. A desktop client MUST NOT
-        # call ``set_logging_level`` against this server. See
-        # docs/desktop_streaming_contract.md.
+        # Standards-compliant negotiation (E3-S-followup): a spec-conformant
+        # client (Claude Desktop) sets a log level during/after init. The apecx
+        # server now ADVERTISES + HANDLES the MCP ``logging`` capability (a no-op
+        # SetLevelRequest handler, see server.py::_register_logging_capability),
+        # so this call SUCCEEDS instead of raising ``McpError: Method not found``
+        # and tearing down the session. The server's ``send_log_message`` does not
+        # gate on the configured level, so the per-stage stream still arrives in
+        # full. This call is the regression guard for that fix — driving it from
+        # the reference client proves the standards-compliant path is robust.
+        await session.set_logging_level("info")
         result = await session.call_tool(
             "run_workflow_streaming",
             {"name": WORKFLOW_NAME, "params": params},
