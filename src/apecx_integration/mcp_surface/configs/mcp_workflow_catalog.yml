@@ -165,3 +165,45 @@ workflows:
     output_envelope_key: workflow_output
     # BV-BRC network + Rhea MCP round-trip (+ first-run conda build) — give the cascade headroom.
     settle_ms: 2000
+
+  - tool_name: viral_epitope_evidence_review
+    description: |
+      Assemble + synthesize an evidence bundle for a viral epitope / antigen / protein question.
+      Runs concurrent retrieval (domain RAG, VIOLIN/BV-BRC, PubMed, and the APECx harvested Globus
+      corpus), then a dedicated PDB + EMDB structural-evidence lookup (separated by publisher), and
+      synthesizes grounded Markdown with inline citations. A "Structural evidence (PDB / EMDB)"
+      section is ALWAYS present: it lists the structures found, or states explicitly that none were
+      found (no-hit is never silent).
+
+      Call with {query} (free-text evidence question); optionally {taxon_id, protein} to focus.
+      Example: {query: "conserved chikungunya E1 structural epitopes", protein: "E1"}. Needs a
+      configured LLM endpoint (APECX_LLM_*) and network access to the Globus/PubMed sources;
+      retrieval branches degrade loudly to empty when a source is unreachable.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.viral_epitope_evidence_review.builder
+      function: build_viral_epitope_evidence_review_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        query:
+          type: string
+          description: "The scientist's free-text evidence question."
+        taxon_id:
+          type: integer
+          description: "Optional NCBI taxon id to focus the query."
+        protein:
+          type: string
+          description: "Optional protein/antigen name to focus structural lookup."
+        requested_outputs:
+          type: string
+          description: "'evidence_only' (default). 'evidence_plus_design' is a v1.1 follow-up."
+      required:
+        - query
+    # First step is `assemble` (SynthesisContextAssemblyStep), whose input DU is `assembly_input`.
+    input_envelope_key: assembly_input
+    output_envelope_key: workflow_output
+    # Concurrent network retrieval (Globus + PubMed + BV-BRC) + one LLM synthesis round-trip.
+    settle_ms: 3000
+    timeout_seconds: 600.0

@@ -58,6 +58,7 @@ def search(
     *,
     max_results: int = 20,
     offset: int = 0,
+    filters: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     """Query the APECx Globus Search index.
 
@@ -67,6 +68,15 @@ def search(
         max_results: Hard cap on returned hits. Globus enforces a max
             of 100 per request; values above that are clamped.
         offset: Starting offset for pagination.
+        filters: Optional list of Globus Search filter clauses (e.g.
+            ``[{"type": "match_any", "field_name": "publisher.name",
+            "values": ["RCSB PDB"]}]``). When provided, the clauses are
+            attached to the post_search payload AND ``advanced: true`` is
+            set (structured field filters require advanced mode). This is
+            how callers restrict the aggregate index to a single logical
+            source (PDB vs EMDB) by ``publisher.name`` — the verified
+            server-side discriminator. ``None`` (default) preserves the
+            original free-text-only behavior exactly.
 
     Returns:
         List of normalized hit dicts with keys ``subject`` (the unique
@@ -98,12 +108,18 @@ def search(
     index_uuid = _resolve_index_uuid()
     capped = max(1, min(int(max_results), 100))
 
+    payload: dict[str, Any] = {"q": query.strip(), "limit": capped, "offset": int(offset)}
+    if filters:
+        # Structured field filters require Globus "advanced" query mode;
+        # without advanced=true the filters are silently ignored and the
+        # query degrades to free-text — exactly the silent-failure shape
+        # we refuse. Set it explicitly whenever filters are present.
+        payload["filters"] = filters
+        payload["advanced"] = True
+
     try:
         client = SearchClient()
-        result = client.post_search(
-            index_uuid,
-            {"q": query.strip(), "limit": capped, "offset": int(offset)},
-        )
+        result = client.post_search(index_uuid, payload)
     except Exception as exc:
         raise GlobusSearchUnavailableError(
             f"Globus Search query failed against index {index_uuid}: {type(exc).__name__}: {exc}"
