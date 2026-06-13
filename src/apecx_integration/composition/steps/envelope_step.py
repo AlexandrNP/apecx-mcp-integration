@@ -88,6 +88,29 @@ class EnvelopeStep(BaseStep):
                 f"{markdown_key!r} string; got {type(markdown).__name__}={markdown!r}"
             )
 
+        # Return-of-control passthrough: when an upstream gate attaches a
+        # ``control_transfer`` (a serialized ControlTransfer dict), this is a
+        # ``needs_input`` terminal — surface it AS such rather than a plain ``ok``.
+        # Backward-compatible: callers that never set the key get the ok path below.
+        raw_ct = input_data.get("control_transfer")
+        if raw_ct is not None:
+            from apecx_integration.composition.schemas.control_transfer import ControlTransfer
+
+            ct = (
+                raw_ct
+                if isinstance(raw_ct, ControlTransfer)
+                else ControlTransfer.model_validate(raw_ct)
+            )
+            result = WorkflowResult.needs_input(
+                ct, markdown=markdown, run_id=input_data.get("run_id")
+            )
+            log.info(
+                "EnvelopeStep %s: emitted needs_input WorkflowResult (reason=%s)",
+                self.name,
+                ct.reason,
+            )
+            return {_OUTPUT_KEY: result.model_dump(mode="json")}
+
         data_handle: str | None = None
         data_preview: dict[str, Any] | None = None
         raw_data = input_data.get(data_key)

@@ -284,9 +284,22 @@ name: my_trigger
 
 - **DataUnitChangeTrigger** subscribes via `register_change_listener` on the
   watched data unit. Zero polling overhead. Fires immediately on SET.
-- **AllDataReceivedTrigger** *polls* every 100 ms until all listed units have
-  non-null data, then fires once. Higher overhead; use only for true
-  multi-input gating.
+- **AllDataReceivedTrigger** is **event-driven** (G120) — it registers a
+  change-listener per input DU and re-checks on each change; the 100 ms poll is
+  only a fallback for non-event-capable DU doubles. It is **RE-ARMABLE via value
+  comparison** (2026-06-13): it fires the first time all inputs are present, then
+  re-fires whenever the input value-tuple DIFFERS from the last fire — **"any input
+  changed", NOT "all changed"**. A same-query re-run that only adds an approval to
+  a *control* input (evidence input unchanged) still re-fires; a byte-identical
+  re-run does NOT (the prior output is already correct). This makes a **cached,
+  re-runnable** fan-in workflow correct — before the fix it fired once then went
+  inert, so run 2+ returned STALE run-1 output. **Do NOT clear a fan-in's inputs to
+  force a re-fire** (an earlier design did this and broke same-query re-runs: an
+  upstream link suppresses no-op transfers, so a cleared-but-unchanged input is
+  never re-delivered and the gate hangs at None). The fire-lock is created per
+  running loop (a cached workflow runs across many event loops). Use for true
+  multi-input gating; one input may arrive long before the other (early-arrival
+  is handled).
 - **TimerTrigger** uses `asyncio.sleep(interval)` in a loop; doesn't watch
   data units.
 - **ManualTrigger** does nothing until you call `await trigger.fire()`.

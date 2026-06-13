@@ -62,6 +62,16 @@ needs_llm_and_globus = pytest.mark.skipif(
     reason="needs a reachable LLM endpoint (APECX_LLM_*) AND Globus Search",
 )
 
+# The fan-in / design-gate proof tests exercise the AllDataReceivedTrigger re-fire
+# and the gate's needs_input/approval logic — none of which touch Globus. The
+# structural leg degrades LOUD (renders its section header with an outage/no-hit
+# note) when Globus is unreachable, so these run on LLM alone. Gating them on Globus
+# too would leave the fan-in fix unverified whenever Globus is flaky.
+needs_llm = pytest.mark.skipif(
+    not _llm_reachable(),
+    reason="needs a reachable LLM endpoint (APECX_LLM_*)",
+)
+
 _QUERY = "conserved chikungunya structural polyprotein epitopes and structural references"
 
 
@@ -76,7 +86,7 @@ def test_builder_produces_workflow_with_child_steps():
     wf = build_viral_epitope_evidence_review_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", None)
     assert isinstance(children, dict)
-    assert set(children) == {"assemble", "structural", "review", "envelope"}
+    assert set(children) == {"normalize", "assemble", "structural", "review", "gate", "envelope"}
 
 
 def test_registered_in_catalog_and_listed():
@@ -137,3 +147,44 @@ def test_structural_no_hit_is_named_e2e(monkeypatch):
     # Degrade-loud guarantees a result; the structural section names the no-hit explicitly.
     assert out["status"] == "ok", out
     assert "No PDB or EMDB structural records" in out["markdown"], out["markdown"][:2000]
+
+
+@needs_llm
+def test_design_without_approval_returns_needs_input_e2e():
+    """FAN-IN PROOF: requested_outputs=evidence_plus_design without a design_approval_id
+    must reach the gate (via the AllDataReceivedTrigger fan-in) and return needs_input —
+    proving the lightweight fan-in fires at runtime, not just loads."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            {"query": _QUERY, "requested_outputs": "evidence_plus_design"},
+        )
+    )
+    assert out["status"] == "needs_input", out
+    assert out["control_transfer"]["reason"] == "needs_prerequisite"
+    # Evidence is NOT discarded on the pause — the gate still returns the gathered evidence.
+    assert "## Structural evidence" in out["markdown"], out["markdown"][:2000]
+    assert "WITHHELD" in out["markdown"]
+
+
+@needs_llm
+def test_design_with_approval_appends_design_section_e2e():
+    """FAN-IN PROOF (approved path): with a design_approval_id the gate opens and appends
+    the design-hypotheses section carrying approval provenance."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            {
+                "query": _QUERY,
+                "requested_outputs": "evidence_plus_design",
+                "design_approval_id": "appr-e2e-001",
+            },
+        )
+    )
+    assert out["status"] == "ok", out
+    assert "Design / optimization hypotheses (approved)" in out["markdown"], out["markdown"][:2000]
+    assert "appr-e2e-001" in out["markdown"]  # approval provenance carried through

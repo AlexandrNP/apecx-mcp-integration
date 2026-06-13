@@ -31,7 +31,7 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 5, f"expected 5 links, got {len(links)}"
+    assert len(links) == 8, f"expected 8 links (incl. the fan-in edge), got {len(links)}"
     for name, entry in links.items():
         link_cfg = entry["config"]
         assert link_cfg["link_type"] == "direct", f"{name}: only DirectLinks expected"
@@ -48,13 +48,41 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
     wf = build_viral_epitope_evidence_review_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", None)
     assert isinstance(children, dict)
-    assert set(children) == {"assemble", "structural", "review", "envelope"}
+    assert set(children) == {"normalize", "assemble", "structural", "review", "gate", "envelope"}
 
 
 def test_entry_step_input_schema_requires_query():
-    """RoC-2c source: the entry step's step_input_schema drives find_param_gaps."""
+    """RoC-2c source: the ENTRY step (normalize) step_input_schema drives find_param_gaps.
+    Its input DU (normalize_input) is the deposit point = catalog input_envelope_key."""
     cfg = _evidence_workflow_builder().get_config()
-    assemble = cfg["steps"]["assemble"]
-    schema = assemble["step_input_schema"]["json_schema"]
-    assert schema["required"] == ["assembly_input"]
-    assert schema["properties"]["assembly_input"]["required"] == ["query"]
+    normalize = cfg["steps"]["normalize"]
+    schema = normalize["step_input_schema"]["json_schema"]
+    assert schema["required"] == ["normalize_input"]
+    assert schema["properties"]["normalize_input"]["required"] == ["query"]
+
+
+def test_control_fanned_from_normalize_not_workflow_input():
+    """REGRESSION: gate.control_in must be fed from normalize.normalize_out (a DU the
+    deposit actually sets), NOT from workflow_input (which run_workflow never sets —
+    the deposit goes to input_envelope_key=normalize_input). This guards the silent
+    failure where the gate never fires because control_in stays empty."""
+    cfg = _evidence_workflow_builder().get_config()
+    sources = {e["config"]["source"]: e["config"]["target"] for e in cfg["links"].values()}
+    # control_in is fed by normalize.normalize_out, and the same DU also feeds assemble.
+    assert "normalize.normalize_out" in sources or any(
+        e["config"]["target"] == "gate.control_in"
+        and e["config"]["source"] == "normalize.normalize_out"
+        for e in cfg["links"].values()
+    )
+    targets_of_normalize_out = {
+        e["config"]["target"]
+        for e in cfg["links"].values()
+        if e["config"]["source"] == "normalize.normalize_out"
+    }
+    assert "gate.control_in" in targets_of_normalize_out
+    assert "assemble.assembly_input" in targets_of_normalize_out
+    # And NOTHING fans control from workflow_input into the gate (the old bug).
+    assert not any(
+        e["config"]["source"] == "workflow_input" and e["config"]["target"] == "gate.control_in"
+        for e in cfg["links"].values()
+    )

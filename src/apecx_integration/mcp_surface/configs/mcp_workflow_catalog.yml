@@ -198,11 +198,18 @@ workflows:
           description: "Optional protein/antigen name to focus structural lookup."
         requested_outputs:
           type: string
-          description: "'evidence_only' (default). 'evidence_plus_design' is a v1.1 follow-up."
+          description: >-
+            'evidence_only' (default) or 'evidence_plus_design' (the latter needs a
+            design_approval_id, else the gate returns needs_input).
+        design_approval_id:
+          type: string
+          description: "Approval token (from the approval control plane) for design output."
       required:
         - query
-    # First step is `assemble` (SynthesisContextAssemblyStep), whose input DU is `assembly_input`.
-    input_envelope_key: assembly_input
+    # First step is `normalize` (EvidenceQueryNormalizeStep); its input DU `normalize_input`
+    # is the deposit point. It fans the params to assemble (query) AND the design gate
+    # (control fields) — the deposit sets THIS DU, not workflow_input.
+    input_envelope_key: normalize_input
     output_envelope_key: workflow_output
     # Concurrent network retrieval (Globus + PubMed + BV-BRC) + one LLM synthesis round-trip.
     settle_ms: 3000

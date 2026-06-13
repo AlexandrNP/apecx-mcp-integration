@@ -3,33 +3,44 @@
 Catalog entry-point: a no-arg callable that constructs the workflow with
 ``nanobrain.lightweight.WorkflowBuilder`` and returns ``builder.load()``.
 
-Pipeline (linear DAG; each DirectLink inherits ``auto_transfer: true`` from
-config_version 2; each step reads the one bundle it needs out of the prior
+Pipeline (DAG with one fan-in; each DirectLink inherits ``auto_transfer: true``
+from config_version 2; each step reads the one bundle it needs out of the prior
 step's output — no TransformLink, no ConditionalLink, no cycle):
 
-    workflow_input {query, taxon_id?, protein?, requested_outputs?, ...}
-      → assemble    SynthesisContextAssemblyStep   → bundle{query, rag, bvbrc, violin, pubs, globus}
-      → structural  StructuralEvidenceStep         → bundle + PDB/EMDB (merged into globus_results)
-                                                       + structural_records + structural_note (loud no-hit)
-      → review      EvidenceReviewSynthesisStep    → {markdown}  (LLM synthesis + deterministic
-                                                       structural section)
-      → envelope    EnvelopeStep                   → WorkflowResult
+    workflow_input {query, taxon_id?, protein?, requested_outputs?, design_approval_id?}
+      → normalize   EvidenceQueryNormalizeStep     → params (passthrough; the DEPOSIT POINT)
+          ├→ assemble    SynthesisContextAssemblyStep → bundle{query, rag, bvbrc, violin, pubs, globus}
+          │    → structural  StructuralEvidenceStep   → bundle + PDB/EMDB (merged) + structural_note
+          │    → review      EvidenceReviewSynthesisStep → {markdown} (LLM + deterministic structural)
+          │                                            ↘ gate.review_in
+          └────────────────────────────────────────────→ gate.control_in   (the second fan-in edge)
+      → gate        DesignGateStep (FAN-IN)        → {markdown, control_transfer?}
+      → envelope    EnvelopeStep                   → WorkflowResult (ok | needs_input)
       → workflow_output
 
-DU-NAME CONTRACT (load-bearing — do not rename): ``SynthesisContextAssemblyStep``
-hard-codes its trigger-envelope unwrap to the key ``assembly_input`` (and emits
-its bundle as the step's return), so the assemble step's input DU MUST be
-``assembly_input``. The other two custom steps unwrap their own declared input
-key (``structural_input`` / ``review_input``). EnvelopeStep unwraps generically.
+    WHY normalize exists (load-bearing): run_workflow deposits the input under the
+    catalog ``input_envelope_key`` = ``normalize.normalize_input`` — NOT the
+    ``workflow_input`` DU. So control fields CANNOT be fanned from workflow_input
+    (it never gets set on that path); they are captured at ``normalize`` and fanned
+    out from its real output DU to BOTH assemble (query) and gate.control_in
+    (requested_outputs / design_approval_id). The gate joins review_in + control_in
+    via an AllDataReceivedTrigger (a fan-in, not a cycle — avoids the G99 cycle-test
+    mandate). Verified by a real run_workflow integration test.
 
-Design output (``requested_outputs="evidence_plus_design"`` + approval gating) is
-a deliberate v1.1 follow-up: it needs control-state (``requested_outputs`` /
-``design_approval_id``) to reach a terminal gate, which the reused closed steps
-drop — the nanobrain-native fix is an ``AllDataReceivedTrigger`` fan-in, which is
-being verified separately before it is built on. v1 ships the evidence core
-(``requested_outputs`` is accepted in the schema but only ``evidence_only`` is
-honored). Missing-``query`` gating is automatic via RoC-2c (the entry step's
-``step_input_schema`` below drives ``find_param_gaps`` at the run_workflow seam).
+DU-NAME CONTRACT (load-bearing — do not rename): ``SynthesisContextAssemblyStep``
+hard-codes its trigger-envelope unwrap to the key ``assembly_input``, so its input
+DU MUST be ``assembly_input``. ``normalize`` is the entry/deposit step
+(``normalize_input``). The custom steps unwrap their own declared keys
+(``structural_input`` / ``review_input`` / ``normalize_input``).
+
+Design output: ``requested_outputs="evidence_plus_design"`` opens the
+``DesignGateStep``. Without a ``design_approval_id`` the gate returns
+``needs_input`` (needs_prerequisite) — approval is EXPLICIT DATA, never inferred
+from text — while still returning the gathered evidence. With an approval token it
+appends a labelled design-hypotheses section (Phase B wires the evidence-bound LLM
+generation; Phase A confirms the gate + provenance). Missing-``query`` gating is
+automatic via RoC-2c (the entry step's ``step_input_schema`` below drives
+``find_param_gaps`` at the run_workflow seam).
 """
 
 from __future__ import annotations
@@ -42,14 +53,14 @@ _STEPS = "apecx_integration.composition.steps"
 
 
 # RoC-2a — authoritative input contract on the ENTRY step (G6 step_input_schema).
-# Wrapped shape: the entry data unit ``assembly_input`` holds the parameter dict.
-# ``find_param_gaps`` unwraps this level to derive required params; ``obtain_via``
-# is an annotation for the frontier LLM (jsonschema ignores unknown keywords).
+# The entry step is ``normalize`` (its input DU ``normalize_input`` is the deposit
+# point = the catalog ``input_envelope_key``). ``find_param_gaps`` unwraps this level
+# to derive required params; ``obtain_via`` is an annotation for the frontier LLM.
 EVIDENCE_INPUT_SCHEMA: dict[str, Any] = {
     "json_schema": {
         "type": "object",
         "properties": {
-            "assembly_input": {
+            "normalize_input": {
                 "type": "object",
                 "properties": {
                     "query": {
@@ -66,13 +77,24 @@ EVIDENCE_INPUT_SCHEMA: dict[str, Any] = {
                     },
                     "requested_outputs": {
                         "type": "string",
-                        "obtain_via": "'evidence_only' (default) — 'evidence_plus_design' is v1.1",
+                        "obtain_via": (
+                            "'evidence_only' (default) or 'evidence_plus_design' — the "
+                            "latter needs a design_approval_id (the gate returns "
+                            "needs_input if absent)"
+                        ),
+                    },
+                    "design_approval_id": {
+                        "type": "string",
+                        "obtain_via": (
+                            "approval token from the approval control plane (approve); "
+                            "required only when requested_outputs='evidence_plus_design'"
+                        ),
                     },
                 },
                 "required": ["query"],
             }
         },
-        "required": ["assembly_input"],
+        "required": ["normalize_input"],
     }
 }
 
@@ -99,12 +121,22 @@ def _evidence_workflow_builder():
     b.add_input("workflow_input", "DataUnitMemory")
     b.add_output("workflow_output", "DataUnitMemory")
 
-    # Entry step: its input DU MUST be ``assembly_input`` (the step's hard-coded
-    # unwrap key). step_input_schema makes it the RoC-2c required-input source.
+    # Entry step (the deposit point = catalog input_envelope_key=normalize_input).
+    # It captures the params and fans them out to BOTH assemble (query) and the gate
+    # (control fields) — because run_workflow deposits under THIS step's input DU, NOT
+    # the workflow_input DU, so control state CANNOT be fanned from workflow_input.
+    # step_input_schema here is the RoC-2c required-input source.
+    b.add_step(
+        "normalize",
+        f"{_STEPS}.evidence_query_normalize_step.EvidenceQueryNormalizeStep",
+        step_input_schema=EVIDENCE_INPUT_SCHEMA,
+        input_data_units=_du("normalize_input"),
+        output_data_units=_du("normalize_out"),
+        triggers=_trig("normalize_input"),
+    )
     b.add_step(
         "assemble",
         f"{_STEPS}.synthesis_context_assembly_step.SynthesisContextAssemblyStep",
-        step_input_schema=EVIDENCE_INPUT_SCHEMA,
         input_data_units=_du("assembly_input"),
         output_data_units=_du("synthesis_bundle_output"),
         triggers=_trig("assembly_input"),
@@ -123,6 +155,27 @@ def _evidence_workflow_builder():
         output_data_units=_du("review_output"),
         triggers=_trig("review_input"),
     )
+    # FAN-IN gate: joins the synthesized evidence (review_in) with the ORIGINAL
+    # control fields (control_in, fanned out from `normalize.normalize_out` — the
+    # reused assembly/synthesis steps drop them) via an AllDataReceivedTrigger. It
+    # emits {markdown, control_transfer?} for the terminal EnvelopeStep. This is the
+    # nanobrain-native control-state threading (fan-in, not a cycle).
+    b.add_step(
+        "gate",
+        f"{_STEPS}.design_gate_step.DesignGateStep",
+        input_data_units={**_du("review_in"), **_du("control_in")},
+        output_data_units=_du("gate_output"),
+        triggers=[
+            {
+                "class": "nanobrain.core.trigger.AllDataReceivedTrigger",
+                "trigger_type": "all_data_received",
+                "data_units": ["review_in", "control_in"],
+            }
+        ],
+    )
+    # Terminal EnvelopeStep shapes the gate's {markdown, control_transfer?} into the
+    # standard WorkflowResult (the form run_workflow recognizes). control_transfer
+    # present → needs_input; absent → ok.
     b.add_step(
         "envelope",
         f"{_STEPS}.envelope_step.EnvelopeStep",
@@ -131,12 +184,18 @@ def _evidence_workflow_builder():
         triggers=_trig("envelope_input"),
     )
 
-    b.add_link("workflow_input", "assemble.assembly_input", link_type="direct")
+    b.add_link("workflow_input", "normalize.normalize_input", link_type="direct")
+    b.add_link("normalize.normalize_out", "assemble.assembly_input", link_type="direct")
+    # Fan-out from a REAL output DU (normalize_out, which the deposit actually sets):
+    # the control fields reach the gate directly, bypassing the steps that drop them.
+    # This is the second edge of the fan-in into `gate`.
+    b.add_link("normalize.normalize_out", "gate.control_in", link_type="direct")
     b.add_link(
         "assemble.synthesis_bundle_output", "structural.structural_input", link_type="direct"
     )
     b.add_link("structural.structural_bundle", "review.review_input", link_type="direct")
-    b.add_link("review.review_output", "envelope.envelope_input", link_type="direct")
+    b.add_link("review.review_output", "gate.review_in", link_type="direct")
+    b.add_link("gate.gate_output", "envelope.envelope_input", link_type="direct")
     b.add_link("envelope.workflow_result", "workflow_output", link_type="direct")
 
     return b

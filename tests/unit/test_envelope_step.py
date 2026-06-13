@@ -86,6 +86,22 @@ def test_framework_envelope_unwrap(tmp_path):
     assert out["workflow_result"]["markdown"] == "# wrapped"
 
 
+def test_control_transfer_passthrough_yields_needs_input(tmp_path):
+    """An upstream gate may attach a serialized ControlTransfer → needs_input terminal.
+    Backward-compatible: only fires when the key is present."""
+    step = _stage(tmp_path)
+    ct = {
+        "reason": "needs_prerequisite",
+        "next_action": {"kind": "resolve_prerequisite", "prerequisite": "design_approval"},
+        "message": "approve first",
+    }
+    out = asyncio.run(step.process({"markdown": "evidence here", "control_transfer": ct}))
+    wr = out["workflow_result"]
+    assert wr["status"] == "needs_input"
+    assert wr["control_transfer"]["reason"] == "needs_prerequisite"
+    assert wr["markdown"] == "evidence here"  # evidence retained on the pause
+
+
 def _stage_keyed(tmp_path: Path, **cfg) -> EnvelopeStep:
     p = tmp_path / "envelope_keyed.yml"
     lines = ["name: envelope_keyed"] + [f"{k}: {v}" for k, v in cfg.items()]
