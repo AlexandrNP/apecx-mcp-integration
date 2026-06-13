@@ -112,15 +112,45 @@ def _structural_retrieval_provenance(bundle: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _analyzed_structures_prov(sr: dict[str, Any]) -> list[dict[str, Any]]:
+    """The N structures analysed for cross-structure corroboration (E3-13), as
+    ``[{pdb_id, structure_kind, available}]``. Falls back to a single-entry list derived
+    from the primary ``pdb_id``/``structure_kind`` for a single-structure (pre-E3-13)
+    bundle, so the record is always a non-empty list when a structure was analysed.
+    """
+    analyzed = sr.get("analyzed_structures")
+    if isinstance(analyzed, list) and analyzed:
+        return [
+            {
+                "pdb_id": s.get("pdb_id"),
+                "structure_kind": s.get("structure_kind"),
+                "available": bool(s.get("available")),
+            }
+            for s in analyzed
+            if isinstance(s, dict)
+        ]
+    if sr.get("pdb_id"):
+        return [
+            {
+                "pdb_id": sr.get("pdb_id"),
+                "structure_kind": sr.get("structure_kind"),
+                "available": True,
+            }
+        ]
+    return []
+
+
 def _structural_reasoning_provenance(bundle: dict[str, Any]) -> dict[str, Any]:
     """The chosen PDB + ranking rationale, the assembly/SASA settings, exposed/buried
-    counts — all already in ``bundle['structural_reasoning']`` (E3-1). Names the absence
-    when no structure was selected / PyMOL was unavailable.
+    counts — all already in ``bundle['structural_reasoning']`` (E3-1). E3-13 additionally
+    records the N analysed structures (ids + per-structure kind). Names the absence when no
+    structure was selected / PyMOL was unavailable.
     """
     sr = bundle.get("structural_reasoning")
     if not isinstance(sr, dict) or not sr.get("available"):
         note = sr.get("note") if isinstance(sr, dict) else None
         pdb = sr.get("pdb_id") if isinstance(sr, dict) else None
+        analyzed = _analyzed_structures_prov(sr) if isinstance(sr, dict) else []
         return {
             "available": False,
             "note": note or "no structural-level reasoning was performed for this run",
@@ -140,9 +170,13 @@ def _structural_reasoning_provenance(bundle: dict[str, Any]) -> dict[str, Any]:
             "n_buried": None,
             "ranking_rationale": [],
             "n_considered": None,
+            "analyzed_structures": analyzed,
+            "n_analyzed_structures": sr.get("n_analyzed_structures") if isinstance(sr, dict) else 0,
+            "n_corroborated": None,
         }
     sasa = sr.get("sasa_settings") if isinstance(sr.get("sasa_settings"), dict) else {}
     sel = sr.get("selection") if isinstance(sr.get("selection"), dict) else {}
+    analyzed = _analyzed_structures_prov(sr)
     return {
         "available": True,
         "note": sr.get("note"),
@@ -162,6 +196,9 @@ def _structural_reasoning_provenance(bundle: dict[str, Any]) -> dict[str, Any]:
         "n_buried": sr.get("n_buried"),
         "ranking_rationale": sel.get("reasons") or [],
         "n_considered": sel.get("considered"),
+        "analyzed_structures": analyzed,
+        "n_analyzed_structures": sr.get("n_analyzed_structures") or len(analyzed),
+        "n_corroborated": sr.get("n_corroborated"),
     }
 
 

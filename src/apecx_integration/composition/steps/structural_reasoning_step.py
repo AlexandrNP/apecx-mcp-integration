@@ -3,9 +3,24 @@
 The structural-LEVEL reasoning leg of ``viral_epitope_evidence_review``. It sits
 AFTER ``merge`` (so it sees BOTH the MSA-derived conserved positions and the
 PDB/EMDB structural records) and BEFORE ``review`` (so the synthesis can cite its
-result). It is *real structural reasoning*, not retrieval: it picks a candidate PDB
-structure from ``structural_records``, runs a CONTAINERIZED, headless, open-source
-PyMOL job that
+result). It is *real structural reasoning*, not retrieval: it picks the top-N candidate
+PDB structures from ``structural_records`` (relevance-ranked), and for EACH runs a
+CONTAINERIZED, headless, open-source PyMOL job that
+
+E3-13 (multi-structure corroboration): rather than analysing only the single
+best-ranked structure, it analyses the top-N ranked, LOADABLE structures (N =
+``max_structures``, default 3; env override ``APECX_STRUCTURAL_MAX_STRUCTURES``) and
+CORROBORATES each candidate-epitope residue across them — a residue is more reliably an
+epitope when it reads solvent-EXPOSED across MULTIPLE structures of the antigen (apo
+crystal vs cryo-EM vs antibody complex). Cross-structure correspondence uses the SHARED
+conserved-region coordinate ``(region_start, region_end, motif_index)``, NOT the PDB
+author residue number (which differs between deposits) — every structure is fed the
+IDENTICAL consensus motifs, so motif index *i* of a region is the SAME aligned position
+in every structure. The PRIMARY (best-ranked structure that SUCCEEDED) supplies the
+headline single-structure shape (``exposed_residues`` / ``pdb_id`` / ``chain``) that
+functional validation + provenance read, so N=1 reproduces today's result exactly; the
+``corroboration`` / ``corroborated_residues`` / ``analyzed_structures`` fields are
+ADDITIONAL. Per the per-structure analysis, each loaded structure
 
 1. loads the (host-pre-fetched) structure — the BIOLOGICAL ASSEMBLY (functional
    oligomer, ``{pdb}.pdb1``) when one is deposited, else the asymmetric unit (named
@@ -227,6 +242,25 @@ class StructuralReasoningStepConfig(StepConfig):
     contact_cutoff: float = Field(
         default=8.0, gt=0.0, description="CA–CA distance (Å) defining a residue contact."
     )
+    max_structures: int = Field(
+        default=3,
+        ge=1,
+        description=(
+            "E3-13: analyse the top-N RANKED, LOADABLE structures and corroborate candidate "
+            "epitope residues across them ('exposed in K of N structures'). N=1 reproduces the "
+            "single-structure behaviour exactly. Overridable per-deployment via the "
+            "APECX_STRUCTURAL_MAX_STRUCTURES env var. Cost: ~N×15s of PyMOL."
+        ),
+    )
+    corroboration_threshold: float = Field(
+        default=0.5,
+        ge=0.0,
+        le=1.0,
+        description=(
+            "A candidate residue is CORROBORATED when exposed in at least this fraction of the "
+            "analysed structures (0.5 = at least half; strict majority for odd N)."
+        ),
+    )
     timeout_seconds: float = Field(
         default=300.0, gt=0.0, description="Wall-clock budget for the containerized PyMOL job."
     )
@@ -257,6 +291,8 @@ class StructuralReasoningStep(BaseStep):
             "rsa_threshold": getattr(config, "rsa_threshold", 0.25),
             "min_map_identity": getattr(config, "min_map_identity", 0.7),
             "contact_cutoff": getattr(config, "contact_cutoff", 8.0),
+            "max_structures": getattr(config, "max_structures", 3),
+            "corroboration_threshold": getattr(config, "corroboration_threshold", 0.5),
             "timeout_seconds": getattr(config, "timeout_seconds", 300.0),
             "memory_mb": getattr(config, "memory_mb", 2048),
         }
@@ -267,8 +303,17 @@ class StructuralReasoningStep(BaseStep):
         self._rsa_threshold: float = float(component_config.get("rsa_threshold", 0.25))
         self._min_map_identity: float = float(component_config.get("min_map_identity", 0.7))
         self._contact_cutoff: float = float(component_config.get("contact_cutoff", 8.0))
+        self._corroboration_threshold: float = float(
+            component_config.get("corroboration_threshold", 0.5)
+        )
         self._timeout: float = float(component_config.get("timeout_seconds", 300.0))
         self._memory_mb: int = int(component_config.get("memory_mb", 2048))
+        # E3-13: env override (ops knob) wins over the config default; ignore non-positive-int.
+        cfg_max = int(component_config.get("max_structures", 3))
+        env_max = os.environ.get("APECX_STRUCTURAL_MAX_STRUCTURES")
+        self._max_structures: int = (
+            int(env_max) if (env_max and env_max.isdigit() and int(env_max) >= 1) else cfg_max
+        )
 
     # ------------------------------------------------------------------ process
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
@@ -307,6 +352,11 @@ class StructuralReasoningStep(BaseStep):
                 "n_exposed": result.get("n_exposed"),
                 "n_buried": result.get("n_buried"),
                 "selection": result.get("selection"),
+                "n_analyzed_structures": result.get("n_analyzed_structures"),
+                "analyzed_pdb_ids": [
+                    s.get("pdb_id") for s in (result.get("analyzed_structures") or [])
+                ],
+                "n_corroborated": result.get("n_corroborated"),
                 "note": note,
             },
         )
@@ -330,40 +380,45 @@ class StructuralReasoningStep(BaseStep):
 
         ``result_dict`` always carries ``available: bool`` and a ``note`` on degrade.
         Never raises — every failure mode returns a LOUD named note. Records are
-        RELEVANCE-RANKED (P1) before selection: the best-ranked LOADABLE structure
-        wins, so epitope mapping runs on a surface antigen rather than the first
-        record by raw search rank.
+        RELEVANCE-RANKED (P1) before selection.
+
+        E3-13: analyses the top-N (``max_structures``) RANKED, LOADABLE structures rather
+        than only the single best, and CORROBORATES each candidate-epitope residue across
+        them ("exposed in K of N structures"). The PRIMARY (best-ranked structure that
+        SUCCEEDED) supplies the headline single-structure shape — ``exposed_residues``,
+        ``pdb_id``, ``chain`` — that functional validation + provenance read, so N=1
+        reproduces today's result exactly; the corroboration is ADDITIONAL signal. Each
+        per-structure failure DEGRADES LOUD (named, skipped) and the rest still aggregate;
+        only an all-fail / no-loadable run is an unavailable degrade (CC-2 / G127).
         """
         ranked = rank_structural_records(records, protein)
-        chosen = next((e for e in ranked if e.get("pdb_id")), None)
+        loadable = [e for e in ranked if e.get("pdb_id")]
         ranking_summary = [
             {k: e[k] for k in ("subject", "pdb_id", "score", "reasons", "title")}
             for e in ranked[:5]
         ]
-        if chosen is None:
+        if not loadable:
             note = (
                 f"No loadable PDB structure among {len(records)} structural record(s); "
                 "structural-level reasoning skipped (EMDB density maps are not loadable as "
                 "atomic coordinates)."
             )
             return {"available": False, "note": note, "ranking": ranking_summary}, note
-        pdb_id = chosen["pdb_id"]
-        selection = {
-            "pdb_id": pdb_id,
-            "score": chosen["score"],
-            "reasons": chosen["reasons"],
-            "title": chosen["title"],
-            "considered": len(ranked),
-        }
+
+        # The top loadable record names the degrade paths (no regions / no docker) — back-compat
+        # with the single-structure behaviour where this was the only candidate considered.
+        head = loadable[0]
+        head_pdb = head["pdb_id"]
+        head_selection = self._selection(head, len(ranked))
         if not regions:
             note = (
-                f"No conserved regions were available to map onto structure {pdb_id}; "
+                f"No conserved regions were available to map onto structure {head_pdb}; "
                 "structural-level reasoning skipped."
             )
             return {
                 "available": False,
-                "pdb_id": pdb_id,
-                "selection": selection,
+                "pdb_id": head_pdb,
+                "selection": head_selection,
                 "ranking": ranking_summary,
                 "note": note,
             }, note
@@ -376,57 +431,141 @@ class StructuralReasoningStep(BaseStep):
             )
             return {
                 "available": False,
-                "pdb_id": pdb_id,
-                "selection": selection,
+                "pdb_id": head_pdb,
+                "selection": head_selection,
                 "ranking": ranking_summary,
                 "note": note,
             }, note
 
-        try:
-            raw = await self._run_container(pdb_id, regions)
-        except Exception as exc:  # noqa: BLE001 — degrade LOUD, never strand the workflow
+        # Analyse the top-N loadable structures; per-structure failures degrade LOUD and the
+        # rest continue. ``successes`` pairs each ok PyMOL-job result with its ranked entry.
+        candidates = loadable[: self._max_structures]
+        successes: list[tuple[dict[str, Any], dict[str, Any]]] = []
+        analyzed_structures: list[dict[str, Any]] = []
+        for entry in candidates:
+            pdb_id = entry["pdb_id"]
+            raw, fail_note = await self._analyze_one(pdb_id, regions)
+            if raw is not None and raw.get("ok"):
+                successes.append((raw, entry))
+                analyzed_structures.append(self._structure_summary(raw, entry))
+            else:
+                log.warning("StructuralReasoningStep %s: %s", self.name, fail_note)
+                analyzed_structures.append(
+                    {
+                        "pdb_id": pdb_id,
+                        "rank_score": entry.get("score"),
+                        "available": False,
+                        "note": fail_note,
+                    }
+                )
+
+        if not successes:
             note = (
-                f"Containerized PyMOL structural reasoning failed for {pdb_id} "
-                f"({type(exc).__name__}: {exc}); other evidence still synthesized."
+                f"All {len(candidates)} candidate structure(s) failed structural reasoning: "
+                + "; ".join(f"{s['pdb_id']}: {s.get('note')}" for s in analyzed_structures)
+                + "; other evidence still synthesized."
             )
-            log.warning("StructuralReasoningStep %s: %s", self.name, note)
             return {
                 "available": False,
-                "pdb_id": pdb_id,
-                "selection": selection,
+                "pdb_id": head_pdb,
+                "selection": head_selection,
                 "ranking": ranking_summary,
+                "analyzed_structures": analyzed_structures,
+                "n_analyzed_structures": 0,
                 "note": note,
             }, note
 
-        if not raw.get("ok"):
-            note = raw.get("note") or f"PyMOL job returned no usable result for {pdb_id}."
-            return {
-                "available": False,
-                "pdb_id": pdb_id,
-                "selection": selection,
-                "ranking": ranking_summary,
-                "note": note,
-            }, note
+        # PRIMARY = the best-ranked structure that SUCCEEDED → supplies the headline
+        # single-structure shape (back-compat). Aggregate corroboration across ALL successes.
+        primary_raw, primary_entry = successes[0]
+        primary_pdb = primary_raw.get("pdb_id")
+        selection = self._selection(primary_entry, len(ranked))
+        success_raws = [raw for raw, _ in successes]
+        corroboration = sasa.aggregate_corroboration(
+            success_raws, threshold=self._corroboration_threshold
+        )
+        corroborated_residues = sasa.corroborated_residue_list(primary_raw, corroboration)
+        n_corroborated = sum(1 for r in corroborated_residues if r.get("corroborated"))
 
-        result = {"available": True, "selection": selection, "ranking": ranking_summary, **raw}
+        result = {
+            "available": True,
+            "selection": selection,
+            "ranking": ranking_summary,
+            "analyzed_structures": analyzed_structures,
+            "n_analyzed_structures": len(successes),
+            "max_structures": self._max_structures,
+            "corroboration_threshold": self._corroboration_threshold,
+            "corroboration": corroboration,
+            "corroborated_residues": corroborated_residues,
+            "n_corroborated": n_corroborated,
+            **primary_raw,
+        }
         caveats: list[str] = []
-        if raw.get("structure_kind") == _KIND_AU:
+        if primary_raw.get("structure_kind") == _KIND_AU:
             # E3-1.3: AU fallback is always NAMED, never silent (CC-2 degrade-loud).
             caveats.append(
                 f"accessibility computed over the asymmetric unit; no biological assembly "
-                f"available in legacy PDB (pdb1) format for {pdb_id}"
+                f"available in legacy PDB (pdb1) format for {primary_pdb}"
             )
             result["assembly_caveat"] = caveats[-1]
-        if not raw.get("n_mapped_regions"):
+        if not primary_raw.get("n_mapped_regions"):
             caveats.append(
-                raw.get("notes")
-                and "; ".join(raw["notes"])
-                or (f"No conserved region mapped onto chain {raw.get('chain')} of {pdb_id}.")
+                primary_raw.get("notes")
+                and "; ".join(primary_raw["notes"])
+                or (
+                    f"No conserved region mapped onto chain {primary_raw.get('chain')} "
+                    f"of {primary_pdb}."
+                )
             )
         note = "; ".join(c for c in caveats if c) or None
         if note:
             result["note"] = note
         return result, note
+
+    @staticmethod
+    def _selection(entry: dict[str, Any], considered: int) -> dict[str, Any]:
+        return {
+            "pdb_id": entry["pdb_id"],
+            "score": entry["score"],
+            "reasons": entry["reasons"],
+            "title": entry["title"],
+            "considered": considered,
+        }
+
+    @staticmethod
+    def _structure_summary(raw: dict[str, Any], entry: dict[str, Any]) -> dict[str, Any]:
+        """Per-structure provenance row for an analysed (ok) structure."""
+        return {
+            "pdb_id": raw.get("pdb_id"),
+            "rank_score": entry.get("score"),
+            "available": True,
+            "structure_kind": raw.get("structure_kind"),
+            "chain": raw.get("chain"),
+            "n_mapped_residues": raw.get("n_mapped_residues"),
+            "n_exposed": raw.get("n_exposed"),
+            "n_buried": raw.get("n_buried"),
+            "note": None,
+        }
+
+    async def _analyze_one(
+        self, pdb_id: str, regions: list[dict[str, Any]]
+    ) -> tuple[dict[str, Any] | None, str | None]:
+        """Run the containerized PyMOL analysis for ONE structure, degrade-loud per structure.
+
+        Returns ``(raw_result, None)`` on success or ``(None, named_note)`` / ``(raw, note)``
+        on a fetch/container failure or a job that returned no usable result. NEVER raises —
+        a single structure failing must not strand the rest of the top-N aggregation."""
+        try:
+            raw = await self._run_container(pdb_id, regions)
+        except Exception as exc:  # noqa: BLE001 — degrade LOUD per structure, never strand
+            note = (
+                f"Containerized PyMOL structural reasoning failed for {pdb_id} "
+                f"({type(exc).__name__}: {exc})"
+            )
+            return None, note
+        if not raw.get("ok"):
+            return raw, raw.get("note") or f"PyMOL job returned no usable result for {pdb_id}."
+        return raw, None
 
     async def _run_container(self, pdb_id: str, regions: list[dict[str, Any]]) -> dict[str, Any]:
         """Fetch the biological assembly (host), then run the headless PyMOL job."""
@@ -553,6 +692,28 @@ class StructuralReasoningStep(BaseStep):
         else:
             ctx = "asymmetric unit — no biological assembly deposited"
         tail = ""
+        # E3-13: corroboration across the top-N analysed structures.
+        n_analyzed = result.get("n_analyzed_structures") or 1
+        if n_analyzed > 1:
+            other_ids = [
+                s.get("pdb_id")
+                for s in (result.get("analyzed_structures") or [])
+                if s.get("available") and s.get("pdb_id") != pdb_id
+            ]
+            n_corr = result.get("n_corroborated") or 0
+            thr = result.get("corroboration_threshold", 0.5)
+            corr_resi = ", ".join(
+                f"{r['resi']} ({r['exposed_in_k']}/{r['analyzed_n']})"
+                for r in (result.get("corroborated_residues") or [])
+                if r.get("corroborated")
+            )[:400]
+            ids_txt = ", ".join(str(i) for i in other_ids) or "none"
+            tail += (
+                f" Corroborated across {n_analyzed} structures (primary {pdb_id} + {ids_txt}; "
+                f"threshold {thr:.0%}): {n_corr} candidate residue(s) exposed in a "
+                f"majority of the analysed structures"
+            )
+            tail += f" ({corr_resi})." if corr_resi else "."
         if result.get("assembly_caveat"):
             tail += f" Caveat: {result['assembly_caveat']}."
         if not result.get("n_mapped_regions"):

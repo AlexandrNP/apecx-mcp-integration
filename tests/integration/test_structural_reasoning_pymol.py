@@ -239,3 +239,115 @@ def test_no_assembly_degrades_to_au_named_caveat(monkeypatch):
     rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
     assert "asymmetric unit" in rep["markdown"]
     assert rep["data"]["structure_kind"] == "asymmetric_unit"
+
+
+# --------------------------------------------------- E3-13: multi-structure corroboration
+# Three REAL CHIKV E1-glycoprotein structures: 3N40 (mature E1/E2 spike, E1 = chain F),
+# 6NK7 (E1/E2, E1 = chain A), 2XFB (icosahedral envelope, E1 motif on chain A). The E1
+# conserved motif MVLEMELLSVTLEP (alignment cols 33-46) maps onto the E1 chain of ALL
+# three (CHIKV E1 shares author numbering across these deposits). Per-residue assembly
+# SASA over each gives a REAL corroboration gradient: motif position resi 34 reads
+# solvent-EXPOSED in 3N40 + 6NK7 + 2XFB (3/3), resi 39 in 3N40 + 2XFB (2/3, majority),
+# resi 37 in 6NK7 only (1/3, minority) — the load-bearing proof that cross-structure
+# corroboration is real, not cosmetic. Cross-structure correspondence is by the SHARED
+# (region, motif_index) coordinate, NOT the PDB residue number.
+_MULTI_CORPUS = [
+    {"subject": "pdb:3N40", "structural_source": "pdb"},
+    {"subject": "pdb:6NK7", "structural_source": "pdb"},
+    {"subject": "pdb:2XFB", "structural_source": "pdb"},
+]
+_E1_REGION = {"start": 33, "end": 46, "length": 14, "consensus": "MVLEMELLSVTLEP"}
+
+
+def _multi_step():
+    import tempfile
+    from pathlib import Path
+
+    from apecx_integration.composition.steps.structural_reasoning_step import (
+        StructuralReasoningStep,
+    )
+
+    cfg = Path(tempfile.mkdtemp(prefix="apecx_pymol_cfg_")) / "reasoning_multi.yml"
+    cfg.write_text(
+        "name: reasoning_multi\nrsa_threshold: 0.25\nmin_map_identity: 0.7\nmax_structures: 3\n"
+    )
+    return StructuralReasoningStep.from_config(str(cfg))
+
+
+def _multi_bundle():
+    return {
+        "query": "chikungunya E1 glycoprotein conserved epitopes",
+        "protein": "envelope glycoprotein E1 E2",
+        "conserved_regions": [dict(_E1_REGION)],
+        "structural_records": [dict(r) for r in _MULTI_CORPUS],
+    }
+
+
+@_GATE
+def test_multi_structure_corroboration_on_real_chikv(capsys):
+    """E3-13 / CC-1: analyse the top-3 ranked CHIKV E1 structures, corroborate candidate
+    epitope residues across them, and prove >=1 residue is exposed in >1 structure (the
+    whole point). Byte-stable across two runs (CC-4)."""
+    for pid in ("3N40", "6NK7", "2XFB"):
+        _require_rcsb(pid)
+    step = _multi_step()
+    out = asyncio.run(step.process(_multi_bundle()))
+    sr = out["structural_reasoning"]
+
+    assert sr["available"] is True, sr.get("note")
+    # >=2 structures actually analysed (non-empty per-structure list).
+    assert sr["n_analyzed_structures"] >= 2
+    analyzed_ok = [s for s in sr["analyzed_structures"] if s["available"]]
+    assert len(analyzed_ok) >= 2
+
+    # PRIMARY supplies the back-compat single-structure shape functional validation reads.
+    assert sr["pdb_id"] == "3N40"
+    assert sr["chain"] == "F"
+    primary_exposed = [e["resi"] for e in sr["exposed_residues"]]
+    assert primary_exposed  # non-empty candidate set (CC-1)
+
+    # Aggregated candidate set is non-empty AND >=1 residue is corroborated across >1 structure.
+    assert sr["corroboration"]
+    multi = [c for c in sr["corroboration"] if c["exposed_in_k"] > 1]
+    assert multi, f"no residue exposed in >1 structure: {sr['corroboration']}"
+    # Headline corroborated set anchored to the primary, non-empty, with K/N counts.
+    corr = [r for r in sr["corroborated_residues"] if r["corroborated"]]
+    assert corr
+    assert any(r["exposed_in_k"] > 1 for r in corr)
+
+    # CC-4: byte-stable aggregated result across two runs.
+    out2 = asyncio.run(step.process(_multi_bundle()))
+    sr2 = out2["structural_reasoning"]
+    assert sr["corroboration"] == sr2["corroboration"]
+    assert sr["corroborated_residues"] == sr2["corroborated_residues"]
+    assert [s["pdb_id"] for s in sr["analyzed_structures"]] == [
+        s["pdb_id"] for s in sr2["analyzed_structures"]
+    ]
+
+    # PASTE the real multi-structure + corroboration output (load-bearing proof).
+    with capsys.disabled():
+        print("\n=== E3-13 real CHIKV multi-structure corroboration ===")
+        print("analyzed structures:")
+        for s in sr["analyzed_structures"]:
+            print(
+                f"  {s['pdb_id']:6s} avail={s['available']} chain={s.get('chain')} "
+                f"kind={s.get('structure_kind')} exposed={s.get('n_exposed')} "
+                f"mapped={s.get('n_mapped_residues')}"
+            )
+        print(f"primary={sr['pdb_id']} chain={sr['chain']} exposed_residues={primary_exposed}")
+        print("per-position corroboration (shared region/motif coordinate):")
+        for c in sr["corroboration"]:
+            print(
+                f"  region {c['region_start']}-{c['region_end']} motif_idx={c['motif_index']} "
+                f"aa={c['consensus_aa']}: exposed in {c['exposed_in_k']}/{c['analyzed_n']} "
+                f"{c['exposed_pdb_ids']} | resi_by_pdb={c['resi_by_pdb']} "
+                f"corroborated={c['corroborated']}"
+            )
+        print("headline corroborated candidate-epitope residues (anchored to primary):")
+        for r in sr["corroborated_residues"]:
+            print(
+                f"  resi {r['resi']} ({r['consensus_aa']}): exposed in "
+                f"{r['exposed_in_k']}/{r['analyzed_n']} {r['exposed_pdb_ids']} "
+                f"corroborated={r['corroborated']}"
+            )
+        print(f"n_corroborated={sr['n_corroborated']}")

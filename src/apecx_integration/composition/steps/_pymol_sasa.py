@@ -205,6 +205,153 @@ def classify_sasa(resn: str, sasa: float, *, rsa_threshold: float = 0.25) -> dic
     }
 
 
+def _structure_positions(struct: dict[str, Any]) -> dict[tuple[Any, Any, int], dict[str, Any]]:
+    """Map one structure's analysis onto SHARED conserved-region coordinates.
+
+    The cross-structure correspondence key is ``(region_start, region_end, motif_index)``
+    — the position of a residue WITHIN a conserved-region consensus motif, NOT its PDB
+    author residue number. This is the scientifically correct shared coordinate: every
+    analysed structure is fed the IDENTICAL ``conserved_regions`` (the same MSA-derived
+    consensus motifs), so motif index *i* of region (start, end) denotes the SAME aligned
+    biological position in every structure regardless of how each PDB happens to number
+    its residues. ``struct`` is a PyMOL-job result (``mapped_regions`` + ``exposed_residues``
+    + ``buried_residues``). Returns ``{key: {"resi", "state", "consensus_aa"}}``.
+    """
+    states: dict[Any, str] = {}
+    for e in struct.get("exposed_residues") or []:
+        if isinstance(e, dict) and "resi" in e:
+            states[e["resi"]] = "exposed"
+    for e in struct.get("buried_residues") or []:
+        if isinstance(e, dict) and "resi" in e:
+            states.setdefault(e["resi"], "buried")
+
+    positions: dict[tuple[Any, Any, int], dict[str, Any]] = {}
+    for reg in struct.get("mapped_regions") or []:
+        if not isinstance(reg, dict):
+            continue
+        start, end = reg.get("start"), reg.get("end")
+        motif = str(reg.get("consensus", "")).replace("-", "")
+        residues = reg.get("residues") or []
+        for i, resi in enumerate(residues):
+            consensus_aa = motif[i] if i < len(motif) else "?"
+            positions[(start, end, i)] = {
+                "resi": resi,
+                "state": states.get(resi, "unknown"),
+                "consensus_aa": consensus_aa,
+            }
+    return positions
+
+
+def aggregate_corroboration(
+    per_structure: list[dict[str, Any]], *, threshold: float = 0.5
+) -> list[dict[str, Any]]:
+    """Corroborate candidate-epitope positions ACROSS the N analysed structures.
+
+    For each shared conserved-region coordinate (see :func:`_structure_positions`), count
+    in how many of the analysed structures the position mapped AND read solvent-EXPOSED.
+    ``per_structure`` is the list of per-structure PyMOL-job results that SUCCEEDED (each
+    a dict with ``ok`` / ``mapped_regions`` / ``exposed_residues`` / ``buried_residues`` /
+    ``pdb_id``); failed structures are excluded by the caller (degrade-loud per structure).
+
+    Returns a list (deterministically sorted by coordinate) of::
+
+        {"region_start", "region_end", "motif_index", "consensus_aa",
+         "exposed_in_k", "mapped_in_m", "analyzed_n",
+         "exposed_pdb_ids": [...], "mapped_pdb_ids": [...],
+         "resi_by_pdb": {pdb_id: resi}, "corroborated": bool}
+
+    A position is ``corroborated`` when it is exposed in at least ``threshold`` (default
+    0.5 = "at least half") of the analysed structures. For an odd N this is strict
+    majority; pure + deterministic so the unit test verifies the exact arithmetic the
+    integration run uses (mock/integration parity).
+    """
+    analyzed = [s for s in per_structure if isinstance(s, dict) and s.get("ok")]
+    n = len(analyzed)
+    agg: dict[tuple[Any, Any, int], dict[str, Any]] = {}
+    for s in analyzed:
+        pdb_id = s.get("pdb_id")
+        for key, info in _structure_positions(s).items():
+            entry = agg.setdefault(
+                key,
+                {
+                    "region_start": key[0],
+                    "region_end": key[1],
+                    "motif_index": key[2],
+                    "consensus_aa": info["consensus_aa"],
+                    "mapped_in": [],
+                    "exposed_in": [],
+                    "resis": {},
+                },
+            )
+            entry["mapped_in"].append(pdb_id)
+            entry["resis"][pdb_id] = info["resi"]
+            if info["state"] == "exposed":
+                entry["exposed_in"].append(pdb_id)
+
+    out: list[dict[str, Any]] = []
+    for key in sorted(agg, key=lambda k: (str(k[0]), str(k[1]), k[2])):
+        e = agg[key]
+        k = len(e["exposed_in"])
+        out.append(
+            {
+                "region_start": e["region_start"],
+                "region_end": e["region_end"],
+                "motif_index": e["motif_index"],
+                "consensus_aa": e["consensus_aa"],
+                "exposed_in_k": k,
+                "mapped_in_m": len(e["mapped_in"]),
+                "analyzed_n": n,
+                "exposed_pdb_ids": sorted(p for p in e["exposed_in"] if p is not None),
+                "mapped_pdb_ids": sorted(p for p in e["mapped_in"] if p is not None),
+                "resi_by_pdb": dict(sorted(e["resis"].items(), key=lambda kv: str(kv[0]))),
+                "corroborated": n > 0 and k >= 1 and (k / n) >= threshold,
+            }
+        )
+    return out
+
+
+def corroborated_residue_list(
+    primary_struct: dict[str, Any], corroboration: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Anchor the cross-structure corroboration onto the PRIMARY structure's residues.
+
+    The headline ``exposed_residues`` (consumed by functional validation + SIFTS) stay the
+    PRIMARY structure's residues — author-numbered against the PRIMARY ``pdb_id``. This adds,
+    for each PRIMARY exposed residue, its "exposed in K of N structures" corroboration count
+    keyed by the SHARED conserved-region coordinate. Returns a list sorted by ``resi`` of::
+
+        {"resi", "consensus_aa", "exposed_in_k", "analyzed_n",
+         "exposed_pdb_ids": [...], "corroborated": bool}
+    """
+    corr_by_key = {(c["region_start"], c["region_end"], c["motif_index"]): c for c in corroboration}
+    # One entry per PRIMARY author residue (matching the deduped ``exposed_residues``
+    # semantics): when two conserved-region positions map onto the same residue, keep the
+    # MOST-corroborated (highest K) — deterministic on ties via the sorted key iteration.
+    positions = _structure_positions(primary_struct)
+    by_resi: dict[Any, dict[str, Any]] = {}
+    for key in sorted(positions, key=lambda k: (str(k[0]), str(k[1]), k[2])):
+        info = positions[key]
+        if info["state"] != "exposed":
+            continue
+        c = corr_by_key.get(key)
+        if not c:
+            continue
+        entry = {
+            "resi": info["resi"],
+            "consensus_aa": info["consensus_aa"],
+            "exposed_in_k": c["exposed_in_k"],
+            "analyzed_n": c["analyzed_n"],
+            "exposed_pdb_ids": c["exposed_pdb_ids"],
+            "corroborated": c["corroborated"],
+        }
+        prev = by_resi.get(info["resi"])
+        if prev is None or entry["exposed_in_k"] > prev["exposed_in_k"]:
+            by_resi[info["resi"]] = entry
+    out = list(by_resi.values())
+    out.sort(key=lambda e: (e["resi"] if isinstance(e["resi"], int) else 1 << 30, str(e["resi"])))
+    return out
+
+
 def assembly_exposure_flips(
     au_residues: list[dict[str, Any]], assembly_residues: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -243,5 +390,7 @@ __all__ = [
     "map_motif_to_chain",
     "relative_sasa",
     "classify_sasa",
+    "aggregate_corroboration",
+    "corroborated_residue_list",
     "assembly_exposure_flips",
 ]

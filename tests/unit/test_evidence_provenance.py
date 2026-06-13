@@ -161,6 +161,41 @@ def test_full_bundle_every_field_non_empty():
     assert fv["n_candidate_epitope_residues"] == 5
 
 
+def test_records_analyzed_structures_multi():
+    """E3-13: when the structural stage analysed the top-N structures, provenance records the
+    N analysed ids + per-structure kind (extends, does not break, the single-structure shape)."""
+    bundle = _full_bundle()
+    bundle["structural_reasoning"].update(
+        n_analyzed_structures=3,
+        n_corroborated=2,
+        analyzed_structures=[
+            {"pdb_id": "3N40", "structure_kind": "assembly_1", "available": True},
+            {"pdb_id": "2XFB", "structure_kind": "assembly_1", "available": True},
+            {
+                "pdb_id": "6NK7",
+                "structure_kind": "asymmetric_unit",
+                "available": False,
+                "note": "container error",
+            },
+        ],
+    )
+    rea = collect_provenance(bundle)["structural_reasoning"]
+    assert rea["n_analyzed_structures"] == 3
+    assert rea["n_corroborated"] == 2
+    assert [s["pdb_id"] for s in rea["analyzed_structures"]] == ["3N40", "2XFB", "6NK7"]
+    assert rea["analyzed_structures"][2]["available"] is False
+
+
+def test_single_structure_bundle_records_one_analyzed_structure():
+    """A pre-E3-13 single-structure bundle (no analyzed_structures key) still yields a
+    non-empty one-entry analyzed_structures list derived from the primary pdb."""
+    rea = collect_provenance(_full_bundle())["structural_reasoning"]
+    assert rea["n_analyzed_structures"] == 1
+    assert rea["analyzed_structures"] == [
+        {"pdb_id": "3N40", "structure_kind": "assembly_1", "available": True}
+    ]
+
+
 def test_partial_bundle_named_nulls_not_missing_keys():
     """A run where the structural/functional/sequence legs all degraded: every block is
     still present with available=False + a named note, and the keys exist as None (not

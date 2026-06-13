@@ -151,6 +151,133 @@ def test_assembly_exposure_flips_deterministic_and_sorted():
     assert [f["resi"] for f in a] == [5, 30]
 
 
+# --------------------------------------------------- E3-13: cross-structure corroboration
+
+
+def _struct_result(pdb_id: str, *, exposed: list, buried: list, regions: list) -> dict:
+    """A realistic per-structure PyMOL-job result (data shape, not an interface mock).
+
+    ``regions`` is the per-structure ``mapped_regions`` (carrying the SHARED conserved-region
+    coordinate start/end/consensus + this structure's author residue numbers)."""
+    return {
+        "ok": True,
+        "pdb_id": pdb_id,
+        "exposed_residues": [{"resi": r, "state": "exposed"} for r in exposed],
+        "buried_residues": [{"resi": r, "state": "buried"} for r in buried],
+        "mapped_regions": regions,
+    }
+
+
+def test_aggregate_corroboration_counts_k_of_n():
+    """A conserved-region motif maps onto 3 structures with DIFFERENT author numbering;
+    corroboration is keyed by the shared (region, motif_index) coordinate, not the resi.
+    Motif index 0 is exposed in 3/3, index 1 in 2/3 (majority), index 2 in 1/3 (minority)."""
+    region = {"start": 10, "end": 12, "consensus": "ABC"}
+    # Structure S1: author resis 100,101,102; all three exposed.
+    s1 = _struct_result(
+        "1AAA",
+        exposed=[100, 101, 102],
+        buried=[],
+        regions=[{**region, "residues": [100, 101, 102]}],
+    )
+    # Structure S2: author resis 200,201,202 (DIFFERENT numbering); idx0+idx1 exposed, idx2 buried.
+    s2 = _struct_result(
+        "2BBB",
+        exposed=[200, 201],
+        buried=[202],
+        regions=[{**region, "residues": [200, 201, 202]}],
+    )
+    # Structure S3: author resis 300,301,302; only idx0 exposed.
+    s3 = _struct_result(
+        "3CCC",
+        exposed=[300],
+        buried=[301, 302],
+        regions=[{**region, "residues": [300, 301, 302]}],
+    )
+    corr = sasa.aggregate_corroboration([s1, s2, s3], threshold=0.5)
+    by_idx = {c["motif_index"]: c for c in corr}
+
+    assert by_idx[0]["exposed_in_k"] == 3 and by_idx[0]["analyzed_n"] == 3
+    assert by_idx[0]["corroborated"] is True
+    assert by_idx[0]["exposed_pdb_ids"] == ["1AAA", "2BBB", "3CCC"]
+    assert by_idx[0]["consensus_aa"] == "A"
+
+    # 2/3 = majority -> corroborated.
+    assert by_idx[1]["exposed_in_k"] == 2
+    assert by_idx[1]["corroborated"] is True
+    assert by_idx[1]["exposed_pdb_ids"] == ["1AAA", "2BBB"]
+
+    # 1/3 = minority -> NOT corroborated.
+    assert by_idx[2]["exposed_in_k"] == 1
+    assert by_idx[2]["corroborated"] is False
+    assert by_idx[2]["exposed_pdb_ids"] == ["1AAA"]
+
+    # Shared-coordinate correspondence: the per-pdb author resis are preserved per position.
+    assert by_idx[1]["resi_by_pdb"] == {"1AAA": 101, "2BBB": 201, "3CCC": 301}
+
+
+def test_aggregate_corroboration_skips_failed_structures():
+    """A per-structure failure (ok=False) is excluded; the rest still aggregate, and N
+    reflects only the SUCCESSFUL structures."""
+    region = {"start": 5, "end": 7, "consensus": "MN"}
+    ok1 = _struct_result(
+        "1AAA", exposed=[10, 11], buried=[], regions=[{**region, "residues": [10, 11]}]
+    )
+    ok2 = _struct_result(
+        "2BBB", exposed=[20], buried=[21], regions=[{**region, "residues": [20, 21]}]
+    )
+    failed = {"ok": False, "pdb_id": "3CCC", "note": "container error"}
+    corr = sasa.aggregate_corroboration([ok1, failed, ok2], threshold=0.5)
+    assert all(c["analyzed_n"] == 2 for c in corr)  # only the 2 successes
+    by_idx = {c["motif_index"]: c for c in corr}
+    assert by_idx[0]["exposed_in_k"] == 2 and by_idx[0]["corroborated"] is True
+    # 1/2 = 0.5 >= threshold 0.5 -> corroborated True (at least half).
+    assert by_idx[1]["exposed_in_k"] == 1 and by_idx[1]["corroborated"] is True
+
+
+def test_aggregate_corroboration_deterministic_and_single_structure():
+    """N=1: every exposed position is exposed in 1/1 -> corroborated. Byte-stable across runs."""
+    region = {"start": 0, "end": 2, "consensus": "PQ"}
+    s = _struct_result("1AAA", exposed=[5, 6], buried=[], regions=[{**region, "residues": [5, 6]}])
+    a = sasa.aggregate_corroboration([s], threshold=0.5)
+    b = sasa.aggregate_corroboration([s], threshold=0.5)
+    assert a == b
+    assert all(c["analyzed_n"] == 1 and c["corroborated"] for c in a)
+
+
+def test_corroborated_residue_list_anchors_to_primary():
+    """The headline corroboration is anchored to the PRIMARY structure's author resis, with
+    each residue's K/N count from the shared-coordinate aggregation."""
+    region = {"start": 10, "end": 12, "consensus": "ABC"}
+    primary = _struct_result(
+        "1AAA",
+        exposed=[100, 101, 102],
+        buried=[],
+        regions=[{**region, "residues": [100, 101, 102]}],
+    )
+    s2 = _struct_result(
+        "2BBB",
+        exposed=[200, 201],
+        buried=[202],
+        regions=[{**region, "residues": [200, 201, 202]}],
+    )
+    s3 = _struct_result(
+        "3CCC",
+        exposed=[300],
+        buried=[301, 302],
+        regions=[{**region, "residues": [300, 301, 302]}],
+    )
+    corr = sasa.aggregate_corroboration([primary, s2, s3], threshold=0.5)
+    res = sasa.corroborated_residue_list(primary, corr)
+    by_resi = {r["resi"]: r for r in res}
+    assert set(by_resi) == {100, 101, 102}  # the primary's exposed residues
+    assert by_resi[100]["exposed_in_k"] == 3 and by_resi[100]["corroborated"] is True
+    assert by_resi[101]["exposed_in_k"] == 2 and by_resi[101]["corroborated"] is True
+    assert by_resi[102]["exposed_in_k"] == 1 and by_resi[102]["corroborated"] is False
+    # Sorted by resi (deterministic).
+    assert [r["resi"] for r in res] == [100, 101, 102]
+
+
 # --------------------------------------------------------------- StructuralReasoningStep
 
 
@@ -304,6 +431,182 @@ def test_container_failure_degrades_loud(tmp_path, monkeypatch):
     sr = out["structural_reasoning"]
     assert sr["available"] is False
     assert "failed" in sr["note"]
+
+
+# ----------------------------------------------- E3-13: multi-structure step loop (offline)
+
+
+def _multi_corpus() -> list[dict]:
+    """Three loadable CHIKV E1/E2 records that rank DETERMINISTICALLY 3N40 > 2XFB > 6NK7
+    (3N40 matches all four protein terms; 2XFB and 6NK7 tie on 2 and break by search rank)."""
+    return [
+        _struct_rec(
+            "pdb:3N40",
+            "Chikungunya envelope glycoprotein E1 E2 mature spike",
+            ["ENVELOPE GLYCOPROTEIN", "E1", "E2"],
+        ),
+        _struct_rec("pdb:2XFB", "Chikungunya envelope glycoprotein", ["ENVELOPE GLYCOPROTEIN"]),
+        _struct_rec("pdb:6NK7", "Chikungunya E1 glycoprotein", ["E1", "GLYCOPROTEIN"]),
+    ]
+
+
+def _job_for(pdb_id: str, exposed: list[int], buried: list[int], residues: list[int]) -> dict:
+    """A realistic per-structure job result for the step loop (shared region cols 10-12)."""
+    r = _au_job_result(pdb_id)
+    r.update(
+        chain="A",
+        structure_kind="assembly_1",
+        assembly_id=1,
+        n_assembly_copies=60,
+        n_mapped_regions=1,
+        n_mapped_residues=len(residues),
+        n_exposed=len(exposed),
+        n_buried=len(buried),
+        exposed_residues=[
+            {"resi": x, "resn": "GLU", "state": "exposed", "rsa": 0.4, "sasa": 90.0}
+            for x in exposed
+        ],
+        buried_residues=[
+            {"resi": x, "resn": "LEU", "state": "buried", "rsa": 0.02, "sasa": 4.0} for x in buried
+        ],
+        mapped_regions=[{"start": 10, "end": 12, "consensus": "ABC", "residues": residues}],
+    )
+    return r
+
+
+def test_step_analyzes_top_n_and_corroborates(tmp_path, monkeypatch):
+    """The step analyses the top-N ranked structures and emits cross-structure corroboration;
+    the PRIMARY structure still supplies the back-compat single-structure shape."""
+    step = _step(tmp_path, max_structures=3)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+    jobs = {
+        "3N40": _job_for("3N40", exposed=[100, 101, 102], buried=[], residues=[100, 101, 102]),
+        "2XFB": _job_for("2XFB", exposed=[200, 201], buried=[202], residues=[200, 201, 202]),
+        "6NK7": _job_for("6NK7", exposed=[300], buried=[301, 302], residues=[300, 301, 302]),
+    }
+
+    async def _run(self, pdb_id, regions):
+        return jobs[pdb_id]
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _run)
+    out = asyncio.run(
+        step.process(
+            _bundle(structural_records=_multi_corpus(), protein="envelope glycoprotein E1 E2")
+        )
+    )
+    sr = out["structural_reasoning"]
+
+    assert sr["available"] is True
+    assert sr["n_analyzed_structures"] == 3
+    assert [s["pdb_id"] for s in sr["analyzed_structures"]] == ["3N40", "2XFB", "6NK7"]
+    # PRIMARY = best-ranked success; its exposed_residues are the back-compat headline shape.
+    assert sr["pdb_id"] == "3N40"
+    assert [e["resi"] for e in sr["exposed_residues"]] == [100, 101, 102]
+    # Corroboration: motif idx0 exposed in 3/3, idx1 in 2/3, idx2 in 1/3.
+    by_idx = {c["motif_index"]: c for c in sr["corroboration"]}
+    assert by_idx[0]["exposed_in_k"] == 3
+    assert by_idx[1]["exposed_in_k"] == 2
+    assert by_idx[2]["exposed_in_k"] == 1
+    # Headline corroborated set anchored to the primary's residues (100->3/3, 101->2/3 majority).
+    cr = {r["resi"]: r for r in sr["corroborated_residues"]}
+    assert cr[100]["corroborated"] and cr[100]["exposed_in_k"] == 3
+    assert cr[101]["corroborated"] and cr[101]["exposed_in_k"] == 2
+    assert cr[102]["corroborated"] is False  # 1/3 minority
+    assert sr["n_corroborated"] == 2
+    # Stage report surfaces the multi-structure corroboration.
+    rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
+    assert "Corroborated across 3 structures" in rep["markdown"]
+    assert rep["data"]["n_analyzed_structures"] == 3
+    assert rep["data"]["analyzed_pdb_ids"] == ["3N40", "2XFB", "6NK7"]
+
+
+def test_step_per_structure_failure_skips_and_continues(tmp_path, monkeypatch):
+    """A per-structure container failure DEGRADES LOUD (named, available=False in
+    analyzed_structures) and the rest still aggregate — never strands the run."""
+    step = _step(tmp_path, max_structures=3)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+    jobs = {
+        "3N40": _job_for("3N40", exposed=[100, 101], buried=[], residues=[100, 101]),
+        "6NK7": _job_for("6NK7", exposed=[300], buried=[301], residues=[300, 301]),
+    }
+
+    async def _run(self, pdb_id, regions):
+        if pdb_id == "2XFB":
+            raise RuntimeError("simulated container OOM")
+        return jobs[pdb_id]
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _run)
+    out = asyncio.run(
+        step.process(
+            _bundle(structural_records=_multi_corpus(), protein="envelope glycoprotein E1 E2")
+        )
+    )
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True
+    assert sr["n_analyzed_structures"] == 2  # 2XFB skipped
+    by_pdb = {s["pdb_id"]: s for s in sr["analyzed_structures"]}
+    assert by_pdb["2XFB"]["available"] is False
+    assert "simulated container OOM" in by_pdb["2XFB"]["note"]
+    assert by_pdb["3N40"]["available"] is True and by_pdb["6NK7"]["available"] is True
+    # The 2 surviving structures still corroborate.
+    assert all(c["analyzed_n"] == 2 for c in sr["corroboration"])
+
+
+def test_step_all_structures_fail_degrades_loud(tmp_path, monkeypatch):
+    """All top-N fail -> the existing unavailable degrade, naming each per-structure failure."""
+    step = _step(tmp_path, max_structures=2)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+
+    async def _boom(self, pdb_id, regions):
+        raise RuntimeError(f"boom-{pdb_id}")
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _boom)
+    out = asyncio.run(
+        step.process(
+            _bundle(structural_records=_multi_corpus(), protein="envelope glycoprotein E1 E2")
+        )
+    )
+    sr = out["structural_reasoning"]
+    assert sr["available"] is False
+    assert "All 2 candidate structure(s) failed" in sr["note"]
+    assert sr["n_analyzed_structures"] == 0
+
+
+def test_step_n1_reproduces_single_structure(tmp_path, monkeypatch):
+    """N=1 (max_structures=1) reproduces the single-structure path: only the primary is
+    analysed, exposed_residues are the primary's, and corroboration is 1/1."""
+    step = _step(tmp_path, max_structures=1)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+    jobs = {"3N40": _job_for("3N40", exposed=[100, 101], buried=[102], residues=[100, 101, 102])}
+
+    seen: list[str] = []
+
+    async def _run(self, pdb_id, regions):
+        seen.append(pdb_id)
+        return jobs[pdb_id]
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _run)
+    out = asyncio.run(
+        step.process(
+            _bundle(structural_records=_multi_corpus(), protein="envelope glycoprotein E1 E2")
+        )
+    )
+    sr = out["structural_reasoning"]
+    assert seen == ["3N40"]  # only ONE container run despite 3 records
+    assert sr["n_analyzed_structures"] == 1
+    assert sr["pdb_id"] == "3N40"
+    assert [e["resi"] for e in sr["exposed_residues"]] == [100, 101]
+    # Corroboration over a single structure: each exposed position is exposed in 1/1.
+    assert all(c["analyzed_n"] == 1 for c in sr["corroboration"])
+    cr = {r["resi"]: r for r in sr["corroborated_residues"]}
+    assert cr[100]["corroborated"] and cr[100]["exposed_in_k"] == 1
+
+
+def test_env_overrides_max_structures(tmp_path, monkeypatch):
+    """APECX_STRUCTURAL_MAX_STRUCTURES overrides the config default (ops knob)."""
+    monkeypatch.setenv("APECX_STRUCTURAL_MAX_STRUCTURES", "1")
+    step = _step(tmp_path, max_structures=3)
+    assert step._max_structures == 1
 
 
 # --------------------------------------------------------------- relevance ranking (P1)
