@@ -176,11 +176,20 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
         f"APECx aggregate index):",
         "",
     ]
+    from apecx_integration.agents.globus_search._datacite import (  # noqa: PLC0415
+        datacite_subjects,
+        datacite_title,
+    )
+
     for h in hits:
         subject = h.get("subject") or "(unknown)"
         content = h.get("content") or {}
-        title = content.get("title") if isinstance(content, dict) else None
-        md_lines.append(f"- **[Globus {subject}]** *{title or '(untitled)'}*")
+        # DataCite-shaped records store the title at titles[0].title; reading the
+        # flat "title" key rendered every structural hit as "(untitled)".
+        title = datacite_title(content)
+        subjects = datacite_subjects(content, limit=4)
+        kw = f" — {', '.join(subjects)}" if subjects else ""
+        md_lines.append(f"- **[Globus {subject}]** *{title or '(untitled)'}*{kw}")
     return WorkflowResult(markdown="\n".join(md_lines)).model_dump(mode="json")
 
 

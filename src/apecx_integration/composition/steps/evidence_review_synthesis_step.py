@@ -37,6 +37,8 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration.agents.globus_search._datacite import datacite_title
+
 log = logging.getLogger(__name__)
 
 _INPUT_KEY = "review_input"
@@ -98,7 +100,8 @@ def render_structural_section(
                 continue
             subject = h.get("subject") or "(unknown)"
             content = h.get("content") or {}
-            title = content.get("title") if isinstance(content, dict) else None
+            # DataCite titles[0].title, not a flat "title" key (else "(untitled)").
+            title = datacite_title(content)
             source = h.get("structural_source") or "structure"
             lines.append(f"- **[Globus {subject}]** *{title or '(untitled)'}* — {source}")
         return "\n".join(lines)

@@ -38,6 +38,12 @@ from typing import Any
 import yaml
 from pydantic import BaseModel, ConfigDict, Field
 
+from apecx_integration.agents.globus_search._datacite import (
+    datacite_description,
+    datacite_subjects,
+    datacite_title,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -551,17 +557,20 @@ def _render_globus_results(
         token = f"[Globus {subject}]"
         allowed.add(token)
         content = h.get("content") or {}
-        title = content.get("title") if isinstance(content, dict) else None
-        abstract = (
-            content.get("abstract") or content.get("description")
-            if isinstance(content, dict)
-            else None
-        )
+        # DataCite-aware extraction: every record in the aggregate index stores
+        # its title at content["titles"][0]["title"], not a flat "title" key.
+        # Reading the flat key dropped the title of EVERY harvested-corpus hit
+        # (journal articles AND PDB/EMDB structures) to "(untitled)".
+        title = datacite_title(content)
+        abstract = datacite_description(content)
+        subjects = datacite_subjects(content)
         bits = [f"- **{token}** *{title or '(untitled)'}*"]
         if abstract:
             shown = str(abstract)[:300]
             ellipsis = "…" if len(str(abstract)) > 300 else ""
             bits.append(f"  - {shown}{ellipsis}")
+        if subjects:
+            bits.append(f"  - keywords: {', '.join(subjects)}")
         rendered_lines.extend(bits)
     if not rendered_lines:
         return ("(no Globus Search hits)", allowed)
