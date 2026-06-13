@@ -85,14 +85,12 @@ _ALIGNER_STEP_CLASSES: dict[str, str] = {
 }
 
 
-def build_viral_conserved_sites_workflow(aligner: str = "mafft"):
-    """Construct + load the viral_conserved_sites workflow (catalog lightweight entry-point).
+def _conserved_sites_core_builder(aligner: str):
+    """Build the shared fetch→align→conserve→report cascade (NO terminal step / output bound).
 
-    ``aligner`` selects the MSA backend at the ``align`` step: ``"mafft"`` (local, default) or
-    ``"muscle"`` (Rhea MCP). The choice is build-time (lightweight catalog builders are no-arg);
-    each runnable catalog entry binds one aligner — ``viral_conserved_sites`` (mafft) and
-    ``viral_conserved_sites_muscle`` (muscle) — so ``list_workflows`` reports each one's real
-    availability (the muscle entry declares its Rhea prerequisite; the mafft entry has none).
+    The single source of topology truth for both the standalone catalog workflow (which adds an
+    EnvelopeStep) and the nesting variant (which surfaces the report dict directly). The caller
+    binds the workflow-level output and terminal link.
     """
     if aligner not in _ALIGNER_STEP_CLASSES:
         raise ValueError(f"unknown aligner {aligner!r}; supported: {sorted(_ALIGNER_STEP_CLASSES)}")
@@ -103,7 +101,6 @@ def build_viral_conserved_sites_workflow(aligner: str = "mafft"):
         "Find conserved protein sites across strains of a virus (BV-BRC → MSA → conservation).",
     )
     b.add_input("workflow_input", "DataUnitMemory")
-    b.add_output("workflow_output", "DataUnitMemory")
 
     b.add_step(
         "fetch",
@@ -139,6 +136,25 @@ def build_viral_conserved_sites_workflow(aligner: str = "mafft"):
         output_data_units=_du("report"),
         triggers=_trig("report_in"),
     )
+
+    b.add_link("workflow_input", "fetch.fetch_in", link_type="direct")
+    b.add_link("fetch.protein_fasta", "align.align_in", link_type="direct")
+    b.add_link("align.alignment", "conserve.conserve_in", link_type="direct")
+    b.add_link("conserve.conservation_result", "report.report_in", link_type="direct")
+    return b
+
+
+def build_viral_conserved_sites_workflow(aligner: str = "mafft"):
+    """Construct + load the viral_conserved_sites workflow (catalog lightweight entry-point).
+
+    ``aligner`` selects the MSA backend at the ``align`` step: ``"mafft"`` (local, default) or
+    ``"muscle"`` (Rhea MCP). The choice is build-time (lightweight catalog builders are no-arg);
+    each runnable catalog entry binds one aligner — ``viral_conserved_sites`` (mafft) and
+    ``viral_conserved_sites_muscle`` (muscle) — so ``list_workflows`` reports each one's real
+    availability (the muscle entry declares its Rhea prerequisite; the mafft entry has none).
+    """
+    b = _conserved_sites_core_builder(aligner)
+    b.add_output("workflow_output", "DataUnitMemory")
     b.add_step(
         "envelope",
         f"{_STEPS}.envelope_step.EnvelopeStep",
@@ -146,14 +162,27 @@ def build_viral_conserved_sites_workflow(aligner: str = "mafft"):
         output_data_units=_du("workflow_result"),
         triggers=_trig("envelope_input"),
     )
-
-    b.add_link("workflow_input", "fetch.fetch_in", link_type="direct")
-    b.add_link("fetch.protein_fasta", "align.align_in", link_type="direct")
-    b.add_link("align.alignment", "conserve.conserve_in", link_type="direct")
-    b.add_link("conserve.conservation_result", "report.report_in", link_type="direct")
     b.add_link("report.report", "envelope.envelope_input", link_type="direct")
     b.add_link("envelope.workflow_result", "workflow_output", link_type="direct")
+    return b.load()
 
+
+def build_viral_conserved_sites_core_workflow(aligner: str = "mafft"):
+    """No-arg NESTING variant (E2-C1): the same fetch→align→conserve→report cascade, but the
+    workflow output is the ``report`` dict ``{markdown, data:{kind:bundle, parts:
+    conservation_result}}`` directly — WITHOUT the terminal EnvelopeStep.
+
+    Why a separate terminal: an EnvelopeStep emits a ``WorkflowResult`` whose ``status: ok``
+    field collides with ``SubworkflowStep``'s own operational ``status`` protocol (the base step
+    raises "inner workflow returned status='ok', expected 'completed'"). Ending at ``report``
+    yields a plain dict with no ``status`` key, so the cascade composes cleanly inside a
+    ``SubworkflowStep`` AND the structured conservation result is available directly under
+    ``data.parts`` (no handle-store round-trip). NOT registered in the catalog — it exists only
+    to be embedded by ``SequenceConservationSubworkflowStep``.
+    """
+    b = _conserved_sites_core_builder(aligner)
+    b.add_output("workflow_output", "DataUnitMemory")
+    b.add_link("report.report", "workflow_output", link_type="direct")
     return b.load()
 
 
@@ -169,6 +198,7 @@ def build_viral_conserved_sites_muscle_workflow():
 
 
 __all__ = [
+    "build_viral_conserved_sites_core_workflow",
     "build_viral_conserved_sites_muscle_workflow",
     "build_viral_conserved_sites_workflow",
 ]

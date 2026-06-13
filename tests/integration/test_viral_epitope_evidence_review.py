@@ -10,11 +10,14 @@ from __future__ import annotations
 
 import asyncio
 import os
+import shutil
 
 import pytest
 import requests
 
 pytestmark = pytest.mark.integration
+
+_CHIKV_TAXON = 37124
 
 
 def _globus_reachable() -> bool:
@@ -72,6 +75,26 @@ needs_llm = pytest.mark.skipif(
     reason="needs a reachable LLM endpoint (APECX_LLM_*)",
 )
 
+
+def _bvbrc_reachable() -> bool:
+    try:
+        r = requests.get(
+            "https://www.bv-brc.org/api/genome_feature/"
+            f"?eq(taxon_id,{_CHIKV_TAXON})&limit(1)&http_accept=application/json",
+            timeout=15,
+        )
+        return r.status_code == 200
+    except Exception:
+        return False
+
+
+# The sequence-conservation leg (E2-C1) nests viral_conserved_sites: it needs a local MAFFT
+# binary AND a reachable BV-BRC, on top of the LLM, to prove the HAPPY path end-to-end.
+needs_llm_seq = pytest.mark.skipif(
+    not (_llm_reachable() and shutil.which("mafft") is not None and _bvbrc_reachable()),
+    reason="needs a reachable LLM (APECX_LLM_*) AND MAFFT installed AND BV-BRC reachable",
+)
+
 _QUERY = "conserved chikungunya structural polyprotein epitopes and structural references"
 
 
@@ -86,7 +109,16 @@ def test_builder_produces_workflow_with_child_steps():
     wf = build_viral_epitope_evidence_review_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", None)
     assert isinstance(children, dict)
-    assert set(children) == {"normalize", "assemble", "structural", "review", "gate", "envelope"}
+    assert set(children) == {
+        "normalize",
+        "assemble",
+        "structural",
+        "sequence",
+        "merge",
+        "review",
+        "gate",
+        "envelope",
+    }
 
 
 def test_registered_in_catalog_and_listed():
@@ -181,6 +213,51 @@ def test_structural_no_hit_is_named_e2e(monkeypatch):
     # Degrade-loud guarantees a result; the structural section names the no-hit explicitly.
     assert out["status"] == "ok", out
     assert "No PDB or EMDB structural records" in out["markdown"], out["markdown"][:2000]
+
+
+@needs_llm_seq
+def test_sequence_conservation_stage_e2e():
+    """E2-C1 END-TO-END (the apecx-side integration gap E2-F1 flagged): the full evidence
+    workflow, on a real CHIKV query WITH taxon_id + protein, nests viral_conserved_sites
+    (BV-BRC fetch → MAFFT MSA → conservation), folds the structured conservation into the
+    bundle, and surfaces a `sequence_conservation` stage report with REAL conserved regions
+    in the reasoning trace — alongside the unchanged 5-section output contract."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            {"query": _QUERY, "taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein"},
+        )
+    )
+    assert out["status"] == "ok", out
+    md = out["markdown"]
+    assert md and md.strip()
+
+    # The five-section output contract is intact (the sequence stage did not perturb it).
+    headers = [
+        "# Answer",
+        "## Cross-data reasoning",
+        "## Integrated insight",
+        "## Sources and evidence",
+        "## Follow-up questions",
+    ]
+    positions = [md.find(h) for h in headers]
+    assert all(p != -1 for p in positions), (positions, md[:3000])
+    assert positions == sorted(positions), (positions, md[:3000])
+
+    # The sequence-conservation stage report is present in the reasoning trace…
+    assert "### Reasoning trace" in md
+    seq_lines = [ln for ln in md.splitlines() if "sequence_conservation" in ln]
+    assert seq_lines, ("no sequence_conservation stage report rendered", md[:4000])
+    seq_line = seq_lines[0]
+    # …carrying REAL conserved regions (the happy path), not the loud degrade note.
+    assert "Sequence conservation unavailable" not in seq_line, (
+        "sequence leg degraded — expected real conserved sites for CHIKV structural polyprotein",
+        seq_line,
+    )
+    assert "conserved region(s) at" in seq_line, seq_line
+    assert "per-strain sequences" in seq_line, seq_line
 
 
 @needs_llm

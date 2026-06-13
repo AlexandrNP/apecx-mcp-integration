@@ -31,7 +31,7 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 8, f"expected 8 links (incl. the fan-in edge), got {len(links)}"
+    assert len(links) == 11, f"expected 11 links (incl. both fan-ins), got {len(links)}"
     for name, entry in links.items():
         link_cfg = entry["config"]
         assert link_cfg["link_type"] == "direct", f"{name}: only DirectLinks expected"
@@ -48,7 +48,49 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
     wf = build_viral_epitope_evidence_review_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", None)
     assert isinstance(children, dict)
-    assert set(children) == {"normalize", "assemble", "structural", "review", "gate", "envelope"}
+    assert set(children) == {
+        "normalize",
+        "assemble",
+        "structural",
+        "sequence",
+        "merge",
+        "review",
+        "gate",
+        "envelope",
+    }
+
+
+def test_sequence_and_merge_fanin_wired():
+    """E2-C1: the sequence-conservation leg + the merge fan-in are present, the merge joins
+    the structural bundle + the sequence result, and review reads the MERGED bundle (not the
+    raw structural bundle). Guards a regression that would drop the sequence stage."""
+    cfg = _evidence_workflow_builder().get_config()
+    steps = cfg["steps"]
+    assert "sequence" in steps and "merge" in steps
+
+    # The sequence step nests the conserved-sites builder; its own input DU (G117) differs
+    # from the inner workflow's first-step input DU (fetch_in).
+    seq = steps["sequence"]
+    assert seq["class"].endswith("SequenceConservationSubworkflowStep")
+    assert "sequence_params" in seq["input_data_units"]
+    assert "fetch_in" not in seq["input_data_units"]
+
+    # merge fan-in: an AllDataReceivedTrigger over both legs.
+    merge = steps["merge"]
+    trig = merge["triggers"][0]
+    assert trig["class"].endswith("AllDataReceivedTrigger")
+    assert set(trig["data_units"]) == {"structural_in", "sequence_in"}
+
+    link_pairs = {(e["config"]["source"], e["config"]["target"]) for e in cfg["links"].values()}
+    assert ("normalize.normalize_out", "sequence.sequence_params") in link_pairs
+    assert ("structural.structural_bundle", "merge.structural_in") in link_pairs
+    assert ("sequence.sequence_result", "merge.sequence_in") in link_pairs
+    assert ("merge.merged_bundle", "review.review_input") in link_pairs
+    # The OLD direct structural→review edge must be gone (review now reads the merged bundle).
+    assert ("structural.structural_bundle", "review.review_input") not in link_pairs
+    # The design-gate fan-in (#2) is untouched.
+    assert ("review.review_output", "gate.review_in") in link_pairs
+    assert ("normalize.normalize_out", "gate.control_in") in link_pairs
 
 
 def test_entry_step_input_schema_requires_query():
