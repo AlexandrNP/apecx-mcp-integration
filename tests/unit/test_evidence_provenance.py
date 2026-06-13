@@ -186,6 +186,30 @@ def test_records_analyzed_structures_multi():
     assert rea["analyzed_structures"][2]["available"] is False
 
 
+def test_records_mmcif_assembly_structure_kind():
+    """R1: provenance threads the new ``mmcif_assembly`` structure_kind through unchanged
+    (a large-assembly run is a real biological assembly, distinct from an AU degrade)."""
+    bundle = _full_bundle()
+    bundle["structural_reasoning"].update(
+        pdb_id="6N1D",
+        chain="AS04",
+        structure_kind="mmcif_assembly",
+        assembly_id=1,
+        n_assembly_copies=1,
+        neighbor_cutoff=None,
+        analyzed_structures=[
+            {"pdb_id": "6N1D", "structure_kind": "mmcif_assembly", "available": True}
+        ],
+        n_analyzed_structures=1,
+    )
+    rea = collect_provenance(bundle)["structural_reasoning"]
+    assert rea["available"] is True
+    assert rea["pdb_id"] == "6N1D"
+    assert rea["structure_kind"] == "mmcif_assembly"
+    assert rea["assembly_id"] == 1
+    assert rea["analyzed_structures"][0]["structure_kind"] == "mmcif_assembly"
+
+
 def test_single_structure_bundle_records_one_analyzed_structure():
     """A pre-E3-13 single-structure bundle (no analyzed_structures key) still yields a
     non-empty one-entry analyzed_structures list derived from the primary pdb."""

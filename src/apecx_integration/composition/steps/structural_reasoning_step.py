@@ -23,8 +23,12 @@ functional validation + provenance read, so N=1 reproduces today's result exactl
 ADDITIONAL. Per the per-structure analysis, each loaded structure
 
 1. loads the (host-pre-fetched) structure — the BIOLOGICAL ASSEMBLY (functional
-   oligomer, ``{pdb}.pdb1``) when one is deposited, else the asymmetric unit (named
-   degrade), so accessibility is judged on the oligomer an antibody actually meets,
+   oligomer) when one is deposited: the legacy-PDB ``{pdb}.pdb1`` assembly, or — when
+   that 404s because the assembly is too large for the legacy format (R1/E3-1:
+   ribosomes, large multi-assembly crystals) — the mmCIF assembly
+   (``{pdb}-assembly1.cif``); only when NEITHER exists does it fall back to the
+   asymmetric unit (named degrade), so accessibility is judged on the oligomer an
+   antibody actually meets,
 2. maps each conserved region's consensus motif onto the structure's chain residues
    (ungapped sliding-window identity — see ``_pymol_sasa.map_motif_to_chain``),
 3. computes PER-RESIDUE SASA with PINNED settings (``dot_solvent=1``,
@@ -93,10 +97,17 @@ _STRUCTURE_CACHE = Path(
 _RCSB_CIF_URL = "https://files.rcsb.org/download/{pdb_id}.cif"
 # Biological assembly 1 (the functional oligomer) in gzipped legacy-PDB format. SASA
 # must be computed over THIS, not the AU .cif — an interface residue reads exposed in
-# the AU but is buried once the assembly's symmetry copies are present. Falls back to
-# the AU .cif on 404 (no biological assembly deposited).
+# the AU but is buried once the assembly's symmetry copies are present.
 _RCSB_ASSEMBLY_URL = "https://files.rcsb.org/download/{pdb_id}.pdb1.gz"
+# R1 (E3-1): a .pdb1 404 is AMBIGUOUS. It means "no LEGACY-PDB assembly", which is EITHER
+# genuinely-no-assembly OR an assembly too large for the legacy format (>62 chains /
+# >99999 atoms — ribosomes, large multi-assembly crystals) that exists ONLY in mmCIF.
+# On a .pdb1 404 we try the mmCIF biological assembly BEFORE falling back to the AU, so
+# accessibility is judged on the real assembly (not a silently-substituted AU). Only when
+# NEITHER format has an assembly is the AU caveat accurate.
+_RCSB_MMCIF_ASSEMBLY_URL = "https://files.rcsb.org/download/{pdb_id}-assembly1.cif.gz"
 _KIND_ASSEMBLY = "assembly_1"
+_KIND_MMCIF_ASSEMBLY = "mmcif_assembly"
 _KIND_AU = "asymmetric_unit"
 
 # Structure-relevance ranking (P1). Epitopes sit on SURFACE ANTIGENS, so when the
@@ -573,12 +584,20 @@ class StructuralReasoningStep(BaseStep):
         return await self._run_pymol_on_file(pdb_id, structure_path, kind, regions)
 
     async def _run_pymol_on_file(
-        self, pdb_id: str, structure_path: Path, kind: str, regions: list[dict[str, Any]]
+        self,
+        pdb_id: str,
+        structure_path: Path,
+        kind: str,
+        regions: list[dict[str, Any]],
+        *,
+        requested_chain: str | None = None,
     ) -> dict[str, Any]:
         """Run the headless PyMOL job in a network-isolated container on a host-fetched
-        structure file. ``kind`` (``'assembly_1'`` | ``'asymmetric_unit'``) selects the
-        load format and is recorded in the result. Split from ``_run_container`` so the
-        AU-vs-assembly SASA comparison test can drive the same job on both files."""
+        structure file. ``kind`` (``'assembly_1'`` | ``'mmcif_assembly'`` |
+        ``'asymmetric_unit'``) selects the load format and is recorded in the result.
+        ``requested_chain`` pins the analysed chain (default: the job auto-selects the
+        best motif-mapping chain — R3). Split from ``_run_container`` so the AU-vs-assembly
+        SASA comparison test can drive the same job on both files."""
         ext = "pdb1" if kind == _KIND_ASSEMBLY else "cif"
         with tempfile.TemporaryDirectory(prefix="apecx_pymol_") as tmp:
             workdir = Path(tmp)
@@ -594,6 +613,8 @@ class StructuralReasoningStep(BaseStep):
                 "min_map_identity": self._min_map_identity,
                 "contact_cutoff": self._contact_cutoff,
             }
+            if requested_chain:
+                job["chain"] = requested_chain
             (workdir / "job.json").write_text(json.dumps(job))
 
             argv = self._docker_argv(workdir)
@@ -689,6 +710,8 @@ class StructuralReasoningStep(BaseStep):
         pv = result.get("pymol_version")
         if result.get("structure_kind") == _KIND_ASSEMBLY:
             ctx = f"biological assembly 1, {result.get('n_assembly_copies')} copy(ies)"
+        elif result.get("structure_kind") == _KIND_MMCIF_ASSEMBLY:
+            ctx = "biological assembly 1 (mmCIF — too large for legacy PDB format)"
         else:
             ctx = "asymmetric unit — no biological assembly deposited"
         tail = ""
@@ -760,16 +783,45 @@ def _fetch_au_cif(pdb_id: str) -> Path:
     return dest
 
 
+def _fetch_mmcif_assembly(pdb_id: str) -> Path | None:
+    """Download (and cache) RCSB biological assembly 1 in mmCIF (``{pdb}-assembly1.cif.gz``,
+    decompressed to ``{pdb}.assembly1.cif`` in the cache).
+
+    R1 (E3-1) large-assembly path: reached only when the legacy-PDB ``.pdb1`` assembly
+    404s. The biological assembly may still be deposited ONLY in mmCIF (too large for the
+    legacy format). Returns the cache path when RCSB has the mmCIF assembly, or ``None``
+    when it 404s too (a genuine no-assembly entry → the caller falls back to the AU with an
+    ACCURATE caveat). Raises on a non-404 network/HTTP failure (the caller degrades LOUD)."""
+    _STRUCTURE_CACHE.mkdir(parents=True, exist_ok=True)
+    dest = _STRUCTURE_CACHE / f"{pdb_id}.assembly1.cif"
+    if dest.exists() and dest.stat().st_size > 0:
+        return dest
+    url = _RCSB_MMCIF_ASSEMBLY_URL.format(pdb_id=pdb_id)
+    try:
+        with urllib.request.urlopen(url, timeout=120) as resp:  # noqa: S310 — fixed RCSB host
+            raw = gzip.decompress(resp.read())
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:  # no mmCIF assembly either → truly no biological assembly
+            return None
+        raise
+    tmp = dest.with_suffix(".cif.part")
+    tmp.write_bytes(raw)
+    tmp.replace(dest)
+    return dest
+
+
 def _fetch_structure(pdb_id: str, *, prefer_assembly: bool = True) -> tuple[Path, str]:
     """Download (and cache) the immutable RCSB structure for ``pdb_id``.
 
     With ``prefer_assembly`` (default) fetch BIOLOGICAL ASSEMBLY 1 — the functional
-    oligomer — from ``{pdb}.pdb1.gz`` (decompressed to ``{pdb}.pdb1`` in the cache) so
-    SASA is computed over the oligomer, not the deposited asymmetric unit. On a 404
-    (no assembly deposited) fall back to the AU ``.cif``. Returns ``(path, kind)`` where
-    ``kind`` is ``'assembly_1'`` or ``'asymmetric_unit'`` (recorded in the result).
-    Set ``prefer_assembly=False`` to force the AU (used to compare AU-vs-assembly SASA).
-    Raises on a non-404 network/HTTP failure (the caller degrades LOUD)."""
+    oligomer — preferring the legacy-PDB ``{pdb}.pdb1.gz`` (decompressed to ``{pdb}.pdb1``).
+    On a ``.pdb1`` 404, try the mmCIF assembly ``{pdb}-assembly1.cif.gz`` (R1: large
+    assemblies — ribosomes, multi-assembly crystals — exist only in mmCIF) BEFORE the AU.
+    Only when NEITHER format has an assembly fall back to the AU ``.cif``. Returns
+    ``(path, kind)`` where ``kind`` is ``'assembly_1'``, ``'mmcif_assembly'`` or
+    ``'asymmetric_unit'`` (recorded in the result). Set ``prefer_assembly=False`` to force
+    the AU (used to compare AU-vs-assembly SASA). Raises on a non-404 network/HTTP failure
+    (the caller degrades LOUD)."""
     if not prefer_assembly:
         return _fetch_au_cif(pdb_id), _KIND_AU
 
@@ -782,7 +834,11 @@ def _fetch_structure(pdb_id: str, *, prefer_assembly: bool = True) -> tuple[Path
         with urllib.request.urlopen(url, timeout=60) as resp:  # noqa: S310 — fixed RCSB host
             raw = gzip.decompress(resp.read())
     except urllib.error.HTTPError as exc:
-        if exc.code == 404:  # no biological assembly deposited → AU fallback (named upstream)
+        if exc.code == 404:
+            # Ambiguous 404 (R1): try the mmCIF assembly before assuming "no assembly".
+            mmcif = _fetch_mmcif_assembly(pdb_id)
+            if mmcif is not None:
+                return mmcif, _KIND_MMCIF_ASSEMBLY
             return _fetch_au_cif(pdb_id), _KIND_AU
         raise
     tmp = dest.with_suffix(".pdb1.part")

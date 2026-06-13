@@ -20,6 +20,8 @@ Docker-gated integration test ``tests/integration/test_structural_reasoning_pymo
 from __future__ import annotations
 
 import asyncio
+import gzip
+import urllib.error
 from pathlib import Path
 
 import pytest
@@ -431,6 +433,132 @@ def test_container_failure_degrades_loud(tmp_path, monkeypatch):
     sr = out["structural_reasoning"]
     assert sr["available"] is False
     assert "failed" in sr["note"]
+
+
+# ----------------------------------------------------- R1: mmCIF large-assembly fetch path
+
+
+class _GzipResp:
+    """Minimal context-manager stand-in for ``urllib.request.urlopen`` returning gzip bytes
+    (a data shape, not a mock of an interface — the bytes are real gzip the code decompresses)."""
+
+    def __init__(self, payload: bytes):
+        self._payload = gzip.compress(payload)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def read(self) -> bytes:
+        return self._payload
+
+
+def _http_404(url, timeout=60):
+    raise urllib.error.HTTPError(url, 404, "Not Found", {}, None)
+
+
+def test_fetch_prefers_legacy_pdb1_assembly(tmp_path, monkeypatch):
+    """Happy path unchanged: a deposited legacy ``.pdb1`` assembly is used as ``assembly_1``."""
+    monkeypatch.setattr(mod, "_STRUCTURE_CACHE", tmp_path)
+    monkeypatch.setattr(mod.urllib.request, "urlopen", lambda url, timeout=60: _GzipResp(b"PDB1\n"))
+    path, kind = mod._fetch_structure("1ABC")
+    assert kind == "assembly_1"
+    assert path.name == "1ABC.pdb1"
+    assert path.read_bytes() == b"PDB1\n"
+
+
+def test_fetch_falls_back_to_mmcif_assembly_on_pdb1_404(tmp_path, monkeypatch):
+    """R1: on a ``.pdb1`` 404 the mmCIF assembly is used (``mmcif_assembly``), NOT the AU —
+    the large-assembly correctness fix. The AU fallback is NOT reached."""
+    monkeypatch.setattr(mod, "_STRUCTURE_CACHE", tmp_path)
+    monkeypatch.setattr(mod.urllib.request, "urlopen", _http_404)
+    mmcif = tmp_path / "7K00.assembly1.cif"
+    mmcif.write_text("data_7K00\n")
+    monkeypatch.setattr(mod, "_fetch_mmcif_assembly", lambda pdb_id: mmcif)
+    au_calls: list[str] = []
+    monkeypatch.setattr(mod, "_fetch_au_cif", lambda pdb_id: au_calls.append(pdb_id))
+    path, kind = mod._fetch_structure("7K00")
+    assert kind == "mmcif_assembly"
+    assert path == mmcif
+    assert au_calls == []  # AU fallback NOT reached when an mmCIF assembly exists
+
+
+def test_fetch_falls_back_to_au_only_when_no_assembly_anywhere(tmp_path, monkeypatch):
+    """R1: AU fallback (``asymmetric_unit``) is reached ONLY when BOTH the .pdb1 AND the
+    mmCIF assembly 404 — then (and only then) the AU caveat is accurate."""
+    monkeypatch.setattr(mod, "_STRUCTURE_CACHE", tmp_path)
+    monkeypatch.setattr(mod.urllib.request, "urlopen", _http_404)
+    monkeypatch.setattr(mod, "_fetch_mmcif_assembly", lambda pdb_id: None)
+    au = tmp_path / "1ABC.cif"
+    au.write_text("data\n")
+    monkeypatch.setattr(mod, "_fetch_au_cif", lambda pdb_id: au)
+    path, kind = mod._fetch_structure("1ABC")
+    assert kind == "asymmetric_unit"
+    assert path == au
+
+
+def test_fetch_mmcif_assembly_returns_none_on_404(tmp_path, monkeypatch):
+    """A genuine no-assembly entry: the mmCIF assembly 404 → ``None`` so the caller degrades
+    to the AU with an accurate (not misleading) caveat."""
+    monkeypatch.setattr(mod, "_STRUCTURE_CACHE", tmp_path)
+    monkeypatch.setattr(mod.urllib.request, "urlopen", lambda url, timeout=120: _http_404(url))
+    assert mod._fetch_mmcif_assembly("9ZZZ") is None
+
+
+def test_fetch_mmcif_assembly_caches_decompressed(tmp_path, monkeypatch):
+    monkeypatch.setattr(mod, "_STRUCTURE_CACHE", tmp_path)
+    monkeypatch.setattr(
+        mod.urllib.request, "urlopen", lambda url, timeout=120: _GzipResp(b"data_7K00\n")
+    )
+    p = mod._fetch_mmcif_assembly("7K00")
+    assert p is not None and p.name == "7K00.assembly1.cif"
+    assert p.read_bytes() == b"data_7K00\n"
+
+
+def test_fetch_mmcif_assembly_raises_on_non_404(tmp_path, monkeypatch):
+    """A non-404 HTTP failure propagates (the caller degrades LOUD), never silently AU."""
+    monkeypatch.setattr(mod, "_STRUCTURE_CACHE", tmp_path)
+
+    def _500(url, timeout=120):
+        raise urllib.error.HTTPError(url, 500, "Server Error", {}, None)
+
+    monkeypatch.setattr(mod.urllib.request, "urlopen", _500)
+    with pytest.raises(urllib.error.HTTPError):
+        mod._fetch_mmcif_assembly("7K00")
+
+
+def _mmcif_job_result(pdb_id: str) -> dict:
+    """A realistic PyMOL-job result computed over an mmCIF biological assembly (R1) — a data
+    shape (real-SASA parity is the 6N1D integration test)."""
+    r = _au_job_result(pdb_id)
+    r.update(structure_kind="mmcif_assembly", assembly_id=1, n_assembly_copies=1)
+    return r
+
+
+def test_mmcif_assembly_named_in_report_no_caveat(tmp_path, monkeypatch):
+    """R1 / CC-2: SASA over the mmCIF assembly is a REAL assembly — it carries the assembly
+    provenance (structure_kind=mmcif_assembly, assembly_id=1) and emits NO misleading
+    'asymmetric unit / no assembly' caveat."""
+    step = _step(tmp_path)
+    monkeypatch.setattr(mod, "_docker_available", lambda image: True)
+
+    async def _mmcif(self, pdb_id, regions):
+        return _mmcif_job_result(pdb_id)
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _mmcif)
+    out = asyncio.run(step.process(_bundle()))
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True
+    assert sr["structure_kind"] == "mmcif_assembly"
+    assert sr["assembly_id"] == 1
+    assert sr["n_exposed"] == 1  # CC-1: non-empty real classification
+    assert "assembly_caveat" not in sr  # a real assembly → NOT an AU degrade
+    rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
+    assert "mmCIF" in rep["markdown"]
+    assert rep["data"]["structure_kind"] == "mmcif_assembly"
+    assert rep["data"]["assembly_id"] == 1
 
 
 # ----------------------------------------------- E3-13: multi-structure step loop (offline)

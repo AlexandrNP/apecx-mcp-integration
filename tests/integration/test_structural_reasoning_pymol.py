@@ -199,20 +199,94 @@ def test_assembly_sasa_differs_from_au_on_2xfb():
     ]
 
 
+# --------------------------------------------------- R1: mmCIF large-assembly fallback
+# 6N1D = a 70S ribosome X-ray crystal with TWO ribosomes in the deposited file. Its
+# biological assembly has >62 chains, so RCSB serves NO legacy ``.pdb1`` — assembly 1
+# (ONE ribosome) exists only as ``6N1D-assembly1.cif``. The current code would 404 on
+# .pdb1 and silently use the deposited AU (.cif = BOTH ribosomes), over-burying the
+# inter-ribosome crystal contacts. Chain AS04 (small-subunit protein S4) carries a
+# crystal-contact cluster (resi 16/18) that reads BURIED in the 2-ribosome AU but
+# correctly EXPOSED in the 1-ribosome biological assembly — the wrong-accessibility R1
+# fixes. (Honest scope: RCSB serves legacy .pdb1 for symmetry-EXPANDED viral capsids,
+# even million-atom ones, so the mmCIF-only path is reached for large multi-chain /
+# multi-assembly deposits like this, not for the icosahedral-capsid case the flag imagined.)
+_6N1D_RECORD = {"subject": "pdb:6N1D", "structural_source": "pdb"}
+_6N1D_CHAIN = "AS04"
+_6N1D_REGION = {"start": 10, "end": 23, "length": 14, "consensus": "RLCRREGVKLYLKG"}
+
+
+@_GATE
+def test_mmcif_assembly_fetch_path_and_sasa_differs_from_au():
+    """R1 / CC-1 / CC-4: a real PDB whose biological assembly is mmCIF-only (.pdb1 404)
+    now (a) fetches as ``mmcif_assembly`` not a silent AU, (b) computes a NON-EMPTY real
+    SASA classification over the assembly, (c) flips >=1 residue's verdict vs the AU
+    (proving the assembly is really used), and (d) is byte-stable across two runs."""
+    _require_rcsb("6N1D")
+    from apecx_integration.composition.steps import _pymol_sasa as sasa
+    from apecx_integration.composition.steps.structural_reasoning_step import _fetch_structure
+
+    step = _step()
+    regions = [dict(_6N1D_REGION)]
+    # R1 fetch decision (REAL): .pdb1 404 -> mmCIF assembly (NOT a silent AU).
+    asm_path, asm_kind = _fetch_structure("6N1D")
+    au_path, au_kind = _fetch_structure("6N1D", prefer_assembly=False)
+    assert asm_kind == "mmcif_assembly", asm_kind
+    assert au_kind == "asymmetric_unit"
+
+    asm = asyncio.run(
+        step._run_pymol_on_file("6N1D", asm_path, asm_kind, regions, requested_chain=_6N1D_CHAIN)
+    )
+    au = asyncio.run(
+        step._run_pymol_on_file("6N1D", au_path, au_kind, regions, requested_chain=_6N1D_CHAIN)
+    )
+    asm2 = asyncio.run(
+        step._run_pymol_on_file("6N1D", asm_path, asm_kind, regions, requested_chain=_6N1D_CHAIN)
+    )
+    assert au["ok"] and asm["ok"], (au.get("note"), asm.get("note"))
+
+    # CC-1: the mmCIF assembly run classifies the real chain non-empty, assembly-tagged.
+    assert asm["structure_kind"] == "mmcif_assembly"
+    assert asm["assembly_id"] == 1
+    assert asm["chain"] == _6N1D_CHAIN
+    assert asm["n_mapped_residues"] == 14
+    assert asm["n_exposed"] + asm["n_buried"] == asm["n_mapped_residues"]
+    assert asm["n_exposed"] >= 1
+
+    # Load-bearing: >=1 residue's verdict CHANGES AU -> assembly (the assembly is really
+    # used, not silently the AU). The 2-ribosome deposited AU spuriously BURIES crystal-
+    # contact residues that the 1-ribosome biological assembly correctly EXPOSES.
+    flips = sasa.assembly_exposure_flips(
+        au["exposed_residues"] + au["buried_residues"],
+        asm["exposed_residues"] + asm["buried_residues"],
+    )
+    assert len(flips) >= 1, f"mmCIF assembly changed NO verdict (cosmetic): au={au} asm={asm}"
+    assert {f["resi"] for f in flips} & {16, 18}, flips
+    assert all(f["au_state"] == "buried" and f["assembly_state"] == "exposed" for f in flips), flips
+    assert asm["n_exposed"] > au["n_exposed"]  # assembly un-buries the crystal contacts
+
+    # CC-4: byte-stable assembly SASA across two runs (same residues + same SASA values).
+    assert [e["resi"] for e in asm["exposed_residues"]] == [
+        e["resi"] for e in asm2["exposed_residues"]
+    ]
+    assert [e["sasa"] for e in asm["exposed_residues"]] == [
+        e["sasa"] for e in asm2["exposed_residues"]
+    ]
+
+
 @_GATE
 def test_no_assembly_degrades_to_au_named_caveat(monkeypatch):
-    """E3-1.3 / CC-2: a real PDB whose biological assembly is NOT available in legacy
-    PDB format (.pdb1.gz 404) falls back to the AU and emits the NAMED caveat. The
-    404 -> AU fetch decision is REAL (7K00, a 70S ribosome whose assembly exceeds legacy
-    PDB limits); the full-step SASA runs over a real (small, cached) AU so the degrade
-    path returns a NON-EMPTY classification (CC-1) carrying the caveat."""
+    """E3-1.3 / CC-2: a structure with NO biological assembly in EITHER format falls back to
+    the AU and emits the NAMED caveat with a NON-EMPTY classification (CC-1). The genuine
+    .pdb1-404 -> mmCIF-404 -> AU fetch decision is covered deterministically by the unit
+    tests (``test_fetch_falls_back_to_au_only_when_no_assembly_anywhere`` /
+    ``test_fetch_mmcif_assembly_returns_none_on_404``) — a released RCSB entry with NO
+    assembly in either format is vanishingly rare (R1 finding: RCSB serves the legacy .pdb1
+    for every symmetry-expanded assembly and the mmCIF assembly for the large ones), so here
+    we steer the fetch to a real cached AU and assert the AU classification + caveat wiring on
+    real SASA."""
     _require_rcsb("2XFB")
     from apecx_integration.composition.steps import structural_reasoning_step as srmod
     from apecx_integration.composition.steps.structural_reasoning_step import _fetch_structure
-
-    # REAL: RCSB 404 on the legacy assembly -> the fetch returns the AU, kind-tagged.
-    _, kind_7k00 = _fetch_structure("7K00")
-    assert kind_7k00 == "asymmetric_unit"
 
     # Full step over a real AU: steer the fetch to the cached 2XFB AU (kept small + fast)
     # tagged as asymmetric_unit, so the AU-classification + caveat wiring runs on real SASA.

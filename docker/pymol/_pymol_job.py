@@ -154,10 +154,14 @@ def run(job: dict) -> dict:
 
     structure_path = job["structure_path"]
     pdb_id = job.get("pdb_id")
-    # 'assembly_1' = the biological assembly (functional oligomer); 'asymmetric_unit' =
-    # the deposited AU (fallback when no assembly is deposited). SASA over the assembly
-    # is the correct accessibility for an oligomeric antigen — interface residues that
-    # read EXPOSED in the AU are BURIED once the symmetry copies are present.
+    # 'assembly_1' = the legacy-PDB biological assembly (functional oligomer);
+    # 'mmcif_assembly' = the same biological assembly in mmCIF, used when the assembly is
+    # too large for the legacy PDB format (R1: ribosomes, multi-assembly crystals — the
+    # mmCIF assembly already carries every chain of assembly 1); 'asymmetric_unit' = the
+    # deposited AU (fallback only when NO assembly is deposited in either format). SASA
+    # over the assembly is the correct accessibility for an oligomeric antigen — interface
+    # residues that read EXPOSED in the AU are BURIED once the assembly's copies/chains
+    # are present.
     structure_kind = job.get("structure_kind", "asymmetric_unit")
     requested_chain = job.get("chain")
     conserved_regions = job.get("conserved_regions") or []
@@ -166,12 +170,13 @@ def run(job: dict) -> dict:
     contact_cutoff = float(job.get("contact_cutoff", 8.0))
 
     notes: list[str] = []
-    assembly_id = 1 if structure_kind == "assembly_1" else None
+    assembly_id = 1 if structure_kind in ("assembly_1", "mmcif_assembly") else None
 
     with pymol2.PyMOL() as p:
         cmd = p.cmd
         version = str(cmd.get_version()[0])
         # Legacy assembly files (.pdb1) carry no recognised extension — force PDB format.
+        # The mmCIF assembly (.cif) and the AU (.cif) auto-detect from the extension.
         if structure_kind == "assembly_1":
             cmd.load(structure_path, "raw", format="pdb")
         else:

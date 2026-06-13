@@ -416,7 +416,7 @@ def test_provenance_record_has_real_values_e2e():
     rea = prov["structural_reasoning"]
     assert rea["available"] is True, rea
     assert rea["pdb_id"], rea
-    assert rea["structure_kind"] in ("assembly_1", "asymmetric_unit"), rea
+    assert rea["structure_kind"] in ("assembly_1", "mmcif_assembly", "asymmetric_unit"), rea
     assert rea["pymol_version"], rea
     assert rea["sasa_dot_solvent"] == 1 and rea["sasa_dot_density"] == 3, rea
     assert rea["ranking_rationale"], rea  # the selection rationale is recorded
