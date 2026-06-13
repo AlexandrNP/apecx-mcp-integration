@@ -186,6 +186,25 @@ class StructuralEvidenceStep(BaseStep):
 
         bundle["structural_records"] = structural_records
         bundle["structural_note"] = structural_note
+
+        # Stage-report scaffolding (E2-C): document the structural-evidence stage's
+        # contribution (records found, or the loud no-hit/outage note).
+        from apecx_integration.composition.steps._stage_report import append_stage_report
+
+        append_stage_report(
+            bundle,
+            stage="structural_evidence",
+            order=2,
+            markdown=(
+                structural_note
+                if structural_note
+                else f"Retrieved {len(structural_records)} PDB/EMDB structural record(s)."
+            ),
+            data={
+                "structural_records": len(structural_records),
+                "note": structural_note,
+            },
+        )
         log.info(
             "StructuralEvidenceStep %s: query=%.80r structural_hits=%d note=%s",
             self.name,

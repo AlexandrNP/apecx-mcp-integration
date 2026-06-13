@@ -602,6 +602,7 @@ def synthesize_response(
     globus_results: Iterable[dict[str, Any]] | None = None,
     llm: Any = None,
     config: SynthesisConfig | None = None,
+    system_prompt_override: str | None = None,
 ) -> str:
     """Synthesize a free-form Markdown response with inline citations.
 
@@ -627,6 +628,12 @@ def synthesize_response(
             ``_build_chat_llm`` factory is used.
         config: Synthesis config. When None, the bundled default
             (``synthesis_config.yml``) is loaded.
+        system_prompt_override: When provided (non-empty), replaces ONLY
+            the system message text for this call — every other knob and
+            citation gate still comes from ``config``. This is the seam a
+            caller (e.g. ``EvidenceReviewSynthesisStep``) uses to enforce an
+            output contract WITHOUT cloning the whole config or mutating the
+            shared ``synthesis_config.yml`` that other workflows depend on.
 
     Returns:
         The LLM's Markdown response, post-validated to contain at
@@ -643,6 +650,21 @@ def synthesize_response(
         )
 
     cfg = config or _load_default_config()
+
+    # System-prompt override seam. The override replaces ONLY the system message
+    # text; all gates (citations, length, empty-retrieval, grounding) stay sourced
+    # from ``cfg``. A blank override is almost certainly a caller bug (the LLM would
+    # get no role) — reject it rather than silently fall back to cfg.system_prompt.
+    if system_prompt_override is not None:
+        if not isinstance(system_prompt_override, str) or not system_prompt_override.strip():
+            raise ValueError(
+                "synthesize_response: system_prompt_override, when provided, must be a "
+                f"non-empty string; got {type(system_prompt_override).__name__}="
+                f"{system_prompt_override!r}"
+            )
+        system_prompt = system_prompt_override
+    else:
+        system_prompt = cfg.system_prompt
 
     rag_block, rag_tokens = _render_rag_chunks(
         rag_chunks or [],
@@ -729,7 +751,7 @@ def synthesize_response(
 
     response = llm.invoke(
         [
-            SystemMessage(content=cfg.system_prompt),
+            SystemMessage(content=system_prompt),
             HumanMessage(content=user_prompt),
         ]
     )

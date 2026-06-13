@@ -134,6 +134,40 @@ def test_evidence_only_e2e_has_structural_section():
 
 
 @needs_llm_and_globus
+def test_evidence_output_contract_five_sections_e2e():
+    """OUTPUT CONTRACT (E2-B): the final Markdown carries the five contract sections,
+    in order, and the deterministic Sources section lists at least one REAL cited
+    record with a non-'(untitled)' title (DataCite title resolution end-to-end)."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(run_workflow("viral_epitope_evidence_review", {"query": _QUERY}))
+    assert out["status"] == "ok", out
+    md = out["markdown"]
+    assert md and md.strip()
+
+    headers = [
+        "# Answer",
+        "## Cross-data reasoning",
+        "## Integrated insight",
+        "## Sources and evidence",
+        "## Follow-up questions",
+    ]
+    positions = [md.find(h) for h in headers]
+    assert all(p != -1 for p in positions), (positions, md[:3000])
+    assert positions == sorted(positions), (positions, md[:3000])
+
+    # Sources lists at least one real cited record with a resolved (non-untitled) title.
+    sources_block = md[md.find("## Sources and evidence") : md.find("## Follow-up questions")]
+    bullet_lines = [ln for ln in sources_block.splitlines() if ln.startswith("- **[")]
+    assert bullet_lines, sources_block
+    assert any("*(untitled)*" not in ln for ln in bullet_lines), sources_block
+
+    # The reasoning-trace scaffolding surfaced both wired stages.
+    assert "### Reasoning trace" in md
+    assert "context_assembly" in md and "structural_evidence" in md
+
+
+@needs_llm_and_globus
 def test_structural_no_hit_is_named_e2e(monkeypatch):
     """With the Globus branch disabled, the structural leg MUST emit the loud no-hit line —
     proving the no-silent-failure path end-to-end (not just at the unit level)."""

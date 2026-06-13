@@ -539,7 +539,7 @@ class SynthesisContextAssemblyStep(BaseStep):
             len(globus_results),
         )
 
-        return {
+        out = {
             "query": query,
             "rag_chunks": rag_chunks,
             "bvbrc_genomes": bvbrc_genomes,
@@ -547,3 +547,27 @@ class SynthesisContextAssemblyStep(BaseStep):
             "publications": publications,
             "globus_results": globus_results,
         }
+        # Stage-report scaffolding (E2-C): contribute a documented sub-report to the
+        # bundle's ``stage_reports`` list. Future reasoning stages append their own;
+        # the terminal synthesis renders them as a ``### Reasoning trace``.
+        from apecx_integration.composition.steps._stage_report import append_stage_report
+
+        append_stage_report(
+            out,
+            stage="context_assembly",
+            order=1,
+            markdown=(
+                f"Assembled retrieval context: {len(rag_chunks)} RAG chunk(s), "
+                f"{len(bvbrc_genomes)} BV-BRC genome(s), {len(violin_mappings)} VIOLIN "
+                f"mapping(s), {len(publications)} publication(s), {len(globus_results)} "
+                f"Globus record(s)."
+            ),
+            data={
+                "rag_chunks": len(rag_chunks),
+                "bvbrc_genomes": len(bvbrc_genomes),
+                "violin_mappings": len(violin_mappings),
+                "publications": len(publications),
+                "globus_results": len(globus_results),
+            },
+        )
+        return out
