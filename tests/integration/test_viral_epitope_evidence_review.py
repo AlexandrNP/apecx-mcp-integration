@@ -370,6 +370,66 @@ def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
     )
 
 
+@needs_llm_seq
+@pytest.mark.skipif(
+    not (_globus_reachable() and _pymol_image_present()),
+    reason="provenance happy-path needs Globus (structural retrieval) + the apecx-pymol image",
+)
+def test_provenance_record_has_real_values_e2e():
+    """E3-8 END-TO-END: a real CHIKV run (LLM + Globus + MAFFT + BV-BRC + containerized
+    PyMOL) produces a WorkflowResult.provenance whose every happy-path field is a real,
+    non-empty value — so the run is reproducible from the record (CC-1). Pastes the block."""
+    import json
+
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            {"query": _QUERY, "taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein"},
+        )
+    )
+    assert out["status"] == "ok", out
+    prov = out["provenance"]
+    assert isinstance(prov, dict), out
+    print("\n=== REAL PROVENANCE BLOCK ===\n" + json.dumps(prov, indent=2, default=str))
+
+    # Top-level identity: model + run_id are real (run_id stamped post-run).
+    assert prov["llm_model"], prov
+    assert prov["run_id"] == out["run_id"] and prov["run_id"], prov
+    assert prov["inputs"]["query"] and prov["inputs"]["taxon_id"] == _CHIKV_TAXON
+
+    # Sequence stage: MAFFT version + threshold + counts are real (the leg ran end-to-end).
+    seq = prov["sequence_stage"]
+    assert seq["available"] is True, seq
+    assert seq["aligner"] == "mafft"
+    assert seq["aligner_version"] and seq["aligner_version"] != "unknown", seq
+    assert seq["conservation_threshold"] and seq["n_sequences"] and seq["n_conserved_regions"]
+
+    # Structural retrieval: the issued query (resolved organisms + per-source hits).
+    sret = prov["structural_retrieval"]
+    assert sret["available"] is True, sret
+    assert sret["per_source"], sret
+    assert sret["per_source"].get("pdb", {}).get("organisms"), sret
+
+    # Structural reasoning: a real PDB was chosen + analysed in PyMOL 3.1.0 with pinned SASA.
+    rea = prov["structural_reasoning"]
+    assert rea["available"] is True, rea
+    assert rea["pdb_id"], rea
+    assert rea["structure_kind"] in ("assembly_1", "asymmetric_unit"), rea
+    assert rea["pymol_version"], rea
+    assert rea["sasa_dot_solvent"] == 1 and rea["sasa_dot_density"] == 3, rea
+    assert rea["ranking_rationale"], rea  # the selection rationale is recorded
+
+    # Functional validation always present; the UniProt block is real iff the chosen
+    # structure carried a SIFTS UniProt cross-reference (named null otherwise).
+    fv = prov["functional_validation"]
+    assert fv["available"] is True, fv
+    if fv["residue_level_annotation_available"]:
+        assert fv["uniprot_accessions"] and fv["uniprot_release"], fv
+        assert fv["sifts_pdb_id"] == rea["pdb_id"], fv
+
+
 @needs_llm
 def test_design_without_approval_returns_needs_input_e2e():
     """FAN-IN PROOF: requested_outputs=evidence_plus_design without a design_approval_id

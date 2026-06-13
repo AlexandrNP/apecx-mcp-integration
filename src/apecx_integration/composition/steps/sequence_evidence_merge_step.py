@@ -101,6 +101,9 @@ class SequenceEvidenceMergeStep(BaseStep):
                 "n_conserved_columns": cons.get("n_conserved_columns", len(sites)),
                 "n_conserved_regions": len(regions),
                 "conservation_threshold": cons.get("conservation_threshold"),
+                # E3-8 provenance: the aligner identity + exact version that produced the MSA.
+                "aligner": cons.get("aligner"),
+                "aligner_version": cons.get("aligner_version"),
             }
         else:
             # LOUD degrade — the absence is named in the bundle AND the stage report.

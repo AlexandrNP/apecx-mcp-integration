@@ -36,6 +36,11 @@ class WorkflowResult(BaseModel):
     error: str | None = None
     # RoC-1a — return of control to the frontier LLM (set iff status == "needs_input").
     control_transfer: ControlTransfer | None = None
+    # E3-8 — per-run reproducibility record: the determinism-relevant params the science
+    # stages used (aligner+version, structural query, PDB/SASA settings, UniProt release,
+    # LLM model, run_id). A structured side-channel to the markdown — present when the
+    # workflow collects it (viral_epitope_evidence_review), None otherwise.
+    provenance: dict[str, Any] | None = None
 
     @model_validator(mode="after")
     def _check_consistency(self) -> WorkflowResult:
@@ -73,6 +78,7 @@ class WorkflowResult(BaseModel):
         *,
         markdown: str = "",
         run_id: str | None = None,
+        provenance: dict[str, Any] | None = None,
     ) -> WorkflowResult:
         """Construct a return-of-control result. Prefer this over hand-setting ``status``."""
         return cls(
@@ -80,4 +86,5 @@ class WorkflowResult(BaseModel):
             status="needs_input",
             control_transfer=control_transfer,
             run_id=run_id,
+            provenance=provenance,
         )

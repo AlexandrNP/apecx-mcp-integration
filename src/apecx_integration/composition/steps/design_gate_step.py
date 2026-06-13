@@ -106,17 +106,20 @@ class DesignGateStep(BaseStep):
                 f"DesignGateStep '{self.name}': review_in must carry a non-empty "
                 f"'markdown' string; got {type(evidence_md).__name__}"
             )
+        # E3-8: the per-run provenance record rides along from the review step; pass it
+        # through unchanged to the terminal EnvelopeStep (the gate does not author it).
+        provenance = review.get("provenance")
 
         requested = control.get("requested_outputs") or "evidence_only"
         approval_id = control.get("design_approval_id")
         query = control.get("query") or ""
 
-        # Emit {markdown, control_transfer?} for the terminal EnvelopeStep, which
-        # shapes the WorkflowResult (and is the form run_workflow recognizes). A
+        # Emit {markdown, control_transfer?, provenance?} for the terminal EnvelopeStep,
+        # which shapes the WorkflowResult (and is the form run_workflow recognizes). A
         # control_transfer present → EnvelopeStep returns status=needs_input.
         if requested != _DESIGN:
             log.info("DesignGateStep %s: evidence_only → ok", self.name)
-            return {"markdown": evidence_md}
+            return {"markdown": evidence_md, "provenance": provenance}
 
         if _is_blank(approval_id):
             md = (
@@ -136,7 +139,11 @@ class DesignGateStep(BaseStep):
                 ),
             )
             log.info("DesignGateStep %s: design requested w/o approval → needs_input", self.name)
-            return {"markdown": md, "control_transfer": ct.model_dump(mode="json")}
+            return {
+                "markdown": md,
+                "control_transfer": ct.model_dump(mode="json"),
+                "provenance": provenance,
+            }
 
         design_md = self._design_section(query, evidence_md, str(approval_id))
         log.info(
@@ -144,4 +151,4 @@ class DesignGateStep(BaseStep):
             self.name,
             approval_id,
         )
-        return {"markdown": f"{evidence_md.rstrip()}\n\n{design_md}\n"}
+        return {"markdown": f"{evidence_md.rstrip()}\n\n{design_md}\n", "provenance": provenance}

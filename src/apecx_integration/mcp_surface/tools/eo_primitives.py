@@ -147,7 +147,14 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
 
     # The workflow emitted a standard envelope (it ends in an EnvelopeStep): use it.
     if outcome.workflow_result is not None:
-        stamped = outcome.workflow_result.model_copy(update={"run_id": record.run_id})
+        updates: dict[str, Any] = {"run_id": record.run_id}
+        # E3-8: the per-run provenance record's run_id is a named null at collection time
+        # (the run id is not known until the run completes) — stamp it here, in lock-step
+        # with the envelope's own run_id, so the provenance is self-contained.
+        prov = outcome.workflow_result.provenance
+        if isinstance(prov, dict):
+            updates["provenance"] = {**prov, "run_id": record.run_id}
+        stamped = outcome.workflow_result.model_copy(update=updates)
         return stamped.model_dump(mode="json")
 
     # The workflow completed but emits no standard envelope (legacy workflow without an

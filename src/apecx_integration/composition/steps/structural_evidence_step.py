@@ -147,18 +147,30 @@ class StructuralEvidenceStep(BaseStep):
         structural_records: list[dict[str, Any]] = []
         structural_note: str | None = None
         degrade_notes: list[str] = []
+        # E3-8: capture the structural query ACTUALLY ISSUED per source — the resolved
+        # organism spellings, the keyword query string, and the hit count — so a run's
+        # provenance can record exactly what structural retrieval ran (these are computed
+        # by structural_query.search_one_source and would otherwise be dropped here).
+        query_per_source: dict[str, dict[str, Any]] = {}
         try:
             # Two independent source queries, concurrently (sync client offloaded).
+            sources = list(self._publishers.items())
             results = await asyncio.gather(
                 *(
                     asyncio.to_thread(self._search_source, query, src, pub, taxon_id)
-                    for src, pub in self._publishers.items()
+                    for src, pub in sources
                 )
             )
-            for result in results:
+            for (src, _pub), result in zip(sources, results, strict=True):
                 structural_records.extend(result.hits)
                 if result.note:
                     degrade_notes.append(result.note)
+                query_per_source[src] = {
+                    "n_hits": len(result.hits),
+                    "organisms": list(getattr(result, "organisms", []) or []),
+                    "query_used": getattr(result, "query_used", "") or "",
+                    "note": result.note,
+                }
         except Exception as exc:  # GlobusSearchUnavailableError + any SDK/network error
             # LOUD degrade — distinct from a legitimate no-hit. The lookup did not
             # succeed-with-zero; it failed, and the output says so.
@@ -198,6 +210,13 @@ class StructuralEvidenceStep(BaseStep):
 
         bundle["structural_records"] = structural_records
         bundle["structural_note"] = structural_note
+        # E3-8 provenance: the issued structural query (resolved organisms + keyword query
+        # + per-source hit counts). Empty per_source on an outage — the note names why.
+        bundle["structural_query"] = {
+            "taxon_id": taxon_id,
+            "per_source": query_per_source,
+            "note": structural_note,
+        }
 
         # Stage-report scaffolding (E2-C): document the structural-evidence stage's
         # contribution (records found, or the loud no-hit/outage note).

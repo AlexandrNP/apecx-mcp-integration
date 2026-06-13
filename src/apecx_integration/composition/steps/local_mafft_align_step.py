@@ -88,6 +88,9 @@ class LocalMafftAlignStep(BaseStep):
             "n_sequences": n_seqs,
             "alignment_length": alignment_length,
             "aligner": "mafft",
+            # E3-8 provenance: the exact MAFFT version (determinism-relevant — different
+            # MAFFT versions can produce different alignments → different conserved sites).
+            "aligner_version": await asyncio.to_thread(self._mafft_version),
         }
         # Pass through identifying context for the downstream report.
         for key in ("taxon_id", "protein"):
@@ -106,6 +109,24 @@ class LocalMafftAlignStep(BaseStep):
             if isinstance(only, dict):
                 return only
         return input_data
+
+    def _mafft_version(self) -> str:
+        """The MAFFT version string (e.g. ``v7.526``) for the run provenance record.
+
+        MAFFT prints its version to STDERR. Best-effort: returns ``"unknown"`` (a named
+        null) if the probe fails for any reason — a provenance probe must never break the
+        alignment that already succeeded.
+        """
+        if shutil.which(self._mafft) is None:
+            return "unknown"
+        try:
+            proc = subprocess.run(
+                [self._mafft, "--version"], capture_output=True, text=True, timeout=15, check=False
+            )
+            out = (proc.stderr or proc.stdout or "").strip()
+            return out.splitlines()[0].strip() if out else "unknown"
+        except Exception:  # noqa: BLE001 — provenance probe must never break a good alignment
+            return "unknown"
 
     def _run_mafft(self, fasta_text: str) -> str:
         if shutil.which(self._mafft) is None:

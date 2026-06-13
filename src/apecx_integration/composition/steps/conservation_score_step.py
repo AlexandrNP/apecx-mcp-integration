@@ -92,6 +92,12 @@ class ConservationScoreStep(BaseStep):
             )
 
         result = await asyncio.to_thread(self._score, seqs)
+        # E3-8 provenance: carry the aligner identity + version forward from the alignment
+        # step so the per-run provenance record can name how the MSA was produced (the
+        # conservation result is what flows downstream to the merge/report steps).
+        for key in ("aligner", "aligner_version"):
+            if key in payload:
+                result[key] = payload[key]
         self.nb_logger.info(
             "ConservationScoreStep %s: %d cols, %d conserved sites, %d regions (threshold %.2f)",
             self.name,

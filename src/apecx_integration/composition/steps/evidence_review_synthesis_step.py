@@ -545,6 +545,14 @@ class EvidenceReviewSynthesisStep(BaseStep):
         # the degrade-loud path — a missing section is impossible by construction.
         full_md = compose_evidence_markdown(evidence_md, query.strip(), input_data)
 
+        # E3-8: collect the per-run provenance record HERE — this is the last step that
+        # still holds the full bundle (downstream only the rendered markdown survives). It
+        # is threaded review → gate → envelope into WorkflowResult.provenance. Pure + never
+        # raises (CC-2): a provenance failure must not strand a run whose science completed.
+        from apecx_integration.composition.steps._evidence_provenance import collect_provenance
+
+        provenance = collect_provenance(input_data)
+
         log.info(
             "EvidenceReviewSynthesisStep %s: evidence=%d chars, full=%d chars, "
             "structural_records=%d, stage_reports=%d",
@@ -554,4 +562,4 @@ class EvidenceReviewSynthesisStep(BaseStep):
             len(input_data.get("structural_records") or []),
             len(input_data.get("stage_reports") or []),
         )
-        return {"markdown": full_md}
+        return {"markdown": full_md, "provenance": provenance}

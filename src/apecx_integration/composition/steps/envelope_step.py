@@ -103,6 +103,12 @@ class EnvelopeStep(BaseStep):
                 f"{markdown_key!r} string; got {type(markdown).__name__}={markdown!r}"
             )
 
+        # E3-8: a per-run provenance record may ride along on the input (the evidence
+        # workflow threads it review → gate → envelope). Surface it on the WorkflowResult
+        # when present; absent for workflows that do not collect it.
+        raw_provenance = input_data.get("provenance")
+        provenance = raw_provenance if isinstance(raw_provenance, dict) else None
+
         # Return-of-control passthrough: when an upstream gate attaches a
         # ``control_transfer`` (a serialized ControlTransfer dict), this is a
         # ``needs_input`` terminal — surface it AS such rather than a plain ``ok``.
@@ -117,7 +123,10 @@ class EnvelopeStep(BaseStep):
                 else ControlTransfer.model_validate(raw_ct)
             )
             result = WorkflowResult.needs_input(
-                ct, markdown=markdown, run_id=input_data.get("run_id")
+                ct,
+                markdown=markdown,
+                run_id=input_data.get("run_id"),
+                provenance=provenance,
             )
             log.info(
                 "EnvelopeStep %s: emitted needs_input WorkflowResult (reason=%s)",
@@ -144,6 +153,7 @@ class EnvelopeStep(BaseStep):
             data_handle=data_handle,
             data_preview=data_preview,
             run_id=input_data.get("run_id"),
+            provenance=provenance,
         )
         log.info(
             "EnvelopeStep %s: emitted WorkflowResult (md=%d chars, handle=%s)",
