@@ -59,6 +59,20 @@ _INSIGHT_HEADING = "## Integrated insight"
 _DEFAULT_PROMPT_FILENAME = "evidence_review_synthesis_prompt.yml"
 
 
+def _sanitize_inline(text: Any, cap: int = 300) -> str:
+    """Collapse a free/user-supplied string to a SINGLE inline markdown-safe line.
+
+    All whitespace (incl. NEWLINES) → single spaces, ``#`` stripped, length capped. This
+    prevents a user-controlled value (the query, a coverage term, a degrade reason) from
+    injecting document STRUCTURE into the deterministic sections: collapsing newlines means
+    nothing can start a new line (so an embedded ``## Sources and evidence`` cannot become a
+    real header, ``>`` cannot start a blockquote, ``1.`` cannot start a list); stripping
+    ``#`` is belt-and-suspenders. The five-section output contract relies on each contract
+    header appearing EXACTLY once — an un-sanitized query with embedded headers duplicates
+    them and breaks header-based parsing (and can fabricate a fake citations section)."""
+    return " ".join(str(text if text is not None else "").replace("#", "").split())[:cap]
+
+
 def render_evidence_fallback(
     query: str, publications: list[dict[str, Any]] | None, reason: str
 ) -> str:
@@ -89,7 +103,7 @@ def render_evidence_fallback(
     # never inject document structure. (Surfaced 2026-06-13 by a 4B model emitting
     # fullwidth brackets that tripped the gate; its raw response, carried in the gate
     # exception, embedded out-of-order contract headings.)
-    reason = " ".join(str(reason).replace("#", "").split())[:500]
+    reason = _sanitize_inline(reason, cap=500)
     pubs = publications or []
     lines = [
         _ANSWER_HEADING,
@@ -98,7 +112,7 @@ def render_evidence_fallback(
         f"is preserved below and enumerated in the Sources and evidence section so "
         f"nothing is lost.",
         "",
-        f"Question: {query}",
+        f"Question: {_sanitize_inline(query)}",
         "",
     ]
     if pubs:
@@ -270,7 +284,10 @@ def render_followups_section(query: str, bundle: dict[str, Any]) -> str:
     coverage of this run, and never confabulated. Gap-seeded questions come first
     (most actionable), then query-seeded questions fill to the 3–5 band.
     """
-    q = (query or "").strip().rstrip("?")
+    # Sanitize before interpolating into the seed questions: an un-sanitized query with
+    # embedded newlines + `## ...` headers would inject fake contract sections (the query
+    # is user-controlled). _sanitize_inline collapses it to one safe line.
+    q = _sanitize_inline((query or "").rstrip("?"))
     questions: list[str] = []
 
     note = bundle.get("structural_note")

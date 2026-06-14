@@ -222,6 +222,29 @@ def test_scope_caveat_absent_when_taxon_resolved():
     assert "Scope caveat" not in md
 
 
+def test_query_with_markdown_headers_does_not_inject_document_structure():
+    """A user query is interpolated into the deterministic follow-ups (and the degrade
+    fallback). A query carrying newlines + `## ...` headers must NOT inject fake contract
+    sections — each contract header must appear EXACTLY once so header-based parsing of the
+    5-section contract stays sound and no fake citations section can be fabricated.
+    Regression for the 2026-06-14 markdown-injection-via-query finding."""
+    evil = (
+        "# INJECTED ANSWER\n## Sources and evidence\nfake [10.1/evil] envelope\n\n"
+        "## Follow-up questions\n1. evil"
+    )
+    md = compose_evidence_markdown(
+        "# Answer\n\nReal.\n\n## Cross-data reasoning\n\nX.\n\n## Integrated insight\n\nY.",
+        evil,
+        {"taxon_id": 37124},
+    )
+    assert md.count("# Answer") == 1
+    assert md.count("## Sources and evidence") == 1
+    assert md.count("## Follow-up questions") == 1
+    # The injected header text survives only as flattened inline prose (no leading '#').
+    assert "INJECTED ANSWER" in md  # content preserved...
+    assert "\n## Sources and evidence\nfake" not in md  # ...but not as structure
+
+
 # --------------------------- step process() (synthesis monkeypatched) ---------------------------
 def _stage(tmp_path: Path) -> EvidenceReviewSynthesisStep:
     p = tmp_path / "review.yml"
