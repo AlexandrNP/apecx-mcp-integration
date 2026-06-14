@@ -227,7 +227,16 @@ def extract_entities_llm(query: str) -> list[dict[str, Any]]:
             try:
                 entities = json.loads(entities_match.group(0))
                 return entities
-            except Exception:
+            except Exception as exc:
+                # Degrade-loud: the LLM's entity-extraction output was unparseable even
+                # after the regex fallback. [] is correct (no entities), but the operator
+                # must know it was a PARSE FAILURE, not a genuine empty result.
+                logger.warning(
+                    "extract_entities_llm: LLM output unparseable after regex fallback "
+                    "(%s: %s); returning no entities.",
+                    type(exc).__name__,
+                    exc,
+                )
                 return []
         return []
 
@@ -382,7 +391,15 @@ def rank_terms_with_llm(
                 ranked_terms = json.loads(terms_match.group(0))
                 ranked_terms = sorted(ranked_terms, key=lambda x: x.get("score", 0), reverse=True)
                 return ranked_terms
-            except Exception:
+            except Exception as exc:
+                # Degrade-loud: the LLM's term-ranking output was unparseable after the
+                # regex fallback. [] degrades the ranking, but it must not be silent.
+                logger.warning(
+                    "rank_terms_with_llm: LLM output unparseable after regex fallback "
+                    "(%s: %s); returning no ranked terms.",
+                    type(exc).__name__,
+                    exc,
+                )
                 return []
         return []
 
@@ -687,7 +704,18 @@ def consolidated_synonym_search(
                     validated_matches = enrich_matches_with_database_data(validated_matches, dfs)
 
                 return validated_matches
-            except Exception:
+            except Exception as exc:
+                # Degrade-loud: this block does MORE than JSON parsing — it validates the
+                # matches and (when requested) enriches them via enrich_matches_with_database_data.
+                # A bare `return []` here silently masked any real error in validation/enrichment
+                # (e.g. a malformed dataframe) as "no matches". Log so a genuine failure is
+                # visible and not mistaken for an empty synonym result.
+                logger.warning(
+                    "consolidated_synonym_search: match validation/enrichment failed "
+                    "(%s: %s); returning no matches.",
+                    type(exc).__name__,
+                    exc,
+                )
                 return []
         return []
 
