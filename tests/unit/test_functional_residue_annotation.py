@@ -83,6 +83,69 @@ def test_bridge_out_of_range_returns_none():
     assert sifts_client.bridge_residue(segs_a, 9999) is None
 
 
+# Real PDBe-SIFTS shape for 9NI9 (HIV-1 env, UniProt M4M1I1): the segment END carries a
+# null author_residue_number — a real-world data quirk. The old parser required BOTH
+# author edges non-null and silently discarded the WHOLE mapping, so functional
+# validation falsely reported "no UniProt cross-reference" (verified 2026-06-14 against
+# the live API). The null author edge is recoverable EXACTLY from the segment's constant
+# offset (offset = unp_start - author_start = 28 - 32 = -4 → author_end = unp_end - offset
+# = 498 - (-4) = 502).
+_SIFTS_9NI9_NULL_AUTHOR_END = {
+    "9ni9": {
+        "UniProt": {
+            "M4M1I1": {
+                "mappings": [
+                    {
+                        "chain_id": "A",
+                        "start": {"residue_number": 37, "author_residue_number": 32},
+                        "end": {"residue_number": 502, "author_residue_number": None},
+                        "unp_start": 28,
+                        "unp_end": 498,
+                    }
+                ]
+            }
+        }
+    }
+}
+
+
+def test_sifts_recovers_segment_with_null_author_end():
+    """A segment whose author_residue_number is null at one edge MUST be recovered (the
+    accession surfaces, the author bridge works), not silently dropped."""
+    parsed = SiftsClient._parse(_SIFTS_9NI9_NULL_AUTHOR_END, "9ni9")
+    assert "M4M1I1" in parsed, "null-author-edge segment was dropped → false 'no xref'"
+    seg = parsed["M4M1I1"][0]
+    # author_end derived exactly from the constant per-segment offset.
+    assert (seg["author_start"], seg["author_end"]) == (32, 502)
+    segs = sifts_client.chain_segments(parsed, "A")
+    assert segs[0]["offset"] == -4
+    assert sifts_client.bridge_residue(segs, 32) == ("M4M1I1", 28)
+    assert sifts_client.bridge_residue(segs, 502) == ("M4M1I1", 498)
+
+
+def test_sifts_skips_segment_with_both_author_edges_null():
+    """No author anchor at all → offset is unknowable → the segment is genuinely unusable
+    for the author-frame bridge and is correctly skipped (not a false recovery)."""
+    body = {
+        "1xxx": {
+            "UniProt": {
+                "P00001": {
+                    "mappings": [
+                        {
+                            "chain_id": "A",
+                            "start": {"residue_number": 1, "author_residue_number": None},
+                            "end": {"residue_number": 10, "author_residue_number": None},
+                            "unp_start": 1,
+                            "unp_end": 10,
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    assert SiftsClient._parse(body, "1xxx") == {}
+
+
 def test_uniprot_parse_features_and_release_header():
     body = {
         "entryType": "UniProtKB unreviewed (TrEMBL)",

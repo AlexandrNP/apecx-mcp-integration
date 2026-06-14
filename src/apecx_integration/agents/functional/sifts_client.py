@@ -88,8 +88,24 @@ class SiftsClient(AsyncHttpClient):
                 a_end = end.get("author_residue_number")
                 unp_start = m.get("unp_start")
                 unp_end = m.get("unp_end")
-                if None in (a_start, a_end, unp_start, unp_end):
+                if None in (unp_start, unp_end):
                     continue
+                # Recover a null author boundary from the segment's constant offset.
+                # Within a SIFTS segment the author↔UniProt mapping is co-linear
+                # (offset = unp - author is constant; gaps/insertions split into
+                # separate segments), so filling a missing edge is EXACT, not a guess.
+                # Some entries (e.g. 9NI9 → M4M1I1) carry a null author_residue_number
+                # on a segment edge; the old ``None in (a_start, a_end, ...)`` guard
+                # discarded the WHOLE mapping, so functional validation falsely reported
+                # "no UniProt cross-reference in SIFTS" when one existed — a silent
+                # under-reporting failure. Only one anchor is needed to fix the offset;
+                # both-null is genuinely unusable for the author-frame bridge.
+                if a_start is None and a_end is None:
+                    continue
+                if a_start is None:
+                    a_start = int(unp_start) - (int(unp_end) - int(a_end))
+                elif a_end is None:
+                    a_end = int(unp_end) - (int(unp_start) - int(a_start))
                 segments.append(
                     {
                         "chain_id": m.get("chain_id"),
