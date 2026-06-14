@@ -45,14 +45,18 @@ class BvbrcProteinFastaStepConfig(StepConfig):
     )
     max_sequences: int = Field(default=50, ge=2)
     request_timeout_seconds: float = Field(default=60.0, gt=0)
-    min_length_fraction: float = Field(
-        default=0.0,
-        ge=0.0,
+    length_cluster_tolerance: float = Field(
+        default=0.2,
+        gt=0.0,
         le=1.0,
-        description="Drop partial records: keep only sequences whose length is at least this "
-        "fraction of the LONGEST fetched sequence (0 = no filter). Partial/fragment CDS records "
-        "are shorter than full-length ones and inflate the alignment with gaps, blurring "
-        "conservation; e.g. 0.8 keeps sequences ≥80% of the longest.",
+        description="Length-cluster selection: keep the DOMINANT (most-populous) length band and "
+        "drop outliers, so a few mis-annotated/partial records (e.g. a 1180aa polyprotein among "
+        "~495aa envelope E proteins, or short genome fragments) do NOT define the keep threshold. "
+        "A record is in the dominant band when its length is within ±this fraction of the modal "
+        "central length (the length whose ±tolerance window contains the most sequences). 0.2 keeps "
+        "a coherent set that MAFFT can align without gap-blurring while tolerating real "
+        "indel-length variation. This REPLACES the former 'fraction of the single longest' filter, "
+        "which a single long outlier could collapse to <2 sequences.",
     )
 
 
@@ -71,7 +75,9 @@ class BvbrcProteinFastaStep(BaseStep):
         self._feature_type: str = getattr(config, "feature_type", "CDS")
         self._max_sequences: int = int(getattr(config, "max_sequences", 50))
         self._timeout: float = float(getattr(config, "request_timeout_seconds", 60.0))
-        self._min_length_fraction: float = float(getattr(config, "min_length_fraction", 0.0))
+        self._length_cluster_tolerance: float = float(
+            getattr(config, "length_cluster_tolerance", 0.2)
+        )
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         import asyncio
@@ -170,38 +176,71 @@ class BvbrcProteinFastaStep(BaseStep):
                     "sequence": seq,
                 }
             )
-        records = self._apply_length_filter(records)
+        records = self._select_length_cluster(records)
         return records[: self._max_sequences]
 
-    def _apply_length_filter(self, records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        """Drop partial records shorter than ``min_length_fraction`` of the longest sequence.
+    def _select_length_cluster(self, records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Keep the DOMINANT (most-populous) length cluster; drop outlier-length records.
 
-        Partial/fragment CDS records inflate the alignment with gaps and blur conservation. When
-        the filter would leave fewer than 2 sequences it FAILS LOUD (rather than silently
-        keeping the partials), so the caller can lower the threshold.
+        BV-BRC's ``product`` substring match for a protein (e.g. ``*envelope*``) pulls in records
+        of heterogeneous length: the real target (~495aa envelope E), short partial-genome
+        fragments, AND a few mis-annotated/whole polyprotein records (~1180aa). The former
+        ``min_length_fraction`` filter anchored its cutoff to the SINGLE LONGEST record, so one
+        long outlier (the 1180aa polyprotein) raised the bar to 944aa and collapsed the keep set
+        to the outlier alone — leaving <2 sequences and failing MAFFT (dengue's real bug).
+
+        Instead, find the modal length band — the central length whose ±tolerance window contains
+        the most records — and keep that band. Outlier-length records (alone in their own sparse
+        bands) are dropped, so the dominant ~495aa cluster of envelope proteins survives intact.
+
+        FAIL-LOUD when the dominant band has <2 sequences: that is a genuine named degrade (the
+        taxon's deposited sequences are length-heterogeneous with no alignable cohort), not a crash
+        to paper over.
         """
-        if self._min_length_fraction <= 0.0 or not records:
+        if len(records) < 2:
+            # The caller's own <2 guard reports the genuinely-too-few case with full context.
             return records
-        max_len = max(len(r["sequence"]) for r in records)
-        cutoff = max_len * self._min_length_fraction
-        kept = [r for r in records if len(r["sequence"]) >= cutoff]
+
+        lengths = [len(r["sequence"]) for r in records]
+        tol = self._length_cluster_tolerance
+        # Sliding-window mode: try every observed length as the band center; the band that
+        # contains the most records wins. Iterate ascending with ``>=`` so that on a count tie
+        # the LARGER center wins — prefer the fuller-length cohort over a shorter-fragment one.
+        best_lo = best_hi = None
+        best_count = -1
+        for center in sorted(set(lengths)):
+            lo = center * (1.0 - tol)
+            hi = center * (1.0 + tol)
+            count = sum(1 for length in lengths if lo <= length <= hi)
+            if count >= best_count:
+                best_count = count
+                best_lo, best_hi = lo, hi
+
+        kept = [r for r in records if best_lo <= len(r["sequence"]) <= best_hi]
         dropped = len(records) - len(kept)
         if dropped:
+            kept_lengths = sorted(len(r["sequence"]) for r in kept)
             self.nb_logger.info(
-                "BvbrcProteinFastaStep %s: length filter (≥%.0f%% of %daa) dropped %d partial "
-                "record(s), kept %d",
+                "BvbrcProteinFastaStep %s: length-cluster (±%.0f%%) kept the dominant %d–%daa "
+                "band (%d of %d records); dropped %d outlier-length record(s) (full range "
+                "%d–%daa)",
                 self.name,
-                self._min_length_fraction * 100,
-                max_len,
-                dropped,
+                tol * 100,
+                kept_lengths[0],
+                kept_lengths[-1],
                 len(kept),
+                len(records),
+                dropped,
+                min(lengths),
+                max(lengths),
             )
         if len(kept) < 2:
             raise ValueError(
-                f"BvbrcProteinFastaStep '{self.name}': length filter "
-                f"(min_length_fraction={self._min_length_fraction}) left {len(kept)} sequence(s) "
-                f"of {len(records)} (longest {max_len}aa); lower min_length_fraction or broaden "
-                f"the protein/feature_type."
+                f"BvbrcProteinFastaStep '{self.name}': length-cluster selection (±{tol:.0%}) found "
+                f"no coherent length band with ≥2 sequences among {len(records)} fetched "
+                f"(lengths {min(lengths)}–{max(lengths)}aa); the deposited sequences are "
+                f"length-heterogeneous (partial genomes / mixed features) with no alignable cohort. "
+                f"Broaden the protein/feature_type or widen length_cluster_tolerance."
             )
         return kept
 

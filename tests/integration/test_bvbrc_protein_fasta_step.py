@@ -99,36 +99,59 @@ def test_fetches_real_chikv_e1_sequences(tmp_path):
     assert bundle["fasta_text"].count(">") == bundle["n_sequences"]
 
 
-def test_length_filter_drops_partials(tmp_path):
-    # Network-free: exercise the partial-record filter directly.
-    step = _stage(tmp_path, min_length_fraction="0.8")
+def _seq(n: int) -> str:
+    return "M" * n
+
+
+def test_length_cluster_keeps_dominant_band_drops_outlier(tmp_path):
+    # The dengue-envelope shape: ~50 sequences clustered at ~495aa + a single 1180aa polyprotein
+    # outlier. The former 'fraction of the longest' filter (0.8 * 1180 = 944) left only the
+    # outlier → <2 → MAFFT failed. Cluster selection must keep the ~495 band, drop the outlier.
+    import random
+
+    rng = random.Random(0)
     records = [
-        {"id": "full1", "sequence": "M" * 100, "product": "", "genome_name": ""},
-        {"id": "full2", "sequence": "M" * 95, "product": "", "genome_name": ""},
-        {"id": "partial", "sequence": "M" * 40, "product": "", "genome_name": ""},  # 40% → dropped
+        {
+            "id": f"env{i}",
+            "sequence": _seq(495 + rng.randint(-8, 8)),
+            "product": "",
+            "genome_name": "",
+        }
+        for i in range(50)
     ]
-    kept = step._apply_length_filter(records)
-    assert {r["id"] for r in kept} == {"full1", "full2"}
+    records.append({"id": "polyprotein", "sequence": _seq(1180), "product": "", "genome_name": ""})
+    kept = step_cluster(tmp_path)._select_length_cluster(records)
+    assert len(kept) == 50  # the whole ~495 cluster
+    assert "polyprotein" not in {r["id"] for r in kept}  # the 1180aa outlier is dropped
+    assert all(480 <= len(r["sequence"]) <= 510 for r in kept)
 
 
-def test_length_filter_disabled_by_default(tmp_path):
-    step = _stage(tmp_path)  # min_length_fraction default 0.0
+def test_length_cluster_drops_short_fragments(tmp_path):
+    # Short partial-genome fragments form their own sparse band and are dropped in favor of the
+    # full-length cohort.
     records = [
-        {"id": "a", "sequence": "M" * 100, "product": "", "genome_name": ""},
-        {"id": "b", "sequence": "M" * 10, "product": "", "genome_name": ""},
+        {"id": "full1", "sequence": _seq(495), "product": "", "genome_name": ""},
+        {"id": "full2", "sequence": _seq(498), "product": "", "genome_name": ""},
+        {"id": "full3", "sequence": _seq(492), "product": "", "genome_name": ""},
+        {"id": "frag", "sequence": _seq(120), "product": "", "genome_name": ""},  # outlier band
     ]
-    assert len(step._apply_length_filter(records)) == 2  # nothing dropped
+    kept = step_cluster(tmp_path)._select_length_cluster(records)
+    assert {r["id"] for r in kept} == {"full1", "full2", "full3"}
 
 
-def test_length_filter_too_aggressive_fails_loud(tmp_path):
-    step = _stage(tmp_path, min_length_fraction="0.95")
+def test_length_cluster_genuinely_too_few_fails_loud(tmp_path):
+    # Three records, all length-disparate (no band holds ≥2) → genuine named degrade, FAIL-LOUD.
     records = [
-        {"id": "full", "sequence": "M" * 100, "product": "", "genome_name": ""},
-        {"id": "p1", "sequence": "M" * 50, "product": "", "genome_name": ""},
-        {"id": "p2", "sequence": "M" * 60, "product": "", "genome_name": ""},
+        {"id": "a", "sequence": _seq(300), "product": "", "genome_name": ""},
+        {"id": "b", "sequence": _seq(600), "product": "", "genome_name": ""},
+        {"id": "c", "sequence": _seq(1180), "product": "", "genome_name": ""},
     ]
-    with pytest.raises(ValueError, match="length filter"):
-        step._apply_length_filter(records)
+    with pytest.raises(ValueError, match="no coherent length band"):
+        step_cluster(tmp_path)._select_length_cluster(records)
+
+
+def step_cluster(tmp_path) -> BvbrcProteinFastaStep:
+    return _stage(tmp_path, length_cluster_tolerance="0.2")
 
 
 @needs_bvbrc

@@ -106,8 +106,10 @@ def _conserved_sites_core_builder(aligner: str):
         "fetch",
         f"{_STEPS}.bvbrc_protein_fasta_step.BvbrcProteinFastaStep",
         max_sequences=25,
-        # Drop partial CDS records (keep ≥80% of the longest) so the MSA isn't gap-blurred.
-        min_length_fraction=0.8,
+        # Keep the dominant length cluster (±20% of the modal length) so a few outlier-length
+        # records (partial genomes, mis-annotated polyproteins) don't gap-blur the MSA — and so a
+        # single long outlier can't collapse the keep set to <2 (the dengue-envelope bug).
+        length_cluster_tolerance=0.2,
         # RoC-2a — authoritative input contract (G6, runtime FAIL-FAST + RoC-2b derivation source).
         step_input_schema=FETCH_INPUT_SCHEMA,
         input_data_units=_du("fetch_in"),
