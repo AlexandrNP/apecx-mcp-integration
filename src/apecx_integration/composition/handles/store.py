@@ -37,17 +37,37 @@ class HandleBackend(Protocol):
     def clear(self) -> None: ...
 
 
-class InMemoryBackend:
-    """Process-lifetime, thread-safe dict backend."""
+# Default cap on retained handles. The store is a process-lifetime singleton and
+# ``run_workflow`` does NOT delete handles after a run (they are kept so a later workflow
+# can chain off them), so without a bound a long-lived MCP server accumulates every handle
+# forever. 2000 recent handles is far more than any realistic chain depth; older handles
+# FIFO-evict and a subsequent ``get`` on an evicted handle raises the LOUD ``HandleNotFound``
+# (never a silent empty result).
+_DEFAULT_MAX_HANDLES = 2000
 
-    def __init__(self) -> None:
+
+class InMemoryBackend:
+    """Process-lifetime, thread-safe dict backend.
+
+    Bounded (``max_handles``, FIFO): oldest handles are evicted once the cap is reached so a
+    long-lived server's memory stays bounded. Eviction is LOUD — ``get`` on an evicted handle
+    raises ``HandleNotFound`` (the existing unknown-handle contract).
+    """
+
+    def __init__(self, max_handles: int = _DEFAULT_MAX_HANDLES) -> None:
+        if max_handles < 1:
+            raise ValueError(f"InMemoryBackend max_handles must be >= 1, got {max_handles}")
         self._data: dict[str, dict] = {}
         self._lock = threading.Lock()
+        self._max_handles = max_handles
 
     def put(self, payload: dict) -> str:
         handle = uuid4().hex
         with self._lock:
             self._data[handle] = payload
+            # Bound the store (dict is insertion-ordered → first key is oldest).
+            while len(self._data) > self._max_handles:
+                del self._data[next(iter(self._data))]
         return handle
 
     def get(self, handle: str) -> dict:

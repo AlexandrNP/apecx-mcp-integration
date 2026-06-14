@@ -63,3 +63,25 @@ def test_clear_empties_store():
 
 def test_default_store_is_singleton():
     assert default_handle_store() is default_handle_store()
+
+
+def test_inmemory_backend_is_bounded_fifo():
+    """Long-lived-server leak guard: the process-lifetime backend must FIFO-evict so it
+    does not grow without bound (run_workflow keeps handles for chaining, never deletes)."""
+    from apecx_integration.composition.handles.store import InMemoryBackend
+
+    b = InMemoryBackend(max_handles=3)
+    handles = [b.put({"i": i}) for i in range(5)]
+    # Only the 3 most-recent survive; the 2 oldest were evicted.
+    assert b.get(handles[-1]) == {"i": 4}
+    assert b.get(handles[2]) == {"i": 2}
+    for old in handles[:2]:
+        with pytest.raises(HandleNotFound):
+            b.get(old)
+
+
+def test_inmemory_backend_rejects_bad_cap():
+    from apecx_integration.composition.handles.store import InMemoryBackend
+
+    with pytest.raises(ValueError):
+        InMemoryBackend(max_handles=0)
