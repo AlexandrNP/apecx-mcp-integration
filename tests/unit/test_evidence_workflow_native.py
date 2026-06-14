@@ -75,6 +75,13 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
         "gate",
         "envelope",
     }
+    # REGRESSION (execution_timeout bug): the framework per-step ceiling MUST exceed each
+    # slow leg's inner budget so the inner timeout + the step's degrade-loud fire FIRST.
+    # Before the fix, the 300s framework default killed the sequence step at 300s (< its
+    # 480s inner budget) for heavily-sequenced viruses (dengue/flu/SARS) → a 191-char
+    # no-envelope catastrophe instead of a degrade-loud full evidence doc.
+    assert children["sequence"].config.execution_timeout >= 480.0
+    assert children["reasoning"].config.execution_timeout >= 360.0
 
 
 def test_sequence_and_merge_fanin_wired():

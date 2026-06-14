@@ -224,9 +224,14 @@ def _evidence_workflow_builder():
         "sequence",
         f"{_STEPS}.sequence_conservation_subworkflow_step.SequenceConservationSubworkflowStep",
         # Generous inner-cascade budget: the nested fetch→MAFFT→conserve runs CONCURRENTLY with
-        # the assemble/structural network branches, so MAFFT (25 long polyprotein sequences) gets
-        # less wall-clock than in isolation. Stays well under the catalog's 600s outer timeout.
+        # the assemble/structural network branches. ``timeout_seconds`` is the INNER workflow's
+        # run budget; ``execution_timeout`` is the FRAMEWORK per-step ceiling (default 300s) —
+        # it MUST exceed timeout_seconds so the inner timeout (→ the step's degrade-loud path)
+        # fires FIRST. Without this, heavily-sequenced viruses (dengue/flu/SARS-CoV-2, thousands
+        # of BV-BRC genomes → slow MAFFT) were killed at the 300s framework default BEFORE the
+        # step could degrade loud, stranding the merge fan-in → a 191-char no-envelope result.
         timeout_seconds=480.0,
+        execution_timeout=540.0,
         settle_ms=500,
         input_data_units=_du("sequence_params"),
         output_data_units=_du("sequence_result"),
@@ -257,7 +262,10 @@ def _evidence_workflow_builder():
     b.add_step(
         "reasoning",
         f"{_STEPS}.structural_reasoning_step.StructuralReasoningStep",
+        # execution_timeout (framework ceiling) > the step's internal docker/PyMOL budget so a
+        # slow multi-structure PyMOL pass (E3-13 N>1) degrades loud rather than being killed at 300s.
         timeout_seconds=360.0,
+        execution_timeout=420.0,
         input_data_units=_du("reasoning_input"),
         output_data_units=_du("reasoning_output"),
         triggers=_trig("reasoning_input"),
