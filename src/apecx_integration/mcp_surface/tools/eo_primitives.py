@@ -421,8 +421,47 @@ async def apecx_context() -> dict[str, Any]:
     return {"runs": runs, "n_runs": len(runs)}
 
 
+def approve_design(token: str, decided_by: str = "operator") -> dict[str, Any]:
+    """Operator approval for a design/optimization output request (HITL gate).
+
+    The ``viral_epitope_evidence_review`` workflow's design gate ISSUES a
+    ``design_approval_id`` (a ``dapprv-…`` token) when design output is requested without a
+    valid one, and WITHHOLDS the design section until an operator approves that token here.
+    After approval, re-call ``run_workflow`` with the SAME ``design_approval_id`` and the same
+    query + protein to receive the design section. The token is scope-bound: approving it
+    authorizes design output for THAT specific design request only.
+
+    Returns ``{status: "approved", token, scope, decided_by}`` on success, or
+    ``{error: ...}`` if the token was never issued by this server (a bogus/forged token never
+    silently succeeds — that is the bypass this gate closes).
+    """
+    from apecx_integration.composition.runtime.design_approval_store import (
+        get_design_approval_store,
+    )
+
+    if not isinstance(token, str) or not token.strip():
+        return {"error": "approve_design: 'token' must be a non-empty design_approval_id."}
+    rec = get_design_approval_store().approve(token.strip(), decided_by=decided_by)
+    if rec is None:
+        return {
+            "error": (
+                f"approve_design: unknown design_approval_id {token!r} — it was not issued "
+                "by this server. Request one by calling run_workflow with "
+                "requested_outputs='evidence_plus_design' (no design_approval_id); the gate "
+                "returns a fresh token to approve."
+            )
+        }
+    return {
+        "status": "approved",
+        "token": rec.token,
+        "scope": {"query": rec.scope[0], "protein": rec.scope[1]},
+        "decided_by": rec.decided_by,
+    }
+
+
 __all__ = [
     "apecx_context",
+    "approve_design",
     "inspect_run",
     "inspect_workflow",
     "run_workflow",

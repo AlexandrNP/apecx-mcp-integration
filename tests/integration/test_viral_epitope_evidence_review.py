@@ -578,26 +578,41 @@ def test_design_without_approval_returns_needs_input_e2e():
 
 
 @needs_llm
-def test_design_with_approval_appends_design_section_e2e():
-    """FAN-IN PROOF (approved path): with a design_approval_id the gate opens and appends
-    the design-hypotheses section carrying approval provenance."""
-    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+def test_design_hitl_loop_e2e():
+    """FAN-IN + FAIL-CLOSED HITL PROOF, end to end: request design (no token) → the gate
+    ISSUES a scope-bound token + withholds → operator approve_design → re-call with the token
+    → the design section is appended. Proves the gate, the design-approval store, and the
+    approve_design tool wire together through the real workflow (G117 re-arm: the same-query
+    re-run that only adds the approval token must re-fire the fan-in gate)."""
+    import re
 
-    out = asyncio.run(
-        run_workflow(
-            "viral_epitope_evidence_review",
-            {
-                "query": _QUERY,
-                "requested_outputs": "evidence_plus_design",
-                "design_approval_id": "appr-e2e-001",
-            },
-        )
+    from apecx_integration.composition.runtime.design_approval_store import (
+        get_design_approval_store,
     )
-    assert out["status"] == "ok", out
-    assert "Design / optimization hypotheses" in out["markdown"], out["markdown"][:2000]
-    assert "appr-e2e-001" in out["markdown"]  # approval provenance carried through
-    # Honesty: v1 gate is presence-only; the output must NOT imply the token was
-    # control-plane-verified (this very test passes a DUMMY token, which proves the
-    # presence-only behavior — the qualifier prevents over-claiming HITL assurance).
-    assert "not control-plane-verified" in out["markdown"]
-    assert "(approved)" not in out["markdown"]  # the over-claiming heading is gone
+    from apecx_integration.mcp_surface.tools.eo_primitives import approve_design, run_workflow
+
+    get_design_approval_store().clear()
+    params = {"query": _QUERY, "requested_outputs": "evidence_plus_design"}
+
+    # 1) Request design WITHOUT a token → withheld, and a fresh dapprv- token is issued.
+    out1 = asyncio.run(run_workflow("viral_epitope_evidence_review", params))
+    assert out1["status"] == "needs_input", out1
+    assert "(approved)" not in out1["markdown"]  # design NOT emitted while unapproved
+    m = re.search(r"dapprv-[0-9a-f]+", out1["markdown"])
+    assert m, out1["markdown"][:2000]
+    token = m.group(0)
+
+    # 2) Operator approves the issued token (in-process; instant).
+    res = approve_design(token)
+    assert res["status"] == "approved", res
+
+    # 3) Re-call with the approved token (same query) → design section appended.
+    out3 = asyncio.run(
+        run_workflow("viral_epitope_evidence_review", {**params, "design_approval_id": token})
+    )
+    assert out3["status"] == "ok", out3
+    assert "Design / optimization hypotheses (approved)" in out3["markdown"], out3["markdown"][
+        :2000
+    ]
+    assert token in out3["markdown"]  # approval provenance carried through
+    assert "verified server-side" in out3["markdown"]  # honest: token WAS validated

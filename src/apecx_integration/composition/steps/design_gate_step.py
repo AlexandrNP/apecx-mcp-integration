@@ -37,6 +37,9 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration.composition.runtime.design_approval_store import (
+    get_design_approval_store,
+)
 from apecx_integration.composition.schemas.control_transfer import needs_prerequisite_transfer
 
 log = logging.getLogger(__name__)
@@ -75,24 +78,20 @@ class DesignGateStep(BaseStep):
         placeholder that carries approval provenance. Phase B replaces the body with
         an evidence-bound LLM generation (config-driven prompt).
 
-        Honesty contract: the heading and body must NOT imply the token was VALIDATED.
-        In v1 the gate checks the token is PRESENT (non-blank) but does not yet
-        cross-check it against the approval control plane (``get_approval``), so the
-        approval is caller-ASSERTED, not control-plane-verified. Stating "(approved)"
-        / "Generated under approval" unqualified would over-claim HITL assurance — a
-        silent misrepresentation. The qualifier below makes the gap explicit so an
-        operator does not over-trust the gate. See the class docstring + the
-        control-plane-validation hardening follow-up."""
+        Honesty contract: a token reaching here has been VALIDATED by the gate's
+        fail-closed check — it is server-issued, operator-approved, AND scope-bound to
+        this query/protein (see ``DesignApprovalStore.validate``). So "(approved)" is
+        accurate here; the section states the verification explicitly so the assurance
+        is neither over- nor under-claimed."""
         return (
-            "## Design / optimization hypotheses\n\n"
-            f"> Released against caller-supplied approval token `{approval_id}`. "
-            "**v1 limitation:** the gate confirms the token is present but does NOT "
-            "yet cross-check it against the approval control plane — treat the "
-            "approval as caller-asserted, not control-plane-verified. These are "
-            "**hypotheses**, not validated results — each must be confirmed "
+            "## Design / optimization hypotheses (approved)\n\n"
+            f"> Released under design-approval token `{approval_id}` — verified "
+            "server-side (operator-approved + scope-bound to this query/protein). These "
+            "are **hypotheses**, not validated results — each must be confirmed "
             "experimentally.\n\n"
             "_Evidence-bound hypothesis generation is being wired in Phase B; this "
-            "section confirms the approval gate opened and provenance is attached._"
+            "section confirms the approval gate opened (validated) and provenance is "
+            "attached._"
         )
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
@@ -126,6 +125,7 @@ class DesignGateStep(BaseStep):
         requested = control.get("requested_outputs") or "evidence_only"
         approval_id = control.get("design_approval_id")
         query = control.get("query") or ""
+        protein = control.get("protein")
 
         # Emit {markdown, control_transfer?, provenance?} for the terminal EnvelopeStep,
         # which shapes the WorkflowResult (and is the form run_workflow recognizes). A
@@ -134,34 +134,52 @@ class DesignGateStep(BaseStep):
             log.info("DesignGateStep %s: evidence_only → ok", self.name)
             return {"markdown": evidence_md, "provenance": provenance}
 
-        if _is_blank(approval_id):
-            md = (
-                f"{evidence_md.rstrip()}\n\n"
-                "## Design / optimization output — WITHHELD\n\n"
-                "> Design/optimization output was requested but no "
-                "`design_approval_id` was provided. Approval is required and must be "
-                "explicit. Obtain approval via the approval control plane (`approve`), "
-                "then re-call with the returned `design_approval_id`. The evidence "
-                "above is complete and unaffected."
-            )
-            ct = needs_prerequisite_transfer(
-                "design_approval",
-                message=(
-                    "Design/optimization output requires explicit approval. Get a "
-                    "design_approval_id via the approval control plane, then re-call."
-                ),
-            )
-            log.info("DesignGateStep %s: design requested w/o approval → needs_input", self.name)
+        # FAIL-CLOSED HITL validation (2026-06-14): the design path opens ONLY for a
+        # server-issued, operator-approved token whose scope matches THIS request. A blank /
+        # unknown / pending / rejected / scope-mismatched token withholds design with a NAMED
+        # reason. Closes the prior bypass where ANY non-blank string opened the gate.
+        store = get_design_approval_store()
+        ok, reason = store.validate(token=approval_id, query=query, protein=protein)
+        if ok:
+            design_md = self._design_section(query, evidence_md, str(approval_id))
+            log.info("DesignGateStep %s: design approval validated → ok with design", self.name)
             return {
-                "markdown": md,
-                "control_transfer": ct.model_dump(mode="json"),
+                "markdown": f"{evidence_md.rstrip()}\n\n{design_md}\n",
                 "provenance": provenance,
             }
 
-        design_md = self._design_section(query, evidence_md, str(approval_id))
-        log.info(
-            "DesignGateStep %s: design approved (%s) → ok with design section",
-            self.name,
-            approval_id,
+        # Withheld. Issue a FRESH token to approve when none/unknown was supplied; otherwise
+        # point at the supplied token + the specific reason it did not open.
+        if _is_blank(approval_id) or "unknown" in reason:
+            token = store.request(query=query, protein=protein)
+            how = (
+                f"A design-approval request has been issued: token `{token}`. Approve it via "
+                f"the `approve_design` MCP tool, then re-call this workflow with "
+                f"design_approval_id=`{token}` (and the SAME query + protein)."
+            )
+        else:
+            token = str(approval_id)
+            how = (
+                f"Token `{token}` is not usable: {reason}. Get it approved via `approve_design` "
+                "(or request a fresh one by re-calling without design_approval_id), then re-call."
+            )
+        md = (
+            f"{evidence_md.rstrip()}\n\n"
+            "## Design / optimization output — WITHHELD\n\n"
+            f"> Design/optimization output was requested but the approval gate did not open: "
+            f"{reason}. Approval must be EXPLICIT and is verified server-side — a token is not "
+            f"valid merely by being present. {how} The evidence above is complete and unaffected."
         )
-        return {"markdown": f"{evidence_md.rstrip()}\n\n{design_md}\n", "provenance": provenance}
+        ct = needs_prerequisite_transfer(
+            "design_approval",
+            message=(
+                f"Design/optimization output requires an APPROVED, scope-bound "
+                f"design_approval_id ({reason}). {how}"
+            ),
+        )
+        log.info("DesignGateStep %s: design withheld — %s", self.name, reason)
+        return {
+            "markdown": md,
+            "control_transfer": ct.model_dump(mode="json"),
+            "provenance": provenance,
+        }

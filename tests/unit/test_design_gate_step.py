@@ -11,7 +11,22 @@ from pathlib import Path
 
 import pytest
 
+from apecx_integration.composition.runtime.design_approval_store import (
+    get_design_approval_store,
+)
 from apecx_integration.composition.steps.design_gate_step import DesignGateStep
+
+_QUERY = "chikv E1"
+_PROTEIN = "structural polyprotein"
+
+
+@pytest.fixture(autouse=True)
+def _clean_store():
+    """The design-approval store is a process-wide singleton — clear it before each test so
+    a token issued in one test cannot leak into another."""
+    get_design_approval_store().clear()
+    yield
+    get_design_approval_store().clear()
 
 
 def _stage(tmp_path: Path) -> DesignGateStep:
@@ -21,10 +36,18 @@ def _stage(tmp_path: Path) -> DesignGateStep:
 
 
 def _inp(requested="evidence_only", approval=None, md="# Evidence\n\nbody [Globus pdb:1I9G]."):
-    control = {"query": "chikv E1", "requested_outputs": requested}
+    control = {"query": _QUERY, "protein": _PROTEIN, "requested_outputs": requested}
     if approval is not None:
         control["design_approval_id"] = approval
     return {"review_in": {"markdown": md}, "control_in": control}
+
+
+def _issue_and_approve() -> str:
+    """Real loop: issue a token scoped to (_QUERY, _PROTEIN) and operator-approve it."""
+    store = get_design_approval_store()
+    token = store.request(query=_QUERY, protein=_PROTEIN)
+    store.approve(token)
+    return token
 
 
 def test_evidence_only_passes_markdown_no_control_transfer(tmp_path):
@@ -42,18 +65,64 @@ def test_design_without_approval_attaches_needs_prerequisite_keeps_evidence(tmp_
     assert "WITHHELD" in out["markdown"]
 
 
-def test_design_with_approval_appends_section_with_provenance(tmp_path):
+def test_design_with_validated_approval_appends_section(tmp_path):
+    """A server-issued, operator-approved, scope-matching token opens the gate."""
+    token = _issue_and_approve()
     out = asyncio.run(
-        _stage(tmp_path).process(_inp(requested="evidence_plus_design", approval="appr-123"))
+        _stage(tmp_path).process(_inp(requested="evidence_plus_design", approval=token))
     )
     assert "control_transfer" not in out  # ok disposition
-    assert "Design / optimization hypotheses" in out["markdown"]
-    assert "appr-123" in out["markdown"]  # approval provenance attached
+    assert "Design / optimization hypotheses (approved)" in out["markdown"]
+    assert token in out["markdown"]  # approval provenance attached
     assert "# Evidence" in out["markdown"]  # evidence retained
-    # Honesty: v1 gate is presence-only — the output must NOT imply control-plane
-    # validation occurred (over-claiming HITL assurance is a silent misrepresentation).
-    assert "not control-plane-verified" in out["markdown"]
-    assert "(approved)" not in out["markdown"]
+    assert "verified server-side" in out["markdown"]  # honest: the token WAS validated
+
+
+def test_fabricated_token_is_rejected_bypass_closed(tmp_path):
+    """THE BYPASS GUARD: a token the server never issued must NOT open the gate, even though
+    it is non-blank. (Pre-fix, ANY non-blank string opened it.)"""
+    out = asyncio.run(
+        _stage(tmp_path).process(
+            _inp(requested="evidence_plus_design", approval="dapprv-totally-made-up")
+        )
+    )
+    assert "control_transfer" in out  # withheld
+    assert "WITHHELD" in out["markdown"]
+    assert "unknown" in out["markdown"]
+    assert "(approved)" not in out["markdown"]  # design section NOT emitted
+
+
+def test_issued_but_unapproved_token_is_withheld(tmp_path):
+    """A token that was issued but NOT yet operator-approved must not open the gate."""
+    store = get_design_approval_store()
+    token = store.request(query=_QUERY, protein=_PROTEIN)  # pending, NOT approved
+    out = asyncio.run(
+        _stage(tmp_path).process(_inp(requested="evidence_plus_design", approval=token))
+    )
+    assert "control_transfer" in out
+    assert "pending" in out["markdown"]
+
+
+def test_approved_token_for_other_request_is_withheld_scope_bound(tmp_path):
+    """An approval issued for a DIFFERENT query/protein must not open THIS request."""
+    store = get_design_approval_store()
+    other = store.request(query="dengue NS1", protein="NS1")
+    store.approve(other)
+    out = asyncio.run(
+        _stage(tmp_path).process(_inp(requested="evidence_plus_design", approval=other))
+    )
+    assert "control_transfer" in out
+    assert "scope mismatch" in out["markdown"]
+
+
+def test_design_without_approval_issues_a_token_to_approve(tmp_path):
+    """No token supplied → withhold AND issue a fresh token the caller can get approved."""
+    out = asyncio.run(_stage(tmp_path).process(_inp(requested="evidence_plus_design")))
+    assert out["control_transfer"]["reason"] == "needs_prerequisite"
+    assert "# Evidence" in out["markdown"]
+    assert "WITHHELD" in out["markdown"]
+    assert "dapprv-" in out["markdown"]  # a concrete token to approve was issued
+    assert "approve_design" in out["markdown"]
 
 
 def test_blank_approval_token_is_not_approval(tmp_path):
