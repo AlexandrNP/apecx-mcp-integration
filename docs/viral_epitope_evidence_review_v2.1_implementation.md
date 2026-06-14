@@ -499,16 +499,27 @@ integration test for "done").
   user previously chose "keep edge-hardening" over this; revisit only if MCP-server throughput
   becomes a measured need. Currently correct-but-serialized is acceptable.
 
-- **E4-3 — Structure selection prefers a UniProt-xref-bearing PDB. (P2, functional coverage)**
-  Structural reasoning ranks by epitope-relevance; if the top PDB lacks a SIFTS UniProt xref
-  (e.g. SARS-2 spike 8F2V, genuinely unmapped) functional validation degrades loud to "no
-  residue annotation" even though xref-bearing spike structures exist. **Tradeoff:** coupling
-  selection to xref-availability could pick a less-epitope-relevant structure, and costs a
-  SIFTS call per candidate. **Proposed:** among the top-K already-ranked candidates, prefer one
-  WITH an xref ONLY when epitope-relevance is within a small margin; never sacrifice a clearly
-  better structure. **AC:** for a virus where the top-ranked PDB has no xref but a near-tied one
-  does, functional validation now returns residue-level annotation; provenance records both the
-  relevance margin and the xref-preference decision. CC-1: the annotation is real + non-empty.
+- **E4-3 — Structure selection prefers a UniProt-xref-bearing PDB. (P2 → DOWNGRADED, won't
+  implement now.)** Structural reasoning ranks by epitope-relevance; if the top PDB lacks a
+  SIFTS xref (e.g. SARS-2 spike 8F2V) functional validation degrades loud to "no residue
+  annotation". **Examined 2026-06-14 — not worth the cost/risk:**
+  - The candidate epitope residues (`structural_reasoning.exposed_residues`) are in the
+    PRIMARY structure's AUTHOR numbering, so functional validation CANNOT simply substitute a
+    different structure's SIFTS — the residue numbers don't correspond. So the "easy" swap is
+    wrong.
+  - **Path 1 (change primary selection to prefer xref within a relevance margin):** risks the
+    CORE epitope analysis (the headline structure could become less epitope-relevant) for a
+    BONUS (residue annotation), and adds a SIFTS call per top-K candidate (latency).
+  - **Path 2 (additive: annotate from a corroborating xref-bearing structure):** lower-risk
+    but needs propagating each `analyzed_structures` entry's per-structure exposed-residue LIST
+    (today only `n_exposed` counts are carried) + per-candidate SIFTS + clear "annotation from
+    corroborating structure X" labeling.
+  - **Decision:** the current behavior is CORRECT and degrade-LOUD — functional honestly reports
+    "no UniProt xref"; the primary structural epitope analysis is unaffected. Chasing the
+    annotation bonus is not worth the complexity/scientific-risk. **Revisit only if** functional
+    residue-annotation coverage is measured to be a real adoption gap; then prefer Path 2
+    (additive, low-risk) + validate across viruses that it lifts coverage without confusing the
+    output. AC unchanged if pursued.
 
 - **E4-4 — DOWNGRADED: one-off, non-reproducible `_loader` TypeError (B-2). (P3, parked)**
   Investigated 2026-06-14: does NOT reproduce (pytest-randomly absent; ≥4 combined runs both
@@ -553,7 +564,7 @@ integration test for "done").
   would over-mangle legitimate long / `#`-bearing titles). **AC:** a fixture publication with a
   newline+`##` title yields no extra `##` heading; legitimate titles render unchanged.
 
-- **E4-7 — Desktop streaming on an identical cached re-query (B-1). (P3, UX)** A desktop
+- **E4-7 — Desktop streaming on an identical cached re-query (B-1). ✅ SHIPPED `ecb78be` (option b). (P3)** A desktop
   re-query of byte-identical params streams nothing (deterministic-skip) then returns the cached
   doc instantly. Options: (a) leave as-is + document (the answer is correct + instant — arguably
   fine); (b) on a cache-hit-with-no-execution, emit ONE synthetic "served from cache (no
