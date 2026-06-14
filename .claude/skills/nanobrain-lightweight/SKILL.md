@@ -182,3 +182,49 @@ The eval_03 Tier 0-4 chain (2026-05-09 -> 2026-05-11) ships
 ``Workflow.from_skeleton`` as the agent-authoring ergonomic;
 ``WorkflowBuilder`` remains the dynamic-DAG path for runtime-computed
 shapes.
+
+## Nesting a builder-produced workflow as a SubworkflowStep stage (E2-F1)
+
+A workflow that exists ONLY as a lightweight ``WorkflowBuilder`` builder
+(a no-arg ``build_*()`` returning ``builder.load()``) has no static YAML
+on disk. ``SubworkflowStep`` (``nanobrain/library/steps/subworkflow_step.py``)
+can still embed it as one stage of an outer workflow via the
+``inner_workflow_builder`` config field — a dotted-path to that no-arg
+callable. Mutually exclusive with ``inner_workflow_path``; declaring both
+or neither is a load-time FAIL-FAST. The builder is resolved + invoked
+ONCE at step init and the returned ``Workflow`` is cached — identical
+lifecycle to the path branch, so every SubworkflowStep silent-failure
+gate (status ≠ completed → RuntimeError; EMPTY-OUTPUT gate; G115-safe
+poll drain) is preserved unchanged.
+
+```yaml
+# outer step YAML — the only new field is inner_workflow_builder
+name: conserved_sites_stage
+class: nanobrain.library.steps.subworkflow_step.SubworkflowStep
+inner_workflow_builder: "apecx_integration.composition.workflows.viral_conserved_sites.builder.build_viral_conserved_sites_workflow"
+input_data_units:
+  stage_in: {class: nanobrain.core.data_unit.DataUnitMemory, name: stage_in}
+output_data_units:
+  stage_out: {class: nanobrain.core.data_unit.DataUnitMemory, name: stage_out}
+triggers:
+  - {class: nanobrain.core.trigger.DataUnitChangeTrigger, data_unit: stage_in}
+```
+
+The callable MUST be no-arg and MUST return a ``Workflow`` (not the
+builder, not a config dict) — a wrong-type return is a FAIL-FAST. For a
+builder that takes a build-time arg with a default (e.g.
+``build_viral_conserved_sites_workflow(aligner="mafft")``), either point
+at the default-arg form or bind a strictly-no-arg wrapper
+(``build_viral_conserved_sites_muscle_workflow``).
+
+**G117 (load-bearing for the cascade):** the outer step's OWN input data
+unit name MUST differ from the inner workflow's first-step input data
+unit name (above: ``stage_in`` vs the inner's ``fetch_in``).
+``SubworkflowStep._route_input_to_first_step_du`` unwraps the outer
+trigger envelope then re-wraps for the inner's first-step DU; a name
+collision defeats that and the inner step receives the wrong shape.
+
+Regression: ``nanobrain/tests/unit/test_subworkflow_step_builder.py``
+drives an OUTER ``Workflow.run()`` whose single stage is a
+builder-sourced SubworkflowStep and asserts the inner output VALUE flows
+through (not just status — per the G99 cycle-bearing rule).

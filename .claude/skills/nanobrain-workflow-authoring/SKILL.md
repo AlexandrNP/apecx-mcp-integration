@@ -521,6 +521,22 @@ with ``inner_workflow_path`` in the step YAML. Do NOT let the
 composer author this shape — the path field is a hallucination
 surface. Reserved for hand-written workflows.
 
+**3. Builder-sourced inner workflow (E2-F1).** When the inner
+workflow exists ONLY as a lightweight ``WorkflowBuilder`` builder
+(a no-arg ``build_*()`` returning ``builder.load()``, e.g. apecx's
+``viral_conserved_sites``) with no YAML on disk, set
+``inner_workflow_builder`` (a dotted-path to that no-arg callable)
+INSTEAD of ``inner_workflow_path``. The two are mutually exclusive
+(both-set or neither-set → load-time FAIL-FAST); the callable is
+resolved + invoked once at step init and the returned ``Workflow``
+is cached, so every silent-failure gate below is preserved
+unchanged. The callable MUST return a ``Workflow`` (not the builder,
+not a dict) — wrong type FAIL-FASTs. **G117 still applies**: the
+outer step's own input DU name must differ from the inner
+workflow's first-step input DU name. See the ``nanobrain-lightweight``
+skill for the full YAML example + regression pointer
+(``nanobrain/tests/unit/test_subworkflow_step_builder.py``).
+
 Both paths run the inner workflow via
 ``inner.process(routed_input) + inner.wait_for_cascade()`` — NOT
 ``inner.run()``. The wrapper auto-routes ``input_data`` to the
