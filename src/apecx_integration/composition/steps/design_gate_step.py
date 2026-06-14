@@ -73,11 +73,24 @@ class DesignGateStep(BaseStep):
     def _design_section(self, query: str, evidence_md: str, approval_id: str) -> str:
         """Generate the approved design-hypotheses section. Phase A: a labelled
         placeholder that carries approval provenance. Phase B replaces the body with
-        an evidence-bound LLM generation (config-driven prompt)."""
+        an evidence-bound LLM generation (config-driven prompt).
+
+        Honesty contract: the heading and body must NOT imply the token was VALIDATED.
+        In v1 the gate checks the token is PRESENT (non-blank) but does not yet
+        cross-check it against the approval control plane (``get_approval``), so the
+        approval is caller-ASSERTED, not control-plane-verified. Stating "(approved)"
+        / "Generated under approval" unqualified would over-claim HITL assurance — a
+        silent misrepresentation. The qualifier below makes the gap explicit so an
+        operator does not over-trust the gate. See the class docstring + the
+        control-plane-validation hardening follow-up."""
         return (
-            "## Design / optimization hypotheses (approved)\n\n"
-            f"> Generated under approval `{approval_id}`. These are **hypotheses**, "
-            f"not validated results — each must be confirmed experimentally.\n\n"
+            "## Design / optimization hypotheses\n\n"
+            f"> Released against caller-supplied approval token `{approval_id}`. "
+            "**v1 limitation:** the gate confirms the token is present but does NOT "
+            "yet cross-check it against the approval control plane — treat the "
+            "approval as caller-asserted, not control-plane-verified. These are "
+            "**hypotheses**, not validated results — each must be confirmed "
+            "experimentally.\n\n"
             "_Evidence-bound hypothesis generation is being wired in Phase B; this "
             "section confirms the approval gate opened and provenance is attached._"
         )

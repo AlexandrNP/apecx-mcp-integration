@@ -594,5 +594,10 @@ def test_design_with_approval_appends_design_section_e2e():
         )
     )
     assert out["status"] == "ok", out
-    assert "Design / optimization hypotheses (approved)" in out["markdown"], out["markdown"][:2000]
+    assert "Design / optimization hypotheses" in out["markdown"], out["markdown"][:2000]
     assert "appr-e2e-001" in out["markdown"]  # approval provenance carried through
+    # Honesty: v1 gate is presence-only; the output must NOT imply the token was
+    # control-plane-verified (this very test passes a DUMMY token, which proves the
+    # presence-only behavior — the qualifier prevents over-claiming HITL assurance).
+    assert "not control-plane-verified" in out["markdown"]
+    assert "(approved)" not in out["markdown"]  # the over-claiming heading is gone

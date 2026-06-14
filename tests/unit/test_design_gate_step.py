@@ -47,9 +47,13 @@ def test_design_with_approval_appends_section_with_provenance(tmp_path):
         _stage(tmp_path).process(_inp(requested="evidence_plus_design", approval="appr-123"))
     )
     assert "control_transfer" not in out  # ok disposition
-    assert "Design / optimization hypotheses (approved)" in out["markdown"]
+    assert "Design / optimization hypotheses" in out["markdown"]
     assert "appr-123" in out["markdown"]  # approval provenance attached
     assert "# Evidence" in out["markdown"]  # evidence retained
+    # Honesty: v1 gate is presence-only — the output must NOT imply control-plane
+    # validation occurred (over-claiming HITL assurance is a silent misrepresentation).
+    assert "not control-plane-verified" in out["markdown"]
+    assert "(approved)" not in out["markdown"]
 
 
 def test_blank_approval_token_is_not_approval(tmp_path):
