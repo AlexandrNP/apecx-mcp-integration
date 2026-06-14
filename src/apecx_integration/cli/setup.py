@@ -679,36 +679,26 @@ def _ollama_url() -> str:
 
 
 def _ollama_model() -> str:
-    """Resolve the configured Ollama model.
+    """Resolve the Ollama model the installer pulls (E3-6 — single source of truth).
 
-    Default is ``mistral-nemo:latest`` because it has the longest
-    track record on the composer's structured-YAML task in this
-    workspace (T01 AC1 strict path, 3/3 consecutive RUN_COMPLETED).
+    Delegates to ``resolve_llm_model`` (the SINGLE source of truth in
+    ``apecx_integration.agents._llm_config``) so the installer pulls EXACTLY the model the
+    SYNTHESIS runtime later asks for. Before this delegation the installer defaulted to
+    ``mistral-nemo:latest`` while ``build_chat_llm`` (the evidence-workflow synthesis) asked
+    for ``nemotron-3-nano:4b`` — a fresh install pulled one model and synthesis 404'd on the
+    other. Override both at once via the ``APECX_LLM_MODEL`` env var.
 
-    Other models we have a reason to mention:
-
-      - ``mistral-small:latest`` (23B) — what composer_config.yml
-        declares as its own default. Better instruction-following on
-        long candidate blocks; ~14GB on disk.
-      - ``gemma4:latest`` (8B) — Gemma 4 family (2026 release).
-        Drop-in size with mistral-nemo (~9.6GB). **MEASURED 2026-05-11
-        TO BE WORSE THAN mistral-nemo FOR THIS TASK**: 2×→4× more
-        framework-rule violations on the diagnostic E2E test, 1.7×
-        slower per inference. Stick with mistral-nemo as the
-        composer default unless a future Gemma 4 fine-tune fixes the
-        gap. Increase ``APECX_LLM_MAX_VALIDATION_RETRIES=2`` if you
-        choose gemma4 anyway.
-      - ``gemma4:26b`` — Mixture-of-Experts with 4B active params.
-        Compute profile similar to gemma4:latest but with broader
-        knowledge; ~16GB on disk. Not measured here.
-
-    Override via ``APECX_LLM_MODEL`` env var. ``apecx-setup llm``
-    pulls whatever you named. The diagnostic E2E test
-    (``test_composer_validator_e2e_against_ollama.py``) is the
-    regression gate when swapping models — verifies the
-    structured-feedback machinery works regardless of LLM quality.
+    NOTE (2026-06-14 epitope-arc merge): the COMPOSER is a SEPARATE tier —
+    ``composer_config.yml`` declares ``mistral-small:latest`` + per-role bindings
+    measured-best for its structured-YAML codegen. Those are NOT pre-pulled by
+    ``apecx-setup llm`` here (the ``--with-composer`` pre-pull was dropped in this merge —
+    see "Further avenues" in the v2.1 plan); the composer pulls them on first use or errors
+    clearly. The default ``llm`` step ensures the EVIDENCE path's model is present out of
+    the box.
     """
-    return os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
+    from apecx_integration.agents._llm_config import resolve_llm_model
+
+    return resolve_llm_model()
 
 
 def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:
@@ -1157,6 +1147,87 @@ def _step_rhea() -> StepResult:
 # ---------------------------------------------------------------------------
 
 
+_PYMOL_IMAGE = "apecx-pymol:3.1.0"
+
+
+def _step_pymol() -> StepResult:
+    """Build the version-pinned headless PyMOL image (E3-7, 2026-06-13).
+
+    The structural-reasoning stage (``StructuralReasoningStep``) shells
+    out to ``apecx-pymol:3.1.0`` for real per-residue SASA. Without the
+    image the stage degrades to a named-skip; building it here makes the
+    real structural path run out of the box.
+
+    Idempotent: skips when the image already exists (unless
+    ``APECX_PYMOL_REBUILD=1``). NEVER raises — degrades to ``skipped``
+    when docker is down.
+    """
+    _print_header("PyMOL image (structural reasoning, opt-in)")
+
+    if not _docker_available():
+        return StepResult(
+            "pymol",
+            "skipped",
+            "docker daemon unreachable — PyMOL image not built. Install "
+            "Docker Desktop (https://docker.com/desktop), start it, then "
+            "re-run `apecx-setup pymol`. (Chain continues without it.)",
+        )
+
+    image_present = (
+        subprocess.run(
+            ["docker", "image", "inspect", _PYMOL_IMAGE],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).returncode
+        == 0
+    )
+    if image_present and os.environ.get("APECX_PYMOL_REBUILD") != "1":
+        return StepResult(
+            "pymol",
+            "ok",
+            f"image {_PYMOL_IMAGE} already present (APECX_PYMOL_REBUILD=1 to rebuild)",
+        )
+
+    # docker/pymol/ lives at the apecx repo root. This module is at
+    # src/apecx_integration/cli/setup.py → parents[3] is the repo root.
+    repo_root = Path(__file__).resolve().parents[3]
+    pymol_ctx = repo_root / "docker" / "pymol"
+    dockerfile = pymol_ctx / "Dockerfile"
+    if not dockerfile.is_file():
+        return StepResult(
+            "pymol",
+            "fail",
+            f"PyMOL Dockerfile not found at {dockerfile}",
+        )
+
+    print(f"  ▶  docker build {_PYMOL_IMAGE} from {pymol_ctx} (~5 min, conda solve) ...")
+    build = subprocess.run(
+        [
+            "docker",
+            "build",
+            "-t",
+            _PYMOL_IMAGE,
+            "-f",
+            str(dockerfile),
+            str(pymol_ctx),
+        ],
+        timeout=1800,
+    )
+    if build.returncode != 0:
+        return StepResult(
+            "pymol",
+            "fail",
+            f"`docker build {_PYMOL_IMAGE}` exited {build.returncode}; "
+            "inspect the build output above",
+        )
+    return StepResult(
+        "pymol",
+        "ok",
+        f"built {_PYMOL_IMAGE} (headless open-source PyMOL, version-pinned)",
+    )
+
+
 def _step_verify() -> StepResult:
     _print_header("Step 7 of 7 — Verification")
     workspace_root = Path(__file__).resolve().parents[4]
@@ -1343,6 +1414,7 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
     "rhea": lambda **_: _step_rhea(),
+    "pymol": lambda **_: _step_pymol(),
     "verify": lambda **_: _step_verify(),
 }
 
@@ -1352,6 +1424,7 @@ def _run_all(
     interactive: bool = True,
     with_rag: bool = False,
     with_rhea: bool = False,
+    with_pymol: bool = False,
 ) -> int:
     """Run the canonical install chain.
 
@@ -1416,6 +1489,16 @@ def _run_all(
                 "opt-in — run `apecx-setup rhea` or `apecx-setup --with-rhea` for Rhea-backed bioinformatics tools (~10 min one-time)",
             )
         )
+    if with_pymol:
+        results.append(_step_pymol())
+    else:
+        results.append(
+            StepResult(
+                "pymol",
+                "skipped",
+                "opt-in — run `apecx-setup pymol` or `apecx-setup --with-pymol` to build the version-pinned PyMOL image for real structural-reasoning SASA",
+            )
+        )
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -1468,6 +1551,17 @@ def main(argv: list[str] | None = None) -> None:
             "tools) available via the apecx-mcp catalog."
         ),
     )
+    parser.add_argument(
+        "--with-pymol",
+        action="store_true",
+        help=(
+            "Include the headless PyMOL image build (E3-7) in the default "
+            "chain (~5 min one-time, conda solve). Run this for real "
+            "per-residue SASA in the structural-reasoning stage of "
+            "viral_epitope_evidence_review (it degrades to a named-skip "
+            "without the image)."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if args.reconfigure_llm:
@@ -1480,6 +1574,7 @@ def main(argv: list[str] | None = None) -> None:
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
                 with_rhea=args.with_rhea,
+                with_pymol=args.with_pymol,
             )
         )
     elif args.subcommand == "data":
