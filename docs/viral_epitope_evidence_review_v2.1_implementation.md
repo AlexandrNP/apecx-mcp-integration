@@ -382,3 +382,176 @@ Depends: E3-5.1.
 Each task = its own commit (per-repo), real-data verified per its AC + CC-1..CC-5
 before the next. Multi-hour real-data runs (e2e, ingest, image build) are expected and
 fine.
+
+---
+
+# 2026-06-14 UPDATE — implementation status, desktop/headless verdict, new + leftover tasks
+
+Plan refresh requested after the v2.1 implementation pass. Reflects what shipped, the
+answer to "does the desktop/headless split actually work", and the new tasks surfaced by
+hardening (the "anything else that warrants improvement"). No code is written here — this
+is the planning artifact only. Cross-repo verification baseline at time of writing:
+nanobrain 1254 unit + apecx 1644 unit + evidence 14/14 integration, all green.
+
+## A. v2.1 status — ALL E3-* SHIPPED (apecx branch `epitope-evidence-workflow`, unpushed)
+
+| Task | What | Commit(s) |
+|------|------|-----------|
+| E3-1 | Biological-assembly SASA + mmCIF large-assembly fallback | `af900e7` |
+| E3-2 | Taxon-precise structural Globus query | (earlier; see v2 plan) |
+| E3-3 | Real functional validation (UniProt + SIFTS + IEDB) | (earlier) + `e3f72ce` (SIFTS null-author-edge recovery) |
+| E3-4 | Fully-automated Rhea bring-up + fork-main push | (earlier) |
+| E3-5 | Desktop/headless verified over a REAL stdio MCP client | `1b5eeb7` + `34a8acc` (MCP logging capability) |
+| E3-6 | Single LLM-model source of truth + loud preflight | `695df98` |
+| E3-7 | PyMOL image in apecx-setup | (earlier) |
+| E3-8 | Per-run provenance capture | `0c37150` |
+| E3-9 | Content-addressed conserved-sites MAFFT cache | `9a2d60d` |
+| E3-13 | Multi-structure corroboration (top-N) + chain-pinning | `d548c26`, `3b17cba` |
+| E3-14 | Model tiers documented (nemotron-3-nano vs mistral-nemo) | `dec71f1` |
+| E3-R-followup | Rhea tool EXECUTION closed (synthesized muscle runs e2e) | `47fa617` |
+
+**Bug chain found by the multi-taxon + diverse-input probes (all shipped):** execution_timeout
+on slow legs (`55c6e86`), length-cluster protein selection (`dd363cc`), word-boundary protein
+match — stop aligning the wrong protein (`3f9062f`), arbitrary-virus → BV-BRC taxon resolver
+(`5d63f29`), `_VIRUS_RE` never matched singular "virus" (`7bc063b`), SubworkflowStep fast
+inner-failure detection (`aa7c9e1`, nanobrain `d397915`).
+
+**Reliability hardening shipped THIS session (beyond v2.1 scope — the silent-failure sweep):**
+
+| Item | Severity | Commit |
+|------|----------|--------|
+| nanobrain `Workflow.run` concurrent-instance cross-contamination (data corruption) | **Critical** | nanobrain `5f93696` |
+| HITL design-gate bypass — fail-closed, scope-bound approval (was: any string opened it) | **High (security)** | `659fac0` + `f00a003` |
+| Unbounded RunStore + handle store (long-lived-server OOM) | High | `b17f01d` |
+| SIFTS null-author-edge — functional validation false-negative | High | `e3f72ce` |
+| Query markdown-injection into deterministic sections | Medium | `9b2e909` |
+| Scope caveat when no virus resolves (non-viral query read as authoritative) | Medium | `5607d9d` |
+| VIOLIN+BV-BRC agent — 3 silent error-swallows → degrade-loud | Medium | `6a94659` |
+| MemoryStore corrupt-file skips → degrade-loud | Low | `c90072b` |
+| Streamed e2e test order-independence (cache clear) | Low (test) | `f210743` |
+
+Distilled lessons persisted: workspace `CLAUDE.md` (long-lived-service concurrent/repeated
+testing rule), `nanobrain-workflow-authoring` skill (concurrent-run silent-failure shape),
+3 memory files. nanobrain `CLAUDE.md` records the `Workflow.run` serialization fix.
+
+## B. Desktop vs headless split — VERDICT: works as intended
+
+Three tools form the split: `run_workflow` (headless one-shot), `run_workflow_streamed`
+(callback primitive), `run_workflow_streaming` (MCP-notification adapter, `ctx`-gated). With
+`ctx=None` the streaming tool runs headless unchanged; with a `ctx` it emits, per completed
+stage, a `report_progress` + a structured `send_log_message` carrying the full stage report.
+Streaming is observability-only: notification failures are caught + logged and NEVER change
+the returned `WorkflowResult` (headless == desktop result, by construction).
+
+**Proven, not assumed:** `tests/integration/test_mcp_stream_client.py` launches `apecx-mcp`
+as a subprocess, does a REAL stdio MCP handshake (incl. `set_logging_level("info")` — the
+Claude-Desktop path; the `34a8acc` fix advertises the MCP `logging` capability so this no
+longer tears the session down), registers real log + progress handlers, and asserts ≥6 stage
+notifications arrive IN ORDER and that streamed == headless reasoning-trace. Unit tests cover
+the mock-ctx emit path, the headless passthrough, and server registration.
+
+**Two caveats (documented, not blocking):**
+- **B-1 (benign):** a cached workflow re-run with byte-IDENTICAL consecutive input does NOT
+  re-execute (DataUnitChangeTrigger deterministic-skip; the prior output is the correct
+  deterministic answer) → a desktop re-query of the exact same params streams NOTHING then
+  returns the cached doc. Correct behavior; only the UX (no progress shown on an instant
+  cached answer) is slightly surprising. See task **E4-7**.
+- **B-2 (test quality):** under random test ordering (`pytest-randomly`),
+  `test_eo_primitives.py` + `test_mcp_stream_client.py` run together can raise
+  `TypeError: _test_catalog_for.<locals>._loader() takes 0 positional arguments but 1 was
+  given` — a cross-file test-isolation leak (the process-wide `_workflow_cache` / a catalog
+  loader fixture). The full 1644-suite passes (order-dependent), so it is latent, not a
+  product bug. See task **E4-4**.
+
+## C. New + leftover tasks (E4-*) — "anything else that warrants improvement"
+
+Priority key: **P1** = real reliability/security gap worth doing; **P2** = quality/UX
+improvement with a tradeoff; **P3** = low-severity / optional. Each carries data-based
+acceptance (CC-1..CC-5 still apply: no empty responses, decide from output VALUES, real-data
+integration test for "done").
+
+- **E4-1 — HITL design-approval: persistence + human-only approval surface. (P1, security)**
+  The fail-closed gate (`659fac0`) closes the any-string bypass, but two boundaries remain
+  (documented in `design_approval_store.py`): (a) the store is in-process/session-scoped —
+  a server restart drops issued/approved tokens (a caller must re-request); (b) `approve_design`
+  is an LLM-callable MCP tool, so a fully-autonomous LLM can self-approve — genuine HITL only
+  holds under a human-operated client. **Sub-tasks:** E4-1a durable backend for
+  `DesignApprovalStore` (mirror the RunStore/HandleStore swap-in seam); E4-1b a human-only /
+  auth-gated approval path (cross-cutting — applies equally to the control-plane
+  `approve`/`reject` tools; coordinate, don't fork). **AC:** a token approved on server A is
+  honored after restart (E4-1a); an LLM identity cannot approve its own request (E4-1b),
+  asserted by a test that the autonomous path is rejected. **Dep:** E4-1b needs an auth model
+  decision (currently no auth layer — `decided_by` defaults to `api_user`).
+
+- **E4-2 — `Workflow.run` concurrency: throughput vs the current serialization. (P2, framework)**
+  `5f93696` made concurrent same-instance runs CORRECT by serializing them (per-instance
+  lock). Distinct workflows still parallelize; same-workflow concurrent requests now QUEUE.
+  For higher throughput, build a DISTINCT workflow instance per concurrent run (no shared data
+  units → true parallelism) instead of caching one. **Tradeoff:** build cost per call + shared
+  sub-resources (LLM client, SIFTS cache) need their own concurrency review. **AC:** two
+  concurrent distinct-virus queries complete in ~max(t1,t2), not t1+t2, each isolated +
+  correct (extend the existing nanobrain concurrent-isolation test). **Decision needed:** the
+  user previously chose "keep edge-hardening" over this; revisit only if MCP-server throughput
+  becomes a measured need. Currently correct-but-serialized is acceptable.
+
+- **E4-3 — Structure selection prefers a UniProt-xref-bearing PDB. (P2, functional coverage)**
+  Structural reasoning ranks by epitope-relevance; if the top PDB lacks a SIFTS UniProt xref
+  (e.g. SARS-2 spike 8F2V, genuinely unmapped) functional validation degrades loud to "no
+  residue annotation" even though xref-bearing spike structures exist. **Tradeoff:** coupling
+  selection to xref-availability could pick a less-epitope-relevant structure, and costs a
+  SIFTS call per candidate. **Proposed:** among the top-K already-ranked candidates, prefer one
+  WITH an xref ONLY when epitope-relevance is within a small margin; never sacrifice a clearly
+  better structure. **AC:** for a virus where the top-ranked PDB has no xref but a near-tied one
+  does, functional validation now returns residue-level annotation; provenance records both the
+  relevance margin and the xref-preference decision. CC-1: the annotation is real + non-empty.
+
+- **E4-4 — Test-isolation flake under random ordering (B-2). (P3, test quality)**
+  `_test_catalog_for._loader` (0-arg) is invoked with 1 arg under some `pytest-randomly`
+  orderings when `test_eo_primitives` + `test_mcp_stream_client` share the process-wide
+  `_workflow_cache`. **Proposed:** an autouse fixture that calls `_clear_workflow_cache()` (+
+  any catalog-loader reset) around these tests; OR make the test catalog loader signature
+  match the framework's call. **AC:** the two files run together under forced random seeds stay
+  green across ≥20 seeds. (Note: distinct from E3-10's already-fixed SearchClient leak.)
+
+- **E4-5 — PDB/EMDB as first-class harmonized sources (Track A–C of the action plan). (P1,
+  but EXTERNALLY GATED)** Make PDB & EMDB canonical-IRI-matchable harmonized indices (today
+  the evidence workflow's structural leg uses a freetext Globus search, which works but is not
+  harmonized). **Blocked on an OPS action (X1): two new Globus Search DEST indices must be
+  created with index-admin privileges — not code.** Phase-0 read-only probe of aggregate index
+  `e74bf12a` is the un-gated first step and sizes the rest (A/B/C scope branch). See
+  `viral_epitope_evidence_workflow_action_plan.md` Tracks A–C + the worktree plan
+  `~/.claude/plans/okay-which-worktree-has-enumerated-marshmallow.md`. **AC (Phase 0):** a saved
+  real PDB + EMDB record fixture from a Globus index with the PDB/EMDB discriminator field
+  named (or its absence proven). **Do not start A–C code until X1 + Phase-0 = A or B, recorded.**
+
+- **E4-6 — External-DB title/field injection into the Sources section. (P3, low)** Publication
+  / genome / VIOLIN titles are interpolated raw into the deterministic Sources list (RAG
+  snippets already collapse newlines; the others don't). A malformed external title with a
+  newline + `##` could inject a stray header — but external DBs are curated (low probability)
+  and it lands in the Sources section past the contract-critical headers (cosmetic). **Proposed:**
+  collapse newlines (only) in rendered external strings — NOT the full `_sanitize_inline` (which
+  would over-mangle legitimate long / `#`-bearing titles). **AC:** a fixture publication with a
+  newline+`##` title yields no extra `##` heading; legitimate titles render unchanged.
+
+- **E4-7 — Desktop streaming on an identical cached re-query (B-1). (P3, UX)** A desktop
+  re-query of byte-identical params streams nothing (deterministic-skip) then returns the cached
+  doc instantly. Options: (a) leave as-is + document (the answer is correct + instant — arguably
+  fine); (b) on a cache-hit-with-no-execution, emit ONE synthetic "served from cache (no
+  re-computation)" progress notification so the desktop pane isn't silent. **AC (if b):** an
+  identical re-query emits exactly one cache-hit notification and the same final doc. Lowest
+  priority — current behavior is correct, only the progress UX is bare.
+
+- **E4-8 — MemoryStore + other best-effort skips: confirm coverage. (P3)** `c90072b` made the
+  two MemoryStore corrupt-file skips loud. A follow pass over the remaining bare-`except` sites
+  (composer, control_plane routes) confirmed they re-raise / log / are best-effort error-message
+  rendering (legitimate). No further action unless a new live-path silent swallow is found.
+
+### Suggested order for the new work (when authorized)
+1. **E4-4** (test flake) — cheap, removes CI noise, no design decision.
+2. **E4-1a** (HITL durable backend) — P1 security, self-contained (mirrors existing store
+   seams). E4-1b (auth) waits on the cross-cutting auth-model decision.
+3. **E4-5 Phase-0 probe** — un-gated, read-only; sizes the PDB/EMDB track (the rest waits on
+   ops X1).
+4. **E4-3** (structure xref preference) — P2, needs the relevance-margin design.
+5. **E4-6 / E4-7 / E4-2** — P2/P3, do opportunistically or on explicit request; E4-2 only if
+   throughput is measured to matter.
