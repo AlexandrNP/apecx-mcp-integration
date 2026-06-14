@@ -889,6 +889,21 @@ def main(argv: list[str] | None = None) -> None:
     parser.parse_args(argv)  # exits on --help / --version
 
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
+
+    # E4-1a — durable HITL design approvals by default for the long-lived server: persist
+    # issued/approved tokens so they survive a restart. Done in the entry point (NOT
+    # build_server, which tests call) so unit tests stay in-memory + pollution-free. An
+    # operator override of APECX_DESIGN_APPROVAL_DIR wins via setdefault.
+    from pathlib import Path as _Path
+
+    from apecx_integration.composition.runtime.design_approval_store import (
+        DESIGN_APPROVAL_DIR_ENV,
+    )
+
+    os.environ.setdefault(
+        DESIGN_APPROVAL_DIR_ENV, str(_Path.home() / ".cache" / "apecx" / "design_approvals")
+    )
+
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
     _check_rag_index_or_warn()
