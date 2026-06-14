@@ -474,17 +474,19 @@ acceptance (CC-1..CC-5 still apply: no empty responses, decide from output VALUE
 integration test for "done").
 
 - **E4-1 — HITL design-approval: persistence + human-only approval surface. (P1, security)**
-  The fail-closed gate (`659fac0`) closes the any-string bypass, but two boundaries remain
-  (documented in `design_approval_store.py`): (a) the store is in-process/session-scoped —
-  a server restart drops issued/approved tokens (a caller must re-request); (b) `approve_design`
-  is an LLM-callable MCP tool, so a fully-autonomous LLM can self-approve — genuine HITL only
-  holds under a human-operated client. **Sub-tasks:** E4-1a durable backend for
-  `DesignApprovalStore` (mirror the RunStore/HandleStore swap-in seam); E4-1b a human-only /
-  auth-gated approval path (cross-cutting — applies equally to the control-plane
-  `approve`/`reject` tools; coordinate, don't fork). **AC:** a token approved on server A is
-  honored after restart (E4-1a); an LLM identity cannot approve its own request (E4-1b),
-  asserted by a test that the autonomous path is rejected. **Dep:** E4-1b needs an auth model
-  decision (currently no auth layer — `decided_by` defaults to `api_user`).
+  The fail-closed gate (`659fac0`) closes the any-string bypass; two boundaries followed.
+  - **E4-1a — durable backend. ✅ SHIPPED (`2606db0`).** `DesignApprovalStore` gains an
+    opt-in `persist_dir`; the server defaults `$APECX_DESIGN_APPROVAL_DIR` to
+    `~/.cache/apecx/design_approvals` so issued/approved tokens survive a restart (mirrored to
+    `<dir>/<token>.json`, reloaded on construction, FIFO-bound across restarts, corrupt-file
+    skip is loud, in-memory default keeps tests pollution-free). Test:
+    `test_design_approval_durable.py` — approved token survives a new-instance "restart".
+  - **E4-1b — human-only / auth-gated approval. ⬜ OPEN (needs decision).** `approve_design`
+    is an LLM-callable MCP tool, so a fully-autonomous LLM can self-approve — genuine HITL only
+    holds under a human-operated client. Cross-cutting — applies equally to the control-plane
+    `approve`/`reject` tools; coordinate, don't fork. **AC:** an LLM identity cannot approve its
+    own request, asserted by a test that the autonomous path is rejected. **Dep:** an auth-model
+    decision (currently no auth layer — `decided_by` defaults to `api_user`).
 
 - **E4-2 — `Workflow.run` concurrency: throughput vs the current serialization. (P2, framework)**
   `5f93696` made concurrent same-instance runs CORRECT by serializing them (per-instance
@@ -551,11 +553,10 @@ integration test for "done").
   rendering (legitimate). No further action unless a new live-path silent swallow is found.
 
 ### Suggested order for the new work (when authorized)
-1. **E4-1a** (HITL durable backend) — P1 security, self-contained (mirrors existing store
-   seams). E4-1b (auth) waits on the cross-cutting auth-model decision.
-2. **E4-5 Phase-0 probe** — un-gated, read-only; sizes the PDB/EMDB track (the rest waits on
+0. ~~**E4-1a** (HITL durable backend)~~ — ✅ SHIPPED `2606db0`. E4-1b (auth) waits on the
+   cross-cutting auth-model decision.
+1. **E4-5 Phase-0 probe** — un-gated, read-only; sizes the PDB/EMDB track (the rest waits on
    ops X1).
-   (E4-4 parked — not reproducible; no work until a repro is captured.)
-4. **E4-3** (structure xref preference) — P2, needs the relevance-margin design.
-5. **E4-6 / E4-7 / E4-2** — P2/P3, do opportunistically or on explicit request; E4-2 only if
+2. **E4-3** (structure xref preference) — P2, needs the relevance-margin design.
+3. **E4-6 / E4-7 / E4-2** — P2/P3, do opportunistically or on explicit request; E4-2 only if
    throughput is measured to matter.
