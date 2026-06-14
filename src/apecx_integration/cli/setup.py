@@ -549,13 +549,86 @@ def _ollama_model() -> str:
 
     NOTE: the composer is a SEPARATE tier — ``composer_config.yml``
     declares ``mistral-small:latest`` plus per-role bindings that were
-    measured-best for its structured-YAML codegen task. Operators who run
-    the composer pull those models explicitly; the installer's single pull
-    targets the synthesis default only.
+    measured-best for its structured-YAML codegen task. Those are pulled
+    only under ``--with-composer`` (see ``_composer_models`` +
+    ``_models_to_ensure``); the synthesis default here is ALWAYS pulled.
     """
     from apecx_integration.agents._llm_config import resolve_llm_model
 
     return resolve_llm_model()
+
+
+# Human-facing download-size hints for the big composer-tier models, so
+# the install log is HONEST about a multi-GB pull before it starts. Sizes
+# are the published Ollama Q4 quant sizes (approximate; "" = unknown ->
+# logged as "size unknown"). Used only for the log line, never for logic.
+_MODEL_SIZE_HINT = {
+    "mistral-small:latest": "~14 GB",
+    "mistral-nemo:latest": "~7 GB",
+    "nemotron-3-nano:4b": "~2.5 GB",
+}
+
+
+def _composer_config_path() -> Path:
+    """Path to the shipped composer_config.yml (single source of truth
+    for the composer's per-role model bindings)."""
+    repo_root = Path(__file__).resolve().parents[3]
+    return repo_root / "src" / "apecx_integration" / "composition" / "composer_config.yml"
+
+
+def _composer_models(config_path: Path | None = None) -> list[str]:
+    """Resolve the EFFECTIVE set of models the composer would call.
+
+    Loads ``composer_config.yml`` and applies the SAME ``APECX_LLM_*``
+    env overrides the composer applies at load
+    (``_apply_llm_env_overrides``), so a fresh install pulls exactly the
+    models a later composer run resolves — including operator env
+    overrides (``APECX_LLM_MODEL`` for the default, ``APECX_LLM_MODEL_<ROLE>``
+    per role). Collects the top-level ``llm_model`` default PLUS every
+    ``model_roles[*].model`` binding (drafter / planner / reviewer + any
+    env-added role). Returns a de-duplicated, order-preserving list; an
+    empty list when the config file is absent.
+
+    This is the composer half of the model set; the synthesis half is
+    ``_ollama_model()``. ``_models_to_ensure`` unions the two.
+    """
+    import yaml
+
+    from apecx_integration.composition._composer_llm_factory import (
+        _apply_llm_env_overrides,
+    )
+
+    path = config_path or _composer_config_path()
+    if not path.is_file():
+        return []
+    raw = yaml.safe_load(path.read_text()) or {}
+    _apply_llm_env_overrides(raw)
+
+    models: list[str] = []
+    top_default = raw.get("llm_model")
+    if top_default:
+        models.append(top_default)
+    for role_cfg in (raw.get("model_roles") or {}).values():
+        model = (role_cfg or {}).get("model")
+        if model:
+            models.append(model)
+    return list(dict.fromkeys(models))
+
+
+def _models_to_ensure(*, with_composer: bool) -> list[str]:
+    """The DISTINCT, order-preserving set of Ollama models apecx-setup
+    ensures present.
+
+    Always includes the synthesis model (``_ollama_model()`` →
+    ``resolve_llm_model()``) — that is the default workflow path and is
+    pulled on every install. When ``with_composer`` is True, unions in
+    the composer's effective model set (``_composer_models()``). The
+    synthesis model leads the list; composer-only additions follow.
+    """
+    models = [_ollama_model()]
+    if with_composer:
+        models.extend(_composer_models())
+    return list(dict.fromkeys(models))
 
 
 def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:
@@ -720,8 +793,40 @@ def _offer_start_ollama_daemon(*, interactive: bool) -> bool:
     return False
 
 
-def _step_llm(*, interactive: bool = True) -> StepResult:
+def _step_llm(*, interactive: bool = True, with_composer: bool = False) -> StepResult:
+    """Install Ollama (offer when missing) + ensure every required model.
+
+    Model coverage (E3-6 + R2, 2026-06-13)
+    ---------------------------------------
+    The synthesis model (``resolve_llm_model()`` →
+    ``nemotron-3-nano:4b``) is ALWAYS ensured — it is the default
+    workflow path. When ``with_composer`` is True (``--with-composer``)
+    the step ALSO ensures the composer's per-role models declared in
+    ``composer_config.yml`` (effective set, env-overridden), so a fresh
+    install can run the composer without a first-call 404 on an
+    un-pulled model.
+
+    Opt-in, not default — JUSTIFICATION
+    -----------------------------------
+    The composer tier adds ``mistral-small:latest`` (~14 GB) +
+    ``mistral-nemo:latest`` (~7 GB) on top of the synthesis
+    ``nemotron-3-nano:4b`` (~2.5 GB); the planner/reviewer roles reuse
+    the synthesis nemotron and cost nothing extra. Pulling ~21 GB on
+    EVERY fresh install would surprise the 80%-case operator (DB
+    queries, MCP tools, synthesis, HPC) who never runs the composer.
+    So composer models are gated behind ``--with-composer`` — mirroring
+    the existing ``--with-rag`` / ``--with-rhea`` / ``--with-pymol``
+    opt-in flags (consistency = least surprise). The total size is
+    logged BEFORE any multi-GB pull begins.
+
+    Degradation: never raises. Ollama unreachable / install declined →
+    ``skipped`` (detail names the models it WOULD ensure). A failed
+    individual pull → ``partial`` (the models that DID land are still
+    reported); the install chain continues.
+    """
     _print_header("Step 4 of 6 — LLM (Ollama install + check + model pull)")
+
+    models = _models_to_ensure(with_composer=with_composer)
 
     # 1. Ensure the CLI is installed (offer to install when missing).
     if not _offer_install_ollama(interactive=interactive):
@@ -731,7 +836,7 @@ def _step_llm(*, interactive: bool = True) -> StepResult:
             "`ollama` CLI not found and install declined / not "
             "possible. Install from https://ollama.com/download (or "
             "set APECX_LLM_BASE_URL to a remote OpenAI-compatible "
-            "endpoint to use vLLM / OpenAI / a hosted Anthropic-proxy).",
+            f"endpoint). Would ensure: {models}",
         )
 
     # 2. Ensure the daemon is reachable (offer to start when not).
@@ -740,32 +845,52 @@ def _step_llm(*, interactive: bool = True) -> StepResult:
         return StepResult(
             "llm",
             "skipped",
-            f"ollama daemon unreachable at {api_url}. Start with: ollama serve",
+            f"ollama daemon unreachable at {api_url}. Start with: "
+            f"ollama serve. Would ensure: {models}",
         )
 
-    # 3. Ensure the model is pulled.
+    # 3. Ensure every required model is pulled (idempotent: skip present).
     import urllib.request
 
     api_url = _ollama_url() + "/api/tags"
     with urllib.request.urlopen(api_url, timeout=5) as resp:
         tags = json.loads(resp.read())
-    model = _ollama_model()
     installed = {m.get("name") for m in tags.get("models") or []}
-    if model in installed:
-        return StepResult("llm", "ok", f"model {model} already pulled")
 
-    print(f"  ▶  pulling {model} (this may take several minutes for first-time downloads)...")
-    result = subprocess.run(
-        ["ollama", "pull", model],
-        timeout=1800,  # 30 minutes worst-case for ~14 GB models
-    )
-    if result.returncode != 0:
+    missing = [m for m in models if m not in installed]
+    if missing:
+        sizes = ", ".join(f"{m} ({_MODEL_SIZE_HINT.get(m, 'size unknown')})" for m in missing)
+        print(f"  ▶  pulling {len(missing)} model(s): {sizes}")
+        print("     (first-time downloads can take several minutes each)")
+
+    ensured: list[str] = []
+    pulled: list[str] = []
+    failed: list[str] = []
+    for model in models:
+        if model in installed:
+            ensured.append(model)
+            continue
+        print(f"  ▶  ollama pull {model} ...")
+        result = subprocess.run(
+            ["ollama", "pull", model],
+            timeout=1800,  # 30 minutes worst-case for ~14 GB models
+        )
+        if result.returncode != 0:
+            failed.append(model)
+            continue
+        ensured.append(model)
+        pulled.append(model)
+
+    detail = f"ensured {ensured}"
+    if pulled:
+        detail += f"; pulled {pulled}"
+    if failed:
         return StepResult(
             "llm",
-            "fail",
-            f"`ollama pull {model}` exited with {result.returncode}",
+            "partial",
+            detail + f"; FAILED to pull {failed} (chain continues; retry `apecx-setup llm`)",
         )
-    return StepResult("llm", "ok", f"pulled {model}")
+    return StepResult("llm", "ok", detail)
 
 
 # ---------------------------------------------------------------------------
@@ -1368,10 +1493,12 @@ def _step_verify() -> StepResult:
 # Subcommand dispatch
 # ---------------------------------------------------------------------------
 
+# ``data`` and ``llm`` are dispatched directly in ``main`` (they take
+# extra kwargs — ``prefer_gh_release`` / ``with_composer``) so they are
+# intentionally absent here.
 _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "globus": _step_globus,
     "infra": lambda **_: _step_infra(),
-    "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
     "rhea": lambda **_: _step_rhea(),
     "pymol": lambda **_: _step_pymol(),
@@ -1385,6 +1512,7 @@ def _run_all(
     with_rag: bool = False,
     with_rhea: bool = False,
     with_pymol: bool = False,
+    with_composer: bool = False,
     prefer_gh_release: bool = False,
 ) -> int:
     """Run the canonical install chain.
@@ -1423,7 +1551,7 @@ def _run_all(
     results.append(_step_globus(interactive=interactive))
     results.append(_step_data(interactive=interactive, prefer_gh_release=prefer_gh_release))
     results.append(_step_infra())
-    results.append(_step_llm(interactive=interactive))
+    results.append(_step_llm(interactive=interactive, with_composer=with_composer))
     if with_rag:
         results.append(_step_rag())
     else:
@@ -1517,6 +1645,20 @@ def main(argv: list[str] | None = None) -> None:
         ),
     )
     parser.add_argument(
+        "--with-composer",
+        action="store_true",
+        help=(
+            "Also pull the COMPOSER's per-role models (R2, E3-6: declared "
+            "in composer_config.yml — mistral-small:latest ~14 GB + "
+            "mistral-nemo:latest ~7 GB on top of the synthesis "
+            "nemotron-3-nano:4b ~2.5 GB). Default-off because the common case "
+            "(DB / MCP / synthesis / HPC) never runs the composer; run this "
+            "when you intend to run the composer so its first call doesn't "
+            "404 on an un-pulled model. The synthesis model is pulled either "
+            "way. Works with the `llm` subcommand too: `apecx-setup llm --with-composer`."
+        ),
+    )
+    parser.add_argument(
         "--prefer-gh-release",
         action="store_true",
         help=(
@@ -1540,6 +1682,7 @@ def main(argv: list[str] | None = None) -> None:
                 with_rag=args.with_rag,
                 with_rhea=args.with_rhea,
                 with_pymol=args.with_pymol,
+                with_composer=args.with_composer,
                 prefer_gh_release=args.prefer_gh_release,
             )
         )
@@ -1547,6 +1690,11 @@ def main(argv: list[str] | None = None) -> None:
         result = _step_data(
             interactive=not args.non_interactive,
             prefer_gh_release=args.prefer_gh_release,
+        )
+    elif args.subcommand == "llm":
+        result = _step_llm(
+            interactive=not args.non_interactive,
+            with_composer=args.with_composer,
         )
     else:
         result = _SUBCOMMANDS[args.subcommand](
