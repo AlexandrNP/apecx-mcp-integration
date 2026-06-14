@@ -57,8 +57,11 @@ _TOKEN_NAMES: dict[str, str] = {tok: name for name, tok in _TAXON_SPECIES.values
 
 # "<word(s)> virus" / "viruses" → the distinctive part (group 1), e.g.
 # "west nile virus" -> "west nile", "chikungunya virus" -> "chikungunya".
+# BUG (fixed 2026-06-13): the suffix was ``viruses?`` which parses as "viruse" + optional
+# "s" — it matches "viruse"/"viruses" but NEVER the singular "virus", so this regex
+# silently never fired on "<X> virus". The intent is "virus" + optional "es" → ``virus(?:es)?``.
 _VIRUS_RE = re.compile(
-    r"\b([a-z][a-z0-9'-]*(?:\s+[a-z][a-z0-9'-]*){0,3})\s+viruses?\b",
+    r"\b([a-z][a-z0-9'-]*(?:\s+[a-z][a-z0-9'-]*){0,3})\s+virus(?:es)?\b",
     re.IGNORECASE,
 )
 
@@ -144,12 +147,16 @@ def resolve_species_terms(
         _add(species_name.strip().lower(), species_name.strip())
 
     text = query if isinstance(query, str) else ""
-    for match in _VIRUS_RE.finditer(text):
-        token = match.group(1).strip().lower()
-        # The matched phrase "<token> virus" is the canonical display name.
-        _add(token, f"{match.group(1).strip()} virus")
-
     lowered = text.lower()
+    # Match "<X> virus" phrases (now that the ``virus(?:es)?`` suffix is fixed — it
+    # previously parsed as "viruse"+"s?" and silently never matched singular "virus").
+    # Mostly superseded by the upstream BV-BRC taxonomy resolver, but a silent-never-match
+    # is exactly the smell we don't ship.
+    for match in _VIRUS_RE.finditer(lowered):
+        token = match.group(1).strip()
+        # The matched phrase "<token> virus" is the canonical display name.
+        _add(token, f"{token} virus")
+
     for token, name in _TOKEN_NAMES.items():
         if re.search(rf"\b{re.escape(token)}\b", lowered):
             _add(token, name)
