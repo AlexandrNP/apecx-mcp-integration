@@ -27,6 +27,17 @@ list. Summary:
 4. **Trigger payload wrapping (`{unit_name: payload}` envelope) is the
    framework's responsibility.** A step's `process()` sees the **raw payload**;
    if you wrap it again you ship a doubly-wrapped value downstream.
+5. **A `Workflow` instance owns MUTABLE data units — do not run one instance
+   concurrently from two callers.** `Workflow.run()` now serializes overlapping
+   runs on the SAME instance via a per-instance lock (`_get_run_lock`, 2026-06-14),
+   so a cached-per-process workflow (an MCP server fielding overlapping requests)
+   no longer silently returns one caller's result to another — but the cost is that
+   same-instance runs queue. For true parallelism, build a DISTINCT instance per
+   concurrent run (distinct instances keep distinct locks and run fully in parallel).
+   Deciding success from the run's `status` field would have missed this entirely:
+   every contaminated run reported `status: completed` (G127 — assert on output
+   VALUES). A SubworkflowStep in the cascade drives a different instance, so nesting
+   does not deadlock.
 
 After every workflow change, call `Workflow.wait_for_cascade(timeout, settle_ms)`
 synchronously after `process()` and assert the workflow-level outputs
