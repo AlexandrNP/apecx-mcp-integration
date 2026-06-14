@@ -544,7 +544,7 @@ integration test for "done").
   Remaining AC for kickoff: save a PDB + an EMDB record JSON fixture under
   `apecx-harvesters-work/tests/fixtures/globus/{pdb,emdb}/` (do it in that repo when A starts).
 
-- **E4-6 — External-DB title/field injection into the Sources section. (P3, low)** Publication
+- **E4-6 — External-DB title injection → Sources section. ✅ SHIPPED `73f3b61`. (P3)** Publication
   / genome / VIOLIN titles are interpolated raw into the deterministic Sources list (RAG
   snippets already collapse newlines; the others don't). A malformed external title with a
   newline + `##` could inject a stray header — but external DBs are curated (low probability)
