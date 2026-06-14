@@ -22,6 +22,17 @@ design — a token approved for one design request can never open a different on
 
 In-process + bounded (FIFO, like RunStore/HandleStore) — the long-lived MCP server must not
 leak. v1 is session-scoped (a durable backend is a documented swap-in, same as those stores).
+
+**Threat-model boundary (be honest about what this enforces):** this closes the
+"any non-blank string opens the gate" bypass — design output now requires an explicit
+request → approve → re-call with a scope-bound token. The STRENGTH of the approval then
+depends on WHO can call ``approve_design``: in the intended HUMAN-OPERATED MCP-client model
+(a scientist drives the client; the orchestrating LLM proposes, the human approves) it is a
+genuine human-in-the-loop gate. In a fully-AUTONOMOUS deployment where the LLM itself can
+call ``approve_design``, the LLM can self-approve — so the gate is advisory there, not
+enforcing. This is the SAME posture as the existing control-plane ``approve``/``reject``
+MCP tools (approval-as-an-MCP-tool); a human-only approval surface / auth is a cross-cutting
+follow-up for the whole approval system, not specific to design approvals.
 """
 
 from __future__ import annotations
