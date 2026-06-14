@@ -332,7 +332,16 @@ class MemoryStore:
             for p in spec_dir.glob("*.json"):
                 try:
                     entry = self._load(p)
-                except Exception:
+                except Exception as exc:
+                    # Skip a corrupt/unreadable memory file but degrade-LOUD: a silently
+                    # dropped entry means the reasoning agent quietly forgets a lesson and
+                    # nobody knows it was a corruption rather than a genuine absence.
+                    log.warning(
+                        "MemoryStore: skipping unreadable entry %s (%s: %s)",
+                        p,
+                        type(exc).__name__,
+                        exc,
+                    )
                     continue
                 jacc = self._keyword_jaccard(tuple(target), entry.spec_keywords)
                 if jacc > 0:
@@ -351,7 +360,13 @@ class MemoryStore:
             for p in spec_dir.glob("*.json"):
                 try:
                     out.append(self._load(p))
-                except Exception:
+                except Exception as exc:
+                    log.warning(
+                        "MemoryStore.all_entries: skipping unreadable entry %s (%s: %s)",
+                        p,
+                        type(exc).__name__,
+                        exc,
+                    )
                     continue
         return out
 
