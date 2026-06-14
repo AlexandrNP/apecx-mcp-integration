@@ -116,6 +116,19 @@ jobs:
         # If Argonne is down, this job fails — that's the intended signal.
         run: |
           set -euo pipefail
+          # The package is installed as a uv TOOL (isolated venv): its console
+          # scripts are on PATH, but the LIBRARY is NOT importable by the runner's
+          # bare `python` (that gave `ModuleNotFoundError: apecx_integration`).
+          # Resolve the tool venv's OWN python from the apecx-mcp entry-point
+          # shebang (fallback: `uv tool dir` glob) and use it for the assertion,
+          # so `import apecx_integration` resolves while `env -i` still proves no
+          # leaked Globus/APECX state.
+          TOOL_PY="$(head -1 "$(command -v apecx-mcp)" | sed 's|^#!||' | awk '{print $1}')"
+          if [ ! -x "$TOOL_PY" ]; then
+            TOOL_PY="$(ls "$(uv tool dir)"/*/bin/python 2>/dev/null | head -1)"
+          fi
+          test -x "$TOOL_PY" || { echo "FAIL: could not resolve the uv-tool venv python (got '$TOOL_PY')"; exit 1; }
+          echo "using tool python: $TOOL_PY"
           # `env -i` strips every inherited env var so we can prove no leaked
           # Globus / APECX setting is making the download possible.
           CLEAN_HOME="$(mktemp -d)"
@@ -123,7 +136,7 @@ jobs:
             HOME="$CLEAN_HOME" \
             PATH="$PATH" \
             APECX_DICT_OUTPUT_DIR="$CLEAN_HOME/.apecx/dictionary" \
-            python -c "
+            "$TOOL_PY" -c "
           import logging, os, sys
           logging.basicConfig(level=logging.INFO, format='%(levelname)s %(name)s: %(message)s')
 
