@@ -456,12 +456,15 @@ the mock-ctx emit path, the headless passthrough, and server registration.
   deterministic answer) → a desktop re-query of the exact same params streams NOTHING then
   returns the cached doc. Correct behavior; only the UX (no progress shown on an instant
   cached answer) is slightly surprising. See task **E4-7**.
-- **B-2 (test quality):** under random test ordering (`pytest-randomly`),
-  `test_eo_primitives.py` + `test_mcp_stream_client.py` run together can raise
-  `TypeError: _test_catalog_for.<locals>._loader() takes 0 positional arguments but 1 was
-  given` — a cross-file test-isolation leak (the process-wide `_workflow_cache` / a catalog
-  loader fixture). The full 1644-suite passes (order-dependent), so it is latent, not a
-  product bug. See task **E4-4**.
+- **B-2 (test quality, NOT reproducible — corrected 2026-06-14):** `test_eo_primitives.py` +
+  `test_mcp_stream_client.py` run together raised, ONCE, `TypeError:
+  _test_catalog_for.<locals>._loader() takes 0 positional arguments but 1 was given` (during a
+  `DataUnitChangeTrigger` cascade). On investigation it does NOT reproduce: `pytest-randomly`
+  is not installed (so it is not an ordering effect), and ≥4 repeated combined runs in both
+  file orders all pass (24/24). Most plausible cause: a rarely-triggered leaked async task from
+  a streaming test (`run_workflow_streaming`'s consumer / a G37 subscriber) still alive into the
+  next test, invoking that test's monkeypatched `load_catalog` (= the 0-arg `_loader`) with an
+  argument. NOT actionable without a captured repro — see **E4-4** (downgraded).
 
 ## C. New + leftover tasks (E4-*) — "anything else that warrants improvement"
 
@@ -505,13 +508,14 @@ integration test for "done").
   does, functional validation now returns residue-level annotation; provenance records both the
   relevance margin and the xref-preference decision. CC-1: the annotation is real + non-empty.
 
-- **E4-4 — Test-isolation flake under random ordering (B-2). (P3, test quality)**
-  `_test_catalog_for._loader` (0-arg) is invoked with 1 arg under some `pytest-randomly`
-  orderings when `test_eo_primitives` + `test_mcp_stream_client` share the process-wide
-  `_workflow_cache`. **Proposed:** an autouse fixture that calls `_clear_workflow_cache()` (+
-  any catalog-loader reset) around these tests; OR make the test catalog loader signature
-  match the framework's call. **AC:** the two files run together under forced random seeds stay
-  green across ≥20 seeds. (Note: distinct from E3-10's already-fixed SearchClient leak.)
+- **E4-4 — DOWNGRADED: one-off, non-reproducible `_loader` TypeError (B-2). (P3, parked)**
+  Investigated 2026-06-14: does NOT reproduce (pytest-randomly absent; ≥4 combined runs both
+  orders all pass 24/24). Per the workspace rule "don't add a rule / fix after a single
+  occurrence you can't reproduce", this is PARKED, not fixed — fixing blind risks masking the
+  real (likely async-task-leak) cause. **Trigger to revisit:** if it recurs, capture the FULL
+  traceback + the pytest invocation; the prime suspect is a leaked `run_workflow_streaming`
+  consumer / G37 subscriber task surviving into the next test. A defensive `_clear_workflow_cache()`
+  autouse fixture around the streaming tests is the likely fix IF a repro is captured.
 
 - **E4-5 — PDB/EMDB as first-class harmonized sources (Track A–C of the action plan). (P1,
   but EXTERNALLY GATED)** Make PDB & EMDB canonical-IRI-matchable harmonized indices (today
@@ -547,11 +551,11 @@ integration test for "done").
   rendering (legitimate). No further action unless a new live-path silent swallow is found.
 
 ### Suggested order for the new work (when authorized)
-1. **E4-4** (test flake) — cheap, removes CI noise, no design decision.
-2. **E4-1a** (HITL durable backend) — P1 security, self-contained (mirrors existing store
+1. **E4-1a** (HITL durable backend) — P1 security, self-contained (mirrors existing store
    seams). E4-1b (auth) waits on the cross-cutting auth-model decision.
-3. **E4-5 Phase-0 probe** — un-gated, read-only; sizes the PDB/EMDB track (the rest waits on
+2. **E4-5 Phase-0 probe** — un-gated, read-only; sizes the PDB/EMDB track (the rest waits on
    ops X1).
+   (E4-4 parked — not reproducible; no work until a repro is captured.)
 4. **E4-3** (structure xref preference) — P2, needs the relevance-margin design.
 5. **E4-6 / E4-7 / E4-2** — P2/P3, do opportunistically or on explicit request; E4-2 only if
    throughput is measured to matter.
