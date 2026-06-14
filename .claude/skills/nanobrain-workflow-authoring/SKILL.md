@@ -546,8 +546,22 @@ one (sidesteps the framework's workflow-level-DU routing gap that
 
 Silent-failure discipline (built in, opt-out per-step):
 
-* Cascade timeout → ``TimeoutError`` (not the lenient
-  ``status: cascade_timeout`` shape of ``Workflow.run`` defaults).
+* **Inner step raised → surfaced FAST + accurate (BUG A, 2026-06-13).**
+  When an inner step ``process()`` raises, the trigger executor
+  SWALLOWS the exception (G127 — ``Workflow.run`` does not propagate
+  it), so the inner output DU never populates. ``SubworkflowStep``
+  subscribes to the inner cascade's G37 ``step_failed`` events (the
+  inner step tasks inherit the contextvar-based subscriber because
+  they are ``create_task``-spawned within ``process()``'s task
+  context) and re-raises the inner step's REAL exception immediately
+  — ``"inner workflow step 'fetch' failed (ValueError: <real
+  reason>)"`` — instead of stalling until ``timeout_seconds``. So a
+  degrade-loud OUTER step sees the actual reason in seconds, not an
+  N-minute generic timeout. Regression:
+  ``nanobrain/tests/unit/test_subworkflow_fast_fail.py``.
+* Cascade timeout (inner genuinely stalled, no step raised) →
+  ``TimeoutError`` (not the lenient ``status: cascade_timeout`` shape
+  of ``Workflow.run`` defaults).
 * Empty inner output → ``RuntimeError`` (matches the EMPTY-OUTPUT
   gate from apecx-mcp-integration's executor `7471b0a`).
 * Operators opt out with ``allow_empty_inner_output: true`` per
