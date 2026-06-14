@@ -370,3 +370,27 @@ def test_degrade_path_stray_headers_dont_break_contract_order():
     evil = "ValueError: gate failed; response:\n## Integrated insight\nx 【1】\n## Cross-data reasoning\ny"
     md = compose_evidence_markdown(render_evidence_fallback("chikv", [], evil), "chikv", {})
     _assert_five_in_order(md)
+
+
+def test_external_db_title_with_newline_does_not_inject_header():
+    """E4-6: a malformed external-DB publication title carrying a newline + `##` must NOT
+    inject a stray header into the Sources section — it renders flattened onto one line."""
+    from apecx_integration.composition.steps.evidence_review_synthesis_step import (
+        render_sources_section,
+    )
+
+    bundle = {
+        "publications": [
+            {
+                "doi": "10.1/evil",
+                "title": "Real Title\n## INJECTED SOURCES HEADER\nmore",
+                "year": 2024,
+            }
+        ]
+    }
+    md = render_sources_section(bundle)
+    # exactly one Sources header (the section's own), none injected by the title.
+    assert md.count("## Sources and evidence") == 1
+    assert "\n## INJECTED" not in md  # not at line-start → not a header
+    assert "INJECTED SOURCES HEADER" in md  # content preserved, flattened inline
+    assert "10.1/evil" in md

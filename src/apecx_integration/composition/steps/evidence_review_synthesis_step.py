@@ -73,6 +73,16 @@ def _sanitize_inline(text: Any, cap: int = 300) -> str:
     return " ".join(str(text if text is not None else "").replace("#", "").split())[:cap]
 
 
+def _collapse_ws(text: Any) -> str:
+    """LIGHT inline-safety for EXTERNAL-DB display strings (publication / genome / VIOLIN /
+    structure titles): collapse all whitespace incl. NEWLINES to single spaces — nothing can
+    start a new line, so a malformed title carrying ``\\n## ...`` cannot inject a stray header
+    into the Sources/Structural section. Unlike ``_sanitize_inline`` it does NOT strip ``#``
+    (harmless mid-line) and does NOT length-cap — a curated title must render in full, just on
+    one line. (E4-6.)"""
+    return " ".join(str(text if text is not None else "").split())
+
+
 def render_evidence_fallback(
     query: str, publications: list[dict[str, Any]] | None, reason: str
 ) -> str:
@@ -211,7 +221,7 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
         if p.get("journal") or p.get("publisher"):
             meta.append(str(p.get("journal") or p.get("publisher")))
         desc = " · ".join(meta) if meta else "publication"
-        entries.append(f"- **[{doi}]** *{title}* — {desc}")
+        entries.append(_collapse_ws(f"- **[{doi}]** *{title}* — {desc}"))
 
     for g in bundle.get("bvbrc_genomes") or []:
         if not isinstance(g, dict):
@@ -222,7 +232,7 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
         name = g.get("genome_name") or g.get("name") or "(unnamed genome)"
         host = g.get("host_name") or g.get("host") or ""
         desc = f"host: {host}" if host else "BV-BRC genome"
-        entries.append(f"- **[BV-BRC genome {gid}]** *{name}* — {desc}")
+        entries.append(_collapse_ws(f"- **[BV-BRC genome {gid}]** *{name}* — {desc}"))
 
     for m in bundle.get("violin_mappings") or []:
         if not isinstance(m, dict):
@@ -233,7 +243,7 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
         canon = m.get("canonical_term") or m.get("canonical") or "(unmapped)"
         q = m.get("query_term") or m.get("query") or ""
         desc = f"`{q}` → `{canon}`" if q else f"canonical `{canon}`"
-        entries.append(f"- **[VIOLIN {sid}]** *{canon}* — {desc}")
+        entries.append(_collapse_ws(f"- **[VIOLIN {sid}]** *{canon}* — {desc}"))
 
     # RAG chunks numbered #1..#N over the chunks that carry text, matching the
     # synthesizer's own numbering (it enumerates the surviving, text-bearing list).
@@ -247,7 +257,7 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
         n_rag += 1
         src = c.get("source") or c.get("id") or "RAG corpus"
         snippet = text[:80].replace("\n", " ")
-        entries.append(f"- **[RAG chunk #{n_rag}]** *{src}* — {snippet}…")
+        entries.append(_collapse_ws(f"- **[RAG chunk #{n_rag}]** *{src}* — {snippet}…"))
 
     for h in bundle.get("globus_results") or []:
         if not isinstance(h, dict):
@@ -266,7 +276,7 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
             desc = ", ".join(subjects[:4])
         else:
             desc = "harvested-corpus record"
-        entries.append(f"- **[Globus {subject}]** *{title}* — {desc}")
+        entries.append(_collapse_ws(f"- **[Globus {subject}]** *{title}* — {desc}"))
 
     if not entries:
         lines.append("_No retrieved records carried a citable identifier for this query._")
