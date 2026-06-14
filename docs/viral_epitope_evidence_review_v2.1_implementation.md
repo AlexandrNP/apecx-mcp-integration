@@ -523,12 +523,26 @@ integration test for "done").
   but EXTERNALLY GATED)** Make PDB & EMDB canonical-IRI-matchable harmonized indices (today
   the evidence workflow's structural leg uses a freetext Globus search, which works but is not
   harmonized). **Blocked on an OPS action (X1): two new Globus Search DEST indices must be
-  created with index-admin privileges — not code.** Phase-0 read-only probe of aggregate index
-  `e74bf12a` is the un-gated first step and sizes the rest (A/B/C scope branch). See
+  created with index-admin privileges — not code.** See
   `viral_epitope_evidence_workflow_action_plan.md` Tracks A–C + the worktree plan
-  `~/.claude/plans/okay-which-worktree-has-enumerated-marshmallow.md`. **AC (Phase 0):** a saved
-  real PDB + EMDB record fixture from a Globus index with the PDB/EMDB discriminator field
-  named (or its absence proven). **Do not start A–C code until X1 + Phase-0 = A or B, recorded.**
+  `~/.claude/plans/okay-which-worktree-has-enumerated-marshmallow.md`.
+
+  **✅ Phase-0 DONE (2026-06-14, read-only probe of `e74bf12a`) → SCOPE A (smallest):** both
+  sources are present in the aggregate index AND cleanly discriminable. Counts + discriminators:
+  | Source | `publisher.name` | `subject` prefix | `alternateIdentifierType` | count |
+  |---|---|---|---|---|
+  | PDB | `RCSB PDB` | `pdb:` (e.g. `pdb:3M70`) | `PDB` | 27,407 |
+  | EMDB | `Electron Microscopy Data Bank` | `emdb:EMD-` (e.g. `emdb:EMD-41076`) | `EMDB` | 8,360 |
+  Records are DataCite-shaped (top keys: identifier/formats/creators/subjects/relatedItems/
+  titles). **Gotcha for the harmonizer: the EMDB publisher string is `"Electron Microscopy
+  Data Bank"`, NOT `"EMDB"`** (a `publisher.name=EMDB` filter returns 0). The aggregate index
+  is virology-corpus-heavy (top publishers: J. Virology, PLoS One, RCSB PDB, Virology…).
+  **Consequence: Track A–C may proceed AS WRITTEN once X1 lands** — each of PDB/EMDB gets its
+  own distinct DEST index + `subjects.valueUri`, separated by `publisher.name` (exact strings
+  above) or the `subject` namespace prefix. No ingest-side discriminator work needed (that was
+  the scope-B/C escalation, now ruled out). **Still blocked on X1 (the two DEST indices).**
+  Remaining AC for kickoff: save a PDB + an EMDB record JSON fixture under
+  `apecx-harvesters-work/tests/fixtures/globus/{pdb,emdb}/` (do it in that repo when A starts).
 
 - **E4-6 — External-DB title/field injection into the Sources section. (P3, low)** Publication
   / genome / VIOLIN titles are interpolated raw into the deterministic Sources list (RAG
