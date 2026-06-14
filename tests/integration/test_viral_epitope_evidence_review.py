@@ -419,6 +419,19 @@ def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
     """
     from apecx_integration.composition.steps._stage_report import render_stage_reports
     from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow_streamed
+    from apecx_integration.mcp_surface.workflow_registry import _clear_workflow_cache
+
+    # Order-independence (2026-06-14): this test asserts stages STREAM, which requires the
+    # workflow to actually re-execute its steps so each emits a G37 step_complete event. A
+    # DataUnitChangeTrigger deterministically SKIPS re-execution when the input is
+    # byte-identical to the immediately-preceding run on the SAME cached instance (the G117
+    # "identical re-run does not re-fire" design — the prior output is already the correct
+    # deterministic answer, but no new step events fire, so nothing streams). If a prior test
+    # in this module ran these exact CHIKV params, the module-cached workflow would correctly
+    # skip and this test would see arrival==[]. Clear the cache so this test always runs on a
+    # FRESH instance and the cascade re-executes. (Not a product bug — the identical-re-run
+    # skip returns the valid prior document; this is purely test isolation.)
+    _clear_workflow_cache()
 
     streamed: list[dict] = []
 
