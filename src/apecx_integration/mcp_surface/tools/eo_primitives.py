@@ -313,12 +313,12 @@ async def run_workflow_streaming(
                 report.get("stage"),
             )
 
-    async def _consume() -> None:
+    async def _consume() -> int:
         n = 0
         while True:
             item = await queue.get()
             if item is sentinel:
-                return
+                return n
             report: StageReport = item  # type: ignore[assignment]
             n += 1
             try:
@@ -337,13 +337,35 @@ async def run_workflow_streaming(
                 )
 
     consumer = asyncio.create_task(_consume())
+    n_streamed = 0
     try:
         result = await run_workflow_streamed(name, params, on_stage=_on_stage)
     finally:
         # Signal end-of-stream and DRAIN: guarantees every stage notification is sent
         # before the tool result is returned to the client (no lost final stage).
         loop.call_soon_threadsafe(queue.put_nowait, sentinel)
-        await consumer
+        n_streamed = await consumer
+
+    # E4-7: a desktop re-query with byte-IDENTICAL inputs deterministic-SKIPS re-execution
+    # (DataUnitChangeTrigger sees no change), so ZERO stages stream — the pane would otherwise
+    # sit blank until the (correct, cached) result appears. Emit ONE notification so the
+    # desktop knows the answer was served from cache rather than silently hung. Gated on a
+    # successful result so a genuine no-work outcome (needs_input/error) doesn't mislabel.
+    if n_streamed == 0 and isinstance(result, dict) and result.get("status") == "ok":
+        try:
+            await ctx.session.send_log_message(
+                level="info",
+                data={
+                    "event": "served_from_cache",
+                    "message": (
+                        "Result served from cache — identical inputs, no re-computation, "
+                        "so no reasoning stages were streamed."
+                    ),
+                },
+                logger="apecx.eo.streaming",
+            )
+        except Exception:  # noqa: BLE001 — observability must never break the run
+            log.exception("run_workflow_streaming: failed to emit served_from_cache notification.")
     return result
 
 

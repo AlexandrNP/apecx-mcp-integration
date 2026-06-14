@@ -523,6 +523,43 @@ def test_run_workflow_streaming_emits_progress_and_log_per_stage(monkeypatch):
     assert ctx.session.logs[0]["data"]["markdown"] == "data_readiness-md"
 
 
+def test_run_workflow_streaming_zero_stages_emits_served_from_cache(monkeypatch):
+    """E4-7: an identical cached re-query deterministic-SKIPS execution → zero stages stream.
+    The desktop must get ONE 'served_from_cache' notification so the pane isn't silently blank."""
+
+    async def _fake_streamed(name, params, on_stage):
+        return {
+            "status": "ok",
+            "markdown": "cached doc",
+            "run_id": "r9",
+            "error": None,
+        }  # no on_stage calls
+
+    monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
+    ctx = _FakeContext()
+    out = asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, ctx))
+
+    assert out["status"] == "ok" and out["markdown"] == "cached doc"
+    assert ctx.progress == []  # no per-stage progress (nothing executed)
+    events = [lg["data"]["event"] for lg in ctx.session.logs]
+    assert events == ["served_from_cache"]  # exactly one, and only this
+
+
+def test_run_workflow_streaming_with_stages_emits_no_cache_notification(monkeypatch):
+    """When stages DO stream, the served_from_cache notification must NOT fire."""
+    rep = _rep("data_readiness", 0)
+    rep.update(step_name="s", run_id="r1")
+
+    async def _fake_streamed(name, params, on_stage):
+        on_stage(rep)
+        return {"status": "ok", "markdown": "fresh doc", "run_id": "r1", "error": None}
+
+    monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
+    ctx = _FakeContext()
+    asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, ctx))
+    assert "served_from_cache" not in [lg["data"]["event"] for lg in ctx.session.logs]
+
+
 def test_run_workflow_streaming_without_ctx_runs_unchanged(monkeypatch):
     """No client context (ctx=None) → no notifications, identical envelope (headless path)."""
 
