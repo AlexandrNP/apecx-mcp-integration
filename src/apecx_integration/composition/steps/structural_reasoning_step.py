@@ -29,8 +29,12 @@ ADDITIONAL. Per the per-structure analysis, each loaded structure
    (``{pdb}-assembly1.cif``); only when NEITHER exists does it fall back to the
    asymmetric unit (named degrade), so accessibility is judged on the oligomer an
    antibody actually meets,
-2. maps each conserved region's consensus motif onto the structure's chain residues
-   (ungapped sliding-window identity — see ``_pymol_sasa.map_motif_to_chain``),
+2. selects the chain whose conserved motifs map with the BEST identity (R3 chain-pinning
+   — different deposits label the same biological protein differently, e.g. one PDB's E1
+   is chain F and another's is chain B, so pinning the same conserved region across
+   structures raises corroboration coverage) and maps each conserved region's consensus
+   motif onto that chain's residues (ungapped sliding-window identity — see
+   ``_pymol_sasa.map_motif_to_chain``),
 3. computes PER-RESIDUE SASA with PINNED settings (``dot_solvent=1``,
    ``dot_density=3``) and classifies each conserved residue EXPOSED vs BURIED
    (relative-SASA cutoff — epitopes are solvent-exposed, so the exposed conserved

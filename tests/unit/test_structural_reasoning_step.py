@@ -94,6 +94,90 @@ def test_map_motif_lowest_offset_tiebreak():
     assert [r["resi"] for r in m["residues"]] == [1, 2]
 
 
+# -------------------------------------------------------- R3: chain-pinning (best-chain)
+
+_MOTIF_REGION = {"start": 33, "end": 46, "consensus": "MVLEMELLSVTLEP"}
+
+
+def _chain_seq(seq: str, start: int = 1):
+    """(resis, seq) for a chain — a data shape, not a mock (the real chain sequences come
+    from PyMOL ``cmd.get_model`` in the integration run)."""
+    return list(range(start, start + len(seq))), seq
+
+
+def test_map_regions_on_chain_maps_dedups_and_notes_absent():
+    resis, seq = _chain_seq("AAAMVLEMELLSVTLEPGGG", start=10)  # motif at offset 3 -> resi 13..26
+    regions = [dict(_MOTIF_REGION), {"start": 200, "end": 211, "consensus": "WWWWWWWWWWWW"}]
+    mapped, mapped_resis, notes = sasa.map_regions_on_chain(
+        resis, seq, regions, min_identity=0.7, chain="F", pdb_id="3N40"
+    )
+    assert len(mapped) == 1
+    assert mapped_resis == list(range(13, 27))
+    assert mapped[0]["map_identity"] == 1.0
+    # the absent (all-W) region is reported LOUD, naming the chain + pdb.
+    assert any("WWWW" in n and "chain F of 3N40" in n for n in notes)
+
+
+def test_select_best_chain_picks_mapping_chain_over_nonmapping():
+    """R3 / the real 6JO8 case: the E1 motif maps onto chain B (E1) but NOT chain A (a
+    different protein — 6JO8's auto-picked 'Togavirin') → best-chain selects B, not first."""
+    a_resis, a_seq = _chain_seq("QWERTYQWERTYQWERTYQW")  # no motif
+    b_resis, b_seq = _chain_seq("AAAMVLEMELLSVTLEPGGG", start=100)  # motif -> resi 103..116
+    winner = sasa.select_best_chain(
+        [("A", a_resis, a_seq), ("B", b_resis, b_seq)],
+        [dict(_MOTIF_REGION)],
+        min_identity=0.7,
+        pdb_id="6JO8",
+    )
+    assert winner["chain"] == "B"
+    assert len(winner["mapped_regions"]) == 1
+    assert winner["mapped_resis"] == list(range(103, 117))
+    assert winner["notes"] == []  # B maps -> no unmapped-region note on the winner
+
+
+def test_select_best_chain_tiebreak_prefers_first_candidate():
+    """Back-compat: when the motif maps equally well on >1 chain, the FIRST candidate wins
+    (deterministic) — preserves the previous 'first protein chain' pick (e.g. 2XFB chain A)."""
+    a_resis, a_seq = _chain_seq("AAAMVLEMELLSVTLEPGGG", start=1)
+    b_resis, b_seq = _chain_seq("AAAMVLEMELLSVTLEPGGG", start=200)
+    winner = sasa.select_best_chain(
+        [("A", a_resis, a_seq), ("B", b_resis, b_seq)], [dict(_MOTIF_REGION)], min_identity=0.7
+    )
+    assert winner["chain"] == "A"
+
+
+def test_select_best_chain_higher_identity_beats_earlier_chain():
+    """A later chain that maps at HIGHER identity beats an earlier lower-identity chain."""
+    a_resis, a_seq = _chain_seq("AAAMVLAMELLSVTLEPGGG", start=1)  # one mismatch -> 13/14
+    b_resis, b_seq = _chain_seq("AAAMVLEMELLSVTLEPGGG", start=50)  # exact
+    winner = sasa.select_best_chain(
+        [("A", a_resis, a_seq), ("B", b_resis, b_seq)], [dict(_MOTIF_REGION)], min_identity=0.7
+    )
+    assert winner["chain"] == "B"
+    assert winner["mapped_regions"][0]["map_identity"] == 1.0
+
+
+def test_select_best_chain_no_false_match_when_absent_everywhere():
+    """When the conserved protein is genuinely NOT in the structure (no chain maps), the
+    FIRST chain is returned with EMPTY mapped_regions + a loud note — never a false match."""
+    a_resis, a_seq = _chain_seq("QWERTYQWERTYQWERTYQW")
+    b_resis, b_seq = _chain_seq("KLKLKLKLKLKLKLKLKLKL")
+    winner = sasa.select_best_chain(
+        [("A", a_resis, a_seq), ("B", b_resis, b_seq)],
+        [dict(_MOTIF_REGION)],
+        min_identity=0.7,
+        pdb_id="9XXX",
+    )
+    assert winner["chain"] == "A"  # falls back to the first concrete chain
+    assert winner["mapped_regions"] == []
+    assert winner["mapped_resis"] == []
+    assert any("did not map" in n for n in winner["notes"])
+
+
+def test_select_best_chain_empty_returns_none():
+    assert sasa.select_best_chain([], [dict(_MOTIF_REGION)]) is None
+
+
 def test_classify_sasa_exposed_buried_unknown():
     # GLU max-ASA 223 Å²; 81.6/223 = 0.366 -> exposed (>= 0.25).
     exposed = sasa.classify_sasa("GLU", 81.623, rsa_threshold=0.25)

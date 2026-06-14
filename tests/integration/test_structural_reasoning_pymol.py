@@ -425,3 +425,126 @@ def test_multi_structure_corroboration_on_real_chikv(capsys):
                 f"corroborated={r['corroborated']}"
             )
         print(f"n_corroborated={sr['n_corroborated']}")
+
+
+# --------------------------------------------- R3: chain-pinning for multi-structure corroboration
+# 6JO8 = "CHIKV envelope glycoprotein bound to human MXRA8". Its biological assembly carries
+# protein chains A (entity 'Togavirin' — the auto-picked FIRST chain), B (CHIKV E1) and O
+# (the MXRA8 receptor). The default-chain-only behaviour auto-picks A, so the E1 conserved
+# region does NOT map and 6JO8 does NOT corroborate. R3 chain-pinning maps the SAME E1 region
+# onto chain B (E1), so 6JO8 corroborates — raising coverage. (The conserved protein IS
+# genuinely present in 6JO8, just under a different chain letter; chain-pinning finds it.)
+_6JO8_RECORD = {"subject": "pdb:6JO8", "structural_source": "pdb"}
+_R3_E1_REGION = {"start": 33, "end": 46, "length": 14, "consensus": "MVLEMELLSVTLEP"}
+
+
+@_GATE
+def test_chain_pinning_selects_e1_chain_not_autopick_on_6jo8(capsys):
+    """R3 before/after on ONE real structure: the auto-picked first chain (A, 'Togavirin')
+    MISSES the E1 conserved region; chain-pinning analyses chain B (E1) where it maps."""
+    _require_rcsb("6JO8")
+    from apecx_integration.composition.steps.structural_reasoning_step import _fetch_structure
+
+    step = _step()
+    regions = [dict(_R3_E1_REGION)]
+    path, kind = _fetch_structure("6JO8")
+
+    # BEFORE (default-chain-only): pin the auto-picked first protein chain A -> E1 absent.
+    before = asyncio.run(step._run_pymol_on_file("6JO8", path, kind, regions, requested_chain="A"))
+    # AFTER (R3 chain-pinning): no pin -> the job selects the best motif-mapping chain.
+    after = asyncio.run(step._run_pymol_on_file("6JO8", path, kind, regions))
+
+    assert before["ok"] and after["ok"], (before.get("note"), after.get("note"))
+    # BEFORE: chain A is analysed but the E1 region maps onto NOTHING (loud note).
+    assert before["chain"] == "A"
+    assert before["n_mapped_regions"] == 0
+    assert before["n_mapped_residues"] == 0
+    # AFTER: chain-pinning analyses the E1 chain (B) where the region maps at full identity.
+    assert after["chain"] == "B", after["chain"]
+    assert after["chain_selected_by"] == "best_motif_identity"
+    assert after["n_candidate_chains"] >= 2
+    assert after["n_mapped_regions"] == 1
+    assert after["n_mapped_residues"] == 14
+    assert after["n_exposed"] >= 1  # CC-1: a non-empty candidate-epitope set on the E1 chain
+
+    with capsys.disabled():
+        print("\n=== R3 chain-pinning before/after on 6JO8 (CHIKV E1 + MXRA8 complex) ===")
+        print(
+            f"  BEFORE (auto-pick first chain): chain={before['chain']} "
+            f"mapped_regions={before['n_mapped_regions']} mapped_residues={before['n_mapped_residues']} "
+            f"-> E1 conserved region MISSED, 6JO8 would NOT corroborate"
+        )
+        print(
+            f"  AFTER  (best-chain pinning):    chain={after['chain']} "
+            f"(of {after['n_candidate_chains']} candidate chains) "
+            f"mapped_regions={after['n_mapped_regions']} mapped_residues={after['n_mapped_residues']} "
+            f"exposed={after['n_exposed']} -> E1 region mapped on the E1 chain, 6JO8 corroborates"
+        )
+
+
+_R3_CORPUS = [
+    {"subject": "pdb:3N40", "structural_source": "pdb"},  # E1 = chain F (auto-pick OK)
+    {"subject": "pdb:6NK7", "structural_source": "pdb"},  # E1 = chain A (auto-pick OK)
+    {"subject": "pdb:6JO8", "structural_source": "pdb"},  # E1 = chain B (auto-pick A MISSES)
+]
+
+
+@_GATE
+def test_chain_pinning_raises_corroboration_on_real_chikv(capsys):
+    """R3 end-to-end: with chain-pinning, the E1 conserved region maps onto the E1 chain of
+    ALL THREE structures (3N40/F, 6NK7/A, 6JO8/B) — including 6JO8, whose auto-picked chain A
+    would have missed it — so 6JO8 now contributes to cross-structure corroboration."""
+    for pid in ("3N40", "6NK7", "6JO8"):
+        _require_rcsb(pid)
+    import tempfile
+    from pathlib import Path
+
+    from apecx_integration.composition.steps.structural_reasoning_step import (
+        StructuralReasoningStep,
+    )
+
+    cfg = Path(tempfile.mkdtemp(prefix="apecx_pymol_cfg_")) / "reasoning_r3.yml"
+    cfg.write_text(
+        "name: reasoning_r3\nrsa_threshold: 0.25\nmin_map_identity: 0.7\nmax_structures: 3\n"
+    )
+    step = StructuralReasoningStep.from_config(str(cfg))
+    bundle = {
+        "query": "chikungunya E1 glycoprotein conserved epitopes",
+        "protein": "envelope glycoprotein E1 E2",
+        "conserved_regions": [dict(_R3_E1_REGION)],
+        "structural_records": [dict(r) for r in _R3_CORPUS],
+    }
+    out = asyncio.run(step.process(bundle))
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True, sr.get("note")
+
+    by_pdb = {s["pdb_id"]: s for s in sr["analyzed_structures"]}
+    assert "6JO8" in by_pdb, by_pdb
+    j = by_pdb["6JO8"]
+    # Chain-pinning analysed 6JO8 on the E1 chain B (NOT the auto-picked Togavirin chain A).
+    assert j["available"] is True, j
+    assert j["chain"] == "B", j
+    assert j["n_mapped_residues"] == 14
+
+    # 6JO8 genuinely contributes: >=1 corroboration position is exposed in 6JO8 AND in >=1
+    # other structure (so chain-pinning RAISED corroboration coverage, not a self-count).
+    contributing = [
+        c for c in sr["corroboration"] if "6JO8" in c["exposed_pdb_ids"] and c["exposed_in_k"] >= 2
+    ]
+    assert contributing, sr["corroboration"]
+
+    with capsys.disabled():
+        print("\n=== R3 chain-pinning raises corroboration (real CHIKV 3N40/6NK7/6JO8) ===")
+        print("analyzed structures (chain chosen by motif-identity pinning):")
+        for s in sr["analyzed_structures"]:
+            print(
+                f"  {s['pdb_id']:6s} chain={s.get('chain')} mapped={s.get('n_mapped_residues')} "
+                f"exposed={s.get('n_exposed')}"
+            )
+        print("corroboration positions 6JO8 contributes to (exposed in 6JO8 + >=1 other):")
+        for c in contributing:
+            print(
+                f"  motif_idx={c['motif_index']} aa={c['consensus_aa']}: exposed in "
+                f"{c['exposed_in_k']}/{c['analyzed_n']} {c['exposed_pdb_ids']} "
+                f"resi_by_pdb={c['resi_by_pdb']}"
+            )

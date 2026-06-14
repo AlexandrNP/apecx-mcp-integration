@@ -11,8 +11,10 @@ BIOLOGICAL ASSEMBLY (``.pdb1``, the functional oligomer), the symmetry-mate copi
 which RCSB encodes as PDB ``MODEL`` records / PyMOL STATES — are co-located into one
 single-state object (``_assembly_context``) so per-residue SASA is occluded by the
 WHOLE oligomer, not just the deposited asymmetric unit: an interface residue that
-reads solvent-exposed on the AU is correctly buried in the assembly. It then maps each
-conserved region's consensus motif onto the original copy's chain residues, computes
+reads solvent-exposed on the AU is correctly buried in the assembly. It then SELECTS
+the chain whose conserved motifs map with the best identity (R3 chain-pinning — so the
+SAME conserved region is analysed across structures regardless of each PDB's chain
+labelling), maps each conserved region's consensus motif onto that chain's residues, computes
 PER-RESIDUE SASA with PINNED settings (``dot_solvent=1``, ``dot_density=3``) via a
 single ``cmd.get_area(..., load_b=1)`` pass in the assembly context, classifies each
 conserved residue EXPOSED vs BURIED (relative-SASA cutoff), and computes a CA–CA
@@ -92,14 +94,47 @@ def _assembly_context(cmd, raw_obj: str, work_obj: str, cutoff: float) -> tuple[
     return f"{work_obj} and segi C0", len(copies)
 
 
-def _pick_chain(cmd, base_sel: str, requested: str | None) -> str | None:
+def _protein_chains(cmd, base_sel: str, requested: str | None) -> list:
+    """Candidate chains to analyse. With ``requested`` set, ONLY that chain (an explicit
+    pin); else every chain carrying protein CA atoms, in the structure's chain order."""
     chains = cmd.get_chains(base_sel) or []
     if requested:
-        return requested if requested in chains else None
-    for ch in chains:
-        if cmd.count_atoms(f"({base_sel}) and chain {ch} and name CA and polymer.protein") > 0:
-            return ch
-    return None
+        return [requested] if requested in chains else []
+    return [
+        ch
+        for ch in chains
+        if cmd.count_atoms(f"({base_sel}) and chain {ch} and name CA and polymer.protein") > 0
+    ]
+
+
+def _select_best_chain(
+    cmd, base_sel: str, candidates: list, conserved_regions: list, min_identity, pdb_id
+):
+    """R3 (chain-pinning): analyse the chain whose conserved motifs map with the BEST identity.
+
+    Gathers each candidate chain's CA sequence (via PyMOL) and delegates the SELECTION
+    arithmetic to the host-tested ``sasa.select_best_chain`` (so the unit test exercises the
+    exact code path). Returns ``(chain, (resis, resns, chain_seq, ca_xyz), mapped_regions,
+    mapped_resis, notes)`` for the winner, or ``None`` when there is no protein chain."""
+    chain_cache: dict = {}
+    per_chain: list = []
+    for ch in candidates:
+        resis, resns, chain_seq, ca_xyz = _chain_sequence(cmd, base_sel, ch)
+        chain_cache[ch] = (resis, resns, chain_seq, ca_xyz)
+        per_chain.append((ch, resis, chain_seq))
+    winner = sasa.select_best_chain(
+        per_chain, conserved_regions, min_identity=min_identity, pdb_id=pdb_id
+    )
+    if winner is None:
+        return None
+    ch = winner["chain"]
+    return (
+        ch,
+        chain_cache[ch],
+        winner["mapped_regions"],
+        winner["mapped_resis"],
+        winner["notes"],
+    )
 
 
 def _chain_sequence(cmd, base_sel: str, chain: str):
@@ -190,8 +225,14 @@ def run(job: dict) -> dict:
         # copy's residues with the assembly's symmetry-mate neighbours (see docstring).
         base_sel, n_copies = _assembly_context(cmd, "raw", "work", _NEIGHBOR_CUTOFF)
 
-        chain = _pick_chain(cmd, base_sel, requested_chain)
-        if chain is None:
+        # R3 (chain-pinning): analyse the chain whose conserved motifs map with the best
+        # identity — overlapping regions share residues, so the mapped-residue set is unique
+        # and SASA is computed once per residue. ``requested_chain`` pins one chain.
+        candidates = _protein_chains(cmd, base_sel, requested_chain)
+        selected = _select_best_chain(
+            cmd, base_sel, candidates, conserved_regions, min_map_identity, pdb_id
+        )
+        if selected is None:
             return {
                 "ok": False,
                 "pymol_version": version,
@@ -199,49 +240,19 @@ def run(job: dict) -> dict:
                 "structure_kind": structure_kind,
                 "assembly_id": assembly_id,
                 "n_assembly_copies": n_copies,
+                "n_candidate_chains": len(candidates),
                 "note": (
                     f"No protein chain with CA atoms found in {pdb_id} "
                     f"(requested chain={requested_chain!r})."
                 ),
             }
 
-        resis, resns, chain_seq, ca_xyz = _chain_sequence(cmd, base_sel, chain)
+        chain, (resis, resns, chain_seq, ca_xyz), mapped_regions, all_mapped_resis, chain_notes = (
+            selected
+        )
+        notes.extend(chain_notes)
         resn_by_resi = dict(zip(resis, resns, strict=True))
         ca_by_resi = dict(zip(resis, ca_xyz, strict=True))
-
-        mapped_regions: list[dict] = []
-        all_mapped_resis: list = []  # unique, first-seen order — overlapping regions share residues
-
-        # First pass: map each region's motif onto chain residues; collect the UNIQUE set
-        # of mapped residues across all regions (a residue covered by two overlapping
-        # conserved regions is ONE residue, not two — dedup so SASA is computed once and the
-        # exposed/buried lists carry no duplicate residue numbers).
-        for region in conserved_regions:
-            consensus = str(region.get("consensus", ""))
-            motif = consensus.replace("-", "")
-            mapping = sasa.map_motif_to_chain(
-                motif, chain_seq, resis, min_identity=min_map_identity
-            )
-            if mapping is None:
-                notes.append(
-                    f"Conserved region (alignment cols {region.get('start')}–"
-                    f"{region.get('end')}, motif {motif[:24]!r}) did not map onto chain "
-                    f"{chain} of {pdb_id} at >= {min_map_identity:.0%} identity."
-                )
-                continue
-            for r in mapping["residues"]:
-                if r["resi"] not in all_mapped_resis:
-                    all_mapped_resis.append(r["resi"])
-            mapped_regions.append(
-                {
-                    "start": region.get("start"),
-                    "end": region.get("end"),
-                    "consensus": consensus,
-                    "offset": mapping["offset"],
-                    "map_identity": mapping["identity"],
-                    "residues": [r["resi"] for r in mapping["residues"]],
-                }
-            )
 
         # ONE surface computation loads each atom's in-context SASA into its b-factor
         # (occluded by the whole `work` object — i.e. the original copy PLUS the
@@ -284,6 +295,8 @@ def run(job: dict) -> dict:
         "n_assembly_copies": n_copies,
         "neighbor_cutoff": _NEIGHBOR_CUTOFF if structure_kind == "assembly_1" else None,
         "chain": chain,
+        "n_candidate_chains": len(candidates),
+        "chain_selected_by": "requested" if requested_chain else "best_motif_identity",
         "chain_length": len(chain_seq),
         "sasa_settings": {"dot_solvent": 1, "dot_density": 3},
         "rsa_threshold": rsa_threshold,

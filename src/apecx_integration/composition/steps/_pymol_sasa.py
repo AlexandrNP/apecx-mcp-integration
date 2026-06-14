@@ -178,6 +178,102 @@ def map_motif_to_chain(
     return {"offset": best_offset, "identity": round(identity, 4), "residues": residues}
 
 
+def map_regions_on_chain(
+    resis: list[Any],
+    chain_seq: str,
+    conserved_regions: list[dict[str, Any]],
+    *,
+    min_identity: float = 0.7,
+    chain: str = "?",
+    pdb_id: Any = None,
+) -> tuple[list[dict[str, Any]], list[Any], list[str]]:
+    """Map every conserved region's consensus motif onto ONE chain's residues.
+
+    Returns ``(mapped_regions, mapped_resis, notes)``: the mapped regions (each carrying
+    this chain's author residue numbers + the map identity), the UNIQUE mapped residue set
+    (first-seen order — overlapping regions share residues, so SASA is computed once and the
+    exposed/buried lists carry no duplicate residue numbers), and a LOUD note per region that
+    did NOT clear the identity bar on this chain (reported, never silently dropped). Pure
+    (shared with the containerized PyMOL job) so the unit test exercises the exact arithmetic
+    the integration run uses.
+    """
+    mapped_regions: list[dict[str, Any]] = []
+    mapped_resis: list[Any] = []
+    notes: list[str] = []
+    for region in conserved_regions:
+        consensus = str(region.get("consensus", ""))
+        motif = consensus.replace("-", "")
+        mapping = map_motif_to_chain(motif, chain_seq, resis, min_identity=min_identity)
+        if mapping is None:
+            notes.append(
+                f"Conserved region (alignment cols {region.get('start')}–"
+                f"{region.get('end')}, motif {motif[:24]!r}) did not map onto chain "
+                f"{chain} of {pdb_id} at >= {min_identity:.0%} identity."
+            )
+            continue
+        for r in mapping["residues"]:
+            if r["resi"] not in mapped_resis:
+                mapped_resis.append(r["resi"])
+        mapped_regions.append(
+            {
+                "start": region.get("start"),
+                "end": region.get("end"),
+                "consensus": consensus,
+                "offset": mapping["offset"],
+                "map_identity": mapping["identity"],
+                "residues": [r["resi"] for r in mapping["residues"]],
+            }
+        )
+    return mapped_regions, mapped_resis, notes
+
+
+def select_best_chain(
+    per_chain: list[tuple[Any, list[Any], str]],
+    conserved_regions: list[dict[str, Any]],
+    *,
+    min_identity: float = 0.7,
+    pdb_id: Any = None,
+) -> dict[str, Any] | None:
+    """R3 (chain-pinning): from per-chain ``(chain, resis, chain_seq)`` sequences, pick the
+    chain whose conserved motifs map with the BEST identity.
+
+    Different deposits label the same biological protein differently (one PDB's E1 = chain F,
+    another's = chain B; an antibody complex puts a Fab chain first), so a conserved region
+    that maps onto the AUTO-PICKED chain in one structure but a non-first chain in another
+    would not corroborate. Analysing the best-MAPPING chain pins the SAME conserved region
+    across structures regardless of chain labelling, raising corroboration coverage. Score =
+    ``(n_regions_mapped, sum_of_map_identities)``; ties resolve to the FIRST candidate
+    (deterministic, back-compatible with the previous 'first protein chain' pick). When NO
+    chain maps any region, the first candidate is returned so the loud 'no region mapped'
+    note still names a concrete chain — it just does NOT corroborate (correct: the conserved
+    protein is genuinely not present in that structure).
+
+    Returns ``{chain, mapped_regions, mapped_resis, notes}`` for the winner, or ``None`` when
+    ``per_chain`` is empty. Pure (shared with the containerized job)."""
+    best: dict[str, Any] | None = None
+    for chain, resis, chain_seq in per_chain:
+        mapped_regions, mapped_resis, notes = map_regions_on_chain(
+            resis,
+            chain_seq,
+            conserved_regions,
+            min_identity=min_identity,
+            chain=chain,
+            pdb_id=pdb_id,
+        )
+        score = (len(mapped_regions), sum(m["map_identity"] for m in mapped_regions))
+        if best is None or score > best["score"]:
+            best = {
+                "score": score,
+                "chain": chain,
+                "mapped_regions": mapped_regions,
+                "mapped_resis": mapped_resis,
+                "notes": notes,
+            }
+    if best is None:
+        return None
+    return {k: best[k] for k in ("chain", "mapped_regions", "mapped_resis", "notes")}
+
+
 def relative_sasa(resn: str, sasa: float) -> float | None:
     """RSA = SASA / theoretical-max-ASA for the residue. ``None`` for non-standard
     residues (no reference max — e.g. a modified residue / ligand)."""
@@ -388,6 +484,8 @@ __all__ = [
     "extract_pdb_id",
     "select_candidate_pdb_id",
     "map_motif_to_chain",
+    "map_regions_on_chain",
+    "select_best_chain",
     "relative_sasa",
     "classify_sasa",
     "aggregate_corroboration",
