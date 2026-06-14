@@ -213,7 +213,7 @@ no-new-privileges`. `DockerSandboxRunner.run(...)` refuses unless
 
 ## MCP surface (Tier 1)
 
-`mcp_surface/server.py` — FastMCP, 24 scientist-facing tools. Entry:
+`mcp_surface/server.py` — FastMCP, 25 scientist-facing tools. Entry:
 ```bash
 apecx-mcp                                       # stdio
 APECX_CONTROL_PLANE_URL=... apecx-mcp           # override CP URL
@@ -223,7 +223,10 @@ APECX_SYNONYM_DICT_PATH=/path apecx-mcp         # enable fast lookup
 
 Tools by module: workflows (3) / discovery (2) /
 database_tools (7 — pure pandas, no LLM) / canonical_entity (1) /
-synthesis (1) / globus_search (1) / approvals (4) / hpc (4).
+synthesis (1) / globus_search (1) / approvals (4) / hpc (4) /
+eo_primitives (`approve_design` — operator HITL approval for the evidence
+workflow's design output; the design gate is fail-closed + scope-bound, see
+`composition/runtime/design_approval_store.py`).
 
 `list_workflows` / `describe_workflow` read
 `composer_config.component_catalog_paths` so the model sees buildable

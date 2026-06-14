@@ -14,19 +14,25 @@ It emits the terminal ``WorkflowResult`` directly (it IS the envelope for this
 workflow), choosing the disposition:
 
 - ``requested_outputs != "evidence_plus_design"`` → status ``ok``, evidence only.
-- design requested but no/blank ``design_approval_id`` → status ``needs_input``
-  with a ``needs_prerequisite`` control transfer. Approval is EXPLICIT DATA — it is
-  never inferred from the query text. The evidence is still returned in the
-  markdown (degrade-loud: a pause never discards the evidence already gathered).
-- design requested WITH an approval token → status ``ok`` with an appended,
+- design requested but no/invalid ``design_approval_id`` → status ``needs_input``
+  with a ``needs_prerequisite`` control transfer, AND a fresh server-issued token to
+  approve. Approval is EXPLICIT DATA — never inferred from the query text. The
+  evidence is still returned in the markdown (degrade-loud: a pause never discards
+  the evidence already gathered).
+- design requested WITH a VALIDATED approval token → status ``ok`` with an appended,
   clearly-labelled design-hypotheses section (Phase B: LLM-generated, evidence-
   bound; until the generator lands this is a labelled placeholder).
 
-Approval-token contract (v1): a non-blank ``design_approval_id`` is the caller's
-explicit assertion that the design action was approved (the token is obtained via
-the approval control plane's ``approve``). Cross-checking the token against the
-control-plane store is a documented hardening follow-up — recorded here so it is
-not mistaken for done.
+Approval-token contract (2026-06-14, FAIL-CLOSED): ``design_approval_id`` is validated
+against the ``DesignApprovalStore`` — the gate opens ONLY for a token that was
+server-ISSUED (by this gate's needs_input path), operator-APPROVED (via the
+``approve_design`` MCP tool), AND scope-bound to THIS request's ``(query, protein)``.
+Any unknown / pending / rejected / scope-mismatched token withholds design with a named
+reason. This closes the prior bypass where any non-blank string opened the gate. A
+DEDICATED store (not the control-plane ``Approval`` model) because that model is
+run/step-centric and this workflow runs via the direct MCP ``run_workflow`` path with no
+control-plane run/step context (closed-class rule: new class when the existing one does
+not fit). See ``composition/runtime/design_approval_store.py``.
 """
 
 from __future__ import annotations
