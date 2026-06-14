@@ -40,6 +40,29 @@ def test_query_text_curated_token_without_the_word_virus():
     assert res.terms == ["chikungunya"]
 
 
+def test_species_name_resolves_arbitrary_virus_without_curated_taxon():
+    """An arbitrary virus (taxon NOT in the curated map) taxon-locks via the canonical
+    species name the BV-BRC resolver produced — the SARS-CoV-2 / influenza / HIV path."""
+    res = resolve_species_terms(
+        "SARS-CoV-2 spike glycoprotein conserved epitopes",
+        taxon_id=2697049,  # not in _TAXON_SPECIES
+        species_name="Severe acute respiratory syndrome coronavirus 2",
+    )
+    assert res.note is None
+    assert "severe acute respiratory syndrome coronavirus 2" in res.terms
+    assert "Severe acute respiratory syndrome coronavirus 2" in res.names
+
+
+def test_species_name_keyword_residual_excludes_species_words():
+    # The structural keyword residual drops the species-name words, keeping the protein terms.
+    kw = _structural_keyword_tokens(
+        "severe acute respiratory syndrome coronavirus 2 spike glycoprotein",
+        ["severe acute respiratory syndrome coronavirus 2"],
+    )
+    assert "spike" in kw and "glycoprotein" in kw
+    assert "coronavirus" not in kw
+
+
 def test_unresolvable_query_degrades_loud_named_note():
     """E3-2.5 CC-1 degrade: nothing resolvable -> empty terms + a NON-EMPTY note."""
     res = resolve_species_terms("envelope glycoprotein structure")

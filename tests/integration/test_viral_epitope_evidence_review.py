@@ -289,6 +289,120 @@ def test_sequence_conservation_stage_e2e():
     assert "per-strain sequences" in seq_line, seq_line
 
 
+def _reasoning_trace_lines(md: str) -> list[str]:
+    """The bullet lines under '### Reasoning trace' (one per stage report)."""
+    if "### Reasoning trace" not in md:
+        return []
+    trace = md.split("### Reasoning trace", 1)[1]
+    return [ln for ln in trace.splitlines() if ln.strip().startswith(("-", "*"))]
+
+
+@needs_llm_seq
+def test_sars_cov2_no_taxon_id_gets_full_science_e2e(capsys):
+    """TASK #2 PROOF — an ARBITRARY virus (SARS-CoV-2, NOT in the curated map) with NO
+    caller taxon_id now resolves the taxon from the query text (BV-BRC taxonomy) and runs
+    the FULL pipeline: sequence conservation + structural reasoning + functional validation.
+
+    The sequence-conservation leg SHORT-CIRCUITS to a loud 'unavailable' note when there is
+    no usable taxon_id — so a POPULATED sequence_conservation stage (with no caller taxon_id)
+    is itself the proof that name->taxon resolution fired and fed the BV-BRC sequence fetch."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            # NO taxon_id — only the free-text query names the virus ("SARS-CoV-2").
+            {"query": "SARS-CoV-2 spike glycoprotein conserved epitopes", "protein": "spike"},
+        )
+    )
+    assert out["status"] == "ok", out
+    md = out["markdown"]
+    assert md and md.strip()
+
+    # Five-section output contract intact.
+    headers = [
+        "# Answer",
+        "## Cross-data reasoning",
+        "## Integrated insight",
+        "## Sources and evidence",
+        "## Follow-up questions",
+    ]
+    positions = [md.find(h) for h in headers]
+    assert all(p != -1 for p in positions), (positions, md[:3000])
+    assert positions == sorted(positions), (positions, md[:3000])
+
+    # SEQUENCE CONSERVATION populated (proves the taxon resolved + BV-BRC fetch ran).
+    seq_lines = [ln for ln in md.splitlines() if "sequence_conservation" in ln]
+    assert seq_lines, ("no sequence_conservation stage report rendered", md[:4000])
+    seq_line = seq_lines[0]
+    assert "Sequence conservation unavailable" not in seq_line, (
+        "sequence leg degraded — name->taxon resolution did NOT feed the BV-BRC fetch",
+        seq_line,
+    )
+    assert "conserved region(s) at" in seq_line, seq_line
+    assert "per-strain sequences" in seq_line, seq_line
+
+    # FUNCTIONAL VALIDATION stage present (it always runs; degrade-loud).
+    assert any("functional_validation" in ln for ln in md.splitlines()), md[:4000]
+
+    # STRUCTURAL REASONING stage present when the PyMOL image is built (it is, in CI here).
+    if _pymol_image_present():
+        assert any("structural_reasoning" in ln for ln in md.splitlines()), md[:4000]
+
+    # Paste the real provenance for the deliverable.
+    with capsys.disabled():
+        print("\n===== SARS-CoV-2 no-taxon-id REASONING TRACE =====")
+        for ln in _reasoning_trace_lines(md):
+            print(ln)
+        prov = out.get("provenance")
+        if prov:
+            print("----- provenance taxon_resolution -----")
+            print(prov.get("taxon_resolution") or prov)
+
+
+@needs_llm_seq
+def test_chikv_no_taxon_id_still_works_no_regression_e2e():
+    """No-regression: a CHIKV query WITHOUT a caller taxon_id resolves 'chikungunya' ->
+    37124 via the resolver and still populates sequence conservation (the curated viruses
+    keep working through the same name path)."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            {
+                "query": "chikungunya structural polyprotein conserved epitopes",
+                "protein": "structural polyprotein",
+            },
+        )
+    )
+    assert out["status"] == "ok", out
+    md = out["markdown"]
+    seq_lines = [ln for ln in md.splitlines() if "sequence_conservation" in ln]
+    assert seq_lines, md[:4000]
+    assert "Sequence conservation unavailable" not in seq_lines[0], seq_lines[0]
+    assert "conserved region(s) at" in seq_lines[0], seq_lines[0]
+
+
+@needs_llm_seq
+def test_unresolvable_virus_degrades_loud_e2e():
+    """A query naming NO resolvable virus leaves the sequence leg loudly 'unavailable'
+    (named degrade) — never silently empty — while the rest of the evidence still completes."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    out = asyncio.run(
+        run_workflow(
+            "viral_epitope_evidence_review",
+            {"query": "envelope glycoprotein conserved epitopes", "protein": "envelope"},
+        )
+    )
+    assert out["status"] == "ok", out
+    md = out["markdown"]
+    seq_lines = [ln for ln in md.splitlines() if "sequence_conservation" in ln]
+    assert seq_lines, md[:4000]
+    assert "unavailable" in seq_lines[0].lower(), seq_lines[0]
+
+
 @needs_llm_seq
 def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
     """E2-S END-TO-END: ``run_workflow_streamed`` on a real CHIKV query pushes each

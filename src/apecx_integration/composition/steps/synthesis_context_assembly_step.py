@@ -552,7 +552,7 @@ class SynthesisContextAssemblyStep(BaseStep):
         # structure that matches the requested protein, not the first by search rank);
         # ``taxon_id`` rides along for the functional-validation stage. Both originate at
         # ``normalize`` and would otherwise be dropped here (this step rebuilds the bundle).
-        for _focus in ("protein", "taxon_id"):
+        for _focus in ("protein", "taxon_id", "resolved_species_name"):
             _val = input_data.get(_focus)
             if _val is not None:
                 out[_focus] = _val

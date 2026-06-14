@@ -76,10 +76,79 @@ class EvidenceQueryNormalizeStep(BaseStep):
             )
         # Passthrough: one output DU feeds both assemble (query) and gate (control fields).
         out = dict(input_data)
+        # Resolve an ARBITRARY virus name from the query text to a real BV-BRC taxon_id +
+        # canonical species name when the caller did not hand one in. This is what unlocks
+        # FULL science (sequence conservation + structural reasoning + functional validation)
+        # for viruses outside the curated 4 — e.g. SARS-CoV-2 / influenza / HIV. The resolved
+        # taxon_id flows to the BV-BRC sequence fetch (sequence.sequence_params) and the
+        # canonical name flows to the structural facet (via assemble -> structural). DEGRADE-
+        # LOUD (G127): the resolver never raises; an unresolvable name leaves taxon_id absent
+        # and records a NAMED note (the existing degrade-loud legs then state the absence).
+        await self._maybe_resolve_taxon(query, out)
         log.info(
-            "EvidenceQueryNormalizeStep %s: query=%.60r requested_outputs=%r",
+            "EvidenceQueryNormalizeStep %s: query=%.60r taxon_id=%r requested_outputs=%r",
             self.name,
             query,
+            out.get("taxon_id"),
             out.get("requested_outputs"),
         )
         return out
+
+    async def _maybe_resolve_taxon(self, query: str, out: dict[str, Any]) -> None:
+        """Resolve the query's virus name to a BV-BRC taxon when no usable taxon_id was given.
+
+        Mutates ``out`` in place: on success sets ``taxon_id`` (NCBI id with BV-BRC sequence
+        coverage), ``resolved_species_name`` (canonical spelling for the structural facet), and
+        a ``taxon_resolution`` provenance block. On failure sets only the provenance block with
+        a NAMED note. A caller-supplied usable ``taxon_id`` is left untouched (never overridden).
+        """
+        import asyncio
+
+        existing = out.get("taxon_id")
+        if isinstance(existing, int) or (isinstance(existing, str) and existing.strip().isdigit()):
+            # Caller hand-supplied a taxon_id — honour it untouched (clean passthrough).
+            return
+
+        from apecx_integration.agents.globus_search import taxonomy_resolver
+
+        candidates = taxonomy_resolver.extract_virus_names(query)
+        resolution = await asyncio.to_thread(taxonomy_resolver.resolve_query_to_taxon, query)
+        if resolution is None:
+            out["taxon_resolution"] = {
+                "source": "bv-brc-taxonomy",
+                "taxon_id": None,
+                "candidates": candidates,
+                "note": (
+                    "no taxon resolved: could not map a virus name from the query "
+                    f"{query!r} to a BV-BRC taxon with sequence coverage "
+                    f"(candidates tried: {candidates or 'none extracted'}). Sequence "
+                    "conservation, structural reasoning, and functional validation are "
+                    "unavailable for this run; literature evidence still proceeds."
+                ),
+            }
+            log.warning(
+                "EvidenceQueryNormalizeStep %s: %s",
+                self.name,
+                out["taxon_resolution"]["note"],
+            )
+            return
+
+        out["taxon_id"] = resolution.taxon_id
+        out["resolved_species_name"] = resolution.scientific_name
+        out["taxon_resolution"] = {
+            "source": resolution.source,
+            "taxon_id": resolution.taxon_id,
+            "scientific_name": resolution.scientific_name,
+            "bvbrc_taxon_name": resolution.bvbrc_taxon_name,
+            "genomes": resolution.genomes,
+            "matched_name": resolution.matched_name,
+            "candidates": candidates,
+        }
+        log.info(
+            "EvidenceQueryNormalizeStep %s: resolved %r -> taxon_id=%d (%r, %d genomes)",
+            self.name,
+            resolution.matched_name,
+            resolution.taxon_id,
+            resolution.bvbrc_taxon_name,
+            resolution.genomes,
+        )

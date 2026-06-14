@@ -102,13 +102,24 @@ class StructuralSearchResult:
     query_used: str = ""
 
 
-def resolve_species_terms(query: str, taxon_id: int | str | None = None) -> SpeciesResolution:
-    """Resolve a query (+ optional NCBI taxon_id) to species scoping terms.
+def resolve_species_terms(
+    query: str,
+    taxon_id: int | str | None = None,
+    species_name: str | None = None,
+) -> SpeciesResolution:
+    """Resolve a query (+ optional NCBI taxon_id / canonical species name) to scoping terms.
 
-    Resolution order: the curated ``taxon_id`` map (when a taxon id is given),
-    then "<X> virus" phrases parsed from the query, then curated distinctive
-    tokens that literally appear in the query. When nothing resolves, ``note`` is
-    set to a named degrade and ``terms``/``names`` are empty.
+    Resolution order: the curated ``taxon_id`` map (when a taxon id is given), then the
+    ``species_name`` canonical spelling (resolved upstream by the BV-BRC taxonomy resolver
+    for ARBITRARY viruses — e.g. SARS-CoV-2, influenza, HIV — that are NOT in the curated
+    map), then "<X> virus" phrases parsed from the query, then curated distinctive tokens
+    that literally appear in the query. When nothing resolves, ``note`` is set to a named
+    degrade and ``terms``/``names`` are empty.
+
+    The ``species_name`` term is the FULL lowercased canonical name (e.g. "severe acute
+    respiratory syndrome coronavirus 2"). PDB deposits use the scientific name, so the facet
+    pre-pass matches it as a substring; using the full name keeps the match taxon-precise
+    (verified live: it finds SARS-CoV-2 PDB structures and excludes SARS-CoV-1).
     """
     terms: list[str] = []
     names: list[str] = []
@@ -127,6 +138,10 @@ def resolve_species_terms(query: str, taxon_id: int | str | None = None) -> Spec
     if tid is not None and tid in _TAXON_SPECIES:
         name, token = _TAXON_SPECIES[tid]
         _add(token, name)
+
+    # Canonical species name from the upstream BV-BRC taxonomy resolver (arbitrary viruses).
+    if isinstance(species_name, str) and species_name.strip():
+        _add(species_name.strip().lower(), species_name.strip())
 
     text = query if isinstance(query, str) else ""
     for match in _VIRUS_RE.finditer(text):
@@ -210,6 +225,7 @@ def search_one_source(
     publisher: str,
     *,
     taxon_id: int | str | None = None,
+    species_name: str | None = None,
     max_results: int = 50,
 ) -> StructuralSearchResult:
     """Run a taxon-precise structural query for one source (``"pdb"`` / ``"emdb"``).
@@ -226,7 +242,7 @@ def search_one_source(
     from apecx_integration.agents.globus_search import client as globus_client
 
     pub_filter = {"type": "match_any", "field_name": _PUBLISHER_FIELD, "values": [publisher]}
-    resolution = resolve_species_terms(query, taxon_id)
+    resolution = resolve_species_terms(query, taxon_id, species_name)
 
     def _free_text_degrade(note: str) -> StructuralSearchResult:
         hits = globus_client.search(query, max_results=max_results, filters=[pub_filter])

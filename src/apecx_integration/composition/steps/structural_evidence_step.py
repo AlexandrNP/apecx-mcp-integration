@@ -99,11 +99,23 @@ class StructuralEvidenceStep(BaseStep):
         self._max_per_source: int = int(component_config.get("max_per_source", 8))
         self._publishers: dict[str, str] = dict(_DEFAULT_PUBLISHERS)
 
-    def _search_source(self, query: str, source: str, publisher: str, taxon_id: int | str | None):
+    def _search_source(
+        self,
+        query: str,
+        source: str,
+        publisher: str,
+        taxon_id: int | str | None,
+        species_name: str | None,
+    ):
         """Taxon-precise structural query for one source (E3-2). Delegates to the
         shared ``structural_query.search_one_source`` so the workflow leg and the
         MCP tool stay in lockstep. Lazy import keeps the globus_sdk dependency off
-        the import path for offline/test environments."""
+        the import path for offline/test environments.
+
+        ``species_name`` is the canonical species spelling resolved upstream by the
+        BV-BRC taxonomy resolver (arbitrary viruses whose taxon is not in the curated
+        map); it lets the facet pre-pass taxon-lock SARS-CoV-2 / influenza / HIV etc.
+        even though their taxon_id is not in ``_TAXON_SPECIES``."""
         from apecx_integration.agents.globus_search import structural_query
 
         return structural_query.search_one_source(
@@ -111,6 +123,7 @@ class StructuralEvidenceStep(BaseStep):
             source,
             publisher,
             taxon_id=taxon_id,
+            species_name=species_name,
             max_results=self._max_per_source,
         )
 
@@ -139,8 +152,12 @@ class StructuralEvidenceStep(BaseStep):
 
         # taxon_id rides along on the bundle from the normalize step; it taxon-locks
         # the structural query (E3-2). Absent/non-taxon queries fall to query-text
-        # parsing inside the shared core, then to a named degrade.
+        # parsing inside the shared core, then to a named degrade. resolved_species_name
+        # is the canonical spelling the BV-BRC taxonomy resolver produced for an arbitrary
+        # virus (taxon not in the curated map) — it taxon-locks the facet pre-pass for
+        # SARS-CoV-2 / influenza / HIV whose taxon_id _TAXON_SPECIES does not carry.
         taxon_id = input_data.get("taxon_id")
+        species_name = input_data.get("resolved_species_name")
 
         bundle = dict(input_data)  # shallow copy; we extend globus_results + add keys
 
@@ -157,7 +174,7 @@ class StructuralEvidenceStep(BaseStep):
             sources = list(self._publishers.items())
             results = await asyncio.gather(
                 *(
-                    asyncio.to_thread(self._search_source, query, src, pub, taxon_id)
+                    asyncio.to_thread(self._search_source, query, src, pub, taxon_id, species_name)
                     for src, pub in sources
                 )
             )
