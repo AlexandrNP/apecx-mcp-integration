@@ -362,6 +362,43 @@ def _ensure_contract_headers(narrative: str) -> str:
     return text
 
 
+def _insert_scope_caveat_if_unresolved(body: str, bundle: dict[str, Any]) -> str:
+    """When NO viral species was resolved (``taxon_id`` is None — neither
+    caller-supplied nor name-resolved), surface a LOUD scope caveat as the FIRST
+    prose under ``# Answer``.
+
+    Why this exists: the Structural section already names the ``not taxon-locked``
+    limitation, but it sits BELOW the Answer + Cross-data reasoning — a user with a
+    typo'd or non-viral query (e.g. ``human insulin protein structure``) reads a
+    confident, authoritative-looking answer first and never reaches the caveat. That
+    is a silent scope failure: the document reads as a viral epitope review when the
+    virus-specific legs (sequence-conservation epitope mapping, taxon-locked structure
+    selection) never ran. Keying off ``taxon_id is None`` — the same signal
+    ``collect_provenance`` records as ``inputs.taxon_id`` — fires ONLY on the
+    unresolved case (a caller-supplied or name-resolved taxon is always set), so a
+    genuine viral query is never mislabeled. ``# Answer`` stays the first heading
+    (output contract intact); the caveat is the first line under it.
+    """
+    if bundle.get("taxon_id") is not None:
+        return body
+    caveat = (
+        "> ⚠️ **Scope caveat — no viral species resolved.** This query did not map to "
+        "a virus taxon, so the virus-specific analyses (sequence-conservation epitope "
+        "mapping, taxon-locked structure selection) did not run. What follows is "
+        "taxon-agnostic structural and literature evidence only; treat any epitope or "
+        "conservation claim as unverified for a specific virus — see the Structural "
+        "evidence section for the resolution detail."
+    )
+    idx = body.find(_ANSWER_HEADING)
+    if idx == -1:
+        # No Answer heading (impossible post _ensure_contract_headers) — prepend rather
+        # than drop the caveat.
+        return f"{_ANSWER_HEADING}\n\n{caveat}\n\n{body.lstrip()}"
+    after_heading = idx + len(_ANSWER_HEADING)
+    rest = body[after_heading:].lstrip("\n")
+    return f"{body[:after_heading]}\n\n{caveat}\n\n{rest}"
+
+
 def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str, Any]) -> str:
     """Assemble the full contract-shaped evidence document from a narrative body
     (the LLM output on the success path, or ``render_evidence_fallback`` on degrade).
@@ -380,6 +417,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     body = _insert_reasoning_trace(
         _ensure_contract_headers(narrative_body), render_stage_reports(bundle)
     )
+    body = _insert_scope_caveat_if_unresolved(body, bundle)
     structural = render_structural_section(
         bundle.get("structural_records"), bundle.get("structural_note")
     )

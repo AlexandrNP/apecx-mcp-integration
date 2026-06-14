@@ -186,6 +186,42 @@ def test_compose_emits_five_sections_in_order():
     )
 
 
+def test_scope_caveat_present_when_taxon_unresolved():
+    """No virus resolved (``taxon_id`` None) → a LOUD scope caveat is the first prose
+    under ``# Answer``, BEFORE the cross-data reasoning and the narrative claim, so a
+    non-viral / typo'd query (e.g. ``human insulin``) cannot read as an authoritative
+    viral epitope review. Regression for the 2026-06-14 edge-input probe finding: the
+    structural 'not taxon-locked' note sat below the fold and never reached the user."""
+    bundle = {"query": "human insulin protein structure", "taxon_id": None}
+    narrative = (
+        "# Answer\n\nHuman insulin adopts an alpha-helical fold [Globus pdb:8HGZ].\n\n"
+        "## Cross-data reasoning\n\nStructure agrees with folding literature.\n\n"
+        "## Integrated insight\n\nCombined view."
+    )
+    md = compose_evidence_markdown(narrative, bundle["query"], bundle)
+    assert "Scope caveat — no viral species resolved" in md
+    answer = md.find("# Answer")
+    caveat = md.find("Scope caveat")
+    crossdata = md.find("## Cross-data reasoning")
+    body_claim = md.find("Human insulin adopts")
+    assert answer < caveat < crossdata, "caveat must sit under # Answer, above cross-data"
+    assert caveat < body_claim, "caveat must precede the confident narrative claim"
+    # `# Answer` is still the FIRST heading — the output contract is intact.
+    assert md.lstrip().startswith("# Answer")
+
+
+def test_scope_caveat_absent_when_taxon_resolved():
+    """A resolved taxon (caller-supplied or name-resolved → ``taxon_id`` set) → NO
+    caveat; a genuine viral query is never mislabeled as unresolved."""
+    bundle = {"query": "chikungunya E1 epitopes", "taxon_id": 37124}
+    narrative = (
+        "# Answer\n\nE1 is conserved.\n\n## Cross-data reasoning\n\nX.\n\n"
+        "## Integrated insight\n\nY."
+    )
+    md = compose_evidence_markdown(narrative, bundle["query"], bundle)
+    assert "Scope caveat" not in md
+
+
 # --------------------------- step process() (synthesis monkeypatched) ---------------------------
 def _stage(tmp_path: Path) -> EvidenceReviewSynthesisStep:
     p = tmp_path / "review.yml"
