@@ -585,3 +585,84 @@ integration test for "done").
 2. **E4-3** (structure xref preference) — P2, needs the relevance-margin design.
 3. **E4-6 / E4-7 / E4-2** — P2/P3, do opportunistically or on explicit request; E4-2 only if
    throughput is measured to matter.
+
+---
+
+# Further avenues of action (forward-looking, beyond the E4 ledger)
+
+Captured 2026-06-14 at session end. These are coherent next directions for whoever picks
+this up — each with its rationale and the condition that unblocks it. None are silent-failure
+gaps (the surface is hardened + green); they are reliability/scale/coverage investments.
+Priority key as before: P1 worth doing, P2 tradeoff, P3 optional.
+
+## 1. Finish the HITL story — auth across the WHOLE approval surface (P1, security)
+E4-1a made design approvals durable; E4-1b (an LLM cannot self-approve) is still open and is
+the deeper one. The honest boundary (see `design_approval_store.py`): `approve_design` — like
+the control-plane `approve`/`reject` tools — is an MCP tool, so an autonomous LLM driving the
+client can approve its own request. The principled fix is a SINGLE cross-cutting auth model
+for every approval surface: a human-operated / authenticated channel distinct from the LLM's
+toolset, with `decided_by` derived from an identity (not the `api_user` default). **Unblocks:**
+an auth-model decision (the project has no auth layer yet). Do NOT fork a design-only auth;
+solve it once for control-plane + design approvals together.
+
+## 2. Durability for the other process-lifetime stores (P2, reliability)
+E4-1a applied a durable-backend pattern to the design-approval store. RunStore and
+HandleStore (`composition/runtime/run_store.py`, `composition/handles/store.py`) are now
+FIFO-bounded (no leak) but still IN-PROCESS — a server restart loses session run history
+(`inspect_run`/`apecx_context`) and any handles a workflow was chaining off. The same opt-in
+`persist_dir` seam applies cleanly. **Tradeoff:** run history / handles are arguably
+session-scoped by design, so durability is lower-value than for approvals (which are a HITL
+contract). Do it if cross-restart session continuity becomes a real ask.
+
+## 3. Functional-annotation coverage via corroborating structures (P2 — the E4-3 Path-2)
+If functional residue-annotation coverage is measured to be a real adoption gap (the top-ranked
+PDB sometimes lacks a SIFTS UniProt xref, e.g. SARS-2 spike 8F2V), the low-risk path is
+ADDITIVE: propagate each `analyzed_structures` entry's per-structure exposed-residue LIST
+(today only `n_exposed` counts travel), then have functional validation, when the primary has
+no xref, annotate from a near-tied corroborating structure that DOES — clearly labeled
+"annotation from corroborating structure X", never changing the primary epitope analysis.
+**Unblocks:** a measurement that coverage matters + multi-virus validation that it lifts
+coverage without confusing the output. (Do NOT change primary selection — that risks the core
+analysis; see the E4-3 entry for why.)
+
+## 4. Concurrency throughput beyond serialization (P2/P3 — the E4-2 generalization)
+nanobrain `Workflow.run` now serializes concurrent same-instance runs (correctness). For an
+MCP server fielding many simultaneous DISTINCT-virus queries, throughput is capped at one
+same-workflow run at a time. Options, in increasing scope: (a) per-call workflow instances
+(no shared data units → parallel; costs build time + shared-subresource review: the LLM client,
+the SIFTS cache); (b) a bounded worker pool of pre-built instances. **Unblocks:** a measured
+throughput need. Until then, correct-but-serialized is right.
+
+## 5. Framework: detect/​warn on concurrent same-instance reuse (P3, nanobrain DX)
+The `Workflow.run` fix SERIALIZES the hazard; it does not WARN a developer who unknowingly
+reuses an instance concurrently expecting parallelism (they'll just see latency). A debug-level
+"serializing concurrent run of <wf> — build a distinct instance for parallelism" log would
+make the tradeoff visible. Pure DX; low risk.
+
+## 6. Model-quality tier, productionized (P2, quality)
+Default is `nemotron-3-nano:4b` (fast, contract-guaranteed, but the narrative is shallow and
+sometimes truncates/uncited → degrade-loud fallback). `mistral-nemo` is documented as the
+quality tier (E3-14). Avenue: a per-deployment tier switch with a gated, recorded per-stage
+quality delta (synthesis depth, citation rate, withhold frequency) so an operator picks the
+tier with data, not vibes. **Unblocks:** nothing — runnable now if quality is a priority.
+
+## 7. Broader virus / organism coverage (P3, diverse-settings UX)
+The taxon resolver (curated aliases + BV-BRC name→taxon) and the structural organism-name
+matching cover ~25+ viruses; obscure viruses with non-standard organism spellings still degrade
+to literature-only. Avenue: expand the alias table + lean harder on the BV-BRC taxonomy
+fallback + a fuzzy organism-name match in the structural facet. Pure additive coverage; each
+new virus is a small, testable increment (multi-taxon probe per [[test_diverse_inputs_not_one_example]]).
+
+## 8. PDB/EMDB harmonization (P1 — E4-5 Tracks A–C, EXTERNALLY GATED)
+Phase-0 is DONE (Scope A — both present + discriminable by `publisher.name`/`subject` prefix).
+The remaining code (per `viral_epitope_evidence_workflow_action_plan.md` Tracks A–C) is ready
+to write once the ONE external dependency lands: **X1 — two new Globus Search DEST indices
+created with index-admin privileges (an ops action, not code).** Until then this is the
+highest-value blocked item.
+
+## Cross-cutting reminder
+Every item above inherits CC-1..CC-5: no empty responses, decide from output VALUES not status
+(G127), a real-data integration test for "done", nanobrain-native (`from_config`/`process()`/
+`auto_transfer`). And the session's headline discipline (now in workspace `CLAUDE.md`): a
+long-lived service must be probed with CONCURRENT + REPEATED + diverse inputs in one process —
+that is how this arc's worst silent failures were found.
