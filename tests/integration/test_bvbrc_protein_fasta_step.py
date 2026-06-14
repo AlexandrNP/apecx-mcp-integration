@@ -163,3 +163,21 @@ def test_unknown_protein_fails_loud(tmp_path):
                 {"taxon_id": _CHIKV_TAXON, "protein": "zzznotaprotein", "feature_type": "CDS"}
             )
         )
+
+
+def test_product_word_boundary_rejects_substring_wrong_protein():
+    """Regression: the BV-BRC substring query eq(product,*structural*) matches
+    'nonstructural polyprotein' too; the word-boundary filter must reject it (the silent
+    wrong-protein bug that made CHIKV align the nonstructural polyprotein)."""
+    from apecx_integration.composition.steps.bvbrc_protein_fasta_step import (
+        _product_matches_word_boundary as m,
+    )
+
+    assert m("structural polyprotein", "structural polyprotein") is True
+    assert m("nonstructural polyprotein", "structural polyprotein") is False
+    assert m("non-structural polyprotein P1234, fragment", "structural") is False  # hyphenated
+    assert m("Non-structural protein 1", "structural") is False  # capitalized hyphen
+    assert m("prM-E polyprotein", "E") is True  # legit hyphen compound still matches
+    assert m("envelope glycoprotein E", "envelope") is True
+    assert m("E1 envelope glycoprotein", "E1") is True
+    assert m("", "envelope") is False

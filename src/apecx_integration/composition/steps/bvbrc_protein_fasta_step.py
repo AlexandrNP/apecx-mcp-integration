@@ -17,11 +17,33 @@ fake-data pipeline that produced plausible-looking but meaningless conservation 
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 import requests
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import Field
+
+
+def _product_matches_word_boundary(product: str, protein: str) -> bool:
+    """True iff ``protein`` occurs in ``product`` at a WORD BOUNDARY — i.e. not as a
+    substring of a longer word.
+
+    The BV-BRC query uses ``eq(product,*{protein}*)`` (a wildcard SUBSTRING match), so a
+    query for ``"structural polyprotein"`` ALSO matches ``"nonstructural polyprotein"``
+    (the query term is literally a substring). That silently aligned the WRONG protein
+    (verified 2026-06-13: CHIKV was aligning the nonstructural polyprotein). This filter
+    requires the match to start at a word boundary (start-of-string or a non-alphanumeric
+    char before it) AND not be preceded by the negation prefix ``non``/``non-`` — so
+    ``"structural"`` matches neither ``"nonstructural"`` (no boundary) nor
+    ``"non-structural"`` (hyphen would otherwise read as a boundary). Short domain/protein
+    tags ("E1", "capsid", "E" in "prM-E") at a real word start still match.
+    """
+    if not product:
+        return False
+    pat = r"(?<![A-Za-z0-9])(?<!non)(?<!non-)" + re.escape(protein.strip())
+    return re.search(pat, product, re.IGNORECASE) is not None
+
 
 log = logging.getLogger(__name__)
 
@@ -152,6 +174,34 @@ class BvbrcProteinFastaStep(BaseStep):
     # ----- real BV-BRC data-API access (no mocks; FAIL-LOUD on error) -----
     def _fetch(self, taxon_id: int, protein: str, feature_type: str) -> list[dict[str, Any]]:
         features = self._query_features(taxon_id, protein, feature_type)
+        # The BV-BRC query is a SUBSTRING match (eq(product,*X*)); drop records where the
+        # protein term only matches mid-word (e.g. "structural" inside "nonstructural
+        # polyprotein") so we never silently align the wrong protein. If the boundary
+        # filter would drop EVERY record, fall back to the unfiltered set + a loud warning
+        # (the protein name may legitimately only appear mid-product for this taxon).
+        bounded = [
+            f for f in features if _product_matches_word_boundary(f.get("product") or "", protein)
+        ]
+        if bounded:
+            if len(bounded) < len(features):
+                log.info(
+                    "BvbrcProteinFastaStep %s: word-boundary filter dropped %d/%d %r features "
+                    "(substring-only matches, e.g. 'nonstructural')",
+                    self.name,
+                    len(features) - len(bounded),
+                    len(features),
+                    protein,
+                )
+            features = bounded
+        elif features:
+            log.warning(
+                "BvbrcProteinFastaStep %s: protein %r matched %d feature(s) only MID-WORD "
+                "(no word-boundary match); using them but the product names may not be the "
+                "intended protein — check the product name.",
+                self.name,
+                protein,
+                len(features),
+            )
         md5s = sorted({f["aa_sequence_md5"] for f in features if f.get("aa_sequence_md5")})
         seq_by_md5 = self._query_sequences(md5s)
         records: list[dict[str, Any]] = []
