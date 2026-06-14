@@ -285,18 +285,17 @@ def _cmd_login(client_id: str | None) -> int:
     """
     _print_header("apecx-globus-setup login — Globus device-code flow")
 
+    # client_id defaults to the built-in apecx native app (2026-05-21: web
+    # login is the DEFAULT setup path, so it must work with no args). Operators
+    # can override with --client-id or $APECX_GLOBUS_NATIVE_CLIENT_ID to use
+    # their own native app.
     if not client_id:
-        _fail("login", "no --client-id supplied")
+        from apecx_integration.cli._globus_data_transfer import _resolve_native_client_id
+
+        client_id = _resolve_native_client_id()
+        print(f"  Using the built-in apecx native client_id ({client_id[:8]}…).")
+        print("  Override with --client-id <UUID> or $APECX_GLOBUS_NATIVE_CLIENT_ID.")
         print()
-        print("  Native-app client_id required for the device-code flow.")
-        print("  Register a free native app at:")
-        print("    https://app.globus.org/settings/developers")
-        print("  Choose: 'Register a thick client or script that will be")
-        print("           installed and run by users on their devices'")
-        print("  Copy the client_id (a UUID; no secret needed for native apps)")
-        print("  Then run:")
-        print("    apecx-globus-setup login --client-id <UUID>")
-        return 1
 
     try:
         globus_sdk = _import_globus_sdk()
@@ -333,6 +332,14 @@ def _cmd_login(client_id: str | None) -> int:
             app_name=app_name,
             client_id=client_id,
             scope_requirements=scope_requirements,
+            # Request a REFRESH token (offline access). globus_sdk's default
+            # (request_refresh_tokens=False) persists an online-only access
+            # token that expires in ~2 days with no way to renew — forcing a
+            # re-login. That is fatal for a default/unattended install path:
+            # an operator's tokens silently die days after setup. (Root cause
+            # of the 2026-05-20 expired-token blocker.) With a refresh token,
+            # globus_sdk renews automatically while it stays valid.
+            config=globus_sdk.GlobusAppConfig(request_refresh_tokens=True),
         )
         # Touching .login_required + .login() forces the device-code
         # flow now (instead of lazily on the first auth-needed API
@@ -835,17 +842,116 @@ def _cmd_test_transfer(*, list_only: bool, source_path_override: str | None) -> 
     return 0
 
 
+def _cmd_add_dir(remote_path: str, dest_subdir: str | None) -> int:
+    """Register an extra source directory (fetched recursively at transfer)."""
+    from apecx_integration.cli import globus_config
+
+    try:
+        entry = globus_config.add_source_dir(remote_path, dest_subdir=dest_subdir)
+    except ValueError as exc:
+        print(f"❌ {exc}", file=sys.stderr)
+        return 1
+    print(
+        f"✓ registered source directory (recursive): {entry['remote_path']} "
+        f"→ data/{entry['dest_subdir']}/"
+    )
+    print(f"  Stored in {globus_config.config_path()}.")
+    print("  Run `apecx-setup` (or `apecx-setup data`) to transfer it.")
+    return 0
+
+
+def _cmd_setup() -> int:
+    """One-shot full configuration (the no-argument default).
+
+    1. Web-based (native) login — the default auth path, no secret.
+    2. Default source directories (BV-BRC + VIOLIN) are fixed constants,
+       applied silently (nothing to configure — they never change).
+    3. Destination endpoint: env wins; else the persisted config; else prompt
+       once and persist it. This is the only user-specific bit.
+    """
+    from apecx_integration.cli import globus_config
+
+    print("apecx-globus-setup — configuring Globus in one go.\n")
+
+    # 1. Web login (native/thick client). _cmd_login(None) resolves the
+    #    built-in native client_id and runs the device-code browser flow.
+    print("Step 1/3 — web-based login (a browser window will open):")
+    rc = _cmd_login(None)
+    if rc != 0:
+        print(
+            "❌ login failed; Globus not configured. Re-run after resolving the above.",
+            file=sys.stderr,
+        )
+        return rc
+
+    # 2. Default source dirs are constants — nothing to set, just confirm.
+    print(
+        "\nStep 2/3 — source directories: using the built-in defaults "
+        "(BV-BRC public + VIOLIN). These are fixed and need no configuration.\n"
+        "  (Add more later with: apecx-globus-setup add-dir <remote_path>)"
+    )
+
+    # 3. Destination endpoint (your Globus Connect Personal UUID).
+    print("\nStep 3/3 — destination endpoint:")
+    dest = os.environ.get("APECX_GLOBUS_DEST_ENDPOINT_ID", "").strip()
+    if dest:
+        print(f"  ✓ using APECX_GLOBUS_DEST_ENDPOINT_ID from the environment ({dest}).")
+    elif globus_config.get_dest_endpoint():
+        print(f"  ✓ already saved in {globus_config.config_path()}.")
+    else:
+        entered = input(
+            "  Enter your destination endpoint UUID (Globus Connect Personal; blank to skip): "
+        ).strip()
+        if entered:
+            globus_config.set_dest_endpoint(entered)
+            print(f"  ✓ saved to {globus_config.config_path()}.")
+        else:
+            print(
+                "  ⚠ no destination endpoint set. Set APECX_GLOBUS_DEST_ENDPOINT_ID "
+                "or re-run `apecx-globus-setup` before transferring data."
+            )
+
+    print(
+        "\n✅ Globus configured. Run `apecx-setup` to transfer the data + "
+        "build the synonym dictionary (without the dictionary, the first "
+        "`apecx-mcp` startup pays a 10-15 minute build cost)."
+    )
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="apecx-globus-setup",
         description=(
-            "Store Globus confidential-client credentials in the OS "
-            "secure store, inspect them, test Globus Compute endpoint "
-            "configuration end-to-end, and render the Aurora "
-            "endpoint-config template."
+            "Configure Globus for apecx in one go. Run with NO arguments to "
+            "do the full setup: web-based (native) login, apply the default "
+            "source directories silently, and record your destination "
+            "endpoint. Subcommands cover credential storage, status, adding "
+            "extra source directories, and endpoint-config rendering."
         ),
     )
-    sub = parser.add_subparsers(dest="subcommand", required=True)
+    sub = parser.add_subparsers(dest="subcommand", required=False)
+
+    p_add_dir = sub.add_parser(
+        "add-dir",
+        help=(
+            "Register an EXTRA source directory to fetch recursively at "
+            "transfer time (in addition to the BV-BRC/VIOLIN defaults). "
+            "Persisted to ~/.apecx/globus_config.json."
+        ),
+    )
+    p_add_dir.add_argument(
+        "remote_path",
+        help="Absolute remote path on the source collection (e.g. /apecx-ramanathan-anl/foo/bar).",
+    )
+    p_add_dir.add_argument(
+        "--dest-subdir",
+        default=None,
+        help=(
+            "Local subdirectory under the data dir to land the files in "
+            "(default: the remote path's last segment)."
+        ),
+    )
 
     sub.add_parser(
         "store",
@@ -967,8 +1073,13 @@ def main(argv: list[str] | None = None) -> int:
         )
     if args.subcommand == "endpoint-config":
         return _cmd_endpoint_config(args.project, args.output)
+    if args.subcommand == "add-dir":
+        return _cmd_add_dir(args.remote_path, args.dest_subdir)
 
-    # argparse(required=True) makes this unreachable, but be explicit.
+    # No subcommand → the one-shot full setup (the default UX).
+    if args.subcommand is None:
+        return _cmd_setup()
+
     parser.error(f"unknown subcommand {args.subcommand!r}")
     return 2  # pragma: no cover
 

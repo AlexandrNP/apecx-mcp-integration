@@ -33,32 +33,14 @@ from pathlib import Path
 
 import pytest
 
-# The whole file tests ``DomainRagIndex`` and its consumers, all of
-# which transitively import ``sentence_transformers`` + ``faiss`` at
-# module load time. CI installs the package without the optional RAG
-# extras, so these deps are absent there. Skip the entire file via
-# the standard pytest gate when they're missing — same pattern as
-# tests/unit/test_globus_setup_cli.py uses for ``keyring``.
-#
-# Operators on the RAG path install with ``pip install -e .[rag]`` or
-# similar; their workspace has both deps and these tests run normally.
-pytest.importorskip(
-    "sentence_transformers",
-    reason=(
-        "sentence_transformers not installed — the domain RAG path "
-        "requires it. Install with `pip install sentence-transformers` "
-        "or `pip install -e apecx-integration[rag]` (when the [rag] "
-        "extra exists)."
-    ),
-)
-pytest.importorskip(
-    "faiss",
-    reason=(
-        "faiss not installed — the domain RAG path requires it. "
-        "Install with `pip install faiss-cpu` (or faiss-gpu on systems "
-        "with CUDA)."
-    ),
-)
+# NOTE (2026-05-21): this file NO LONGER importorskips sentence_transformers /
+# faiss. As of the index.py lazy-import fix, ``DomainRagIndex`` (and
+# ``DomainRagSearchStep``) import WITHOUT the optional 'rag' extra — that is the
+# whole point of the graceful-degradation contract these tests verify. The
+# disabled-path tests below run on a CLEAN install (no faiss), which is exactly
+# the environment the contract is designed for. The package-missing branch is
+# exercised by ``test_search_degrades_when_rag_packages_missing`` (which
+# simulates the absent extra) so the contract is proven, not skipped.
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -189,6 +171,41 @@ def test_search_returns_empty_for_empty_query_even_when_available(
     # Empty / whitespace queries return [] without touching FAISS.
     assert idx.search("", k=5) == []
     assert idx.search("   ", k=5) == []
+
+
+def test_search_degrades_when_rag_packages_missing(
+    tmp_path: Path,
+    caplog: pytest.LogCaptureFixture,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Index FILES present but the optional 'rag' extra (sentence-transformers
+    + faiss) NOT installed → search() still returns [] with a loud, actionable
+    warning, never a crash. This is the package-level half of the
+    graceful-degradation contract (the file-level half is covered above).
+    Simulated by forcing the lazy-import cache to the 'unavailable' sentinel,
+    so it runs even where faiss IS installed."""
+    import apecx_integration.agents.domain_rag.index as rag_index
+
+    both = tmp_path / "files_present_no_pkgs"
+    both.mkdir()
+    (both / "faiss_index.bin").write_bytes(b"\x00" * 16)
+    (both / "metadata.json").write_text("[]", encoding="utf-8")
+    idx = _make_index_in(both)
+    assert idx.is_available is True  # files are there...
+
+    # ...but the 'rag' packages are not (forced unavailable via the cache).
+    monkeypatch.setattr(rag_index, "_RAG_LIBS", False)
+
+    with caplog.at_level(logging.WARNING, logger="apecx_integration.agents.domain_rag.index"):
+        result = idx.search("a real non-empty query", k=5)
+
+    assert result == []
+    warnings = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
+    assert warnings, "expected a loud RAG-DISABLED warning when the 'rag' extra is missing"
+    msg = warnings[0]
+    assert "RAG DISABLED" in msg
+    assert "rag" in msg.lower()
+    assert "pip install" in msg
 
 
 # ---------------------------------------------------------------------------

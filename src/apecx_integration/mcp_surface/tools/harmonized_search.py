@@ -209,18 +209,34 @@ async def harmonized_search(
     index: str,
     entity_type: str = "",
 ) -> dict:
-    """Run the harmonized_search workflow and return its WorkflowResult envelope.
+    """Search any APECx Globus index (BV-BRC genomes / proteins / protein structures /
+    epitopes; VIOLIN pathogens / vaccines / genes; AntiviralDB; ProtaBank) for records
+    about a specific biological entity (virus, vaccine, pathogen, gene). Use for any
+    question like:
 
-    Drives a three-step nanobrain workflow:
-      1. Resolve ``term`` to a canonical IRI via the synonym dictionary
-      2. Either emit a *paused* envelope (when the resolution is
-         ambiguous — the LLM gets the candidate list, NO Globus
-         queries are run, no record count to silently mis-attribute),
-         OR run both a raw substring query (``q=<term>``) and a
-         harmonized query (filter on per-index field with the
-         canonical_label / synonyms / NCBI taxon) and compute
-         divergence
-      3. Wrap the result into a WorkflowResult envelope
+      - "How many Chikungunya virus genomes are in BV-BRC?"
+      - "Are there EEEV vaccines in VIOLIN?"
+      - "What protein structures exist for Mayaro virus?"
+      - "Find Yellow fever records in BV-BRC."
+
+    The tool resolves the user's term through the synonym dictionary first, then runs
+    both a raw substring query and a harmonized synonym-expanded query against the
+    index. When the term is ambiguous (e.g. "RSV" maps to 6 distinct viruses), the
+    tool returns a paused result with the candidate IRIs and asks the calling LLM
+    to surface them to the user — it does NOT silently pick one.
+
+    Output is a structured envelope with:
+      - record counts (raw + harmonized)
+      - a harmonization-health verdict (broken / degraded / harmonization_helped /
+        healthy_parity / zero_floor_unclear)
+      - the recommended_total to quote to the user
+      - sample records
+      - (when ambiguous) the candidate IRI list for disambiguation re-call
+
+    This is the canonical tool for "find records about X in any APECx index"; it
+    supersedes the raw query_bvbrc_genomes / query_pathogens / query_vaccines /
+    query_genes primitives which were deregistered on 2026-06-09 because they
+    bypassed disambiguation gating.
 
     Parameters
     ----------
@@ -244,16 +260,6 @@ async def harmonized_search(
     entity_type:
         Optional restrict-by-type hint: ``"pathogen"`` / ``"vaccine"``
         / ``"disease"`` / ``"gene"``. Empty string = search all types.
-
-    Returns
-    -------
-    dict
-        Serialized WorkflowResult — ``{markdown, data_handle,
-        data_preview, run_id}``. The ``data_preview`` carries a
-        Bundle preview with the resolution path, raw and harmonized
-        record counts (or candidate list when paused), and divergence
-        stats. The full structured payload sits behind ``data_handle``
-        in the HandleStore.
     """
     if not isinstance(term, str) or not term.strip():
         raise ValueError(f"term={term!r} must be a non-empty string.")

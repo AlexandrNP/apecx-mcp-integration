@@ -58,7 +58,13 @@ dependencies = [
     # Branch refs are pinned for reproducibility — bump explicitly
     # when upstream lands a feature this repo depends on.
     "nanobrain @ git+https://github.com/AlexandrNP/nanobrain.git@academy-integration",
-    "apecx-harvesters @ git+https://github.com/abought/apecx-harvesters.git@main",
+    # Pinned to AlexandrNP/apecx-harvesters until the dict_reader package
+    # lands upstream — clean-install dictionary auto-download (the
+    # _ensure_synonym_dict_or_warn fast path in mcp_surface/server.py)
+    # depends on apecx_harvesters.dict_reader.bootstrap_dictionary,
+    # which is only on the fork's main branch today. Swap back to
+    # abought/main when the dict_reader PR is merged upstream.
+    "apecx-harvesters @ git+https://github.com/AlexandrNP/apecx-harvesters.git@main",
 ]
 
 [project.optional-dependencies]

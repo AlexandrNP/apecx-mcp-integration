@@ -32,6 +32,25 @@ Ollama-gated tests (auto-skip when unreachable): see
 `composer_config.yml` at load — see
 `composition/composer.py::_apply_llm_env_overrides`.
 
+## Clean-install: never module-scope-import an optional extra
+
+pytest collection IS import — it imports every `test_*.py` to discover tests,
+**before** marker deselection. So an unguarded module-scope `import` of an
+optional extra (`rag`: faiss/sentence-transformers; `hpc`: globus-sdk/keyring;
+`academy`) in `src/` OR a test module aborts the WHOLE `make unit` run on a
+clean `pip install -e .[dev]` (which has none of those extras) — `-m "not
+integration"` can't save it. **Rule:** lazy-import extras inside the
+function/method that uses them; in tests use `pytest.importorskip` at module
+top. An optional feature must IMPORT without its extra and degrade LOUDLY (e.g.
+`DomainRagIndex.search` → `[]` + a `pip install '.[rag]'` warning), never crash
+on import. A base-dep import can still drift — guard imported *symbols* too
+(`Transform` was removed from `apecx-harvesters`). **Detection:**
+`grep -rnE '^(import|from) (sentence_transformers|faiss|globus_sdk|globus_compute_sdk|keyring|academy)\b' src tests`.
+Eval scaffolding must NOT be named `test_*.py` under `tests/` (the bench
+`problems/**/test_code.py` templates are excluded via a `tests/conftest.py`
+`pytest_ignore_collect` hook). **Source:** 2026-05-21 clean-install audit
+(`docs/clean_install_collection_audit_2026-05-21.md`).
+
 ## New supervisor onboarding
 
 If you are taking over apecx-composer supervision from a previous
@@ -144,33 +163,57 @@ Output: `data/apecx_domain_rag/{faiss_index.bin,metadata.json}`.
 When missing, `DomainRagIndex.search` returns `[]` with a single
 loud WARNING per process; the synthesis branch degrades to empty
 chunks without crashing. The MCP server prints a `RAG DISABLED`
-banner at startup. See `docs/architecture.md` + `FAISS_SETUP_INSTRUCTIONS.md`.
+banner at startup. See `docs/architecture.md` + `docs/FAISS_SETUP_INSTRUCTIONS.md`.
 
-## Globus-first data transfer (G82, 2026-05-16)
+## Globus data transfer — SOLE path (G82 2026-05-16; G127 2026-05-21)
 
-`apecx-setup data` prefers Globus over `gh release download` when
-the operator has credentials configured. Falls back transparently
-when Globus is unconfigured — zero extra friction for operators
-who never set it up.
+`apecx-setup data` acquires the dataset ONLY via Globus. The legacy
+`gh release download` fallback (and `--prefer-gh-release`) were retired
+2026-05-21. When Globus is unconfigured AND no data is already present
+locally, the data step **FAILS LOUD** with setup instructions — no silent
+degradation.
 
 ```bash
-# One-time credential store:
+# One-time credential store (keyring service "nanobrain-globus"):
 apecx-globus-setup store --client-id <id> --client-secret <secret>
 
-# Per-shell env vars (see .env.example):
+# Per-shell env vars (see .env.example). DEST is now a hard requirement:
 export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<source-uuid>
-export APECX_GLOBUS_DEST_ENDPOINT_ID=<your-personal-uuid>
+export APECX_GLOBUS_DEST_ENDPOINT_ID=<your-personal-uuid>   # Globus Connect Personal, running
 
-# Globus-preferred install:
 apecx-setup
-
-# Force the legacy gh-release path:
-apecx-setup --prefer-gh-release
 ```
 
-The transfer primitive is nanobrain's `GlobusTransferStep`; the
-apecx-side wrapper YAML is `configs/globus_transfers/violin_bvbrc_transfer_step.yml`.
-Full operator guide: `docs/globus_data_transfer.md`.
+**Auth (default flipped 2026-05-22):** DEFAULT is NATIVE / web-based
+device-code login (thick client, no secret) — `apecx-globus-setup login`
+(zero-config; built-in public native client_id, override via
+`$APECX_GLOBUS_NATIVE_CLIENT_ID`). The confidential secret path (thin client,
+M2M) is OPT-IN via `APECX_GLOBUS_AUTH_MODE=client_credentials` — required for
+headless/CI (no browser). `_resolve_auth_env` defaults native even when
+confidential creds exist. nanobrain `build_globus_app` native path sets
+`request_refresh_tokens=True` (commit `ae5262d`) so native tokens auto-refresh.
+
+The data step drives a 2-step nanobrain workflow
+(`configs/globus_transfers/violin_bvbrc_transfer_workflow.yml`):
+`GlobusManifestVerifyStep` (G127, fail-loud source-existence gate) →
+`GlobusTransferStep` (G28), via `Workflow.run`. **Honesty contract:**
+`Workflow.run` swallows a step exception (returns `status:'completed'` with
+empty outputs); the driver trusts ONLY `transfer_status=='SUCCEEDED'` and
+reconstructs the error from captured `step_failed` events. **Keyring note:**
+the preflight reads creds via nanobrain's `globus_credentials.load_credentials`
+(service `nanobrain-globus`) — the same place `build_globus_app` resolves them
+(fixed 2026-05-21; the two used to disagree). **Source map (both live-verified
+2026-05-21, same endpoint 8d2e71d6):** BV-BRC at
+`/apecx-ramanathan-anl/public/data/BV-BRC/`; VIOLIN at
+`/apecx-ramanathan-anl/apecx-project-all/violin/` — ACL-gated by the
+`apecx-project-all` Globus Group (the earlier "Path not allowed" was that ACL
+gate, not a separate collection; Group membership unlocked the same path — so
+NO per-dataset endpoint is needed). **Required vs optional:** BV-BRC is
+REQUIRED; VIOLIN is OPTIONAL — an identity in the Group fetches it (canonical
+client is a member → default install gets both), one not in the Group hits the
+verify gate → `_step_data` returns `partial` (install completes, exit 0) with a
+loud warning. Optionality is an apecx CLI policy layer; the nanobrain verify
+step stays strict. Full operator guide: `docs/globus_data_transfer.md`.
 
 ## PBS bundle export
 

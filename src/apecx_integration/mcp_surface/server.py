@@ -57,9 +57,6 @@ from apecx_integration.mcp_surface.tools import (
     approvals as approvals_tools,
 )
 from apecx_integration.mcp_surface.tools import (
-    canonical_entity as canonical_entity_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -139,17 +136,30 @@ def build_server() -> FastMCP:
     # Direct database lookups — bypass the composer for one-shot
     # VIOLIN + BV-BRC queries the model can answer without orchestrating
     # a workflow ("list vaccines targeting EEEV").
-    server.tool()(database_tools.query_vaccines)
-    server.tool()(database_tools.query_pathogens)
-    server.tool()(database_tools.query_genes)
-    server.tool()(database_tools.query_bvbrc_genomes)
-    server.tool()(database_tools.get_vaccine_pathogen_genes)
-    server.tool()(database_tools.resolve_entity)
+    # Database query primitives — DELIBERATELY NOT EXPOSED as MCP tools
+    # (2026-06-09 tier cleanup).
+    #
+    # query_vaccines / query_pathogens / query_genes / query_bvbrc_genomes /
+    # get_vaccine_pathogen_genes / resolve_entity / resolve_canonical_entity
+    # were registered as tier-1 tools but violated the workflow-first
+    # tiered architecture: each one has a specific first-line description
+    # (e.g. "Search the BV-BRC alphavirus genome database (~17,000
+    # genomes)") that LLMs route against in preference to the canonical
+    # ``harmonized_search`` workflow tool. The result was that the LLM
+    # would pick the cheaper-looking primitive — bypassing harmonized
+    # synonym expansion + the verdict surface + (until the 2026-06-09
+    # Path B hotfix) HITL gating on ambiguous terms.
+    #
+    # ``harmonized_search`` (below) is now the canonical entry point for
+    # "find records about X in any APECx Globus index" queries. The
+    # underlying Python functions remain importable and are used
+    # internally by the synthesis pipeline and by the composer.
+    #
+    # ``database_statistics`` STAYS on the wire as a meta/navigation
+    # tool — it doesn't compete with harmonized_search; it tells the LLM
+    # "what tables exist, what columns they have" for composer-driven
+    # workflow generation.
     server.tool()(database_tools.database_statistics)
-
-    # Stage 2 canonical entity resolution — dictionary fast path first,
-    # substring slow path fallback.  Always surfaces path + confidence.
-    server.tool()(canonical_entity_tools.resolve_canonical_entity)
 
     # End-to-end RAG synthesis — drives the rag_e2e_synthesis workflow
     # directly (no composer round-trip). One LLM call total. Steps are
@@ -695,28 +705,81 @@ def _check_rhea_status_or_warn() -> None:
     )
 
 
+def _try_public_download(sqlite_path: Path) -> Path | None:
+    """Anonymous bootstrap of the dictionary from the public Globus path.
+
+    Tries to fetch the pre-built dictionary via
+    :func:`apecx_harvesters.dict_reader.bootstrap.bootstrap_dictionary` —
+    the canonical clean-install path. Anonymous HTTPS only; no Globus
+    credentials, no keyring access, no env-var pre-configuration
+    required (the bootstrap defaults to the production URL when
+    ``APECX_DICT_PUBLIC_BASE_URL`` is unset).
+
+    Returns the dictionary path on success, ``None`` on any failure
+    (network, sha mismatch, unsupported schema, dict_reader missing).
+    The caller then falls back to the local-build path so offline /
+    dev environments still work.
+
+    Opt out via ``APECX_SKIP_DICT_DOWNLOAD=1`` to force the local-build
+    path (useful when the published version is older than what the
+    local build would produce).
+    """
+    if os.environ.get("APECX_SKIP_DICT_DOWNLOAD", "").strip() == "1":
+        log.info(
+            "APECX_SKIP_DICT_DOWNLOAD=1 — skipping public bootstrap, "
+            "deferring to local-build fallback"
+        )
+        return None
+    try:
+        from apecx_harvesters.dict_reader.bootstrap import (
+            bootstrap_dictionary,
+        )
+    except ImportError as exc:
+        log.info(
+            "public download path unavailable (apecx_harvesters.dict_reader "
+            "import failed: %s) — deferring to local build",
+            exc,
+        )
+        return None
+    try:
+        log.warning(
+            "MCP startup: bootstrapping synonym dictionary from public "
+            "Globus path (anonymous, ~30s first run) to %s",
+            sqlite_path,
+        )
+        return bootstrap_dictionary(dest=sqlite_path, quiet=True)
+    except Exception as exc:  # noqa: BLE001
+        log.warning(
+            "public dictionary bootstrap failed (%s) — falling back to "
+            "local-build path; entity resolution will use slow substring "
+            "search if neither path produces an artifact",
+            exc,
+        )
+        return None
+
+
 def _ensure_synonym_dict_or_warn() -> None:
-    """Build the synonym dictionary at startup if it isn't already there.
+    """Make a synonym dictionary available at startup.
 
-    Behavior:
+    Two paths, tried in order so a clean install with zero prior state
+    works without any user Globus configuration:
 
-    1. If ``APECX_SYNONYM_DICT_PATH`` points at an existing file, pre-warm
-       the singleton and return — same as before.
-    2. Otherwise, invoke the dictionary-build workflow via
-       :func:`ensure_dictionary` (the migration seam — same function that
-       a future apecx-harvesters sink will call). The workflow:
-         - Returns the existing artifact path if one was built earlier.
-         - Returns ``None`` if VIOLIN data is missing (operator must
-           ``apecx-setup`` first) or the operator opted out via
-           ``APECX_SKIP_DICT_BUILD=1``.
-         - Otherwise drives the cascade and writes a fresh SQLite.
-    3. After a successful build, point ``APECX_SYNONYM_DICT_PATH`` at the
-       result and pre-warm the loader singleton.
+    1. **Public download** (anonymous). Calls
+       :func:`apecx_harvesters.dict_reader.bootstrap.bootstrap_dictionary`,
+       which fetches the pre-built SQLite from the canonical Argonne
+       LCF Globus HTTPS path. ~30s on first run for ~47 MB; cached on
+       disk thereafter. Opt out via ``APECX_SKIP_DICT_DOWNLOAD=1``.
+    2. **Local build** (legacy). Invokes :func:`ensure_dictionary` to
+       drive the dictionary-build workflow against locally-staged
+       VIOLIN/BV-BRC data. Returns ``None`` if data is missing or the
+       operator opted out via ``APECX_SKIP_DICT_BUILD=1``. 10-15 min
+       on first run.
 
-    The build is 10-15 minutes on first run (live OLS calls). Subsequent
-    starts are <1 s because the artifact is detected and the build is
-    skipped. Operators who want fast startup with degraded resolution
-    can set ``APECX_SKIP_DICT_BUILD=1``.
+    If ``APECX_SYNONYM_DICT_PATH`` already points at an existing file,
+    both paths are skipped — the operator's choice wins.
+
+    After either path produces a SQLite, the loader singleton is
+    pre-warmed so the first MCP tool call doesn't pay the open cost.
     """
     from apecx_integration.synonym_dictionary.loader import (
         configure_dictionary_path,
@@ -731,8 +794,16 @@ def _ensure_synonym_dict_or_warn() -> None:
     assert cfg.sqlite_path is not None  # resolve() guarantees this
 
     if not cfg.sqlite_path.is_file():
+        # Path 1: public anonymous download (no creds, no env config).
+        downloaded = _try_public_download(cfg.sqlite_path)
+        if downloaded is not None:
+            os.environ["APECX_SYNONYM_DICT_PATH"] = str(downloaded)
+
+    if not cfg.sqlite_path.is_file():
+        # Path 2: legacy local-build fallback (needs VIOLIN data).
         log.info(
-            "MCP startup: synonym dictionary not found at %s — invoking build workflow",
+            "MCP startup: no dictionary at %s after download attempt — "
+            "invoking local-build workflow",
             cfg.sqlite_path,
         )
         try:
@@ -745,13 +816,12 @@ def _ensure_synonym_dict_or_warn() -> None:
             return
         if built is None:
             log.warning("=" * 64)
-            log.warning("Synonym dictionary not built — entity resolution will use")
-            log.warning("the slow substring fallback. Reasons (check earlier log lines):")
-            log.warning("  - APECX_SKIP_DICT_BUILD=1 was set, OR")
-            log.warning("  - VIOLIN data is missing (run apecx-setup first).")
+            log.warning("Synonym dictionary not available — entity resolution will use")
+            log.warning("the slow substring fallback. Both paths declined:")
+            log.warning("  - public download: unreachable or APECX_SKIP_DICT_DOWNLOAD=1")
+            log.warning("  - local build: APECX_SKIP_DICT_BUILD=1 OR VIOLIN data missing")
             log.warning("=" * 64)
             return
-        # Re-export the env var so child tool calls see the same path.
         os.environ["APECX_SYNONYM_DICT_PATH"] = str(built)
 
     # Pre-warm the loader singleton so the first MCP tool call doesn't pay

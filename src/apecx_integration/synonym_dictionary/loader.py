@@ -82,12 +82,16 @@ class DictionaryIndex:
     def __init__(
         self,
         *,
-        inverse: dict[tuple[str, str], str],
+        inverse: dict[tuple[str, str], tuple[str, ...]],
         entries: dict[str, DictionaryEntry],
         manifest: BuildManifest,
         db_path: Path | None = None,
         has_hierarchy: bool = False,
     ) -> None:
+        # ``inverse`` carries the FULL candidate IRI list per
+        # (entity_type, normalized_surface_form). SC-A4b (2026-06-08):
+        # collisions surface to the lookup_entity caller as AMBIGUOUS
+        # instead of being silently collapsed to a single winner.
         self._inverse = inverse
         self._entries = entries
         self._manifest = manifest
@@ -99,17 +103,46 @@ class DictionaryIndex:
         return self._manifest
 
     def lookup(self, entity_type: EntityType, surface_form: str) -> DictionaryEntry | None:
-        """Fast-path lookup: normalized surface form -> canonical entry.
+        """Fast-path lookup: normalized surface form -> single canonical entry.
 
-        Returns ``None`` on miss (caller should route to slow path).
+        Returns ``None`` when (a) the surface form has no candidate, OR
+        (b) it has ≥2 candidates and the caller therefore must route to
+        the AMBIGUOUS path via :meth:`lookup_all`. Callers wanting to
+        distinguish "miss" from "ambiguous" should use :meth:`lookup_all`.
         """
         normalized = normalize_surface_form(surface_form)
         if not normalized:
             return None
-        canonical_iri = self._inverse.get((entity_type.value, normalized))
-        if canonical_iri is None:
+        candidates = self._inverse.get((entity_type.value, normalized), ())
+        if len(candidates) != 1:
             return None
-        return self._entries.get(canonical_iri)
+        return self._entries.get(candidates[0])
+
+    def lookup_all(self, entity_type: EntityType, surface_form: str) -> tuple[DictionaryEntry, ...]:
+        """SC-A4b: return ALL candidate entries for a surface form.
+
+        - ``()``        — miss.
+        - ``(entry,)``  — unambiguous match.
+        - ``(e1, e2, …)`` — ambiguous; caller surfaces AMBIGUOUS status
+          + full candidate list to HITL.
+
+        Order matches insertion order in the entries table (stable across
+        repeat builds because the build pass iterates taxa by ascending
+        taxon id). Entries with confidence == 1.0 sort first within the
+        result tuple so ID-anchored candidates lead the list — but the
+        full set is returned so the caller doesn't silently lose any.
+        """
+        normalized = normalize_surface_form(surface_form)
+        if not normalized:
+            return ()
+        iris = self._inverse.get((entity_type.value, normalized), ())
+        results: list[DictionaryEntry] = []
+        for iri in iris:
+            entry = self._entries.get(iri)
+            if entry is not None:
+                results.append(entry)
+        results.sort(key=lambda e: e.confidence, reverse=True)
+        return tuple(results)
 
     def lookup_any_type(self, surface_form: str) -> list[DictionaryEntry]:
         """Search across all entity types.
@@ -123,8 +156,12 @@ class DictionaryIndex:
             return []
         results: list[DictionaryEntry] = []
         seen_iris: set[str] = set()
-        for (_, norm_form), iri in self._inverse.items():
-            if norm_form == normalized and iri not in seen_iris:
+        for (_, norm_form), iris in self._inverse.items():
+            if norm_form != normalized:
+                continue
+            for iri in iris:
+                if iri in seen_iris:
+                    continue
                 entry = self._entries.get(iri)
                 if entry is not None:
                     results.append(entry)
@@ -340,24 +377,41 @@ class DictionaryIndex:
         reader = SQLiteDictionaryReader(path)
         manifest = reader.read_manifest()
 
-        inverse: dict[tuple[str, str], str] = {}
+        # SC-A4b (2026-06-08): accumulate ALL candidate IRIs per
+        # (entity_type, normalized_surface_form). Earlier code kept the
+        # FIRST-seen IRI (``if key not in inverse``) — that was the
+        # in-memory cousin of last-write-wins: stable order, but a
+        # silent disambiguation that hid collisions (603 in the
+        # virus-subtree build). The lookup path now surfaces ambiguity.
+        # Use list during accumulation so we can dedupe + preserve order,
+        # then freeze to tuple at the end for hashability + immutability.
+        inverse_acc: dict[tuple[str, str], list[str]] = {}
         entries: dict[str, DictionaryEntry] = {}
 
         for entry in reader.all_entries():
             entries[entry.canonical_iri] = entry
             for surface in (entry.canonical_label, *entry.synonyms):
                 normalized = normalize_surface_form(surface)
-                if normalized:
-                    key = (entry.entity_type.value, normalized)
-                    if key not in inverse:
-                        inverse[key] = entry.canonical_iri
+                if not normalized:
+                    continue
+                key = (entry.entity_type.value, normalized)
+                bucket = inverse_acc.setdefault(key, [])
+                if entry.canonical_iri not in bucket:
+                    bucket.append(entry.canonical_iri)
+
+        inverse: dict[tuple[str, str], tuple[str, ...]] = {
+            k: tuple(v) for k, v in inverse_acc.items()
+        }
+        ambiguous_count = sum(1 for v in inverse.values() if len(v) > 1)
 
         has_hierarchy = reader.has_taxon_hierarchy()
         log.info(
-            "loaded dictionary %s: %d entries, %d index rows (version %s, hierarchy=%s)",
+            "loaded dictionary %s: %d entries, %d index rows, "
+            "%d ambiguous surface forms (version %s, hierarchy=%s)",
             path,
             len(entries),
             len(inverse),
+            ambiguous_count,
             manifest.dictionary_version,
             has_hierarchy,
         )

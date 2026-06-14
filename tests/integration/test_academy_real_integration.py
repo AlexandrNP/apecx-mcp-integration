@@ -27,31 +27,44 @@ pre-G5 code:
   in the non-demo path rather than dispatching through the real
   Handle.
 
-## Why not a skipif-gated test
+## Skip policy (revised 2026-05-21)
 
-``academy-py`` is now a declared dependency of apecx-mcp-integration
-(pyproject.toml ``[project.optional-dependencies].academy`` —
-installed automatically in the canonical venv). If it goes missing,
-that is a test-environment regression worth seeing as an explicit
-failure, not a quiet skip.
+``academy-py`` is an OPTIONAL extra
+(pyproject.toml ``[project.optional-dependencies].academy``), NOT a base
+dependency. A clean ``pip install`` without ``[academy]`` legitimately
+lacks it, so importing ``academy`` at module scope would raise a
+COLLECTION error that aborts the whole ``make unit`` run — punishing the
+majority who don't install the academy extra. ``pytest.importorskip``
+turns absence into a clean module-level skip; when academy IS installed
+this test runs for real (and ``-m "not integration"`` deselects it
+regardless). A genuinely BROKEN academy install still surfaces inside the
+real-path tests below, not as a collection abort.
 """
 
 from __future__ import annotations
 
-import os
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
 import pytest
 
 pytestmark = pytest.mark.integration
 
 
+# ``academy`` is an OPTIONAL extra (``pip install -e '.[academy]'``). On a
+# clean install without it, importing at module scope would ERROR during
+# collection (breaking `make unit` for everyone), not skip. importorskip turns
+# absence into a clean module-level skip; when academy IS installed the test
+# runs for real (and is deselected by `-m "not integration"` regardless).
+pytest.importorskip(
+    "academy.agent", reason="academy extra not installed — `pip install -e '.[academy]'`"
+)
+
 # ---------------------------------------------------------------------------
 # A real Academy agent for the test to launch + invoke.
 # Defined at module level so ``manager.launch(Echo)`` can pickle it.
 # ---------------------------------------------------------------------------
 
-from academy.agent import Agent, action
+from academy.agent import Agent, action  # noqa: E402
 
 
 class Echo(Agent):

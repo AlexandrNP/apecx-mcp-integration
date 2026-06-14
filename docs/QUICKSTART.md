@@ -26,12 +26,15 @@ For depth on any step, see `INSTALL.md` (alt installers) and
 ```bash
 python3 --version    # need 3.12+
 uv --version         # any recent — install with: curl -LsSf https://astral.sh/uv/install.sh | sh
-gh auth status       # authenticated to GitHub — required for the private data download
 ```
 
-`gh` is required because `apecx-setup` downloads domain data from a
-private GitHub release; auth piggybacks on `gh`'s session, no PAT
-setup needed.
+You also need, for the data transfer (Step 3):
+- A **Globus account** (any institutional or Globus ID — free).
+- **[Globus Connect Personal](https://www.globus.org/globus-connect-personal)**
+  installed + running, to give you a local destination endpoint UUID.
+
+(`gh` is NOT needed — the GitHub-release data download was retired; data now
+comes over Globus.)
 
 ---
 
@@ -85,37 +88,66 @@ shell rc file.
 
 ---
 
-## Step 3 — Run apecx-setup (~30 sec)
+## Step 3 — Configure Globus (one command)
+
+Data is transferred over Globus. Run the setup with **no arguments** — it does
+the whole thing: web-based login (no secret), applies the default source
+directories silently, and records your destination endpoint (prompts once,
+then remembers it in `~/.apecx/globus_config.json`):
+
+```bash
+apecx-globus-setup          # opens your browser; then asks for your
+                            # destination endpoint UUID (one-time).
+```
+
+You only need the **destination** endpoint (your local Globus Connect Personal
+UUID, from Settings → Endpoints). The source collection + directories are
+built-in defaults.
+
+Want extra data beyond the BV-BRC/VIOLIN defaults? Register additional source
+directories (fetched recursively):
+
+```bash
+apecx-globus-setup add-dir /apecx-ramanathan-anl/path/to/more-data
+```
+
+Headless / CI (no browser)? Use the secret path instead:
+`export APECX_GLOBUS_AUTH_MODE=client_credentials` then
+`apecx-globus-setup store --client-id <id> --client-secret <secret>` and set
+`APECX_GLOBUS_SOURCE_ENDPOINT_ID` / `APECX_GLOBUS_DEST_ENDPOINT_ID` in the env.
+Full details: [`globus_data_transfer.md`](globus_data_transfer.md).
+
+---
+
+## Step 4 — Run apecx-setup (~30 sec, longer on the first data transfer)
 
 ```bash
 apecx-setup
 ```
 
-Walks you through (each step prints what it will do; consent
-prompts gate any system-touching action):
+Runs these steps in order (each prints what it will do; consent prompts gate
+any system-touching action):
 
-1. **`data`** — confirms the data directory (default
-   `~/.apecx/data`), downloads the domain tarball via your `gh`
-   session (~1.5 MB compressed, ~15 MB extracted), AND patches
-   `claude_desktop_config.json` with the `apecx` MCP server block
-   (prompts for the three LLM env vars on first install).
-2. **`infra`** — starts Postgres + Redis Docker containers if
-   Docker is available; skipped if not (SQLite is the default
-   backend, so this is purely optional).
-3. **`llm`** — if `ollama` is not on PATH, prompts to install via
-   `brew install ollama` (macOS) or `curl -fsSL
-   https://ollama.ai/install.sh | sh` (Linux). The exact command
-   is printed BEFORE the prompt. If the CLI is present but the
-   daemon isn't responding, prompts to start it in the background.
-   Pulls `mistral-nemo:latest` (or whatever `APECX_LLM_MODEL` is
-   set to) if it's not already there.
-4. **`rag`** — builds the FAISS index from the downloaded data.
-5. **`verify`** — health-checks every component; prints a summary
-   table.
+1. **`globus`** — preflight: SDK + auth + endpoint UUIDs. Surfaces readiness.
+2. **`data`** — confirms the data directory (default `~/.apecx/data`), runs the
+   Globus **verify→transfer** workflow (BV-BRC is required; VIOLIN is optional
+   and skipped with a loud warning if your identity lacks `apecx-project-all`
+   Group access — the install still completes), then patches
+   `claude_desktop_config.json` with the `apecx` MCP server block (prompts for
+   the three LLM env vars on first install).
+3. **`infra`** — starts Postgres + Redis Docker containers if Docker is
+   available; skipped if not (SQLite is the default backend, so optional).
+4. **`llm`** — if `ollama` isn't on PATH, prompts to install (the exact command
+   is printed BEFORE the y/N prompt); starts the daemon if needed; pulls
+   `mistral-nemo:latest` (or `$APECX_LLM_MODEL`).
+5. **`verify`** — health-checks every component; prints a summary table.
+
+(`rag` and `rhea` are opt-in extra steps — `apecx-setup --with-rag` /
+`--with-rhea` — and are skipped from the default chain.)
 
 ---
 
-## Step 4 — Restart Claude Desktop
+## Step 5 — Restart Claude Desktop
 
 **Fully quit** (Cmd-Q on macOS — closing the window doesn't restart
 the MCP subprocesses) and reopen. After 2–5 seconds, the apecx
@@ -135,7 +167,7 @@ Common failure banners (each clearly indicates the cause):
 
 ---
 
-## Step 5 — First query
+## Step 6 — First query
 
 In Claude Desktop, try:
 
@@ -162,7 +194,7 @@ For the full tool inventory + per-tool input/output shapes, see
 
 ```bash
 apecx-setup --reconfigure-llm   # change LLM endpoint; preserves other env
-apecx-setup                     # re-download data (prompts before overwrite)
+apecx-setup                     # re-transfer data over Globus (prompts before overwrite)
 uv tool install --reinstall --python 3.12 \
   git+https://github.com/AlexandrNP/apecx-mcp-integration.git   # update
 ```
@@ -174,9 +206,11 @@ uv tool install --reinstall --python 3.12 \
 - **`APECX_LLM_API_KEY` is plaintext** in `claude_desktop_config.json`
   if you use a paid cloud LLM. Operator-managed; no built-in vault
   integration.
-- **Private data repo** — `apecx-data` requires `gh auth` access to
-  `AlexandrNP/apecx-data`. Outside the org you can't download the
-  dataset.
+- **Globus access** — the data lives on a Globus collection. BV-BRC is on the
+  public path; VIOLIN is gated by the `apecx-project-all` Globus Group. Without
+  Group membership the install completes on BV-BRC alone (loud warning) and
+  VIOLIN-dependent lookups return empty until access is granted. Headless/CI
+  installs must use the secret auth path (no browser for the device-code flow).
 - **First-launch latency** — apecx-mcp autostarts the Control Plane
   backend on first MCP call (~2–5 s the first time; sub-second
   thereafter).

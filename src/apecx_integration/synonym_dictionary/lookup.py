@@ -48,20 +48,42 @@ log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
+class LookupCandidate:
+    """One candidate for an ambiguous surface form (SC-A4b, 2026-06-08).
+
+    Emitted on :attr:`LookupResult.candidates` when the same normalized
+    surface form maps to multiple distinct canonical IRIs. Carries the
+    minimum fields needed by HITL UIs to present the user with a choice
+    without re-querying the dictionary.
+    """
+
+    canonical_iri: str
+    canonical_label: str
+    canonical_ontology: str
+    confidence: float
+
+
+@dataclass(frozen=True)
 class LookupResult:
     """The outcome of a single Stage 2 entity lookup.
 
     ``path`` values:
-    - ``"fast"``     — exact dictionary hit (canonical IRI or synonym).
-    - ``"ancestor"`` — IRI miss but a taxonomic ancestor was found in the
-                       dictionary via the NCBITaxon hierarchy table.
-                       Confidence is the ancestor entry's confidence × 0.9.
-    - ``"slow"``     — fell through to database substring matcher.
-    - ``"miss"``     — no match on any path.
+    - ``"fast"``      — exact dictionary hit (canonical IRI or synonym),
+                         single unambiguous candidate.
+    - ``"ambiguous"`` — exact dictionary hit but the surface form maps to
+                         ≥2 distinct canonical IRIs (SC-A4b, 2026-06-08).
+                         The candidates are on :attr:`candidates`; the
+                         single ``canonical_*`` fields are ``None``.
+                         Caller MUST route to HITL — do not silently pick.
+    - ``"ancestor"``  — IRI miss but a taxonomic ancestor was found in the
+                         dictionary via the NCBITaxon hierarchy table.
+                         Confidence is the ancestor entry's confidence × 0.9.
+    - ``"slow"``      — fell through to database substring matcher.
+    - ``"miss"``      — no match on any path.
     """
 
     surface_form: str
-    path: Literal["fast", "ancestor", "slow", "miss"]
+    path: Literal["fast", "ambiguous", "ancestor", "slow", "miss"]
     canonical_iri: str | None
     canonical_label: str | None
     canonical_ontology: str | None
@@ -69,6 +91,10 @@ class LookupResult:
     resolution_status: ResolutionStatus
     synonyms: tuple[str, ...] = field(default_factory=tuple)
     evidence: str = ""
+    # SC-A4b: when ``path == "ambiguous"``, the full candidate list.
+    # Empty for every other path so existing consumers ignoring it
+    # behave identically.
+    candidates: tuple[LookupCandidate, ...] = field(default_factory=tuple)
 
 
 def fast_miss(surface_form: str, *, reason: str = "") -> LookupResult:
@@ -140,13 +166,17 @@ def lookup_entity(
     # Fast path — surface form lookup
     if index is not None:
         if entity_type is not None:
-            entry = index.lookup(entity_type, surface_form)
-            if entry is not None:
-                return _entry_to_result(surface_form, entry, path="fast")
+            candidates = index.lookup_all(entity_type, surface_form)
+            if len(candidates) == 1:
+                return _entry_to_result(surface_form, candidates[0], path="fast")
+            if len(candidates) >= 2:
+                return _ambiguous_to_result(surface_form, candidates)
         else:
             matches = index.lookup_any_type(surface_form)
-            if matches:
+            if len(matches) == 1:
                 return _entry_to_result(surface_form, matches[0], path="fast")
+            if len(matches) >= 2:
+                return _ambiguous_to_result(surface_form, tuple(matches))
 
     # Slow path: delegate to the existing database substring matcher.
     slow = _try_slow_path(surface_form)
@@ -307,6 +337,40 @@ def _entry_to_result(
             f"dictionary_version={entry.ontology_version}; "
             f"source_records={len(entry.source_records)}"
         ),
+    )
+
+
+def _ambiguous_to_result(
+    surface_form: str, candidates: tuple[DictionaryEntry, ...]
+) -> LookupResult:
+    """SC-A4b: build a LookupResult for an ambiguous surface form.
+
+    All candidate entries are projected into :class:`LookupCandidate`
+    records and attached to ``LookupResult.candidates``. The single
+    ``canonical_*`` fields are deliberately ``None`` — a caller that
+    treats them as the resolved IRI without checking ``path`` will get
+    a loud TypeError, not a silent wrong answer.
+    """
+    candidate_records = tuple(
+        LookupCandidate(
+            canonical_iri=entry.canonical_iri,
+            canonical_label=entry.canonical_label,
+            canonical_ontology=entry.ontology.value,
+            confidence=entry.confidence,
+        )
+        for entry in candidates
+    )
+    return LookupResult(
+        surface_form=surface_form,
+        path="ambiguous",
+        canonical_iri=None,
+        canonical_label=None,
+        canonical_ontology=None,
+        confidence=0.0,
+        resolution_status=ResolutionStatus.AMBIGUOUS,
+        synonyms=(),
+        evidence=(f"{len(candidate_records)} candidate IRIs for {surface_form!r}; HITL required"),
+        candidates=candidate_records,
     )
 
 

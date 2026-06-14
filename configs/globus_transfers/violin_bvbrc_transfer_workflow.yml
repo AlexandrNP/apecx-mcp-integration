@@ -1,0 +1,119 @@
+# violin_bvbrc_transfer_workflow (G127) — verify-then-transfer, framework-native
+#
+# A two-step nanobrain workflow that gates the VIOLIN + BV-BRC Globus transfer
+# behind a fail-loud source-existence check:
+#
+#     workflow_input ({items})            # built by build_transfer_items at runtime
+#         │  input_to_verify (DirectLink, auto_transfer)
+#         ▼
+#     verify   (GlobusManifestVerifyStep) # operation_ls every source path; FAIL-LOUD on any miss
+#         │  verify_to_transfer (DirectLink, auto_transfer)   # carries {items} through
+#         ▼
+#     transfer (GlobusTransferStep)        # submit + poll to SUCCEEDED
+#         │  transfer_to_output (DirectLink, auto_transfer)
+#         ▼
+#     workflow_output ({status})
+#
+# Why a workflow (not two sequential process() calls): the verify->transfer
+# ordering is enforced by a DATA-DEPENDENCY link, so the transfer can never
+# race ahead of (or skip) verification. The gate is an explicit, auditable edge
+# in the DAG. Driven via ``Workflow.run`` from
+# cli/_globus_data_transfer.py:_attempt_globus_data_transfer_async.
+#
+# Endpoint UUIDs + resolved auth come from env vars (never hardcoded). The two
+# step configs share those env vars as the single source of truth.
+
+name: violin_bvbrc_transfer_workflow
+description: >
+  Verify-then-transfer the VIOLIN + BV-BRC dataset from the "APECx Data at
+  Argonne LCF" Globus collection to the operator's local endpoint. The verify
+  step refuses to proceed if any source file is missing.
+version: 0.1.0
+# G39: explicit schema v2 pin. v2 + G7 Step 5 also auto-injects auto_transfer
+# into inline link configs; the explicit auto_transfer: true on every DirectLink
+# below is self-documenting belt-and-suspenders against the dominant
+# silent-no-op-on-auto_transfer=false failure shape.
+config_version: 2
+
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      ``{items: [{source_path, dest_path}, ...]}`` — the transfer manifest
+      built at runtime by build_transfer_items. Forwarded to verify.manifest_in
+      via input_to_verify.
+    persistent: false
+
+output_data_units:
+  # Three exit ports mirroring the fields the driver surfaces. The framework's
+  # integrity validator requires every DECLARED step output to have a consumer,
+  # so each transfer-step output DU is linked to a workflow output below.
+  transfer_status:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: transfer_status
+    description: "Globus terminal status ('SUCCEEDED'); from transfer.status."
+    persistent: false
+  transfer_task_id:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: transfer_task_id
+    description: "Globus task UUID; from transfer.task_id."
+    persistent: false
+  transfer_items_count:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: transfer_items_count
+    description: "Count of items transferred; from transfer.items_transferred."
+    persistent: false
+
+steps:
+  verify:
+    class: "nanobrain.library.steps.globus_manifest_verify_step.GlobusManifestVerifyStep"
+    config: "violin_bvbrc_verify_step.yml"
+
+  transfer:
+    class: "nanobrain.library.steps.globus_transfer_step.GlobusTransferStep"
+    config: "violin_bvbrc_transfer_step.yml"
+
+links:
+  # All three DirectLinks MUST set auto_transfer: true (see header). A False
+  # (or omitted, pre-v2) value loads cleanly but turns the workflow into a
+  # runtime no-op — the dominant nanobrain silent-failure shape.
+  input_to_verify:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "workflow_input"
+      target: "verify.manifest_in"
+      auto_transfer: true
+
+  verify_to_transfer:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "verify.verified_manifest"
+      target: "transfer.transfer_input"
+      auto_transfer: true
+
+  transfer_status_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "transfer.status"
+      target: "transfer_status"
+      auto_transfer: true
+
+  transfer_task_id_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "transfer.task_id"
+      target: "transfer_task_id"
+      auto_transfer: true
+
+  transfer_items_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      link_type: "direct"
+      source: "transfer.items_transferred"
+      target: "transfer_items_count"
+      auto_transfer: true

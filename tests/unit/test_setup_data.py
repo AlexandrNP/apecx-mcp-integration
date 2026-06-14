@@ -1,71 +1,37 @@
 """
 Unit tests for apecx_integration.cli.setup_data.
 
-Verifies: gh availability checks, download dispatch, extraction,
-Claude Desktop config-update logic, and ``--reconfigure-llm`` flow.
+Data acquisition is now Globus-only — the legacy ``gh release download``
+path was retired 2026-05-21, so this module no longer downloads anything.
+It provides the operator-facing helpers the Globus path reuses
+(``prompt_for_data_dir``, ``report_post_transfer_layout``), the Claude
+Desktop config-update logic, and the ``--reconfigure-llm`` flow.
 
 Mock surface is kept minimal:
-- ``subprocess.run`` is intercepted with real ``CompletedProcess``
-  objects (no ``unittest.mock.MagicMock``); the gh subprocess itself
-  is the only cross-process boundary, and tests never shell out to
-  the real network.
-- ``_download_asset`` is patched per-test to copy a real local
-  tarball into the destination — preserves the unpack/extract path
-  end-to-end (real tarfile, real disk, real Path operations).
 - ``input()`` is the only unavoidable mock — there's no portable
   way to simulate a TTY without a pty.
-- All Path / JSON / tarfile work uses real components on tmp_path.
+- All Path / JSON work uses real components on tmp_path. No test
+  shells out or hits the network.
 """
 
 import json
-import subprocess
 import sys
-import tarfile
-from pathlib import Path
 
 import pytest
+
 from apecx_integration.cli.setup_data import (
+    _DEFAULT_DATA_DIR,
     _DEFAULT_LLM_ENV,
     _EXPECTED_FILES,
     _default_claude_config_path,
     _find_apecx_mcp_binary,
-    _gh_authenticated,
-    _gh_available,
     _prompt_for_llm_config,
     _reconfigure_llm_in_config,
     _update_claude_config,
     main,
+    prompt_for_data_dir,
+    report_post_transfer_layout,
 )
-
-
-def _fake_gh_status(returncode: int):
-    """Return a real ``subprocess.CompletedProcess`` — no MagicMock."""
-    return lambda *a, **kw: subprocess.CompletedProcess(
-        args=list(a[0]) if a else [], returncode=returncode, stdout="", stderr=""
-    )
-
-
-# ---------------------------------------------------------------------------
-# _gh_available / _gh_authenticated
-# ---------------------------------------------------------------------------
-def test_gh_available_when_found(monkeypatch):
-    monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/gh")
-    assert _gh_available() is True
-
-
-def test_gh_available_when_missing(monkeypatch):
-    monkeypatch.setattr("shutil.which", lambda _: None)
-    assert _gh_available() is False
-
-
-def test_gh_authenticated_success(monkeypatch):
-    monkeypatch.setattr("subprocess.run", _fake_gh_status(0))
-    assert _gh_authenticated() is True
-
-
-def test_gh_authenticated_failure(monkeypatch):
-    monkeypatch.setattr("subprocess.run", _fake_gh_status(1))
-    assert _gh_authenticated() is False
 
 
 # ---------------------------------------------------------------------------
@@ -246,263 +212,111 @@ def test_update_rejects_when_no_apecx_mcp_binary(monkeypatch, tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# main() — error paths
+# prompt_for_data_dir — Globus path's data-dir chooser + overwrite guard
 # ---------------------------------------------------------------------------
-def test_main_exits_when_gh_missing(monkeypatch, capsys):
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: False)
-    with pytest.raises(SystemExit) as exc:
-        main([])
-    assert exc.value.code == 1
-    assert "gh" in capsys.readouterr().out.lower()
+def test_prompt_for_data_dir_empty_input_returns_default(monkeypatch, tmp_path):
+    """Pressing Enter at the prompt picks ``_DEFAULT_DATA_DIR``.
+
+    The module's real ``_DEFAULT_DATA_DIR`` (``~/.apecx/data``) may already
+    exist with CSVs on the developer's machine, which would trip the
+    overwrite guard. Repoint it at a non-existent tmp_path location so the
+    test asserts the empty-input branch in isolation.
+    """
+    fake_default = tmp_path / "default_data"
+    monkeypatch.setattr("apecx_integration.cli.setup_data._DEFAULT_DATA_DIR", fake_default)
+    monkeypatch.setattr("builtins.input", lambda _prompt: "")
+    assert prompt_for_data_dir() == fake_default
 
 
-def test_main_exits_when_not_authenticated(monkeypatch, capsys):
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: False)
-    with pytest.raises(SystemExit) as exc:
-        main([])
-    assert exc.value.code == 1
-    assert "auth" in capsys.readouterr().out.lower()
+def test_prompt_for_data_dir_explicit_path(monkeypatch, tmp_path):
+    """A typed path (that does not yet exist) is returned verbatim."""
+    target = tmp_path / "chosen"
+    monkeypatch.setattr("builtins.input", lambda _prompt: str(target))
+    assert prompt_for_data_dir() == target
+
+
+def test_prompt_for_data_dir_non_interactive_skips_input(monkeypatch):
+    """interactive=False returns the default WITHOUT calling input()."""
+
+    def boom(_prompt):
+        raise AssertionError("input() must not be called in non-interactive mode")
+
+    monkeypatch.setattr("builtins.input", boom)
+    assert prompt_for_data_dir(interactive=False) == _DEFAULT_DATA_DIR
+
+
+def test_prompt_for_data_dir_existing_csv_abort(monkeypatch, tmp_path, capsys):
+    """Existing dir with a CSV + answer 'n' → returns None and prints 'Aborted.'."""
+    data_dir = tmp_path / "existing"
+    data_dir.mkdir()
+    (data_dir / "old.csv").write_text("a,b\n")
+
+    inputs = iter([str(data_dir), "n"])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+
+    assert prompt_for_data_dir() is None
+    assert "Aborted." in capsys.readouterr().out
+
+
+def test_prompt_for_data_dir_existing_csv_overwrite(monkeypatch, tmp_path):
+    """Existing dir with a CSV + answer 'y' → returns the chosen dir."""
+    data_dir = tmp_path / "existing"
+    data_dir.mkdir()
+    (data_dir / "old.csv").write_text("a,b\n")
+
+    inputs = iter([str(data_dir), "y"])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+
+    assert prompt_for_data_dir() == data_dir
+
+
+def test_prompt_for_data_dir_existing_dir_without_csv_no_overwrite_prompt(monkeypatch, tmp_path):
+    """Existing dir with no CSVs → returned directly, no overwrite prompt."""
+    data_dir = tmp_path / "empty_existing"
+    data_dir.mkdir()
+    (data_dir / "readme.txt").write_text("not a csv\n")
+
+    # Only one input() call expected (the data-dir prompt); a second call
+    # would StopIteration and fail the test, proving no overwrite prompt.
+    inputs = iter([str(data_dir)])
+    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
+
+    assert prompt_for_data_dir() == data_dir
 
 
 # ---------------------------------------------------------------------------
-# main() — happy path with config update
+# report_post_transfer_layout — Globus completion summary
 # ---------------------------------------------------------------------------
-def test_main_happy_path_with_config_update(monkeypatch, tmp_path, capsys):
-    # Build a real tarball with the expected file layout.
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
+def test_report_post_transfer_layout_all_present(tmp_path, capsys):
+    """All expected files present → returns [] and prints the all-present line."""
     for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("fake,csv,data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
+        path = tmp_path / f
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("data\n")
 
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
+    missing = report_post_transfer_layout(tmp_path)
 
-    # Pre-create the config so the "found at default location" branch fires.
-    config_path.write_text(json.dumps({"mcpServers": {}}))
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._find_apecx_mcp_binary",
-        lambda: "/usr/bin/apecx-mcp",
-    )
-
-    # input() sequence: data dir → "Use this config?" → 3 LLM prompts → "Add block?"
-    inputs = iter([str(dest_dir), "y", "", "", "", "y"])
-    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-
-    def fake_download(dest: str) -> None:
-        import shutil
-
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-
-    main([])
-
+    assert missing == []
     out = capsys.readouterr().out
-    assert "All 6 data files extracted successfully" in out
-    assert "Wrote " + str(config_path) in out
-    assert "first-time install" in out
-    # Block preview was shown.
-    assert "/usr/bin/apecx-mcp" in out
-    assert "APECX_LLM_BASE_URL" in out
-
-    parsed = json.loads(config_path.read_text())
-    assert parsed["mcpServers"]["apecx"]["env"]["APECX_DATA_ROOT"] == str(dest_dir)
+    assert f"All {len(_EXPECTED_FILES)} data files present under {tmp_path}." in out
 
 
-def test_main_first_install_decline_does_not_write(monkeypatch, tmp_path, capsys):
-    """User says yes to using the config but no to adding the block."""
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
-    for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
+def test_report_post_transfer_layout_some_missing(tmp_path, capsys):
+    """Some files missing → returns the missing list and prints a WARNING."""
+    present = _EXPECTED_FILES[:2]
+    expected_missing = _EXPECTED_FILES[2:]
+    for f in present:
+        path = tmp_path / f
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("data\n")
 
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
-    config_path.write_text(json.dumps({"mcpServers": {}}))
+    missing = report_post_transfer_layout(tmp_path)
 
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._find_apecx_mcp_binary",
-        lambda: "/usr/bin/apecx-mcp",
-    )
-    # data dir → "Use config?" → 3 LLM defaults → "Add block? n"
-    inputs = iter([str(dest_dir), "y", "", "", "", "n"])
-    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-
-    def fake_download(dest: str) -> None:
-        import shutil
-
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main([])
-
-    assert json.loads(config_path.read_text()) == {"mcpServers": {}}, "config untouched"
-
-
-def test_main_update_existing_apecx_shows_change_only(monkeypatch, tmp_path, capsys):
-    """Existing apecx block: prompt should show only the data-root change, not the full block."""
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
-    for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
-
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
-    config_path.write_text(
-        json.dumps(
-            {
-                "mcpServers": {
-                    "apecx": {
-                        "command": "/already/installed/apecx-mcp",
-                        "args": [],
-                        "env": {"APECX_LLM_API_KEY": "real-secret"},
-                    }
-                }
-            }
-        )
-    )
-
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    inputs = iter([str(dest_dir), "y", "y"])
-    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-
-    def fake_download(dest: str) -> None:
-        import shutil
-
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main([])
-
+    assert missing == expected_missing
     out = capsys.readouterr().out
-    assert "Existing 'apecx' MCP server found" in out
-    assert "first-time install" not in out, "should NOT use first-install language"
-    assert "All other fields" in out, "must reassure user other fields preserved"
-
-    parsed = json.loads(config_path.read_text())
-    apecx = parsed["mcpServers"]["apecx"]
-    assert apecx["env"]["APECX_LLM_API_KEY"] == "real-secret", "secret preserved"
-    assert apecx["env"]["APECX_DATA_ROOT"] == str(dest_dir)
-    assert apecx["command"] == "/already/installed/apecx-mcp"
-
-
-def test_main_update_idempotent_when_already_correct(monkeypatch, tmp_path, capsys):
-    """Re-running setup with identical APECX_DATA_ROOT should not re-write the file."""
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
-    for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
-
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
-    original = {
-        "mcpServers": {
-            "apecx": {
-                "command": "/x",
-                "env": {"APECX_DATA_ROOT": str(dest_dir)},
-            }
-        }
-    }
-    config_path.write_text(json.dumps(original))
-
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    inputs = iter([str(dest_dir), "y"])  # only 2 inputs: data + "Use this config?"
-    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-
-    def fake_download(dest: str) -> None:
-        import shutil
-
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main([])
-
-    out = capsys.readouterr().out
-    assert "already set" in out.lower() or "Nothing to do" in out
-    assert json.loads(config_path.read_text()) == original
-
-
-def test_main_skips_config_update_when_user_declines(monkeypatch, tmp_path, capsys):
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
-    for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
-
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
-    config_path.write_text(json.dumps({"mcpServers": {}}))
-
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    # Input sequence: data dir → "Use this config? [Y/n]" → "Alternate path:"
-    inputs = iter([str(dest_dir), "n", ""])
-    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-
-    def fake_download(dest: str) -> None:
-        import shutil
-
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-
-    main([])
-
-    # Config untouched.
-    assert json.loads(config_path.read_text()) == {"mcpServers": {}}
-    assert "Skipped" in capsys.readouterr().out
+    assert f"WARNING: {len(expected_missing)} expected file(s) not found under {tmp_path}:" in out
+    for f in expected_missing:
+        assert str(tmp_path / f) in out
 
 
 # ---------------------------------------------------------------------------
@@ -553,67 +367,6 @@ def test_prompt_for_llm_config_strips_whitespace(monkeypatch):
     assert result["APECX_LLM_MODEL"] == "mymodel"
     # Whitespace-only is treated as empty → default kicks in.
     assert result["APECX_LLM_API_KEY"] == _DEFAULT_LLM_ENV["APECX_LLM_API_KEY"]
-
-
-# ---------------------------------------------------------------------------
-# Threading: custom LLM env actually reaches the written config
-# ---------------------------------------------------------------------------
-def test_main_first_install_writes_custom_llm_env(monkeypatch, tmp_path, capsys):
-    """User customizes LLM URL + model → values land in the written config."""
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
-    for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
-
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
-    config_path.write_text(json.dumps({"mcpServers": {}}))
-
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._find_apecx_mcp_binary",
-        lambda: "/usr/bin/apecx-mcp",
-    )
-    # data dir → "Use config?" → URL → model → key → "Add block?"
-    inputs = iter(
-        [
-            str(dest_dir),
-            "y",
-            "https://api.anthropic.com/v1",
-            "claude-sonnet-4-6",
-            "sk-ant-fake",
-            "y",
-        ]
-    )
-    monkeypatch.setattr("builtins.input", lambda _prompt: next(inputs))
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-
-    def fake_download(dest: str) -> None:
-        import shutil
-
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-    main([])
-
-    apecx_env = json.loads(config_path.read_text())["mcpServers"]["apecx"]["env"]
-    assert apecx_env["APECX_LLM_BASE_URL"] == "https://api.anthropic.com/v1"
-    assert apecx_env["APECX_LLM_MODEL"] == "claude-sonnet-4-6"
-    assert apecx_env["APECX_LLM_API_KEY"] == "sk-ant-fake"
-    # The JSON preview must show the chosen URL, not the default.
-    # ("localhost:11434" appears in the help text — assert the JSON key/value form.)
-    out = capsys.readouterr().out
-    assert '"APECX_LLM_BASE_URL": "https://api.anthropic.com/v1"' in out
-    assert '"APECX_LLM_BASE_URL": "http://localhost:11434/v1"' not in out
 
 
 # ---------------------------------------------------------------------------
@@ -789,11 +542,13 @@ def test_reconfigure_round_trip_via_main(monkeypatch, tmp_path):
 
 
 def test_main_reconfigure_does_not_invoke_data_download(monkeypatch, tmp_path):
-    """--reconfigure-llm must not trigger gh / tarfile / data-dir prompts.
+    """--reconfigure-llm must not trigger the data-dir prompt.
 
-    Guard against regression: if a future refactor accidentally
-    routes the flag through _run_full_setup, the canary functions
-    below would be called and the test fails loudly.
+    Guard against regression: if a future refactor accidentally routes
+    the flag through the data-acquisition path, ``prompt_for_data_dir``
+    would be called and this test fails loudly. (The gh download path
+    was retired 2026-05-21; data acquisition is Globus-only and lives
+    in ``cli/setup.py``, not here.)
     """
     config = tmp_path / "claude_desktop_config.json"
     config.write_text(
@@ -813,85 +568,32 @@ def test_main_reconfigure_does_not_invoke_data_download(monkeypatch, tmp_path):
         lambda: config,
     )
 
-    canary = {"download_called": False, "gh_check_called": False}
+    def boom_prompt(*_a, **_kw):
+        raise AssertionError("prompt_for_data_dir must not run under --reconfigure-llm")
 
-    def boom_download(_dest):
-        canary["download_called"] = True
-        raise AssertionError("data download should not run under --reconfigure-llm")
-
-    def boom_gh_avail():
-        canary["gh_check_called"] = True
-        raise AssertionError("gh check should not run under --reconfigure-llm")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", boom_download)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", boom_gh_avail)
+    monkeypatch.setattr("apecx_integration.cli.setup_data.prompt_for_data_dir", boom_prompt)
 
     inputs = iter(["y", "", "", "", "y"])  # use config / 3 Enters / apply
     monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
 
     main(["--reconfigure-llm"])
 
-    assert canary["download_called"] is False
-    assert canary["gh_check_called"] is False
 
+def test_main_default_branch_points_at_apecx_setup_without_downloading(monkeypatch, capsys):
+    """Plain ``main([])`` only prints a pointer to apecx-setup; it downloads nothing."""
 
-def test_main_full_setup_prompt_mentions_reconfigure_flag(monkeypatch, tmp_path):
-    """Update path (existing apecx block, full apecx-setup) prints the --reconfigure-llm pointer."""
-    archive_dir = tmp_path / "archive_src"
-    archive_dir.mkdir()
-    (archive_dir / "violin").mkdir()
-    for f in _EXPECTED_FILES:
-        (archive_dir / f).write_text("data\n")
-    archive_path = tmp_path / "apecx-data.tar.gz"
-    with tarfile.open(archive_path, "w:gz") as tf:  # noqa: S202
-        for f in _EXPECTED_FILES:
-            tf.add(archive_dir / f, arcname=f)
+    def boom_prompt(*_a, **_kw):
+        raise AssertionError("the default branch must not prompt for a data dir")
 
-    dest_dir = tmp_path / "data"
-    config_path = tmp_path / "claude_desktop_config.json"
-    config_path.write_text(
-        json.dumps({"mcpServers": {"apecx": {"command": "/x", "env": {"APECX_DATA_ROOT": "/old"}}}})
-    )
+    monkeypatch.setattr("apecx_integration.cli.setup_data.prompt_for_data_dir", boom_prompt)
 
-    monkeypatch.setattr(
-        "apecx_integration.cli.setup_data._default_claude_config_path",
-        lambda: config_path,
-    )
-    inputs = iter([str(dest_dir), "y", "y"])
-    monkeypatch.setattr("builtins.input", lambda _p: next(inputs))
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
+    def boom_input(_prompt):
+        raise AssertionError("the default branch must not prompt for input")
 
-    def fake_download(dest: str) -> None:
-        import shutil
+    monkeypatch.setattr("builtins.input", boom_input)
 
-        shutil.copy(archive_path, Path(dest) / "apecx-data.tar.gz")
+    main([])
 
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", fake_download)
-
-    import io
-    from contextlib import redirect_stdout
-
-    buf = io.StringIO()
-    with redirect_stdout(buf):
-        main([])
-
-    output = buf.getvalue()
-    assert "--reconfigure-llm" in output, "update flow must point users at the flag"
-
-
-def test_main_download_failure_exits(monkeypatch, tmp_path, capsys):
-    dest_dir = tmp_path / "data"
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_available", lambda: True)
-    monkeypatch.setattr("apecx_integration.cli.setup_data._gh_authenticated", lambda: True)
-    monkeypatch.setattr("builtins.input", lambda _prompt: str(dest_dir))
-
-    def failing_download(_dest: str) -> None:
-        raise subprocess.CalledProcessError(1, "gh")
-
-    monkeypatch.setattr("apecx_integration.cli.setup_data._download_asset", failing_download)
-
-    with pytest.raises(SystemExit) as exc:
-        main([])
-    assert exc.value.code == 1
-    assert "download failed" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "apecx-setup" in out
+    assert "Globus" in out

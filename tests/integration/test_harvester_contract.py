@@ -46,8 +46,24 @@ apecx_harvesters = pytest.importorskip(
     reason="apecx-harvesters sibling repo not on path; install/clone it to run contract test",
 )
 
-from apecx_harvesters.loaders.base import DataCite  # noqa: E402
-from apecx_harvesters.pipeline.run import Transform  # noqa: E402
+# Guard the SPECIFIC symbols too: importorskip above only confirms the
+# top-level package imports, but a clean install may pull an older/renamed
+# apecx-harvesters whose API lacks these names (e.g. `Transform` was removed
+# from `pipeline.run`). A missing symbol must SKIP the module, not error at
+# collection time.
+try:
+    from apecx_harvesters.loaders.base import DataCite  # noqa: E402
+    from apecx_harvesters.pipeline.run import Transform  # noqa: E402
+except ImportError as exc:  # pragma: no cover - exercised only on API drift
+    pytest.skip(
+        f"installed apecx-harvesters lacks an expected symbol ({exc}); this "
+        "contract test targets a newer harvesters API — install/clone a "
+        "matching apecx-harvesters to run it",
+        allow_module_level=True,
+    )
+
+from pydantic import BaseModel, ConfigDict  # noqa: E402
+
 from apecx_integration.synonym_dictionary.harvester_adapter import (  # noqa: E402
     adapt_to_harvester_transform,
 )
@@ -55,7 +71,6 @@ from apecx_integration.synonym_dictionary.transform import (  # noqa: E402
     EntityRecord,
     EntityResolutionTransform,
 )
-from pydantic import BaseModel, ConfigDict  # noqa: E402
 
 # ---------- a trivial entity transform we can adapt ----------
 
@@ -188,8 +203,7 @@ def test_adapter_signature_matches_harvester_transform_protocol() -> None:
         p for p in sig.parameters.values() if p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD)
     ]
     assert len(pos_or_kw) == 1, (
-        f"harvester Transform takes exactly one positional argument; "
-        f"adapter has {len(pos_or_kw)}"
+        f"harvester Transform takes exactly one positional argument; adapter has {len(pos_or_kw)}"
     )
 
     # The Transform alias is referenced for type-narrowing only; assert

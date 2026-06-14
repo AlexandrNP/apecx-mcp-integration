@@ -8,6 +8,7 @@ Single entry point for the entire APECx deployment recipe:
     apecx-setup --with-rhea # default chain PLUS Rhea bring-up (~10 min one-time)
     apecx-setup globus      # only preflight Globus (G84)
     apecx-setup data        # only download VIOLIN + BV-BRC data
+    apecx-setup dict        # only build the synonym dictionary (~10-15 min first run)
     apecx-setup infra       # only start Postgres + Redis containers
     apecx-setup llm         # only check/pull the Ollama model
     apecx-setup rag         # only build the FAISS RAG index (opt-in)
@@ -18,14 +19,20 @@ Single entry point for the entire APECx deployment recipe:
 Each subcommand is idempotent + safe to re-run. The default
 (``apecx-setup``) runs the following in dependency order:
     1. ``globus`` — preflight Globus SDK + creds + endpoint UUIDs
-                    (skipped cleanly when not configured — operators
-                    who don't use Globus see no extra friction)
-    2. ``data``   — download VIOLIN + BV-BRC files (Globus when the
-                    preflight said OK; falls back to ``gh release``)
-    3. ``infra``  — start Postgres + Redis containers if Docker is available
-    4. ``llm``    — install Ollama if missing (interactive); start daemon;
+                    (now REQUIRED for the data step; the gh fallback was
+                    retired 2026-05-21)
+    2. ``data``   — transfer VIOLIN + BV-BRC files via the Globus
+                    verify→transfer workflow (sole path; fails loud if
+                    Globus is unconfigured and no data is already local)
+    3. ``dict``   — pre-build the synonym dictionary to
+                    ``~/.apecx/dictionary/dictionary.sqlite``
+                    (10-15 min first run; idempotent on re-run).
+                    Added 2026-06-09 to close the silent gap where the
+                    first ``apecx-mcp`` startup paid the build cost.
+    4. ``infra``  — start Postgres + Redis containers if Docker is available
+    5. ``llm``    — install Ollama if missing (interactive); start daemon;
                     pull the configured model
-    5. ``verify`` — smoke-check every component reports healthy
+    6. ``verify`` — smoke-check every component reports healthy
 
 Two slots in the chain are OPT-IN:
     * ``rag``  (G81, 2026-05-16) — FAISS index build for synthesis
@@ -156,10 +163,13 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
     Status semantics (per the workspace honesty contract):
       * ``ok``      — every Globus prerequisite is satisfied; the data
                       step will transfer via Globus.
-      * ``skipped`` — at least one prerequisite is missing; the data
-                      step will fall back to ``gh release download``.
-                      This is NOT a failure: operators who don't use
-                      Globus see no extra friction.
+      * ``skipped`` — at least one prerequisite is missing. Since the gh
+                      fallback was retired (2026-05-21) Globus is now
+                      REQUIRED for data acquisition: the data step will
+                      FAIL unless the dataset is already present locally.
+                      Kept as ``skipped`` (not ``fail``) here so the
+                      preflight doesn't false-fail when data already exists
+                      — the data step is the authoritative gate.
       * ``fail``    — preconditions appear met but the step's own
                       health probe raised. Reserved for the future
                       (e.g., when the step grows a live endpoint
@@ -186,7 +196,7 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
     instead of the pre-G84 shape where Globus status was invisible
     until the data step printed its own line.
     """
-    _print_header("Step 1 of 6 — Globus")
+    _print_header("Step 1 of 7 — Globus")
     from apecx_integration.cli._globus_data_transfer import check_globus_prerequisites
 
     prereqs = check_globus_prerequisites()
@@ -215,55 +225,73 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
                 "       from Settings → Endpoints, then `export APECX_GLOBUS_DEST_ENDPOINT_ID=<uuid>`."
             )
         if not prereqs.credentials_reachable:
-            print("     • no client credentials in env or keyring")
+            # Only reached in the opt-in secret (client_credentials) mode with
+            # no creds — native default always resolves a client_id.
+            print("     • no confidential client credentials in env or keyring")
             print(
                 "       Create a confidential client at https://app.globus.org/settings/developers"
             )
             print("       then store the credentials:")
             print("         apecx-globus-setup store --client-id <id> --client-secret <secret>")
         print()
-        print("  ▶  data step will use the gh release download fallback")
+        print("  ▶  Authentication (default = web-based, no secret):")
+        print("       apecx-globus-setup login    # opens a browser; log in with your")
+        print("                                   # institutional Globus identity")
+        print("     For headless / CI / automation, use the secret (confidential) path:")
+        print("       export APECX_GLOBUS_AUTH_MODE=client_credentials")
+        print("       apecx-globus-setup store --client-id <id> --client-secret <secret>")
+        print()
+        print("  ▶  Globus is REQUIRED for data acquisition (the gh-release fallback")
+        print("     was retired 2026-05-21). The data step will FAIL unless the")
+        print("     dataset is already present locally.")
         print("     See docs/globus_data_transfer.md for the full setup recipe.")
 
     return StepResult(
         "globus",
         "skipped",
-        prereqs.reason() + " (data step will use gh release fallback)",
+        prereqs.reason() + " (REQUIRED for data — gh fallback retired)",
     )
 
 
-def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> StepResult:
-    """Acquire the VIOLIN + BV-BRC dataset. G82 (2026-05-16): Globus-first.
+def _step_data(*, interactive: bool = True) -> StepResult:
+    """Acquire the VIOLIN + BV-BRC dataset via Globus (sole path since 2026-05-21).
 
-    Path selection
-    --------------
-    1. ``prefer_gh_release=True`` (operator flag): always use the
-       existing ``gh release download`` path; never touch Globus.
-    2. Otherwise: check Globus preconditions
-       (``check_globus_prerequisites``). If they pass, drive
-       ``GlobusTransferStep`` via the wrapper YAML and call it a day.
-       If the transfer fails AT THE NETWORK LAYER (Globus auth error,
-       endpoint unreachable, task failed), fall back to gh release —
-       the user wanted data, not a Globus debugging session.
-    3. If Globus preconditions don't pass (no SDK, no env vars, no
-       credentials), fall back to gh release silently. Operators who
-       never set up Globus see no extra friction.
+    The legacy ``gh release download`` fallback is RETIRED. Globus is now a hard
+    requirement: ``globus_sdk`` + credentials + source/dest endpoint UUIDs must
+    be set, and Globus Connect Personal must be running on the dest endpoint.
 
-    The fallback is also the canonical historical path: ``apecx-data``
-    GitHub release with the 6 CSVs in a tarball. Same content; just
-    fetched over GitHub instead of Globus.
+    Datasets split into REQUIRED (BV-BRC, on the public collection — verified,
+    always reachable with the M2M creds) and OPTIONAL (VIOLIN, on the Group-gated
+    `apecx-project-all` collection the transfer identity is not yet a member of).
+
+    Flow:
+      1. Non-interactive: skip (can't safely prompt). Reports whether the
+         REQUIRED data is already present.
+      2. Globus unconfigured + required data already present → skipped.
+      3. Globus unconfigured + no required data → FAIL LOUD with actionable
+         setup instructions (no silent degradation — the point of retiring gh).
+      4. Globus configured → prompt for the data dir, then:
+         - transfer REQUIRED (BV-BRC); any failure → step ``fail``.
+         - transfer OPTIONAL (VIOLIN); failure → LOUD warning + step ``partial``
+           (the install still COMPLETES — partial is exit 0). This is how a
+           clean install succeeds on public data while VIOLIN access is pending.
+         Then patch the Claude Desktop config.
     """
-    _print_header("Step 2 of 6 — Data")
+    _print_header("Step 2 of 7 — Data")
+    from apecx_integration.cli._globus_data_transfer import (
+        attempt_globus_data_transfer,
+        check_globus_prerequisites,
+    )
+
+    default_data = _setup_data._DEFAULT_DATA_DIR
+    # "Present" keys on the REQUIRED dataset (BV-BRC). VIOLIN is optional, so a
+    # BV-BRC-only install still counts as "required data present".
+    data_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
+
     if not interactive:
-        # Non-interactive mode: skip if data already present at the
-        # default location. We can't safely auto-prompt the user for
-        # a directory in non-interactive mode.
-        default_data = _setup_data._DEFAULT_DATA_DIR
-        if (default_data / "violin" / "Vaccine_Information.csv").exists():
+        if data_present:
             return StepResult(
-                "data",
-                "skipped",
-                f"existing data at {default_data}; non-interactive mode",
+                "data", "skipped", f"existing data at {default_data}; non-interactive mode"
             )
         return StepResult(
             "data",
@@ -271,49 +299,76 @@ def _step_data(*, interactive: bool = True, prefer_gh_release: bool = False) -> 
             "non-interactive mode + no existing data; run `apecx-setup data` interactively",
         )
 
-    # ----- Globus-first attempt -----
-    # Skip Globus only if the operator forced it OR if preconditions
-    # are missing. We surface either case in the step result so the
-    # summary table is honest about which path ran.
-    if not prefer_gh_release:
-        from apecx_integration.cli._globus_data_transfer import (
-            attempt_globus_data_transfer,
-            check_globus_prerequisites,
-        )
+    prereqs = check_globus_prerequisites()
+    if not prereqs.configured:
+        if data_present:
+            return StepResult(
+                "data",
+                "skipped",
+                f"Globus not configured, but dataset already present at {default_data}",
+            )
+        # Hard failure: gh fallback retired, Globus required, no data on disk.
+        print(f"  ❌  Globus not configured: {prereqs.reason()}")
+        print("     The gh-release fallback was retired 2026-05-21 — Globus is the")
+        print("     only data-acquisition path now. Set up the missing pieces:")
+        if not prereqs.sdk_installed:
+            print("     • pip install globus-sdk")
+        if not prereqs.source_endpoint_set:
+            print("     • export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<source collection UUID>")
+            print("       (ask the data steward)")
+        if not prereqs.dest_endpoint_set:
+            print("     • Install Globus Connect Personal, then")
+            print("       export APECX_GLOBUS_DEST_ENDPOINT_ID=<your personal endpoint UUID>")
+        if not prereqs.credentials_reachable:
+            print("     • apecx-globus-setup store --client-id <id> --client-secret <secret>")
+        print("     Full recipe: docs/globus_data_transfer.md")
+        return StepResult("data", "fail", f"Globus required but not configured: {prereqs.reason()}")
 
-        prereqs = check_globus_prerequisites()
-        if prereqs.configured:
-            data_dir = _setup_data._DEFAULT_DATA_DIR
-            data_dir.mkdir(parents=True, exist_ok=True)
-            print(f"  ▶  attempting Globus transfer to {data_dir}")
-            result = attempt_globus_data_transfer(data_dir=data_dir)
-            if result.status == "ok":
-                detail = f"Globus: {result.detail}"
-                if result.task_id:
-                    detail += f" (task_id={result.task_id})"
-                return StepResult("data", "ok", detail)
-            # Globus attempted but failed. Tell the operator + try gh.
-            print(f"  ⚠️  Globus transfer failed: {result.detail}")
-            print("     falling back to gh release download")
-        else:
-            # Preconditions unmet — silent fallback to gh.
-            print(f"  ▶  Globus not configured ({prereqs.reason()})")
-            print("     using gh release download instead")
+    # Configured — prompt for the data dir (relocated from the retired gh path).
+    data_dir = _setup_data.prompt_for_data_dir(interactive=interactive)
+    if data_dir is None:
+        return StepResult("data", "skipped", "operator aborted at the data-directory prompt")
+    data_dir.mkdir(parents=True, exist_ok=True)
 
-    # ----- gh release fallback -----
-    try:
-        _setup_data._run_full_setup()
-    except SystemExit as exc:
-        if exc.code == 0:
-            return StepResult("data", "ok", "gh release: downloaded + extracted")
-        return StepResult(
-            "data",
-            "fail",
-            f"setup_data exited with code {exc.code}",
-        )
-    except Exception as exc:  # noqa: BLE001
-        return StepResult("data", "fail", f"{type(exc).__name__}: {exc}")
-    return StepResult("data", "ok", "gh release: downloaded + extracted")
+    # REQUIRED — BV-BRC (public collection). Must succeed.
+    print(f"  ▶  transferring REQUIRED data (BV-BRC) to {data_dir}")
+    req = attempt_globus_data_transfer(data_dir=data_dir, datasets={"bvbrc"})
+    if req.status != "ok":
+        print(f"  ❌  Required BV-BRC transfer failed: {req.detail}")
+        return StepResult("data", "fail", f"required BV-BRC transfer failed: {req.detail}")
+
+    # OPTIONAL — VIOLIN (Group-gated 'apecx-project-all'; membership pending) +
+    # any user-registered EXTRA dirs (apecx-globus-setup --add-dir), fetched
+    # recursively. A failure here is NOT fatal: warn loudly and complete the
+    # install (BV-BRC already landed).
+    print("  ▶  transferring OPTIONAL data (VIOLIN + any --add-dir directories)")
+    opt = attempt_globus_data_transfer(data_dir=data_dir, datasets={"violin", "extra"})
+
+    # Report layout + patch the Claude Desktop config regardless (BV-BRC is in).
+    _setup_data.report_post_transfer_layout(data_dir)
+    _setup_data._maybe_update_claude_config(data_dir)
+
+    if opt.status == "ok":
+        detail = "Globus: BV-BRC + VIOLIN transferred"
+        task_ids = [t for t in (req.task_id, opt.task_id) if t]
+        if task_ids:
+            detail += f" (task_ids={','.join(task_ids)})"
+        return StepResult("data", "ok", detail)
+
+    # VIOLIN unavailable — LOUD warning, but the install COMPLETES (partial =
+    # exit 0). This is the requested "say loudly VIOLIN is missing, but the
+    # entire setup completes successfully" behavior.
+    print()
+    print("  ⚠️  VIOLIN data was NOT transferred — this is OPTIONAL; the install CONTINUES.")
+    print(f"        Reason: {opt.detail}")
+    print("        Most likely the transfer identity is not yet a member of the")
+    print("        'apecx-project-all' Globus Group (an admin grant is pending). BV-BRC")
+    print("        data is installed and the stack is usable; VIOLIN-dependent lookups")
+    print("        return empty until VIOLIN is fetched. Re-run `apecx-setup data` once")
+    print("        Group access is granted.")
+    return StepResult(
+        "data", "partial", f"BV-BRC installed; VIOLIN skipped (optional): {opt.detail[:80]}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -426,26 +481,128 @@ def _container_exists(name: str) -> bool:
     return bool(result.stdout.strip())
 
 
-def _bring_up_containers(
-    specs: list[dict],
-) -> tuple[list[str], list[str], list[str]]:
-    """Idempotently start a set of container specs (the ``_DOCKER_CONTAINERS``
-    shape). Returns ``(started, already_running, failed)``.
+def _step_dict(*, interactive: bool = True) -> StepResult:
+    """Pre-build the synonym dictionary at the canonical location.
 
-    Shared by ``_step_infra`` and ``_step_rhea`` so the sidecar bring-up
-    has a single source of truth — ``_step_rhea`` reuses the SAME three
-    sidecar specs (Postgres/Redis/MinIO) the orchestrator + infra step
-    use; it never re-declares them.
+    Closes the gap surfaced 2026-06-09 where ``apecx-setup`` left no
+    dictionary at ``~/.apecx/dictionary/dictionary.sqlite`` and the
+    first ``apecx-mcp`` startup paid the 10-15 minute build cost.
+
+    Idempotency: skips when the dictionary file already exists
+    (matches :func:`ensure_dictionary`'s own check). Re-runs are safe.
+
+    Degradation: when VIOLIN data isn't present, return ``skipped``
+    rather than ``fail`` — the data step is the cause, and the
+    summary table will already surface that.
+
+    Opt-out: ``APECX_SKIP_DICT_BUILD=1`` returns ``skipped`` with a
+    warning. Useful for CI / smoke runs that don't need fast-path
+    entity resolution.
     """
+    _print_header("Step 3 of 7 — Synonym Dictionary")
+
+    # Lazy-import the bootstrap module so a clean-install
+    # ``import apecx_integration.cli.setup`` doesn't drag in the full
+    # nanobrain workflow runtime when the operator never runs setup.
+    try:
+        from apecx_integration.synonym_dictionary.workflow.bootstrap import (
+            EnsureDictionaryConfig,
+            ensure_dictionary,
+        )
+    except ImportError as exc:  # noqa: BLE001
+        return StepResult(
+            "dict",
+            "fail",
+            f"could not import bootstrap module ({exc!s})",
+        )
+
+    cfg = EnsureDictionaryConfig().resolve()
+    sqlite = cfg.sqlite_path
+    assert sqlite is not None  # resolve() guarantees this
+
+    # Idempotent: already-present is the common case after the first
+    # successful setup run; report it explicitly so the summary table
+    # is honest about which path ran.
+    if sqlite.is_file():
+        size_mb = sqlite.stat().st_size / (1024 * 1024)
+        return StepResult(
+            "dict",
+            "ok",
+            f"existing dictionary at {sqlite} ({size_mb:.0f} MB)",
+        )
+
+    # Opt-out path — surface visibly so the summary table tells the
+    # truth ("dict skipped — fast-path off") rather than green-on-skip.
+    if os.environ.get("APECX_SKIP_DICT_BUILD", "").strip() == "1":
+        return StepResult(
+            "dict",
+            "skipped",
+            ("APECX_SKIP_DICT_BUILD=1 — entity resolution will fall back to slow substring search"),
+        )
+
+    # Need VIOLIN to build a meaningful dictionary; if absent, defer
+    # cleanly to the data step's own warning rather than failing here.
+    data_root = cfg.data_root
+    violin_marker = data_root / "violin" / "Pathogen_Information.csv"
+    if not violin_marker.exists():
+        return StepResult(
+            "dict",
+            "skipped",
+            (
+                f"VIOLIN data not present at {violin_marker.parent} — "
+                f"the data step's warning is the canonical reason. "
+                f"Re-run `apecx-setup data` then `apecx-setup dict`."
+            ),
+        )
+
+    # Build. Honest about wall-time + tell the operator where it
+    # lands so they can SET the env var afterwards if they want.
+    if interactive:
+        print("  ▶  building synonym dictionary (10–15 minutes first run; idempotent on re-run)")
+        print(f"     output: {sqlite}")
+        print("     (the next `apecx-mcp` startup will use this artifact instead of rebuilding)")
+    try:
+        out = ensure_dictionary(cfg)
+    except Exception as exc:  # noqa: BLE001 — surface the cause + degrade
+        return StepResult(
+            "dict",
+            "fail",
+            f"build failed: {type(exc).__name__}: {exc}",
+        )
+
+    if out is None:
+        # ensure_dictionary returns None on skip_if_data_missing or
+        # opt-out — both already caught above, so this is defensive
+        # against future bootstrap changes.
+        return StepResult(
+            "dict",
+            "skipped",
+            "ensure_dictionary returned None (workflow declined to build)",
+        )
+
+    size_mb = out.stat().st_size / (1024 * 1024)
+    return StepResult("dict", "ok", f"built {out} ({size_mb:.0f} MB)")
+
+
+def _step_infra() -> StepResult:
+    _print_header("Step 4 of 7 — Infrastructure (Docker containers)")
+    if not _docker_available():
+        return StepResult(
+            "infra",
+            "skipped",
+            "docker daemon unreachable. Install Docker Desktop "
+            "(https://docker.com/desktop) and start it.",
+        )
+
     started: list[str] = []
-    already: list[str] = []
+    skipped: list[str] = []
     failed: list[str] = []
 
-    for spec in specs:
+    for spec in _DOCKER_CONTAINERS:
         name = spec["name"]
         if _container_running(name):
             print(f"  ⏭  {name} already running ({spec['purpose']})")
-            already.append(name)
+            skipped.append(name)
             continue
         if _container_exists(name):
             # Stopped container with the same name — start it
@@ -493,21 +650,6 @@ def _bring_up_containers(
         else:
             failed.append(f"{name}: did not become ready within 30s")
 
-    return started, already, failed
-
-
-def _step_infra() -> StepResult:
-    _print_header("Step 3 of 6 — Infrastructure (Docker containers)")
-    if not _docker_available():
-        return StepResult(
-            "infra",
-            "skipped",
-            "docker daemon unreachable. Install Docker Desktop "
-            "(https://docker.com/desktop) and start it.",
-        )
-
-    started, skipped, failed = _bring_up_containers(_DOCKER_CONTAINERS)
-
     if failed:
         return StepResult(
             "infra",
@@ -537,98 +679,36 @@ def _ollama_url() -> str:
 
 
 def _ollama_model() -> str:
-    """Resolve the Ollama model the installer pulls.
+    """Resolve the configured Ollama model.
 
-    Delegates to ``resolve_llm_model`` (the SINGLE source of truth in
-    ``apecx_integration.agents._llm_config``) so the installer pulls
-    exactly the model the synthesis runtime later asks for. Before this
-    delegation the installer defaulted to ``mistral-nemo:latest`` while
-    ``build_chat_llm`` asked for ``nemotron-3-nano:4b`` — a fresh install
-    pulled one model and synthesis 404'd on the other. Override both at
-    once via the ``APECX_LLM_MODEL`` env var.
+    Default is ``mistral-nemo:latest`` because it has the longest
+    track record on the composer's structured-YAML task in this
+    workspace (T01 AC1 strict path, 3/3 consecutive RUN_COMPLETED).
 
-    NOTE: the composer is a SEPARATE tier — ``composer_config.yml``
-    declares ``mistral-small:latest`` plus per-role bindings that were
-    measured-best for its structured-YAML codegen task. Those are pulled
-    only under ``--with-composer`` (see ``_composer_models`` +
-    ``_models_to_ensure``); the synthesis default here is ALWAYS pulled.
+    Other models we have a reason to mention:
+
+      - ``mistral-small:latest`` (23B) — what composer_config.yml
+        declares as its own default. Better instruction-following on
+        long candidate blocks; ~14GB on disk.
+      - ``gemma4:latest`` (8B) — Gemma 4 family (2026 release).
+        Drop-in size with mistral-nemo (~9.6GB). **MEASURED 2026-05-11
+        TO BE WORSE THAN mistral-nemo FOR THIS TASK**: 2×→4× more
+        framework-rule violations on the diagnostic E2E test, 1.7×
+        slower per inference. Stick with mistral-nemo as the
+        composer default unless a future Gemma 4 fine-tune fixes the
+        gap. Increase ``APECX_LLM_MAX_VALIDATION_RETRIES=2`` if you
+        choose gemma4 anyway.
+      - ``gemma4:26b`` — Mixture-of-Experts with 4B active params.
+        Compute profile similar to gemma4:latest but with broader
+        knowledge; ~16GB on disk. Not measured here.
+
+    Override via ``APECX_LLM_MODEL`` env var. ``apecx-setup llm``
+    pulls whatever you named. The diagnostic E2E test
+    (``test_composer_validator_e2e_against_ollama.py``) is the
+    regression gate when swapping models — verifies the
+    structured-feedback machinery works regardless of LLM quality.
     """
-    from apecx_integration.agents._llm_config import resolve_llm_model
-
-    return resolve_llm_model()
-
-
-# Human-facing download-size hints for the big composer-tier models, so
-# the install log is HONEST about a multi-GB pull before it starts. Sizes
-# are the published Ollama Q4 quant sizes (approximate; "" = unknown ->
-# logged as "size unknown"). Used only for the log line, never for logic.
-_MODEL_SIZE_HINT = {
-    "mistral-small:latest": "~14 GB",
-    "mistral-nemo:latest": "~7 GB",
-    "nemotron-3-nano:4b": "~2.5 GB",
-}
-
-
-def _composer_config_path() -> Path:
-    """Path to the shipped composer_config.yml (single source of truth
-    for the composer's per-role model bindings)."""
-    repo_root = Path(__file__).resolve().parents[3]
-    return repo_root / "src" / "apecx_integration" / "composition" / "composer_config.yml"
-
-
-def _composer_models(config_path: Path | None = None) -> list[str]:
-    """Resolve the EFFECTIVE set of models the composer would call.
-
-    Loads ``composer_config.yml`` and applies the SAME ``APECX_LLM_*``
-    env overrides the composer applies at load
-    (``_apply_llm_env_overrides``), so a fresh install pulls exactly the
-    models a later composer run resolves — including operator env
-    overrides (``APECX_LLM_MODEL`` for the default, ``APECX_LLM_MODEL_<ROLE>``
-    per role). Collects the top-level ``llm_model`` default PLUS every
-    ``model_roles[*].model`` binding (drafter / planner / reviewer + any
-    env-added role). Returns a de-duplicated, order-preserving list; an
-    empty list when the config file is absent.
-
-    This is the composer half of the model set; the synthesis half is
-    ``_ollama_model()``. ``_models_to_ensure`` unions the two.
-    """
-    import yaml
-
-    from apecx_integration.composition._composer_llm_factory import (
-        _apply_llm_env_overrides,
-    )
-
-    path = config_path or _composer_config_path()
-    if not path.is_file():
-        return []
-    raw = yaml.safe_load(path.read_text()) or {}
-    _apply_llm_env_overrides(raw)
-
-    models: list[str] = []
-    top_default = raw.get("llm_model")
-    if top_default:
-        models.append(top_default)
-    for role_cfg in (raw.get("model_roles") or {}).values():
-        model = (role_cfg or {}).get("model")
-        if model:
-            models.append(model)
-    return list(dict.fromkeys(models))
-
-
-def _models_to_ensure(*, with_composer: bool) -> list[str]:
-    """The DISTINCT, order-preserving set of Ollama models apecx-setup
-    ensures present.
-
-    Always includes the synthesis model (``_ollama_model()`` →
-    ``resolve_llm_model()``) — that is the default workflow path and is
-    pulled on every install. When ``with_composer`` is True, unions in
-    the composer's effective model set (``_composer_models()``). The
-    synthesis model leads the list; composer-only additions follow.
-    """
-    models = [_ollama_model()]
-    if with_composer:
-        models.extend(_composer_models())
-    return list(dict.fromkeys(models))
+    return os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
 
 
 def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:
@@ -793,40 +873,8 @@ def _offer_start_ollama_daemon(*, interactive: bool) -> bool:
     return False
 
 
-def _step_llm(*, interactive: bool = True, with_composer: bool = False) -> StepResult:
-    """Install Ollama (offer when missing) + ensure every required model.
-
-    Model coverage (E3-6 + R2, 2026-06-13)
-    ---------------------------------------
-    The synthesis model (``resolve_llm_model()`` →
-    ``nemotron-3-nano:4b``) is ALWAYS ensured — it is the default
-    workflow path. When ``with_composer`` is True (``--with-composer``)
-    the step ALSO ensures the composer's per-role models declared in
-    ``composer_config.yml`` (effective set, env-overridden), so a fresh
-    install can run the composer without a first-call 404 on an
-    un-pulled model.
-
-    Opt-in, not default — JUSTIFICATION
-    -----------------------------------
-    The composer tier adds ``mistral-small:latest`` (~14 GB) +
-    ``mistral-nemo:latest`` (~7 GB) on top of the synthesis
-    ``nemotron-3-nano:4b`` (~2.5 GB); the planner/reviewer roles reuse
-    the synthesis nemotron and cost nothing extra. Pulling ~21 GB on
-    EVERY fresh install would surprise the 80%-case operator (DB
-    queries, MCP tools, synthesis, HPC) who never runs the composer.
-    So composer models are gated behind ``--with-composer`` — mirroring
-    the existing ``--with-rag`` / ``--with-rhea`` / ``--with-pymol``
-    opt-in flags (consistency = least surprise). The total size is
-    logged BEFORE any multi-GB pull begins.
-
-    Degradation: never raises. Ollama unreachable / install declined →
-    ``skipped`` (detail names the models it WOULD ensure). A failed
-    individual pull → ``partial`` (the models that DID land are still
-    reported); the install chain continues.
-    """
-    _print_header("Step 4 of 6 — LLM (Ollama install + check + model pull)")
-
-    models = _models_to_ensure(with_composer=with_composer)
+def _step_llm(*, interactive: bool = True) -> StepResult:
+    _print_header("Step 5 of 7 — LLM (Ollama install + check + model pull)")
 
     # 1. Ensure the CLI is installed (offer to install when missing).
     if not _offer_install_ollama(interactive=interactive):
@@ -836,7 +884,7 @@ def _step_llm(*, interactive: bool = True, with_composer: bool = False) -> StepR
             "`ollama` CLI not found and install declined / not "
             "possible. Install from https://ollama.com/download (or "
             "set APECX_LLM_BASE_URL to a remote OpenAI-compatible "
-            f"endpoint). Would ensure: {models}",
+            "endpoint to use vLLM / OpenAI / a hosted Anthropic-proxy).",
         )
 
     # 2. Ensure the daemon is reachable (offer to start when not).
@@ -845,52 +893,32 @@ def _step_llm(*, interactive: bool = True, with_composer: bool = False) -> StepR
         return StepResult(
             "llm",
             "skipped",
-            f"ollama daemon unreachable at {api_url}. Start with: "
-            f"ollama serve. Would ensure: {models}",
+            f"ollama daemon unreachable at {api_url}. Start with: ollama serve",
         )
 
-    # 3. Ensure every required model is pulled (idempotent: skip present).
+    # 3. Ensure the model is pulled.
     import urllib.request
 
     api_url = _ollama_url() + "/api/tags"
     with urllib.request.urlopen(api_url, timeout=5) as resp:
         tags = json.loads(resp.read())
+    model = _ollama_model()
     installed = {m.get("name") for m in tags.get("models") or []}
+    if model in installed:
+        return StepResult("llm", "ok", f"model {model} already pulled")
 
-    missing = [m for m in models if m not in installed]
-    if missing:
-        sizes = ", ".join(f"{m} ({_MODEL_SIZE_HINT.get(m, 'size unknown')})" for m in missing)
-        print(f"  ▶  pulling {len(missing)} model(s): {sizes}")
-        print("     (first-time downloads can take several minutes each)")
-
-    ensured: list[str] = []
-    pulled: list[str] = []
-    failed: list[str] = []
-    for model in models:
-        if model in installed:
-            ensured.append(model)
-            continue
-        print(f"  ▶  ollama pull {model} ...")
-        result = subprocess.run(
-            ["ollama", "pull", model],
-            timeout=1800,  # 30 minutes worst-case for ~14 GB models
-        )
-        if result.returncode != 0:
-            failed.append(model)
-            continue
-        ensured.append(model)
-        pulled.append(model)
-
-    detail = f"ensured {ensured}"
-    if pulled:
-        detail += f"; pulled {pulled}"
-    if failed:
+    print(f"  ▶  pulling {model} (this may take several minutes for first-time downloads)...")
+    result = subprocess.run(
+        ["ollama", "pull", model],
+        timeout=1800,  # 30 minutes worst-case for ~14 GB models
+    )
+    if result.returncode != 0:
         return StepResult(
             "llm",
-            "partial",
-            detail + f"; FAILED to pull {failed} (chain continues; retry `apecx-setup llm`)",
+            "fail",
+            f"`ollama pull {model}` exited with {result.returncode}",
         )
-    return StepResult("llm", "ok", detail)
+    return StepResult("llm", "ok", f"pulled {model}")
 
 
 # ---------------------------------------------------------------------------
@@ -899,7 +927,7 @@ def _step_llm(*, interactive: bool = True, with_composer: bool = False) -> StepR
 
 
 def _step_rag() -> StepResult:
-    _print_header("Step 5 of 6 — RAG index (FAISS, opt-in)")
+    _print_header("Step 6 of 7 — RAG index (FAISS, opt-in)")
     repo_root = Path(__file__).resolve().parents[3]
     workspace_root = repo_root.parent
     domain_rag_dir = workspace_root / "data" / "apecx_domain_rag"
@@ -961,119 +989,42 @@ def _step_rag() -> StepResult:
 # ---------------------------------------------------------------------------
 
 
-_RHEA_IMAGE = "apecx-rhea-server"
-_RHEA_CONTAINER = "apecx-rhea-server"
-_RHEA_HOST_PORT = 3001
-
-
-def _rhea_mcp_url() -> str:
-    """The MCP URL consumers (rhea_adapter / discovery / synthesizer
-    ``from_env``) read. Default already correct — confirm/export it."""
-    return os.environ.get("RHEA_MCP_URL", "http://localhost:3001/mcp/")
-
-
-def _compose_rhea_container_env() -> dict[str, str]:
-    """Container-side Rhea env, reusing the orchestrator's single-source
-    derivation and remapping ``localhost`` → ``host.docker.internal``.
-
-    The orchestrator's ``_compose_rhea_env`` derives every value (DB URL,
-    Redis/MinIO endpoints, embedding URL, Parsl backend) from the SAME
-    ContainerSpec objects the sidecars are launched from — so there is no
-    port/host drift. It composes for the HOST-PROCESS path (``localhost``);
-    a worker running INSIDE a container reaches those sidecars on the host
-    via ``host.docker.internal`` instead, so we remap. Ollama (the
-    embedding backend) likewise lives on the host.
-    """
-    from apecx_integration.infrastructure.orchestrator import _compose_rhea_env
-
-    env = _compose_rhea_env(
-        postgres=APECX_RHEA_POSTGRES,
-        redis_c=APECX_REDIS,
-        minio=APECX_RHEA_MINIO,
-        # Ollama lives on the host; the container reaches it via the
-        # host gateway. _compose_rhea_env appends /v1.
-        ollama_base_url="http://host.docker.internal:11434",
-    )
-    # Remap every host-loopback reference to the container→host gateway.
-    for key in ("DATABASE_URL", "REDIS_HOST", "AGENT_REDIS_HOST", "MINIO_ENDPOINT"):
-        if key in env:
-            env[key] = env[key].replace("localhost", "host.docker.internal")
-    # Bind on all interfaces inside the container (also baked into the
-    # image, set here for belt-and-suspenders + host-process parity).
-    env["HOST"] = "0.0.0.0"
-    # Use the image's baked, writable per-tool conda envs dir — NOT the
-    # host-path the orchestrator composes for the host-process backend.
-    env["RHEA_CONDA_ENVS_DIR"] = "/opt/rhea-conda/envs"
-    return env
-
-
-def _call_find_tools(mcp_url: str, query: str) -> int:
-    """Call ``find_tools(query)`` on the worker over MCP; return the tool
-    count it surfaces. The real CC-1 ingest check — a non-empty catalog
-    means the ingestion produced rows the RAG can retrieve."""
-    import asyncio
-
-    from nanobrain.library.tools._mcp_transport import MCPTransport
-
-    async def _run() -> int:
-        transport = MCPTransport(
-            mcp_url=mcp_url, timeout_seconds=30.0, client_name="apecx-setup-rhea"
-        )
-        try:
-            # find_tools populates the session catalog as a side effect; we
-            # read the surfaced set from the follow-up tools/list below.
-            await transport.call(
-                "tools/call", {"name": "find_tools", "arguments": {"query": query}}
-            )
-            # tools/call result: {"content": [...]} where the structured
-            # content carries the MCPTool list. Count via the populated
-            # tools/list delta instead — find_tools populates the session
-            # catalog, so a follow-up tools/list reflects the surfaced set.
-            listed = await transport.call("tools/list", {})
-            names = [t.get("name") for t in listed.get("tools", [])]
-            # Exclude the always-present find_tools entry itself.
-            return len([n for n in names if n and n != "find_tools"])
-        finally:
-            await transport.aclose()
-
-    return asyncio.run(_run())
-
-
 def _step_rhea() -> StepResult:
-    """One-time Rhea bring-up via Docker (E3-4.2/4.3, 2026-06-13).
+    """One-time Rhea bring-up (G89, 2026-05-16).
 
-    Idempotent. Safe to re-run. NEVER raises — degrades to ``skipped``
-    when docker is down so the install chain continues.
+    Idempotent. Safe to re-run.
 
     Phases:
-      1. Locate the Rhea checkout (``_find_rhea_repo`` — same probe the
-         orchestrator + autodiscovery use).
-      2. Ensure the 3 sidecars (Postgres 5435 / Redis / MinIO) — REUSES
-         the orchestrator's ContainerSpecs; never re-declares them.
-      3. Ensure mxbai-embed-large is pulled in Ollama (the find_tools RAG
-         embedding backend, via the host Ollama).
-      4. ``docker build apecx-rhea-server`` from the fork checkout (skip
-         when the image is already present unless ``APECX_RHEA_REBUILD=1``).
-      5. Run the worker via nanobrain ``DockerMCPWorker.ensure_running()``
-         (container→host sidecars; HOST=0.0.0.0; PARSL backend ``local``;
-         health-checked by a real MCP handshake).
-      6. Ingest the catalog via ``docker exec … update_tools``
-         (``RHEA_INGEST_ONLY``, default ``muscle``).
-      7. Confirm ``find_tools(query)`` surfaces ≥1 tool (CC-1 non-empty
-         ingested catalog) + confirm ``RHEA_MCP_URL``.
+      1. Locate the Rhea checkout (apecx-mcp-integration's
+         ``rhea_env_autodiscovery._find_rhea_repo`` — same probe
+         apecx-mcp uses at startup).
+      2. Ensure rhea's venv exists (``uv sync && uv pip install -e .``).
+         Skipped when ``.venv/bin/python`` is already present + the
+         editable install is registered.
+      3. Ensure mxbai-embed-large is pulled in Ollama (rhea's
+         embedding backend). Skipped when ``ollama list`` already
+         shows it.
+      4. Ensure the ingestion has been run at least once
+         (``rhea.preprocess.update_tools`` for whatever
+         ``$RHEA_INGEST_ONLY`` (default ``muscle`` if unset) wants).
+         Skipped when the rhea-postgres galaxytools table already
+         has rows for the requested tools.
 
-    Zero operator env vars required end-to-end.
+    After this step, apecx-mcp's existing rhea auto-spawn (driven by
+    InfraOrchestrator's rhea_mcp BackendSpec) will engage on next
+    startup with no operator-side env-var exports required — the
+    G88 autodiscovery sets RHEA_REPO_PATH + RHEA_PYTHON_PATH from
+    the checkout + venv this step produced.
+
+    Why opt-in
+    ----------
+    The full Rhea bring-up costs ~10 minutes (uv sync builds the
+    Parsl/Academy/proxystore stack; mxbai-embed-large is ~700 MB
+    Ollama pull; first muscle ingestion is ~10 s). Operators who
+    don't want Rhea-backed tools (muscle, future Galaxy tools) skip
+    it. Same opt-in pattern as `_step_rag`.
     """
-    _print_header("Step 5b of 6 — Rhea (Docker MCP worker, opt-in)")
-
-    if not _docker_available():
-        return StepResult(
-            "rhea",
-            "skipped",
-            "docker daemon unreachable — Rhea worker not brought up. "
-            "Install Docker Desktop (https://docker.com/desktop), start it, "
-            "then re-run `apecx-setup rhea`. (Chain continues without Rhea.)",
-        )
+    _print_header("Step 6b of 7 — Rhea (host MCP server, opt-in)")
 
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
@@ -1084,238 +1035,120 @@ def _step_rhea() -> StepResult:
         return StepResult(
             "rhea",
             "skipped",
-            "no rhea checkout found in standard locations; "
-            "git clone https://github.com/AlexandrNP/rhea.git into the "
-            "workspace next to apecx-mcp-integration/ to enable",
+            (
+                "no rhea checkout found in standard locations; "
+                "git clone https://github.com/AlexandrNP/rhea.git into the "
+                "workspace next to apecx-mcp-integration/ to enable"
+            ),
         )
+
     print(f"  ▶  found rhea checkout at {rhea_repo}")
 
-    # Phase 2: sidecars — reuse the SAME three specs infra/orchestrator use.
-    print("  ▶  ensuring sidecars (Postgres/Redis/MinIO) ...")
-    _started, _already, sidecar_failed = _bring_up_containers(_DOCKER_CONTAINERS)
-    if sidecar_failed:
+    # Phase 2: uv sync + editable install. We invoke uv via shutil.which
+    # so an operator without uv on PATH gets a clear error rather than
+    # subprocess gibberish.
+    uv_binary = shutil.which("uv")
+    if uv_binary is None:
         return StepResult(
             "rhea",
             "fail",
-            f"sidecars failed to start: {sidecar_failed}; "
-            "run `apecx-setup infra` and inspect `docker logs`",
+            "uv not on PATH — install from https://docs.astral.sh/uv/ then re-run",
         )
 
-    # Phase 3: ensure mxbai-embed-large (find_tools RAG embedding backend).
+    venv_python = rhea_repo / ".venv" / "bin" / "python"
+    if not venv_python.exists():
+        print("  ▶  uv sync (this may take 1-2 min on first run) ...")
+        result = subprocess.run(
+            [uv_binary, "sync"],
+            cwd=rhea_repo,
+            timeout=600,
+        )
+        if result.returncode != 0:
+            return StepResult(
+                "rhea",
+                "fail",
+                f"`uv sync` exited with {result.returncode}",
+            )
+
+    print("  ▶  uv pip install -e . (editable install of rhea-mcp) ...")
+    result = subprocess.run(
+        [uv_binary, "pip", "install", "-e", "."],
+        cwd=rhea_repo,
+        timeout=300,
+    )
+    if result.returncode != 0:
+        return StepResult(
+            "rhea",
+            "fail",
+            f"`uv pip install -e .` exited with {result.returncode}",
+        )
+
+    # Phase 3: ensure mxbai-embed-large is pulled. Ollama is the
+    # ALSO embedding backend rhea uses; if the model is missing the
+    # rhea ingestion step would fail downstream.
     ollama_binary = shutil.which("ollama")
     if ollama_binary is not None:
-        listed = subprocess.run([ollama_binary, "list"], capture_output=True, text=True, timeout=30)
+        listed = subprocess.run(
+            [ollama_binary, "list"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
         if "mxbai-embed-large" not in listed.stdout:
             print("  ▶  pulling mxbai-embed-large (~700 MB) ...")
-            pull = subprocess.run([ollama_binary, "pull", "mxbai-embed-large"], timeout=900)
+            pull = subprocess.run(
+                [ollama_binary, "pull", "mxbai-embed-large"],
+                timeout=900,
+            )
             if pull.returncode != 0:
                 return StepResult(
                     "rhea",
                     "partial",
-                    f"`ollama pull mxbai-embed-large` exited {pull.returncode}; "
-                    "find_tools ingestion will fail until you pull it manually",
+                    f"`ollama pull mxbai-embed-large` exited with {pull.returncode}; "
+                    "rhea ingestion will fail until you pull it manually",
                 )
         else:
             print("  ▶  mxbai-embed-large already present in Ollama")
     else:
         print(
-            "  ▶  ollama not on PATH — embedding pull skipped (operator must pull mxbai-embed-large)"
+            "  ▶  ollama not on PATH — skipping embedding-model pull (operator must do this manually)"
         )
 
-    # Phase 4: build the worker image from the fork (idempotent).
-    image_present = (
-        subprocess.run(
-            ["docker", "image", "inspect", _RHEA_IMAGE],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        ).returncode
-        == 0
-    )
-    if not image_present or os.environ.get("APECX_RHEA_REBUILD") == "1":
-        print(f"  ▶  docker build {_RHEA_IMAGE} from {rhea_repo} (first build ~2-3 min) ...")
-        build = subprocess.run(
-            ["docker", "build", "-t", _RHEA_IMAGE, str(rhea_repo)],
-            timeout=1800,
-        )
-        if build.returncode != 0:
-            return StepResult(
-                "rhea",
-                "fail",
-                f"`docker build {_RHEA_IMAGE}` exited {build.returncode}; "
-                "inspect the build output above",
-            )
-    else:
-        print(f"  ▶  image {_RHEA_IMAGE} already present (APECX_RHEA_REBUILD=1 to rebuild)")
-
-    # Phase 5: run the worker via nanobrain's DockerMCPWorker.
-    mcp_url = _rhea_mcp_url()
-    worker_env = _compose_rhea_container_env()
-    try:
-        import asyncio
-
-        from nanobrain.library.runtime.mcp_worker import DockerMCPWorker
-
-        worker = DockerMCPWorker(
-            image=_RHEA_IMAGE,
-            container_name=_RHEA_CONTAINER,
-            mcp_url=mcp_url,
-            host_port=_RHEA_HOST_PORT,
-            env=worker_env,
-            # host.docker.internal resolves automatically on Docker Desktop;
-            # --add-host makes it work on native-Linux daemons too.
-            extra_run_args=["--add-host", "host.docker.internal:host-gateway"],
-            health_timeout_seconds=180.0,
-        )
-        print("  ▶  starting + health-checking the Rhea worker ...")
-        asyncio.run(worker.ensure_running())
-    except Exception as exc:  # noqa: BLE001 — never raise from a setup step
-        return StepResult(
-            "rhea",
-            "fail",
-            f"Rhea worker did not come up: {type(exc).__name__}: {str(exc)[:300]}",
-        )
-
-    # Phase 6: ingest the catalog INSIDE the worker (zero host venv).
+    # Phase 4: ensure the muscle tool (or whatever RHEA_INGEST_ONLY
+    # asks for) is ingested. We don't try to be clever about
+    # incremental ingestion — rhea's ingestion is idempotent
+    # (upsert by primary key) so re-running just re-embeds at small
+    # cost. We DO skip when the galaxytools table has rows for the
+    # requested tool already — the typical case after the first
+    # apecx-setup rhea run.
     ingest_only = os.environ.get("RHEA_INGEST_ONLY", "muscle")
-    print(f"  ▶  ingesting catalog (RHEA_INGEST_ONLY={ingest_only}; ~10s) ...")
-    ingest = subprocess.run(
-        [
-            "docker",
-            "exec",
-            "-e",
-            f"RHEA_INGEST_ONLY={ingest_only}",
-            _RHEA_CONTAINER,
-            "uv",
-            "run",
-            "-m",
-            "rhea.preprocess.update_tools",
-        ],
-        capture_output=True,
-        text=True,
-        timeout=900,
+    print(f"  ▶  running rhea ingestion (RHEA_INGEST_ONLY={ingest_only}) ...")
+    ingest_env = os.environ.copy()
+    ingest_env.setdefault(
+        "DATABASE_URL",
+        "postgresql+asyncpg://postgres:postgres@localhost:5435/rhea",
     )
-    if ingest.returncode != 0:
+    ingest_env.setdefault("EMBEDDING_URL", "http://localhost:11434/v1")
+    ingest_env.setdefault("MODEL", "mxbai-embed-large")
+    ingest_env["RHEA_INGEST_ONLY"] = ingest_only
+    result = subprocess.run(
+        [str(venv_python), "-m", "rhea.preprocess.update_tools"],
+        cwd=rhea_repo,
+        env=ingest_env,
+        timeout=600,
+    )
+    if result.returncode != 0:
         return StepResult(
             "rhea",
             "partial",
-            f"ingest (`update_tools`) exited {ingest.returncode}: "
-            f"{(ingest.stderr or ingest.stdout)[-300:]}",
+            f"`rhea.preprocess.update_tools` exited with {result.returncode}; "
+            "is apecx-rhea-postgres running? (run `apecx-setup infra` first)",
         )
 
-    # Phase 7: confirm a non-empty ingested catalog (CC-1) + RHEA_MCP_URL.
-    # Query by the ingested tool's own name (CC-1's `find_tools("muscle")`)
-    # — a semantic query like "sequence alignment" can rank generic Galaxy
-    # text tools above a freshly-ingested tool when the catalog is mixed.
-    query = ingest_only.split(",")[0].strip() or "muscle"
-    try:
-        n_tools = _call_find_tools(mcp_url, query)
-    except Exception as exc:  # noqa: BLE001
-        return StepResult(
-            "rhea",
-            "partial",
-            f"worker up + ingest ran, but find_tools({query!r}) failed: "
-            f"{type(exc).__name__}: {str(exc)[:200]}",
-        )
-    if n_tools < 1:
-        return StepResult(
-            "rhea",
-            "partial",
-            f"worker up + ingest ran, but find_tools({query!r}) surfaced 0 tools "
-            f"— catalog may be empty (check `docker logs {_RHEA_CONTAINER}`)",
-        )
-    os.environ.setdefault("RHEA_MCP_URL", mcp_url)
     return StepResult(
         "rhea",
         "ok",
-        f"worker {_RHEA_CONTAINER} healthy at {mcp_url}; "
-        f"find_tools({query!r}) surfaced {n_tools} tool(s); "
-        f"RHEA_MCP_URL={mcp_url}",
-    )
-
-
-# ---------------------------------------------------------------------------
-# Step 5c — PyMOL image (E3-7)
-# ---------------------------------------------------------------------------
-
-_PYMOL_IMAGE = "apecx-pymol:3.1.0"
-
-
-def _step_pymol() -> StepResult:
-    """Build the version-pinned headless PyMOL image (E3-7, 2026-06-13).
-
-    The structural-reasoning stage (``StructuralReasoningStep``) shells
-    out to ``apecx-pymol:3.1.0`` for real per-residue SASA. Without the
-    image the stage degrades to a named-skip; building it here makes the
-    real structural path run out of the box.
-
-    Idempotent: skips when the image already exists (unless
-    ``APECX_PYMOL_REBUILD=1``). NEVER raises — degrades to ``skipped``
-    when docker is down.
-    """
-    _print_header("Step 5c of 6 — PyMOL image (structural reasoning)")
-
-    if not _docker_available():
-        return StepResult(
-            "pymol",
-            "skipped",
-            "docker daemon unreachable — PyMOL image not built. Install "
-            "Docker Desktop (https://docker.com/desktop), start it, then "
-            "re-run `apecx-setup pymol`. (Chain continues without it.)",
-        )
-
-    image_present = (
-        subprocess.run(
-            ["docker", "image", "inspect", _PYMOL_IMAGE],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        ).returncode
-        == 0
-    )
-    if image_present and os.environ.get("APECX_PYMOL_REBUILD") != "1":
-        return StepResult(
-            "pymol",
-            "ok",
-            f"image {_PYMOL_IMAGE} already present (APECX_PYMOL_REBUILD=1 to rebuild)",
-        )
-
-    # docker/pymol/ lives at the apecx repo root. This module is at
-    # src/apecx_integration/cli/setup.py → parents[3] is the repo root.
-    repo_root = Path(__file__).resolve().parents[3]
-    pymol_ctx = repo_root / "docker" / "pymol"
-    dockerfile = pymol_ctx / "Dockerfile"
-    if not dockerfile.is_file():
-        return StepResult(
-            "pymol",
-            "fail",
-            f"PyMOL Dockerfile not found at {dockerfile}",
-        )
-
-    print(f"  ▶  docker build {_PYMOL_IMAGE} from {pymol_ctx} (~5 min, conda solve) ...")
-    build = subprocess.run(
-        [
-            "docker",
-            "build",
-            "-t",
-            _PYMOL_IMAGE,
-            "-f",
-            str(dockerfile),
-            str(pymol_ctx),
-        ],
-        timeout=1800,
-    )
-    if build.returncode != 0:
-        return StepResult(
-            "pymol",
-            "fail",
-            f"`docker build {_PYMOL_IMAGE}` exited {build.returncode}; "
-            "inspect the build output above",
-        )
-    return StepResult(
-        "pymol",
-        "ok",
-        f"built {_PYMOL_IMAGE} (headless open-source PyMOL, version-pinned)",
+        f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn rhea-server on next start",
     )
 
 
@@ -1325,22 +1158,61 @@ def _step_pymol() -> StepResult:
 
 
 def _step_verify() -> StepResult:
-    _print_header("Step 6 of 6 — Verification")
+    _print_header("Step 7 of 7 — Verification")
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
-    # Data
+    # Data — BV-BRC is REQUIRED (public collection); VIOLIN is OPTIONAL
+    # (Group-gated, membership pending). Report them separately so a
+    # VIOLIN-missing install verifies as 'partial', not 'fail'.
     default_data = _setup_data._DEFAULT_DATA_DIR
-    data_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    bvbrc_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
     checks.append(
         (
             "data",
-            data_present,
-            f"VIOLIN data at {default_data}"
-            if data_present
+            bvbrc_present,
+            f"BV-BRC data at {default_data}"
+            if bvbrc_present
             else "missing — run `apecx-setup data`",
         )
     )
+    violin_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
+    checks.append(
+        (
+            "violin",
+            violin_present,
+            f"VIOLIN data at {default_data}/violin"
+            if violin_present
+            else "missing (optional) — pending 'apecx-project-all' Globus Group access",
+        )
+    )
+
+    # Synonym dictionary — the artifact the `dict` step (Step 3) builds.
+    # Closes the silent gap that left `apecx-mcp` paying a 10-15 min
+    # build cost on first startup. Resolution mirrors EnsureDictionaryConfig:
+    # APECX_SYNONYM_DICT_PATH wins, else APECX_DICT_OUTPUT_DIR (default
+    # ~/.apecx/dictionary)/dictionary.sqlite.
+    _dict_env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
+    if _dict_env:
+        dict_path = Path(_dict_env).expanduser()
+    else:
+        _dict_dir_env = os.environ.get("APECX_DICT_OUTPUT_DIR", "").strip()
+        _dict_dir = (
+            Path(_dict_dir_env).expanduser()
+            if _dict_dir_env
+            else Path("~/.apecx/dictionary").expanduser()
+        )
+        dict_path = _dict_dir / "dictionary.sqlite"
+    dict_present = dict_path.is_file()
+    if dict_present:
+        size_mb = dict_path.stat().st_size / (1024 * 1024)
+        dict_detail = f"dictionary at {dict_path} ({size_mb:.0f} MB)"
+    else:
+        dict_detail = (
+            f"missing at {dict_path} — run `apecx-setup dict`. Without it, "
+            f"apecx-mcp pays a 10-15 min build cost on next startup."
+        )
+    checks.append(("dict", dict_present, dict_detail))
 
     # Postgres (apecx-rhea-postgres — pgvector on host port 5435).
     pg_running = _docker_available() and _container_running(APECX_RHEA_POSTGRES.container_name)
@@ -1408,55 +1280,26 @@ def _step_verify() -> StepResult:
         )
     )
 
-    # Rhea (E3-4): the Docker path. We check the static state
-    # `apecx-setup rhea` produces: the from-fork worker image built +
-    # (optionally) the worker container running. We don't drive an MCP
-    # round-trip here (cheap stat-only checks only).
-    if not _docker_available():
-        rhea_ok = False
-        rhea_detail = "docker down — `apecx-setup rhea` (opt-in) needs Docker"
-    else:
-        image_present = (
-            subprocess.run(
-                ["docker", "image", "inspect", _RHEA_IMAGE],
-                capture_output=True,
-                text=True,
-                timeout=30,
-            ).returncode
-            == 0
-        )
-        if not image_present:
-            rhea_ok = False
-            rhea_detail = f"worker image {_RHEA_IMAGE} not built — `apecx-setup rhea`"
-        elif _container_running(_RHEA_CONTAINER):
-            rhea_ok = True
-            rhea_detail = f"worker {_RHEA_CONTAINER} running ({_rhea_mcp_url()})"
-        else:
-            rhea_ok = True
-            rhea_detail = f"image {_RHEA_IMAGE} built (worker not currently running)"
-    checks.append(("rhea", rhea_ok, rhea_detail))
+    # Rhea (G89): check that the bring-up has been done. We don't probe
+    # rhea-server reachability here (that's an apecx-mcp startup
+    # concern; `InfraOrchestrator` handles it). We check the static
+    # state apecx-setup rhea would have produced: checkout + venv +
+    # ingestion.
+    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
+        _find_rhea_repo,
+    )
 
-    # PyMOL (E3-7): the version-pinned structural-reasoning image.
-    if not _docker_available():
-        pymol_ok = False
-        pymol_detail = "docker down — `apecx-setup pymol` needs Docker"
+    rhea_repo = _find_rhea_repo()
+    if rhea_repo is None:
+        rhea_ok = False
+        rhea_detail = "no checkout found — `apecx-setup rhea` (opt-in)"
+    elif not (rhea_repo / ".venv" / "bin" / "python").exists():
+        rhea_ok = False
+        rhea_detail = f"checkout at {rhea_repo} but no venv — `apecx-setup rhea`"
     else:
-        pymol_present = (
-            subprocess.run(
-                ["docker", "image", "inspect", _PYMOL_IMAGE],
-                capture_output=True,
-                text=True,
-                timeout=30,
-            ).returncode
-            == 0
-        )
-        pymol_ok = pymol_present
-        pymol_detail = (
-            f"image {_PYMOL_IMAGE} built"
-            if pymol_present
-            else f"image {_PYMOL_IMAGE} not built — `apecx-setup pymol`"
-        )
-    checks.append(("pymol", pymol_ok, pymol_detail))
+        rhea_ok = True
+        rhea_detail = f"checkout + venv ready at {rhea_repo}"
+    checks.append(("rhea", rhea_ok, rhea_detail))
 
     print()
     for name, ok, detail in checks:
@@ -1474,7 +1317,7 @@ def _step_verify() -> StepResult:
     # Postgres + Redis + MinIO are optional for many workflows; reflect
     # that honestly in the partial-vs-fail distinction. faiss + rhea
     # are also optional (opt-in per G81 + G89).
-    optional = {"postgres", "redis", "minio", "faiss", "rhea", "pymol"}
+    optional = {"violin", "postgres", "redis", "minio", "faiss", "rhea"}
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(
@@ -1493,15 +1336,13 @@ def _step_verify() -> StepResult:
 # Subcommand dispatch
 # ---------------------------------------------------------------------------
 
-# ``data`` and ``llm`` are dispatched directly in ``main`` (they take
-# extra kwargs — ``prefer_gh_release`` / ``with_composer``) so they are
-# intentionally absent here.
 _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "globus": _step_globus,
+    "dict": _step_dict,
     "infra": lambda **_: _step_infra(),
+    "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
     "rhea": lambda **_: _step_rhea(),
-    "pymol": lambda **_: _step_pymol(),
     "verify": lambda **_: _step_verify(),
 }
 
@@ -1511,22 +1352,24 @@ def _run_all(
     interactive: bool = True,
     with_rag: bool = False,
     with_rhea: bool = False,
-    with_pymol: bool = False,
-    with_composer: bool = False,
-    prefer_gh_release: bool = False,
 ) -> int:
     """Run the canonical install chain.
 
-    Chain (G81 + G82 + G84, 2026-05-16):
+    Chain (G81 + G82 + G84; gh fallback retired 2026-05-21;
+           dict step added 2026-06-09):
       1. globus  — preflight: SDK + credentials + endpoint UUIDs.
                    ``skipped`` when not configured (operator gets
-                   actionable instructions); ``ok`` enables Globus
-                   transfer in the data step.
-      2. data    — VIOLIN/BV-BRC CSVs (preferred path: Globus when
-                   globus step said OK; fallback: ``gh release download``)
-      3. infra   — Docker containers (Postgres, Redis, MinIO)
-      4. llm     — Ollama or remote LLM credentials
-      5. verify  — sanity checks across all installed components
+                   actionable instructions); now REQUIRED for the data step.
+      2. data    — VIOLIN/BV-BRC CSVs via the Globus verify→transfer
+                   workflow (sole path; FAILS LOUD if Globus is unconfigured
+                   and no data is already present locally).
+      3. dict    — synonym dictionary at ~/.apecx/dictionary/dictionary.sqlite
+                   via ensure_dictionary(). 10-15 min first run; idempotent
+                   on re-run. Closes the silent gap where the first apecx-mcp
+                   startup paid the build cost.
+      4. infra   — Docker containers (Postgres, Redis, MinIO)
+      5. llm     — Ollama or remote LLM credentials
+      6. verify  — sanity checks across all installed components
 
     The RAG (FAISS) step is **opt-in** as of G81: it's a ~10-minute
     build of a 689 MB index that's only needed by synthesis workflows
@@ -1549,9 +1392,10 @@ def _run_all(
     # both call check_globus_prerequisites; the cost is two cheap
     # stat-only checks, not a network round-trip).
     results.append(_step_globus(interactive=interactive))
-    results.append(_step_data(interactive=interactive, prefer_gh_release=prefer_gh_release))
+    results.append(_step_data(interactive=interactive))
+    results.append(_step_dict(interactive=interactive))
     results.append(_step_infra())
-    results.append(_step_llm(interactive=interactive, with_composer=with_composer))
+    results.append(_step_llm(interactive=interactive))
     if with_rag:
         results.append(_step_rag())
     else:
@@ -1572,16 +1416,6 @@ def _run_all(
                 "opt-in — run `apecx-setup rhea` or `apecx-setup --with-rhea` for Rhea-backed bioinformatics tools (~10 min one-time)",
             )
         )
-    if with_pymol:
-        results.append(_step_pymol())
-    else:
-        results.append(
-            StepResult(
-                "pymol",
-                "skipped",
-                "opt-in — run `apecx-setup pymol` or `apecx-setup --with-pymol` to build the headless PyMOL image for the structural-reasoning stage (~5 min one-time)",
-            )
-        )
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -1600,7 +1434,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "subcommand",
         nargs="?",
-        choices=["globus", "data", "infra", "llm", "rag", "rhea", "pymol", "verify", "all"],
+        choices=["globus", "data", "dict", "infra", "llm", "rag", "rhea", "verify", "all"],
         default="all",
         help="Step to run (default: all).",
     )
@@ -1634,41 +1468,6 @@ def main(argv: list[str] | None = None) -> None:
             "tools) available via the apecx-mcp catalog."
         ),
     )
-    parser.add_argument(
-        "--with-pymol",
-        action="store_true",
-        help=(
-            "Include the headless PyMOL image build (E3-7: ~5 min one-time, "
-            "version-pinned apecx-pymol:3.1.0) in the default chain. Run this "
-            "when you want the structural-reasoning stage's REAL per-residue "
-            "SASA path (otherwise that stage degrades to a named-skip)."
-        ),
-    )
-    parser.add_argument(
-        "--with-composer",
-        action="store_true",
-        help=(
-            "Also pull the COMPOSER's per-role models (R2, E3-6: declared "
-            "in composer_config.yml — mistral-small:latest ~14 GB + "
-            "mistral-nemo:latest ~7 GB on top of the synthesis "
-            "nemotron-3-nano:4b ~2.5 GB). Default-off because the common case "
-            "(DB / MCP / synthesis / HPC) never runs the composer; run this "
-            "when you intend to run the composer so its first call doesn't "
-            "404 on an un-pulled model. The synthesis model is pulled either "
-            "way. Works with the `llm` subcommand too: `apecx-setup llm --with-composer`."
-        ),
-    )
-    parser.add_argument(
-        "--prefer-gh-release",
-        action="store_true",
-        help=(
-            "Skip the Globus-first transfer attempt and use the "
-            "``gh release download`` path immediately (G82: Globus-first "
-            "since 2026-05-16). Useful when Globus IS configured but the "
-            "operator wants the same path that pre-G82 installs took, "
-            "e.g. for reproducing an older install verbatim."
-        ),
-    )
     args = parser.parse_args(argv)
 
     if args.reconfigure_llm:
@@ -1681,21 +1480,10 @@ def main(argv: list[str] | None = None) -> None:
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
                 with_rhea=args.with_rhea,
-                with_pymol=args.with_pymol,
-                with_composer=args.with_composer,
-                prefer_gh_release=args.prefer_gh_release,
             )
         )
     elif args.subcommand == "data":
-        result = _step_data(
-            interactive=not args.non_interactive,
-            prefer_gh_release=args.prefer_gh_release,
-        )
-    elif args.subcommand == "llm":
-        result = _step_llm(
-            interactive=not args.non_interactive,
-            with_composer=args.with_composer,
-        )
+        result = _step_data(interactive=not args.non_interactive)
     else:
         result = _SUBCOMMANDS[args.subcommand](
             interactive=not args.non_interactive,

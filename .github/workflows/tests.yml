@@ -52,6 +52,101 @@ jobs:
         run: |
           pytest tests/unit/ -v --tb=short --no-header
 
+  install-smoke:
+    # Exercises the EXACT command in README/QUICKSTART/INSTALL:
+    #   uv tool install --python 3.12 git+https://github.com/<repo>.git@<ref>
+    # Unlike the `unit` job (which `pip install -e .` from an
+    # actions/checkout with lfs:false — pointers stay as text, never
+    # smudged), this does a real git clone + `git reset --hard`, so any
+    # clone-time data dependency fails HERE instead of in a user's
+    # terminal. This is the path that shipped broken: a committed-but-
+    # missing git-LFS object (data/faiss_indexes/) made the smudge filter
+    # abort the install with exit 128. No DATA is downloaded: the install
+    # ships code + console scripts only; datasets come later via Globus
+    # (`apecx-setup data`), which is deliberately NOT run here — the
+    # default web/native auth needs a browser and the thin-client secret
+    # path needs provisioned M2M creds, neither of which belongs in a
+    # headless smoke test.
+    name: clean install smoke (uv tool install git+)
+    runs-on: ubuntu-latest
+    # push only: on PR events github.sha is a synthetic merge commit that
+    # isn't fetchable via the public git URL by ref. Branch pushes give a
+    # real, fetchable ref_name.
+    if: github.event_name == 'push'
+    steps:
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: uv tool install from git (canonical user path)
+        run: |
+          uv tool install --python 3.12 \
+            "git+https://github.com/${{ github.repository }}.git@${{ github.ref_name }}"
+
+      - name: Verify console scripts resolve + respond (no data needed)
+        run: |
+          set -euo pipefail
+          uv tool list
+          for s in apecx-mcp apecx-cp apecx-setup; do
+            command -v "$s" || { echo "MISSING console script: $s"; exit 1; }
+          done
+          # argparse entry points respond without booting anything.
+          # NEVER run `apecx-mcp --help` — any invocation boots the server.
+          apecx-setup --help
+          apecx-cp --help
+
+      - name: Assert install downloaded NO dataset
+        run: |
+          set -euo pipefail
+          if [ -d "$HOME/.apecx/data" ] && [ -n "$(ls -A "$HOME/.apecx/data" 2>/dev/null)" ]; then
+            echo "FAIL: install populated ~/.apecx/data — datasets must come from Globus at apecx-setup time, not at install."
+            exit 1
+          fi
+          echo "OK: install is data-free (no GitHub data download)."
+
+      - name: Assert dictionary auto-downloads on clean MCP startup (zero Globus config)
+        # Pins the clean-install contract: with no APECX_*/GLOBUS_* env vars,
+        # no keyring entries, no ~/.apecx state, the synonym dictionary must
+        # auto-download anonymously from the public Globus HTTPS path. This is
+        # the external-user-facing guarantee that broke before commit 83525af
+        # and would silently regress if the public bootstrap path were removed
+        # or re-gated behind credentials. ~21 s on first run; subsequent CI
+        # runs hit the same path. Networked — Argonne LCF must be reachable.
+        # If Argonne is down, this job fails — that's the intended signal.
+        run: |
+          set -euo pipefail
+          # `env -i` strips every inherited env var so we can prove no leaked
+          # Globus / APECX setting is making the download possible.
+          CLEAN_HOME="$(mktemp -d)"
+          env -i \
+            HOME="$CLEAN_HOME" \
+            PATH="$PATH" \
+            APECX_DICT_OUTPUT_DIR="$CLEAN_HOME/.apecx/dictionary" \
+            python -c "
+          import logging, os, sys
+          logging.basicConfig(level=logging.INFO, format='%(levelname)s %(name)s: %(message)s')
+
+          # Sanity: nothing Globus/APECX leaked past env -i (except the explicit
+          # APECX_DICT_OUTPUT_DIR we set above to redirect output into CLEAN_HOME).
+          leaked = sorted(
+              k for k in os.environ
+              if k.startswith(('APECX_', 'GLOBUS_')) and k != 'APECX_DICT_OUTPUT_DIR'
+          )
+          assert not leaked, f'env leak — clean-install assertion is invalid: {leaked}'
+
+          from apecx_integration.mcp_surface.server import _ensure_synonym_dict_or_warn
+          _ensure_synonym_dict_or_warn()
+
+          sqlite = os.path.expanduser('~/.apecx/dictionary/dictionary.sqlite')
+          if not os.path.exists(sqlite):
+              print(f'FAIL: dictionary did not auto-download to {sqlite}')
+              sys.exit(1)
+          size_mb = os.path.getsize(sqlite) / (1024 * 1024)
+          print(f'OK: dictionary auto-downloaded to {sqlite} ({size_mb:.1f} MB)')
+          "
+          rm -rf "$CLEAN_HOME"
+
   # Ruff gating intentionally NOT in this initial CI workflow.
   # The repo has ~510 pre-existing ruff errors (most auto-fixable but
   # touching many files); adding a gating ruff job would be red on day

@@ -1,0 +1,40 @@
+# Strain→species normalization step.
+#
+# Computes, for every NCBI taxon at-or-below species rank, its species
+# ancestor, and writes the ``taxon_species`` table into the dictionary.
+# Consumed at runtime (single indexed read) by the harvester republish
+# resolver via dict_reader, so a strain-stamped record also carries its
+# species IRI and a species-level subjects.valueUri query matches it.
+#
+# No top-level ``class:``: loaded either via the workflow nested-resolver
+# (class named in the workflow YAML) or via an explicit
+# ``TaxonSpeciesMapStep.from_config(...)`` caller. Adding ``class:`` here
+# would be rejected by TaxonSpeciesMapStepConfig's ``extra='forbid'``.
+
+name: taxon_species_map_step
+description: "Precompute strain→species ancestors; write taxon_species into the dict."
+
+species_rank: "species"
+
+input_data_units:
+  species_map_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: species_map_input
+    description: >
+      Dict {nodes_path: <str>, dictionary_path: <str>} — the NCBI
+      nodes.dmp to read ranks/hierarchy from, and the dictionary SQLite
+      to write the taxon_species table into.
+    persistent: false
+
+output_data_units:
+  species_map_result:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: species_map_result
+    description: >
+      Dict {dictionary_path, taxa_mapped, species_count} — the enriched
+      dictionary path plus counts.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "species_map_input"
