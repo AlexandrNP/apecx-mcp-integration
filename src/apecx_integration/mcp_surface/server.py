@@ -137,6 +137,7 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     server.execution_locus = resolved_locus  # type: ignore[attr-defined]
 
     _register_logging_capability(server)
+    _register_reasoning_prompts(server)
 
     # Composer — ONE primitive (2026-06-15 Layer-1 trim; was start_workflow /
     # show_diff / execute_workflow, which split one decision across 3 tools and
@@ -359,6 +360,40 @@ def _register_logging_capability(server: FastMCP) -> None:
     @server._mcp_server.set_logging_level()
     async def _accept_logging_level(level: LoggingLevel) -> None:
         log.debug("MCP set_logging_level: accepted level=%s (no-op)", level)
+
+
+def _register_reasoning_prompts(server: FastMCP) -> None:
+    """Serve the desktop reasoning host's operating rules as live MCP prompts.
+
+    The connected host (Claude Desktop / IDE) is the orchestrating + synthesizing LLM in
+    desktop locus. ``instructions=`` is advisory and short; these two prompts carry the
+    detailed reuse-first loop the host should follow — fetchable on demand rather than
+    always-resident. Both are pinned by ``tests/unit/test_reasoning_prompts.py`` so a future
+    edit cannot silently drop a load-bearing imperative.
+
+    Loaded at registration time (not lazily) so a missing/renamed asset FAILS LOUD at server
+    build, not on a client's first prompt fetch.
+    """
+    from apecx_integration.mcp_surface.prompts import load_prompt
+
+    rules = load_prompt("rules_core.md")
+    protocol = load_prompt("reasoning_protocol.md")
+
+    @server.prompt(
+        name="reasoning_rules",
+        description="Lean imperative rules for the apecx reasoning host (reuse-first, "
+        "closed-class, nanobrain framework rules, requires_llm).",
+    )
+    def reasoning_rules() -> str:
+        return rules
+
+    @server.prompt(
+        name="reasoning_protocol",
+        description="The match → parametrize → execute procedure for fulfilling a "
+        "viral-immunology task with the apecx tools.",
+    )
+    def reasoning_protocol() -> str:
+        return protocol
 
 
 async def _ping_control_plane(base_url: str) -> bool:
