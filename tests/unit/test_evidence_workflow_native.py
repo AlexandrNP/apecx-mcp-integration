@@ -1,4 +1,4 @@
-"""AC-NATIVE — nanobrain-compliance guards for viral_epitope_evidence_review.
+"""AC-NATIVE — nanobrain-compliance guards for viral_epitope_analysis.
 
 These assert the no-silent-failure properties at the level a regression would
 break them: the generated workflow config (which becomes the per-step YAML the
@@ -18,9 +18,9 @@ from __future__ import annotations
 
 import pytest
 
-from apecx_integration.composition.workflows.viral_epitope_evidence_review.builder import (
+from apecx_integration.composition.workflows.viral_epitope_analysis.builder import (
     _evidence_workflow_builder,
-    build_viral_epitope_evidence_review_workflow,
+    build_viral_epitope_analysis_workflow,
 )
 
 
@@ -59,7 +59,7 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
 def test_lightweight_load_builds_expected_dag_via_from_config():
     # build_...() runs builder.load(), which writes per-step YAMLs + a workflow YAML and
     # calls Workflow.from_config — so this exercises the YAML construction path too.
-    wf = build_viral_epitope_evidence_review_workflow()
+    wf = build_viral_epitope_analysis_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", None)
     assert isinstance(children, dict)
     assert set(children) == {

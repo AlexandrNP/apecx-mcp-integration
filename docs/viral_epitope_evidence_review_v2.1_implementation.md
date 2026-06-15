@@ -1,6 +1,6 @@
-# viral_epitope_evidence_review v2.1 — Detailed Implementation Plan
+# viral_epitope_analysis v2.1 — Detailed Implementation Plan
 
-Companion to `viral_epitope_evidence_review_v2_plan.md` (design rationale + real-data
+Companion to `viral_epitope_analysis_v2_plan.md` (design rationale + real-data
 findings). This doc is the actionable task tree: dependencies, concrete steps, files,
 gated real-data tests, and data-based acceptance per task. Cite task IDs (E3-*) in
 commits/PRs. Branch: `epitope-evidence-workflow` (apecx) + per-repo branches for

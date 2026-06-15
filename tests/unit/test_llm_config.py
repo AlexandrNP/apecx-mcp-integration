@@ -52,11 +52,11 @@ def test_review_step_ceiling_exceeds_client_timeout_so_it_degrades_loud():
     # THE fix for the epitope null: the LLM client must time out BEFORE the framework kills
     # the synthesis step (which would strand the EnvelopeStep under G127 → null). So the
     # `review` step's execution_timeout MUST exceed the default client LLM timeout.
-    from apecx_integration.composition.workflows.viral_epitope_evidence_review.builder import (
-        build_viral_epitope_evidence_review_workflow,
+    from apecx_integration.composition.workflows.viral_epitope_analysis.builder import (
+        build_viral_epitope_analysis_workflow,
     )
 
-    wf = build_viral_epitope_evidence_review_workflow()
+    wf = build_viral_epitope_analysis_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", {})
     review = children["review"]
     ceiling = getattr(review.config, "execution_timeout", None)

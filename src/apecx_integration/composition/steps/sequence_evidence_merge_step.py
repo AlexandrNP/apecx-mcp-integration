@@ -1,7 +1,7 @@
 """SequenceEvidenceMergeStep — fan-in that folds sequence conservation into the evidence bundle.
 
 The join point between the structural-evidence leg and the sequence-conservation leg of
-``viral_epitope_evidence_review``. It receives two inputs via an ``AllDataReceivedTrigger``:
+``viral_epitope_analysis``. It receives two inputs via an ``AllDataReceivedTrigger``:
 
 - ``structural_in`` — the evidence bundle from ``StructuralEvidenceStep`` (query + all source
   branches + structural_records + structural_note + the accumulated ``stage_reports``);

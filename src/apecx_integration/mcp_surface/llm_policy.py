@@ -113,7 +113,7 @@ def workflow_needs_llm_at_run(workflow: object, locus: ExecutionLocus) -> bool:
     ``agent`` locus: any LLM-bearing step needs the server LLM. ``desktop`` locus: a
     ``final_synthesis`` step omits its LLM call (the host synthesizes), so it does NOT need
     one — only a genuine in-DAG LLM step does. This is what keeps the gate from wrongly
-    refusing a self-omitting workflow (e.g. viral_epitope_evidence_review) on a desktop with
+    refusing a self-omitting workflow (e.g. viral_epitope_analysis) on a desktop with
     no Ollama.
     """
     from apecx_integration.composition.workflow_requires_llm import loaded_workflow_llm_steps

@@ -51,11 +51,11 @@ def test_resolve_llm_external_needs_api_key(monkeypatch):
 
 
 def test_epitope_needs_llm_only_in_agent_locus():
-    from apecx_integration.composition.workflows.viral_epitope_evidence_review.builder import (
-        build_viral_epitope_evidence_review_workflow,
+    from apecx_integration.composition.workflows.viral_epitope_analysis.builder import (
+        build_viral_epitope_analysis_workflow,
     )
 
-    wf = build_viral_epitope_evidence_review_workflow()
+    wf = build_viral_epitope_analysis_workflow()
     # Desktop: the only LLM step is final_synthesis → self-omits → no LLM needed.
     assert workflow_needs_llm_at_run(wf, ExecutionLocus.DESKTOP) is False
     # Agent: that step synthesizes internally → needs the server LLM.
@@ -99,7 +99,7 @@ def test_run_workflow_refuses_loud_when_llm_unavailable_in_agent_locus(monkeypat
             available=False, target=None, detail="LOUD REFUSAL: no LLM (test)."
         ),
     )
-    out = asyncio.run(run_workflow("viral_epitope_evidence_review", {"query": "chikv E1 epitopes"}))
+    out = asyncio.run(run_workflow("viral_epitope_analysis", {"query": "chikv E1 epitopes"}))
     assert out["status"] == "error"
     assert "LOUD REFUSAL: no LLM (test)." in out["error"]
     assert not out.get("run_id")  # refused before running → no run recorded
@@ -120,5 +120,5 @@ def test_run_workflow_desktop_does_not_refuse_self_omitting_workflow(monkeypatch
     # gate (i.e. it proceeds past the gate — any later outcome is fine for this test).
     # _must_not_resolve raises if the gate calls resolve_llm — reaching here proves it did
     # not. The result may complete or error later (network), but it is NOT the gate refusal.
-    out = asyncio.run(run_workflow("viral_epitope_evidence_review", {"query": "chikv E1"}))
+    out = asyncio.run(run_workflow("viral_epitope_analysis", {"query": "chikv E1"}))
     assert "none is resolvable" not in (out.get("error") or "")

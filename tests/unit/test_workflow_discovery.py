@@ -25,7 +25,7 @@ _PRODUCT = {
     "rag_e2e_synthesis",
     "rhea_muscle_alignment",
     "viral_conserved_sites",
-    "viral_epitope_evidence_review",
+    "viral_epitope_analysis",
 }
 
 
@@ -42,15 +42,15 @@ def test_discovery_carries_self_described_metadata():
     assert hs.source["kind"] == "yaml"
     assert hs.description and "synonym dictionary" in hs.description.lower()
     # Builder-defined: description from the package __init__ docstring, name-prefix stripped.
-    ep = by_name["viral_epitope_evidence_review"]
+    ep = by_name["viral_epitope_analysis"]
     assert ep.source["kind"] == "lightweight"
-    assert ep.description and not ep.description.startswith("viral_epitope_evidence_review")
+    assert ep.description and not ep.description.startswith("viral_epitope_analysis")
 
 
 def test_category_is_a_label_not_a_filter():
     assert category_for("benchmark_direct_codegen") == "benchmark"
     assert category_for("tdr_loop") == "demo"
-    assert category_for("viral_epitope_evidence_review") == "product"
+    assert category_for("viral_epitope_analysis") == "product"
     # Every benchmark/demo is STILL discovered (labeled, not hidden).
     names = {dw.name for dw in discover_workflows()}
     assert "benchmark_direct_codegen" in names

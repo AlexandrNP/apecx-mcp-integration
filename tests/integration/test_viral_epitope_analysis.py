@@ -1,4 +1,4 @@
-"""viral_epitope_evidence_review (Track D) — the evidence workflow as a catalog tool.
+"""viral_epitope_analysis (Track D) — the evidence workflow as a catalog tool.
 
 Proves the lightweight WorkflowBuilder catalog entry: builds with real child steps (guards the
 0-child-steps silent failure), is registered + listed, gates missing params via RoC-2c, and —
@@ -141,11 +141,11 @@ _QUERY = "conserved chikungunya structural polyprotein epitopes and structural r
 def test_builder_produces_workflow_with_child_steps():
     """Guards the WorkflowBuilder 0-child-steps silent failure (loads with 0 steps → silent
     no_first_step). No network needed — construction only."""
-    from apecx_integration.composition.workflows.viral_epitope_evidence_review.builder import (
-        build_viral_epitope_evidence_review_workflow,
+    from apecx_integration.composition.workflows.viral_epitope_analysis.builder import (
+        build_viral_epitope_analysis_workflow,
     )
 
-    wf = build_viral_epitope_evidence_review_workflow()
+    wf = build_viral_epitope_analysis_workflow()
     children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", None)
     assert isinstance(children, dict)
     assert set(children) == {
@@ -168,10 +168,10 @@ def test_registered_in_catalog_and_listed():
     from apecx_integration.mcp_surface.workflow_registry import load_catalog
 
     names = {e.tool_name for e in load_catalog().workflows}
-    assert "viral_epitope_evidence_review" in names
+    assert "viral_epitope_analysis" in names
 
     out = asyncio.run(list_workflows())
-    row = next(r for r in out["runnable"] if r["name"] == "viral_epitope_evidence_review")
+    row = next(r for r in out["runnable"] if r["name"] == "viral_epitope_analysis")
     assert row["invoke_with"] == "run_workflow"
     assert isinstance(row["available"], bool)
 
@@ -180,7 +180,7 @@ def test_missing_query_returns_needs_input():
     """RoC-2c: missing required `query` → needs_input BEFORE any backend call."""
     from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
 
-    out = asyncio.run(run_workflow("viral_epitope_evidence_review", {"protein": "E1"}))
+    out = asyncio.run(run_workflow("viral_epitope_analysis", {"protein": "E1"}))
     assert out["status"] == "needs_input", out
     ct = out["control_transfer"]
     assert ct["reason"] == "missing_param"
@@ -197,7 +197,7 @@ def test_evidence_only_e2e_has_structural_section():
     evidence summary rather than discarding the retrieved evidence."""
     from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
 
-    out = asyncio.run(run_workflow("viral_epitope_evidence_review", {"query": _QUERY}))
+    out = asyncio.run(run_workflow("viral_epitope_analysis", {"query": _QUERY}))
     assert out["status"] == "ok", out
     assert out["error"] is None
     assert out["run_id"]
@@ -214,7 +214,7 @@ def test_evidence_output_contract_five_sections_e2e():
     record with a non-'(untitled)' title (DataCite title resolution end-to-end)."""
     from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
 
-    out = asyncio.run(run_workflow("viral_epitope_evidence_review", {"query": _QUERY}))
+    out = asyncio.run(run_workflow("viral_epitope_analysis", {"query": _QUERY}))
     assert out["status"] == "ok", out
     md = out["markdown"]
     assert md and md.strip()
@@ -250,7 +250,7 @@ def test_structural_no_hit_is_named_e2e(monkeypatch):
     # Disable the Globus branch so structural lookup deterministically finds nothing.
     monkeypatch.setenv("APECX_GLOBUS_SEARCH_DISABLED", "1")
     out = asyncio.run(
-        run_workflow("viral_epitope_evidence_review", {"query": "Mayaro virus nsP2 protease"})
+        run_workflow("viral_epitope_analysis", {"query": "Mayaro virus nsP2 protease"})
     )
     # Degrade-loud guarantees a result; the structural section names the no-hit explicitly.
     assert out["status"] == "ok", out
@@ -268,7 +268,7 @@ def test_sequence_conservation_stage_e2e():
 
     out = asyncio.run(
         run_workflow(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             {"query": _QUERY, "taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein"},
         )
     )
@@ -330,7 +330,7 @@ def test_sars_cov2_no_taxon_id_gets_full_science_e2e(capsys):
 
     out = asyncio.run(
         run_workflow(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             # NO taxon_id — only the free-text query names the virus ("SARS-CoV-2").
             {"query": "SARS-CoV-2 spike glycoprotein conserved epitopes", "protein": "spike"},
         )
@@ -389,7 +389,7 @@ def test_chikv_no_taxon_id_still_works_no_regression_e2e():
 
     out = asyncio.run(
         run_workflow(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             {
                 "query": "chikungunya structural polyprotein conserved epitopes",
                 "protein": "structural polyprotein",
@@ -412,7 +412,7 @@ def test_unresolvable_virus_degrades_loud_e2e():
 
     out = asyncio.run(
         run_workflow(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             {"query": "envelope glycoprotein conserved epitopes", "protein": "envelope"},
         )
     )
@@ -457,7 +457,7 @@ def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
 
     out = asyncio.run(
         run_workflow_streamed(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             {"query": _QUERY, "taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein"},
             streamed.append,
         )
@@ -532,7 +532,7 @@ def test_provenance_record_has_real_values_e2e():
 
     out = asyncio.run(
         run_workflow(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             {"query": _QUERY, "taxon_id": _CHIKV_TAXON, "protein": "structural polyprotein"},
         )
     )
@@ -586,7 +586,7 @@ def test_design_without_approval_returns_needs_input_e2e():
 
     out = asyncio.run(
         run_workflow(
-            "viral_epitope_evidence_review",
+            "viral_epitope_analysis",
             {"query": _QUERY, "requested_outputs": "evidence_plus_design"},
         )
     )
@@ -627,7 +627,7 @@ def test_design_hitl_loop_e2e():
     params = {"query": _QUERY, "requested_outputs": "evidence_plus_design"}
 
     # 1) Request design WITHOUT a token → withheld, and a fresh dapprv- token is issued.
-    out1 = asyncio.run(run_workflow("viral_epitope_evidence_review", params))
+    out1 = asyncio.run(run_workflow("viral_epitope_analysis", params))
     assert out1["status"] == "needs_input", out1
     assert "(approved)" not in out1["markdown"]  # design NOT emitted while unapproved
     m = re.search(r"dapprv-[0-9a-f]+", out1["markdown"])
@@ -640,7 +640,7 @@ def test_design_hitl_loop_e2e():
 
     # 3) Re-call with the approved token (same query) → design section appended.
     out3 = asyncio.run(
-        run_workflow("viral_epitope_evidence_review", {**params, "design_approval_id": token})
+        run_workflow("viral_epitope_analysis", {**params, "design_approval_id": token})
     )
     assert out3["status"] == "ok", out3
     assert "Design / optimization hypotheses (approved)" in out3["markdown"], out3["markdown"][

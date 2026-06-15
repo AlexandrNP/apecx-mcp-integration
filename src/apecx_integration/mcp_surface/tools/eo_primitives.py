@@ -157,7 +157,7 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
     # requires_llm gate (design §9): if this workflow needs an LLM to run UNDER THIS LOCUS
     # (an in-DAG LLM step, or — in agent locus — its final synthesis), RESOLVE and announce
     # it, or LOUDLY REFUSE before running. A desktop, final-synthesis-only workflow (e.g.
-    # viral_epitope_evidence_review) needs no LLM here — the step omits it and the host
+    # viral_epitope_analysis) needs no LLM here — the step omits it and the host
     # synthesizes — so the gate passes through. This turns "no LLM → null/stranded" into a
     # loud, actionable refusal (never a silent empty result).
     from apecx_integration.composition.runtime.execution_locus import get_active_locus
@@ -550,7 +550,7 @@ async def apecx_capabilities() -> dict[str, Any]:
         orchestrating + synthesizing LLM. apecx tools return deterministic data and
         scaffolds for YOU to analyze; NO apecx-side LLM endpoint is required for that.
       - **Backend / headless mode** — ``run_workflow`` workflows (e.g.
-        ``viral_epitope_evidence_review``) synthesize markdown INTERNALLY using the
+        ``viral_epitope_analysis``) synthesize markdown INTERNALLY using the
         apecx LLM backend (Ollama at ``localhost:11434`` by default, or
         ``APECX_LLM_BASE_URL``). Its health is the ``ollama`` row under ``backends``;
         a local Ollama is OFF until installed, and there is no remote default.
@@ -614,7 +614,7 @@ async def apecx_capabilities() -> dict[str, Any]:
 def approve_design(token: str, decided_by: str = "operator") -> dict[str, Any]:
     """Operator approval for a design/optimization output request (HITL gate).
 
-    The ``viral_epitope_evidence_review`` workflow's design gate ISSUES a
+    The ``viral_epitope_analysis`` workflow's design gate ISSUES a
     ``design_approval_id`` (a ``dapprv-…`` token) when design output is requested without a
     valid one, and WITHHOLDS the design section until an operator approves that token here.
     After approval, re-call ``run_workflow`` with the SAME ``design_approval_id`` and the same

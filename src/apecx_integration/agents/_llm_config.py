@@ -87,7 +87,7 @@ def _probe_model(model: str, base_url: str) -> tuple[bool, bool]:
     """Probe the endpoint's model list. Returns ``(reachable, model_pulled)``.
 
     Mirrors the proven reachability logic in
-    ``tests/integration/test_viral_epitope_evidence_review.py::_llm_reachable``:
+    ``tests/integration/test_viral_epitope_analysis.py::_llm_reachable``:
     Ollama's native list is at the ROOT (``/api/tags``); the OpenAI-compat list
     is at ``/v1/models``. We match the exact tag OR its ``name:tag`` stem so a
     ``latest`` vs pinned-digest difference does not read as "missing".

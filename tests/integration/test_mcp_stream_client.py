@@ -29,7 +29,7 @@ Asserts (CC-1, real data — not "didn't crash"):
   (c) the final result carries the 5-section output contract + status=ok.
 
 Reuses the existing reachability gate (``needs_llm_seq``) and query fixtures from
-``test_viral_epitope_evidence_review`` — the prerequisites are identical (LLM +
+``test_viral_epitope_analysis`` — the prerequisites are identical (LLM +
 Globus + MAFFT + BV-BRC), so re-deriving them here would duplicate knowledge.
 """
 
@@ -41,7 +41,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.integration.test_viral_epitope_evidence_review import (
+from tests.integration.test_viral_epitope_analysis import (
     _CHIKV_TAXON,
     _QUERY,
     needs_llm_seq,

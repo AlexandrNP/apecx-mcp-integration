@@ -1,4 +1,4 @@
-"""viral_epitope_evidence_review — lightweight builder (Track D).
+"""viral_epitope_analysis — lightweight builder (Track D).
 
 Catalog entry-point: a no-arg callable that constructs the workflow with
 ``nanobrain.lightweight.WorkflowBuilder`` and returns ``builder.load()``.
@@ -171,9 +171,11 @@ def _evidence_workflow_builder():
     from nanobrain.lightweight.workflow_builder import WorkflowBuilder
 
     b = WorkflowBuilder(
-        "viral_epitope_evidence_review",
-        "Assemble + synthesize evidence (RAG, VIOLIN/BV-BRC, PubMed, PDB/EMDB "
-        "structures) for a viral epitope/antigen/protein question.",
+        "viral_epitope_analysis",
+        "Identify and analyze B-cell epitopes / antigenic sites on a viral protein. "
+        "Pulls the data itself (BV-BRC genomes, PDB/EMDB structures, VIOLIN, PubMed) and "
+        "analyzes it: sequence-conservation (MAFFT alignment) + structural surface-exposure "
+        "(PyMOL SASA, exposed vs buried) → ranked conserved, surface-exposed epitope candidates.",
     )
     b.add_input("workflow_input", "DataUnitMemory")
     b.add_output("workflow_output", "DataUnitMemory")
@@ -362,9 +364,9 @@ def _evidence_workflow_builder():
     return b
 
 
-def build_viral_epitope_evidence_review_workflow():
-    """Construct + load the viral_epitope_evidence_review workflow (catalog entry-point)."""
+def build_viral_epitope_analysis_workflow():
+    """Construct + load the viral_epitope_analysis workflow (catalog entry-point)."""
     return _evidence_workflow_builder().load()
 
 
-__all__ = ["EVIDENCE_INPUT_SCHEMA", "build_viral_epitope_evidence_review_workflow"]
+__all__ = ["EVIDENCE_INPUT_SCHEMA", "build_viral_epitope_analysis_workflow"]

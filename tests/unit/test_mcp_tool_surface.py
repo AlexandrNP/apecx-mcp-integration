@@ -34,7 +34,7 @@ EXPECTED_STATIC = {
     "compose_workflow",
     # canonical retrieval primitive
     "harmonized_search",
-    # the viral_epitope_evidence_review workflow's HITL design gate
+    # the viral_epitope_analysis workflow's HITL design gate
     "approve_design",
     # meta / navigation
     "database_statistics",
@@ -46,7 +46,7 @@ EXPECTED_CATALOG = {
     "rhea_muscle_alignment",
     "viral_conserved_sites",
     "viral_conserved_sites_muscle",
-    "viral_epitope_evidence_review",
+    "viral_epitope_analysis",
 }
 
 EXPECTED = EXPECTED_STATIC | EXPECTED_CATALOG
@@ -65,7 +65,7 @@ FORBIDDEN = {
     "confirm_allocation",
     "export_hpc_bundle",
     "ingest_hpc_bundle",
-    "analyze_viral_immunology",  # retired — use viral_epitope_evidence_review
+    "analyze_viral_immunology",  # retired — use viral_epitope_analysis
     "analyze_eeev_epitopes",
     "query_globus_search",  # raw free-text — superseded by harmonized_search
     "query_vaccines",

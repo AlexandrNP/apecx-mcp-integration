@@ -17,7 +17,7 @@ When to use ``query_globus_search`` vs. the existing tools:
     sources are NOT in the Globus index — they are joined offline
     into the synonym dictionary instead).
   - For "ask a question, get a Markdown answer", run a catalog
-    workflow via ``run_workflow`` (e.g. ``viral_epitope_evidence_review``,
+    workflow via ``run_workflow`` (e.g. ``viral_epitope_analysis``,
     which synthesizes grounded markdown over HARMONIZED search). The
     standalone ``synthesize_query`` tool was retired 2026-06-15.
 """

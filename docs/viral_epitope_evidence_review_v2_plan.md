@@ -1,4 +1,4 @@
-# `viral_epitope_evidence_review` v2 — Multi-Stage Reasoning + Dynamic Tooling Plan
+# `viral_epitope_analysis` v2 — Multi-Stage Reasoning + Dynamic Tooling Plan
 
 Status: DRAFT 2026-06-13. Branch home: `epitope-evidence-workflow` (wt-eo-mvp),
 nanobrain changes on their own branch. Cite task IDs (E2-*) in commits/PRs.
@@ -55,7 +55,7 @@ returned empty-on-every-request.** Residual hardening: query construction is bar
 freetext — add taxon-aware query expansion (E2-D5) and a relevance floor.
 
 ### 1.4 Current workflow vs the 6-stage spec — the gap is architectural
-Current `viral_epitope_evidence_review` = `normalize → assemble → structural →
+Current `viral_epitope_analysis` = `normalize → assemble → structural →
 review → gate → envelope`: a retrieve→one-LLM-synthesize→gate pipeline with **one**
 LLM call emitting **one** terminal Markdown blob. Measured against the spec:
 **~1 of 6 reasoning stages** (and only implicitly), **0 of 5 mandated output

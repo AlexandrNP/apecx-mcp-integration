@@ -19,7 +19,7 @@ mis-flagged by the heuristic, or categorize it non-product (demo/benchmark) / re
 
 No current product workflow is exempt: ``violin_bvbrc`` (the pre-harmonized-search workflow that
 baked entity extraction + LLM synonym proposals INTO the DAG) was RETIRED 2026-06-15, superseded
-by ``harmonized_search`` (deterministic resolution) + ``viral_epitope_evidence_review``
+by ``harmonized_search`` (deterministic resolution) + ``viral_epitope_analysis``
 (final-synthesis). ``_KNOWN_NOT_DESKTOP_CLEAN`` is therefore empty: every product workflow is
 desktop-clean, unconditionally. Adding to that set again is a deliberate design decision (an
 agent-shaped workflow temporarily mis-filed as product), not a way to silence this test.

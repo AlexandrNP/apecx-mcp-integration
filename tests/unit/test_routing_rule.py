@@ -33,7 +33,7 @@ def test_routing_rule_carries_the_load_bearing_directives():
         "list_workflows",
         "web_search",
         "MUST",
-        "viral_epitope_evidence_review",
+        "viral_epitope_analysis",
     ):
         assert needle in ROUTING_RULE, needle
 

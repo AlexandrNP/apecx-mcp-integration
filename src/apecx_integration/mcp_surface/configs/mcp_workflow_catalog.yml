@@ -48,9 +48,9 @@ workflows:
         the Rhea MCP server (run `apecx-setup rhea` and set RHEA_MCP_URL).
         WITHOUT Docker it does NOT run — for sequence alignment use the
         MAFFT path instead (`viral_conserved_sites`, needs only the `mafft`
-        binary, no Docker), or use the LLM-only analysis
-        (`viral_epitope_evidence_review`) which works on harmonized data
-        with no bioinformatics infra at all.
+        binary, no Docker), or use `viral_epitope_analysis` for full epitope
+        analysis (sequence conservation + structural surface-exposure; the
+        structural PyMOL leg degrades loudly when Docker is absent).
     timeout_seconds: 900.0
     # Workflow.run() deposits the input dict by FIRST-STEP input-data-unit
     # name, NOT by workflow-level input-data-unit name. The
@@ -123,8 +123,9 @@ workflows:
         - mafft
       unavailable_hint: >-
         Install MAFFT (`brew install mafft` / `apt install mafft`) — no Docker
-        needed, it's a single local binary. For evidence analysis without any
-        alignment infra, use the LLM-only `viral_epitope_evidence_review`.
+        needed, it's a single local binary. For full epitope analysis
+        (sequence conservation + structural surface-exposure), use
+        `viral_epitope_analysis`.
     timeout_seconds: 600.0
     # Workflow.run deposits by FIRST-STEP input-DU name (see rhea note above): the first step
     # is `fetch` (BvbrcProteinFastaStep) whose input DU is `fetch_in`.
@@ -183,23 +184,35 @@ workflows:
     # BV-BRC network + Rhea MCP round-trip (+ first-run conda build) — give the cascade headroom.
     settle_ms: 2000
 
-  - tool_name: viral_epitope_evidence_review
+  - tool_name: viral_epitope_analysis
     description: |
-      Assemble + synthesize an evidence bundle for a viral epitope / antigen / protein question.
-      Runs concurrent retrieval (domain RAG, VIOLIN/BV-BRC, PubMed, and the APECx harvested Globus
-      corpus), then a dedicated PDB + EMDB structural-evidence lookup (separated by publisher), and
-      synthesizes grounded Markdown with inline citations. A "Structural evidence (PDB / EMDB)"
-      section is ALWAYS present: it lists the structures found, or states explicitly that none were
-      found (no-hit is never silent).
+      Identify and analyze B-cell epitopes / antigenic sites on a viral protein. This is the tool
+      for ANY epitope / antigenic-site / antibody-target / vaccine-target question about a virus.
 
-      Call with {query} (free-text evidence question); optionally {taxon_id, protein} to focus.
-      Example: {query: "conserved chikungunya E1 structural epitopes", protein: "E1"}. Needs a
-      configured LLM endpoint (APECX_LLM_*) and network access to the Globus/PubMed sources;
-      retrieval branches degrade loudly to empty when a source is unreachable.
+      USE IT FOR queries like: "what are the epitopes on chikungunya E1?", "find conserved
+      antigenic sites on the dengue envelope protein", "which residues are good antibody/vaccine
+      targets on the SARS-CoV-2 spike?", "predict B-cell epitopes for Mayaro virus", "where are
+      the surface-exposed conserved sites on EEEV E2?".
+
+      It PULLS THE DATA ITSELF (no pre-supplied data needed) and ANALYZES it end-to-end:
+        - sequence-conservation — fetches BV-BRC genomes, runs a MAFFT alignment, finds the
+          conserved (low-mutation) positions across strains;
+        - structural surface-exposure — pulls PDB/EMDB structures and runs containerized PyMOL
+          (per-residue SASA) to classify each conserved residue EXPOSED vs BURIED;
+        - cross-references VIOLIN immunology + PubMed literature,
+      then returns RANKED candidate epitopes (conserved AND surface-exposed) with cited sequence +
+      structural evidence. A "Structural evidence (PDB / EMDB)" section is ALWAYS present (a no-hit
+      is stated explicitly, never silent).
+
+      Call with {query}; optionally {taxon_id, protein} to focus. Example:
+      {query: "conserved surface-exposed epitopes on chikungunya E1", protein: "E1"}. NO apecx LLM
+      is required in desktop/MCP mode — the assembled, cited evidence is returned for the calling
+      assistant to write the answer; the headless backend synthesizes internally instead. Pulls
+      from the Globus/PubMed sources over the network; each branch degrades loudly (never silent).
     source:
       kind: lightweight
-      module: apecx_integration.composition.workflows.viral_epitope_evidence_review.builder
-      function: build_viral_epitope_evidence_review_workflow
+      module: apecx_integration.composition.workflows.viral_epitope_analysis.builder
+      function: build_viral_epitope_analysis_workflow
     input_schema:
       type: object
       additionalProperties: false

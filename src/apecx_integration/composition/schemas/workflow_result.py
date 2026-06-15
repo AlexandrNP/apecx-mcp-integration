@@ -39,7 +39,7 @@ class WorkflowResult(BaseModel):
     # E3-8 — per-run reproducibility record: the determinism-relevant params the science
     # stages used (aligner+version, structural query, PDB/SASA settings, UniProt release,
     # LLM model, run_id). A structured side-channel to the markdown — present when the
-    # workflow collects it (viral_epitope_evidence_review), None otherwise.
+    # workflow collects it (viral_epitope_analysis), None otherwise.
     provenance: dict[str, Any] | None = None
 
     @model_validator(mode="after")

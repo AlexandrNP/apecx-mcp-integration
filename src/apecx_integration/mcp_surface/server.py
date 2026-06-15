@@ -205,11 +205,11 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     # super-tool (the design calls for "primitives, not super-tools") that
     # duplicated ``run_workflow`` and whose retrieval used the legacy local-CSV +
     # raw-Globus path instead of harmonized search. Grounded synthesis is provided
-    # by the catalog workflows (``viral_epitope_evidence_review`` does it WITH
+    # by the catalog workflows (``viral_epitope_analysis`` does it WITH
     # harmonized search). See docs/layer1_surface_trim_plan.md.
 
     # Viral epitope / immunology analysis is provided by the
-    # ``viral_epitope_evidence_review`` CATALOG WORKFLOW (discoverable via
+    # ``viral_epitope_analysis`` CATALOG WORKFLOW (discoverable via
     # ``list_workflows``, run via ``run_workflow``) — a multi-step,
     # harmonized-search pipeline (PDB/EMDB structural evidence + nested
     # sequence-conservation over harmonized BV-BRC + grounded synthesis). The

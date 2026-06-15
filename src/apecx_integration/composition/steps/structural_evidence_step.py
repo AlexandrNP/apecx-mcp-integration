@@ -1,6 +1,6 @@
 """StructuralEvidenceStep — pull PDB + EMDB structural records for the query.
 
-The structural-evidence leg of ``viral_epitope_evidence_review``. It sits between
+The structural-evidence leg of ``viral_epitope_analysis``. It sits between
 the synthesis-context assembly and the evidence-review synthesis: it queries the
 aggregate APECx Globus Search index (``e74bf12a``) for structural records, using
 the verified ``publisher.name`` discriminator to separate the two logical

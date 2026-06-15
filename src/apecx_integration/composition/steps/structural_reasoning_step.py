@@ -1,6 +1,6 @@
 """StructuralReasoningStep — map sequence conservation onto 3D structure (E2-P).
 
-The structural-LEVEL reasoning leg of ``viral_epitope_evidence_review``. It sits
+The structural-LEVEL reasoning leg of ``viral_epitope_analysis``. It sits
 AFTER ``merge`` (so it sees BOTH the MSA-derived conserved positions and the
 PDB/EMDB structural records) and BEFORE ``review`` (so the synthesis can cite its
 result). It is *real structural reasoning*, not retrieval: it picks the top-N candidate

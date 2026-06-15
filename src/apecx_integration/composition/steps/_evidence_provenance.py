@@ -1,4 +1,4 @@
-"""Per-run provenance collection for viral_epitope_evidence_review (E3-8).
+"""Per-run provenance collection for viral_epitope_analysis (E3-8).
 
 A single, reproducibility-oriented record that captures every determinism-relevant
 parameter the science stages used on one run — so a reader can tell *exactly* what

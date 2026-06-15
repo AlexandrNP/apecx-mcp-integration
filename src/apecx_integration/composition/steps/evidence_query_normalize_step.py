@@ -1,4 +1,4 @@
-"""EvidenceQueryNormalizeStep — the first step of viral_epitope_evidence_review.
+"""EvidenceQueryNormalizeStep — the first step of viral_epitope_analysis.
 
 Its sole job is to be the deposit point that captures the workflow's input params
 and fans them out to BOTH the synthesis pipeline (which needs ``query``) AND the

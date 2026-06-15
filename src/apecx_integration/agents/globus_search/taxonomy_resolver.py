@@ -1,7 +1,7 @@
 """Virus-name -> (taxon_id, canonical species name) resolution via the BV-BRC taxonomy API.
 
 WHY THIS EXISTS (the gap, verified by a real multi-taxon probe 2026-06-13):
-``viral_epitope_evidence_review`` only does FULL multi-stage science (sequence
+``viral_epitope_analysis`` only does FULL multi-stage science (sequence
 conservation + structural reasoning + functional validation) when it has an NCBI
 ``taxon_id``. When the caller does not pass one, the workflow used to resolve the
 species ONLY from a curated 4-virus subset (CHIKV/WNV/ZIKV/DENV) plus a ``"<name>

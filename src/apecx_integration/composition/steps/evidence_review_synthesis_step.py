@@ -1,7 +1,7 @@
 """EvidenceReviewSynthesisStep — LLM evidence synthesis + a DETERMINISTIC
 structural-evidence section.
 
-Terminal-but-one step of ``viral_epitope_evidence_review``. It reuses the
+Terminal-but-one step of ``viral_epitope_analysis``. It reuses the
 ``apecx_integration.agents.rag_synthesis.synthesize_response`` FUNCTION (one LLM
 round-trip, grounded inline citations) to turn the assembled multi-source bundle
 into evidence Markdown — then appends a **deterministically rendered** structural

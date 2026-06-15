@@ -8,7 +8,7 @@ journal article) rendered as ``(untitled)`` with no content.
 
 Integration coverage of the same code path: the live structural search in
 ``tests/integration/test_harmonized_search_aggregate_served_live.py`` and the
-evidence-review e2e in ``tests/integration/test_viral_epitope_evidence_review.py``
+evidence-review e2e in ``tests/integration/test_viral_epitope_analysis.py``
 exercise these extractors against real Globus records.
 """
 

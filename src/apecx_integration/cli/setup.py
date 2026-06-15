@@ -1760,7 +1760,7 @@ def main(argv: list[str] | None = None) -> None:
             "Include the headless PyMOL image build (E3-7) in the default "
             "chain (~5 min one-time, conda solve). Run this for real "
             "per-residue SASA in the structural-reasoning stage of "
-            "viral_epitope_evidence_review (it degrades to a named-skip "
+            "viral_epitope_analysis (it degrades to a named-skip "
             "without the image)."
         ),
     )

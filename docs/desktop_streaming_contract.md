@@ -42,7 +42,7 @@ A desktop client that wants live per-stage progress does four things:
    token is what the server's `report_progress` needs; without a `progress_callback`
    the server's progress notifications no-op cleanly.
 4. **Call the streaming tool**:
-   `call_tool("run_workflow_streaming", {"name": "viral_epitope_evidence_review", "params": {"query": ...}})`.
+   `call_tool("run_workflow_streaming", {"name": "viral_epitope_analysis", "params": {"query": ...}})`.
    The server's injected `Context` parameter is hidden from the tool's input schema —
    the client supplies only `name` + `params`.
 
@@ -205,5 +205,5 @@ stage stream; only the streamed-resource migration fixes that semantic mismatch.
   debug console). The streamed-resource migration above is the durable fix — the
   capability fix removes the teardown fragility but not the semantic mismatch.
 - **Single workflow exercised.** E3-5 proves the split on
-  `viral_epitope_evidence_review`. Any future streaming workflow inherits the same
+  `viral_epitope_analysis`. Any future streaming workflow inherits the same
   wiring (the tool is generic), but only this one is verified over the wire.

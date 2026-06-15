@@ -18,7 +18,7 @@ Authoritative source: `external_orchestration_design.md §4` (surface), `§8`
   `inspect_run`, `apecx_context`, `apecx_capabilities`
 - `harmonized_search` — the canonical retrieval primitive
 - `compose_workflow` — ONE tool, replaces `start_workflow`/`show_diff`/`execute_workflow`
-- `approve_design` — stays: it is the HITL gate of the `viral_epitope_evidence_review`
+- `approve_design` — stays: it is the HITL gate of the `viral_epitope_analysis`
   WORKFLOW, not a standalone operational tool
 - (decision) `describe_workflow`, `database_statistics`, `infrastructure_status` — meta
 
@@ -42,7 +42,7 @@ NOT harmonized search. It is a super-tool that duplicates `run_workflow`.
   Keep the underlying Python functions (the composer + internal pipelines import
   them — verify with grep before deleting `tools/synthesis.py`).
 - **Decision D1:** does the generic-synthesis capability stay?
-  - (a) **Retire fully** — `viral_epitope_evidence_review` already does grounded
+  - (a) **Retire fully** — `viral_epitope_analysis` already does grounded
     synthesis WITH harmonized search; recommended.
   - (b) Register `rag_e2e_synthesis` as a catalog workflow (run_workflow target).
     Only worthwhile if its retrieval is first rewired to `harmonized_search`

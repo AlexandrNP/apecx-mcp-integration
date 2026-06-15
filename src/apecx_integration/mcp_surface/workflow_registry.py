@@ -130,7 +130,7 @@ class WorkflowRequirements(BaseModel):
     infrastructure dependency the user can't infer from a bare ``env var
     $RHEA_MCP_URL is not set`` — e.g. "needs Docker + Rhea; without them use
     the MAFFT path (viral_conserved_sites) or the LLM-only analysis
-    (viral_epitope_evidence_review)". Keeps the no-silent-failure contract:
+    (viral_epitope_analysis)". Keeps the no-silent-failure contract:
     a locked Docker/Rhea workflow names its working alternative instead of
     just refusing."""
 

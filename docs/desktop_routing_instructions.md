@@ -8,7 +8,7 @@ extension, a custom agent). **Status:** operational guidance, not code. Verified
 
 A connected client LLM, asked a domain question ("RVFV Gn epitopes", "conserved sites in
 CHIKV E1"), **defaults to `web_search` or answers from its own knowledge** and never calls
-the APECx tools — even though `viral_epitope_evidence_review`, `viral_conserved_sites`, and
+the APECx tools — even though `viral_epitope_analysis`, `viral_conserved_sites`, and
 `apecx_capabilities` are sitting in its tool list. Observed on a real Claude Desktop session
 (2026-06-15) with the apecx MCP server confirmed connected.
 
@@ -47,7 +47,7 @@ vaccines, pathogens, conserved sites, sequence conservation, protein structures,
 the scientific literature / papers / publications on any of these —
 and BEFORE using web_search or answering from memory — you MUST first call
 `apecx_capabilities` (or `list_workflows`) to see available APECx workflows, then run
-the best match (e.g. `viral_epitope_evidence_review`, `viral_conserved_sites`).
+the best match (e.g. `viral_epitope_analysis`, `viral_conserved_sites`).
 APECx returns grounded, cited evidence from curated databases (BV-BRC, VIOLIN,
 PDB/EMDB, PubMed). This is a specialized-data problem, not a web-search problem.
 Only fall back to web_search if APECx has no relevant workflow or returns nothing.

@@ -1,6 +1,6 @@
 # Evidence-review synthesis system prompt (output-contract enforcing).
 #
-# This prompt is SPECIFIC to viral_epitope_evidence_review. It is passed as a
+# This prompt is SPECIFIC to viral_epitope_analysis. It is passed as a
 # per-call ``system_prompt_override`` into ``synthesize_response`` so it governs
 # ONLY this workflow's narrative — the SHARED ``agents/rag_synthesis/synthesis_config.yml``
 # (used by rag_e2e_synthesis) keeps its minimal, no-sections prompt unchanged. All

@@ -2,7 +2,7 @@
 
 A concrete ``SubworkflowStep`` (the framework's "subclass per reusable pattern" usage shape):
 it embeds the lightweight ``viral_conserved_sites`` workflow (BV-BRC fetch → MAFFT MSA →
-per-column conservation scoring) as a single step inside ``viral_epitope_evidence_review`` so
+per-column conservation scoring) as a single step inside ``viral_epitope_analysis`` so
 the evidence synthesis can reason about sequence conservation. The inner workflow comes from
 the ``inner_workflow_builder`` seam (a no-arg ``build_*`` catalog callable), not a YAML path —
 its ``aligner="mafft"`` arg is defaulted, so it is a valid no-arg callable. The NESTING variant

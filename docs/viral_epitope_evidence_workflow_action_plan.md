@@ -29,7 +29,7 @@ logic path.
 
 ## 1. Target capability
 
-Add a catalog workflow tentatively named `viral_epitope_evidence_review`.
+Add a catalog workflow tentatively named `viral_epitope_analysis`.
 
 The workflow should produce an evidence bundle for a viral epitope, antigen, protein, or design
 question by reusing existing retrieval and analysis components:
@@ -59,7 +59,7 @@ The terminal workflow output should be an envelope-compatible dict that can be r
 existing MCP surface:
 
 ```yaml
-workflow: viral_epitope_evidence_review
+workflow: viral_epitope_analysis
 status: ok | partial | error | needs_input
 query:
   original: string
@@ -436,7 +436,7 @@ Required real-data checks:
    destination configured for the same schema.
 3. Query `harmonized_search(index="pdb", ...)` and `harmonized_search(index="emdb", ...)` and prove
    they return source-distinct records.
-4. Run `viral_epitope_evidence_review` on a small real viral example and assert:
+4. Run `viral_epitope_analysis` on a small real viral example and assert:
    - terminal output is non-empty;
    - evidence table contains at least one publication or RAG record;
    - structural track is queried and reports either records or an explicit no-hit limitation;
@@ -509,7 +509,7 @@ Exit criteria:
 
 ### Phase 4 - Evidence workflow skeleton
 
-1. Add `viral_epitope_evidence_review` workflow scaffold.
+1. Add `viral_epitope_analysis` workflow scaffold.
 2. Define first-step input schema.
 3. Wire entity/query normalization, harmonized search, context assembly, synthesis, and envelope.
 4. Add `run_workflow`/catalog visibility.
@@ -564,7 +564,7 @@ Exit criteria:
    are safe.
 2. Should PDB/EMDB harmonization write directly to the production ProtaBank destination during
    testing, or should the first integration run use a staging destination with the same schema?
-3. Should `viral_epitope_evidence_review` always run conservation analysis when `taxon_id` and
+3. Should `viral_epitope_analysis` always run conservation analysis when `taxon_id` and
    `protein` are present, or only when `include_conservation=true`? The conservative default is
    opt-in.
 4. Should design/optimization approval be stored as a workflow input token, an approval-store

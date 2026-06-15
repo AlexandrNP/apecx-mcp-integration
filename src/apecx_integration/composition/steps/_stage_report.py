@@ -1,4 +1,4 @@
-"""Stage-report scaffolding for the viral_epitope_evidence_review pipeline.
+"""Stage-report scaffolding for the viral_epitope_analysis pipeline.
 
 A reusable convention: every reasoning stage appends a documented sub-report to a
 ``stage_reports`` list carried in the bundle dict that flows step-to-step. The

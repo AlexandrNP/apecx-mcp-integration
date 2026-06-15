@@ -49,7 +49,7 @@ from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 from mcp.types import CallToolResult, LoggingMessageNotificationParams
 
-WORKFLOW_NAME = "viral_epitope_evidence_review"
+WORKFLOW_NAME = "viral_epitope_analysis"
 
 # Env that keeps the spawned server's boot lean: skip the Control Plane health
 # check + backend autostart, skip the 10-15 min synonym-dictionary build, and run
