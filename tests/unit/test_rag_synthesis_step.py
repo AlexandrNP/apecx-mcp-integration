@@ -31,7 +31,7 @@ WRAPPER_YAML = (
     / "apecx_integration"
     / "composition"
     / "workflows"
-    / "violin_bvbrc"
+    / "rag_e2e_synthesis"
     / "steps"
     / "rag_synthesis.yml"
 )

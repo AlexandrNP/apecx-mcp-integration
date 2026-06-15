@@ -11,8 +11,8 @@ Tests:
      C1 retry can guide the LLM to a real name.
   5. Empty library doesn't poison the spec_system prompt.
 
-The three shipped skeletons (synthesis_pipeline, entity_extraction_only,
-pathogen_bvbrc_match) are exercised against the real composer fixture.
+The shipped skeletons (synthesis_pipeline, entity_extraction_only,
+pubmed_only_literature_search) are exercised against the real composer fixture.
 """
 
 from __future__ import annotations
@@ -45,16 +45,16 @@ SHIPPED_SKELETONS = REPO_ROOT / "src" / "apecx_integration" / "composition" / "s
 def test_skeleton_library_loads_shipped_files():
     lib = SkeletonLibrary.from_dir(SHIPPED_SKELETONS)
     names = lib.names()
-    # Starter set (SKEL, 2026-05-11).
+    # Starter set (SKEL, 2026-05-11). pathogen_bvbrc_match +
+    # violin_bvbrc_context_only retired with the violin_bvbrc workflow
+    # (2026-06-15).
     assert "synthesis_pipeline" in names
     assert "entity_extraction_only" in names
-    assert "pathogen_bvbrc_match" in names
     # Single-source patterns added in SKEL-PLUS (2026-05-12) after
     # web-research surveyed 2026 RAG/agentic literature. Each one
     # composes existing apecx components in a new way.
     assert "pubmed_only_literature_search" in names
     assert "rag_domain_search_only" in names
-    assert "violin_bvbrc_context_only" in names
 
 
 def test_each_shipped_skeleton_has_at_least_one_step():
@@ -144,7 +144,7 @@ def test_render_prompt_block_lists_each_skeleton():
     assert "## Available skeletons" in block
     assert "synthesis_pipeline" in block
     assert "entity_extraction_only" in block
-    assert "pathogen_bvbrc_match" in block
+    assert "pubmed_only_literature_search" in block
 
 
 def test_composer_init_loads_skeleton_library():

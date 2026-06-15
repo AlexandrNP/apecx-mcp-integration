@@ -17,14 +17,12 @@ desktop-clean. When someone adds a new in-DAG-LLM product workflow, this FAILS L
 remedy is to make it final-synthesis-only, mark it ``LLM_ROLE='none'`` on a deterministic step
 mis-flagged by the heuristic, or categorize it non-product (demo/benchmark) / retire it.
 
-KNOWN EXCEPTION — ``violin_bvbrc``: the pre-harmonized-search workflow bakes entity extraction +
-LLM synonym proposals INTO the DAG (real in-DAG LLM). It is superseded by ``harmonized_search``
-(deterministic resolution) + ``viral_epitope_evidence_review`` (final-synthesis), and is slated
-for retirement (a ~dozen-file change: discovered workflow + ``violin_bvbrc_synonym_gate``
-manifest + agent package + skeletons + composer config + tests — see
-``docs/generate_arc_agent_locus_design.md`` companion notes / the both-modes audit). Until that
-lands it is the SINGLE documented exception; the test forces a NEW in-DAG-LLM product workflow to
-fail rather than silently joining it.
+No current product workflow is exempt: ``violin_bvbrc`` (the pre-harmonized-search workflow that
+baked entity extraction + LLM synonym proposals INTO the DAG) was RETIRED 2026-06-15, superseded
+by ``harmonized_search`` (deterministic resolution) + ``viral_epitope_evidence_review``
+(final-synthesis). ``_KNOWN_NOT_DESKTOP_CLEAN`` is therefore empty: every product workflow is
+desktop-clean, unconditionally. Adding to that set again is a deliberate design decision (an
+agent-shaped workflow temporarily mis-filed as product), not a way to silence this test.
 """
 
 from __future__ import annotations
@@ -43,8 +41,9 @@ from apecx_integration.mcp_surface.workflow_registry import (
 
 # Documented, deliberately-pinned exceptions. An entry here is a workflow KNOWN to require a
 # server LLM in desktop — it must be retired or reshaped, not grown. Adding to this set is a
-# design decision, not a way to silence the test.
-_KNOWN_NOT_DESKTOP_CLEAN = {"violin_bvbrc"}
+# design decision, not a way to silence the test. Empty since violin_bvbrc was retired
+# (2026-06-15): every product workflow is desktop-clean.
+_KNOWN_NOT_DESKTOP_CLEAN: set[str] = set()
 
 
 def _product_workflow_names() -> list[str]:

@@ -65,7 +65,7 @@ log = logging.getLogger(__name__)
 _PKG_ROOT = Path(__file__).resolve().parent.parent
 _DEFAULT_COMPOSER_CONFIG = _PKG_ROOT / "composition" / "composer_config.yml"
 _DEFAULT_APPROVAL_POLICY = _PKG_ROOT / "_configs" / "approval_policy.yml"
-_DEFAULT_WORKFLOW_BASE_DIR = _PKG_ROOT / "composition" / "workflows" / "violin_bvbrc"
+_DEFAULT_WORKFLOW_BASE_DIR = _PKG_ROOT / "composition" / "workflows" / "rag_e2e_synthesis"
 
 
 def create_app(
@@ -202,7 +202,7 @@ def _build_components_from_env(
     tutorial hit a 503 on the first ``/workflows/start`` call.
 
     This helper closes that gap. Defaults point at the in-repo
-    ``composer_config.yml`` / ``approval_policy.yml`` / ``violin_bvbrc``
+    ``composer_config.yml`` / ``approval_policy.yml`` / ``rag_e2e_synthesis``
     workflow dir, so a fresh ``apecx-cp serve`` works out of the box
     for the tutorial scenario. Operators with custom configs override
     via env vars.

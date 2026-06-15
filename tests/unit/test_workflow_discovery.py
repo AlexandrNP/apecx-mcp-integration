@@ -24,7 +24,6 @@ _PRODUCT = {
     "harmonized_search",
     "rag_e2e_synthesis",
     "rhea_muscle_alignment",
-    "violin_bvbrc",
     "viral_conserved_sites",
     "viral_epitope_evidence_review",
 }

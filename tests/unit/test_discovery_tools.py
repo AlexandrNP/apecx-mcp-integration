@@ -1,9 +1,11 @@
 """Unit tests for the MCP discovery tools (Option A).
 
 Hits the real packaged composer config + the real
-``workflows/violin_bvbrc/manifest.yml`` — no mocking. The
+``workflows/rag_e2e_synthesis/manifest.yml`` — no mocking. The
 discovery tools are pure file readers; "real" here means the
-shipped manifest, not a constructed fixture.
+shipped manifest, not a constructed fixture. (The example workflow was
+``violin_bvbrc_synonym_gate`` until that workflow was retired 2026-06-15;
+``rag_e2e_synthesis_workflow`` is the successor shipped-manifest example.)
 
 A constructed-fixture test is added separately for the
 non-default-config path (env-var override + multi-manifest case).
@@ -23,46 +25,43 @@ from apecx_integration.mcp_surface.tools import discovery
 # ---------------------------------------------------------------------------
 
 
-def test_list_workflows_returns_violin_bvbrc():
+def test_list_workflows_returns_rag_e2e_synthesis():
     out = asyncio.run(discovery.list_workflows())
     assert out["count"] >= 1
     names = [row["workflow_name"] for row in out["workflows"]]
-    assert "violin_bvbrc_synonym_gate" in names
+    assert "rag_e2e_synthesis_workflow" in names
 
 
 def test_list_workflows_row_shape():
     out = asyncio.run(discovery.list_workflows())
-    row = next(r for r in out["workflows"] if r["workflow_name"] == "violin_bvbrc_synonym_gate")
+    row = next(r for r in out["workflows"] if r["workflow_name"] == "rag_e2e_synthesis_workflow")
     # Required fields present + types are JSON-friendly
     assert isinstance(row["manifest_path"], str)
     assert row["manifest_path"].endswith("manifest.yml")
-    assert row["num_components"] >= 9
-    assert row["num_ready"] >= 1
+    assert row["num_components"] >= 2
+    assert row["num_ready"] >= 2
     assert row["num_deferred"] >= 0
-    assert row["first_release_variant"] == "hard_only"
     assert isinstance(row["component_names"], list)
-    assert "entity_extraction" in row["component_names"]
+    assert "rag_synthesis" in row["component_names"]
 
 
 def test_describe_workflow_returns_full_components():
-    out = asyncio.run(discovery.describe_workflow("violin_bvbrc_synonym_gate"))
+    out = asyncio.run(discovery.describe_workflow("rag_e2e_synthesis_workflow"))
     assert "error" not in out
-    assert out["workflow_name"] == "violin_bvbrc_synonym_gate"
+    assert out["workflow_name"] == "rag_e2e_synthesis_workflow"
     components = out["components"]
-    # Must include the deferred entry too — discovery shows the full picture.
     names = {c["step_name"] for c in components}
-    assert "entity_extraction" in names
-    assert "synonym_fuzzy_match" in names
+    assert "synthesis_context_assembly" in names
+    assert "rag_synthesis" in names
 
     # Per-component shape check using a known entry.
-    extraction = next(c for c in components if c["step_name"] == "entity_extraction")
-    assert extraction["step_id"] == "1"
-    assert extraction["disposition"] == "wrap"
-    assert extraction["status"] == "ready"
-    assert extraction["rag_description"]
-    assert extraction["rag_examples"]
+    assembly = next(c for c in components if c["step_name"] == "synthesis_context_assembly")
+    assert assembly["step_id"] == "A1"
+    assert assembly["status"] == "ready"
+    assert assembly["rag_description"]
+    assert assembly["rag_examples"]
     # Multi-line YAML folded scalars must collapse to single-spaced strings.
-    assert "  " not in extraction["rag_description"]
+    assert "  " not in assembly["rag_description"]
 
 
 def test_describe_workflow_unknown_returns_structured_error():
@@ -70,7 +69,7 @@ def test_describe_workflow_unknown_returns_structured_error():
     assert "error" in out
     assert "does_not_exist" in out["error"]
     assert "available" in out
-    assert "violin_bvbrc_synonym_gate" in out["available"]
+    assert "rag_e2e_synthesis_workflow" in out["available"]
 
 
 def test_describe_workflow_empty_name_is_an_error_not_a_crash():
@@ -79,12 +78,16 @@ def test_describe_workflow_empty_name_is_an_error_not_a_crash():
     assert "available" in out
 
 
-def test_describe_workflow_reports_deferred_status():
-    """The deferred synonym_fuzzy_match must surface as deferred so
-    the model doesn't re-propose it via start_workflow."""
-    out = asyncio.run(discovery.describe_workflow("violin_bvbrc_synonym_gate"))
-    fuzzy = next(c for c in out["components"] if c["step_name"] == "synonym_fuzzy_match")
-    assert fuzzy["disposition"] == "deferred"
+def test_describe_workflow_reports_component_status():
+    """Every component surfaces a disposition + status so the model knows what is ready.
+
+    (The shipped manifests no longer carry a ``deferred`` component — that was
+    ``violin_bvbrc_synonym_gate``'s ``synonym_fuzzy_match``, retired 2026-06-15. The
+    deferred-disposition rendering is exercised by the constructed-fixture tests below.)"""
+    out = asyncio.run(discovery.describe_workflow("rag_e2e_synthesis_workflow"))
+    for c in out["components"]:
+        assert c["disposition"] in {"new", "wrap", "reuse", "deferred"}
+        assert c["status"] in {"ready", "deferred"}
 
 
 # ---------------------------------------------------------------------------
@@ -195,6 +198,6 @@ def test_runnable_row_shape_and_availability_flag():
 
 def test_composable_rows_tagged_for_compose_path():
     out = asyncio.run(discovery.list_workflows())
-    row = next(r for r in out["workflows"] if r["workflow_name"] == "violin_bvbrc_synonym_gate")
+    row = next(r for r in out["workflows"] if r["workflow_name"] == "rag_e2e_synthesis_workflow")
     assert row["kind"] == "composable"
     assert row["invoke_with"] == "start_workflow"

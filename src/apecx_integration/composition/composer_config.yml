@@ -34,7 +34,6 @@ max_retries: 0
 # Each manifest's ``components:`` entries get flattened into the
 # retrieval corpus. Add more lines as more workflows ship.
 component_catalog_paths:
-  - "workflows/violin_bvbrc/manifest.yml"
   - "workflows/rag_e2e_synthesis/manifest.yml"
   - "workflows/code_writing/manifest.yml"
 
