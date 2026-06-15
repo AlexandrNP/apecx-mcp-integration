@@ -291,6 +291,15 @@ def _evidence_workflow_builder():
         input_data_units=_du("review_input"),
         output_data_units=_du("review_output"),
         triggers=_trig("review_input"),
+        # The only LLM step; its siblings declare framework ceilings (sequence 540s, reasoning
+        # 420s) but this one inherited the 300s `execution_timeout` DEFAULT (step.py:1677). A
+        # stalled LLM was killed by that default from OUTSIDE the step's degrade-loud try/except
+        # → EnvelopeStep stranded → run_workflow returned null (G127). Declare a ceiling ABOVE
+        # the client LLM timeout (APECX_LLM_TIMEOUT, default 300s) so the client times out FIRST
+        # and the step degrades loud (5-section fallback) instead of being killed. 540 < the
+        # workflow timeout (600s). (`execution_timeout` is the per-step ceiling; the
+        # subworkflow-only `timeout_seconds` does not apply to this plain step.)
+        execution_timeout=540.0,
     )
     # FAN-IN gate: joins the synthesized evidence (review_in) with the ORIGINAL
     # control fields (control_in, fanned out from `normalize.normalize_out` — the

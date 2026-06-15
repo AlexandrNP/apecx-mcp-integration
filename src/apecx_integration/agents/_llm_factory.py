@@ -37,7 +37,11 @@ from typing import Any
 
 from langchain_openai import ChatOpenAI
 
-from apecx_integration.agents._llm_config import resolve_llm_base_url, resolve_llm_model
+from apecx_integration.agents._llm_config import (
+    resolve_llm_base_url,
+    resolve_llm_model,
+    resolve_llm_timeout,
+)
 
 
 def build_chat_llm(
@@ -93,6 +97,11 @@ def build_chat_llm(
         "max_tokens": max_tokens,
         "base_url": base_url,
         "api_key": api_key,
+        # Bounded per-request timeout so a STALLED endpoint raises (→ caught → degrade-loud)
+        # instead of hanging until the nanobrain step kill strands the result. APECX_LLM_TIMEOUT
+        # overrides; keep it BELOW the synthesis step's execution_timeout. A caller-supplied
+        # `timeout`/`request_timeout` in **overrides still wins.
+        "timeout": resolve_llm_timeout(),
     }
     kwargs.update(overrides)
     return ChatOpenAI(**kwargs)

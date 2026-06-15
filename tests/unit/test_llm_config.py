@@ -19,10 +19,53 @@ import requests
 from apecx_integration.agents import _llm_config
 from apecx_integration.agents._llm_config import (
     DEFAULT_LLM_MODEL,
+    DEFAULT_LLM_TIMEOUT,
     preflight_llm_model,
     resolve_llm_model,
+    resolve_llm_timeout,
 )
 from apecx_integration.cli import setup
+
+
+def test_resolve_llm_timeout_default_and_env_override(monkeypatch):
+    monkeypatch.delenv("APECX_LLM_TIMEOUT", raising=False)
+    assert resolve_llm_timeout() == DEFAULT_LLM_TIMEOUT
+    monkeypatch.setenv("APECX_LLM_TIMEOUT", "90")
+    assert resolve_llm_timeout() == 90.0
+    # A non-numeric value falls back to the default, loud (does not crash the synthesis path).
+    monkeypatch.setenv("APECX_LLM_TIMEOUT", "not-a-number")
+    assert resolve_llm_timeout() == DEFAULT_LLM_TIMEOUT
+
+
+def test_build_chat_llm_sets_a_bounded_client_timeout(monkeypatch):
+    # The null-result fix: a STALLED endpoint must raise (→ degrade-loud), not hang to the
+    # step kill. That requires the client to carry a finite request timeout.
+    monkeypatch.delenv("APECX_LLM_TIMEOUT", raising=False)
+    from apecx_integration.agents._llm_factory import build_chat_llm
+
+    llm = build_chat_llm()
+    timeout = getattr(llm, "request_timeout", None) or getattr(llm, "timeout", None)
+    assert timeout == DEFAULT_LLM_TIMEOUT
+
+
+def test_review_step_ceiling_exceeds_client_timeout_so_it_degrades_loud():
+    # THE fix for the epitope null: the LLM client must time out BEFORE the framework kills
+    # the synthesis step (which would strand the EnvelopeStep under G127 → null). So the
+    # `review` step's execution_timeout MUST exceed the default client LLM timeout.
+    from apecx_integration.composition.workflows.viral_epitope_evidence_review.builder import (
+        build_viral_epitope_evidence_review_workflow,
+    )
+
+    wf = build_viral_epitope_evidence_review_workflow()
+    children = getattr(wf, "child_steps", None) or getattr(wf, "_child_steps", {})
+    review = children["review"]
+    ceiling = getattr(review.config, "execution_timeout", None)
+    assert ceiling is not None
+    assert ceiling > DEFAULT_LLM_TIMEOUT, (
+        f"review execution_timeout ({ceiling}) must exceed the client LLM timeout "
+        f"({DEFAULT_LLM_TIMEOUT}) or a stalled LLM strands the result (null) instead of "
+        "degrading loud."
+    )
 
 
 @pytest.fixture(autouse=True)

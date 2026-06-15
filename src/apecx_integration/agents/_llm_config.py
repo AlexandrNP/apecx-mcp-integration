@@ -39,6 +39,28 @@ log = logging.getLogger(__name__)
 # and ``build_chat_llm`` asks for it. Change it here and both move in lock-step.
 DEFAULT_LLM_MODEL = "nemotron-3-nano:4b"
 DEFAULT_LLM_BASE_URL = "http://localhost:11434/v1"
+# Client-side per-request timeout (seconds) for the synthesis ChatOpenAI client. WITHOUT
+# this, the openai client default (~600s) lets a STALLED endpoint (accepts the TCP
+# connection but never returns — e.g. Ollama mid-model-load, or a black-holing proxy) hang
+# until the nanobrain step's execution_timeout KILLS it from OUTSIDE the step's degrade-loud
+# try/except → the EnvelopeStep is stranded → run_workflow returns null (G127). With a
+# bounded client timeout SHORTER than the step ceiling, the call raises INSIDE the step and
+# degrades loud (the deterministic 5-section fallback) instead. Tunable per deployment.
+DEFAULT_LLM_TIMEOUT = 300.0
+
+
+def resolve_llm_timeout() -> float:
+    """Return the LLM client request timeout: ``APECX_LLM_TIMEOUT`` env > default (300s)."""
+    raw = os.environ.get("APECX_LLM_TIMEOUT")
+    if not raw:
+        return DEFAULT_LLM_TIMEOUT
+    try:
+        return float(raw)
+    except ValueError:
+        log.warning(
+            "APECX_LLM_TIMEOUT=%r is not a number; using default %.0fs", raw, DEFAULT_LLM_TIMEOUT
+        )
+        return DEFAULT_LLM_TIMEOUT
 
 
 def resolve_llm_model() -> str:
