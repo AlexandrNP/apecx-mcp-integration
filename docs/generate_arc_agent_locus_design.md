@@ -1,11 +1,20 @@
-# Integration design — GENERATE arc as the agent-locus reasoning engine
+# Integration design — GENERATE arc + workflow co-authoring across loci
 
-**Status:** DESIGN (no code). 2026-06-15. Companion to
+**Status:** DESIGN (no code). 2026-06-15, REVISED. Companion to
 `docs/resolver_trio_port_plan.md`.
 **Source:** `reasoning-agent-surface`. **Target:** `main`.
-**Decision input:** user confirmed a real headless/autonomous backend use case →
-the generate arc is wanted, "gated/announced behind `--locus agent` + the
-requires_llm gate."
+**Decision input:** user confirmed a real headless/autonomous backend use case
+AND pushed back on excluding generation from desktop ("how do we co-author
+workflows with the agent?"). That pushback corrected the design — see §2.
+
+**REVISION NOTE (supersedes the first cut):** the first version recommended
+gating the WHOLE arc on `--locus agent`. That was wrong: it conflated the LLM
+*composition* step (where host-vs-local-LLM matters) with the deterministic
+*gate → draft → promote → reuse* lifecycle (locus-agnostic, the actual value).
+The branch already split these — `gate_composed_workflow(composed)` is documented
+as "split out … so a caller can gate a workflow it composed once **without
+re-invoking the LLM**." The corrected model (§2) applies the locus INVERSION to
+composition, exactly as we did for synthesis.
 
 ---
 
@@ -39,45 +48,74 @@ is exactly the autonomy guard a headless agent needs.
 
 ---
 
-## 2. THE decision — locus gating (branch parity vs. user's agent-gate)
+## 2. THE decision — composition obeys the locus inversion; the lifecycle is shared
 
-This is the one real architectural choice, and the branch and the user **disagree**:
+The question that drove this revision: *"How do we co-author workflows with the
+agent?"* Answer: the same way the host already co-produces ANSWERS — the locus
+inversion. Composition is just another LLM task carrying an `LLM_ROLE`; the
+deterministic gate/draft/promote/reuse lifecycle is locus-agnostic infrastructure.
 
-- **Branch author chose UNCONDITIONAL parity.** `server.py` registers
-  `generate_workflow` / `execute_draft` / `promote_draft` with no locus guard, and
-  `tests/.../test_locus_tool_parity.py` *actively forbids* a per-locus feature gate
-  (`test_exactly_one_locus_flag_and_no_feature_gate` source-scans for and rejects
-  any `ENABLE/DISABLE_GENERAT*` flag; `test_deterministic_tool_set_is_identical_across_loci`
-  asserts a 21-tool surface identical in both loci). Rationale: locus steers the
-  *prompt/face*, not the tool set; in desktop the tools simply loudly-refuse via
-  requires_llm when no Ollama is present.
-- **User endorsed gating on `--locus agent`.** Rationale (the architecture we
-  shipped): in desktop the frontier host out-reasons a local 12B composer; exposing
-  a weaker server-side generator invites the host to delegate reasoning *downward*.
-  Desktop = host composes primitives; backend = generate arc.
+**Two separable concerns (the branch already split them in code):**
+- **(a) COMPOSE** — author the workflow (`Composer.compose`, an LLM call). Here
+  host-vs-local-LLM matters.
+- **(b) GATE → DRAFT → PROMOTE → REUSE** — `gate_composed_workflow(composed)` /
+  `promote_draft(composed)` / `execute_draft(state)`. Deterministic, LLM-free.
+  `gate_composed_workflow`'s own docstring: split out "so a caller can gate a
+  workflow it composed once **without re-invoking the LLM**."
 
-**Recommendation: gate generate-tool REGISTRATION on `--locus agent`.** Follow the
-user. Concretely:
-- In `build_server`, register `generate_workflow` / `execute_draft` /
-  `promote_draft` / `find_workflow` only when `resolved_locus == AGENT`.
-- `compose_workflow` (the one-shot, already on main) STAYS available in both loci as
-  the desktop last-resort — it carries no draft/promote lifecycle and no autonomy
-  surface to hide.
-- **Adapt, don't delete, `test_locus_tool_parity`:** its contract changes from
-  "identical tool set across loci" to "the *deterministic* tools are identical; the
-  generate arc is agent-only." Re-pin it to assert exactly that (desktop set ⊂ agent
-  set, and the difference is exactly the 4 generate tools). Keep the
-  "no hidden env feature-gate" half — locus is still the *only* switch, it just now
-  gates registration, not merely the prompt.
+**The model — invert (a), share (b):**
 
-This diverges from the branch deliberately; record it as a decision (DECISION-GEN1)
-with this rationale so a future reader doesn't "restore parity" by reflex.
+| | Desktop locus | Agent locus |
+|---|---|---|
+| **(a) Compose** | **host authors** the `ComposedWorkflow` — the local `Composer.compose` LLM call is OMITTED (inversion, exactly like `final_synthesis`) | local `Composer.compose` authors |
+| **(b) Gate/draft/promote/reuse** | server (deterministic) | server (deterministic) |
 
-Honest caveat: parity is genuinely simpler (one surface, requires_llm does the
-availability talking). If the cost of agent-gating (a locus branch in registration +
-the parity-test rewrite) ever outweighs the "don't tempt the desktop host" benefit,
-parity + a strong reuse-first prompt is a defensible fallback. The reasoning prompts
-we just shipped already push reuse-first, which softens the parity risk.
+So BOTH loci expose the lifecycle; they differ only in WHO composes. This is why
+the earlier "gate the whole arc on agent" was wrong — it would hide a deterministic,
+desktop-appropriate lifecycle behind the one LLM step that should instead invert.
+
+**Tool surface (the only real delta):**
+- `submit_workflow(authored_artifact)` — **NEW, both loci, desktop-primary.** Takes a
+  HOST-authored workflow (YAML + any novel python), lowers it deterministically into a
+  `ComposedWorkflow`, runs `gate_composed_workflow` → DRAFT. This is the desktop
+  co-authoring entry: the frontier host is the composer.
+- `generate_workflow(description)` — branch tool, **AGENT-locus only.** The local
+  `Composer.compose` authors from a description. In desktop this is omitted (the host
+  authors via `submit_workflow` instead); calling it in desktop would delegate
+  authoring DOWN to the weak local model — the one thing to avoid.
+- `execute_draft` / `promote_draft` / `find_workflow` — **both loci** (deterministic
+  lifecycle + reuse discovery).
+- `compose_workflow` (one-shot, already on main) — keep both loci as a convenience;
+  it is the un-gated predecessor of this lifecycle.
+
+**`test_locus_tool_parity` — adapt, don't delete.** Its contract becomes: the
+deterministic + lifecycle tools are identical across loci; the SINGLE difference is
+`generate_workflow` (agent-only) vs `submit_workflow` being the desktop compose entry.
+Keep its "no hidden env feature-gate" half — locus stays the only switch.
+
+Record as **DECISION-GEN1 (revised):** composition is locus-inverted (host composes
+in desktop, local Composer in agent); the gate/draft/promote/reuse lifecycle is
+shared. A future reader must not "simplify" by either (i) re-welding compose to the
+lifecycle, or (ii) exposing `generate_workflow(description)` in desktop.
+
+### The co-authoring loop (desktop)
+1. Host `find_workflow` / `list_workflows` — reuse-first.
+2. Nothing fits → host AUTHORS a `ComposedWorkflow` (reuse existing components by
+   path + novel python it writes itself; CLOSED-CLASS + path-reference rules make the
+   lowering deterministic).
+3. Host → `submit_workflow(artifact)` → server gate (static + requires_llm + dry-run
+   on trivial input) → DRAFT + verdict. No server LLM.
+4. Host relays the verdict; user `promote_draft` (D5 user-only) → REUSE_LEVEL.
+5. `find_workflow` surfaces it next session. Iteration = re-submit after reading the
+   gate feedback.
+
+**Open sub-question for the lowering step (Phase 3):** does the host emit (i) full
+nanobrain YAML + novel python, lowered by a deterministic adapter into
+`ComposedWorkflow`, or (ii) a higher-level step+link spec that a deterministic
+builder materializes? (i) is more expressive and matches `Composer`'s own output
+shape; (ii) is safer (smaller authoring surface for the host to get wrong). Decide
+when Phase 3 lands; (i) is the default since it reuses the existing `ComposedWorkflow`
+schema with no new spec language.
 
 ---
 
@@ -152,16 +190,23 @@ verification, then let them auto-skip in CI. One critical pin to keep:
 - **Phase 2 — control-plane:** migration 0007 + entities + schemas + 3 routes +
   artifact_store methods. Gated by `test_artifact_store` + promotion-guard
   integration tests. Needs a control-plane DB in the test env.
-- **Phase 3 — MCP surface (agent-locus-gated):** `find_workflow` + generate/draft/
-  promote tools, registered ONLY in `--locus agent`; rewrite `test_locus_tool_parity`
-  per §2; run the real-LLM roundtrip once.
+- **Phase 3 — MCP surface (the locus-inverted compose entry):** register the SHARED
+  lifecycle tools (`find_workflow`, `execute_draft`, `promote_draft`) in BOTH loci;
+  add `submit_workflow(authored_artifact)` (both loci, the host-as-composer entry)
+  with the deterministic lowering (§2 open sub-question); register
+  `generate_workflow(description)` in `--locus agent` ONLY. Rewrite
+  `test_locus_tool_parity` per §2 (single difference = `generate_workflow` agent-only).
+  Run the real-LLM roundtrip once. Record **DECISION-GEN1 (revised)**.
 - **Phase 4 — agent face:** point the reasoning prompts' MATCH step at `find_workflow`
-  (they currently use `list_workflows` per the desktop adaptation) when served under
-  agent locus; record DECISION-GEN1.
+  (they currently use `list_workflows` per the desktop adaptation), and add a desktop
+  co-authoring section to the protocol prompt (author → `submit_workflow` → relay gate
+  verdict → user promote).
 
 Each phase is its own branch + worktree + PR, citing this doc. Phase 1 is safe to
 start immediately; Phases 2–4 each gate on the prior phase's tests green.
 
-**Recommended first step:** Phase 1 only. It delivers the deterministic gate (the
-actual value) with no surface-area risk, and proves the LLM-free safety property
-before any of it is exposed.
+**Recommended first step:** Phase 1 only. It delivers the deterministic gate +
+draft/promote/reuse lifecycle (the actual value, locus-agnostic) with no surface-area
+risk, and proves the LLM-free safety property before any of it is exposed. The
+co-authoring surface (`submit_workflow`) and the locus split land in Phase 3 on top
+of that proven core.
