@@ -440,6 +440,10 @@ tracks with stable IDs). Cite task ID in PR/commit body.
   scaffolds; local LLM as bounded fallback. See "Two operating modes".
 - `docs/desktop_streaming_contract.md` — desktop/MCP per-stage
   streaming contract (`run_workflow_streaming`).
+- `docs/desktop_routing_instructions.md` — client-side routing rule
+  that makes the desktop LLM call APECx FIRST for bio questions
+  (server `instructions=` is advisory + insufficient; the trigger
+  lives in the client's Custom/Project instructions).
 - `docs/clean_install_capabilities_scoring.md` — capability matrix +
   the two LLM modes + per-mode end-to-end scoring.
 - `docs/_design_index.md` — design master index.
