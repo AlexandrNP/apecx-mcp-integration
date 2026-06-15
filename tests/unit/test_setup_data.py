@@ -82,6 +82,9 @@ def test_update_creates_new_config(monkeypatch, tmp_path):
     parsed = json.loads(config.read_text())
     apecx = parsed["mcpServers"]["apecx"]
     assert apecx["command"] == "/fake/apecx-mcp"
+    # The install writes the execution-locus flag EXPLICITLY (desktop is the
+    # default, but pinning it makes the running mode legible + one-token to flip).
+    assert apecx["args"] == ["--locus", "desktop"]
     assert apecx["env"]["APECX_DATA_ROOT"] == str(data_dir)
     # Default LLM env vars are seeded for new entries.
     for key in _DEFAULT_LLM_ENV:

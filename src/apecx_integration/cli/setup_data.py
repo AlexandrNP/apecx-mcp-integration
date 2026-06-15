@@ -125,7 +125,11 @@ def _build_apecx_server_block(data_dir: Path, llm_env: dict | None = None) -> di
     env["APECX_DATA_ROOT"] = str(data_dir)
     return {
         "command": apecx_mcp,
-        "args": [],
+        # Desktop is the DEFAULT locus, but write it EXPLICITLY so the installed
+        # config is self-documenting and discoverable: a reader sees the mode the
+        # server runs in, and an agent-mode deployment edits one obvious place
+        # (--locus agent) instead of having to know the default.
+        "args": ["--locus", "desktop"],
         "env": env,
     }
 
