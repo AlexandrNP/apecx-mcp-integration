@@ -84,13 +84,41 @@ _CHILD_BACKEND_PROC: subprocess.Popen[bytes] | None = None
 _CHILD_BACKEND_LOG: Path | None = None
 
 
+# Top-level MCP instructions — surfaced to the client (Claude Desktop) in the
+# `initialize` response. This is the ONE global "what is this server for + when to
+# use it" signal. Without it, a capable desktop LLM answers a viral-immunology
+# question from its own training data and never considers these tools relevant (the
+# "LLM won't trigger discovery" failure). The text trades on user-domain INTENT
+# (viruses / vaccines / epitopes / structures / sequences), not the internal jargon
+# of "workflows" / "composer" — the model routes on intent, not implementation.
+_SERVER_INSTRUCTIONS = """\
+apecx-mcp answers viral-immunology questions — about viruses, vaccines, pathogens, \
+genes and proteins, epitopes and antigens, protein structures, and sequence \
+conservation — with GROUNDED, CITED evidence assembled from real curated sources \
+(BV-BRC, VIOLIN, PDB/EMDB, PubMed, and the APECx harvested Globus corpus). This is \
+data you cannot get from training knowledge.
+
+When the user asks any such question, do NOT answer from general knowledge first. \
+Instead:
+  1. Call `apecx_capabilities` (or `list_workflows`) to see the specialized \
+workflows and primitive tools available, and which are runnable right now.
+  2. Run the best-matching workflow with `run_workflow(name, params)` and synthesize \
+from its grounded, cited result.
+  3. For a one-off "find records about entity X across the curated indexes" lookup, \
+call `harmonized_search` directly.
+  4. If no catalog workflow fits the question, `compose_workflow` builds a new one.
+
+Prefer these tools over answering from memory whenever the question touches viral \
+immunology, vaccines, pathogen genomics, or protein/epitope structure."""
+
+
 def build_server() -> FastMCP:
     """Construct the FastMCP server with every tool registered.
 
     Split from ``main()`` so tests can exercise the server without
     launching the stdio transport.
     """
-    server: FastMCP = FastMCP("apecx-mcp")
+    server: FastMCP = FastMCP("apecx-mcp", instructions=_SERVER_INSTRUCTIONS)
 
     _register_logging_capability(server)
 

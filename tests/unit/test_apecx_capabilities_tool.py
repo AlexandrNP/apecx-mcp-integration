@@ -71,3 +71,31 @@ def test_capabilities_backends_present_or_errored_loud():
     backends = caps["backends"]
     assert isinstance(backends, dict)
     assert "overall" in backends or "error" in backends
+
+
+def test_capabilities_lists_primitive_tools_not_only_workflows():
+    # The complaint this guards: "discovery returns ONLY workflows, no surface-level
+    # tools." apecx_capabilities must enumerate the standalone primitive tools too.
+    caps = asyncio.run(apecx_capabilities())
+    primitives = caps["primitives"]
+    assert isinstance(primitives, list) and primitives, "primitives must be a non-empty list"
+    names = {p["name"] for p in primitives}
+    # The canonical action verbs an orchestrating LLM needs must be present.
+    assert {"run_workflow", "harmonized_search", "compose_workflow"} <= names
+    for p in primitives:
+        assert p["name"] and p["use"], p  # no empty rows
+
+
+def test_primitives_are_all_registered():
+    # Every curated primitive name MUST be a tool actually on the wire — otherwise the
+    # capability view points the LLM at a tool that does not exist (the drift this pins).
+    import asyncio as _asyncio
+
+    from apecx_integration.mcp_surface.server import build_server
+    from apecx_integration.mcp_surface.tools.eo_primitives import _PRIMITIVES
+
+    server = build_server()
+    registered = {t.name for t in _asyncio.run(server.list_tools())}
+    listed = {p["name"] for p in _PRIMITIVES}
+    missing = listed - registered
+    assert not missing, f"apecx_capabilities lists primitives not on the MCP surface: {missing}"

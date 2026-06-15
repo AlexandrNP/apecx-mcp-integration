@@ -39,6 +39,64 @@ StageReport = dict[str, Any]
 OnStage = Callable[[StageReport], None]
 _STAGE_REPORTS_KEY = "stage_reports"
 
+# Standalone surface-level primitive TOOLS the orchestrating LLM can call directly —
+# distinct from the catalog WORKFLOWS (those are surfaced as runnable_now /
+# needs_configuration). ``apecx_capabilities`` returns this list under ``primitives`` so a
+# "what can I do" query reports the WHOLE surface, not just workflows (the prior gap: the
+# capability view enumerated only workflows). Each ``name`` MUST be a tool actually
+# registered by ``build_server`` — pinned by
+# ``tests/unit/test_apecx_capabilities_tool.py::test_primitives_are_all_registered``.
+_PRIMITIVES: list[dict[str, str]] = [
+    {
+        "name": "run_workflow",
+        "use": "Run a catalog workflow by name (params) and get its grounded, cited "
+        "result. The desktop variant run_workflow_streaming streams per-stage reasoning.",
+    },
+    {
+        "name": "harmonized_search",
+        "use": "Canonical one-shot retrieval — find records about an entity (virus, gene, "
+        "vaccine) across ALL APECx Globus indexes, with synonym expansion + HITL gating.",
+    },
+    {
+        "name": "compose_workflow",
+        "use": "Build a NEW workflow from a natural-language description when no catalog "
+        "workflow fits the question.",
+    },
+    {
+        "name": "list_workflows",
+        "use": "List the workflows (runnable + composer-buildable). The workflows-only "
+        "subset of this capability view.",
+    },
+    {
+        "name": "describe_workflow",
+        "use": "Per-component detail of one workflow (steps, statuses, rag descriptions).",
+    },
+    {
+        "name": "inspect_workflow",
+        "use": "Static structure (steps, links, nested workflows) of a workflow's YAML tree.",
+    },
+    {
+        "name": "inspect_run",
+        "use": "The 'what ran' per-step breakdown (status/timing) for a run_id.",
+    },
+    {
+        "name": "apecx_context",
+        "use": "Re-orient: the workflow runs made this session (run_id, name, status).",
+    },
+    {
+        "name": "database_statistics",
+        "use": "What curated tables/columns exist — navigation for composing workflows.",
+    },
+    {
+        "name": "infrastructure_status",
+        "use": "Live health of the backends apecx depends on (Ollama/Postgres/Redis/etc.).",
+    },
+    {
+        "name": "approve_design",
+        "use": "Operator HITL approval for the evidence workflow's design/optimization output.",
+    },
+]
+
 
 async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
     """Run the catalog workflow ``name`` with ``params``; return its result envelope.
@@ -444,15 +502,22 @@ async def apecx_context() -> dict[str, Any]:
 
 
 async def apecx_capabilities() -> dict[str, Any]:
-    """What this apecx stack can do RIGHT NOW, and what infra would unlock more.
+    """The COMPLETE "what can I do" view — call this before answering a science question from memory.
 
-    A convenience aggregator over the two existing capability surfaces — it runs no
-    new probes of its own:
-      - ``list_workflows`` prerequisites (``check_prerequisites`` per catalog entry):
-        which workflows are runnable now vs. need configuration (with the missing
+    When the user asks about viruses / vaccines / pathogens / genes / proteins / epitopes /
+    structures / sequences, call this to see everything apecx offers in ONE response, then
+    run the best fit. It reports the WHOLE surface, not just workflows:
+      - ``runnable_now`` / ``needs_configuration`` — the catalog WORKFLOWS (run via
+        ``run_workflow``), split by whether prerequisites are met (with the missing
         prerequisites AND an honest fallback hint).
-      - ``infrastructure_status`` (the orchestrator backend roster): live health of
-        Ollama / Postgres / Redis / MinIO / Rhea.
+      - ``primitives`` — the standalone surface-level TOOLS you can call directly
+        (``harmonized_search``, ``compose_workflow``, ``inspect_*`` …), each with its intent.
+        These are NOT workflows; the prior gap was that this view listed only workflows.
+      - ``backends`` — live backend health (Ollama / Postgres / Redis / MinIO / Rhea).
+      - ``modes`` — the two LLM ROLES this stack uses (stated below; do not conflate).
+
+    A convenience aggregator over the existing capability surfaces — it runs no new probes
+    of its own (``check_prerequisites`` per catalog entry + the orchestrator backend roster).
 
     The two LLM ROLES this stack uses (do not conflate them):
       - **Desktop / MCP mode** — the connected MCP client (e.g. Claude Desktop) IS the
@@ -501,6 +566,7 @@ async def apecx_capabilities() -> dict[str, Any]:
         },
         "runnable_now": runnable_now,
         "needs_configuration": needs_configuration,
+        "primitives": _PRIMITIVES,
         "backends": backends,
         "catalog_error": catalog_error,
         "summary": (

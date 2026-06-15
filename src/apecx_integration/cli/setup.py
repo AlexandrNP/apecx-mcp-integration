@@ -1524,6 +1524,13 @@ def _step_capabilities() -> StepResult:
         print("  (none — every catalog workflow is runnable)")
     print()
 
+    primitives = caps.get("primitives") or []
+    if primitives:
+        print("  PRIMITIVE TOOLS (call directly — not workflows)")
+        for p in primitives:
+            print(f"  • {p['name']} — {p['use']}")
+        print()
+
     backends = caps.get("backends") or {}
     if isinstance(backends, dict) and "overall" in backends:
         print(f"  BACKENDS (overall: {backends['overall']})")

@@ -222,7 +222,15 @@ def _load_runnable_catalog() -> tuple[list[dict[str, Any]], str | None]:
 
 
 async def list_workflows() -> dict:
-    """Discover every workflow — both runnable now and composer-buildable.
+    """Find a specialized apecx workflow for a science question BEFORE answering from memory.
+
+    Call this FIRST whenever the user asks about viruses, vaccines, pathogens, genes or
+    proteins, epitopes / antigens, protein structures, or sequence conservation — it lists
+    the workflows that return GROUNDED, CITED evidence from real curated data (BV-BRC,
+    VIOLIN, PDB/EMDB, PubMed, the APECx Globus corpus) instead of model knowledge. Then run
+    the best match with ``run_workflow(name, params)``. (``apecx_capabilities`` is the
+    one-call superset: these workflows PLUS the standalone primitive tools and live backend
+    health.)
 
     Two distinct kinds, by how you invoke them (external_orchestration_design.md §4):
 
