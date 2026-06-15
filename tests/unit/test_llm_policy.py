@@ -62,6 +62,20 @@ def test_epitope_needs_llm_only_in_agent_locus():
     assert workflow_needs_llm_at_run(wf, ExecutionLocus.AGENT) is True
 
 
+def test_rag_e2e_synthesis_needs_llm_only_in_agent_locus():
+    """rag_e2e_synthesis is a discoverable PRODUCT workflow whose terminal RagSynthesisStep
+    is final_synthesis — so a desktop user with no apecx LLM must NOT be refused it (the host
+    synthesizes). In agent locus the step synthesizes internally → needs the server LLM."""
+    from nanobrain.core.workflow import Workflow
+
+    wf = Workflow.from_config(
+        "src/apecx_integration/composition/workflows/rag_e2e_synthesis/"
+        "rag_e2e_synthesis_workflow.yml"
+    )
+    assert workflow_needs_llm_at_run(wf, ExecutionLocus.DESKTOP) is False
+    assert workflow_needs_llm_at_run(wf, ExecutionLocus.AGENT) is True
+
+
 def test_deterministic_workflow_never_needs_llm():
     from apecx_integration.composition.workflows.viral_conserved_sites.builder import (
         build_viral_conserved_sites_workflow,

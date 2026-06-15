@@ -24,6 +24,26 @@ from apecx_integration.composition.steps.rag_synthesis_step import (
 pytestmark = pytest.mark.integration
 
 
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """These probes target the BACKEND internal-synthesis path (they assert on
+    ``synthesize_response`` being invoked, its gates, its offload). The default locus is
+    ``desktop`` (host synthesizes → apecx LLM omitted), so force ``agent`` here. Restored
+    after each test."""
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
+
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
+
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WRAPPER_YAML = (
     REPO_ROOT

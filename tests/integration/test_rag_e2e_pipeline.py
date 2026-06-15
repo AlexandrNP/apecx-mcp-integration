@@ -35,6 +35,27 @@ BVBRC_DIR = WORKSPACE_ROOT / "data" / "bvbrc_cache"
 
 pytestmark = pytest.mark.integration
 
+
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """Exercise the BACKEND internal-synthesis path (real-Ollama E2E + the empty-retrieval
+    gate). The default locus is ``desktop`` (host synthesizes → apecx LLM omitted); the local
+    FAISS/CSV/assembly tests don't touch RagSynthesisStep so this is a no-op for them.
+    Restored after each test."""
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
+
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
+
+
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
 

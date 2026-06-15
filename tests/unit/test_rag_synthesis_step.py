@@ -15,16 +15,41 @@ from typing import Any
 
 import pytest
 
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 from apecx_integration.composition.steps.rag_synthesis_step import (
     RagSynthesisStep,
 )
 
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WRAPPER_YAML = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition"
-    / "workflows" / "violin_bvbrc" / "steps" / "rag_synthesis.yml"
+    REPO_ROOT
+    / "src"
+    / "apecx_integration"
+    / "composition"
+    / "workflows"
+    / "violin_bvbrc"
+    / "steps"
+    / "rag_synthesis.yml"
 )
+
+
+@pytest.fixture
+def agent_locus():
+    """Run a test under AGENT locus (internal-synthesis path), restoring the prior locus.
+
+    The default locus is ``desktop`` (host synthesizes → the apecx LLM call is OMITTED), so a
+    test exercising the internal ``synthesize_response`` branch must opt into ``agent``.
+    """
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
 
 
 def test_step_loads_via_from_config():
@@ -51,7 +76,7 @@ def test_process_rejects_non_dict_input():
         asyncio.run(step.process("a string, not a dict"))  # type: ignore[arg-type]
 
 
-def test_process_forwards_four_sources_to_synthesize_response(monkeypatch):
+def test_process_forwards_four_sources_to_synthesize_response(monkeypatch, agent_locus):
     """Verify the kwargs forwarded to synthesize_response carry every
     source. A future refactor that drops one (e.g. ``publications``)
     would silently lose data — this test pins the contract."""
@@ -64,33 +89,34 @@ def test_process_forwards_four_sources_to_synthesize_response(monkeypatch):
 
     # Monkeypatch the exact symbol the step imports.
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _fake_synth)
 
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    out = asyncio.run(step.process({
-        "query": "what is sindbis",
-        "rag_chunks": [{"text": "chunk"}],
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-        "violin_mappings": [
-            {"synonym_id": "VO_1", "canonical_term": "C"}
-        ],
-        "publications": [{"doi": "10.1/x", "title": "T"}],
-    }))
+    out = asyncio.run(
+        step.process(
+            {
+                "query": "what is sindbis",
+                "rag_chunks": [{"text": "chunk"}],
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+                "violin_mappings": [{"synonym_id": "VO_1", "canonical_term": "C"}],
+                "publications": [{"doi": "10.1/x", "title": "T"}],
+            }
+        )
+    )
     assert out == {"synthesis": "fake markdown synthesis output"}
     assert captured["query"] == "what is sindbis"
     kw = captured["kwargs"]
     assert kw["rag_chunks"] == [{"text": "chunk"}]
     assert kw["bvbrc_genomes"] == [{"genome_id": "G1", "name": "n"}]
-    assert kw["violin_mappings"] == [
-        {"synonym_id": "VO_1", "canonical_term": "C"}
-    ]
+    assert kw["violin_mappings"] == [{"synonym_id": "VO_1", "canonical_term": "C"}]
     assert kw["publications"] == [{"doi": "10.1/x", "title": "T"}]
     # config kwarg defaults to None (no override path) when the YAML
     # doesn't set ``synthesis_config_path``.
     assert kw["config"] is None
 
 
-def test_process_defaults_missing_sources_to_empty_lists(monkeypatch):
+def test_process_defaults_missing_sources_to_empty_lists(monkeypatch, agent_locus):
     """A caller passing only query + bvbrc_genomes must NOT crash on
     KeyError when the synthesizer reads rag_chunks/violin/publications
     — the step substitutes empty lists."""
@@ -101,13 +127,18 @@ def test_process_defaults_missing_sources_to_empty_lists(monkeypatch):
         return "synthesis"
 
     import apecx_integration.composition.steps.rag_synthesis_step as mod
+
     monkeypatch.setattr(mod, "synthesize_response", _fake_synth)
 
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-    asyncio.run(step.process({
-        "query": "Q",
-        "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-    }))
+    asyncio.run(
+        step.process(
+            {
+                "query": "Q",
+                "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+            }
+        )
+    )
     kw = captured["kwargs"]
     assert kw["rag_chunks"] == []
     assert kw["violin_mappings"] == []
@@ -119,7 +150,6 @@ def test_synthesis_config_path_loaded_eagerly_at_init(tmp_path):
     init (not at first process() call). Catches the silent-failure
     shape where workflow boots, scientist submits a query, and only
     then sees a config error pointing at boot-time wiring."""
-    bad_yaml = tmp_path / "bad_synthesis.yml"
     # Write a NON-existent path into the wrapper to force the
     # eager-load failure.
     wrapper = tmp_path / "rag_synthesis_bad.yml"
@@ -155,8 +185,7 @@ def test_synthesis_config_typo_caught_at_step_init(tmp_path):
     eager-load path, not later."""
     bad_synth = tmp_path / "bad_synthesis.yml"
     bad_synth.write_text(
-        "system_prompt: 'x'\n"
-        "max_rag_chuncks: 8\n"  # typo
+        "system_prompt: 'x'\nmax_rag_chuncks: 8\n"  # typo
     )
     wrapper = tmp_path / "rag_synthesis_typo.yml"
     wrapper.write_text(
@@ -181,5 +210,62 @@ def test_synthesis_config_typo_caught_at_step_init(tmp_path):
         "    data_unit: synthesis_input\n"
     )
     from pydantic import ValidationError
+
     with pytest.raises(ValidationError, match=r"[Ee]xtra"):
         RagSynthesisStep.from_config(str(wrapper))
+
+
+def test_desktop_locus_omits_synthesis_and_defers_to_host(tmp_path, monkeypatch):
+    """DESKTOP locus (default): the host LLM synthesizes, so the apecx LLM call is OMITTED.
+
+    The step must NOT invoke synthesize_response; it returns a scaffold carrying every
+    retrieved record + an instruction to the host — and works with NO apecx LLM configured.
+    """
+    set_active_locus(ExecutionLocus.DESKTOP)  # the default, asserted explicitly
+    try:
+
+        def _must_not_be_called(q, **k):
+            raise AssertionError("synthesize_response called in desktop locus — must be omitted")
+
+        import apecx_integration.composition.steps.rag_synthesis_step as mod
+
+        monkeypatch.setattr(mod, "synthesize_response", _must_not_be_called)
+
+        step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
+        out = asyncio.run(
+            step.process(
+                {
+                    "query": "what is sindbis",
+                    "publications": [{"doi": "10.1/x", "title": "T"}],
+                    "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+                    "rag_chunks": [{"text": "a chunk about fusion", "source": "corpus"}],
+                }
+            )
+        )
+        md = out["synthesis"]
+        assert md.startswith("# Answer")
+        assert "Synthesis is deferred to you" in md
+        assert "10.1/x" in md  # publication carried for the host
+        assert "[BV-BRC genome G1]" in md
+        assert "[RAG chunk #1]" in md
+    finally:
+        set_active_locus(ExecutionLocus.DESKTOP)
+
+
+def test_desktop_locus_empty_retrieval_says_so(tmp_path, monkeypatch):
+    """DESKTOP + nothing retrieved: scaffold is honest about the empty result (loud, not an
+    empty answer) and still omits the LLM call."""
+    set_active_locus(ExecutionLocus.DESKTOP)
+    try:
+        import apecx_integration.composition.steps.rag_synthesis_step as mod
+
+        monkeypatch.setattr(
+            mod,
+            "synthesize_response",
+            lambda q, **k: (_ for _ in ()).throw(AssertionError("must not call LLM")),
+        )
+        step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
+        out = asyncio.run(step.process({"query": "obscure query with no hits"}))
+        assert "No evidence was retrieved" in out["synthesis"]
+    finally:
+        set_active_locus(ExecutionLocus.DESKTOP)

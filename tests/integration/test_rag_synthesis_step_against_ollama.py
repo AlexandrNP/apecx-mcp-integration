@@ -16,6 +16,7 @@ IDs and a non-domain prompt; assert size + grounded citation only.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import os
 from pathlib import Path
 
@@ -26,14 +27,38 @@ from apecx_integration.composition.steps.rag_synthesis_step import (
     RagSynthesisStep,
 )
 
-
 pytestmark = pytest.mark.integration
+
+
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """This suite exercises the BACKEND internal-synthesis path against real Ollama. The
+    default locus is ``desktop`` (host synthesizes → apecx LLM omitted), so force ``agent``
+    so the step actually calls ``synthesize_response``. Restored after each test."""
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
+
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 WRAPPER_YAML = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition"
-    / "workflows" / "violin_bvbrc" / "steps" / "rag_synthesis.yml"
+    REPO_ROOT
+    / "src"
+    / "apecx_integration"
+    / "composition"
+    / "workflows"
+    / "violin_bvbrc"
+    / "steps"
+    / "rag_synthesis.yml"
 )
 
 
@@ -59,10 +84,7 @@ def _ollama_reachable_with_model(model: str) -> bool:
 
 
 SKIP_OPTOUT = "APECX_SKIP_LIVE_LLM=1 — live-LLM tests skipped."
-SKIP_NOT_REACHABLE = (
-    f"Ollama not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} "
-    f"not pulled."
-)
+SKIP_NOT_REACHABLE = f"Ollama not reachable at {OLLAMA_URL} or model {OLLAMA_MODEL} not pulled."
 
 
 @pytest.fixture(autouse=True)
@@ -79,10 +101,7 @@ def test_step_runs_against_ollama_with_synthetic_inputs():
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
 
     inputs = {
-        "query": (
-            "Briefly explain how pickling preserves food, drawing on "
-            "the retrieved context."
-        ),
+        "query": ("Briefly explain how pickling preserves food, drawing on the retrieved context."),
         "rag_chunks": [
             {
                 "text": (
@@ -154,6 +173,7 @@ def test_step_pre_llm_empty_retrieval_gate_holds_via_step():
     timing the call (real Ollama latency is >100ms; sub-500ms = no
     LLM contact)."""
     import time
+
     step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
     t0 = time.monotonic()
     with pytest.raises(ValueError, match="every retrieval input is empty"):
@@ -190,12 +210,11 @@ def test_step_async_does_not_block_the_event_loop():
             {"genome_id": "99000.99", "name": "Synthetic test genome"},
         ],
         "violin_mappings": [],
-        "publications": [
-            {"doi": "10.0000/test.x", "title": "T"}
-        ],
+        "publications": [{"doi": "10.0000/test.x", "title": "T"}],
     }
 
     import time
+
     sleep_elapsed = None
     synth_done = False
 
@@ -210,14 +229,11 @@ def test_step_async_does_not_block_the_event_loop():
 
         async def _synth_task():
             nonlocal synth_done
-            try:
+            # Tolerate synthesizer ValueError — the property under test is event-loop
+            # liveness, not synth success. A failure here doesn't invalidate the
+            # async-non-blocking property.
+            with contextlib.suppress(Exception):
                 await step.process(inputs)
-            except Exception:
-                # Tolerate synthesizer ValueError — the property
-                # under test is event-loop liveness, not synth
-                # success. A failure here doesn't invalidate the
-                # async-non-blocking property.
-                pass
             synth_done = True
 
         await asyncio.gather(_sleep_task(), _synth_task())
