@@ -15,6 +15,11 @@ from pathlib import Path
 
 import pytest
 
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 from apecx_integration.composition.steps._stage_report import append_stage_report
 from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     EvidenceReviewSynthesisStep,
@@ -22,6 +27,19 @@ from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     render_followups_section,
     render_sources_section,
 )
+
+
+@pytest.fixture
+def agent_locus():
+    """Run under AGENT locus — the internal-synthesis path. Default locus is ``desktop``
+    (host synthesizes → apecx LLM omitted), so synthesis-path tests opt into ``agent``."""
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
+
 
 _FIVE_HEADERS = [
     "# Answer",
@@ -252,7 +270,7 @@ def _stage(tmp_path: Path) -> EvidenceReviewSynthesisStep:
     return EvidenceReviewSynthesisStep.from_config(str(p))
 
 
-def test_process_success_path_has_all_five_sections(tmp_path, monkeypatch):
+def test_process_success_path_has_all_five_sections(tmp_path, monkeypatch, agent_locus):
     step = _stage(tmp_path)
     monkeypatch.setattr(
         "apecx_integration.agents.rag_synthesis.synthesize_response",
@@ -269,7 +287,7 @@ def test_process_success_path_has_all_five_sections(tmp_path, monkeypatch):
     assert positions == sorted(positions)
 
 
-def test_process_degrade_loud_still_has_all_five_sections(tmp_path, monkeypatch):
+def test_process_degrade_loud_still_has_all_five_sections(tmp_path, monkeypatch, agent_locus):
     """RELIABILITY: an LLM gate failure must NOT collapse the contract. The fallback
     body emits the three LLM headings; Sources + Follow-ups are deterministic → all
     five sections present, evidence preserved."""
@@ -290,7 +308,7 @@ def test_process_degrade_loud_still_has_all_five_sections(tmp_path, monkeypatch)
     assert "[Globus pdb:1I9G]" in md
 
 
-def test_process_passes_evidence_prompt_override(tmp_path, monkeypatch):
+def test_process_passes_evidence_prompt_override(tmp_path, monkeypatch, agent_locus):
     """The step must pass its evidence output-contract prompt as system_prompt_override
     — proving the chosen seam is wired (NOT the shared synthesis_config prompt)."""
     captured: dict = {}

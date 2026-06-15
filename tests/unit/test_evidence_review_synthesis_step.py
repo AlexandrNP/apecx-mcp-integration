@@ -12,11 +12,31 @@ from pathlib import Path
 
 import pytest
 
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 from apecx_integration.composition.steps import evidence_review_synthesis_step as mod
 from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     EvidenceReviewSynthesisStep,
     render_structural_section,
 )
+
+
+@pytest.fixture
+def agent_locus():
+    """Run a test under AGENT locus (internal synthesis path), restoring the prior locus.
+
+    The default locus is ``desktop`` (host synthesizes → the apecx LLM call is OMITTED), so
+    a test that exercises the internal-synthesis branch must opt into ``agent`` explicitly.
+    """
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
 
 
 # ----------------------- pure renderer (no LLM, no construction) -----------------------
@@ -54,7 +74,7 @@ def _stage(tmp_path: Path) -> EvidenceReviewSynthesisStep:
     return EvidenceReviewSynthesisStep.from_config(str(p))
 
 
-def test_appends_structural_records_section(tmp_path, monkeypatch):
+def test_appends_structural_records_section(tmp_path, monkeypatch, agent_locus):
     step = _stage(tmp_path)
     monkeypatch.setattr(mod, "synthesize_response", None, raising=False)
     monkeypatch.setattr(
@@ -83,7 +103,7 @@ def test_appends_structural_records_section(tmp_path, monkeypatch):
     assert "[Globus pdb:1I9G]" in md and "E1 structure" in md
 
 
-def test_appends_loud_no_hit_section(tmp_path, monkeypatch):
+def test_appends_loud_no_hit_section(tmp_path, monkeypatch, agent_locus):
     step = _stage(tmp_path)
     monkeypatch.setattr(
         "apecx_integration.agents.rag_synthesis.synthesize_response",
@@ -100,7 +120,7 @@ def test_appends_loud_no_hit_section(tmp_path, monkeypatch):
     assert "No PDB or EMDB structural records" in md  # loud no-hit reached the output
 
 
-def test_synthesis_failure_degrades_loud_keeps_evidence(tmp_path, monkeypatch):
+def test_synthesis_failure_degrades_loud_keeps_evidence(tmp_path, monkeypatch, agent_locus):
     """RELIABILITY: a synthesis gate failure must NOT discard retrieved evidence.
     The output names the reason and still lists the retrieved publications +
     structural section — never an empty/error result when evidence exists."""
@@ -126,6 +146,45 @@ def test_synthesis_failure_degrades_loud_keeps_evidence(tmp_path, monkeypatch):
     assert "Narrative synthesis was withheld" in md
     assert "10.1080/07391102.2022.2158941" in md  # the retrieved publication survived
     assert "## Structural evidence" in md and "[Globus pdb:7XYZ]" in md
+
+
+def test_desktop_locus_omits_internal_synthesis_and_defers_to_host(tmp_path, monkeypatch):
+    """DESKTOP locus (default): the host LLM synthesizes, so the apecx LLM call is OMITTED.
+
+    The step must NOT invoke synthesize_response; it returns the deterministic evidence
+    document (host-synthesis scaffold + Structural/Sources/Follow-up sections) with the
+    retrieved evidence intact — and it works with NO apecx LLM configured.
+    """
+    set_active_locus(ExecutionLocus.DESKTOP)  # the default, asserted explicitly
+
+    def _must_not_be_called(q, **k):
+        raise AssertionError("synthesize_response was called in desktop locus — must be omitted")
+
+    monkeypatch.setattr(
+        "apecx_integration.agents.rag_synthesis.synthesize_response", _must_not_be_called
+    )
+    bundle = {
+        "query": "chikv E1 epitopes",
+        "publications": [{"doi": "10.1/abc", "title": "E1 paper"}],
+        "structural_records": [
+            {
+                "subject": "pdb:2XFB",
+                "content": {"title": "E1 structure"},
+                "structural_source": "pdb",
+            }
+        ],
+        "structural_note": None,
+    }
+    step = _stage(tmp_path)
+    out = asyncio.run(step.process(bundle))
+    md = out["markdown"]
+    # Host-synthesis scaffold (inversion framing, NOT an error), five-section shaped,
+    # evidence preserved.
+    assert md.startswith("# Answer")
+    assert "Synthesis is deferred to you" in md
+    assert "10.1/abc" in md  # retrieved publication carried for the host
+    assert "## Structural evidence" in md and "[Globus pdb:2XFB]" in md
+    assert "Narrative synthesis was withheld" not in md  # not the error path
 
 
 def test_missing_query_raises(tmp_path):

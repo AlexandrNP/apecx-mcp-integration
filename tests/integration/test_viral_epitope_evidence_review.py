@@ -20,6 +20,26 @@ pytestmark = pytest.mark.integration
 _CHIKV_TAXON = 37124
 
 
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """This suite validates the BACKEND internal-synthesis path against a real LLM. The
+    default locus is ``desktop`` (host synthesizes → apecx LLM omitted), so force ``agent``
+    here so ``run_workflow`` actually exercises internal synthesis. Restored after each test.
+    """
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
+
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        yield
+    finally:
+        set_active_locus(prior)
+
+
 def _globus_reachable() -> bool:
     try:
         import globus_sdk

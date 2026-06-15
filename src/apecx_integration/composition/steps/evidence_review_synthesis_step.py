@@ -154,6 +154,56 @@ def render_evidence_fallback(
     return "\n".join(lines)
 
 
+def render_desktop_synthesis_scaffold(query: str, publications: list[dict[str, Any]] | None) -> str:
+    """Narrative body for DESKTOP locus — the host LLM synthesizes, so we omit the call.
+
+    This is the inversion, not a degrade: in desktop locus the orchestrating host LLM
+    (Claude Desktop) IS the synthesizer, so the apecx-side LLM call is deliberately skipped
+    (no apecx LLM endpoint required). We still emit the three contract headings — but as an
+    INSTRUCTION to the host to write each from the assembled evidence below, NOT an
+    "withheld due to error" message. The deterministic Structural / Sources / Follow-up
+    sections (appended by ``compose_evidence_markdown``) carry the actual evidence; the host
+    reads them + the publication list here and writes the narrative in its next turn.
+    """
+    pubs = publications or []
+    lines = [
+        _ANSWER_HEADING,
+        "",
+        "> **Synthesis is deferred to you, the orchestrating assistant** (desktop locus): "
+        "the evidence for this question has been assembled deterministically below — the "
+        "Sources and evidence, Structural evidence, and Follow-up sections. Write the answer "
+        "from that evidence; cite the records by their identifiers.",
+        "",
+        f"Question: {_sanitize_inline(query)}",
+        "",
+    ]
+    if pubs:
+        lines.append("Retrieved publications relevant to the question:")
+        lines.append("")
+        for p in pubs:
+            if not isinstance(p, dict):
+                continue
+            ident = p.get("doi") or p.get("id") or p.get("pmid") or ""
+            title = p.get("title") or "(untitled)"
+            cite = f"**[{ident}]** " if ident else ""
+            lines.append(f"- {cite}*{title}*")
+    else:
+        lines.append("_No publications were retrieved for this query._")
+    lines += [
+        "",
+        "## Cross-data reasoning",
+        "",
+        "> Relate the records across the data sources below (sequence conservation, "
+        "structural evidence, publications) and write the cross-data reasoning here.",
+        "",
+        _INSIGHT_HEADING,
+        "",
+        "> Integrate the above into a single insight that answers the question, grounded in "
+        "the cited evidence.",
+    ]
+    return "\n".join(lines)
+
+
 def render_structural_section(
     structural_records: list[dict[str, Any]] | None,
     structural_note: str | None,
@@ -569,6 +619,32 @@ class EvidenceReviewSynthesisStep(BaseStep):
                 f"EvidenceReviewSynthesisStep '{self.name}': bundle must carry a non-empty "
                 f"'query' string; got {type(query).__name__}={query!r}"
             )
+
+        from apecx_integration.composition.runtime.execution_locus import (
+            ExecutionLocus,
+            get_active_locus,
+        )
+
+        # Final-synthesis step. In DESKTOP locus the host LLM (Claude Desktop) is the
+        # synthesizer, so the apecx-side LLM call is OMITTED (inversion of control — no apecx
+        # LLM endpoint required). We return the assembled evidence + a scaffold instructing
+        # the host to write the narrative. In AGENT/headless locus we synthesize internally
+        # via the apecx LLM backend, exactly as before.
+        if get_active_locus() == ExecutionLocus.DESKTOP:
+            log.info(
+                "EvidenceReviewSynthesisStep %s: desktop locus — deferring final synthesis to "
+                "the host LLM; returning assembled evidence + scaffold (no apecx LLM call).",
+                self.name,
+            )
+            evidence_md = render_desktop_synthesis_scaffold(
+                query.strip(), input_data.get("publications")
+            )
+            full_md = compose_evidence_markdown(evidence_md, query.strip(), input_data)
+            from apecx_integration.composition.steps._evidence_provenance import (
+                collect_provenance,
+            )
+
+            return {"markdown": full_md, "provenance": collect_provenance(input_data)}
 
         from apecx_integration.agents.rag_synthesis import synthesize_response
 

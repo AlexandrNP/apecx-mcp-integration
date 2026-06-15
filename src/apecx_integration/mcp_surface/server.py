@@ -53,6 +53,11 @@ from urllib.parse import urlparse
 
 from mcp.server.fastmcp import FastMCP
 
+from apecx_integration.mcp_surface.locus import (
+    ExecutionLocus,
+    resolve_locus,
+    set_active_locus,
+)
 from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
@@ -112,13 +117,24 @@ Prefer these tools over answering from memory whenever the question touches vira
 immunology, vaccines, pathogen genomics, or protein/epitope structure."""
 
 
-def build_server() -> FastMCP:
+def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     """Construct the FastMCP server with every tool registered.
 
     Split from ``main()`` so tests can exercise the server without
     launching the stdio transport.
+
+    ``locus`` selects the orchestration face (``desktop`` ↔ ``agent``); it comes from
+    the ``apecx-mcp --locus`` startup flag (``$APECX_EXECUTION_LOCUS`` is a fallback).
+    Resolved here so a misconfigured value FAILS LOUD at startup, recorded
+    process-wide (``set_active_locus``) so steps + ``run_workflow`` read it, and stored
+    on the server as ``server.execution_locus`` for introspection.
     """
+    resolved_locus = locus if locus is not None else resolve_locus()
+    set_active_locus(resolved_locus)
+    log.info("server build: execution_locus=%s", resolved_locus.value)
+
     server: FastMCP = FastMCP("apecx-mcp", instructions=_SERVER_INSTRUCTIONS)
+    server.execution_locus = resolved_locus  # type: ignore[attr-defined]
 
     _register_logging_capability(server)
 
@@ -958,6 +974,17 @@ def _build_arg_parser():
         version=f"apecx-mcp (apecx-integration {_resolve_package_version()})",
         help="print the apecx-integration package version and exit",
     )
+    parser.add_argument(
+        "--locus",
+        choices=[m.value for m in ExecutionLocus],
+        default=None,
+        help=(
+            "orchestration face: 'desktop' (default) — the host LLM (Claude Desktop) "
+            "synthesizes; a workflow's final-synthesis LLM is omitted and the assembled "
+            "evidence is returned for the host. 'agent' — the apecx server LLM synthesizes "
+            "(headless). Falls back to $APECX_EXECUTION_LOCUS, then 'desktop'."
+        ),
+    )
     return parser
 
 
@@ -981,7 +1008,10 @@ def main(argv: list[str] | None = None) -> None:
             so argparse reads ``sys.argv``.
     """
     parser = _build_arg_parser()
-    parser.parse_args(argv)  # exits on --help / --version
+    args = parser.parse_args(argv)  # exits on --help / --version
+    # FAIL-LOUD at startup on a bad locus (argparse already constrains --locus; this also
+    # validates a stray $APECX_EXECUTION_LOCUS before the server boots).
+    resolved_locus = resolve_locus(args.locus)
 
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 
@@ -1004,7 +1034,7 @@ def main(argv: list[str] | None = None) -> None:
     _check_rag_index_or_warn()
     _check_rhea_status_or_warn()
     _ensure_synonym_dict_or_warn()
-    server = build_server()
+    server = build_server(locus=resolved_locus)
     server.run()
 
 
