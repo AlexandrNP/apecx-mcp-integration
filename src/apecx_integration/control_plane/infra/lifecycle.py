@@ -86,6 +86,73 @@ def _find_alembic_root() -> Path:
     )
 
 
+def _current_db_revision(db_url: str) -> str | None:
+    """Revision the DB is stamped at, or ``None`` for a fresh / un-stamped DB."""
+    from alembic.runtime.migration import MigrationContext
+    from sqlalchemy import create_engine
+
+    engine = create_engine(db_url)
+    try:
+        with engine.connect() as conn:
+            return MigrationContext.configure(conn).get_current_revision()
+    finally:
+        engine.dispose()
+
+
+def _revision_known_to_scripts(cfg: Config, revision: str) -> bool:
+    """Is ``revision`` present in our bundled migration scripts?
+
+    Uses ``walk_revisions`` (which never raises on an unknown id) rather than
+    ``get_revision`` (which raises alembic ``CommandError`` for an unknown
+    revision — the very case we are probing for).
+    """
+    from alembic.script import ScriptDirectory
+
+    script = ScriptDirectory.from_config(cfg)
+    return revision in {rev.revision for rev in script.walk_revisions()}
+
+
+def _quarantine_incompatible_sqlite(db_url: str, revision: str) -> None:
+    """Move an incompatible SQLite DB aside so a fresh one can be created.
+
+    Triggered when the DB is stamped at a revision this build does NOT ship
+    (e.g. created by a newer / dev version — a downgrade). The control-plane DB
+    holds operational run/approval state (regenerable), NOT precious
+    user-authored data — but we RENAME (never delete) so the old file is kept
+    for forensics. Raises for non-SQLite URLs: we must not auto-drop an
+    operator's Postgres.
+    """
+    import time
+
+    from sqlalchemy.engine import make_url
+
+    url = make_url(db_url)
+    if not url.drivername.startswith("sqlite"):
+        raise RuntimeError(
+            f"Control-plane DB at {db_url} is stamped at revision {revision!r}, which this "
+            f"build does not recognize (it ships migrations only up to its bundled head). The "
+            f"DB was likely created by a NEWER/dev build. This build will NOT auto-modify a "
+            f"non-SQLite database — back it up and point APECX_CP_DB_URL at a fresh database "
+            f"(or downgrade the DB schema), then restart."
+        )
+    db_path = Path(url.database) if url.database else None
+    if db_path is None or not db_path.exists():
+        return  # nothing to move (already fresh)
+    backup = db_path.with_name(f"{db_path.name}.incompatible-{revision}-{int(time.time())}")
+    db_path.rename(backup)
+    log.warning("=" * 64)
+    log.warning(
+        "Control-plane DB %s was stamped at revision %r, UNKNOWN to this build (likely "
+        "created by a newer/dev version). Moved it aside to %s and recreating a fresh "
+        "database so the backend can start. The old operational state is preserved in "
+        "that file.",
+        db_path,
+        revision,
+        backup.name,
+    )
+    log.warning("=" * 64)
+
+
 def ensure_infra_ready(
     db_url: str,
     *,
@@ -106,6 +173,16 @@ def ensure_infra_ready(
     # reachable server — alembic upgrade head fails loudly if it doesn't.
     log.info("running alembic upgrade head against %s", db_url)
     cfg = _alembic_cfg_for(db_url, alembic_root=_find_alembic_root())
+    # Resilience (2026-06-15): if the DB is stamped at a revision this build does
+    # NOT ship (e.g. created by a newer/dev version → alembic "Can't locate
+    # revision"), a raw upgrade crash takes down the whole backend + the MCP
+    # server that autostarts it (observed on a desktop install with a 0007-stamped
+    # cp.db against a 0006-head build). Detect the unknown stamp and quarantine the
+    # incompatible SQLite DB (rename, never delete) so a fresh schema can be built;
+    # for non-SQLite, raise an actionable error rather than touch the operator's DB.
+    current = _current_db_revision(db_url)
+    if current is not None and not _revision_known_to_scripts(cfg, current):
+        _quarantine_incompatible_sqlite(db_url, current)
     command.upgrade(cfg, "head")
 
 
@@ -119,7 +196,7 @@ def teardown_infra(
     decision = decide_infra_mode(db_url)
     if decision.mode is not InfraMode.LOCAL_POSTGRES_MANAGED:
         log.info(
-            "teardown skipped: %s does not correspond to a managed container " "(mode=%s)",
+            "teardown skipped: %s does not correspond to a managed container (mode=%s)",
             db_url,
             decision.mode.value,
         )
