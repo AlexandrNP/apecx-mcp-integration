@@ -27,6 +27,10 @@ htmlcov/
 # pollute git history with multi-megabyte regenerable artifacts AND
 # silently mask cache-vs-source drift in PR diffs.
 .web_search_cache/
+# Generic on-disk fetch cache: PubMed eFetch/eSearch + other HTTP caches that
+# integration tests populate under a worktree. Transient + regenerable; left
+# untracked it also blocks `git worktree remove` (must --force) — ignore it.
+.cache/
 _benchmark_runs/
 src/apecx_integration/composition/_runtime/
 
