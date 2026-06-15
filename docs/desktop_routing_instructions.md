@@ -43,7 +43,8 @@ project only). `apecx-setup` prints this same text at install time as a reminder
 ```
 APECx tool-routing rule (highest priority — overrides default search behavior):
 Before answering ANY question about viruses, viral proteins, epitopes, antigens,
-vaccines, pathogens, conserved sites, sequence conservation, or protein structures —
+vaccines, pathogens, conserved sites, sequence conservation, protein structures, OR
+the scientific literature / papers / publications on any of these —
 and BEFORE using web_search or answering from memory — you MUST first call
 `apecx_capabilities` (or `list_workflows`) to see available APECx workflows, then run
 the best match (e.g. `viral_epitope_evidence_review`, `viral_conserved_sites`).
