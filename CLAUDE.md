@@ -290,12 +290,23 @@ apecx runs in TWO modes; the LLM role differs in each. **Do not conflate them.**
   DETERMINISTIC data + scaffolds for it to reason over — **no apecx-side LLM
   endpoint is required** for analysis. `run_workflow_streaming` streams per-stage
   reasoning to the client (`docs/desktop_streaming_contract.md`).
-- **Backend / headless mode.** `run_workflow` / `synthesize_query` synthesize
-  markdown **internally** via the apecx LLM backend — Ollama (`localhost:11434`
-  default) or `APECX_LLM_BASE_URL`. **There is NO remote default**; this LLM is
-  OFF until Ollama is installed or the env var is set. It is a FALLBACK (bounded
-  local decomposition + the few internal-synthesis workflows), not the primary
+- **Backend / headless mode.** `run_workflow` synthesizes markdown **internally**
+  via the apecx LLM backend — Ollama (`localhost:11434` default) or
+  `APECX_LLM_BASE_URL`. **There is NO remote default**; this LLM is OFF until
+  Ollama is installed or the env var is set. It is a FALLBACK (bounded local
+  decomposition + the few internal-synthesis workflows), not the primary
   orchestrator.
+
+**The mode is selected by the `--locus` startup flag** (NOT an env-primary
+toggle): `apecx-mcp --locus desktop|agent` (default `desktop`;
+`APECX_EXECUTION_LOCUS` is a fallback). `apecx-setup` writes `--locus desktop`
+into the installed config. Single source: `composition/runtime/execution_locus.py`
+(re-exported by `mcp_surface/locus.py`). A step's `LLM_ROLE='final_synthesis'`
+class attr makes it **omit its apecx LLM call in desktop locus** (returns assembled
+evidence + a host-synthesis scaffold — the inversion; no apecx LLM needed), while
+`mcp_surface/llm_policy.workflow_needs_llm_at_run` uses locus+role so such a
+workflow is not wrongly refused on a desktop with no Ollama. Full design:
+`docs/desktop_routing_instructions.md`.
 
 Consequence: "is an LLM available?" has two answers. The desktop frontier LLM
 covers the primary analysis path with ZERO apecx LLM config. NEVER claim the
