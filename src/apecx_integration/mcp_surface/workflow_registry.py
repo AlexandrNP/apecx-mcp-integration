@@ -124,6 +124,15 @@ class WorkflowRequirements(BaseModel):
     """Executables that must be on PATH (checked via ``shutil.which``) — e.g. an external
     aligner like ``mafft``. Lets a binary-dependent workflow report honest availability via
     ``list_workflows`` instead of only failing at run time."""
+    unavailable_hint: str = ""
+    """Optional human-facing guidance appended to the unavailable-tool error
+    when prerequisites are NOT met. Use it to be HONEST about an
+    infrastructure dependency the user can't infer from a bare ``env var
+    $RHEA_MCP_URL is not set`` — e.g. "needs Docker + Rhea; without them use
+    the MAFFT path (viral_conserved_sites) or the LLM-only analysis
+    (viral_epitope_evidence_review)". Keeps the no-silent-failure contract:
+    a locked Docker/Rhea workflow names its working alternative instead of
+    just refusing."""
 
 
 class WorkflowCatalogEntry(BaseModel):
@@ -430,12 +439,13 @@ async def _runner(entry: WorkflowCatalogEntry, **kwargs: Any) -> dict[str, Any]:
     met, missing = check_prerequisites(entry.requires)
     if not met:
         reason = "; ".join(missing)
+        hint = entry.requires.unavailable_hint
         return {
             "error": (
                 f"tool '{entry.tool_name}' is unavailable because its "
                 f"prerequisites are not met: {reason}. "
                 f"Fix the configuration (set the missing env vars, install "
-                f"the missing modules) and retry."
+                f"the missing modules) and retry." + (f" {hint}" if hint else "")
             )
         }
 
@@ -696,19 +706,23 @@ def register_workflows(
                 )
             else:
                 reason = "; ".join(missing)
+                hint = entry.requires.unavailable_hint
 
-                async def _unavailable_dispatch(_entry=entry, _reason=reason, **kwargs):
+                async def _unavailable_dispatch(_entry=entry, _reason=reason, _hint=hint, **kwargs):
                     return {
                         "error": (
                             f"tool '{_entry.tool_name}' is unavailable because its "
                             f"prerequisites are not met: {_reason}. "
                             f"Fix the configuration (set the missing env vars, "
                             f"install the missing modules) and retry."
+                            + (f" {_hint}" if _hint else "")
                         )
                     }
 
                 fn = _synthesize_tool_function(entry, _unavailable_dispatch)
-                description = f"{entry.description}\n\n[UNAVAILABLE: {reason}]"
+                description = f"{entry.description}\n\n[UNAVAILABLE: {reason}]" + (
+                    f" {hint}" if hint else ""
+                )
                 server.tool(name=entry.tool_name, description=description)(fn)
                 report.unavailable.append((entry.tool_name, reason))
                 lg.warning(

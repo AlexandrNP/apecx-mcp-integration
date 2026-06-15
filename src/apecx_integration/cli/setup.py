@@ -718,6 +718,46 @@ def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:
         return False
 
 
+def _probe_llm() -> tuple[bool, str]:
+    """Resolve whether an LLM endpoint is usable, and how — local OR remote.
+
+    Single source of truth shared by ``_step_verify`` and the
+    ``capabilities`` command so the two never drift. Honest about the two
+    legitimate ways to satisfy the LLM dependency:
+
+    - **Remote** (``APECX_LLM_BASE_URL`` set to a non-localhost
+      OpenAI-compatible endpoint): reported available WITHOUT a live probe.
+      The endpoint may be a vLLM/OpenAI/Anthropic-proxy that does not expose
+      Ollama's ``/api/tags``; we cannot meaningfully health-check it here, so
+      we report it as *configured* and say so plainly rather than inventing a
+      green/red verdict. Installing Ollama locally is therefore OPTIONAL.
+    - **Local Ollama**: probe ``/api/tags`` and confirm the resolved model is
+      pulled (the model the synthesis runtime will actually ask for).
+    """
+    base = os.environ.get("APECX_LLM_BASE_URL", "").strip()
+    if base and not any(h in base for h in ("localhost", "127.0.0.1", "0.0.0.0")):
+        return True, f"remote endpoint configured: {base} (not actively probed)"
+
+    if shutil.which("ollama") is None:
+        return False, (
+            "no local Ollama and no remote APECX_LLM_BASE_URL — "
+            "run `apecx-setup llm`, or set APECX_LLM_BASE_URL to a remote "
+            "OpenAI-compatible endpoint (vLLM / OpenAI / Anthropic-proxy)"
+        )
+    try:
+        import urllib.request
+
+        with urllib.request.urlopen(_ollama_url() + "/api/tags", timeout=5) as resp:
+            tags = json.loads(resp.read())
+        installed = {m.get("name") for m in tags.get("models") or []}
+    except Exception:  # noqa: BLE001
+        return False, "ollama daemon unreachable — `ollama serve`"
+    model = _ollama_model()
+    if model in installed:
+        return True, f"local Ollama model {model} ready"
+    return False, f"local Ollama model {model} not pulled — `apecx-setup llm`"
+
+
 def _prompt_yes(question: str, default: bool = True) -> bool:
     """Prompt user for y/N. Returns the default on empty input."""
     suffix = "[Y/n]" if default else "[y/N]"
@@ -1233,18 +1273,21 @@ def _step_verify() -> StepResult:
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
-    # Data — BV-BRC is REQUIRED (public collection); VIOLIN is OPTIONAL
-    # (Group-gated, membership pending). Report them separately so a
-    # VIOLIN-missing install verifies as 'partial', not 'fail'.
+    # Data — local BV-BRC/VIOLIN CSVs are OPTIONAL. harmonized_search queries
+    # the PUBLIC Globus Search index ANONYMOUSLY (no creds, no download), which
+    # supersedes these CSVs for every search path. Only the offline `query_*`
+    # database tools need the local files. A clean install with NO local data
+    # is fully functional for search — so this is a 'partial', never a 'fail'.
     default_data = _setup_data._DEFAULT_DATA_DIR
     bvbrc_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
     checks.append(
         (
             "data",
             bvbrc_present,
-            f"BV-BRC data at {default_data}"
+            f"local BV-BRC CSVs at {default_data} (offline query_* tools)"
             if bvbrc_present
-            else "missing — run `apecx-setup data`",
+            else "no local CSVs (optional) — harmonized_search uses the public "
+            "Globus index anonymously; run `apecx-setup data` only for offline query_* tools",
         )
     )
     violin_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
@@ -1321,23 +1364,8 @@ def _step_verify() -> StepResult:
         )
     )
 
-    # Ollama
-    ollama_ok = False
-    ollama_detail = "ollama CLI absent"
-    if shutil.which("ollama") is not None:
-        try:
-            import urllib.request
-
-            with urllib.request.urlopen(_ollama_url() + "/api/tags", timeout=5) as resp:
-                tags = json.loads(resp.read())
-            installed = {m.get("name") for m in tags.get("models") or []}
-            if _ollama_model() in installed:
-                ollama_ok = True
-                ollama_detail = f"model {_ollama_model()} ready"
-            else:
-                ollama_detail = f"model {_ollama_model()} not pulled — `apecx-setup llm`"
-        except Exception:  # noqa: BLE001
-            ollama_detail = "daemon unreachable — `ollama serve`"
+    # LLM endpoint — local Ollama OR remote APECX_LLM_BASE_URL (both legit).
+    ollama_ok, ollama_detail = _probe_llm()
     checks.append(("ollama", ollama_ok, ollama_detail))
 
     # RAG index
@@ -1385,10 +1413,25 @@ def _step_verify() -> StepResult:
             "ok",
             "every component healthy",
         )
-    # Postgres + Redis + MinIO are optional for many workflows; reflect
-    # that honestly in the partial-vs-fail distinction. faiss + rhea
-    # are also optional (opt-in per G81 + G89).
-    optional = {"violin", "postgres", "redis", "minio", "faiss", "rhea"}
+    # The ONLY required component is the synonym dictionary (it auto-downloads
+    # anonymously on first MCP launch). Everything else is an OPTIONAL unlock:
+    #   - data (local VIOLIN/BV-BRC CSVs): superseded by harmonized_search, which
+    #     queries the PUBLIC Globus Search index ANONYMOUSLY (no creds, no setup).
+    #     Only the offline `query_*` database tools need it.
+    #   - ollama: an LLM endpoint is needed for LLM analysis/synthesis, but it can be
+    #     a REMOTE one (APECX_LLM_BASE_URL) — installing Ollama locally is optional.
+    #   - postgres/redis/minio/faiss/rhea: opt-in infra (durable stores / RAG / Rhea).
+    # See `apecx-setup capabilities` for the capability-by-capability view + unlocks.
+    optional = {
+        "data",
+        "violin",
+        "ollama",
+        "postgres",
+        "redis",
+        "minio",
+        "faiss",
+        "rhea",
+    }
     real_failures = [f for f in failed if f not in optional]
     if real_failures:
         return StepResult(
@@ -1399,8 +1442,232 @@ def _step_verify() -> StepResult:
     return StepResult(
         "verify",
         "partial",
-        f"optional components missing: {failed}",
+        (
+            f"baseline healthy (dictionary ready → entity resolution + harmonized "
+            f"search work); optional unlocks not configured: {sorted(failed)}. "
+            f"Run `apecx-setup capabilities` to see what each unlocks."
+        ),
     )
+
+
+@dataclasses.dataclass(frozen=True)
+class Capability:
+    """One user-facing capability: what it does, whether it works now, what unlocks it.
+
+    This is the FEATURE-oriented view (``apecx-setup capabilities``), distinct
+    from the COMPONENT-health view (``apecx-setup verify``). ``verify`` answers
+    "did each install step succeed"; ``capabilities`` answers "what can I
+    actually DO right now, and what would I gain by setting up more". A clean
+    install with only the synonym dictionary still has real capabilities
+    (entity resolution + anonymous harmonized search + LLM analysis if an
+    endpoint is configured) — this command makes that legible instead of
+    leaving the user to infer it from a wall of ❌ optional components.
+    """
+
+    key: str
+    title: str
+    available: bool
+    enables: str  # what the user can do with it
+    unlock: str  # how to turn it on (empty when available)
+    needs_docker: bool = False
+
+
+def _dict_artifact_path() -> Path:
+    """Resolve the synonym-dictionary sqlite path (mirrors EnsureDictionaryConfig)."""
+    env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
+    if env:
+        return Path(env).expanduser()
+    dir_env = os.environ.get("APECX_DICT_OUTPUT_DIR", "").strip()
+    base = Path(dir_env).expanduser() if dir_env else Path("~/.apecx/dictionary").expanduser()
+    return base / "dictionary.sqlite"
+
+
+def _probe_capabilities() -> list[Capability]:
+    """Probe the environment and classify every capability available/locked.
+
+    Pure read-only probes (filesystem stat, ``shutil.which``, a short Ollama
+    HTTP GET, ``docker image inspect``). No network beyond the optional Ollama
+    probe; no mutation. Shared by the ``capabilities`` command and reusable by
+    any future status surface.
+    """
+    caps: list[Capability] = []
+
+    # 1. Entity resolution — the one true baseline (dict auto-downloads on first launch).
+    dict_present = _dict_artifact_path().is_file()
+    caps.append(
+        Capability(
+            "entity_resolution",
+            "Entity resolution & synonym harmonization",
+            dict_present,
+            "Resolve virus/protein/strain names & synonyms to canonical IDs (HARD match).",
+            ""
+            if dict_present
+            else "auto-downloads on first `apecx-mcp` launch, or run `apecx-setup dict`",
+        )
+    )
+
+    # 2. Harmonized search — ANONYMOUS public Globus index. No creds, no infra.
+    #    The only requirement is outbound network to Globus Search; we don't
+    #    pre-probe it here (that's a per-query concern) but it needs no setup.
+    caps.append(
+        Capability(
+            "harmonized_search",
+            "Harmonized multi-source search",
+            True,
+            "Search BV-BRC, ProtaBank, AntiviralDB + more via the PUBLIC Globus index "
+            "(anonymous — no credentials, no data download).",
+            "",
+        )
+    )
+
+    # 3. LLM analysis & synthesis — local Ollama OR remote endpoint.
+    llm_ok, llm_detail = _probe_llm()
+    caps.append(
+        Capability(
+            "llm_analysis",
+            "LLM analysis & synthesis of harmonized data",
+            llm_ok,
+            "Evidence reviews, summaries & structured analysis of harmonized records "
+            "(e.g. viral_epitope_evidence_review). Works on harmonized data with ZERO "
+            "bioinformatics infra — this is the LLM-only analysis path.",
+            "" if llm_ok else llm_detail,
+        )
+    )
+
+    # 4. Sequence conservation — MAFFT binary (no Docker).
+    mafft_ok = shutil.which("mafft") is not None
+    caps.append(
+        Capability(
+            "sequence_conservation",
+            "Sequence conservation (MAFFT alignment)",
+            mafft_ok,
+            "Multiple-sequence alignment + per-position conservation scoring "
+            "(viral_conserved_sites workflow).",
+            "" if mafft_ok else "install MAFFT (`brew install mafft` / `apt install mafft`)",
+        )
+    )
+
+    docker_ok = _docker_available()
+
+    # 5. Structural SASA — PyMOL image (needs Docker).
+    pymol_ok = docker_ok and (
+        subprocess.run(
+            ["docker", "image", "inspect", _PYMOL_IMAGE],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).returncode
+        == 0
+    )
+    caps.append(
+        Capability(
+            "structural_sasa",
+            "Structural reasoning with real SASA (PyMOL)",
+            pymol_ok,
+            "Real per-residue solvent accessibility for surface-epitope ranking. "
+            "WITHOUT it the structural stage degrades to an LLM-only named-skip.",
+            ""
+            if pymol_ok
+            else (
+                "needs Docker — run `apecx-setup pymol` (or `--with-pymol`). "
+                "Until then structural reasoning is LLM-only."
+            ),
+            needs_docker=True,
+        )
+    )
+
+    # 6. Rhea bioinformatics tools (MUSCLE etc.) — needs Docker + RHEA_MCP_URL + checkout.
+    from apecx_integration.infrastructure.rhea_env_autodiscovery import _find_rhea_repo
+
+    rhea_repo = _find_rhea_repo()
+    rhea_url = os.environ.get("RHEA_MCP_URL", "").strip()
+    rhea_ok = (
+        bool(rhea_url)
+        and rhea_repo is not None
+        and (rhea_repo / ".venv" / "bin" / "python").exists()
+    )
+    caps.append(
+        Capability(
+            "rhea_tools",
+            "Rhea-backed bioinformatics tools (MUSCLE alignment)",
+            rhea_ok,
+            "MUSCLE-based alignment workflows (rhea_muscle_alignment, "
+            "viral_conserved_sites_muscle).",
+            ""
+            if rhea_ok
+            else (
+                "needs Docker + Rhea — run `apecx-setup rhea` (or `--with-rhea`) and set "
+                "RHEA_MCP_URL. Until then these workflows do NOT run; use the MAFFT or "
+                "LLM-only paths instead."
+            ),
+            needs_docker=True,
+        )
+    )
+
+    # 7. RAG-augmented synthesis — FAISS index.
+    workspace_root = Path(__file__).resolve().parents[4]
+    faiss_ok = (workspace_root / "data" / "apecx_domain_rag" / "faiss_index.bin").exists()
+    caps.append(
+        Capability(
+            "rag_synthesis",
+            "Domain-RAG-augmented synthesis (FAISS)",
+            faiss_ok,
+            "Synthesis grounded in the domain RAG corpus.",
+            "" if faiss_ok else "opt-in — run `apecx-setup rag` (~10 min, 689 MB)",
+        )
+    )
+
+    # 8. Offline local-CSV database tools — superseded by harmonized search.
+    bvbrc_present = (_setup_data._DEFAULT_DATA_DIR / "BVBRC_genome_alphavirus.csv").exists()
+    caps.append(
+        Capability(
+            "offline_db_tools",
+            "Offline local-database tools (query_*)",
+            bvbrc_present,
+            "Legacy offline CSV queries. SUPERSEDED by harmonized_search (anonymous "
+            "Globus index) for nearly every use; only needed fully offline.",
+            "" if bvbrc_present else "optional — run `apecx-setup data` (needs Globus creds)",
+        )
+    )
+
+    return caps
+
+
+def _step_capabilities() -> StepResult:
+    """Show what the current install can do and what each infra add-on unlocks."""
+    _print_header("Capabilities — what works now, what infra unlocks more")
+    caps = _probe_capabilities()
+    available = [c for c in caps if c.available]
+    locked = [c for c in caps if not c.available]
+
+    print()
+    print("  AVAILABLE NOW")
+    if available:
+        for c in available:
+            print(f"  ✅ {c.title}")
+            print(f"       {c.enables}")
+    else:
+        print("  (none — run `apecx-setup dict` to enable the baseline)")
+    print()
+    print("  LOCKED — set up infrastructure to unlock")
+    if locked:
+        for c in locked:
+            tag = " [needs Docker]" if c.needs_docker else ""
+            print(f"  🔒 {c.title}{tag}")
+            print(f"       enables: {c.enables}")
+            print(f"       unlock:  {c.unlock}")
+    else:
+        print("  (none — every capability is available)")
+    print()
+
+    # Always-true honest headline: the baseline is usable with ZERO infra.
+    baseline = {"entity_resolution", "harmonized_search", "llm_analysis"}
+    baseline_ok = [c for c in caps if c.key in baseline and c.available]
+    detail = (
+        f"{len(available)}/{len(caps)} capabilities available; "
+        f"{len(baseline_ok)}/3 zero-infra baseline (resolution / harmonized search / LLM analysis) ready"
+    )
+    return StepResult("capabilities", "ok", detail)
 
 
 # ---------------------------------------------------------------------------
@@ -1409,6 +1676,7 @@ def _step_verify() -> StepResult:
 
 _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "globus": _step_globus,
+    "capabilities": lambda **_: _step_capabilities(),
     "dict": _step_dict,
     "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
@@ -1517,7 +1785,19 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "subcommand",
         nargs="?",
-        choices=["globus", "data", "dict", "infra", "llm", "rag", "rhea", "verify", "all"],
+        choices=[
+            "globus",
+            "data",
+            "dict",
+            "infra",
+            "llm",
+            "rag",
+            "rhea",
+            "pymol",
+            "verify",
+            "capabilities",
+            "all",
+        ],
         default="all",
         help="Step to run (default: all).",
     )

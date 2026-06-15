@@ -300,6 +300,33 @@ def test_register_workflows_unavailable_appears_in_description_and_runner(
     assert "stub_tool" in result["error"]
 
 
+def test_unavailable_hint_is_surfaced_in_description_and_error(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An unavailable tool with an ``unavailable_hint`` must surface that hint
+    BOTH in its [UNAVAILABLE] description and in the runner error — this is the
+    honest "needs Docker; use the LLM-only / MAFFT path instead" announcement.
+    """
+    monkeypatch.delenv("APECX_TEST_PREREQ_VAR", raising=False)
+    hint = "needs Docker + Rhea; use the MAFFT path (viral_conserved_sites) instead."
+    catalog = _make_yaml_catalog(
+        tmp_path,
+        requires={
+            "env": ["APECX_TEST_PREREQ_VAR"],
+            "modules": [],
+            "unavailable_hint": hint,
+        },
+    )
+    fake = _FakeFastMCP()
+    register_workflows(fake, catalog)
+
+    cap = fake.captured[0]
+    assert hint in cap.description
+    result = asyncio.run(cap.fn(q="anything"))
+    assert hint in result["error"]
+
+
 # ---------------------------------------------------------------------------
 # Registration — one bad entry doesn't break the others
 # ---------------------------------------------------------------------------

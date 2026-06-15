@@ -441,8 +441,10 @@ class StructuralReasoningStep(BaseStep):
         if not _docker_available(self._image):
             note = (
                 f"Containerized PyMOL image {self._image!r} is not available "
-                "(docker missing or image not built); structural-level reasoning skipped. "
-                "Build it with the repo's PyMOL Dockerfile to enable this stage."
+                "(docker missing or image not built): NO per-residue SASA was computed — "
+                "the evidence review continues with LLM-only structural reasoning (no "
+                "quantitative solvent-accessibility ranking). Run `apecx-setup pymol` "
+                "(needs Docker) to enable the real structural-analysis stage."
             )
             return {
                 "available": False,

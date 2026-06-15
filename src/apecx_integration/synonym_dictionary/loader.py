@@ -24,6 +24,7 @@ Design decisions:
 from __future__ import annotations
 
 import logging
+import os
 import sqlite3
 import threading
 from pathlib import Path
@@ -36,6 +37,30 @@ from apecx_integration.synonym_dictionary.sqlite_writer import SQLiteDictionaryR
 log = logging.getLogger(__name__)
 
 _NOT_LOADED = object()
+
+
+def default_dictionary_path() -> Path:
+    """Resolve the canonical dictionary location WITHOUT requiring an env var.
+
+    Mirrors ``EnsureDictionaryConfig.resolve()`` exactly: ``APECX_SYNONYM_DICT_PATH``
+    wins, else ``${APECX_DICT_OUTPUT_DIR or ~/.apecx/dictionary}/dictionary.sqlite``
+    — the same place the MCP-startup bootstrap downloads the dictionary to.
+
+    This is the single source of the default so the loader can find a
+    bootstrap-downloaded dictionary even when no caller has explicitly called
+    :func:`configure_dictionary_path` and ``APECX_SYNONYM_DICT_PATH`` is unset
+    (e.g. resolution surfaces used outside a booted MCP server). Without this
+    the dictionary could sit at the default location while resolution reported
+    "not set" and silently degraded to the slow path — green tests, broken
+    product.
+    """
+    env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
+    if env:
+        return Path(env).expanduser()
+    out_dir = os.environ.get("APECX_DICT_OUTPUT_DIR", "").strip()
+    base = Path(out_dir).expanduser() if out_dir else Path("~/.apecx/dictionary").expanduser()
+    return base / "dictionary.sqlite"
+
 
 _NCBITAXON_OBO_PREFIX = "http://purl.obolibrary.org/obo/NCBITaxon_"
 
@@ -459,18 +484,24 @@ class _ProcessSingleton:
 
         with self._lock:
             if self._index is _NOT_LOADED:
-                if self._path is None:
+                # No explicit configure_dictionary_path() call: fall back to the
+                # canonical default location (where the MCP bootstrap downloads
+                # the dict) so resolution works whenever the artifact is present,
+                # regardless of whether the env var was exported or the server
+                # booted. Only error when the default is ALSO absent.
+                path = self._path or default_dictionary_path()
+                if not path.is_file():
                     self._error = (
-                        "APECX_SYNONYM_DICT_PATH not set; Stage 2 fast path "
-                        "is disabled. The dictionary is normally produced by "
-                        "the apecx-mcp startup hook (see "
-                        "synonym_dictionary.workflow.bootstrap.ensure_dictionary)."
+                        f"No synonym dictionary found at {path}. Set "
+                        "APECX_SYNONYM_DICT_PATH, or run `apecx-setup dict` (or "
+                        "launch apecx-mcp once to auto-download it). Stage 2 fast "
+                        "path is disabled; resolution falls back to slow search."
                     )
                     return None, self._error
                 try:
-                    self._index = DictionaryIndex.load(self._path)
+                    self._index = DictionaryIndex.load(path)
                 except Exception as exc:
-                    self._error = f"Failed to load dictionary from {self._path}: {exc}"
+                    self._error = f"Failed to load dictionary from {path}: {exc}"
                     log.warning(self._error)
                     return None, self._error
             if isinstance(self._index, DictionaryIndex):

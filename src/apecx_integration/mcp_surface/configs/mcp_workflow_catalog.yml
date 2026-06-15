@@ -43,6 +43,14 @@ workflows:
       modules:
         - rhea
         - rhea.utils.proxy
+      unavailable_hint: >-
+        This workflow runs MUSCLE inside Rhea and therefore needs Docker +
+        the Rhea MCP server (run `apecx-setup rhea` and set RHEA_MCP_URL).
+        WITHOUT Docker it does NOT run — for sequence alignment use the
+        MAFFT path instead (`viral_conserved_sites`, needs only the `mafft`
+        binary, no Docker), or use the LLM-only analysis
+        (`viral_epitope_evidence_review`) which works on harmonized data
+        with no bioinformatics infra at all.
     timeout_seconds: 900.0
     # Workflow.run() deposits the input dict by FIRST-STEP input-data-unit
     # name, NOT by workflow-level input-data-unit name. The
@@ -113,6 +121,10 @@ workflows:
       # list_workflows reports honest availability instead of only failing at run time.
       binaries:
         - mafft
+      unavailable_hint: >-
+        Install MAFFT (`brew install mafft` / `apt install mafft`) — no Docker
+        needed, it's a single local binary. For evidence analysis without any
+        alignment infra, use the LLM-only `viral_epitope_evidence_review`.
     timeout_seconds: 600.0
     # Workflow.run deposits by FIRST-STEP input-DU name (see rhea note above): the first step
     # is `fetch` (BvbrcProteinFastaStep) whose input DU is `fetch_in`.
@@ -160,6 +172,11 @@ workflows:
         - RHEA_MCP_URL
       modules:
         - rhea
+      unavailable_hint: >-
+        The MUSCLE backend runs inside Rhea and needs Docker + the Rhea MCP
+        server (`apecx-setup rhea` + RHEA_MCP_URL). WITHOUT Docker, use the
+        identical pipeline on the local-MAFFT backend instead:
+        `viral_conserved_sites` (needs only the `mafft` binary, no Docker).
     timeout_seconds: 900.0
     input_envelope_key: fetch_in
     output_envelope_key: workflow_output

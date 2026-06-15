@@ -25,9 +25,11 @@ apecx-setup
 `apecx-setup` is interactive: it confirms the data directory,
 **offers to install Ollama if missing** (Homebrew on macOS / the official
 install script on Linux — every command printed before a y/N prompt),
-starts the daemon, pulls the configured model (`mistral-nemo:latest` by
-default), and patches `claude_desktop_config.json` with the right paths and LLM
-env vars.
+starts the daemon, pulls the configured model (`nemotron-3-nano:4b` by
+default — the exact model the synthesis runtime asks for), and patches
+`claude_desktop_config.json` with the right paths and LLM env vars.
+Installing Ollama locally is **optional**: set `APECX_LLM_BASE_URL` to a
+remote OpenAI-compatible endpoint (vLLM / OpenAI / Anthropic-proxy) instead.
 
 **The synonym dictionary auto-downloads anonymously** on first MCP launch
 (~47 MB compressed, ~30 s on a typical home connection) from a public
@@ -51,6 +53,22 @@ lookup tools still work; only the domain-data transfer step is unavailable.
 After it finishes, **fully quit Claude Desktop** (Cmd-Q on macOS —
 closing the window is not enough) and reopen. The 23 apecx tools
 appear in the tool picker after 2–5 seconds.
+
+### Check what your install can do
+
+```bash
+apecx-setup capabilities
+```
+
+Prints a feature-by-feature view: what works **right now** versus what's
+**locked** behind optional infrastructure, with the exact command to unlock
+each. A fresh install with zero infrastructure already has a usable
+**zero-infra baseline** — entity resolution, harmonized multi-source search
+(anonymous public Globus index, no credentials), and LLM analysis of that
+harmonized data (local Ollama *or* a remote endpoint). Sequence alignment
+(MAFFT), structural SASA (Docker + PyMOL), and Rhea/MUSCLE tools (Docker)
+are opt-in unlocks. `apecx-setup verify` re-checks component health and
+treats every component except the synonym dictionary as optional.
 
 ## Prerequisites
 

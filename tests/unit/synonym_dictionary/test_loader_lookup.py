@@ -224,12 +224,36 @@ def test_lookup_entity_synonym_lookup_no_entity_type(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_singleton_returns_error_when_path_not_set() -> None:
+def test_singleton_returns_error_when_no_path_and_no_default(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # No explicit configure() and the canonical default location is empty →
+    # actionable error naming the path + the unlock commands. (Point the
+    # default at an empty tmp dir so the test is independent of ~/.apecx.)
+    monkeypatch.delenv("APECX_SYNONYM_DICT_PATH", raising=False)
+    monkeypatch.setenv("APECX_DICT_OUTPUT_DIR", str(tmp_path))
     s = _ProcessSingleton()
     idx, err = s.get()
     assert idx is None
     assert err is not None
-    assert "APECX_SYNONYM_DICT_PATH" in err
+    assert "No synonym dictionary found" in err
+    assert "apecx-setup dict" in err
+
+
+def test_singleton_loads_default_path_without_explicit_configure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The fix: a dictionary present at the canonical default location loads even
+    # when nothing called configure_dictionary_path() and APECX_SYNONYM_DICT_PATH
+    # is unset — the silent-degrade-despite-present-dict bug this guards against.
+    monkeypatch.delenv("APECX_SYNONYM_DICT_PATH", raising=False)
+    monkeypatch.setenv("APECX_DICT_OUTPUT_DIR", str(tmp_path))
+    db = tmp_path / "dictionary.sqlite"
+    _write_test_dictionary(db)
+    s = _ProcessSingleton()
+    idx, err = s.get()
+    assert err is None
+    assert idx is not None
 
 
 def test_singleton_returns_error_when_path_missing(tmp_path: Path) -> None:
