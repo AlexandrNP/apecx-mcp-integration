@@ -28,10 +28,17 @@ is not an imperative — the model needs an explicit "check first" rule.
 
 ## 2. The routing rule (paste this)
 
-Paste verbatim into **Claude Desktop → Settings → Profile → Custom Instructions** (applies
-everywhere), or into a **Project's instructions** (applies in that project only). Use a
-Project if you also use Claude Desktop for non-bio work and don't want every chat checking
-APECx.
+**Auto-installed for local-agent modes.** `apecx-setup` (and `apecx-setup routing`) writes
+this rule into an idempotent marker block in **`~/.claude/CLAUDE.md`**, which every
+local-agent / Cowork / Claude Code session reads. You do not paste it for those modes — it
+is placed for you. The canonical text ships in code at
+`src/apecx_integration/cli/routing_rule.py::ROUTING_RULE`; this fenced block is pinned equal
+to it by `tests/unit/test_routing_rule.py`.
+
+**Plain Claude Desktop *chat* is account-side and CANNOT be auto-installed** (no local
+file — see §1/§3). Paste the rule verbatim into **Claude Desktop → Settings → Profile →
+Custom Instructions** (applies everywhere), or into a **Project's instructions** (that
+project only). `apecx-setup` prints this same text at install time as a reminder.
 
 ```
 APECx tool-routing rule (highest priority — overrides default search behavior):

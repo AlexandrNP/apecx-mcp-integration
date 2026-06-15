@@ -1541,6 +1541,47 @@ def _step_capabilities() -> StepResult:
     return StepResult("capabilities", "ok", caps["summary"])
 
 
+def _step_routing(interactive: bool = True) -> StepResult:
+    """Install the APECx tool-routing rule so the client LLM reaches for APECx first.
+
+    Writes an idempotent marker block into the user-global ``~/.claude/CLAUDE.md`` (read by
+    every local-agent / Cowork / Claude Code session on this machine), and ALWAYS prints the
+    paste-ready rule for plain Claude Desktop *chat* — whose Custom Instructions are
+    account-side and have no local file an installer can write. See
+    ``docs/desktop_routing_instructions.md``.
+    """
+    from apecx_integration.cli.routing_rule import (
+        manual_paste_guidance,
+        upsert_routing_block,
+        user_global_claude_md_path,
+    )
+
+    _print_header("Routing — make the client LLM call APECx first")
+
+    target = user_global_claude_md_path()
+    if interactive and not _setup_data._prompt_yes_no(
+        f"  Write the APECx routing rule into {target}?", default=True
+    ):
+        print()
+        print("  Skipped the auto-write. For ANY mode, paste this rule yourself:")
+        print()
+        print("  " + manual_paste_guidance())
+        return StepResult(
+            "routing", "skipped", f"declined auto-write to {target}; rule printed for manual paste"
+        )
+
+    try:
+        change = upsert_routing_block(target)
+    except OSError as exc:
+        return StepResult("routing", "fail", f"could not write {target}: {exc}")
+
+    print()
+    print(f"  local-agent / Claude Code: {change}")
+    print()
+    print("  " + manual_paste_guidance())
+    return StepResult("routing", "ok", change)
+
+
 # ---------------------------------------------------------------------------
 # Subcommand dispatch
 # ---------------------------------------------------------------------------
@@ -1554,6 +1595,7 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "rag": lambda **_: _step_rag(),
     "rhea": lambda **_: _step_rhea(),
     "pymol": lambda **_: _step_pymol(),
+    "routing": _step_routing,
     "verify": lambda **_: _step_verify(),
 }
 
@@ -1581,7 +1623,10 @@ def _run_all(
                    startup paid the build cost.
       4. infra   — Docker containers (Postgres, Redis, MinIO)
       5. llm     — Ollama or remote LLM credentials
-      6. verify  — sanity checks across all installed components
+      6. routing — write the APECx tool-routing rule into the user-global
+                   ~/.claude/CLAUDE.md (local-agent / Cowork / Claude Code read
+                   it) + print the paste-ready rule for account-side Desktop chat.
+      7. verify  — sanity checks across all installed components
 
     The RAG (FAISS) step is **opt-in** as of G81: it's a ~10-minute
     build of a 689 MB index that's only needed by synthesis workflows
@@ -1638,6 +1683,7 @@ def _run_all(
                 "opt-in — run `apecx-setup pymol` or `apecx-setup --with-pymol` to build the version-pinned PyMOL image for real structural-reasoning SASA",
             )
         )
+    results.append(_step_routing(interactive=interactive))
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -1665,6 +1711,7 @@ def main(argv: list[str] | None = None) -> None:
             "rag",
             "rhea",
             "pymol",
+            "routing",
             "verify",
             "capabilities",
             "all",
