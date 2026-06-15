@@ -1507,21 +1507,25 @@ def _step_capabilities() -> StepResult:
 
     runnable = caps["runnable_now"]
     locked = caps["needs_configuration"]
-    print("  RUNNABLE NOW")
+    print("  RUNNABLE NOW (dynamically discovered; [category] is a label, not a filter)")
     if runnable:
         for r in runnable:
-            print(f"  ✅ {r['name']}")
+            print(f"  ✅ {r['name']}  [{r.get('category', 'product')}]")
     else:
         print("  (none)")
     print()
     print("  NEEDS CONFIGURATION")
     if locked:
         for r in locked:
-            print(f"  \U0001f512 {r['name']} — missing: {', '.join(r['missing_prerequisites'])}")
+            cat = r.get("category", "product")
+            print(
+                f"  \U0001f512 {r['name']}  [{cat}] — missing: "
+                f"{', '.join(r['missing_prerequisites'])}"
+            )
             if r["fallback"]:
                 print(f"       fallback: {r['fallback']}")
     else:
-        print("  (none — every catalog workflow is runnable)")
+        print("  (none — every workflow is runnable)")
     print()
 
     primitives = caps.get("primitives") or []

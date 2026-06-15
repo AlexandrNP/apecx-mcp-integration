@@ -110,10 +110,12 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
     from apecx_integration.composition.runtime.run_store import get_run_store
     from apecx_integration.composition.schemas.data_shapes import Bundle
     from apecx_integration.composition.schemas.workflow_result import WorkflowResult
+    from apecx_integration.mcp_surface.workflow_discovery import discover_workflows
     from apecx_integration.mcp_surface.workflow_registry import (
         _load_workflow_for_entry,
         check_prerequisites,
-        load_catalog,
+        resolve_catalog_entry,
+        sole_data_unit_name,
     )
 
     if not isinstance(name, str) or not name.strip():
@@ -128,10 +130,11 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
             error=f"run_workflow: 'params' must be an object, got {type(params).__name__}."
         ).model_dump(mode="json")
 
-    catalog = load_catalog()
-    entry = next((e for e in catalog.workflows if e.tool_name == name), None)
+    # Catalog override if present, else SYNTHESIZED from dynamic discovery — a workflow on
+    # disk is runnable by name with no catalog registration.
+    entry = resolve_catalog_entry(name)
     if entry is None:
-        available = sorted(e.tool_name for e in catalog.workflows)
+        available = sorted(dw.name for dw in discover_workflows())
         return WorkflowResult.failed(
             error=f"run_workflow: unknown workflow {name!r}. "
             f"Available: {available}. Use list_workflows to discover."
@@ -151,6 +154,13 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
             error=f"run_workflow: failed to load workflow {name!r}: {type(exc).__name__}: {exc}"
         ).model_dump(mode="json")
 
+    # Envelope key: the catalog override sets it explicitly; a discovered (synthesized)
+    # entry leaves it None → derive from the LOADED workflow's single workflow-level input
+    # DU. Safe under G122 (deposit to workflow + first-step inputs, fail-loud on unknown).
+    input_envelope_key = entry.input_envelope_key or sole_data_unit_name(
+        getattr(workflow, "input_data_units", None)
+    )
+
     # RoC-2c — return control to the frontier LLM if required params (per the workflow's OWN
     # step_input_schema) are missing/ill-typed, BEFORE any backend call. This is the param-gap fix:
     # the deterministic side does not guess values — it states exactly what is needed + how to get it.
@@ -160,7 +170,7 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
         find_param_gaps,
     )
 
-    gaps = find_param_gaps(params, derive_required_inputs(workflow, entry.input_envelope_key))
+    gaps = find_param_gaps(params, derive_required_inputs(workflow, input_envelope_key))
     if gaps:
         missing = [g.param_name for g in gaps]
         return WorkflowResult.needs_input(
@@ -168,8 +178,8 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
             markdown=f"`{name}` needs more input before it can run: {missing}.",
         ).model_dump(mode="json")
 
-    if entry.input_envelope_key is not None:
-        input_data: dict[str, Any] = {entry.input_envelope_key: dict(params)}
+    if input_envelope_key is not None:
+        input_data: dict[str, Any] = {input_envelope_key: dict(params)}
     else:
         input_data = dict(params)
 
@@ -458,18 +468,18 @@ async def inspect_workflow(name: str, max_depth: int = 3) -> dict[str, Any]:
     from apecx_integration.composition.inspection.workflow_inspector import (
         inspect_workflow as _inspect_yaml,
     )
+    from apecx_integration.mcp_surface.workflow_discovery import discover_workflows
     from apecx_integration.mcp_surface.workflow_registry import (
         _resolve_yaml_path,
-        load_catalog,
+        resolve_catalog_entry,
     )
 
     if not isinstance(name, str) or not name.strip():
         return {"error": "inspect_workflow: 'name' must be a non-empty workflow name."}
     name = name.strip()
-    catalog = load_catalog()
-    entry = next((e for e in catalog.workflows if e.tool_name == name), None)
+    entry = resolve_catalog_entry(name)
     if entry is None:
-        available = sorted(e.tool_name for e in catalog.workflows)
+        available = sorted(dw.name for dw in discover_workflows())
         return {"error": f"inspect_workflow: unknown workflow {name!r}. Available: {available}."}
     if entry.source.kind != "yaml":
         return {
@@ -534,11 +544,18 @@ async def apecx_capabilities() -> dict[str, Any]:
 
     rows, catalog_error = _load_runnable_catalog()
     runnable_now = [
-        {"name": r["name"], "description": r["description"]} for r in rows if r["available"]
+        {
+            "name": r["name"],
+            "category": r.get("category", "product"),
+            "description": r["description"],
+        }
+        for r in rows
+        if r["available"]
     ]
     needs_configuration = [
         {
             "name": r["name"],
+            "category": r.get("category", "product"),
             "missing_prerequisites": r["missing_prerequisites"],
             "fallback": r["unavailable_hint"],
         }
@@ -570,7 +587,9 @@ async def apecx_capabilities() -> dict[str, Any]:
         "backends": backends,
         "catalog_error": catalog_error,
         "summary": (
-            f"{len(runnable_now)}/{len(rows)} catalog workflows runnable now"
+            f"{len(runnable_now)}/{len(rows)} workflows runnable now "
+            f"({sum(1 for r in rows if r.get('category') == 'product')} product, "
+            f"dynamically discovered from disk)"
             + (f"; catalog load error: {catalog_error}" if catalog_error else "")
         ),
     }

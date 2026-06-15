@@ -179,45 +179,87 @@ def _load_all_manifests() -> list[_ManifestSummary]:
 
 
 def _load_runnable_catalog() -> tuple[list[dict[str, Any]], str | None]:
-    """Rows for the directly-runnable workflow catalog (``run_workflow`` targets).
+    """Rows for the directly-runnable workflows (``run_workflow`` targets), DYNAMICALLY.
 
-    Reads the ``workflow_registry`` catalog (``mcp_workflow_catalog.yml``) — the
-    workflows exposed as runnable objects. Each row is tagged ``kind="runnable"`` +
-    ``invoke_with="run_workflow"`` and carries an ``available`` flag (are this
-    workflow's prerequisites met right now?) so the discovering LLM knows which it can
-    run immediately vs. which need configuration first.
+    Built by scanning ``composition/workflows/`` (``workflow_discovery``) — EVERY workflow
+    on disk appears, with NO central registration. The hand-written
+    ``mcp_workflow_catalog.yml`` is merged in only as an OVERRIDE (tuned prerequisites /
+    run-hints) for the workflows that declare it; it never gates which workflows are
+    listed. A new workflow directory shows up here automatically.
 
-    Returns ``(rows, error)``. On a catalog-load failure returns ``([], "<message>")``
-    so composer discovery still works and the failure is surfaced LOUDLY in the
-    response (never a silent empty list).
+    Each row carries ``name``, ``description``, ``category`` (transparent label:
+    ``product`` | ``benchmark`` | ``demo`` — nothing is hidden, only labeled),
+    ``invoke_with="run_workflow"``, an ``available`` flag (+ ``missing_prerequisites`` /
+    ``unavailable_hint`` when a backend is unconfigured), and ``tuned`` (does a catalog
+    override exist?). Rows are sorted product-first, then by name.
+
+    Returns ``(rows, error)``. On a discovery/catalog failure returns ``([], "<message>")``
+    — surfaced LOUDLY in the response, never a silent empty list.
     """
     try:
+        from apecx_integration.mcp_surface.workflow_discovery import (
+            category_for,
+            discover_workflows,
+        )
         from apecx_integration.mcp_surface.workflow_registry import (
             check_prerequisites,
             load_catalog,
         )
 
+        discovered = discover_workflows()
         catalog = load_catalog()
     except Exception as exc:  # noqa: BLE001 — surface, don't crash discovery
         return [], f"{type(exc).__name__}: {exc}"
-    rows: list[dict[str, Any]] = []
-    for entry in catalog.workflows:
-        met, missing = check_prerequisites(entry.requires)
-        rows.append(
-            {
-                "name": entry.tool_name,
+
+    cat_by_name = {e.tool_name: e for e in catalog.workflows}
+
+    def _row(name: str, category: str, default_description: str) -> dict[str, Any]:
+        entry = cat_by_name.get(name)
+        if entry is not None:
+            met, missing = check_prerequisites(entry.requires)
+            return {
+                "name": name,
                 "kind": "runnable",
                 "invoke_with": "run_workflow",
-                "description": _strip(entry.description),
+                "category": category,
+                "description": _strip(entry.description) or default_description,
                 "available": met,
                 "missing_prerequisites": missing,
-                # Honest fallback guidance when prerequisites are unmet (e.g. a
-                # Docker/Rhea workflow names the MAFFT or LLM-only alternative).
-                # Empty string when none declared or when available.
                 "unavailable_hint": entry.requires.unavailable_hint if not met else "",
                 "input_schema": entry.input_schema,
+                "tuned": True,
             }
-        )
+        # Discovered but not cataloged: runnable now (no declared prereqs); run-hints are
+        # auto-derived at run time. ``available`` is True because nothing is known to block
+        # it — a real missing backend surfaces as a loud failure at run, never a silent skip.
+        return {
+            "name": name,
+            "kind": "runnable",
+            "invoke_with": "run_workflow",
+            "category": category,
+            "description": default_description,
+            "available": True,
+            "missing_prerequisites": [],
+            "unavailable_hint": "",
+            "input_schema": {},
+            "tuned": False,
+        }
+
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for dw in discovered:
+        seen.add(dw.name)
+        rows.append(_row(dw.name, dw.category, _strip(dw.description)))
+    # Catalog entries with no matching directory (e.g. a second variant built from the same
+    # builder, like ``viral_conserved_sites_muscle``) are still real runnable tools.
+    for entry in catalog.workflows:
+        if entry.tool_name in seen:
+            continue
+        rows.append(_row(entry.tool_name, category_for(entry.tool_name), _strip(entry.description)))
+
+    # Product first (the scientist-facing set), then benchmark/demo — sorted, never hidden.
+    _order = {"product": 0, "demo": 1, "benchmark": 2}
+    rows.sort(key=lambda r: (_order.get(r["category"], 9), r["name"]))
     return rows, None
 
 
@@ -234,10 +276,13 @@ async def list_workflows() -> dict:
 
     Two distinct kinds, by how you invoke them (external_orchestration_design.md §4):
 
-    - ``runnable`` (under the ``runnable`` key): registered catalog workflows you drive
-      directly with ``run_workflow(name, params)``. Each row carries ``name``,
-      ``description``, ``input_schema``, and ``available`` (+ ``missing_prerequisites``
-      when a backend/env is not configured). THIS is the path for "do task X now".
+    - ``runnable`` (under the ``runnable`` key): EVERY workflow discovered on disk
+      (``composition/workflows/``), driven directly with ``run_workflow(name, params)`` —
+      NO central registration; a new workflow directory appears here automatically. Each
+      row carries ``name``, ``description``, ``category`` (``product`` | ``benchmark`` |
+      ``demo`` — a transparent label, nothing is hidden), ``available`` (+
+      ``missing_prerequisites`` when a backend/env is not configured), and ``tuned`` (does
+      a catalog override of its run-hints exist?). THIS is the path for "do task X now".
     - ``composable`` (under the ``workflows`` key): manifests the composer can stitch a
       NEW workflow from, via ``start_workflow(description)``. Use when no runnable
       workflow matches and a new one must be composed.

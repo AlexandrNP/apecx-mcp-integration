@@ -290,6 +290,60 @@ def load_catalog(path: str | Path | None = None) -> WorkflowCatalog:
         raise ValueError(f"workflow catalog at {catalog_path} failed validation: {exc}") from exc
 
 
+def resolve_catalog_entry(
+    name: str, catalog: WorkflowCatalog | None = None
+) -> WorkflowCatalogEntry | None:
+    """The runnable entry for ``name`` — catalog override if present, else SYNTHESIZED
+    from dynamic filesystem discovery.
+
+    This is what makes a workflow runnable by name WITHOUT a catalog registration: the
+    hand-written ``mcp_workflow_catalog.yml`` only tunes run-hints (settle_ms, envelope
+    keys, prereqs, prewarm) for the few workflows that need them; every other workflow on
+    disk resolves to a synthesized entry whose ``source`` comes straight from
+    ``workflow_discovery``. Envelope keys are left ``None`` here and auto-derived from the
+    LOADED workflow at run time (``run_workflow`` introspects the single workflow-level
+    input DU — safe under G122, which deposits to both workflow + first-step inputs and
+    fails loud on an unknown key).
+
+    Returns ``None`` only when ``name`` is neither cataloged nor discoverable on disk.
+    """
+    catalog = catalog if catalog is not None else load_catalog()
+    for e in catalog.workflows:
+        if e.tool_name == name:
+            return e
+
+    from apecx_integration.mcp_surface.workflow_discovery import discover_by_name
+
+    dw = discover_by_name(name)
+    if dw is None:
+        return None
+    return WorkflowCatalogEntry(
+        tool_name=dw.name,
+        description=dw.description or f"{dw.name} (auto-discovered workflow)",
+        source=dw.source,  # dict → discriminated WorkflowSource union (validated)
+        input_schema={"type": "object", "additionalProperties": True},
+        # No tuned run-hints: network/subprocess workflows need headroom, so default the
+        # settle window high (a too-short window yields a partial result, not a wrong one).
+        settle_ms=2000,
+    )
+
+
+def sole_data_unit_name(data_units: Any) -> str | None:
+    """The single DU name in a ``{name: cfg}`` mapping or ``[name]`` list, else ``None``.
+
+    Used to auto-derive a discovered workflow's input envelope key from its loaded shape.
+    Returns ``None`` for 0 or >1 units — the caller then leaves the key unset and lets the
+    framework's deposit fail loud rather than guess (no silent mis-routing).
+    """
+    if isinstance(data_units, dict):
+        names = list(data_units.keys())
+    elif isinstance(data_units, (list, tuple)):
+        names = list(data_units)
+    else:
+        return None
+    return names[0] if len(names) == 1 else None
+
+
 # ---------------------------------------------------------------------------
 # Prerequisites
 # ---------------------------------------------------------------------------
