@@ -41,6 +41,7 @@ DEFAULT_WHITELIST_PATH = REPO_ROOT / "configs" / "sandbox" / "import_whitelist.t
 # AC1 — scanner identifies import forms
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.parametrize(
     "source,expected_modules",
     [
@@ -83,6 +84,7 @@ def test_scanner_records_lineno():
 # AC2 — whitelist pass / fail
 # ---------------------------------------------------------------------------
 
+
 def test_whitelisted_imports_pass():
     result = scan_python_source(
         "import pandas\nfrom numpy import array\n",
@@ -113,6 +115,7 @@ def test_whitelist_none_accepts_any_import():
 # ---------------------------------------------------------------------------
 # Dynamic-import / exec / eval — rejected regardless of whitelist
 # ---------------------------------------------------------------------------
+
 
 def test_eval_banned_even_when_builtins_whitelisted():
     """``eval`` is in ``__builtins__`` so the whitelist can't gate it;
@@ -149,9 +152,7 @@ def test_importlib_import_module_banned():
         whitelist=frozenset({"importlib", "os"}),
     )
     assert not result.ok
-    assert any(
-        "importlib.import_module" in v for v in result.violations
-    )
+    assert any("importlib.import_module" in v for v in result.violations)
 
 
 def test_compile_banned():
@@ -167,6 +168,7 @@ def test_compile_banned():
 # Relative-import rejection
 # ---------------------------------------------------------------------------
 
+
 def test_relative_import_rejected():
     """Novel single-file artifacts have no package context. A ``from .
     import x`` either is a bug in the generator or an attempted escape.
@@ -179,6 +181,7 @@ def test_relative_import_rejected():
 # ---------------------------------------------------------------------------
 # ScanViolation exception path
 # ---------------------------------------------------------------------------
+
 
 def test_scan_violation_message_lists_all_violations():
     """Callers that raise ScanViolation get a multi-line message naming
@@ -200,6 +203,7 @@ def test_scan_violation_message_lists_all_violations():
 # Syntax-error handling
 # ---------------------------------------------------------------------------
 
+
 def test_syntax_error_recorded_as_violation():
     """A syntax error is a violation, not an exception the scanner
     re-raises — callers should treat "can't parse" the same as "failed
@@ -213,6 +217,7 @@ def test_syntax_error_recorded_as_violation():
 # ---------------------------------------------------------------------------
 # Whitelist loader
 # ---------------------------------------------------------------------------
+
 
 def test_default_whitelist_loads_cleanly():
     """The shipped whitelist file parses without error and includes the
@@ -247,6 +252,7 @@ def test_whitelist_loader_rejects_dotted_entries(tmp_path: Path):
 # End-to-end: the shipped whitelist against a plausible novel artifact
 # ---------------------------------------------------------------------------
 
+
 def test_end_to_end_realistic_novel_artifact():
     """A fake "composer-generated" module that imports only whitelisted
     things should pass against the shipped whitelist.
@@ -256,7 +262,7 @@ from dataclasses import dataclass
 from typing import Any
 import pandas as pd
 import numpy as np
-from apecx_integration.composition.steps.synonym_cache import SynonymCacheLookupStep
+from apecx_integration.composition.steps.db_integration_wrappers import EntityExtractionStep
 
 @dataclass
 class Result:

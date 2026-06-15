@@ -38,8 +38,10 @@ from apecx_integration.mcp_surface.tools import _shared
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPOSER_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
-VIOLIN_WORKFLOW_DIR = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "violin_bvbrc"
+# violin_bvbrc retired 2026-06-15; use a surviving workflow dir as the
+# generic base for the executor's relative step-config resolution.
+EXAMPLE_WORKFLOW_DIR = (
+    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "rag_e2e_synthesis"
 )
 DEFAULT_POLICY = REPO_ROOT / "configs" / "approval_policy.yml"
 
@@ -64,6 +66,8 @@ def _factory(canned: str):
     return _f
 
 
+# Monolithic (yaml) composer format — mcp_client pins the composer to
+# monolithic mode so the default spec-mode parser doesn't reject it.
 COMPOSED_ONLY = textwrap.dedent(
     """\
     ```yaml
@@ -71,9 +75,9 @@ COMPOSED_ONLY = textwrap.dedent(
     description: "MCP end-to-end test composition"
     version: "0.1.0"
     steps:
-      extract:
-        class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
-        config: "steps/entity_extraction.yml"
+      synthesize:
+        class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+        config: "steps/rag_synthesis.yml"
     links: {}
     ```
     """
@@ -89,6 +93,9 @@ def mcp_client(cp_engine: Engine):
     recorder = ProvenanceRecorder(factory)
     store = ArtifactStore(session_factory=factory, recorder=recorder)
     composer = Composer.from_config(COMPOSER_CONFIG)
+    # Pin monolithic mode so the yaml COMPOSED_ONLY parses (the default
+    # spec mode expects a JSON MinimalWorkflowSpec).
+    composer._config.composer_mode = "monolithic"
     composer._llm_factory = _factory(COMPOSED_ONLY)
     composer._artifact_store = store
     policy = ApprovalPolicy.load(DEFAULT_POLICY)
@@ -96,7 +103,7 @@ def mcp_client(cp_engine: Engine):
         session_factory=factory,
         artifact_store=store,
         recorder=recorder,
-        workflow_base_dir=VIOLIN_WORKFLOW_DIR,
+        workflow_base_dir=EXAMPLE_WORKFLOW_DIR,
     )
     app = create_app(
         engine=cp_engine,

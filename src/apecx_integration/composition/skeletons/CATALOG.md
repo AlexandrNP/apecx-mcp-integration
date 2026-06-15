@@ -11,10 +11,8 @@ LLM can pick by name.
 |---|---|---|
 | `synthesis_pipeline` | `SynthesisContextAssemblyStep` → `RagSynthesisStep` | Cross-corpus synthesis answers ("explain X", "what does the literature say about Y"). |
 | `entity_extraction_only` | `EntityExtractionStep` | Single-step NER ("extract entities from this text"). |
-| `pathogen_bvbrc_match` | `EntityExtractionStep` → `EnhancedBVBRCMatchStep` | Pathogen names → BV-BRC genome ids. |
 | `pubmed_only_literature_search` | `PubMedHarvesterStep` | Raw citations + abstracts, no synthesis. |
 | `rag_domain_search_only` | `DomainRagSearchStep` | Top-k semantic chunks, no LLM. |
-| `violin_bvbrc_context_only` | `VIOLINBVBRCContextStep` | Pure pandas lookup against VIOLIN/BV-BRC. |
 | `code_write_and_review` | `CodeReflectionStep` | Generate Python code + critique it against the spec. |
 | `code_write_review_and_run` | `CodeReflectionStep` → `CodeVerificationStep` | Generate + critique + run in isolated subprocess (requires `APECX_CODE_EXEC=1`). |
 | `generic/reflection_skeleton` (G9 typed bindings) | `<generator>` → `<critic>` | Cross-domain reflection — bind any generator + critic step pair via `Workflow.from_skeleton`. |
@@ -53,17 +51,14 @@ arxiv.org/abs/2506.00054 (RAG comprehensive survey, 2026) §4.1.
 **To ship**: needs a `QueryRefinementStep` that takes the first-pass
 retrieval output + the original prompt and produces a refined query.
 
-### Self-consistency / N-best voting — PARTIALLY SHIPPED (2026-05-12)
+### Self-consistency / N-best voting — DEFERRED
 
 Generate `N` independent answers, vote / aggregate. See the
 deeplearning.ai post on agentic design patterns.
 
-**Shipped piece**: `MultiAnswerAggregationStep`
-(`composition/steps/multi_answer_aggregation_step.py`) — pure-Python
-aggregator with four strategies (most_frequent / longest / first /
-concatenate). Pairs with the wrapper at
-`workflows/violin_bvbrc/steps/multi_answer_aggregation.yml`.
-Manifest entry under step_id `AGG`.
+**Note (2026-06-15)**: the earlier `MultiAnswerAggregationStep`
+aggregator + its `violin_bvbrc` wrapper YAML were retired with the
+`violin_bvbrc` workflow. This pattern is unshipped again.
 
 **Still missing for a full skeleton**: a `BroadcastStep` or
 framework primitive that fans out one input to N independent

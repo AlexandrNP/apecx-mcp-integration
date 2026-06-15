@@ -4,13 +4,12 @@
 #   synthesis_context_assembly  — concurrent retrieval fan-in
 #   rag_synthesis               — LLM synthesis with citations
 #
-# The three individual retrieval steps (domain_rag_search,
-# violin_bvbrc_context, pubmed_harvester) live in
-# ../violin_bvbrc/manifest.yml (steps 8a-8c) and share the same
-# YAML configs. SynthesisContextAssemblyStep bundles all three
-# concurrently inside a single step, avoiding complex multi-input
-# link topologies — prefer it when the task is "retrieve from all
-# sources and synthesize."
+# SynthesisContextAssemblyStep bundles the three retrieval branches
+# (domain-RAG semantic search, VIOLIN/BV-BRC tabular lookup, and
+# PubMed harvest) concurrently inside a single step, avoiding complex
+# multi-input link topologies — prefer it when the task is "retrieve
+# from all sources and synthesize." (The standalone per-branch wrapper
+# manifest was retired 2026-06-15 with the violin_bvbrc workflow.)
 
 workflow:
   name: rag_e2e_synthesis_workflow
@@ -34,9 +33,7 @@ components:
       parallel (asyncio.gather). Outputs the full synthesis bundle
       {query, rag_chunks, bvbrc_genomes, violin_mappings, publications}
       in a single step. Combined retrieval latency = max(three branches)
-      rather than their sum. Prefer this over wiring domain_rag_search +
-      violin_bvbrc_context + pubmed_harvester separately unless per-step
-      configuration differs.
+      rather than their sum.
     rag_examples:
       - "assemble retrieval context for 'EEEV vaccine efficacy' from RAG + VIOLIN + PubMed"
       - "fan-in all three data sources before LLM synthesis"

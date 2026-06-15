@@ -29,6 +29,7 @@ try:
         ComponentIndex,
         ComponentMatch,
     )
+
     _NB_IMPORT_ERROR: str | None = None
 except ImportError as exc:
     ComponentIndex = None  # type: ignore[assignment]
@@ -38,37 +39,34 @@ except ImportError as exc:
 pytestmark = pytest.mark.integration
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+# Any non-empty component manifest works here — these AC1/AC2/AC4 tests
+# exercise ComponentIndex mechanics (rebuild budget, deterministic hash,
+# save/load, similarity bounds), not workflow-specific recall.
+# (violin_bvbrc retired 2026-06-15; rag_e2e_synthesis survives.)
 MANIFEST = (
     REPO_ROOT
     / "src"
     / "apecx_integration"
     / "composition"
     / "workflows"
-    / "violin_bvbrc"
+    / "rag_e2e_synthesis"
     / "manifest.yml"
 )
 
 
 def _model_cache_present() -> bool:
     cache = Path.home() / ".cache" / "huggingface" / "hub"
-    return (
-        cache / "models--sentence-transformers--all-mpnet-base-v2"
-    ).is_dir()
+    return (cache / "models--sentence-transformers--all-mpnet-base-v2").is_dir()
 
 
-SKIP_NB_MISSING = (
-    f"nanobrain.lightweight.component_index not importable: "
-    f"{_NB_IMPORT_ERROR}"
-)
+SKIP_NB_MISSING = f"nanobrain.lightweight.component_index not importable: {_NB_IMPORT_ERROR}"
 SKIP_MODEL_MISSING = "all-mpnet-base-v2 not cached — cold CI"
 
 
 pytestmark = [
     pytestmark,
     pytest.mark.skipif(ComponentIndex is None, reason=SKIP_NB_MISSING),
-    pytest.mark.skipif(
-        not _model_cache_present(), reason=SKIP_MODEL_MISSING
-    ),
+    pytest.mark.skipif(not _model_cache_present(), reason=SKIP_MODEL_MISSING),
 ]
 
 
@@ -125,12 +123,8 @@ def test_ac1_index_hash_changes_when_model_changes():
     # Call the static hash helper directly rather than rebuild() —
     # we want the hash to change on model name alone, independent of
     # whether the two models' output tensors differ.
-    ha = ComponentIndex._compute_hash(
-        records=(), library_version="v", model_name="model-A"
-    )
-    hb = ComponentIndex._compute_hash(
-        records=(), library_version="v", model_name="model-B"
-    )
+    ha = ComponentIndex._compute_hash(records=(), library_version="v", model_name="model-A")
+    hb = ComponentIndex._compute_hash(records=(), library_version="v", model_name="model-B")
     assert ha != hb
 
 
@@ -148,9 +142,7 @@ def test_ac2_search_returns_component_match_instances(built_index):
 def test_ac2_similarity_is_bounded_to_unit_interval(built_index):
     hits = built_index.search("any query works here", k=len(built_index))
     for h in hits:
-        assert 0.0 <= h.similarity <= 1.0, (
-            f"similarity {h.similarity} out of [0, 1] for {h.id}"
-        )
+        assert 0.0 <= h.similarity <= 1.0, f"similarity {h.similarity} out of [0, 1] for {h.id}"
 
 
 def test_ac2_similarity_is_sorted_descending(built_index):
@@ -197,9 +189,7 @@ def test_ac4_reloaded_index_returns_same_top_hits(tmp_path, built_index):
     a = [h.id for h in built_index.search(q, k=5)]
     b = [h.id for h in reloaded.search(q, k=5)]
     assert a == b, (
-        f"reloaded index produced different top-5 order.\n"
-        f"  fresh:    {a}\n"
-        f"  reloaded: {b}"
+        f"reloaded index produced different top-5 order.\n  fresh:    {a}\n  reloaded: {b}"
     )
 
 

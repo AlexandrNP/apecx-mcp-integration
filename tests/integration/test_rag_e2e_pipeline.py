@@ -2,8 +2,8 @@
 
 Covers:
   - Domain RAG index: real FAISS search with real embeddings
-  - VIOLINBVBRCContextStep: real CSV data, no LLM
-  - SynthesisContextAssemblyStep: full retrieval assembly, no LLM
+  - SynthesisContextAssemblyStep: full retrieval assembly (incl. the
+    VIOLIN + BV-BRC tabular branch), no LLM
   - RagSynthesisStep: full E2E against real Ollama (gated)
   - Workflow YAML loading: rag_e2e_synthesis_workflow.yml
 
@@ -152,85 +152,6 @@ def test_rag_index_source_references_violin(rag_index):
 
 
 # ---------------------------------------------------------------------------
-# VIOLINBVBRCContextStep — real CSV data, no LLM, no network
-# ---------------------------------------------------------------------------
-
-
-@pytest.fixture(scope="module")
-def violin_bvbrc_step():
-    """Load VIOLINBVBRCContextStep with real data dirs."""
-    if not (VIOLIN_DIR / "Pathogen_Information.csv").exists():
-        pytest.skip(f"VIOLIN data not found at {VIOLIN_DIR}")
-    from apecx_integration.composition.steps.violin_bvbrc_context_step import (
-        VIOLINBVBRCContextStep,
-    )
-
-    step_yaml = (
-        REPO_ROOT
-        / "src"
-        / "apecx_integration"
-        / "composition"
-        / "workflows"
-        / "violin_bvbrc"
-        / "steps"
-        / "violin_bvbrc_context.yml"
-    )
-    step = VIOLINBVBRCContextStep.from_config(str(step_yaml))
-    return step
-
-
-def test_violin_bvbrc_step_eeev_pathogen_match(violin_bvbrc_step):
-    """EEEV entity matches at least one VIOLIN row (pathogen or vaccine)."""
-    result = asyncio.run(
-        violin_bvbrc_step.process({"entities": [{"name": "EEEV", "type": "pathogen"}]})
-    )
-    assert "violin_mappings" in result
-    assert len(result["violin_mappings"]) >= 1
-    # Mappings may come from either VIOLIN pathogen or vaccine CSV
-    assert all(m["synonym_id"].startswith("VIOLIN_") for m in result["violin_mappings"])
-
-
-def test_violin_bvbrc_step_alphavirus_genome_match(violin_bvbrc_step):
-    """Chikungunya entity matches BV-BRC alphavirus genomes."""
-    if not (BVBRC_DIR / "alphavirus_genomes.tsv").exists():
-        pytest.skip(f"BV-BRC TSV not found at {BVBRC_DIR}")
-    result = asyncio.run(
-        violin_bvbrc_step.process({"entities": [{"name": "Chikungunya", "type": "pathogen"}]})
-    )
-    assert "bvbrc_genomes" in result
-    genomes = result["bvbrc_genomes"]
-    assert len(genomes) >= 1
-    assert all("genome_id" in g and "genome_name" in g for g in genomes)
-
-
-def test_violin_bvbrc_step_empty_entities_returns_empty_lists(violin_bvbrc_step):
-    """No entities → empty results, no error."""
-    result = asyncio.run(violin_bvbrc_step.process({"entities": []}))
-    assert result["violin_mappings"] == []
-    assert result["bvbrc_genomes"] == []
-
-
-def test_violin_bvbrc_step_query_terms_fallback(violin_bvbrc_step):
-    """query_terms input (not entities) also triggers lookup."""
-    result = asyncio.run(violin_bvbrc_step.process({"query_terms": ["Herpes", "simplex"]}))
-    # Herpes simplex virus is in VIOLIN; at least one mapping expected.
-    assert len(result["violin_mappings"]) >= 1
-
-
-def test_violin_bvbrc_step_result_shape(violin_bvbrc_step):
-    """Output violin_mappings have the expected keys."""
-    result = asyncio.run(
-        violin_bvbrc_step.process({"entities": [{"name": "HIV", "type": "pathogen"}]})
-    )
-    for m in result["violin_mappings"]:
-        assert "synonym_id" in m
-        assert "canonical_term" in m
-        assert "query_term" in m
-        assert "entity_type" in m
-        assert "source" in m
-
-
-# ---------------------------------------------------------------------------
 # SynthesisContextAssemblyStep — real data, no LLM, skip PubMed for offline
 # ---------------------------------------------------------------------------
 
@@ -341,7 +262,7 @@ def test_rag_synthesis_step_yaml_loads():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "rag_synthesis.yml"
     )
@@ -362,7 +283,7 @@ def test_rag_synthesis_step_raises_on_empty_retrieval():
         / "apecx_integration"
         / "composition"
         / "workflows"
-        / "violin_bvbrc"
+        / "rag_e2e_synthesis"
         / "steps"
         / "rag_synthesis.yml"
     )
@@ -412,8 +333,8 @@ def test_all_new_step_yamls_reference_valid_classes():
     workflows_root = REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows"
     # Day-2 workflow step directories. Each contains the YAMLs that
     # were authored or wrapped during the synthesis-pipeline work.
+    # (violin_bvbrc retired 2026-06-15; rag_e2e_synthesis survives.)
     day2_step_dirs = [
-        workflows_root / "violin_bvbrc" / "steps",
         workflows_root / "rag_e2e_synthesis" / "steps",
     ]
 
@@ -438,10 +359,10 @@ def test_all_new_step_yamls_reference_valid_classes():
                 pytest.fail(f"{path.name}: class {class_str} not importable: {exc}")
             checked += 1
 
-    # Sanity floor — at least 4 Day-2 step YAMLs exist (domain_rag_search,
-    # pubmed_harvester, violin_bvbrc_context, rag_synthesis). If this
-    # ever drops below 4, the test isn't actually checking anything.
-    assert checked >= 4, f"only {checked} step YAMLs were checked; expected ≥4"
+    # Sanity floor — at least 3 surviving Day-2 step YAMLs exist
+    # (envelope, synthesis_context_assembly, rag_synthesis). If this
+    # ever drops below 3, the test isn't actually checking anything.
+    assert checked >= 3, f"only {checked} step YAMLs were checked; expected ≥3"
 
 
 # ---------------------------------------------------------------------------

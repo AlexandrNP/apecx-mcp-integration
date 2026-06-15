@@ -45,13 +45,15 @@ def _agent_locus():
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+# violin_bvbrc retired 2026-06-15; RagSynthesisStep's wrapper YAML now
+# ships with the surviving rag_e2e_synthesis workflow.
 WRAPPER_YAML = (
     REPO_ROOT
     / "src"
     / "apecx_integration"
     / "composition"
     / "workflows"
-    / "violin_bvbrc"
+    / "rag_e2e_synthesis"
     / "steps"
     / "rag_synthesis.yml"
 )

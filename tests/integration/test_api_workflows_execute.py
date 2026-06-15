@@ -23,6 +23,7 @@ from sqlalchemy import Engine, text
 
 try:
     import nanobrain.core.workflow  # noqa: F401
+
     _NANOBRAIN_AVAILABLE = True
 except ImportError:
     _NANOBRAIN_AVAILABLE = False
@@ -50,11 +51,11 @@ pytestmark = [
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-COMPOSER_CONFIG = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
-)
-VIOLIN_WORKFLOW_DIR = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "violin_bvbrc"
+COMPOSER_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
+# violin_bvbrc retired 2026-06-15; use a surviving workflow dir as the
+# generic base for the executor's relative step-config resolution.
+EXAMPLE_WORKFLOW_DIR = (
+    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "rag_e2e_synthesis"
 )
 DEFAULT_POLICY = REPO_ROOT / "configs" / "approval_policy.yml"
 
@@ -79,6 +80,8 @@ def _placeholder_factory(canned: str):
     return _factory
 
 
+# Monolithic (yaml) composer format — see client_full, which pins the
+# composer to monolithic mode to match this response shape.
 ONE_STEP_RESPONSE = textwrap.dedent(
     """\
     ```yaml
@@ -86,9 +89,9 @@ ONE_STEP_RESPONSE = textwrap.dedent(
     description: "T01 P2 HTTP surface test."
     version: "0.1.0"
     steps:
-      extract:
-        class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
-        config: "steps/entity_extraction.yml"
+      synthesize:
+        class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+        config: "steps/rag_synthesis.yml"
     links: {}
     ```
     """
@@ -101,6 +104,9 @@ def client_full(cp_engine) -> TestClient:
     recorder = ProvenanceRecorder(factory)
     store = ArtifactStore(session_factory=factory, recorder=recorder)
     composer = Composer.from_config(COMPOSER_CONFIG)
+    # Pin monolithic mode so the yaml ONE_STEP_RESPONSE parses (the
+    # default spec mode expects a JSON MinimalWorkflowSpec).
+    composer._config.composer_mode = "monolithic"
     composer._llm_factory = _placeholder_factory(ONE_STEP_RESPONSE)
     composer._artifact_store = store
     policy = ApprovalPolicy.load(DEFAULT_POLICY)
@@ -108,7 +114,7 @@ def client_full(cp_engine) -> TestClient:
         session_factory=factory,
         artifact_store=store,
         recorder=recorder,
-        workflow_base_dir=VIOLIN_WORKFLOW_DIR,
+        workflow_base_dir=EXAMPLE_WORKFLOW_DIR,
     )
     app = create_app(
         engine=cp_engine,
@@ -119,9 +125,7 @@ def client_full(cp_engine) -> TestClient:
     return TestClient(app)
 
 
-def test_execute_round_trip_from_start_to_terminal(
-    client_full: TestClient, cp_engine: Engine
-):
+def test_execute_round_trip_from_start_to_terminal(client_full: TestClient, cp_engine: Engine):
     """Full story: POST /workflows/start → POST /workflows/execute →
     response carries the terminal status and the Run row matches."""
     start = client_full.post(
@@ -135,9 +139,7 @@ def test_execute_round_trip_from_start_to_terminal(
     assert start.status_code == 200, start.text
     run_id = start.json()["run"]["id"]
 
-    execute = client_full.post(
-        "/workflows/execute", json={"run_id": run_id}
-    )
+    execute = client_full.post("/workflows/execute", json={"run_id": run_id})
     assert execute.status_code == 200, execute.text
     body = execute.json()
     assert body["status"] in {"completed", "failed"}
@@ -171,9 +173,7 @@ def test_execute_on_missing_run_returns_failed_with_reason(
             {"id": str(phantom), "ts": datetime.now(UTC).isoformat()},
         )
 
-    execute = client_full.post(
-        "/workflows/execute", json={"run_id": str(phantom)}
-    )
+    execute = client_full.post("/workflows/execute", json={"run_id": str(phantom)})
     assert execute.status_code == 200, execute.text
     body = execute.json()
     assert body["status"] == "failed"

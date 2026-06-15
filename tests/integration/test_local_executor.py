@@ -41,6 +41,7 @@ from sqlalchemy import Engine, text
 
 try:
     import nanobrain.core.workflow  # noqa: F401
+
     _NANOBRAIN_AVAILABLE = True
 except ImportError:
     _NANOBRAIN_AVAILABLE = False
@@ -74,20 +75,12 @@ pytestmark = [
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-COMPOSER_CONFIG = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "composer_config.yml"
-)
-VIOLIN_WORKFLOW_DIR = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "workflows"
-    / "violin_bvbrc"
+COMPOSER_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
+# violin_bvbrc retired 2026-06-15; this test uses a surviving workflow
+# dir purely as a generic base for the executor's relative step-config
+# resolution. rag_e2e_synthesis ships a real ``steps/rag_synthesis.yml``.
+EXAMPLE_WORKFLOW_DIR = (
+    REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "rag_e2e_synthesis"
 )
 DEFAULT_POLICY = REPO_ROOT / "configs" / "approval_policy.yml"
 
@@ -113,9 +106,11 @@ def _placeholder_factory(canned: str):
 
 
 # A workflow with a single step that references a real shipped wrapper
-# YAML in the violin_bvbrc manifest tree. Enough for nanobrain to
-# attempt a load. Execution will fail at the first LLM call (Ollama
-# unreachable in CI) — the executor catches that cleanly.
+# YAML in the rag_e2e_synthesis manifest tree. Enough for nanobrain to
+# attempt a load. Execution will fail at process() time (empty retrieval
+# gate / Ollama unreachable in CI) — the executor catches that cleanly.
+# Monolithic (yaml) composer format — see _build_composer, which pins
+# the composer to monolithic mode to match this response shape.
 ONE_STEP_RESPONSE = textwrap.dedent(
     """\
     ```yaml
@@ -123,9 +118,9 @@ ONE_STEP_RESPONSE = textwrap.dedent(
     description: "Single-step workflow for T01 P2 end-to-end test."
     version: "0.1.0"
     steps:
-      extract:
-        class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
-        config: "steps/entity_extraction.yml"
+      synthesize:
+        class: "apecx_integration.composition.steps.rag_synthesis_step.RagSynthesisStep"
+        config: "steps/rag_synthesis.yml"
     links: {}
     ```
     """
@@ -139,6 +134,10 @@ def _build_composer(engine: Engine) -> Composer:
         recorder=ProvenanceRecorder(factory),
     )
     composer = Composer.from_config(COMPOSER_CONFIG)
+    # This test exercises the executor round-trip via a monolithic (yaml)
+    # composer response; pin the mode so the default spec-mode parser
+    # (which expects a JSON MinimalWorkflowSpec) doesn't reject it.
+    composer._config.composer_mode = "monolithic"
     composer._llm_factory = _placeholder_factory(ONE_STEP_RESPONSE)
     composer._artifact_store = store
     return composer
@@ -153,7 +152,7 @@ def executor(cp_engine) -> LocalExecutor:
         session_factory=factory,
         artifact_store=store,
         recorder=recorder,
-        workflow_base_dir=VIOLIN_WORKFLOW_DIR,
+        workflow_base_dir=EXAMPLE_WORKFLOW_DIR,
     )
 
 
@@ -161,9 +160,7 @@ def executor(cp_engine) -> LocalExecutor:
 def client_with_composer(cp_engine) -> TestClient:
     composer = _build_composer(cp_engine)
     policy = ApprovalPolicy.load(DEFAULT_POLICY)
-    app = create_app(
-        engine=cp_engine, composer=composer, approval_policy=policy
-    )
+    app = create_app(engine=cp_engine, composer=composer, approval_policy=policy)
     return TestClient(app)
 
 
@@ -185,8 +182,7 @@ def _events_for_run(cp_engine: Engine, run_id: str) -> list[str]:
         rows = list(
             conn.execute(
                 text(
-                    "SELECT event_type FROM provenance_event "
-                    "WHERE run_id = :rid ORDER BY timestamp"
+                    "SELECT event_type FROM provenance_event WHERE run_id = :rid ORDER BY timestamp"
                 ),
                 {"rid": run_id},
             )
@@ -220,9 +216,7 @@ def test_executor_captures_run_started_event_before_loading(
     run_id = _start_and_get_run_id(client_with_composer)
     run_sync(executor, run_id)
     events = [e.lower() for e in _events_for_run(cp_engine, run_id)]
-    assert "run_started" in events, (
-        f"expected RUN_STARTED in events; got {events}"
-    )
+    assert "run_started" in events, f"expected RUN_STARTED in events; got {events}"
     # RUN_STARTED must come BEFORE any terminal (COMPLETED/FAILED) event
     # so the chain anchor is present if execution fails partway.
     idx_started = events.index("run_started")
@@ -247,9 +241,7 @@ def test_executor_captures_terminal_event_and_updates_run_status(
 
     terminal_ok = {"run_completed", "run_failed"}
     lowered = [e.lower() for e in events]
-    assert lowered[-1] in terminal_ok, (
-        f"expected terminal event; got {events}"
-    )
+    assert lowered[-1] in terminal_ok, f"expected terminal event; got {events}"
 
     status = _run_status(cp_engine, run_id)
     if lowered[-1] == "run_completed":
@@ -274,6 +266,7 @@ def test_executor_marks_failed_when_run_has_no_workflow_config(
 
     run_id = uuid.uuid4()
     from datetime import UTC, datetime
+
     with cp_engine.begin() as conn:
         conn.execute(
             text(
@@ -324,8 +317,7 @@ def test_executor_provenance_failure_payload_records_class(
 
     result = run_sync(executor, run_id)
     assert result.status is RunStatus.FAILED, (
-        f"forced precondition failure must land in FAILED; got "
-        f"{result.status}"
+        f"forced precondition failure must land in FAILED; got {result.status}"
     )
 
     with cp_engine.connect() as conn:
@@ -338,9 +330,7 @@ def test_executor_provenance_failure_payload_records_class(
         ).first()
     assert row is not None, "RUN_FAILED event missing from provenance"
     payload = json.loads(row[0]) if isinstance(row[0], str) else row[0]
-    assert "failure_class" in payload, (
-        f"failure_class missing from RUN_FAILED payload: {payload!r}"
-    )
+    assert "failure_class" in payload, f"failure_class missing from RUN_FAILED payload: {payload!r}"
     assert payload["failure_class"] in {
         "load_failed",
         "execute_failed",
