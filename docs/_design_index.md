@@ -11,6 +11,7 @@ Navigation aid. For deeper context: `README.md` (user-facing),
 | `external_orchestration_design.md` | **Active design (2026-05-19).** External-LLM orchestration surface (frontier LLM orchestrates; deterministic workflow scaffolds; local LLM decomposes only as bounded fallback). Reuse-first. Supersedes the unbuilt server-side multi-agent roadmap in `implementation_task_graph.md`. |
 | `mcp_integration.md` | Operator install + per-tool reference + troubleshooting. |
 | `QUICKSTART.md` | Fresh-laptop walkthrough (referenced from README). |
+| `clean_install_capabilities_scoring.md` | **Clean-install capability matrix + end-to-end scoring (2026-06-15).** Each execution mode → infra required → status → real-data test evidence. Companion to the `apecx-setup capabilities` command; documents the verified zero-infra baseline (resolution + anonymous harmonized search + LLM analysis). |
 | `tutorial/` | Multi-chapter walkthrough from install to reproducible run. |
 | `api_contract.yaml` | HTTP API contract for the control-plane backend. |
 

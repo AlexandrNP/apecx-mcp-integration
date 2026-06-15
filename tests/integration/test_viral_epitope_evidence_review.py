@@ -590,7 +590,19 @@ def test_design_hitl_loop_e2e():
         get_design_approval_store,
     )
     from apecx_integration.mcp_surface.tools.eo_primitives import approve_design, run_workflow
+    from apecx_integration.mcp_surface.workflow_registry import _clear_workflow_cache
 
+    # Order-independence (2026-06-15): this test CLEARS the approval store, then expects its
+    # first run_workflow to issue a FRESH token into that store. But the workflow instance is
+    # module-cached, and an earlier test (test_design_without_approval) runs the byte-identical
+    # input WITHOUT clearing the store — so the DataUnitChangeTrigger deterministically SKIPS
+    # re-execution (G117) and run_workflow returns the prior CACHED output, which renders the
+    # EARLIER token. That earlier token is gone (we just cleared the store) → approve() returns
+    # None → KeyError 'status'. Clear the cache so this test runs on a FRESH instance and issues
+    # a token that actually lives in the cleared store. NOT a product bug: in production the
+    # store is never cleared, so a cached-output token stays valid. Mirrors the same guard in
+    # test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e.
+    _clear_workflow_cache()
     get_design_approval_store().clear()
     params = {"query": _QUERY, "requested_outputs": "evidence_plus_design"}
 
