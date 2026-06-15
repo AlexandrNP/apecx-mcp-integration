@@ -281,6 +281,61 @@ Deliberately NOT exposed: `/hpc/submit` (501), `create_approval`
 
 Full operator reference: `docs/mcp_integration.md`.
 
+## Two operating modes — desktop/MCP vs backend/headless (LOAD-BEARING)
+
+apecx runs in TWO modes; the LLM role differs in each. **Do not conflate them.**
+
+- **Desktop / MCP mode (primary).** The connected MCP client (Claude Desktop /
+  IDE) **IS** the orchestrating + synthesizing LLM. apecx tools return
+  DETERMINISTIC data + scaffolds for it to reason over — **no apecx-side LLM
+  endpoint is required** for analysis. `run_workflow_streaming` streams per-stage
+  reasoning to the client (`docs/desktop_streaming_contract.md`).
+- **Backend / headless mode.** `run_workflow` / `synthesize_query` synthesize
+  markdown **internally** via the apecx LLM backend — Ollama (`localhost:11434`
+  default) or `APECX_LLM_BASE_URL`. **There is NO remote default**; this LLM is
+  OFF until Ollama is installed or the env var is set. It is a FALLBACK (bounded
+  local decomposition + the few internal-synthesis workflows), not the primary
+  orchestrator.
+
+Consequence: "is an LLM available?" has two answers. The desktop frontier LLM
+covers the primary analysis path with ZERO apecx LLM config. NEVER claim the
+backend endpoint is "optional because you can set a remote URL" — there is no
+remote default; it is optional because the DESKTOP LLM covers the primary path.
+
+Design sources (the major architectural designs — read before touching the LLM
+or orchestration path): `docs/external_orchestration_design.md` (frontier-LLM
+orchestration — the PRIMARY architecture), `docs/architecture.md` §14 (backend vs
+user-facing two pipelines), `docs/desktop_streaming_contract.md` (desktop stream).
+
+## Canonical surfaces — reuse, don't rebuild (grep BEFORE you build)
+
+Before adding any "capabilities / health / what's-available / probe" surface, use
+the EXISTING ones (this has been rebuilt-by-mistake — don't):
+- `mcp_surface/tools/discovery.py::list_workflows` — each workflow's `available` +
+  `missing_prerequisites` + `unavailable_hint`, via `check_prerequisites`.
+- `mcp_surface/tools/infrastructure_status.py` — live backend roster
+  (ollama/postgres/redis/minio/rhea) from the InfraOrchestrator `status()`.
+- `mcp_surface/tools/eo_primitives.py::apecx_capabilities` — thin aggregator over
+  the two above; the CLI `apecx-setup capabilities` renders it. ONE source of truth.
+- `mcp_surface/workflow_registry.py::check_prerequisites` — env/module/binary gate.
+
+Rule: a new top-level module or a parallel `_probe_*` that re-stats
+docker/mafft/dict is almost always duplication AND a layer violation — the MCP
+server must NOT import the CLI installer. Layer order: `cli` → `mcp_surface` →
+`composition` / `infrastructure` / `agents` / `synonym_dictionary`.
+
+## Dev-loop discipline — finish the loop, then clean up
+
+Completed + verified work on a task branch is NOT done until it is merged to main
+and the worktree is cleaned up. Standing process (don't park finished arcs on
+feature branches "pending approval"):
+1. FF-merge the task branch to `main` (**clean fast-forward only** — divergent /
+   force-merge still stop-and-ask per the workspace `CLAUDE.md` "Git and Worktree
+   Discipline").
+2. `git push origin main`.
+3. Remove the task worktree (`git worktree remove`) + delete the merged branch.
+4. Continue in the `main` worktree unless a NEW task spawns a new worktree.
+
 ## Synonym dictionary — nanobrain workflow, lazy at startup
 
 NO console scripts (`apecx-build-dictionary`,
@@ -379,7 +434,14 @@ tracks with stable IDs). Cite task ID in PR/commit body.
 
 - `docs/architecture.md` — canonical end-to-end map (8 Mermaid
   diagrams, MCP tools, ontologies, invocation paths, test surface,
-  failure contract).
+  failure contract). §14 = backend vs user-facing two pipelines.
+- `docs/external_orchestration_design.md` — **PRIMARY architecture**:
+  frontier-LLM (desktop) orchestration; deterministic nanobrain
+  scaffolds; local LLM as bounded fallback. See "Two operating modes".
+- `docs/desktop_streaming_contract.md` — desktop/MCP per-stage
+  streaming contract (`run_workflow_streaming`).
+- `docs/clean_install_capabilities_scoring.md` — capability matrix +
+  the two LLM modes + per-mode end-to-end scoring.
 - `docs/_design_index.md` — design master index.
 - `docs/nanobrain_capability_gaps.md` — G1-G45 framework gap
   proposals (most shipped; rest paired with `docs/WORKAROUND_INVENTORY.md`).
