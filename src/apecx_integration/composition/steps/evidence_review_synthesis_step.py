@@ -544,6 +544,10 @@ class EvidenceReviewSynthesisStepConfig(StepConfig):
 class EvidenceReviewSynthesisStep(BaseStep):
     COMPONENT_TYPE: str = "evidence_review_synthesis_step"
     REQUIRED_CONFIG_FIELDS: list[str] = ["name"]
+    # This step's LLM use is the FINAL narrative synthesis: in desktop locus it omits the
+    # call and the host synthesizes (see process()). The run-time requires_llm gate reads
+    # this so it does NOT refuse the workflow on a desktop with no apecx LLM configured.
+    LLM_ROLE: str = "final_synthesis"
 
     @classmethod
     def _get_config_class(cls):

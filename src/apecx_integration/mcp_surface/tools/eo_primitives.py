@@ -154,6 +154,22 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
             error=f"run_workflow: failed to load workflow {name!r}: {type(exc).__name__}: {exc}"
         ).model_dump(mode="json")
 
+    # requires_llm gate (design §9): if this workflow needs an LLM to run UNDER THIS LOCUS
+    # (an in-DAG LLM step, or — in agent locus — its final synthesis), RESOLVE and announce
+    # it, or LOUDLY REFUSE before running. A desktop, final-synthesis-only workflow (e.g.
+    # viral_epitope_evidence_review) needs no LLM here — the step omits it and the host
+    # synthesizes — so the gate passes through. This turns "no LLM → null/stranded" into a
+    # loud, actionable refusal (never a silent empty result).
+    from apecx_integration.composition.runtime.execution_locus import get_active_locus
+    from apecx_integration.mcp_surface.llm_policy import resolve_llm, workflow_needs_llm_at_run
+
+    _locus = get_active_locus()
+    if workflow_needs_llm_at_run(workflow, _locus):
+        _resolution = resolve_llm(_locus)
+        if not _resolution.available:
+            return WorkflowResult.failed(error=_resolution.detail).model_dump(mode="json")
+        log.info("run_workflow: %s — %s", name, _resolution.detail)
+
     # Envelope key: the catalog override sets it explicitly; a discovered (synthesized)
     # entry leaves it None → derive from the LOADED workflow's single workflow-level input
     # DU. Safe under G122 (deposit to workflow + first-step inputs, fail-loud on unknown).
