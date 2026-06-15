@@ -163,13 +163,13 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
     Status semantics (per the workspace honesty contract):
       * ``ok``      — every Globus prerequisite is satisfied; the data
                       step will transfer via Globus.
-      * ``skipped`` — at least one prerequisite is missing. Since the gh
-                      fallback was retired (2026-05-21) Globus is now
-                      REQUIRED for data acquisition: the data step will
-                      FAIL unless the dataset is already present locally.
-                      Kept as ``skipped`` (not ``fail``) here so the
-                      preflight doesn't false-fail when data already exists
-                      — the data step is the authoritative gate.
+      * ``skipped`` — at least one prerequisite is missing. Globus is
+                      OPTIONAL: it only fetches the local VIOLIN/BV-BRC CSVs
+                      that the offline ``query_*`` tools read. The stack works
+                      without it (harmonized_search uses the anonymous Globus
+                      index; the dictionary auto-downloads), and the data step
+                      SKIPS cleanly when Globus is unconfigured — it does NOT
+                      fail. ``skipped`` here is honest, not a deferred failure.
       * ``fail``    — preconditions appear met but the step's own
                       health probe raised. Reserved for the future
                       (e.g., when the step grows a live endpoint
@@ -241,40 +241,44 @@ def _step_globus(*, interactive: bool = True) -> StepResult:
         print("       export APECX_GLOBUS_AUTH_MODE=client_credentials")
         print("       apecx-globus-setup store --client-id <id> --client-secret <secret>")
         print()
-        print("  ▶  Globus is REQUIRED for data acquisition (the gh-release fallback")
-        print("     was retired 2026-05-21). The data step will FAIL unless the")
-        print("     dataset is already present locally.")
-        print("     See docs/globus_data_transfer.md for the full setup recipe.")
+        print("  ▶  Globus is OPTIONAL — it only fetches the local VIOLIN/BV-BRC CSVs")
+        print("     used by the OFFLINE `query_*` database tools. The stack is fully")
+        print("     functional without it: harmonized_search queries the public Globus")
+        print("     index anonymously and the synonym dictionary auto-downloads. The")
+        print("     data step SKIPS cleanly when Globus is unconfigured — it does NOT fail.")
+        print("     See docs/globus_data_transfer.md if you want the offline data tools.")
 
     return StepResult(
         "globus",
         "skipped",
-        prereqs.reason() + " (REQUIRED for data — gh fallback retired)",
+        prereqs.reason() + " (OPTIONAL — only for the offline query_* data tools)",
     )
 
 
 def _step_data(*, interactive: bool = True) -> StepResult:
-    """Acquire the VIOLIN + BV-BRC dataset via Globus (sole path since 2026-05-21).
+    """Acquire the OPTIONAL local VIOLIN + BV-BRC datasets via Globus.
 
-    The legacy ``gh release download`` fallback is RETIRED. Globus is now a hard
-    requirement: ``globus_sdk`` + credentials + source/dest endpoint UUIDs must
-    be set, and Globus Connect Personal must be running on the dest endpoint.
+    Local CSVs are NOT required for current functionality (the hard requirement
+    was retired): ``harmonized_search`` queries the anonymous public Globus
+    INDEX, the synonym dictionary auto-downloads anonymously on first launch, and
+    the offline ``query_*`` database tools return ``{"error": ...}`` (never crash)
+    when the data is absent. This step exists ONLY to populate those offline
+    ``query_*`` tools — so a missing local dataset is a clean SKIP, never a
+    failure. (Failing here confused users whose fresh install is fully functional
+    without it.)
 
-    Datasets split into REQUIRED (BV-BRC, on the public collection — verified,
-    always reachable with the M2M creds) and OPTIONAL (VIOLIN, on the Group-gated
-    `apecx-project-all` collection the transfer identity is not yet a member of).
+    Globus is the only TRANSFER path (the legacy ``gh release download`` fallback
+    was retired 2026-05-21). Datasets split into BV-BRC (public collection) and
+    VIOLIN (Group-gated ``apecx-project-all``).
 
     Flow:
-      1. Non-interactive: skip (can't safely prompt). Reports whether the
-         REQUIRED data is already present.
-      2. Globus unconfigured + required data already present → skipped.
-      3. Globus unconfigured + no required data → FAIL LOUD with actionable
-         setup instructions (no silent degradation — the point of retiring gh).
+      1. Non-interactive: skip (can't safely prompt).
+      2. Globus unconfigured + local data already present → skipped.
+      3. Globus unconfigured + no local data → SKIPPED (optional; the stack works
+         without it — only the offline ``query_*`` tools want it).
       4. Globus configured → prompt for the data dir, then:
-         - transfer REQUIRED (BV-BRC); any failure → step ``fail``.
-         - transfer OPTIONAL (VIOLIN); failure → LOUD warning + step ``partial``
-           (the install still COMPLETES — partial is exit 0). This is how a
-           clean install succeeds on public data while VIOLIN access is pending.
+         - transfer BV-BRC; any failure → step ``fail``.
+         - transfer VIOLIN (optional); failure → LOUD warning + step ``partial``.
          Then patch the Claude Desktop config.
     """
     _print_header("Step 2 of 7 — Data")
@@ -307,22 +311,23 @@ def _step_data(*, interactive: bool = True) -> StepResult:
                 "skipped",
                 f"Globus not configured, but dataset already present at {default_data}",
             )
-        # Hard failure: gh fallback retired, Globus required, no data on disk.
-        print(f"  ❌  Globus not configured: {prereqs.reason()}")
-        print("     The gh-release fallback was retired 2026-05-21 — Globus is the")
-        print("     only data-acquisition path now. Set up the missing pieces:")
-        if not prereqs.sdk_installed:
-            print("     • pip install globus-sdk")
-        if not prereqs.source_endpoint_set:
-            print("     • export APECX_GLOBUS_SOURCE_ENDPOINT_ID=<source collection UUID>")
-            print("       (ask the data steward)")
-        if not prereqs.dest_endpoint_set:
-            print("     • Install Globus Connect Personal, then")
-            print("       export APECX_GLOBUS_DEST_ENDPOINT_ID=<your personal endpoint UUID>")
-        if not prereqs.credentials_reachable:
-            print("     • apecx-globus-setup store --client-id <id> --client-secret <secret>")
-        print("     Full recipe: docs/globus_data_transfer.md")
-        return StepResult("data", "fail", f"Globus required but not configured: {prereqs.reason()}")
+        # No local data + Globus unconfigured → clean SKIP, NOT a failure. Local
+        # CSVs are optional: harmonized_search uses the anonymous public Globus
+        # index, the dictionary auto-downloads, and query_* tools degrade to a
+        # clear {"error": ...} (never crash). Only the offline query_* tools want
+        # this data, so don't fail a fully-functional fresh install over it.
+        print("  ⏭   No local VIOLIN/BV-BRC CSVs and Globus not configured — SKIPPING (optional).")
+        print("     The stack is fully functional without local data: harmonized_search")
+        print("     queries the public Globus index anonymously and the synonym dictionary")
+        print("     auto-downloads on first launch. You only need this step to populate the")
+        print("     OFFLINE `query_*` database tools. To add it later, configure Globus")
+        print("     (see docs/globus_data_transfer.md) and re-run `apecx-setup data`.")
+        return StepResult(
+            "data",
+            "skipped",
+            "no local datasets (OPTIONAL) — harmonized_search uses the anonymous Globus index; "
+            "configure Globus + re-run `apecx-setup data` only for the offline query_* tools",
+        )
 
     # Configured — prompt for the data dir (relocated from the retired gh path).
     data_dir = _setup_data.prompt_for_data_dir(interactive=interactive)
@@ -491,9 +496,11 @@ def _step_dict(*, interactive: bool = True) -> StepResult:
     Idempotency: skips when the dictionary file already exists
     (matches :func:`ensure_dictionary`'s own check). Re-runs are safe.
 
-    Degradation: when VIOLIN data isn't present, return ``skipped``
-    rather than ``fail`` — the data step is the cause, and the
-    summary table will already surface that.
+    Acquisition: tries the ANONYMOUS public download first (the same artifact
+    the MCP server fetches at startup — no VIOLIN data, no Globus creds). Only
+    when that is unavailable does it fall back to a local VIOLIN-build, and when
+    THAT can't run either (no VIOLIN data) it returns ``skipped`` rather than
+    ``fail``.
 
     Opt-out: ``APECX_SKIP_DICT_BUILD=1`` returns ``skipped`` with a
     warning. Useful for CI / smoke runs that don't need fast-path
@@ -529,6 +536,33 @@ def _step_dict(*, interactive: bool = True) -> StepResult:
             "dict",
             "ok",
             f"existing dictionary at {sqlite} ({size_mb:.0f} MB)",
+        )
+
+    # Anonymous public download — the canonical clean-install path. Reuse the MCP
+    # server's bootstrap helper (lazy import: the heavy import cost is paid only
+    # when this step runs) so the CLI and the server fetch the SAME artifact the
+    # SAME way — no VIOLIN data and no Globus credentials required. The local
+    # VIOLIN-build below is only a fallback for offline / dev. Opt out via
+    # APECX_SKIP_DICT_DOWNLOAD=1 (the helper honors it). This closes the confusing
+    # clean-install path where the dict step skipped on "VIOLIN data not present"
+    # and `verify` then failed on the required dictionary.
+    try:
+        from apecx_integration.mcp_surface.server import _try_public_download
+
+        if interactive:
+            print(
+                "  ▶  fetching the pre-built dictionary from the public Globus path "
+                "(anonymous, ~30 s first run)"
+            )
+        downloaded = _try_public_download(sqlite)
+    except Exception:  # noqa: BLE001 — degrade to the local build, never crash setup
+        downloaded = None
+    if downloaded is not None and sqlite.is_file():
+        size_mb = sqlite.stat().st_size / (1024 * 1024)
+        return StepResult(
+            "dict",
+            "ok",
+            f"downloaded dictionary to {sqlite} ({size_mb:.0f} MB, anonymous public path)",
         )
 
     # Opt-out path — surface visibly so the summary table tells the

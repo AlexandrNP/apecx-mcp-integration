@@ -585,9 +585,9 @@ def test_step_globus_skipped_when_prereqs_missing(
     capsys: pytest.CaptureFixture,
 ) -> None:
     """``_step_globus`` returns ``skipped`` (NOT ``fail``) when Globus isn't
-    configured — the data step is the authoritative gate (it fails loud only
-    if no data is already present). The reason text flags that Globus is now
-    REQUIRED (gh fallback retired) so the summary table is honest."""
+    configured, and the reason text flags that Globus is OPTIONAL (only the
+    offline ``query_*`` data tools need it) so the summary table is honest and
+    a fresh, fully-functional install isn't made to look broken."""
     from apecx_integration.cli.setup import _step_globus
 
     with patch(
@@ -598,7 +598,7 @@ def test_step_globus_skipped_when_prereqs_missing(
 
     assert result.name == "globus"
     assert result.status == "skipped"
-    assert "REQUIRED for data" in result.detail
+    assert "OPTIONAL" in result.detail
 
 
 def test_step_globus_interactive_prints_actionable_instructions(
@@ -625,9 +625,10 @@ def test_step_globus_interactive_prints_actionable_instructions(
     assert "apecx-globus-setup login" in out
     assert "APECX_GLOBUS_AUTH_MODE=client_credentials" in out
     assert "apecx-globus-setup store" in out
-    # And the operator is told Globus is now required (gh fallback retired).
-    assert "REQUIRED" in out
-    assert "retired" in out
+    # And the operator is told Globus is OPTIONAL (only the offline query_* tools
+    # need it) — a fresh install without it is fully functional, not broken.
+    assert "OPTIONAL" in out
+    assert "query_*" in out
 
 
 def test_step_globus_ok_when_everything_configured(
@@ -768,3 +769,40 @@ def test_step_data_fail_when_required_bvbrc_fails(monkeypatch, tmp_path, capsys)
     res = _step_data(interactive=True)
     assert res.status == "fail"
     assert "BV-BRC" in res.detail
+
+
+def test_step_data_skips_not_fails_when_unconfigured_and_no_local_data(
+    monkeypatch, tmp_path, capsys
+):
+    """Clean install (no Globus, no local CSVs) must SKIP, NOT fail.
+
+    Regression for the confusing "❌ data — Globus required but not configured"
+    hard failure on a fresh install. Local CSVs are OPTIONAL — harmonized_search
+    uses the anonymous public Globus index and the dictionary auto-downloads, so a
+    missing local dataset must never make a fully-functional install look broken.
+    """
+    import apecx_integration.cli._globus_data_transfer as gdt
+    import apecx_integration.cli.setup_data as sd
+    from apecx_integration.cli._globus_data_transfer import GlobusPrereqStatus
+    from apecx_integration.cli.setup import _step_data
+
+    unconfigured = GlobusPrereqStatus(
+        configured=False,
+        sdk_installed=True,
+        source_endpoint_set=False,
+        dest_endpoint_set=False,
+        credentials_reachable=True,
+        detail="endpoints unset",
+    )
+    monkeypatch.setattr(gdt, "check_globus_prerequisites", lambda: unconfigured)
+    # Point the default data dir at an EMPTY tmp dir → no local BV-BRC CSV present.
+    monkeypatch.setattr(sd, "_DEFAULT_DATA_DIR", tmp_path)
+
+    res = _step_data(interactive=True)
+
+    assert res.status == "skipped", res
+    assert "OPTIONAL" in res.detail
+    out = capsys.readouterr().out
+    assert "SKIPPING" in out
+    assert "harmonized_search" in out
+    assert "❌" not in out  # no alarming failure marker on a healthy fresh install

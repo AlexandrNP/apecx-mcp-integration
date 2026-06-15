@@ -20,6 +20,18 @@ import pytest
 
 from apecx_integration.cli import setup as setup_cli
 
+
+@pytest.fixture(autouse=True)
+def _disable_public_dict_download(monkeypatch):
+    """Default for this module: disable the anonymous public download so the
+    LOCAL-build / skip / opt-out fallback paths are exercised deterministically
+    (no network in unit tests). ``_try_public_download`` honors
+    APECX_SKIP_DICT_DOWNLOAD=1 and returns None. The download-SUCCESS path has its
+    own dedicated test that re-enables it and mocks the fetch.
+    """
+    monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
+
+
 # ─────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────
@@ -282,3 +294,34 @@ def test_dict_appears_in_argparse_choices():
         assert args.subcommand == "dict"
     except SystemExit:
         pytest.fail("argparse rejected 'dict' as a valid subcommand")
+
+
+def test_dict_step_downloads_from_public_path_no_violin_needed(tmp_path, monkeypatch):
+    """Clean install (NO VIOLIN, NO Globus creds): the dict step fetches the
+    dictionary via the ANONYMOUS public download — the same artifact the MCP
+    server bootstraps — so a fresh `apecx-setup` produces the dictionary and
+    `verify` no longer fails on a missing required dict. Regression for the
+    confusing chain where dict skipped on "VIOLIN data not present".
+    """
+    import apecx_integration.mcp_surface.server as server_mod
+
+    sqlite = tmp_path / "dictionary.sqlite"
+    data_root = tmp_path / "data"  # deliberately NO violin/ under it
+    _patch_bootstrap(monkeypatch, sqlite_path=sqlite, data_root=data_root)
+    # Re-enable the download for THIS test (autouse fixture disabled it) and mock
+    # the fetch so no real network is needed.
+    monkeypatch.delenv("APECX_SKIP_DICT_DOWNLOAD", raising=False)
+    monkeypatch.delenv("APECX_SKIP_DICT_BUILD", raising=False)
+
+    def _fake_download(dest):
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(b"\x00" * 4096)
+        return dest
+
+    monkeypatch.setattr(server_mod, "_try_public_download", _fake_download)
+
+    result = setup_cli._step_dict(interactive=False)
+
+    assert result.status == "ok", result
+    assert "downloaded" in result.detail
+    assert "anonymous public path" in result.detail
