@@ -458,11 +458,11 @@ async def apecx_capabilities() -> dict[str, Any]:
       - **Desktop / MCP mode** — the connected MCP client (e.g. Claude Desktop) IS the
         orchestrating + synthesizing LLM. apecx tools return deterministic data and
         scaffolds for YOU to analyze; NO apecx-side LLM endpoint is required for that.
-      - **Backend / headless mode** — ``run_workflow`` and ``synthesize_query``
-        synthesize markdown INTERNALLY using the apecx LLM backend (Ollama at
-        ``localhost:11434`` by default, or ``APECX_LLM_BASE_URL``). Its health is the
-        ``ollama`` row under ``backends``; a local Ollama is OFF until installed, and
-        there is no remote default.
+      - **Backend / headless mode** — ``run_workflow`` workflows (e.g.
+        ``viral_epitope_evidence_review``) synthesize markdown INTERNALLY using the
+        apecx LLM backend (Ollama at ``localhost:11434`` by default, or
+        ``APECX_LLM_BASE_URL``). Its health is the ``ollama`` row under ``backends``;
+        a local Ollama is OFF until installed, and there is no remote default.
     """
     from apecx_integration.infrastructure.orchestrator import get_orchestrator
     from apecx_integration.mcp_surface.tools.discovery import _load_runnable_catalog
@@ -494,7 +494,7 @@ async def apecx_capabilities() -> dict[str, Any]:
                 "apecx-side LLM endpoint is required for analysis."
             ),
             "backend_headless": (
-                "run_workflow / synthesize_query synthesize internally via the apecx LLM "
+                "run_workflow workflows synthesize internally via the apecx LLM "
                 "backend (Ollama at localhost:11434 by default, or APECX_LLM_BASE_URL). "
                 "See backends -> ollama; there is no remote default."
             ),

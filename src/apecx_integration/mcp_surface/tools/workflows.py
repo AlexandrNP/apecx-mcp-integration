@@ -20,82 +20,77 @@ from apecx_integration.mcp_surface.tools._shared import (
     parse_run_id,
 )
 
-
 _VALID_EXECUTORS = {e.value for e in ExecutorKind}
 
 
-async def start_workflow(
-    description: str,
-    user_id: str,
+async def compose_workflow(
+    description: str = "",
+    user_id: str = "",
     preferred_executor: str = "local",
+    run_id: str = "",
+    execute: bool = False,
 ) -> dict:
-    """Compose a workflow from a natural-language description.
+    """Compose (and optionally run) a NEW workflow from a natural-language description.
 
-    Returns the newly-created Run (with status PAUSED or RUNNING
-    depending on the approval policy) and the generated workflow
-    artifact id.
+    Use this ONLY when ``list_workflows`` finds no existing catalog workflow that
+    fits — for anything already in the catalog use ``run_workflow(name, params)``.
+    This is the SINGLE composer primitive (it replaces the former
+    ``start_workflow`` / ``show_diff`` / ``execute_workflow`` split, which competed
+    with ``run_workflow`` and split one decision across three calls).
+
+    Return-of-control flow — the T06 differential review is folded in:
+
+      1. **COMPOSE** — call with ``description`` + ``user_id`` (leave ``execute``
+         False). Returns ``run_id``, ``status``, ``generated_workflow_artifact_id``,
+         and ``review`` (the T06 diff: ``yaml_text``, per-step ``categorization``,
+         ``summary_sentence``, ``novel_python_by_step``) so the frontier LLM /
+         scientist reviews BEFORE running. Control returns to the caller here.
+      2. **EXECUTE** — after review, re-call with the returned ``run_id`` +
+         ``execute=True``. Returns the terminal ``execution`` result.
+
+    Pass ``execute=True`` in step 1 to compose-and-run in a single call.
     """
-    if preferred_executor not in _VALID_EXECUTORS:
-        # Audit §3.10. Pre-fix the bare `ExecutorKind(...)` raised
-        # deep inside Pydantic with a generic enum-coercion error;
-        # echo the offending value back so the caller can correct.
-        raise ValueError(
-            f"preferred_executor={preferred_executor!r} is not a "
-            f"valid executor; expected one of {sorted(_VALID_EXECUTORS)}."
+    client = get_client()
+    out: dict = {}
+
+    if not run_id:
+        if not description or not user_id:
+            raise ValueError(
+                "compose_workflow: provide `description` + `user_id` to compose a new "
+                "workflow, OR `run_id` (+ execute=True) to run a previously-composed one."
+            )
+        if preferred_executor not in _VALID_EXECUTORS:
+            # Echo the offending value back (vs the opaque Pydantic enum-coercion error).
+            raise ValueError(
+                f"preferred_executor={preferred_executor!r} is not a valid executor; "
+                f"expected one of {sorted(_VALID_EXECUTORS)}."
+            )
+        started = await client.start_workflow(
+            StartWorkflowRequest(
+                description=description,
+                user_id=user_id,
+                preferred_executor=ExecutorKind(preferred_executor),
+            )
         )
-    body = StartWorkflowRequest(
-        description=description,
-        user_id=user_id,
-        preferred_executor=ExecutorKind(preferred_executor),
-    )
-    client = get_client()
-    result = await client.start_workflow(body)
-    return result.model_dump(mode="json")
+        started_d = started.model_dump(mode="json")
+        out["run_id"] = started_d["run"]["id"]
+        out["status"] = started_d["run"].get("status")
+        out["generated_workflow_artifact_id"] = started_d.get("generated_workflow_artifact_id")
+        if started_d.get("pause_reason"):
+            out["pause_reason"] = started_d["pause_reason"]
+        # Fold in the T06 differential review so the caller decides before running.
+        diff = await client.show_yaml_diff(ShowYamlDiffRequest(run_id=parse_run_id(out["run_id"])))
+        out["review"] = diff.model_dump(mode="json")
+        target = out["run_id"]
+    else:
+        out["run_id"] = run_id
+        target = run_id
+
+    if execute:
+        result = await client.execute_workflow(ExecuteWorkflowRequest(run_id=parse_run_id(target)))
+        out["execution"] = result.model_dump(mode="json")
+
+    return out
 
 
-async def show_diff(run_id: str) -> dict:
-    """Surface the T06 differential-review payload for a run.
-
-    Returns ``yaml_text``, ``novel_python_by_step``, per-step
-    ``categorization`` (composed_standard / composed_parameterized /
-    composed_wrapped / novel), and a one-sentence summary.
-    """
-    body = ShowYamlDiffRequest(run_id=parse_run_id(run_id))
-    client = get_client()
-    result = await client.show_yaml_diff(body)
-    return result.model_dump(mode="json")
-
-
-async def execute_workflow(run_id: str) -> dict:
-    """Run the composed workflow locally.
-
-    Synchronous wrt MCP — holds the tool call until the LocalExecutor
-    reaches terminal state OR until the executor recognizes another
-    writer owns the transition (sweeper, future /workflows/cancel).
-
-    Returns:
-      - ``status``: the actual DB status (``completed``, ``failed``,
-        ``cancelled``, or, in the rare concurrent-claim path,
-        ``running`` — see ``reason``).
-      - ``output_artifact_id``: present when the executor itself
-        completed the run; None otherwise.
-      - ``reason``: None on a clean executor-driven completion. Non-
-        None when the executor's terminal transition was rejected by
-        a conditional UPDATE — e.g. "run was already in status=X by
-        the time the executor finished" — so the caller can
-        distinguish executor-driven outcomes from outcomes another
-        writer landed first.
-
-    Cluster AJ (2026-04-26) made ``status`` truthful. Before, the
-    field was fabricated as "completed" any time the workflow code
-    finished, regardless of whether the run had been swept to FAILED
-    in the meantime. Trust the ``reason`` field as the source of
-    truth for "did THIS executor drive the transition."
-    """
-    body = ExecuteWorkflowRequest(run_id=parse_run_id(run_id))
-    client = get_client()
-    result = await client.execute_workflow(body)
-    return result.model_dump(mode="json")
-
-
-__all__ = ["execute_workflow", "show_diff", "start_workflow"]
+__all__ = ["compose_workflow"]

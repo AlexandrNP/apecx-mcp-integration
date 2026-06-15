@@ -37,9 +37,7 @@ from apecx_integration.mcp_surface.server import build_server
 from apecx_integration.mcp_surface.tools import _shared
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-COMPOSER_CONFIG = (
-    REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
-)
+COMPOSER_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
 VIOLIN_WORKFLOW_DIR = (
     REPO_ROOT / "src" / "apecx_integration" / "composition" / "workflows" / "violin_bvbrc"
 )
@@ -128,10 +126,29 @@ def test_build_server_registers_all_expected_tools():
     server = build_server()
     tools = asyncio.run(server.list_tools())
     names = {t.name for t in tools}
+    # Layer-1 surface (2026-06-15 trim). Exact lock: tests/unit/test_mcp_tool_surface.py.
     expected = {
+        "list_workflows",
+        "describe_workflow",
+        "inspect_workflow",
+        "run_workflow",
+        "run_workflow_streaming",
+        "inspect_run",
+        "apecx_context",
+        "apecx_capabilities",
+        "compose_workflow",
+        "harmonized_search",
+        "approve_design",
+        "database_statistics",
+        "infrastructure_status",
+    }
+    assert expected <= names, f"missing tools: {expected - names}"
+    # Retired: composer split, super-tool synthesis, operational approvals/HPC.
+    removed = {
         "start_workflow",
         "show_diff",
         "execute_workflow",
+        "synthesize_query",
         "list_pending_approvals",
         "approve",
         "reject",
@@ -141,7 +158,7 @@ def test_build_server_registers_all_expected_tools():
         "export_hpc_bundle",
         "ingest_hpc_bundle",
     }
-    assert expected <= names, f"missing tools: {expected - names}"
+    assert not (removed & names), f"retired tools still exposed: {sorted(removed & names)}"
 
 
 def test_build_server_does_not_expose_hpc_submit_or_create_approval():
@@ -156,56 +173,38 @@ def test_build_server_does_not_expose_hpc_submit_or_create_approval():
 
 
 # ---------------------------------------------------------------------------
-# start_workflow → show_diff → execute_workflow round-trip
+# compose_workflow — single primitive (compose → fold-in review → execute)
 # ---------------------------------------------------------------------------
 
 
-def test_start_workflow_tool_round_trips(mcp_client):
-    from apecx_integration.mcp_surface.tools.workflows import start_workflow
+def test_compose_workflow_composes_and_returns_review(mcp_client):
+    # COMPOSE step: returns run_id + status + the folded-in T06 review.
+    from apecx_integration.mcp_surface.tools.workflows import compose_workflow
 
-    result = asyncio.run(
-        start_workflow(
-            description="extract pathogen entities",
-            user_id="alex",
-        )
-    )
-    assert "run" in result
-    assert result["run"]["status"] in {"running", "paused"}
-    assert UUID(result["run"]["id"])
+    result = asyncio.run(compose_workflow(description="extract pathogen entities", user_id="alex"))
+    assert UUID(result["run_id"])
+    assert result["status"] in {"running", "paused"}
     assert UUID(result["generated_workflow_artifact_id"])
+    review = result["review"]
+    assert review["yaml_text"].startswith("name: mcp_e2e_test_wf")
+    assert isinstance(review["categorization"], list)
+    assert review["summary_sentence"]
+    # Compose-only must NOT have executed.
+    assert "execution" not in result
 
 
-def test_show_diff_tool_returns_categorization(mcp_client):
-    from apecx_integration.mcp_surface.tools.workflows import (
-        show_diff,
-        start_workflow,
+def test_compose_workflow_executes_on_reentry(mcp_client):
+    # EXECUTE step: re-call with the returned run_id + execute=True.
+    from apecx_integration.mcp_surface.tools.workflows import compose_workflow
+
+    composed = asyncio.run(
+        compose_workflow(description="extract pathogen entities", user_id="alex")
     )
+    run_id = composed["run_id"]
 
-    started = asyncio.run(
-        start_workflow(description="extract pathogen entities", user_id="alex")
-    )
-    run_id = started["run"]["id"]
-
-    diff = asyncio.run(show_diff(run_id=run_id))
-    assert diff["yaml_text"].startswith("name: mcp_e2e_test_wf")
-    assert isinstance(diff["categorization"], list)
-    assert diff["summary_sentence"]
-
-
-def test_execute_workflow_tool_reaches_terminal_state(mcp_client):
-    from apecx_integration.mcp_surface.tools.workflows import (
-        execute_workflow,
-        start_workflow,
-    )
-
-    started = asyncio.run(
-        start_workflow(description="extract pathogen entities", user_id="alex")
-    )
-    run_id = started["run"]["id"]
-
-    result = asyncio.run(execute_workflow(run_id=run_id))
-    assert result["status"] in {"completed", "failed"}
+    result = asyncio.run(compose_workflow(run_id=run_id, execute=True))
     assert result["run_id"] == run_id
+    assert result["execution"]["status"] in {"completed", "failed"}
 
 
 # ---------------------------------------------------------------------------
@@ -219,13 +218,11 @@ def test_hpc_estimate_and_confirm_via_mcp_tools(mcp_client, cp_engine):
         estimate_cost,
     )
     from apecx_integration.mcp_surface.tools.workflows import (
-        start_workflow,
+        compose_workflow,
     )
 
-    started = asyncio.run(
-        start_workflow(description="entities", user_id="alex")
-    )
-    run_id = started["run"]["id"]
+    started = asyncio.run(compose_workflow(description="entities", user_id="alex"))
+    run_id = started["run_id"]
 
     est = asyncio.run(estimate_cost(run_id=run_id))
     assert est["total_core_hours"] >= 0.0
@@ -249,23 +246,18 @@ def test_hpc_export_then_ingest_round_trip(mcp_client, cp_engine, tmp_path):
         ingest_hpc_bundle,
     )
     from apecx_integration.mcp_surface.tools.workflows import (
-        start_workflow,
+        compose_workflow,
     )
 
-    started = asyncio.run(
-        start_workflow(description="entities", user_id="alex")
-    )
-    run_id = started["run"]["id"]
+    started = asyncio.run(compose_workflow(description="entities", user_id="alex"))
+    run_id = started["run_id"]
     # Flip run back to RUNNING — normal flow is
     # start→paused-or-running→approve→running→execute. The
     # ingest route expects a non-terminal state. We don't need
     # a real approval here; update the DB directly.
     with cp_engine.begin() as conn:
         conn.execute(
-            text(
-                "UPDATE run SET status = 'RUNNING', started_at = :ts "
-                "WHERE id = :rid"
-            ),
+            text("UPDATE run SET status = 'RUNNING', started_at = :ts WHERE id = :rid"),
             {"ts": datetime.now(UTC).isoformat(), "rid": run_id},
         )
 
@@ -283,13 +275,9 @@ def test_hpc_export_then_ingest_round_trip(mcp_client, cp_engine, tmp_path):
     # Simulate a completed remote run.
     (bundle_dir / "apecx_status.txt").write_text("completed")
     (bundle_dir / "outputs").mkdir(exist_ok=True)
-    (bundle_dir / "outputs" / "result.json").write_text(
-        _json.dumps({"status": "ok"})
-    )
+    (bundle_dir / "outputs" / "result.json").write_text(_json.dumps({"status": "ok"}))
 
-    ingested = asyncio.run(
-        ingest_hpc_bundle(bundle_path=str(bundle_dir))
-    )
+    ingested = asyncio.run(ingest_hpc_bundle(bundle_path=str(bundle_dir)))
     assert ingested["status"] == "completed"
     assert ingested["run_id"] == run_id
 
@@ -337,8 +325,7 @@ def test_get_client_builds_from_env(monkeypatch):
             "export_hpc_bundle",
             {"run_id": "x", "target_system": "polaris", "output_directory": "/tmp/x"},
         ),
-        ("show_diff", {"run_id": ""}),
-        ("execute_workflow", {"run_id": "garbage"}),
+        ("compose_workflow", {"run_id": "garbage", "execute": True}),
     ],
 )
 def test_mcp_tools_echo_malformed_run_id(tool_name, kwargs):
@@ -348,7 +335,6 @@ def test_mcp_tools_echo_malformed_run_id(tool_name, kwargs):
     the helper raises ``InvalidRunIdError`` with the offending input
     echoed back so Claude can self-correct.
     """
-    from apecx_integration.mcp_surface.tools._shared import InvalidRunIdError
     from apecx_integration.mcp_surface.tools import (
         approvals as approvals_tools,
     )
@@ -356,6 +342,7 @@ def test_mcp_tools_echo_malformed_run_id(tool_name, kwargs):
     from apecx_integration.mcp_surface.tools import (
         workflows as workflow_tools,
     )
+    from apecx_integration.mcp_surface.tools._shared import InvalidRunIdError
 
     # Resolve the tool from one of the three modules.
     for mod in (workflow_tools, hpc_tools, approvals_tools):
@@ -386,10 +373,10 @@ def test_approval_tools_echo_malformed_approval_id(tool_name, kwargs):
     ``approval_id`` so the error message must say ``approval_id``,
     not ``run_id``.
     """
-    from apecx_integration.mcp_surface.tools._shared import InvalidRunIdError
     from apecx_integration.mcp_surface.tools import (
         approvals as approvals_tools,
     )
+    from apecx_integration.mcp_surface.tools._shared import InvalidRunIdError
 
     tool = getattr(approvals_tools, tool_name)
     with pytest.raises(InvalidRunIdError) as excinfo:
@@ -399,17 +386,11 @@ def test_approval_tools_echo_malformed_approval_id(tool_name, kwargs):
     assert "is not a valid UUID" in str(err)
 
 
-def test_start_workflow_rejects_invalid_executor():
-    """Audit §3.10. Pre-fix the bare ``ExecutorKind(...)`` raised
-    a generic Pydantic enum-coercion error from inside the request
-    schema. The fix validates explicitly so the error message lists
-    the valid executor names.
+def test_compose_workflow_rejects_invalid_executor():
+    """Audit §3.10. ``compose_workflow`` validates ``preferred_executor`` explicitly
+    so the error lists the valid executor names (vs the opaque Pydantic enum error).
     """
-    from apecx_integration.mcp_surface.tools.workflows import start_workflow
+    from apecx_integration.mcp_surface.tools.workflows import compose_workflow
 
     with pytest.raises(ValueError, match=r"preferred_executor='gpu'.*valid executor"):
-        asyncio.run(
-            start_workflow(
-                description="x", user_id="alex", preferred_executor="gpu"
-            )
-        )
+        asyncio.run(compose_workflow(description="x", user_id="alex", preferred_executor="gpu"))

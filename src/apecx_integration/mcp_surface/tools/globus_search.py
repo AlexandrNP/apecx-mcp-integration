@@ -16,9 +16,10 @@ When to use ``query_globus_search`` vs. the existing tools:
     structured lookup against the VIOLIN + BV-BRC tables (those
     sources are NOT in the Globus index — they are joined offline
     into the synonym dictionary instead).
-  - Use ``synthesize_query`` for "ask a question, get a Markdown
-    answer" — the synthesis pipeline now folds Globus results into
-    the retrieval bundle alongside FAISS / VIOLIN/BV-BRC / PubMed.
+  - For "ask a question, get a Markdown answer", run a catalog
+    workflow via ``run_workflow`` (e.g. ``viral_epitope_evidence_review``,
+    which synthesizes grounded markdown over HARMONIZED search). The
+    standalone ``synthesize_query`` tool was retired 2026-06-15.
 """
 
 from __future__ import annotations

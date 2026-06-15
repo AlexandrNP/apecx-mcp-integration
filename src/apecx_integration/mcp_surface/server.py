@@ -54,9 +54,6 @@ from urllib.parse import urlparse
 from mcp.server.fastmcp import FastMCP
 
 from apecx_integration.mcp_surface.tools import (
-    approvals as approvals_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
 from apecx_integration.mcp_surface.tools import (
@@ -69,13 +66,7 @@ from apecx_integration.mcp_surface.tools import (
     harmonized_search as harmonized_search_tools,
 )
 from apecx_integration.mcp_surface.tools import (
-    hpc as hpc_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     infrastructure_status as infrastructure_status_tool,
-)
-from apecx_integration.mcp_surface.tools import (
-    synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
@@ -103,13 +94,16 @@ def build_server() -> FastMCP:
 
     _register_logging_capability(server)
 
-    server.tool()(workflow_tools.start_workflow)
-    server.tool()(workflow_tools.show_diff)
-    server.tool()(workflow_tools.execute_workflow)
+    # Composer — ONE primitive (2026-06-15 Layer-1 trim; was start_workflow /
+    # show_diff / execute_workflow, which split one decision across 3 tools and
+    # competed with run_workflow). compose_workflow folds the T06 diff-review in
+    # and returns control to the caller before execution. Use ONLY when
+    # list_workflows finds no existing catalog workflow.
+    server.tool()(workflow_tools.compose_workflow)
 
     # Discovery — read-only catalog tools that let the model see
     # which workflows / components the composer can actually build
-    # before it calls start_workflow.
+    # before it calls compose_workflow.
     server.tool()(discovery_tools.list_workflows)
     server.tool()(discovery_tools.describe_workflow)
 
@@ -162,11 +156,12 @@ def build_server() -> FastMCP:
     # workflow generation.
     server.tool()(database_tools.database_statistics)
 
-    # End-to-end RAG synthesis — drives the rag_e2e_synthesis workflow
-    # directly (no composer round-trip). One LLM call total. Steps are
-    # cached as module-level singletons so a long-running server
-    # doesn't pay the FAISS load cost on every call.
-    server.tool()(synthesis_tools.synthesize_query)
+    # ``synthesize_query`` was RETIRED 2026-06-15 (Layer-1 surface trim): it was a
+    # super-tool (the design calls for "primitives, not super-tools") that
+    # duplicated ``run_workflow`` and whose retrieval used the legacy local-CSV +
+    # raw-Globus path instead of harmonized search. Grounded synthesis is provided
+    # by the catalog workflows (``viral_epitope_evidence_review`` does it WITH
+    # harmonized search). See docs/layer1_surface_trim_plan.md.
 
     # Viral epitope / immunology analysis is provided by the
     # ``viral_epitope_evidence_review`` CATALOG WORKFLOW (discoverable via
@@ -199,15 +194,16 @@ def build_server() -> FastMCP:
     # for the workflow YAML.
     server.tool()(harmonized_search_tools.harmonized_search)
 
-    server.tool()(approvals_tools.list_pending_approvals)
-    server.tool()(approvals_tools.approve)
-    server.tool()(approvals_tools.reject)
-    server.tool()(approvals_tools.correct)
-
-    server.tool()(hpc_tools.estimate_cost)
-    server.tool()(hpc_tools.confirm_allocation)
-    server.tool()(hpc_tools.export_hpc_bundle)
-    server.tool()(hpc_tools.ingest_hpc_bundle)
+    # Operational control-plane tools — REMOVED from the agentic MCP surface
+    # 2026-06-15 (Layer-1 trim, external_orchestration_design.md §4: "operational
+    # tools … out of the agentic loop"). The control-plane routes, client, and
+    # schemas remain — these operations are driven via the control-plane API /
+    # `apecx-cp`, not by the orchestrating LLM:
+    #   - approvals: list_pending_approvals / approve / reject / correct
+    #     (the WORKFLOW design-gate keeps its own `approve_design` tool above).
+    #   - HPC: estimate_cost / confirm_allocation / export_hpc_bundle /
+    #     ingest_hpc_bundle — to be re-exposed as ONE `hpc_export` catalog
+    #     workflow (follow-up; see docs/layer1_surface_trim_plan.md Phase 3).
 
     # Infrastructure-status — reports the health of the 5 backends
     # apecx-mcp depends on (Postgres, Redis, MinIO, Ollama, Rhea MCP).
