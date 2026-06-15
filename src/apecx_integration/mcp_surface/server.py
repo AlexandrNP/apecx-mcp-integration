@@ -78,9 +78,6 @@ from apecx_integration.mcp_surface.tools import (
     synthesis as synthesis_tools,
 )
 from apecx_integration.mcp_surface.tools import (
-    viral_immunology_analysis as viral_immunology_tools,
-)
-from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
 
@@ -171,15 +168,15 @@ def build_server() -> FastMCP:
     # doesn't pay the FAISS load cost on every call.
     server.tool()(synthesis_tools.synthesize_query)
 
-    # Viral Immunology Analysis — comprehensive framework for any viral
-    # immunology research. Automatically detects virus + immunology queries
-    # (COVID-19, influenza, EEEV, etc.) and provides unlimited multi-source
-    # analysis with ontology-driven classification and quality filtering.
-    # Replaces hardcoded EEEV-only approach with extensible architecture.
-    server.tool()(viral_immunology_tools.analyze_viral_immunology)
-
-    # Backward compatibility for existing EEEV-specific queries
-    server.tool()(viral_immunology_tools.analyze_eeev_epitopes)
+    # Viral epitope / immunology analysis is provided by the
+    # ``viral_epitope_evidence_review`` CATALOG WORKFLOW (discoverable via
+    # ``list_workflows``, run via ``run_workflow``) — a multi-step,
+    # harmonized-search pipeline (PDB/EMDB structural evidence + nested
+    # sequence-conservation over harmonized BV-BRC + grounded synthesis). The
+    # former standalone ``analyze_viral_immunology`` / ``analyze_eeev_epitopes``
+    # tools were RETIRED 2026-06-15: they bypassed harmonized search (raw Globus
+    # free-text + local CSVs), were not discoverable as workflows, and their
+    # builder/YAML no longer loaded. Use the workflow.
 
     # Globus Search — DELIBERATELY NOT EXPOSED as an MCP tool.
     #
