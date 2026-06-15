@@ -211,6 +211,10 @@ def _load_runnable_catalog() -> tuple[list[dict[str, Any]], str | None]:
                 "description": _strip(entry.description),
                 "available": met,
                 "missing_prerequisites": missing,
+                # Honest fallback guidance when prerequisites are unmet (e.g. a
+                # Docker/Rhea workflow names the MAFFT or LLM-only alternative).
+                # Empty string when none declared or when available.
+                "unavailable_hint": entry.requires.unavailable_hint if not met else "",
                 "input_schema": entry.input_schema,
             }
         )

@@ -1,12 +1,17 @@
-"""Unit tests for the capability model + the verify optional-set reclassification.
+"""Unit tests for the verify reclassification + the backend-LLM probe in setup.py.
 
-Two clean-install UX guarantees are pinned here (2026-06-15):
+The capability *view* itself now lives in the shared aggregator
+(``apecx_capabilities`` MCP tool, built on ``check_prerequisites`` +
+orchestrator status); ``apecx-setup capabilities`` renders that. The probe
+logic is no longer duplicated in setup.py — see test_apecx_capabilities_tool.py.
 
-  1. ``_probe_capabilities`` honestly classifies the zero-infra baseline
-     (entity resolution / harmonized search / LLM analysis) as AVAILABLE on a
-     fresh install — harmonized search needs NO credentials (anonymous public
-     Globus index), and the LLM leg is satisfiable by a REMOTE endpoint, so
-     installing Ollama locally is optional.
+What remains setup.py's own and is pinned here (2026-06-15):
+
+  1. ``_probe_llm`` — the BACKEND-mode synthesis LLM probe (local Ollama OR a
+     remote APECX_LLM_BASE_URL). This is the apecx-internal LLM used by
+     headless ``run_workflow`` / ``synthesize_query``; in desktop/MCP mode the
+     frontier LLM (the MCP client) does analysis instead, so this backend LLM
+     is OPTIONAL — hence its 'ollama' verify check is optional, not required.
 
   2. ``_step_verify`` treats ``data`` and ``ollama`` as OPTIONAL: a clean
      install with only the synonym dictionary verifies as ``partial`` (a usable
@@ -18,13 +23,13 @@ from __future__ import annotations
 from apecx_integration.cli import setup as setup_cli
 
 # ─────────────────────────────────────────────────────────────────────────
-# _probe_llm — remote endpoint makes local Ollama optional
+# _probe_llm — the BACKEND synthesis LLM (local Ollama OR remote endpoint)
 # ─────────────────────────────────────────────────────────────────────────
 
 
 def test_probe_llm_remote_endpoint_is_available_without_local_ollama(monkeypatch):
     monkeypatch.setenv("APECX_LLM_BASE_URL", "https://vllm.example.org/v1")
-    # Even with no `ollama` binary, a remote endpoint satisfies the LLM dep.
+    # Even with no `ollama` binary, a remote backend endpoint satisfies the dep.
     monkeypatch.setattr(setup_cli.shutil, "which", lambda _: None)
     ok, detail = setup_cli._probe_llm()
     assert ok is True
@@ -39,42 +44,6 @@ def test_probe_llm_localhost_base_url_falls_through_to_ollama_probe(monkeypatch)
     ok, detail = setup_cli._probe_llm()
     assert ok is False
     assert "no local Ollama" in detail
-
-
-# ─────────────────────────────────────────────────────────────────────────
-# _probe_capabilities — zero-infra baseline is real
-# ─────────────────────────────────────────────────────────────────────────
-
-
-def test_harmonized_search_is_always_available(monkeypatch):
-    # Anonymous public Globus index — no creds, no infra, no data download.
-    caps = {c.key: c for c in setup_cli._probe_capabilities()}
-    assert caps["harmonized_search"].available is True
-    assert caps["harmonized_search"].unlock == ""
-
-
-def test_clean_install_baseline_available_with_dict_and_remote_llm(monkeypatch, tmp_path):
-    # Simulate the leanest functional install: dictionary present + a remote
-    # LLM endpoint, but NO Docker, NO mafft, NO local data, NO Ollama binary.
-    sqlite = tmp_path / "dictionary.sqlite"
-    sqlite.write_bytes(b"x")
-    monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(sqlite))
-    monkeypatch.setenv("APECX_LLM_BASE_URL", "https://remote-llm.example.org/v1")
-    monkeypatch.setattr(setup_cli.shutil, "which", lambda _: None)  # no mafft, no ollama
-    monkeypatch.setattr(setup_cli, "_docker_available", lambda: False)
-
-    caps = {c.key: c for c in setup_cli._probe_capabilities()}
-    # Zero-infra baseline all green:
-    assert caps["entity_resolution"].available is True
-    assert caps["harmonized_search"].available is True
-    assert caps["llm_analysis"].available is True
-    # Docker-gated capabilities locked + honestly tagged:
-    assert caps["structural_sasa"].available is False
-    assert caps["structural_sasa"].needs_docker is True
-    assert caps["rhea_tools"].available is False
-    assert "LLM-only" in caps["structural_sasa"].unlock
-    # MAFFT locked without the binary:
-    assert caps["sequence_conservation"].available is False
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -106,17 +75,3 @@ def test_verify_optional_set_makes_dict_the_only_required_component():
         == "partial"
     )
     assert _checks_to_result([("dict", True, ""), ("data", True, "")]) == "ok"
-
-
-def test_step_capabilities_returns_ok_and_counts(monkeypatch, tmp_path):
-    sqlite = tmp_path / "dictionary.sqlite"
-    sqlite.write_bytes(b"x")
-    monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(sqlite))
-    monkeypatch.setenv("APECX_LLM_BASE_URL", "https://remote-llm.example.org/v1")
-    monkeypatch.setattr(setup_cli.shutil, "which", lambda _: None)
-    monkeypatch.setattr(setup_cli, "_docker_available", lambda: False)
-
-    result = setup_cli._step_capabilities()
-    assert result.name == "capabilities"
-    assert result.status == "ok"
-    assert "3/3 zero-infra baseline" in result.detail

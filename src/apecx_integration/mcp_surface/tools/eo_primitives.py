@@ -443,6 +443,73 @@ async def apecx_context() -> dict[str, Any]:
     return {"runs": runs, "n_runs": len(runs)}
 
 
+async def apecx_capabilities() -> dict[str, Any]:
+    """What this apecx stack can do RIGHT NOW, and what infra would unlock more.
+
+    A convenience aggregator over the two existing capability surfaces — it runs no
+    new probes of its own:
+      - ``list_workflows`` prerequisites (``check_prerequisites`` per catalog entry):
+        which workflows are runnable now vs. need configuration (with the missing
+        prerequisites AND an honest fallback hint).
+      - ``infrastructure_status`` (the orchestrator backend roster): live health of
+        Ollama / Postgres / Redis / MinIO / Rhea.
+
+    The two LLM ROLES this stack uses (do not conflate them):
+      - **Desktop / MCP mode** — the connected MCP client (e.g. Claude Desktop) IS the
+        orchestrating + synthesizing LLM. apecx tools return deterministic data and
+        scaffolds for YOU to analyze; NO apecx-side LLM endpoint is required for that.
+      - **Backend / headless mode** — ``run_workflow`` and ``synthesize_query``
+        synthesize markdown INTERNALLY using the apecx LLM backend (Ollama at
+        ``localhost:11434`` by default, or ``APECX_LLM_BASE_URL``). Its health is the
+        ``ollama`` row under ``backends``; a local Ollama is OFF until installed, and
+        there is no remote default.
+    """
+    from apecx_integration.infrastructure.orchestrator import get_orchestrator
+    from apecx_integration.mcp_surface.tools.discovery import _load_runnable_catalog
+
+    rows, catalog_error = _load_runnable_catalog()
+    runnable_now = [
+        {"name": r["name"], "description": r["description"]} for r in rows if r["available"]
+    ]
+    needs_configuration = [
+        {
+            "name": r["name"],
+            "missing_prerequisites": r["missing_prerequisites"],
+            "fallback": r["unavailable_hint"],
+        }
+        for r in rows
+        if not r["available"]
+    ]
+
+    try:
+        backends = await get_orchestrator().status()
+    except Exception as exc:  # noqa: BLE001 — surface, never crash the capability query
+        backends = {"error": f"{type(exc).__name__}: {exc}"}
+
+    return {
+        "modes": {
+            "desktop_mcp": (
+                "The connected MCP client (e.g. Claude Desktop) is the orchestrating + "
+                "synthesizing LLM. apecx returns deterministic data + scaffolds; no "
+                "apecx-side LLM endpoint is required for analysis."
+            ),
+            "backend_headless": (
+                "run_workflow / synthesize_query synthesize internally via the apecx LLM "
+                "backend (Ollama at localhost:11434 by default, or APECX_LLM_BASE_URL). "
+                "See backends -> ollama; there is no remote default."
+            ),
+        },
+        "runnable_now": runnable_now,
+        "needs_configuration": needs_configuration,
+        "backends": backends,
+        "catalog_error": catalog_error,
+        "summary": (
+            f"{len(runnable_now)}/{len(rows)} catalog workflows runnable now"
+            + (f"; catalog load error: {catalog_error}" if catalog_error else "")
+        ),
+    }
+
+
 def approve_design(token: str, decided_by: str = "operator") -> dict[str, Any]:
     """Operator approval for a design/optimization output request (HITL gate).
 
@@ -482,6 +549,7 @@ def approve_design(token: str, decided_by: str = "operator") -> dict[str, Any]:
 
 
 __all__ = [
+    "apecx_capabilities",
     "apecx_context",
     "approve_design",
     "inspect_run",

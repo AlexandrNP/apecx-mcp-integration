@@ -26,10 +26,19 @@ apecx-setup
 **offers to install Ollama if missing** (Homebrew on macOS / the official
 install script on Linux — every command printed before a y/N prompt),
 starts the daemon, pulls the configured model (`nemotron-3-nano:4b` by
-default — the exact model the synthesis runtime asks for), and patches
-`claude_desktop_config.json` with the right paths and LLM env vars.
-Installing Ollama locally is **optional**: set `APECX_LLM_BASE_URL` to a
-remote OpenAI-compatible endpoint (vLLM / OpenAI / Anthropic-proxy) instead.
+default), and patches `claude_desktop_config.json` with the right paths.
+
+**Two LLM roles — don't conflate them.** In the **desktop / MCP** mode you'll
+normally use, **Claude Desktop itself is the analysis & synthesis LLM**: it
+calls the apecx tools, which return deterministic data + scaffolds for it to
+reason over. No apecx-side LLM endpoint is needed for that path. The Ollama
+model `apecx-setup` pulls powers the separate **backend / headless** path —
+the workflows that synthesize markdown *internally* (`run_workflow`,
+`synthesize_query`). That backend LLM defaults to local Ollama
+(`localhost:11434`); point it elsewhere with `APECX_LLM_BASE_URL` (there is no
+remote default). So the Ollama install is optional precisely *because* the
+desktop LLM covers the primary analysis path — not because some default
+endpoint exists.
 
 **The synonym dictionary auto-downloads anonymously** on first MCP launch
 (~47 MB compressed, ~30 s on a typical home connection) from a public
@@ -56,19 +65,26 @@ appear in the tool picker after 2–5 seconds.
 
 ### Check what your install can do
 
+From the terminal:
+
 ```bash
 apecx-setup capabilities
 ```
 
-Prints a feature-by-feature view: what works **right now** versus what's
-**locked** behind optional infrastructure, with the exact command to unlock
-each. A fresh install with zero infrastructure already has a usable
-**zero-infra baseline** — entity resolution, harmonized multi-source search
-(anonymous public Globus index, no credentials), and LLM analysis of that
-harmonized data (local Ollama *or* a remote endpoint). Sequence alignment
-(MAFFT), structural SASA (Docker + PyMOL), and Rhea/MUSCLE tools (Docker)
-are opt-in unlocks. `apecx-setup verify` re-checks component health and
-treats every component except the synonym dictionary as optional.
+Or **from inside Claude Desktop**, ask it to call the `apecx_capabilities`
+MCP tool — same data, queried live over MCP (it also drives `list_workflows`
++ `infrastructure_status` under the hood).
+
+Both show: which workflows are **runnable now** versus **need configuration**
+(with the missing prerequisite *and* an honest fallback — e.g. a Docker/Rhea
+workflow points you at the MAFFT or LLM-only path), plus the backend roster.
+A fresh install with zero infrastructure already covers the primary path:
+entity resolution + harmonized multi-source search (anonymous public Globus
+index, no credentials), with **Claude Desktop doing the analysis** (no
+apecx-side LLM needed). Sequence alignment (MAFFT), structural SASA (Docker +
+PyMOL), Rhea/MUSCLE tools (Docker), and the internal-synthesis backend LLM
+(Ollama) are opt-in unlocks. `apecx-setup verify` re-checks component health
+and treats every component except the synonym dictionary as optional.
 
 ## Prerequisites
 

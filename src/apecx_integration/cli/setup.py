@@ -1450,224 +1450,54 @@ def _step_verify() -> StepResult:
     )
 
 
-@dataclasses.dataclass(frozen=True)
-class Capability:
-    """One user-facing capability: what it does, whether it works now, what unlocks it.
-
-    This is the FEATURE-oriented view (``apecx-setup capabilities``), distinct
-    from the COMPONENT-health view (``apecx-setup verify``). ``verify`` answers
-    "did each install step succeed"; ``capabilities`` answers "what can I
-    actually DO right now, and what would I gain by setting up more". A clean
-    install with only the synonym dictionary still has real capabilities
-    (entity resolution + anonymous harmonized search + LLM analysis if an
-    endpoint is configured) — this command makes that legible instead of
-    leaving the user to infer it from a wall of ❌ optional components.
-    """
-
-    key: str
-    title: str
-    available: bool
-    enables: str  # what the user can do with it
-    unlock: str  # how to turn it on (empty when available)
-    needs_docker: bool = False
-
-
-def _dict_artifact_path() -> Path:
-    """Resolve the synonym-dictionary sqlite path (mirrors EnsureDictionaryConfig)."""
-    env = os.environ.get("APECX_SYNONYM_DICT_PATH", "").strip()
-    if env:
-        return Path(env).expanduser()
-    dir_env = os.environ.get("APECX_DICT_OUTPUT_DIR", "").strip()
-    base = Path(dir_env).expanduser() if dir_env else Path("~/.apecx/dictionary").expanduser()
-    return base / "dictionary.sqlite"
-
-
-def _probe_capabilities() -> list[Capability]:
-    """Probe the environment and classify every capability available/locked.
-
-    Pure read-only probes (filesystem stat, ``shutil.which``, a short Ollama
-    HTTP GET, ``docker image inspect``). No network beyond the optional Ollama
-    probe; no mutation. Shared by the ``capabilities`` command and reusable by
-    any future status surface.
-    """
-    caps: list[Capability] = []
-
-    # 1. Entity resolution — the one true baseline (dict auto-downloads on first launch).
-    dict_present = _dict_artifact_path().is_file()
-    caps.append(
-        Capability(
-            "entity_resolution",
-            "Entity resolution & synonym harmonization",
-            dict_present,
-            "Resolve virus/protein/strain names & synonyms to canonical IDs (HARD match).",
-            ""
-            if dict_present
-            else "auto-downloads on first `apecx-mcp` launch, or run `apecx-setup dict`",
-        )
-    )
-
-    # 2. Harmonized search — ANONYMOUS public Globus index. No creds, no infra.
-    #    The only requirement is outbound network to Globus Search; we don't
-    #    pre-probe it here (that's a per-query concern) but it needs no setup.
-    caps.append(
-        Capability(
-            "harmonized_search",
-            "Harmonized multi-source search",
-            True,
-            "Search BV-BRC, ProtaBank, AntiviralDB + more via the PUBLIC Globus index "
-            "(anonymous — no credentials, no data download).",
-            "",
-        )
-    )
-
-    # 3. LLM analysis & synthesis — local Ollama OR remote endpoint.
-    llm_ok, llm_detail = _probe_llm()
-    caps.append(
-        Capability(
-            "llm_analysis",
-            "LLM analysis & synthesis of harmonized data",
-            llm_ok,
-            "Evidence reviews, summaries & structured analysis of harmonized records "
-            "(e.g. viral_epitope_evidence_review). Works on harmonized data with ZERO "
-            "bioinformatics infra — this is the LLM-only analysis path.",
-            "" if llm_ok else llm_detail,
-        )
-    )
-
-    # 4. Sequence conservation — MAFFT binary (no Docker).
-    mafft_ok = shutil.which("mafft") is not None
-    caps.append(
-        Capability(
-            "sequence_conservation",
-            "Sequence conservation (MAFFT alignment)",
-            mafft_ok,
-            "Multiple-sequence alignment + per-position conservation scoring "
-            "(viral_conserved_sites workflow).",
-            "" if mafft_ok else "install MAFFT (`brew install mafft` / `apt install mafft`)",
-        )
-    )
-
-    docker_ok = _docker_available()
-
-    # 5. Structural SASA — PyMOL image (needs Docker).
-    pymol_ok = docker_ok and (
-        subprocess.run(
-            ["docker", "image", "inspect", _PYMOL_IMAGE],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        ).returncode
-        == 0
-    )
-    caps.append(
-        Capability(
-            "structural_sasa",
-            "Structural reasoning with real SASA (PyMOL)",
-            pymol_ok,
-            "Real per-residue solvent accessibility for surface-epitope ranking. "
-            "WITHOUT it the structural stage degrades to an LLM-only named-skip.",
-            ""
-            if pymol_ok
-            else (
-                "needs Docker — run `apecx-setup pymol` (or `--with-pymol`). "
-                "Until then structural reasoning is LLM-only."
-            ),
-            needs_docker=True,
-        )
-    )
-
-    # 6. Rhea bioinformatics tools (MUSCLE etc.) — needs Docker + RHEA_MCP_URL + checkout.
-    from apecx_integration.infrastructure.rhea_env_autodiscovery import _find_rhea_repo
-
-    rhea_repo = _find_rhea_repo()
-    rhea_url = os.environ.get("RHEA_MCP_URL", "").strip()
-    rhea_ok = (
-        bool(rhea_url)
-        and rhea_repo is not None
-        and (rhea_repo / ".venv" / "bin" / "python").exists()
-    )
-    caps.append(
-        Capability(
-            "rhea_tools",
-            "Rhea-backed bioinformatics tools (MUSCLE alignment)",
-            rhea_ok,
-            "MUSCLE-based alignment workflows (rhea_muscle_alignment, "
-            "viral_conserved_sites_muscle).",
-            ""
-            if rhea_ok
-            else (
-                "needs Docker + Rhea — run `apecx-setup rhea` (or `--with-rhea`) and set "
-                "RHEA_MCP_URL. Until then these workflows do NOT run; use the MAFFT or "
-                "LLM-only paths instead."
-            ),
-            needs_docker=True,
-        )
-    )
-
-    # 7. RAG-augmented synthesis — FAISS index.
-    workspace_root = Path(__file__).resolve().parents[4]
-    faiss_ok = (workspace_root / "data" / "apecx_domain_rag" / "faiss_index.bin").exists()
-    caps.append(
-        Capability(
-            "rag_synthesis",
-            "Domain-RAG-augmented synthesis (FAISS)",
-            faiss_ok,
-            "Synthesis grounded in the domain RAG corpus.",
-            "" if faiss_ok else "opt-in — run `apecx-setup rag` (~10 min, 689 MB)",
-        )
-    )
-
-    # 8. Offline local-CSV database tools — superseded by harmonized search.
-    bvbrc_present = (_setup_data._DEFAULT_DATA_DIR / "BVBRC_genome_alphavirus.csv").exists()
-    caps.append(
-        Capability(
-            "offline_db_tools",
-            "Offline local-database tools (query_*)",
-            bvbrc_present,
-            "Legacy offline CSV queries. SUPERSEDED by harmonized_search (anonymous "
-            "Globus index) for nearly every use; only needed fully offline.",
-            "" if bvbrc_present else "optional — run `apecx-setup data` (needs Globus creds)",
-        )
-    )
-
-    return caps
-
-
 def _step_capabilities() -> StepResult:
-    """Show what the current install can do and what each infra add-on unlocks."""
+    """Show what the install can do now + what infra unlocks — via the shared aggregator.
+
+    Renders the SAME data the ``apecx_capabilities`` MCP tool returns (ONE source of
+    truth): runnable-now vs needs-configuration workflows (from ``check_prerequisites``)
+    plus the backend roster (from the infrastructure orchestrator). No parallel probe
+    logic, no mode-blind LLM claim — the two LLM roles are stated under MODES.
+    """
+    import asyncio
+
+    from apecx_integration.mcp_surface.tools.eo_primitives import apecx_capabilities
+
     _print_header("Capabilities — what works now, what infra unlocks more")
-    caps = _probe_capabilities()
-    available = [c for c in caps if c.available]
-    locked = [c for c in caps if not c.available]
+    caps = asyncio.run(apecx_capabilities())
 
     print()
-    print("  AVAILABLE NOW")
-    if available:
-        for c in available:
-            print(f"  ✅ {c.title}")
-            print(f"       {c.enables}")
-    else:
-        print("  (none — run `apecx-setup dict` to enable the baseline)")
+    print("  MODES (two LLM roles — do not conflate)")
+    print(f"  • desktop / MCP:      {caps['modes']['desktop_mcp']}")
+    print(f"  • backend / headless: {caps['modes']['backend_headless']}")
     print()
-    print("  LOCKED — set up infrastructure to unlock")
+
+    runnable = caps["runnable_now"]
+    locked = caps["needs_configuration"]
+    print("  RUNNABLE NOW")
+    if runnable:
+        for r in runnable:
+            print(f"  ✅ {r['name']}")
+    else:
+        print("  (none)")
+    print()
+    print("  NEEDS CONFIGURATION")
     if locked:
-        for c in locked:
-            tag = " [needs Docker]" if c.needs_docker else ""
-            print(f"  🔒 {c.title}{tag}")
-            print(f"       enables: {c.enables}")
-            print(f"       unlock:  {c.unlock}")
+        for r in locked:
+            print(f"  \U0001f512 {r['name']} — missing: {', '.join(r['missing_prerequisites'])}")
+            if r["fallback"]:
+                print(f"       fallback: {r['fallback']}")
     else:
-        print("  (none — every capability is available)")
+        print("  (none — every catalog workflow is runnable)")
     print()
 
-    # Always-true honest headline: the baseline is usable with ZERO infra.
-    baseline = {"entity_resolution", "harmonized_search", "llm_analysis"}
-    baseline_ok = [c for c in caps if c.key in baseline and c.available]
-    detail = (
-        f"{len(available)}/{len(caps)} capabilities available; "
-        f"{len(baseline_ok)}/3 zero-infra baseline (resolution / harmonized search / LLM analysis) ready"
-    )
-    return StepResult("capabilities", "ok", detail)
+    backends = caps.get("backends") or {}
+    if isinstance(backends, dict) and "overall" in backends:
+        print(f"  BACKENDS (overall: {backends['overall']})")
+        for b in backends.get("backends", []):
+            print(f"  • {b.get('name')}: {b.get('state')} — {b.get('detail', '')}")
+        print()
+
+    return StepResult("capabilities", "ok", caps["summary"])
 
 
 # ---------------------------------------------------------------------------

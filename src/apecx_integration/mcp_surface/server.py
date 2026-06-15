@@ -128,6 +128,10 @@ def build_server() -> FastMCP:
     server.tool()(eo_primitive_tools.inspect_run)
     server.tool()(eo_primitive_tools.inspect_workflow)
     server.tool()(eo_primitive_tools.apecx_context)
+    # "What can I do now + what infra unlocks more" — aggregates list_workflows
+    # prerequisites + infrastructure_status backends into one capability view,
+    # queryable directly from the desktop MCP client.
+    server.tool()(eo_primitive_tools.apecx_capabilities)
     # Operator HITL approval for the evidence workflow's design/optimization output. The
     # design gate issues a scope-bound `dapprv-…` token (fail-closed); the operator approves
     # it here, then the caller re-calls run_workflow with that design_approval_id.
