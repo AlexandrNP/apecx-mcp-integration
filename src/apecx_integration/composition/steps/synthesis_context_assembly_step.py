@@ -375,12 +375,19 @@ class SynthesisContextAssemblyStep(BaseStep):
         """
         from apecx_integration.composition.steps import _pubmed_helpers
 
-        term = _pubmed_helpers.build_term(
-            query,
-            entities,
-            self._query_template,
-            owner_name=self.name,
-        )
+        # Default template ("{query}") fed the whole natural-language sentence to
+        # eSearch, which ANDs every token → 0 hits for verbose queries even when
+        # thousands of papers exist. Anchor on the query's virus name(s) instead;
+        # a custom template (with {entities}) is still honoured verbatim.
+        if self._query_template == "{query}":
+            term = _pubmed_helpers.build_focused_term(query, owner_name=self.name)
+        else:
+            term = _pubmed_helpers.build_term(
+                query,
+                entities,
+                self._query_template,
+                owner_name=self.name,
+            )
         log.info(
             "%s: PubMed term=%.100r (max=%d)",
             self.name,

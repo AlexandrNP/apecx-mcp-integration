@@ -10,10 +10,13 @@ from __future__ import annotations
 from types import SimpleNamespace
 
 from apecx_integration.composition.steps._pubmed_helpers import (
+    build_focused_term,
     build_term,
     container_to_dict,
     entity_name,
 )
+
+_RESOLVER = "apecx_integration.agents.globus_search.taxonomy_resolver.extract_virus_names"
 
 # ---------------------------------------------------------------------
 # entity_name
@@ -108,6 +111,91 @@ def test_build_term_handles_empty_entities_list():
     out = build_term("Q", [], template="{query} {entities}")
     # Trailing space is fine; the term is what eSearch sees.
     assert out == "Q "
+
+
+# ---------------------------------------------------------------------
+# build_focused_term — organism-anchored eSearch term construction
+#
+# Pure-transform (no network): the only dependency is the LOCAL virus-name
+# resolver, which we pin via monkeypatch for determinism. The real eUtils
+# behaviour (that the produced term returns non-empty results) is integration-
+# covered by tests/integration/test_viral_epitope_analysis.py's end-to-end CHIKV
+# run, which drives the assembly step's PubMed branch against live PubMed.
+# ---------------------------------------------------------------------
+
+
+def test_build_focused_term_anchors_on_virus_and_or_groups_concepts(monkeypatch):
+    """The bug: the verbose raw query ANDs every token → 0 hits. The fix anchors
+    on the virus name (AND) and OR-groups the remaining concept tokens."""
+    monkeypatch.setattr(_RESOLVER, lambda q: ["Chikungunya virus"])
+    out = build_focused_term(
+        "conserved chikungunya structural polyprotein epitopes and structural references"
+    )
+    # Organism is the phrase-quoted AND anchor; concepts are an OR group.
+    assert out == (
+        '"Chikungunya virus" AND (conserved OR structural OR polyprotein OR epitopes OR references)'
+    )
+
+
+def test_build_focused_term_excludes_organism_words_boolean_and_short_tokens(monkeypatch):
+    """Organism words (chikungunya, virus), the bareword boolean ``and``, and
+    sub-3-char tokens never leak into the concept OR-group."""
+    monkeypatch.setattr(_RESOLVER, lambda q: ["Chikungunya virus"])
+    out = build_focused_term("chikungunya E1 of the virus and epitopes")
+    concepts = out.split("AND (", 1)[1].rstrip(")")
+    tokens = [t.strip() for t in concepts.split(" OR ")]
+    assert "and" not in tokens  # boolean operator dropped
+    assert "E1" not in tokens  # < 3 chars dropped
+    assert "virus" not in tokens and "chikungunya" not in tokens  # organism words dropped
+    assert "epitopes" in tokens and "the" in tokens  # >=3-char non-organism tokens kept
+
+
+def test_build_focused_term_dedups_concepts_case_insensitively(monkeypatch):
+    monkeypatch.setattr(_RESOLVER, lambda q: ["Chikungunya virus"])
+    out = build_focused_term("chikungunya Structural structural STRUCTURAL polyprotein")
+    # 'structural' appears once despite three casings.
+    assert out == '"Chikungunya virus" AND (Structural OR polyprotein)'
+
+
+def test_build_focused_term_multiple_organisms_or_grouped_anchor(monkeypatch):
+    monkeypatch.setattr(_RESOLVER, lambda q: ["Chikungunya virus", "Dengue virus"])
+    out = build_focused_term("chikungunya and dengue epitopes")
+    assert out == '("Chikungunya virus" OR "Dengue virus") AND (epitopes)'
+
+
+def test_build_focused_term_anchor_only_when_no_concept_tokens(monkeypatch):
+    monkeypatch.setattr(_RESOLVER, lambda q: ["Chikungunya virus"])
+    out = build_focused_term("chikungunya virus")
+    assert out == '"Chikungunya virus"'
+
+
+def test_build_focused_term_no_virus_falls_back_to_raw_query(monkeypatch):
+    """No anchor in the query → return the raw query unchanged (never worse)."""
+    monkeypatch.setattr(_RESOLVER, lambda q: [])
+    assert build_focused_term("generic envelope glycoprotein epitopes") == (
+        "generic envelope glycoprotein epitopes"
+    )
+
+
+def test_build_focused_term_resolver_error_degrades_to_raw_query(monkeypatch, caplog):
+    """A resolver/import failure must degrade LOUD to the raw query, not crash."""
+
+    def _boom(_q):
+        raise RuntimeError("resolver unavailable")
+
+    monkeypatch.setattr(_RESOLVER, _boom)
+    with caplog.at_level("WARNING"):
+        out = build_focused_term("chikungunya epitopes", owner_name="assemble")
+    assert out == "chikungunya epitopes"
+    assert any("assemble:" in r.message for r in caplog.records)
+
+
+def test_build_focused_term_uses_real_resolver_for_known_virus():
+    """Integration-lite: the REAL local resolver anchors a CHIKV query (no mock,
+    no network) — proves the wiring, not just the mocked structure."""
+    out = build_focused_term("chikungunya structural polyprotein epitopes")
+    assert out.startswith('"Chikungunya virus" AND (')
+    assert "polyprotein" in out and "epitopes" in out
 
 
 # ---------------------------------------------------------------------
