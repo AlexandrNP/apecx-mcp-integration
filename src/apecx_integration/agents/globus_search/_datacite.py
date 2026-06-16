@@ -76,6 +76,83 @@ def datacite_subjects(content: Any, limit: int = 6) -> list[str]:
     return out
 
 
+# Citation-token precedence: the most object-specific identifier first. NCBI-Taxonomy is
+# deliberately excluded — it names the organism, not the record, so it can't cite a specific
+# object (every record for a virus shares it).
+_PRIMARY_ID_PRECEDENCE: tuple[str, ...] = (
+    "PDB",
+    "EMDB",
+    "GenBank",
+    "RefSeq",
+    "BVBRC-Genome",
+    "BVBRC-Protein",
+    "UniProt",
+    "DOI",
+)
+
+
+def datacite_identifiers(content: Any) -> dict[str, list[str]]:
+    """Return the object identifiers of a Globus record, grouped by type.
+
+    Pulls ``alternateIdentifiers[]`` ({alternateIdentifier, alternateIdentifierType} —
+    GenBank / PDB / UniProt / BVBRC-Genome / NCBI-Taxonomy / …) and DOI-typed
+    ``relatedIdentifiers[]``. Values are split on ``;`` (BV-BRC doubles UniProt as
+    ``"Q1H8W5;Q1H8W5"``) and deduped per type, order preserved. These are the concrete
+    references a reader needs to trace a claim back to a specific database object — the
+    fields the old projection silently dropped.
+    """
+    out: dict[str, list[str]] = {}
+    if not isinstance(content, dict):
+        return out
+
+    def _add(id_type: Any, raw: Any) -> None:
+        if not id_type or not raw:
+            return
+        bucket = out.setdefault(str(id_type), [])
+        for piece in str(raw).split(";"):
+            v = piece.strip()
+            if v and v not in bucket:
+                bucket.append(v)
+
+    for entry in content.get("alternateIdentifiers") or []:
+        if isinstance(entry, dict):
+            _add(entry.get("alternateIdentifierType"), entry.get("alternateIdentifier"))
+    for entry in content.get("relatedIdentifiers") or []:
+        if isinstance(entry, dict) and entry.get("relatedIdentifierType") == "DOI":
+            _add("DOI", entry.get("relatedIdentifier"))
+    return out
+
+
+def datacite_primary_id(content: Any) -> str | None:
+    """Return the best single citation token for a record (e.g. ``"PDB:7H6J"``,
+    ``"GenBank:LT964945"``), or ``None`` if it carries no object-specific identifier.
+
+    The token is a clean ``Type:Value`` (no whitespace/brackets) so it survives the
+    inline-citation regex and can be used as the record's ``subject`` at render. Precedence
+    favors the most specific object id; NCBI-Taxonomy is never primary (it's the organism).
+    """
+    ids = datacite_identifiers(content)
+    for id_type in _PRIMARY_ID_PRECEDENCE:
+        vals = ids.get(id_type)
+        if vals:
+            return f"{id_type}:{vals[0]}"
+    return None
+
+
+def datacite_taxon_iris(content: Any) -> list[str]:
+    """Return the DataCite ``subjects[].valueUri`` taxon IRIs (deduped, order preserved)."""
+    if not isinstance(content, dict):
+        return []
+    out: list[str] = []
+    seen: set[str] = set()
+    for entry in content.get("subjects") or []:
+        uri = entry.get("valueUri") if isinstance(entry, dict) else None
+        if uri and isinstance(uri, str) and uri not in seen:
+            seen.add(uri)
+            out.append(uri)
+    return out
+
+
 def datacite_organisms(content: Any) -> list[str]:
     """Return the deposited organism scientific names of a PDB record (deduped).
 
@@ -108,5 +185,8 @@ __all__ = [
     "datacite_title",
     "datacite_description",
     "datacite_subjects",
+    "datacite_identifiers",
+    "datacite_primary_id",
+    "datacite_taxon_iris",
     "datacite_organisms",
 ]

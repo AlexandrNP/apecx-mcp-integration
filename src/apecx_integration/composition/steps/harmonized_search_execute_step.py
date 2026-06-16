@@ -69,7 +69,10 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 
 from apecx_integration.agents.globus_search._datacite import (
+    datacite_identifiers,
+    datacite_primary_id,
     datacite_subjects,
+    datacite_taxon_iris,
     datacite_title,
 )
 
@@ -335,10 +338,22 @@ def _summarize_record(record: dict[str, Any]) -> dict[str, Any]:
     subjects = datacite_subjects(record, limit=4)
     if subjects:
         out["subjects"] = subjects
-    # DataCite identifier if present.
-    ident = record.get("identifier")
-    if isinstance(ident, dict) and ident.get("identifier"):
-        out["identifier"] = ident["identifier"]
+    # Object references — the concrete IDs a reader needs to trace a claim to a specific
+    # database object (PDB / GenBank / UniProt / BVBRC-Genome / DOI). The old code read a
+    # top-level ``identifier`` key that DataCite records DO NOT have, so every harmonized
+    # record was projected with NO identifier — and the final-doc renderer, which keys off
+    # ``subject``, then SKIPPED them entirely (zero Globus records in the evidence ledger).
+    identifiers = datacite_identifiers(record)
+    if identifiers:
+        out["identifiers"] = identifiers
+    # ``subject`` = the primary citation token (e.g. "PDB:7H6J"). The renderer requires a
+    # string ``subject`` to emit a record; without it the record vanishes from the doc.
+    primary = datacite_primary_id(record)
+    if primary:
+        out["subject"] = primary
+    taxon_iris = datacite_taxon_iris(record)
+    if taxon_iris:
+        out["taxon_iris"] = taxon_iris
     return out
 
 

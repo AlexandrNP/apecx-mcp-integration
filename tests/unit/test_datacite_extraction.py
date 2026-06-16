@@ -16,8 +16,11 @@ from __future__ import annotations
 
 from apecx_integration.agents.globus_search._datacite import (
     datacite_description,
+    datacite_identifiers,
     datacite_organisms,
+    datacite_primary_id,
     datacite_subjects,
+    datacite_taxon_iris,
     datacite_title,
 )
 
@@ -103,3 +106,70 @@ def test_datacite_organisms_empty_for_emdb_and_malformed():
     # EMDB records carry no pdb.polymer_entities -> [] (organism only in title/desc).
     for bad in (None, {}, "string", {"pdb": "nope"}, {"pdb": {"polymer_entities": [{}]}}):
         assert datacite_organisms(bad) == []
+
+
+# --------------------------- object identifiers (P0 fix) ---------------------------
+
+# Real shape (verified live 2026-06-16): alternateIdentifiers is a list of
+# {alternateIdentifier, alternateIdentifierType}; DOIs would live in relatedIdentifiers.
+_GENOME_CONTENT = {
+    "titles": [{"title": "Chikungunya virus CHIKV/Homo sapiens/NIC/1800.1D/2014"}],
+    "alternateIdentifiers": [
+        {"alternateIdentifier": "37124", "alternateIdentifierType": "NCBI-Taxonomy"},
+        {"alternateIdentifier": "KY703959", "alternateIdentifierType": "GenBank"},
+        {"alternateIdentifier": "37124.51", "alternateIdentifierType": "BVBRC-Genome"},
+    ],
+    "subjects": [
+        {
+            "subject": "Chikungunya virus",
+            "valueUri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        },
+    ],
+}
+_STRUCT_CONTENT = {
+    "alternateIdentifiers": [
+        {"alternateIdentifier": "37124", "alternateIdentifierType": "NCBI-Taxonomy"},
+        {"alternateIdentifier": "7H6J", "alternateIdentifierType": "PDB"},
+        # BV-BRC doubles UniProt as "X;X" — must split + dedupe.
+        {"alternateIdentifier": "Q1H8W5;Q1H8W5", "alternateIdentifierType": "UniProt"},
+    ],
+    "relatedIdentifiers": [
+        {"relatedIdentifier": "10.1016/j.chom.2020.07.008", "relatedIdentifierType": "DOI"},
+    ],
+}
+
+
+def test_datacite_identifiers_groups_by_type_and_splits_doubled():
+    ids = datacite_identifiers(_GENOME_CONTENT)
+    assert ids["GenBank"] == ["KY703959"]
+    assert ids["BVBRC-Genome"] == ["37124.51"]
+    assert ids["NCBI-Taxonomy"] == ["37124"]
+    ids2 = datacite_identifiers(_STRUCT_CONTENT)
+    assert ids2["PDB"] == ["7H6J"]
+    assert ids2["UniProt"] == ["Q1H8W5"]  # ";"-doubled value collapsed
+    assert ids2["DOI"] == ["10.1016/j.chom.2020.07.008"]  # from relatedIdentifiers
+
+
+def test_datacite_primary_id_precedence_never_taxonomy():
+    # structure → PDB wins; genome → GenBank wins; taxonomy is NEVER primary.
+    assert datacite_primary_id(_STRUCT_CONTENT) == "PDB:7H6J"
+    assert datacite_primary_id(_GENOME_CONTENT) == "GenBank:KY703959"
+    # a record carrying ONLY a taxon id has no citable object → None
+    assert (
+        datacite_primary_id(
+            {
+                "alternateIdentifiers": [
+                    {"alternateIdentifier": "9606", "alternateIdentifierType": "NCBI-Taxonomy"}
+                ]
+            }
+        )
+        is None
+    )
+    assert datacite_primary_id(None) is None and datacite_primary_id({}) is None
+
+
+def test_datacite_taxon_iris():
+    assert datacite_taxon_iris(_GENOME_CONTENT) == [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+    ]
+    assert datacite_taxon_iris({}) == [] and datacite_taxon_iris(None) == []

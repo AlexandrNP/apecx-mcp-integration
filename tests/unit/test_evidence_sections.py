@@ -24,6 +24,7 @@ from apecx_integration.composition.steps._stage_report import append_stage_repor
 from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     EvidenceReviewSynthesisStep,
     compose_evidence_markdown,
+    render_coverage_section,
     render_followups_section,
     render_sources_section,
 )
@@ -132,6 +133,36 @@ def test_sources_empty_bundle_is_present_and_honest():
     assert "No retrieved records carried a citable identifier" in sec
 
 
+def test_sources_renders_harmonized_projected_record_with_object_ids():
+    """P0 regression: harmonized Globus records are projected to the FLAT shape
+    (subject = a citation token, identifiers = typed object IDs) by _summarize_record —
+    NOT the {subject, content} shape. The renderer must emit them (they were silently
+    skipped, so the whole 13k-record corpus produced ZERO source lines) AND surface their
+    concrete object identifiers (GenBank/PDB/…) so a claim is traceable."""
+    sec = render_sources_section(
+        {
+            "globus_results": [
+                {
+                    "title": "Chikungunya virus CHIKV/Homo sapiens/NIC/1800.1D/2014",
+                    "subjects": ["Chikungunya virus"],
+                    "subject": "GenBank:KY703959",
+                    "identifiers": {
+                        "GenBank": ["KY703959"],
+                        "BVBRC-Genome": ["37124.51"],
+                        "NCBI-Taxonomy": ["37124"],
+                    },
+                }
+            ]
+        }
+    )
+    assert "[Globus GenBank:KY703959]" in sec
+    assert "Chikungunya virus CHIKV/Homo sapiens/NIC/1800.1D/2014" in sec
+    # the OTHER object id is surfaced in the descriptor; the taxon id is NOT a citation
+    assert "BVBRC-Genome:37124.51" in sec
+    assert "NCBI-Taxonomy" not in sec  # taxon id never used as an object reference
+    assert "No retrieved records carried a citable identifier" not in sec
+
+
 def test_sources_globus_datacite_title_not_untitled():
     """Regression: DataCite titles live at content.titles[0].title, not a flat key."""
     sec = render_sources_section(
@@ -142,6 +173,41 @@ def test_sources_globus_datacite_title_not_untitled():
         }
     )
     assert "Real Title" in sec and "(untitled)" not in sec
+
+
+# --------------------------- Evidence coverage ---------------------------
+def test_coverage_section_lists_per_source_counts():
+    """The per-source coverage (RAG, PubMed, and EACH Globus index separately) is rendered
+    from data_readiness.counts — the fix for 'Globus per-source count not in the document'.
+    An index with 0 records is named, never silently omitted."""
+    bundle = {
+        "data_readiness": {
+            "counts": {
+                "rag_chunks": 2,
+                "publications": 326,
+                "bvbrc_genome": 6684,
+                "bvbrc_protein": 6681,
+                "violin_vaccine": 3,
+                "protabank": 0,
+            }
+        }
+    }
+    sec = render_coverage_section(bundle)
+    assert sec.startswith("## Evidence coverage")
+    assert "bvbrc_genome**: 6684" in sec
+    assert "bvbrc_protein**: 6681" in sec
+    assert "violin_vaccine**: 3" in sec
+    assert "publications (PubMed)**: 326" in sec
+    assert "RAG chunks**: 2" in sec
+    # the empty index is named with a no-records marker, not dropped
+    assert "protabank**: 0" in sec and "no records" in sec
+    assert "Total records retrieved across sources: 13696" in sec  # 2+326+6684+6681+3+0
+
+
+def test_coverage_section_present_and_honest_when_absent():
+    sec = render_coverage_section({"query": "q"})
+    assert sec.startswith("## Evidence coverage")
+    assert "No per-source coverage was recorded" in sec
 
 
 # --------------------------- Follow-up questions ---------------------------

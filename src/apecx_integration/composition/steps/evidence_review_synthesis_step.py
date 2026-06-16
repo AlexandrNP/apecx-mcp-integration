@@ -38,6 +38,8 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.agents.globus_search._datacite import (
+    datacite_identifiers,
+    datacite_primary_id,
     datacite_subjects,
     datacite_title,
 )
@@ -45,11 +47,24 @@ from apecx_integration.composition.steps._stage_report import render_stage_repor
 
 log = logging.getLogger(__name__)
 
+# Object-identifier types surfaced in the Sources ledger, most-specific first.
+_GLOBUS_ID_TYPES: tuple[str, ...] = (
+    "PDB",
+    "EMDB",
+    "GenBank",
+    "RefSeq",
+    "BVBRC-Genome",
+    "BVBRC-Protein",
+    "UniProt",
+    "DOI",
+)
+
 _INPUT_KEY = "review_input"
 _STRUCTURAL_HEADING = "## Structural evidence (PDB / EMDB)"
 _ANSWER_HEADING = "# Answer"
 _CROSSDATA_HEADING = "## Cross-data reasoning"
 _SOURCES_HEADING = "## Sources and evidence"
+_COVERAGE_HEADING = "## Evidence coverage"
 _FOLLOWUPS_HEADING = "## Follow-up questions"
 _INSIGHT_HEADING = "## Integrated insight"
 # The five contract sections, in the order the final document MUST carry them.
@@ -262,26 +277,75 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
     for h in bundle.get("globus_results") or []:
         if not isinstance(h, dict):
             continue
-        subject = h.get("subject")
+        # Two record shapes coexist in globus_results: the flat projected shape
+        # (_summarize_record: title/subjects/subject/identifiers at top level) and the
+        # globus_search {subject, content} shape. Resolve each field from whichever
+        # carries it, so harmonized records (which had NO `subject` and were silently
+        # dropped here) now render with their concrete object identifiers.
+        content = h.get("content") or {}
+        subject = h.get("subject") or datacite_primary_id(content)
         if not subject or not isinstance(subject, str):
             continue
-        content = h.get("content") or {}
-        # DataCite-shaped: titles[0].title, not a flat "title" key (else "(untitled)").
-        title = datacite_title(content) or "(untitled)"
-        subjects = datacite_subjects(content)
+        title = h.get("title") or datacite_title(content) or "(untitled)"
+        subjects = h.get("subjects") or datacite_subjects(content)
+        identifiers = h.get("identifiers") or datacite_identifiers(content)
         structural_source = h.get("structural_source")
+        # Concrete object IDs beyond the citation token already shown (PDB/GenBank/…).
+        id_bits: list[str] = []
+        for id_type in _GLOBUS_ID_TYPES:
+            for v in (identifiers.get(id_type) or [])[:2]:
+                tok = f"{id_type}:{v}"
+                if tok != subject and tok not in id_bits:
+                    id_bits.append(tok)
+        desc_parts: list[str] = []
         if structural_source:
-            desc = f"{structural_source} structure"
+            desc_parts.append(f"{structural_source} structure")
         elif subjects:
-            desc = ", ".join(subjects[:4])
-        else:
-            desc = "harvested-corpus record"
+            desc_parts.append(", ".join(subjects[:4]))
+        if id_bits:
+            desc_parts.append(", ".join(id_bits[:6]))
+        desc = " · ".join(desc_parts) or "harvested-corpus record"
         entries.append(_collapse_ws(f"- **[Globus {subject}]** *{title}* — {desc}"))
 
     if not entries:
         lines.append("_No retrieved records carried a citable identifier for this query._")
     else:
         lines.extend(entries)
+    return "\n".join(lines)
+
+
+def render_coverage_section(bundle: dict[str, Any]) -> str:
+    """Deterministic ``## Evidence coverage`` — the per-source record counts backing this
+    answer: RAG, PubMed, and EACH Globus destination index separately (bvbrc_genome,
+    bvbrc_protein, violin_vaccine, …). Built in CODE from the ``data_readiness`` stage
+    (which captured the RETRIEVED counts right after assemble + the harmonized merge), so
+    the reader sees up front how much evidence each source contributed and which returned
+    nothing — instead of one collapsed "globus" aggregate. Counts are coverage (retrieved),
+    distinct from the distillation digest (kept top-N).
+
+    Always present; degrades to an explicit line when no coverage was recorded.
+    """
+    dr = bundle.get("data_readiness")
+    counts = dr.get("counts") if isinstance(dr, dict) else None
+    lines: list[str] = [_COVERAGE_HEADING, ""]
+    if not isinstance(counts, dict) or not counts:
+        lines.append("_No per-source coverage was recorded for this query._")
+        return "\n".join(lines)
+
+    # RAG + PubMed first (stable, human labels), then the Globus indices alphabetically.
+    base = [("rag_chunks", "RAG chunks"), ("publications", "publications (PubMed)")]
+    rendered: set[str] = set()
+    for key, label in base:
+        if key in counts:
+            lines.append(f"- **{label}**: {int(counts[key])}")
+            rendered.add(key)
+    for key in sorted(k for k in counts if k not in rendered):
+        marker = "" if int(counts[key]) else "  _(no records)_"
+        lines.append(f"- **{key}**: {int(counts[key])}{marker}")
+
+    total = sum(int(v) for v in counts.values() if isinstance(v, int))
+    lines.append("")
+    lines.append(f"_Total records retrieved across sources: {total}._")
     return "\n".join(lines)
 
 
@@ -474,13 +538,13 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     (the LLM output on the success path, or ``render_evidence_fallback`` on degrade).
 
     Order (the five contract sections, in order, plus the always-present Structural
-    section between Integrated insight and Sources):
+    + Evidence-coverage sections between Integrated insight and Sources):
 
         # Answer · ## Cross-data reasoning [+ ### Reasoning trace] ·
         ## Integrated insight · ## Structural evidence (PDB / EMDB) ·
-        ## Sources and evidence · ## Follow-up questions
+        ## Evidence coverage · ## Sources and evidence · ## Follow-up questions
 
-    Sources + Follow-ups are deterministic, so those two sections can NEVER be
+    Coverage + Sources + Follow-ups are deterministic, so those sections can NEVER be
     omitted regardless of LLM behavior — a missing section is impossible by
     construction for them.
     """
@@ -491,9 +555,10 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     structural = render_structural_section(
         bundle.get("structural_records"), bundle.get("structural_note")
     )
+    coverage = render_coverage_section(bundle)
     sources = render_sources_section(bundle)
     followups = render_followups_section(query, bundle)
-    return f"{body.rstrip()}\n\n{structural}\n\n{sources}\n\n{followups}\n"
+    return f"{body.rstrip()}\n\n{structural}\n\n{coverage}\n\n{sources}\n\n{followups}\n"
 
 
 class EvidenceReviewSynthesisStepConfig(StepConfig):

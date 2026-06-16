@@ -146,6 +146,37 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     assert parts["raw_sample"][0]["title"] == "Chikungunya virus strain S27"
 
 
+def test_summarize_record_preserves_object_identifiers():
+    """P0 fix: _summarize_record must carry a citation token (`subject`) + typed object
+    IDs (`identifiers`) from the DataCite shape. The old code read a top-level `identifier`
+    key DataCite records lack, so every harmonized record was projected with NO id and then
+    silently dropped by the renderer (zero Globus records in the evidence ledger)."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _summarize_record,
+    )
+
+    rec = {
+        "titles": [{"title": "Chikungunya virus strain X"}],
+        "alternateIdentifiers": [
+            {"alternateIdentifier": "37124", "alternateIdentifierType": "NCBI-Taxonomy"},
+            {"alternateIdentifier": "KY703959", "alternateIdentifierType": "GenBank"},
+            {"alternateIdentifier": "37124.51", "alternateIdentifierType": "BVBRC-Genome"},
+        ],
+        "subjects": [
+            {
+                "subject": "Chikungunya virus",
+                "valueUri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+            },
+        ],
+    }
+    out = _summarize_record(rec)
+    assert out["title"] == "Chikungunya virus strain X"
+    assert out["subject"] == "GenBank:KY703959"  # primary citation token (not the taxon)
+    assert out["identifiers"]["GenBank"] == ["KY703959"]
+    assert out["identifiers"]["BVBRC-Genome"] == ["37124.51"]
+    assert out["taxon_iris"] == ["http://purl.obolibrary.org/obo/NCBITaxon_37124"]
+
+
 class _FakeResp:
     def __init__(self, total, n_returned):
         self.data = {
