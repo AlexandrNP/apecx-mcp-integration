@@ -116,12 +116,19 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     in the index but not pulled is a failure' (the bvbrc/violin 0-except-PDB report)."""
     import apecx_integration.composition.steps.harmonized_search_execute_step as mod
 
+    # The destination (harmonized) index returns DataCite-shaped records:
+    # the title lives at titles[0].title, not a flat Genome_Name column.
     monkeypatch.setattr(
         mod,
         "_raw_query",
         lambda index, term, limit=200: (
             6687,
-            [{"Genome_Name": "Chikungunya virus strain S27", "Species": "Chikungunya virus"}],
+            [
+                {
+                    "titles": [{"title": "Chikungunya virus strain S27"}],
+                    "subjects": [{"subject": "Chikungunya virus"}],
+                }
+            ],
             None,
         ),
     )
@@ -136,7 +143,7 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     assert "Chikungunya virus strain S27" in md  # the record is actually rendered
     assert parts["resolution"]["path"] == "miss_raw_fallback"
     assert parts["raw_total"] == 6687
-    assert parts["raw_sample"][0]["Genome_Name"] == "Chikungunya virus strain S27"
+    assert parts["raw_sample"][0]["title"] == "Chikungunya virus strain S27"
 
 
 @pytest.mark.parametrize("missing_key", ["term", "index", "resolution_path"])
@@ -499,3 +506,73 @@ def test_select_raw_query_term_iri_without_label_falls_through():
     assert reason is not None
     assert "no canonical_label" in reason
     assert "not-applicable" in reason
+
+
+# ---------------------------------------------------------------------------
+# Destination-index contract pin (taxon-based search regression guard)
+# ---------------------------------------------------------------------------
+
+# The harmonized DESTINATION index UUIDs (the SC-D harmonized output). The
+# step MUST query these — never the raw scrape-input *source* UUIDs. Pointing
+# the step at the sources silently broke taxon-based search: the sources have
+# no canonical taxon IRI, so the filter fell back to raw name-string matching
+# (e.g. violin_vaccine returned 0 for a pathogen the index actually carries).
+_DESTINATION_UUIDS = {
+    "violin_pathogen": "b4965a61-e6de-4e8b-b312-7ab37c7c39d3",
+    "violin_vaccine": "12dfce07-0b4a-40b9-8890-48c3e943f9a1",
+    "violin_gene": "667dc223-55ba-423a-b116-3bb434813238",
+    "bvbrc_genome": "dfefcd85-d130-4dd1-b37a-4bc05f3bcdc8",
+    "bvbrc_protein": "826e5d28-c906-4f74-816c-9b37b6ef0a7b",
+    "bvbrc_protein_structure": "96fbabbb-06b2-4ea3-91f9-8510bfabb52a",
+    "bvbrc_epitope": "4c0b4e3d-1d9d-40be-8cbc-d0f2601e44bf",
+    "antiviraldb": "23a7bffd-10b7-4d40-9cec-1a435f32b04e",
+    "protabank": "be999b57-88c4-4aff-a883-4b96c57b66cc",
+}
+
+# The raw scrape-input SOURCE UUIDs — the step must NOT use any of these.
+_SOURCE_UUIDS_FORBIDDEN = {
+    "a67c7310-5115-446f-bfb6-d889bc4efa06",
+    "c5ff64fd-5e78-4cf0-848a-2788a78e71cd",
+    "205c1a5b-c9bd-4137-8ac6-ca879c9a4f9c",
+    "b676edbe-3286-4514-bc13-5cbe891c4bb1",
+    "249efe96-14d2-443d-ad47-5621ed43a343",
+    "439f2b66-09d4-4141-8c3d-b4dc18ef8a07",
+    "f873c7d5-8652-466d-806b-b5da46f0f786",
+    "e8097a7b-a280-4031-9df1-1e837193494f",
+    "9e902471-9c77-49d3-a12c-516cc0808c3b",
+}
+
+
+def test_index_uuids_are_destination_not_source():
+    """Pin every index to its HARMONIZED destination UUID; forbid the sources."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _INDEX_UUIDS,
+    )
+
+    assert _INDEX_UUIDS == _DESTINATION_UUIDS
+    assert not (set(_INDEX_UUIDS.values()) & _SOURCE_UUIDS_FORBIDDEN), (
+        "step is querying a raw SOURCE scrape index — taxon search will silently "
+        "degrade to name-string matching. Use the harmonized destination UUID."
+    )
+
+
+def test_harmonized_filter_is_uniform_taxon_iri():
+    """The harmonized filter collapsed to the uniform canonical-taxon-IRI field
+    on every index — a single IRI value returns the whole strain rollup."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _HARMONIZED_FILTER,
+        _build_filter_values,
+    )
+
+    for index, spec in _HARMONIZED_FILTER.items():
+        assert spec == {"field": "subjects.valueUri", "shape": "iri"}, index
+
+    # _build_filter_values returns the single canonical IRI (not a strain-name
+    # enumeration) — that single value is what rolls up all strains.
+    plan = {
+        "index": "bvbrc_genome",
+        "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "canonical_label": "Chikungunya virus",
+        "synonyms": ["CHIKV", "Chikungunya fever virus"],
+    }
+    assert _build_filter_values(plan) == ["http://purl.obolibrary.org/obo/NCBITaxon_37124"]

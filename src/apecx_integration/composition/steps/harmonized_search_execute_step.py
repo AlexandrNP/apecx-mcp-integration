@@ -66,40 +66,56 @@ from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
 
+from apecx_integration.agents.globus_search._datacite import (
+    datacite_subjects,
+    datacite_title,
+)
+
 log = logging.getLogger(__name__)
 
 _INPUT_DU = "plan"
 _OUTPUT_KEY = "envelope_input"
 
 
-# Per-index harmonized filter map. Mirrors the standalone CLI's
-# HARMONIZED_FILTER (apecx-harvesters skill). When the SC-D ingest
-# eventually populates ``subjects.valueUri`` on every published index,
-# this collapses to a uniform ``{field: "subjects.valueUri", shape: "iri"}``
-# entry per index.
+# Per-index harmonized filter map. The SC-D ingest has run: every
+# *destination* (harmonized) index below is DataCite-shaped and carries
+# the canonical pathogen taxon on every record at ``subjects[].valueUri``
+# (the NCBI Taxonomy IRI), with each strain record ALSO stamped with its
+# species-rank ancestor IRI. So the map has collapsed to the uniform
+# ``{field: "subjects.valueUri", shape: "iri"}`` entry the earlier
+# source-index version anticipated: a SINGLE canonical IRI filter now
+# returns the whole strain set for a species (rename-proof — IRIs are
+# stable), replacing the old per-index column filters that enumerated
+# every strain *name* against the raw scrape columns.
 _HARMONIZED_FILTER: dict[str, dict[str, str]] = {
-    "violin_pathogen": {"field": "NCBI_Taxonomy_ID", "shape": "taxon_id"},
-    "violin_vaccine": {"field": "VIOLIN_c_pathogen_id", "shape": "taxon_id"},
-    "violin_gene": {"field": "Organism", "shape": "label"},
-    "bvbrc_genome": {"field": "Species", "shape": "label"},
-    "bvbrc_protein": {"field": "Genome", "shape": "label"},
-    "bvbrc_protein_structure": {"field": "Organism_Name", "shape": "label"},
-    "bvbrc_epitope": {"field": "Organism", "shape": "label"},
-    "antiviraldb": {"field": "Virus", "shape": "label"},
-    "protabank": {"field": "Title", "shape": "label"},
+    "violin_pathogen": {"field": "subjects.valueUri", "shape": "iri"},
+    "violin_vaccine": {"field": "subjects.valueUri", "shape": "iri"},
+    "violin_gene": {"field": "subjects.valueUri", "shape": "iri"},
+    "bvbrc_genome": {"field": "subjects.valueUri", "shape": "iri"},
+    "bvbrc_protein": {"field": "subjects.valueUri", "shape": "iri"},
+    "bvbrc_protein_structure": {"field": "subjects.valueUri", "shape": "iri"},
+    "bvbrc_epitope": {"field": "subjects.valueUri", "shape": "iri"},
+    "antiviraldb": {"field": "subjects.valueUri", "shape": "iri"},
+    "protabank": {"field": "subjects.valueUri", "shape": "iri"},
 }
 
-# Globus Search collection UUIDs for each APECx index.
+# Globus Search collection UUIDs — the HARMONIZED *destination* indices
+# (the SC-D harmonized output), NOT the raw scrape-input sources. The
+# destination carries the DataCite ``subjects[].valueUri`` taxon slot the
+# harmonized filter above queries; the source indices have only raw
+# per-database columns (no canonical taxon IRI) and must never be the
+# query target — pointing here at the sources is what silently broke
+# taxon-based search (it fell back to raw name-string matching).
 _INDEX_UUIDS: dict[str, str] = {
-    "violin_pathogen": "a67c7310-5115-446f-bfb6-d889bc4efa06",
-    "violin_vaccine": "c5ff64fd-5e78-4cf0-848a-2788a78e71cd",
-    "violin_gene": "205c1a5b-c9bd-4137-8ac6-ca879c9a4f9c",
-    "bvbrc_genome": "b676edbe-3286-4514-bc13-5cbe891c4bb1",
-    "bvbrc_protein": "249efe96-14d2-443d-ad47-5621ed43a343",
-    "bvbrc_protein_structure": "439f2b66-09d4-4141-8c3d-b4dc18ef8a07",
-    "bvbrc_epitope": "f873c7d5-8652-466d-806b-b5da46f0f786",
-    "antiviraldb": "e8097a7b-a280-4031-9df1-1e837193494f",
-    "protabank": "9e902471-9c77-49d3-a12c-516cc0808c3b",
+    "violin_pathogen": "b4965a61-e6de-4e8b-b312-7ab37c7c39d3",
+    "violin_vaccine": "12dfce07-0b4a-40b9-8890-48c3e943f9a1",
+    "violin_gene": "667dc223-55ba-423a-b116-3bb434813238",
+    "bvbrc_genome": "dfefcd85-d130-4dd1-b37a-4bc05f3bcdc8",
+    "bvbrc_protein": "826e5d28-c906-4f74-816c-9b37b6ef0a7b",
+    "bvbrc_protein_structure": "96fbabbb-06b2-4ea3-91f9-8510bfabb52a",
+    "bvbrc_epitope": "4c0b4e3d-1d9d-40be-8cbc-d0f2601e44bf",
+    "antiviraldb": "23a7bffd-10b7-4d40-9cec-1a435f32b04e",
+    "protabank": "be999b57-88c4-4aff-a883-4b96c57b66cc",
 }
 
 
@@ -275,25 +291,23 @@ def _compute_harmonization_health(
 
 
 def _summarize_record(record: dict[str, Any]) -> dict[str, Any]:
-    """Project a Globus record to a small preview dict.
+    """Project a harmonized (DataCite-shaped) Globus record to a small preview dict.
 
-    Strips deeply nested arrays; surfaces the most identity-bearing
-    top-level fields per source.
+    The destination indices store identity in the DataCite shape — the
+    human title at ``titles[0].title`` and the taxon/keyword anchors at
+    ``subjects[].subject`` — NOT in flat per-database columns. Reading the
+    old flat keys (``Species`` / ``Organism`` / …) here returned ``{}`` for
+    every harmonized record. ``_datacite`` is the single source of truth
+    for pulling these fields, with a flat-key fallback for any record a
+    harvester normalized into the simpler shape.
     """
     out: dict[str, Any] = {}
-    for k in (
-        "Genome_Name",
-        "Species",
-        "Pathogen",
-        "Organism",
-        "Organism_Name",
-        "Virus",
-        "Title",
-        "Gene_Name",
-        "Genome",
-    ):
-        if k in record and record[k] is not None:
-            out[k] = record[k]
+    title = datacite_title(record)
+    if title:
+        out["title"] = title
+    subjects = datacite_subjects(record, limit=4)
+    if subjects:
+        out["subjects"] = subjects
     # DataCite identifier if present.
     ident = record.get("identifier")
     if isinstance(ident, dict) and ident.get("identifier"):
@@ -391,18 +405,9 @@ def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
             f"or an NCBI Taxonomy IRI for a taxon-precise count.\n"
         )
         for s in sample:
-            # _summarize_record keeps the identity-bearing fields (Genome_Name / Species /
-            # Organism / Title / identifier …); render whichever are present.
-            label = (
-                s.get("Genome_Name")
-                or s.get("Species")
-                or s.get("Pathogen")
-                or s.get("Organism")
-                or s.get("Organism_Name")
-                or s.get("Title")
-                or s.get("identifier")
-                or "(record)"
-            )
+            # _summarize_record keeps the DataCite identity fields
+            # (title / subjects / identifier); render whichever are present.
+            label = s.get("title") or s.get("identifier") or "(record)"
             md += f"- {label}\n"
         bundle_parts = {
             "resolution": {"path": "miss_raw_fallback", "canonical_iri": None, "term": term},
