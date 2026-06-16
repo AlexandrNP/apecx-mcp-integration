@@ -200,6 +200,15 @@ class WorkflowCatalog(BaseModel):
 
     workflows: list[WorkflowCatalogEntry]
 
+    promote_discovered: list[str] = Field(default_factory=list)
+    """Names of DISCOVERED workflows to ALSO expose as first-class MCP tools at startup,
+    WITHOUT hand-writing a full ``workflows:`` entry. Each name is resolved from filesystem
+    discovery (``resolve_catalog_entry``); the tool gets the workflow's own description and a
+    typed ``{query}`` signature so a model sees + calls it directly (no list_workflows hop).
+    A workflow that needs richer typed params (taxon_id, protein, …) should get a full
+    ``workflows:`` entry instead — this list is the lightweight path for query-shaped ones.
+    Names already present in ``workflows:`` are skipped (the explicit entry wins)."""
+
 
 # ---------------------------------------------------------------------------
 # Registration report
@@ -740,60 +749,140 @@ def register_workflows(
     report = RegistrationReport()
 
     for index, entry in enumerate(catalog.workflows):
-        identifier = entry.tool_name or f"<entry #{index}>"
-        try:
-            met, missing = check_prerequisites(entry.requires)
+        _register_one_entry(
+            server, entry, lg, report, identifier=entry.tool_name or f"<entry #{index}>"
+        )
 
-            if met:
-                # Live tool: synthesize a function that defers to _runner.
-                async def _live_dispatch(_entry=entry, **kwargs):
-                    return await _runner(_entry, **kwargs)
-
-                fn = _synthesize_tool_function(entry, _live_dispatch)
-                description = entry.description
-                server.tool(name=entry.tool_name, description=description)(fn)
-                report.registered.append(entry.tool_name)
-                lg.info(
-                    "workflow registry: registered MCP tool '%s' (source=%s)",
-                    entry.tool_name,
-                    entry.source.kind,
-                )
-            else:
-                reason = "; ".join(missing)
-                hint = entry.requires.unavailable_hint
-
-                async def _unavailable_dispatch(_entry=entry, _reason=reason, _hint=hint, **kwargs):
-                    return {
-                        "error": (
-                            f"tool '{_entry.tool_name}' is unavailable because its "
-                            f"prerequisites are not met: {_reason}. "
-                            f"Fix the configuration (set the missing env vars, "
-                            f"install the missing modules) and retry."
-                            + (f" {_hint}" if _hint else "")
-                        )
-                    }
-
-                fn = _synthesize_tool_function(entry, _unavailable_dispatch)
-                description = f"{entry.description}\n\n[UNAVAILABLE: {reason}]" + (
-                    f" {hint}" if hint else ""
-                )
-                server.tool(name=entry.tool_name, description=description)(fn)
-                report.unavailable.append((entry.tool_name, reason))
-                lg.warning(
-                    "workflow registry: tool '%s' registered as UNAVAILABLE — %s",
-                    entry.tool_name,
-                    reason,
-                )
-        except Exception as exc:
-            report.failed.append((identifier, f"{type(exc).__name__}: {exc}"))
-            lg.error(
-                "workflow registry: failed to register tool '%s': %s",
-                identifier,
-                exc,
-                exc_info=True,
-            )
+    # promote_discovered: expose named DISCOVERED workflows as first-class tools too, WITHOUT a
+    # hand-written entry. Each is resolved from discovery + given a typed {query} signature so a
+    # model calls it directly. Explicit entries above already win (we skip names registered there).
+    already = set(report.registered) | {tn for tn, _ in report.unavailable}
+    for entry in _resolve_promoted_entries(catalog, already, lg):
+        # Promoted-discovered tools dispatch through the GENERIC ``run_workflow`` (not the
+        # registry ``_runner``): it DERIVES the input-envelope key from the loaded workflow
+        # (a discovery-synthesized entry has none), and applies the requires_llm gate +
+        # param-gap control-return + G127 fail-loud + run-store/provenance — the same path a
+        # caller gets from ``run_workflow(name, …)``. So a promoted direct tool and the generic
+        # call behave identically (no divergent second execution path).
+        _register_one_entry(
+            server, entry, lg, report, identifier=entry.tool_name, runner=_run_via_run_workflow
+        )
 
     return report
+
+
+async def _run_via_run_workflow(entry: WorkflowCatalogEntry, **kwargs: Any) -> dict[str, Any]:
+    """Runner that dispatches to the generic ``run_workflow`` MCP tool by name (used for
+    ``promote_discovered`` tools — see ``register_workflows``)."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    return await run_workflow(entry.tool_name, dict(kwargs))
+
+
+def _register_one_entry(
+    server: Any,
+    entry: WorkflowCatalogEntry,
+    lg: logging.Logger,
+    report: RegistrationReport,
+    *,
+    identifier: str,
+    runner: Callable[..., Any] | None = None,
+) -> None:
+    """Register ONE catalog entry as an MCP tool (live or UNAVAILABLE), recording the outcome.
+
+    Shared by the explicit ``workflows:`` entries (default ``runner=_runner``) and the
+    ``promote_discovered`` ones (``runner=_run_via_run_workflow``) so both take the identical
+    synthesize → prereq-gate → register → report path, differing only in the dispatch target."""
+    dispatch = runner or _runner
+    try:
+        met, missing = check_prerequisites(entry.requires)
+        if met:
+
+            async def _live_dispatch(_entry=entry, _dispatch=dispatch, **kwargs):
+                return await _dispatch(_entry, **kwargs)
+
+            fn = _synthesize_tool_function(entry, _live_dispatch)
+            server.tool(name=entry.tool_name, description=entry.description)(fn)
+            report.registered.append(entry.tool_name)
+            lg.info(
+                "workflow registry: registered MCP tool '%s' (source=%s)",
+                entry.tool_name,
+                entry.source.kind,
+            )
+        else:
+            reason = "; ".join(missing)
+            hint = entry.requires.unavailable_hint
+
+            async def _unavailable_dispatch(_entry=entry, _reason=reason, _hint=hint, **kwargs):
+                return {
+                    "error": (
+                        f"tool '{_entry.tool_name}' is unavailable because its "
+                        f"prerequisites are not met: {_reason}. "
+                        f"Fix the configuration (set the missing env vars, "
+                        f"install the missing modules) and retry." + (f" {_hint}" if _hint else "")
+                    )
+                }
+
+            fn = _synthesize_tool_function(entry, _unavailable_dispatch)
+            description = f"{entry.description}\n\n[UNAVAILABLE: {reason}]" + (
+                f" {hint}" if hint else ""
+            )
+            server.tool(name=entry.tool_name, description=description)(fn)
+            report.unavailable.append((entry.tool_name, reason))
+            lg.warning(
+                "workflow registry: tool '%s' registered as UNAVAILABLE — %s",
+                entry.tool_name,
+                reason,
+            )
+    except Exception as exc:
+        report.failed.append((identifier, f"{type(exc).__name__}: {exc}"))
+        lg.error(
+            "workflow registry: failed to register tool '%s': %s", identifier, exc, exc_info=True
+        )
+
+
+# Typed default for a promoted DISCOVERED workflow: a single required ``query`` so the model
+# sees a usable parameter (the discovery default is untyped ``additionalProperties: true``,
+# which synthesizes a NO-arg tool the model can't drive). ``additionalProperties: true`` is kept
+# so a caller MAY still pass extra keys, which ``run_workflow`` forwards + param-gap-validates.
+_DEFAULT_PROMOTED_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "query": {
+            "type": "string",
+            "description": "The scientist's free-text question for this workflow.",
+        }
+    },
+    "required": ["query"],
+    "additionalProperties": True,
+}
+
+
+def _resolve_promoted_entries(
+    catalog: WorkflowCatalog, already_registered: set[str], lg: logging.Logger
+) -> list[WorkflowCatalogEntry]:
+    """Build registrable entries for ``catalog.promote_discovered`` names.
+
+    Each is resolved via ``resolve_catalog_entry`` (so its ``source`` + runner path match an
+    explicit entry exactly); a discovery-synthesized entry's untyped schema is replaced with the
+    typed ``{query}`` default so the tool exposes a usable parameter. Names already registered as
+    explicit entries are skipped; unknown names are warned + skipped (never a hard failure)."""
+    entries: list[WorkflowCatalogEntry] = []
+    for name in catalog.promote_discovered:
+        if name in already_registered:
+            continue  # an explicit workflows: entry already registered it
+        entry = resolve_catalog_entry(name, catalog)
+        if entry is None:
+            lg.warning(
+                "workflow registry: promote_discovered name '%s' is not a discoverable workflow "
+                "— skipped (check spelling / that its dir exists under composition/workflows/).",
+                name,
+            )
+            continue
+        if not (isinstance(entry.input_schema, dict) and entry.input_schema.get("properties")):
+            entry = entry.model_copy(update={"input_schema": dict(_DEFAULT_PROMOTED_SCHEMA)})
+        entries.append(entry)
+    return entries
 
 
 __all__ = [

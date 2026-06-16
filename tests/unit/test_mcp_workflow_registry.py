@@ -455,3 +455,54 @@ def build_passthrough():
         if factory_mod_name in sys.modules:
             del sys.modules[factory_mod_name]
         workflow_registry._clear_workflow_cache()
+
+
+# ---------------------------------------------------------------------------
+# promote_discovered — config-driven runtime promotion of DISCOVERED workflows
+# ---------------------------------------------------------------------------
+
+
+def test_promote_discovered_registers_a_discovered_workflow_as_typed_query_tool() -> None:
+    """A name in ``promote_discovered`` becomes a first-class tool — resolved from filesystem
+    discovery (no hand-written entry) — with a typed ``query`` signature so a model calls it
+    directly. ``rag_e2e_synthesis`` is a real discovered product workflow with no explicit entry."""
+    import inspect
+
+    catalog = WorkflowCatalog(workflows=[], promote_discovered=["rag_e2e_synthesis"])
+    fake = _FakeFastMCP()
+    report = register_workflows(fake, catalog)
+
+    assert "rag_e2e_synthesis" in report.registered
+    cap = next(c for c in fake.captured if c.name == "rag_e2e_synthesis")
+    # Typed {query} signature (the discovery default is untyped → would be a no-arg tool).
+    params = inspect.signature(cap.fn).parameters
+    assert "query" in params
+    assert params["query"].default is inspect.Parameter.empty  # required
+    # Description comes from the workflow itself, not a placeholder.
+    assert cap.description and "rag_e2e_synthesis (auto-discovered" not in cap.description
+
+
+def test_promote_discovered_unknown_name_is_warned_not_fatal(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """A bogus promote_discovered name is skipped with a WARNING — never a hard failure that
+    would empty the whole tool surface."""
+    catalog = WorkflowCatalog(workflows=[], promote_discovered=["does_not_exist_xyz_123"])
+    fake = _FakeFastMCP()
+    with caplog.at_level(logging.WARNING):
+        report = register_workflows(fake, catalog)
+
+    assert report.registered == []
+    assert not fake.captured
+    assert any("does_not_exist_xyz_123" in r.message for r in caplog.records)
+
+
+def test_promote_discovered_skips_a_name_already_an_explicit_entry(tmp_path: Path) -> None:
+    """A name in BOTH ``workflows:`` and ``promote_discovered`` registers ONCE (explicit wins)."""
+    catalog = _make_yaml_catalog(tmp_path)  # has one explicit entry 'stub_tool'
+    catalog = catalog.model_copy(update={"promote_discovered": ["stub_tool"]})
+    fake = _FakeFastMCP()
+    report = register_workflows(fake, catalog)
+
+    assert report.registered.count("stub_tool") == 1
+    assert sum(1 for c in fake.captured if c.name == "stub_tool") == 1

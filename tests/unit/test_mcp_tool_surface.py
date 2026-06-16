@@ -47,6 +47,11 @@ EXPECTED_CATALOG = {
     "viral_conserved_sites",
     "viral_conserved_sites_muscle",
     "viral_epitope_analysis",
+    # Promoted from filesystem discovery via the catalog `promote_discovered:` list (no
+    # hand-written entry) — a product workflow exposed as a first-class {query} tool so a
+    # model calls it directly instead of via list_workflows → run_workflow. Routes THROUGH
+    # run_workflow (not a shadow tool — same execution + gating). 2026-06-15.
+    "rag_e2e_synthesis",
 }
 
 EXPECTED = EXPECTED_STATIC | EXPECTED_CATALOG

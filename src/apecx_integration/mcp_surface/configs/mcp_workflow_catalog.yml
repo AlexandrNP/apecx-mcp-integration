@@ -11,6 +11,14 @@
 # To add a new pre-made workflow, append an entry here. See
 # docs/running_nanobrain_workflows_via_mcp.md for the full guide.
 
+# promote_discovered — names of DISCOVERED workflows to ALSO expose as first-class MCP
+# tools at startup, WITHOUT a full `workflows:` entry. Each gets a typed {query} tool so a
+# model calls it directly (no list_workflows hop — small models skip that). Add a name here
+# to promote a query-shaped product workflow; use a full `workflows:` entry for ones that
+# need richer typed params (taxon_id, protein). Names also in `workflows:` are ignored.
+promote_discovered:
+  - rag_e2e_synthesis
+
 workflows:
   - tool_name: rhea_muscle_alignment
     description: |
