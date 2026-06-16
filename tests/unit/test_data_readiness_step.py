@@ -100,6 +100,48 @@ def test_total_absence_is_named(tmp_path):
     assert "NONE" in rep["markdown"]
 
 
+def test_harmonized_per_index_coverage(tmp_path):
+    """Primary path: BV-BRC/VIOLIN now arrive via the Globus destination indices, so coverage
+    is counted per-index from harmonized_search_summary.per_index_kept (NOT the dead tabular
+    keys). An index with 0 hits is named as a gap with its raw index name."""
+    step = _step(tmp_path)
+    bundle = {
+        "query": "chikungunya epitopes",
+        "rag_chunks": [{"id": 1}],
+        "publications": [{"doi": "10.x"}],
+        "globus_results": [{"subject": "pdb:3N40"}] * 9,
+        "harmonized_search_summary": {
+            "per_index_kept": {
+                "antiviraldb": 2,
+                "bvbrc_epitope": 2,
+                "bvbrc_genome": 6,
+                "bvbrc_protein": 6,
+                "bvbrc_protein_structure": 6,
+                "protabank": 0,
+                "violin_gene": 2,
+                "violin_pathogen": 2,
+                "violin_vaccine": 3,
+            },
+            "total_records": 29,
+            "map_errors": {},
+        },
+    }
+    out = asyncio.run(step.process(bundle))
+    dr = out["data_readiness"]
+    # base sources + 9 destination indices = 11 sources; the dead tabular keys are NOT counted.
+    assert dr["n_sources"] == 11
+    assert "bvbrc_genomes" not in dr["counts"]
+    assert dr["counts"]["bvbrc_genome"] == 6
+    assert dr["counts"]["protabank"] == 0
+    # the empty index is named as a gap with its raw index name.
+    assert "no protabank record" in dr["gaps"]
+    # one base source (rag/pubmed) + the 8 non-empty indices = 10 populated.
+    assert dr["sources_available"] == 10
+    rep = [r for r in out["stage_reports"] if r["stage"] == "data_readiness"][0]
+    assert "6 bvbrc_genome(s)" in rep["markdown"]
+    assert "Coverage gaps" in rep["markdown"]
+
+
 def test_envelope_unwrap(tmp_path):
     step = _step(tmp_path)
     out = asyncio.run(step.process({"readiness_input": _bundle()}))

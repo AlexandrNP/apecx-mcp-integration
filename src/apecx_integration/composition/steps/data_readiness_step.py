@@ -4,9 +4,12 @@ Sits AFTER ``assemble`` and BEFORE ``structural``. It summarizes the COVERAGE of
 assembled evidence bundle — how many records each retrieval branch returned — and
 NAMES the gaps (branches that returned nothing) so the scientist sees, up front and
 explicitly, which evidence sources are backing the answer and which are absent for this
-query ("no VIOLIN immunology mapping available", "no BV-BRC genome available", …). A
-named gap is a real signal: it tells the reader the evidence basis is narrower than the
-full source set, instead of letting a silent empty branch read as "nothing exists".
+query. Structured coverage is counted PER Globus DESTINATION INDEX (from
+``harmonized_search_summary.per_index_kept`` — BV-BRC/VIOLIN now arrive via their Globus
+indices, not local tabular keys), e.g. "no protabank record"; the RAG + PubMed branches
+are always counted. A named gap is a real signal: it tells the reader the evidence basis
+is narrower than the full source set, instead of letting a silent empty branch read as
+"nothing exists".
 
 Pure: it reads only the assemble-built bundle (no network, no I/O) and passes the bundle
 through UNCHANGED apart from appending a ``data_readiness`` stage report (order 0) and
@@ -34,12 +37,20 @@ _INPUT_KEY = "readiness_input"
 _STAGE = "data_readiness"
 _STAGE_ORDER = 0
 
-# (bundle key, human label, "missing" phrasing) for each assembled retrieval branch.
-_SOURCES: tuple[tuple[str, str, str], ...] = (
+# Always-present branches (RAG + PubMed). The structured-retrieval coverage is
+# reported per-harmonized-index when ``harmonized_search_summary`` is on the bundle
+# (the current viral_epitope_analysis path: BV-BRC + VIOLIN come from their Globus
+# DESTINATION indices, not local tabular keys), else falls back to the legacy keys.
+_BASE_SOURCES: tuple[tuple[str, str, str], ...] = (
     ("rag_chunks", "RAG chunk", "no domain-RAG context"),
+    ("publications", "publication", "no PubMed publication"),
+)
+
+# Legacy fallback: the pre-harmonized structured branches (used only when no
+# ``harmonized_search_summary`` is present — e.g. a degraded run that never reached hmerge).
+_LEGACY_STRUCTURED: tuple[tuple[str, str, str], ...] = (
     ("bvbrc_genomes", "BV-BRC genome", "no BV-BRC genome"),
     ("violin_mappings", "VIOLIN immunology mapping", "no VIOLIN immunology mapping"),
-    ("publications", "publication", "no PubMed publication"),
     ("globus_results", "Globus record", "no Globus harvested-corpus record"),
 )
 
@@ -85,26 +96,53 @@ class DataReadinessStep(BaseStep):
         bundle = dict(input_data)  # passthrough copy; we add data_readiness + a report
 
         counts: dict[str, int] = {}
+        coverage: list[tuple[str, int]] = []  # ordered (label, count) for rendering
         gaps: list[str] = []
-        for key, _label, missing_phrase in _SOURCES:
+
+        # 1) Always-present branches (RAG + PubMed).
+        for key, label, missing_phrase in _BASE_SOURCES:
             val = bundle.get(key)
             n = len(val) if isinstance(val, list) else 0
             counts[key] = n
+            coverage.append((label, n))
             if n == 0:
                 gaps.append(missing_phrase)
 
+        # 2) Structured coverage. The current path is the harmonized Globus search: count
+        #    each DESTINATION index from harmonized_search_summary.per_index_kept (the real
+        #    per-index hit counts recorded by HarmonizedBundleMergeStep). A degraded run that
+        #    never reached hmerge has no summary → fall back to the legacy structured keys.
+        summary = bundle.get("harmonized_search_summary")
+        per_index = summary.get("per_index_kept") if isinstance(summary, dict) else None
+        if isinstance(per_index, dict):
+            for index in sorted(per_index):
+                n = int(per_index.get(index) or 0)
+                counts[index] = n
+                coverage.append((index, n))
+                if n == 0:
+                    gaps.append(f"no {index} record")
+        else:
+            for key, label, missing_phrase in _LEGACY_STRUCTURED:
+                val = bundle.get(key)
+                n = len(val) if isinstance(val, list) else 0
+                counts[key] = n
+                coverage.append((label, n))
+                if n == 0:
+                    gaps.append(missing_phrase)
+
         total = sum(counts.values())
-        sources_available = sum(1 for n in counts.values() if n > 0)
+        n_sources = len(coverage)
+        sources_available = sum(1 for _, n in coverage if n > 0)
         result = {
             "counts": counts,
             "gaps": gaps,
             "sources_available": sources_available,
-            "n_sources": len(_SOURCES),
+            "n_sources": n_sources,
             "total_records": total,
         }
         bundle["data_readiness"] = result
 
-        markdown = self._render_markdown(counts, gaps, sources_available)
+        markdown = self._render_markdown(coverage, gaps, sources_available)
         append_stage_report(
             bundle, stage=_STAGE, order=_STAGE_ORDER, markdown=markdown, data=result
         )
@@ -112,19 +150,21 @@ class DataReadinessStep(BaseStep):
             "DataReadinessStep %s: %d/%d sources populated (%d record(s)); gaps=%s",
             self.name,
             sources_available,
-            len(_SOURCES),
+            n_sources,
             total,
             gaps or "none",
         )
         return bundle
 
     @staticmethod
-    def _render_markdown(counts: dict[str, int], gaps: list[str], sources_available: int) -> str:
-        coverage = ", ".join(f"{counts[key]} {label}(s)" for key, label, _ in _SOURCES)
+    def _render_markdown(
+        coverage: list[tuple[str, int]], gaps: list[str], sources_available: int
+    ) -> str:
+        coverage_str = ", ".join(f"{n} {label}(s)" for label, n in coverage)
         if not sources_available:
             return (
                 f"Index coverage: NONE — every retrieval branch returned 0 records for this "
-                f"query ({coverage}). The answer cannot be grounded in assembled evidence."
+                f"query ({coverage_str}). The answer cannot be grounded in assembled evidence."
             )
         gap_clause = (
             f" Coverage gaps: {'; '.join(gaps)} for this query."
@@ -132,8 +172,8 @@ class DataReadinessStep(BaseStep):
             else " All retrieval branches returned records."
         )
         return (
-            f"Index coverage: {sources_available}/{len(_SOURCES)} sources populated — "
-            f"{coverage}.{gap_clause}"
+            f"Index coverage: {sources_available}/{len(coverage)} sources populated — "
+            f"{coverage_str}.{gap_clause}"
         )
 
 
