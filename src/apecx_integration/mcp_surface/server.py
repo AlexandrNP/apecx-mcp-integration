@@ -835,27 +835,22 @@ def _try_public_download(sqlite_path: Path) -> Path | None:
 
 
 def _ensure_synonym_dict_or_warn() -> None:
-    """Make a synonym dictionary available at startup.
+    """Make the synonym dictionary available at startup — DOWNLOAD it from Globus.
 
-    Two paths, tried in order so a clean install with zero prior state
-    works without any user Globus configuration:
+    The dictionary is a PRE-BUILT artifact published on Globus; it is DOWNLOADED, not built on
+    a user machine. The single clean-install path:
 
-    1. **Public download** (anonymous). Calls
-       :func:`apecx_harvesters.dict_reader.bootstrap.bootstrap_dictionary`,
-       which fetches the pre-built SQLite from the canonical Argonne
-       LCF Globus HTTPS path. ~30s on first run for ~47 MB; cached on
-       disk thereafter. Opt out via ``APECX_SKIP_DICT_DOWNLOAD=1``.
-    2. **Local build** (legacy). Invokes :func:`ensure_dictionary` to
-       drive the dictionary-build workflow against locally-staged
-       VIOLIN/BV-BRC data. Returns ``None`` if data is missing or the
-       operator opted out via ``APECX_SKIP_DICT_BUILD=1``. 10-15 min
-       on first run.
+    1. **Public download** (anonymous). Fetches the pre-built SQLite from the canonical Argonne
+       LCF Globus HTTPS path. Cached on disk thereafter. Opt out via ``APECX_SKIP_DICT_DOWNLOAD=1``.
 
-    If ``APECX_SYNONYM_DICT_PATH`` already points at an existing file,
-    both paths are skipped — the operator's choice wins.
+    If the download produces no file, this FAILS LOUD with an actionable message — it does NOT
+    silently fall back to a slow local build (which needs VIOLIN data a clean install lacks). A
+    local build is available ONLY as an explicit dev/offline opt-in via
+    ``APECX_DICT_ALLOW_LOCAL_BUILD=1``. If ``APECX_SYNONYM_DICT_PATH`` already points at an
+    existing file, the download is skipped (the operator's choice wins).
 
-    After either path produces a SQLite, the loader singleton is
-    pre-warmed so the first MCP tool call doesn't pay the open cost.
+    After a path produces a SQLite, the loader singleton is pre-warmed so the first MCP tool
+    call doesn't pay the open cost.
     """
     from apecx_integration.synonym_dictionary.loader import (
         configure_dictionary_path,
@@ -875,29 +870,37 @@ def _ensure_synonym_dict_or_warn() -> None:
         if downloaded is not None:
             os.environ["APECX_SYNONYM_DICT_PATH"] = str(downloaded)
 
-    if not cfg.sqlite_path.is_file():
-        # Path 2: legacy local-build fallback (needs VIOLIN data).
-        log.info(
-            "MCP startup: no dictionary at %s after download attempt — "
-            "invoking local-build workflow",
-            cfg.sqlite_path,
-        )
+    if not cfg.sqlite_path.is_file() and os.environ.get("APECX_DICT_ALLOW_LOCAL_BUILD") == "1":
+        # The published dictionary is DOWNLOADED from Globus — it is NOT built on a user machine
+        # (a local build needs VIOLIN data a clean install does not have). So the local build is
+        # OPT-IN for dev/offline ONLY (APECX_DICT_ALLOW_LOCAL_BUILD=1) — never an automatic
+        # fallback that silently masks a download failure.
+        log.info("MCP startup: download produced no file; APECX_DICT_ALLOW_LOCAL_BUILD=1 → build")
         try:
             built = ensure_dictionary(cfg)
-        except Exception as exc:  # noqa: BLE001 — final user-facing fallback
-            log.warning("=" * 64)
-            log.warning("Synonym dictionary build failed: %s", exc)
-            log.warning("Entity resolution will fall back to slow substring search.")
-            log.warning("=" * 64)
-            return
-        if built is None:
-            log.warning("=" * 64)
-            log.warning("Synonym dictionary not available — entity resolution will use")
-            log.warning("the slow substring fallback. Both paths declined:")
-            log.warning("  - public download: unreachable or APECX_SKIP_DICT_DOWNLOAD=1")
-            log.warning("  - local build: APECX_SKIP_DICT_BUILD=1 OR VIOLIN data missing")
-            log.warning("=" * 64)
-            return
+        except Exception as exc:  # noqa: BLE001 — opt-in dev path; surface + continue
+            built = None
+            log.warning("opt-in local dictionary build failed: %s", exc)
+        if built is not None:
+            os.environ["APECX_SYNONYM_DICT_PATH"] = str(built)
+
+    if not cfg.sqlite_path.is_file():
+        # LOUD + actionable — the Globus download did not produce a file and no dict is present.
+        # Do NOT silently degrade: name the failure, the consequence, and the fix. (Search still
+        # works in a degraded mode — it returns UNHARMONIZED raw full-text matches — but
+        # taxon-precise resolution is OFF until the dictionary is downloaded.)
+        log.warning("=" * 70)
+        log.warning("SYNONYM DICTIONARY UNAVAILABLE — the Globus download produced no file.")
+        log.warning("  Expected at: %s", cfg.sqlite_path)
+        log.warning("  Consequence: entity resolution + taxon-precise harmonized search are OFF;")
+        log.warning("    harmonized_search returns UNHARMONIZED raw full-text matches meanwhile.")
+        log.warning("  Fix: ensure network access to the Argonne LCF Globus HTTPS endpoint, then")
+        log.warning("    re-run `apecx-setup dict` or restart apecx-mcp. To use an existing copy:")
+        log.warning("    APECX_SYNONYM_DICT_PATH=/path/to/dictionary.sqlite. (Was the download")
+        log.warning("    disabled? APECX_SKIP_DICT_DOWNLOAD must be unset. Dev/offline build:")
+        log.warning("    APECX_DICT_ALLOW_LOCAL_BUILD=1 + local VIOLIN data.)")
+        log.warning("=" * 70)
+        return
         os.environ["APECX_SYNONYM_DICT_PATH"] = str(built)
 
     # Pre-warm the loader singleton so the first MCP tool call doesn't pay

@@ -74,26 +74,22 @@ def _write_valid_dict(path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_no_env_var_no_data_skips_build(monkeypatch, tmp_path, caplog):
-    """No APECX_SYNONYM_DICT_PATH and no VIOLIN data: build workflow is invoked
-    but skips immediately because inputs are missing. Fallback warning emitted.
-
-    Scopes to the local-build path via ``APECX_SKIP_DICT_DOWNLOAD=1`` so this
-    test stays offline; the public-download path's clean-install contract
-    is covered by ``test_clean_install_dict_bootstrap.py``.
-    """
+def test_download_unavailable_fails_loud_does_not_silently_build(monkeypatch, tmp_path, caplog):
+    """Download is the ONLY auto path (2026-06-15): when it produces no file and the local build
+    is NOT opted in, the server FAILS LOUD ('dictionary unavailable') — it does NOT silently fall
+    back to a build (the old behavior that masked a download failure). Download is suppressed via
+    ``APECX_SKIP_DICT_DOWNLOAD=1`` to stay offline."""
     monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
+    monkeypatch.delenv("APECX_DICT_ALLOW_LOCAL_BUILD", raising=False)
     monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path))  # empty dir, no violin/
     monkeypatch.setenv("APECX_DICT_OUTPUT_DIR", str(tmp_path / "out"))
     with caplog.at_level(logging.WARNING):
         _ensure_synonym_dict_or_warn()
     text = caplog.text.lower()
-    assert (
-        "fallback" in text
-        or "slow substring" in text
-        or "not built" in text
-        or "not available" in text
-    )
+    assert "dictionary unavailable" in text  # the loud, actionable message
+    assert "globus download" in text
+    # did NOT silently attempt a build
+    assert "invoking local-build" not in text and "allow_local_build" in text  # build is opt-in
 
 
 # ---------------------------------------------------------------------------
@@ -101,21 +97,19 @@ def test_no_env_var_no_data_skips_build(monkeypatch, tmp_path, caplog):
 # ---------------------------------------------------------------------------
 
 
-def test_skip_dict_build_env_var_honored(monkeypatch, tmp_path, caplog):
-    """APECX_SKIP_DICT_BUILD=1 → no build attempt, fallback warning.
-
-    Both ``APECX_SKIP_DICT_DOWNLOAD`` and ``APECX_SKIP_DICT_BUILD`` are
-    set so this test asserts the all-paths-declined fallback warning
-    without touching the network.
-    """
+def test_opt_in_local_build_runs_when_allowed(monkeypatch, tmp_path, caplog):
+    """The local build is OPT-IN: with APECX_DICT_ALLOW_LOCAL_BUILD=1 (and the download
+    suppressed), the build IS attempted (it then skips on missing VIOLIN data, but the opt-in
+    path was taken — proving build is reachable for dev/offline)."""
     missing = tmp_path / "missing.sqlite"
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(missing))
     monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
-    monkeypatch.setenv("APECX_SKIP_DICT_BUILD", "1")
-    with caplog.at_level(logging.WARNING):
+    monkeypatch.setenv("APECX_DICT_ALLOW_LOCAL_BUILD", "1")
+    monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path / "no_data"))  # no violin → build skips
+    with caplog.at_level(logging.INFO):
         _ensure_synonym_dict_or_warn()
     text = caplog.text.lower()
-    assert "fallback" in text or "not built" in text or "not available" in text
+    assert "allow_local_build=1" in text  # the opt-in build path was entered
 
 
 # ---------------------------------------------------------------------------
@@ -135,11 +129,12 @@ def test_missing_file_no_data_skips_build(monkeypatch, tmp_path, caplog):
     missing = tmp_path / "does_not_exist.sqlite"
     monkeypatch.setenv("APECX_SYNONYM_DICT_PATH", str(missing))
     monkeypatch.setenv("APECX_SKIP_DICT_DOWNLOAD", "1")
+    monkeypatch.delenv("APECX_DICT_ALLOW_LOCAL_BUILD", raising=False)
     monkeypatch.setenv("APECX_DATA_ROOT", str(tmp_path / "no_data"))  # not present
     with caplog.at_level(logging.WARNING):
         _ensure_synonym_dict_or_warn()
     text = caplog.text.lower()
-    assert "fallback" in text or "not built" in text or "not available" in text
+    assert "dictionary unavailable" in text  # loud + actionable, not a silent build/degrade
 
 
 # ---------------------------------------------------------------------------

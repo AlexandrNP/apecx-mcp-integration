@@ -5,11 +5,11 @@ Pins the contract from the workspace constraint:
     "No prior Globus information from the user side should be required
      or used."
 
-The MCP startup gate (``_ensure_synonym_dict_or_warn``) must try the
-public anonymous download FIRST and only fall back to the local-build
-path on failure. This test mocks the network so it runs offline; a
-companion live-network test below probes the real Argonne public path
-when reachable.
+The MCP startup gate (``_ensure_synonym_dict_or_warn``) DOWNLOADS the pre-built dictionary from
+the anonymous public Globus path — that is the only auto path. On a download failure it FAILS
+LOUD (it does NOT silently build); a local build runs only as an explicit dev/offline opt-in
+(``APECX_DICT_ALLOW_LOCAL_BUILD=1``). These tests mock the network so they run offline; a
+companion live-network test below probes the real Argonne public path when reachable.
 """
 
 from __future__ import annotations
@@ -132,12 +132,22 @@ def test_ensure_synonym_dict_prefers_public_download(
     assert os.environ.get("APECX_SYNONYM_DICT_PATH") == str(fake_dict)
 
 
-def test_ensure_synonym_dict_falls_back_to_build_when_download_fails(
+def test_download_failure_builds_ONLY_with_opt_in_else_fails_loud(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    """If download fails, the legacy local-build path runs."""
-    _clean_env(monkeypatch, tmp_path)
+    """Download-only contract (2026-06-15): a download failure does NOT auto-build (the old
+    silent fallback that masked the failure). The local build runs ONLY with
+    APECX_DICT_ALLOW_LOCAL_BUILD=1; without it the server fails loud and never calls the build."""
     built_path = tmp_path / ".apecx" / "dictionary" / "dictionary.sqlite"
+
+    def _fake_build(cfg):
+        built_path.parent.mkdir(parents=True, exist_ok=True)
+        built_path.write_bytes(b"SQLite format 3\x00")
+        return built_path
+
+    # (a) NO opt-in → download fails → build is NOT called.
+    _clean_env(monkeypatch, tmp_path)
+    monkeypatch.delenv("APECX_DICT_ALLOW_LOCAL_BUILD", raising=False)
     with (
         patch(
             "apecx_harvesters.dict_reader.bootstrap.bootstrap_dictionary",
@@ -145,19 +155,33 @@ def test_ensure_synonym_dict_falls_back_to_build_when_download_fails(
         ),
         patch(
             "apecx_integration.synonym_dictionary.workflow.bootstrap.ensure_dictionary",
-            side_effect=lambda cfg: (
-                built_path.parent.mkdir(parents=True, exist_ok=True),
-                built_path.write_bytes(b"SQLite format 3\x00"),
-                built_path,
-            )[2],
-        ) as mock_build,
+            side_effect=_fake_build,
+        ) as mock_build_off,
+    ):
+        _ensure_synonym_dict_or_warn()
+    mock_build_off.assert_not_called()
+
+    # (b) opt-in → download fails → build IS called.
+    if built_path.exists():
+        built_path.unlink()
+    _clean_env(monkeypatch, tmp_path)
+    monkeypatch.setenv("APECX_DICT_ALLOW_LOCAL_BUILD", "1")
+    with (
+        patch(
+            "apecx_harvesters.dict_reader.bootstrap.bootstrap_dictionary",
+            side_effect=RuntimeError("simulated download failure"),
+        ),
+        patch(
+            "apecx_integration.synonym_dictionary.workflow.bootstrap.ensure_dictionary",
+            side_effect=_fake_build,
+        ) as mock_build_on,
         patch(
             "apecx_integration.synonym_dictionary.loader.get_dictionary_index",
             return_value=(object(), None),
         ),
     ):
         _ensure_synonym_dict_or_warn()
-    mock_build.assert_called_once()
+    mock_build_on.assert_called_once()
 
 
 def test_ensure_synonym_dict_no_globus_creds_required(
