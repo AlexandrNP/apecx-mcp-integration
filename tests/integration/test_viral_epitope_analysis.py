@@ -150,7 +150,10 @@ def test_builder_produces_workflow_with_child_steps():
     assert isinstance(children, dict)
     assert set(children) == {
         "normalize",
+        "resolve",
+        "map",
         "assemble",
+        "hmerge",
         "data_readiness",
         "structural",
         "sequence",

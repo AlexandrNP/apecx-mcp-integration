@@ -166,3 +166,32 @@ async def test_all_branches_succeeding_returns_full_bundle(assembly_step):
     assert out["violin_mappings"][0]["canonical_term"] == "11036"
     assert out["bvbrc_genomes"][0]["genome_id"] == "11036.7"
     assert out["publications"] == []
+
+
+def test_skip_violin_and_bvbrc_does_no_tabular_lookups(monkeypatch):
+    """skip_violin + skip_bvbrc → ``_violin_bvbrc_lookup`` returns ([], []) and
+    NEVER calls the local CSV/TSV lookup functions.
+
+    This is the harmonized epitope path's contract: it retrieves VIOLIN +
+    BV-BRC evidence via Globus search, so both local tabular branches are off.
+    Detection signal: a regression that drops the skip short-circuit would call
+    the patched lookups, which raise — surfacing the failure here.
+    """
+    from apecx_integration.composition.steps import _violin_bvbrc_lookup as lookup_mod
+
+    def _explode_violin(*a, **k):
+        raise AssertionError("lookup_violin must not be called when skip_violin=True")
+
+    def _explode_bvbrc(*a, **k):
+        raise AssertionError("lookup_bvbrc must not be called when skip_bvbrc=True")
+
+    monkeypatch.setattr(lookup_mod, "lookup_violin", _explode_violin)
+    monkeypatch.setattr(lookup_mod, "lookup_bvbrc", _explode_bvbrc)
+
+    step = _make_bare_step()
+    step._skip_violin = True
+    step._skip_bvbrc = True
+
+    violin_mappings, bvbrc_genomes = step._violin_bvbrc_lookup([("EEEV", "pathogen")])
+    assert violin_mappings == []
+    assert bvbrc_genomes == []

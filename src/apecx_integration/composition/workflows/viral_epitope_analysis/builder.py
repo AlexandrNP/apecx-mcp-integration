@@ -122,11 +122,18 @@ EVIDENCE_INPUT_SCHEMA: dict[str, Any] = {
                 "properties": {
                     "query": {
                         "type": "string",
-                        "obtain_via": "the scientist's evidence question (free text)",
+                        "obtain_via": (
+                            "the scientist's evidence question in plain English, OR a bare "
+                            "virus name (e.g. 'chikungunya'). The workflow extracts the entity "
+                            "and resolves it to a taxon itself — do NOT pre-resolve a taxon_id."
+                        ),
                     },
                     "taxon_id": {
                         "type": "integer",
-                        "obtain_via": "optional NCBI taxon id to focus the query",
+                        "obtain_via": (
+                            "do NOT provide — the workflow resolves the virus name to a taxon "
+                            "internally via harmonized search. (Optional override only.)"
+                        ),
                     },
                     "protein": {
                         "type": "string",
@@ -193,11 +200,58 @@ def _evidence_workflow_builder():
         output_data_units=_du("normalize_out"),
         triggers=_trig("normalize_input"),
     )
-    # Retrieve EVERYTHING per source (``0`` = no limit — set ONLY here; the step's
-    # defaults stay small so the shared rag_e2e_synthesis consumer is untouched).
-    # Unbounded retrieval pages the sources to exhaustion; the downstream ``distill``
-    # step absorbs the full throughput and ranks it down to the LLM-ready top-N, so
-    # there is no artificial recall ceiling on what the analysis can draw from.
+    # RESOLUTION stage: a BARE virus name → entity extraction → synonym-dictionary
+    # resolution (canonical IRI + candidates + ambiguity) → the resolved plan + the list
+    # of all 9 destination index names. The caller passes a plain name; this resolves the
+    # taxon internally (no caller-side taxon_id). Ambiguous → index_names=[] (the map below
+    # no-ops) + carried candidates.
+    b.add_step(
+        "resolve",
+        f"{_STEPS}.epitope_resolve_step.EpitopeResolveStep",
+        input_data_units=_du("resolve_input"),
+        output_data_units=_du("resolve_output"),
+        triggers=_trig("resolve_input"),
+    )
+    # ALL-INDEX harmonized search: fan the resolved plan across ALL 9 Globus DESTINATION
+    # indices (incl. violin_* + bvbrc_* — no local tabular data) via the nanobrain
+    # MapSubworkflowStep primitive (fresh inner workflow per index, concurrent). Each item
+    # is a plan with ``index`` set to one destination index; static_params_keys spread the
+    # resolved plan fields so each per-item input is a complete plan.
+    b.add_step(
+        "map",
+        "nanobrain.library.steps.map_subworkflow_step.MapSubworkflowStep",
+        inner_workflow_builder=(
+            "apecx_integration.composition.workflows.harmonized_index_search.builder"
+            ".build_harmonized_index_search_workflow"
+        ),
+        item_list_key="index_names",
+        item_param_key="index",
+        static_params_keys=[
+            "term",
+            "resolution_path",
+            "canonical_iri",
+            "canonical_label",
+            "canonical_ontology",
+            "confidence",
+            "resolution_status",
+            "synonyms",
+            "candidates",
+            "needs_disambiguation",
+            "evidence",
+        ],
+        step_input_data_unit_name="map_input",
+        output_list_key="items",
+        max_concurrency=9,
+        timeout_seconds=300.0,
+        settle_ms=500,
+        input_data_units=_du("map_input"),
+        output_data_units=_du("map_output"),
+        triggers=_trig("map_input"),
+    )
+    # PubMed + RAG ONLY. The structured retrieval (Globus free-text + VIOLIN/BV-BRC
+    # TABULAR) is REPLACED by the all-index harmonized search above — so all three are
+    # skipped here. PubMed stays unbounded (max_publications=0 → no cap); the hmerge step
+    # below folds the harmonized records in as globus_results.
     b.add_step(
         "assemble",
         f"{_STEPS}.synthesis_context_assembly_step.SynthesisContextAssemblyStep",
@@ -205,9 +259,19 @@ def _evidence_workflow_builder():
         output_data_units=_du("synthesis_bundle_output"),
         triggers=_trig("assembly_input"),
         max_publications=0,
-        max_globus_hits=0,
-        max_bvbrc_genomes=0,
-        max_violin_mappings=0,
+        skip_globus=True,
+        skip_violin=True,
+        skip_bvbrc=True,
+    )
+    # Fold the 9-index harmonized results into globus_results + derive taxon_id /
+    # resolved_species_name from the resolved plan (so the structural / sequence /
+    # rhea_genomic legs key off the resolved taxon). Degrade-loud.
+    b.add_step(
+        "hmerge",
+        f"{_STEPS}.harmonized_bundle_merge_step.HarmonizedBundleMergeStep",
+        input_data_units=_du("hmerge_input"),
+        output_data_units=_du("hmerge_output"),
+        triggers=_trig("hmerge_input"),
     )
     # DATA-READINESS stage (C0): summarize assembled-bundle COVERAGE (per-source counts +
     # named gaps) before the structural lookup. Pure (no network), passes the bundle through
@@ -374,7 +438,13 @@ def _evidence_workflow_builder():
     )
 
     b.add_link("workflow_input", "normalize.normalize_input", link_type="direct")
-    b.add_link("normalize.normalize_out", "assemble.assembly_input", link_type="direct")
+    # Resolution leg: normalize → resolve (bare name → plan + 9 index_names) → map
+    # (harmonized search across all 9 dest indices) → assemble (PubMed/RAG only) → hmerge
+    # (fold harmonized records into globus_results + derive taxon).
+    b.add_link("normalize.normalize_out", "resolve.resolve_input", link_type="direct")
+    b.add_link("resolve.resolve_output", "map.map_input", link_type="direct")
+    b.add_link("map.map_output", "assemble.assembly_input", link_type="direct")
+    b.add_link("assemble.synthesis_bundle_output", "hmerge.hmerge_input", link_type="direct")
     # Fan-out from a REAL output DU (normalize_out, which the deposit actually sets):
     # the control fields reach the gate directly, bypassing the steps that drop them.
     # This is the second edge of the fan-in into `gate`.
@@ -382,11 +452,9 @@ def _evidence_workflow_builder():
     # Third fan-out edge from normalize_out: feed the query/taxon/protein to the nested
     # conserved-sites subworkflow (the sequence step reads taxon_id + protein).
     b.add_link("normalize.normalize_out", "sequence.sequence_params", link_type="direct")
-    # C0: the assembled bundle flows through the data-readiness coverage summary before
+    # C0: the merged bundle flows through the data-readiness coverage summary before
     # the structural lookup.
-    b.add_link(
-        "assemble.synthesis_bundle_output", "data_readiness.readiness_input", link_type="direct"
-    )
+    b.add_link("hmerge.hmerge_output", "data_readiness.readiness_input", link_type="direct")
     b.add_link("data_readiness.readiness_output", "structural.structural_input", link_type="direct")
     # FAN-IN #1 edges into `merge`: the structural bundle + the sequence-conservation result.
     b.add_link("structural.structural_bundle", "merge.structural_in", link_type="direct")

@@ -140,6 +140,24 @@ class SynthesisContextAssemblyStepConfig(StepConfig):
         default=10,
         description="Cap on BV-BRC genomes returned per query.",
     )
+    skip_violin: bool = Field(
+        default=False,
+        description=(
+            "When True, skip the VIOLIN tabular lookup branch entirely "
+            "(returns no VIOLIN mappings). Used by the harmonized epitope "
+            "path, which retrieves VIOLIN data via Globus search instead of "
+            "local CSVs. Default False keeps rag_e2e unaffected."
+        ),
+    )
+    skip_bvbrc: bool = Field(
+        default=False,
+        description=(
+            "When True, skip the BV-BRC tabular lookup branch entirely "
+            "(returns no BV-BRC genomes). Used by the harmonized epitope "
+            "path, which retrieves BV-BRC data via Globus search instead of "
+            "local TSVs. Default False keeps rag_e2e unaffected."
+        ),
+    )
 
     # --- Globus Search (harvested corpus) ---
     max_globus_hits: int = Field(
@@ -208,6 +226,8 @@ class SynthesisContextAssemblyStep(BaseStep):
             "bvbrc_cache_dir": getattr(config, "bvbrc_cache_dir", None),
             "max_violin_mappings": getattr(config, "max_violin_mappings", 10),
             "max_bvbrc_genomes": getattr(config, "max_bvbrc_genomes", 10),
+            "skip_violin": getattr(config, "skip_violin", False),
+            "skip_bvbrc": getattr(config, "skip_bvbrc", False),
             "max_globus_hits": getattr(config, "max_globus_hits", 10),
             "skip_globus": getattr(config, "skip_globus", False),
         }
@@ -260,6 +280,8 @@ class SynthesisContextAssemblyStep(BaseStep):
         self._bvbrc_cache_dir: str | None = component_config.get("bvbrc_cache_dir")
         self._max_violin: int = int(component_config.get("max_violin_mappings", 10))
         self._max_bvbrc: int = int(component_config.get("max_bvbrc_genomes", 10))
+        self._skip_violin: bool = bool(component_config.get("skip_violin", False))
+        self._skip_bvbrc: bool = bool(component_config.get("skip_bvbrc", False))
 
         self._max_globus: int = int(component_config.get("max_globus_hits", 10))
         self._skip_globus: bool = bool(component_config.get("skip_globus", False))
@@ -319,6 +341,12 @@ class SynthesisContextAssemblyStep(BaseStep):
         return self._rag_index.search(query, k=self._k_rag)
 
     def _violin_bvbrc_lookup(self, terms: list[tuple[str, str]]) -> tuple[list[dict], list[dict]]:
+        # Short-circuit when both local tabular branches are disabled (the
+        # harmonized epitope path sets both — it retrieves VIOLIN + BV-BRC data
+        # via Globus search, never local CSV/TSV). No imports, no I/O.
+        if self._skip_violin and self._skip_bvbrc:
+            return [], []
+
         import os
         from pathlib import Path
 
@@ -339,17 +367,25 @@ class SynthesisContextAssemblyStep(BaseStep):
             else _DEFAULT_VIOLIN_DIR
         )
         bvbrc_dir = Path(self._bvbrc_cache_dir) if self._bvbrc_cache_dir else _DEFAULT_BVBRC_DIR
-        violin_mappings = lookup_violin(
-            terms,
-            violin_dir,
-            max_results=self._max_violin,
-            owner_name=self.name,
+        violin_mappings = (
+            []
+            if self._skip_violin
+            else lookup_violin(
+                terms,
+                violin_dir,
+                max_results=self._max_violin,
+                owner_name=self.name,
+            )
         )
-        bvbrc_genomes = lookup_bvbrc(
-            terms,
-            bvbrc_dir,
-            max_results=self._max_bvbrc,
-            owner_name=self.name,
+        bvbrc_genomes = (
+            []
+            if self._skip_bvbrc
+            else lookup_bvbrc(
+                terms,
+                bvbrc_dir,
+                max_results=self._max_bvbrc,
+                owner_name=self.name,
+            )
         )
         return violin_mappings, bvbrc_genomes
 
@@ -559,7 +595,20 @@ class SynthesisContextAssemblyStep(BaseStep):
         # structure that matches the requested protein, not the first by search rank);
         # ``taxon_id`` rides along for the functional-validation stage. Both originate at
         # ``normalize`` and would otherwise be dropped here (this step rebuilds the bundle).
-        for _focus in ("protein", "taxon_id", "resolved_species_name"):
+        # ``resolution_plan`` / ``items`` / ``_map_errors`` / ``index_names`` ride through
+        # when present (the viral_epitope_analysis path runs resolve → map → assemble →
+        # hmerge, and hmerge — AFTER this rebuild — needs the map's per-index results +
+        # the resolution plan). Absent for every other consumer (e.g. rag_e2e), so this is
+        # a no-op there.
+        for _focus in (
+            "protein",
+            "taxon_id",
+            "resolved_species_name",
+            "resolution_plan",
+            "items",
+            "_map_errors",
+            "index_names",
+        ):
             _val = input_data.get(_focus)
             if _val is not None:
                 out[_focus] = _val

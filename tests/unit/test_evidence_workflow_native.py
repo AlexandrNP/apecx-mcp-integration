@@ -42,9 +42,10 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 16, (
-        f"expected 16 links (both fan-ins + data-readiness + structural-reasoning + "
-        f"functional-validation + distillation + rhea-genomic edges), got {len(links)}"
+    assert len(links) == 19, (
+        f"expected 19 links (resolution leg resolve→map→assemble→hmerge + both fan-ins + "
+        f"data-readiness + structural-reasoning + functional-validation + distillation + "
+        f"rhea-genomic edges), got {len(links)}"
     )
     for name, entry in links.items():
         link_cfg = entry["config"]
@@ -64,7 +65,10 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
     assert isinstance(children, dict)
     assert set(children) == {
         "normalize",
+        "resolve",
+        "map",
         "assemble",
+        "hmerge",
         "data_readiness",
         "structural",
         "sequence",
@@ -150,7 +154,8 @@ def test_control_fanned_from_normalize_not_workflow_input():
     failure where the gate never fires because control_in stays empty."""
     cfg = _evidence_workflow_builder().get_config()
     sources = {e["config"]["source"]: e["config"]["target"] for e in cfg["links"].values()}
-    # control_in is fed by normalize.normalize_out, and the same DU also feeds assemble.
+    # control_in is fed by normalize.normalize_out, and the same DU also feeds the
+    # resolution leg (resolve) + the sequence leg.
     assert "normalize.normalize_out" in sources or any(
         e["config"]["target"] == "gate.control_in"
         and e["config"]["source"] == "normalize.normalize_out"
@@ -162,7 +167,7 @@ def test_control_fanned_from_normalize_not_workflow_input():
         if e["config"]["source"] == "normalize.normalize_out"
     }
     assert "gate.control_in" in targets_of_normalize_out
-    assert "assemble.assembly_input" in targets_of_normalize_out
+    assert "resolve.resolve_input" in targets_of_normalize_out
     # And NOTHING fans control from workflow_input into the gate (the old bug).
     assert not any(
         e["config"]["source"] == "workflow_input" and e["config"]["target"] == "gate.control_in"

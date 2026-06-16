@@ -86,6 +86,149 @@ _ENTITY_TYPE_MAP: dict[str, EntityType] = {
 }
 
 
+def build_resolution_plan(term: str, index: str, entity_type_str: str = "") -> dict[str, Any]:
+    """Resolve ``term`` to a canonical entity + classify HITL state, returning the
+    plain ``plan`` dict (NOT wrapped under any output data-unit key).
+
+    Factored out of :meth:`HarmonizedResolveStep.process` so other steps
+    (e.g. ``EpitopeResolveStep``) can produce the same plan shape without
+    re-implementing the lookup + ambiguity-detection logic. The plan dict
+    carries the keys: ``term``, ``index``, ``resolution_path``,
+    ``canonical_iri``, ``canonical_label``, ``canonical_ontology``,
+    ``confidence``, ``resolution_status``, ``synonyms``, ``candidates``,
+    ``needs_disambiguation``, ``evidence``.
+
+    ``index`` is echoed through unchanged — the resolution itself does not
+    depend on the index, but downstream steps do, so it rides along.
+    Raises ``ValueError`` on an unknown ``entity_type_str``.
+    """
+    entity_type: EntityType | None = None
+    if entity_type_str:
+        if entity_type_str not in _ENTITY_TYPE_MAP:
+            raise ValueError(
+                f"build_resolution_plan: unknown entity_type={entity_type_str!r}; "
+                f"expected one of {sorted(_ENTITY_TYPE_MAP)} or empty for any-type."
+            )
+        entity_type = _ENTITY_TYPE_MAP[entity_type_str]
+
+    result: LookupResult = lookup_entity(term, entity_type=entity_type)
+
+    # Ambiguity detection: the eo-mvp branch's LookupResult is the
+    # "first match wins" shape; ambiguity requires a separate query
+    # against the dictionary index. If multiple distinct canonical
+    # IRIs match this surface form, we override the resolver's
+    # single-result optimism and emit an ambiguous plan.
+    candidates: list[dict[str, Any]] = []
+    resolution_path: str = result.path
+    canonical_iri: str | None = result.canonical_iri
+    canonical_label: str | None = result.canonical_label
+    canonical_ontology: str | None = result.canonical_ontology
+
+    # Only run the multi-candidate check for non-IRI surface inputs
+    # (an IRI input is by construction unambiguous — it's already a
+    # canonical identifier).
+    is_iri_input = term.startswith(("http://", "https://"))
+    if not is_iri_input:
+        try:
+            index_obj, _err = get_dictionary_index()
+            if index_obj is not None:
+                # Two ambiguity-detection paths, in order of trust:
+                # (a) The dictionary's curated ambiguous_surface_forms
+                #     table records (winning, alternative) IRI pairs
+                #     captured at build time. This is the
+                #     authoritative source for already-known
+                #     conflicts (RSV → 6 candidates, HEV, BVDV,
+                #     etc.).
+                # (b) Otherwise fall through to ``lookup_any_type``
+                #     which surfaces multi-IRI conflicts the build
+                #     pass may have missed.
+                surface_norm = " ".join(term.casefold().split())
+                amb_rows = index_obj.lookup_ambiguous_surface_forms(
+                    surface_form=surface_norm,
+                    limit=50,
+                )
+                candidate_iris: list[str] = []
+                seen_iris: set[str] = set()
+                for row in amb_rows:
+                    for iri_key in ("winning_canonical_iri", "alternative_canonical_iri"):
+                        iri = row.get(iri_key)
+                        if iri and iri not in seen_iris:
+                            seen_iris.add(iri)
+                            candidate_iris.append(iri)
+                if not candidate_iris:
+                    matches: list[DictionaryEntry] = index_obj.lookup_any_type(term)
+                    for entry in matches:
+                        if entry.canonical_iri not in seen_iris:
+                            seen_iris.add(entry.canonical_iri)
+                            candidate_iris.append(entry.canonical_iri)
+
+                if len(candidate_iris) > 1:
+                    resolution_path = "ambiguous"
+                    canonical_iri = None
+                    canonical_label = None
+                    canonical_ontology = None
+                    for iri in candidate_iris:
+                        entry = index_obj.lookup_by_iri(iri)
+                        if entry is not None:
+                            candidates.append(
+                                {
+                                    "canonical_iri": entry.canonical_iri,
+                                    "canonical_label": entry.canonical_label,
+                                    "canonical_ontology": entry.ontology.value,
+                                    "confidence": entry.confidence,
+                                }
+                            )
+                        else:
+                            candidates.append(
+                                {
+                                    "canonical_iri": iri,
+                                    "canonical_label": None,
+                                    "canonical_ontology": None,
+                                    "confidence": 0.0,
+                                }
+                            )
+                    log.info(
+                        "build_resolution_plan: detected %d-way ambiguity for "
+                        "term=%r — overriding path to 'ambiguous'",
+                        len(candidates),
+                        term,
+                    )
+        except Exception as exc:  # noqa: BLE001
+            # Multi-candidate detection is best-effort. If the dict
+            # is unavailable we keep the resolver's optimistic
+            # single answer rather than failing the whole step.
+            log.warning(
+                "build_resolution_plan: multi-candidate detection failed "
+                "(%s); keeping single-match resolution",
+                exc,
+            )
+
+    plan: dict[str, Any] = {
+        "term": term,
+        "index": index,
+        "resolution_path": resolution_path,
+        "canonical_iri": canonical_iri,
+        "canonical_label": canonical_label,
+        "canonical_ontology": canonical_ontology,
+        "confidence": result.confidence if resolution_path != "ambiguous" else 0.0,
+        "resolution_status": result.resolution_status.value,
+        "synonyms": list(result.synonyms) if resolution_path != "ambiguous" else [],
+        "candidates": candidates,
+        "needs_disambiguation": resolution_path == "ambiguous",
+        "evidence": result.evidence,
+    }
+
+    log.info(
+        "build_resolution_plan: term=%r index=%r path=%s candidates=%d",
+        term,
+        index,
+        result.path,
+        len(candidates),
+    )
+
+    return plan
+
+
 class HarmonizedResolveStep(BaseStep):
     """Resolve term → canonical IRI + classify HITL state for downstream gating."""
 
@@ -125,133 +268,4 @@ class HarmonizedResolveStep(BaseStep):
             )
 
         entity_type_str = input_data.get("entity_type") or ""
-        entity_type: EntityType | None = None
-        if entity_type_str:
-            if entity_type_str not in _ENTITY_TYPE_MAP:
-                raise ValueError(
-                    f"HarmonizedResolveStep '{self.name}': unknown "
-                    f"entity_type={entity_type_str!r}; expected one of "
-                    f"{sorted(_ENTITY_TYPE_MAP)} or empty for any-type."
-                )
-            entity_type = _ENTITY_TYPE_MAP[entity_type_str]
-
-        result: LookupResult = lookup_entity(term, entity_type=entity_type)
-
-        # Ambiguity detection: the eo-mvp branch's LookupResult is the
-        # "first match wins" shape; ambiguity requires a separate query
-        # against the dictionary index. If multiple distinct canonical
-        # IRIs match this surface form, we override the resolver's
-        # single-result optimism and emit an ambiguous plan.
-        candidates: list[dict[str, Any]] = []
-        resolution_path: str = result.path
-        canonical_iri: str | None = result.canonical_iri
-        canonical_label: str | None = result.canonical_label
-        canonical_ontology: str | None = result.canonical_ontology
-
-        # Only run the multi-candidate check for non-IRI surface inputs
-        # (an IRI input is by construction unambiguous — it's already a
-        # canonical identifier).
-        is_iri_input = term.startswith(("http://", "https://"))
-        if not is_iri_input:
-            try:
-                index_obj, _err = get_dictionary_index()
-                if index_obj is not None:
-                    # Two ambiguity-detection paths, in order of trust:
-                    # (a) The dictionary's curated ambiguous_surface_forms
-                    #     table records (winning, alternative) IRI pairs
-                    #     captured at build time. This is the
-                    #     authoritative source for already-known
-                    #     conflicts (RSV → 6 candidates, HEV, BVDV,
-                    #     etc.).
-                    # (b) Otherwise fall through to ``lookup_any_type``
-                    #     which surfaces multi-IRI conflicts the build
-                    #     pass may have missed.
-                    surface_norm = " ".join(term.casefold().split())
-                    amb_rows = index_obj.lookup_ambiguous_surface_forms(
-                        surface_form=surface_norm,
-                        limit=50,
-                    )
-                    candidate_iris: list[str] = []
-                    seen_iris: set[str] = set()
-                    for row in amb_rows:
-                        for iri_key in ("winning_canonical_iri", "alternative_canonical_iri"):
-                            iri = row.get(iri_key)
-                            if iri and iri not in seen_iris:
-                                seen_iris.add(iri)
-                                candidate_iris.append(iri)
-                    if not candidate_iris:
-                        matches: list[DictionaryEntry] = index_obj.lookup_any_type(term)
-                        for entry in matches:
-                            if entry.canonical_iri not in seen_iris:
-                                seen_iris.add(entry.canonical_iri)
-                                candidate_iris.append(entry.canonical_iri)
-
-                    if len(candidate_iris) > 1:
-                        resolution_path = "ambiguous"
-                        canonical_iri = None
-                        canonical_label = None
-                        canonical_ontology = None
-                        for iri in candidate_iris:
-                            entry = index_obj.lookup_by_iri(iri)
-                            if entry is not None:
-                                candidates.append(
-                                    {
-                                        "canonical_iri": entry.canonical_iri,
-                                        "canonical_label": entry.canonical_label,
-                                        "canonical_ontology": entry.ontology.value,
-                                        "confidence": entry.confidence,
-                                    }
-                                )
-                            else:
-                                candidates.append(
-                                    {
-                                        "canonical_iri": iri,
-                                        "canonical_label": None,
-                                        "canonical_ontology": None,
-                                        "confidence": 0.0,
-                                    }
-                                )
-                        log.info(
-                            "HarmonizedResolveStep %s: detected %d-way "
-                            "ambiguity for term=%r — overriding path to "
-                            "'ambiguous'",
-                            self.name,
-                            len(candidates),
-                            term,
-                        )
-            except Exception as exc:  # noqa: BLE001
-                # Multi-candidate detection is best-effort. If the dict
-                # is unavailable we keep the resolver's optimistic
-                # single answer rather than failing the whole step.
-                log.warning(
-                    "HarmonizedResolveStep %s: multi-candidate detection "
-                    "failed (%s); keeping single-match resolution",
-                    self.name,
-                    exc,
-                )
-
-        plan: dict[str, Any] = {
-            "term": term,
-            "index": index,
-            "resolution_path": resolution_path,
-            "canonical_iri": canonical_iri,
-            "canonical_label": canonical_label,
-            "canonical_ontology": canonical_ontology,
-            "confidence": result.confidence if resolution_path != "ambiguous" else 0.0,
-            "resolution_status": result.resolution_status.value,
-            "synonyms": list(result.synonyms) if resolution_path != "ambiguous" else [],
-            "candidates": candidates,
-            "needs_disambiguation": resolution_path == "ambiguous",
-            "evidence": result.evidence,
-        }
-
-        log.info(
-            "HarmonizedResolveStep %s: term=%r index=%r path=%s candidates=%d",
-            self.name,
-            term,
-            index,
-            result.path,
-            len(candidates),
-        )
-
-        return {_OUTPUT_KEY: plan}
+        return {_OUTPUT_KEY: build_resolution_plan(term, index, entity_type_str)}
