@@ -20,6 +20,18 @@ change, OR a new function/class/abstraction, OR >~20 changed lines.)
   **necessity justification** per change, and an explicit **"what I will NOT build"** list.
 - `ExitPlanMode` for approval. Do not edit source before approval.
 
+## Phase 1b — Detailed implementation plan (after high-level approval, before code)
+Expand the approved plan into a DETAILED plan carrying ALL FIVE — high-level alone is not
+enough to start coding:
+1. **File:line refs** — `path:line` for every edit, not bare filenames.
+2. **Code snippets** — the actual new/changed code (before→after for edits).
+3. **Acceptance criteria rooted in real data** — runnable checks on real inputs/outputs (a
+   command + the concrete expected value), never "works correctly".
+4. **Tests** — named test functions + the case each pins, mapped to each change.
+5. **Task graph** — ordered tasks with explicit `blocks` / `blocked-by` dependencies.
+Re-confirm via `ExitPlanMode` only if the detail surfaces a material change to the approved
+approach; otherwise proceed to Phase 2.
+
 ## Phase 2 — Implement
 - Smallest change that satisfies the request. Match the surrounding code's style, naming,
   and comment density. No speculative fields, options, or abstractions.
