@@ -103,6 +103,21 @@ def test_appends_structural_records_section(tmp_path, monkeypatch, agent_locus):
     assert "[Globus pdb:1I9G]" in md and "E1 structure" in md
 
 
+def test_review_feeds_llm_the_bundle_lists(tmp_path, monkeypatch, agent_locus):
+    """review hands the bundle's source lists (already the distilled top-N upstream) to the LLM."""
+    step = _stage(tmp_path)
+    captured: dict = {}
+
+    def _spy(q, **k):
+        captured.update(k)
+        return "# Answer\n\nbody"
+
+    monkeypatch.setattr("apecx_integration.agents.rag_synthesis.synthesize_response", _spy)
+    pubs = [{"doi": "10.1", "title": "p"}]
+    asyncio.run(step.process({"query": "chikv", "publications": pubs}))
+    assert captured["publications"] == pubs
+
+
 def test_appends_loud_no_hit_section(tmp_path, monkeypatch, agent_locus):
     step = _stage(tmp_path)
     monkeypatch.setattr(

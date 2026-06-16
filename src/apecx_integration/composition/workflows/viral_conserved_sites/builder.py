@@ -85,12 +85,16 @@ _ALIGNER_STEP_CLASSES: dict[str, str] = {
 }
 
 
-def _conserved_sites_core_builder(aligner: str):
+def _conserved_sites_core_builder(aligner: str, max_sequences: int = 25):
     """Build the shared fetch→align→conserve→report cascade (NO terminal step / output bound).
 
     The single source of topology truth for both the standalone catalog workflow (which adds an
     EnvelopeStep) and the nesting variant (which surfaces the report dict directly). The caller
     binds the workflow-level output and terminal link.
+
+    ``max_sequences`` bounds the BV-BRC fetch. The default (25) suits the local MAFFT path; the
+    RHEA-MUSCLE path passes a larger representative subset (MUSCLE is O(N²) — a few-hundred-cap
+    keeps the distributed alignment bounded while spanning more strains than the MAFFT default).
     """
     if aligner not in _ALIGNER_STEP_CLASSES:
         raise ValueError(f"unknown aligner {aligner!r}; supported: {sorted(_ALIGNER_STEP_CLASSES)}")
@@ -105,7 +109,7 @@ def _conserved_sites_core_builder(aligner: str):
     b.add_step(
         "fetch",
         f"{_STEPS}.bvbrc_protein_fasta_step.BvbrcProteinFastaStep",
-        max_sequences=25,
+        max_sequences=max_sequences,
         # Keep the dominant length cluster (±20% of the modal length) so a few outlier-length
         # records (partial genomes, mis-annotated polyproteins) don't gap-blur the MSA — and so a
         # single long outlier can't collapse the keep set to <2 (the dengue-envelope bug).
@@ -183,6 +187,22 @@ def build_viral_conserved_sites_core_workflow(aligner: str = "mafft"):
     to be embedded by ``SequenceConservationSubworkflowStep``.
     """
     b = _conserved_sites_core_builder(aligner)
+    b.add_output("workflow_output", "DataUnitMemory")
+    b.add_link("report.report", "workflow_output", link_type="direct")
+    return b.load()
+
+
+def build_viral_conserved_sites_rhea_core_workflow():
+    """No-arg NESTING variant for the RHEA-MUSCLE path (large-scale genomic analysis leg).
+
+    Same fetch→align→conserve→report cascade as ``build_viral_conserved_sites_core_workflow``
+    but the ``align`` step is ``RheaMuscleAlignStep`` (MUSCLE dispatched to the Rhea MCP server,
+    Parsl-distributed) and the BV-BRC fetch keeps a larger representative subset (60) than the
+    local-MAFFT default (25). Output is the ``report`` dict (no EnvelopeStep) so it composes
+    cleanly inside a ``SubworkflowStep``. Used by the epitope workflow's RHEA conserved-sites
+    leg; requires a reachable Rhea server + the ``rhea`` module importable in this process.
+    """
+    b = _conserved_sites_core_builder("muscle", max_sequences=60)
     b.add_output("workflow_output", "DataUnitMemory")
     b.add_link("report.report", "workflow_output", link_type="direct")
     return b.load()

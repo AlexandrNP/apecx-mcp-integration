@@ -65,8 +65,12 @@ def search(
     Args:
         query: Free-text search query. Empty / whitespace-only short-
             circuits to ``[]``.
-        max_results: Hard cap on returned hits. Globus enforces a max
-            of 100 per request; values above that are clamped.
+        max_results: Cap on returned hits. Globus enforces a max of 100
+            PER REQUEST, so larger values are satisfied by PAGING (not a
+            silent clamp). ``<= 0`` means "no limit — retrieve every
+            matching record", bounded only by Globus's hard deep-paging
+            ceiling (``offset + limit <= 10000``); a truncation at that
+            ceiling is logged LOUDLY, never silent.
         offset: Starting offset for pagination.
         filters: Optional list of Globus Search filter clauses (e.g.
             ``[{"type": "match_any", "field_name": "publisher.name",
@@ -106,25 +110,72 @@ def search(
         ) from exc
 
     index_uuid = _resolve_index_uuid()
-    capped = max(1, min(int(max_results), 100))
 
-    payload: dict[str, Any] = {"q": query.strip(), "limit": capped, "offset": int(offset)}
+    # <= 0 → unbounded: page until the index is exhausted, bounded only by Globus's
+    # hard deep-paging ceiling. A positive value is satisfied by paging too (NOT a
+    # silent 100-clamp). Globus enforces a max page size of 100 and rejects
+    # offset + limit > 10000.
+    _PER_PAGE = 100
+    _CEILING = 10000
+    target: int | None = None if int(max_results) <= 0 else int(max_results)
+
+    base_payload: dict[str, Any] = {}
     if filters:
         # Structured field filters require Globus "advanced" query mode;
         # without advanced=true the filters are silently ignored and the
         # query degrades to free-text — exactly the silent-failure shape
         # we refuse. Set it explicitly whenever filters are present.
-        payload["filters"] = filters
-        payload["advanced"] = True
+        base_payload["filters"] = filters
+        base_payload["advanced"] = True
 
-    try:
-        client = SearchClient()
-        result = client.post_search(index_uuid, payload)
-    except Exception as exc:
-        raise GlobusSearchUnavailableError(
-            f"Globus Search query failed against index {index_uuid}: {type(exc).__name__}: {exc}"
-        ) from exc
+    client = SearchClient()
+    hits: list[dict[str, Any]] = []
+    page_offset = int(offset)
+    total = 0
+    while True:
+        remaining = _PER_PAGE if target is None else min(_PER_PAGE, target - len(hits))
+        if remaining <= 0:
+            break
+        if page_offset >= _CEILING:
+            log.warning(
+                "globus_search: q=%.60r hit Globus deep-paging ceiling (%d); retrieved "
+                "%d of %d matching records — results TRUNCATED (not all data returned)",
+                query,
+                _CEILING,
+                len(hits),
+                total,
+            )
+            break
+        page_limit = min(remaining, _CEILING - page_offset)
+        payload = {**base_payload, "q": query.strip(), "limit": page_limit, "offset": page_offset}
+        try:
+            result = client.post_search(index_uuid, payload)
+        except Exception as exc:
+            raise GlobusSearchUnavailableError(
+                f"Globus Search query failed against index {index_uuid}: "
+                f"{type(exc).__name__}: {exc}"
+            ) from exc
+        total = result.get("total", 0)
+        page = _extract_hits(result)
+        hits.extend(page)
+        page_offset += len(page)
+        # Stop when the index is exhausted (no more rows or we've passed total) or the
+        # server returned a short page (final page).
+        if not page or page_offset >= total or len(page) < page_limit:
+            break
 
+    log.info(
+        "globus_search: q=%.80r → %d hits (total=%d, index=%s)",
+        query,
+        len(hits),
+        total,
+        index_uuid,
+    )
+    return hits
+
+
+def _extract_hits(result: Any) -> list[dict[str, Any]]:
+    """Normalize one Globus ``post_search`` page into hit dicts."""
     hits: list[dict[str, Any]] = []
     for entry in result.get("gmeta", []):
         subject = entry.get("subject", "")
@@ -142,14 +193,6 @@ def search(
                 "score": None if isinstance(score, str) else score,
             }
         )
-
-    log.info(
-        "globus_search: q=%.80r → %d hits (total=%d, index=%s)",
-        query,
-        len(hits),
-        result.get("total", 0),
-        index_uuid,
-    )
     return hits
 
 

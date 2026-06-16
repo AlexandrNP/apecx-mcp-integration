@@ -233,7 +233,7 @@ def search_one_source(
     *,
     taxon_id: int | str | None = None,
     species_name: str | None = None,
-    max_results: int = 50,
+    max_results: int = 0,
 ) -> StructuralSearchResult:
     """Run a taxon-precise structural query for one source (``"pdb"`` / ``"emdb"``).
 

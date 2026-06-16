@@ -208,13 +208,15 @@ def container_to_dict(container: Any) -> dict[str, Any]:
     }
 
 
-async def harvest(term: str, *, max_papers: int) -> list[dict[str, Any]]:
+async def harvest(term: str, *, max_papers: int = 0) -> list[dict[str, Any]]:
     """Run the PubMed eSearch → eFetch chain for ``term``.
 
     Args:
         term: eSearch query string.
-        max_papers: Hard cap on PMIDs collected (PubMed eSearch can
-            return 10k+; we stop early).
+        max_papers: Cap on PMIDs collected. ``<= 0`` means "no limit —
+            collect every PMID eSearch returns" (PubMed eSearch can return
+            10k+; the focused organism-anchored term keeps this bounded in
+            practice). A positive value stops early.
 
     Returns:
         List of publication dicts via ``container_to_dict``.
@@ -233,7 +235,7 @@ async def harvest(term: str, *, max_papers: int) -> list[dict[str, Any]]:
     pmids: list[str] = []
     async for pmid in pubmed_search(term):
         pmids.append(pmid)
-        if len(pmids) >= max_papers:
+        if max_papers > 0 and len(pmids) >= max_papers:
             break
 
     if not pmids:

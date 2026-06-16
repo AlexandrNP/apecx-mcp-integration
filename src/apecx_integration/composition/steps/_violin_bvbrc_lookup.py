@@ -35,7 +35,7 @@ def lookup_violin(
             list short-circuits to ``[]``.
         violin_dir: Directory containing ``Pathogen_Information.csv``
             and ``Vaccine_Information.csv``.
-        max_results: Hard cap on returned mappings.
+        max_results: Cap on returned mappings; ``<= 0`` means no limit.
         owner_name: Caller's step name; only used in log messages.
 
     Returns:
@@ -64,11 +64,11 @@ def lookup_violin(
             if "Pathogen" in df.columns:
                 name_lower = df["Pathogen"].astype(str).str.lower()
                 for query, etype in terms:
-                    if len(results) >= max_results:
+                    if max_results > 0 and len(results) >= max_results:
                         break
                     mask = name_lower.str.contains(query.lower(), regex=False, na=False)
                     for _, row in df[mask].iterrows():
-                        if len(results) >= max_results:
+                        if max_results > 0 and len(results) >= max_results:
                             break
                         canonical = str(row.get("NCBI_Taxonomy_ID", ""))
                         if not canonical:
@@ -95,7 +95,7 @@ def lookup_violin(
             pathogen_csv,
         )
 
-    if len(results) < max_results and vaccine_csv.is_file():
+    if (max_results <= 0 or len(results) < max_results) and vaccine_csv.is_file():
         try:
             df = pd.read_csv(vaccine_csv, dtype=str).fillna("")
         except Exception as exc:
@@ -107,7 +107,7 @@ def lookup_violin(
             name_cols = [c for c in ("Vaccine_Name", "Vaccine") if c in df.columns]
             if name_cols:
                 for query, etype in terms:
-                    if len(results) >= max_results:
+                    if max_results > 0 and len(results) >= max_results:
                         break
                     mask = None
                     for col in name_cols:
@@ -117,7 +117,7 @@ def lookup_violin(
                     if mask is None:
                         continue
                     for _, row in df[mask].iterrows():
-                        if len(results) >= max_results:
+                        if max_results > 0 and len(results) >= max_results:
                             break
                         vac_canonical = str(row.get("Vaccine_Ontology_ID", ""))
                         if not vac_canonical:
@@ -167,7 +167,7 @@ def lookup_bvbrc(
             entity type is unused but kept for shape symmetry with
             ``lookup_violin``.
         bvbrc_dir: Directory containing ``alphavirus_genomes.tsv``.
-        max_results: Hard cap on returned genomes.
+        max_results: Cap on returned genomes; ``<= 0`` means no limit.
         owner_name: Caller's step name; only used in log messages.
 
     Returns:
@@ -206,11 +206,11 @@ def lookup_bvbrc(
     results: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
     for query, _etype in terms:
-        if len(results) >= max_results:
+        if max_results > 0 and len(results) >= max_results:
             break
         mask = name_lower.str.contains(query.lower(), regex=False, na=False)
         for _, row in df[mask].iterrows():
-            if len(results) >= max_results:
+            if max_results > 0 and len(results) >= max_results:
                 break
             gid = str(row.get("genome.genome_id", ""))
             if gid in seen_ids:

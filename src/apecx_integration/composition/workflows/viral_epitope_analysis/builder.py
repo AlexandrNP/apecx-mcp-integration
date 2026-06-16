@@ -193,12 +193,21 @@ def _evidence_workflow_builder():
         output_data_units=_du("normalize_out"),
         triggers=_trig("normalize_input"),
     )
+    # Retrieve EVERYTHING per source (``0`` = no limit — set ONLY here; the step's
+    # defaults stay small so the shared rag_e2e_synthesis consumer is untouched).
+    # Unbounded retrieval pages the sources to exhaustion; the downstream ``distill``
+    # step absorbs the full throughput and ranks it down to the LLM-ready top-N, so
+    # there is no artificial recall ceiling on what the analysis can draw from.
     b.add_step(
         "assemble",
         f"{_STEPS}.synthesis_context_assembly_step.SynthesisContextAssemblyStep",
         input_data_units=_du("assembly_input"),
         output_data_units=_du("synthesis_bundle_output"),
         triggers=_trig("assembly_input"),
+        max_publications=0,
+        max_globus_hits=0,
+        max_bvbrc_genomes=0,
+        max_violin_mappings=0,
     )
     # DATA-READINESS stage (C0): summarize assembled-bundle COVERAGE (per-source counts +
     # named gaps) before the structural lookup. Pure (no network), passes the bundle through
@@ -210,12 +219,16 @@ def _evidence_workflow_builder():
         output_data_units=_du("readiness_output"),
         triggers=_trig("readiness_input"),
     )
+    # ``0`` = no limit: the dedicated structural leg pulls EVERY PDB/EMDB record for the
+    # taxon (paged), isolated to this workflow (the standalone structural MCP tool passes
+    # its own explicit cap). The structural records are ranked by the distill step.
     b.add_step(
         "structural",
         f"{_STEPS}.structural_evidence_step.StructuralEvidenceStep",
         input_data_units=_du("structural_input"),
         output_data_units=_du("structural_bundle"),
         triggers=_trig("structural_input"),
+        max_per_source=0,
     )
     # SEQUENCE-CONSERVATION leg (E2-C1): a concrete SubworkflowStep nesting viral_conserved_sites
     # via the inner_workflow_builder seam. G117: this step's OWN input DU (sequence_params) MUST
@@ -256,6 +269,22 @@ def _evidence_workflow_builder():
             }
         ],
     )
+    # RHEA GENOMIC-ANALYSIS leg: large-scale sequence-conservation via the Rhea MCP server
+    # (MUSCLE multiple-sequence alignment of a representative per-strain subset, Parsl-distributed)
+    # → real conserved-region signal, ADDITIVE to the local MAFFT leg above. Reads taxon_id/protein
+    # from the bundle, folds `rhea_conservation` in, passes through. Degrade-loud subclass: an
+    # unreachable Rhea server / missing `rhea` module / absent taxon-protein becomes a NAMED note
+    # (never a raise), so reasoning downstream always fires. Budget covers the BV-BRC fetch + the
+    # distributed MUSCLE run (+ a slow first-call conda-env unpack on the Rhea side).
+    b.add_step(
+        "rhea_genomic",
+        f"{_STEPS}.rhea_genomic_analysis_step.RheaGenomicAnalysisStep",
+        timeout_seconds=600.0,
+        execution_timeout=660.0,
+        input_data_units=_du("rhea_genomic_input"),
+        output_data_units=_du("rhea_genomic_bundle"),
+        triggers=_trig("rhea_genomic_input"),
+    )
     # STRUCTURAL-REASONING leg (E2-P): map conserved positions onto a candidate PDB in a
     # CONTAINERIZED headless PyMOL (per-residue SASA exposed/buried + contact map). It NEVER
     # raises (degrade-loud subclass) so the review step downstream always fires; the
@@ -286,6 +315,18 @@ def _evidence_workflow_builder():
         output_data_units=_du("functional_output"),
         triggers=_trig("functional_input"),
         timeout_seconds=120.0,
+    )
+    # DISTILLATION stage: rank the high-volume sources (publications / globus / bvbrc /
+    # violin) by a DETERMINISTIC quality score and keep only the top-N per source for the
+    # LLM. Additive — it deposits ``distilled_*`` keys and leaves the full lists intact so
+    # the review step's deterministic Sources ledger + coverage counts stay honest. Pure
+    # (no network, no LLM); never raises, so review always fires.
+    b.add_step(
+        "distill",
+        f"{_STEPS}.evidence_distillation_step.EvidenceDistillationStep",
+        input_data_units=_du("distill_input"),
+        output_data_units=_du("distill_output"),
+        triggers=_trig("distill_input"),
     )
     b.add_step(
         "review",
@@ -353,10 +394,12 @@ def _evidence_workflow_builder():
     # The enriched bundle (now carrying conserved_sites/regions + the sequence stage report)
     # feeds the structural-reasoning step, which maps conserved positions onto a structure and
     # then feeds the (further-enriched) bundle to the synthesis step.
-    b.add_link("merge.merged_bundle", "reasoning.reasoning_input", link_type="direct")
+    b.add_link("merge.merged_bundle", "rhea_genomic.rhea_genomic_input", link_type="direct")
+    b.add_link("rhea_genomic.rhea_genomic_bundle", "reasoning.reasoning_input", link_type="direct")
     # C3: the structural-reasoning bundle flows through functional validation before synthesis.
     b.add_link("reasoning.reasoning_output", "functional.functional_input", link_type="direct")
-    b.add_link("functional.functional_output", "review.review_input", link_type="direct")
+    b.add_link("functional.functional_output", "distill.distill_input", link_type="direct")
+    b.add_link("distill.distill_output", "review.review_input", link_type="direct")
     b.add_link("review.review_output", "gate.review_in", link_type="direct")
     b.add_link("gate.gate_output", "envelope.envelope_input", link_type="direct")
     b.add_link("envelope.workflow_result", "workflow_output", link_type="direct")

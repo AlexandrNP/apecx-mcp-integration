@@ -112,8 +112,9 @@ def test_search_normalizes_gmeta_response(monkeypatch):
     assert hits[1]["subject"] == "PMID:12345"
 
 
-def test_search_clamps_max_results_to_100(monkeypatch):
-    """Globus enforces a 100-result cap server-side; client clamps."""
+def test_search_per_request_limit_capped_at_100(monkeypatch):
+    """Globus enforces a 100-result cap PER REQUEST; the client never asks for more
+    in a single page (larger totals are satisfied by paging, not a silent clamp)."""
     captured: dict = {}
 
     class _CapturingClient:
@@ -124,6 +125,48 @@ def test_search_clamps_max_results_to_100(monkeypatch):
     monkeypatch.setattr("globus_sdk.SearchClient", lambda *a, **kw: _CapturingClient())
     gs_client.search("X", max_results=999)
     assert captured["limit"] == 100
+
+
+def _corpus_stub(total: int):
+    """A SearchClient stub serving ``total`` synthetic records, honoring offset/limit."""
+
+    class _Paged:
+        def post_search(self, index_uuid, body):
+            off, lim = body["offset"], body["limit"]
+            page = [
+                {"subject": f"rec:{i}", "entries": [{"content": {"i": i}}]}
+                for i in range(off, min(off + lim, total))
+            ]
+            return {"total": total, "gmeta": page}
+
+    return _Paged()
+
+
+def test_search_pages_until_max_results(monkeypatch):
+    """A positive max_results above 100 is satisfied by PAGING, not a 100-clamp."""
+    monkeypatch.setattr("globus_sdk.SearchClient", lambda *a, **kw: _corpus_stub(500))
+    hits = gs_client.search("X", max_results=250)
+    assert len(hits) == 250
+    assert hits[0]["subject"] == "rec:0"
+    assert hits[-1]["subject"] == "rec:249"
+
+
+def test_search_unbounded_retrieves_everything(monkeypatch):
+    """max_results <= 0 → no limit: page the whole index."""
+    monkeypatch.setattr("globus_sdk.SearchClient", lambda *a, **kw: _corpus_stub(350))
+    hits = gs_client.search("X", max_results=0)
+    assert len(hits) == 350
+
+
+def test_search_unbounded_truncates_at_ceiling_loud(monkeypatch, caplog):
+    """Beyond Globus's 10000 deep-paging ceiling, stop + WARN (never a silent cap)."""
+    import logging
+
+    monkeypatch.setattr("globus_sdk.SearchClient", lambda *a, **kw: _corpus_stub(10500))
+    with caplog.at_level(logging.WARNING):
+        hits = gs_client.search("X", max_results=0)
+    assert len(hits) == 10000
+    assert any("truncated" in r.message.lower() for r in caplog.records)
 
 
 def test_search_index_uuid_env_override(monkeypatch):

@@ -42,9 +42,9 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 14, (
-        f"expected 14 links (both fan-ins + data-readiness + structural-reasoning + "
-        f"functional-validation edges), got {len(links)}"
+    assert len(links) == 16, (
+        f"expected 16 links (both fan-ins + data-readiness + structural-reasoning + "
+        f"functional-validation + distillation + rhea-genomic edges), got {len(links)}"
     )
     for name, entry in links.items():
         link_cfg = entry["config"]
@@ -69,8 +69,10 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
         "structural",
         "sequence",
         "merge",
+        "rhea_genomic",
         "reasoning",
         "functional",
+        "distill",
         "review",
         "gate",
         "envelope",
@@ -110,10 +112,16 @@ def test_sequence_and_merge_fanin_wired():
     assert ("structural.structural_bundle", "merge.structural_in") in link_pairs
     assert ("sequence.sequence_result", "merge.sequence_in") in link_pairs
     # E2-P + C3: merge feeds structural-reasoning, which feeds functional-validation,
-    # which feeds review.
-    assert ("merge.merged_bundle", "reasoning.reasoning_input") in link_pairs
+    # which feeds the distillation stage, which feeds review.
+    # merge → rhea_genomic (large-scale RHEA-MUSCLE conservation leg) → reasoning.
+    assert ("merge.merged_bundle", "rhea_genomic.rhea_genomic_input") in link_pairs
+    assert ("rhea_genomic.rhea_genomic_bundle", "reasoning.reasoning_input") in link_pairs
+    assert ("merge.merged_bundle", "reasoning.reasoning_input") not in link_pairs
     assert ("reasoning.reasoning_output", "functional.functional_input") in link_pairs
-    assert ("functional.functional_output", "review.review_input") in link_pairs
+    assert ("functional.functional_output", "distill.distill_input") in link_pairs
+    assert ("distill.distill_output", "review.review_input") in link_pairs
+    # The OLD direct functional→review edge must be gone (distill sits between them now).
+    assert ("functional.functional_output", "review.review_input") not in link_pairs
     # The OLD direct merge→review edge must be gone (review now reads the reasoning bundle).
     assert ("merge.merged_bundle", "review.review_input") not in link_pairs
     # The OLD direct reasoning→review edge must be gone (functional sits between them now).

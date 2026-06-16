@@ -625,6 +625,11 @@ class EvidenceReviewSynthesisStep(BaseStep):
         # markdown is the user-facing deliverable; ``data`` carries the structured result.
         from apecx_integration.agents.rag_synthesis import synthesize_response
 
+        # The bundle's source lists ARE the distilled top-N at this point: the upstream
+        # EvidenceDistillationStep ranks the (unbounded) retrieved corpus and REPLACES
+        # each source list with its quality-ranked top-N, so the LLM reasons over the
+        # digest, never the raw corpus. (Standalone review with no distill step upstream
+        # — e.g. tests — simply uses whatever was passed.)
         try:
             evidence_md = await asyncio.to_thread(
                 synthesize_response,
