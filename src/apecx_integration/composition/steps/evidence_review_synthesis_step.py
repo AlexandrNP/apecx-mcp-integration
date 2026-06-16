@@ -169,12 +169,16 @@ def render_desktop_synthesis_scaffold(query: str, publications: list[dict[str, A
     lines = [
         _ANSWER_HEADING,
         "",
-        "> **Synthesis is deferred to you, the orchestrating assistant** (desktop locus): "
-        "the evidence for this question has been assembled deterministically below — the "
-        "Sources and evidence, Structural evidence, and Follow-up sections. Write the answer "
-        "from that evidence; cite the records by their identifiers.",
+        "> ▶▶▶ **ACTION REQUIRED — this is NOT the final answer. YOU must write it now.** "
+        "The apecx tool gathered + analyzed the evidence below (sequence conservation, structural "
+        "exposure, publications) but deliberately did NOT write the prose — that is YOUR job as "
+        "the assistant. In your reply: (1) read the Sources / Structural / Follow-up sections "
+        "below; (2) write the answer under each heading, citing every record by its bracketed "
+        "[identifier]; (3) do NOT paste this scaffold back to the user and do NOT say the result "
+        "was empty — it is the raw material for the answer you write.",
         "",
-        f"Question: {_sanitize_inline(query)}",
+        f"> Question to answer, grounded in the cited evidence below: "
+        f"**{_sanitize_inline(query)}**",
         "",
     ]
     if pubs:

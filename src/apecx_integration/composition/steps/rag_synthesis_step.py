@@ -130,11 +130,13 @@ def render_desktop_synthesis_scaffold(query: str, bundle: dict[str, Any]) -> str
     lines = [
         "# Answer",
         "",
-        "> **Synthesis is deferred to you, the orchestrating assistant** (desktop locus): "
-        "the evidence retrieved for this question is enumerated below, grouped by source. "
-        "Write the grounded answer from it and cite each record by its bracketed identifier.",
+        "> ▶▶▶ **ACTION REQUIRED — this is NOT the final answer. YOU must write it now.** "
+        "The apecx tool retrieved the evidence below (grouped by source) but deliberately did "
+        "NOT write the prose — that is YOUR job as the assistant. In your reply: write the "
+        "grounded answer from this evidence, citing each record by its bracketed [identifier]; "
+        "do NOT paste this scaffold back to the user and do NOT say the result was empty.",
         "",
-        f"Question: {q}",
+        f"> Question to answer, grounded in the evidence below: **{q}**",
         "",
     ]
     any_record = False

@@ -99,3 +99,26 @@ def test_primitives_are_all_registered():
     listed = {p["name"] for p in _PRIMITIVES}
     missing = listed - registered
     assert not missing, f"apecx_capabilities lists primitives not on the MCP surface: {missing}"
+
+
+def test_capabilities_carries_how_to_run_instructions_for_weak_models():
+    """apecx_capabilities must TEACH a weak model the call mechanics + the desktop result
+    contract, so it doesn't stop at the 'ACTION REQUIRED' scaffold or call it empty."""
+    caps = asyncio.run(apecx_capabilities())
+    h = caps["how_to_run"]
+    # the three-step contract + the refusal + a worked example are all present
+    assert {
+        "step_1_call_it",
+        "step_2_read_the_result",
+        "step_3_write_the_answer",
+        "if_it_refuses",
+        "worked_example",
+    } <= set(h)
+    blob = " ".join(h.values())
+    low = blob.lower()
+    # names the direct-call shape, the ACTION-REQUIRED scaffold, "write the answer", and the
+    # don't-stop-at-the-scaffold imperative
+    assert "run_workflow(" in blob
+    assert "ACTION REQUIRED" in blob
+    assert "write the final answer" in low
+    assert "not paste the scaffold" in low

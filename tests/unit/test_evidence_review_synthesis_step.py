@@ -181,7 +181,7 @@ def test_desktop_locus_omits_internal_synthesis_and_defers_to_host(tmp_path, mon
     # Host-synthesis scaffold (inversion framing, NOT an error), five-section shaped,
     # evidence preserved.
     assert md.startswith("# Answer")
-    assert "Synthesis is deferred to you" in md
+    assert "ACTION REQUIRED" in md and "YOU must write it now" in md
     assert "10.1/abc" in md  # retrieved publication carried for the host
     assert "## Structural evidence" in md and "[Globus pdb:2XFB]" in md
     assert "Narrative synthesis was withheld" not in md  # not the error path

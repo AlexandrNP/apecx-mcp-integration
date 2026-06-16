@@ -605,11 +605,45 @@ async def apecx_capabilities() -> dict[str, Any]:
         backends = {"error": f"{type(exc).__name__}: {exc}"}
 
     return {
+        "how_to_run": {
+            "step_1_call_it": (
+                "Every workflow under 'runnable_now' is ALSO a first-class tool with the SAME "
+                'name — call it directly, e.g. viral_epitope_analysis(query="epitopes on '
+                "chikungunya E1\"). Required param is usually 'query' (plain English); some "
+                'accept optional taxon_id / protein. Equivalent: run_workflow("<name>", '
+                '{"query": "..."}). You do NOT need to call list_workflows first.'
+            ),
+            "step_2_read_the_result": (
+                "The result is a dict with a 'markdown' field (and 'run_id', 'data_handle'). "
+                "In desktop mode that markdown is ASSEMBLED EVIDENCE + a scaffold that begins "
+                "'▶▶▶ ACTION REQUIRED — this is NOT the final answer. YOU must write it now.' "
+                "That is BY DESIGN, not an error or an empty result."
+            ),
+            "step_3_write_the_answer": (
+                "When you see the ACTION REQUIRED scaffold: WRITE the final answer yourself "
+                "from the Sources / Structural / Follow-up sections in the markdown, citing each "
+                "record by its bracketed [identifier]. Do NOT paste the scaffold back to the "
+                "user, and do NOT tell the user the tool returned nothing — the evidence IS the "
+                "answer's raw material. (In backend/headless mode the server writes the prose "
+                "for you and 'markdown' is already the finished answer.)"
+            ),
+            "if_it_refuses": (
+                "If the result has an 'error' field, relay it + its remedy (e.g. a missing "
+                "prerequisite or LLM). A refusal is a real answer — never present it as success."
+            ),
+            "worked_example": (
+                "User: 'What are the conserved epitopes on CHIKV E1?' → call "
+                'viral_epitope_analysis(query="conserved surface-exposed epitopes on '
+                'chikungunya virus E1", protein="E1") → read the returned markdown → write '
+                "the answer from its cited sequence + structural evidence."
+            ),
+        },
         "modes": {
             "desktop_mcp": (
                 "The connected MCP client (e.g. Claude Desktop) is the orchestrating + "
-                "synthesizing LLM. apecx returns deterministic data + scaffolds; no "
-                "apecx-side LLM endpoint is required for analysis."
+                "synthesizing LLM. apecx tools return deterministic data + an 'ACTION REQUIRED' "
+                "scaffold for YOU to write the answer from; no apecx-side LLM endpoint is "
+                "required for analysis."
             ),
             "backend_headless": (
                 "run_workflow workflows synthesize internally via the apecx LLM "

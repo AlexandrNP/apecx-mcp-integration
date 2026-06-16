@@ -244,7 +244,7 @@ def test_desktop_locus_omits_synthesis_and_defers_to_host(tmp_path, monkeypatch)
         )
         md = out["synthesis"]
         assert md.startswith("# Answer")
-        assert "Synthesis is deferred to you" in md
+        assert "ACTION REQUIRED" in md and "YOU must write it now" in md
         assert "10.1/x" in md  # publication carried for the host
         assert "[BV-BRC genome G1]" in md
         assert "[RAG chunk #1]" in md
