@@ -1020,6 +1020,29 @@ def _build_arg_parser():
             "(headless). Falls back to $APECX_EXECUTION_LOCUS, then 'desktop'."
         ),
     )
+    parser.add_argument(
+        "--transport",
+        choices=["stdio", "streamable-http", "sse"],
+        default="stdio",
+        help=(
+            "MCP transport. 'stdio' (default) — for Claude Desktop / IDE clients that spawn "
+            "the server locally. 'streamable-http' — serve over HTTP at http://HOST:PORT/mcp, "
+            "REQUIRED by ChatGPT (Developer Mode → Apps & Connectors → Create → Connector URL); "
+            "ChatGPT needs a PUBLIC HTTPS URL, so tunnel this port (e.g. `ngrok http PORT`) and "
+            "give ChatGPT the tunnel's https URL + /mcp. 'sse' — legacy HTTP+SSE transport."
+        ),
+    )
+    parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="bind host for --transport streamable-http/sse (default 127.0.0.1).",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8765,
+        help="bind port for --transport streamable-http/sse (default 8765; 8000 is the CP).",
+    )
     return parser
 
 
@@ -1070,7 +1093,21 @@ def main(argv: list[str] | None = None) -> None:
     _check_rhea_status_or_warn()
     _ensure_synonym_dict_or_warn()
     server = build_server(locus=resolved_locus)
-    server.run()
+    if args.transport == "stdio":
+        server.run()
+    else:
+        # HTTP transports (ChatGPT needs streamable-http at /mcp). Bind host/port from the
+        # flags; ChatGPT still requires a PUBLIC HTTPS URL, so the operator tunnels this port.
+        server.settings.host = args.host
+        server.settings.port = args.port
+        log.info(
+            "apecx-mcp serving %s at http://%s:%d%s (tunnel this for ChatGPT)",
+            args.transport,
+            args.host,
+            args.port,
+            getattr(server.settings, "streamable_http_path", "/mcp"),
+        )
+        server.run(transport=args.transport)
 
 
 if __name__ == "__main__":

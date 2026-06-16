@@ -1586,6 +1586,48 @@ def _step_routing(interactive: bool = True) -> StepResult:
     return StepResult("routing", "ok", change)
 
 
+_CHATGPT_PORT = 8765
+
+
+def chatgpt_connector_guidance(port: int = _CHATGPT_PORT) -> str:
+    """Operator instructions to connect ChatGPT to apecx-mcp.
+
+    Unlike Claude Desktop (a local JSON config an installer writes), ChatGPT's MCP support is
+    a REMOTE HTTP connector added through the ChatGPT UI — there is NO local file to write, and
+    it needs a PUBLIC HTTPS URL (a localhost stdio server cannot be reached). So this step is
+    instructional, not an auto-write. Source: OpenAI Developer Mode / Apps & Connectors (2026)."""
+    url = f"http://127.0.0.1:{port}/mcp"
+    return (
+        "ChatGPT uses REMOTE HTTP MCP connectors (no local config file, unlike Claude\n"
+        "  Desktop). apecx-mcp must serve HTTP and be reachable at a PUBLIC HTTPS URL:\n"
+        "\n"
+        f"    1. Serve apecx-mcp over HTTP:   apecx-mcp --transport streamable-http --port {port}\n"
+        f"       (endpoint: {url})\n"
+        "    2. Expose it publicly (localhost will NOT work for ChatGPT):\n"
+        f"           ngrok http {port}      # → e.g. https://<id>.ngrok-free.app\n"
+        "    3. In ChatGPT: Settings → Apps & Connectors → (enable Developer Mode) → Create:\n"
+        "         • Connector URL: https://<your-tunnel>/mcp\n"
+        "         • Authentication: None\n"
+        "       → Create. The apecx tools then appear in ChatGPT.\n"
+        "\n"
+        "  ChatGPT is a capable host, so the default desktop locus applies (it writes the\n"
+        "  final answer from the returned evidence — same as Claude Desktop)."
+    )
+
+
+def _step_chatgpt(interactive: bool = True) -> StepResult:
+    """Print how to connect ChatGPT to apecx-mcp (instructional — no file to auto-write).
+
+    ChatGPT's MCP support is a remote HTTP connector configured in the ChatGPT UI; there is no
+    local config an installer can write (contrast Claude Desktop). apecx-mcp now serves the
+    ChatGPT-required transport via ``apecx-mcp --transport streamable-http``; this step prints
+    the exact serve → tunnel → add-connector steps."""
+    _print_header("ChatGPT — connect apecx-mcp as a custom connector")
+    print()
+    print("  " + chatgpt_connector_guidance())
+    return StepResult("chatgpt", "ok", "printed ChatGPT connector instructions (HTTP transport)")
+
+
 # ---------------------------------------------------------------------------
 # Subcommand dispatch
 # ---------------------------------------------------------------------------
@@ -1600,6 +1642,7 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "rhea": lambda **_: _step_rhea(),
     "pymol": lambda **_: _step_pymol(),
     "routing": _step_routing,
+    "chatgpt": _step_chatgpt,
     "verify": lambda **_: _step_verify(),
 }
 
@@ -1688,6 +1731,7 @@ def _run_all(
             )
         )
     results.append(_step_routing(interactive=interactive))
+    results.append(_step_chatgpt(interactive=interactive))
     results.append(_step_verify())
 
     return _print_summary(results)
@@ -1716,6 +1760,7 @@ def main(argv: list[str] | None = None) -> None:
             "rhea",
             "pymol",
             "routing",
+            "chatgpt",
             "verify",
             "capabilities",
             "all",
