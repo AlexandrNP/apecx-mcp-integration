@@ -183,6 +183,78 @@ def test_unwraps_trigger_envelope(tmp_path):
     assert out["query"] == "chikungunya"
 
 
+def _ok_item_full(index: str, harm_n: int, raw_n: int) -> dict:
+    """A real-shape OK envelope carrying FULL ``records`` lists (the new search output),
+    not just samples. ``sample`` is the 3-record preview alongside."""
+    harm = [{"title": f"{index} harm {i}", "identifier": f"{index}:H{i}"} for i in range(harm_n)]
+    raw = [{"title": f"{index} raw {i}", "identifier": f"{index}:R{i}"} for i in range(raw_n)]
+    return {
+        "envelope_input": {
+            "markdown": f"### {index}",
+            "data": {
+                "kind": "bundle",
+                "parts": {
+                    "resolution": {"path": "fast"},
+                    "raw_query": {"total": raw_n, "records": raw, "sample": raw[:3]},
+                    "harmonized_query": {"total": harm_n, "records": harm, "sample": harm[:3]},
+                    "status": "ok",
+                },
+            },
+        }
+    }
+
+
+def test_full_records_prefer_harmonized_no_double_carry(tmp_path):
+    """With full record lists present, the merge takes the HARMONIZED leg only — NOT
+    harmonized+raw concatenated. For chikungunya genome (harm 6684, raw 6687) that is the
+    difference between carrying ~6.7k records and double-carrying ~13.4k."""
+    index_names = sorted(_INDEX_UUIDS)
+    item = _ok_item_full(index_names[0], harm_n=6684, raw_n=6687)
+    bundle = {
+        "query": "chikungunya",
+        "items": [item],
+        "index_names": index_names,
+        "resolution_plan": {
+            "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+            "canonical_label": "Chikungunya virus",
+        },
+    }
+    out = asyncio.run(_stage(tmp_path).process(bundle))
+    # harmonized leg only — 6684, not 6684+6687.
+    assert len(out["globus_results"]) == 6684
+    assert out["harmonized_search_summary"]["per_index_kept"][index_names[0]] == 6684
+
+
+def test_full_records_fall_back_to_raw_when_harmonized_empty(tmp_path):
+    """Broken-harmonization shape (harm carried nothing, raw has the records): the merge
+    falls back to the raw leg so the corpus is not silently empty."""
+    index_names = sorted(_INDEX_UUIDS)
+    item = _ok_item_full(index_names[0], harm_n=0, raw_n=42)
+    bundle = {
+        "query": "yellow fever",
+        "items": [item],
+        "index_names": index_names,
+        "resolution_plan": {"canonical_iri": None, "canonical_label": None},
+    }
+    out = asyncio.run(_stage(tmp_path).process(bundle))
+    assert len(out["globus_results"]) == 42
+
+
+def test_items_dropped_after_merge(tmp_path):
+    """The heavy per-index envelopes (``items``) are dropped once flattened — nothing
+    downstream of hmerge reads them, and keeping them would double-carry the whole corpus."""
+    index_names = sorted(_INDEX_UUIDS)
+    bundle = {
+        "query": "chikungunya",
+        "items": [_ok_item_full(index_names[0], harm_n=5, raw_n=5)],
+        "index_names": index_names,
+        "resolution_plan": {"canonical_iri": None, "canonical_label": None},
+    }
+    out = asyncio.run(_stage(tmp_path).process(bundle))
+    assert "items" not in out
+    assert len(out["globus_results"]) == 5
+
+
 def test_non_dict_raises(tmp_path):
     step = _stage(tmp_path)
     with pytest.raises(ValueError, match="must be a dict"):

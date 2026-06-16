@@ -146,6 +146,61 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     assert parts["raw_sample"][0]["title"] == "Chikungunya virus strain S27"
 
 
+class _FakeResp:
+    def __init__(self, total, n_returned):
+        self.data = {
+            "total": total,
+            "gmeta": [
+                {"entries": [{"content": {"titles": [{"title": f"rec {i}"}]}}]}
+                for i in range(n_returned)
+            ],
+        }
+
+
+class _FakeClient:
+    """Records the limit requested and returns ``min(total, limit)`` records — mirrors
+    Globus Search's single-call behavior (a large limit returns the whole set)."""
+
+    def __init__(self, total):
+        self._total = total
+        self.last_limit = None
+
+    def post_search(self, uuid, body):
+        self.last_limit = body["limit"]
+        return _FakeResp(self._total, min(self._total, body["limit"]))
+
+
+def test_fetch_records_pulls_full_set_in_one_call():
+    """The retrieval cap fix: a single large-limit request pulls the WHOLE matched set
+    (6,684 records), not a 200-record page — and is not flagged capped."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _MAX_RECORDS,
+        _fetch_records,
+    )
+
+    client = _FakeClient(total=6684)
+    total, records, capped = _fetch_records(client, "uuid", {"q": "chikungunya"})
+    assert total == 6684
+    assert len(records) == 6684  # the FULL set, not 200
+    assert capped is False
+    assert client.last_limit == _MAX_RECORDS  # asked for everything up to the ceiling
+
+
+def test_fetch_records_flags_capped_above_ceiling():
+    """A result set larger than the Globus offset ceiling is carried up to the cap and
+    flagged capped=True (honest: this is the first N, not the whole set)."""
+    from apecx_integration.composition.steps.harmonized_search_execute_step import (
+        _MAX_RECORDS,
+        _fetch_records,
+    )
+
+    client = _FakeClient(total=_MAX_RECORDS + 5000)
+    total, records, capped = _fetch_records(client, "uuid", {"q": "influenza"})
+    assert total == _MAX_RECORDS + 5000
+    assert len(records) == _MAX_RECORDS
+    assert capped is True
+
+
 @pytest.mark.parametrize("missing_key", ["term", "index", "resolution_path"])
 def test_missing_required_keys_raises(tmp_path, missing_key):
     step = _stage(tmp_path)

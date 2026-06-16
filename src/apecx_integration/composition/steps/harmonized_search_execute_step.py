@@ -27,13 +27,15 @@ consumes — ``{markdown: str, data: dict (serialized DataShape)}``. The
 
 - ``resolution`` — path / canonical_iri / canonical_label / confidence /
   synonyms_count
-- ``raw_query`` — q / was_quoted / total / sample (first 3 records) /
-  error / ``q_substitution_reason`` (set when ``term`` was an IRI and
-  the workflow substituted the canonical label as the raw query;
-  ``None`` for plain surface-form inputs)
+- ``raw_query`` — q / was_quoted / total / capped / records (the FULL
+  matched set, projected) / sample (first 3, for preview) / error /
+  ``q_substitution_reason`` (set when ``term`` was an IRI and the
+  workflow substituted the canonical label as the raw query; ``None``
+  for plain surface-form inputs)
 - ``harmonized_query`` — filter_field / filter_shape /
   filter_values_count / filter_values_sample (first 5) / total /
-  sample / error
+  capped / records (the FULL taxon-filtered set, projected) / sample
+  (first 3) / error
 - ``divergence`` — absolute_diff / fraction_of_larger_total /
   hitl_recommended
 - ``harmonization_health`` (the structured signal the user-facing LLM
@@ -139,6 +141,31 @@ def _iri_to_taxon_id(iri: str) -> int | None:
         return int(suffix)
     except (TypeError, ValueError):
         return None
+
+
+# Globus Search offset ceiling: the API enforces ``limit + offset <= 10000``, so a
+# single ``limit=10000`` request returns EVERY match up to this hard cap (verified
+# live: a 6,687-record query returns all 6,687 in one call). No offset pagination can
+# exceed 10,000; deeper result sets need the scroll/marker API (a separate change).
+# This replaces the old ``limit=200`` single-page query that silently capped the
+# retrieved corpus — the epitope path now carries the FULL matched set downstream so
+# the distillation stage ranks the real corpus, not a 3-record preview.
+_MAX_RECORDS = 10_000
+
+
+def _fetch_records(
+    client: Any, index_uuid: str, query_body: dict[str, Any]
+) -> tuple[int, list[dict[str, Any]], bool]:
+    """Run ONE Globus search pulling every match up to the offset ceiling.
+
+    Returns ``(total, records, capped)`` where ``capped`` is True iff the index
+    holds more matches than we could retrieve (``total > _MAX_RECORDS``) — an
+    honest signal the corpus is the first 10,000, not the whole set.
+    """
+    resp = client.post_search(index_uuid, {**query_body, "limit": _MAX_RECORDS})
+    total = int(resp.data.get("total", 0))
+    records = [g["entries"][0]["content"] for g in resp.data.get("gmeta", []) if g.get("entries")]
+    return total, records, total > len(records)
 
 
 def _is_iri_input(term: str) -> bool:
@@ -362,12 +389,11 @@ def _run_paused_envelope(plan: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _raw_query(
-    index: str, term: str, limit: int = 200
-) -> tuple[int, list[dict[str, Any]], str | None]:
+def _raw_query(index: str, term: str) -> tuple[int, list[dict[str, Any]], str | None]:
     """Run the anonymous RAW full-text query (no IRI / no taxon filter needed) against an
-    index. Returns ``(total, records, error)``. Used by the resolution-MISS fallback so a term
-    that the dictionary can't resolve still PULLS the records that are present in the index —
+    index, pulling the FULL matched set (up to the Globus offset ceiling). Returns
+    ``(total, records, error)``. Used by the resolution-MISS fallback so a term that the
+    dictionary can't resolve still PULLS the records that are present in the index —
     instead of returning nothing (the failure: present-but-not-pulled data)."""
     import globus_sdk  # noqa: PLC0415 — heavy import only when actually querying
 
@@ -376,11 +402,7 @@ def _raw_query(
         return 0, [], f"index {index!r} has no directly-queryable Globus index UUID"
     raw_q, _ = _quote_raw_term(term)
     try:
-        resp = globus_sdk.SearchClient().post_search(uuid, {"q": raw_q, "limit": limit})
-        total = int(resp.data.get("total", 0))
-        records = [
-            g["entries"][0]["content"] for g in resp.data.get("gmeta", []) if g.get("entries")
-        ]
+        total, records, _capped = _fetch_records(globus_sdk.SearchClient(), uuid, {"q": raw_q})
         return total, records, None
     except (globus_sdk.GlobusAPIError, globus_sdk.NetworkError) as exc:
         return 0, [], f"{type(exc).__name__}: {exc}"
@@ -395,7 +417,8 @@ def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
     raw_total, raw_records, raw_error = _raw_query(index, term)
 
     if raw_total > 0:
-        sample = [_summarize_record(r) for r in raw_records[:5]]
+        raw_proj = [_summarize_record(r) for r in raw_records]
+        sample = raw_proj[:5]
         md = (
             f"### `{term}` on `{index}` — {raw_total} raw full-text match(es)\n\n"
             f"> ⚠️ The term did NOT resolve to a taxon in the synonym dictionary "
@@ -412,7 +435,8 @@ def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
         bundle_parts = {
             "resolution": {"path": "miss_raw_fallback", "canonical_iri": None, "term": term},
             "raw_total": raw_total,
-            "raw_sample": sample,
+            "raw_records": raw_proj,  # FULL set for the corpus
+            "raw_sample": sample,  # 5-record preview for the markdown
             "harmonization_health": "unharmonized_raw_fallback",
             "status": "ok",
         }
@@ -454,16 +478,13 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
 
     client = globus_sdk.SearchClient()
 
-    # Raw query
+    # Raw query — pull the FULL matched set (up to the Globus offset ceiling), not a page.
     raw_total = 0
     raw_records: list[dict[str, Any]] = []
     raw_error: str | None = None
+    raw_capped = False
     try:
-        resp = client.post_search(index_uuid, {"q": raw_q, "limit": 200})
-        raw_total = int(resp.data.get("total", 0))
-        raw_records = [
-            g["entries"][0]["content"] for g in resp.data.get("gmeta", []) if g.get("entries")
-        ]
+        raw_total, raw_records, raw_capped = _fetch_records(client, index_uuid, {"q": raw_q})
     except (
         globus_sdk.GlobusAPIError,
         globus_sdk.NetworkError,
@@ -471,13 +492,15 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
         raw_error = f"{type(exc).__name__}: {exc}"
         log.warning("HarmonizedSearchExecuteStep: raw query failed: %s", raw_error)
 
-    # Harmonized query
+    # Harmonized query — likewise the FULL taxon-filtered set.
     harm_total = 0
     harm_records: list[dict[str, Any]] = []
     harm_error: str | None = None
+    harm_capped = False
     if filter_values:
         try:
-            resp = client.post_search(
+            harm_total, harm_records, harm_capped = _fetch_records(
+                client,
                 index_uuid,
                 {
                     "filters": [
@@ -486,14 +509,9 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
                             "field_name": spec["field"],
                             "values": list(filter_values),
                         }
-                    ],
-                    "limit": 200,
+                    ]
                 },
             )
-            harm_total = int(resp.data.get("total", 0))
-            harm_records = [
-                g["entries"][0]["content"] for g in resp.data.get("gmeta", []) if g.get("entries")
-            ]
         except (
             globus_sdk.GlobusAPIError,
             globus_sdk.NetworkError,
@@ -574,6 +592,20 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
     if harm_error and harm_health != "broken":
         md_lines += ["", f"_harmonized query error_: {harm_error}"]
 
+    # Project the FULL matched sets once. ``records`` carries the whole corpus
+    # downstream (the merge step flattens it into ``globus_results`` for the
+    # distillation stage to rank); ``sample`` stays a 3-record preview for the
+    # markdown / divergence surface and back-compat.
+    raw_proj = [_summarize_record(r) for r in raw_records]
+    harm_proj = [_summarize_record(r) for r in harm_records]
+    if raw_capped or harm_capped:
+        md_lines += [
+            "",
+            f"**Note**: result set exceeds the Globus offset ceiling "
+            f"({_MAX_RECORDS}); the corpus carries the first {_MAX_RECORDS} of "
+            f"raw={raw_total}/harmonized={harm_total} matches.",
+        ]
+
     bundle_parts: dict[str, Any] = {
         "resolution": {
             "path": plan["resolution_path"],
@@ -586,7 +618,9 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
             "q": raw_q,
             "was_quoted": was_quoted,
             "total": raw_total,
-            "sample": [_summarize_record(r) for r in raw_records[:3]],
+            "capped": raw_capped,
+            "records": raw_proj,
+            "sample": raw_proj[:3],
             "error": raw_error,
             "q_substitution_reason": raw_q_substitution_reason,
         },
@@ -596,7 +630,9 @@ def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:
             "filter_values_count": len(filter_values),
             "filter_values_sample": list(filter_values)[:5],
             "total": harm_total,
-            "sample": [_summarize_record(r) for r in harm_records[:3]],
+            "capped": harm_capped,
+            "records": harm_proj,
+            "sample": harm_proj[:3],
             "error": harm_error,
         },
         "divergence": {

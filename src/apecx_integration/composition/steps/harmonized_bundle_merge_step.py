@@ -49,12 +49,19 @@ _INPUT_KEY = "hmerge_input"
 
 
 def _records_from_item(item: Any) -> list[dict[str, Any]]:
-    """Pull the harmonized + raw record previews out of one per-index
-    ``HarmonizedSearchExecuteStep`` result envelope.
+    """Pull the full record set out of one per-index ``HarmonizedSearchExecuteStep``
+    result envelope.
 
-    Returns a (possibly empty) list of preview record dicts. A result with no
-    records (paused envelope, both legs empty, or a malformed item) yields an
-    empty list — degrade-loud, never raise.
+    The harmonized leg is the canonical taxon-filtered set; the raw leg is the
+    noisier full-text superset. The two overlap heavily (for chikungunya: raw 6687,
+    harmonized 6684 — nearly identical), so we take ONE leg, never both — concatenating
+    would double-carry the entire corpus. Preference: the harmonized leg when it carried
+    records; the raw leg as a fallback when harmonization returned nothing (broken /
+    zero-harmonization dict-staleness case, where raw is the trustworthy signal).
+
+    Returns a (possibly empty) list of record dicts. A result with no records (paused
+    envelope, both legs empty, or a malformed item) yields an empty list — degrade-loud,
+    never raise.
     """
     if not isinstance(item, dict):
         return []
@@ -67,11 +74,22 @@ def _records_from_item(item: Any) -> list[dict[str, Any]]:
     if not isinstance(parts, dict):
         return []
 
-    records: list[dict[str, Any]] = []
+    # Preferred path: the FULL ``records`` lists the search step now carries.
     harm = parts.get("harmonized_query")
+    if isinstance(harm, dict) and isinstance(harm.get("records"), list) and harm["records"]:
+        return [r for r in harm["records"] if isinstance(r, dict)]
+    raw = parts.get("raw_query")
+    if isinstance(raw, dict) and isinstance(raw.get("records"), list) and raw["records"]:
+        return [r for r in raw["records"] if isinstance(r, dict)]
+    # Resolution-MISS envelope carries the full raw fallback under ``raw_records``.
+    if isinstance(parts.get("raw_records"), list) and parts["raw_records"]:
+        return [r for r in parts["raw_records"] if isinstance(r, dict)]
+
+    # Legacy fallback: envelopes WITHOUT full record lists (old cached envelopes,
+    # unit fixtures) — concatenate the small samples so they still contribute.
+    records: list[dict[str, Any]] = []
     if isinstance(harm, dict) and isinstance(harm.get("sample"), list):
         records.extend(r for r in harm["sample"] if isinstance(r, dict))
-    raw = parts.get("raw_query")
     if isinstance(raw, dict) and isinstance(raw.get("sample"), list):
         records.extend(r for r in raw["sample"] if isinstance(r, dict))
     if isinstance(parts.get("raw_sample"), list):
@@ -165,6 +183,11 @@ class HarmonizedBundleMergeStep(BaseStep):
             "total_records": len(globus_results),
             "map_errors": map_errors,
         }
+        # ``items`` (the per-index search envelopes) carried the full record sets the
+        # loop just flattened into ``globus_results``. Nothing downstream of hmerge reads
+        # ``items``, so drop it here — otherwise the entire corpus would ride a second,
+        # dead copy through every remaining step (data_readiness → … → distill).
+        bundle.pop("items", None)
 
         log.info(
             "HarmonizedBundleMergeStep %s: indices=%d total_records=%d taxon_id=%s map_errors=%s",
