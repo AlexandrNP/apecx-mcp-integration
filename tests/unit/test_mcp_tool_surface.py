@@ -41,10 +41,12 @@ EXPECTED_STATIC = {
 }
 
 # Catalog workflows — each registers as one MCP tool (run via run_workflow too).
+# NOTE: viral_conserved_sites / _muscle were RETIRED from the catalog 2026-06-16 — they
+# required a pre-resolved taxon_id (no free-text query) and steered the model to run
+# harmonized_search first; viral_epitope_analysis (free-text, nests the same conserved-sites
+# pipeline) supersedes them. The builders remain on disk; they are simply not first-class tools.
 EXPECTED_CATALOG = {
     "rhea_muscle_alignment",
-    "viral_conserved_sites",
-    "viral_conserved_sites_muscle",
     "viral_epitope_analysis",
     # Promoted from filesystem discovery via the catalog `promote_discovered:` list (no
     # hand-written entry) — a product workflow exposed as a first-class {query} tool so a
