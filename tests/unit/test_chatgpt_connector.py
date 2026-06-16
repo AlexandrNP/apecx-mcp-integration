@@ -14,24 +14,23 @@ from apecx_integration.mcp_surface.server import _build_arg_parser
 
 def test_apecx_mcp_supports_streamable_http_transport_for_chatgpt():
     parser = _build_arg_parser()
-    ns = parser.parse_args(
-        ["--transport", "streamable-http", "--host", "0.0.0.0", "--port", "8811"]
-    )
+    # MINIMUM arguments: only --transport. Host/port are FastMCP defaults (no extra flags).
+    ns = parser.parse_args(["--transport", "streamable-http"])
     assert ns.transport == "streamable-http"
-    assert ns.host == "0.0.0.0"
-    assert ns.port == 8811
+    assert not hasattr(ns, "port") and not hasattr(ns, "host")  # no port/host bloat
     # default stays stdio (Claude Desktop / local clients)
     assert parser.parse_args([]).transport == "stdio"
 
 
-def test_chatgpt_guidance_names_the_http_endpoint_tunnel_and_ui_steps():
-    g = chatgpt_connector_guidance(port=8765)
-    # the three load-bearing facts a ChatGPT user needs
-    assert "--transport streamable-http" in g  # serve HTTP
-    assert "/mcp" in g  # the endpoint path ChatGPT connects to
-    assert "ngrok" in g and "https://" in g.lower()  # public HTTPS tunnel (localhost won't work)
-    assert "Apps & Connectors" in g and "Connector URL" in g  # the UI add steps
-    assert "no local config file" in g.lower()  # honest: nothing to auto-write
+def test_chatgpt_guidance_is_minimal_and_uses_the_default_port():
+    g = chatgpt_connector_guidance()
+    # ONE-arg serve command, the DEFAULT port (not a random example), the /mcp endpoint
+    assert "apecx-mcp --transport streamable-http" in g
+    assert "--port" not in g  # no extra argument in the instruction
+    assert ":8000/mcp" in g  # the actual default port apecx-mcp HTTP serves on
+    # a tunnel (noted as a separate install) + the UI add steps
+    assert ("ngrok" in g or "cloudflared" in g) and "separately" in g.lower()
+    assert "Apps & Connectors" in g and "Connector URL" in g
 
 
 def test_step_chatgpt_runs_and_reports_ok(capsys):

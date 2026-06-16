@@ -106,19 +106,19 @@ def test_capabilities_carries_how_to_run_instructions_for_weak_models():
     contract, so it doesn't stop at the 'ACTION REQUIRED' scaffold or call it empty."""
     caps = asyncio.run(apecx_capabilities())
     h = caps["how_to_run"]
-    # the three-step contract + the refusal + a worked example are all present
+    # the call → markdown-IS-the-report → structured-data contract + refusal + example
     assert {
         "step_1_call_it",
-        "step_2_read_the_result",
-        "step_3_write_the_answer",
+        "step_2_the_markdown_IS_the_report",
+        "step_3_structured_data",
         "if_it_refuses",
         "worked_example",
     } <= set(h)
     blob = " ".join(h.values())
     low = blob.lower()
-    # names the direct-call shape, the ACTION-REQUIRED scaffold, "write the answer", and the
-    # don't-stop-at-the-scaffold imperative
+    # names the direct-call shape, that the markdown IS the finished report to SHOW the user,
+    # the durable artifact_path, and the structured data channel
     assert "run_workflow(" in blob
-    assert "ACTION REQUIRED" in blob
-    assert "write the final answer" in low
-    assert "not paste the scaffold" in low
+    assert "finished" in low and "present this markdown" in low
+    assert "artifact_path" in blob
+    assert "data_preview" in blob

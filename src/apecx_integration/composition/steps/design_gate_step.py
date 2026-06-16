@@ -127,6 +127,9 @@ class DesignGateStep(BaseStep):
         # E3-8: the per-run provenance record rides along from the review step; pass it
         # through unchanged to the terminal EnvelopeStep (the gate does not author it).
         provenance = review.get("provenance")
+        # Forward the review's STRUCTURED output (a DataShape bundle) to the EnvelopeStep so it
+        # surfaces as WorkflowResult.data_preview — emitted alongside the user-facing markdown.
+        structured = review.get("data")
 
         requested = control.get("requested_outputs") or "evidence_only"
         approval_id = control.get("design_approval_id")
@@ -138,7 +141,7 @@ class DesignGateStep(BaseStep):
         # control_transfer present → EnvelopeStep returns status=needs_input.
         if requested != _DESIGN:
             log.info("DesignGateStep %s: evidence_only → ok", self.name)
-            return {"markdown": evidence_md, "provenance": provenance}
+            return {"markdown": evidence_md, "data": structured, "provenance": provenance}
 
         # FAIL-CLOSED HITL validation (2026-06-14): the design path opens ONLY for a
         # server-issued, operator-approved token whose scope matches THIS request. A blank /
@@ -151,6 +154,7 @@ class DesignGateStep(BaseStep):
             log.info("DesignGateStep %s: design approval validated → ok with design", self.name)
             return {
                 "markdown": f"{evidence_md.rstrip()}\n\n{design_md}\n",
+                "data": structured,
                 "provenance": provenance,
             }
 
@@ -186,6 +190,7 @@ class DesignGateStep(BaseStep):
         log.info("DesignGateStep %s: design withheld — %s", self.name, reason)
         return {
             "markdown": md,
+            "data": structured,
             "control_transfer": ct.model_dump(mode="json"),
             "provenance": provenance,
         }

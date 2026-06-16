@@ -215,22 +215,20 @@ def test_synthesis_config_typo_caught_at_step_init(tmp_path):
         RagSynthesisStep.from_config(str(wrapper))
 
 
-def test_desktop_locus_omits_synthesis_and_defers_to_host(tmp_path, monkeypatch):
-    """DESKTOP locus (default): the host LLM synthesizes, so the apecx LLM call is OMITTED.
-
-    The step must NOT invoke synthesize_response; it returns a scaffold carrying every
-    retrieved record + an instruction to the host — and works with NO apecx LLM configured.
-    """
-    set_active_locus(ExecutionLocus.DESKTOP)  # the default, asserted explicitly
+def test_no_llm_degrades_to_deterministic_evidence_report_not_scaffold(tmp_path, monkeypatch):
+    """The SERVER always writes the report (the desktop 'defer to host' scaffold was removed
+    2026-06-15). When NO LLM is reachable, synthesis degrades LOUD to a deterministic rendering
+    of the retrieved evidence — a complete answer body with the records cited, NOT a 'you write
+    it' scaffold. Works with no apecx LLM configured."""
+    set_active_locus(ExecutionLocus.DESKTOP)
     try:
-
-        def _must_not_be_called(q, **k):
-            raise AssertionError("synthesize_response called in desktop locus — must be omitted")
-
         import apecx_integration.composition.steps.rag_synthesis_step as mod
 
-        monkeypatch.setattr(mod, "synthesize_response", _must_not_be_called)
-
+        monkeypatch.setattr(
+            mod,
+            "synthesize_response",
+            lambda q, **k: (_ for _ in ()).throw(RuntimeError("no LLM reachable")),
+        )
         step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
         out = asyncio.run(
             step.process(
@@ -244,17 +242,16 @@ def test_desktop_locus_omits_synthesis_and_defers_to_host(tmp_path, monkeypatch)
         )
         md = out["synthesis"]
         assert md.startswith("# Answer")
-        assert "ACTION REQUIRED" in md and "YOU must write it now" in md
-        assert "10.1/x" in md  # publication carried for the host
-        assert "[BV-BRC genome G1]" in md
-        assert "[RAG chunk #1]" in md
+        assert "ACTION REQUIRED" not in md  # NOT a scaffold
+        assert "Narrative synthesis was not run" in md  # honest deterministic-fallback header
+        assert "10.1/x" in md and "[BV-BRC genome G1]" in md and "[RAG chunk #1]" in md
     finally:
         set_active_locus(ExecutionLocus.DESKTOP)
 
 
-def test_desktop_locus_empty_retrieval_says_so(tmp_path, monkeypatch):
-    """DESKTOP + nothing retrieved: scaffold is honest about the empty result (loud, not an
-    empty answer) and still omits the LLM call."""
+def test_no_llm_empty_retrieval_says_so(tmp_path, monkeypatch):
+    """No LLM + nothing retrieved: the deterministic fallback is honest about the empty result
+    (loud, never an empty answer)."""
     set_active_locus(ExecutionLocus.DESKTOP)
     try:
         import apecx_integration.composition.steps.rag_synthesis_step as mod
@@ -262,7 +259,7 @@ def test_desktop_locus_empty_retrieval_says_so(tmp_path, monkeypatch):
         monkeypatch.setattr(
             mod,
             "synthesize_response",
-            lambda q, **k: (_ for _ in ()).throw(AssertionError("must not call LLM")),
+            lambda q, **k: (_ for _ in ()).throw(RuntimeError("no LLM reachable")),
         )
         step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
         out = asyncio.run(step.process({"query": "obscure query with no hits"}))

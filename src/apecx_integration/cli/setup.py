@@ -1586,32 +1586,24 @@ def _step_routing(interactive: bool = True) -> StepResult:
     return StepResult("routing", "ok", change)
 
 
-_CHATGPT_PORT = 8765
+# apecx-mcp's HTTP transport binds FastMCP's default port; the instruction uses the SAME
+# port so the served endpoint and the connector URL never disagree.
+_CHATGPT_PORT = 8000
 
 
 def chatgpt_connector_guidance(port: int = _CHATGPT_PORT) -> str:
-    """Operator instructions to connect ChatGPT to apecx-mcp.
+    """Operator instructions to connect ChatGPT to apecx-mcp — minimal + exact.
 
-    Unlike Claude Desktop (a local JSON config an installer writes), ChatGPT's MCP support is
-    a REMOTE HTTP connector added through the ChatGPT UI — there is NO local file to write, and
-    it needs a PUBLIC HTTPS URL (a localhost stdio server cannot be reached). So this step is
-    instructional, not an auto-write. Source: OpenAI Developer Mode / Apps & Connectors (2026)."""
-    url = f"http://127.0.0.1:{port}/mcp"
+    ChatGPT's MCP support is a REMOTE HTTP connector added in the ChatGPT UI (no local config
+    file to write, unlike Claude Desktop) and needs a PUBLIC HTTPS URL. Three commands; the
+    serve command takes ONE argument and uses the default port. Source: OpenAI Developer Mode."""
     return (
-        "ChatGPT uses REMOTE HTTP MCP connectors (no local config file, unlike Claude\n"
-        "  Desktop). apecx-mcp must serve HTTP and be reachable at a PUBLIC HTTPS URL:\n"
-        "\n"
-        f"    1. Serve apecx-mcp over HTTP:   apecx-mcp --transport streamable-http --port {port}\n"
-        f"       (endpoint: {url})\n"
-        "    2. Expose it publicly (localhost will NOT work for ChatGPT):\n"
-        f"           ngrok http {port}      # → e.g. https://<id>.ngrok-free.app\n"
-        "    3. In ChatGPT: Settings → Apps & Connectors → (enable Developer Mode) → Create:\n"
-        "         • Connector URL: https://<your-tunnel>/mcp\n"
-        "         • Authentication: None\n"
-        "       → Create. The apecx tools then appear in ChatGPT.\n"
-        "\n"
-        "  ChatGPT is a capable host, so the default desktop locus applies (it writes the\n"
-        "  final answer from the returned evidence — same as Claude Desktop)."
+        f"  1. Serve over HTTP:   apecx-mcp --transport streamable-http   "
+        f"(→ http://localhost:{port}/mcp)\n"
+        f"  2. Tunnel it to a public HTTPS URL (install a tunnel separately — it is NOT bundled):\n"
+        f"         ngrok http {port}      # or: cloudflared tunnel --url http://localhost:{port}\n"
+        f"  3. ChatGPT → Settings → Apps & Connectors → Create → Connector URL = "
+        f"https://<your-tunnel>/mcp , Authentication: None."
     )
 
 

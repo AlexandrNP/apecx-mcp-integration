@@ -148,24 +148,18 @@ def test_synthesis_failure_degrades_loud_keeps_evidence(tmp_path, monkeypatch, a
     assert "## Structural evidence" in md and "[Globus pdb:7XYZ]" in md
 
 
-def test_desktop_locus_omits_internal_synthesis_and_defers_to_host(tmp_path, monkeypatch):
-    """DESKTOP locus (default): the host LLM synthesizes, so the apecx LLM call is OMITTED.
-
-    The step must NOT invoke synthesize_response; it returns the deterministic evidence
-    document (host-synthesis scaffold + Structural/Sources/Follow-up sections) with the
-    retrieved evidence intact — and it works with NO apecx LLM configured.
-    """
-    set_active_locus(ExecutionLocus.DESKTOP)  # the default, asserted explicitly
-
-    def _must_not_be_called(q, **k):
-        raise AssertionError("synthesize_response was called in desktop locus — must be omitted")
-
-    monkeypatch.setattr(
-        "apecx_integration.agents.rag_synthesis.synthesize_response", _must_not_be_called
-    )
+def test_server_always_writes_report_and_structured_data_in_both_loci(tmp_path, monkeypatch):
+    """The SERVER always writes the finished report (the desktop 'defer to the host' scaffold
+    was removed 2026-06-15 — it produced no durable artifact and the host LLM discarded it). In
+    BOTH loci the step returns a complete markdown report AND a structured ``data`` bundle. With
+    no reachable LLM it degrades LOUD (deterministic body), still a complete document — never a
+    scaffold that tells the host to write the answer."""
     bundle = {
         "query": "chikv E1 epitopes",
+        "taxon_id": 37124,
+        "protein": "E1",
         "publications": [{"doi": "10.1/abc", "title": "E1 paper"}],
+        "conserved_regions": [{"start": 10, "end": 20, "identity": 0.97}],
         "structural_records": [
             {
                 "subject": "pdb:2XFB",
@@ -175,16 +169,28 @@ def test_desktop_locus_omits_internal_synthesis_and_defers_to_host(tmp_path, mon
         ],
         "structural_note": None,
     }
-    step = _stage(tmp_path)
-    out = asyncio.run(step.process(bundle))
-    md = out["markdown"]
-    # Host-synthesis scaffold (inversion framing, NOT an error), five-section shaped,
-    # evidence preserved.
-    assert md.startswith("# Answer")
-    assert "ACTION REQUIRED" in md and "YOU must write it now" in md
-    assert "10.1/abc" in md  # retrieved publication carried for the host
-    assert "## Structural evidence" in md and "[Globus pdb:2XFB]" in md
-    assert "Narrative synthesis was withheld" not in md  # not the error path
+
+    def _no_llm(q, **k):
+        raise RuntimeError("no LLM reachable")  # force the degrade-loud deterministic path
+
+    monkeypatch.setattr("apecx_integration.agents.rag_synthesis.synthesize_response", _no_llm)
+
+    for locus in (ExecutionLocus.DESKTOP, ExecutionLocus.AGENT):
+        set_active_locus(locus)
+        out = asyncio.run(_stage(tmp_path).process(bundle))
+        md = out["markdown"]
+        # A complete report, NOT a scaffold — the user sees this directly.
+        assert md.startswith("# Answer"), locus
+        assert "ACTION REQUIRED" not in md and "Synthesis is deferred to you" not in md, locus
+        assert "## Structural evidence" in md and "[Globus pdb:2XFB]" in md, locus
+        assert "10.1/abc" in md, locus
+        # STRUCTURED OUTPUT emitted alongside the markdown (the main requirement).
+        data = out["data"]
+        assert data["kind"] == "bundle"
+        parts = data["parts"]
+        assert parts["taxon_id"] == 37124 and parts["protein"] == "E1"
+        assert parts["counts"]["conserved_regions"] == 1
+        assert parts["counts"]["structural_records"] == 1
 
 
 def test_missing_query_raises(tmp_path):

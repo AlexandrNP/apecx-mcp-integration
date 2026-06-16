@@ -116,27 +116,25 @@ _SOURCE_RENDERERS: tuple[tuple[str, str, Any], ...] = (
 )
 
 
-def render_desktop_synthesis_scaffold(query: str, bundle: dict[str, Any]) -> str:
-    """DESKTOP-locus body — the host LLM synthesizes, so the apecx LLM call is OMITTED.
+def render_rag_evidence_fallback(query: str, bundle: dict[str, Any], reason: str = "") -> str:
+    """DETERMINISTIC report body when LLM synthesis cannot run (no reachable LLM, or a synth-gate
+    failure) — degrade-loud, NOT a 'host writes it' scaffold.
 
-    The inversion (not a degrade): in desktop locus the orchestrating host (Claude Desktop)
-    IS the synthesizer, so no apecx LLM endpoint is required. We hand the host the assembled
-    retrieved evidence — every citable record, grouped by source — plus an instruction to
-    write the grounded answer in its next turn. RAG chunks are enumerated #1..#N to match the
-    synthesizer's own numbering so the host cites them the same way the internal path would.
-    When NOTHING was retrieved the scaffold says so explicitly (loud, never an empty answer).
-    """
+    The SERVER always writes the report; when the narrative model is unavailable this renders the
+    retrieved evidence — every citable record, grouped by source — as a complete answer body with
+    a NAMED limitation, so the user still receives a useful, grounded document. RAG chunks are
+    enumerated #1..#N to match the synthesizer's own numbering. When NOTHING was retrieved it says
+    so explicitly (loud, never an empty answer)."""
     q = " ".join(str(query or "").split())
+    why = f" ({reason})" if reason else ""
     lines = [
         "# Answer",
         "",
-        "> ▶▶▶ **ACTION REQUIRED — this is NOT the final answer. YOU must write it now.** "
-        "The apecx tool retrieved the evidence below (grouped by source) but deliberately did "
-        "NOT write the prose — that is YOUR job as the assistant. In your reply: write the "
-        "grounded answer from this evidence, citing each record by its bracketed [identifier]; "
-        "do NOT paste this scaffold back to the user and do NOT say the result was empty.",
+        f"> **Narrative synthesis was not run{why}** — the retrieved evidence for the question "
+        "is enumerated below, grouped by source, with citable identifiers. Treat this as the "
+        "grounded answer material; re-run with a reachable LLM for a written narrative.",
         "",
-        f"> Question to answer, grounded in the evidence below: **{q}**",
+        f"> Question: **{q}**",
         "",
     ]
     any_record = False
@@ -323,24 +321,6 @@ class RagSynthesisStep(BaseStep):
                 f"{type(query).__name__}={query!r}"
             )
 
-        from apecx_integration.composition.runtime.execution_locus import (
-            ExecutionLocus,
-            get_active_locus,
-        )
-
-        # Final-synthesis step. In DESKTOP locus the host LLM (Claude Desktop) is the
-        # synthesizer, so the apecx-side LLM call is OMITTED (inversion of control — no apecx
-        # LLM endpoint required). We return the assembled retrieved evidence + an instruction
-        # for the host to write the answer. In AGENT/headless locus we synthesize internally
-        # via the apecx LLM backend, exactly as before.
-        if get_active_locus() == ExecutionLocus.DESKTOP:
-            log.info(
-                "RagSynthesisStep %s: desktop locus — deferring synthesis to the host LLM; "
-                "returning assembled evidence scaffold (no apecx LLM call).",
-                self.name,
-            )
-            return {"synthesis": render_desktop_synthesis_scaffold(query.strip(), input_data)}
-
         # Forward the five-source bundle. Missing keys default to
         # empty lists; the synthesizer's fail_on_empty_retrieval gate
         # fires only when EVERY source is empty.
@@ -352,17 +332,27 @@ class RagSynthesisStep(BaseStep):
             "globus_results": input_data.get("globus_results") or [],
         }
 
-        # synthesize_response is sync; offload the blocking LLM call.
-        # We do NOT pass ``llm=...`` — the synthesizer builds its own
-        # via ``build_chat_llm()`` which honors APECX_LLM_* env vars.
-        # Tests can override by monkeypatching ``synthesize_response``
-        # itself (no global LLM cache to clear).
-        synthesis = await asyncio.to_thread(
-            synthesize_response,
-            query,
-            config=self._synthesis_config,
-            **kwargs_for_synth,
-        )
+        # The SERVER ALWAYS writes the report (the desktop 'defer to the host' scaffold was
+        # removed 2026-06-15 — it produced no durable artifact and the host LLM discarded it).
+        # Synthesize with the configured LLM; on no reachable LLM / a synth-gate failure, degrade
+        # LOUD to a deterministic rendering of the retrieved evidence (a complete answer body,
+        # never a 'you write it' scaffold). synthesize_response is sync → offload it.
+        try:
+            synthesis = await asyncio.to_thread(
+                synthesize_response,
+                query,
+                config=self._synthesis_config,
+                **kwargs_for_synth,
+            )
+        except Exception as exc:  # noqa: BLE001 — degrade-loud, never strand the retrieved evidence
+            log.warning(
+                "RagSynthesisStep %s: synthesis failed (%s); deterministic evidence fallback.",
+                self.name,
+                exc,
+            )
+            synthesis = render_rag_evidence_fallback(
+                query.strip(), input_data, reason=f"{type(exc).__name__}: {exc}"
+            )
 
         log.info(
             "RagSynthesisStep %s: produced %d-char synthesis "

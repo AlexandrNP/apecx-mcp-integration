@@ -98,6 +98,52 @@ _PRIMITIVES: list[dict[str, str]] = [
 ]
 
 
+def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
+    """Write the workflow's markdown report (+ structured data) to a DURABLE run-keyed file and
+    set ``result['artifact_path']``.
+
+    The markdown is the user-facing deliverable; writing it to disk means it SURVIVES the LLM /
+    MCP client discarding or summarising the tool result — the user (or operator) can open the
+    file directly. ``<APECX_ARTIFACTS_DIR or ~/.apecx/artifacts>/<run_id>.md`` for the report,
+    ``<run_id>.json`` for the structured ``data_preview`` when present. Never raises — an
+    artifact-write failure must not strand a run whose science completed."""
+    md = result.get("markdown")
+    if not (md and str(md).strip() and run_id):
+        return
+    try:
+        import json as _json
+        import os as _os
+        from pathlib import Path as _Path
+
+        base = _Path(
+            _os.environ.get("APECX_ARTIFACTS_DIR") or (_Path.home() / ".apecx" / "artifacts")
+        )
+        base.mkdir(parents=True, exist_ok=True)
+        md_path = base / f"{run_id}.md"
+        md_path.write_text(str(md), encoding="utf-8")
+        # Write the FULL structured data — resolve the data_handle to the complete DataShape
+        # (data_preview is keys-only). Falls back to data_preview when there is no handle.
+        data: Any = None
+        handle = result.get("data_handle")
+        if handle:
+            try:
+                from apecx_integration.composition.handles.store import default_handle_store
+
+                shape = default_handle_store().get(handle)
+                data = shape.model_dump(mode="json") if hasattr(shape, "model_dump") else shape
+            except Exception:  # noqa: BLE001 — fall back to the preview if the handle won't resolve
+                data = result.get("data_preview")
+        else:
+            data = result.get("data_preview")
+        if data is not None:
+            (base / f"{run_id}.json").write_text(
+                _json.dumps(data, indent=2, default=str), encoding="utf-8"
+            )
+        result["artifact_path"] = str(md_path)
+    except Exception as exc:  # noqa: BLE001 — artifact write must never strand a completed run
+        log.warning("artifact write failed for run %s: %s", run_id, exc)
+
+
 async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
     """Run the catalog workflow ``name`` with ``params``; return its result envelope.
 
@@ -259,7 +305,9 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
         if isinstance(prov, dict):
             updates["provenance"] = {**prov, "run_id": record.run_id}
         stamped = outcome.workflow_result.model_copy(update=updates)
-        return stamped.model_dump(mode="json")
+        result = stamped.model_dump(mode="json")
+        _attach_artifact(result, record.run_id)
+        return result
 
     # The workflow completed but emits no standard envelope (legacy workflow without an
     # EnvelopeStep). Do NOT drop its output: stash the raw output behind a handle and
@@ -271,7 +319,7 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
     )
     bundle = Bundle(parts=raw_outputs)
     handle = default_handle_store().put(bundle)
-    return WorkflowResult(
+    result = WorkflowResult(
         markdown=(
             f"`{name}` completed but does not emit a standard result envelope "
             f"(no EnvelopeStep). Its structured output is attached as `data_handle`; "
@@ -281,6 +329,8 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
         data_preview=bundle.preview(),
         run_id=record.run_id,
     ).model_dump(mode="json")
+    _attach_artifact(result, record.run_id)
+    return result
 
 
 def _make_stage_streamer(on_stage: OnStage) -> Callable[[StepEvent], None]:
@@ -613,19 +663,18 @@ async def apecx_capabilities() -> dict[str, Any]:
                 'accept optional taxon_id / protein. Equivalent: run_workflow("<name>", '
                 '{"query": "..."}). You do NOT need to call list_workflows first.'
             ),
-            "step_2_read_the_result": (
-                "The result is a dict with a 'markdown' field (and 'run_id', 'data_handle'). "
-                "In desktop mode that markdown is ASSEMBLED EVIDENCE + a scaffold that begins "
-                "'▶▶▶ ACTION REQUIRED — this is NOT the final answer. YOU must write it now.' "
-                "That is BY DESIGN, not an error or an empty result."
+            "step_2_the_markdown_IS_the_report": (
+                "The result dict's 'markdown' field is the FINISHED, user-facing report (the "
+                "server writes it in BOTH modes — it is NOT a scaffold for you to fill in). "
+                "PRESENT this markdown to the user: show it, do not summarise it away or replace "
+                "it with a shorter version. It is also saved on disk at 'artifact_path' so the "
+                "user can open it directly."
             ),
-            "step_3_write_the_answer": (
-                "When you see the ACTION REQUIRED scaffold: WRITE the final answer yourself "
-                "from the Sources / Structural / Follow-up sections in the markdown, citing each "
-                "record by its bracketed [identifier]. Do NOT paste the scaffold back to the "
-                "user, and do NOT tell the user the tool returned nothing — the evidence IS the "
-                "answer's raw material. (In backend/headless mode the server writes the prose "
-                "for you and 'markdown' is already the finished answer.)"
+            "step_3_structured_data": (
+                "Machine-readable results are in 'data_preview' (full data in the '<run_id>.json' "
+                "next to artifact_path): conserved regions, structural records with SASA, ranked "
+                "candidates, counts. Use it for follow-ups; the markdown stays the primary "
+                "deliverable shown to the user."
             ),
             "if_it_refuses": (
                 "If the result has an 'error' field, relay it + its remedy (e.g. a missing "
@@ -634,8 +683,8 @@ async def apecx_capabilities() -> dict[str, Any]:
             "worked_example": (
                 "User: 'What are the conserved epitopes on CHIKV E1?' → call "
                 'viral_epitope_analysis(query="conserved surface-exposed epitopes on '
-                'chikungunya virus E1", protein="E1") → read the returned markdown → write '
-                "the answer from its cited sequence + structural evidence."
+                'chikungunya virus E1", protein="E1") → SHOW the returned markdown report to '
+                "the user (also saved at artifact_path)."
             ),
         },
         "modes": {

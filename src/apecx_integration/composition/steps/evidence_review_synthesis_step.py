@@ -154,60 +154,6 @@ def render_evidence_fallback(
     return "\n".join(lines)
 
 
-def render_desktop_synthesis_scaffold(query: str, publications: list[dict[str, Any]] | None) -> str:
-    """Narrative body for DESKTOP locus — the host LLM synthesizes, so we omit the call.
-
-    This is the inversion, not a degrade: in desktop locus the orchestrating host LLM
-    (Claude Desktop) IS the synthesizer, so the apecx-side LLM call is deliberately skipped
-    (no apecx LLM endpoint required). We still emit the three contract headings — but as an
-    INSTRUCTION to the host to write each from the assembled evidence below, NOT an
-    "withheld due to error" message. The deterministic Structural / Sources / Follow-up
-    sections (appended by ``compose_evidence_markdown``) carry the actual evidence; the host
-    reads them + the publication list here and writes the narrative in its next turn.
-    """
-    pubs = publications or []
-    lines = [
-        _ANSWER_HEADING,
-        "",
-        "> ▶▶▶ **ACTION REQUIRED — this is NOT the final answer. YOU must write it now.** "
-        "The apecx tool gathered + analyzed the evidence below (sequence conservation, structural "
-        "exposure, publications) but deliberately did NOT write the prose — that is YOUR job as "
-        "the assistant. In your reply: (1) read the Sources / Structural / Follow-up sections "
-        "below; (2) write the answer under each heading, citing every record by its bracketed "
-        "[identifier]; (3) do NOT paste this scaffold back to the user and do NOT say the result "
-        "was empty — it is the raw material for the answer you write.",
-        "",
-        f"> Question to answer, grounded in the cited evidence below: "
-        f"**{_sanitize_inline(query)}**",
-        "",
-    ]
-    if pubs:
-        lines.append("Retrieved publications relevant to the question:")
-        lines.append("")
-        for p in pubs:
-            if not isinstance(p, dict):
-                continue
-            ident = p.get("doi") or p.get("id") or p.get("pmid") or ""
-            title = p.get("title") or "(untitled)"
-            cite = f"**[{ident}]** " if ident else ""
-            lines.append(f"- {cite}*{title}*")
-    else:
-        lines.append("_No publications were retrieved for this query._")
-    lines += [
-        "",
-        "## Cross-data reasoning",
-        "",
-        "> Relate the records across the data sources below (sequence conservation, "
-        "structural evidence, publications) and write the cross-data reasoning here.",
-        "",
-        _INSIGHT_HEADING,
-        "",
-        "> Integrate the above into a single insight that answers the question, grounded in "
-        "the cited evidence.",
-    ]
-    return "\n".join(lines)
-
-
 def render_structural_section(
     structural_records: list[dict[str, Any]] | None,
     structural_note: str | None,
@@ -480,6 +426,49 @@ def _insert_scope_caveat_if_unresolved(body: str, bundle: dict[str, Any]) -> str
     return f"{body[:after_heading]}\n\n{caveat}\n\n{rest}"
 
 
+def collect_structured_output(bundle: dict[str, Any]) -> dict[str, Any]:
+    """The STRUCTURED scientific result (not prose) — emitted alongside the markdown so the
+    caller gets machine-readable data, surfaced as the WorkflowResult ``data_preview`` and
+    written to the run's durable ``.json`` artifact. Shape: a ``DataShape`` bundle
+    (``{"kind": "bundle", "parts": {...}}``) the terminal EnvelopeStep turns into data_preview.
+
+    Carries the actual analysis the workflow computed and previously THREW AWAY by rendering
+    only prose: the resolved entity, the sequence-conservation regions (MAFFT), the structural
+    records with per-residue SASA exposed/buried (PyMOL), and the cited publications. Lightweight
+    by construction (ids + summaries, not raw FASTA/structures) so it serializes cleanly."""
+
+    def _pub(p: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "doi": p.get("doi") or p.get("id") or p.get("pmid"),
+            "title": p.get("title"),
+            "year": p.get("year"),
+        }
+
+    parts: dict[str, Any] = {
+        "query": bundle.get("query"),
+        "taxon_id": bundle.get("taxon_id"),
+        "protein": bundle.get("protein"),
+        # sequence-conservation leg (MAFFT → conserved positions/regions across strains)
+        "conserved_regions": bundle.get("conserved_regions") or bundle.get("conserved_sites") or [],
+        # structural leg (PDB/EMDB records, each carrying its SASA exposed/buried classification
+        # from the containerized PyMOL reasoning step when present)
+        "structural_records": bundle.get("structural_records") or [],
+        "structural_note": bundle.get("structural_note"),
+        "structural_reasoning": bundle.get("structural_reasoning"),
+        "publications": [
+            _pub(p) for p in (bundle.get("publications") or []) if isinstance(p, dict)
+        ],
+        "counts": {
+            "conserved_regions": len(
+                bundle.get("conserved_regions") or bundle.get("conserved_sites") or []
+            ),
+            "structural_records": len(bundle.get("structural_records") or []),
+            "publications": len(bundle.get("publications") or []),
+        },
+    }
+    return {"kind": "bundle", "parts": parts}
+
+
 def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str, Any]) -> str:
     """Assemble the full contract-shaped evidence document from a narrative body
     (the LLM output on the success path, or ``render_evidence_fallback`` on degrade).
@@ -628,32 +617,12 @@ class EvidenceReviewSynthesisStep(BaseStep):
                 f"'query' string; got {type(query).__name__}={query!r}"
             )
 
-        from apecx_integration.composition.runtime.execution_locus import (
-            ExecutionLocus,
-            get_active_locus,
-        )
-
-        # Final-synthesis step. In DESKTOP locus the host LLM (Claude Desktop) is the
-        # synthesizer, so the apecx-side LLM call is OMITTED (inversion of control — no apecx
-        # LLM endpoint required). We return the assembled evidence + a scaffold instructing
-        # the host to write the narrative. In AGENT/headless locus we synthesize internally
-        # via the apecx LLM backend, exactly as before.
-        if get_active_locus() == ExecutionLocus.DESKTOP:
-            log.info(
-                "EvidenceReviewSynthesisStep %s: desktop locus — deferring final synthesis to "
-                "the host LLM; returning assembled evidence + scaffold (no apecx LLM call).",
-                self.name,
-            )
-            evidence_md = render_desktop_synthesis_scaffold(
-                query.strip(), input_data.get("publications")
-            )
-            full_md = compose_evidence_markdown(evidence_md, query.strip(), input_data)
-            from apecx_integration.composition.steps._evidence_provenance import (
-                collect_provenance,
-            )
-
-            return {"markdown": full_md, "provenance": collect_provenance(input_data)}
-
+        # The SERVER ALWAYS writes the finished markdown report — in BOTH loci (the desktop
+        # "defer to the host" scaffold was removed 2026-06-15: it produced no durable artifact
+        # and the host LLM discarded it, so the user saw nothing). Synthesize the narrative with
+        # the configured LLM when one is reachable; degrade LOUD to a deterministic body when not
+        # (no hard LLM requirement → the workflow still runs in desktop with no Ollama). The
+        # markdown is the user-facing deliverable; ``data`` carries the structured result.
         from apecx_integration.agents.rag_synthesis import synthesize_response
 
         try:
@@ -711,4 +680,8 @@ class EvidenceReviewSynthesisStep(BaseStep):
             len(input_data.get("structural_records") or []),
             len(input_data.get("stage_reports") or []),
         )
-        return {"markdown": full_md, "provenance": provenance}
+        return {
+            "markdown": full_md,
+            "data": collect_structured_output(input_data),
+            "provenance": provenance,
+        }
