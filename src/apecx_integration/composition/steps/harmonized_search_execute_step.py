@@ -348,31 +348,90 @@ def _run_paused_envelope(plan: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _raw_query(
+    index: str, term: str, limit: int = 200
+) -> tuple[int, list[dict[str, Any]], str | None]:
+    """Run the anonymous RAW full-text query (no IRI / no taxon filter needed) against an
+    index. Returns ``(total, records, error)``. Used by the resolution-MISS fallback so a term
+    that the dictionary can't resolve still PULLS the records that are present in the index —
+    instead of returning nothing (the failure: present-but-not-pulled data)."""
+    import globus_sdk  # noqa: PLC0415 — heavy import only when actually querying
+
+    uuid = _INDEX_UUIDS.get(index)
+    if not uuid:
+        return 0, [], f"index {index!r} has no directly-queryable Globus index UUID"
+    raw_q, _ = _quote_raw_term(term)
+    try:
+        resp = globus_sdk.SearchClient().post_search(uuid, {"q": raw_q, "limit": limit})
+        total = int(resp.data.get("total", 0))
+        records = [
+            g["entries"][0]["content"] for g in resp.data.get("gmeta", []) if g.get("entries")
+        ]
+        return total, records, None
+    except (globus_sdk.GlobusAPIError, globus_sdk.NetworkError) as exc:
+        return 0, [], f"{type(exc).__name__}: {exc}"
+
+
 def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
-    """Emit a miss envelope — dictionary had no entry for the term."""
+    """The term did not resolve to a taxon. DO NOT give up — fall back to a RAW full-text query
+    so records that are present in the index are still pulled (a resolution miss must not mean
+    'no results' when the data exists). Only when the raw query ALSO returns nothing is this a
+    genuine no-data answer."""
+    index, term = plan["index"], plan["term"]
+    raw_total, raw_records, raw_error = _raw_query(index, term)
+
+    if raw_total > 0:
+        sample = [_summarize_record(r) for r in raw_records[:5]]
+        md = (
+            f"### `{term}` on `{index}` — {raw_total} raw full-text match(es)\n\n"
+            f"> ⚠️ The term did NOT resolve to a taxon in the synonym dictionary "
+            f"({plan.get('evidence') or 'no entry'}), so taxonomic harmonization was skipped. "
+            f"These are UNHARMONIZED full-text matches — relevant records ARE present in the "
+            f"index; verify they are the intended organism, and consider a verbose species name "
+            f"or an NCBI Taxonomy IRI for a taxon-precise count.\n"
+        )
+        for s in sample:
+            # _summarize_record keeps the identity-bearing fields (Genome_Name / Species /
+            # Organism / Title / identifier …); render whichever are present.
+            label = (
+                s.get("Genome_Name")
+                or s.get("Species")
+                or s.get("Pathogen")
+                or s.get("Organism")
+                or s.get("Organism_Name")
+                or s.get("Title")
+                or s.get("identifier")
+                or "(record)"
+            )
+            md += f"- {label}\n"
+        bundle_parts = {
+            "resolution": {"path": "miss_raw_fallback", "canonical_iri": None, "term": term},
+            "raw_total": raw_total,
+            "raw_sample": sample,
+            "harmonization_health": "unharmonized_raw_fallback",
+            "status": "ok",
+        }
+        return {_OUTPUT_KEY: {"markdown": md, "data": {"kind": "bundle", "parts": bundle_parts}}}
+
+    # Raw query ALSO returned nothing (or could not run) — a genuine miss, stated honestly.
+    if raw_error:
+        why = f"and the raw full-text query could not run ({raw_error})"
+    else:
+        why = "and a raw full-text query also returned 0 records"
     md = (
-        f"### Term `{plan['term']}` did not resolve on index `{plan['index']}`\n\n"
-        f"The synonym dictionary has no entry that matches "
-        f"`{plan['term']}`. Evidence: {plan.get('evidence') or '(none)'}.\n\n"
-        f"Try a different surface form, a verbose species name, or an "
-        f"NCBI Taxonomy IRI."
+        f"### `{term}` on `{index}` — no records\n\n"
+        f"The synonym dictionary has no entry for `{term}` "
+        f"({plan.get('evidence') or 'no entry'}), {why}. Try a verbose species name or an "
+        f"NCBI Taxonomy IRI; if you expected records here, the index may be unreachable."
     )
     bundle_parts = {
-        "resolution": {
-            "path": "miss",
-            "canonical_iri": None,
-            "term": plan["term"],
-        },
+        "resolution": {"path": "miss", "canonical_iri": None, "term": term},
+        "raw_total": 0,
+        "raw_error": raw_error,
+        "harmonization_health": "errored" if raw_error else "miss_zero",
         "status": "ok",
-        "raw_query_skipped_reason": "No canonical IRI; harmonized query has no filter values.",
     }
-    data = {"kind": "bundle", "parts": bundle_parts}
-    return {
-        _OUTPUT_KEY: {
-            "markdown": md,
-            "data": data,
-        }
-    }
+    return {_OUTPUT_KEY: {"markdown": md, "data": {"kind": "bundle", "parts": bundle_parts}}}
 
 
 def _execute_globus_queries(plan: dict[str, Any]) -> dict[str, Any]:

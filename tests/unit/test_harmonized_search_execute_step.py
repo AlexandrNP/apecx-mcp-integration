@@ -103,9 +103,40 @@ def test_miss_emits_miss_envelope(tmp_path):
     out = asyncio.run(step.process(plan))
     env_in = out["envelope_input"]
     parts = env_in["data"]["parts"]
+    # No network in the unit env → the raw fallback can't run → genuine miss (path 'miss'),
+    # but it is HONEST that a raw query was attempted (raw_total present).
     assert parts["resolution"]["path"] == "miss"
     assert parts["status"] == "ok"
-    assert "raw_query" not in parts
+    assert parts["raw_total"] == 0
+
+
+def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
+    """THE FIX: a term the dictionary cannot resolve must STILL pull the records that are present
+    in the index via a raw full-text query — not return nothing. 'Empty output for data present
+    in the index but not pulled is a failure' (the bvbrc/violin 0-except-PDB report)."""
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    monkeypatch.setattr(
+        mod,
+        "_raw_query",
+        lambda index, term, limit=200: (
+            6687,
+            [{"Genome_Name": "Chikungunya virus strain S27", "Species": "Chikungunya virus"}],
+            None,
+        ),
+    )
+    out = mod._run_miss_envelope(
+        {"term": "Chikungunya virus", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    env = out["envelope_input"]
+    md = env["markdown"]
+    parts = env["data"]["parts"]
+    assert "6687 raw full-text match" in md  # the present data is PULLED, not dropped
+    assert "did NOT resolve to a taxon" in md  # honest it is unharmonized
+    assert "Chikungunya virus strain S27" in md  # the record is actually rendered
+    assert parts["resolution"]["path"] == "miss_raw_fallback"
+    assert parts["raw_total"] == 6687
+    assert parts["raw_sample"][0]["Genome_Name"] == "Chikungunya virus strain S27"
 
 
 @pytest.mark.parametrize("missing_key", ["term", "index", "resolution_path"])
