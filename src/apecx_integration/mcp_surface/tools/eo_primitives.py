@@ -105,18 +105,9 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
     ``data_handle`` / ``data_preview`` / ``run_id`` / ``error``). Discover valid names +
     their parameters with ``list_workflows`` / ``inspect_workflow``.
     """
-    from apecx_integration.composition.handles.store import default_handle_store
-    from apecx_integration.composition.runtime.observed_run import run_workflow_observed
-    from apecx_integration.composition.runtime.run_store import get_run_store
-    from apecx_integration.composition.schemas.data_shapes import Bundle
     from apecx_integration.composition.schemas.workflow_result import WorkflowResult
     from apecx_integration.mcp_surface.workflow_discovery import discover_workflows
-    from apecx_integration.mcp_surface.workflow_registry import (
-        _load_workflow_for_entry,
-        check_prerequisites,
-        resolve_catalog_entry,
-        sole_data_unit_name,
-    )
+    from apecx_integration.mcp_surface.workflow_registry import resolve_catalog_entry
 
     if not isinstance(name, str) or not name.strip():
         return WorkflowResult.failed(
@@ -139,6 +130,35 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
             error=f"run_workflow: unknown workflow {name!r}. "
             f"Available: {available}. Use list_workflows to discover."
         ).model_dump(mode="json")
+
+    return await _run_resolved_entry(entry, params)
+
+
+async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Guarded execution of an ALREADY-RESOLVED catalog entry — the SINGLE execution core.
+
+    Shared by ``run_workflow`` (which resolves a name → entry) and the workflow-tool registry
+    (``workflow_registry`` dispatches a first-class tool with the entry already in hand, so it
+    calls this directly — no per-call catalog re-parse, no divergent second runner). Applies
+    the full guard stack so EVERY workflow tool behaves identically: call-time prerequisite
+    re-check, the requires_llm gate (resolve-or-LOUDLY-refuse), input-envelope-key derivation,
+    the param-gap control-return, the run, and G127 FAIL-LOUD — success is decided from the
+    output VALUE, never from ``status`` alone (the exact gap that made the old registry runner
+    return NULL from a direct first-class tool) — plus run-store recording + provenance.
+    """
+    from apecx_integration.composition.handles.store import default_handle_store
+    from apecx_integration.composition.runtime.observed_run import run_workflow_observed
+    from apecx_integration.composition.runtime.run_store import get_run_store
+    from apecx_integration.composition.schemas.data_shapes import Bundle
+    from apecx_integration.composition.schemas.workflow_result import WorkflowResult
+    from apecx_integration.mcp_surface.workflow_registry import (
+        _load_workflow_for_entry,
+        check_prerequisites,
+        sole_data_unit_name,
+    )
+
+    name = entry.tool_name
+    params = params or {}
 
     met, missing = check_prerequisites(entry.requires)
     if not met:

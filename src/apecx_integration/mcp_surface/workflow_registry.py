@@ -478,105 +478,6 @@ def _clear_workflow_cache() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Per-entry runner
-# ---------------------------------------------------------------------------
-
-
-async def _runner(entry: WorkflowCatalogEntry, **kwargs: Any) -> dict[str, Any]:
-    """Per-entry async dispatcher.
-
-    Sequence (FAIL-LOUD at every gate):
-      1. Re-check prerequisites at call time — env / modules can change
-         between server start and tool invocation. Unmet → return
-         ``{"error": "<actionable message>"}``.
-      2. Load (or fetch cached) Workflow.
-      3. Wrap kwargs in the input envelope if configured.
-      4. ``await workflow.run(input_data, timeout=entry.timeout_seconds,
-         settle_ms=50, await_cascade=True)``.
-      5. If returned ``status`` is not a success kind, surface as
-         ``{"error": ...}``. Else strip ``status`` and return the rest.
-
-    Any exception is caught and returned as ``{"error": "<type>: <msg>"}``
-    — the MCP transport stays clean and the body carries the failure.
-    """
-    met, missing = check_prerequisites(entry.requires)
-    if not met:
-        reason = "; ".join(missing)
-        hint = entry.requires.unavailable_hint
-        return {
-            "error": (
-                f"tool '{entry.tool_name}' is unavailable because its "
-                f"prerequisites are not met: {reason}. "
-                f"Fix the configuration (set the missing env vars, install "
-                f"the missing modules) and retry." + (f" {hint}" if hint else "")
-            )
-        }
-
-    try:
-        workflow = _load_workflow_for_entry(entry)
-    except Exception as exc:
-        return {
-            "error": (
-                f"failed to load workflow for tool '{entry.tool_name}': {type(exc).__name__}: {exc}"
-            )
-        }
-
-    if entry.input_envelope_key is not None:
-        input_data: dict[str, Any] = {entry.input_envelope_key: dict(kwargs)}
-    else:
-        input_data = dict(kwargs)
-
-    try:
-        # The cascade-drain detector waits this long after the last
-        # trigger fire before returning. Workflows with multi-second gaps
-        # between steps need a larger settle than nanobrain's 50ms default.
-        result = await workflow.run(
-            input_data,
-            timeout=entry.timeout_seconds,
-            settle_ms=entry.settle_ms,
-            await_cascade=True,
-        )
-    except Exception as exc:
-        return {"error": f"{type(exc).__name__}: {exc}"}
-
-    status = result.get("status") if isinstance(result, dict) else None
-    if status not in {"completed", "completed_no_await"}:
-        return {
-            "error": (
-                f"workflow '{entry.tool_name}' did not complete cleanly: "
-                f"status={status!r}. Inspect the workflow logs."
-            )
-        }
-
-    outputs = {k: v for k, v in result.items() if k != "status"}
-    if entry.output_envelope_key is not None:
-        # Unwrap the named output data unit's value to a flat MCP result.
-        # FAIL-LOUD when the declared key isn't in the workflow output —
-        # that is a config error and silently returning the keyed dict
-        # would mask it. Same anti-silent-failure discipline as the
-        # input_envelope_key bridge.
-        if entry.output_envelope_key not in outputs:
-            return {
-                "error": (
-                    f"workflow '{entry.tool_name}' completed but its "
-                    f"output_envelope_key={entry.output_envelope_key!r} is "
-                    f"not in the workflow outputs (have: "
-                    f"{sorted(outputs.keys())}). The catalog entry "
-                    f"declares an output data unit the workflow does not "
-                    f"actually produce."
-                )
-            }
-        unwrapped = outputs[entry.output_envelope_key]
-        if not isinstance(unwrapped, dict):
-            # The MCP transport expects a dict result; an unwrapped
-            # scalar would not serialize correctly through the tool
-            # envelope. Wrap it in a single-key dict rather than fail.
-            return {"value": unwrapped}
-        return unwrapped
-    return outputs
-
-
-# ---------------------------------------------------------------------------
 # Tool synthesis (the FastMCP-API workaround)
 # ---------------------------------------------------------------------------
 
@@ -748,35 +649,38 @@ def register_workflows(
     lg = logger or log
     report = RegistrationReport()
 
+    # EVERY workflow tool — explicit ``workflows:`` entries AND ``promote_discovered`` ones —
+    # dispatches through the SINGLE guarded path ``run_workflow``. There is NO second runner
+    # (the old per-entry ``_runner`` was retired 2026-06-15: it checked only run ``status``,
+    # not the output VALUE, so a G127 strand — status 'completed', output empty — returned NULL
+    # from the direct first-class tool a weak model calls, even though ``run_workflow`` guarded
+    # it. Unifying gives every direct tool the G127 fail-loud + requires_llm gate + param-gap
+    # control-return + run-store/provenance.)
     for index, entry in enumerate(catalog.workflows):
         _register_one_entry(
             server, entry, lg, report, identifier=entry.tool_name or f"<entry #{index}>"
         )
 
-    # promote_discovered: expose named DISCOVERED workflows as first-class tools too, WITHOUT a
-    # hand-written entry. Each is resolved from discovery + given a typed {query} signature so a
-    # model calls it directly. Explicit entries above already win (we skip names registered there).
     already = set(report.registered) | {tn for tn, _ in report.unavailable}
     for entry in _resolve_promoted_entries(catalog, already, lg):
-        # Promoted-discovered tools dispatch through the GENERIC ``run_workflow`` (not the
-        # registry ``_runner``): it DERIVES the input-envelope key from the loaded workflow
-        # (a discovery-synthesized entry has none), and applies the requires_llm gate +
-        # param-gap control-return + G127 fail-loud + run-store/provenance — the same path a
-        # caller gets from ``run_workflow(name, …)``. So a promoted direct tool and the generic
-        # call behave identically (no divergent second execution path).
-        _register_one_entry(
-            server, entry, lg, report, identifier=entry.tool_name, runner=_run_via_run_workflow
-        )
+        _register_one_entry(server, entry, lg, report, identifier=entry.tool_name)
 
     return report
 
 
 async def _run_via_run_workflow(entry: WorkflowCatalogEntry, **kwargs: Any) -> dict[str, Any]:
-    """Runner that dispatches to the generic ``run_workflow`` MCP tool by name (used for
-    ``promote_discovered`` tools — see ``register_workflows``)."""
-    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+    """The SINGLE workflow-tool runner: the shared guarded execution core.
 
-    return await run_workflow(entry.tool_name, dict(kwargs))
+    Calls ``eo_primitives._run_resolved_entry`` with the entry ALREADY in hand (the registry
+    resolved it) — the same core ``run_workflow`` reaches after name-resolution, so a direct
+    first-class tool and ``run_workflow(name, …)`` are identical (full guard stack: requires_llm,
+    param-gap, G127 output-value check, run-store, provenance). No per-call catalog re-parse.
+    ``None``-valued optional params are dropped so an unset optional never reaches the workflow
+    as an explicit ``None``."""
+    from apecx_integration.mcp_surface.tools.eo_primitives import _run_resolved_entry
+
+    params = {k: v for k, v in kwargs.items() if v is not None}
+    return await _run_resolved_entry(entry, params)
 
 
 def _register_one_entry(
@@ -790,10 +694,9 @@ def _register_one_entry(
 ) -> None:
     """Register ONE catalog entry as an MCP tool (live or UNAVAILABLE), recording the outcome.
 
-    Shared by the explicit ``workflows:`` entries (default ``runner=_runner``) and the
-    ``promote_discovered`` ones (``runner=_run_via_run_workflow``) so both take the identical
-    synthesize → prereq-gate → register → report path, differing only in the dispatch target."""
-    dispatch = runner or _runner
+    All entries (explicit + promoted) take the identical synthesize → prereq-gate → register →
+    report path, dispatching through the single ``_run_via_run_workflow`` runner."""
+    dispatch = runner or _run_via_run_workflow
     try:
         met, missing = check_prerequisites(entry.requires)
         if met:

@@ -379,7 +379,7 @@ def test_register_workflows_one_bad_entry_does_not_break_others(
 # ---------------------------------------------------------------------------
 
 
-def test_runner_dispatches_to_workflow_run(tmp_path: Path) -> None:
+def test_registered_tool_routes_through_shared_guarded_core(tmp_path: Path) -> None:
     """The runner forwards kwargs to ``Workflow.run`` and surfaces the
     workflow's output data units.
 
@@ -437,16 +437,22 @@ def build_passthrough():
             cap = fake.captured[0]
             result = asyncio.run(cap.fn(payload="hello"))
             assert isinstance(result, dict)
-            # Either a clean success OR an actionable error envelope —
-            # never a silent empty dict.
-            if "error" in result:
-                # Acceptable: the lightweight builder can't construct
-                # the DAG in this minimal stub. The point is that the
-                # error is surfaced, not swallowed.
+            # The registered tool routes through the shared guarded core
+            # (eo_primitives._run_resolved_entry) — the SAME path as
+            # run_workflow(name). So the result is either a clean
+            # WorkflowResult envelope OR an actionable error — never a
+            # silent empty dict (the G127 null the unification fixed).
+            if result.get("error"):
+                # Acceptable: the lightweight builder can't construct the DAG
+                # in this minimal stub. The point is the error is surfaced.
                 assert result["error"]
             else:
-                # Success path: workflow round-tripped the payload.
-                assert "status" not in result  # _runner strips status
+                # Success: a non-null WorkflowResult envelope (the core
+                # decides success from the output VALUE, not status alone).
+                assert result.get("markdown") or result.get("data_handle"), (
+                    f"registered-tool success must carry output, got: {sorted(result)}"
+                )
+                assert result.get("run_id")  # run-store recorded it (proves the unified path)
         else:
             # Bad shape: at least one failure recorded, no silent absence.
             assert report.failed
