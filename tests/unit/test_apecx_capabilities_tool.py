@@ -122,3 +122,11 @@ def test_capabilities_carries_how_to_run_instructions_for_weak_models():
     assert "finished" in low and "present this markdown" in low
     assert "artifact_path" in blob
     assert "data_preview" in blob
+    # Anti-improvising guidance (the model was writing scripts / pre-resolving taxa):
+    assert "do not write" in low and ("scripts" in low)
+    assert "do not call" in low and ("bv-brc" in low or "globus" in low)
+    # Single tool + automatic desktop streaming (the run/stream split is gone):
+    assert "one tool" in low or "one workflow-run tool" in low or "exactly one tool" in low
+    assert "stream" in low and "automatic" in low
+    # Bare entity name → internal taxon resolution (no caller pre-resolution):
+    assert "bare" in low and "taxon" in low

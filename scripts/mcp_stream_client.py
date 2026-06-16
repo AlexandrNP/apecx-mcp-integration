@@ -202,8 +202,10 @@ async def stream_workflow(
         # full. This call is the regression guard for that fix — driving it from
         # the reference client proves the standards-compliant path is robust.
         await session.set_logging_level("info")
+        # The merged tool: run_workflow streams automatically when the client passes a
+        # progress_callback (FastMCP injects a Context server-side). No separate tool.
         result = await session.call_tool(
-            "run_workflow_streaming",
+            "run_workflow",
             {"name": WORKFLOW_NAME, "params": params},
             progress_callback=progress_callback,
             read_timeout_seconds=timedelta(minutes=timeout_minutes),

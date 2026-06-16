@@ -113,6 +113,13 @@ from its grounded, cited result.
 call `harmonized_search` directly.
   4. If no catalog workflow fits the question, `compose_workflow` builds a new one.
 
+Pass the user's plain-English question (or a bare entity name) as `query` — the \
+workflow resolves names to taxa itself. Do NOT write or run scripts, and do NOT call \
+BV-BRC / Globus / PubMed / the databases directly: `run_workflow` performs all \
+retrieval and analysis and returns the finished report in its `markdown` field. There \
+is ONE workflow-run tool (`run_workflow`); it streams per-stage progress automatically \
+in desktop.
+
 Prefer these tools over answering from memory whenever the question touches viral \
 immunology, vaccines, pathogen genomics, or protein/epitope structure."""
 
@@ -156,11 +163,10 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     # "workflows as first-class objects": the external LLM discovers a
     # workflow (list_workflows) then drives ANY of them through this generic
     # set, instead of one bespoke super-tool per task.
+    # ONE tool to run any workflow. FastMCP injects a Context for desktop clients, so
+    # run_workflow streams each reasoning stage automatically there; headless callers
+    # (ctx=None) get the same result one-shot. No separate streaming tool to choose.
     server.tool()(eo_primitive_tools.run_workflow)
-    # Streaming variant: same run as run_workflow, but pushes each reasoning stage's
-    # report to the client as a progress + log notification as it completes (desktop
-    # transport). Headless clients keep using run_workflow (one-shot, unchanged).
-    server.tool()(eo_primitive_tools.run_workflow_streaming)
     server.tool()(eo_primitive_tools.inspect_run)
     server.tool()(eo_primitive_tools.inspect_workflow)
     server.tool()(eo_primitive_tools.apecx_context)

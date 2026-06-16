@@ -366,7 +366,6 @@ def test_probe_502_server_registers_the_layer1_static_tools() -> None:
         "list_workflows",
         "describe_workflow",
         "run_workflow",
-        "run_workflow_streaming",
         "inspect_run",
         "inspect_workflow",
         "apecx_context",

@@ -505,7 +505,7 @@ def test_run_workflow_streaming_emits_progress_and_log_per_stage(monkeypatch):
     monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
 
     ctx = _FakeContext()
-    out = asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, ctx))
+    out = asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
 
     # Result returned verbatim (streaming did not alter the envelope).
     assert out == {"status": "ok", "markdown": "final doc", "run_id": "r1", "error": None}
@@ -537,7 +537,7 @@ def test_run_workflow_streaming_zero_stages_emits_served_from_cache(monkeypatch)
 
     monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
     ctx = _FakeContext()
-    out = asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, ctx))
+    out = asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
 
     assert out["status"] == "ok" and out["markdown"] == "cached doc"
     assert ctx.progress == []  # no per-stage progress (nothing executed)
@@ -556,26 +556,35 @@ def test_run_workflow_streaming_with_stages_emits_no_cache_notification(monkeypa
 
     monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
     ctx = _FakeContext()
-    asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, ctx))
+    asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
     assert "served_from_cache" not in [lg["data"]["event"] for lg in ctx.session.logs]
 
 
-def test_run_workflow_streaming_without_ctx_runs_unchanged(monkeypatch):
-    """No client context (ctx=None) → no notifications, identical envelope (headless path)."""
+def test_run_workflow_without_ctx_runs_headless_no_streaming(monkeypatch):
+    """ctx=None → headless path (resolve + _run_resolved_entry); the streaming impl is
+    NOT invoked. (Merged tool: streaming is a desktop-only branch keyed on ctx.)"""
 
-    async def _fake_run_workflow(name, params=None):
+    async def _boom_stream(*a, **k):
+        raise AssertionError("_run_workflow_streaming_impl must not run when ctx is None")
+
+    async def _fake_resolved(entry, params=None):
         return {"status": "ok", "markdown": "doc", "run_id": "r2", "error": None}
 
-    monkeypatch.setattr(eo_primitives, "run_workflow", _fake_run_workflow)
-    out = asyncio.run(eo_primitives.run_workflow_streaming("eo_stage_wf", {"q": "x"}, None))
+    monkeypatch.setattr(eo_primitives, "_run_workflow_streaming_impl", _boom_stream)
+    monkeypatch.setattr(eo_primitives, "_run_resolved_entry", _fake_resolved)
+    # A real, resolvable catalog workflow so resolution succeeds before the run.
+    out = asyncio.run(eo_primitives.run_workflow("viral_conserved_sites", {"taxon_id": 1}))
     assert out["status"] == "ok" and out["markdown"] == "doc"
 
 
-def test_build_server_registers_streaming_primitive():
+def test_build_server_registers_single_run_workflow_tool():
+    """The split is gone: run_workflow is the ONE workflow-run tool; the old
+    run_workflow_streaming tool is no longer exposed."""
     from apecx_integration.mcp_surface.server import build_server
 
     names = {t.name for t in asyncio.run(build_server().list_tools())}
-    assert "run_workflow_streaming" in names
+    assert "run_workflow" in names
+    assert "run_workflow_streaming" not in names
 
 
 def _test_catalog_for(name: str):

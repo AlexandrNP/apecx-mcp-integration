@@ -50,7 +50,9 @@ _PRIMITIVES: list[dict[str, str]] = [
     {
         "name": "run_workflow",
         "use": "Run a catalog workflow by name (params) and get its grounded, cited "
-        "result. The desktop variant run_workflow_streaming streams per-stage reasoning.",
+        "result — the markdown IS the report. The ONE way to run a workflow; it streams "
+        "per-stage reasoning automatically in desktop. Do NOT write scripts or call "
+        "BV-BRC/Globus/PubMed yourself.",
     },
     {
         "name": "harmonized_search",
@@ -144,12 +146,23 @@ def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
         log.warning("artifact write failed for run %s: %s", run_id, exc)
 
 
-async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+async def run_workflow(
+    name: str,
+    params: dict[str, Any] | None = None,
+    ctx: Context | None = None,
+) -> dict[str, Any]:
     """Run the catalog workflow ``name`` with ``params``; return its result envelope.
 
-    The return is always a ``WorkflowResult``-shaped dict (``markdown`` / ``status`` /
-    ``data_handle`` / ``data_preview`` / ``run_id`` / ``error``). Discover valid names +
-    their parameters with ``list_workflows`` / ``inspect_workflow``.
+    This is the ONE tool for running any workflow. The result is always a
+    ``WorkflowResult``-shaped dict (``markdown`` / ``status`` / ``data_handle`` /
+    ``data_preview`` / ``run_id`` / ``error``); the ``markdown`` IS the finished report.
+    Discover valid names + their parameters with ``list_workflows`` / ``inspect_workflow``.
+
+    Streaming is AUTOMATIC: when called from a desktop MCP client (FastMCP injects a
+    ``ctx``), each reasoning stage is streamed to the client as it completes — there is
+    no separate "streaming" tool to choose. A headless/programmatic caller (``ctx`` is
+    ``None``) gets the same result without notifications. Streaming is observability,
+    not correctness — the returned envelope is identical either way.
     """
     from apecx_integration.composition.schemas.workflow_result import WorkflowResult
     from apecx_integration.mcp_surface.workflow_discovery import discover_workflows
@@ -166,6 +179,12 @@ async def run_workflow(name: str, params: dict[str, Any] | None = None) -> dict[
         return WorkflowResult.failed(
             error=f"run_workflow: 'params' must be an object, got {type(params).__name__}."
         ).model_dump(mode="json")
+
+    # Desktop (ctx present) → stream per-stage reasoning. The streaming impl re-enters
+    # this function (via run_workflow_streamed → run_workflow) with ctx=None, so the
+    # resolution + guarded run below happen exactly once, with the stage subscriber active.
+    if ctx is not None:
+        return await _run_workflow_streaming_impl(name, params, ctx)
 
     # Catalog override if present, else SYNTHESIZED from dynamic discovery — a workflow on
     # disk is runnable by name with no catalog registration.
@@ -413,8 +432,8 @@ async def run_workflow_streamed(
     Streaming is wired via nanobrain's G37 ``subscribe_to_step_events`` (``step_events.py``):
     the subscriber stacks on top of the provenance subscriber ``run_workflow`` already
     installs, so both observe every event. ``on_stage`` is invoked synchronously inside the
-    run; long work should be deferred by the caller (see ``run_workflow_streaming`` for the
-    MCP-notification adapter). A ``None`` ``on_stage`` runs the workflow with no streaming.
+    run; long work should be deferred by the caller (see ``_run_workflow_streaming_impl`` for
+    the MCP-notification adapter). A ``None`` ``on_stage`` runs the workflow with no streaming.
     """
     from nanobrain.core.step_events import subscribe_to_step_events
 
@@ -425,15 +444,15 @@ async def run_workflow_streamed(
         return await run_workflow(name, params)
 
 
-async def run_workflow_streaming(
+async def _run_workflow_streaming_impl(
     name: str,
-    params: dict[str, Any] | None = None,
-    ctx: Context | None = None,
+    params: dict[str, Any] | None,
+    ctx: Context,
 ) -> dict[str, Any]:
-    """Run a catalog workflow and STREAM each reasoning stage to the MCP client as it
-    completes (desktop transport), then return the same result envelope ``run_workflow``
-    returns. Use this instead of ``run_workflow`` when a client wants live per-stage
-    progress (a desktop UI); a headless client should keep calling ``run_workflow``.
+    """STREAM each reasoning stage of workflow ``name`` to the desktop MCP client as it
+    completes, then return the same ``WorkflowResult`` envelope ``run_workflow`` returns.
+    Internal: ``run_workflow`` calls this when a desktop ``ctx`` is present (there is no
+    separate streaming tool — streaming is automatic in desktop).
 
     Per completed stage the client receives two MCP notifications: a progress notification
     (``report_progress`` — increments a counter, ``message`` names the stage) and a
@@ -446,10 +465,6 @@ async def run_workflow_streaming(
     caught + logged and NEVER change the run — the returned ``WorkflowResult`` is identical
     whether or not the client is listening.
     """
-    if ctx is None:
-        # No client context to stream to (e.g. a programmatic caller) — run unchanged.
-        return await run_workflow(name, params)
-
     loop = asyncio.get_running_loop()
     queue: asyncio.Queue[StageReport | object] = asyncio.Queue()
     sentinel = object()
@@ -657,11 +672,19 @@ async def apecx_capabilities() -> dict[str, Any]:
     return {
         "how_to_run": {
             "step_1_call_it": (
-                "Every workflow under 'runnable_now' is ALSO a first-class tool with the SAME "
-                'name — call it directly, e.g. viral_epitope_analysis(query="epitopes on '
-                "chikungunya E1\"). Required param is usually 'query' (plain English); some "
-                'accept optional taxon_id / protein. Equivalent: run_workflow("<name>", '
-                '{"query": "..."}). You do NOT need to call list_workflows first.'
+                "To run ANY workflow, call run_workflow(name, {params}). The required param is "
+                "usually 'query' (plain English) — pass the user's question or a BARE entity "
+                'name (e.g. run_workflow("viral_epitope_analysis", {"query": "conserved '
+                'epitopes on chikungunya virus E1"})). The workflow resolves the virus name to '
+                "a taxon itself via harmonized search — you do NOT pre-resolve taxon_id. You do "
+                "NOT need to call list_workflows first."
+            ),
+            "do_not": (
+                "Do NOT write or execute scripts, and do NOT call BV-BRC / Globus / PubMed / the "
+                "databases directly — run_workflow does all retrieval + analysis for you. Do NOT "
+                "pre-resolve taxon ids or pre-fetch sequences. There is exactly ONE tool to run a "
+                "workflow (run_workflow); it streams per-stage reasoning AUTOMATICALLY in desktop "
+                "(no separate streaming tool to choose)."
             ),
             "step_2_the_markdown_IS_the_report": (
                 "The result dict's 'markdown' field is the FINISHED, user-facing report (the "
@@ -760,5 +783,4 @@ __all__ = [
     "inspect_workflow",
     "run_workflow",
     "run_workflow_streamed",
-    "run_workflow_streaming",
 ]

@@ -139,7 +139,6 @@ def test_build_server_registers_all_expected_tools():
         "describe_workflow",
         "inspect_workflow",
         "run_workflow",
-        "run_workflow_streaming",
         "inspect_run",
         "apecx_context",
         "apecx_capabilities",
