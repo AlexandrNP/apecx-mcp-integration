@@ -219,7 +219,60 @@ def build_viral_conserved_sites_muscle_workflow():
     return build_viral_conserved_sites_workflow(aligner="muscle")
 
 
+def build_clade_conservation_core_workflow(aligner: str = "mafft"):
+    """No-arg NESTING variant for the PER-CLADE re-analysis loop (Req 5 looped execution).
+
+    Like the core cascade but SKIPS the BV-BRC fetch — a clade's member sequences are already
+    chosen by ``CladeGroupingStep``, so the workflow is seeded with the clade's ``fasta_text``
+    fed straight to ``align`` (``align → conserve → report``). Output is the ``report`` dict (no
+    EnvelopeStep) so it composes inside a ``MapSubworkflowStep`` (one inner run per clade).
+
+    Wiring contract for the map: the map injects each item under ``item_param_key="fasta_text"``,
+    so the per-item input is ``{"fasta_text": "<clade fasta>"}`` — the ``align`` step's own
+    envelope-unwrap then reads ``fasta_text`` exactly as on the full-fetch path. (Mirrors how the
+    harmonized-search map feeds ``{"index": ...}`` into its inner first step.)
+    """
+    if aligner not in _ALIGNER_STEP_CLASSES:
+        raise ValueError(f"unknown aligner {aligner!r}; supported: {sorted(_ALIGNER_STEP_CLASSES)}")
+    from nanobrain.lightweight.workflow_builder import WorkflowBuilder
+
+    b = WorkflowBuilder(
+        "clade_conservation",
+        "Per-clade conservation: align a pre-selected clade's sequences → conservation report.",
+    )
+    b.add_input("workflow_input", "DataUnitMemory")
+    b.add_step(
+        "align",
+        _ALIGNER_STEP_CLASSES[aligner],
+        input_data_units=_du("align_in"),
+        output_data_units=_du("alignment"),
+        triggers=_trig("align_in"),
+    )
+    b.add_step(
+        "conserve",
+        f"{_STEPS}.conservation_score_step.ConservationScoreStep",
+        conservation_threshold=0.9,
+        input_data_units=_du("conserve_in"),
+        output_data_units=_du("conservation_result"),
+        triggers=_trig("conserve_in"),
+    )
+    b.add_step(
+        "report",
+        f"{_STEPS}.conservation_report_step.ConservationReportStep",
+        input_data_units=_du("report_in"),
+        output_data_units=_du("report"),
+        triggers=_trig("report_in"),
+    )
+    b.add_output("workflow_output", "DataUnitMemory")
+    b.add_link("workflow_input", "align.align_in", link_type="direct")
+    b.add_link("align.alignment", "conserve.conserve_in", link_type="direct")
+    b.add_link("conserve.conservation_result", "report.report_in", link_type="direct")
+    b.add_link("report.report", "workflow_output", link_type="direct")
+    return b.load()
+
+
 __all__ = [
+    "build_clade_conservation_core_workflow",
     "build_viral_conserved_sites_core_workflow",
     "build_viral_conserved_sites_muscle_workflow",
     "build_viral_conserved_sites_workflow",

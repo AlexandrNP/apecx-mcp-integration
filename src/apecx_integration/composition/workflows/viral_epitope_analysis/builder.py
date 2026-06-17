@@ -357,6 +357,34 @@ def _evidence_workflow_builder():
         output_data_units=_du("clade_grouping_output"),
         triggers=_trig("clade_grouping_input"),
     )
+    # PER-CLADE RE-ANALYSIS LOOP (Req 5 looped execution): a genuine MapSubworkflowStep that
+    # re-runs the conservation cascade (align→conserve→report, fetch SKIPPED) ONCE PER CLADE on
+    # the clade's own sequences — independent per-clade conserved-region detail, ADDITIVE to the
+    # shared-frame breadth. Each item is a clade FASTA injected under `fasta_text`; the inner
+    # `align` step reads it via its envelope-unwrap (isolation-verified). Homogeneous strains →
+    # clade_fastas == [] → the map is a no-op (no inner runs), so the common CHIKV-style path
+    # pays nothing. execution_timeout > timeout_seconds so a many-clade divergent virus degrades
+    # loud rather than being killed. Per-item degrade-loud: one clade failing becomes a named
+    # _map_item_error, never a raise (cross_clade folds the survivors).
+    b.add_step(
+        "clade_map",
+        "nanobrain.library.steps.map_subworkflow_step.MapSubworkflowStep",
+        inner_workflow_builder=(
+            "apecx_integration.composition.workflows.viral_conserved_sites.builder"
+            ".build_clade_conservation_core_workflow"
+        ),
+        item_list_key="clade_fastas",
+        item_param_key="fasta_text",
+        output_list_key="clade_results",
+        step_input_data_unit_name="clade_map_input",
+        max_concurrency=3,
+        timeout_seconds=300.0,
+        execution_timeout=360.0,
+        settle_ms=500,
+        input_data_units=_du("clade_map_input"),
+        output_data_units=_du("clade_map_output"),
+        triggers=_trig("clade_map_input"),
+    )
     b.add_step(
         "cross_clade",
         f"{_STEPS}.cross_clade_aggregate_step.CrossCladeAggregateStep",
@@ -498,8 +526,9 @@ def _evidence_workflow_builder():
         "align_viz.align_viz_output", "clade_grouping.clade_grouping_input", link_type="direct"
     )
     b.add_link(
-        "clade_grouping.clade_grouping_output", "cross_clade.cross_clade_input", link_type="direct"
+        "clade_grouping.clade_grouping_output", "clade_map.clade_map_input", link_type="direct"
     )
+    b.add_link("clade_map.clade_map_output", "cross_clade.cross_clade_input", link_type="direct")
     b.add_link(
         "cross_clade.cross_clade_output", "rhea_genomic.rhea_genomic_input", link_type="direct"
     )

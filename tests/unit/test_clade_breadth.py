@@ -122,6 +122,33 @@ def test_cross_clade_step_computes_breadth(tmp_path):
     )
 
 
+def test_cross_clade_folds_per_clade_map_results(tmp_path):
+    """The MapSubworkflowStep per-clade re-analysis (clade_results) is folded in as per-clade
+    region counts; a failed clade item is recorded as a named error, never silently dropped."""
+    bundle = {
+        "query": "q",
+        "alignment_fasta": _FASTA,
+        "clade_groups": [
+            {"clade_id": 0, "member_ids": ["a1", "a2", "a3"], "size": 3},
+            {"clade_id": 1, "member_ids": ["b1", "b2", "b3"], "size": 3},
+        ],
+        "clade_results": [
+            {
+                "data": {
+                    "parts": {
+                        "conserved_regions": [{"start": 0, "end": 9}, {"start": 12, "end": 18}]
+                    }
+                }
+            },
+            {"_map_item_error": "ValueError: too few sequences"},
+        ],
+    }
+    out = asyncio.run(_aggregate_stage(tmp_path).process(bundle))
+    counts = out["cross_clade_breadth"]["per_clade_region_counts"]
+    assert counts[0] == {"clade": 0, "n_conserved_regions": 2}
+    assert counts[1]["clade"] == 1 and "too few sequences" in counts[1]["error"]
+
+
 def test_cross_clade_step_not_applicable_single_clade(tmp_path):
     bundle = {
         "query": "q",
