@@ -67,6 +67,10 @@ async def infrastructure_status() -> dict[str, Any]:
     """
     try:
         orchestrator = get_orchestrator()
+        # Self-heal: if Docker was started AFTER the MCP server came up, re-attempt the
+        # stuck docker backends before reporting. Cheap when nothing is stuck; the expensive
+        # re-attempt is throttled inside reconcile().
+        await orchestrator.reconcile()
         snapshot = await orchestrator.status()
         return snapshot
     except Exception as exc:  # noqa: BLE001

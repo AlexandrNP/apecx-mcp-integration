@@ -232,6 +232,17 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
     name = entry.tool_name
     params = params or {}
 
+    # Self-heal before the prerequisite gate: if Docker was started AFTER the MCP server came
+    # up, re-attempt the stuck docker backends (RHEA etc.) so a workflow that needs them isn't
+    # refused on stale startup state. reconcile() self-throttles + is a no-op when nothing is
+    # stuck; best-effort, never blocks the run.
+    try:
+        from apecx_integration.infrastructure.orchestrator import get_orchestrator
+
+        await get_orchestrator().reconcile()
+    except Exception:  # noqa: BLE001 — self-heal is best-effort; never break the run
+        log.debug("run_workflow: infra reconcile() failed (non-fatal)", exc_info=True)
+
     met, missing = check_prerequisites(entry.requires)
     if not met:
         return WorkflowResult.failed(

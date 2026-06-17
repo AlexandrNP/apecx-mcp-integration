@@ -506,6 +506,12 @@ def _default_backend_specs() -> tuple[BackendSpec, ...]:
 # ---------------------------------------------------------------------------
 
 
+# Minimum seconds between reconcile() RE-ATTEMPTS of a stuck docker backend (the expensive
+# `docker info` + start_all path). Tool calls invoke reconcile() freely; this bounds the retry
+# rate so a persistently-down Docker daemon isn't probed on every single call.
+_RECONCILE_THROTTLE_S = 15.0
+
+
 class InfraOrchestrator:
     """Process-singleton infra orchestrator.
 
@@ -556,6 +562,12 @@ class InfraOrchestrator:
         self._spawned_processes: list[subprocess.Popen[bytes]] = []
         self._spawned_containers: list[str] = []
         self._atexit_registered = False
+        # Monotonic stamp of the last reconcile() that PASSED the stuck-scan and entered the
+        # re-detection path (binary re-resolve + `docker info` + start_all) — set even when the
+        # daemon turns out still-down, so a down/absent daemon is probed at most once per
+        # _RECONCILE_THROTTLE_S, not on every tool call. The cheap "nothing stuck" scan that
+        # precedes it is never throttled (it early-returns before this stamp is read).
+        self._last_reconcile_at: float = 0.0
 
     # ---- public API ---------------------------------------------------
 
@@ -598,6 +610,55 @@ class InfraOrchestrator:
         )
         self._start_all_done = True
         return await self.status()
+
+    async def reconcile(self) -> dict[str, Any]:
+        """Self-heal docker-dependent backends when Docker comes up AFTER startup.
+
+        Docker is detected once at construction + once per backend during the initial
+        ``start_all()``; if the user starts the daemon LATER, the docker backends
+        (postgres/redis/minio → RHEA) would otherwise stay stuck forever. This is the
+        seam tool calls invoke to re-attempt bring-up when Docker became available.
+
+        Cheap on the happy path: the stuck-scan (a list-comp over the runtimes) runs FIRST
+        and early-returns, so a healthy server pays nothing — no ``shutil.which``, no
+        ``docker info``. Only when a docker backend is actually stuck does it pay the
+        re-detection cost, and that whole path is throttled (``_RECONCILE_THROTTLE_S``) so a
+        persistently-down/absent daemon isn't probed on every call. ``start_all`` is
+        idempotent (re-probes healthy backends, re-attempts the stuck ones). NOTE: only a
+        stuck *docker container* triggers this; RHEA (a host_process) is re-attempted only as
+        a side effect of ``start_all`` firing for a stuck container — if ONLY RHEA is stuck,
+        reconcile is a no-op (out of scope: this heals the Docker-came-up-late case).
+        """
+        # Cheap stuck-scan FIRST — a docker backend NOT in a healthy/in-flight state. The
+        # happy path returns here, before any shutil.which / docker info / time call.
+        healthy = {BackendState.READY, BackendState.REUSED, BackendState.STARTING}
+        stuck = [
+            rt
+            for rt in self._runtimes.values()
+            if rt.spec.kind == "docker_container" and rt.state not in healthy
+        ]
+        if not stuck:
+            return {"reattempted": []}
+        # Something is stuck — throttle the whole re-attempt (binary re-resolve + docker info +
+        # start_all) so a down/absent daemon isn't probed every call.
+        now = time.monotonic()
+        if now - self._last_reconcile_at < _RECONCILE_THROTTLE_S:
+            return {"reattempted": [], "throttled": True}
+        self._last_reconcile_at = now
+        if not self._docker:
+            self._docker = shutil.which("docker")  # may have been installed since construction
+        if not self._docker:
+            return {"reattempted": []}
+        # Is the daemon actually up now? (the one-shot startup check may have run while it was down)
+        info = await asyncio.to_thread(
+            subprocess.run, [self._docker, "info"], capture_output=True, timeout=10
+        )
+        if info.returncode != 0:
+            return {"reattempted": []}  # daemon still down
+        reattempting = [rt.spec.name for rt in stuck]
+        log.info("InfraOrchestrator.reconcile: Docker now up; re-attempting %s", reattempting)
+        await self.start_all()
+        return {"reattempted": reattempting}
 
     async def status(self) -> dict[str, Any]:
         """Snapshot of every backend's current state.
