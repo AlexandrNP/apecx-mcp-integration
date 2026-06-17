@@ -1,0 +1,216 @@
+# apecx-mcp server deployment — full stack on ONE docker network (`apecx-net`).
+#
+# Brings up every backing service the stack needs, so a remote/headless deployment is one
+# `docker compose up` instead of the manual `docker network create` + `docker network connect`
+# + hand-run-Ollama dance a field deployment otherwise requires. apecx-mcp ITSELF runs on the
+# HOST (uv tool install) pointed at the published host-ports below — see deploy/install-server.sh
+# and deploy/SERVER_DEPLOYMENT.md. Run it with `APECX_MCP_AUTOSTART_INFRA=0` so it PROBES these
+# containers rather than spawning its own (leave the control-plane autostart at its default — it
+# runs a separate child on :8000; setting APECX_MCP_AUTOSTART_BACKEND=0 without a running control
+# plane or APECX_MCP_SKIP_HEALTHCHECK=1 makes apecx-mcp exit 2).
+#
+# One shared backend set (NOT Rhea's stock parallel stack): Postgres(pgvector) / Redis / MinIO /
+# Ollama. Ollama serves BOTH apecx chat synthesis (nemotron) AND Rhea's tool-RAG embeddings
+# (mxbai-embed-large, 1024-dim — matches Rhea's hardcoded Vector(1024) in rhea/utils/models.py).
+#
+# Images/ports/volume-names mirror the canonical specs in
+# src/apecx_integration/infrastructure/containers.py so the host orchestrator's probes
+# (localhost:5435 / :6379 / :9000) and `infrastructure_status` find the same state.
+
+# Rhea env shared by the server + the one-shot db-init/ingest jobs. A single anchor keeps the
+# embedding MODEL identical across ingest and query — drift there yields green probes + garbage
+# tool rankings (same model must embed the catalog AND the query).
+x-rhea-env: &rhea-env
+  HOST: "0.0.0.0"
+  PORT: "3001"
+  DATABASE_URL: "postgresql+asyncpg://postgres:postgres@postgres:5432/rhea"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  AGENT_REDIS_HOST: "redis"
+  AGENT_REDIS_PORT: "6379"
+  MINIO_ENDPOINT: "minio:9000"
+  MINIO_ACCESS_KEY: "minioadmin"
+  MINIO_SECRET_KEY: "minioadmin"
+  EMBEDDING_URL: "http://ollama:11434/v1"
+  EMBEDDING_KEY: "EMPTY"            # OpenAI client rejects an empty key; Ollama ignores the value
+  MODEL: "${RHEA_EMBEDDING_MODEL:-mxbai-embed-large}"
+  RHEA_INGEST_LIMIT: "${RHEA_INGEST_LIMIT:-25}"
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.0-pg17
+    container_name: apecx-rhea-postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rhea
+    ports:
+      - "5435:5432"
+    volumes:
+      - apecx-rhea-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rhea"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [apecx-net]
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: apecx-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [apecx-net]
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio
+    container_name: apecx-rhea-minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - apecx-rhea-minio-data:/data
+    # No healthcheck: the minio image ships no curl/wget/mc to probe /minio/health/live, and the
+    # find_tools/RAG path does not touch MinIO at boot. Readiness is reported by install-server.sh
+    # via the host-published :9000 endpoint; nothing gates on minio health.
+    networks: [apecx-net]
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama
+    container_name: apecx-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - apecx-ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks: [apecx-net]
+    restart: unless-stopped
+    # GPU: uncomment to pass through NVIDIA GPUs (needs nvidia-container-toolkit on the host).
+    # Without it Ollama runs CPU-only (works, slower). macOS Docker has no GPU passthrough.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  # One-shot: pull the chat (apecx synthesis) + embedding (Rhea tool-RAG) models. Exits 0.
+  ollama-init:
+    image: ollama/ollama
+    container_name: apecx-ollama-init
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        OLLAMA_HOST=http://ollama:11434 ollama pull ${APECX_LLM_MODEL:-nemotron-3-nano:4b} &&
+        OLLAMA_HOST=http://ollama:11434 ollama pull ${RHEA_EMBEDDING_MODEL:-mxbai-embed-large}
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks: [apecx-net]
+    restart: "no"
+
+  # One-shot: provision Rhea's Postgres schema. CLOSES A BLOCKING GAP — neither
+  # rhea.server.mcp_server nor rhea.preprocess.update_tools creates the schema, and Rhea's own
+  # stock compose silently relies on a pre-provisioned volume. Order is load-bearing:
+  # `CREATE EXTENSION vector` MUST precede create_all (the embedding column type is `vector`).
+  # Uses asyncpg (present in the rhea image) — no sync driver assumption.
+  rhea-db-init:
+    image: ${RHEA_IMAGE:-apecx-rhea-server:local}
+    build:
+      context: ${RHEA_REPO_PATH:?set RHEA_REPO_PATH to your rhea checkout (a sibling clone) in deploy/.env}
+      dockerfile: Dockerfile
+    container_name: apecx-rhea-db-init
+    command:
+      - uv
+      - run
+      - python
+      - -c
+      - |
+        import asyncio
+        from sqlalchemy import text
+        from sqlalchemy.ext.asyncio import create_async_engine
+        from rhea.utils.models import Base  # registers galaxytools on Base.metadata
+
+        async def main():
+            eng = create_async_engine(
+                "postgresql+asyncpg://postgres:postgres@postgres:5432/rhea"
+            )
+            async with eng.begin() as conn:
+                await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+                await conn.run_sync(Base.metadata.create_all)
+            await eng.dispose()
+            print("rhea-db-init: vector extension + galaxytools schema ready")
+
+        asyncio.run(main())
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [apecx-net]
+    restart: "no"
+
+  # Rhea MCP worker (discovery + tool-RAG). No docker.sock mount and conda unused: find_tools
+  # touches only the embedding client + the DB, and Parsl boots with init_blocks=0 (no worker
+  # provisioned until a tool is actually executed — out of scope here). Redis is touched at
+  # IMPORT time, so it must be healthy before this starts.
+  rhea:
+    image: ${RHEA_IMAGE:-apecx-rhea-server:local}
+    build:
+      context: ${RHEA_REPO_PATH:?set RHEA_REPO_PATH to your rhea checkout (a sibling clone) in deploy/.env}
+      dockerfile: Dockerfile
+    container_name: apecx-rhea-server
+    environment: *rhea-env
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rhea-db-init:
+        condition: service_completed_successfully
+    networks: [apecx-net]
+    restart: unless-stopped
+
+  # One-shot: populate Rhea's Galaxy tool catalog (embeds each tool via Ollama → galaxytools).
+  # FAIL-LOUDs on zero tools. Needs the schema (db-init) + the embedding model (ollama-init).
+  # Does NOT need the rhea server running — it uses the same code/DB directly.
+  rhea-ingest:
+    image: ${RHEA_IMAGE:-apecx-rhea-server:local}
+    container_name: apecx-rhea-ingest
+    environment: *rhea-env
+    command: ["uv", "run", "-m", "rhea.preprocess.update_tools"]
+    depends_on:
+      rhea-db-init:
+        condition: service_completed_successfully
+      ollama-init:
+        condition: service_completed_successfully
+    networks: [apecx-net]
+    restart: "no"
+
+networks:
+  apecx-net:
+    name: apecx-net
+
+volumes:
+  apecx-rhea-postgres-data:
+    name: apecx-rhea-postgres-data
+  apecx-rhea-minio-data:
+    name: apecx-rhea-minio-data
+  apecx-ollama-data:
+    name: apecx-ollama-data
