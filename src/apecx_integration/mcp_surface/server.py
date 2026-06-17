@@ -41,6 +41,7 @@ What's deliberately NOT exposed
 
 from __future__ import annotations
 
+import argparse
 import asyncio
 import atexit
 import logging
@@ -996,8 +997,6 @@ def _build_arg_parser():
     function exists for) and ``--version`` (so operators can see what
     they have installed).
     """
-    import argparse
-
     parser = argparse.ArgumentParser(
         prog="apecx-mcp",
         description=(
@@ -1035,12 +1034,61 @@ def _build_arg_parser():
         default="stdio",
         help=(
             "MCP transport. 'stdio' (default) — for Claude Desktop / IDE clients that spawn the "
-            "server locally. 'streamable-http' — serve over HTTP at /mcp on the default port, "
-            "REQUIRED by ChatGPT (see `apecx-setup chatgpt`). 'sse' — legacy HTTP+SSE transport. "
-            "(Host/port are FastMCP defaults; override with $FASTMCP_HOST / $FASTMCP_PORT.)"
+            "server locally. 'streamable-http' — serve over HTTP at /mcp, REQUIRED by ChatGPT "
+            "and for remote/server deployment (see `apecx-setup chatgpt`). 'sse' — legacy "
+            "HTTP+SSE transport. (For HTTP transports set the bind address with --host/--port or "
+            "$APECX_MCP_HOST/$APECX_MCP_PORT.)"
+        ),
+    )
+    # HTTP-transport bind address. apecx owns this resolution rather than relying on FastMCP's
+    # own $FASTMCP_HOST/$FASTMCP_PORT binding, which is version-fragile and was observed NOT to
+    # take effect in a real server deployment. Defaults are None → leave FastMCP's own defaults
+    # (0.0.0.0:8000) untouched. Ignored for stdio (no socket).
+    parser.add_argument(
+        "--host",
+        default=None,
+        help=(
+            "Bind address for HTTP transports (streamable-http / sse). Falls back to "
+            "$APECX_MCP_HOST, then FastMCP's default. Use 0.0.0.0 to accept remote connections. "
+            "Ignored for stdio."
+        ),
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=None,
+        help=(
+            "Port for HTTP transports (streamable-http / sse). Falls back to $APECX_MCP_PORT, "
+            "then FastMCP's default (8000). Pick a port distinct from the control plane (8000), "
+            "e.g. 8001. Ignored for stdio."
         ),
     )
     return parser
+
+
+def _resolve_http_host_port(args: argparse.Namespace) -> tuple[str | None, int | None]:
+    """Resolve the HTTP-transport bind (host, port) with precedence flag > env > None.
+
+    None means "leave FastMCP's own default untouched". apecx resolves this itself instead of
+    deferring to FastMCP's $FASTMCP_HOST/$FASTMCP_PORT binding, which proved unreliable in a real
+    server deployment (the operator had to monkeypatch ``server.settings`` by hand).
+
+    FAIL-LOUD on a malformed $APECX_MCP_PORT — a typo'd port silently falling back to 8000 (which
+    collides with the control plane) is exactly the kind of silent misconfiguration to surface.
+    """
+    host = args.host if args.host else os.environ.get("APECX_MCP_HOST") or None
+
+    port: int | None = args.port
+    if port is None:
+        env_port = os.environ.get("APECX_MCP_PORT")
+        if env_port:
+            try:
+                port = int(env_port)
+            except ValueError as exc:
+                raise ValueError(f"APECX_MCP_PORT must be an integer, got {env_port!r}") from exc
+    if port is not None and not (1 <= port <= 65535):
+        raise ValueError(f"port must be in 1..65535, got {port}")
+    return host, port
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -1093,9 +1141,15 @@ def main(argv: list[str] | None = None) -> None:
     if args.transport == "stdio":
         server.run()
     else:
-        # HTTP transports (ChatGPT needs streamable-http at /mcp). Host/port are FastMCP's
-        # defaults (override via $FASTMCP_HOST / $FASTMCP_PORT). ChatGPT still needs a PUBLIC
-        # HTTPS URL — the operator tunnels this port (see `apecx-setup chatgpt`).
+        # HTTP transports (ChatGPT / remote deployment need streamable-http at /mcp). Apply the
+        # apecx-resolved host/port to FastMCP's settings BEFORE run() — see _resolve_http_host_port
+        # for why we don't defer to $FASTMCP_*. A PUBLIC HTTPS URL still requires a tunnel
+        # (see `apecx-setup chatgpt`).
+        http_host, http_port = _resolve_http_host_port(args)
+        if http_host is not None:
+            server.settings.host = http_host
+        if http_port is not None:
+            server.settings.port = http_port
         log.info(
             "apecx-mcp serving %s at http://%s:%s%s",
             args.transport,
