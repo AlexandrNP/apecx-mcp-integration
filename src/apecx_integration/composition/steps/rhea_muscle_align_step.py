@@ -90,7 +90,9 @@ class RheaMuscleAlignStep(BaseStep):
                 f"has {fasta_text.count('>')}."
             )
 
+        self.emit_progress(f"aligning {fasta_text.count('>')} sequences (MUSCLE via Rhea)")
         report_out = await self._drive_rhea_muscle(fasta_text)
+        self.emit_progress("MUSCLE alignment complete")
 
         aligned = report_out.get("alignment_fasta")
         if not isinstance(aligned, str) or aligned.count(">") < 2:

@@ -201,8 +201,10 @@ class PubMedHarvesterStep(BaseStep):
             self._max_papers,
         )
 
+        self.emit_progress(f"harvesting PubMed for {term!r}")
         try:
             publications = await asyncio.to_thread(self._harvest_sync, term)
+            self.emit_progress(f"PubMed: {len(publications)} publication(s) retrieved")
         except Exception as exc:
             # Network blip, eSearch error, parse glitch — log and
             # degrade to empty. The synthesis pipeline does not

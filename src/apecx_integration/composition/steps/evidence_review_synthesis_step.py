@@ -754,6 +754,7 @@ class EvidenceReviewSynthesisStep(BaseStep):
         # each source list with its quality-ranked top-N, so the LLM reasons over the
         # digest, never the raw corpus. (Standalone review with no distill step upstream
         # — e.g. tests — simply uses whatever was passed.)
+        self.emit_progress("composing evidence review (LLM)")
         try:
             evidence_md = await asyncio.to_thread(
                 synthesize_response,

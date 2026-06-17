@@ -337,6 +337,7 @@ class RagSynthesisStep(BaseStep):
         # Synthesize with the configured LLM; on no reachable LLM / a synth-gate failure, degrade
         # LOUD to a deterministic rendering of the retrieved evidence (a complete answer body,
         # never a 'you write it' scaffold). synthesize_response is sync → offload it.
+        self.emit_progress("synthesizing answer (LLM)")
         try:
             synthesis = await asyncio.to_thread(
                 synthesize_response,
@@ -344,6 +345,7 @@ class RagSynthesisStep(BaseStep):
                 config=self._synthesis_config,
                 **kwargs_for_synth,
             )
+            self.emit_progress("synthesis complete")
         except Exception as exc:  # noqa: BLE001 — degrade-loud, never strand the retrieved evidence
             log.warning(
                 "RagSynthesisStep %s: synthesis failed (%s); deterministic evidence fallback.",

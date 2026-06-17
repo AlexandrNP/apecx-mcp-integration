@@ -110,8 +110,10 @@ class LocalMafftAlignStep(BaseStep):
                 )
                 return {"alignment": self._with_live_context(cached, payload)}
 
+        self.emit_progress(f"aligning {fasta_text.count('>')} sequences (MAFFT)")
         aligned = await asyncio.to_thread(self._run_mafft, fasta_text)
         n_seqs = aligned.count(">")
+        self.emit_progress(f"alignment complete: {n_seqs} sequences")
         # All aligned records share one length; derive it from the first record.
         alignment_length = _first_record_length(aligned)
         self.nb_logger.info(
