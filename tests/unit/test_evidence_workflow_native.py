@@ -42,10 +42,11 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 19, (
-        f"expected 19 links (resolution leg resolve→map→assemble→hmerge + both fan-ins + "
+    assert len(links) == 23, (
+        f"expected 23 links (resolution leg resolve→map→assemble→hmerge + both fan-ins + "
         f"data-readiness + structural-reasoning + functional-validation + distillation + "
-        f"rhea-genomic edges), got {len(links)}"
+        f"rhea-genomic + the merge→align_viz→clade_grouping→clade_map→cross_clade→rhea_genomic "
+        f"visibility/breadth chain), got {len(links)}"
     )
     for name, entry in links.items():
         link_cfg = entry["config"]
@@ -73,6 +74,10 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
         "structural",
         "sequence",
         "merge",
+        "align_viz",
+        "clade_grouping",
+        "clade_map",
+        "cross_clade",
         "rhea_genomic",
         "reasoning",
         "functional",
@@ -115,12 +120,18 @@ def test_sequence_and_merge_fanin_wired():
     assert ("normalize.normalize_out", "sequence.sequence_params") in link_pairs
     assert ("structural.structural_bundle", "merge.structural_in") in link_pairs
     assert ("sequence.sequence_result", "merge.sequence_in") in link_pairs
-    # E2-P + C3: merge feeds structural-reasoning, which feeds functional-validation,
-    # which feeds the distillation stage, which feeds review.
-    # merge → rhea_genomic (large-scale RHEA-MUSCLE conservation leg) → reasoning.
-    assert ("merge.merged_bundle", "rhea_genomic.rhea_genomic_input") in link_pairs
+    # E2-P + C3: merge feeds the visibility/breadth chain (align_viz → clade_grouping →
+    # clade_map → cross_clade), which feeds rhea_genomic → structural-reasoning →
+    # functional-validation → distillation → review.
+    assert ("merge.merged_bundle", "align_viz.align_viz_input") in link_pairs
+    assert ("align_viz.align_viz_output", "clade_grouping.clade_grouping_input") in link_pairs
+    assert ("clade_grouping.clade_grouping_output", "clade_map.clade_map_input") in link_pairs
+    assert ("clade_map.clade_map_output", "cross_clade.cross_clade_input") in link_pairs
+    assert ("cross_clade.cross_clade_output", "rhea_genomic.rhea_genomic_input") in link_pairs
     assert ("rhea_genomic.rhea_genomic_bundle", "reasoning.reasoning_input") in link_pairs
     assert ("merge.merged_bundle", "reasoning.reasoning_input") not in link_pairs
+    # The OLD direct merge→rhea_genomic edge must be gone (the chain now runs through align_viz).
+    assert ("merge.merged_bundle", "rhea_genomic.rhea_genomic_input") not in link_pairs
     assert ("reasoning.reasoning_output", "functional.functional_input") in link_pairs
     assert ("functional.functional_output", "distill.distill_input") in link_pairs
     assert ("distill.distill_output", "review.review_input") in link_pairs
