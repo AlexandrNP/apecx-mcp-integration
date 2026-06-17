@@ -130,6 +130,22 @@ def test_sources_lists_every_citable_record_with_title():
     assert "[RAG chunk #2]" not in sec
 
 
+def test_sources_surfaces_publication_abstract_for_desktop_llm():
+    """The Sources ledger surfaces each publication's ABSTRACT (capped) as a sub-bullet — the
+    article CONTENT the DESKTOP host LLM reads to do real literature analysis (it sees only the
+    rendered report, not the server synthesizer prompt). A title-only ledger left the desktop LLM
+    unable to analyze anything."""
+    long_abstract = "Neutralizing mAbs target the E1 fusion loop. " * 40  # > cap
+    sec = render_sources_section(
+        {"publications": [{"doi": "10.1/ab", "title": "T", "abstract": long_abstract}]}
+    )
+    assert "Neutralizing mAbs target the E1 fusion loop." in sec  # abstract content present
+    assert "…" in sec  # truncated at the cap
+    # a publication without an abstract still renders (just no sub-bullet) — no crash
+    sec2 = render_sources_section({"publications": [{"doi": "10.2/cd", "title": "No abstract"}]})
+    assert "[10.2/cd]" in sec2
+
+
 def test_sources_empty_bundle_is_present_and_honest():
     sec = render_sources_section({"query": "q"})
     assert sec.startswith("## Sources and evidence")

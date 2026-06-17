@@ -74,6 +74,11 @@ _INSIGHT_HEADING = "## Integrated insight"
 # and `## Follow-up questions` are built deterministically below.
 _DEFAULT_PROMPT_FILENAME = "evidence_review_synthesis_prompt.yml"
 _DEFAULT_SYNTH_CONFIG_FILENAME = "evidence_synthesis_config.yml"
+# Abstract length surfaced per publication in the Sources ledger + structured output. This is the
+# article CONTENT the DESKTOP host LLM (which sees only the rendered report / data_handle, not the
+# server synthesizer prompt) reads to perform real literature analysis. Generous — the desktop LLM
+# has a large context — but capped so the report stays bounded.
+_SOURCES_ABSTRACT_CHARS = 700
 
 
 def _sanitize_inline(text: Any, cap: int = 300) -> str:
@@ -326,6 +331,16 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
             meta.append(str(p.get("journal") or p.get("publisher")))
         desc = " · ".join(meta) if meta else "publication"
         entries.append(_collapse_ws(f"- **[{doi}]** *{title}* — {desc}"))
+        # Surface the ABSTRACT as an indented sub-bullet so the synthesizing LLM — including the
+        # DESKTOP host (Claude), which receives only this rendered report, not the server-side
+        # synthesizer prompt — can analyze article CONTENT, not just titles. Collapsed to one
+        # line (no header/blockquote injection); capped for report size.
+        abstract = p.get("abstract") or p.get("description")
+        if abstract:
+            flat = _collapse_ws(abstract)
+            shown = flat[:_SOURCES_ABSTRACT_CHARS]
+            ell = "…" if len(flat) > _SOURCES_ABSTRACT_CHARS else ""
+            entries.append(f"  - {shown}{ell}")
 
     for g in bundle.get("bvbrc_genomes") or []:
         if not isinstance(g, dict):
@@ -925,10 +940,14 @@ def collect_structured_output(bundle: dict[str, Any]) -> dict[str, Any]:
     by construction (ids + summaries, not raw FASTA/structures) so it serializes cleanly."""
 
     def _pub(p: dict[str, Any]) -> dict[str, Any]:
+        # Include a (capped) abstract so a STRUCTURED consumer of the data_handle (e.g. a desktop
+        # host reading the JSON rather than the markdown) also has article content to analyze.
+        abstract = p.get("abstract") or p.get("description") or ""
         return {
             "doi": p.get("doi") or p.get("id") or p.get("pmid"),
             "title": p.get("title"),
             "year": p.get("year"),
+            "abstract": _collapse_ws(abstract)[:_SOURCES_ABSTRACT_CHARS] if abstract else None,
         }
 
     parts: dict[str, Any] = {
