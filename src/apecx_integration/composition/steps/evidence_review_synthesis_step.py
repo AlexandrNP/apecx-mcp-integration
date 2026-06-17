@@ -502,6 +502,141 @@ def render_provenance_disclosure_section(bundle: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+_CROSSREF_HEADING = "## Cross-referenced epitope candidates"
+
+
+def render_cross_reference_section(bundle: dict[str, Any]) -> str:
+    """Render ``## Cross-referenced epitope candidates`` — the SYNTHESIZED (not siloed) view.
+
+    Each conserved region is one candidate epitope, JOINED across the four evidence axes by the
+    coordinate that already links them: the conserved-region span (sequence), the per-region
+    corroboration entries → primary-PDB residues (structure), those residues' functional
+    coincidences (UniProt/IEDB via the SIFTS bridge), and publications whose abstract quotes the
+    motif (literature). Pure + LLM-free; ALWAYS non-empty; honest gaps (—) ARE the signal. No
+    re-computation — every input already lives on the bundle from the upstream steps.
+    """
+    regions = bundle.get("conserved_regions") or []
+    lines = [_CROSSREF_HEADING, ""]
+    if not regions:
+        lines.append(
+            "> No conserved regions were identified, so no candidate epitopes could be "
+            "cross-referenced across sequence, structure, function, and literature."
+        )
+        return "\n".join(lines)
+
+    reasoning = bundle.get("structural_reasoning")
+    reasoning = reasoning if isinstance(reasoning, dict) else {}
+    corroboration = reasoning.get("corroboration") or []
+    primary_pdb = reasoning.get("pdb_id")
+    n_struct = reasoning.get("n_analyzed_structures")
+    fv = bundle.get("functional_validation")
+    coincidences = (fv.get("coincidences") or []) if isinstance(fv, dict) else []
+    pubs = bundle.get("publications") or []
+    protein = _collapse_ws(bundle.get("protein") or "protein")
+
+    # Index functional coincidences by PDB author residue (the shared join key).
+    coin_by_resi: dict[Any, list[dict[str, Any]]] = {}
+    for c in coincidences:
+        if isinstance(c, dict) and c.get("residue") is not None:
+            coin_by_resi.setdefault(c["residue"], []).append(c)
+
+    lines.append(
+        f"Each conserved region of {protein} as a candidate epitope, cross-referenced across "
+        f"sequence conservation ↔ structural surface-exposure ↔ functional annotation ↔ "
+        f"literature. A `—` means that axis had no evidence for this candidate (an honest gap, "
+        f"not an omission)."
+    )
+    lines.append("")
+
+    for i, region in enumerate(regions[:12], 1):
+        if not isinstance(region, dict):
+            continue
+        start, end = int(region.get("start", 0)), int(region.get("end", 0))
+        motif = str(region.get("consensus") or "").replace("-", "")
+        mean_id = region.get("mean_identity")
+        reg_corr = [
+            c
+            for c in corroboration
+            if isinstance(c, dict) and c.get("region_start") == start and c.get("region_end") == end
+        ]
+        # Primary-PDB residues of this region's surface-exposed positions.
+        resis: list[Any] = []
+        for c in reg_corr:
+            if (c.get("exposed_in_k") or 0) > 0:
+                r = (c.get("resi_by_pdb") or {}).get(primary_pdb)
+                if r is not None:
+                    resis.append(r)
+        resis = sorted(set(resis), key=lambda r: (r if isinstance(r, int) else 1 << 30, str(r)))
+
+        motif_show = f"{motif[:40]}{'…' if len(motif) > 40 else ''}"
+        lines.append(f"**Candidate {i} — region cols {start}–{end}** (`{motif_show}`)")
+        id_str = f"{mean_id:.0%}" if isinstance(mean_id, (int, float)) else "?"
+        lines.append(f"- sequence: conserved at {id_str} mean identity across the aligned strains")
+
+        # structure axis
+        if reasoning.get("available") and reg_corr:
+            kmax = max((c.get("exposed_in_k") or 0) for c in reg_corr)
+            nstruct = n_struct or (reg_corr[0].get("analyzed_n") if reg_corr else 0)
+            if resis:
+                shown = ", ".join(str(r) for r in resis[:12])
+                more = f" (+{len(resis) - 12} more)" if len(resis) > 12 else ""
+                lines.append(
+                    f"- structure ({primary_pdb}): {len(resis)} residue(s) solvent-exposed "
+                    f"(resi {shown}{more}); corroborated in up to {kmax}/{nstruct} structures"
+                )
+            else:
+                lines.append(
+                    f"- structure ({primary_pdb}): mapped, but no residue of this region is "
+                    f"surface-exposed (likely buried — lower epitope priority)"
+                )
+        else:
+            lines.append("- structure: — (no structural surface analysis available)")
+
+        # function axis
+        func_hits: list[str] = []
+        for r in resis:
+            for c in coin_by_resi.get(r, []):
+                if c.get("source") == "UniProt":
+                    desc = _collapse_ws(c.get("description") or c.get("type") or "feature")
+                    func_hits.append(f"{c.get('type')} ({desc}) @resi {r}")
+                elif c.get("source") == "IEDB":
+                    func_hits.append(
+                        f"IEDB epitope {_collapse_ws(c.get('epitope') or '')} @resi {r}"
+                    )
+        if func_hits:
+            uniq = list(dict.fromkeys(func_hits))[:5]
+            lines.append(f"- function: {'; '.join(uniq)}")
+        else:
+            lines.append(
+                "- function: — (no UniProt feature / IEDB epitope coincides with these residues)"
+            )
+
+        # literature axis — best-effort motif-fragment match (deterministic; honestly low-yield).
+        lit: list[str] = []
+        if len(motif) >= 8:
+            frags = {motif[j : j + 8].upper() for j in range(len(motif) - 7)}
+            for p in pubs:
+                if not isinstance(p, dict):
+                    continue
+                hay = f"{p.get('title') or ''} {p.get('abstract') or p.get('description') or ''}".upper()
+                if any(f in hay for f in frags):
+                    doi = p.get("doi") or p.get("id") or p.get("pmid")
+                    if doi:
+                        lit.append(str(doi))
+        if lit:
+            cites = ", ".join(f"[{d}]" for d in list(dict.fromkeys(lit))[:5])
+            lines.append(f"- literature: this motif is quoted in {cites}")
+        else:
+            lines.append(
+                "- literature: — (no retrieved abstract quotes this motif; general literature is "
+                "in Sources and evidence)"
+            )
+        lines.append("")
+    if len(regions) > 12:
+        lines.append(f"_…and {len(regions) - 12} more conserved region(s) (see Analysis steps)._")
+    return "\n".join(lines).rstrip()
+
+
 def render_analysis_steps_section(bundle: dict[str, Any]) -> str:
     """Deterministic ``## Analysis steps`` — the full pipeline progression, ordered.
 
@@ -758,8 +893,9 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     Order (the contract sections, in order, plus the always-present deterministic sections):
 
         # Answer · ## Cross-data reasoning · ## Integrated insight ·
-        ## Analysis steps · ## Data actually used · ## Structural evidence (PDB / EMDB) ·
-        ## Evidence coverage · ## Sources and evidence · ## Follow-up questions
+        ## Analysis steps · ## Data actually used · ## Cross-referenced epitope candidates ·
+        ## Structural evidence (PDB / EMDB) · ## Evidence coverage · ## Sources and evidence ·
+        ## Follow-up questions
 
     Analysis-steps + Coverage + Sources + Follow-ups are deterministic, so those sections can
     NEVER be omitted regardless of LLM behavior — a missing section is impossible by
@@ -770,6 +906,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     body = _insert_scope_caveat_if_unresolved(_ensure_contract_headers(narrative_body), bundle)
     analysis = render_analysis_steps_section(bundle)
     disclosure = render_provenance_disclosure_section(bundle)
+    crossref = render_cross_reference_section(bundle)
     structural = render_structural_section(
         bundle.get("structural_records"),
         bundle.get("structural_note"),
@@ -779,7 +916,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     sources = render_sources_section(bundle)
     followups = render_followups_section(query, bundle)
     return (
-        f"{body.rstrip()}\n\n{analysis}\n\n{disclosure}\n\n{structural}\n\n"
+        f"{body.rstrip()}\n\n{analysis}\n\n{disclosure}\n\n{crossref}\n\n{structural}\n\n"
         f"{coverage}\n\n{sources}\n\n{followups}\n"
     )
 

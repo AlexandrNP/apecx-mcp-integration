@@ -25,6 +25,7 @@ from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     EvidenceReviewSynthesisStep,
     compose_evidence_markdown,
     render_coverage_section,
+    render_cross_reference_section,
     render_evidence_fallback,
     render_followups_section,
     render_provenance_disclosure_section,
@@ -310,6 +311,73 @@ def test_disclosure_section_names_sequences_and_structures_used():
     # selected structure + the used / rejected split with reasons
     assert "9IXA" in md and "used (chain B" in md
     assert "3N40" in md and "rejected: no chain mapped the motif" in md
+
+
+def test_cross_reference_joins_sequence_structure_function_literature():
+    """Phase 5: per conserved region, the section JOINS the four axes by the shared coordinate
+    (region span → primary-PDB residues → functional coincidences → motif-quoting papers)."""
+    bundle = {
+        "protein": "E1",
+        "conserved_regions": [
+            {"start": 60, "end": 75, "consensus": "ESCKTEFASAYRAHTA", "mean_identity": 0.97},
+        ],
+        "structural_reasoning": {
+            "available": True,
+            "pdb_id": "9IXA",
+            "n_analyzed_structures": 3,
+            "corroboration": [
+                {
+                    "region_start": 60,
+                    "region_end": 75,
+                    "motif_index": 2,
+                    "consensus_aa": "C",
+                    "exposed_in_k": 3,
+                    "analyzed_n": 3,
+                    "resi_by_pdb": {"9IXA": 145},
+                    "corroborated": True,
+                },
+            ],
+        },
+        "functional_validation": {
+            "coincidences": [
+                {
+                    "residue": 145,
+                    "source": "UniProt",
+                    "type": "Glycosylation",
+                    "description": "N-linked",
+                },
+            ],
+        },
+        "publications": [
+            {"doi": "10.1/ab", "title": "x", "abstract": "the motif ESCKTEFA is surface exposed"},
+            {"doi": "10.2/cd", "title": "unrelated", "abstract": "nothing here"},
+        ],
+    }
+    md = render_cross_reference_section(bundle)
+    assert md.startswith("## Cross-referenced epitope candidates")
+    assert "Candidate 1 — region cols 60–75" in md
+    assert "conserved at 97% mean identity" in md
+    assert "9IXA" in md and "resi 145" in md and "3/3 structures" in md
+    assert "Glycosylation" in md and "@resi 145" in md
+    assert "[10.1/ab]" in md  # the paper quoting the motif
+    assert "[10.2/cd]" not in md  # the unrelated paper is not falsely linked
+
+
+def test_cross_reference_honest_gaps_and_empty():
+    # No structural/functional/literature → honest em-dashes, never blank.
+    md = render_cross_reference_section(
+        {
+            "protein": "E1",
+            "conserved_regions": [
+                {"start": 1, "end": 9, "consensus": "MKLGTPQRS", "mean_identity": 0.9}
+            ],
+        }
+    )
+    assert "structure: —" in md and "function: —" in md and "literature: —" in md
+    # No conserved regions → loud, present section.
+    md2 = render_cross_reference_section({"protein": "E1"})
+    assert md2.startswith("## Cross-referenced epitope candidates")
+    assert "No conserved regions" in md2
 
 
 def test_fallback_groups_publications_by_theme():
