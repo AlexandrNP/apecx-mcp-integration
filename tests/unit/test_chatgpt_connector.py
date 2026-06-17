@@ -14,10 +14,12 @@ from apecx_integration.mcp_surface.server import _build_arg_parser
 
 def test_apecx_mcp_supports_streamable_http_transport_for_chatgpt():
     parser = _build_arg_parser()
-    # MINIMUM arguments: only --transport. Host/port are FastMCP defaults (no extra flags).
+    # MINIMUM arguments: only --transport. --host/--port are OPTIONAL (default None → FastMCP's
+    # own default applies); a ChatGPT user need not pass them. Server deployments override the
+    # bind via --host/--port or $APECX_MCP_HOST/$APECX_MCP_PORT (see deploy/SERVER_DEPLOYMENT.md).
     ns = parser.parse_args(["--transport", "streamable-http"])
     assert ns.transport == "streamable-http"
-    assert not hasattr(ns, "port") and not hasattr(ns, "host")  # no port/host bloat
+    assert ns.host is None and ns.port is None  # optional, unset unless explicitly bound
     # default stays stdio (Claude Desktop / local clients)
     assert parser.parse_args([]).transport == "stdio"
 

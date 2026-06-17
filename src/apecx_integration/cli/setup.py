@@ -1603,7 +1603,9 @@ def chatgpt_connector_guidance(port: int = _CHATGPT_PORT) -> str:
         f"  2. Tunnel it to a public HTTPS URL (install a tunnel separately — it is NOT bundled):\n"
         f"         ngrok http {port}      # or: cloudflared tunnel --url http://localhost:{port}\n"
         f"  3. ChatGPT → Settings → Apps & Connectors → Create → Connector URL = "
-        f"https://<your-tunnel>/mcp , Authentication: None."
+        f"https://<your-tunnel>/mcp , Authentication: None.\n"
+        f"  For a full SERVER deployment (all backends + Rhea in containers, one network, custom "
+        f"bind host/port), see deploy/SERVER_DEPLOYMENT.md."
     )
 
 
