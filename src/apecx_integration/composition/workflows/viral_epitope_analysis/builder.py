@@ -333,6 +333,18 @@ def _evidence_workflow_builder():
             }
         ],
     )
+    # ALIGNMENT-CONSERVATION VISUALIZATION (E-viz): render the conservation PNG + an inline text
+    # track from the per-column identity + conserved regions threaded onto the bundle by `merge`.
+    # Pure + degrade-loud (PNG → text track when matplotlib absent / no data); deliberately placed
+    # here, OFF the timeout-tight `review` LLM step. Passes the bundle through unchanged apart from
+    # alignment_viz_artifact / alignment_viz_text + a stage report.
+    b.add_step(
+        "align_viz",
+        f"{_STEPS}.alignment_viz_step.AlignmentVizStep",
+        input_data_units=_du("align_viz_input"),
+        output_data_units=_du("align_viz_output"),
+        triggers=_trig("align_viz_input"),
+    )
     # RHEA GENOMIC-ANALYSIS leg: large-scale sequence-conservation via the Rhea MCP server
     # (MUSCLE multiple-sequence alignment of a representative per-strain subset, Parsl-distributed)
     # → real conserved-region signal, ADDITIVE to the local MAFFT leg above. Reads taxon_id/protein
@@ -462,7 +474,8 @@ def _evidence_workflow_builder():
     # The enriched bundle (now carrying conserved_sites/regions + the sequence stage report)
     # feeds the structural-reasoning step, which maps conserved positions onto a structure and
     # then feeds the (further-enriched) bundle to the synthesis step.
-    b.add_link("merge.merged_bundle", "rhea_genomic.rhea_genomic_input", link_type="direct")
+    b.add_link("merge.merged_bundle", "align_viz.align_viz_input", link_type="direct")
+    b.add_link("align_viz.align_viz_output", "rhea_genomic.rhea_genomic_input", link_type="direct")
     b.add_link("rhea_genomic.rhea_genomic_bundle", "reasoning.reasoning_input", link_type="direct")
     # C3: the structural-reasoning bundle flows through functional validation before synthesis.
     b.add_link("reasoning.reasoning_output", "functional.functional_input", link_type="direct")

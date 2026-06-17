@@ -311,6 +311,34 @@ def test_disclosure_section_names_sequences_and_structures_used():
     assert "3N40" in md and "rejected: no chain mapped the motif" in md
 
 
+def test_disclosure_embeds_alignment_png_when_present():
+    """Cross-module contract: AlignmentVizStep writes bundle['alignment_viz_artifact'] and the
+    disclosure section embeds it. A rename on either side would silently drop the visualization,
+    so pin the consumer side here (the producer side is pinned in test_alignment_viz)."""
+    bundle = {
+        "protein": "E1",
+        "sequence_used_records": [{"id": "x", "genome_name": "strain A"}],
+        "sequence_fetch_summary": {"n_used": 1},
+        "alignment_viz_artifact": "conservation_37124_E1_abc123.png",
+        "alignment_viz_text": "region 1 cols 2-7",
+    }
+    md = render_provenance_disclosure_section(bundle)
+    assert "![Sequence conservation — E1](conservation_37124_E1_abc123.png)" in md
+
+
+def test_disclosure_falls_back_to_text_track_when_no_png():
+    bundle = {
+        "protein": "E1",
+        "sequence_used_records": [{"id": "x", "genome_name": "strain A"}],
+        "sequence_fetch_summary": {"n_used": 1},
+        "alignment_viz_artifact": None,  # matplotlib absent / render degraded
+        "alignment_viz_text": "region 1 cols 2-7 — TEXTTRACK",
+    }
+    md = render_provenance_disclosure_section(bundle)
+    assert "TEXTTRACK" in md  # the text track is embedded
+    assert "![Sequence conservation" not in md  # no broken image link
+
+
 def test_disclosure_section_present_and_loud_when_legs_empty():
     md = render_provenance_disclosure_section({"sequence_conservation_note": "no protein on query"})
     assert md.startswith("## Data actually used")

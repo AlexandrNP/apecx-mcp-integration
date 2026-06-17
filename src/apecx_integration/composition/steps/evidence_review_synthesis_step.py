@@ -389,6 +389,16 @@ def render_provenance_disclosure_section(bundle: dict[str, Any]) -> str:
         )
         lines.append(f"> {_collapse_ws(note)}")
 
+    # Alignment-conservation visualization: the PNG when rendered (matplotlib + data present),
+    # else the dependency-free inline text track (the degrade-loud floor) — never a broken image.
+    viz_art = bundle.get("alignment_viz_artifact")
+    viz_text = bundle.get("alignment_viz_text")
+    if viz_art:
+        prot = _collapse_ws(bundle.get("protein") or "protein")
+        lines += ["", f"![Sequence conservation — {prot}]({viz_art})"]
+    elif viz_text:
+        lines += ["", viz_text]
+
     # --- Structures used ------------------------------------------------------------------
     lines += ["", "### Structures used"]
     reasoning = bundle.get("structural_reasoning")

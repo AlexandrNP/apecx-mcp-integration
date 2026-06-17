@@ -87,6 +87,14 @@ rag = [
     "sentence-transformers>=2.7,<3.0.0",
     "faiss-cpu>=1.8",
 ]
+# viz (2026-06-17): matplotlib drives the sequence-conservation visualization
+# (AlignmentVizStep → _alignment_viz.render_conservation_png). OPTIONAL — the step
+# degrades LOUD to an inline text conservation track when matplotlib is absent (the
+# helper lazy-imports it inside the render fn and pins the headless Agg backend), so a
+# clean install without this extra still produces the full report, just without the PNG.
+viz = [
+    "matplotlib>=3.7",
+]
 hpc = [
     "globus-compute-sdk>=2.20",
     "globus-sdk>=3.40",
