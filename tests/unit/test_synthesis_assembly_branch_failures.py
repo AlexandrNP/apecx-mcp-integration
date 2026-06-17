@@ -168,6 +168,42 @@ async def test_all_branches_succeeding_returns_full_bundle(assembly_step):
     assert out["publications"] == []
 
 
+async def test_pre_assemble_stage_report_survives_the_rebuild(assembly_step):
+    """A ``stage_reports`` entry present on the INPUT (e.g. ``resolve`` appends one at
+    order -2 BEFORE this step) must survive assemble's bundle rebuild and still be in
+    the output, with assemble's own ``context_assembly`` report appended after it.
+
+    Detection signal: ``synthesis_context_assembly_step.py`` rebuilds the bundle as a
+    fresh ``out`` dict and threads only a whitelist of keys through; if ``stage_reports``
+    is dropped from that whitelist, the resolve line never reaches the terminal
+    ``## Analysis steps`` render. This pins the carry-through.
+
+    Real-data coverage: ``tests/integration/test_viral_epitope_analysis.py`` drives the
+    full resolve → map → assemble → hmerge chain; the resolve line appears in the
+    rendered ``## Analysis steps`` (verified on a live CHIKV run, 2026-06-17).
+    """
+    assembly_step._rag_search = lambda query: []
+    assembly_step._violin_bvbrc_lookup = lambda terms: ([], [])
+    assembly_step._skip_globus = True
+    assembly_step._max_globus = 0
+
+    resolve_report = {
+        "stage": "resolve",
+        "order": -2,
+        "markdown": "Resolved 'chikungunya virus' → 'Chikungunya virus' (NCBITaxon_37124).",
+        "data": {"resolution_path": "fast"},
+    }
+    out = await assembly_step.process(
+        {"query": "chikungunya E1 epitopes", "stage_reports": [resolve_report]}
+    )
+
+    stages = [r["stage"] for r in out["stage_reports"]]
+    assert "resolve" in stages, "pre-assemble resolve report was dropped by the rebuild"
+    assert "context_assembly" in stages
+    # resolve (order -2) must sort ahead of context_assembly (order 1) at render time.
+    assert out["stage_reports"][0]["stage"] == "resolve"
+
+
 def test_skip_violin_and_bvbrc_does_no_tabular_lookups(monkeypatch):
     """skip_violin + skip_bvbrc → ``_violin_bvbrc_lookup`` returns ([], []) and
     NEVER calls the local CSV/TSV lookup functions.

@@ -614,7 +614,10 @@ class SynthesisContextAssemblyStep(BaseStep):
         # when present (the viral_epitope_analysis path runs resolve → map → assemble →
         # hmerge, and hmerge — AFTER this rebuild — needs the map's per-index results +
         # the resolution plan). Absent for every other consumer (e.g. rag_e2e), so this is
-        # a no-op there.
+        # a no-op there. ``stage_reports`` is the cross-cutting Analysis-steps accumulator:
+        # any stage BEFORE this rebuild (``resolve`` appends at order -2) would otherwise be
+        # dropped here and never reach the terminal ``## Analysis steps`` render. The
+        # ``append_stage_report`` below copies-on-write, so carrying it forward is safe.
         for _focus in (
             "protein",
             "taxon_id",
@@ -623,6 +626,7 @@ class SynthesisContextAssemblyStep(BaseStep):
             "items",
             "_map_errors",
             "index_names",
+            "stage_reports",
         ):
             _val = input_data.get(_focus)
             if _val is not None:
