@@ -390,11 +390,18 @@ def _make_stage_streamer(
     """
     seen: set[tuple[Any, Any]] = set()
 
-    def _beat(event: StepEvent, phase: str) -> None:
+    def _beat(event: StepEvent, phase: str, **extra: Any) -> None:
         if on_heartbeat is None:
             return
         try:
-            on_heartbeat({"step_name": event.step_name, "phase": phase, "run_id": event.run_id})
+            on_heartbeat(
+                {
+                    "step_name": event.step_name,
+                    "phase": phase,
+                    "run_id": event.run_id,
+                    **extra,
+                }
+            )
         except Exception:  # noqa: BLE001 — a heartbeat MUST NOT break the run
             log.exception(
                 "run_workflow_streamed: on_heartbeat raised for step %r (%s) — swallowed.",
@@ -409,6 +416,16 @@ def _make_stage_streamer(
                 return
             if event.event_type == "step_failed":
                 _beat(event, "failed")
+                return
+            if event.event_type == "step_progress":
+                # Mid-process() incremental progress (nanobrain BaseStep.emit_progress) —
+                # forward the human message so the client sees real work, not just lifecycle.
+                _beat(
+                    event,
+                    "progress",
+                    message=event.payload.get("message"),
+                    fraction=event.payload.get("fraction"),
+                )
                 return
             if event.event_type != "step_complete":
                 return
@@ -561,8 +578,14 @@ async def _run_workflow_streaming_impl(
                     # inner-step starts don't flood the client with notifications.
                     if loop.time() - state["last_notify"] >= heartbeat_throttle_s:
                         phase = payload.get("phase")
-                        verb = "finished" if phase == "complete" else "running"
-                        await _emit_progress(f"{verb}: {payload.get('step_name')}")
+                        if phase == "progress" and payload.get("message"):
+                            # Real mid-step content — show the step's own message.
+                            await _emit_progress(
+                                f"{payload.get('step_name')}: {payload['message']}"
+                            )
+                        else:
+                            verb = "finished" if phase == "complete" else "running"
+                            await _emit_progress(f"{verb}: {payload.get('step_name')}")
             except Exception:  # noqa: BLE001 — a notification failure must not break the run
                 log.exception("run_workflow_streaming: failed to emit MCP notification (%s).", kind)
 

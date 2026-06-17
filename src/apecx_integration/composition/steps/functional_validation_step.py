@@ -132,8 +132,11 @@ class FunctionalValidationStep(BaseStep):
         ):
             input_data = input_data[_INPUT_KEY]
 
+        self.emit_progress("validating functional annotations")
+
         bundle = dict(input_data)  # shallow copy; we add functional_validation + a report
         annotation = await self._fetch_real_annotation(bundle)
+        self.emit_progress("cross-checking candidate residues against annotation")
         result, markdown = self._validate(bundle, annotation)
         bundle["functional_validation"] = result
 

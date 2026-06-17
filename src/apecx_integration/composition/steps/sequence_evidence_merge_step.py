@@ -86,6 +86,8 @@ class SequenceEvidenceMergeStep(BaseStep):
                 f"{sorted(input_data)} (structural={type(structural).__name__})"
             )
 
+        self.emit_progress("merging sequence + structural evidence")
+
         bundle = dict(structural)  # shallow copy; we add conserved_* keys + a stage report
         cons, note = self._resolve_conservation(sequence)
 
@@ -113,6 +115,9 @@ class SequenceEvidenceMergeStep(BaseStep):
             markdown = f"Sequence conservation unavailable: {note}"
             data = {"available": False, "note": note}
 
+        self.emit_progress(
+            f"merged: {len(bundle.get('conserved_regions') or [])} conserved regions"
+        )
         append_stage_report(bundle, stage=_STAGE, order=_STAGE_ORDER, markdown=markdown, data=data)
         log.info(
             "SequenceEvidenceMergeStep %s: conservation=%s, %d conserved region(s) threaded",

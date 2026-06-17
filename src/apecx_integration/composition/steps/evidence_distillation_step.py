@@ -282,6 +282,8 @@ class EvidenceDistillationStep(BaseStep):
                 f"EvidenceDistillationStep '{self.name}': bundle must carry a non-empty "
                 f"'query' string; got {type(query).__name__}={query!r}"
             )
+        self.emit_progress("starting evidence distillation")
+
         terms = _query_terms(query.strip())
 
         bundle = dict(input_data)  # shallow copy; we REPLACE each source list in place
@@ -300,6 +302,7 @@ class EvidenceDistillationStep(BaseStep):
             ("violin_mappings", _score_generic, self._max_violin),
             ("structural_records", _score_globus, self._max_structural),
         ]
+        self.emit_progress(f"ranking {sum(len(bundle.get(k) or []) for k, _, _ in specs)} records")
         totals: dict[str, int] = {}
         kept: dict[str, int] = {}
         for key, scorer, cap in specs:

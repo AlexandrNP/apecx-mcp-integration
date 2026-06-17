@@ -493,6 +493,8 @@ class SynthesisContextAssemblyStep(BaseStep):
                 f"{type(query_terms).__name__}={query_terms!r}"
             )
 
+        self.emit_progress("assembling context")
+
         terms = self._extract_search_terms(query, entities, query_terms)
 
         log.info(
@@ -581,6 +583,19 @@ class SynthesisContextAssemblyStep(BaseStep):
             len(publications),
             len(globus_results),
         )
+
+        n_populated = sum(
+            1
+            for n in (
+                len(rag_chunks),
+                len(bvbrc_genomes),
+                len(violin_mappings),
+                len(publications),
+                len(globus_results),
+            )
+            if n
+        )
+        self.emit_progress(f"context assembled: {n_populated} sources")
 
         out = {
             "query": query,

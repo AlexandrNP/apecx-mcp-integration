@@ -150,6 +150,8 @@ class StructuralEvidenceStep(BaseStep):
             )
         query = query.strip()
 
+        self.emit_progress("fetching structural evidence")
+
         # taxon_id rides along on the bundle from the normalize step; it taxon-locks
         # the structural query (E3-2). Absent/non-taxon queries fall to query-text
         # parsing inside the shared core, then to a named degrade. resolved_species_name
@@ -196,6 +198,8 @@ class StructuralEvidenceStep(BaseStep):
                 f"PDB/EMDB evidence could not be retrieved for {query!r}."
             )
             log.warning("StructuralEvidenceStep %s: %s", self.name, structural_note)
+
+        self.emit_progress(f"structural evidence: {len(structural_records)} records")
 
         if structural_note is None and not structural_records:
             # LOUD no-hit — the absence is named, never a silent empty list.

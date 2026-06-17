@@ -156,6 +156,8 @@ class RheaGenomicAnalysisStep(BaseStep):
         ):
             input_data = input_data[_INPUT_KEY]
 
+        self.emit_progress("starting RHEA genomic analysis")
+
         bundle = dict(input_data)  # shallow copy; we add rhea_conservation[_note]
         bundle["rhea_conservation"] = None
         note: str | None = None
@@ -166,9 +168,11 @@ class RheaGenomicAnalysisStep(BaseStep):
             log.warning("RheaGenomicAnalysisStep %s: skipping — %s", self.name, reason)
         else:
             try:
+                self.emit_progress("dispatching MUSCLE alignment")
                 report = await self._drive_rhea_conservation(
                     bundle["taxon_id"], str(bundle["protein"]).strip()
                 )
+                self.emit_progress("MUSCLE alignment complete")
                 regions = _find_nested(report, "conserved_regions")
                 bundle["rhea_conservation"] = {
                     "markdown": _find_nested(report, "markdown"),

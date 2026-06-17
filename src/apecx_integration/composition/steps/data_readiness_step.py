@@ -93,6 +93,8 @@ class DataReadinessStep(BaseStep):
         ):
             input_data = input_data[_INPUT_KEY]
 
+        self.emit_progress("starting data-readiness check")
+
         bundle = dict(input_data)  # passthrough copy; we add data_readiness + a report
 
         counts: dict[str, int] = {}

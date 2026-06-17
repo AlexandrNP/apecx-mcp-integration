@@ -720,6 +720,7 @@ class HarmonizedSearchExecuteStep(BaseStep):
             )
 
         path = plan["resolution_path"]
+        index = plan["index"]
         if path == "ambiguous":
             log.info(
                 "HarmonizedSearchExecuteStep %s: ambiguous resolution, "
@@ -732,11 +733,27 @@ class HarmonizedSearchExecuteStep(BaseStep):
                 "HarmonizedSearchExecuteStep %s: miss, emitting miss envelope",
                 self.name,
             )
-            return _run_miss_envelope(plan)
+            # _run_miss_envelope does a SYNC raw Globus query — offload so the loop stays free.
+            self.emit_progress(f"searching {index} (unresolved → raw)")
+            return await self.run_blocking(_run_miss_envelope, plan)
 
         log.info(
             "HarmonizedSearchExecuteStep %s: running raw + harmonized Globus queries for path=%s",
             self.name,
             path,
         )
-        return _execute_globus_queries(plan)
+        # _execute_globus_queries does SYNC globus_sdk calls pulling the full corpus
+        # (limit=10000 × raw+harmonized). Run it OFF the event loop via run_blocking so a slow
+        # Globus call can't freeze the loop (the 2110s gap that starved the desktop keepalive).
+        # emit_progress runs from THIS async context, never from inside the threaded fn.
+        self.emit_progress(f"searching {index}")
+        result = await self.run_blocking(_execute_globus_queries, plan)
+        parts = result.get(_OUTPUT_KEY, {}).get("data", {}).get("parts", {})
+        if isinstance(parts, dict):
+            rt = parts.get("raw_query", {}).get("total")
+            ht = parts.get("harmonized_query", {}).get("total")
+            self.emit_progress(
+                f"{index}: raw {rt} / harmonized {ht}",
+                data={"raw_total": rt, "harmonized_total": ht},
+            )
+        return result

@@ -232,6 +232,35 @@ def test_fetch_records_flags_capped_above_ceiling():
     assert capped is True
 
 
+def test_process_emits_step_progress_on_miss_path(tmp_path, monkeypatch):
+    """The step offloads its SYNC Globus call via run_blocking and emits step_progress so the
+    desktop stream isn't silent during the (slow) search. Drives the miss path offline (raw
+    query monkeypatched) under a G37 subscriber and asserts a progress event fires."""
+    from nanobrain.core.step_events import subscribe_to_step_events
+
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    monkeypatch.setattr(
+        mod,
+        "_raw_query",
+        lambda index, term: (3, [{"titles": [{"title": "rec"}]}], None),
+    )
+    step = _stage(tmp_path)
+    plan = {
+        "term": "made-up",
+        "index": "bvbrc_genome",
+        "resolution_path": "miss",
+        "candidates": [],
+        "synonyms": [],
+    }
+    events: list = []
+    with subscribe_to_step_events(events.append):
+        asyncio.run(step.process(plan))
+    progs = [e for e in events if e.event_type == "step_progress"]
+    assert progs, "miss path must emit a step_progress event (searching ...)"
+    assert any("bvbrc_genome" in (p.payload.get("message") or "") for p in progs)
+
+
 @pytest.mark.parametrize("missing_key", ["term", "index", "resolution_path"])
 def test_missing_required_keys_raises(tmp_path, missing_key):
     step = _stage(tmp_path)

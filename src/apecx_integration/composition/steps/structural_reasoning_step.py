@@ -344,11 +344,14 @@ class StructuralReasoningStep(BaseStep):
         ):
             input_data = input_data[_INPUT_KEY]
 
+        self.emit_progress("structural reasoning")
+
         bundle = dict(input_data)
         regions = bundle.get("conserved_regions") or []
         records = bundle.get("structural_records") or []
         protein = bundle.get("protein")
 
+        self.emit_progress("computing SASA / surface exposure")
         result, note = await self._reason(regions, records, protein)
         bundle["structural_reasoning"] = result
 

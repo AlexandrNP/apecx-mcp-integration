@@ -363,6 +363,32 @@ def test_stage_streamer_ignores_non_complete_and_reportless_events():
     assert received == []
 
 
+def test_stage_streamer_forwards_step_progress():
+    """A step_progress event (nanobrain BaseStep.emit_progress) is forwarded to on_heartbeat
+    with phase='progress' + the message/fraction — NOT dropped, NOT treated as a stage card."""
+    from nanobrain.core.step_events import StepEvent
+
+    stages: list[dict] = []
+    beats: list[dict] = []
+    sub = eo_primitives._make_stage_streamer(stages.append, beats.append)
+
+    sub(
+        StepEvent(
+            "step_progress",
+            "harmonized_search",
+            "r1",
+            "t",
+            payload={"message": "bvbrc_genome: 6684 records", "fraction": 0.4},
+        )
+    )
+    assert stages == []  # progress is not a stage report
+    assert len(beats) == 1
+    assert beats[0]["phase"] == "progress"
+    assert beats[0]["step_name"] == "harmonized_search"
+    assert beats[0]["message"] == "bvbrc_genome: 6684 records"
+    assert beats[0]["fraction"] == 0.4
+
+
 def test_stage_streamer_throwing_on_stage_does_not_propagate():
     """A throwing on_stage callback is swallowed (observability != correctness): the
     subscriber returns normally so the framework's publish loop / the run is untouched."""
