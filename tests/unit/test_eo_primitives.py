@@ -497,7 +497,7 @@ def test_run_workflow_streaming_emits_progress_and_log_per_stage(monkeypatch):
     for r in reports:
         r.update(step_name="step-" + r["stage"], run_id="r1")
 
-    async def _fake_streamed(name, params, on_stage):
+    async def _fake_streamed(name, params, on_stage=None, on_heartbeat=None):
         for r in reports:
             on_stage(r)  # subscriber fires synchronously, as in the real run
         return {"status": "ok", "markdown": "final doc", "run_id": "r1", "error": None}
@@ -509,10 +509,12 @@ def test_run_workflow_streaming_emits_progress_and_log_per_stage(monkeypatch):
 
     # Result returned verbatim (streaming did not alter the envelope).
     assert out == {"status": "ok", "markdown": "final doc", "run_id": "r1", "error": None}
-    # One progress notification per stage, increasing counter, naming the stage, in order.
+    # An immediate 'starting' ping (so the client timer resets at t=0), then one progress
+    # notification per stage, increasing counter, naming the stage, in order.
     assert ctx.progress == [
-        (1.0, "stage complete: data_readiness"),
-        (2.0, "stage complete: structural_evidence"),
+        (1.0, "starting workflow: eo_stage_wf"),
+        (2.0, "stage complete: data_readiness"),
+        (3.0, "stage complete: structural_evidence"),
     ]
     # One structured log notification per stage carrying the full report, in order.
     assert [lg["data"]["stage"] for lg in ctx.session.logs] == [
@@ -527,20 +529,21 @@ def test_run_workflow_streaming_zero_stages_emits_served_from_cache(monkeypatch)
     """E4-7: an identical cached re-query deterministic-SKIPS execution → zero stages stream.
     The desktop must get ONE 'served_from_cache' notification so the pane isn't silently blank."""
 
-    async def _fake_streamed(name, params, on_stage):
+    async def _fake_streamed(name, params, on_stage=None, on_heartbeat=None):
         return {
             "status": "ok",
             "markdown": "cached doc",
             "run_id": "r9",
             "error": None,
-        }  # no on_stage calls
+        }  # no on_stage / on_heartbeat calls
 
     monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
     ctx = _FakeContext()
     out = asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
 
     assert out["status"] == "ok" and out["markdown"] == "cached doc"
-    assert ctx.progress == []  # no per-stage progress (nothing executed)
+    # Only the immediate 'starting' ping fired (nothing executed → no stage/heartbeat).
+    assert ctx.progress == [(1.0, "starting workflow: eo_stage_wf")]
     events = [lg["data"]["event"] for lg in ctx.session.logs]
     assert events == ["served_from_cache"]  # exactly one, and only this
 
@@ -550,7 +553,7 @@ def test_run_workflow_streaming_with_stages_emits_no_cache_notification(monkeypa
     rep = _rep("data_readiness", 0)
     rep.update(step_name="s", run_id="r1")
 
-    async def _fake_streamed(name, params, on_stage):
+    async def _fake_streamed(name, params, on_stage=None, on_heartbeat=None):
         on_stage(rep)
         return {"status": "ok", "markdown": "fresh doc", "run_id": "r1", "error": None}
 
@@ -558,6 +561,52 @@ def test_run_workflow_streaming_with_stages_emits_no_cache_notification(monkeypa
     ctx = _FakeContext()
     asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
     assert "served_from_cache" not in [lg["data"]["event"] for lg in ctx.session.logs]
+
+
+def test_stage_streamer_emits_heartbeats_for_every_step_when_callback_given():
+    """Issue 3 fix: the slow front (resolve → map → assemble) + nested subworkflow steps
+    produce NO stage report, so a stage-only stream is silent and the client times out. When
+    on_heartbeat is supplied, the subscriber fires a heartbeat for EVERY step lifecycle —
+    step_start, a step_complete that added no NEW report, and step_failed — so those silent
+    stretches still reset the client's timer. Stage reports still go to on_stage as before."""
+    from nanobrain.core.step_events import StepEvent
+
+    stages: list = []
+    beats: list = []
+    sub = eo_primitives._make_stage_streamer(stages.append, beats.append)
+
+    # Front steps: start + reportless complete → heartbeats, no stage report.
+    sub(StepEvent("step_start", "map", "r1", "t", payload={"inputs": {}}))
+    sub(StepEvent("step_complete", "map", "r1", "t", payload={"outputs": {"items": []}}))
+    # A failed step → a heartbeat too (run keeps going / surfaces activity).
+    sub(StepEvent("step_failed", "rhea_genomic", "r1", "t", payload={"error": "x"}))
+    # A back-half step WITH a new stage report → on_stage (NOT a heartbeat).
+    sub(
+        StepEvent(
+            "step_complete",
+            "data_readiness",
+            "r1",
+            "t",
+            payload={"outputs": {"stage_reports": [_rep("data_readiness", 0)]}},
+        )
+    )
+
+    assert [b["step_name"] for b in beats] == ["map", "map", "rhea_genomic"]
+    assert [b["phase"] for b in beats] == ["start", "complete", "failed"]
+    assert [s["stage"] for s in stages] == ["data_readiness"]  # the report went to on_stage
+
+
+def test_stage_streamer_no_heartbeats_when_callback_absent():
+    """Back-compat: with no on_heartbeat, step_start / step_failed / reportless complete are
+    ignored exactly as before — heartbeats are strictly opt-in."""
+    from nanobrain.core.step_events import StepEvent
+
+    stages: list = []
+    sub = eo_primitives._make_stage_streamer(stages.append)  # no on_heartbeat
+    sub(StepEvent("step_start", "map", "r1", "t", payload={"inputs": {}}))
+    sub(StepEvent("step_complete", "map", "r1", "t", payload={"outputs": {"items": []}}))
+    sub(StepEvent("step_failed", "x", "r1", "t", payload={"error": "e"}))
+    assert stages == []  # nothing emitted (no stage reports, heartbeats off)
 
 
 def test_run_workflow_without_ctx_runs_headless_no_streaming(monkeypatch):

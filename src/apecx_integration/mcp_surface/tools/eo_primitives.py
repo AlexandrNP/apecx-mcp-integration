@@ -19,6 +19,7 @@ markdown says so (its structured output is preserved via a handle, never dropped
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
@@ -37,6 +38,12 @@ _SUCCESS_STATUSES = {"completed", "completed_no_await"}
 # the G37 step-event subscriber fires synchronously inside the run.
 StageReport = dict[str, Any]
 OnStage = Callable[[StageReport], None]
+# A heartbeat: a lightweight per-step lifecycle ping ({step_name, phase, run_id}) emitted
+# for EVERY step (start / reportless-complete / failed), independent of whether the step
+# produced a stage report. It carries no analysis content — its job is to keep the desktop
+# client's request timer alive and show live activity through the long, stage-report-less
+# front of the workflow (resolve → map → assemble) and inside long single steps.
+OnHeartbeat = Callable[[dict[str, Any]], None]
 _STAGE_REPORTS_KEY = "stage_reports"
 
 # Standalone surface-level primitive TOOLS the orchestrating LLM can call directly —
@@ -352,8 +359,11 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
     return result
 
 
-def _make_stage_streamer(on_stage: OnStage) -> Callable[[StepEvent], None]:
-    """Build a G37 step-event subscriber that extracts NEWLY-added stage reports.
+def _make_stage_streamer(
+    on_stage: OnStage, on_heartbeat: OnHeartbeat | None = None
+) -> Callable[[StepEvent], None]:
+    """Build a G37 step-event subscriber that extracts NEWLY-added stage reports and (when
+    ``on_heartbeat`` is given) a per-step lifecycle heartbeat.
 
     Each reasoning stage appends one ``{stage, order, markdown, data}`` entry to the
     bundle's ``stage_reports`` list (``composition/steps/_stage_report.py``); the list
@@ -362,48 +372,79 @@ def _make_stage_streamer(on_stage: OnStage) -> Callable[[StepEvent], None]:
     invokes ``on_stage`` once per new report, IN ARRIVAL ORDER (= step-completion order,
     which is NOT the render ``order`` field).
 
+    HEARTBEATS (opt-in): only a handful of back-half steps append a stage report, so a
+    stage-report-only stream is SILENT through the long front (resolve → map over 9 Globus
+    indices → assemble) and inside long single steps — which is what makes the desktop
+    client time out (no progress to reset its timer). When ``on_heartbeat`` is supplied it
+    fires for EVERY step lifecycle event (start, a complete that added no new report, and
+    failed), carrying ``{step_name, phase, run_id}`` and NO analysis content. This reaches
+    inner subworkflow steps too (the G37 ContextVar subscriber is inherited by nested runs),
+    so the map / sequence / structural legs stop being invisible. With no ``on_heartbeat``
+    the behavior is byte-identical to before (stage reports only).
+
     RELIABILITY (load-bearing — streaming is observability, not correctness): both the
-    extraction and the ``on_stage`` callback are wrapped so NO exception can escape into
-    the framework's ``publish_step_event`` loop and perturb the run. A dropped/late stage
-    is impossible by construction (each event carries the cumulative list, so a re-delivery
-    re-checks ``seen``); a callback failure is caught + LOUDLY logged, never propagated.
+    extraction and the callbacks are wrapped so NO exception can escape into the framework's
+    ``publish_step_event`` loop and perturb the run. A dropped/late stage is impossible by
+    construction (each event carries the cumulative list, so a re-delivery re-checks
+    ``seen``); a callback failure is caught + LOUDLY logged, never propagated.
     """
     seen: set[tuple[Any, Any]] = set()
 
+    def _beat(event: StepEvent, phase: str) -> None:
+        if on_heartbeat is None:
+            return
+        try:
+            on_heartbeat({"step_name": event.step_name, "phase": phase, "run_id": event.run_id})
+        except Exception:  # noqa: BLE001 — a heartbeat MUST NOT break the run
+            log.exception(
+                "run_workflow_streamed: on_heartbeat raised for step %r (%s) — swallowed.",
+                getattr(event, "step_name", "?"),
+                phase,
+            )
+
     def _subscriber(event: StepEvent) -> None:
         try:
+            if event.event_type == "step_start":
+                _beat(event, "start")
+                return
+            if event.event_type == "step_failed":
+                _beat(event, "failed")
+                return
             if event.event_type != "step_complete":
                 return
             outputs = event.payload.get("outputs")
-            if not isinstance(outputs, dict):
-                return
-            reports = outputs.get(_STAGE_REPORTS_KEY)
-            if not isinstance(reports, list):
-                return
-            for r in reports:
-                if not isinstance(r, dict):
-                    continue
-                key = (r.get("stage"), r.get("order"))
-                if key in seen:
-                    continue
-                seen.add(key)
-                report: StageReport = {
-                    "stage": r.get("stage"),
-                    "order": r.get("order"),
-                    "markdown": r.get("markdown"),
-                    "data": r.get("data"),
-                    "step_name": event.step_name,
-                    "run_id": event.run_id,
-                }
-                try:
-                    on_stage(report)
-                except Exception:  # noqa: BLE001 — observability MUST NOT break the run
-                    log.exception(
-                        "run_workflow_streamed: on_stage callback raised for stage %r "
-                        "(step %r) — swallowed; the run completes and returns the same result.",
-                        report["stage"],
-                        event.step_name,
-                    )
+            reports = outputs.get(_STAGE_REPORTS_KEY) if isinstance(outputs, dict) else None
+            new = 0
+            if isinstance(reports, list):
+                for r in reports:
+                    if not isinstance(r, dict):
+                        continue
+                    key = (r.get("stage"), r.get("order"))
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    report: StageReport = {
+                        "stage": r.get("stage"),
+                        "order": r.get("order"),
+                        "markdown": r.get("markdown"),
+                        "data": r.get("data"),
+                        "step_name": event.step_name,
+                        "run_id": event.run_id,
+                    }
+                    new += 1
+                    try:
+                        on_stage(report)
+                    except Exception:  # noqa: BLE001 — observability MUST NOT break the run
+                        log.exception(
+                            "run_workflow_streamed: on_stage callback raised for stage %r "
+                            "(step %r) — swallowed; the run completes, same result.",
+                            report["stage"],
+                            event.step_name,
+                        )
+            # A step that finished without contributing a NEW stage report still advances
+            # the run — emit a heartbeat so the long stage-report-less stretches aren't silent.
+            if new == 0:
+                _beat(event, "complete")
         except Exception:  # noqa: BLE001 — an extraction bug MUST NOT break the run either
             log.exception(
                 "run_workflow_streamed: stage-report extraction raised for a %r event from "
@@ -419,6 +460,7 @@ async def run_workflow_streamed(
     name: str,
     params: dict[str, Any] | None = None,
     on_stage: OnStage | None = None,
+    on_heartbeat: OnHeartbeat | None = None,
 ) -> dict[str, Any]:
     """Run the catalog workflow ``name`` EXACTLY like ``run_workflow``, but push each
     reasoning stage's report to ``on_stage`` as the producing step completes.
@@ -437,10 +479,13 @@ async def run_workflow_streamed(
     """
     from nanobrain.core.step_events import subscribe_to_step_events
 
-    if on_stage is None:
+    if on_stage is None and on_heartbeat is None:
         return await run_workflow(name, params)
 
-    with subscribe_to_step_events(_make_stage_streamer(on_stage)):
+    # on_stage may be None while on_heartbeat is set (a pure-progress consumer); _make_stage_streamer
+    # tolerates a no-op on_stage, so supply a sink to keep its contract simple.
+    stage_cb = on_stage if on_stage is not None else (lambda _r: None)
+    with subscribe_to_step_events(_make_stage_streamer(stage_cb, on_heartbeat)):
         return await run_workflow(name, params)
 
 
@@ -466,54 +511,94 @@ async def _run_workflow_streaming_impl(
     whether or not the client is listening.
     """
     loop = asyncio.get_running_loop()
-    queue: asyncio.Queue[StageReport | object] = asyncio.Queue()
+    queue: asyncio.Queue[tuple[str, dict[str, Any]] | object] = asyncio.Queue()
     sentinel = object()
+    # Coalesce bursty heartbeats (the map leg starts 9 inner searches at once) and bound the
+    # max silence before a keepalive ping. Both must stay well under a typical desktop client
+    # request timeout (~60s) so the client's timer is reset long before it fires.
+    heartbeat_throttle_s = 3.0
+    keepalive_s = 20.0
+    state = {"n_stage": 0, "n_progress": 0, "last_notify": loop.time()}
+
+    def _enqueue(kind: str, payload: dict[str, Any]) -> None:
+        # The G37 subscriber fires synchronously, possibly off the loop thread (a
+        # thread-executed step); hand items to the loop thread. Items are enqueued IN ARRIVAL
+        # ORDER and the single consumer drains them in that order, so notification order ==
+        # stage order.
+        try:
+            loop.call_soon_threadsafe(queue.put_nowait, (kind, payload))
+        except Exception:  # noqa: BLE001 — never let an enqueue failure break the run
+            log.exception("run_workflow_streaming: failed to enqueue %s for notification.", kind)
 
     def _on_stage(report: StageReport) -> None:
-        # The G37 subscriber fires synchronously, possibly off the loop thread (a
-        # thread-executed step); hand the report to the loop thread. call_soon_threadsafe
-        # is safe from the loop thread too. Reports are enqueued IN ARRIVAL ORDER and the
-        # single consumer drains them in that order, so notification order == stage order.
-        try:
-            loop.call_soon_threadsafe(queue.put_nowait, report)
-        except Exception:  # noqa: BLE001 — never let an enqueue failure break the run
-            log.exception(
-                "run_workflow_streaming: failed to enqueue stage %r for notification.",
-                report.get("stage"),
-            )
+        _enqueue("stage", report)
 
-    async def _consume() -> int:
-        n = 0
+    def _on_heartbeat(beat: dict[str, Any]) -> None:
+        _enqueue("heartbeat", beat)
+
+    async def _emit_progress(message: str) -> None:
+        state["n_progress"] += 1
+        state["last_notify"] = loop.time()
+        await ctx.report_progress(progress=float(state["n_progress"]), message=message)
+
+    async def _consume() -> None:
         while True:
             item = await queue.get()
             if item is sentinel:
-                return n
-            report: StageReport = item  # type: ignore[assignment]
-            n += 1
+                return
+            kind, payload = item  # type: ignore[misc]
             try:
-                await ctx.report_progress(
-                    progress=float(n), message=f"stage complete: {report.get('stage')}"
-                )
-                await ctx.session.send_log_message(
-                    level="info",
-                    data={"event": "stage_report", **report},
-                    logger="apecx.eo.streaming",
-                )
+                if kind == "stage":
+                    state["n_stage"] += 1
+                    await _emit_progress(f"stage complete: {payload.get('stage')}")
+                    await ctx.session.send_log_message(
+                        level="info",
+                        data={"event": "stage_report", **payload},
+                        logger="apecx.eo.streaming",
+                    )
+                elif kind == "heartbeat":
+                    # Always advances the client's timer; coalesce bursts so 9 concurrent
+                    # inner-step starts don't flood the client with notifications.
+                    if loop.time() - state["last_notify"] >= heartbeat_throttle_s:
+                        phase = payload.get("phase")
+                        verb = "finished" if phase == "complete" else "running"
+                        await _emit_progress(f"{verb}: {payload.get('step_name')}")
             except Exception:  # noqa: BLE001 — a notification failure must not break the run
-                log.exception(
-                    "run_workflow_streaming: failed to emit MCP notification for stage %r.",
-                    report.get("stage"),
-                )
+                log.exception("run_workflow_streaming: failed to emit MCP notification (%s).", kind)
+
+    async def _keepalive() -> None:
+        # A single long step (MAFFT/MUSCLE/PyMOL/LLM) can run for minutes between its start
+        # and complete events; without a periodic ping the client times out mid-step. Fire a
+        # "still working" progress whenever the stream has been silent for keepalive_s.
+        try:
+            while True:
+                await asyncio.sleep(keepalive_s)
+                if loop.time() - state["last_notify"] >= keepalive_s:
+                    with contextlib.suppress(Exception):
+                        await _emit_progress("still working…")
+        except asyncio.CancelledError:
+            return
+
+    # An immediate ping so the client's request timer starts fresh from t=0 (before the slow
+    # resolve → map → assemble front, which produces no stage report).
+    with contextlib.suppress(Exception):
+        await _emit_progress(f"starting workflow: {name}")
 
     consumer = asyncio.create_task(_consume())
-    n_streamed = 0
+    keepalive = asyncio.create_task(_keepalive())
     try:
-        result = await run_workflow_streamed(name, params, on_stage=_on_stage)
+        result = await run_workflow_streamed(
+            name, params, on_stage=_on_stage, on_heartbeat=_on_heartbeat
+        )
     finally:
         # Signal end-of-stream and DRAIN: guarantees every stage notification is sent
         # before the tool result is returned to the client (no lost final stage).
+        keepalive.cancel()
         loop.call_soon_threadsafe(queue.put_nowait, sentinel)
-        n_streamed = await consumer
+        await consumer
+        with contextlib.suppress(asyncio.CancelledError):
+            await keepalive
+    n_streamed = state["n_stage"]
 
     # E4-7: a desktop re-query with byte-IDENTICAL inputs deterministic-SKIPS re-execution
     # (DataUnitChangeTrigger sees no change), so ZERO stages stream — the pane would otherwise
