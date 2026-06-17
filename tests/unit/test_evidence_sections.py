@@ -25,6 +25,7 @@ from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     EvidenceReviewSynthesisStep,
     compose_evidence_markdown,
     render_coverage_section,
+    render_evidence_fallback,
     render_followups_section,
     render_provenance_disclosure_section,
     render_sources_section,
@@ -309,6 +310,29 @@ def test_disclosure_section_names_sequences_and_structures_used():
     # selected structure + the used / rejected split with reasons
     assert "9IXA" in md and "used (chain B" in md
     assert "3N40" in md and "rejected: no chain mapped the motif" in md
+
+
+def test_fallback_groups_publications_by_theme():
+    """Phase 4: when narrative synthesis is withheld, the deterministic fallback ORGANIZES the
+    publications by topic (the no-LLM literature-analysis floor) instead of a flat list."""
+    pubs = [
+        {"doi": "10.1/ab", "title": "Neutralizing antibody epitopes on E1"},
+        {"doi": "10.2/cd", "title": "Cryo-EM structure of the glycoprotein"},
+        {"doi": "10.3/ef", "title": "A chikungunya vaccine candidate (VLP)"},
+        {"doi": "10.4/gh", "title": "Sequence conservation across lineages"},
+        {"doi": "10.5/ij", "title": "Outbreak surveillance in 2017"},
+        {"doi": "10.6/kl", "title": "Something unrelated entirely"},
+    ]
+    md = render_evidence_fallback("chikv E1 epitopes", pubs, reason="gate failure")
+    assert "Narrative synthesis was withheld" in md
+    assert "Neutralizing antibodies & epitopes" in md and "[10.1/ab]" in md
+    assert "Structure & glycoprotein biology" in md and "[10.2/cd]" in md
+    assert "Vaccine & protective immunity" in md and "[10.3/ef]" in md
+    assert "Sequence conservation & evolution" in md and "[10.4/gh]" in md
+    assert "Epidemiology & clinical" in md and "[10.5/ij]" in md
+    assert "Other relevant literature" in md and "[10.6/kl]" in md
+    # Still contract-shaped (the caller appends Sources + Follow-ups).
+    assert "## Cross-data reasoning" in md and "## Integrated insight" in md
 
 
 def test_disclosure_embeds_alignment_png_when_present():

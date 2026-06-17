@@ -1,0 +1,44 @@
+# Synthesis config for the viral_epitope_analysis EVIDENCE REVIEW step (E-lit / Req 3).
+#
+# Distinct from the SHARED agents/rag_synthesis/synthesis_config.yml (used by rag_e2e_synthesis):
+# this one ENRICHES the literature evidence so the synthesizing LLM performs real article-level
+# analysis — more publications + near-full abstracts — rather than reasoning off titles. The
+# evidence step passes its own system_prompt_override (evidence_review_synthesis_prompt.yml), so
+# the system_prompt here is unused; it's set to a minimal placeholder only to satisfy the schema.
+#
+# CALIBRATION (brutal truth): caps are raised MODERATELY, not maximally. The desktop/host LLM
+# (Claude) has a huge context and benefits most; the agent-locus model (Ollama, e.g.
+# nemotron-3-nano:4b) has finite context, and over-stuffing raises citation-gate trip rate
+# (more degrades). These values roughly 2-3x the literature signal without exploding context.
+
+system_prompt: |
+  You are a viral-immunology research assistant. Synthesize the retrieved evidence and cite it
+  inline with the markers ``[RAG chunk #N]``, ``[BV-BRC genome <id>]``, ``[VIOLIN <id>]``,
+  ``[<doi>]``, ``[Globus <id>]``. Respond in Markdown. (Overridden at call time.)
+
+# Literature enrichment: more publications + RAG chunks surfaced (was 5 / 8).
+max_rag_chunks: 10
+max_bvbrc_genomes: 5
+max_violin_mappings: 20
+max_publications: 12
+max_globus_results: 15
+
+# Near-full abstracts (was 300) so the model analyzes article CONTENT, not just titles. 0 omits.
+abstract_max_chars: 800
+
+# Grounding gates — IDENTICAL to the shared config (NEVER relax these; they are the
+# anti-hallucination contract). More papers means a larger allowed-token set, which REDUCES
+# false rejections, but longer context can make a small model mangle a DOI → a gate trip →
+# the deterministic thematically-grouped fallback (a loud, useful degrade, not a regression).
+require_inline_citations: true
+min_distinct_citations: 1
+citation_marker_patterns:
+  - '\[BV-BRC genome [^\]\s\[]+\]'
+  - '\[VIOLIN [^\]\s\[]+\]'
+  - '\[RAG chunk #\d+\]'
+  - '\[10\.[0-9]+/[^\]\s\[]+\]'
+  - '\[Globus [^\]\s\[]+\]'
+min_response_chars: 200
+fail_on_empty_retrieval: true
+strict_input_validation: true
+validate_citations_against_inputs: true

@@ -19,7 +19,6 @@ might mask.
 
 from __future__ import annotations
 
-import re
 from typing import Any
 
 import pytest
@@ -37,7 +36,6 @@ from apecx_integration.agents.rag_synthesis.synthesizer import (
     _render_rag_chunks,
     _render_violin_mappings,
 )
-
 
 # --------------------------------------------------------------------------- #
 # Helpers
@@ -90,8 +88,11 @@ def _full_inputs() -> dict[str, list[dict[str, Any]]]:
             {"genome_id": "11036.7", "genome_name": "Sindbis virus AR339"},
         ],
         "violin_mappings": [
-            {"synonym_id": "VO_0000001",
-             "query_term": "sindbis", "canonical_term": "Sindbis virus"},
+            {
+                "synonym_id": "VO_0000001",
+                "query_term": "sindbis",
+                "canonical_term": "Sindbis virus",
+            },
         ],
         "publications": [
             {"doi": "10.1234/abc", "title": "Sindbis envelope structure"},
@@ -113,6 +114,7 @@ def test_default_config_loads_with_expected_defaults():
     carry the documented defaults. If a future commit drifts the YAML
     out of sync with the schema, this catches it before runtime."""
     import yaml
+
     raw = yaml.safe_load(DEFAULT_SYNTHESIS_CONFIG_PATH.read_text())
     cfg = SynthesisConfig.model_validate(raw)
     assert cfg.require_inline_citations is True
@@ -182,10 +184,7 @@ def test_partial_retrieval_passes_empty_check():
     ``[BV-BRC genome <id>]`` — citing RAG/VIOLIN/DOI here would
     correctly raise a hallucination error under v4 grounding."""
     inputs = {"bvbrc_genomes": [{"genome_id": "11036.7", "name": "X"}]}
-    canned = (
-        "Sindbis virus reference genome [BV-BRC genome 11036.7] anchors "
-        "the analysis. " * 6
-    )
+    canned = "Sindbis virus reference genome [BV-BRC genome 11036.7] anchors the analysis. " * 6
     stub = _StubLLM(content=canned)
     out = synthesize_response("Sindbis?", llm=stub, **inputs)
     assert out == canned
@@ -199,28 +198,36 @@ def test_partial_retrieval_passes_empty_check():
 def test_strict_rejects_bvbrc_row_with_no_id():
     with pytest.raises(ValueError, match="missing ``genome_id``"):
         synthesize_response(
-            "Q", bvbrc_genomes=[{"name": "Sindbis"}], llm=_StubLLM(),
+            "Q",
+            bvbrc_genomes=[{"name": "Sindbis"}],
+            llm=_StubLLM(),
         )
 
 
 def test_strict_rejects_violin_row_with_no_synonym_id():
     with pytest.raises(ValueError, match="missing ``synonym_id``"):
         synthesize_response(
-            "Q", violin_mappings=[{"canonical_term": "Sindbis"}], llm=_StubLLM(),
+            "Q",
+            violin_mappings=[{"canonical_term": "Sindbis"}],
+            llm=_StubLLM(),
         )
 
 
 def test_strict_rejects_violin_row_with_no_canonical_term():
     with pytest.raises(ValueError, match="missing ``canonical_term``"):
         synthesize_response(
-            "Q", violin_mappings=[{"synonym_id": "VO_0000001"}], llm=_StubLLM(),
+            "Q",
+            violin_mappings=[{"synonym_id": "VO_0000001"}],
+            llm=_StubLLM(),
         )
 
 
 def test_strict_rejects_pub_with_no_doi():
     with pytest.raises(ValueError, match="missing or non-DOI"):
         synthesize_response(
-            "Q", publications=[{"title": "Untitled"}], llm=_StubLLM(),
+            "Q",
+            publications=[{"title": "Untitled"}],
+            llm=_StubLLM(),
         )
 
 
@@ -230,14 +237,18 @@ def test_strict_rejects_pub_with_non_doi_string():
     confabulated marker downstream."""
     with pytest.raises(ValueError, match="missing or non-DOI"):
         synthesize_response(
-            "Q", publications=[{"doi": "abc"}], llm=_StubLLM(),
+            "Q",
+            publications=[{"doi": "abc"}],
+            llm=_StubLLM(),
         )
 
 
 def test_strict_rejects_chunk_with_no_text():
     with pytest.raises(ValueError, match="missing or empty ``text``"):
         synthesize_response(
-            "Q", rag_chunks=[{"id": "c1"}], llm=_StubLLM(),
+            "Q",
+            rag_chunks=[{"id": "c1"}],
+            llm=_StubLLM(),
         )
 
 
@@ -247,7 +258,9 @@ def test_strict_rejects_non_dict_row():
     ValueError naming the row index."""
     with pytest.raises(ValueError, match="expected dict"):
         synthesize_response(
-            "Q", bvbrc_genomes=["a string, not a dict"], llm=_StubLLM(),
+            "Q",
+            bvbrc_genomes=["a string, not a dict"],
+            llm=_StubLLM(),
         )
 
 
@@ -266,7 +279,8 @@ def test_lenient_skips_rows_with_warning(caplog):
             {"name": "no id row"},
             {"genome_id": "11036.7", "name": "good row"},
         ],
-        llm=stub, config=cfg,
+        llm=stub,
+        config=cfg,
     )
     assert out == canned
     skip_logs = [r for r in caplog.records if "skipping" in r.message]
@@ -321,9 +335,7 @@ def test_response_with_no_citations_rejected():
 
 
 def test_mono_citation_rejected_when_min_distinct_2():
-    stub = _StubLLM(
-        content=("Long enough body of text. " * 20) + "[RAG chunk #1]"
-    )
+    stub = _StubLLM(content=("Long enough body of text. " * 20) + "[RAG chunk #1]")
     inputs = _full_inputs()
     cfg = _cfg(min_distinct_citations=2)
     with pytest.raises(ValueError, match="only 1 distinct citation"):
@@ -340,9 +352,7 @@ def test_happy_path_returns_llm_content_verbatim():
 def test_repeated_citation_counts_as_one_distinct():
     """The LLM cites the same source 5x. With min_distinct=2 this is
     still 1 distinct → reject. Verifies the dedupe semantics."""
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[RAG chunk #1] " * 5
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[RAG chunk #1] " * 5)
     inputs = _full_inputs()
     cfg = _cfg(min_distinct_citations=2)
     with pytest.raises(ValueError, match="only 1 distinct"):
@@ -356,9 +366,7 @@ def test_v4_hallucinated_genome_id_rejected():
     ``[BV-BRC genome 99999.99]``) is now rejected as a hallucination.
     The validator unions the per-renderer ``allowed_tokens`` and
     rejects any extracted token outside the union."""
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[BV-BRC genome ?]"
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[BV-BRC genome ?]")
     inputs = _full_inputs()
     with pytest.raises(ValueError, match="hallucinating IDs"):
         synthesize_response("Q", llm=stub, **inputs)
@@ -367,18 +375,14 @@ def test_v4_hallucinated_genome_id_rejected():
 def test_v4_hallucinated_doi_rejected():
     """A DOI literal that's correctly shaped but not in the input pubs
     is a hallucination — reject."""
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[10.9999/never-cited]"
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[10.9999/never-cited]")
     inputs = _full_inputs()  # has [10.1234/abc]
     with pytest.raises(ValueError, match="hallucinat"):
         synthesize_response("Q", llm=stub, **inputs)
 
 
 def test_v4_hallucinated_violin_id_rejected():
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[VIOLIN VO_9999999]"
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[VIOLIN VO_9999999]")
     inputs = _full_inputs()
     with pytest.raises(ValueError, match="hallucinat"):
         synthesize_response("Q", llm=stub, **inputs)
@@ -388,9 +392,7 @@ def test_v4_rag_chunk_number_out_of_range_rejected():
     """``[RAG chunk #99]`` when only 2 chunks were rendered must reject.
     Chunk numbers are 1-based and bounded by the surviving count; an
     LLM citing #99 is hallucinating beyond the prompt."""
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[RAG chunk #99]"
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[RAG chunk #99]")
     inputs = _full_inputs()  # 2 RAG chunks → allowed: #1, #2
     with pytest.raises(ValueError, match="hallucinat"):
         synthesize_response("Q", llm=stub, **inputs)
@@ -400,9 +402,7 @@ def test_v4_grounding_can_be_disabled():
     """Operators with deliberately-out-of-band citations can disable
     grounding; the regex-only check still applies. (Smell, but
     supported for unusual deployments.)"""
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[BV-BRC genome ?]"
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[BV-BRC genome ?]")
     inputs = _full_inputs()
     cfg = _cfg(validate_citations_against_inputs=False)
     out = synthesize_response("Q", llm=stub, config=cfg, **inputs)
@@ -422,10 +422,7 @@ def test_v4_legitimate_citation_passes_grounding():
 def test_v4_partial_hallucination_with_legitimate_citations_still_rejected():
     """The LLM cites two real tokens AND one hallucinated. Grounding
     must reject — partial hallucination is still hallucination."""
-    content = (
-        ("Long body. " * 30)
-        + "[RAG chunk #1] [BV-BRC genome 11036.7] [VIOLIN VO_FAKE]"
-    )
+    content = ("Long body. " * 30) + "[RAG chunk #1] [BV-BRC genome 11036.7] [VIOLIN VO_FAKE]"
     stub = _StubLLM(content=content)
     inputs = _full_inputs()
     with pytest.raises(ValueError, match="VIOLIN VO_FAKE"):
@@ -437,9 +434,7 @@ def test_v4_error_message_lists_allowed_tokens():
     operators (and downstream LLM-judge agents) can see what the LLM
     SHOULD have cited. Without this, debugging hallucinations is
     needle-in-haystack work."""
-    stub = _StubLLM(
-        content=("Lots of text. " * 30) + "[RAG chunk #99]"
-    )
+    stub = _StubLLM(content=("Lots of text. " * 30) + "[RAG chunk #99]")
     inputs = _full_inputs()
     with pytest.raises(ValueError) as exc:
         synthesize_response("Q", llm=stub, **inputs)
@@ -459,24 +454,28 @@ def test_v4_error_message_lists_allowed_tokens():
 def test_caps_applied_to_each_source():
     """``max_*`` caps clip input lists to the configured ceiling."""
     cfg = _cfg(
-        max_rag_chunks=2, max_bvbrc_genomes=1,
-        max_violin_mappings=1, max_publications=1,
+        max_rag_chunks=2,
+        max_bvbrc_genomes=1,
+        max_violin_mappings=1,
+        max_publications=1,
         # Disable post-LLM gates so the test focuses on caps.
-        min_response_chars=0, require_inline_citations=False,
+        min_response_chars=0,
+        require_inline_citations=False,
         fail_on_empty_retrieval=False,
     )
     stub = _StubLLM(content="x")
     chunks = [{"text": f"chunk {i}"} for i in range(10)]
     genomes = [{"genome_id": f"id{i}", "name": f"g{i}"} for i in range(5)]
-    mappings = [
-        {"synonym_id": f"vo{i}", "canonical_term": f"c{i}"} for i in range(5)
-    ]
+    mappings = [{"synonym_id": f"vo{i}", "canonical_term": f"c{i}"} for i in range(5)]
     pubs = [{"doi": f"10.1234/{i}", "title": f"p{i}"} for i in range(5)]
     synthesize_response(
         "Q",
-        rag_chunks=chunks, bvbrc_genomes=genomes,
-        violin_mappings=mappings, publications=pubs,
-        llm=stub, config=cfg,
+        rag_chunks=chunks,
+        bvbrc_genomes=genomes,
+        violin_mappings=mappings,
+        publications=pubs,
+        llm=stub,
+        config=cfg,
     )
     # Inspect the prompt the synthesizer sent.
     sent_user_msg = stub.received[0][1].content
@@ -501,7 +500,8 @@ def test_render_rag_chunks_numbers_by_surviving_position():
     is always the first surviving chunk."""
     rendered, allowed = _render_rag_chunks(
         [{"id": "c0"}, {"text": "real"}, {"id": "c2"}, {"text": "real2"}],
-        cap=8, strict=False,
+        cap=8,
+        strict=False,
     )
     assert allowed == {"[RAG chunk #1]", "[RAG chunk #2]"}
     assert "### RAG chunk #1" in rendered
@@ -512,7 +512,8 @@ def test_render_rag_chunks_numbers_by_surviving_position():
 def test_render_rag_chunks_includes_optional_metadata():
     rendered, _ = _render_rag_chunks(
         [{"text": "x", "id": "c1", "source": "Pubmed/123", "score": 0.876}],
-        cap=8, strict=True,
+        cap=8,
+        strict=True,
     )
     assert "id=c1" in rendered
     assert "source=Pubmed/123" in rendered
@@ -524,7 +525,9 @@ def test_render_bvbrc_falls_back_on_alt_keys():
     ``genome_name``/``name`` shapes — the harvester step might emit
     either."""
     rendered, allowed = _render_bvbrc_genomes(
-        [{"id": "11036.7", "name": "Sindbis"}], cap=5, strict=True,
+        [{"id": "11036.7", "name": "Sindbis"}],
+        cap=5,
+        strict=True,
     )
     assert allowed == {"[BV-BRC genome 11036.7]"}
     assert "BV-BRC genome `11036.7`" in rendered
@@ -533,9 +536,9 @@ def test_render_bvbrc_falls_back_on_alt_keys():
 
 def test_render_violin_emits_citation_marker():
     rendered, allowed = _render_violin_mappings(
-        [{"synonym_id": "VO_0000001",
-          "canonical_term": "Sindbis virus", "query_term": "sindbis"}],
-        cap=5, strict=True,
+        [{"synonym_id": "VO_0000001", "canonical_term": "Sindbis virus", "query_term": "sindbis"}],
+        cap=5,
+        strict=True,
     )
     # The token is what the LLM is supposed to copy into its citation.
     assert "[VIOLIN VO_0000001]" in rendered
@@ -546,12 +549,35 @@ def test_render_publications_truncates_long_abstract_with_ellipsis():
     long_abstract = "A" * 500
     rendered, allowed = _render_publications(
         [{"doi": "10.1234/abc", "title": "T", "abstract": long_abstract}],
-        cap=1, strict=True,
+        cap=1,
+        strict=True,
     )
     # 300 chars + ellipsis.
     assert ("A" * 300 + "…") in rendered
     assert "A" * 301 not in rendered
     assert allowed == {"[10.1234/abc]"}
+
+
+def test_render_publications_abstract_max_chars_is_configurable():
+    """Phase 4 (literature enrichment): the abstract length is config-driven, not hard-coded 300.
+    The enriched evidence config raises it so the LLM analyzes article CONTENT, not just titles."""
+    long_abstract = "A" * 1000
+    rendered, _ = _render_publications(
+        [{"doi": "10.1234/abc", "title": "T", "abstract": long_abstract}],
+        cap=1,
+        strict=True,
+        abstract_max_chars=800,
+    )
+    assert ("A" * 800 + "…") in rendered  # 800-char window, not the legacy 300
+    assert "A" * 801 not in rendered
+    # 0 omits the abstract entirely (no truncated body line).
+    rendered0, _ = _render_publications(
+        [{"doi": "10.1234/abc", "title": "T", "abstract": long_abstract}],
+        cap=1,
+        strict=True,
+        abstract_max_chars=0,
+    )
+    assert "AAA" not in rendered0
 
 
 def test_render_handles_empty_input_gracefully():
@@ -609,5 +635,6 @@ def _cfg(**overrides: Any) -> SynthesisConfig:
     """Load default config + apply overrides. Used by tests that need
     to relax one specific gate without re-typing every default field."""
     import yaml
+
     raw = yaml.safe_load(DEFAULT_SYNTHESIS_CONFIG_PATH.read_text())
     return SynthesisConfig.model_validate(raw).model_copy(update=overrides)

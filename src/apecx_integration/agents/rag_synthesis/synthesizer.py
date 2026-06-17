@@ -109,6 +109,16 @@ class SynthesisConfig(BaseModel):
             "section from the prompt entirely."
         ),
     )
+    abstract_max_chars: int = Field(
+        default=300,
+        ge=0,
+        description=(
+            "Per-publication / per-Globus-record abstract length (chars) rendered into the LLM "
+            "prompt. The 300 default is a terse summary; raise it (the evidence-synthesis config "
+            "uses a larger value) so the model performs REAL literature analysis over near-full "
+            "abstracts rather than reasoning off titles alone. 0 omits abstracts entirely."
+        ),
+    )
     require_inline_citations: bool = Field(
         default=True,
         description=(
@@ -417,7 +427,7 @@ def _render_violin_mappings(
 
 
 def _render_publications(
-    pubs: Iterable[dict[str, Any]], cap: int, *, strict: bool
+    pubs: Iterable[dict[str, Any]], cap: int, *, strict: bool, abstract_max_chars: int = 300
 ) -> tuple[str, set[str]]:
     """Render harvester publication metadata.
 
@@ -489,9 +499,9 @@ def _render_publications(
             meta_parts.append(journal)
         if meta_parts:
             bits.append(f"  - {' · '.join(meta_parts)}")
-        if abstract:
-            shown = abstract[:300]
-            ellipsis = "…" if len(abstract) > 300 else ""
+        if abstract and abstract_max_chars > 0:
+            shown = abstract[:abstract_max_chars]
+            ellipsis = "…" if len(abstract) > abstract_max_chars else ""
             bits.append(f"  - {shown}{ellipsis}")
         rendered_lines.extend(bits)
     if not rendered_lines:
@@ -500,7 +510,7 @@ def _render_publications(
 
 
 def _render_globus_results(
-    hits: Iterable[dict[str, Any]], cap: int, *, strict: bool
+    hits: Iterable[dict[str, Any]], cap: int, *, strict: bool, abstract_max_chars: int = 300
 ) -> tuple[str, set[str]]:
     """Render Globus Search hits from the APECx harvested-corpus index.
 
@@ -565,9 +575,9 @@ def _render_globus_results(
         abstract = datacite_description(content)
         subjects = datacite_subjects(content)
         bits = [f"- **{token}** *{title or '(untitled)'}*"]
-        if abstract:
-            shown = str(abstract)[:300]
-            ellipsis = "…" if len(str(abstract)) > 300 else ""
+        if abstract and abstract_max_chars > 0:
+            shown = str(abstract)[:abstract_max_chars]
+            ellipsis = "…" if len(str(abstract)) > abstract_max_chars else ""
             bits.append(f"  - {shown}{ellipsis}")
         if subjects:
             bits.append(f"  - keywords: {', '.join(subjects)}")
@@ -685,11 +695,13 @@ def synthesize_response(
         publications or [],
         cfg.max_publications,
         strict=cfg.strict_input_validation,
+        abstract_max_chars=cfg.abstract_max_chars,
     )
     globus_block, globus_tokens = _render_globus_results(
         globus_results or [],
         cfg.max_globus_results,
         strict=cfg.strict_input_validation,
+        abstract_max_chars=cfg.abstract_max_chars,
     )
     # The union of every token a renderer authorized. The LLM is
     # allowed to cite any of these and nothing else (when

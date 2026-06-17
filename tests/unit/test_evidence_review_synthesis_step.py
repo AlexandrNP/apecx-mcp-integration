@@ -98,6 +98,18 @@ def _stage(tmp_path: Path) -> EvidenceReviewSynthesisStep:
     return EvidenceReviewSynthesisStep.from_config(str(p))
 
 
+def test_defaults_to_enriched_evidence_synthesis_config(tmp_path):
+    """Phase 4: with no synthesis_config_path override, the step loads the co-located ENRICHED
+    evidence_synthesis_config.yml (more publications + near-full abstracts) rather than falling
+    back to the minimal default — so the SHARED rag_e2e config stays untouched."""
+    step = _stage(tmp_path)
+    assert step._synthesis_config is not None
+    assert step._synthesis_config.max_publications == 12  # enriched (shared default is 5)
+    assert step._synthesis_config.abstract_max_chars == 800  # enriched (default is 300)
+    # the anti-hallucination gate stays ON
+    assert step._synthesis_config.validate_citations_against_inputs is True
+
+
 def test_appends_structural_records_section(tmp_path, monkeypatch, agent_locus):
     step = _stage(tmp_path)
     monkeypatch.setattr(mod, "synthesize_response", None, raising=False)

@@ -73,6 +73,7 @@ _INSIGHT_HEADING = "## Integrated insight"
 # LLM (or, on degrade, from render_evidence_fallback); `## Sources and evidence`
 # and `## Follow-up questions` are built deterministically below.
 _DEFAULT_PROMPT_FILENAME = "evidence_review_synthesis_prompt.yml"
+_DEFAULT_SYNTH_CONFIG_FILENAME = "evidence_synthesis_config.yml"
 
 
 def _sanitize_inline(text: Any, cap: int = 300) -> str:
@@ -97,6 +98,61 @@ def _collapse_ws(text: Any) -> str:
     (harmless mid-line) and does NOT length-cap — a curated title must render in full, just on
     one line. (E4-6.)"""
     return " ".join(str(text if text is not None else "").split())
+
+
+# Deterministic literature themes (priority order). Each publication is assigned to its FIRST
+# matching theme over title+abstract, so the grouping is non-overlapping. This is the no-LLM
+# "literature analysis floor": when narrative synthesis is withheld, the reader still gets the
+# papers ORGANIZED by topic rather than a flat list — useful regardless of the model.
+_LIT_THEMES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "Neutralizing antibodies & epitopes",
+        ("antibod", "neutraliz", "epitope", "mab", "fab", "immunogen", "antigen"),
+    ),
+    (
+        "Structure & glycoprotein biology",
+        ("structur", "cryo-em", "cryoem", "crystal", "glycoprotein", "fusion", "conformation"),
+    ),
+    (
+        "Vaccine & protective immunity",
+        ("vaccine", "vaccin", "immuniz", "vlp", "adjuvant", "protective", "protection"),
+    ),
+    (
+        "Sequence conservation & evolution",
+        ("conserv", "mutation", "polymorphism", "variant", "lineage", "phylogen", "evolution"),
+    ),
+    (
+        "Epidemiology & clinical",
+        ("outbreak", "epidemic", "clinical", "patient", "surveillance", "transmission", "disease"),
+    ),
+)
+_LIT_OTHER = "Other relevant literature"
+
+
+def _group_publications_by_theme(
+    pubs: list[dict[str, Any]],
+) -> list[tuple[str, list[dict[str, Any]]]]:
+    """Group publications into deterministic topical themes (first-match, non-overlapping).
+
+    Pure + LLM-free. Returns themes in priority order, each with its papers, dropping empty
+    themes; papers matching no theme land under 'Other relevant literature'. The signal a
+    reader gets — even with no narrative model — is which topics the corpus actually covers."""
+    buckets: dict[str, list[dict[str, Any]]] = {name: [] for name, _ in _LIT_THEMES}
+    buckets[_LIT_OTHER] = []
+    for p in pubs:
+        if not isinstance(p, dict):
+            continue
+        hay = f"{p.get('title') or ''} {p.get('abstract') or p.get('description') or ''}".lower()
+        placed = False
+        for name, kws in _LIT_THEMES:
+            if any(k in hay for k in kws):
+                buckets[name].append(p)
+                placed = True
+                break
+        if not placed:
+            buckets[_LIT_OTHER].append(p)
+    ordered = [name for name, _ in _LIT_THEMES] + [_LIT_OTHER]
+    return [(name, buckets[name]) for name in ordered if buckets[name]]
 
 
 def render_evidence_fallback(
@@ -142,15 +198,22 @@ def render_evidence_fallback(
         "",
     ]
     if pubs:
-        lines.append("Retrieved publications relevant to the question:")
+        grouped = _group_publications_by_theme(pubs)
+        lines.append(
+            f"Retrieved {len(pubs)} publication(s), organized by topic (deterministic grouping — "
+            f"narrative synthesis was withheld, so this is the literature organized, not analyzed):"
+        )
         lines.append("")
-        for p in pubs:
-            if not isinstance(p, dict):
-                continue
-            ident = p.get("doi") or p.get("id") or p.get("pmid") or ""
-            title = p.get("title") or "(untitled)"
-            cite = f"**[{ident}]** " if ident else ""
-            lines.append(f"- {cite}*{title}*")
+        for theme, theme_pubs in grouped:
+            lines.append(f"**{theme}** ({len(theme_pubs)}):")
+            for p in theme_pubs:
+                if not isinstance(p, dict):
+                    continue
+                ident = p.get("doi") or p.get("id") or p.get("pmid") or ""
+                title = _collapse_ws(p.get("title") or "(untitled)")
+                cite = f"**[{ident}]** " if ident else ""
+                lines.append(f"- {cite}*{title}*")
+            lines.append("")
     else:
         lines.append("_No publications were retrieved for this query._")
     lines += [
@@ -785,8 +848,13 @@ class EvidenceReviewSynthesisStep(BaseStep):
         from apecx_integration.agents.rag_synthesis import SynthesisConfig
 
         path = component_config.get("synthesis_config_path")
+        # Default to the co-located ENRICHED evidence config (more publications + near-full
+        # abstracts → real literature analysis) when the caller doesn't override — the SHARED
+        # agents/rag_synthesis/synthesis_config.yml (rag_e2e_synthesis) stays untouched. Mirror
+        # the evidence-prompt default-resolution pattern below.
         if path is None:
-            self._synthesis_config: SynthesisConfig | None = None
+            default_cfg = Path(__file__).parent / _DEFAULT_SYNTH_CONFIG_FILENAME
+            p = default_cfg if default_cfg.is_file() else None
         else:
             p = Path(path)
             if not p.is_file():
@@ -794,6 +862,9 @@ class EvidenceReviewSynthesisStep(BaseStep):
                     f"EvidenceReviewSynthesisStep: synthesis_config_path {p} does not "
                     f"exist or is not a file."
                 )
+        if p is None:
+            self._synthesis_config: SynthesisConfig | None = None
+        else:
             import yaml
 
             self._synthesis_config = SynthesisConfig.model_validate(
