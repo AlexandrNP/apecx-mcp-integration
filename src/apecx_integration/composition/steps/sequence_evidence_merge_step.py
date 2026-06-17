@@ -15,7 +15,7 @@ It emits ONE enriched bundle (the structural bundle + ``conserved_sites`` / ``co
 threaded in) for the downstream ``EvidenceReviewSynthesisStep``, and ALWAYS appends a
 ``sequence_conservation`` stage report (order 1) — either summarizing the real conserved regions
 + count, or carrying the LOUD "sequence conservation unavailable: <reason>" note. The report
-surfaces in the synthesis's ``### Reasoning trace``; the structured ``conserved_*`` keys ride
+surfaces in the synthesis's ``## Analysis steps``; the structured ``conserved_*`` keys ride
 along in the bundle for the later structural stage (map conserved positions onto 3D structure).
 
 DEGRADE-LOUD: a missing/failed conservation result is NEVER a silent omission — the absence is

@@ -15,7 +15,7 @@ test is `tests/integration/test_mcp_stream_client.py`.
   subprocess `apecx-mcp` server, full `initialize` handshake — consumes the stream.
   Per completed reasoning stage the client receives a progress notification AND a
   structured log notification, IN ARRIVAL ORDER, and the concatenation of the
-  streamed stage reports is byte-for-byte present as the `### Reasoning trace` in
+  streamed stage reports is byte-for-byte present as the `## Analysis steps` in
   the final headless document (streamed == headless, no divergence over the wire).
   This closes the E2-S gap, where the tool had only ever been driven by a fake
   `Context` object — no real client had consumed the wire.
@@ -119,7 +119,7 @@ streamed reports render identically to the headless trace.
    the pane keyed by `data.stage`, rendering `data.markdown`; keep `data.data` for a
    "details" disclosure. Sort cards by `data.order` if you want final-document layout.
 4. On tool return: replace the live pane with the final `WorkflowResult.markdown`
-   (the 5-section document). The streamed cards and the final `### Reasoning trace`
+   (the 5-section document). The streamed cards and the final `## Analysis steps`
    are the same content — no second fetch needed; the live view simply becomes
    authoritative.
 5. `run_id` lets the app cross-link a streamed card to `inspect_run(run_id)` for the

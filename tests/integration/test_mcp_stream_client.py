@@ -138,9 +138,11 @@ def test_real_stdio_client_consumes_streamed_stages_e2e():
 
     rendered = render_stage_reports({"stage_reports": stage_reports})
     print("\nRENDERED-FROM-WIRE TRACE:\n", rendered)
-    assert "### Reasoning trace" in md
+    # The progression now lives in the prominent ## Analysis steps section (replaced the old
+    # buried ### Reasoning trace) — same stage reports, same deterministic render.
+    assert "## Analysis steps" in md
     assert rendered in md, (
         "streamed-over-the-wire stage reports diverge from the headless document",
         rendered,
-        md[md.find("### Reasoning trace") : md.find("### Reasoning trace") + 1500],
+        md[md.find("## Analysis steps") : md.find("## Analysis steps") + 1500],
     )

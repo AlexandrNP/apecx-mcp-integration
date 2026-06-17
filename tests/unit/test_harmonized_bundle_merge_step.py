@@ -103,6 +103,10 @@ def test_nine_items_flatten_and_derive_taxon(tmp_path):
     assert summary["per_index_kept"][index_names[0]] == 2
     assert len(summary["per_index_kept"]) == 9
     assert summary["map_errors"] == []
+    # per-index AVAILABLE (the harmonized_query.total) + the full searched index set (all 9)
+    # are recorded so the report can show available-vs-used for every index.
+    assert summary["per_index_available"][index_names[0]] == 2
+    assert summary["index_names"] == index_names
 
     # passthrough preserved
     assert out["query"] == "chikungunya epitopes"

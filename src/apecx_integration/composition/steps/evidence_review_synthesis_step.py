@@ -65,6 +65,7 @@ _ANSWER_HEADING = "# Answer"
 _CROSSDATA_HEADING = "## Cross-data reasoning"
 _SOURCES_HEADING = "## Sources and evidence"
 _COVERAGE_HEADING = "## Evidence coverage"
+_ANALYSIS_HEADING = "## Analysis steps"
 _FOLLOWUPS_HEADING = "## Follow-up questions"
 _INSIGHT_HEADING = "## Integrated insight"
 # The five contract sections, in the order the final document MUST carry them.
@@ -314,38 +315,81 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def render_coverage_section(bundle: dict[str, Any]) -> str:
-    """Deterministic ``## Evidence coverage`` — the per-source record counts backing this
-    answer: RAG, PubMed, and EACH Globus destination index separately (bvbrc_genome,
-    bvbrc_protein, violin_vaccine, …). Built in CODE from the ``data_readiness`` stage
-    (which captured the RETRIEVED counts right after assemble + the harmonized merge), so
-    the reader sees up front how much evidence each source contributed and which returned
-    nothing — instead of one collapsed "globus" aggregate. Counts are coverage (retrieved),
-    distinct from the distillation digest (kept top-N).
+def render_analysis_steps_section(bundle: dict[str, Any]) -> str:
+    """Deterministic ``## Analysis steps`` — the full pipeline progression, ordered.
 
-    Always present; degrades to an explicit line when no coverage was recorded.
+    A PROMINENT, top-level rendering of the stage reports (resolve → all-9 harmonized search →
+    assemble → data-readiness → structural → sequence → rhea → reasoning → functional →
+    distill), so the reader sees the progression of steps the run went through — not buried in
+    a sub-section. Reuses ``render_stage_reports`` (ordered by each report's ``order``).
     """
-    dr = bundle.get("data_readiness")
-    counts = dr.get("counts") if isinstance(dr, dict) else None
+    return f"{_ANALYSIS_HEADING}\n\n{render_stage_reports(bundle)}"
+
+
+def render_coverage_section(bundle: dict[str, Any]) -> str:
+    """Deterministic ``## Evidence coverage`` — what each source contributed.
+
+    Globus rows are driven from ``harmonized_search_summary`` so EVERY one of the (mandatory)
+    9 destination indices appears — even an index that returned nothing — each shown as
+    ``available`` (how many exist for this query in the index) vs ``used`` (how many were
+    retrieved into the corpus). Searching all indices is mandatory, so showing all 9 makes
+    that verifiable and distinguishes "searched, 0 records" from "not searched". RAG + PubMed
+    come from the ``data_readiness`` counts. ``used`` is retrieval breadth (kept), distinct
+    from the distillation digest (top-N the LLM actually reasons over).
+
+    Always present; degrades to an explicit line when nothing was recorded.
+    """
     lines: list[str] = [_COVERAGE_HEADING, ""]
-    if not isinstance(counts, dict) or not counts:
+    summary = bundle.get("harmonized_search_summary")
+    dr = bundle.get("data_readiness")
+    counts = dr.get("counts") if isinstance(dr, dict) else {}
+    counts = counts if isinstance(counts, dict) else {}
+
+    rendered_anything = False
+
+    # Globus indices — ALL of them, available vs used.
+    if isinstance(summary, dict):
+        names = summary.get("index_names")
+        if not isinstance(names, list) or not names:
+            from apecx_integration.composition.steps.harmonized_search_execute_step import (
+                _INDEX_UUIDS,
+            )
+
+            names = sorted(_INDEX_UUIDS)
+        available = summary.get("per_index_available") or {}
+        kept = summary.get("per_index_kept") or {}
+        lines.append(f"Globus indices (all {len(names)} searched — mandatory):")
+        for name in names:
+            a = int(available.get(name, 0))
+            u = int(kept.get(name, 0))
+            marker = "" if a else "  _(searched, no records)_"
+            lines.append(f"- **{name}**: {a} available / {u} used{marker}")
+        lines.append("")
+        rendered_anything = True
+
+    # RAG + PubMed (retrieval counts from data_readiness).
+    other = [("rag_chunks", "RAG chunks"), ("publications", "publications (PubMed)")]
+    other_lines = [f"- **{label}**: {int(counts[key])}" for key, label in other if key in counts]
+    if other_lines:
+        lines.append("Other sources:")
+        lines.extend(other_lines)
+        lines.append("")
+        rendered_anything = True
+
+    if not rendered_anything:
         lines.append("_No per-source coverage was recorded for this query._")
         return "\n".join(lines)
 
-    # RAG + PubMed first (stable, human labels), then the Globus indices alphabetically.
-    base = [("rag_chunks", "RAG chunks"), ("publications", "publications (PubMed)")]
-    rendered: set[str] = set()
-    for key, label in base:
-        if key in counts:
-            lines.append(f"- **{label}**: {int(counts[key])}")
-            rendered.add(key)
-    for key in sorted(k for k in counts if k not in rendered):
-        marker = "" if int(counts[key]) else "  _(no records)_"
-        lines.append(f"- **{key}**: {int(counts[key])}{marker}")
-
-    total = sum(int(v) for v in counts.values() if isinstance(v, int))
-    lines.append("")
-    lines.append(f"_Total records retrieved across sources: {total}._")
+    globus_used = (
+        sum(int(v) for v in (summary.get("per_index_kept") or {}).values())
+        if isinstance(summary, dict)
+        else 0
+    )
+    other_used = sum(int(counts[k]) for k, _ in other if k in counts)
+    lines.append(
+        f"_Total records retrieved across sources: {globus_used + other_used} "
+        f"(the distillation stage ranks these and keeps a top-N digest for synthesis)._"
+    )
     return "\n".join(lines)
 
 
@@ -400,19 +444,6 @@ def render_followups_section(query: str, bundle: dict[str, Any]) -> str:
     lines = [_FOLLOWUPS_HEADING, ""]
     lines.extend(f"{i}. {qn}" for i, qn in enumerate(questions, 1))
     return "\n".join(lines)
-
-
-def _insert_reasoning_trace(narrative: str, trace_md: str) -> str:
-    """Insert a ``### Reasoning trace`` subsection carrying the concatenated stage
-    reports. Placed at the END of ``## Cross-data reasoning`` (i.e. immediately
-    before ``## Integrated insight``) when that heading is present; otherwise
-    appended after the narrative. The trace documents what each upstream stage
-    contributed — the plug-in point for future reasoning stages."""
-    block = f"### Reasoning trace\n\n{trace_md}"
-    idx = narrative.find(_INSIGHT_HEADING)
-    if idx != -1:
-        return f"{narrative[:idx].rstrip()}\n\n{block}\n\n{narrative[idx:].lstrip()}"
-    return f"{narrative.rstrip()}\n\n{block}"
 
 
 def _ensure_contract_headers(narrative: str) -> str:
@@ -537,28 +568,29 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     """Assemble the full contract-shaped evidence document from a narrative body
     (the LLM output on the success path, or ``render_evidence_fallback`` on degrade).
 
-    Order (the five contract sections, in order, plus the always-present Structural
-    + Evidence-coverage sections between Integrated insight and Sources):
+    Order (the contract sections, in order, plus the always-present deterministic sections):
 
-        # Answer · ## Cross-data reasoning [+ ### Reasoning trace] ·
-        ## Integrated insight · ## Structural evidence (PDB / EMDB) ·
+        # Answer · ## Cross-data reasoning · ## Integrated insight ·
+        ## Analysis steps · ## Structural evidence (PDB / EMDB) ·
         ## Evidence coverage · ## Sources and evidence · ## Follow-up questions
 
-    Coverage + Sources + Follow-ups are deterministic, so those sections can NEVER be
-    omitted regardless of LLM behavior — a missing section is impossible by
-    construction for them.
+    Analysis-steps + Coverage + Sources + Follow-ups are deterministic, so those sections can
+    NEVER be omitted regardless of LLM behavior — a missing section is impossible by
+    construction for them. (The former buried ``### Reasoning trace`` sub-section is replaced
+    by the prominent top-level ``## Analysis steps`` progression below — same stage reports,
+    not duplicated.)
     """
-    body = _insert_reasoning_trace(
-        _ensure_contract_headers(narrative_body), render_stage_reports(bundle)
-    )
-    body = _insert_scope_caveat_if_unresolved(body, bundle)
+    body = _insert_scope_caveat_if_unresolved(_ensure_contract_headers(narrative_body), bundle)
+    analysis = render_analysis_steps_section(bundle)
     structural = render_structural_section(
         bundle.get("structural_records"), bundle.get("structural_note")
     )
     coverage = render_coverage_section(bundle)
     sources = render_sources_section(bundle)
     followups = render_followups_section(query, bundle)
-    return f"{body.rstrip()}\n\n{structural}\n\n{coverage}\n\n{sources}\n\n{followups}\n"
+    return (
+        f"{body.rstrip()}\n\n{analysis}\n\n{structural}\n\n{coverage}\n\n{sources}\n\n{followups}\n"
+    )
 
 
 class EvidenceReviewSynthesisStepConfig(StepConfig):

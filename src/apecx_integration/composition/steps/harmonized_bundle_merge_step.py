@@ -97,6 +97,41 @@ def _records_from_item(item: Any) -> list[dict[str, Any]]:
     return records
 
 
+def _available_from_item(item: Any) -> int:
+    """Total records AVAILABLE in the index for this query (distinct from KEPT/retrieved).
+
+    MUST report the total of the SAME leg ``_records_from_item`` took for "used" — otherwise a
+    dict-staleness case (harmonized empty, raw populated) would render "0 available / N used".
+    So: the harmonized leg's total when it supplied records; else the raw leg's total when it
+    did; else the resolution-MISS ``raw_total``; else 0. Never raises.
+    """
+    if not isinstance(item, dict):
+        return 0
+    env = item.get("envelope_input")
+    if not isinstance(env, dict):
+        env = item
+    data = env.get("data") if isinstance(env, dict) else None
+    parts = data.get("parts") if isinstance(data, dict) else None
+    if not isinstance(parts, dict):
+        return 0
+    harm = parts.get("harmonized_query")
+    if isinstance(harm, dict) and isinstance(harm.get("records"), list) and harm["records"]:
+        return int(harm["total"]) if isinstance(harm.get("total"), int) else len(harm["records"])
+    raw = parts.get("raw_query")
+    if isinstance(raw, dict) and isinstance(raw.get("records"), list) and raw["records"]:
+        return int(raw["total"]) if isinstance(raw.get("total"), int) else len(raw["records"])
+    if isinstance(parts.get("raw_records"), list) and parts["raw_records"]:
+        rt = parts.get("raw_total")
+        return int(rt) if isinstance(rt, int) else len(parts["raw_records"])
+    # No records on any leg — report the harmonized total if present (e.g. an all-empty index
+    # legitimately has 0 available), else the raw total, else 0.
+    for leg in (harm, raw):
+        if isinstance(leg, dict) and isinstance(leg.get("total"), int):
+            return leg["total"]
+    rt = parts.get("raw_total")
+    return rt if isinstance(rt, int) else 0
+
+
 class HarmonizedBundleMergeStepConfig(StepConfig):
     """Config for HarmonizedBundleMergeStep.
 
@@ -157,10 +192,12 @@ class HarmonizedBundleMergeStep(BaseStep):
 
         globus_results: list[dict[str, Any]] = []
         per_index_counts: dict[str, int] = {}
+        per_index_available: dict[str, int] = {}
         for i, item in enumerate(items):
             recs = _records_from_item(item)
             label = index_names[i] if i < len(index_names) else f"index_{i}"
             per_index_counts[str(label)] = len(recs)
+            per_index_available[str(label)] = _available_from_item(item)
             globus_results.extend(recs)
 
         # Derive taxon_id + resolved species name from the resolution plan.
@@ -180,9 +217,38 @@ class HarmonizedBundleMergeStep(BaseStep):
         bundle["resolved_species_name"] = resolved_species_name
         bundle["harmonized_search_summary"] = {
             "per_index_kept": per_index_counts,
+            "per_index_available": per_index_available,
+            # The full searched index set (all 9), so the report renders EVERY index — even one
+            # that returned nothing — making "all indices searched (mandatory)" verifiable.
+            "index_names": list(index_names),
             "total_records": len(globus_results),
             "map_errors": map_errors,
         }
+        # Record the all-9-index search in the document's step progression (order -1 sorts it
+        # ahead of the back-half stages: data_readiness=0, assemble=1, …). This is what puts
+        # "searched all 9 indices" into the report's Analysis-steps trace.
+        from apecx_integration.composition.steps._stage_report import append_stage_report
+
+        searched = (
+            ", ".join(
+                f"{name} {per_index_counts.get(name, 0)}/{per_index_available.get(name, 0)}"
+                for name in (index_names or per_index_counts)
+            )
+            if (index_names or per_index_counts)
+            else "none"
+        )
+        append_stage_report(
+            bundle,
+            stage="harmonized_search",
+            order=-1,
+            markdown=f"Searched all {len(index_names or per_index_counts)} Globus indices "
+            f"(used/available): {searched}.",
+            data={
+                "per_index_available": per_index_available,
+                "per_index_kept": per_index_counts,
+            },
+        )
+
         # ``items`` (the per-index search envelopes) carried the full record sets the
         # loop just flattened into ``globus_results``. Nothing downstream of hmerge reads
         # ``items``, so drop it here — otherwise the entire corpus would ride a second,

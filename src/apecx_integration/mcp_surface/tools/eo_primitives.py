@@ -496,7 +496,7 @@ async def run_workflow_streamed(
     The return value is the SAME ``WorkflowResult``-shaped dict ``run_workflow`` returns
     for the same inputs (this function literally ``return``s ``run_workflow``'s value) —
     the headless one-shot output is unchanged. The streamed reports are exactly the stage
-    reports that compose the final document's ``### Reasoning trace`` (no divergence: both
+    reports that compose the final document's ``## Analysis steps`` (no divergence: both
     read the same ``stage_reports`` entries).
 
     Streaming is wired via nanobrain's G37 ``subscribe_to_step_events`` (``step_events.py``):

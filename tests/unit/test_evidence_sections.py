@@ -176,32 +176,38 @@ def test_sources_globus_datacite_title_not_untitled():
 
 
 # --------------------------- Evidence coverage ---------------------------
-def test_coverage_section_lists_per_source_counts():
-    """The per-source coverage (RAG, PubMed, and EACH Globus index separately) is rendered
-    from data_readiness.counts — the fix for 'Globus per-source count not in the document'.
-    An index with 0 records is named, never silently omitted."""
+def test_coverage_section_lists_all_indices_available_vs_used():
+    """ALL searched Globus indices are listed (available vs used) from harmonized_search_summary
+    — even one that returned nothing (mandatory-search verifiability) — plus RAG/PubMed from
+    data_readiness. 'available' = index total; 'used' = retrieved into the corpus (kept)."""
     bundle = {
-        "data_readiness": {
-            "counts": {
-                "rag_chunks": 2,
-                "publications": 326,
+        "data_readiness": {"counts": {"rag_chunks": 2, "publications": 326}},
+        "harmonized_search_summary": {
+            "index_names": ["bvbrc_genome", "bvbrc_protein", "violin_vaccine", "protabank"],
+            "per_index_available": {
+                "bvbrc_genome": 6687,
+                "bvbrc_protein": 6681,
+                "violin_vaccine": 3,
+                "protabank": 0,
+            },
+            "per_index_kept": {
                 "bvbrc_genome": 6684,
                 "bvbrc_protein": 6681,
                 "violin_vaccine": 3,
                 "protabank": 0,
-            }
-        }
+            },
+        },
     }
     sec = render_coverage_section(bundle)
     assert sec.startswith("## Evidence coverage")
-    assert "bvbrc_genome**: 6684" in sec
-    assert "bvbrc_protein**: 6681" in sec
-    assert "violin_vaccine**: 3" in sec
-    assert "publications (PubMed)**: 326" in sec
-    assert "RAG chunks**: 2" in sec
-    # the empty index is named with a no-records marker, not dropped
-    assert "protabank**: 0" in sec and "no records" in sec
-    assert "Total records retrieved across sources: 13696" in sec  # 2+326+6684+6681+3+0
+    assert "all 4 searched — mandatory" in sec
+    assert "bvbrc_genome**: 6687 available / 6684 used" in sec
+    assert "violin_vaccine**: 3 available / 3 used" in sec
+    # the empty index is listed with the searched-no-records marker, never dropped
+    assert "protabank**: 0 available / 0 used" in sec and "searched, no records" in sec
+    assert "publications (PubMed)**: 326" in sec and "RAG chunks**: 2" in sec
+    # total = globus used (6684+6681+3+0) + rag/pubs (2+326) = 13696
+    assert "Total records retrieved across sources: 13696" in sec
 
 
 def test_coverage_section_present_and_honest_when_absent():
@@ -244,6 +250,24 @@ def test_followups_always_at_least_three_even_with_no_gaps():
     assert len(items) == 3  # no gaps → exactly the 3 query-seeded fillers
 
 
+# --------------------------- Analysis steps (progression) ---------------------------
+def test_analysis_steps_section_lists_progression_in_order():
+    """## Analysis steps renders the full pipeline progression, ordered by each report's
+    `order` — resolve (-2) + harmonized_search (-1) sort ahead of the back-half stages."""
+    from apecx_integration.composition.steps.evidence_review_synthesis_step import (
+        render_analysis_steps_section,
+    )
+
+    bundle: dict = {}
+    append_stage_report(bundle, "distill", 9, "Ranked corpus, kept top-N.")
+    append_stage_report(bundle, "resolve", -2, "Resolved chikungunya → taxon 37124.")
+    append_stage_report(bundle, "harmonized_search", -1, "Searched all 9 Globus indices.")
+    sec = render_analysis_steps_section(bundle)
+    assert sec.startswith("## Analysis steps")
+    # ordered: resolve, then harmonized_search, then distill
+    assert sec.index("resolve") < sec.index("harmonized_search") < sec.index("distill")
+
+
 # --------------------------- compose (order) ---------------------------
 def test_compose_emits_five_sections_in_order():
     bundle = _realistic_bundle()
@@ -258,16 +282,14 @@ def test_compose_emits_five_sections_in_order():
     positions = [md.find(h) for h in _FIVE_HEADERS]
     assert all(p != -1 for p in positions), positions
     assert positions == sorted(positions), f"sections out of order: {positions}"
-    # Reasoning trace lands inside cross-data reasoning (before integrated insight).
-    trace = md.find("### Reasoning trace")
-    assert md.find("## Cross-data reasoning") < trace < md.find("## Integrated insight")
+    # The prominent ## Analysis steps progression replaces the old buried ### Reasoning trace:
+    # a top-level section after Integrated insight, listing the stage reports.
+    assert "### Reasoning trace" not in md
+    steps = md.find("## Analysis steps")
+    assert md.find("## Integrated insight") < steps < md.find("## Structural evidence")
     assert "context_assembly" in md and "structural_evidence" in md
-    # Structural section sits between integrated insight and sources.
-    assert (
-        md.find("## Integrated insight")
-        < md.find("## Structural evidence")
-        < md.find("## Sources and evidence")
-    )
+    # Structural section sits between Analysis steps and Sources.
+    assert steps < md.find("## Structural evidence") < md.find("## Sources and evidence")
 
 
 def test_scope_caveat_present_when_taxon_unresolved():

@@ -242,7 +242,7 @@ def test_evidence_output_contract_five_sections_e2e():
     assert any("*(untitled)*" not in ln for ln in bullet_lines), sources_block
 
     # The reasoning-trace scaffolding surfaced both wired stages.
-    assert "### Reasoning trace" in md
+    assert "## Analysis steps" in md
     assert "context_assembly" in md and "structural_evidence" in md
 
 
@@ -294,7 +294,7 @@ def test_sequence_conservation_stage_e2e():
     assert positions == sorted(positions), (positions, md[:3000])
 
     # The sequence-conservation stage report is present in the reasoning trace…
-    assert "### Reasoning trace" in md
+    assert "## Analysis steps" in md
     seq_lines = [ln for ln in md.splitlines() if "sequence_conservation" in ln]
     assert seq_lines, ("no sequence_conservation stage report rendered", md[:4000])
     seq_line = seq_lines[0]
@@ -315,10 +315,10 @@ def test_sequence_conservation_stage_e2e():
 
 
 def _reasoning_trace_lines(md: str) -> list[str]:
-    """The bullet lines under '### Reasoning trace' (one per stage report)."""
-    if "### Reasoning trace" not in md:
+    """The bullet lines under '## Analysis steps' (one per stage report)."""
+    if "## Analysis steps" not in md:
         return []
-    trace = md.split("### Reasoning trace", 1)[1]
+    trace = md.split("## Analysis steps", 1)[1]
     return [ln for ln in trace.splitlines() if ln.strip().startswith(("-", "*"))]
 
 
@@ -514,11 +514,11 @@ def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
     # regardless of arrival order.
     rendered = render_stage_reports({"stage_reports": streamed})
     print("\nRENDERED-FROM-STREAMED TRACE:\n", rendered)
-    assert "### Reasoning trace" in md
+    assert "## Analysis steps" in md
     assert rendered in md, (
         "streamed stage reports diverge from the headless document's reasoning trace",
         rendered,
-        md[md.find("### Reasoning trace") : md.find("### Reasoning trace") + 1500],
+        md[md.find("## Analysis steps") : md.find("## Analysis steps") + 1500],
     )
 
 

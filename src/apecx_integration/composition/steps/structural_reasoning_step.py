@@ -57,7 +57,7 @@ ONLY on a broken wiring contract (non-dict input).
 
 Output: the same bundle, plus ``bundle["structural_reasoning"]`` (machine-readable
 result the synthesis can cite) and a ``structural_reasoning`` stage report (order 3)
-rendered into the synthesis ``### Reasoning trace``.
+rendered into the synthesis ``## Analysis steps``.
 """
 
 from __future__ import annotations

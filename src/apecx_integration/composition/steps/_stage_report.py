@@ -2,7 +2,7 @@
 
 A reusable convention: every reasoning stage appends a documented sub-report to a
 ``stage_reports`` list carried in the bundle dict that flows step-to-step. The
-terminal synthesis renders the accumulated reports as a ``### Reasoning trace``
+terminal synthesis renders the accumulated reports as a ``## Analysis steps``
 inside the cross-data-reasoning section, so the final document carries a
 transparent, ordered record of what each stage contributed.
 

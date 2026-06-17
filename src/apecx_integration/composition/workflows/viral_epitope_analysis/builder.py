@@ -66,7 +66,7 @@ step's output — no TransformLink, no ConditionalLink, no cycle):
     runs from the SAME query/taxon/protein the normalize step fans out, then ``merge`` folds the
     structured conservation result (``conserved_sites`` / ``conserved_regions``, recovered from
     the conserved-sites terminal handle) into the evidence bundle BEFORE synthesis, and emits a
-    ``sequence_conservation`` stage report into the ``### Reasoning trace``. Conserved positions
+    ``sequence_conservation`` stage report into the ``## Analysis steps``. Conserved positions
     ride along in the bundle for the later structural stage (map onto 3D structure). DEGRADE-LOUD:
     the sequence step NEVER raises (it would strand the merge fan-in and silently empty the whole
     run — G127); on a sub-workflow failure or a query without a usable taxon_id/protein it returns

@@ -629,7 +629,7 @@ class SynthesisContextAssemblyStep(BaseStep):
                 out[_focus] = _val
         # Stage-report scaffolding (E2-C): contribute a documented sub-report to the
         # bundle's ``stage_reports`` list. Future reasoning stages append their own;
-        # the terminal synthesis renders them as a ``### Reasoning trace``.
+        # the terminal synthesis renders them as a ``## Analysis steps``.
         from apecx_integration.composition.steps._stage_report import append_stage_report
 
         append_stage_report(

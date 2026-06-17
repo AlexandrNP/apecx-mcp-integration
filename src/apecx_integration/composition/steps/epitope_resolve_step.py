@@ -181,6 +181,27 @@ class EpitopeResolveStep(BaseStep):
 
         bundle["index_names"] = index_names
 
+        # Record resolution in the document's step progression (order -2 sorts it FIRST, ahead
+        # of harmonized_search at -1 and the back-half stages at 0+).
+        from apecx_integration.composition.steps._stage_report import append_stage_report
+
+        _label = plan.get("canonical_label") or term
+        _iri = plan.get("canonical_iri")
+        resolve_md = (
+            f"Resolved {term!r} → {_label!r} ({_iri}) via {plan['resolution_path']}; "
+            f"fanning the search across {len(index_names)} Globus indices."
+            if _iri
+            else f"Resolution of {term!r}: {plan['resolution_path']} "
+            f"({len(index_names)} indices). {resolution_note or ''}".strip()
+        )
+        append_stage_report(
+            bundle,
+            stage="resolve",
+            order=-2,
+            markdown=resolve_md,
+            data={"resolution_path": plan["resolution_path"], "canonical_iri": _iri},
+        )
+
         log.info(
             "EpitopeResolveStep %s: query=%.80r term=%r path=%s indices=%d note=%s",
             self.name,
