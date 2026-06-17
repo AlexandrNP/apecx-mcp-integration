@@ -534,7 +534,12 @@ async def _run_workflow_streaming_impl(
     # max silence before a keepalive ping. Both must stay well under a typical desktop client
     # request timeout (~60s) so the client's timer is reset long before it fires.
     heartbeat_throttle_s = 3.0
-    keepalive_s = 20.0
+    keepalive_s = 20.0  # emit a keepalive once the stream has been silent this long
+    # Poll FASTER than keepalive_s: a polling loop whose period == the threshold catches a
+    # silence that starts just after a poll only on the NEXT poll, so worst-case gap is
+    # ~2×period. Polling at keepalive_s/4 bounds the worst-case gap to ~keepalive_s + poll
+    # (≈25s here, comfortably < a ~60s client timeout / the 30s target).
+    keepalive_poll_s = keepalive_s / 4
     state = {"n_stage": 0, "n_progress": 0, "last_notify": loop.time()}
 
     def _enqueue(kind: str, payload: dict[str, Any]) -> None:
@@ -595,7 +600,7 @@ async def _run_workflow_streaming_impl(
         # "still working" progress whenever the stream has been silent for keepalive_s.
         try:
             while True:
-                await asyncio.sleep(keepalive_s)
+                await asyncio.sleep(keepalive_poll_s)
                 if loop.time() - state["last_notify"] >= keepalive_s:
                     with contextlib.suppress(Exception):
                         await _emit_progress("still working…")
