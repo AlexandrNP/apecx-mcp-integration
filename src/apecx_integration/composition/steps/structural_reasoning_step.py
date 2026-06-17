@@ -84,6 +84,18 @@ from apecx_integration.composition.steps._stage_report import append_stage_repor
 
 log = logging.getLogger(__name__)
 
+
+def _artifacts_dir() -> Path:
+    """The durable artifacts directory (``$APECX_ARTIFACTS_DIR`` or ``~/.apecx/artifacts``),
+    created if absent. Resolution is INLINED here (not imported from
+    ``mcp_surface.tools.eo_primitives._attach_artifact``) because this is a ``composition``-
+    layer step and must NOT import upward into ``mcp_surface`` (cli → mcp_surface → composition).
+    """
+    base = Path(os.environ.get("APECX_ARTIFACTS_DIR") or (Path.home() / ".apecx" / "artifacts"))
+    base.mkdir(parents=True, exist_ok=True)
+    return base
+
+
 _INPUT_KEY = "reasoning_input"
 _STAGE = "structural_reasoning"
 _STAGE_ORDER = 3
@@ -584,7 +596,13 @@ class StructuralReasoningStep(BaseStep):
             )
             return None, note
         if not raw.get("ok"):
-            return raw, raw.get("note") or f"PyMOL job returned no usable result for {pdb_id}."
+            # Surface the REAL reason the container reported (type + note + traceback tail),
+            # not a generic "no usable result".
+            note = raw.get("note") or f"PyMOL job returned no usable result for {pdb_id}."
+            tb = raw.get("traceback")
+            if tb:
+                note = f"{note}\nTraceback (in PyMOL container):\n{str(tb)[-2000:].strip()}"
+            return raw, note
         return raw, None
 
     async def _run_container(self, pdb_id: str, regions: list[dict[str, Any]]) -> dict[str, Any]:
@@ -621,6 +639,8 @@ class StructuralReasoningStep(BaseStep):
                 "rsa_threshold": self._rsa_threshold,
                 "min_map_identity": self._min_map_identity,
                 "contact_cutoff": self._contact_cutoff,
+                # Ask the job to render an epitope-surface PNG into the (mounted) workdir.
+                "render_png": f"/work/{pdb_id}.png",
             }
             if requested_chain:
                 job["chain"] = requested_chain
@@ -643,12 +663,32 @@ class StructuralReasoningStep(BaseStep):
 
             result_path = workdir / "result.json"
             if proc.returncode != 0 or not result_path.exists():
-                stderr = stderr_b.decode("utf-8", errors="replace")[-2000:]
+                full = stderr_b.decode("utf-8", errors="replace")
+                # Keep a generous tail so the REAL container error survives (a libGL/import
+                # failure or a PyMOL traceback can be long); mark truncation honestly.
+                stderr = (("…(truncated)…\n" + full[-8000:]) if len(full) > 8000 else full).strip()
                 raise RuntimeError(
                     f"docker run exited {proc.returncode}; result.json "
-                    f"{'present' if result_path.exists() else 'missing'}. stderr: {stderr}"
+                    f"{'present' if result_path.exists() else 'missing'}. stderr:\n{stderr}"
                 )
-            return json.loads(result_path.read_text())
+            result = json.loads(result_path.read_text())
+            # Copy the rendered PNG out of the temp workdir (auto-deleted on block exit) into
+            # the durable artifacts dir, and record its path on the result for the report to
+            # embed. Best-effort: a copy failure never strands the SASA result.
+            viz = result.get("visualization_path")
+            if viz:
+                src = workdir / viz
+                if src.exists():
+                    try:
+                        dest = _artifacts_dir() / viz
+                        shutil.copy2(src, dest)
+                        # Record the BASENAME (not the absolute dest): the report .md is written
+                        # into the SAME artifacts dir, so a relative src resolves next to it and
+                        # survives the artifacts dir being moved/served from another root.
+                        result["visualization_artifact"] = dest.name
+                    except Exception as exc:  # noqa: BLE001 — artifact copy is best-effort
+                        log.warning("structural viz copy failed for %s: %s", pdb_id, exc)
+            return result
 
     def _docker_argv(self, workdir: Path) -> list[str]:
         """Hardened ``docker run`` argv for the PyMOL job.

@@ -173,15 +173,18 @@ def render_evidence_fallback(
 def render_structural_section(
     structural_records: list[dict[str, Any]] | None,
     structural_note: str | None,
+    reasoning: dict[str, Any] | None = None,
 ) -> str:
     """Render the structural-evidence Markdown section. Pure + LLM-free so the
     no-silent-failure guarantee is unit-testable without a live model.
 
     Contract: ALWAYS returns a non-empty section.
       - records present → a bulleted list (citation token + title + source);
-      - else → the ``structural_note`` as a blockquote limitation;
-      - else (defensive — upstream always sets a note on empty) → a generic
-        explicit no-records line. Never an empty/absent section.
+      - else → the ``structural_note`` as a blockquote limitation.
+    Then, from the PyMOL SASA ``reasoning`` result (``bundle['structural_reasoning']``):
+      - if a visualization was rendered → embed the epitope-surface PNG;
+      - else if the SASA assessment was unavailable → surface the UNDERLYING reason
+        (the container note/traceback), never a silent "failed".
     """
     records = structural_records or []
     lines = [_STRUCTURAL_HEADING, ""]
@@ -195,13 +198,35 @@ def render_structural_section(
             title = datacite_title(content)
             source = h.get("structural_source") or "structure"
             lines.append(f"- **[Globus {subject}]** *{title or '(untitled)'}* — {source}")
-        return "\n".join(lines)
-    # No records — the absence MUST be named, never silently empty.
-    note = structural_note or (
-        "No PDB or EMDB structural records were found for this query in the "
-        "APECx structural corpus."
-    )
-    lines.append(f"> {note}")
+    else:
+        # No records — the absence MUST be named, never silently empty.
+        note = structural_note or (
+            "No PDB or EMDB structural records were found for this query in the "
+            "APECx structural corpus."
+        )
+        lines.append(f"> {note}")
+
+    # PyMOL SASA / surface-exposure outcome: the visualization, or the real failure reason.
+    if isinstance(reasoning, dict):
+        viz = reasoning.get("visualization_artifact")
+        if viz:
+            pdb = reasoning.get("pdb_id") or "structure"
+            lines.append("")
+            lines.append(f"![Epitope surface map — {pdb}]({viz})")
+        elif not reasoning.get("available"):
+            rnote = reasoning.get("note")
+            if rnote:
+                # Fenced block preserves the multi-line container traceback/stderr (the REAL
+                # reason) AND prevents any ``#``/``>`` in it from injecting document structure.
+                safe = str(rnote).replace("```", "ʼʼʼ")
+                lines += [
+                    "",
+                    "> **Surface-exposure (SASA) assessment unavailable** — underlying reason:",
+                    "",
+                    "```",
+                    safe,
+                    "```",
+                ]
     return "\n".join(lines)
 
 
@@ -583,7 +608,9 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     body = _insert_scope_caveat_if_unresolved(_ensure_contract_headers(narrative_body), bundle)
     analysis = render_analysis_steps_section(bundle)
     structural = render_structural_section(
-        bundle.get("structural_records"), bundle.get("structural_note")
+        bundle.get("structural_records"),
+        bundle.get("structural_note"),
+        reasoning=bundle.get("structural_reasoning"),
     )
     coverage = render_coverage_section(bundle)
     sources = render_sources_section(bundle)

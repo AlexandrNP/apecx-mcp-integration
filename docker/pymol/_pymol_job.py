@@ -206,6 +206,7 @@ def run(job: dict) -> dict:
 
     notes: list[str] = []
     assembly_id = 1 if structure_kind in ("assembly_1", "mmcif_assembly") else None
+    visualization_path: str | None = None
 
     with pymol2.PyMOL() as p:
         cmd = p.cmd
@@ -278,6 +279,32 @@ def run(job: dict) -> dict:
         contact_xyz = [ca_by_resi[r] for r in all_mapped_resis]
         contacts = _contact_map(all_mapped_resis, contact_xyz, contact_cutoff)
 
+        # Optional visualization: render the chain surface with the mapped epitope residues
+        # highlighted. Headless CPU ray-trace (no display/GL needed for cmd.png(ray=1)). MUST run
+        # INSIDE this `with pymol2.PyMOL()` block — `cmd` is bound to `p`'s session, which __exit__
+        # tears down. DEGRADE LOUD — a render failure (missing GL libs, etc.) must NOT lose the
+        # SASA result: record a note and leave visualization_path=None.
+        png_target = job.get("render_png")
+        if png_target:
+            try:
+                cmd.hide("everything", "work")
+                cmd.bg_color("white")
+                cmd.show("surface", f"work and chain {chain} and polymer.protein")
+                cmd.color("grey80", f"work and chain {chain}")
+                if all_mapped_resis:
+                    resi_sel = "+".join(str(r) for r in all_mapped_resis)
+                    epitope = f"work and chain {chain} and resi {resi_sel}"
+                    cmd.color("red", epitope)
+                    cmd.show("sticks", epitope)
+                cmd.orient(f"work and chain {chain}")
+                cmd.png(png_target, width=900, height=700, dpi=120, ray=1)
+                if os.path.exists(png_target):
+                    visualization_path = os.path.basename(png_target)
+                else:
+                    notes.append("visualization: cmd.png produced no file (headless render?)")
+            except Exception as exc:  # noqa: BLE001 — viz is best-effort; SASA must survive
+                notes.append(f"visualization render failed: {type(exc).__name__}: {exc}")
+
     exposed_sorted = sorted(
         exposed,
         key=lambda e: (e["resi"] if isinstance(e["resi"], int) else 1 << 30, str(e["resi"])),
@@ -291,6 +318,7 @@ def run(job: dict) -> dict:
         "pymol_version": version,
         "pdb_id": pdb_id,
         "structure_kind": structure_kind,
+        "visualization_path": visualization_path,
         "assembly_id": assembly_id,
         "n_assembly_copies": n_copies,
         "neighbor_cutoff": _NEIGHBOR_CUTOFF if structure_kind == "assembly_1" else None,
@@ -322,7 +350,17 @@ def main() -> int:
     try:
         result = run(job)
     except Exception as exc:  # noqa: BLE001 — surface ANY failure as a result, never crash silently
-        result = {"ok": False, "note": f"PyMOL job failed: {type(exc).__name__}: {exc}"}
+        import traceback
+
+        # Carry the REAL reason out of the container: type + message + full traceback. The host
+        # surfaces these so a SASA failure names WHY (import error, no assembly, no SASA, …)
+        # instead of a generic "PyMOL job returned no usable result".
+        result = {
+            "ok": False,
+            "error_type": type(exc).__name__,
+            "note": f"PyMOL job failed: {type(exc).__name__}: {exc}",
+            "traceback": traceback.format_exc(),
+        }
     with open(result_path, "w") as fh:
         json.dump(result, fh, sort_keys=True, indent=2)
     return 0

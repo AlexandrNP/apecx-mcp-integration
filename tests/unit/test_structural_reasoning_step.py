@@ -414,6 +414,26 @@ def test_degrade_loud_no_conserved_regions(tmp_path):
     assert "No conserved regions" in sr["note"]
 
 
+def test_analyze_one_surfaces_container_traceback(tmp_path):
+    """When the PyMOL job returns ok:false with a traceback, _analyze_one surfaces the REAL
+    reason (note + traceback) — not a generic 'no usable result'."""
+    step = _step(tmp_path)
+
+    async def _fake_run_container(pdb_id, regions):
+        return {
+            "ok": False,
+            "error_type": "ImportError",
+            "note": "PyMOL job failed: ImportError: libGL.so.1: cannot open shared object file",
+            "traceback": "Traceback (most recent call last):\n  ...\nImportError: libGL.so.1",
+        }
+
+    step._run_container = _fake_run_container  # type: ignore[method-assign]
+    raw, note = asyncio.run(step._analyze_one("2XFB", []))
+    assert raw is not None and raw["ok"] is False
+    assert "libGL.so.1" in note  # the real reason, surfaced
+    assert "Traceback (in PyMOL container)" in note  # the traceback is carried, not dropped
+
+
 def test_degrade_loud_docker_unavailable(tmp_path, monkeypatch):
     """Docker/image missing -> named note + passthrough, never raises (G127)."""
     step = _step(tmp_path)

@@ -67,6 +67,30 @@ def test_render_defensive_both_none():
     assert "No PDB or EMDB structural records" in sec
 
 
+def test_render_embeds_pymol_visualization():
+    """When the PyMOL SASA reasoning produced a PNG, the structural section embeds it."""
+    sec = render_structural_section(
+        [{"subject": "pdb:2XFB", "content": {"title": "CHIKV E1"}, "structural_source": "pdb"}],
+        None,
+        reasoning={"available": True, "pdb_id": "2XFB", "visualization_artifact": "/a/2XFB.png"},
+    )
+    assert "![Epitope surface map — 2XFB](/a/2XFB.png)" in sec
+
+
+def test_render_surfaces_sasa_failure_reason_not_silent():
+    """When SASA was unavailable, the UNDERLYING reason (container traceback) is rendered in a
+    fenced block — not a silent generic 'failed'."""
+    reason = "PyMOL job failed: ImportError: libGL.so.1\nTraceback (most recent call last):\n  ..."
+    sec = render_structural_section(
+        [],
+        "No structures.",
+        reasoning={"available": False, "pdb_id": "2XFB", "note": reason},
+    )
+    assert "Surface-exposure (SASA) assessment unavailable" in sec
+    assert "ImportError: libGL.so.1" in sec  # the REAL reason, not generic
+    assert "```" in sec  # fenced (preserves the multi-line traceback)
+
+
 # ----------------------- step process() (synthesis monkeypatched) -----------------------
 def _stage(tmp_path: Path) -> EvidenceReviewSynthesisStep:
     p = tmp_path / "review.yml"
