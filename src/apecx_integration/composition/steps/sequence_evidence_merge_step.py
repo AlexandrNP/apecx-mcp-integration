@@ -104,6 +104,15 @@ class SequenceEvidenceMergeStep(BaseStep):
             bundle["sequence_used_records"] = cons.get("records")
             bundle["alignment_fasta"] = cons.get("alignment_fasta")
             bundle["per_column_conservation"] = cons.get("per_column")
+            # Tiny fetched-vs-used summary on the bundle too (the disclosure render reads it
+            # directly rather than digging through stage_reports).
+            bundle["sequence_fetch_summary"] = {
+                "n_fetched": cons.get("n_fetched"),
+                "n_used": cons.get("n_sequences"),
+                "n_dropped_length_outlier": cons.get("n_dropped_length_outlier"),
+                "aligner": cons.get("aligner"),
+                "aligner_version": cons.get("aligner_version"),
+            }
             markdown = self._render_available(cons, sites, regions)
             data = {
                 "available": True,

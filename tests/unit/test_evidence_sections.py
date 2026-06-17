@@ -26,6 +26,7 @@ from apecx_integration.composition.steps.evidence_review_synthesis_step import (
     compose_evidence_markdown,
     render_coverage_section,
     render_followups_section,
+    render_provenance_disclosure_section,
     render_sources_section,
 )
 
@@ -269,6 +270,55 @@ def test_analysis_steps_section_lists_progression_in_order():
 
 
 # --------------------------- compose (order) ---------------------------
+def test_disclosure_section_names_sequences_and_structures_used():
+    bundle = {
+        "protein": "E1",
+        "sequence_used_records": [
+            {"id": "fig|37124.1.peg.1", "genome_name": "Chikungunya virus BK1371"},
+            {"id": "fig|37124.2.peg.1", "genome_name": "Chikungunya virus BK1361"},
+        ],
+        "sequence_fetch_summary": {
+            "n_fetched": 75,
+            "n_used": 2,
+            "n_dropped_length_outlier": 52,
+            "aligner": "mafft",
+            "aligner_version": "v7.526",
+        },
+        "structural_reasoning": {
+            "available": True,
+            "pdb_id": "9IXA",
+            "selection": {"pdb_id": "9IXA", "considered": 21, "reasons": ["matches E1"]},
+            "n_analyzed_structures": 2,
+            "analyzed_structures": [
+                {
+                    "pdb_id": "9IXA",
+                    "available": True,
+                    "chain": "B",
+                    "n_exposed": 122,
+                    "n_buried": 140,
+                },
+                {"pdb_id": "3N40", "available": False, "note": "no chain mapped the motif"},
+            ],
+        },
+    }
+    md = render_provenance_disclosure_section(bundle)
+    assert md.startswith("## Data actually used")
+    # fetched-vs-used disclosure + the actual strains
+    assert "75 fetched" in md and "52 dropped" in md
+    assert "Chikungunya virus BK1371" in md and "fig|37124.1.peg.1" in md
+    # selected structure + the used / rejected split with reasons
+    assert "9IXA" in md and "used (chain B" in md
+    assert "3N40" in md and "rejected: no chain mapped the motif" in md
+
+
+def test_disclosure_section_present_and_loud_when_legs_empty():
+    md = render_provenance_disclosure_section({"sequence_conservation_note": "no protein on query"})
+    assert md.startswith("## Data actually used")
+    assert "### Sequences used" in md and "### Structures used" in md
+    assert "no protein on query" in md  # loud, not blank
+    assert "No structure was analyzed" in md
+
+
 def test_compose_emits_five_sections_in_order():
     bundle = _realistic_bundle()
     append_stage_report(bundle, "context_assembly", 1, "Assembled 5 sources.")

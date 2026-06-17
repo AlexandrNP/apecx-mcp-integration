@@ -340,6 +340,95 @@ def render_sources_section(bundle: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+_DISCLOSURE_HEADING = "## Data actually used"
+
+
+def render_provenance_disclosure_section(bundle: dict[str, Any]) -> str:
+    """Render the ``## Data actually used`` section — full disclosure of WHICH sequences and
+    structures the analysis actually consumed (not just counts). Pure + LLM-free; ALWAYS
+    returns a non-empty section (degrade-loud when a leg produced nothing).
+
+    Sequences: fetched-vs-used counts + the per-strain identities aligned (genome_name + id).
+    Structures: the structure selected for SASA + why, and every candidate analyzed/rejected
+    with its chain, exposed-residue count, and rejection reason.
+    """
+    lines = [_DISCLOSURE_HEADING, ""]
+
+    # --- Sequences used -------------------------------------------------------------------
+    lines.append("### Sequences used")
+    records = bundle.get("sequence_used_records")
+    summary = bundle.get("sequence_fetch_summary") or {}
+    if isinstance(records, list) and records:
+        n_used = summary.get("n_used") or len(records)
+        n_fetched = summary.get("n_fetched")
+        n_dropped = summary.get("n_dropped_length_outlier")
+        aligner = summary.get("aligner") or "the aligner"
+        ver = summary.get("aligner_version")
+        head = f"Aligned **{n_used}** per-strain {_collapse_ws(bundle.get('protein') or 'protein')} sequence(s)"
+        if n_fetched:
+            head += f" (of {n_fetched} fetched from BV-BRC"
+            if n_dropped:
+                head += f"; {n_dropped} dropped as length outliers before alignment"
+            head += ")"
+        head += f" with {aligner}{f' {ver}' if ver else ''}."
+        lines.append(head)
+        lines.append("")
+        cap = 30
+        for r in records[:cap]:
+            if not isinstance(r, dict):
+                continue
+            strain = _collapse_ws(r.get("genome_name") or "(unnamed strain)")
+            acc = _collapse_ws(r.get("id") or "")
+            lines.append(f"- {strain}{f' — `{acc}`' if acc else ''}")
+        if len(records) > cap:
+            lines.append(f"- …and {len(records) - cap} more strain(s).")
+    else:
+        note = bundle.get("sequence_conservation_note") or (
+            "No per-strain sequences were aligned for this query (sequence conservation "
+            "unavailable — see the Analysis steps)."
+        )
+        lines.append(f"> {_collapse_ws(note)}")
+
+    # --- Structures used ------------------------------------------------------------------
+    lines += ["", "### Structures used"]
+    reasoning = bundle.get("structural_reasoning")
+    if isinstance(reasoning, dict) and reasoning.get("available"):
+        sel = reasoning.get("selection") if isinstance(reasoning.get("selection"), dict) else {}
+        why = "; ".join(sel.get("reasons") or []) or "best-ranked loadable structure"
+        considered = sel.get("considered")
+        n_analyzed = reasoning.get("n_analyzed_structures")
+        lines.append(
+            f"Selected **{sel.get('pdb_id') or reasoning.get('pdb_id')}** for SASA from "
+            f"{considered if considered is not None else 'the'} candidate(s) "
+            f"({_collapse_ws(why)}); analyzed {n_analyzed or 1} structure(s) for corroboration."
+        )
+        analyzed = reasoning.get("analyzed_structures")
+        if isinstance(analyzed, list) and analyzed:
+            lines.append("")
+            for a in analyzed:
+                if not isinstance(a, dict):
+                    continue
+                pdb = a.get("pdb_id") or "(unknown)"
+                used = a.get("available")
+                chain = a.get("chain")
+                if used:
+                    lines.append(
+                        f"- **{pdb}** — used (chain {chain or '?'}, "
+                        f"{a.get('n_exposed', 0)} exposed / {a.get('n_buried', 0)} buried)"
+                    )
+                else:
+                    reason = _collapse_ws(a.get("note") or "not analyzed")
+                    lines.append(f"- **{pdb}** — rejected: {reason}")
+    else:
+        note = bundle.get("structural_note") or (
+            "No structure was analyzed for surface exposure (structural reasoning unavailable "
+            "— see the Analysis steps)."
+        )
+        lines.append(f"> {_collapse_ws(note)}")
+
+    return "\n".join(lines)
+
+
 def render_analysis_steps_section(bundle: dict[str, Any]) -> str:
     """Deterministic ``## Analysis steps`` — the full pipeline progression, ordered.
 
@@ -596,7 +685,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     Order (the contract sections, in order, plus the always-present deterministic sections):
 
         # Answer · ## Cross-data reasoning · ## Integrated insight ·
-        ## Analysis steps · ## Structural evidence (PDB / EMDB) ·
+        ## Analysis steps · ## Data actually used · ## Structural evidence (PDB / EMDB) ·
         ## Evidence coverage · ## Sources and evidence · ## Follow-up questions
 
     Analysis-steps + Coverage + Sources + Follow-ups are deterministic, so those sections can
@@ -607,6 +696,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     """
     body = _insert_scope_caveat_if_unresolved(_ensure_contract_headers(narrative_body), bundle)
     analysis = render_analysis_steps_section(bundle)
+    disclosure = render_provenance_disclosure_section(bundle)
     structural = render_structural_section(
         bundle.get("structural_records"),
         bundle.get("structural_note"),
@@ -616,7 +706,8 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     sources = render_sources_section(bundle)
     followups = render_followups_section(query, bundle)
     return (
-        f"{body.rstrip()}\n\n{analysis}\n\n{structural}\n\n{coverage}\n\n{sources}\n\n{followups}\n"
+        f"{body.rstrip()}\n\n{analysis}\n\n{disclosure}\n\n{structural}\n\n"
+        f"{coverage}\n\n{sources}\n\n{followups}\n"
     )
 
 
