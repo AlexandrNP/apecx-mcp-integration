@@ -17,7 +17,7 @@ One of the four retrieval branches feeding the synthesis pipeline.
 Output ``publications`` is a list of DataCite-shaped publication
 dicts with the fields the downstream RagSynthesisStep expects::
 
-    {doi, title, authors, year, journal, pmid}
+    {doi, title, authors, year, journal, pmid, abstract}
 
 Operator-level hooks
 --------------------

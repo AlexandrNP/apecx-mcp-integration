@@ -198,6 +198,15 @@ def container_to_dict(container: Any) -> dict[str, Any]:
             if pmid:
                 break
 
+    # The abstract — parsed by the loader from <AbstractText> into the DataCite ``descriptions``
+    # list — was previously DROPPED here, so every downstream consumer (the synthesizer prompt
+    # AND the rendered report the desktop host LLM reads) saw titles only and could not perform
+    # real literature analysis. Carry it forward under ``abstract``.
+    abstract = ""
+    descriptions = getattr(container, "descriptions", None) or []
+    if descriptions:
+        abstract = getattr(descriptions[0], "description", "") or ""
+
     return {
         "doi": doi,
         "title": title,
@@ -205,6 +214,7 @@ def container_to_dict(container: Any) -> dict[str, Any]:
         "year": str(year) if year else "",
         "journal": journal,
         "pmid": pmid,
+        "abstract": abstract,
     }
 
 

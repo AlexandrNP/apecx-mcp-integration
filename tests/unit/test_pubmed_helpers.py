@@ -213,6 +213,7 @@ def _make_container(**overrides):
         "publisher": None,
         "identifier": None,
         "alternateIdentifiers": [],
+        "descriptions": [],
     }
     defaults.update(overrides)
     return SimpleNamespace(**defaults)
@@ -229,7 +230,21 @@ def test_container_to_dict_minimal_returns_empty_strings():
         "year": "",
         "journal": "",
         "pmid": "",
+        "abstract": "",
     }
+
+
+def test_container_to_dict_carries_abstract_from_descriptions():
+    """The abstract (parsed from <AbstractText> into DataCite descriptions) must be carried as
+    ``abstract`` — it was previously DROPPED, leaving the desktop LLM with titles only and no
+    article content to analyze."""
+    container = _make_container(
+        descriptions=[
+            SimpleNamespace(description="Neutralizing antibodies target the E1 fusion loop.")
+        ]
+    )
+    out = container_to_dict(container)
+    assert out["abstract"] == "Neutralizing antibodies target the E1 fusion loop."
 
 
 def test_container_to_dict_first_title_only():
