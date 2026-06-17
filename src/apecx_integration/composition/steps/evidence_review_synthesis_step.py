@@ -637,6 +637,76 @@ def render_cross_reference_section(bundle: dict[str, Any]) -> str:
     return "\n".join(lines).rstrip()
 
 
+_BREADTH_HEADING = "## Epitope breadth across strains/clades"
+
+
+def render_cross_clade_section(bundle: dict[str, Any]) -> str:
+    """Render ``## Epitope breadth across strains/clades`` — the broad-effectiveness signal.
+
+    Pure + LLM-free; ALWAYS non-empty. Reports, per conserved region, how many clades conserve it
+    (computed on the shared alignment by CrossCladeAggregateStep): PAN-CLADE regions are
+    broad-spectrum epitope candidates; clade-restricted ones would only cover some strains. When
+    the strains are homogeneous (one clade), says so loudly — that itself means the conservation
+    already reflects effectiveness across the sampled strains."""
+    breadth = bundle.get("cross_clade_breadth")
+    lines = [_BREADTH_HEADING, ""]
+    if not isinstance(breadth, dict) or not breadth.get("available"):
+        note = ((breadth or {}).get("note") if isinstance(breadth, dict) else None) or (
+            "Per-clade breadth was not computed (sequence conservation unavailable or strains "
+            "homogeneous)."
+        )
+        lines.append(f"> {_collapse_ws(note)}")
+        return "\n".join(lines)
+
+    n_clades = breadth.get("n_clades")
+    pan = breadth.get("pan_clade_regions") or []
+    restricted = breadth.get("clade_restricted_regions") or []
+    lines.append(
+        f"The aligned strains form **{n_clades}** clade(s). **{len(pan)}** conserved region(s) are "
+        f"PAN-CLADE — the SAME sequence conserved in every clade (broad-spectrum epitope "
+        f"candidates) — and **{len(restricted)}** are clade-restricted (conserved within clades "
+        f"but divergent between them; a single epitope would not cover all strains)."
+    )
+    lines.append("")
+    if pan:
+        lines.append("**Pan-clade (broad-spectrum) candidates:**")
+        for r in pan:
+            if not isinstance(r, dict):
+                continue
+            motif = str(r.get("consensus") or "")
+            motif_show = f"{motif[:40]}{'…' if len(motif) > 40 else ''}"
+            lines.append(
+                f"- cols {r.get('start')}–{r.get('end')} (len {r.get('length')}): `{motif_show}`"
+            )
+        lines.append("")
+    if restricted:
+        lines.append("**Clade-restricted (divergent between clades):**")
+        for r in restricted[:8]:
+            if not isinstance(r, dict):
+                continue
+            per = r.get("per_clade_consensus") or []
+            shown = " | ".join(f"{c[:18]}" for c in per[:n_clades]) if isinstance(per, list) else ""
+            lines.append(
+                f"- cols {r.get('start')}–{r.get('end')} (len {r.get('length')}) — per-clade: {shown}"
+            )
+        lines.append("")
+    if not pan and not restricted:
+        lines.append(
+            "> No conserved region met the per-clade threshold (the clades may be small or the "
+            "protein highly variable within clades)."
+        )
+    counts = breadth.get("per_clade_region_counts")
+    if counts:
+        detail = ", ".join(
+            f"clade {c.get('clade')}: {c.get('n_conserved_regions', '—')} region(s)"
+            if "error" not in c
+            else f"clade {c.get('clade')}: failed"
+            for c in counts
+        )
+        lines += ["", f"_Per-clade re-analysis (independent alignment): {detail}._"]
+    return "\n".join(lines)
+
+
 def render_analysis_steps_section(bundle: dict[str, Any]) -> str:
     """Deterministic ``## Analysis steps`` — the full pipeline progression, ordered.
 
@@ -894,8 +964,8 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
 
         # Answer · ## Cross-data reasoning · ## Integrated insight ·
         ## Analysis steps · ## Data actually used · ## Cross-referenced epitope candidates ·
-        ## Structural evidence (PDB / EMDB) · ## Evidence coverage · ## Sources and evidence ·
-        ## Follow-up questions
+        ## Epitope breadth across strains/clades · ## Structural evidence (PDB / EMDB) ·
+        ## Evidence coverage · ## Sources and evidence · ## Follow-up questions
 
     Analysis-steps + Coverage + Sources + Follow-ups are deterministic, so those sections can
     NEVER be omitted regardless of LLM behavior — a missing section is impossible by
@@ -907,6 +977,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     analysis = render_analysis_steps_section(bundle)
     disclosure = render_provenance_disclosure_section(bundle)
     crossref = render_cross_reference_section(bundle)
+    breadth = render_cross_clade_section(bundle)
     structural = render_structural_section(
         bundle.get("structural_records"),
         bundle.get("structural_note"),
@@ -916,7 +987,7 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     sources = render_sources_section(bundle)
     followups = render_followups_section(query, bundle)
     return (
-        f"{body.rstrip()}\n\n{analysis}\n\n{disclosure}\n\n{crossref}\n\n{structural}\n\n"
+        f"{body.rstrip()}\n\n{analysis}\n\n{disclosure}\n\n{crossref}\n\n{breadth}\n\n{structural}\n\n"
         f"{coverage}\n\n{sources}\n\n{followups}\n"
     )
 

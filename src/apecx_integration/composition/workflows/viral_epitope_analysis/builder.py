@@ -345,6 +345,25 @@ def _evidence_workflow_builder():
         output_data_units=_du("align_viz_output"),
         triggers=_trig("align_viz_input"),
     )
+    # PER-CLADE BREADTH (E-clade / Req 5 broad-effectiveness): group the aligned strains into
+    # clades (identity-clustering; BV-BRC has no lineage field) then compute, per conserved
+    # region, how many clades conserve it (pan-clade = broad-spectrum epitope candidate). Both
+    # steps are pure + degrade-loud (homogeneous strains → loud "N/A", never a raise), so they
+    # never strand the chain to rhea_genomic.
+    b.add_step(
+        "clade_grouping",
+        f"{_STEPS}.clade_grouping_step.CladeGroupingStep",
+        input_data_units=_du("clade_grouping_input"),
+        output_data_units=_du("clade_grouping_output"),
+        triggers=_trig("clade_grouping_input"),
+    )
+    b.add_step(
+        "cross_clade",
+        f"{_STEPS}.cross_clade_aggregate_step.CrossCladeAggregateStep",
+        input_data_units=_du("cross_clade_input"),
+        output_data_units=_du("cross_clade_output"),
+        triggers=_trig("cross_clade_input"),
+    )
     # RHEA GENOMIC-ANALYSIS leg: large-scale sequence-conservation via the Rhea MCP server
     # (MUSCLE multiple-sequence alignment of a representative per-strain subset, Parsl-distributed)
     # → real conserved-region signal, ADDITIVE to the local MAFFT leg above. Reads taxon_id/protein
@@ -475,7 +494,15 @@ def _evidence_workflow_builder():
     # feeds the structural-reasoning step, which maps conserved positions onto a structure and
     # then feeds the (further-enriched) bundle to the synthesis step.
     b.add_link("merge.merged_bundle", "align_viz.align_viz_input", link_type="direct")
-    b.add_link("align_viz.align_viz_output", "rhea_genomic.rhea_genomic_input", link_type="direct")
+    b.add_link(
+        "align_viz.align_viz_output", "clade_grouping.clade_grouping_input", link_type="direct"
+    )
+    b.add_link(
+        "clade_grouping.clade_grouping_output", "cross_clade.cross_clade_input", link_type="direct"
+    )
+    b.add_link(
+        "cross_clade.cross_clade_output", "rhea_genomic.rhea_genomic_input", link_type="direct"
+    )
     b.add_link("rhea_genomic.rhea_genomic_bundle", "reasoning.reasoning_input", link_type="direct")
     # C3: the structural-reasoning bundle flows through functional validation before synthesis.
     b.add_link("reasoning.reasoning_output", "functional.functional_input", link_type="direct")
