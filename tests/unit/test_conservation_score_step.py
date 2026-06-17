@@ -44,6 +44,32 @@ def test_conserved_columns_and_region(tmp_path):
     assert region["consensus"] == "MAK"
 
 
+def test_forwards_disclosure_fields_from_payload(tmp_path):
+    """The conservation step copies the per-strain disclosure fields + aligned FASTA from the
+    align payload into its result — the single mid-chain point where the whole "Data actually
+    used" disclosure could silently break (Phase 0). Pin it so removing a key fails CI.
+    """
+    step = _stage(tmp_path)
+    payload = {
+        "alignment_fasta": _ALN,
+        "records": [
+            {"id": "fig|1.1", "genome_name": "strain A", "product": "E1", "sequence": "MA"}
+        ],
+        "n_fetched": 9,
+        "n_dropped_length_outlier": 6,
+        "aligner": "mafft",
+        "aligner_version": "v7.526",
+    }
+    res = asyncio.run(step.process(payload))["conservation_result"]
+    assert res["records"] == payload["records"]
+    assert res["n_fetched"] == 9
+    assert res["n_dropped_length_outlier"] == 6
+    assert res["alignment_fasta"] == _ALN
+    assert res["aligner"] == "mafft" and res["aligner_version"] == "v7.526"
+    # per_column is produced by _score (include_per_column default True) — length == alignment.
+    assert len(res["per_column"]) == res["alignment_length"]
+
+
 def test_gap_and_identity_math(tmp_path):
     step = _stage(tmp_path)
     cols = asyncio.run(step.process({"alignment_fasta": _ALN}))["conservation_result"]["per_column"]

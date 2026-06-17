@@ -96,10 +96,22 @@ class SequenceEvidenceMergeStep(BaseStep):
             regions = cons.get("conserved_regions") or []
             bundle["conserved_sites"] = sites
             bundle["conserved_regions"] = regions
+            # Disclosure carry-forward: the per-strain records actually aligned, the aligned
+            # FASTA, and the per-column identity table — for the "Data actually used" section,
+            # the alignment-conservation visualization, and the per-clade loop. These are HEAVY
+            # (per_column ~ alignment_length dicts); they ride on the in-memory bundle for the
+            # render/viz steps but MUST be kept out of the durable JSON artifact (summaries only).
+            bundle["sequence_used_records"] = cons.get("records")
+            bundle["alignment_fasta"] = cons.get("alignment_fasta")
+            bundle["per_column_conservation"] = cons.get("per_column")
             markdown = self._render_available(cons, sites, regions)
             data = {
                 "available": True,
                 "n_sequences": cons.get("n_sequences"),
+                # Fetched-vs-used disclosure (summary counts only — not the record lists).
+                "n_fetched": cons.get("n_fetched"),
+                "n_used": cons.get("n_sequences"),
+                "n_dropped_length_outlier": cons.get("n_dropped_length_outlier"),
                 "n_conserved_columns": cons.get("n_conserved_columns", len(sites)),
                 "n_conserved_regions": len(regions),
                 "conservation_threshold": cons.get("conservation_threshold"),

@@ -120,8 +120,9 @@ def test_length_cluster_keeps_dominant_band_drops_outlier(tmp_path):
         for i in range(50)
     ]
     records.append({"id": "polyprotein", "sequence": _seq(1180), "product": "", "genome_name": ""})
-    kept = step_cluster(tmp_path)._select_length_cluster(records)
+    kept, dropped = step_cluster(tmp_path)._select_length_cluster(records)
     assert len(kept) == 50  # the whole ~495 cluster
+    assert dropped == 1  # the 1180aa outlier
     assert "polyprotein" not in {r["id"] for r in kept}  # the 1180aa outlier is dropped
     assert all(480 <= len(r["sequence"]) <= 510 for r in kept)
 
@@ -135,8 +136,9 @@ def test_length_cluster_drops_short_fragments(tmp_path):
         {"id": "full3", "sequence": _seq(492), "product": "", "genome_name": ""},
         {"id": "frag", "sequence": _seq(120), "product": "", "genome_name": ""},  # outlier band
     ]
-    kept = step_cluster(tmp_path)._select_length_cluster(records)
+    kept, dropped = step_cluster(tmp_path)._select_length_cluster(records)
     assert {r["id"] for r in kept} == {"full1", "full2", "full3"}
+    assert dropped == 1  # the 120aa fragment
 
 
 def test_length_cluster_genuinely_too_few_fails_loud(tmp_path):

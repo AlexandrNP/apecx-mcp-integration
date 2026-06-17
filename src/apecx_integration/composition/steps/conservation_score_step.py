@@ -95,7 +95,17 @@ class ConservationScoreStep(BaseStep):
         # E3-8 provenance: carry the aligner identity + version forward from the alignment
         # step so the per-run provenance record can name how the MSA was produced (the
         # conservation result is what flows downstream to the merge/report steps).
-        for key in ("aligner", "aligner_version"):
+        # Also carry the per-strain disclosure fields + the aligned FASTA so the merge step
+        # can surface which strains were used and render the conservation visualization
+        # (``per_column`` is already in ``result`` from ``_score`` when include_per_column).
+        for key in (
+            "aligner",
+            "aligner_version",
+            "records",
+            "n_fetched",
+            "n_dropped_length_outlier",
+            "alignment_fasta",
+        ):
             if key in payload:
                 result[key] = payload[key]
         self.nb_logger.info(

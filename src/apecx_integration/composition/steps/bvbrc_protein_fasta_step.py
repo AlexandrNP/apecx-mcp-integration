@@ -122,7 +122,9 @@ class BvbrcProteinFastaStep(BaseStep):
             )
         protein = protein.strip()
 
-        records = await asyncio.to_thread(self._fetch, taxon_id, protein, feature_type)
+        records, n_fetched, n_dropped_length_outlier = await asyncio.to_thread(
+            self._fetch, taxon_id, protein, feature_type
+        )
 
         if not records:
             raise ValueError(
@@ -152,6 +154,10 @@ class BvbrcProteinFastaStep(BaseStep):
                 "fasta_text": fasta_text,
                 "records": records,
                 "n_sequences": len(records),
+                # Fetched-vs-used disclosure: how many BV-BRC records resolved to a sequence
+                # (n_fetched) and how many were culled as length outliers before alignment.
+                "n_fetched": n_fetched,
+                "n_dropped_length_outlier": n_dropped_length_outlier,
                 "taxon_id": taxon_id,
                 "protein": protein,
                 "feature_type": feature_type,
@@ -172,7 +178,15 @@ class BvbrcProteinFastaStep(BaseStep):
         return input_data
 
     # ----- real BV-BRC data-API access (no mocks; FAIL-LOUD on error) -----
-    def _fetch(self, taxon_id: int, protein: str, feature_type: str) -> list[dict[str, Any]]:
+    def _fetch(
+        self, taxon_id: int, protein: str, feature_type: str
+    ) -> tuple[list[dict[str, Any]], int, int]:
+        """Return ``(records, n_fetched, n_dropped_length_outlier)``.
+
+        ``n_fetched`` = records that resolved to an AA sequence before the length-cluster cull;
+        ``n_dropped_length_outlier`` = records culled as length outliers. Both feed the report's
+        fetched-vs-used disclosure.
+        """
         features = self._query_features(taxon_id, protein, feature_type)
         # The BV-BRC query is a SUBSTRING match (eq(product,*X*)); drop records where the
         # protein term only matches mid-word (e.g. "structural" inside "nonstructural
@@ -226,11 +240,17 @@ class BvbrcProteinFastaStep(BaseStep):
                     "sequence": seq,
                 }
             )
-        records = self._select_length_cluster(records)
-        return records[: self._max_sequences]
+        n_with_sequence = len(records)  # records that resolved to an AA sequence (pre-cull)
+        records, n_dropped = self._select_length_cluster(records)
+        return records[: self._max_sequences], n_with_sequence, n_dropped
 
-    def _select_length_cluster(self, records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def _select_length_cluster(
+        self, records: list[dict[str, Any]]
+    ) -> tuple[list[dict[str, Any]], int]:
         """Keep the DOMINANT (most-populous) length cluster; drop outlier-length records.
+
+        Returns ``(kept, n_dropped)`` — the dropped count feeds the report's fetched-vs-used
+        disclosure (how many records were culled as length outliers before alignment).
 
         BV-BRC's ``product`` substring match for a protein (e.g. ``*envelope*``) pulls in records
         of heterogeneous length: the real target (~495aa envelope E), short partial-genome
@@ -249,7 +269,7 @@ class BvbrcProteinFastaStep(BaseStep):
         """
         if len(records) < 2:
             # The caller's own <2 guard reports the genuinely-too-few case with full context.
-            return records
+            return records, 0
 
         lengths = [len(r["sequence"]) for r in records]
         tol = self._length_cluster_tolerance
@@ -292,7 +312,7 @@ class BvbrcProteinFastaStep(BaseStep):
                 f"length-heterogeneous (partial genomes / mixed features) with no alignable cohort. "
                 f"Broaden the protein/feature_type or widen length_cluster_tolerance."
             )
-        return kept
+        return kept, dropped
 
     def _get_json(self, path: str, query: str) -> list[dict[str, Any]]:
         url = f"{self._api_base}/{path}/?{query}&http_accept=application/json"

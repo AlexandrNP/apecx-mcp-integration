@@ -144,9 +144,14 @@ class LocalMafftAlignStep(BaseStep):
         current payload so a cache HIT is byte-identical to a FRESH run for the same input. The
         ``aligner_version`` is deliberately NOT re-probed: it describes the alignment that was
         actually produced (the cached, older one on a post-upgrade HIT — the residual staleness).
+
+        ``records`` / ``n_fetched`` / ``n_dropped_length_outlier`` also ride through from the
+        live payload — they describe the per-strain input set actually fed to this alignment
+        (the report's fetched-vs-used disclosure), and like taxon_id/protein they belong to the
+        CURRENT input, not the cached alignment, so a cache HIT carries the right strains.
         """
         out = dict(alignment)
-        for key in ("taxon_id", "protein"):
+        for key in ("taxon_id", "protein", "records", "n_fetched", "n_dropped_length_outlier"):
             if key in payload:
                 out[key] = payload[key]
             else:

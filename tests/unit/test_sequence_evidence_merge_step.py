@@ -49,6 +49,26 @@ def _structural_bundle() -> dict:
 def _conservation_result() -> dict:
     return {
         "n_sequences": 12,
+        # Disclosure carry-forward (Phase 0): fetched-vs-used counts, per-strain records, the
+        # aligned FASTA, and the per-column identity table flow from the conservation result.
+        "n_fetched": 30,
+        "n_dropped_length_outlier": 18,
+        "records": [
+            {
+                "id": "fig|1.1.peg.1",
+                "product": "E1",
+                "genome_name": "CHIKV strain A",
+                "sequence": "MK",
+            },
+            {
+                "id": "fig|2.1.peg.1",
+                "product": "E1",
+                "genome_name": "CHIKV strain B",
+                "sequence": "MK",
+            },
+        ],
+        "alignment_fasta": ">a\nMK--\n>b\nMKL-\n",
+        "per_column": [{"column": c, "identity": 0.9} for c in range(30)],
         "alignment_length": 30,
         "conservation_threshold": 0.9,
         "mean_identity": 0.95,
@@ -84,6 +104,15 @@ def test_merge_folds_real_conservation_and_emits_stage_report(tmp_path):
     # Structured conservation threaded into the bundle for the later structural stage.
     assert out["conserved_regions"] == cons["conserved_regions"]
     assert out["conserved_sites"] == cons["conserved_sites"]
+    # Phase-0 disclosure carry-forward: per-strain records, aligned FASTA, per-column table
+    # land on the bundle (for the "Data actually used" section + the alignment viz + clade loop).
+    assert out["sequence_used_records"] == cons["records"]
+    assert out["alignment_fasta"] == cons["alignment_fasta"]
+    assert len(out["per_column_conservation"]) == cons["alignment_length"]
+    # Summary counts (NOT the heavy lists) reach the stage report.
+    seq_data = {r["stage"]: r for r in out["stage_reports"]}["sequence_conservation"]["data"]
+    assert seq_data["n_fetched"] == 30 and seq_data["n_used"] == 12
+    assert seq_data["n_dropped_length_outlier"] == 18
     # The base structural bundle is preserved (query + prior keys carried through).
     assert out["query"] == _structural_bundle()["query"]
     assert out["structural_note"]

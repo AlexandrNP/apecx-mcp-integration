@@ -106,8 +106,9 @@ class RheaMuscleAlignStep(BaseStep):
             "alignment_length": report_out.get("alignment_length"),
             "aligner": "muscle",
         }
-        # Pass through identifying context for the downstream report (parity with MAFFT step).
-        for key in ("taxon_id", "protein"):
+        # Pass through identifying context + the per-strain disclosure fields for the downstream
+        # report (parity with the MAFFT step's _with_live_context).
+        for key in ("taxon_id", "protein", "records", "n_fetched", "n_dropped_length_outlier"):
             if key in payload:
                 out[key] = payload[key]
         self.nb_logger.info(
