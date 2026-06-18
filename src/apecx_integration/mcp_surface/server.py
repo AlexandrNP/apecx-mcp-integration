@@ -322,6 +322,14 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
                 "MCP startup: rhea env autodiscovery — no changes (operator pre-set or no rhea repo found)"
             )
 
+    # Startup sweep: bound the per-run artifacts folder (a prior process may have left many dirs).
+    try:
+        from apecx_integration.mcp_surface.tools.eo_primitives import prune_artifacts
+
+        prune_artifacts()
+    except Exception as exc:  # noqa: BLE001 — a retention sweep must never block startup
+        log.warning("MCP startup: artifact retention sweep failed: %s", exc)
+
     from apecx_integration.infrastructure.orchestrator import (
         start_orchestrator_in_background_thread,
     )

@@ -33,6 +33,26 @@ If the autostart fails (binary not found, port conflict, migration
 error), the MCP server logs the autostart-log tail to its own stderr
 (which Claude Desktop captures) and exits with code `2`.
 
+### Keeping the stack (and RHEA) online — supervised launch
+
+RHEA's MCP server is spawned + kept online by the InfraOrchestrator for **apecx-mcp's
+lifetime** (torn down cleanly on stop via the atexit SIGTERM→SIGKILL above). In INTERACTIVE
+use, Claude Desktop is apecx-mcp's stdin client, so it stays alive for the session — RHEA stays
+online — and tears down on disconnect. For HEADLESS / server operation (running workflows
+programmatically while RHEA must stay up), a stdio server would exit on stdin-EOF, so use the
+reproducible supervised launcher:
+
+```bash
+scripts/serve_apecx_mcp.sh                        # infra + long-lived apecx-mcp (rhea kept online)
+APECX_SERVE_WITH_RHEA=1 scripts/serve_apecx_mcp.sh  # also run the one-time `apecx-setup rhea`
+```
+
+Run it under a supervisor (launchd/systemd/`nohup`) that restarts on exit. RHEA health on the
+server it manages: `GET http://localhost:3001/mcp/` → **406** = healthy (the correct MCP reply to
+a plain GET), **500** = backend down, **000** = not listening. When a RHEA tool is unavailable,
+`viral_epitope_analysis` does NOT fail — it degrades loud with a warning + `apecx-setup rhea`
+instructions and the rest of the analysis still completes.
+
 ## What this server is (and is not)
 
 **Is**: a thin MCP-stdio adapter over the apecx Control Plane HTTP

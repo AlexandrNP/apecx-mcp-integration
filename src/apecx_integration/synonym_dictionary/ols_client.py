@@ -28,6 +28,7 @@ from typing import Any
 
 import httpx
 
+from apecx_integration._bounded_cache import BoundedDict
 from apecx_integration.synonym_dictionary.enums import OntologyName
 
 log = logging.getLogger(__name__)
@@ -76,9 +77,11 @@ class OLSClient:
         self._inter_request_delay = inter_request_delay
         self._owns_client = client is None
         self._client = client or httpx.AsyncClient(timeout=timeout)
-        # In-process per-build caches.  Key shapes documented at use site.
-        self._term_cache: dict[tuple[str, str], dict[str, Any] | None] = {}
-        self._search_cache: dict[tuple[str, str], list[dict[str, Any]]] = {}
+        # In-process per-build caches.  Key shapes documented at use site. FIFO-bounded so a
+        # long-lived client (process-singleton) does not grow without limit across distinct
+        # lookups; a build with more unique terms than the cap simply re-fetches the oldest.
+        self._term_cache: BoundedDict = BoundedDict(maxsize=4096)
+        self._search_cache: BoundedDict = BoundedDict(maxsize=4096)
 
     async def __aenter__(self) -> OLSClient:
         return self

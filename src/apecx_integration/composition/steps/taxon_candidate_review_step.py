@@ -26,6 +26,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration._bounded_cache import BoundedDict
 from apecx_integration.agents._llm_config import preflight_llm_model
 from apecx_integration.agents._llm_factory import build_chat_llm
 from apecx_integration.composition.steps._bvbrc_cds import cds_count
@@ -39,8 +40,9 @@ _DEFAULT_PROMPT_FILENAME = "taxon_candidate_review_prompt.yml"
 
 # Process-lifetime memo of the per-query verdict (taxon_id, or None for a miss). The fallback is
 # expensive (LLM + several HTTP calls); an identical-query re-run reuses the verdict. Keyed by the
-# normalized query string. ``_clear_cache`` lets unit tests reset it between cases.
-_REVIEW_CACHE: dict[str, int | None] = {}
+# normalized query string. ``_clear_cache`` lets unit tests reset it between cases. FIFO-bounded
+# so a long-lived MCP server fielding many distinct queries does not grow without limit.
+_REVIEW_CACHE: BoundedDict = BoundedDict(maxsize=512)
 
 
 def _clear_cache() -> None:

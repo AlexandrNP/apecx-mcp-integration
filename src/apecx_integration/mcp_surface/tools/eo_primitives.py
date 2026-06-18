@@ -231,8 +231,41 @@ def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
 
         result["artifact_dir"] = str(run_dir)
         result["artifact_path"] = str(run_dir / "report.md")
+        # Bounded retention: keep only the N newest run dirs so the folder does not grow forever.
+        prune_artifacts(base)
     except Exception as exc:  # noqa: BLE001 — artifact write must never strand a completed run
         log.warning("artifact write failed for run %s: %s", run_id, exc)
+
+
+def prune_artifacts(base: Any = None, max_runs: int | None = None) -> None:
+    """Keep only the N newest run dirs under the artifacts base (FIFO by mtime). NEVER raises.
+
+    Bounds ``~/.apecx/artifacts`` (or ``$APECX_ARTIFACTS_DIR``) so a long-lived server does not
+    accumulate run folders without limit. Cap via ``$APECX_ARTIFACTS_MAX_RUNS`` (default 500).
+    Called after each artifact write and once at MCP startup (a stale-dir sweep)."""
+    import os as _os
+    import shutil as _shutil
+    from pathlib import Path as _Path
+
+    try:
+        if base is None:
+            base = _os.environ.get("APECX_ARTIFACTS_DIR") or (_Path.home() / ".apecx" / "artifacts")
+        base = _Path(base)
+        if max_runs is None:
+            try:
+                max_runs = int(_os.environ.get("APECX_ARTIFACTS_MAX_RUNS", "500"))
+            except ValueError:
+                max_runs = 500
+        if max_runs < 1 or not base.is_dir():
+            return
+        dirs = [d for d in base.iterdir() if d.is_dir()]
+        if len(dirs) <= max_runs:
+            return
+        dirs.sort(key=lambda d: d.stat().st_mtime)  # oldest first
+        for d in dirs[: len(dirs) - max_runs]:
+            _shutil.rmtree(d, ignore_errors=True)
+    except Exception as exc:  # noqa: BLE001 — pruning must never break a run / startup
+        log.warning("artifact prune failed: %s", exc)
 
 
 async def run_workflow(
