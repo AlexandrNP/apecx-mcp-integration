@@ -217,8 +217,9 @@ def _evidence_workflow_builder():
     # --- LLM-driven taxon-resolution FALLBACK (3 steps, fire ONLY when the dict resolver missed) ---
     # Each short-circuits to a pass-through the instant `resolve` already set an NCBITaxon
     # canonical_iri (the common dict-hit path), so on a hit they add ~0 cost. On a dict MISS:
-    # synonym_gen (LLM, degrade-loud if no LLM) -> bvbrc_search (rank taxa by hits) -> taxon_review
-    # (LLM picks the query-matching taxon + verifies BV-BRC CDS coverage, else a NAMED miss). The
+    # synonym_gen (LLM, degrade-loud if no LLM) -> bvbrc_search (rank taxa by exact CDS coverage) ->
+    # taxon_review (LLM filters to same-virus taxa, step picks the max-CDS one + verifies BV-BRC CDS
+    # coverage, else a NAMED miss; covered descendant clade beats a thin genus). The
     # review step finalizes the int taxon_id from canonical_iri so the sequence leg + gate consume
     # the SAME resolved taxon as the harmonized search (single resolution source).
     b.add_step(

@@ -61,8 +61,9 @@ def _step(tmp_path: Path, module: str, cls: str):
 
 
 @needs_bvbrc
-def test_bvbrc_taxonomy_search_ranks_real_taxa(tmp_path):
-    """Deterministic step, real BV-BRC: synonyms -> candidates ranked by genome hits."""
+def test_bvbrc_taxonomy_search_ranks_real_taxa_by_cds(tmp_path):
+    """Deterministic step, real BV-BRC: synonyms -> candidates ranked by EXACT CDS coverage
+    (the fetchable signal), tie-broken by genome count."""
     step = _step(
         tmp_path,
         "apecx_integration.composition.steps.bvbrc_taxonomy_search_step",
@@ -72,9 +73,28 @@ def test_bvbrc_taxonomy_search_ranks_real_taxa(tmp_path):
     out = asyncio.run(step.process({"bvbrc_search_input": bundle}))
     cands = out["taxon_candidates"]
     assert cands, "real BV-BRC should return at least one Lassa taxonomy candidate"
-    assert all({"taxon_id", "taxon_name", "hits"} <= set(c) for c in cands)
-    # ranked by hits desc
-    assert [c["hits"] for c in cands] == sorted((c["hits"] for c in cands), reverse=True)
+    assert all({"taxon_id", "taxon_name", "genomes", "cds"} <= set(c) for c in cands)
+    # ranked by cds desc (tie-break genomes desc): the per-candidate key is non-increasing.
+    keys = [(c["cds"], c["genomes"]) for c in cands]
+    assert keys == sorted(keys, reverse=True)
+
+
+@needs_bvbrc
+def test_bvbrc_search_surfaces_covered_clade_for_rotavirus(tmp_path):
+    """Coverage-maximizing rank, real BV-BRC: a genus-structured virus (rotavirus) surfaces a
+    descendant clade/species with substantial exact CDS as the TOP candidate — not the thin genus.
+    Numbers shift over time, so assert a threshold (top candidate has real fetchable coverage)."""
+    step = _step(
+        tmp_path,
+        "apecx_integration.composition.steps.bvbrc_taxonomy_search_step",
+        "BvbrcTaxonomySearchStep",
+    )
+    bundle = {"query": "rotavirus", "taxon_synonyms": ["Rotavirus", "Rotavirus A"]}
+    out = asyncio.run(step.process({"bvbrc_search_input": bundle}))
+    cands = out["taxon_candidates"]
+    assert cands, "real BV-BRC should return rotavirus taxonomy candidates"
+    # the top candidate is CDS-covered (well above min_cds) — the conservation leg can fetch it.
+    assert cands[0]["cds"] >= 1000, f"top rotavirus candidate thinly covered: {cands[0]}"
 
 
 @needs_bvbrc

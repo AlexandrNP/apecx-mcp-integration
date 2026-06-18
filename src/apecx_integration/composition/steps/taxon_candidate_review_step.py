@@ -22,13 +22,13 @@ import logging
 import re
 from typing import Any
 
-import requests
 from langchain_core.messages import HumanMessage, SystemMessage
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.agents._llm_config import preflight_llm_model
 from apecx_integration.agents._llm_factory import build_chat_llm
+from apecx_integration.composition.steps._bvbrc_cds import cds_count
 from apecx_integration.composition.steps.harmonized_search_execute_step import _iri_to_taxon_id
 from apecx_integration.composition.steps.taxon_synonym_generation_step import _load_system_prompt
 
@@ -52,14 +52,6 @@ def _already_resolved(bundle: dict[str, Any]) -> bool:
     """True when the deterministic dict resolver already won (the fallback is then skipped)."""
     iri = bundle.get("canonical_iri")
     return isinstance(iri, str) and "NCBITaxon" in iri
-
-
-def _parse_content_range_total(header: str | None) -> int:
-    """Parse the BV-BRC ``Content-Range: items a-b/N`` header, returning ``N`` (0 if absent)."""
-    if not header:
-        return 0
-    m = re.search(r"/\s*(\d+)\s*$", header)
-    return int(m.group(1)) if m else 0
 
 
 class TaxonCandidateReviewStepConfig(StepConfig):
@@ -124,7 +116,7 @@ class TaxonCandidateReviewStep(BaseStep):
                 bundle,
                 cached,
                 cand.get("taxon_name", "") if cand else "",
-                cand.get("hits") if cand else None,
+                cand.get("genomes") if cand else None,
                 cds=None,
             )
 
@@ -142,7 +134,8 @@ class TaxonCandidateReviewStep(BaseStep):
         try:
             llm = build_chat_llm(temperature=0.0, max_tokens=64)
             listing = "\n".join(
-                f"{c['taxon_id']} | {c.get('taxon_name', '')} ({c.get('hits', 0)} genomes)"
+                f"{c['taxon_id']} | {c.get('taxon_name', '')} "
+                f"({c.get('genomes', 0)} genomes, {c.get('cds', 0)} CDS)"
                 for c in candidates
                 if isinstance(c.get("taxon_id"), int)
             )
@@ -150,15 +143,26 @@ class TaxonCandidateReviewStep(BaseStep):
             resp = await asyncio.to_thread(
                 llm.invoke, [SystemMessage(content=self._system_prompt), HumanMessage(content=user)]
             )
-            chosen = self._parse_choice(getattr(resp, "content", "") or "", valid_ids)
+            matched = self._parse_matches(getattr(resp, "content", "") or "", valid_ids)
         except Exception as exc:  # noqa: BLE001 - optional LLM; degrade-loud, never raise
             log.warning("TaxonCandidateReviewStep %s: candidate review failed (%s)", self.name, exc)
             return self._miss(bundle, key, f"candidate review failed ({type(exc).__name__})")
 
-        if chosen is None:
+        if not matched:
             return self._miss(bundle, key, "no candidate matched the query")
 
-        # CDS-coverage gate: only promote a pick with real sequence coverage.
+        # COVERAGE-MAXIMIZING selection: among the candidates the LLM confirmed are the SAME virus,
+        # pick the one with the MOST exact CDS (the fetchable level). A genus and its clades both
+        # "match" the query, but only the covered clade yields sequences for the conservation leg —
+        # the LLM judges identity, the step maximizes coverage deterministically.
+        matched_cands = sorted(
+            (c for c in candidates if c.get("taxon_id") in matched),
+            key=lambda c: (-(c.get("cds") or 0), -(c.get("genomes") or 0), c["taxon_id"]),
+        )
+        winner = matched_cands[0]
+        chosen = winner["taxon_id"]
+
+        # Re-verify the winner's CDS coverage (freshness) before promoting.
         try:
             cds = await asyncio.to_thread(self._cds_count, chosen)
         except Exception as exc:  # noqa: BLE001 - degrade-loud; treat an unverifiable taxon as 0
@@ -168,20 +172,17 @@ class TaxonCandidateReviewStep(BaseStep):
                 chosen,
                 exc,
             )
-            cds = 0
+            cds = winner.get("cds") or 0
         if cds < self._min_cds:
             return self._miss(
-                bundle, key, f"chosen taxon {chosen} has {cds} CDS (< min_cds {self._min_cds})"
+                bundle,
+                key,
+                f"best matching taxon {chosen} has {cds} CDS (< min_cds {self._min_cds})",
             )
 
-        cand = self._find_candidate(bundle, chosen)
         _REVIEW_CACHE[key] = chosen
         return self._finalize_winner(
-            bundle,
-            chosen,
-            cand.get("taxon_name", "") if cand else "",
-            cand.get("hits") if cand else None,
-            cds=cds,
+            bundle, chosen, winner.get("taxon_name", ""), winner.get("genomes"), cds=cds
         )
 
     # ----- helpers -----
@@ -206,31 +207,25 @@ class TaxonCandidateReviewStep(BaseStep):
         return None
 
     @staticmethod
-    def _parse_choice(text: str, valid_ids: set[int]) -> int | None:
-        """Return the first integer in ``text`` that is a candidate taxon_id, else None.
+    def _parse_matches(text: str, valid_ids: set[int]) -> set[int]:
+        """Return the SET of candidate taxon_ids the LLM listed as the same virus as the query.
 
-        Handles the literal ``NONE`` and any unparseable / out-of-set output as None.
+        The genus AND its descendant clades/species are all "the virus", so the LLM may list
+        several; the step then maximizes CDS coverage among them. The literal ``NONE`` and any
+        unparseable / out-of-set output yield the empty set (a named miss).
         """
-        for tok in re.findall(r"\d+", text):
-            val = int(tok)
-            if val in valid_ids:
-                return val
-        return None
+        return {int(tok) for tok in re.findall(r"\d+", text) if int(tok) in valid_ids}
 
     def _cds_count(self, taxon_id: int) -> int:
-        """Total ``genome_feature`` CDS rows for a taxon, read from the Content-Range header."""
-        query = f"eq(taxon_id,{taxon_id})&eq(feature_type,CDS)&limit(1)"
-        url = f"{self._api_base}/genome_feature/?{query}&http_accept=application/json"
-        resp = requests.get(url, timeout=self._timeout)
-        resp.raise_for_status()
-        return _parse_content_range_total(resp.headers.get("Content-Range"))
+        """Exact ``genome_feature`` CDS count for a taxon (shared with the search step)."""
+        return cds_count(self._api_base, taxon_id, self._timeout)
 
     def _finalize_winner(
         self,
         bundle: dict[str, Any],
         taxon_id: int,
         name: str,
-        hits: int | None,
+        genomes: int | None,
         cds: int | None,
     ) -> dict[str, Any]:
         bundle["canonical_iri"] = f"http://purl.obolibrary.org/obo/NCBITaxon_{taxon_id}"
@@ -241,15 +236,15 @@ class TaxonCandidateReviewStep(BaseStep):
             "source": "llm-fallback",
             "taxon_id": taxon_id,
             "scientific_name": name,
-            "hits": hits,
+            "genomes": genomes,
             "cds": cds,
         }
         log.info(
-            "TaxonCandidateReviewStep %s: resolved query -> taxon_id=%d (%r, hits=%s, cds=%s)",
+            "TaxonCandidateReviewStep %s: resolved query -> taxon_id=%d (%r, genomes=%s, cds=%s)",
             self.name,
             taxon_id,
             name,
-            hits,
+            genomes,
             cds,
         )
         return bundle

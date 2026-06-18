@@ -21,11 +21,16 @@ import requests
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration.composition.steps._bvbrc_cds import cds_count
+
 log = logging.getLogger(__name__)
 
 _INPUT_KEY = "bvbrc_search_input"
 # Rows pulled per synonym from BV-BRC taxonomy (best-genome-coverage taxa first).
 _PER_SYNONYM_LIMIT = 5
+# Cap on how many distinct taxa get an exact-CDS probe (one HTTP call each), to bound cost on a
+# many-synonym run. The cap is applied to the genome-coverage-ranked taxa, so the richest are probed.
+_CDS_PROBE_CAP = 12
 
 
 def _already_resolved(bundle: dict[str, Any]) -> bool:
@@ -79,7 +84,7 @@ class BvbrcTaxonomySearchStep(BaseStep):
             return bundle
 
         synonyms = bundle.get("taxon_synonyms") or []
-        # taxon_id -> {"taxon_id", "taxon_name", "hits"}; keep the name from the max-genomes row.
+        # taxon_id -> {"taxon_id", "taxon_name", "genomes"}; keep the name from the max-genomes row.
         agg: dict[int, dict[str, Any]] = {}
         for syn in synonyms:
             if not isinstance(syn, str) or not syn.strip():
@@ -109,18 +114,39 @@ class BvbrcTaxonomySearchStep(BaseStep):
                 genomes = _as_int(r.get("genomes")) or 0
                 name = r.get("taxon_name") or ""
                 cur = agg.get(tid)
-                if cur is None or genomes > cur["hits"]:
-                    agg[tid] = {"taxon_id": tid, "taxon_name": name, "hits": genomes}
+                if cur is None or genomes > cur["genomes"]:
+                    agg[tid] = {"taxon_id": tid, "taxon_name": name, "genomes": genomes}
 
-        # Rank by genome coverage desc, tie-break taxon_id asc; keep top max_candidates.
-        ranked = sorted(agg.values(), key=lambda c: (-c["hits"], c["taxon_id"]))
+        # COVERAGE-MAXIMIZING rank: a genus can have the most GENOMES yet ~0 fetchable CDS at the
+        # exact taxon (the conservation leg fetches eq(taxon_id,X)&CDS), while a descendant
+        # clade/species holds the actual CDS (e.g. genus Norovirus 0 CDS vs clade GII 112k). So
+        # probe exact CDS for the top genome-coverage taxa and rank by CDS — surfacing the covered
+        # clade over the thin genus. Probes are bounded to _CDS_PROBE_CAP; a per-taxon error → cds=0.
+        by_genomes = sorted(agg.values(), key=lambda c: (-c["genomes"], c["taxon_id"]))
+        for i, cand in enumerate(by_genomes):
+            if i >= _CDS_PROBE_CAP:
+                cand["cds"] = 0  # beyond the probe cap (lowest genome coverage) — not CDS-ranked
+                continue
+            try:
+                cand["cds"] = await asyncio.to_thread(self._cds_count, cand["taxon_id"])
+            except Exception as exc:  # noqa: BLE001 - degrade-loud; unverifiable taxon ranks last
+                log.warning(
+                    "BvbrcTaxonomySearchStep %s: CDS probe for taxon %d failed (%s); cds=0.",
+                    self.name,
+                    cand["taxon_id"],
+                    exc,
+                )
+                cand["cds"] = 0
+        ranked = sorted(by_genomes, key=lambda c: (-c["cds"], -c["genomes"], c["taxon_id"]))
         bundle["taxon_candidates"] = ranked[: self._max_candidates]
         log.info(
-            "BvbrcTaxonomySearchStep %s: %d synonym(s) -> %d distinct taxa -> %d candidate(s)",
+            "BvbrcTaxonomySearchStep %s: %d synonym(s) -> %d distinct taxa -> %d candidate(s) "
+            "(top: %s)",
             self.name,
             len(synonyms),
             len(agg),
             len(bundle["taxon_candidates"]),
+            bundle["taxon_candidates"][0] if bundle["taxon_candidates"] else None,
         )
         return bundle
 
@@ -148,6 +174,10 @@ class BvbrcTaxonomySearchStep(BaseStep):
                 f"{path}: {type(data).__name__}"
             )
         return data
+
+    def _cds_count(self, taxon_id: int) -> int:
+        """Exact ``genome_feature`` CDS count for a taxon (shared with the review step)."""
+        return cds_count(self._api_base, taxon_id, self._timeout)
 
 
 __all__ = ["BvbrcTaxonomySearchStep", "BvbrcTaxonomySearchStepConfig"]

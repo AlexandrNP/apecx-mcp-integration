@@ -1,4 +1,7 @@
-"""Unit tests for TaxonCandidateReviewStep — LLM pick + CDS-coverage gate (fallback step 3).
+"""Unit tests for TaxonCandidateReviewStep — LLM same-virus filter + max-CDS selection (step 3).
+
+The LLM returns the SET of candidates that are the same virus as the query; the step then picks
+the highest-CDS member of that set (coverage-maximizing) and re-verifies its CDS >= min_cds.
 
 LLM mocked by monkeypatching ``build_chat_llm`` / ``preflight_llm_model`` on the step's module;
 the Content-Range CDS count mocked by monkeypatching the step's ``_cds_count`` (no unittest.mock).
@@ -51,8 +54,8 @@ def _stage(tmp_path: Path) -> TaxonCandidateReviewStep:
 
 def _candidates():
     return [
-        {"taxon_id": 37124, "taxon_name": "Chikungunya virus", "hits": 200},
-        {"taxon_id": 9999, "taxon_name": "Other virus", "hits": 5},
+        {"taxon_id": 37124, "taxon_name": "Chikungunya virus", "genomes": 200, "cds": 50},
+        {"taxon_id": 9999, "taxon_name": "Other virus", "genomes": 5, "cds": 3},
     ]
 
 
@@ -87,9 +90,30 @@ def test_pick_winner_with_cds_coverage(tmp_path, monkeypatch):
     res = out["taxon_resolution"]
     assert res["source"] == "llm-fallback"
     assert res["taxon_id"] == 37124
-    assert res["hits"] == 200
+    assert res["genomes"] == 200
     assert res["cds"] == 50
     assert mod._REVIEW_CACHE["chikungunya virus"] == 37124
+
+
+def test_selects_max_cds_among_matched(tmp_path, monkeypatch):
+    """COVERAGE-MAXIMIZING: the LLM confirms BOTH a thin genus and a covered clade are the same
+    virus; the step picks the higher-CDS clade deterministically — NOT the LLM's first-listed id."""
+    monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
+    # LLM lists the genus FIRST, the clade SECOND — listing order must not decide the winner.
+    monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("142786\n122929"))
+    step = _stage(tmp_path)
+    cands = [
+        {"taxon_id": 142786, "taxon_name": "Norovirus", "genomes": 9000, "cds": 0},
+        {"taxon_id": 122929, "taxon_name": "Norovirus GII", "genomes": 4000, "cds": 112058},
+    ]
+    monkeypatch.setattr(step, "_cds_count", lambda tid: {142786: 0, 122929: 112058}[tid])
+    bundle = {"query": "norovirus", "taxon_candidates": cands}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert out["taxon_id"] == 122929
+    assert out["resolved_species_name"] == "Norovirus GII"
+    assert out["taxon_resolution"]["cds"] == 112058
+    assert out["taxon_resolution"]["genomes"] == 4000
+    assert mod._REVIEW_CACHE["norovirus"] == 122929
 
 
 def test_reject_all_is_a_named_miss(tmp_path, monkeypatch):
