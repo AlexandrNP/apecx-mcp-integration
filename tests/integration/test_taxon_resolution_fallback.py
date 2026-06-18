@@ -189,18 +189,27 @@ def test_full_fallback_chain_picks_covered_clade_not_thin_genus(tmp_path, query)
     """Real LLM + real BV-BRC, GENUS-STRUCTURED viruses: this exercises the multi-match -> max-CDS
     selection branch. The candidate set contains BOTH a thin genus (~0 exact CDS) and a richer
     descendant clade; the LLM confirms several are the same virus, and the step MUST select the
-    high-CDS clade — never settle on the genus the conservation leg can't fetch.
+    HIGHEST-CDS one — never settle on the genus the conservation leg can't fetch.
 
-    Threshold (not exact count) since BV-BRC numbers drift. A degrade-loud miss is acceptable (weak
-    local model); but if it resolves, it MUST be a covered clade — resolving to a <1000-CDS taxon
-    for norovirus/rotavirus is exactly the coverage-max bug this guards against."""
+    The assertion is RELATIVE, not an absolute floor: the resolver must promote the highest-CDS
+    candidate it saw (which is provably never the ~0-CDS genus), and that taxon need only clear
+    production's min_cds. This deliberately avoids a magic threshold — an absolute floor like
+    `cds >= 1000` would conflate "beat the thin genus" (the real intent) with "has lots of data"
+    and would WRONGLY fail a genus-structured virus whose richest clade is legitimately sparse.
+    A degrade-loud miss stays acceptable (a weak local model may match nothing)."""
     bundle = _run_fallback_chain(tmp_path, query)
-    if bundle.get("taxon_id") is not None:
-        assert bundle["resolution_status"] == "llm_fallback"
-        cds = bundle["taxon_resolution"]["cds"]
-        assert cds >= 1000, (
-            f"{query!r} resolved to a thinly-covered taxon (the coverage-max bug): "
-            f"{bundle['taxon_resolution']}"
-        )
-    else:
+    if bundle.get("taxon_id") is None:
         assert bundle["taxon_resolution"]["taxon_id"] is None  # honest named miss
+        return
+    assert bundle["resolution_status"] == "llm_fallback"
+    cands = bundle["taxon_candidates"]
+    assert cands, "a fallback resolution must have gone through BV-BRC candidates"
+    # coverage-max contract: the promoted taxon IS the highest-CDS candidate (compare by identity,
+    # robust to BV-BRC counts drifting a hair between the rank probe and the winner re-verify).
+    top = max(cands, key=lambda c: c["cds"])
+    assert bundle["taxon_id"] == top["taxon_id"], (
+        f"{query!r}: resolver did not pick the richest covered clade (the coverage-max bug): "
+        f"resolved={bundle['taxon_id']}, candidates={[(c['taxon_id'], c['cds']) for c in cands]}"
+    )
+    # production contract: a promoted taxon clears min_cds — covered, however sparsely.
+    assert bundle["taxon_resolution"]["cds"] >= 2
