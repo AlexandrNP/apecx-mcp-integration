@@ -14,6 +14,7 @@ Two coordinate-distinct jobs, both PURE so they unit-test without a workflow:
 
 from __future__ import annotations
 
+import itertools
 from typing import Any
 
 
@@ -29,6 +30,39 @@ def pairwise_identity(a: str, b: str) -> float:
         if ca == cb:
             matches += 1
     return (matches / comparable) if comparable else 0.0
+
+
+def identity_distribution(
+    aligned: list[tuple[str, str]], *, max_pairs: int = 2000
+) -> dict[str, Any]:
+    """Summary of pairwise identity across the aligned sequences — evidence for the clade verdict.
+
+    Returns ``{"n", "min", "median", "max", "sampled"}``. When the number of pairs exceeds
+    ``max_pairs`` the pairs are sampled deterministically (evenly strided over the ordered pair
+    list) so the stat is bounded and reproducible. ``n < 2`` → zeros + ``sampled=False`` (no pairs).
+    """
+    n = len(aligned)
+    if n < 2:
+        return {"n": n, "min": 0.0, "median": 0.0, "max": 0.0, "sampled": False}
+    seqs = [s for _, s in aligned]
+    total = n * (n - 1) // 2
+    sampled = total > max_pairs
+    # Lazy over combinations (no O(n^2) list materialized); when sampling, keep a bounded set of
+    # strided pair-indices so both compute AND memory stay O(max_pairs), deterministically.
+    pairs = itertools.combinations(range(n), 2)
+    if sampled:
+        stride = total / max_pairs
+        targets = {int(k * stride) for k in range(max_pairs)}
+        vals = sorted(
+            pairwise_identity(seqs[i], seqs[j])
+            for idx, (i, j) in enumerate(pairs)
+            if idx in targets
+        )
+    else:
+        vals = sorted(pairwise_identity(seqs[i], seqs[j]) for i, j in pairs)
+    m = len(vals)
+    median = vals[m // 2] if m % 2 else (vals[m // 2 - 1] + vals[m // 2]) / 2.0
+    return {"n": n, "min": vals[0], "median": median, "max": vals[-1], "sampled": sampled}
 
 
 def cluster_by_identity(
@@ -208,4 +242,9 @@ def _runs(
     return out
 
 
-__all__ = ["clade_conservation_breadth", "cluster_by_identity", "pairwise_identity"]
+__all__ = [
+    "clade_conservation_breadth",
+    "cluster_by_identity",
+    "identity_distribution",
+    "pairwise_identity",
+]

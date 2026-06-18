@@ -26,7 +26,11 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
-from apecx_integration.composition.steps._clade_grouping import cluster_by_identity
+from apecx_integration.composition.steps._clade_grouping import (
+    cluster_by_identity,
+    identity_distribution,
+)
+from apecx_integration.composition.steps._proceed import append_proceed_note
 from apecx_integration.composition.steps._stage_report import append_stage_report
 from apecx_integration.composition.steps.conservation_score_step import _parse_fasta
 
@@ -35,6 +39,9 @@ log = logging.getLogger(__name__)
 _INPUT_KEY = "clade_grouping_input"
 _STAGE = "clade_grouping"
 _STAGE_ORDER = 5  # after sequence(1)/structural(2)/reasoning(3)/functional(4)
+# Stricter threshold for the adaptive sub-structure probe when the default yields <2 clades:
+# does finer structure exist just below the clade line? Reported, never promoted to clades.
+_ADAPTIVE_PROBE_THRESHOLD = 0.98
 
 
 class CladeGroupingStepConfig(StepConfig):
@@ -121,12 +128,72 @@ class CladeGroupingStep(BaseStep):
         ungrouped: list[str] = clustering["ungrouped"]
 
         if len(clades) < 2:
+            dist = identity_distribution(aligned)
+            # Adaptive probe: does finer structure exist just above the clade threshold? Reported
+            # as evidence, NOT promoted to clades (breadth stays computed only on real ≥2 clades).
+            probe = cluster_by_identity(
+                aligned, threshold=_ADAPTIVE_PROBE_THRESHOLD, min_size=self._min_clade_size
+            )
+            n_subgroups = len(probe["clades"])
+            n_ungrouped = len(ungrouped)
+            thr = self._clade_identity_threshold
+            # Discriminate on whether a dominant cluster actually formed — NOT on the median (the
+            # median is EVIDENCE; outliers can drag it below thr even when one real clade exists).
+            if len(clades) == 1:
+                # A dominant homogeneous clade formed — a POSITIVE finding: its conserved regions
+                # are broadly effective across that clade by construction.
+                sub = (
+                    f"; fine-scale sub-structure exists at {_ADAPTIVE_PROBE_THRESHOLD:.0%} "
+                    f"({n_subgroups} sub-groups) but below the clade threshold"
+                    if n_subgroups >= 2
+                    else ""
+                )
+                outliers = (
+                    f"; {n_ungrouped} divergent outlier(s) fall outside it" if n_ungrouped else ""
+                )
+                note = (
+                    f"{dist['n']} strains form a single homogeneous clade (median pairwise identity "
+                    f"{dist['median']:.0%}, threshold {thr:.0%}){outliers} → conserved regions are "
+                    f"broadly effective across the clade by construction{sub}"
+                )
+                append_proceed_note(
+                    bundle,
+                    stage="clade grouping",
+                    what="the strains form a single homogeneous clade",
+                    why=f"{dist['n']} strains, median pairwise identity {dist['median']:.0%}",
+                    action=(
+                        "treat the conserved regions as broadly effective across the clade; to "
+                        "assess sub-strain breadth, supply more divergent strains or a more "
+                        "variable gene"
+                        + (
+                            f" (fine-scale structure appears at {_ADAPTIVE_PROBE_THRESHOLD:.0%})"
+                            if n_subgroups >= 2
+                            else ""
+                        )
+                    ),
+                    severity="info",
+                )
+            else:
+                # Zero clades: no cluster of ≥min_size formed — too divergent, or too few replicates
+                # per lineage.
+                note = (
+                    f"the {dist['n']} strains do not form any cluster of ≥{self._min_clade_size} at "
+                    f"the {thr:.0%} threshold (median pairwise identity {dist['median']:.0%}) — too "
+                    f"divergent or too few replicates per lineage; per-clade breadth not applicable"
+                )
+                append_proceed_note(
+                    bundle,
+                    stage="clade grouping",
+                    what="could not resolve any clade",
+                    why=f"{dist['n']} strains, median pairwise identity {dist['median']:.0%}",
+                    action=(
+                        "supply more strains per lineage for this protein/taxon to enable "
+                        "per-clade breadth analysis"
+                    ),
+                    severity="blocked",
+                )
             return self._degrade(
-                bundle,
-                f"strains are homogeneous at the {self._clade_identity_threshold:.0%} identity "
-                f"threshold ({len(clades)} clade) — per-clade breadth not applicable; the "
-                f"sequence-conservation across all strains already reflects effectiveness",
-                n_clades=len(clades),
+                bundle, note, n_clades=len(clades), distribution=dist, n_subgroups=n_subgroups
             )
 
         # Cap clades (bound the per-clade loop runtime); fold the excess into a note.
@@ -177,17 +244,34 @@ class CladeGroupingStep(BaseStep):
         log.info("CladeGroupingStep %s: %s", self.name, md)
         return bundle
 
-    def _degrade(self, bundle: dict[str, Any], note: str, n_clades: int = 0) -> dict[str, Any]:
-        """Loud single-group/empty fallback — never raise, never silently empty."""
+    def _degrade(
+        self,
+        bundle: dict[str, Any],
+        note: str,
+        n_clades: int = 0,
+        distribution: dict[str, Any] | None = None,
+        n_subgroups: int | None = None,
+    ) -> dict[str, Any]:
+        """Loud single-group/empty fallback — never raise, never silently empty.
+
+        ``distribution`` (pairwise-identity stats) and ``n_subgroups`` (the adaptive-probe count)
+        are carried into the summary so the cross-clade aggregate / synthesis can EVIDENCE the
+        single-clade verdict rather than merely assert it.
+        """
+        summary: dict[str, Any] = {"n_clades": n_clades, "note": note}
+        if distribution is not None:
+            summary["identity_distribution"] = distribution
+        if n_subgroups is not None:
+            summary["n_subgroups_at_098"] = n_subgroups
         bundle["clade_groups"] = []
         bundle["clade_fastas"] = []
-        bundle["clade_grouping"] = {"n_clades": n_clades, "note": note}
+        bundle["clade_grouping"] = summary
         append_stage_report(
             bundle,
             stage=_STAGE,
             order=_STAGE_ORDER,
             markdown=f"Per-clade grouping: {note}.",
-            data={"n_clades": n_clades, "note": note},
+            data=summary,
         )
         log.info("CladeGroupingStep %s: degrade — %s", self.name, note)
         return bundle

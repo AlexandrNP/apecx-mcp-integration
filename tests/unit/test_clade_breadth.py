@@ -13,6 +13,7 @@ from pathlib import Path
 from apecx_integration.composition.steps._clade_grouping import (
     clade_conservation_breadth,
     cluster_by_identity,
+    identity_distribution,
     pairwise_identity,
 )
 from apecx_integration.composition.steps.clade_grouping_step import CladeGroupingStep
@@ -158,3 +159,63 @@ def test_cross_clade_step_not_applicable_single_clade(tmp_path):
     }
     out = asyncio.run(_aggregate_stage(tmp_path).process(bundle))
     assert out["cross_clade_breadth"]["available"] is False
+
+
+# --- Phase B: evidence the clade verdict + adaptive probe ---
+
+
+def test_identity_distribution_math():
+    # _A vs _A = 1.0; _A vs _C = 0.5 (cols 0-9 match, 10-19 differ).
+    d = identity_distribution([("a1", _A), ("a2", _A), ("c1", _C)])
+    assert d["n"] == 3 and d["sampled"] is False
+    # pairs: a1-a2=1.0, a1-c1=0.5, a2-c1=0.5 → sorted [0.5,0.5,1.0] → median 0.5, max 1.0, min 0.5
+    assert d["min"] == 0.5 and d["median"] == 0.5 and d["max"] == 1.0
+    assert identity_distribution([("x", _A)])["n"] == 1  # <2 → zeros, no crash
+
+
+def test_homogeneous_clade_is_positive_finding_with_evidence(tmp_path):
+    homo_fasta = "".join(f">{i}\n{_A}\n" for i in ("x", "y", "z"))
+    records = [{"id": i, "sequence": _A} for i in ("x", "y", "z")]
+    bundle = {"query": "q", "alignment_fasta": homo_fasta, "sequence_used_records": records}
+    out = asyncio.run(_grouping_stage(tmp_path).process(bundle))
+    # the verdict is EVIDENCED (distribution + adaptive-probe subgroup count carried)
+    grouping = out["clade_grouping"]
+    assert grouping["identity_distribution"]["median"] == 1.0
+    assert "n_subgroups_at_098" in grouping
+    assert "single homogeneous clade" in grouping["note"]
+    assert "broadly effective across the clade" in grouping["note"]
+    # a POSITIVE (info) proceed note, not a blocked one
+    notes = out["proceed_notes"]
+    assert len(notes) == 1 and notes[0]["severity"] == "info"
+    assert "homogeneous" in notes[0]["what"]
+
+
+def test_divergent_singletons_yield_blocked_proceed_note(tmp_path):
+    # three mutually-divergent sequences → no clusters of >=2, median identity low → blocked
+    div = [("a", _A), ("c", _C), ("w", "W" * 20)]
+    fasta = "".join(f">{i}\n{s}\n" for i, s in div)
+    records = [{"id": i, "sequence": s} for i, s in div]
+    bundle = {"query": "q", "alignment_fasta": fasta, "sequence_used_records": records}
+    out = asyncio.run(_grouping_stage(tmp_path).process(bundle))
+    assert out["clade_groups"] == []
+    notes = out["proceed_notes"]
+    assert len(notes) == 1 and notes[0]["severity"] == "blocked"
+    assert "could not resolve" in notes[0]["what"]
+
+
+def test_cross_clade_not_applicable_carries_identity_distribution(tmp_path):
+    bundle = {
+        "query": "q",
+        "alignment_fasta": _FASTA,
+        "clade_groups": [],
+        "clade_grouping": {
+            "note": "homogeneous",
+            "identity_distribution": {"n": 3, "min": 0.97, "median": 0.99, "max": 1.0},
+            "n_subgroups_at_098": 0,
+        },
+    }
+    out = asyncio.run(_aggregate_stage(tmp_path).process(bundle))
+    b = out["cross_clade_breadth"]
+    assert b["available"] is False
+    assert b["identity_distribution"]["median"] == 0.99
+    assert b["n_subgroups_at_098"] == 0

@@ -85,16 +85,25 @@ class CrossCladeAggregateStep(BaseStep):
         alignment_fasta = bundle.get("alignment_fasta")
 
         if len(clade_groups) < 2 or not isinstance(alignment_fasta, str):
-            note = (bundle.get("clade_grouping") or {}).get(
-                "note"
-            ) or "fewer than 2 clades — broad-effectiveness breadth not applicable"
-            bundle["cross_clade_breadth"] = {"available": False, "note": note}
+            grouping = bundle.get("clade_grouping") or {}
+            note = (
+                grouping.get("note")
+                or "fewer than 2 clades — broad-effectiveness breadth not applicable"
+            )
+            # Carry the EVIDENCE for the verdict (identity distribution + adaptive-probe subgroup
+            # count) so the synthesis can show WHY breadth was not assessed, not just assert it.
+            breadth = {"available": False, "note": note}
+            if "identity_distribution" in grouping:
+                breadth["identity_distribution"] = grouping["identity_distribution"]
+            if "n_subgroups_at_098" in grouping:
+                breadth["n_subgroups_at_098"] = grouping["n_subgroups_at_098"]
+            bundle["cross_clade_breadth"] = breadth
             append_stage_report(
                 bundle,
                 stage=_STAGE,
                 order=_STAGE_ORDER,
                 markdown=f"Cross-clade breadth: {note}.",
-                data={"available": False, "note": note},
+                data=dict(breadth),
             )
             return bundle
 
