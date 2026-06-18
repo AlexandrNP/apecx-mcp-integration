@@ -956,6 +956,9 @@ def collect_structured_output(bundle: dict[str, Any]) -> dict[str, Any]:
         "protein": bundle.get("protein"),
         # sequence-conservation leg (MAFFT → conserved positions/regions across strains)
         "conserved_regions": bundle.get("conserved_regions") or bundle.get("conserved_sites") or [],
+        # basename of the raw MAFFT alignment FASTA artifact (written by AlignmentVizStep); the
+        # lightweight string the MCP-layer gather uses to locate the file for <run_id>/tool_outputs/.
+        "alignment_fasta_artifact": bundle.get("alignment_fasta_artifact"),
         # structural leg (PDB/EMDB records, each carrying its SASA exposed/buried classification
         # from the containerized PyMOL reasoning step when present)
         "structural_records": bundle.get("structural_records") or [],

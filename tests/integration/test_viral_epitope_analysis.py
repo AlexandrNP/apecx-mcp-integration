@@ -653,3 +653,34 @@ def test_design_hitl_loop_e2e():
     ]
     assert token in out3["markdown"]  # approval provenance carried through
     assert "verified server-side" in out3["markdown"]  # honest: token WAS validated
+
+
+@needs_llm_seq
+def test_evidence_e2e_writes_per_run_artifacts_folder(tmp_path, monkeypatch):
+    """The completed run gathers a self-contained per-run folder: report.md (with the conservation
+    figure inlined via a relative ``figures/`` path), the figure as PNG + a real vector PDF, and
+    split-per-tool native outputs incl. the raw alignment FASTA. Gated on the sequence leg
+    (mafft + BV-BRC + LLM) — that leg produces the alignment + conservation figure."""
+    from pathlib import Path
+
+    from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
+
+    monkeypatch.setenv("APECX_ARTIFACTS_DIR", str(tmp_path))
+    out = asyncio.run(run_workflow("viral_epitope_analysis", {"query": _QUERY, "protein": "E1"}))
+    assert out["status"] == "ok", out
+
+    run_dir = Path(out["artifact_dir"])
+    assert run_dir.is_dir()
+    report = (run_dir / "report.md").read_text()
+    assert report.strip()
+    # data.json + the raw alignment captured as a native FASTA file
+    assert (run_dir / "data.json").exists()
+    assert (run_dir / "tool_outputs" / "alignment.fasta").read_text().startswith(">")
+    assert (run_dir / "tool_outputs" / "conserved_regions.json").exists()
+    # conservation figure gathered as PNG + a real vector PDF; the report inlines the relative path
+    pdfs = list(run_dir.glob("figures/conservation_*.pdf"))
+    assert list(run_dir.glob("figures/conservation_*.png")), sorted(
+        p.name for p in run_dir.glob("figures/*")
+    )
+    assert pdfs and pdfs[0].read_bytes()[:4] == b"%PDF"
+    assert "](figures/" in report

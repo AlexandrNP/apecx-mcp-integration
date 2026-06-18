@@ -56,6 +56,26 @@ def test_png_renders_to_a_file_when_matplotlib_present(tmp_path):
     assert out.exists() and out.stat().st_size > 0
 
 
+def test_render_conservation_png_writes_pdf_sibling(tmp_path):
+    # The PNG is inlined in the report; a co-located vector .pdf sibling is written for the
+    # durable per-run folder. The function still returns the PNG basename (the PDF rides along
+    # by naming convention).
+    name = render_conservation_png(
+        _PER_COLUMN,
+        _REGIONS,
+        _ALN,
+        protein="E1",
+        n_sequences=3,
+        dest_dir=tmp_path,
+        basename="cons_test",
+    )
+    assert name == "cons_test.png"
+    pdf = tmp_path / "cons_test.pdf"
+    assert pdf.exists() and pdf.stat().st_size > 0
+    # A real PDF (vector), not a renamed PNG.
+    assert pdf.read_bytes()[:4] == b"%PDF"
+
+
 def test_png_returns_none_on_no_per_column(tmp_path):
     # No per-column data → degrade-loud to None (caller renders the text track), never raise.
     assert render_conservation_png(None, _REGIONS, _ALN, dest_dir=tmp_path) is None
@@ -85,6 +105,30 @@ def test_step_threads_text_and_artifact_onto_bundle(tmp_path, monkeypatch):
     # A stage report was appended; the bundle passed through.
     assert out["query"] == "chikv E1"
     assert any(r["stage"] == "alignment_viz" for r in out["stage_reports"])
+
+
+def test_alignment_viz_step_records_fasta_artifact(tmp_path, monkeypatch):
+    # The step stashes the raw MAFFT alignment as a durable native artifact and records only its
+    # (content-addressed) basename on the bundle — the channel the MCP-layer gather uses to place
+    # alignment.fasta into <run_id>/tool_outputs/.
+    monkeypatch.setenv("APECX_ARTIFACTS_DIR", str(tmp_path))
+    bundle = {
+        "query": "chikv E1",
+        "protein": "E1",
+        "taxon_id": 37124,
+        "per_column_conservation": _PER_COLUMN,
+        "conserved_regions": _REGIONS,
+        "alignment_fasta": _ALN,
+        "sequence_fetch_summary": {"n_used": 3},
+        "stage_reports": [],
+    }
+    out = asyncio.run(_stage(tmp_path).process(bundle))
+    fa = out["alignment_fasta_artifact"]
+    assert fa.startswith("alignment_37124_E1_") and fa.endswith(".fasta")
+    written = tmp_path / fa
+    assert written.exists()
+    assert written.read_text().startswith(">")  # native FASTA, byte-for-byte the alignment
+    assert written.read_text() == _ALN
 
 
 def test_step_degrades_loud_with_no_conservation(tmp_path):

@@ -107,31 +107,109 @@ _PRIMITIVES: list[dict[str, str]] = [
 ]
 
 
-def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
-    """Write the workflow's markdown report (+ structured data) to a DURABLE run-keyed file and
-    set ``result['artifact_path']``.
+def _write_tool_outputs(tool_dir: Any, data: Any, base: Any) -> None:
+    """Split the resolved structured DataShape into per-tool NATIVE files under ``tool_outputs/``.
 
-    The markdown is the user-facing deliverable; writing it to disk means it SURVIVES the LLM /
-    MCP client discarding or summarising the tool result — the user (or operator) can open the
-    file directly. ``<APECX_ARTIFACTS_DIR or ~/.apecx/artifacts>/<run_id>.md`` for the report,
-    ``<run_id>.json`` for the structured ``data_preview`` when present. Never raises — an
-    artifact-write failure must not strand a run whose science completed."""
+    Each write is best-effort so one failure does not lose the others. The raw alignment FASTA is
+    copied from the content-addressed file the composition layer wrote (only its basename rides
+    the lightweight handle, by ``collect_structured_output``)."""
+    import json as _json
+    import shutil as _shutil
+
+    parts = data.get("parts") if isinstance(data, dict) else None
+    if not isinstance(parts, dict):
+        return
+
+    def _dump(name: str, obj: Any) -> None:
+        try:
+            (tool_dir / name).write_text(_json.dumps(obj, indent=2, default=str), encoding="utf-8")
+        except Exception as exc:  # noqa: BLE001 — one native file failing keeps the rest
+            log.warning("tool_output write failed for %s: %s", name, exc)
+
+    _dump("conserved_regions.json", parts.get("conserved_regions") or [])
+    _dump(
+        "structural_sasa.json",
+        {
+            "structural_records": parts.get("structural_records") or [],
+            "structural_reasoning": parts.get("structural_reasoning"),
+        },
+    )
+    _dump("publications.json", parts.get("publications") or [])
+    fasta_name = parts.get("alignment_fasta_artifact")
+    if fasta_name:
+        src = base / str(fasta_name)
+        if src.exists():
+            try:
+                _shutil.copy2(src, tool_dir / "alignment.fasta")
+            except Exception as exc:  # noqa: BLE001 — best-effort native copy
+                log.warning("alignment.fasta copy failed: %s", exc)
+
+
+def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
+    """Gather a completed run's deliverables into a DURABLE per-run folder and set
+    ``result['artifact_dir']`` + ``result['artifact_path']``.
+
+    Layout under ``<APECX_ARTIFACTS_DIR or ~/.apecx/artifacts>/<run_id>/``:
+      * ``report.md``   — the markdown report; inline image refs rewritten to ``figures/<name>``.
+      * ``figures/``    — each figure the report inlines (PNG), plus a co-located vector ``.pdf``
+                          sibling when one exists (matplotlib conservation plots; the raster PyMOL
+                          surface has none, so it stays PNG-only).
+      * ``data.json``   — the FULL structured DataShape (handle-resolved; preview fallback).
+      * ``tool_outputs/`` — split-per-tool native files (conserved_regions.json,
+                          structural_sasa.json, publications.json, alignment.fasta).
+
+    The folder makes each run a self-contained, file-by-file-openable deliverable that SURVIVES the
+    LLM / MCP client discarding the tool result. Never raises — an artifact-write failure must not
+    strand a run whose science completed."""
     md = result.get("markdown")
     if not (md and str(md).strip() and run_id):
         return
     try:
         import json as _json
         import os as _os
+        import re as _re
+        import shutil as _shutil
         from pathlib import Path as _Path
 
         base = _Path(
             _os.environ.get("APECX_ARTIFACTS_DIR") or (_Path.home() / ".apecx" / "artifacts")
         )
-        base.mkdir(parents=True, exist_ok=True)
-        md_path = base / f"{run_id}.md"
-        md_path.write_text(str(md), encoding="utf-8")
-        # Write the FULL structured data — resolve the data_handle to the complete DataShape
-        # (data_preview is keys-only). Falls back to data_preview when there is no handle.
+        run_dir = base / str(run_id)
+        figures_dir = run_dir / "figures"
+        tool_dir = run_dir / "tool_outputs"
+        figures_dir.mkdir(parents=True, exist_ok=True)
+        tool_dir.mkdir(parents=True, exist_ok=True)
+
+        # Gather figures: copy each LOCAL image the report inlines (and any vector .pdf sibling)
+        # into figures/, then rewrite the markdown ref to the relocated path so the folder is
+        # self-contained. Refs with a scheme or sub-path (external URLs) are left untouched.
+        def _relocate(m):
+            ref = m.group(1).strip()
+            if "://" in ref or "/" in ref:
+                return m.group(0)
+            src = base / ref
+            if not src.exists():
+                return m.group(0)
+            try:
+                _shutil.copy2(src, figures_dir / src.name)
+            except Exception as exc:  # noqa: BLE001 — this figure failing keeps the rest + report
+                log.warning("figure copy failed for %s: %s", ref, exc)
+                return m.group(0)
+            # The vector PDF sibling is a bonus (matplotlib figures only); a PDF-copy failure must
+            # NOT undo the PNG's relocation + ref rewrite — that would leave a broken link + orphan.
+            pdf = src.with_suffix(".pdf")
+            if pdf.exists():
+                try:
+                    _shutil.copy2(pdf, figures_dir / pdf.name)
+                except Exception as exc:  # noqa: BLE001 — bonus PDF; the PNG rewrite still stands
+                    log.warning("figure PDF sibling copy failed for %s: %s", pdf.name, exc)
+            return m.group(0).replace(f"]({m.group(1)})", f"](figures/{src.name})")
+
+        md_text = _re.sub(r"!\[[^\]]*\]\(([^)]+)\)", _relocate, str(md))
+        (run_dir / "report.md").write_text(md_text, encoding="utf-8")
+
+        # Resolve the FULL structured data — handle → complete DataShape (data_preview is
+        # keys-only); falls back to data_preview when there is no handle / it won't resolve.
         data: Any = None
         handle = result.get("data_handle")
         if handle:
@@ -145,10 +223,13 @@ def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
         else:
             data = result.get("data_preview")
         if data is not None:
-            (base / f"{run_id}.json").write_text(
+            (run_dir / "data.json").write_text(
                 _json.dumps(data, indent=2, default=str), encoding="utf-8"
             )
-        result["artifact_path"] = str(md_path)
+            _write_tool_outputs(tool_dir, data, base)
+
+        result["artifact_dir"] = str(run_dir)
+        result["artifact_path"] = str(run_dir / "report.md")
     except Exception as exc:  # noqa: BLE001 — artifact write must never strand a completed run
         log.warning("artifact write failed for run %s: %s", run_id, exc)
 
@@ -814,14 +895,16 @@ async def apecx_capabilities() -> dict[str, Any]:
                 "The result dict's 'markdown' field is the FINISHED, user-facing report (the "
                 "server writes it in BOTH modes — it is NOT a scaffold for you to fill in). "
                 "PRESENT this markdown to the user: show it, do not summarise it away or replace "
-                "it with a shorter version. It is also saved on disk at 'artifact_path' so the "
-                "user can open it directly."
+                "it with a shorter version. It is also saved on disk as report.md inside a "
+                "self-contained per-run folder ('artifact_dir'; 'artifact_path' points at the "
+                "report.md) so the user can open it directly."
             ),
             "step_3_structured_data": (
-                "Machine-readable results are in 'data_preview' (full data in the '<run_id>.json' "
-                "next to artifact_path): conserved regions, structural records with SASA, ranked "
-                "candidates, counts. Use it for follow-ups; the markdown stays the primary "
-                "deliverable shown to the user."
+                "Machine-readable results are in 'data_preview' (full data in 'data.json' inside "
+                "the run folder 'artifact_dir', alongside split-per-tool native files under "
+                "tool_outputs/ — conserved_regions.json, structural_sasa.json, publications.json, "
+                "alignment.fasta — and figures/ holding the conservation plot as PNG + vector PDF). "
+                "Use it for follow-ups; the markdown stays the primary deliverable shown to the user."
             ),
             "if_it_refuses": (
                 "If the result has an 'error' field, relay it + its remedy (e.g. a missing "

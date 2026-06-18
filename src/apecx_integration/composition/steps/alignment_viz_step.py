@@ -23,6 +23,7 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.composition.steps._alignment_viz import (
+    _artifacts_dir,
     render_conservation_png,
     render_conservation_text,
 )
@@ -87,12 +88,35 @@ class AlignmentVizStep(BaseStep):
             per_column, regions, protein=protein, n_sequences=n_used
         )
 
+        # Content-address key by taxon+protein; the figure/fasta basenames append a data digest.
+        taxon = bundle.get("taxon_id")
+        safe = re.sub(r"[^A-Za-z0-9]+", "_", f"{taxon}_{protein}").strip("_") or "conservation"
+
+        # Stash the raw MAFFT alignment as a durable NATIVE artifact (content-addressed by the
+        # alignment bytes) so the per-run folder carries the actual tool output, not just the plot.
+        # Only the lightweight BASENAME rides the bundle → the durable handle; the MCP-layer gather
+        # moves the file into <run_id>/tool_outputs/alignment.fasta. Independent of whether conserved
+        # regions were found. Best-effort: a write failure never strands the chain.
+        if alignment_fasta:
+            try:
+                fa_digest = hashlib.sha256(alignment_fasta.encode("utf-8", "ignore")).hexdigest()[
+                    :10
+                ]
+                fa_path = _artifacts_dir() / f"alignment_{safe}_{fa_digest}.fasta"
+                fa_path.write_text(alignment_fasta, encoding="utf-8")
+                bundle["alignment_fasta_artifact"] = fa_path.name
+            except Exception as exc:  # noqa: BLE001 — raw-artifact write is best-effort
+                log.warning(
+                    "AlignmentVizStep %s: alignment fasta write failed (%s: %s).",
+                    self.name,
+                    type(exc).__name__,
+                    exc,
+                )
+
         # Best-effort PNG (None when matplotlib absent / no data / render error).
         artifact = None
         if regions:
             self.emit_progress(f"rendering conservation visualization ({len(regions)} regions)")
-            taxon = bundle.get("taxon_id")
-            safe = re.sub(r"[^A-Za-z0-9]+", "_", f"{taxon}_{protein}").strip("_") or "conservation"
             # CONTENT-ADDRESS the PNG by the alignment (+ regions) it plots, NOT just taxon+protein:
             # two runs of the same virus+protein can align a DIFFERENT strain subset, and the
             # report .md is run_id-keyed. A non-content basename would let an older report embed a

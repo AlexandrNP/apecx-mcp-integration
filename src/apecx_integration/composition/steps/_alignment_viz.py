@@ -7,7 +7,8 @@ Two renderers, both PURE (no step/framework state) so they unit-test without a w
   degrade-loud floor: the report always carries *some* conservation visualization.
 * ``render_conservation_png`` — a matplotlib conservation plot (per-column identity track with
   conserved-region bands + a sequence logo of the top conserved region) written as a PNG
-  artifact. matplotlib is an OPTIONAL extra (``pip install '.[viz]'``); the function
+  artifact (inlined in the report), plus a co-located vector ``.pdf`` sibling for the durable
+  per-run artifacts folder. matplotlib is an OPTIONAL extra (``pip install '.[viz]'``); the function
   lazy-imports it INSIDE the body and pins the headless ``Agg`` backend BEFORE pyplot, so a
   clean install without the extra (or a headless server) degrades to ``None`` + one loud log
   line — never a crash, never a broken image link.
@@ -232,6 +233,17 @@ def render_conservation_png(
         fig.tight_layout()
         dest = (dest_dir or _artifacts_dir()) / f"{basename}.png"
         fig.savefig(dest, dpi=120, bbox_inches="tight")
+        # Vector PDF sibling for the durable per-run artifacts folder. matplotlib renders true
+        # vector here (the same figure object), so it is free; the MCP-layer gather picks the
+        # sibling up by naming convention — which is exactly why only vector (matplotlib) figures
+        # get a PDF and the raster PyMOL surface stays PNG-only. Best-effort: a PDF failure must
+        # NOT lose the inlined PNG (the deliverable), so it degrades loud and the PNG return stands.
+        try:
+            fig.savefig(dest.with_suffix(".pdf"), bbox_inches="tight")
+        except Exception as exc:  # noqa: BLE001 — PDF is a bonus; the PNG is the deliverable
+            log.warning(
+                "render_conservation_png: PDF sibling failed (%s: %s).", type(exc).__name__, exc
+            )
         plt.close(fig)
         if dest.exists() and dest.stat().st_size > 0:
             return dest.name
