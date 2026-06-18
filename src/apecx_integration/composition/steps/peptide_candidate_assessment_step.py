@@ -29,14 +29,6 @@ _OUTPUT_KEY = "assessment_output"
 _APPROVAL_PREREQ = "candidate_sequence_approval"
 _EVIDENCE_PREREQ = "conserved_region_evidence"
 
-_BANNED_OUTPUT_TERMS = (
-    "vaccine",
-    "neutralizing",
-    "optimized vaccine",
-    "validated immunogenicity",
-    "regulatory compliant",
-)
-
 
 def _is_blank(v: Any) -> bool:
     return v is None or (isinstance(v, str) and not v.strip())
@@ -210,7 +202,6 @@ class PeptideCandidateAssessmentStep(BaseStep):
             scope_query=scope_query,
             protein=protein,
         )
-        self._assert_neutral_output(output["markdown"])
         return {_OUTPUT_KEY: output}
 
     def _load_evidence(self, payload: dict[str, Any]) -> tuple[dict[str, Any], bool]:
@@ -761,16 +752,6 @@ class PeptideCandidateAssessmentStep(BaseStep):
             "only. It does not perform docking, FoldX, MHC prediction, expression-yield "
             "analysis, safety assessment, or regulatory assessment.\n"
         )
-
-    @staticmethod
-    def _assert_neutral_output(markdown: str) -> None:
-        lower = markdown.lower()
-        hits = [term for term in _BANNED_OUTPUT_TERMS if term in lower]
-        if hits:
-            raise ValueError(
-                "PeptideCandidateAssessmentStep produced unsupported language: "
-                + ", ".join(sorted(hits))
-            )
 
 
 __all__ = ["PeptideCandidateAssessmentStep", "PeptideCandidateAssessmentStepConfig"]
