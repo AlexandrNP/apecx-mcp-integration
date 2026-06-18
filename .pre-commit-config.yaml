@@ -54,3 +54,19 @@ repos:
         entry: .venv/bin/python scripts/lint_workflow_yamls.py --quiet
         language: system
         pass_filenames: false
+
+      # Hard review gate (commit-msg stage): BLOCKS a non-trivial commit whose
+      # message has no `Reviewed:` trailer recording the self-review (necessity /
+      # minimality / readability / DRY / what-was-deleted). The shared script lives
+      # at the WORKSPACE level next to review_policy_check.py (which it reuses); the
+      # `../` resolves from both this repo checkout and any wt-* worktree (siblings of
+      # .claude/). INSTALL the stage once: `pre-commit install --hook-type commit-msg`.
+      - id: review-gate
+        name: "Non-trivial commits carry a Reviewed: trailer (review gate)"
+        entry: .venv/bin/python ../.claude/scripts/review_gate.py
+        language: system
+        stages: [commit-msg]
+        always_run: true
+        # MUST be true for commit-msg stage: pre-commit passes the commit-message
+        # file path AS the filename. With pass_filenames:false the script gets no
+        # argv[1] and silently no-ops (verified — the gate then never blocks).
