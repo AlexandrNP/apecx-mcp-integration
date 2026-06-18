@@ -200,3 +200,50 @@ workflows:
     output_envelope_key: workflow_output
     settle_ms: 500
     timeout_seconds: 120.0
+
+  - tool_name: epitope_combination_feasibility_assessment
+    description: |
+      Follow-up assessment for considering an approved candidate peptide and additional submitted
+      epitopes together as an evidence-limited epitope combination. It consumes the data_handle from
+      the approved candidate-peptide assessment plus caller-supplied epitopes, then reports
+      high-level support, missing validation, and approval status.
+
+      Use this after the candidate-peptide assessment has already returned an approved data_handle.
+      The workflow is deterministic and does not produce a combined sequence, epitope order, linker,
+      construct-design instructions, or operational recommendation.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.epitope_combination_feasibility_assessment.builder
+      function: build_epitope_combination_feasibility_assessment_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        evidence_data_handle:
+          type: string
+          description: "Optional data handle from the upstream evidence workflow."
+        evidence_bundle:
+          type: object
+          description: "Inline evidence Bundle payload; use only when no handle is available."
+        candidate_assessment_handle:
+          type: string
+          description: "Data handle from the approved candidate-peptide assessment."
+        candidate_assessment_bundle:
+          type: object
+          description: "Inline approved candidate-peptide Bundle; use only when no handle is available."
+        additional_epitopes:
+          type: array
+          description: "Additional epitopes with source metadata, coordinates, and optional sequence."
+          items:
+            type: object
+        assessment_question:
+          type: string
+          description: "Optional follow-up assessment question used for approval scoping."
+        design_approval_id:
+          type: string
+          description: "Approval token required before epitope-level combination output is released."
+      required: []
+    input_envelope_key: combination_request
+    output_envelope_key: workflow_output
+    settle_ms: 500
+    timeout_seconds: 120.0
