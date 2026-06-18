@@ -60,6 +60,36 @@ def _step(tmp_path: Path, module: str, cls: str):
     return getattr(importlib.import_module(module), cls).from_config(str(p))
 
 
+_CHAIN = [
+    (
+        "apecx_integration.composition.steps.taxon_synonym_generation_step",
+        "TaxonSynonymGenerationStep",
+        "synonym_gen_input",
+    ),
+    (
+        "apecx_integration.composition.steps.bvbrc_taxonomy_search_step",
+        "BvbrcTaxonomySearchStep",
+        "bvbrc_search_input",
+    ),
+    (
+        "apecx_integration.composition.steps.taxon_candidate_review_step",
+        "TaxonCandidateReviewStep",
+        "taxon_review_input",
+    ),
+]
+
+
+def _run_fallback_chain(tmp_path: Path, query: str) -> dict:
+    """Drive synonym_gen -> bvbrc_search -> taxon_review on a fresh cache for one query."""
+    from apecx_integration.composition.steps.taxon_candidate_review_step import _clear_cache
+
+    _clear_cache()
+    bundle: dict = {"query": query}
+    for module, cls, key in _CHAIN:
+        bundle = asyncio.run(_step(tmp_path, module, cls).process({key: bundle}))
+    return bundle
+
+
 @needs_bvbrc
 def test_bvbrc_taxonomy_search_ranks_real_taxa_by_cds(tmp_path):
     """Deterministic step, real BV-BRC: synonyms -> candidates ranked by EXACT CDS coverage
@@ -141,34 +171,36 @@ def test_fallback_chain_short_circuits_when_already_resolved(tmp_path):
 def test_full_fallback_chain_resolves_real_dict_miss(tmp_path):
     """Real LLM + real BV-BRC: a bundle with NO canonical_iri runs the whole chain and resolves to
     a covered taxon, OR a named miss — never a wrong silently-promoted taxon."""
-    from apecx_integration.composition.steps.taxon_candidate_review_step import _clear_cache
-
-    _clear_cache()
-    bundle: dict = {"query": "Lassa virus glycoprotein conserved epitopes"}
-    for module, cls, key in [
-        (
-            "apecx_integration.composition.steps.taxon_synonym_generation_step",
-            "TaxonSynonymGenerationStep",
-            "synonym_gen_input",
-        ),
-        (
-            "apecx_integration.composition.steps.bvbrc_taxonomy_search_step",
-            "BvbrcTaxonomySearchStep",
-            "bvbrc_search_input",
-        ),
-        (
-            "apecx_integration.composition.steps.taxon_candidate_review_step",
-            "TaxonCandidateReviewStep",
-            "taxon_review_input",
-        ),
-    ]:
-        step = _step(tmp_path, module, cls)
-        bundle = asyncio.run(step.process({key: bundle}))
+    bundle = _run_fallback_chain(tmp_path, "Lassa virus glycoprotein conserved epitopes")
     # Lassa is well-covered in BV-BRC — the chain should resolve it to a real arenavirus taxon
     # with CDS coverage (NOT a wrong organism). If the local model is too weak it may miss, which
     # is acceptable (degrade-loud) — but it must NEVER promote a non-arenavirus.
     if bundle.get("taxon_id") is not None:
         assert bundle["resolution_status"] == "llm_fallback"
         assert bundle["taxon_resolution"]["cds"] >= 2
+    else:
+        assert bundle["taxon_resolution"]["taxon_id"] is None  # honest named miss
+
+
+@needs_bvbrc
+@needs_llm
+@pytest.mark.parametrize("query", ["norovirus epitopes", "rotavirus conserved sites"])
+def test_full_fallback_chain_picks_covered_clade_not_thin_genus(tmp_path, query):
+    """Real LLM + real BV-BRC, GENUS-STRUCTURED viruses: this exercises the multi-match -> max-CDS
+    selection branch. The candidate set contains BOTH a thin genus (~0 exact CDS) and a richer
+    descendant clade; the LLM confirms several are the same virus, and the step MUST select the
+    high-CDS clade — never settle on the genus the conservation leg can't fetch.
+
+    Threshold (not exact count) since BV-BRC numbers drift. A degrade-loud miss is acceptable (weak
+    local model); but if it resolves, it MUST be a covered clade — resolving to a <1000-CDS taxon
+    for norovirus/rotavirus is exactly the coverage-max bug this guards against."""
+    bundle = _run_fallback_chain(tmp_path, query)
+    if bundle.get("taxon_id") is not None:
+        assert bundle["resolution_status"] == "llm_fallback"
+        cds = bundle["taxon_resolution"]["cds"]
+        assert cds >= 1000, (
+            f"{query!r} resolved to a thinly-covered taxon (the coverage-max bug): "
+            f"{bundle['taxon_resolution']}"
+        )
     else:
         assert bundle["taxon_resolution"]["taxon_id"] is None  # honest named miss
