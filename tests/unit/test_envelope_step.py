@@ -102,6 +102,30 @@ def test_control_transfer_passthrough_yields_needs_input(tmp_path):
     assert wr["markdown"] == "evidence here"  # evidence retained on the pause
 
 
+def test_control_transfer_can_carry_structured_data_handle(tmp_path):
+    step = _stage(tmp_path)
+    ct = {
+        "reason": "needs_prerequisite",
+        "next_action": {"kind": "resolve_prerequisite", "prerequisite": "approval"},
+        "message": "approve first",
+    }
+    rs = RecordSet(records=[{"status": "withheld"}], columns=["status"])
+    out = asyncio.run(
+        step.process(
+            {
+                "markdown": "approval required",
+                "data": rs.model_dump(mode="json"),
+                "control_transfer": ct,
+            }
+        )
+    )
+    wr = out["workflow_result"]
+    assert wr["status"] == "needs_input"
+    assert wr["data_handle"]
+    assert wr["data_preview"]["kind"] == "record_set"
+    assert isinstance(default_handle_store().get(wr["data_handle"]), RecordSet)
+
+
 def _stage_keyed(tmp_path: Path, **cfg) -> EnvelopeStep:
     p = tmp_path / "envelope_keyed.yml"
     lines = ["name: envelope_keyed"] + [f"{k}: {v}" for k, v in cfg.items()]

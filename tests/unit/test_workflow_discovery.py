@@ -21,6 +21,7 @@ from apecx_integration.mcp_surface.workflow_registry import load_catalog, resolv
 
 # The scientist-facing workflows that must always be discovered from their own dirs.
 _PRODUCT = {
+    "conserved_epitope_candidate_assessment",
     "harmonized_search",
     "rag_e2e_synthesis",
     "rhea_muscle_alignment",

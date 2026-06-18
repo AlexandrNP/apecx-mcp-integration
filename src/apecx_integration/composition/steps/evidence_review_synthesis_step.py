@@ -967,6 +967,13 @@ def collect_structured_output(bundle: dict[str, Any]) -> dict[str, Any]:
         "publications": [
             _pub(p) for p in (bundle.get("publications") or []) if isinstance(p, dict)
         ],
+        # broad-effectiveness leg (pan-clade vs clade-restricted regions across the shared
+        # alignment) — a downstream consumer (e.g. conserved_epitope_candidate_assessment)
+        # reads this to prefer pan-clade candidates; previously rendered to markdown but dropped here.
+        "cross_clade_breadth": bundle.get("cross_clade_breadth"),
+        # functional-annotation leg (VIOLIN/BV-BRC/IEDB residue-level recognition) — consumed by
+        # the candidate ranker's reported-recognition score; dropped here until now.
+        "functional_validation": bundle.get("functional_validation"),
         "counts": {
             "conserved_regions": len(
                 bundle.get("conserved_regions") or bundle.get("conserved_sites") or []

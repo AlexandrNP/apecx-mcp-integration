@@ -77,6 +77,8 @@ class WorkflowResult(BaseModel):
         control_transfer: ControlTransfer,
         *,
         markdown: str = "",
+        data_handle: str | None = None,
+        data_preview: dict[str, Any] | None = None,
         run_id: str | None = None,
         provenance: dict[str, Any] | None = None,
     ) -> WorkflowResult:
@@ -84,6 +86,8 @@ class WorkflowResult(BaseModel):
         return cls(
             markdown=markdown,
             status="needs_input",
+            data_handle=data_handle,
+            data_preview=data_preview,
             control_transfer=control_transfer,
             run_id=run_id,
             provenance=provenance,

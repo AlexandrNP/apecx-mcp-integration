@@ -94,3 +94,15 @@ def test_needs_input_constructor_and_roundtrip():
     # JSON round-trips through the MCP surface.
     r2 = WorkflowResult.model_validate(r.model_dump(mode="json"))
     assert r2 == r
+
+
+def test_needs_input_constructor_allows_data_handle():
+    r = WorkflowResult.needs_input(
+        _ct(),
+        markdown="approval required",
+        data_handle="h1",
+        data_preview={"kind": "bundle"},
+    )
+    assert r.status == "needs_input"
+    assert r.data_handle == "h1"
+    assert r.data_preview == {"kind": "bundle"}

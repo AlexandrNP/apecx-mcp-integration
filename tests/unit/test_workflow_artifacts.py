@@ -113,6 +113,12 @@ def test_collect_structured_output_carries_the_real_analysis():
         "conserved_regions": [{"start": 1, "end": 9, "identity": 0.95}],
         "structural_records": [{"subject": "pdb:2XFB"}, {"subject": "emdb:EMD-1"}],
         "publications": [{"doi": "10.1/x", "title": "T", "year": 2024}],
+        "cross_clade_breadth": {
+            "available": True,
+            "n_clades": 3,
+            "pan_clade_regions": [{"start": 1, "end": 9}],
+        },
+        "functional_validation": {"candidate_source": "conserved_regions_only", "coincidences": []},
     }
     data = collect_structured_output(bundle)
     assert data["kind"] == "bundle"
@@ -120,5 +126,9 @@ def test_collect_structured_output_carries_the_real_analysis():
     assert parts["taxon_id"] == 37124 and parts["protein"] == "E1"
     assert parts["counts"] == {"conserved_regions": 1, "structural_records": 2, "publications": 1}
     assert parts["publications"][0]["doi"] == "10.1/x"
+    # the breadth + functional-annotation legs reach the stored Bundle so a downstream consumer
+    # (conserved_epitope_candidate_assessment) can read them via the data_handle.
+    assert parts["cross_clade_breadth"]["pan_clade_regions"] == [{"start": 1, "end": 9}]
+    assert parts["functional_validation"]["candidate_source"] == "conserved_regions_only"
     # it serialises cleanly (it lands in a .json artifact)
     json.dumps(data, default=str)

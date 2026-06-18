@@ -109,6 +109,19 @@ class EnvelopeStep(BaseStep):
         raw_provenance = input_data.get("provenance")
         provenance = raw_provenance if isinstance(raw_provenance, dict) else None
 
+        data_handle: str | None = None
+        data_preview: dict[str, Any] | None = None
+        raw_data = input_data.get(data_key)
+        if raw_data is not None:
+            if not isinstance(raw_data, dict):
+                raise ValueError(
+                    f"EnvelopeStep '{self.name}': {data_key!r} must be a serialized DataShape "
+                    f"dict, got {type(raw_data).__name__}"
+                )
+            shape = parse_data_shape(raw_data)  # loud on bad/missing kind
+            data_handle = self._handle_store().put(shape)
+            data_preview = shape.preview()
+
         # Return-of-control passthrough: when an upstream gate attaches a
         # ``control_transfer`` (a serialized ControlTransfer dict), this is a
         # ``needs_input`` terminal — surface it AS such rather than a plain ``ok``.
@@ -125,6 +138,8 @@ class EnvelopeStep(BaseStep):
             result = WorkflowResult.needs_input(
                 ct,
                 markdown=markdown,
+                data_handle=data_handle,
+                data_preview=data_preview,
                 run_id=input_data.get("run_id"),
                 provenance=provenance,
             )
@@ -134,19 +149,6 @@ class EnvelopeStep(BaseStep):
                 ct.reason,
             )
             return {_OUTPUT_KEY: result.model_dump(mode="json")}
-
-        data_handle: str | None = None
-        data_preview: dict[str, Any] | None = None
-        raw_data = input_data.get(data_key)
-        if raw_data is not None:
-            if not isinstance(raw_data, dict):
-                raise ValueError(
-                    f"EnvelopeStep '{self.name}': {data_key!r} must be a serialized DataShape "
-                    f"dict, got {type(raw_data).__name__}"
-                )
-            shape = parse_data_shape(raw_data)  # loud on bad/missing kind
-            data_handle = self._handle_store().put(shape)
-            data_preview = shape.preview()
 
         result = WorkflowResult(
             markdown=markdown,

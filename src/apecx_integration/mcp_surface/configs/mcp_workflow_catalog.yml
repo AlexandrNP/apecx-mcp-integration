@@ -164,3 +164,39 @@ workflows:
     # Concurrent network retrieval (Globus + PubMed + BV-BRC) + one LLM synthesis round-trip.
     settle_ms: 3000
     timeout_seconds: 600.0
+
+  - tool_name: conserved_epitope_candidate_assessment
+    description: |
+      Follow-up assessment for a prior conserved-region evidence run. It consumes the structured
+      data_handle from that run (or an inline Bundle), ranks conserved-region consensus records,
+      and releases a minimal candidate peptide assessment only after explicit approval.
+
+      Use this after the evidence workflow has already returned a data_handle. The workflow is
+      deterministic and does not run binding, safety, expression, stability, manufacturing, or
+      regulatory validation. It emits neutral presentation-context considerations and validation
+      gaps; it does not emit nucleotide sequences or operational protocols.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.conserved_epitope_candidate_assessment.builder
+      function: build_conserved_epitope_candidate_assessment_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        evidence_data_handle:
+          type: string
+          description: "Data handle from the upstream conserved-region evidence workflow."
+        evidence_bundle:
+          type: object
+          description: "Inline Bundle payload; use only when no handle is available."
+        assessment_question:
+          type: string
+          description: "Optional follow-up assessment question used for approval scoping."
+        design_approval_id:
+          type: string
+          description: "Approval token required before candidate peptide sequence output is released."
+      required: []
+    input_envelope_key: assessment_input
+    output_envelope_key: workflow_output
+    settle_ms: 500
+    timeout_seconds: 120.0
