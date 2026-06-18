@@ -110,20 +110,39 @@ class EvidenceQueryNormalizeStep(BaseStep):
             return
 
         from apecx_integration.agents.globus_search import taxonomy_resolver
+        from apecx_integration.composition.steps.harmonized_resolve_step import (
+            build_resolution_plan,
+        )
+        from apecx_integration.composition.steps.harmonized_search_execute_step import (
+            _iri_to_taxon_id,
+        )
 
         candidates = taxonomy_resolver.extract_virus_names(query)
-        resolution = await asyncio.to_thread(taxonomy_resolver.resolve_query_to_taxon, query)
-        if resolution is None:
+        term = candidates[0] if candidates else query
+        # Resolve via the SAME dict resolver and SAME term-selection as EpitopeResolveStep, so the
+        # sequence leg's taxon AGREES with the recorded bundle["taxon_id"] (harmonized_bundle_merge
+        # also derives from this plan's canonical_iri). The dict applies merged_taxons redirects
+        # (e.g. Lassa 11620→3052310) — the live-BV-BRC name-matcher used before did not, and it
+        # fuzzy-matched wrong organisms (Junin→an influenza strain). Coverage is NOT pre-checked
+        # here; a resolved-but-empty taxon (e.g. norovirus) is surfaced loudly downstream by the
+        # BvbrcProteinFastaStep too-few-sequences fallback.
+        plan = await asyncio.to_thread(
+            build_resolution_plan, term, index="bvbrc_genome", entity_type_str=""
+        )
+        iri = plan.get("canonical_iri")
+        taxon_id = _iri_to_taxon_id(iri) if isinstance(iri, str) and iri else None
+        if taxon_id is None:
             out["taxon_resolution"] = {
-                "source": "bv-brc-taxonomy",
+                "source": "synonym-dictionary",
                 "taxon_id": None,
                 "candidates": candidates,
+                "resolution_status": plan.get("resolution_status"),
                 "note": (
-                    "no taxon resolved: could not map a virus name from the query "
-                    f"{query!r} to a BV-BRC taxon with sequence coverage "
-                    f"(candidates tried: {candidates or 'none extracted'}). Sequence "
-                    "conservation, structural reasoning, and functional validation are "
-                    "unavailable for this run; literature evidence still proceeds."
+                    f"no taxon resolved: the synonym dictionary could not map a virus name from the "
+                    f"query {query!r} to an NCBI taxon (candidates tried: "
+                    f"{candidates or 'none extracted'}). Sequence conservation, structural "
+                    "reasoning, and functional validation are unavailable for this run; literature "
+                    "evidence still proceeds."
                 ),
             }
             log.warning(
@@ -133,22 +152,21 @@ class EvidenceQueryNormalizeStep(BaseStep):
             )
             return
 
-        out["taxon_id"] = resolution.taxon_id
-        out["resolved_species_name"] = resolution.scientific_name
+        out["taxon_id"] = taxon_id
+        out["resolved_species_name"] = plan.get("canonical_label")
         out["taxon_resolution"] = {
-            "source": resolution.source,
-            "taxon_id": resolution.taxon_id,
-            "scientific_name": resolution.scientific_name,
-            "bvbrc_taxon_name": resolution.bvbrc_taxon_name,
-            "genomes": resolution.genomes,
-            "matched_name": resolution.matched_name,
+            "source": "synonym-dictionary",
+            "taxon_id": taxon_id,
+            "scientific_name": plan.get("canonical_label"),
+            "canonical_iri": iri,
+            "resolution_status": plan.get("resolution_status"),
             "candidates": candidates,
         }
         log.info(
-            "EvidenceQueryNormalizeStep %s: resolved %r -> taxon_id=%d (%r, %d genomes)",
+            "EvidenceQueryNormalizeStep %s: resolved %r -> taxon_id=%d (%r, status=%s)",
             self.name,
-            resolution.matched_name,
-            resolution.taxon_id,
-            resolution.bvbrc_taxon_name,
-            resolution.genomes,
+            term,
+            taxon_id,
+            plan.get("canonical_label"),
+            plan.get("resolution_status"),
         )

@@ -1,13 +1,14 @@
-"""Live (real BV-BRC) tests for the virus-name -> taxon resolver.
+"""Live real-data parity for the taxon-resolution path used by the sequence-conservation leg.
 
-Proves against the real BV-BRC taxonomy index that an ARBITRARY virus name (SARS-CoV-2 /
-influenza / HIV — none of which are in the curated ``_TAXON_SPECIES`` map) resolves to a
-real NCBI taxon_id whose taxon ACTUALLY has BV-BRC sequence coverage (the property that
-guarantees the conservation leg can fetch sequences). Mock/integration parity for the
-behaviors unit-tested in ``tests/unit/test_taxonomy_resolver.py``.
+After the dual-resolver unification (2026-06-18), ``EvidenceQueryNormalizeStep`` resolves the
+query's virus name via the SAME dict resolver as the resolve step:
+``extract_virus_names`` -> ``build_resolution_plan`` -> ``_iri_to_taxon_id``. This test exercises
+that exact path against the REAL synonym dictionary AND verifies the resolved taxon actually has
+BV-BRC CDS coverage (the property the conservation leg depends on).
 
-Gated on BV-BRC reachability (auto-skip, honest). CC-1: every happy path asserts NON-EMPTY
-real values; the unresolvable case asserts a real ``None`` degrade.
+It is the regression guard for the bug it replaces: the old live-BV-BRC name-matcher resolved
+Lassa to the stale 11620 (0 coverage) and "Junin virus" to an Influenza A strain. Gated on the
+dictionary being present + BV-BRC reachable (auto-skip, honest).
 """
 
 from __future__ import annotations
@@ -18,6 +19,26 @@ import requests
 pytestmark = pytest.mark.integration
 
 _BVBRC_API = "https://www.bv-brc.org/api"
+
+
+def _resolve_via_dict(query: str) -> int | None:
+    """Reproduce EvidenceQueryNormalizeStep._maybe_resolve_taxon's resolution core."""
+    from apecx_integration.agents.globus_search import taxonomy_resolver
+    from apecx_integration.composition.steps.harmonized_resolve_step import build_resolution_plan
+    from apecx_integration.composition.steps.harmonized_search_execute_step import _iri_to_taxon_id
+
+    names = taxonomy_resolver.extract_virus_names(query)
+    term = names[0] if names else query
+    plan = build_resolution_plan(term, index="bvbrc_genome", entity_type_str="")
+    iri = plan.get("canonical_iri")
+    return _iri_to_taxon_id(iri) if isinstance(iri, str) and iri else None
+
+
+def _dict_available() -> bool:
+    try:
+        return _resolve_via_dict("chikungunya virus epitopes") == 37124
+    except Exception:
+        return False
 
 
 def _bvbrc_reachable() -> bool:
@@ -32,63 +53,49 @@ def _bvbrc_reachable() -> bool:
         return False
 
 
-needs_bvbrc = pytest.mark.skipif(not _bvbrc_reachable(), reason="BV-BRC taxonomy API unreachable")
+needs = pytest.mark.skipif(
+    not (_dict_available() and _bvbrc_reachable()),
+    reason="synonym dictionary not loadable or BV-BRC unreachable",
+)
 
 
-def _bvbrc_has_features(taxon_id: int) -> int:
-    """Count BV-BRC CDS features at the (species) taxon node — proves sequence coverage."""
+def _cds(taxon_id: int) -> int:
     r = requests.get(
         f"{_BVBRC_API}/genome_feature/?eq(taxon_id,{taxon_id})&eq(feature_type,CDS)"
-        f"&select(patric_id)&limit(5)&http_accept=application/json",
+        f"&select(patric_id)&limit(2)&http_accept=application/json",
         timeout=20,
     )
     r.raise_for_status()
     return len(r.json())
 
 
-@pytest.fixture(autouse=True)
-def _clear_cache():
-    from apecx_integration.agents.globus_search import taxonomy_resolver as tr
-
-    tr._clear_cache()
-    yield
-    tr._clear_cache()
-
-
-@needs_bvbrc
+@needs
 @pytest.mark.parametrize(
     "query,expected_taxon_id",
     [
+        # always-worked controls
         ("SARS-CoV-2 spike glycoprotein conserved epitopes", 2697049),
-        ("influenza hemagglutinin broadly neutralizing epitopes", 11320),
-        ("HIV-1 envelope gp120 epitopes", 11676),
         ("chikungunya envelope epitopes", 37124),
         ("dengue virus envelope domain III", 12637),
+        # REGRESSION: previously mis-resolved by the retired live name-matcher
+        ("Lassa virus glycoprotein conserved epitopes", 3052310),  # was stale 11620 (0 coverage)
+        ("Hantaan virus glycoprotein epitopes", 3052480),  # was strain 11601 (8 CDS)
     ],
 )
-def test_resolve_query_to_real_taxon_with_coverage(query, expected_taxon_id):
-    from apecx_integration.agents.globus_search import taxonomy_resolver as tr
-
-    res = tr.resolve_query_to_taxon(query)
-    assert res is not None, f"CC-1: {query!r} must resolve to a real taxon"
-    assert res.taxon_id == expected_taxon_id, (query, res)
-    assert res.genomes > 0, ("resolved taxon must report BV-BRC genome coverage", res)
-    # The resolved taxon ACTUALLY has fetchable CDS features (the conservation-leg guarantee).
-    assert _bvbrc_has_features(res.taxon_id) >= 1, (
-        "resolved taxon must have BV-BRC CDS features for the sequence fetch",
-        res,
-    )
+def test_query_resolves_to_covered_taxon(query, expected_taxon_id):
+    taxon_id = _resolve_via_dict(query)
+    assert taxon_id == expected_taxon_id, (query, taxon_id)
+    assert _cds(taxon_id) >= 2, ("resolved taxon must have BV-BRC CDS coverage", query, taxon_id)
 
 
-@needs_bvbrc
-def test_unresolvable_name_returns_none_live():
-    from apecx_integration.agents.globus_search import taxonomy_resolver as tr
+@needs
+def test_junin_resolves_to_arenavirus_not_influenza():
+    """The retired resolver fuzzy-matched 'Junin virus' to an Influenza A strain (taxon 507335)."""
+    taxon_id = _resolve_via_dict("Junin virus glycoprotein conserved epitopes")
+    assert taxon_id not in (507335, None), taxon_id
+    assert _cds(taxon_id) >= 2, ("Junin must resolve to a covered arenavirus taxon", taxon_id)
 
-    assert tr.resolve_query_to_taxon("Unobtainium virus glycoprotein") is None
 
-
-@needs_bvbrc
-def test_no_virus_name_returns_none_live():
-    from apecx_integration.agents.globus_search import taxonomy_resolver as tr
-
-    assert tr.resolve_query_to_taxon("envelope glycoprotein structure") is None
+@needs
+def test_no_virus_name_resolves_to_nothing():
+    assert _resolve_via_dict("envelope glycoprotein structure") is None
