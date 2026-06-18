@@ -215,3 +215,27 @@ def test_non_dict_raises(tmp_path):
     step = _stage(tmp_path)
     with pytest.raises(ValueError, match="must be a dict"):
         asyncio.run(step.process(["not", "a", "dict"]))
+
+
+def test_caller_supplied_taxon_skips_resolution_but_keeps_index_names(tmp_path, monkeypatch):
+    """REGRESSION: a pre-set NCBITaxon canonical_iri (caller-supplied taxon_id seeded by normalize)
+    SKIPS the dict name-resolution WITHOUT emptying index_names — the harmonized map's item list.
+    An early return here silently no-op'd the 9-index search. build_resolution_plan must NOT run;
+    index_names + resolution_plan must still be set and canonical_iri preserved."""
+    monkeypatch.setattr(
+        harmonized_resolve_step,
+        "build_resolution_plan",
+        lambda *a, **k: pytest.fail(
+            "build_resolution_plan must not run for a caller-supplied taxon"
+        ),
+    )
+    bundle = {
+        "query": "chikv E1",
+        "taxon_id": 37124,
+        "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+    }
+    out = asyncio.run(_stage(tmp_path).process({"resolve_input": bundle}))
+    assert out["canonical_iri"] == "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+    assert out["resolution_status"] == "caller_supplied"
+    assert len(out["index_names"]) == len(_INDEX_UUIDS)  # 9-index fan-out preserved (the bug)
+    assert "resolution_plan" in out

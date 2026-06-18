@@ -42,11 +42,10 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 23, (
-        f"expected 23 links (resolution leg resolve→map→assemble→hmerge + both fan-ins + "
-        f"data-readiness + structural-reasoning + functional-validation + distillation + "
-        f"rhea-genomic + the merge→align_viz→clade_grouping→clade_map→cross_clade→rhea_genomic "
-        f"visibility/breadth chain), got {len(links)}"
+    assert len(links) == 26, (
+        f"expected 26 links (the prior 23 + the 3-step LLM-fallback resolution chain "
+        f"resolve→synonym_gen→bvbrc_search→taxon_review, whose output replaces normalize/resolve "
+        f"as the source for map + sequence + gate.control_in), got {len(links)}"
     )
     for name, entry in links.items():
         link_cfg = entry["config"]
@@ -67,6 +66,9 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
     assert set(children) == {
         "normalize",
         "resolve",
+        "synonym_gen",
+        "bvbrc_search",
+        "taxon_review",
         "map",
         "assemble",
         "hmerge",
@@ -117,7 +119,9 @@ def test_sequence_and_merge_fanin_wired():
     assert set(trig["data_units"]) == {"structural_in", "sequence_in"}
 
     link_pairs = {(e["config"]["source"], e["config"]["target"]) for e in cfg["links"].values()}
-    assert ("normalize.normalize_out", "sequence.sequence_params") in link_pairs
+    # The sequence leg consumes the RESOLVED taxon (post dict + LLM-fallback chain), not raw normalize.
+    assert ("taxon_review.taxon_review_output", "sequence.sequence_params") in link_pairs
+    assert ("normalize.normalize_out", "sequence.sequence_params") not in link_pairs
     assert ("structural.structural_bundle", "merge.structural_in") in link_pairs
     assert ("sequence.sequence_result", "merge.sequence_in") in link_pairs
     # E2-P + C3: merge feeds the visibility/breadth chain (align_viz → clade_grouping →
@@ -143,9 +147,10 @@ def test_sequence_and_merge_fanin_wired():
     assert ("reasoning.reasoning_output", "review.review_input") not in link_pairs
     # The OLD direct structural→review edge must be gone (review now reads the merged bundle).
     assert ("structural.structural_bundle", "review.review_input") not in link_pairs
-    # The design-gate fan-in (#2) is untouched.
+    # The design-gate fan-in (#2): review_in from the synthesis review; control_in now from the
+    # resolution chain's terminal step (carries the resolved taxon + the threaded control fields).
     assert ("review.review_output", "gate.review_in") in link_pairs
-    assert ("normalize.normalize_out", "gate.control_in") in link_pairs
+    assert ("taxon_review.taxon_review_output", "gate.control_in") in link_pairs
 
 
 def test_entry_step_input_schema_requires_query():
@@ -158,27 +163,26 @@ def test_entry_step_input_schema_requires_query():
     assert schema["properties"]["normalize_input"]["required"] == ["query"]
 
 
-def test_control_fanned_from_normalize_not_workflow_input():
-    """REGRESSION: gate.control_in must be fed from normalize.normalize_out (a DU the
-    deposit actually sets), NOT from workflow_input (which run_workflow never sets —
-    the deposit goes to input_envelope_key=normalize_input). This guards the silent
-    failure where the gate never fires because control_in stays empty."""
+def test_control_and_taxon_fanned_from_resolution_chain_not_workflow_input():
+    """REGRESSION: the resolved bundle feeds gate.control_in + sequence + harmonized search from
+    the resolution chain's terminal step (taxon_review.taxon_review_output) — a DU set by real
+    upstream steps — NOT from workflow_input (which run_workflow never sets; the deposit goes to
+    input_envelope_key=normalize_input). Guards the silent failure where the gate never fires."""
     cfg = _evidence_workflow_builder().get_config()
-    sources = {e["config"]["source"]: e["config"]["target"] for e in cfg["links"].values()}
-    # control_in is fed by normalize.normalize_out, and the same DU also feeds the
-    # resolution leg (resolve) + the sequence leg.
-    assert "normalize.normalize_out" in sources or any(
-        e["config"]["target"] == "gate.control_in"
-        and e["config"]["source"] == "normalize.normalize_out"
-        for e in cfg["links"].values()
-    )
-    targets_of_normalize_out = {
+    # normalize feeds the resolution chain entry; the chain's terminal step fans the resolved
+    # bundle to the three taxon consumers.
+    targets_of_normalize = {
         e["config"]["target"]
         for e in cfg["links"].values()
         if e["config"]["source"] == "normalize.normalize_out"
     }
-    assert "gate.control_in" in targets_of_normalize_out
-    assert "resolve.resolve_input" in targets_of_normalize_out
+    assert targets_of_normalize == {"resolve.resolve_input"}
+    targets_of_review = {
+        e["config"]["target"]
+        for e in cfg["links"].values()
+        if e["config"]["source"] == "taxon_review.taxon_review_output"
+    }
+    assert {"gate.control_in", "sequence.sequence_params", "map.map_input"} <= targets_of_review
     # And NOTHING fans control from workflow_input into the gate (the old bug).
     assert not any(
         e["config"]["source"] == "workflow_input" and e["config"]["target"] == "gate.control_in"

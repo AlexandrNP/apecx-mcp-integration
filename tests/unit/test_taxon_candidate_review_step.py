@@ -1,0 +1,164 @@
+"""Unit tests for TaxonCandidateReviewStep — LLM pick + CDS-coverage gate (fallback step 3).
+
+LLM mocked by monkeypatching ``build_chat_llm`` / ``preflight_llm_model`` on the step's module;
+the Content-Range CDS count mocked by monkeypatching the step's ``_cds_count`` (no unittest.mock).
+"""
+
+from __future__ import annotations
+
+import asyncio
+from pathlib import Path
+
+import pytest
+
+import apecx_integration.composition.steps.taxon_candidate_review_step as mod
+from apecx_integration.composition.steps.taxon_candidate_review_step import TaxonCandidateReviewStep
+
+
+class _Resp:
+    def __init__(self, content: str) -> None:
+        self.content = content
+
+
+class _FakeLLM:
+    def __init__(self, content: str) -> None:
+        self._content = content
+
+    def invoke(self, messages):  # noqa: D401 - mirrors langchain ChatModel.invoke
+        return _Resp(self._content)
+
+
+def _boom(*a, **k):
+    pytest.fail("path must not be reached")
+
+
+def _no_llm(*a, **k):
+    raise RuntimeError("no LLM reachable")
+
+
+@pytest.fixture(autouse=True)
+def _reset_cache():
+    mod._clear_cache()
+    yield
+    mod._clear_cache()
+
+
+def _stage(tmp_path: Path) -> TaxonCandidateReviewStep:
+    p = tmp_path / "review.yml"
+    p.write_text("name: review_test\n")
+    return TaxonCandidateReviewStep.from_config(str(p))
+
+
+def _candidates():
+    return [
+        {"taxon_id": 37124, "taxon_name": "Chikungunya virus", "hits": 200},
+        {"taxon_id": 9999, "taxon_name": "Other virus", "hits": 5},
+    ]
+
+
+def test_from_config_constructs(tmp_path):
+    step = _stage(tmp_path)
+    assert step.COMPONENT_TYPE == "taxon_candidate_review_step"
+    assert step.name == "review_test"
+
+
+def test_short_circuit_finalizes_taxon_id_from_iri(tmp_path, monkeypatch):
+    """Dict resolver already won -> only set the int taxon_id; no LLM / no CDS call."""
+    monkeypatch.setattr(mod, "build_chat_llm", _boom)
+    monkeypatch.setattr(mod, "preflight_llm_model", _boom)
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", _boom)
+    bundle = {"query": "chikv", "canonical_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124"}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert out["taxon_id"] == 37124
+
+
+def test_pick_winner_with_cds_coverage(tmp_path, monkeypatch):
+    monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("the answer is 37124"))
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", lambda tid: 50)
+    bundle = {"query": "chikungunya virus", "taxon_candidates": _candidates()}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert out["taxon_id"] == 37124
+    assert out["canonical_iri"].endswith("NCBITaxon_37124")
+    assert out["resolved_species_name"] == "Chikungunya virus"
+    assert out["resolution_status"] == "llm_fallback"
+    res = out["taxon_resolution"]
+    assert res["source"] == "llm-fallback"
+    assert res["taxon_id"] == 37124
+    assert res["hits"] == 200
+    assert res["cds"] == 50
+    assert mod._REVIEW_CACHE["chikungunya virus"] == 37124
+
+
+def test_reject_all_is_a_named_miss(tmp_path, monkeypatch):
+    monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("NONE"))
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", _boom)  # never verify a NONE
+    bundle = {"query": "chikungunya virus", "taxon_candidates": _candidates()}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert "taxon_id" not in out
+    assert out["taxon_resolution"]["taxon_id"] is None
+    assert "no candidate matched" in out["taxon_resolution"]["note"]
+    assert mod._REVIEW_CACHE["chikungunya virus"] is None
+
+
+def test_below_min_cds_is_a_named_miss(tmp_path, monkeypatch):
+    monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("37124"))
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", lambda tid: 1)  # < default min_cds (2)
+    bundle = {"query": "chikungunya virus", "taxon_candidates": _candidates()}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert "taxon_id" not in out
+    assert out["taxon_resolution"]["taxon_id"] is None
+    assert "min_cds" in out["taxon_resolution"]["note"]
+    assert mod._REVIEW_CACHE["chikungunya virus"] is None
+
+
+def test_no_candidates_is_a_named_miss(tmp_path, monkeypatch):
+    monkeypatch.setattr(mod, "build_chat_llm", _boom)  # candidates checked before any LLM
+    step = _stage(tmp_path)
+    out = asyncio.run(step.process({"taxon_review_input": {"query": "q", "taxon_candidates": []}}))
+    assert "taxon_id" not in out
+    assert "no BV-BRC taxonomy candidates" in out["taxon_resolution"]["note"]
+
+
+def test_no_llm_is_a_named_miss(tmp_path, monkeypatch):
+    monkeypatch.setattr(mod, "preflight_llm_model", _no_llm)
+    monkeypatch.setattr(mod, "build_chat_llm", _boom)
+    step = _stage(tmp_path)
+    bundle = {"query": "chikungunya virus", "taxon_candidates": _candidates()}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert out["taxon_resolution"]["note"] == "LLM unavailable for candidate review"
+
+
+def test_cache_hit_reuses_verdict_without_llm(tmp_path, monkeypatch):
+    mod._REVIEW_CACHE["chikungunya virus"] = 37124
+    monkeypatch.setattr(mod, "build_chat_llm", _boom)
+    monkeypatch.setattr(mod, "preflight_llm_model", _boom)
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", _boom)
+    bundle = {"query": "Chikungunya Virus", "taxon_candidates": _candidates()}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert out["taxon_id"] == 37124
+    assert out["canonical_iri"].endswith("NCBITaxon_37124")
+    assert out["resolved_species_name"] == "Chikungunya virus"
+
+
+def test_cache_hit_remembers_a_miss(tmp_path, monkeypatch):
+    mod._REVIEW_CACHE["chikungunya virus"] = None
+    monkeypatch.setattr(mod, "build_chat_llm", _boom)
+    monkeypatch.setattr(mod, "preflight_llm_model", _boom)
+    step = _stage(tmp_path)
+    bundle = {"query": "chikungunya virus", "taxon_candidates": _candidates()}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert "taxon_id" not in out
+    assert "(cached)" in out["taxon_resolution"]["note"]
+
+
+def test_non_dict_input_raises(tmp_path):
+    with pytest.raises(ValueError):
+        asyncio.run(_stage(tmp_path).process("not a dict"))

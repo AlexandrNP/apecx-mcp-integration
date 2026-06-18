@@ -132,31 +132,52 @@ class EpitopeResolveStep(BaseStep):
         index_names = sorted(_INDEX_UUIDS)
         resolution_note: str | None = None
 
-        # ``index`` here is just a plan placeholder — the real per-index value
-        # is set later by the downstream map.
-        try:
-            plan = build_resolution_plan(term, index="bvbrc_genome", entity_type_str="")
-        except Exception as exc:  # noqa: BLE001 — degrade-loud, never raise on a data miss
-            resolution_note = (
-                f"Term resolution for {term!r} (from query {query!r}) could not run "
-                f"({type(exc).__name__}: {exc}); proceeding with the unharmonized RAW "
-                f"per-index fallback across all {len(index_names)} destination indices."
-            )
-            log.warning("EpitopeResolveStep %s: %s", self.name, resolution_note)
+        # Honor a pre-resolved taxon (caller-supplied taxon_id seeded by normalize as canonical_iri):
+        # SKIP the dict name-resolution but fall through to the SHARED flatten + index_names + stage
+        # setup below (the harmonized map needs index_names + resolution_plan — an early return here
+        # silently emptied the 9-index search). The LLM fallback chain also short-circuits on this.
+        _pre_iri = bundle.get("canonical_iri")
+        if isinstance(_pre_iri, str) and "NCBITaxon" in _pre_iri:
             plan = {
                 "term": term,
                 "index": "bvbrc_genome",
-                "resolution_path": "miss",
-                "canonical_iri": None,
-                "canonical_label": None,
-                "canonical_ontology": None,
-                "confidence": 0.0,
-                "resolution_status": "unresolved",
+                "resolution_path": "caller_supplied",
+                "canonical_iri": _pre_iri,
+                "canonical_label": bundle.get("resolved_species_name"),
+                "canonical_ontology": "NCBITaxon",
+                "confidence": 1.0,
+                "resolution_status": "caller_supplied",
                 "synonyms": [],
                 "candidates": [],
                 "needs_disambiguation": False,
-                "evidence": resolution_note,
+                "evidence": "caller-supplied taxon_id (name resolution skipped)",
             }
+        else:
+            # ``index`` here is just a plan placeholder — the real per-index value
+            # is set later by the downstream map.
+            try:
+                plan = build_resolution_plan(term, index="bvbrc_genome", entity_type_str="")
+            except Exception as exc:  # noqa: BLE001 — degrade-loud, never raise on a data miss
+                resolution_note = (
+                    f"Term resolution for {term!r} (from query {query!r}) could not run "
+                    f"({type(exc).__name__}: {exc}); proceeding with the unharmonized RAW "
+                    f"per-index fallback across all {len(index_names)} destination indices."
+                )
+                log.warning("EpitopeResolveStep %s: %s", self.name, resolution_note)
+                plan = {
+                    "term": term,
+                    "index": "bvbrc_genome",
+                    "resolution_path": "miss",
+                    "canonical_iri": None,
+                    "canonical_label": None,
+                    "canonical_ontology": None,
+                    "confidence": 0.0,
+                    "resolution_status": "unresolved",
+                    "synonyms": [],
+                    "candidates": [],
+                    "needs_disambiguation": False,
+                    "evidence": resolution_note,
+                }
 
         # Spread the plan fields onto the bundle (excluding ``index``).
         for key in _FLATTENED_PLAN_KEYS:

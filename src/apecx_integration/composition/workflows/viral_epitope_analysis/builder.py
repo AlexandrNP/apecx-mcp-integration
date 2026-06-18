@@ -78,10 +78,12 @@ step's output — no TransformLink, no ConditionalLink, no cycle):
     WHY normalize exists (load-bearing): run_workflow deposits the input under the
     catalog ``input_envelope_key`` = ``normalize.normalize_input`` — NOT the
     ``workflow_input`` DU. So control fields CANNOT be fanned from workflow_input
-    (it never gets set on that path); they are captured at ``normalize`` and fanned
-    out from its real output DU to BOTH assemble (query) and gate.control_in
-    (requested_outputs / design_approval_id). The gate joins review_in + control_in
-    via an AllDataReceivedTrigger (a fan-in, not a cycle — avoids the G99 cycle-test
+    (it never gets set on that path); they are captured at ``normalize`` and thread
+    through the resolution chain (resolve → synonym_gen → bvbrc_search → taxon_review),
+    whose terminal step ``taxon_review`` fans the fully-resolved bundle out to the
+    harmonized search, the sequence leg, and gate.control_in (requested_outputs /
+    design_approval_id ride along). The gate joins review_in + control_in via an
+    AllDataReceivedTrigger (a fan-in, not a cycle — avoids the G99 cycle-test
     mandate). Verified by a real run_workflow integration test.
 
 DU-NAME CONTRACT (load-bearing — do not rename): ``SynthesisContextAssemblyStep``
@@ -187,10 +189,10 @@ def _evidence_workflow_builder():
     b.add_input("workflow_input", "DataUnitMemory")
     b.add_output("workflow_output", "DataUnitMemory")
 
-    # Entry step (the deposit point = catalog input_envelope_key=normalize_input).
-    # It captures the params and fans them out to BOTH assemble (query) and the gate
-    # (control fields) — because run_workflow deposits under THIS step's input DU, NOT
-    # the workflow_input DU, so control state CANNOT be fanned from workflow_input.
+    # Entry step (the deposit point = catalog input_envelope_key=normalize_input). Parse-only:
+    # it captures the params and feeds the resolution chain (resolve); taxon resolution + the
+    # control-field fan-out happen downstream at taxon_review. (run_workflow deposits under THIS
+    # step's input DU, NOT workflow_input, so control state cannot be fanned from workflow_input.)
     # step_input_schema here is the RoC-2c required-input source.
     b.add_step(
         "normalize",
@@ -211,6 +213,34 @@ def _evidence_workflow_builder():
         input_data_units=_du("resolve_input"),
         output_data_units=_du("resolve_output"),
         triggers=_trig("resolve_input"),
+    )
+    # --- LLM-driven taxon-resolution FALLBACK (3 steps, fire ONLY when the dict resolver missed) ---
+    # Each short-circuits to a pass-through the instant `resolve` already set an NCBITaxon
+    # canonical_iri (the common dict-hit path), so on a hit they add ~0 cost. On a dict MISS:
+    # synonym_gen (LLM, degrade-loud if no LLM) -> bvbrc_search (rank taxa by hits) -> taxon_review
+    # (LLM picks the query-matching taxon + verifies BV-BRC CDS coverage, else a NAMED miss). The
+    # review step finalizes the int taxon_id from canonical_iri so the sequence leg + gate consume
+    # the SAME resolved taxon as the harmonized search (single resolution source).
+    b.add_step(
+        "synonym_gen",
+        f"{_STEPS}.taxon_synonym_generation_step.TaxonSynonymGenerationStep",
+        input_data_units=_du("synonym_gen_input"),
+        output_data_units=_du("synonym_gen_output"),
+        triggers=_trig("synonym_gen_input"),
+    )
+    b.add_step(
+        "bvbrc_search",
+        f"{_STEPS}.bvbrc_taxonomy_search_step.BvbrcTaxonomySearchStep",
+        input_data_units=_du("bvbrc_search_input"),
+        output_data_units=_du("bvbrc_search_output"),
+        triggers=_trig("bvbrc_search_input"),
+    )
+    b.add_step(
+        "taxon_review",
+        f"{_STEPS}.taxon_candidate_review_step.TaxonCandidateReviewStep",
+        input_data_units=_du("taxon_review_input"),
+        output_data_units=_du("taxon_review_output"),
+        triggers=_trig("taxon_review_input"),
     )
     # ALL-INDEX harmonized search: fan the resolved plan across ALL 9 Globus DESTINATION
     # indices (incl. violin_* + bvbrc_* — no local tabular data) via the nanobrain
@@ -468,8 +498,9 @@ def _evidence_workflow_builder():
         execution_timeout=540.0,
     )
     # FAN-IN gate: joins the synthesized evidence (review_in) with the ORIGINAL
-    # control fields (control_in, fanned out from `normalize.normalize_out` — the
-    # reused assembly/synthesis steps drop them) via an AllDataReceivedTrigger. It
+    # control fields (control_in, fanned out from `taxon_review.taxon_review_output` — the
+    # resolution chain's terminal step threads them through; the reused assembly/synthesis
+    # steps drop them) via an AllDataReceivedTrigger. It
     # emits {markdown, control_transfer?} for the terminal EnvelopeStep. This is the
     # nanobrain-native control-state threading (fan-in, not a cycle).
     b.add_step(
@@ -501,16 +532,26 @@ def _evidence_workflow_builder():
     # (harmonized search across all 9 dest indices) → assemble (PubMed/RAG only) → hmerge
     # (fold harmonized records into globus_results + derive taxon).
     b.add_link("normalize.normalize_out", "resolve.resolve_input", link_type="direct")
-    b.add_link("resolve.resolve_output", "map.map_input", link_type="direct")
+    # Resolution chain: dict-resolve -> LLM fallback (short-circuited on dict-hit) -> review.
+    b.add_link("resolve.resolve_output", "synonym_gen.synonym_gen_input", link_type="direct")
+    b.add_link(
+        "synonym_gen.synonym_gen_output", "bvbrc_search.bvbrc_search_input", link_type="direct"
+    )
+    b.add_link(
+        "bvbrc_search.bvbrc_search_output", "taxon_review.taxon_review_input", link_type="direct"
+    )
+    # The fully-resolved bundle (dict OR LLM-fallback taxon) fans out to the harmonized search,
+    # the sequence-conservation leg, and the gate — ONE resolution source for all consumers.
+    b.add_link("taxon_review.taxon_review_output", "map.map_input", link_type="direct")
     b.add_link("map.map_output", "assemble.assembly_input", link_type="direct")
     b.add_link("assemble.synthesis_bundle_output", "hmerge.hmerge_input", link_type="direct")
-    # Fan-out from a REAL output DU (normalize_out, which the deposit actually sets):
-    # the control fields reach the gate directly, bypassing the steps that drop them.
-    # This is the second edge of the fan-in into `gate`.
-    b.add_link("normalize.normalize_out", "gate.control_in", link_type="direct")
-    # Third fan-out edge from normalize_out: feed the query/taxon/protein to the nested
-    # conserved-sites subworkflow (the sequence step reads taxon_id + protein).
-    b.add_link("normalize.normalize_out", "sequence.sequence_params", link_type="direct")
+    # Fan-out from the resolution chain's terminal output DU (taxon_review_output — carries the
+    # resolved taxon + the threaded control fields): the control fields reach the gate directly,
+    # bypassing the steps that drop them. This is the second edge of the fan-in into `gate`.
+    b.add_link("taxon_review.taxon_review_output", "gate.control_in", link_type="direct")
+    # Third fan-out edge from taxon_review_output: feed the resolved query/taxon/protein to the
+    # nested conserved-sites subworkflow (the sequence step reads taxon_id + protein).
+    b.add_link("taxon_review.taxon_review_output", "sequence.sequence_params", link_type="direct")
     # C0: the merged bundle flows through the data-readiness coverage summary before
     # the structural lookup.
     b.add_link("hmerge.hmerge_output", "data_readiness.readiness_input", link_type="direct")

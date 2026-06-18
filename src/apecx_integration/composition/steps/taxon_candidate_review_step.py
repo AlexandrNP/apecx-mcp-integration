@@ -1,0 +1,268 @@
+"""TaxonCandidateReviewStep — LLM picks the right taxon, then a deterministic CDS-coverage gate.
+
+The third (terminal) step of the OPTIONAL LLM-driven taxon-resolution fallback. Given the ranked
+BV-BRC taxonomy candidates from ``BvbrcTaxonomySearchStep``, it asks the LLM which ONE candidate
+is the SAME virus as the query, then VERIFIES the LLM's pick has real sequence coverage
+(``genome_feature`` CDS count >= ``min_cds``) before promoting it. A pick that fails verification
+— or no pick at all — is a NAMED miss, never a silently-wrong taxon.
+
+On a win it FINALIZES the resolution onto the bundle exactly like the dict resolver would
+(``canonical_iri`` / ``taxon_id`` / ``resolved_species_name`` / ``resolution_status`` /
+``taxon_resolution``) so the downstream sequence leg + gate consume it uniformly. When the dict
+resolver already won (``canonical_iri`` set), it only ensures ``taxon_id`` is the int form.
+
+RELIABILITY: does NOT set ``LLM_ROLE`` (the OPTIONAL fallback must not force an LLM requirement).
+FAIL-LOUD only on non-dict input; every data/network/LLM issue is a degrade-loud miss.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import logging
+import re
+from typing import Any
+
+import requests
+from langchain_core.messages import HumanMessage, SystemMessage
+from nanobrain.core.step import BaseStep, StepConfig
+from pydantic import ConfigDict, Field, model_validator
+
+from apecx_integration.agents._llm_config import preflight_llm_model
+from apecx_integration.agents._llm_factory import build_chat_llm
+from apecx_integration.composition.steps.harmonized_search_execute_step import _iri_to_taxon_id
+from apecx_integration.composition.steps.taxon_synonym_generation_step import _load_system_prompt
+
+log = logging.getLogger(__name__)
+
+_INPUT_KEY = "taxon_review_input"
+_DEFAULT_PROMPT_FILENAME = "taxon_candidate_review_prompt.yml"
+
+# Process-lifetime memo of the per-query verdict (taxon_id, or None for a miss). The fallback is
+# expensive (LLM + several HTTP calls); an identical-query re-run reuses the verdict. Keyed by the
+# normalized query string. ``_clear_cache`` lets unit tests reset it between cases.
+_REVIEW_CACHE: dict[str, int | None] = {}
+
+
+def _clear_cache() -> None:
+    """Test seam: drop the process-lifetime per-query verdict cache."""
+    _REVIEW_CACHE.clear()
+
+
+def _already_resolved(bundle: dict[str, Any]) -> bool:
+    """True when the deterministic dict resolver already won (the fallback is then skipped)."""
+    iri = bundle.get("canonical_iri")
+    return isinstance(iri, str) and "NCBITaxon" in iri
+
+
+def _parse_content_range_total(header: str | None) -> int:
+    """Parse the BV-BRC ``Content-Range: items a-b/N`` header, returning ``N`` (0 if absent)."""
+    if not header:
+        return 0
+    m = re.search(r"/\s*(\d+)\s*$", header)
+    return int(m.group(1)) if m else 0
+
+
+class TaxonCandidateReviewStepConfig(StepConfig):
+    """Config — ``extra='forbid'`` (workspace rule): YAML typos raise at config-load time."""
+
+    model_config = ConfigDict(extra="forbid", validate_assignment=False)
+
+    source_path: str | None = Field(default=None)
+    min_cds: int = Field(
+        default=2,
+        ge=1,
+        description="Minimum genome_feature CDS count a chosen taxon must have to be promoted "
+        "(below this the pick is a NAMED miss — no sequence coverage to analyze).",
+    )
+    bvbrc_api_base: str = Field(default="https://www.bv-brc.org/api")
+    request_timeout_seconds: float = Field(default=60.0, gt=0)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _strip_framework_keys(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            data.pop("class", None)
+        return data
+
+
+class TaxonCandidateReviewStep(BaseStep):
+    COMPONENT_TYPE: str = "taxon_candidate_review_step"
+    REQUIRED_CONFIG_FIELDS: list[str] = ["name"]
+
+    @classmethod
+    def _get_config_class(cls):
+        return TaxonCandidateReviewStepConfig
+
+    def _init_from_config(self, config, component_config, dependencies) -> None:
+        super()._init_from_config(config, component_config, dependencies)
+        self._min_cds: int = int(getattr(config, "min_cds", 2))
+        self._api_base: str = getattr(config, "bvbrc_api_base", "https://www.bv-brc.org/api")
+        self._timeout: float = float(getattr(config, "request_timeout_seconds", 60.0))
+        self._system_prompt: str = _load_system_prompt(_DEFAULT_PROMPT_FILENAME)
+
+    async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
+        bundle = dict(self._unwrap(input_data))
+
+        # Dict resolver already won → just FINALIZE the int taxon_id from the IRI for the leg/gate.
+        if _already_resolved(bundle):
+            if not isinstance(bundle.get("taxon_id"), int):
+                tid = _iri_to_taxon_id(bundle["canonical_iri"])
+                if tid is not None:
+                    bundle["taxon_id"] = tid
+            return bundle
+
+        query = bundle.get("query") or ""
+        key = query.strip().lower()
+
+        # Cached verdict for this exact query (None = a remembered miss).
+        if key in _REVIEW_CACHE:
+            cached = _REVIEW_CACHE[key]
+            if cached is None:
+                return self._set_miss(bundle, "no candidate matched the query (cached)")
+            cand = self._find_candidate(bundle, cached)
+            return self._finalize_winner(
+                bundle,
+                cached,
+                cand.get("taxon_name", "") if cand else "",
+                cand.get("hits") if cand else None,
+                cds=None,
+            )
+
+        candidates = bundle.get("taxon_candidates") or []
+        if not candidates:
+            return self._miss(bundle, key, "no BV-BRC taxonomy candidates to review")
+
+        try:
+            preflight_llm_model()
+        except Exception as exc:  # noqa: BLE001 - optional LLM; degrade-loud, never raise
+            log.warning("TaxonCandidateReviewStep %s: LLM preflight failed (%s)", self.name, exc)
+            return self._miss(bundle, key, "LLM unavailable for candidate review")
+
+        valid_ids = {c["taxon_id"] for c in candidates if isinstance(c.get("taxon_id"), int)}
+        try:
+            llm = build_chat_llm(temperature=0.0, max_tokens=64)
+            listing = "\n".join(
+                f"{c['taxon_id']} | {c.get('taxon_name', '')} ({c.get('hits', 0)} genomes)"
+                for c in candidates
+                if isinstance(c.get("taxon_id"), int)
+            )
+            user = f"Query: {query}\n\nCandidates:\n{listing}"
+            resp = await asyncio.to_thread(
+                llm.invoke, [SystemMessage(content=self._system_prompt), HumanMessage(content=user)]
+            )
+            chosen = self._parse_choice(getattr(resp, "content", "") or "", valid_ids)
+        except Exception as exc:  # noqa: BLE001 - optional LLM; degrade-loud, never raise
+            log.warning("TaxonCandidateReviewStep %s: candidate review failed (%s)", self.name, exc)
+            return self._miss(bundle, key, f"candidate review failed ({type(exc).__name__})")
+
+        if chosen is None:
+            return self._miss(bundle, key, "no candidate matched the query")
+
+        # CDS-coverage gate: only promote a pick with real sequence coverage.
+        try:
+            cds = await asyncio.to_thread(self._cds_count, chosen)
+        except Exception as exc:  # noqa: BLE001 - degrade-loud; treat an unverifiable taxon as 0
+            log.warning(
+                "TaxonCandidateReviewStep %s: CDS verify for taxon %d failed (%s)",
+                self.name,
+                chosen,
+                exc,
+            )
+            cds = 0
+        if cds < self._min_cds:
+            return self._miss(
+                bundle, key, f"chosen taxon {chosen} has {cds} CDS (< min_cds {self._min_cds})"
+            )
+
+        cand = self._find_candidate(bundle, chosen)
+        _REVIEW_CACHE[key] = chosen
+        return self._finalize_winner(
+            bundle,
+            chosen,
+            cand.get("taxon_name", "") if cand else "",
+            cand.get("hits") if cand else None,
+            cds=cds,
+        )
+
+    # ----- helpers -----
+    def _unwrap(self, input_data: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(input_data, dict):
+            raise ValueError(
+                f"TaxonCandidateReviewStep '{self.name}': input_data must be a dict, got "
+                f"{type(input_data).__name__}"
+            )
+        # Single-key trigger-envelope unwrap (the framework delivers {taxon_review_input: payload}).
+        if "query" not in input_data and len(input_data) == 1:
+            only = next(iter(input_data.values()))
+            if isinstance(only, dict):
+                return only
+        return input_data
+
+    @staticmethod
+    def _find_candidate(bundle: dict[str, Any], taxon_id: int) -> dict[str, Any] | None:
+        for c in bundle.get("taxon_candidates") or []:
+            if isinstance(c, dict) and c.get("taxon_id") == taxon_id:
+                return c
+        return None
+
+    @staticmethod
+    def _parse_choice(text: str, valid_ids: set[int]) -> int | None:
+        """Return the first integer in ``text`` that is a candidate taxon_id, else None.
+
+        Handles the literal ``NONE`` and any unparseable / out-of-set output as None.
+        """
+        for tok in re.findall(r"\d+", text):
+            val = int(tok)
+            if val in valid_ids:
+                return val
+        return None
+
+    def _cds_count(self, taxon_id: int) -> int:
+        """Total ``genome_feature`` CDS rows for a taxon, read from the Content-Range header."""
+        query = f"eq(taxon_id,{taxon_id})&eq(feature_type,CDS)&limit(1)"
+        url = f"{self._api_base}/genome_feature/?{query}&http_accept=application/json"
+        resp = requests.get(url, timeout=self._timeout)
+        resp.raise_for_status()
+        return _parse_content_range_total(resp.headers.get("Content-Range"))
+
+    def _finalize_winner(
+        self,
+        bundle: dict[str, Any],
+        taxon_id: int,
+        name: str,
+        hits: int | None,
+        cds: int | None,
+    ) -> dict[str, Any]:
+        bundle["canonical_iri"] = f"http://purl.obolibrary.org/obo/NCBITaxon_{taxon_id}"
+        bundle["taxon_id"] = taxon_id
+        bundle["resolved_species_name"] = name
+        bundle["resolution_status"] = "llm_fallback"
+        bundle["taxon_resolution"] = {
+            "source": "llm-fallback",
+            "taxon_id": taxon_id,
+            "scientific_name": name,
+            "hits": hits,
+            "cds": cds,
+        }
+        log.info(
+            "TaxonCandidateReviewStep %s: resolved query -> taxon_id=%d (%r, hits=%s, cds=%s)",
+            self.name,
+            taxon_id,
+            name,
+            hits,
+            cds,
+        )
+        return bundle
+
+    @staticmethod
+    def _set_miss(bundle: dict[str, Any], note: str) -> dict[str, Any]:
+        bundle["taxon_resolution"] = {"source": "llm-fallback", "taxon_id": None, "note": note}
+        return bundle
+
+    def _miss(self, bundle: dict[str, Any], key: str, note: str) -> dict[str, Any]:
+        _REVIEW_CACHE[key] = None
+        log.warning("TaxonCandidateReviewStep %s: %s", self.name, note)
+        return self._set_miss(bundle, note)
+
+
+__all__ = ["TaxonCandidateReviewStep", "TaxonCandidateReviewStepConfig"]
