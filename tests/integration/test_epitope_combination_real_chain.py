@@ -21,7 +21,10 @@ would catch it. Both real outcomes are exercised:
 from __future__ import annotations
 
 import asyncio
+import importlib.util
+import os
 import re
+import urllib.request
 
 import pytest
 
@@ -39,23 +42,26 @@ def _globus_reachable() -> bool:
         return False
 
 
+def _rhea_reachable() -> bool:
+    # The chain runs viral_epitope_analysis, which now MANDATES Rhea — gate on a live server.
+    if not os.environ.get("RHEA_MCP_URL") or importlib.util.find_spec("rhea") is None:
+        return False
+    try:
+        urllib.request.urlopen(os.environ["RHEA_MCP_URL"], timeout=4)  # noqa: S310
+        return True
+    except urllib.error.HTTPError as e:  # type: ignore[attr-defined]
+        return e.code != 500
+    except Exception:
+        return False
+
+
 needs_globus = pytest.mark.skipif(
     not _globus_reachable(), reason="needs reachable Globus Search for the upstream evidence run"
 )
-
-# A fixed, plausible additional epitope. The combination workflow catalogs supplied epitopes;
-# it does not validate biological relatedness, so a fixed peptide isolates the variable under
-# test (the REAL candidate handle, which varies with upstream strain count).
-_ADDITIONAL_EPITOPES = [
-    {
-        "label": "reported additional epitope",
-        "sequence": "GILGFVFTL",
-        "start": 200,
-        "end": 208,
-        "source": "reported literature epitope",
-        "reported_recognition_evidence": {"class": "reported"},
-    }
-]
+needs_rhea = pytest.mark.skipif(
+    not _rhea_reachable(),
+    reason="chain runs viral_epitope_analysis which mandates Rhea (run `apecx-setup rhea`)",
+)
 
 # (query, protein, label) — chosen for a sharp strain-count contrast.
 _VIRUSES = [
@@ -104,16 +110,45 @@ def _approve_and_rerun(tool: str, params: dict) -> dict:
     return asyncio.run(run_workflow(tool, {**params, "design_approval_id": m.group(0)}))
 
 
-def _candidate_sequence(candidate_handle: str) -> str | None:
+def _candidate_region(candidate_handle: str):
     from apecx_integration.composition.handles.store import default_handle_store
 
-    shape = default_handle_store().get(candidate_handle)
-    parts = getattr(shape, "parts", {}) or {}
+    parts = getattr(default_handle_store().get(candidate_handle), "parts", {}) or {}
     cand = parts.get("candidate") or {}
-    return cand.get("sequence")
+    reg = cand.get("source_region") or {}
+    return cand.get("sequence"), (reg.get("start"), reg.get("end"))
+
+
+def _real_additional_epitopes(evidence_handle: str, exclude=None) -> list[dict]:
+    """Source a REAL additional epitope from the upstream evidence's conserved regions — a
+    region OTHER than ``exclude`` (start,end) when given. No fixed placeholder: the epitope's
+    sequence/coordinates come from the actual run. Returns [] when none is available."""
+    from apecx_integration.composition.handles.store import default_handle_store
+
+    parts = getattr(default_handle_store().get(evidence_handle), "parts", {}) or {}
+    for r in parts.get("conserved_regions") or []:
+        if not isinstance(r, dict):
+            continue
+        se = (r.get("start"), r.get("end"))
+        if exclude is not None and se == exclude:
+            continue
+        seq = r.get("consensus") or r.get("sequence")
+        if not seq:
+            continue
+        return [
+            {
+                "label": "conserved-region epitope",
+                "sequence": seq,
+                "start": r.get("start"),
+                "end": r.get("end"),
+                "source": "upstream conserved-region evidence",
+            }
+        ]
+    return []
 
 
 @needs_globus
+@needs_rhea
 @pytest.mark.parametrize("query,protein,label", _VIRUSES, ids=[v[2] for v in _VIRUSES])
 def test_full_chain_combination_across_strain_counts(query, protein, label):
     """Both real paths, per virus, against a REAL candidate bundle (one expensive upstream run):
@@ -140,13 +175,15 @@ def test_full_chain_combination_across_strain_counts(query, protein, label):
     )
     assert unapproved["status"] == "needs_input", (label, unapproved)
     assert unapproved["data_handle"], (label, unapproved)
+    degrade_epitopes = _real_additional_epitopes(evidence_handle)
+    assert degrade_epitopes, (label, "no real conserved-region epitope to supply from the evidence")
     degraded = asyncio.run(
         _run_workflow_named(
             "epitope_combination_feasibility_assessment",
             {
                 "evidence_data_handle": evidence_handle,
                 "candidate_assessment_handle": unapproved["data_handle"],
-                "additional_epitopes": _ADDITIONAL_EPITOPES,
+                "additional_epitopes": degrade_epitopes,
             },
         )
     )
@@ -165,24 +202,32 @@ def test_full_chain_combination_across_strain_counts(query, protein, label):
 
     cand_handle = candidate["data_handle"]
     assert cand_handle, (label, candidate)
-    cand_seq = _candidate_sequence(cand_handle)
+    cand_seq, cand_region = _candidate_region(cand_handle)
     assert cand_seq, (label, "real candidate bundle carried no candidate sequence")
+
+    # A REAL additional epitope from a DIFFERENT conserved region of the same run (no placeholder).
+    extra = _real_additional_epitopes(evidence_handle, exclude=cand_region)
+    assert extra, (label, "no second real conserved-region epitope to combine")
+    extra_seq = extra[0]["sequence"]
 
     combo = _approve_and_rerun(
         "epitope_combination_feasibility_assessment",
         {
             "evidence_data_handle": evidence_handle,
             "candidate_assessment_handle": cand_handle,
-            "additional_epitopes": _ADDITIONAL_EPITOPES,
+            "additional_epitopes": extra,
         },
     )
     assert combo["status"] == "ok", (label, combo)
     assert combo["error"] is None, (label, combo)
     md = combo["markdown"] or ""
-    # Decide success on OUTPUT VALUES, not status.
+    # Decide success on OUTPUT VALUES, not status: both REAL epitope sequences present.
     assert "## Summary" in md and "## Epitopes" in md, (label, md[:1500])
     assert cand_seq in md, (label, "real candidate sequence missing from released combination")
-    assert "reported additional epitope" in md, (label, md[:1500])
+    assert extra_seq in md, (
+        label,
+        "real additional-epitope sequence missing from released combination",
+    )
     assert combo["data_preview"]["kind"] == "bundle", (label, combo)
 
 
