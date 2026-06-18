@@ -447,6 +447,22 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
             run_id=record.run_id,
         ).model_dump(mode="json")
 
+    # FAIL-LOUD on a SWALLOWED mid-cascade step failure (G127): Workflow.run returns
+    # status="completed" even when a step RAISED — the exception is swallowed and the cascade
+    # stalls, so the coarse workflow_status alone is NOT trustworthy. The G37 step_failed events
+    # (captured in run_summary.steps) are the real signal. Without this, a raising step (e.g. a
+    # RHEA MUSCLE tool error in rhea_muscle_alignment) returns a misleading status=ok with
+    # empty/degraded output. NOTE: degrade-loud steps that CATCH + note (e.g. the
+    # viral_epitope_analysis RHEA leg) emit no step_failed event, so they are unaffected.
+    failed_steps = [s.step_name for s in outcome.run_summary.steps if s.status == "failed"]
+    if failed_steps:
+        return WorkflowResult.failed(
+            error=f"workflow {name!r} had a step failure ({', '.join(failed_steps)}); the cascade "
+            f"did not complete. Call inspect_run({record.run_id!r}) for the per-step breakdown "
+            "(including the failing step's exception).",
+            run_id=record.run_id,
+        ).model_dump(mode="json")
+
     # The workflow emitted a standard envelope (it ends in an EnvelopeStep): use it.
     if outcome.workflow_result is not None:
         updates: dict[str, Any] = {"run_id": record.run_id}
