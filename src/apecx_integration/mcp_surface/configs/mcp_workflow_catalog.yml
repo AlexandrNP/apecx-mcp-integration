@@ -161,27 +161,13 @@ workflows:
     # (control fields) — the deposit sets THIS DU, not workflow_input.
     input_envelope_key: normalize_input
     output_envelope_key: workflow_output
-    # RHEA is MANDATORY: the large-scale MUSCLE genomic-analysis leg is required for a
-    # meaningful epitope result — there is no MAFFT-only fallback. The gate refuses the run
-    # up front when RHEA is not configured; the RheaGenomicAnalysisStep fails loud at run time
-    # if the RHEA call fails.
-    requires:
-      env:
-        - RHEA_MCP_URL
-      modules:
-        - rhea
-        - rhea.utils.proxy
-      unavailable_hint: >-
-        viral_epitope_analysis requires the RHEA MCP server for its mandatory large-scale
-        MUSCLE genomic-analysis leg (run `apecx-setup rhea` and set RHEA_MCP_URL). RHEA is
-        required — there is no MAFFT-only fallback.
+    # RHEA genomic-analysis is a mandatory PART of the analysis (always attempted + disclosed),
+    # but it is NOT a hard prerequisite: when RHEA is unavailable the workflow DEGRADES LOUD
+    # (prominent warning + `apecx-setup rhea` instructions in the report) and still completes —
+    # the MAFFT/structural/literature legs remain valid. So no `requires: rhea` gate here.
     # Concurrent network retrieval (Globus + PubMed + BV-BRC) + RHEA MUSCLE + one LLM round-trip.
     settle_ms: 3000
     timeout_seconds: 600.0
-    # Pre-install the muscle conda env at orchestrator startup so the first epitope run does
-    # not pay the conda-create cost (see the rhea_muscle_alignment entry for the rationale).
-    prewarm_rhea_tools:
-      - muscle
 
   - tool_name: conserved_epitope_candidate_assessment
     description: |

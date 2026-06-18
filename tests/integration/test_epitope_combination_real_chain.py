@@ -21,10 +21,7 @@ would catch it. Both real outcomes are exercised:
 from __future__ import annotations
 
 import asyncio
-import importlib.util
-import os
 import re
-import urllib.request
 
 import pytest
 
@@ -42,26 +39,10 @@ def _globus_reachable() -> bool:
         return False
 
 
-def _rhea_reachable() -> bool:
-    # The chain runs viral_epitope_analysis, which now MANDATES Rhea — gate on a live server.
-    if not os.environ.get("RHEA_MCP_URL") or importlib.util.find_spec("rhea") is None:
-        return False
-    try:
-        urllib.request.urlopen(os.environ["RHEA_MCP_URL"], timeout=4)  # noqa: S310
-        return True
-    except urllib.error.HTTPError as e:  # type: ignore[attr-defined]
-        return e.code != 500
-    except Exception:
-        return False
-
-
 needs_globus = pytest.mark.skipif(
     not _globus_reachable(), reason="needs reachable Globus Search for the upstream evidence run"
 )
-needs_rhea = pytest.mark.skipif(
-    not _rhea_reachable(),
-    reason="chain runs viral_epitope_analysis which mandates Rhea (run `apecx-setup rhea`)",
-)
+
 
 # (query, protein, label) — chosen for a sharp strain-count contrast.
 _VIRUSES = [
@@ -148,7 +129,6 @@ def _real_additional_epitopes(evidence_handle: str, exclude=None) -> list[dict]:
 
 
 @needs_globus
-@needs_rhea
 @pytest.mark.parametrize("query,protein,label", _VIRUSES, ids=[v[2] for v in _VIRUSES])
 def test_full_chain_combination_across_strain_counts(query, protein, label):
     """Both real paths, per virus, against a REAL candidate bundle (one expensive upstream run):

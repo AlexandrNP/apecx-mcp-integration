@@ -1,9 +1,9 @@
-"""Unit tests for RheaGenomicAnalysisStep — the MANDATORY RHEA-backed conservation leg.
+"""Unit tests for RheaGenomicAnalysisStep — the MANDATORY-but-degrade-loud RHEA conservation leg.
 
-Focus: the fail-closed contract (no live RHEA needed). RHEA is mandatory — a missing
-taxon/protein, or a RHEA runtime failure, must RAISE (no degrade-to-note, no silent empty,
-no MAFFT-only fallback). The prereq gate (catalog ``requires: rhea``) refuses the run up
-front when RHEA is not configured; this step fails loud when the RHEA call itself fails.
+RHEA genomic-analysis is a mandatory PART of the analysis (always attempted + DISCLOSED), but its
+absence DEGRADES LOUD — it does NOT fail the run. A missing taxon/protein or a RHEA runtime failure
+produces a prominent warning + `apecx-setup rhea` fix instructions (a named note + a proceed_notes
+entry) and the bundle passes through so the rest of the analysis still completes.
 """
 
 from __future__ import annotations
@@ -31,32 +31,44 @@ def test_loads_via_from_config(tmp_path):
     assert step._timeout == 120.0
 
 
-def test_unusable_params_raise_missing_taxon(tmp_path):
-    step = _stage(tmp_path)
-    with pytest.raises(ValueError, match="MANDATORY RHEA"):
-        asyncio.run(step.process({"query": "chikv", "protein": "E1"}))
+def _assert_loud_unavailable(out: dict) -> None:
+    note = out["rhea_conservation_note"]
+    assert note and "not available" in note.lower(), note
+    assert "apecx-setup rhea" in note, note  # fix instructions
+    assert "still" in note.lower() or "remains valid" in note.lower(), note  # don't-fail framing
+    # a loud "how to proceed" entry is appended for prominence
+    pn = out.get("proceed_notes") or []
+    assert any("rhea" in (n.get("stage", "") + n.get("what", "")).lower() for n in pn), pn
 
 
-def test_unusable_params_raise_missing_protein(tmp_path):
-    step = _stage(tmp_path)
-    with pytest.raises(ValueError, match="MANDATORY RHEA"):
-        asyncio.run(step.process({"query": "chikv", "taxon_id": 37124}))
+def test_missing_taxon_degrades_loud(tmp_path):
+    out = asyncio.run(_stage(tmp_path).process({"query": "chikv", "protein": "E1"}))
+    assert out["rhea_conservation"] is None
+    assert out["query"] == "chikv"  # bundle passed through (did not fail)
+    _assert_loud_unavailable(out)
 
 
-def test_rhea_failure_raises_not_degrades(tmp_path, monkeypatch):
-    """A failure inside the RHEA drive RAISES (no degrade-to-note swallow)."""
+def test_missing_protein_degrades_loud(tmp_path):
+    out = asyncio.run(_stage(tmp_path).process({"query": "chikv", "taxon_id": 37124}))
+    assert out["rhea_conservation"] is None
+    _assert_loud_unavailable(out)
+
+
+def test_rhea_failure_degrades_loud_not_raises(tmp_path, monkeypatch):
+    """A failure inside the RHEA drive becomes a loud warning + fix instructions, NOT a raise."""
     step = _stage(tmp_path)
 
     async def _boom(taxon_id, protein):
         raise RuntimeError("Rhea server unreachable")
 
     monkeypatch.setattr(step, "_drive_rhea_conservation", _boom)
-    with pytest.raises(RuntimeError, match="MANDATORY RHEA genomic-analysis"):
-        asyncio.run(step.process({"query": "chikv", "taxon_id": 37124, "protein": "E1"}))
+    out = asyncio.run(step.process({"query": "chikv", "taxon_id": 37124, "protein": "E1"}))
+    assert out["rhea_conservation"] is None
+    assert "RuntimeError" in out["rhea_conservation_note"]
+    _assert_loud_unavailable(out)
 
 
 def test_success_folds_conservation(tmp_path, monkeypatch):
-    """A successful RHEA run folds conserved regions into the bundle under rhea_conservation."""
     step = _stage(tmp_path)
 
     async def _ok(taxon_id, protein):
@@ -83,15 +95,14 @@ def test_success_folds_conservation(tmp_path, monkeypatch):
     assert rc["alignment_length"] == 439
     assert len(rc["conserved_regions"]) == 2
     assert rc["aligner"] == "muscle"
-    assert out["rhea_conservation_note"] is None
+    assert out["rhea_conservation_note"] is None  # no warning on success
 
 
 def test_envelope_unwrap(tmp_path):
-    """The step unwraps the single-key trigger envelope before reading params — proven by the
-    MANDATORY-leg error naming the inner missing field (protein)."""
-    step = _stage(tmp_path)
-    with pytest.raises(ValueError, match="protein"):
-        asyncio.run(step.process({"rhea_genomic_input": {"query": "x", "taxon_id": 37124}}))
+    out = asyncio.run(
+        _stage(tmp_path).process({"rhea_genomic_input": {"query": "x", "taxon_id": 37124}})
+    )
+    assert "rhea_conservation_note" in out  # processed the unwrapped bundle (degraded: no protein)
 
 
 def test_bad_input_raises(tmp_path):

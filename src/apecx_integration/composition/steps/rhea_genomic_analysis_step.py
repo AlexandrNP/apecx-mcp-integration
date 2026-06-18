@@ -158,68 +158,97 @@ class RheaGenomicAnalysisStep(BaseStep):
 
         self.emit_progress("starting RHEA genomic analysis")
 
-        bundle = dict(input_data)  # shallow copy; we add rhea_conservation
+        bundle = dict(input_data)  # shallow copy; we add rhea_conservation[_note]
         bundle["rhea_conservation"] = None
+        note: str | None = None
 
-        # MANDATORY leg (fail-closed): the RHEA large-scale MUSCLE conservation is required —
-        # a result without it is meaningless. There is NO MAFFT-only fallback / degrade-to-note.
-        # An unusable upstream (no taxon/protein) or a RHEA runtime failure RAISES; the prereq
-        # gate (catalog ``requires: rhea``) refuses the run up front when RHEA is not configured.
+        # RHEA genomic-analysis is a MANDATORY part of the analysis — always attempted, always
+        # DISCLOSED in the output. But its absence DEGRADES LOUD, it does NOT fail the run: the
+        # rest of the end-to-end analysis (MAFFT sequence conservation, structural, literature)
+        # still has merit. When RHEA can't run we emit a prominent warning + fix instructions
+        # (here as the note + a proceed_notes "how to proceed" entry) and carry on.
         reason = self._params_unusable(bundle)
         if reason is not None:
-            raise ValueError(
-                f"RheaGenomicAnalysisStep '{self.name}': cannot run the MANDATORY RHEA "
-                f"genomic-analysis leg — {reason}. RHEA is required (run `apecx-setup rhea`); "
-                "there is no MAFFT-only fallback."
-            )
-        try:
-            self.emit_progress("dispatching MUSCLE alignment")
-            report = await self._drive_rhea_conservation(
-                bundle["taxon_id"], str(bundle["protein"]).strip()
-            )
-            self.emit_progress("MUSCLE alignment complete")
-            regions = _find_nested(report, "conserved_regions")
-            bundle["rhea_conservation"] = {
-                "markdown": _find_nested(report, "markdown"),
-                "conserved_regions": regions if isinstance(regions, list) else [],
-                "n_sequences": _find_nested(report, "n_sequences"),
-                "alignment_length": _find_nested(report, "alignment_length"),
-                "aligner": "muscle",
-            }
-            log.info(
-                "RheaGenomicAnalysisStep %s: RHEA MUSCLE aligned %s sequences → %s conserved "
-                "region(s)",
-                self.name,
-                bundle["rhea_conservation"]["n_sequences"],
-                len(bundle["rhea_conservation"]["conserved_regions"]),
-            )
-        except Exception as exc:
-            raise RuntimeError(
-                f"RheaGenomicAnalysisStep '{self.name}': the MANDATORY RHEA genomic-analysis "
-                f"leg failed ({type(exc).__name__}): {exc}. RHEA must be running "
-                "(run `apecx-setup rhea`); there is no MAFFT-only fallback."
-            ) from exc
+            note = self._unavailable_warning(reason)
+            log.warning("RheaGenomicAnalysisStep %s: %s", self.name, note)
+        else:
+            try:
+                self.emit_progress("dispatching MUSCLE alignment")
+                report = await self._drive_rhea_conservation(
+                    bundle["taxon_id"], str(bundle["protein"]).strip()
+                )
+                self.emit_progress("MUSCLE alignment complete")
+                regions = _find_nested(report, "conserved_regions")
+                bundle["rhea_conservation"] = {
+                    "markdown": _find_nested(report, "markdown"),
+                    "conserved_regions": regions if isinstance(regions, list) else [],
+                    "n_sequences": _find_nested(report, "n_sequences"),
+                    "alignment_length": _find_nested(report, "alignment_length"),
+                    "aligner": "muscle",
+                }
+                log.info(
+                    "RheaGenomicAnalysisStep %s: RHEA MUSCLE aligned %s sequences → %s conserved "
+                    "region(s)",
+                    self.name,
+                    bundle["rhea_conservation"]["n_sequences"],
+                    len(bundle["rhea_conservation"]["conserved_regions"]),
+                )
+            except Exception as exc:  # noqa: BLE001 — degrade-loud is the contract (do NOT fail)
+                note = self._unavailable_warning(f"{type(exc).__name__}: {exc}")
+                log.warning("RheaGenomicAnalysisStep %s: %s", self.name, note)
 
-        bundle["rhea_conservation_note"] = None
+        bundle["rhea_conservation_note"] = note
 
         from apecx_integration.composition.steps._stage_report import append_stage_report
 
-        rc = bundle["rhea_conservation"]
+        rc = bundle.get("rhea_conservation") or {}
         append_stage_report(
             bundle,
             stage="rhea_genomic_analysis",
             order=6,
             markdown=(
-                f"RHEA MUSCLE aligned {rc.get('n_sequences')} sequences "
-                f"(length {rc.get('alignment_length')}) → "
-                f"{len(rc.get('conserved_regions') or [])} conserved region(s)."
+                note
+                if note
+                else (
+                    f"RHEA MUSCLE aligned {rc.get('n_sequences')} sequences "
+                    f"(length {rc.get('alignment_length')}) → "
+                    f"{len(rc.get('conserved_regions') or [])} conserved region(s)."
+                )
             ),
             data={
                 "n_sequences": rc.get("n_sequences"),
                 "n_conserved_regions": len(rc.get("conserved_regions") or []),
+                "note": note,
             },
         )
+        # Loud "how to proceed" guidance so the unavailability + fix surfaces in the report,
+        # not just a buried field.
+        if note:
+            notes = list(bundle.get("proceed_notes") or [])
+            notes.append(
+                {
+                    "stage": "rhea genomic analysis",
+                    "what": "RHEA large-scale MUSCLE conservation tools are not available",
+                    "why": reason if reason is not None else "the RHEA call failed",
+                    "action": (
+                        "run `apecx-setup rhea` and ensure the RHEA MCP server is reachable "
+                        "(RHEA_MCP_URL); the rest of the analysis still completed and is valid"
+                    ),
+                    "severity": "warning",
+                }
+            )
+            bundle["proceed_notes"] = notes
         return bundle
+
+    @staticmethod
+    def _unavailable_warning(reason: str) -> str:
+        return (
+            f"⚠️ RHEA genomic-analysis tools are NOT available ({reason}). The large-scale "
+            "MUSCLE conservation leg did NOT run — but the rest of the end-to-end analysis "
+            "(MAFFT sequence conservation, structural surface-exposure, literature) completed "
+            "and remains valid. To enable the RHEA leg: run `apecx-setup rhea` and ensure the "
+            "RHEA MCP server is reachable (set RHEA_MCP_URL)."
+        )
 
 
 __all__ = ["RheaGenomicAnalysisStep", "RheaGenomicAnalysisStepConfig"]

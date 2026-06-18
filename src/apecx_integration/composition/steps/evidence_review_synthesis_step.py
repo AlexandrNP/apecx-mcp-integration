@@ -975,6 +975,11 @@ def collect_structured_output(bundle: dict[str, Any]) -> dict[str, Any]:
         # functional-annotation leg (VIOLIN/BV-BRC/IEDB residue-level recognition) — consumed by
         # the candidate ranker's reported-recognition score; dropped here until now.
         "functional_validation": bundle.get("functional_validation"),
+        # RHEA large-scale MUSCLE genomic-analysis leg — a MANDATORY disclosure: the structured
+        # result when RHEA ran, else None with a loud rhea_conservation_note (unavailable +
+        # `apecx-setup rhea` fix). Always stored so a downstream handle consumer sees it too.
+        "rhea_conservation": bundle.get("rhea_conservation"),
+        "rhea_conservation_note": bundle.get("rhea_conservation_note"),
         # how-to-proceed guidance (diagnosis + next action for any degrade) — so a downstream
         # handle consumer (conserved_epitope_candidate_assessment) surfaces it too.
         "proceed_notes": bundle.get("proceed_notes"),

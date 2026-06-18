@@ -9,11 +9,8 @@ WorkflowResult whose markdown ALWAYS carries a Structural evidence section.
 from __future__ import annotations
 
 import asyncio
-import importlib.util
 import os
 import shutil
-import urllib.error
-import urllib.request
 
 import pytest
 import requests
@@ -138,35 +135,6 @@ needs_llm_seq = pytest.mark.skipif(
 )
 
 
-def _rhea_reachable() -> bool:
-    """True only when ALL of: RHEA_MCP_URL is set (non-empty), the `rhea` module is
-    importable, AND an HTTP GET to the URL reaches a LIVE MCP server. viral_epitope_analysis
-    now MANDATES Rhea (catalog `requires: {env: [RHEA_MCP_URL], modules: [rhea]}`), so the
-    prereq gate returns status=error BEFORE the workflow runs whenever Rhea is absent — every
-    test that calls run_workflow on it must gate on this. A 4xx (e.g. 406) means the MCP
-    server is UP (treat any non-500 reply as healthy); a connection error or a 500 means
-    not-reachable."""
-    if not os.environ.get("RHEA_MCP_URL"):
-        return False
-    if importlib.util.find_spec("rhea") is None:
-        return False
-    url = os.environ.get("RHEA_MCP_URL") or "http://localhost:3001/mcp/"
-    try:
-        urllib.request.urlopen(url, timeout=4)  # noqa: S310 (trusted, env-provided URL)
-        return True
-    except urllib.error.HTTPError as e:
-        # A 4xx like 406 means the server is UP; only a 500 (backend down) is unhealthy.
-        return e.code != 500
-    except Exception:
-        # URLError (connection refused / DNS / timeout) → not reachable.
-        return False
-
-
-needs_rhea = pytest.mark.skipif(
-    not _rhea_reachable(),
-    reason="needs the Rhea MCP server (run `apecx-setup rhea`); viral_epitope_analysis mandates RHEA",
-)
-
 _QUERY = "conserved chikungunya structural polyprotein epitopes and structural references"
 
 
@@ -221,7 +189,6 @@ def test_registered_in_catalog_and_listed():
     assert isinstance(row["available"], bool)
 
 
-@needs_rhea
 def test_missing_query_returns_needs_input():
     """RoC-2c: missing required `query` → needs_input BEFORE any backend call.
 
@@ -239,7 +206,6 @@ def test_missing_query_returns_needs_input():
 
 
 # --------------------------- end-to-end (real LLM + Globus) ---------------------------
-@needs_rhea
 @needs_llm_and_globus
 def test_evidence_only_e2e_has_structural_section():
     """End-to-end against real Globus + LLM. RELIABILITY: status is always ok — even if
@@ -257,7 +223,6 @@ def test_evidence_only_e2e_has_structural_section():
     assert "## Structural evidence" in md, md[:2000]
 
 
-@needs_rhea
 @needs_llm_and_globus
 def test_evidence_output_contract_five_sections_e2e():
     """OUTPUT CONTRACT (E2-B): the final Markdown carries the five contract sections,
@@ -292,7 +257,6 @@ def test_evidence_output_contract_five_sections_e2e():
     assert "context_assembly" in md and "structural_evidence" in md
 
 
-@needs_rhea
 @needs_llm_and_globus
 def test_structural_no_hit_is_named_e2e(monkeypatch):
     """With the Globus branch disabled, the structural leg MUST emit the loud no-hit line —
@@ -309,7 +273,6 @@ def test_structural_no_hit_is_named_e2e(monkeypatch):
     assert "No PDB or EMDB structural records" in out["markdown"], out["markdown"][:2000]
 
 
-@needs_rhea
 @needs_llm_seq
 def test_sequence_conservation_stage_e2e():
     """E2-C1 END-TO-END (the apecx-side integration gap E2-F1 flagged): the full evidence
@@ -370,7 +333,6 @@ def _reasoning_trace_lines(md: str) -> list[str]:
     return [ln for ln in trace.splitlines() if ln.strip().startswith(("-", "*"))]
 
 
-@needs_rhea
 @needs_llm_seq
 def test_sars_cov2_no_taxon_id_gets_full_science_e2e(capsys):
     """TASK #2 PROOF — an ARBITRARY virus (SARS-CoV-2, NOT in the curated map) with NO
@@ -434,7 +396,6 @@ def test_sars_cov2_no_taxon_id_gets_full_science_e2e(capsys):
             print(prov.get("taxon_resolution") or prov)
 
 
-@needs_rhea
 @needs_llm_seq
 def test_chikv_no_taxon_id_still_works_no_regression_e2e():
     """No-regression: a CHIKV query WITHOUT a caller taxon_id resolves 'chikungunya' ->
@@ -459,7 +420,6 @@ def test_chikv_no_taxon_id_still_works_no_regression_e2e():
     assert "conserved region(s) at" in seq_lines[0], seq_lines[0]
 
 
-@needs_rhea
 @needs_llm_seq
 def test_unresolvable_virus_degrades_loud_e2e():
     """A query naming NO resolvable virus leaves the sequence leg loudly 'unavailable'
@@ -479,7 +439,6 @@ def test_unresolvable_virus_degrades_loud_e2e():
     assert "unavailable" in seq_lines[0].lower(), seq_lines[0]
 
 
-@needs_rhea
 @needs_llm_seq
 def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
     """E2-S END-TO-END: ``run_workflow_streamed`` on a real CHIKV query pushes each
@@ -574,7 +533,6 @@ def test_streamed_stages_arrive_in_order_and_equal_headless_trace_e2e():
     )
 
 
-@needs_rhea
 @needs_llm_seq
 @pytest.mark.skipif(
     not (_globus_reachable() and _pymol_image_present()),
@@ -635,7 +593,6 @@ def test_provenance_record_has_real_values_e2e():
         assert fv["sifts_pdb_id"] == rea["pdb_id"], fv
 
 
-@needs_rhea
 @needs_llm
 def test_design_without_approval_returns_needs_input_e2e():
     """FAN-IN PROOF: requested_outputs=evidence_plus_design without a design_approval_id
@@ -656,7 +613,6 @@ def test_design_without_approval_returns_needs_input_e2e():
     assert "WITHHELD" in out["markdown"]
 
 
-@needs_rhea
 @needs_llm
 def test_design_hitl_loop_e2e():
     """FAN-IN + FAIL-CLOSED HITL PROOF, end to end: request design (no token) → the gate
@@ -710,7 +666,6 @@ def test_design_hitl_loop_e2e():
     assert "verified server-side" in out3["markdown"]  # honest: token WAS validated
 
 
-@needs_rhea
 @needs_llm_seq
 def test_evidence_e2e_writes_per_run_artifacts_folder(tmp_path, monkeypatch):
     """The completed run gathers a self-contained per-run folder: report.md (with the conservation
