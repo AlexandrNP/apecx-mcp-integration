@@ -153,7 +153,15 @@ class LocalMafftAlignStep(BaseStep):
         CURRENT input, not the cached alignment, so a cache HIT carries the right strains.
         """
         out = dict(alignment)
-        for key in ("taxon_id", "protein", "records", "n_fetched", "n_dropped_length_outlier"):
+        for key in (
+            "taxon_id",
+            "protein",
+            "requested_protein",
+            "substituted_protein",
+            "records",
+            "n_fetched",
+            "n_dropped_length_outlier",
+        ):
             if key in payload:
                 out[key] = payload[key]
             else:

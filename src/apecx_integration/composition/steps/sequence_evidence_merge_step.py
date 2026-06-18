@@ -31,10 +31,15 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
+from apecx_integration.composition.steps._proceed import append_proceed_note
 from apecx_integration.composition.steps._stage_report import append_stage_report
 from apecx_integration.composition.steps.sequence_conservation_subworkflow_step import (
     UNAVAILABLE_KEY,
 )
+
+# Below this many aligned sequences, conservation is real but statistically weak — surfaced as a
+# low-confidence proceed note so the reader doesn't over-trust a 2-4 sequence result.
+_LOW_CONFIDENCE_SEQ_FLOOR = 5
 
 log = logging.getLogger(__name__)
 
@@ -128,6 +133,43 @@ class SequenceEvidenceMergeStep(BaseStep):
                 "aligner": cons.get("aligner"),
                 "aligner_version": cons.get("aligner_version"),
             }
+            # Phase C guidance: the too-few-sequences auto-substitution and low-sequence-count
+            # caveat are emitted HERE (the main workflow, with the bundle) from facts threaded up
+            # through the sequence leg.
+            sub = cons.get("substituted_protein")
+            if sub:
+                requested = cons.get("requested_protein") or "the requested protein"
+                append_proceed_note(
+                    bundle,
+                    stage="sequence retrieval",
+                    what=(
+                        f"the requested protein had <2 sequences; auto-substituted {sub!r} for the "
+                        f"sequence-conservation leg"
+                    ),
+                    why=f"{requested!r} returned too few sequences for this taxon to align",
+                    action=(
+                        "verify the substitute is the intended antigen — NOTE the structural and "
+                        "functional legs still used the requested protein, so those legs and the "
+                        "sequence-conservation leg describe DIFFERENT proteins"
+                    ),
+                    severity="low_confidence",
+                )
+            n_seq = cons.get("n_sequences")
+            if isinstance(n_seq, int) and n_seq < _LOW_CONFIDENCE_SEQ_FLOOR:
+                append_proceed_note(
+                    bundle,
+                    stage="sequence conservation",
+                    what=f"conservation computed on only {n_seq} sequence(s)",
+                    why=(
+                        f"fewer than {_LOW_CONFIDENCE_SEQ_FLOOR} aligned sequences is a "
+                        f"statistically weak conservation signal"
+                    ),
+                    action=(
+                        "treat the conserved-region calls as low-confidence; supply more strains "
+                        "for a robust signal"
+                    ),
+                    severity="low_confidence",
+                )
         else:
             # LOUD degrade — the absence is named in the bundle AND the stage report.
             bundle["conserved_sites"] = []
@@ -135,6 +177,17 @@ class SequenceEvidenceMergeStep(BaseStep):
             bundle["sequence_conservation_note"] = note
             markdown = f"Sequence conservation unavailable: {note}"
             data = {"available": False, "note": note}
+            append_proceed_note(
+                bundle,
+                stage="sequence conservation",
+                what="sequence conservation is unavailable",
+                why=note or "no conserved-region evidence was produced",
+                action=(
+                    "supply >=2 sequences for this protein/taxon (the error above lists the "
+                    "products that DO have coverage), or re-run with a better-covered protein"
+                ),
+                severity="blocked",
+            )
 
         self.emit_progress(
             f"merged: {len(bundle.get('conserved_regions') or [])} conserved regions"

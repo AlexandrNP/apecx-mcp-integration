@@ -146,6 +146,41 @@ def test_merge_degrades_loud_on_unavailable_marker(tmp_path):
     assert seq_report["data"]["available"] is False
 
 
+def test_merge_emits_low_confidence_note_on_protein_substitution(tmp_path):
+    # Phase C: the sequence leg auto-substituted a protein; the merge step surfaces it with the
+    # cross-leg-divergence caveat.
+    cons = _conservation_result()
+    cons["substituted_protein"] = "nucleocapsid protein"
+    cons["requested_protein"] = "glycoprotein"
+    inp = {"structural_in": _structural_bundle(), "sequence_in": _sequence_result(cons)}
+    out = asyncio.run(_stage(tmp_path).process(inp))
+    notes = [n for n in out["proceed_notes"] if "nucleocapsid protein" in n["what"]]
+    assert notes and notes[0]["severity"] == "low_confidence"
+    assert "DIFFERENT proteins" in notes[0]["action"]
+
+
+def test_merge_emits_low_confidence_note_on_few_sequences(tmp_path):
+    cons = _conservation_result()
+    cons["n_sequences"] = 3
+    inp = {"structural_in": _structural_bundle(), "sequence_in": _sequence_result(cons)}
+    out = asyncio.run(_stage(tmp_path).process(inp))
+    notes = [n for n in out["proceed_notes"] if "only 3 sequence" in n["what"]]
+    assert notes and notes[0]["severity"] == "low_confidence"
+
+
+def test_merge_emits_blocked_note_on_degrade(tmp_path):
+    inp = {
+        "structural_in": _structural_bundle(),
+        "sequence_in": {
+            UNAVAILABLE_KEY: "only 1 sequence for 'glycoprotein'; available: matrix (n=40)"
+        },
+    }
+    out = asyncio.run(_stage(tmp_path).process(inp))
+    blocked = [n for n in out["proceed_notes"] if n["severity"] == "blocked"]
+    assert blocked and "unavailable" in blocked[0]["what"]
+    assert "matrix (n=40)" in blocked[0]["why"]
+
+
 def test_merge_degrades_loud_on_missing_data_payload(tmp_path):
     # A sequence output that is neither a marker nor a conservation-data-bearing report.
     inp = {"structural_in": _structural_bundle(), "sequence_in": {"markdown": "x"}}

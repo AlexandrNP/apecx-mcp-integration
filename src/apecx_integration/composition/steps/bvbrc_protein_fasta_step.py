@@ -49,6 +49,8 @@ log = logging.getLogger(__name__)
 
 # feature_sequence batched lookups — keep each request URL well under server limits.
 _MD5_BATCH = 40
+# Cap on alternate products tried by the too-few-sequences fallback (bounds network calls).
+_MAX_SUBSTITUTE_ATTEMPTS = 3
 
 
 class BvbrcProteinFastaStepConfig(StepConfig):
@@ -126,18 +128,53 @@ class BvbrcProteinFastaStep(BaseStep):
             self._fetch, taxon_id, protein, feature_type
         )
 
-        if not records:
-            raise ValueError(
-                f"BvbrcProteinFastaStep '{self.name}': BV-BRC returned no {protein!r} "
-                f"({feature_type}) protein features for taxon {taxon_id}. Check the protein "
-                f"product name and feature_type, or that BV-BRC has coverage for this taxon."
-            )
+        requested_protein = protein
+        substituted_protein: str | None = None
         if len(records) < 2:
-            raise ValueError(
-                f"BvbrcProteinFastaStep '{self.name}': only {len(records)} sequence(s) found for "
-                f"{protein!r} (taxon {taxon_id}); multiple-sequence alignment needs at least 2. "
-                f"Broaden the protein filter or feature_type."
+            # Too-few-sequences fallback: reverse-lookup the products that DO exist for this taxon,
+            # and auto-retry the most-covered one (>=2). The substitute fixes ONLY the sequence-
+            # conservation leg; the structural/functional legs still use the requested protein —
+            # the divergence is surfaced loudly downstream (SequenceEvidenceMergeStep proceed_note).
+            available = await asyncio.to_thread(
+                self._query_available_proteins, taxon_id, feature_type
             )
+            # Try the most-covered alternates in order until one yields >=2 USABLE sequences after
+            # the word-boundary filter + length-cluster cull (feature count >=2 does not guarantee
+            # >=2 alignable). Bounded to keep network calls in check.
+            candidates = [
+                (p, c)
+                for p, c in available
+                if p.strip().lower() != requested_protein.lower() and c >= 2
+            ]
+            for cand_protein, cand_count in candidates[:_MAX_SUBSTITUTE_ATTEMPTS]:
+                sub_records, sub_fetched, sub_dropped = await asyncio.to_thread(
+                    self._fetch, taxon_id, cand_protein, feature_type
+                )
+                if len(sub_records) >= 2:
+                    log.warning(
+                        "BvbrcProteinFastaStep %s: %r had <2 sequences for taxon %d; auto-"
+                        "substituting product %r (%d features)",
+                        self.name,
+                        requested_protein,
+                        taxon_id,
+                        cand_protein,
+                        cand_count,
+                    )
+                    records = sub_records
+                    n_fetched, n_dropped_length_outlier = sub_fetched, sub_dropped
+                    substituted_protein = cand_protein
+                    protein = cand_protein
+                    break
+            if len(records) < 2:
+                avail_str = (
+                    ", ".join(f"{p} (n={c})" for p, c in available[:10]) if available else "none"
+                )
+                raise ValueError(
+                    f"BvbrcProteinFastaStep '{self.name}': only {len(records)} sequence(s) for "
+                    f"{requested_protein!r} (taxon {taxon_id}) and no alternate product has >=2 "
+                    f"sequences (alignment needs at least 2). Available products for this taxon: "
+                    f"{avail_str}. Re-run with one of these as the protein, or verify the taxon."
+                )
 
         fasta_text = "".join(
             f">{r['id']} {r['product']} | {r['genome_name']}\n{r['sequence']}\n" for r in records
@@ -160,6 +197,11 @@ class BvbrcProteinFastaStep(BaseStep):
                 "n_dropped_length_outlier": n_dropped_length_outlier,
                 "taxon_id": taxon_id,
                 "protein": protein,
+                # Fallback disclosure: the originally-requested protein and the auto-selected
+                # substitute (None when no substitution happened). Threaded downstream so the
+                # merge step can surface the substitution + its scope caveat.
+                "requested_protein": requested_protein,
+                "substituted_protein": substituted_protein,
                 "feature_type": feature_type,
             }
         }
@@ -325,6 +367,31 @@ class BvbrcProteinFastaStep(BaseStep):
                 f"{path}: {type(data).__name__}"
             )
         return data
+
+    def _query_available_proteins(
+        self, taxon_id: int, feature_type: str, *, cap: int = 5000
+    ) -> list[tuple[str, int]]:
+        """Reverse lookup: which protein products (and how many features each) exist for this taxon.
+
+        Drops the product filter and counts the ``product`` field client-side (BV-BRC RQL has no
+        portable facet here). Returns ``[(product, count), …]`` sorted by count desc. ``cap`` bounds
+        the scan; a taxon with more features than ``cap`` yields counts over the scanned window
+        (still a useful "what's available" signal). Network/parse errors degrade to ``[]`` (the
+        caller's raise carries its own guidance) — never raises.
+        """
+        query = (
+            f"eq(taxon_id,{taxon_id})&eq(feature_type,{feature_type})&select(product)&limit({cap})"
+        )
+        try:
+            rows = self._get_json("genome_feature", query)
+        except Exception:  # noqa: BLE001 - best-effort guidance; the caller raises with context
+            return []
+        counts: dict[str, int] = {}
+        for r in rows:
+            product = (r.get("product") or "").strip()
+            if product:
+                counts[product] = counts.get(product, 0) + 1
+        return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
 
     def _query_features(
         self, taxon_id: int, protein: str, feature_type: str

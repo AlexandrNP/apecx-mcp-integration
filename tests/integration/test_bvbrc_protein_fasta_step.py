@@ -156,15 +156,89 @@ def step_cluster(tmp_path) -> BvbrcProteinFastaStep:
     return _stage(tmp_path, length_cluster_tolerance="0.2")
 
 
-@needs_bvbrc
-def test_unknown_protein_fails_loud(tmp_path):
+# --------------------------------------------------------------------------- #
+# Too-few-sequences fallback (Phase C) — network-free (the HTTP layer is patched).
+# Real-data parity: test_query_available_proteins_real_chikv hits the real reverse lookup.
+# --------------------------------------------------------------------------- #
+
+
+def test_fallback_substitutes_most_covered_protein(tmp_path, monkeypatch):
     step = _stage(tmp_path)
-    with pytest.raises(ValueError, match="no .* protein features|at least 2"):
-        asyncio.run(
-            step.process(
-                {"taxon_id": _CHIKV_TAXON, "protein": "zzznotaprotein", "feature_type": "CDS"}
+    calls: list[str] = []
+
+    def fake_fetch(taxon_id, protein, feature_type):
+        calls.append(protein)
+        if protein == "glycoprotein":  # requested: too few
+            return (
+                [{"id": "g1", "product": protein, "genome_name": "x", "sequence": _seq(100)}],
+                1,
+                0,
             )
+        recs = [
+            {"id": f"n{i}", "product": protein, "genome_name": "x", "sequence": _seq(100)}
+            for i in range(4)
+        ]
+        return (recs, 4, 0)
+
+    monkeypatch.setattr(step, "_fetch", fake_fetch)
+    monkeypatch.setattr(
+        step,
+        "_query_available_proteins",
+        lambda t, ft, **k: [("nucleocapsid protein", 40), ("glycoprotein", 1)],
+    )
+    out = asyncio.run(
+        step.process({"taxon_id": 123, "protein": "glycoprotein", "feature_type": "CDS"})
+    )
+    pf = out["protein_fasta"]
+    assert pf["substituted_protein"] == "nucleocapsid protein"
+    assert pf["requested_protein"] == "glycoprotein"
+    assert pf["protein"] == "nucleocapsid protein"  # downstream uses the substitute
+    assert pf["n_sequences"] == 4
+    assert "nucleocapsid protein" in calls  # retried with the substitute
+
+
+def test_fallback_no_viable_substitute_raises_with_available_list(tmp_path, monkeypatch):
+    step = _stage(tmp_path)
+    monkeypatch.setattr(
+        step,
+        "_fetch",
+        lambda t, p, ft: (
+            [{"id": "x", "product": p, "genome_name": "g", "sequence": _seq(100)}],
+            1,
+            0,
+        ),
+    )
+    monkeypatch.setattr(
+        step, "_query_available_proteins", lambda t, ft, **k: [("glycoprotein", 1), ("matrix", 1)]
+    )
+    with pytest.raises(ValueError, match="Available products for this taxon"):
+        asyncio.run(
+            step.process({"taxon_id": 123, "protein": "glycoprotein", "feature_type": "CDS"})
         )
+
+
+@needs_bvbrc
+def test_query_available_proteins_real_chikv(tmp_path):
+    avail = _stage(tmp_path)._query_available_proteins(_CHIKV_TAXON, "CDS")
+    assert avail, "real BV-BRC should return at least one product for CHIKV"
+    assert all(isinstance(p, str) and isinstance(c, int) and c > 0 for p, c in avail)
+    assert avail == sorted(avail, key=lambda kv: (-kv[1], kv[0]))  # sorted by count desc
+
+
+@needs_bvbrc
+def test_unknown_protein_auto_substitutes_most_covered_real_protein(tmp_path):
+    # Phase C real-data parity: a protein name with no coverage now auto-substitutes the most-
+    # covered real product for this taxon (loudly — substituted_protein + proceed_note), instead
+    # of dead-ending. (The genuine no-viable-substitute RAISE path is covered network-free by
+    # test_fallback_no_viable_substitute_raises_with_available_list.)
+    step = _stage(tmp_path)
+    out = asyncio.run(
+        step.process({"taxon_id": _CHIKV_TAXON, "protein": "zzznotaprotein", "feature_type": "CDS"})
+    )
+    pf = out["protein_fasta"]
+    assert pf["requested_protein"] == "zzznotaprotein"
+    assert pf["substituted_protein"] and pf["substituted_protein"] != "zzznotaprotein"
+    assert pf["n_sequences"] >= 2
 
 
 def test_product_word_boundary_rejects_substring_wrong_protein():

@@ -104,6 +104,8 @@ class ConservationScoreStep(BaseStep):
             "records",
             "n_fetched",
             "n_dropped_length_outlier",
+            "requested_protein",
+            "substituted_protein",
             "alignment_fasta",
         ):
             if key in payload:
