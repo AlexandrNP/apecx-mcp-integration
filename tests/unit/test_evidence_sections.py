@@ -478,6 +478,32 @@ def test_compose_emits_five_sections_in_order():
     assert steps < md.find("## Structural evidence") < md.find("## Sources and evidence")
 
 
+def test_how_to_proceed_section_present_when_notes_absent_otherwise():
+    from apecx_integration.composition.steps._proceed import append_proceed_note
+
+    narrative = (
+        "# Answer\n\nFoo.\n\n## Cross-data reasoning\n\nBar.\n\n## Integrated insight\n\nBaz."
+    )
+    # Absent when there are no proceed notes (no empty heading).
+    plain = compose_evidence_markdown(narrative, "chikv", _realistic_bundle())
+    assert "## How to proceed" not in plain
+
+    # Present (before Follow-ups) when a degrade/guidance note was recorded.
+    bundle = _realistic_bundle()
+    append_proceed_note(
+        bundle,
+        stage="clade grouping",
+        what="single clade",
+        why="median pairwise identity 99%",
+        action="supply more divergent strains",
+        severity="info",
+    )
+    md = compose_evidence_markdown(narrative, bundle["query"], bundle)
+    assert "## How to proceed" in md
+    assert md.find("## How to proceed") < md.find("## Follow-up questions")
+    assert "supply more divergent strains" in md
+
+
 def test_scope_caveat_present_when_taxon_unresolved():
     """No virus resolved (``taxon_id`` None) → a LOUD scope caveat is the first prose
     under ``# Answer``, BEFORE the cross-data reasoning and the narrative claim, so a

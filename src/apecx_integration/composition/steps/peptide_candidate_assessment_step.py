@@ -20,6 +20,7 @@ from apecx_integration.composition.runtime.design_approval_store import (
 )
 from apecx_integration.composition.schemas.control_transfer import needs_prerequisite_transfer
 from apecx_integration.composition.schemas.data_shapes import Bundle
+from apecx_integration.composition.steps._proceed import render_how_to_proceed
 
 log = logging.getLogger(__name__)
 
@@ -175,7 +176,7 @@ class PeptideCandidateAssessmentStep(BaseStep):
         readiness = self._readiness(parts)
         regions = self._candidate_regions(parts.get("conserved_regions"))
         if not regions:
-            return {_OUTPUT_KEY: self._needs_conserved_regions(readiness)}
+            return {_OUTPUT_KEY: self._needs_conserved_regions(readiness, parts)}
 
         scope_query = self._scope_query(parts, input_data)
         protein = parts.get("protein")
@@ -197,7 +198,7 @@ class PeptideCandidateAssessmentStep(BaseStep):
         self.emit_progress("ranking candidate regions")
         ranked = self._rank_candidates(regions, parts)
         if not ranked:
-            return {_OUTPUT_KEY: self._needs_conserved_regions(readiness)}
+            return {_OUTPUT_KEY: self._needs_conserved_regions(readiness, parts)}
         primary = ranked[0]
         alternates = ranked[1 : 1 + self._max_alternates]
         output = self._approved_output(
@@ -532,7 +533,9 @@ class PeptideCandidateAssessmentStep(BaseStep):
             "control_transfer": ct.model_dump(mode="json"),
         }
 
-    def _needs_conserved_regions(self, readiness: dict[str, Any]) -> dict[str, Any]:
+    def _needs_conserved_regions(
+        self, readiness: dict[str, Any], parts: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         ct = needs_prerequisite_transfer(
             _EVIDENCE_PREREQ,
             message=(
@@ -541,6 +544,10 @@ class PeptideCandidateAssessmentStep(BaseStep):
                 "conservation available, then re-call this assessment."
             ),
         )
+        # Surface the upstream's how-to-proceed guidance (e.g. available proteins for a sparse
+        # taxon) so the dead-end carries an actionable next step instead of just "absent".
+        guidance = render_how_to_proceed({"proceed_notes": (parts or {}).get("proceed_notes")})
+        guidance_md = f"\n{guidance}\n" if guidance else ""
         return {
             "markdown": (
                 "# Answer\n\n"
@@ -549,6 +556,7 @@ class PeptideCandidateAssessmentStep(BaseStep):
                 f"{readiness.get('conserved_regions', 0)}.\n\n"
                 "## Approval requirement\n\n"
                 "No candidate sequence is released because the prerequisite evidence is absent.\n"
+                f"{guidance_md}"
             ),
             "data": {
                 "kind": "bundle",

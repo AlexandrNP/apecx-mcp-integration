@@ -43,6 +43,7 @@ from apecx_integration.agents.globus_search._datacite import (
     datacite_subjects,
     datacite_title,
 )
+from apecx_integration.composition.steps._proceed import render_how_to_proceed
 from apecx_integration.composition.steps._stage_report import render_stage_reports
 
 log = logging.getLogger(__name__)
@@ -974,6 +975,9 @@ def collect_structured_output(bundle: dict[str, Any]) -> dict[str, Any]:
         # functional-annotation leg (VIOLIN/BV-BRC/IEDB residue-level recognition) — consumed by
         # the candidate ranker's reported-recognition score; dropped here until now.
         "functional_validation": bundle.get("functional_validation"),
+        # how-to-proceed guidance (diagnosis + next action for any degrade) — so a downstream
+        # handle consumer (conserved_epitope_candidate_assessment) surfaces it too.
+        "proceed_notes": bundle.get("proceed_notes"),
         "counts": {
             "conserved_regions": len(
                 bundle.get("conserved_regions") or bundle.get("conserved_sites") or []
@@ -1015,10 +1019,21 @@ def compose_evidence_markdown(narrative_body: str, query: str, bundle: dict[str,
     coverage = render_coverage_section(bundle)
     sources = render_sources_section(bundle)
     followups = render_followups_section(query, bundle)
-    return (
-        f"{body.rstrip()}\n\n{analysis}\n\n{disclosure}\n\n{crossref}\n\n{breadth}\n\n{structural}\n\n"
-        f"{coverage}\n\n{sources}\n\n{followups}\n"
-    )
+    proceed = render_how_to_proceed(bundle)  # "" when no degrade/guidance notes
+    sections = [
+        body.rstrip(),
+        analysis,
+        disclosure,
+        crossref,
+        breadth,
+        structural,
+        coverage,
+        sources,
+    ]
+    if proceed:
+        sections.append(proceed)
+    sections.append(followups)
+    return "\n\n".join(sections) + "\n"
 
 
 class EvidenceReviewSynthesisStepConfig(StepConfig):

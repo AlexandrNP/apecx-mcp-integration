@@ -119,6 +119,15 @@ def test_collect_structured_output_carries_the_real_analysis():
             "pan_clade_regions": [{"start": 1, "end": 9}],
         },
         "functional_validation": {"candidate_source": "conserved_regions_only", "coincidences": []},
+        "proceed_notes": [
+            {
+                "stage": "clade grouping",
+                "what": "single clade",
+                "why": "homogeneous",
+                "action": "supply divergent strains",
+                "severity": "info",
+            }
+        ],
     }
     data = collect_structured_output(bundle)
     assert data["kind"] == "bundle"
@@ -130,5 +139,7 @@ def test_collect_structured_output_carries_the_real_analysis():
     # (conserved_epitope_candidate_assessment) can read them via the data_handle.
     assert parts["cross_clade_breadth"]["pan_clade_regions"] == [{"start": 1, "end": 9}]
     assert parts["functional_validation"]["candidate_source"] == "conserved_regions_only"
+    # how-to-proceed guidance rides the handle so a downstream consumer can surface it.
+    assert parts["proceed_notes"][0]["action"] == "supply divergent strains"
     # it serialises cleanly (it lands in a .json artifact)
     json.dumps(data, default=str)
