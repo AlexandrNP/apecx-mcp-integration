@@ -84,13 +84,40 @@ def test_attach_artifact_gathers_figures_and_splits_tool_outputs(tmp_path, monke
     assert "](figures/conservation_37124_E1_abcd.png)" in report
     assert "](figures/2XFB_surface.png)" in report
     assert "](https://example.org/x.png)" in report
-    # Split-per-tool native files.
+    # Split native files — one JSON per bundle part (data-driven), plus the materialized FASTA.
     assert json.loads((tools / "conserved_regions.json").read_text()) == [{"start": 1, "end": 9}]
-    sasa = json.loads((tools / "structural_sasa.json").read_text())
-    assert sasa["structural_records"][0]["subject"] == "pdb:2XFB"
-    assert sasa["structural_reasoning"]["pdb_id"] == "2XFB"
+    assert json.loads((tools / "structural_records.json").read_text())[0]["subject"] == "pdb:2XFB"
+    assert json.loads((tools / "structural_reasoning.json").read_text())["pdb_id"] == "2XFB"
     assert json.loads((tools / "publications.json").read_text())[0]["doi"] == "10.1/x"
     assert (tools / "alignment.fasta").read_text() == ">s1\nMAKL\n"
+    # The FASTA basename is a pointer, not content — it must NOT be dumped as JSON.
+    assert not (tools / "alignment_fasta_artifact.json").exists()
+
+
+def test_tool_outputs_split_is_data_driven(tmp_path, monkeypatch):
+    """Any bundle part — not just the viral-epitope keys — lands as its own ``<key>.json`` so
+    every workflow (current + future) gets openable native files with no per-workflow wiring."""
+    monkeypatch.setenv("APECX_ARTIFACTS_DIR", str(tmp_path))
+    result = {
+        "markdown": "# Answer\n\nA non-epitope workflow's report.",
+        "data_preview": {
+            "kind": "bundle",
+            "parts": {
+                "combination_released": True,
+                "epitopes": [{"label": "x", "sequence": "ACDE"}],
+                "combination_support": {"classification": "epitope-level support only"},
+            },
+        },
+        "run_id": "run-generic",
+    }
+    _attach_artifact(result, "run-generic")
+    tools = tmp_path / "run-generic" / "tool_outputs"
+    assert json.loads((tools / "combination_released.json").read_text()) is True
+    assert json.loads((tools / "epitopes.json").read_text())[0]["sequence"] == "ACDE"
+    assert (
+        json.loads((tools / "combination_support.json").read_text())["classification"]
+        == "epitope-level support only"
+    )
 
 
 def test_attach_artifact_never_raises_on_empty_or_bad_input(tmp_path, monkeypatch):

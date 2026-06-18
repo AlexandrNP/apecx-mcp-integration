@@ -22,6 +22,7 @@ from apecx_integration.composition.runtime.design_approval_store import (
 )
 from apecx_integration.composition.schemas.control_transfer import needs_prerequisite_transfer
 from apecx_integration.composition.steps._combination_common import is_terminal, unwrap_single_key
+from apecx_integration.composition.steps._stage_report import append_stage_report
 
 log = logging.getLogger(__name__)
 
@@ -80,21 +81,19 @@ class CombinationReleaseStep(BaseStep):
         )
         if not ok:
             token = self._approval_token(approval_id, reason, scope_query, protein)
-            return {
-                _OUTPUT_KEY: self._withheld_output(
-                    readiness=readiness,
-                    preliminary=preliminary,
-                    reason=reason,
-                    token=token,
-                    scope_query=scope_query,
-                    protein=protein,
-                    epitopes=epitopes,
-                )
-            }
-
-        self.emit_progress("releasing approved epitope combination assessment")
-        return {
-            _OUTPUT_KEY: self._approved_output(
+            terminal = self._withheld_output(
+                readiness=readiness,
+                preliminary=preliminary,
+                reason=reason,
+                token=token,
+                scope_query=scope_query,
+                protein=protein,
+                epitopes=epitopes,
+            )
+            stage_md = f"Combination output withheld pending design approval: {reason}."
+        else:
+            self.emit_progress("releasing approved epitope combination assessment")
+            terminal = self._approved_output(
                 readiness=readiness,
                 preliminary=preliminary,
                 evidence_parts=evidence_parts,
@@ -104,7 +103,16 @@ class CombinationReleaseStep(BaseStep):
                 scope_query=scope_query,
                 protein=protein,
             )
-        }
+            stage_md = "Released the approved epitope-combination assessment."
+
+        # Surface the cumulative stage list (accumulated intake->classify->here) at the top of
+        # the returned dict so the G37 step_complete event carries this stage for the desktop
+        # stream. ``terminal`` itself stays EnvelopeStep-shaped (markdown/data/control_transfer).
+        carrier = {"stage_reports": list(payload.get("stage_reports") or [])}
+        append_stage_report(
+            carrier, stage="combination_release", order=3, markdown=stage_md, data={}
+        )
+        return {_OUTPUT_KEY: terminal, "stage_reports": carrier["stage_reports"]}
 
     @staticmethod
     def _approval_token(approval_id: Any, reason: str, query: str, protein: Any) -> str:

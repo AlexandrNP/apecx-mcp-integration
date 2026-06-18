@@ -23,6 +23,7 @@ from pydantic import ConfigDict, Field, model_validator
 from apecx_integration.composition.handles.store import default_handle_store
 from apecx_integration.composition.schemas.control_transfer import needs_prerequisite_transfer
 from apecx_integration.composition.schemas.data_shapes import Bundle
+from apecx_integration.composition.steps._stage_report import append_stage_report
 
 log = logging.getLogger(__name__)
 
@@ -128,16 +129,28 @@ class CombinationIntakeStep(BaseStep):
         protein = self._scope_protein(evidence_parts, candidate_parts)
 
         self.emit_progress("normalizing epitope combination intake")
-        return {
-            _OUTPUT_KEY: {
-                "evidence_parts": evidence_parts,
-                "candidate_parts": candidate_parts,
-                "epitopes": epitopes,
-                "scope_query": scope_query,
-                "protein": protein,
-                "design_approval_id": payload.get("design_approval_id"),
-            }
+        bundle = {
+            "evidence_parts": evidence_parts,
+            "candidate_parts": candidate_parts,
+            "epitopes": epitopes,
+            "scope_query": scope_query,
+            "protein": protein,
+            "design_approval_id": payload.get("design_approval_id"),
         }
+        append_stage_report(
+            bundle,
+            stage="combination_intake",
+            order=1,
+            markdown=(
+                f"Staged {len(epitopes)} epitope(s) for combination assessment: the approved "
+                f"candidate peptide + {len(epitopes) - 1} additional epitope(s)."
+            ),
+            data={"epitope_count": len(epitopes)},
+        )
+        # ``stage_reports`` is surfaced at the top of the returned dict (alongside the output-DU
+        # key) so the G37 step_complete event carries it for the desktop stream; it also rides
+        # ``bundle`` downstream so classify/release accumulate onto the same list.
+        return {_OUTPUT_KEY: bundle, "stage_reports": bundle["stage_reports"]}
 
     @staticmethod
     def _unwrap(input_data: dict[str, Any]) -> dict[str, Any]:

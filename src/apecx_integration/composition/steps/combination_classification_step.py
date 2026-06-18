@@ -17,6 +17,7 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.composition.steps._combination_common import is_terminal, unwrap_single_key
+from apecx_integration.composition.steps._stage_report import append_stage_report
 
 log = logging.getLogger(__name__)
 
@@ -70,7 +71,19 @@ class CombinationClassificationStep(BaseStep):
         epitopes = payload.get("epitopes") or []
         readiness = self._readiness(evidence_parts, payload.get("candidate_parts") or {}, epitopes)
         preliminary = self._preliminary_assessment(evidence_parts, epitopes)
-        return {_OUTPUT_KEY: {**payload, "readiness": readiness, "preliminary": preliminary}}
+        out = {**payload, "readiness": readiness, "preliminary": preliminary}
+        append_stage_report(
+            out,
+            stage="combination_classification",
+            order=2,
+            markdown=(
+                f"Combination-level support: {preliminary['combination_support']['classification']}; "
+                f"structural placement: {preliminary['structural_placement']['classification']}; "
+                f"immunodominance: {preliminary['immunodominance']['classification']}."
+            ),
+            data={"readiness": readiness},
+        )
+        return {_OUTPUT_KEY: out, "stage_reports": out["stage_reports"]}
 
     @staticmethod
     def _readiness(

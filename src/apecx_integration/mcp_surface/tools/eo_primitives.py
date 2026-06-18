@@ -108,11 +108,14 @@ _PRIMITIVES: list[dict[str, str]] = [
 
 
 def _write_tool_outputs(tool_dir: Any, data: Any, base: Any) -> None:
-    """Split the resolved structured DataShape into per-tool NATIVE files under ``tool_outputs/``.
+    """Split the resolved structured DataShape into per-part NATIVE files under ``tool_outputs/``.
 
+    Data-driven + workflow-agnostic: each ``parts`` entry is written to ``<key>.json``, so ANY
+    workflow's bundle (current or future) yields openable native files with no per-workflow wiring.
     Each write is best-effort so one failure does not lose the others. The raw alignment FASTA is
-    copied from the content-addressed file the composition layer wrote (only its basename rides
-    the lightweight handle, by ``collect_structured_output``)."""
+    copied from the content-addressed file the composition layer wrote (only its basename rides the
+    lightweight handle, via ``collect_structured_output``); that basename is a pointer, not content,
+    so it is materialized as ``alignment.fasta`` below rather than dumped as JSON."""
     import json as _json
     import shutil as _shutil
 
@@ -120,22 +123,20 @@ def _write_tool_outputs(tool_dir: Any, data: Any, base: Any) -> None:
     if not isinstance(parts, dict):
         return
 
+    _fasta_key = "alignment_fasta_artifact"
+
     def _dump(name: str, obj: Any) -> None:
         try:
             (tool_dir / name).write_text(_json.dumps(obj, indent=2, default=str), encoding="utf-8")
         except Exception as exc:  # noqa: BLE001 — one native file failing keeps the rest
             log.warning("tool_output write failed for %s: %s", name, exc)
 
-    _dump("conserved_regions.json", parts.get("conserved_regions") or [])
-    _dump(
-        "structural_sasa.json",
-        {
-            "structural_records": parts.get("structural_records") or [],
-            "structural_reasoning": parts.get("structural_reasoning"),
-        },
-    )
-    _dump("publications.json", parts.get("publications") or [])
-    fasta_name = parts.get("alignment_fasta_artifact")
+    for key, val in parts.items():
+        if key == _fasta_key:
+            continue
+        _dump(f"{key}.json", val)
+
+    fasta_name = parts.get(_fasta_key)
     if fasta_name:
         src = base / str(fasta_name)
         if src.exists():
