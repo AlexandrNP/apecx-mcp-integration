@@ -39,9 +39,18 @@ def _rhea_spec(monkeypatch: pytest.MonkeyPatch, backend: str | None):
     return {s.name: s for s in _default_backend_specs()}["rhea_mcp"]
 
 
-def test_default_backend_is_host_process(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Unset APECX_RHEA_BACKEND -> the existing host-process backend (non-breaking)."""
+def test_default_backend_is_container(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Unset APECX_RHEA_BACKEND -> the CONTAINER backend (default, host-conda-independent)."""
     rhea = _rhea_spec(monkeypatch, None)
+    assert rhea.kind == "docker_container"
+    assert rhea.container is not None
+    assert rhea.process is None
+    assert rhea.container.ports == ((3001, 3001),)
+
+
+def test_host_backend_is_opt_in(monkeypatch: pytest.MonkeyPatch) -> None:
+    """APECX_RHEA_BACKEND=host -> the host-process backend (opt-out of the container default)."""
+    rhea = _rhea_spec(monkeypatch, "host")
     assert rhea.kind == "host_process"
     assert rhea.process is not None
     assert rhea.container is None

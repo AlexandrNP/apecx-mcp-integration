@@ -1210,14 +1210,14 @@ def _step_rhea() -> StepResult:
         )
 
     # Phase 5 (container backend only): build the rhea-server image so the
-    # orchestrator's CONTAINER backend (APECX_RHEA_BACKEND=container) can
-    # `docker run` it — tool execution then uses the container's conda,
-    # independent of a broken/missing HOST conda. The host-process backend
-    # (default) needs no image, so we skip the multi-GB build for it.
-    # Mirrors _step_pymol: docker-available check, idempotent image-inspect,
-    # APECX_RHEA_IMAGE_REBUILD=1 to force, NEVER raises. The orchestrator only
-    # `docker run`s; this is where the image actually gets built.
-    rhea_backend = os.environ.get("APECX_RHEA_BACKEND", "host").strip().lower()
+    # orchestrator's CONTAINER backend (APECX_RHEA_BACKEND=container, now the
+    # DEFAULT) can `docker run` it — tool execution then uses the container's
+    # conda, independent of a broken/missing HOST conda. The opt-in host-process
+    # backend (APECX_RHEA_BACKEND=host) needs no image, so we skip the multi-GB
+    # build for it. Mirrors _step_pymol: docker-available check, idempotent
+    # image-inspect, APECX_RHEA_IMAGE_REBUILD=1 to force, NEVER raises. The
+    # orchestrator only `docker run`s; this is where the image actually gets built.
+    rhea_backend = os.environ.get("APECX_RHEA_BACKEND", "container").strip().lower()
     base_msg = (
         f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn "
         "rhea-server on next start"

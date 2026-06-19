@@ -67,11 +67,16 @@ _gate = pytest.mark.skipif(
 
 @_gate
 @pytest.mark.asyncio
-async def test_orchestrator_spawns_rhea_and_atexit_stops_it() -> None:
+async def test_orchestrator_spawns_rhea_and_atexit_stops_it(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     """The orchestrator spawns rhea-server from a clean state, the
     probe flips to READY, ``spawned_by_us=True``, and ``shutdown()``
     terminates the process so no orphan survives the test.
     """
+    # This test asserts the HOST-PROCESS spawn (spawned_pid), so opt out of the
+    # container default (APECX_RHEA_BACKEND now defaults to "container").
+    monkeypatch.setenv("APECX_RHEA_BACKEND", "host")
     if _rhea_already_running():
         pytest.skip(
             f"Rhea MCP is already running at {_RHEA_MCP_URL} (operator-managed). "
@@ -121,6 +126,9 @@ async def test_bad_rhea_python_path_fails_loud_fast(monkeypatch: pytest.MonkeyPa
     Unconditional. Uses a guaranteed-nonexistent Python prefix so we
     don't need a real Rhea checkout to exercise the import-check path.
     """
+    # This test exercises the HOST-PROCESS spawn/import-check path, so opt out
+    # of the container default (APECX_RHEA_BACKEND now defaults to "container").
+    monkeypatch.setenv("APECX_RHEA_BACKEND", "host")
     # Need RHEA_REPO_PATH to pass the prereq-env-vars gate; the value
     # doesn't matter because we'll fail before we use it.
     monkeypatch.setenv("RHEA_REPO_PATH", "/tmp/__not_a_real_rhea_repo__")

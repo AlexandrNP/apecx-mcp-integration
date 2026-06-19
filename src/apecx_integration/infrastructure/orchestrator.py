@@ -98,14 +98,17 @@ _RHEA_EMBEDDING_MODEL_ENV = "RHEA_EMBEDDING_MODEL"
 _OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
 _RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
 # Selects how the orchestrator brings up rhea-server:
-#   "host"      (default) — spawn it as a host PROCESS using RHEA_PYTHON_PATH.
-#                Tool execution then uses the HOST conda — fragile on hosts with
-#                a broken/missing conda (the canonical Apple-Silicon failure).
-#   "container" — run the rhea-server Docker IMAGE. Tool execution + per-tool
-#                conda envs build INSIDE the container, independent of the host
-#                conda. The image is NOT built here (the orchestrator only
-#                `docker run`s) — `apecx-setup rhea` builds it; a missing image
-#                surfaces a LOUD actionable error.
+#   "container" (DEFAULT) — run the rhea-server Docker IMAGE. Tool execution +
+#                per-tool conda envs build INSIDE the container, independent of
+#                the host conda (the canonical Apple-Silicon broken-conda
+#                failure). Verified host-conda-independent + memory-flat across a
+#                4-virus viral_epitope_analysis multi-probe. Requires Docker; the
+#                orchestrator only `docker run`s — `apecx-setup rhea` builds the
+#                image; a missing image / no Docker surfaces a LOUD actionable
+#                error and RHEA-backed tools degrade-loud (the rest still runs).
+#   "host"      — spawn it as a host PROCESS using RHEA_PYTHON_PATH. No Docker
+#                needed, but tool execution uses the HOST conda (fragile if that
+#                conda is broken/missing). Set APECX_RHEA_BACKEND=host to opt in.
 _RHEA_BACKEND_ENV = "APECX_RHEA_BACKEND"
 # Image tag the container backend runs. Default matches what `apecx-setup rhea`
 # builds from $RHEA_REPO_PATH/Dockerfile.
@@ -623,7 +626,7 @@ def _default_backend_specs() -> tuple[BackendSpec, ...]:
     ollama_base_url = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1")
     # Backend selection: default "host" (unchanged behavior). "container" runs
     # the rhea-server image so tool execution is independent of the host conda.
-    rhea_backend = os.environ.get(_RHEA_BACKEND_ENV, "host").strip().lower()
+    rhea_backend = os.environ.get(_RHEA_BACKEND_ENV, "container").strip().lower()
     if rhea_backend == "container":
         rhea = _make_rhea_container_spec(
             postgres_container=pg.container,  # type: ignore[arg-type]
