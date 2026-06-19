@@ -97,6 +97,20 @@ _RHEA_CONDA_BIN_ENV = "RHEA_CONDA_BIN"
 _RHEA_EMBEDDING_MODEL_ENV = "RHEA_EMBEDDING_MODEL"
 _OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
 _RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
+# Selects how the orchestrator brings up rhea-server:
+#   "host"      (default) — spawn it as a host PROCESS using RHEA_PYTHON_PATH.
+#                Tool execution then uses the HOST conda — fragile on hosts with
+#                a broken/missing conda (the canonical Apple-Silicon failure).
+#   "container" — run the rhea-server Docker IMAGE. Tool execution + per-tool
+#                conda envs build INSIDE the container, independent of the host
+#                conda. The image is NOT built here (the orchestrator only
+#                `docker run`s) — `apecx-setup rhea` builds it; a missing image
+#                surfaces a LOUD actionable error.
+_RHEA_BACKEND_ENV = "APECX_RHEA_BACKEND"
+# Image tag the container backend runs. Default matches what `apecx-setup rhea`
+# builds from $RHEA_REPO_PATH/Dockerfile.
+_RHEA_IMAGE_ENV = "APECX_RHEA_IMAGE"
+_RHEA_IMAGE_DEFAULT = "apecx-rhea-server:local"
 
 
 def _autostart_enabled() -> bool:
@@ -254,6 +268,7 @@ def _compose_rhea_env(
     redis_c: ContainerSpec,
     minio: ContainerSpec,
     ollama_base_url: str,
+    infra_host: str = "localhost",
 ) -> dict[str, str]:
     """Derive the env vars Rhea needs, from the orchestrator's own specs.
 
@@ -272,7 +287,7 @@ def _compose_rhea_env(
     db_name = pg_env.get("POSTGRES_DB", "rhea")
     db_password = pg_env.get("POSTGRES_PASSWORD", "postgres")
     database_url = (
-        f"postgresql+asyncpg://{db_user}:{db_password}@localhost:{pg_host_port}/{db_name}"
+        f"postgresql+asyncpg://{db_user}:{db_password}@{infra_host}:{pg_host_port}/{db_name}"
     )
     redis_host_port = redis_c.ports[0][0]
     minio_host_port = minio.ports[0][0]
@@ -289,11 +304,11 @@ def _compose_rhea_env(
         "PORT": "3001",
         # DB / object store / cache.
         "DATABASE_URL": database_url,
-        "REDIS_HOST": "localhost",
+        "REDIS_HOST": infra_host,
         "REDIS_PORT": str(redis_host_port),
-        "AGENT_REDIS_HOST": "localhost",
+        "AGENT_REDIS_HOST": infra_host,
         "AGENT_REDIS_PORT": str(redis_host_port),
-        "MINIO_ENDPOINT": f"localhost:{minio_host_port}",
+        "MINIO_ENDPOINT": f"{infra_host}:{minio_host_port}",
         "MINIO_ACCESS_KEY": minio_env.get("MINIO_ROOT_USER", "minioadmin"),
         "MINIO_SECRET_KEY": minio_env.get("MINIO_ROOT_PASSWORD", "minioadmin"),
         # Embedding service (Ollama).
@@ -323,6 +338,55 @@ def _compose_rhea_env(
             os.path.expanduser("~/.cache/apecx-rhea/conda/envs"),
         ),
     }
+
+
+def _compose_rhea_container_env(
+    *,
+    postgres: ContainerSpec,
+    redis_c: ContainerSpec,
+    minio: ContainerSpec,
+    ollama_base_url: str,
+) -> dict[str, str]:
+    """Rhea env for the CONTAINER backend.
+
+    Same derivation as the host-process env, with three container-specific
+    differences:
+      * every infra endpoint is reached via ``host.docker.internal`` (the
+        container talks to the host-published postgres/redis/minio/ollama ports)
+        instead of ``localhost``;
+      * the server binds ``0.0.0.0`` so ``-p 3001:3001`` is reachable from the
+        host (the image bakes this too — set here for belt-and-braces);
+      * ``AGENT_HANDLE_TIMEOUT`` is raised: the first call to a tool cold-builds
+        its per-tool conda env INSIDE the container and the agent handle is
+        written only after that build finishes, so the 30s default would time
+        out with the opaque "Never received handle from Parsl worker".
+    The per-tool conda dir is left to the image's baked ``RHEA_CONDA_ENVS_DIR``
+    (``/opt/rhea-conda/envs``), NOT the macOS host-cache path the host-process
+    variant pins — that path does not exist inside the container.
+    """
+    # Ollama runs on the HOST; rewrite a localhost/127.0.0.1 base URL to the
+    # docker-desktop host alias so the container can reach it.
+    container_ollama = ollama_base_url.replace("localhost", "host.docker.internal").replace(
+        "127.0.0.1", "host.docker.internal"
+    )
+    env = _compose_rhea_env(
+        postgres=postgres,
+        redis_c=redis_c,
+        minio=minio,
+        ollama_base_url=container_ollama,
+        infra_host="host.docker.internal",
+    )
+    env["HOST"] = "0.0.0.0"
+    env["AGENT_HANDLE_TIMEOUT"] = os.environ.get("AGENT_HANDLE_TIMEOUT", "900")
+    # Use the image's baked RHEA_CONDA_ENVS_DIR (/opt/rhea-conda/envs) by default
+    # — the host-process variant's ~/.cache path does not exist in the container.
+    # But HONOR an explicit operator override (e.g. a mounted persistent
+    # conda-cache volume) rather than silently dropping it.
+    if os.environ.get("RHEA_CONDA_ENVS_DIR"):
+        env["RHEA_CONDA_ENVS_DIR"] = os.environ["RHEA_CONDA_ENVS_DIR"]
+    else:
+        env.pop("RHEA_CONDA_ENVS_DIR", None)
+    return env
 
 
 def _verify_rhea_python_can_import(python_exec: str) -> tuple[bool, str]:
@@ -479,6 +543,71 @@ def _make_rhea_mcp_spec(
     )
 
 
+def _make_rhea_container_spec(
+    *,
+    postgres_container: ContainerSpec,
+    redis_container: ContainerSpec,
+    minio_container: ContainerSpec,
+    ollama_base_url: str,
+) -> BackendSpec:
+    """Rhea backend that runs the rhea-server DOCKER IMAGE (host-conda-independent).
+
+    Tool execution + per-tool conda envs build INSIDE the container using its
+    baked conda, so a broken/missing HOST conda (the canonical Apple-Silicon
+    failure) is irrelevant. The worker is a Parsl LOCAL subprocess inside the
+    container — it shares the server's network namespace, so there is no
+    Docker-Desktop interchange-reachability problem (the reason the sibling
+    container WORKER backend fails on macOS).
+
+    The orchestrator only ``docker run``s — it does NOT build the image. A
+    missing image surfaces a LOUD actionable message (build via ``apecx-setup
+    rhea`` / ``docker build``). Reaching the host-published infra ports uses
+    ``--add-host=host.docker.internal:host-gateway`` (needed on Linux; a no-op
+    but harmless on Docker Desktop).
+    """
+    mcp_url = os.environ.get(_RHEA_MCP_URL_ENV, "http://localhost:3001/mcp/")
+    image = os.environ.get(_RHEA_IMAGE_ENV, _RHEA_IMAGE_DEFAULT)
+
+    async def _probe() -> ProbeResult:
+        return await rhea_mcp_probe(mcp_url=mcp_url)
+
+    rhea_env = _compose_rhea_container_env(
+        postgres=postgres_container,
+        redis_c=redis_container,
+        minio=minio_container,
+        ollama_base_url=ollama_base_url,
+    )
+    container_spec = ContainerSpec(
+        image=image,
+        container_name="apecx-rhea-server",
+        ports=((3001, 3001),),
+        # Sorted for a deterministic argv (tests pin the generated docker run).
+        env=tuple(sorted(rhea_env.items())),
+        extra_run_args=("--add-host=host.docker.internal:host-gateway",),
+        # The server boots (probe = :3001 health) in ~10s; the slow per-tool
+        # conda build happens later, on the first tool CALL, not at startup.
+        ready_timeout_s=120.0,
+    )
+
+    return BackendSpec(
+        name="rhea_mcp",
+        display_name="Rhea MCP (container)",
+        kind="docker_container",
+        required=True,
+        probe=Probe(name="rhea_mcp", fn=_probe),
+        actionable_message=(
+            f"Rhea MCP container is unreachable at {mcp_url}. The orchestrator "
+            f"runs the image {image!r} but does NOT build it. Build it once with "
+            f"`apecx-setup rhea` (or `docker build -t {image} -f "
+            f"$RHEA_REPO_PATH/Dockerfile $RHEA_REPO_PATH`), make sure Docker is "
+            f"running, then retry. To use the host-process backend instead, set "
+            f"${_RHEA_BACKEND_ENV}=host."
+        ),
+        container=container_spec,
+        tags=("mcp", "rhea"),
+    )
+
+
 def _default_backend_specs() -> tuple[BackendSpec, ...]:
     """Build the default 5-backend roster.
 
@@ -492,12 +621,23 @@ def _default_backend_specs() -> tuple[BackendSpec, ...]:
     minio_s = _make_minio_spec()
     ollama_s = _make_ollama_spec()
     ollama_base_url = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1")
-    rhea = _make_rhea_mcp_spec(
-        postgres_container=pg.container,  # type: ignore[arg-type]
-        redis_container=redis_s.container,  # type: ignore[arg-type]
-        minio_container=minio_s.container,  # type: ignore[arg-type]
-        ollama_base_url=ollama_base_url,
-    )
+    # Backend selection: default "host" (unchanged behavior). "container" runs
+    # the rhea-server image so tool execution is independent of the host conda.
+    rhea_backend = os.environ.get(_RHEA_BACKEND_ENV, "host").strip().lower()
+    if rhea_backend == "container":
+        rhea = _make_rhea_container_spec(
+            postgres_container=pg.container,  # type: ignore[arg-type]
+            redis_container=redis_s.container,  # type: ignore[arg-type]
+            minio_container=minio_s.container,  # type: ignore[arg-type]
+            ollama_base_url=ollama_base_url,
+        )
+    else:
+        rhea = _make_rhea_mcp_spec(
+            postgres_container=pg.container,  # type: ignore[arg-type]
+            redis_container=redis_s.container,  # type: ignore[arg-type]
+            minio_container=minio_s.container,  # type: ignore[arg-type]
+            ollama_base_url=ollama_base_url,
+        )
     return (pg, redis_s, minio_s, ollama_s, rhea)
 
 

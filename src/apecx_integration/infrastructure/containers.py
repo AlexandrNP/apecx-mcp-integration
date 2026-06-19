@@ -108,7 +108,8 @@ def container_run_args(spec: ContainerSpec) -> list[str]:
     cleanly. Shape:
 
     ``["docker", "run", "-d", "--name", <name>, "-p", "H:C", ...,
-       "-e", "K=V", ..., <image>, *<command>]``
+       "-e", "K=V", ..., "-v", "S:C", ..., *<extra_run_args>, <image>,
+       *<command>]``
 
     Callers prepend ``docker`` themselves so they can use ``shutil.which``
     or a custom binary path.
@@ -120,6 +121,7 @@ def container_run_args(spec: ContainerSpec) -> list[str]:
         args.extend(["-e", f"{key}={value}"])
     for source, container_path in spec.volumes:
         args.extend(["-v", f"{source}:{container_path}"])
+    args.extend(spec.extra_run_args)
     args.append(spec.image)
     args.extend(spec.command)
     return args

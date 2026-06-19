@@ -136,6 +136,13 @@ class ContainerSpec:
     # start``) path on a volume-bearing container, so the operator knows
     # the named volume may or may not still hold prior state.
     volumes: tuple[tuple[str, str], ...] = ()
+    # Extra ``docker run`` flags inserted BEFORE the image (after name/ports/
+    # env/volumes). For flags that have no dedicated field — e.g.
+    # ``--add-host=host.docker.internal:host-gateway`` so a container started by
+    # the orchestrator can reach the host-published infra ports (rhea-server
+    # reaching postgres/redis/minio/ollama). Each entry is one token, e.g.
+    # ``("--add-host=host.docker.internal:host-gateway",)``.
+    extra_run_args: tuple[str, ...] = ()
     # Ordered list of extra positional args appended after the image.
     # E.g. ``("server", "/data")`` for minio.
     command: tuple[str, ...] = ()
