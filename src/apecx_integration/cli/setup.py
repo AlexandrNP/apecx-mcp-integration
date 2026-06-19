@@ -1209,10 +1209,65 @@ def _step_rhea() -> StepResult:
             "is apecx-rhea-postgres running? (run `apecx-setup infra` first)",
         )
 
+    # Phase 5 (container backend only): build the rhea-server image so the
+    # orchestrator's CONTAINER backend (APECX_RHEA_BACKEND=container) can
+    # `docker run` it — tool execution then uses the container's conda,
+    # independent of a broken/missing HOST conda. The host-process backend
+    # (default) needs no image, so we skip the multi-GB build for it.
+    # Mirrors _step_pymol: docker-available check, idempotent image-inspect,
+    # APECX_RHEA_IMAGE_REBUILD=1 to force, NEVER raises. The orchestrator only
+    # `docker run`s; this is where the image actually gets built.
+    rhea_backend = os.environ.get("APECX_RHEA_BACKEND", "host").strip().lower()
+    base_msg = (
+        f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn "
+        "rhea-server on next start"
+    )
+    if rhea_backend != "container":
+        return StepResult("rhea", "ok", base_msg)
+
+    image = os.environ.get("APECX_RHEA_IMAGE", "apecx-rhea-server:local")
+    if not _docker_available():
+        return StepResult(
+            "rhea",
+            "partial",
+            f"{base_msg}; but APECX_RHEA_BACKEND=container and docker is "
+            f"unreachable — image {image} NOT built. Start Docker, then re-run "
+            "`apecx-setup rhea`, or set APECX_RHEA_BACKEND=host.",
+        )
+    image_present = (
+        subprocess.run(
+            ["docker", "image", "inspect", image],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).returncode
+        == 0
+    )
+    if image_present and os.environ.get("APECX_RHEA_IMAGE_REBUILD") != "1":
+        return StepResult(
+            "rhea",
+            "ok",
+            f"{base_msg}; container image {image} already present "
+            "(APECX_RHEA_IMAGE_REBUILD=1 to rebuild)",
+        )
+    print(f"  ▶  building rhea-server image {image} (cold build can take several min) ...")
+    build = subprocess.run(
+        ["docker", "build", "-t", image, "-f", str(rhea_repo / "Dockerfile"), str(rhea_repo)],
+        timeout=1800,
+    )
+    if build.returncode != 0:
+        return StepResult(
+            "rhea",
+            "partial",
+            f"{base_msg}; but the container image {image} build FAILED "
+            f"(rc={build.returncode}) — the container backend will error until "
+            "it builds. Check the docker build output above.",
+        )
     return StepResult(
         "rhea",
         "ok",
-        f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn rhea-server on next start",
+        f"{base_msg}; container image {image} built — orchestrator will run "
+        "rhea-server as a container (host-conda-independent)",
     )
 
 
