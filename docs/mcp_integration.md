@@ -53,6 +53,32 @@ a plain GET), **500** = backend down, **000** = not listening. When a RHEA tool 
 `viral_epitope_analysis` does NOT fail — it degrades loud with a warning + `apecx-setup rhea`
 instructions and the rest of the analysis still completes.
 
+### RHEA execution backend — `host` (default) vs `container`
+
+RHEA runs Galaxy tools (MUSCLE, …) by building a **per-tool conda env**. WHERE that conda runs is
+selected by `$APECX_RHEA_BACKEND`:
+
+| `APECX_RHEA_BACKEND` | rhea-server runs as | per-tool conda | when to use |
+|---|---|---|---|
+| `host` (default) | a host PROCESS (RHEA_PYTHON_PATH) | the HOST's conda | hosts with a healthy conda; lightest setup |
+| `container` | the rhea-server Docker IMAGE | the CONTAINER's conda (`/opt/conda`) | **host-conda-independent** — works where the host conda is broken/missing (e.g. Apple-Silicon dev) |
+
+The container backend's worker is a Parsl **local** subprocess INSIDE the rhea-server container, so
+it shares the server's network namespace (no Docker-Desktop interchange-reachability problem) and
+reaches the apecx infra (postgres/redis/minio/ollama) via `host.docker.internal`. Enable it:
+
+```bash
+export APECX_RHEA_BACKEND=container
+apecx-setup rhea          # builds apecx-rhea-server:local (override tag via APECX_RHEA_IMAGE;
+                          #   force a rebuild with APECX_RHEA_IMAGE_REBUILD=1)
+```
+
+The orchestrator only `docker run`s the image — it never builds it; a missing image surfaces a
+LOUD actionable message. The first call to each tool cold-builds its conda env inside the container
+(~15-20 s for MUSCLE) and caches it (conda-pack) in Redis; subsequent calls unpack in seconds. Per
+execution, the per-call ProxyStore Redis keys (both the proxy object AND the file-byte payload) are
+evicted so Redis does not grow run-over-run; the rhea-server + its per-tool agents stay online.
+
 ## What this server is (and is not)
 
 **Is**: a thin MCP-stdio adapter over the apecx Control Plane HTTP
