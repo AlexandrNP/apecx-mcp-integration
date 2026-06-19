@@ -33,7 +33,17 @@ static_tool_args:
 output_file_args:
   - "out_align"
   - "out_align_html"
+# timeout_seconds is the RheaFileToolStep MCP TOOL-CALL timeout (how long to wait
+# for the rhea server to return). execution_timeout is the SEPARATE nanobrain
+# step-level wrapper around process() (step.py wraps it in asyncio.wait_for,
+# default 300s). The first call to a tool cold-builds its per-tool conda env on
+# the server; for a heavy tool that exceeds 300s, the default would kill the step
+# and the workflow would return a misleading status=ok with EMPTY output (G127),
+# even though timeout_seconds is generous. Keep execution_timeout >= timeout_seconds
+# so the cleaner tool-call timeout surfaces first. (MUSCLE itself cold-builds in
+# ~17s; this guards heavier tools and slower/emulated hosts.)
 timeout_seconds: 900.0
+execution_timeout: 960.0
 
 input_data_units:
   muscle_alignment_input:
