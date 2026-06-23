@@ -38,7 +38,7 @@ components:
     step_name: code_write
     disposition: new
     class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
-    yaml: "workflows/code_writing/steps/code_write.yml"
+    yaml: "steps/code_write.yml"
     status: ready
     rag_description: >
       Author Python source from a natural-language spec via an LLM.
@@ -59,7 +59,7 @@ components:
     step_name: code_review
     disposition: new
     class: "apecx_integration.composition.steps.code_review_step.CodeReviewStep"
-    yaml: "workflows/code_writing/steps/code_review.yml"
+    yaml: "steps/code_review.yml"
     status: ready
     rag_description: >
       Review Python code against a spec; emit a structured JSON
@@ -78,7 +78,7 @@ components:
     step_name: isolated_py_exec
     disposition: new
     class: "apecx_integration.composition.steps.isolated_py_exec_step.IsolatedPyExecStep"
-    yaml: "workflows/code_writing/steps/isolated_py_exec.yml"
+    yaml: "steps/isolated_py_exec.yml"
     status: ready
     rag_description: >
       Run Python source in an isolated subprocess; capture stdout,
@@ -98,7 +98,7 @@ components:
     step_name: code_reflection
     disposition: new
     class: "apecx_integration.composition.steps.code_reflection_step.CodeReflectionStep"
-    yaml: "workflows/code_writing/steps/code_reflection.yml"
+    yaml: "steps/code_reflection.yml"
     status: ready
     rag_description: >
       Self-improving code authoring as a single composable step:
@@ -120,7 +120,7 @@ components:
     step_name: code_verification
     disposition: new
     class: "apecx_integration.composition.steps.code_verification_step.CodeVerificationStep"
-    yaml: "workflows/code_writing/steps/code_verification.yml"
+    yaml: "steps/code_verification.yml"
     status: ready
     rag_description: >
       Runtime verification of Python code as a single composable
@@ -140,7 +140,7 @@ components:
     step_name: test_write
     disposition: new
     class: "apecx_integration.composition.steps.test_write_step.TestWriteStep"
-    yaml: "workflows/code_writing/steps/test_write.yml"
+    yaml: "steps/test_write.yml"
     status: ready
     rag_description: >
       Author pytest test cases for a given Python function via LLM.
@@ -158,7 +158,7 @@ components:
     step_name: code_with_tests
     disposition: new
     class: "apecx_integration.composition.steps.code_with_tests_step.CodeWithTestsStep"
-    yaml: "workflows/code_writing/steps/code_with_tests.yml"
+    yaml: "steps/code_with_tests.yml"
     status: ready
     rag_description: >
       Generate Python code AND its tests in one step. Composes
@@ -176,7 +176,7 @@ components:
     step_name: workflow_analysis
     disposition: new
     class: "apecx_integration.composition.steps.workflow_analysis_step.WorkflowAnalysisStep"
-    yaml: "workflows/code_writing/steps/workflow_analysis.yml"
+    yaml: "steps/workflow_analysis.yml"
     status: ready
     rag_description: >
       Pure-Python structural analyzer for a workflow YAML. Emits a
@@ -194,7 +194,7 @@ components:
     step_name: workflow_summarize
     disposition: new
     class: "apecx_integration.composition.steps.workflow_summarizer_step.WorkflowSummarizerStep"
-    yaml: "workflows/code_writing/steps/workflow_summarize.yml"
+    yaml: "steps/workflow_summarize.yml"
     status: ready
     rag_description: >
       LLM-backed plain-English explainer for a workflow. Consumes
@@ -213,7 +213,7 @@ components:
     step_name: memory_read
     disposition: new
     class: "apecx_integration.composition.steps.memory_read_step.MemoryReadStep"
-    yaml: "workflows/code_writing/steps/memory_read.yml"
+    yaml: "steps/memory_read.yml"
     status: ready
     rag_description: >
       Read prior reflexion-style lessons from a git-tracked memory
@@ -232,7 +232,7 @@ components:
     step_name: memory_write
     disposition: new
     class: "apecx_integration.composition.steps.memory_write_step.MemoryWriteStep"
-    yaml: "workflows/code_writing/steps/memory_write.yml"
+    yaml: "steps/memory_write.yml"
     status: ready
     rag_description: >
       Write a reflexion-style memory entry derived from a review
@@ -250,7 +250,7 @@ components:
     step_name: bug_fix_write
     disposition: new
     class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
-    yaml: "workflows/code_writing/steps/bug_fix_write.yml"
+    yaml: "steps/bug_fix_write.yml"
     status: ready
     rag_description: >
       Patch broken Python given a failure trace, following the
@@ -268,7 +268,7 @@ components:
     step_name: code_document_write
     disposition: new
     class: "apecx_integration.composition.steps.code_write_step.CodeWriteStep"
-    yaml: "workflows/code_writing/steps/code_document_write.yml"
+    yaml: "steps/code_document_write.yml"
     status: ready
     rag_description: >
       Add Google-style docstring + type hints to existing Python
