@@ -21,11 +21,17 @@ Reliability invariants:
 
 from __future__ import annotations
 
+import logging
 import re
 from pathlib import Path
 
 import yaml
-from nanobrain.library.tools.rhea_step_synthesizer import RheaStepSpec
+from nanobrain.library.tools.rhea_step_synthesizer import (
+    RheaStepSpec,
+    synthesize_rhea_step,
+)
+
+log = logging.getLogger(__name__)
 
 # Dedicated dir, NOT under composition/workflows/ — these are step wrappers, not
 # workflows, and the ``*.yml`` here must never be mistaken for a workflow by the
@@ -80,4 +86,33 @@ def persist_rhea_step(
     return path
 
 
-__all__ = ["persist_rhea_step"]
+async def ensure_tool_step(
+    tool_name: str,
+    *,
+    dest_dir: Path | None = None,
+    mcp_url: str | None = None,
+    **synth_kwargs,
+) -> Path:
+    """On-demand resolver: return a committed wrapper for *tool_name*, synthesizing
+    it first ONLY if not already cached.
+
+    §0 in action: if a persisted wrapper already exists (the git cache), return it
+    WITHOUT touching rhea — lazy, per-need, no re-synthesis. On a cache miss,
+    synthesize against rhea + persist + return. The cache key is derived from
+    *tool_name* (the input) so the lookup happens BEFORE any network call;
+    ``persist_rhea_step`` is told the same slug so write + lookup agree.
+
+    ``synth_kwargs`` (find_tools_query, static_tool_args, file_input_args,
+    output_file_args, timeout_seconds) are forwarded to ``synthesize_rhea_step``.
+    """
+    slug = _slug(tool_name)
+    cached = (dest_dir or _GENERATED_DIR) / slug / f"{slug}.yml"
+    if cached.is_file():
+        log.info("rhea tool step %r served from git cache (no synthesis): %s", tool_name, cached)
+        return cached
+    log.info("rhea tool step %r not cached; synthesizing on demand", tool_name)
+    spec = await synthesize_rhea_step(tool_name, mcp_url=mcp_url, **synth_kwargs)
+    return persist_rhea_step(spec, dest_dir=dest_dir, tool_slug=slug)
+
+
+__all__ = ["ensure_tool_step", "persist_rhea_step"]

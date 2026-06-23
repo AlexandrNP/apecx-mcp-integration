@@ -12,7 +12,10 @@ import pytest
 import yaml
 from nanobrain.library.tools.rhea_step_synthesizer import RheaStepSpec
 
-from apecx_integration.composition.rhea_tool_persistence import persist_rhea_step
+from apecx_integration.composition.rhea_tool_persistence import (
+    ensure_tool_step,
+    persist_rhea_step,
+)
 
 try:
     from nanobrain.library.tools.rhea_step_synthesizer import _UNPINNED_VERSION
@@ -99,3 +102,39 @@ def test_synthesize_then_persist_real_muscle_loads(tmp_path, monkeypatch):
     # from the env (portable) — proving the persisted step is actually usable.
     step = RheaFileToolStep.from_config(str(path))
     assert step is not None
+
+
+def test_ensure_tool_step_cache_hit_returns_existing_without_resynthesis(tmp_path):
+    # Pre-seed the git cache with a SENTINEL wrapper. ensure_tool_step must return
+    # it unchanged — no synthesis, no overwrite (needs no rhea: the cache short-
+    # circuits before any network call). If it had synthesized, content would differ.
+    d = tmp_path / "muscle"
+    d.mkdir()
+    sentinel = d / "muscle.yml"
+    sentinel.write_text("name: SENTINEL_cached_step\n", encoding="utf-8")
+    out = asyncio.run(ensure_tool_step("muscle", dest_dir=tmp_path))
+    assert out == sentinel
+    assert "SENTINEL_cached_step" in out.read_text(encoding="utf-8")
+
+
+@pytest.mark.skipif(not _rhea_up(), reason="needs a live rhea MCP server at :3001")
+def test_ensure_tool_step_cache_miss_synthesizes_then_caches(tmp_path, monkeypatch):
+    monkeypatch.setenv("RHEA_MCP_URL", _RHEA_URL)
+    out = asyncio.run(
+        asyncio.wait_for(
+            ensure_tool_step(
+                "muscle",
+                dest_dir=tmp_path,
+                mcp_url=_RHEA_URL,
+                find_tools_query="muscle multiple sequence alignment",
+                static_tool_args={"diags": False},
+            ),
+            timeout=60,
+        )
+    )
+    assert out.is_file()
+    text = out.read_text(encoding="utf-8")
+    assert "${RHEA_MCP_URL}" in text and "rhea:muscle@" in text  # portable + pinned
+    # Second call now hits the git cache and returns the same path.
+    out2 = asyncio.run(ensure_tool_step("muscle", dest_dir=tmp_path))
+    assert out2 == out
