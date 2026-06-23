@@ -40,6 +40,9 @@ component_catalog_paths:
   # embeddable sub-steps via ReasoningPatternStep — so the composer can REUSE a
   # reasoning loop instead of re-authoring it.
   - "workflows/_reasoning_patterns/manifest.yml"
+  # Standalone retrieval/extraction building-block steps (EntityExtractionStep) —
+  # catalogued so the reviewer prompt's "extract entities" example is buildable.
+  - "_catalog_steps/manifest.yml"
 
 # ``sandbox_whitelist_path`` points at the T13 import whitelist. When
 # set, any novel Python the LLM emits gets scanned before the

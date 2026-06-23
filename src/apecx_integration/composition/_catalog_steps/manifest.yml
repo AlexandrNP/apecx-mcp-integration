@@ -1,0 +1,28 @@
+# Composer corpus manifest for standalone retrieval/extraction building-block
+# steps — reusable composer components that are NOT bundled inside a workflow.
+#
+# Why this exists: the composer's reviewer prompt cites EntityExtractionStep as
+# THE canonical "extract entities" example, but it was not in any catalogued
+# manifest — so the spec expander rejected the LLM's (prompt-following) choice
+# with "no catalog match", and real-LLM compose was fragile (root-caused
+# 2026-06-23). Cataloguing it makes the prompt's example actually buildable.
+#
+# Curation, not auto-discovery: add a row only for a step that is genuinely
+# composer-safe (in-repo deps, APECX_LLM_* config) and has a committed wrapper.
+components:
+  - step_id: entity_extraction
+    step_name: entity_extraction
+    class: apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep
+    yaml: entity_extraction.yml
+    status: ready
+    domain: retrieval
+    rag_description: >-
+      Extract biomedical entity candidates (pathogens, vaccines, genes, ...) from
+      a free-text query via one LLM call. Output {entities, query_terms} feeds a
+      downstream retrieval step. Use as the FIRST step when a workflow must turn a
+      natural-language biomedical question into structured entities before
+      retrieval/synthesis.
+    rag_examples:
+      - "extract entities from a biomedical query"
+      - "identify pathogens and vaccines mentioned in a question"
+      - "turn a free-text query into structured entity candidates"

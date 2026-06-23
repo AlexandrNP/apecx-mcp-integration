@@ -1,0 +1,35 @@
+# Catalog wrapper for EntityExtractionStep — the entity-extraction front-end of
+# a retrieve-and-synthesize pipeline. One LLM call turns a free-text biomedical
+# query into structured entity candidates. Its {entities, query_terms} output
+# feeds SynthesisContextAssemblyStep.assembly_input.
+#
+# This is the reviewer prompt's canonical "extract entities" example; it MUST be
+# catalogued or the composer steers the LLM toward an unresolvable class
+# (root-caused 2026-06-23). Wraps
+# src/apecx_integration/composition/steps/db_integration_wrappers.py.
+
+class: "apecx_integration.composition.steps.db_integration_wrappers.EntityExtractionStep"
+name: entity_extraction
+description: >
+  Extract biomedical entity candidates (pathogens, vaccines, genes, ...) from a
+  free-text user query via one LLM call. Output
+  {entities: [{name, type, confidence}], query_terms: [str]} feeds a downstream
+  retrieval step (e.g. SynthesisContextAssemblyStep).
+
+input_data_units:
+  entity_extraction_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: entity_extraction_input
+    description: "{query: str} — the scientist's free-text query."
+    persistent: false
+
+output_data_units:
+  entity_extraction_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: entity_extraction_output
+    description: "{entities: list[dict], query_terms: list[str]}"
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "entity_extraction_input"
