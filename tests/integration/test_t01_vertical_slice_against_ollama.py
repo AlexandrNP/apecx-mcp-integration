@@ -115,7 +115,7 @@ SKIP_OLLAMA = (
     "not pulled. Run `ollama serve` + `ollama pull mistral-nemo:latest`."
 )
 SKIP_VIOLIN = (
-    "APECX_DB_DATA_DIR is unset or missing VIOLIN CSVs " f"({', '.join(REQUIRED_VIOLIN_CSVS)})."
+    f"APECX_DB_DATA_DIR is unset or missing VIOLIN CSVs ({', '.join(REQUIRED_VIOLIN_CSVS)})."
 )
 SKIP_CP = (
     f"Control Plane unreachable at {CP_URL}. Run `apecx-cp serve` (or "
@@ -128,6 +128,11 @@ SKIP_CP = (
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.skip(
+    reason="RETIRED: workflows/violin_bvbrc was removed 2026-06-15 (WORKFLOW_YAML no longer "
+    "exists). Mirrors the test_t01_ac1_against_ollama retirement. The live composer e2e "
+    "(test_spec_mode_ac1_against_ollama) is the replacement adoption gate."
+)
 def test_workflow_loads_with_5_links():
     """Post-T04 workflow YAML composes via Workflow.from_config and
     reports the expected step + link counts. Catches link-schema
