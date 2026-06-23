@@ -35,6 +35,18 @@ input_data_units:
       violin_mappings: list, publications: list}``. Upstream steps
       (or a TransformLink) assemble this shape.
     persistent: false
+    # Project A Step 3a — I/O contract (verified against this description + the producer
+    # synthesis_context_assembly.synthesis_bundle_output). Matches the producer's contract so the
+    # assembly->synthesis boundary is both-declared + compatible (no WARN).
+    contract:
+      kind: record
+      required:
+        query: {kind: text}
+        rag_chunks: {kind: collection}
+        bvbrc_genomes: {kind: collection}
+        violin_mappings: {kind: collection}
+        publications: {kind: collection}
+        globus_results: {kind: collection}
 
 output_data_units:
   synthesis_output:
