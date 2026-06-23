@@ -22,6 +22,11 @@ input_data_units:
       when entrypoint is set (and test_code is not), print(<entry>())
       is appended for invocation; otherwise code runs as-is.
     persistent: false
+    # Project A Step 3b — code_source always required (str); test_code/entrypoint optional.
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 output_data_units:
   exec_output:
@@ -31,6 +36,14 @@ output_data_units:
       Dict {stdout: str, stderr: str, returncode: int,
       exec_succeeded: bool, elapsed_seconds: float}.
     persistent: false
+    # Project A Step 3b — stdout/stderr text; returncode(int)/exec_succeeded(bool)/
+    # elapsed_seconds(float) are scalars with no lattice kind -> required_keys (presence).
+    contract:
+      kind: record
+      required:
+        stdout: {kind: text}
+        stderr: {kind: text}
+      required_keys: [returncode, exec_succeeded, elapsed_seconds]
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

@@ -25,6 +25,11 @@ input_data_units:
       code)}. ``critique`` is unused for documentation but
       preserved for the prompt template.
     persistent: false
+    # Project A Step 3b — CodeWriteStep variant; code_spec always required (str).
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   code_document_write_output:
@@ -34,6 +39,14 @@ output_data_units:
       Dict {code_source: <documented code>, function_name_verified,
       code_spec, function_name, function_signature}.
     persistent: false
+    # Project A Step 3b — same shape as code_write_output (code_source + code_spec always str;
+    # function_name_verified str|None -> undeclared). Matches code_review_input for the
+    # code_documentation_workflow boundary (both-declared + compatible).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        code_spec: {kind: text}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
