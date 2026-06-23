@@ -40,15 +40,12 @@ Design notes
 
 from __future__ import annotations
 
-import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 import yaml
-
-log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -98,32 +95,45 @@ class ComponentCatalog:
 
     @classmethod
     def from_manifests(cls, paths: list[Path]) -> ComponentCatalog:
-        """Load + flatten components from one or more manifest YAMLs."""
-        all_components: list[CatalogComponent] = []
-        # Track which manifest each component first came from so the
-        # last-write-wins overrides can be logged with a useful "X
-        # shadowed by Y" message (audit §1.5).
-        first_seen: dict[str, Path] = {}
-        for p in paths:
-            loaded = _load_manifest(p)
-            for c in loaded:
-                if c.id in first_seen and first_seen[c.id] != p:
-                    log.warning(
-                        "ComponentCatalog: component id=%r from %s "
-                        "shadowed by entry in %s (last-write-wins). "
-                        "Phase-4 multi-library setups should choose "
-                        "stable ids; otherwise debugging "
-                        "'component X went missing' is hard.",
-                        c.id,
-                        first_seen[c.id],
-                        p,
-                    )
-                else:
-                    first_seen[c.id] = p
-            all_components.extend(loaded)
+        """Load + flatten components from one or more manifest YAMLs.
+
+        The ``rich_id`` (``workflow_slug/name:step_id``) is the package-system's
+        IDENTITY PRIMITIVE — a stable logical id that must map to exactly ONE
+        component. Collision policy (replaces the old silent last-write-wins):
+
+        * duplicate id pointing at the SAME wrapper file → idempotent collapse
+          (a component legitimately listed twice — keep the first);
+        * duplicate id pointing at a DIFFERENT wrapper file → **FAIL LOUD**
+          (the silent-shadowing bug: which file the id resolves to depended on
+          manifest order, so a real component "went missing");
+        * search-path / manifest order is a RANKING input only, never an
+          identity tiebreaker — a collision raises regardless of order.
+
+        Path comparison is skipped when either side has no resolved
+        ``yaml_path_absolute`` (an unresolvable entry is a separate concern;
+        don't mask it as a collision). No abs-path *aliasing* check: the same
+        wrapper reused under two manifests legitimately gets two rich_ids — that
+        is the cross-dir reuse the package system enables, not an error.
+        """
         by_id: dict[str, CatalogComponent] = {}
-        for c in all_components:
-            by_id[c.id] = c
+        source: dict[str, Path] = {}
+        for p in paths:
+            for c in _load_manifest(p):
+                existing = by_id.get(c.id)
+                if existing is None:
+                    by_id[c.id] = c
+                    source[c.id] = p
+                    continue
+                a, b = existing.yaml_path_absolute, c.yaml_path_absolute
+                if a is not None and b is not None and a != b:
+                    raise ValueError(
+                        f"ComponentCatalog: duplicate component id {c.id!r} maps to TWO "
+                        f"different wrapper files — identity must resolve to exactly one:\n"
+                        f"  {a}  (from {source[c.id]})\n"
+                        f"  {b}  (from {p})\n"
+                        "Give one a distinct step_id/step_name, or remove the duplicate."
+                    )
+                # Same file (or an unresolved entry) → idempotent; keep the first.
         return cls(components=tuple(by_id.values()))
 
     def search(self, query: str, k: int = 10) -> list[SearchHit]:
