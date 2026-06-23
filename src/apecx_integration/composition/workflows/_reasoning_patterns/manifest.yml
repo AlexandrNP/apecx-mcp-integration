@@ -1,0 +1,58 @@
+# Composer corpus manifest for the CURATED reusable reasoning patterns.
+#
+# Each component is a reasoning-pattern workflow exposed as an embeddable
+# sub-step via ReasoningPatternStep + a committed wrapper (../<wf>/<wf>_pattern.yml).
+# Adding this manifest to composer_config.yml's component_catalog_paths makes the
+# composer's retrieval surface these patterns so a composed workflow can reuse one
+# instead of re-authoring the reasoning loop.
+#
+# Curation, not auto-discovery: only workflows that are genuine reusable building
+# blocks belong here (NOT product workflows like viral_epitope_analysis, NOT
+# benchmark scaffolds). Add a row only after vetting a workflow for reuse + adding
+# its committed *_pattern.yml wrapper.
+components:
+  - step_id: tdr_loop_pattern
+    step_name: tdr_loop_pattern
+    class: apecx_integration.composition.steps.reasoning_pattern_step.ReasoningPatternStep
+    yaml: ../tdr_loop/tdr_loop_pattern.yml
+    status: ready
+    domain: reasoning_pattern
+    rag_description: >-
+      Test-driven recursive refinement (TDR): iteratively generate a solution,
+      run tests against it, and refine from the failures. Use when a task needs
+      iterative self-correction against verifiable checks (e.g. code that must
+      pass tests). Embed as a single sub-step via ReasoningPatternStep.
+    rag_examples:
+      - "iteratively refine code until tests pass"
+      - "generate then test then fix in a loop"
+      - "self-correcting code generation against a test suite"
+  - step_id: best_of_n_pattern
+    step_name: best_of_n_pattern
+    class: apecx_integration.composition.steps.reasoning_pattern_step.ReasoningPatternStep
+    yaml: ../best_of_n_loop/best_of_n_pattern.yml
+    status: ready
+    domain: reasoning_pattern
+    rag_description: >-
+      Best-of-N: generate N independent candidate solutions and select the best.
+      Use when one-shot quality is unreliable and sampling several attempts then
+      picking the strongest improves the result. Embed as a sub-step via
+      ReasoningPatternStep.
+    rag_examples:
+      - "generate several candidates and pick the best"
+      - "sample N answers and select the strongest"
+      - "best of N sampling for higher quality"
+  - step_id: rag_e2e_synthesis_pattern
+    step_name: rag_e2e_synthesis_pattern
+    class: apecx_integration.composition.steps.reasoning_pattern_step.ReasoningPatternStep
+    yaml: ../rag_e2e_synthesis/rag_e2e_synthesis_pattern.yml
+    status: ready
+    domain: reasoning_pattern
+    rag_description: >-
+      Retrieve-then-synthesize: assemble evidence from multiple sources, then do
+      a single grounded LLM synthesis with inline citations. Use when a question
+      must be answered from retrieved, cited evidence rather than model memory.
+      Embed as a sub-step via ReasoningPatternStep.
+    rag_examples:
+      - "answer a question from retrieved cited evidence"
+      - "retrieve documents then synthesize a grounded summary"
+      - "grounded question answering with citations"

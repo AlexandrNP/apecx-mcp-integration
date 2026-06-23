@@ -36,6 +36,10 @@ max_retries: 0
 component_catalog_paths:
   - "workflows/rag_e2e_synthesis/manifest.yml"
   - "workflows/code_writing/manifest.yml"
+  # Curated reusable reasoning patterns (tdr_loop, best_of_n, rag_e2e) exposed as
+  # embeddable sub-steps via ReasoningPatternStep — so the composer can REUSE a
+  # reasoning loop instead of re-authoring it.
+  - "workflows/_reasoning_patterns/manifest.yml"
 
 # ``sandbox_whitelist_path`` points at the T13 import whitelist. When
 # set, any novel Python the LLM emits gets scanned before the
