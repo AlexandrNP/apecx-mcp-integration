@@ -101,6 +101,13 @@ SKIP_LLM = (
 )
 
 
+@pytest.mark.skip(
+    reason="RETIRED: workflows/violin_bvbrc was removed 2026-06-15 (VIOLIN_WORKFLOW_DIR "
+    "now points at a non-existent dir). The multi-dir config-resolution this exercised at "
+    "load is covered deterministically by tests/integration/test_multidir_reuse_e2e.py (T8); "
+    "compose+run LLM e2e is covered by the test_composer_*_against_ollama suite + tracked in "
+    "the composer-reliability arc. Kept (not deleted) as a record + a revive point."
+)
 @pytest.mark.skipif(not _DEPS_OK, reason=SKIP_DEPS)
 @pytest.mark.skipif(not _llm_reachable(), reason=SKIP_LLM)
 def test_t01_ac1_real_violin_bvbrc_workflow_runs(cp_engine):
