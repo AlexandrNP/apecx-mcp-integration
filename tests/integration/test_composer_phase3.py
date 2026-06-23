@@ -64,18 +64,13 @@ pytestmark = pytest.mark.integration
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CONFIG = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "composer_config.yml"
-)
+DEFAULT_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
 
 
 # ---------------------------------------------------------------------------
 # DB + store fixtures (mirrors test_artifact_store.py)
 # ---------------------------------------------------------------------------
+
 
 def _seeded_engine_and_run(tmp_path):
     """Fresh migrated SQLite + one Run row so FK references are satisfied."""
@@ -150,12 +145,14 @@ class _PlaceholderLLM:
 def _make_factory(canned: str):
     def _factory(**_kwargs):
         return _PlaceholderLLM(canned)
+
     return _factory
 
 
 # ---------------------------------------------------------------------------
 # AC3 — with run_id: persistence happens, rows + file + provenance line up
 # ---------------------------------------------------------------------------
+
 
 def test_compose_with_run_id_persists_artifact_and_generated_metadata(live_store):
     store, engine, run_id, session_factory = live_store
@@ -169,9 +166,7 @@ def test_compose_with_run_id_persists_artifact_and_generated_metadata(live_store
     # AC3.1 — Artifact row exists + matches the returned artifact_id.
     with session_factory() as session:
         artifact = session.get(ArtifactORM, result.artifact_id)
-        assert artifact is not None, (
-            "expected Artifact row to exist after compose+persist"
-        )
+        assert artifact is not None, "expected Artifact row to exist after compose+persist"
         assert artifact.run_id == run_id
         # content_hash on the row equals sha256(yaml_bytes)
         expected_hash = hashlib.sha256(result.yaml_bytes).hexdigest()
@@ -190,14 +185,16 @@ def test_compose_with_run_id_persists_artifact_and_generated_metadata(live_store
         assert gen.llm_model == composer.config.llm_model
         assert len(gen.llm_model_version_hash) == 64
         assert gen.composition_summary["steps_reused"] >= 0
+        # T6: env_manifest persists in the composition_summary dict — verified
+        # spec-rot-independently by test_env_manifest.test_persisted_summary_includes_env_manifest
+        # (this store-backed compose test is pre-existing-broken by spec-mode rot).
+        assert "env_manifest" in gen.composition_summary
 
         # AC3.4 — WORKFLOW_GENERATED provenance event is emitted.
         stmt = (
             select(ProvenanceEventORM)
             .where(ProvenanceEventORM.run_id == run_id)
-            .where(
-                ProvenanceEventORM.event_type == ProvenanceEventType.WORKFLOW_GENERATED
-            )
+            .where(ProvenanceEventORM.event_type == ProvenanceEventType.WORKFLOW_GENERATED)
         )
         events = session.execute(stmt).scalars().all()
         assert len(events) == 1
@@ -225,6 +222,7 @@ def test_compose_with_run_id_yaml_parses_as_workflow(live_store):
 # AC4 — regeneration produces distinct artifact IDs even with the
 # same LLM output (append-only)
 # ---------------------------------------------------------------------------
+
 
 def test_two_composes_produce_distinct_artifact_ids(live_store):
     store, engine, run_id, session_factory = live_store
@@ -271,6 +269,7 @@ def test_same_content_same_hash_distinct_uuids(live_store):
 # ---------------------------------------------------------------------------
 # Phase-2 compat: without run_id, legacy behavior (no persistence)
 # ---------------------------------------------------------------------------
+
 
 def test_compose_without_run_id_synthesizes_uuid_and_skips_persist(live_store):
     """When the store is injected but the caller omits run_id, the

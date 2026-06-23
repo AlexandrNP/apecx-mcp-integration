@@ -232,6 +232,11 @@ class CompositionSummary:
     # rather than block). Operators query the field to count "how
     # many composes did the reviewer reject?" as a quality signal.
     review_verdict: dict | None = None
+    # T6 (2026-06-23) — multi-repo provenance STAMP recorded at compose time:
+    # per-repo git SHA + dirty, key package versions, LLM model, python/platform,
+    # reproducible flag (False if any contributing repo is dirty/uncommitted). STAMP
+    # only — verify/reproduce against it is Project B. ``None`` when not stamped.
+    env_manifest: dict | None = None
 
     @property
     def reuse_ratio(self) -> float:

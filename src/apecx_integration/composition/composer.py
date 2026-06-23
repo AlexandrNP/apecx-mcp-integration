@@ -757,6 +757,8 @@ class Composer:
                     *(f"reviewer concern: {c}" for c in verdict.concerns),
                 )
 
+        from apecx_integration.composition.env_manifest import build_env_manifest  # noqa: PLC0415
+
         summary = CompositionSummary(
             steps_reused=steps_reused,
             steps_generated=len(novel_python),
@@ -768,6 +770,10 @@ class Composer:
             compose_retries=compose_retries,
             class_path_repairs=class_path_repairs,
             review_verdict=review_verdict_dict,
+            env_manifest=build_env_manifest(
+                llm_model=self._config.llm_model,
+                llm_base_url=getattr(self._config, "llm_base_url", None),
+            ),
         )
         llm_model_version_hash = hashlib.sha256(self._config.llm_model.encode("utf-8")).hexdigest()
 
@@ -1147,45 +1153,7 @@ class Composer:
             library_version=self._config.library_version,
             llm_model=self._config.llm_model,
             llm_model_version_hash=llm_model_version_hash,
-            composition_summary={
-                "steps_reused": composition_summary.steps_reused,
-                "steps_generated": composition_summary.steps_generated,
-                "steps_swapped": composition_summary.steps_swapped,
-                "summary_sentence": composition_summary.summary_sentence,
-                # T06: persist per-step categorization so
-                # /workflows/diff can surface it without re-running
-                # retrieval, and the novel_python source so
-                # /workflows/novel_python has something to return.
-                "step_categorizations": [
-                    {
-                        "step_id": s.step_id,
-                        "step_class": s.step_class,
-                        "category": s.category.value,
-                        "reason": s.reason,
-                        "retrieval_gap": s.retrieval_gap,
-                    }
-                    for s in composition_summary.step_categorizations
-                ],
-                "review_notes": list(composition_summary.review_notes),
-                "novel_python_by_step": dict(novel_python),
-                # C1 (2026-05-11): how many compose-validate-retry
-                # rounds were needed. Operators / regression-tracking
-                # queries SELECT this to measure LLM prompt drift over
-                # time.
-                "compose_retries": composition_summary.compose_retries,
-                # CPR (2026-05-11): class-path auto-repairs applied
-                # by the catalog-grounded resolver. Persisted so
-                # apecx-regression-metrics can surface a "leaf-match
-                # repair rate" without re-running the composer.
-                "class_path_repairs": [
-                    {
-                        "step_id": s,
-                        "emitted": e,
-                        "resolved": r,
-                    }
-                    for s, e, r in composition_summary.class_path_repairs
-                ],
-            },
+            composition_summary=_persisted_composition_summary(composition_summary, novel_python),
         )
         artifact = self._artifact_store.store(
             content=yaml_bytes,
@@ -1423,6 +1391,46 @@ class Composer:
                     budget.size_bytes / 1024,
                     budget.soft_cap_bytes / 1024,
                 )
+
+
+def _persisted_composition_summary(
+    summary: CompositionSummary, novel_python: dict[str, str]
+) -> dict:
+    """Serialize a CompositionSummary to the dict persisted on the GeneratedArtifact.
+
+    Extracted from the inline GenerationMetadata construction so the persisted shape —
+    including the T6 ``env_manifest`` provenance stamp — is unit-testable without driving
+    a full compose() (the store-backed compose tests are pre-existing-broken by spec-rot).
+    """
+    return {
+        "steps_reused": summary.steps_reused,
+        "steps_generated": summary.steps_generated,
+        "steps_swapped": summary.steps_swapped,
+        "summary_sentence": summary.summary_sentence,
+        # T06: per-step categorization (for /workflows/diff) + the novel_python source
+        # (for /workflows/novel_python).
+        "step_categorizations": [
+            {
+                "step_id": s.step_id,
+                "step_class": s.step_class,
+                "category": s.category.value,
+                "reason": s.reason,
+                "retrieval_gap": s.retrieval_gap,
+            }
+            for s in summary.step_categorizations
+        ],
+        "review_notes": list(summary.review_notes),
+        "novel_python_by_step": dict(novel_python),
+        # C1: compose-validate-retry rounds (prompt-drift metric).
+        "compose_retries": summary.compose_retries,
+        # CPR: class-path auto-repairs (leaf-match repair-rate metric).
+        "class_path_repairs": [
+            {"step_id": s, "emitted": e, "resolved": r} for s, e, r in summary.class_path_repairs
+        ],
+        # T6: the env-manifest provenance STAMP — persisted so a stored artifact carries it
+        # (Project B reads it), never silently dropped at the persistence boundary.
+        "env_manifest": summary.env_manifest,
+    }
 
 
 __all__ = [
