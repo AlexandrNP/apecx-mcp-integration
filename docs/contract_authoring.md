@@ -56,6 +56,17 @@ overwhelmingly DirectLink). The runtime checker runs on every link class, so a C
 boundary is enforced at load/runtime but not yet counted here — widen `contract_coverage.py` if
 ConditionalLink boundaries become common.
 
+## Passthrough inputs: leave undeclared
+
+A consumer fed via a **passthrough chain** (an upstream step forwards keys it received, e.g.
+`CodeReviewStep` passes `spec_id` through to `memory_write`) often can't be statically satisfied:
+the *generic* producer contract (`code_review_output`) can't declare a key it only sometimes
+carries. Requiring such a key on the consumer's input creates a false-incompatible both-declared
+boundary (a WARN on a workflow that works at runtime). **Rule:** when a consumer's required key
+arrives via passthrough rather than from the producer's own logic, leave that input **undeclared**
+(gradual). Declare the producer's *own* outputs, not what flows through it. The runtime guard
+(config_version:3) still validates the actual value at the consuming DU's `set()`.
+
 ## Enforcement is opt-in
 
 At `config_version: 1`/`2` (the default) a mismatch only WARNs at load (non-binding). A workflow

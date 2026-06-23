@@ -21,11 +21,12 @@ input_data_units:
       review_verdict?, exec_result?, lesson?}. Typically supplied
       by CodeReviewStep's passthrough output.
     persistent: false
-    # Project A Step 3b — only spec_id is always required (str); all else branch-optional.
-    contract:
-      kind: record
-      required:
-        spec_id: {kind: text}
+    # Project A Step 3b/3c — INTENTIONALLY UNDECLARED. memory_write requires spec_id at runtime,
+    # but its input arrives via PASSTHROUGH chains (e.g. code_review_output in
+    # self_improving_code_writing carries spec_id from upstream) that the GENERIC producer
+    # contracts cannot declare. Requiring spec_id here produced a false-incompatible both-declared
+    # boundary (code_review_output -> memory_write_input) — a decl-vs-decl limitation with
+    # passthrough. Left undeclared (gradual) so no false WARN; the output contract below stands.
 
 output_data_units:
   memory_write_output:

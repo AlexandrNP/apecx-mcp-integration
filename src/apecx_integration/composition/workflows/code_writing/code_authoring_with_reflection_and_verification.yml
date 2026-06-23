@@ -59,6 +59,11 @@ input_data_units:
       function_name is required because the inner code_write step
       verifies the AST defines it.
     persistent: false
+    # Project A Step 3c — matches code_reflection.code_reflection_input (compatible).
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   exec_result:
@@ -68,6 +73,12 @@ output_data_units:
       Final exec result dict from the verification sub-workflow:
       {stdout, stderr, returncode, exec_succeeded, elapsed_seconds}.
     persistent: false
+    # Project A Step 3c — receives code_verification.code_verification_output, which wraps the exec
+    # dict under `exec_result` (record{exec_result: record}) — matches the producer (compatible).
+    contract:
+      kind: record
+      required:
+        exec_result: {kind: record}
 
 steps:
   code_reflection:

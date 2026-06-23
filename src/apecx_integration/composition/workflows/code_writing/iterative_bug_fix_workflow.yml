@@ -59,6 +59,11 @@ input_data_units:
       critique (failure trace), test_code}. The shape mirrors
       CodeWriteStep input + adds test_code for the exec gate.
     persistent: false
+    # Project A Step 3c — matches bug_fix_write.bug_fix_write_input (compatible).
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   fix_result:
@@ -69,6 +74,13 @@ output_data_units:
       exec_succeeded, elapsed_seconds}. exec_succeeded=True means
       the patched code passed the test_code assertion.
     persistent: false
+    # Project A Step 3c — matches isolated_py_exec.exec_output (compatible).
+    contract:
+      kind: record
+      required:
+        stdout: {kind: text}
+        stderr: {kind: text}
+      required_keys: [returncode, exec_succeeded, elapsed_seconds]
 
 steps:
   bug_fix_write:

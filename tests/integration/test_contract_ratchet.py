@@ -21,9 +21,11 @@ from apecx_integration.composition.contract_coverage import (
 # code_review/test_write/entity_extraction) -> 135 (3b batch2: isolated_py_exec/bug_fix_write/
 # code_document_write/memory_write) -> 134 (3b batch3: code_reflection/code_verification/
 # code_with_tests subworkflow steps) -> 126 (3c: workflow-level DUs in the code_verification/
-# code_reflection/code_with_tests inner workflows, pairing with the annotated wrappers).
+# code_reflection/code_with_tests inner workflows) -> 118 (3c-cont: code_documentation/
+# iterative_bug_fix/code_authoring/self_improving workflow-level DUs; memory_write_input reverted to
+# undeclared — its spec_id arrives via passthrough the generic producers can't declare).
 # RATCHET: only ever lower this. If it would rise, a boundary lost coverage — annotate, don't bump.
-BASELINE = 126
+BASELINE = 118
 
 _DU = "nanobrain.core.data_unit.DataUnitMemory"
 _LINK = "nanobrain.core.link.DirectLink"
