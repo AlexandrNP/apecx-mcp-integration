@@ -38,6 +38,11 @@ input_data_units:
       Dict {code_spec: str, function_name?: str, function_signature?: str}.
       Forwarded to code_write.
     persistent: false
+    # Project A Step 3c — matches code_write.code_write_input (both-declared + compatible).
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   code_source:
@@ -45,16 +50,38 @@ output_data_units:
     name: code_source
     description: "Generated Python source."
     persistent: false
+    # Project A Step 3c — receives the FULL test_write_output record (DirectLink transfers the
+    # whole value, not a single field), so the contract matches test_write_output (compatible).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        test_code: {kind: text}
+      required_keys: [test_function_count]
   test_code:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: test_code
     description: "Generated pytest test source."
     persistent: false
+    # Project A Step 3c — receives the FULL test_write_output record (see code_source note).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        test_code: {kind: text}
+      required_keys: [test_function_count]
   test_function_count:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: test_function_count
     description: "Number of test_* functions in test_code."
     persistent: false
+    # Project A Step 3c — receives the FULL test_write_output record (see code_source note).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        test_code: {kind: text}
+      required_keys: [test_function_count]
 
 steps:
   code_write:

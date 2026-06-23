@@ -35,6 +35,11 @@ input_data_units:
       Dict {code_source: str, test_code?: str, entrypoint?: str}.
       Forwarded to isolated_py_exec via the input_to_exec link.
     persistent: false
+    # Project A Step 3c — matches isolated_py_exec.exec_input (both-declared + compatible).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 output_data_units:
   exec_result:
@@ -45,6 +50,13 @@ output_data_units:
       elapsed_seconds}. exec_succeeded=False on non-zero returncode
       or timeout; the result dict carries the diagnostics either way.
     persistent: false
+    # Project A Step 3c — matches isolated_py_exec.exec_output (both-declared + compatible).
+    contract:
+      kind: record
+      required:
+        stdout: {kind: text}
+        stderr: {kind: text}
+      required_keys: [returncode, exec_succeeded, elapsed_seconds]
 
 steps:
   isolated_py_exec:
