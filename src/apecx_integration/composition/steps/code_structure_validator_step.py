@@ -69,43 +69,17 @@ Silent-failure discipline
 
 from __future__ import annotations
 
-import ast
 import logging
 from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
-log = logging.getLogger(__name__)
-
-
-# Whitelist of canonical nanobrain submodules. Imports from any other
-# nanobrain.* submodule are flagged as likely hallucinations. This is
-# a deliberate conservative whitelist; if a user's candidate
-# legitimately imports from a submodule we forgot, the critique just
-# says "check this import" — the reviser sees it and decides.
-_NANOBRAIN_WHITELIST: frozenset[str] = frozenset(
-    {
-        "nanobrain.core.step",
-        "nanobrain.core.tool",
-        "nanobrain.core.workflow",
-        "nanobrain.core.agent",
-        "nanobrain.core.data_unit",
-        "nanobrain.core.trigger",
-        "nanobrain.core.link",
-        "nanobrain.core.config",
-        "nanobrain.core.executor",
-        "nanobrain.lightweight",
-        "nanobrain.library",
-        "nanobrain.academy_integration",
-    }
+from apecx_integration.composition.novel_python_validation import (
+    validate_python_structure,
 )
 
-# Base classes whose subclasses MUST NOT override from_config or
-# execute. Determined by whether the candidate's class inherits any
-# of these (matched by simple Name lookup, not full MRO -- we only
-# care about direct inheritance in the candidate file).
-_FRAMEWORK_BASES: frozenset[str] = frozenset({"BaseStep", "ToolBase", "Workflow", "BaseAgent"})
+log = logging.getLogger(__name__)
 
 
 class CodeStructureValidatorStepConfig(StepConfig):
@@ -229,117 +203,18 @@ class CodeStructureValidatorStep(BaseStep):
         }
 
     def _validate(self, code: str, entry_point: str) -> list[str]:
-        """Run AST checks. Returns ordered list of issue strings.
+        """Run AST structural checks (delegates to the shared validator).
 
-        Empty list = code passes all checks.
+        Returns an ordered list of issue strings; empty = passes. The shared
+        ``validate_python_structure`` is the single source of truth, also used
+        by the composer's novel-Python acceptance check.
         """
-        issues: list[str] = []
-
-        # Check 1: syntax.
-        try:
-            tree = ast.parse(code)
-        except SyntaxError as e:
-            return [f"SyntaxError at line {e.lineno}: {e.msg}"]
-
-        top_level_names = self._collect_top_level_names(tree)
-        class_defs = [n for n in tree.body if isinstance(n, ast.ClassDef)]
-
-        # Check 2: entry_point present at module scope (if requested).
-        if entry_point and entry_point not in top_level_names:
-            issues.append(
-                f"Required entry point ``{entry_point}`` is not defined at module "
-                f"scope. Found names: {sorted(top_level_names)[:6]}..."
-            )
-
-        # Check 3 + 4: from_config / execute overrides on framework-class subclasses.
-        for cls in class_defs:
-            if not self._inherits_framework_base(cls):
-                continue
-            for item in cls.body:
-                if not isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    continue
-                if item.name == "from_config":
-                    issues.append(
-                        f"Class ``{cls.name}`` overrides ``from_config`` — remove "
-                        f"it; the framework's inherited ``from_config`` is the "
-                        f"only correct path. Direct instantiation via "
-                        f"``cls(...)`` raises ``RuntimeError``."
-                    )
-                if item.name == "execute":
-                    issues.append(
-                        f"Class ``{cls.name}`` overrides ``execute`` — remove "
-                        f"it; the framework forbids overriding execute(). "
-                        f"Implement ``async def process`` instead."
-                    )
-
-            # Check 5: BaseStep subclass without process() (optional).
-            if self._require_process and self._inherits_base_class(cls, "BaseStep"):
-                has_process = any(
-                    isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
-                    and item.name == "process"
-                    for item in cls.body
-                )
-                if not has_process:
-                    issues.append(
-                        f"Class ``{cls.name}`` inherits BaseStep but does not "
-                        f"define ``async def process``. The framework requires "
-                        f"process() implementations on every BaseStep subclass."
-                    )
-
-        # Check 6: hallucinated nanobrain imports.
-        if self._strict_imports:
-            for stmt in ast.walk(tree):
-                if (
-                    isinstance(stmt, ast.ImportFrom)
-                    and stmt.module
-                    and stmt.module.startswith("nanobrain.")
-                    and not any(
-                        stmt.module == w or stmt.module.startswith(w + ".")
-                        for w in _NANOBRAIN_WHITELIST
-                    )
-                ):
-                    issues.append(
-                        f"Import ``from {stmt.module} import ...`` references "
-                        f"a non-existent nanobrain submodule. Valid roots: "
-                        f"{sorted(_NANOBRAIN_WHITELIST)[:5]}..."
-                    )
-
-        return issues
-
-    @staticmethod
-    def _collect_top_level_names(tree: ast.Module) -> set[str]:
-        """Names defined at module scope (classes + functions)."""
-        out: set[str] = set()
-        for node in tree.body:
-            if isinstance(node, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
-                out.add(node.name)
-            elif isinstance(node, ast.Assign):
-                for target in node.targets:
-                    if isinstance(target, ast.Name):
-                        out.add(target.id)
-        return out
-
-    @staticmethod
-    def _inherits_framework_base(cls: ast.ClassDef) -> bool:
-        """True if the class declares any framework base in its bases.
-
-        Simple Name lookup — works for ``class X(BaseStep)`` and
-        ``class X(BaseStep, OtherMixin)``. Does NOT walk MRO; we only
-        care about what's literally in the candidate file.
-        """
-        return any(
-            CodeStructureValidatorStep._inherits_base_class(cls, name) for name in _FRAMEWORK_BASES
+        return validate_python_structure(
+            code,
+            entry_point,
+            strict_imports=self._strict_imports,
+            require_process=self._require_process,
         )
-
-    @staticmethod
-    def _inherits_base_class(cls: ast.ClassDef, name: str) -> bool:
-        for base in cls.bases:
-            # Handle both `BaseStep` and `nanobrain.core.step.BaseStep`.
-            if isinstance(base, ast.Name) and base.id == name:
-                return True
-            if isinstance(base, ast.Attribute) and base.attr == name:
-                return True
-        return False
 
 
 __all__ = [
