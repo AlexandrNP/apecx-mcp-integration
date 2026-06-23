@@ -1,0 +1,14 @@
+# Reusable-pattern wrapper: embed the rag_e2e_synthesis reasoning-pattern
+# workflow (retrieve evidence -> grounded, cited synthesis) as a sub-step, BY NAME.
+#
+# Reference from a parent workflow with
+#   class: apecx_integration.composition.steps.reasoning_pattern_step.ReasoningPatternStep
+#   config: <this file>
+name: rag_e2e_synthesis_pattern
+description: >-
+  Retrieve-then-synthesize: assemble evidence from multiple sources, then a
+  single grounded LLM synthesis with inline citations. Reusable reasoning
+  pattern embedded as a sub-step.
+inner_workflow_name: rag_e2e_synthesis
+# One retrieval fan-out + one synthesis LLM call; 300s is a comfortable bound.
+timeout_seconds: 300

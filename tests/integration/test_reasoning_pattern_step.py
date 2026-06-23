@@ -9,12 +9,17 @@ then load the real workflow), which is the genuine consumption of nanobrain's
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from nanobrain.core.component_base import ComponentConfigurationError
 
+import apecx_integration
 from apecx_integration.composition.steps.reasoning_pattern_step import (
     ReasoningPatternStep,
 )
+
+_WF_DIR = Path(apecx_integration.__file__).parent / "composition" / "workflows"
 
 
 @pytest.mark.parametrize(
@@ -58,3 +63,25 @@ def test_explicit_search_paths_still_respected(tmp_path):
     )
     with pytest.raises(ComponentConfigurationError, match="Available names"):
         ReasoningPatternStep.from_config(str(p))
+
+
+@pytest.mark.parametrize(
+    "wrapper_rel,inner_yaml",
+    [
+        ("tdr_loop/tdr_loop_pattern.yml", "tdr_refine_workflow.yml"),
+        ("best_of_n_loop/best_of_n_pattern.yml", "best_of_n_workflow.yml"),
+        ("rag_e2e_synthesis/rag_e2e_synthesis_pattern.yml", "rag_e2e_synthesis_workflow.yml"),
+    ],
+)
+def test_committed_pattern_wrapper_loads(wrapper_rel, inner_yaml):
+    # The committed reusable-pattern wrappers must actually instantiate (a wrapper
+    # that doesn't load would be a broken reference advertised as reusable — a
+    # silent gap). Loads from the REAL committed file, no tmp/mocks.
+    wrapper = _WF_DIR / wrapper_rel
+    assert wrapper.is_file(), f"committed pattern wrapper missing: {wrapper}"
+    step = ReasoningPatternStep.from_config(str(wrapper))
+    assert step.inner_workflow is not None
+    assert step.inner_workflow_path.name == inner_yaml
+    # A generous outer timeout was set (not the silent 60s default that would
+    # prematurely TimeoutError a multi-minute reasoning pattern).
+    assert step._timeout_seconds >= 300

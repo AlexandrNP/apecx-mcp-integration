@@ -1,0 +1,17 @@
+# Reusable-pattern wrapper: embed the tdr_loop reasoning-pattern workflow
+# (test-driven recursive refinement) as a single sub-step, BY NAME.
+#
+# Reference it from a parent workflow's steps: block as
+#   class: apecx_integration.composition.steps.reasoning_pattern_step.ReasoningPatternStep
+#   config: <this file>
+# ReasoningPatternStep resolves inner_workflow_name against apecx's
+# composition/workflows dir (portable; no absolute path needed here).
+name: tdr_loop_pattern
+description: >-
+  Test-driven recursive refinement (TDR): iteratively generate -> run tests ->
+  refine against the failures. Reusable reasoning pattern embedded as a sub-step.
+inner_workflow_name: tdr_loop
+# Generous outer bound on the inner cascade — TDR runs multiple LLM+exec
+# iterations; the default 60s would surface a premature TimeoutError. The inner
+# workflow's own G37 step-failure detection still surfaces real failures fast.
+timeout_seconds: 900

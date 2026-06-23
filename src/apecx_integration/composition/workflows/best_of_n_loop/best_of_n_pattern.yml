@@ -1,0 +1,13 @@
+# Reusable-pattern wrapper: embed the best_of_n_loop reasoning-pattern workflow
+# (generate N candidates, pick the best) as a single sub-step, BY NAME.
+#
+# Reference from a parent workflow with
+#   class: apecx_integration.composition.steps.reasoning_pattern_step.ReasoningPatternStep
+#   config: <this file>
+name: best_of_n_pattern
+description: >-
+  Best-of-N: generate N independent candidates and select the best. Reusable
+  reasoning pattern embedded as a sub-step.
+inner_workflow_name: best_of_n_loop
+# Generous outer bound — N candidate generations may run several LLM calls.
+timeout_seconds: 900
