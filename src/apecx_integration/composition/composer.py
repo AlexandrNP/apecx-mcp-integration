@@ -654,6 +654,7 @@ class Composer:
                     yaml_text,
                     yaml_paths,
                     catalog_class_paths=full_catalog_paths,
+                    novel_python=novel_python,
                 )
                 # Stash the repairs onto the workflow_dict so the
                 # caller can read them when building CompositionSummary.
@@ -1021,6 +1022,7 @@ class Composer:
         yaml_paths: dict[str, str],
         *,
         catalog_class_paths: set[str] | None = None,
+        novel_python: dict[str, str] | None = None,
     ) -> None:
         """Run framework-rule validation on a parsed workflow.
 
@@ -1038,17 +1040,56 @@ class Composer:
         """
         from apecx_integration.composition.workflow_validator import (
             WorkflowValidationError,
+            WorkflowViolation,
             validate_workflow_against_framework,
         )
 
-        violations = validate_workflow_against_framework(
-            workflow_dict,
-            catalog_yaml_paths=yaml_paths,
-            catalog_class_paths=catalog_class_paths,
+        violations: list[WorkflowViolation] = list(
+            validate_workflow_against_framework(
+                workflow_dict,
+                catalog_yaml_paths=yaml_paths,
+                catalog_class_paths=catalog_class_paths,
+            )
         )
+
+        # WS2b: AST-validate the LLM's novel Python BEFORE acceptance. The T13
+        # import-scan (in _invoke_and_parse) only checks imports; it does NOT
+        # check the source parses, defines the referenced class, or obeys the
+        # framework (no execute()/from_config override). Without this, a novel
+        # step that imports-clean but is structurally broken passes compose and
+        # fails only at workflow-run time. Folding the issues into the same
+        # violation list routes them through the existing C1 retry loop, and it
+        # runs for BOTH composer modes (monolithic + spec) since both reach here.
+        if novel_python:
+            from apecx_integration.composition.novel_python_validation import (  # noqa: PLC0415
+                validate_python_structure,
+            )
+
+            steps_block = workflow_dict.get("steps") or {}
+            for step_id, source in novel_python.items():
+                entry = ""
+                step_body = steps_block.get(step_id)
+                if isinstance(step_body, dict):
+                    entry = str(step_body.get("class") or "").rpartition(".")[2]
+                for issue in validate_python_structure(str(source), entry):
+                    violations.append(
+                        WorkflowViolation(
+                            rule_id="novel_python_invalid",
+                            path=f"novel_python.{step_id}",
+                            message=issue,
+                            suggested_fix=(
+                                "Fix the novel Python so it parses, defines the "
+                                "referenced class at module scope, and obeys the "
+                                "framework: implement `async def process`, never "
+                                "override `execute`/`from_config`, and import only "
+                                "from real nanobrain submodules."
+                            ),
+                        )
+                    )
+
         if violations:
             err = WorkflowValidationError(
-                violations=violations,
+                violations=tuple(violations),
                 yaml_text=yaml_text,
             )
             raise _RetryableValidationError(err)

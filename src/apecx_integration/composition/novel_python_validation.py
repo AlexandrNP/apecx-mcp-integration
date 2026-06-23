@@ -23,19 +23,15 @@ from __future__ import annotations
 
 import ast
 
-# Whitelist of canonical nanobrain submodules. Imports from any other
-# nanobrain.* submodule are flagged as likely hallucinations.
+# Valid nanobrain package ROOTS. An import is accepted iff its module equals a
+# root or is under it (``root.<submodule>``). Roots, not a leaf-module list, so
+# every REAL ``nanobrain.core.*`` submodule (e.g. ``nanobrain.core.component_base``)
+# passes — a leaf whitelist silently false-flagged legit core imports at compose
+# time. Truly hallucinated top-level subpackages (``nanobrain.utils``,
+# ``nanobrain.helpers``) match no root and are still flagged.
 _NANOBRAIN_WHITELIST: frozenset[str] = frozenset(
     {
-        "nanobrain.core.step",
-        "nanobrain.core.tool",
-        "nanobrain.core.workflow",
-        "nanobrain.core.agent",
-        "nanobrain.core.data_unit",
-        "nanobrain.core.trigger",
-        "nanobrain.core.link",
-        "nanobrain.core.config",
-        "nanobrain.core.executor",
+        "nanobrain.core",
         "nanobrain.lightweight",
         "nanobrain.library",
         "nanobrain.academy_integration",

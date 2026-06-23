@@ -57,6 +57,19 @@ def test_missing_entry_point_flagged():
     )
 
 
+def test_real_core_submodule_import_not_flagged():
+    # Regression: a leaf whitelist false-flagged real nanobrain.core.* submodules
+    # at compose time. Roots accept every real core submodule.
+    code = (
+        "from nanobrain.core.component_base import FromConfigBase\n"
+        "from nanobrain.core.step import BaseStep\n"
+        "class Foo(BaseStep):\n"
+        "    async def process(self, d, **k):\n"
+        "        return {}\n"
+    )
+    assert validate_python_structure(code, "Foo") == []
+
+
 def test_non_framework_class_not_checked_for_overrides():
     # execute() on a NON-framework class is fine (only framework-base subclasses
     # are checked) — guards against false positives.
