@@ -15,7 +15,7 @@ library_version: "0.1.0-dev"
 # declares its own here (and per-role bindings below) rather than sharing
 # the synthesis single-default. Operators running the composer pull these
 # explicitly; `apecx-setup`'s single pull targets the synthesis model only.
-llm_model: "mistral-small:latest"
+llm_model: "devstral-small-2:latest"
 llm_base_url: "http://localhost:11434/v1"
 
 prompt_dir: "composer_prompts"
@@ -77,7 +77,7 @@ retrieval_k: 10
 #   5. hardcoded role default           (codegen module)
 model_roles:
   drafter:
-    model: "mistral-nemo:latest"
+    model: "devstral-small-2:latest"
   planner:
     model: "nemotron-3-nano:4b"
   reviewer:
