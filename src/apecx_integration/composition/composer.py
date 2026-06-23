@@ -210,29 +210,18 @@ class Composer:
         # we keep the Phase-2 linear-scan catalog as the retrieval
         # backend. The composer never builds the index on its own —
         # the operator runs ``scripts/build_rag_index.py`` out-of-band.
+        # Semantic (FAISS) retrieval is an OPT-IN enhancement: set
+        # ``rag_index_dir`` and build the index out-of-band
+        # (``scripts/build_rag_index.py``). When it is unset, absent,
+        # un-importable, or STALE versus the current component corpus, the
+        # composer DEGRADES LOUD to the Phase-2 linear-scan catalog rather than
+        # refusing to start or — worse — silently retrieving over an outdated
+        # corpus. Linear-scan is a correct (if lower-recall) fallback, so a
+        # broken/stale index must never break composition; the warning surfaces
+        # the condition + the fix. The composer never builds the index itself.
         self._rag_index = None
         if config.rag_index_dir is not None:
-            try:
-                from nanobrain.lightweight.component_index import (
-                    ComponentIndex,
-                )
-            except ImportError as exc:
-                raise ComposerConfigurationError(
-                    f"rag_index_dir is set in composer config but "
-                    f"nanobrain.lightweight.component_index is not "
-                    f"importable: {exc}"
-                ) from exc
-            index_dir = Path(config.rag_index_dir)
-            if (
-                not (index_dir / "faiss.bin").is_file()
-                or not (index_dir / "metadata.json").is_file()
-            ):
-                raise ComposerConfigurationError(
-                    f"rag_index_dir={index_dir} is missing faiss.bin "
-                    "or metadata.json. Run scripts/build_rag_index.py "
-                    "to create the index."
-                )
-            self._rag_index = ComponentIndex.load(index_dir)
+            self._rag_index = self._load_rag_index_or_degrade(config)
 
         # Cache the import whitelist at init so that high-QPS compose()
         # calls don't re-read the file from disk on every novel-Python
@@ -253,6 +242,80 @@ class Composer:
             "rag" if self._rag_index is not None else "linear",
             artifact_store is not None,
         )
+
+    def _load_rag_index_or_degrade(self, config: ComposerConfig):
+        """Load the FAISS ``ComponentIndex`` at ``config.rag_index_dir``, or
+        return ``None`` (degrade to linear-scan) with a LOUD warning when it is
+        un-importable, missing, corrupt, or STALE versus the current corpus.
+
+        Never raises — a broken/stale semantic index must not break composition.
+        """
+        try:
+            from nanobrain.lightweight.component_index import (  # noqa: PLC0415
+                ComponentIndex,
+            )
+        except ImportError as exc:
+            log.warning(
+                "rag_index_dir is set but nanobrain.lightweight.component_index "
+                "is not importable (%s); using linear-scan retrieval. Install the "
+                "'rag' extra to enable semantic retrieval.",
+                exc,
+            )
+            return None
+
+        index_dir = Path(config.rag_index_dir)
+        if not (index_dir / "faiss.bin").is_file() or not (index_dir / "metadata.json").is_file():
+            log.warning(
+                "rag_index_dir=%s is missing faiss.bin/metadata.json; using "
+                "linear-scan retrieval. Run scripts/build_rag_index.py to enable "
+                "semantic retrieval.",
+                index_dir,
+            )
+            return None
+
+        try:
+            candidate = ComponentIndex.load(index_dir)
+        except Exception as exc:  # noqa: BLE001 — a corrupt index must degrade, not crash
+            log.warning(
+                "rag_index at %s failed to load (%s); using linear-scan "
+                "retrieval. Rebuild with scripts/build_rag_index.py.",
+                index_dir,
+                exc,
+            )
+            return None
+
+        try:
+            stale = candidate.is_stale(
+                list(config.component_catalog_paths),
+                library_version=config.library_version,
+            )
+        except Exception as exc:  # noqa: BLE001 — can't verify freshness => don't trust it
+            # The staleness check re-reads the manifests; if that fails we cannot
+            # confirm the index matches the corpus, so degrade rather than risk
+            # serving a possibly-stale index. Keeps the method's never-raises
+            # contract locally true (not reliant on from_manifests pre-validation).
+            log.warning(
+                "rag_index at %s: staleness check failed (%s); using linear-scan "
+                "retrieval to avoid serving a possibly-stale index.",
+                index_dir,
+                exc,
+            )
+            return None
+        if stale:
+            log.warning(
+                "rag_index at %s is STALE vs the current component corpus (built "
+                "from an older manifest set / library_version); using linear-scan "
+                "retrieval. Rebuild with scripts/build_rag_index.py to re-enable "
+                "semantic retrieval over the current corpus.",
+                index_dir,
+            )
+            return None
+
+        log.info(
+            "rag_index at %s loaded (fresh vs corpus); semantic retrieval ON.",
+            index_dir,
+        )
+        return candidate
 
     def llm_for_role(self, role: str, **overrides: Any) -> Any:
         """Build a chat LLM bound to the model assigned to ``role``.
