@@ -17,9 +17,10 @@ from apecx_integration.composition.contract_coverage import (
     undeclared_boundaries,
 )
 
-# Undeclared-boundary count as of Step 3a (was 142; the assembly->synthesis exemplar covered 1).
+# Undeclared-boundary count: 142 (pre-3a) -> 141 (3a assembly->synthesis exemplar) -> 138 (3b
+# catalog wrappers: code_write/code_review/test_write/entity_extraction).
 # RATCHET: only ever lower this. If it would rise, a boundary lost coverage — annotate, don't bump.
-BASELINE = 141
+BASELINE = 138
 
 _DU = "nanobrain.core.data_unit.DataUnitMemory"
 _LINK = "nanobrain.core.link.DirectLink"
@@ -66,6 +67,29 @@ def test_exemplar_boundary_is_covered_and_compatible():
     assert not [b for b in undeclared_boundaries() if "synthesis_bundle_output" in b[1]], (
         "assembly->synthesis should be covered after Step 3a annotation"
     )
+
+
+def test_3b_code_write_boundaries_compatible():
+    # N2 hardening: the ratchet counts presence (both-declared), not compatibility — so assert
+    # the 3b code_write boundaries are actually compatible (a both-declared-but-incompatible
+    # boundary would drop the count + pass the ratchet otherwise).
+    from pathlib import Path
+
+    from nanobrain.core.data_contract import compatible, parse_contract
+
+    import apecx_integration
+
+    steps = Path(apecx_integration.__file__).parent / "composition/workflows/code_writing/steps"
+    prod = yaml.safe_load((steps / "code_write.yml").read_text())["output_data_units"][
+        "code_write_output"
+    ]["contract"]
+    for cons_f, cons_du in [
+        ("code_review.yml", "code_review_input"),
+        ("test_write.yml", "test_write_input"),
+    ]:
+        cc = yaml.safe_load((steps / cons_f).read_text())["input_data_units"][cons_du]["contract"]
+        ok, why = compatible(parse_contract(prod), parse_contract(cc))
+        assert ok, f"code_write_output -> {cons_du} must be compatible; got {why!r}"
 
 
 def _wf(tmp_path, name, *, with_contracts):

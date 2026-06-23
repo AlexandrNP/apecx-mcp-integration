@@ -21,6 +21,13 @@ input_data_units:
       function_signature?: str}. Typically supplied by code_write's
       passthrough output via the write_to_review DirectLink.
     persistent: false
+    # Project A Step 3b — code_source + code_spec always present (matches code_write_output, so
+    # the code_write->code_review boundary is both-declared + compatible). function_* optional.
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        code_spec: {kind: text}
 
 output_data_units:
   code_review_output:
@@ -30,6 +37,16 @@ output_data_units:
       Dict {approved: bool, reasoning: str, concerns: list[str],
       suggestions: list[str], raw_response: str}.
     persistent: false
+    # Project A Step 3b — `approved` is bool (no scalar kind in the lattice) -> required_keys
+    # (presence, any). reasoning/raw_response text; concerns/suggestions collection.
+    contract:
+      kind: record
+      required:
+        reasoning: {kind: text}
+        raw_response: {kind: text}
+        concerns: {kind: collection}
+        suggestions: {kind: collection}
+      required_keys: [approved]
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

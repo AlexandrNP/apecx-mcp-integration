@@ -20,6 +20,17 @@ input_data_units:
       Dict {code_source: str, code_spec: str, function_name?: str}.
       Typically supplied by CodeWriteStep's passthrough output.
     persistent: false
+    # Project A Step 3b — code_source + code_spec always present (matches code_write_output, so
+    # the code_write->test_write boundary is both-declared + compatible). function_name optional.
+    # NOTE (asymmetry): TestWriteStep.process() itself TOLERATES a missing code_spec (defaults
+    # to ""); the contract requires it because the sole wired producer (code_write_output)
+    # guarantees it. A future standalone wiring that omits code_spec would correctly fail under
+    # config_version:3 — declare code_spec optional there if such a producer is added.
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        code_spec: {kind: text}
 
 output_data_units:
   test_write_output:
@@ -30,6 +41,15 @@ output_data_units:
       code_spec: str, function_name: str | None}. Passthrough of
       code_source so the runner can concatenate code + tests.
     persistent: false
+    # Project A Step 3b — test_function_count is int (no scalar kind) -> required_keys.
+    # function_name is str|None -> undeclared.
+    contract:
+      kind: record
+      required:
+        test_code: {kind: text}
+        code_source: {kind: text}
+        code_spec: {kind: text}
+      required_keys: [test_function_count]
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

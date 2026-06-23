@@ -28,6 +28,12 @@ input_data_units:
       previous_attempt?: str, critique?: str}. function_name is required
       unless require_function_name is False.
     persistent: false
+    # Project A Step 3b — verified against CodeWriteStep.process(). Only code_spec is always
+    # present; function_name/signature/previous_attempt/critique are branch-optional (undeclared).
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   code_write_output:
@@ -39,6 +45,13 @@ output_data_units:
       Passes spec/name/signature through alongside the generated source
       so a single DirectLink can feed the review step.
     persistent: false
+    # Project A Step 3b — code_source + code_spec(passthrough) always present + str.
+    # function_name_verified is str|None -> NOT required-typed (would false-fail on None at v3).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        code_spec: {kind: text}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
