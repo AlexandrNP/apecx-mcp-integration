@@ -31,6 +31,11 @@ input_data_units:
       previous_attempt?: str, critique?: str}. Forwarded to the inner
       workflow's workflow_input data unit.
     persistent: false
+    # Project A Step 3b — code_spec always required (str); rest branch-optional.
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   code_reflection_output:
@@ -41,6 +46,13 @@ output_data_units:
       code_source, function_name_verified, review_verdict (with
       approved/reasoning/concerns/suggestions/raw_response).
     persistent: false
+    # Project A Step 3b — code_source text; review_verdict is the nested verdict dict (record).
+    # function_name_verified str|None -> undeclared.
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
+        review_verdict: {kind: record}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

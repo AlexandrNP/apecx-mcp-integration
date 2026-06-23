@@ -27,6 +27,11 @@ input_data_units:
       Dict {code_source: str, test_code?: str, entrypoint?: str}.
       Forwarded to the inner workflow's workflow_input data unit.
     persistent: false
+    # Project A Step 3b — code_source always required (str); test_code/entrypoint optional.
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 output_data_units:
   code_verification_output:
@@ -36,6 +41,11 @@ output_data_units:
       Dict {exec_result: {stdout, stderr, returncode, exec_succeeded,
       elapsed_seconds}}.
     persistent: false
+    # Project A Step 3b — exec_result is the nested exec dict (record), always present.
+    contract:
+      kind: record
+      required:
+        exec_result: {kind: record}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

@@ -19,9 +19,10 @@ from apecx_integration.composition.contract_coverage import (
 
 # Undeclared-boundary count: 142 (pre-3a) -> 141 (3a exemplar) -> 138 (3b batch1: code_write/
 # code_review/test_write/entity_extraction) -> 135 (3b batch2: isolated_py_exec/bug_fix_write/
-# code_document_write/memory_write).
+# code_document_write/memory_write) -> 134 (3b batch3: code_reflection/code_verification/
+# code_with_tests subworkflow steps — catalog coverage; most boundaries pair with workflow-level DUs).
 # RATCHET: only ever lower this. If it would rise, a boundary lost coverage — annotate, don't bump.
-BASELINE = 135
+BASELINE = 134
 
 _DU = "nanobrain.core.data_unit.DataUnitMemory"
 _LINK = "nanobrain.core.link.DirectLink"
