@@ -310,6 +310,15 @@ def _build_components_from_env(
             "true",
             "yes",
         )
+        # Catalog roots so a composed workflow reusing wrappers from multiple
+        # catalog dirs resolves at run time (nanobrain config_base Strategy 7).
+        # Resolves off composer_path, which defaults to the real config even when
+        # the composer is disabled — harmless: the executor branch is independent
+        # of the composer branch, and Strategy 7 is additive/no-op-on-success.
+        # A genuinely missing config file -> [] (no-op).
+        from apecx_integration.composition.component_catalog import catalog_search_roots
+
+        catalog_roots = catalog_search_roots(composer_path)
         local_executor = LocalExecutor(
             session_factory=session_factory,
             artifact_store=store,
@@ -317,11 +326,13 @@ def _build_components_from_env(
             workflow_base_dir=workflow_dir,
             allow_empty_input=allow_empty_in_env,
             allow_empty_output=allow_empty_out_env,
+            config_search_paths=catalog_roots,
         )
         _banner(
             f"local executor wired against workflow_base_dir={workflow_dir} "
             f"(allow_empty_input={allow_empty_in_env} "
-            f"allow_empty_output={allow_empty_out_env})"
+            f"allow_empty_output={allow_empty_out_env} "
+            f"catalog_search_roots={len(catalog_roots)})"
         )
     else:
         _banner(

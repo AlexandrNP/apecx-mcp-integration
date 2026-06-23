@@ -261,8 +261,37 @@ def _tokenize(query: str) -> list[str]:
     return [t for t in re.split(r"[^a-z0-9]+", query.lower()) if t]
 
 
+def catalog_search_roots(composer_config_path: Path) -> list[str]:
+    """Resolved directories a composed workflow's relative ``config:`` refs
+    resolve against — the parent dir of each manifest in composer_config's
+    ``component_catalog_paths``. A composer-emitted ref (``steps/x.yml``,
+    ``entity_extraction.yml``, ...) resolves under exactly one of these roots
+    (the spike confirmed zero cross-root basename collisions). The executor
+    passes these as ``config_search_paths`` so a workflow reusing wrappers from
+    multiple catalog dirs resolves at run time. Absolute + de-duplicated;
+    missing/empty config → ``[]`` (a true no-op for the resolver).
+    """
+    p = Path(composer_config_path)
+    if not p.is_file():
+        return []
+    raw = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    manifests = raw.get("component_catalog_paths") or []
+    cfg_dir = p.parent
+    roots: list[str] = []
+    seen: set[str] = set()
+    for m in manifests:
+        mp = Path(m)
+        manifest_abs = mp if mp.is_absolute() else (cfg_dir / mp)
+        root = str(manifest_abs.resolve().parent)
+        if root not in seen:
+            seen.add(root)
+            roots.append(root)
+    return roots
+
+
 __all__ = [
     "CatalogComponent",
     "ComponentCatalog",
     "SearchHit",
+    "catalog_search_roots",
 ]

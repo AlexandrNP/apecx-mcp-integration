@@ -116,11 +116,17 @@ class LocalExecutor:
         default_payload: dict[str, Any] | None = None,
         allow_empty_input: bool = False,
         allow_empty_output: bool = False,
+        config_search_paths: list[str] | None = None,
     ) -> None:
         self._session_factory = session_factory
         self._artifact_store = artifact_store
         self._recorder = recorder
         self._workflow_base_dir = Path(workflow_base_dir).resolve()
+        # Extra catalog roots threaded into Workflow.from_config so a composed
+        # workflow that reuses wrappers from MULTIPLE catalog dirs resolves at
+        # run time (nanobrain config_base Strategy 7). Empty = no-op (single-dir
+        # behavior unchanged). Roots come from catalog_search_roots(composer_config).
+        self._config_search_paths = [str(Path(p).resolve()) for p in (config_search_paths or [])]
         self._actor = actor
         # G35 — cascade-drain knobs for ``Workflow.run``. The default
         # 600s/200ms pair is chosen to match the synonym-dictionary
@@ -242,7 +248,9 @@ class LocalExecutor:
                 # in modules that only import LocalExecutor for typing.
                 from nanobrain.core.workflow import Workflow
 
-                workflow = Workflow.from_config(str(staged_yaml))
+                workflow = Workflow.from_config(
+                    str(staged_yaml), config_search_paths=self._config_search_paths
+                )
             except Exception as exc:
                 reason = f"workflow load failed: {type(exc).__name__}: {exc}"
                 log.warning("Run %s: %s", run_id, reason)
