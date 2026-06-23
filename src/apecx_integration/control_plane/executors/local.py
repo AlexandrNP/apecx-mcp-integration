@@ -124,9 +124,18 @@ class LocalExecutor:
         self._workflow_base_dir = Path(workflow_base_dir).resolve()
         # Extra catalog roots threaded into Workflow.from_config so a composed
         # workflow that reuses wrappers from MULTIPLE catalog dirs resolves at
-        # run time (nanobrain config_base Strategy 7). Empty = no-op (single-dir
-        # behavior unchanged). Roots come from catalog_search_roots(composer_config).
-        self._config_search_paths = [str(Path(p).resolve()) for p in (config_search_paths or [])]
+        # run time (nanobrain config_base Strategy 7). Roots come from
+        # catalog_search_roots(composer_config). ROBUSTNESS: when the caller passes
+        # None (didn't wire them), default to the canonical catalog roots so a
+        # composed workflow referencing catalog components (e.g. entity_extraction.yml)
+        # still resolves — a caller cannot silently forget the wiring. An explicit
+        # empty list ([]) opts OUT (single-dir behavior). Strategy 7 is additive/
+        # no-op-on-success, so the default roots never change non-catalog resolution.
+        if config_search_paths is None:
+            from apecx_integration.composition.component_catalog import catalog_search_roots
+
+            config_search_paths = catalog_search_roots()
+        self._config_search_paths = [str(Path(p).resolve()) for p in config_search_paths]
         self._actor = actor
         # G35 — cascade-drain knobs for ``Workflow.run``. The default
         # 600s/200ms pair is chosen to match the synonym-dictionary

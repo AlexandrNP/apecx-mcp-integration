@@ -261,7 +261,11 @@ def _tokenize(query: str) -> list[str]:
     return [t for t in re.split(r"[^a-z0-9]+", query.lower()) if t]
 
 
-def catalog_search_roots(composer_config_path: Path) -> list[str]:
+# Canonical composer config — the default catalog source when a caller doesn't pass one.
+_DEFAULT_COMPOSER_CONFIG = Path(__file__).resolve().parent / "composer_config.yml"
+
+
+def catalog_search_roots(composer_config_path: Path | None = None) -> list[str]:
     """Resolved directories a composed workflow's relative ``config:`` refs
     resolve against — the parent dir of each manifest in composer_config's
     ``component_catalog_paths``. A composer-emitted ref (``steps/x.yml``,
@@ -270,8 +274,12 @@ def catalog_search_roots(composer_config_path: Path) -> list[str]:
     passes these as ``config_search_paths`` so a workflow reusing wrappers from
     multiple catalog dirs resolves at run time. Absolute + de-duplicated;
     missing/empty config → ``[]`` (a true no-op for the resolver).
+
+    ``composer_config_path=None`` defaults to the canonical
+    ``composition/composer_config.yml`` so an executor that was not explicitly wired
+    still resolves catalog-component configs (kills the forget-to-wire fragility class).
     """
-    p = Path(composer_config_path)
+    p = Path(composer_config_path) if composer_config_path is not None else _DEFAULT_COMPOSER_CONFIG
     if not p.is_file():
         return []
     raw = yaml.safe_load(p.read_text(encoding="utf-8")) or {}

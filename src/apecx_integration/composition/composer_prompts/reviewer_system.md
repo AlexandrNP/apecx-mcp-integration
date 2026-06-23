@@ -68,6 +68,6 @@ Heuristics for "covers the same purpose":
 - Step does string parsing / data shape transform → check for existing `*WrapperStep` / `*AssemblyStep` / `*TransformStep`.
 - Step does LLM authoring → check for `CodeWriteStep`, `CodeReflectionStep`, `CodeVerificationStep`, `CodeWithTestsStep`, sub-workflow variants.
 - Step does retrieval → check for `SynthesisContextAssemblyStep` (bundles RAG + VIOLIN/BV-BRC + PubMed + Globus retrieval) or `EntityExtractionStep` (entity front-end).
-- Step does HPC / sandbox execution → check for `IsolatedPyExecStep`, `DockerSandboxRunner`.
+- Step does HPC / sandbox execution → check for `IsolatedPyExecStep`.
 
 When a step's purpose is ambiguous, default to flagging as a non-blocking concern asking the composer to justify the novel_python's existence inline.

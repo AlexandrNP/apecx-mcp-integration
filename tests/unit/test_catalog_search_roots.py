@@ -20,6 +20,39 @@ def test_real_config_yields_the_four_manifest_dirs():
     assert all(Path(r).is_absolute() and Path(r).is_dir() for r in roots)
 
 
+def test_default_arg_uses_canonical_composer_config():
+    # No arg -> the canonical composition/composer_config.yml, so an executor that wasn't
+    # explicitly wired still resolves catalog components (the forget-to-wire robustness fix).
+    default_roots = catalog_search_roots()
+    explicit_roots = catalog_search_roots(_CFGDIR / "composer_config.yml")
+    assert default_roots == explicit_roots
+    # The _catalog_steps root (which holds entity_extraction.yml) is present by default.
+    assert any((Path(r) / "entity_extraction.yml").is_file() for r in default_roots)
+
+
+def test_executor_defaults_roots_when_omitted_but_optout_on_empty(tmp_path):
+    # B (robustness): LocalExecutor that wasn't wired (arg omitted -> None) gets the canonical
+    # catalog roots so a composed workflow referencing catalog components still resolves; an
+    # EXPLICIT [] opts out. No LLM/DB needed — __init__ only stores these deps.
+    from apecx_integration.control_plane.executors.local import LocalExecutor
+
+    omitted = LocalExecutor(
+        session_factory=None, artifact_store=None, recorder=None, workflow_base_dir=tmp_path
+    )
+    expected = [str(Path(p).resolve()) for p in catalog_search_roots()]
+    assert omitted._config_search_paths == expected
+    assert omitted._config_search_paths  # non-empty default roots (the forget-to-wire fix)
+
+    optout = LocalExecutor(
+        session_factory=None,
+        artifact_store=None,
+        recorder=None,
+        workflow_base_dir=tmp_path,
+        config_search_paths=[],
+    )
+    assert optout._config_search_paths == []
+
+
 def test_missing_config_is_empty_noop(tmp_path):
     assert catalog_search_roots(tmp_path / "nope.yml") == []
 
