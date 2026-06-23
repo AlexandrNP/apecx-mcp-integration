@@ -212,11 +212,11 @@ an answer," the library provides two ready-made pathways:
    ``rag_synthesis.synthesis_input`` (don't forget
    ``auto_transfer: true``).
 
-2. **Individual retrieval branches (only when per-step config differs):**
-   Wire ``DomainRagSearchStep``, ``VIOLINBVBRCContextStep``, and
-   ``PubMedHarvesterStep`` as separate steps, then author a novel
-   Python fan-in step that assembles the bundle for ``RagSynthesisStep``.
-   Only choose this path when the assembly step's defaults don't fit.
+2. **Custom per-source config:** if the assembly step's defaults don't
+   fit, set its per-source fields (``k_rag``, ``max_publications``,
+   ``max_violin_mappings``, ``max_bvbrc_genomes``, ``skip_pubmed``) on
+   ``SynthesisContextAssemblyStep`` directly — it bundles every retrieval
+   branch, so you do not wire separate per-source steps.
 
 Do NOT wire retrieval steps directly into ``RagSynthesisStep`` —
 its ``synthesis_input`` data unit expects a single pre-assembled bundle
