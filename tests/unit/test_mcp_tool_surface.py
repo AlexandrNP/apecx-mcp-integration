@@ -53,6 +53,11 @@ EXPECTED_CATALOG = {
     # model calls it directly instead of via list_workflows → run_workflow. Routes THROUGH
     # run_workflow (not a shadow tool — same execution + gating). 2026-06-15.
     "rag_e2e_synthesis",
+    # NOTE (2026-06-23): conserved_epitope_candidate_assessment + epitope_combination_feasibility_
+    # assessment were RETIRED from first-class status (their catalog entries removed) — they are
+    # handle-driven FOLLOW-UPS (consume a prior run's data_handle, no free-text {query} entry), the
+    # same not-directly-invocable shape as the retired viral_conserved_sites above. They remain
+    # discoverable + runnable via list_workflows -> run_workflow; just not Layer-1 agentic tools.
 }
 
 EXPECTED = EXPECTED_STATIC | EXPECTED_CATALOG

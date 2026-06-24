@@ -31,6 +31,16 @@ from apecx_integration.infrastructure.containers import container_run_args
 from apecx_integration.infrastructure.orchestrator import _default_backend_specs
 
 
+@pytest.fixture(autouse=True)
+def _isolate_rhea_env(monkeypatch: pytest.MonkeyPatch):
+    """Isolate from ambient/leaked rhea env vars. _compose_rhea_container_env reads os.environ
+    (e.g. RHEA_CONDA_ENVS_DIR copies through, AGENT_HANDLE_TIMEOUT overrides the default), so a
+    sibling test (e.g. test_rhea_env_autodiscovery) that sets them must not pollute these
+    spec-composition assertions. Clearing them per-test makes this file order-independent."""
+    for _var in ("RHEA_CONDA_ENVS_DIR", "AGENT_HANDLE_TIMEOUT", "PARSL_CONTAINER_BACKEND"):
+        monkeypatch.delenv(_var, raising=False)
+
+
 def _rhea_spec(monkeypatch: pytest.MonkeyPatch, backend: str | None):
     if backend is None:
         monkeypatch.delenv("APECX_RHEA_BACKEND", raising=False)

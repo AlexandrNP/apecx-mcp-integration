@@ -100,6 +100,11 @@ class TaxonSynonymGenerationStepConfig(StepConfig):
 class TaxonSynonymGenerationStep(BaseStep):
     COMPONENT_TYPE: str = "taxon_synonym_generation_step"
     REQUIRED_CONFIG_FIELDS: list[str] = ["name"]
+    # An OPTIONAL LLM fallback (runs only on a dict-resolver miss; degrade-loud on LLM failure),
+    # so it does NOT REQUIRE a server LLM. Declared 'none' explicitly because the source heuristic
+    # (workflow_requires_llm) otherwise mis-flags it as an in-DAG LLM step and wrongly forces a
+    # server-LLM requirement in desktop locus. See the module docstring + test_llm_policy.
+    LLM_ROLE: str = "none"
 
     @classmethod
     def _get_config_class(cls):

@@ -82,6 +82,10 @@ class TaxonCandidateReviewStepConfig(StepConfig):
 class TaxonCandidateReviewStep(BaseStep):
     COMPONENT_TYPE: str = "taxon_candidate_review_step"
     REQUIRED_CONFIG_FIELDS: list[str] = ["name"]
+    # OPTIONAL LLM fallback (degrade-loud); does NOT REQUIRE a server LLM. Declared 'none'
+    # explicitly so the workflow_requires_llm heuristic doesn't mis-flag it as in-DAG and force a
+    # server-LLM requirement in desktop locus. See the module docstring + test_llm_policy.
+    LLM_ROLE: str = "none"
 
     @classmethod
     def _get_config_class(cls):
