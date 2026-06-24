@@ -38,7 +38,8 @@ x-rhea-env: &rhea-env
 
 services:
   postgres:
-    image: pgvector/pgvector:0.8.0-pg17
+    # Digest-pinned 2026-06-24 (provenance; re-pin via `docker buildx imagetools inspect` + re-scan).
+    image: pgvector/pgvector:0.8.0-pg17@sha256:40b404964359299eefdd5f8518facf1886c562848cf4de13b6eaf91cb70c2b87
     container_name: apecx-rhea-postgres
     # Resource caps (open-endpoint exhaustion guard, P2): an anonymous query flood is
     # bounded to "request rejected", not "host down". Tune per host RAM/cores.
@@ -64,7 +65,8 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:7
+    # Digest-pinned 2026-06-24 (redis 7.4.9). Re-pin + re-scan on bump.
+    image: redis:7@sha256:4b81516bf4d02b32d81da6f40b41b9a73d842ae9bdfd615ad48ad14df58b45a1
     container_name: apecx-redis
     mem_limit: 1g
     cpus: 1.0
@@ -80,7 +82,8 @@ services:
     restart: unless-stopped
 
   minio:
-    image: minio/minio
+    # Digest-pinned 2026-06-24 (was floating `latest`). Re-pin + re-scan on bump.
+    image: minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
     container_name: apecx-rhea-minio
     mem_limit: 2g
     cpus: 2.0
@@ -102,7 +105,8 @@ services:
     restart: unless-stopped
 
   ollama:
-    image: ollama/ollama
+    # Digest-pinned 2026-06-24 (was floating `latest`; same pin for the server + the init one-shot).
+    image: ollama/ollama@sha256:bfc9c6d53cc6989aa5131a6fde6b162b2802d4d337657f3253b5f69579bddeee
     container_name: apecx-ollama
     mem_limit: 8g
     cpus: 4.0
@@ -136,7 +140,8 @@ services:
 
   # One-shot: pull the chat (apecx synthesis) + embedding (Rhea tool-RAG) models. Exits 0.
   ollama-init:
-    image: ollama/ollama
+    # Digest-pinned 2026-06-24 (was floating `latest`; same pin for the server + the init one-shot).
+    image: ollama/ollama@sha256:bfc9c6d53cc6989aa5131a6fde6b162b2802d4d337657f3253b5f69579bddeee
     container_name: apecx-ollama-init
     entrypoint: ["/bin/sh", "-c"]
     command:
