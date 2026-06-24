@@ -22,12 +22,20 @@ input_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: perturbing_drafter_input
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   perturbing_drafter_output:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: perturbing_drafter_output
     persistent: false
+    contract:
+      kind: record
+      required:
+        candidates: {kind: collection}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

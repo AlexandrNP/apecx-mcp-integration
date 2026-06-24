@@ -48,12 +48,20 @@ input_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_input
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   workflow_output:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_output
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
   # The memory_recorder is a side-effect step; its status (recorded/
   # category/store_size_after) is surfaced via this secondary port so
   # the framework's data-flow integrity validator doesn't see an
@@ -63,6 +71,11 @@ output_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_recorder_status
     persistent: false
+    contract:
+      kind: record
+      required:
+        category: {kind: text}
+      required_keys: [recorded, store_size_after]
 
 steps:
   task_router_integrated:

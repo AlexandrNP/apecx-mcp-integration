@@ -24,10 +24,10 @@ from apecx_integration.composition.contract_coverage import (
 # code_reflection/code_with_tests inner workflows) -> 118 (3c-cont: code_documentation/
 # iterative_bug_fix/code_authoring/self_improving workflow-level DUs; memory_write_input reverted to
 # undeclared — its spec_id arrives via passthrough the generic producers can't declare)
-# -> 116 (3c-benchmark: benchmark_direct_codegen drafter boundaries — representative; the other
-# 23 benchmark_* eval-harness workflows remain gradual/contributor-territory).
+# -> 116 (3c-benchmark: benchmark_direct_codegen drafter boundaries — representative; the other 23) -> 34 (3c-benchmark-grind: all 22 loadable benchmark_* workflows annotated via
+# the verified DU-name->contract map; aggregator_input=record{} is honest polymorphic; 0 false WARN).
 # RATCHET: only ever lower this. If it would rise, a boundary lost coverage — annotate, don't bump.
-BASELINE = 116
+BASELINE = 34
 
 _DU = "nanobrain.core.data_unit.DataUnitMemory"
 _LINK = "nanobrain.core.link.DirectLink"

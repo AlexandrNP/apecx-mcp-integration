@@ -24,6 +24,10 @@ input_data_units:
       Dict {code_spec: str, entry_point?: str, test_hint?: str,
       function_signature?: str}. Mirrors the BenchmarkProblem shape.
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   planner_output:
@@ -33,6 +37,10 @@ output_data_units:
       Dict {code_spec: <original + plan>, plan, entry_point,
       test_hint, function_signature}. Consumed by drafter.drafter_input.
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"

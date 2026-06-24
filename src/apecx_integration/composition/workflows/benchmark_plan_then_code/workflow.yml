@@ -38,6 +38,10 @@ input_data_units:
       validator. Runtime-side, Workflow.process writes to planner_input
       directly (see tests/benchmarks/codegen/nanobrain_workflow.py).
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   workflow_output:
@@ -45,6 +49,10 @@ output_data_units:
     name: workflow_output
     description: "Dict {code_source: str} from the drafter stage."
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 steps:
   planner:

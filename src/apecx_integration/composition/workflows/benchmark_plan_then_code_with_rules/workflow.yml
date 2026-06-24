@@ -15,12 +15,20 @@ input_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_input
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   workflow_output:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_output
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 steps:
   planner:

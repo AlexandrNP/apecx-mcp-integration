@@ -24,6 +24,10 @@ input_data_units:
       function_signature?}. The planner stage prefixes the original
       spec with ``Suggested plan:`` text.
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   drafter_output:
@@ -31,6 +35,10 @@ output_data_units:
     name: drafter_output
     description: "Dict {code_source: str}."
     persistent: false
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 triggers:
   - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
