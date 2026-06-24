@@ -70,6 +70,7 @@ class EntityExtractionStep(BaseStep):
     Return shape (matches Step1Output in data_unit_schemas)::
 
         {
+            "query": "find EEEV vaccines",
             "entities": [
                 {"name": "EEEV", "type": "pathogen", "confidence": 0.95},
                 ...,
@@ -77,6 +78,8 @@ class EntityExtractionStep(BaseStep):
             "query_terms": ["EEEV", ...],
         }
 
+    ``query`` is passed through so a direct link to a consumer that needs the
+    original query (e.g. SynthesisContextAssemblyStep.assembly_input) is satisfied.
     The duplicated ``query_terms`` field is so Step 3a (cache lookup)
     can read names directly without a transform-link from
     ``entities[].name``. ``entities`` stays in the output for any
@@ -106,4 +109,9 @@ class EntityExtractionStep(BaseStep):
             len(entities),
             len(query),
         )
-        return {"entities": entities, "query_terms": query_terms}
+        # Pass `query` through so a downstream consumer that needs the original query
+        # (e.g. SynthesisContextAssemblyStep.assembly_input, which REQUIRES it) is satisfied
+        # by a direct entity_extraction -> assembly link. Without this passthrough the composer's
+        # natural "extract entities then assemble" wiring fails at runtime (assembly raises on a
+        # missing 'query'); the entity_extraction wrapper documents this feed relationship.
+        return {"query": query, "entities": entities, "query_terms": query_terms}

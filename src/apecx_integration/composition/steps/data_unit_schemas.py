@@ -46,6 +46,7 @@ from typing import TypedDict
 # Atomic types (re-used across step shapes)
 # ---------------------------------------------------------------------------
 
+
 class EntityCandidate(TypedDict):
     """One LLM-extracted entity candidate from Step 1."""
 
@@ -79,6 +80,7 @@ class ApprovedMapping(TypedDict, total=False):
 # Per-step output shapes (cross-boundary DataUnit contents)
 # ---------------------------------------------------------------------------
 
+
 class Step1Output(TypedDict):
     """EntityExtractionStep output. Carries BOTH the rich entity dicts
     and the bare query-term names so downstream steps can pick what
@@ -90,8 +92,12 @@ class Step1Output(TypedDict):
     - ``query_terms``: just the names (``[e["name"] for e in entities]``).
       The cache-lookup chain (Step 3a) takes only names; this avoids a
       transform-link between Step 1 and Step 3a.
+    - ``query``: the original query, passed through so a consumer that needs
+      it (e.g. SynthesisContextAssemblyStep.assembly_input) is satisfied by a
+      direct link.
     """
 
+    query: str
     entities: list[EntityCandidate]
     query_terms: list[str]
 
@@ -100,7 +106,7 @@ class Step3aOutput(TypedDict):
     """SynonymCacheLookupStep output."""
 
     cached_mappings: dict[str, str]  # query_term -> canonical_term
-    novel_terms: list[str]            # query_terms that missed the cache
+    novel_terms: list[str]  # query_terms that missed the cache
 
 
 class Step3cOutput(TypedDict):
@@ -127,13 +133,14 @@ class Step4Output(TypedDict, total=False):
 class Step4pOutput(TypedDict):
     """VerifiedSynonymWritebackStep output."""
 
-    written: list[str]            # synonym IDs returned by the Control Plane
-    already_existed: list[str]    # query_terms that 409'd (race-with-concurrent-run)
+    written: list[str]  # synonym IDs returned by the Control Plane
+    already_existed: list[str]  # query_terms that 409'd (race-with-concurrent-run)
 
 
 # ---------------------------------------------------------------------------
 # Final-output shape (Step 7 result)
 # ---------------------------------------------------------------------------
+
 
 class T01FinalOutput(TypedDict, total=False):
     """ResultCollectionStep output for the T01 slice. The

@@ -32,12 +32,15 @@ output_data_units:
   entity_extraction_output:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: entity_extraction_output
-    description: "{entities: list[dict], query_terms: list[str]}"
+    description: "{query: str, entities: list[dict], query_terms: list[str]}"
     persistent: false
-    # Project A Step 3b — entities + query_terms always present (process() builds both).
+    # Project A Step 3b/3c — query (passthrough) + entities + query_terms always present. The query
+    # passthrough makes a direct entity_extraction -> SynthesisContextAssemblyStep.assembly_input
+    # link shape-compatible (assembly requires 'query').
     contract:
       kind: record
       required:
+        query: {kind: text}
         entities: {kind: collection}
         query_terms: {kind: collection}
 
