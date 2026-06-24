@@ -43,6 +43,11 @@ input_data_units:
       test_hint?, function_signature?}. Forwarded to drafter.drafter_input
       verbatim.
     persistent: false
+    # Project A Step 3c — matches drafter.drafter_input (compatible).
+    contract:
+      kind: record
+      required:
+        code_spec: {kind: text}
 
 output_data_units:
   workflow_output:
@@ -50,6 +55,11 @@ output_data_units:
     name: workflow_output
     description: "Dict {code_source: str} produced by the drafter step."
     persistent: false
+    # Project A Step 3c — matches drafter.drafter_output (compatible).
+    contract:
+      kind: record
+      required:
+        code_source: {kind: text}
 
 steps:
   drafter:
