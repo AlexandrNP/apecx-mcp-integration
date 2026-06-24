@@ -169,11 +169,19 @@ class WorkflowSummarizerStep(BaseStep):
             input_data = input_data["summarizer_input"]
 
         analysis = input_data.get("analysis")
+        # Accept a DIRECT analysis dict too: WorkflowAnalysisStep emits the FLAT analysis
+        # ({workflow_name, steps, links, issues, ...}) rather than wrapping it under 'analysis',
+        # so a direct analysis->summarize DirectLink (the composer's natural wiring) would otherwise
+        # fail here. When 'analysis' is absent but input_data itself looks like an analysis, use it.
+        if not isinstance(analysis, dict) and all(
+            k in input_data for k in ("workflow_name", "steps", "links", "issues")
+        ):
+            analysis = input_data
         if not isinstance(analysis, dict):
             raise ValueError(
                 f"WorkflowSummarizerStep {self.name!r}: input_data must "
                 f"contain 'analysis' (dict produced by "
-                f"WorkflowAnalysisStep); got "
+                f"WorkflowAnalysisStep) or be the analysis dict itself; got "
                 f"{type(analysis).__name__}"
             )
         for required_key in ("workflow_name", "steps", "links", "issues"):
