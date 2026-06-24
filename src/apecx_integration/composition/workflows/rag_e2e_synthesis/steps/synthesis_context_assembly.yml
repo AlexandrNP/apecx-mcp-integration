@@ -47,6 +47,12 @@ input_data_units:
       entities/query_terms are absent the lookup falls back to
       whitespace-tokenized query words.
     persistent: false
+    # Project A Step 3c — query REQUIRED (process() raises without it); entities/query_terms optional.
+    # Compatible with the now-fixed entity_extraction_output (which passes query through).
+    contract:
+      kind: record
+      required:
+        query: {kind: text}
 
 output_data_units:
   synthesis_bundle_output:
