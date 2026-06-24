@@ -79,6 +79,7 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.agents.globus_search._datacite import datacite_subjects, datacite_title
+from apecx_integration.composition.runtime.container_admission import acquire_container_slot
 from apecx_integration.composition.steps import _pymol_sasa as sasa
 from apecx_integration.composition.steps._stage_report import append_stage_report
 
@@ -647,19 +648,22 @@ class StructuralReasoningStep(BaseStep):
             (workdir / "job.json").write_text(json.dumps(job))
 
             argv = self._docker_argv(workdir)
-            proc = await asyncio.create_subprocess_exec(
-                *argv,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-            )
-            try:
-                _, stderr_b = await asyncio.wait_for(proc.communicate(), timeout=self._timeout)
-            except TimeoutError as exc:
-                proc.kill()
-                await proc.communicate()
-                raise RuntimeError(
-                    f"PyMOL container exceeded {self._timeout:.0f}s timeout"
-                ) from exc
+            # Bound simultaneous code-exec containers process-wide (open-endpoint
+            # exhaustion guard); hold the slot for the container's whole lifetime.
+            async with acquire_container_slot():
+                proc = await asyncio.create_subprocess_exec(
+                    *argv,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                try:
+                    _, stderr_b = await asyncio.wait_for(proc.communicate(), timeout=self._timeout)
+                except TimeoutError as exc:
+                    proc.kill()
+                    await proc.communicate()
+                    raise RuntimeError(
+                        f"PyMOL container exceeded {self._timeout:.0f}s timeout"
+                    ) from exc
 
             result_path = workdir / "result.json"
             if proc.returncode != 0 or not result_path.exists():

@@ -35,6 +35,8 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from apecx_integration.composition.runtime.container_admission import acquire_container_slot
+
 log = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -270,15 +272,21 @@ class DockerSandboxRunner:
         )
 
         start = time.monotonic()
-        proc = await asyncio.create_subprocess_exec(
-            *argv,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-
+        # Bound simultaneous code-exec containers process-wide (open-endpoint
+        # exhaustion guard); released in the ``finally`` below after the container is
+        # fully reaped on every path. The spawn is INSIDE the ``try`` so a failed
+        # spawn (e.g. OSError when fork() can't allocate memory — exactly the
+        # exhaustion case) still releases the slot rather than leaking it.
+        slot = acquire_container_slot()
+        await slot.acquire()
         killed = False
         kill_succeeded = True  # only meaningful when killed=True
         try:
+            proc = await asyncio.create_subprocess_exec(
+                *argv,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
             stdout_b, stderr_b = await asyncio.wait_for(
                 proc.communicate(),
                 timeout=self._config.timeout_seconds,
@@ -324,6 +332,8 @@ class DockerSandboxRunner:
             with contextlib.suppress(ProcessLookupError):
                 proc.kill()
             stdout_b, stderr_b = await proc.communicate()
+        finally:
+            slot.release()
 
         duration = time.monotonic() - start
         returncode = proc.returncode if proc.returncode is not None else -1
