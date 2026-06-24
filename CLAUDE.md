@@ -435,6 +435,30 @@ task; all are framework-native):
    `.add_trigger(...)`, `.load()`. Best for code-generated / agent-
    composed workflows where the LLM produces Python, not YAML.
 
+## Data-unit I/O contracts (Project A, 2026-06-23)
+
+Workflow data units can declare an optional **`contract`** (gradual typing) so producer→consumer
+interface drift is CAUGHT, not silently consumed (the G7/G127 silent-failure class). Authoring
+guide: `docs/contract_authoring.md`. Algebra + runtime guard: nanobrain
+`nanobrain/core/data_contract.py` (`parse_contract`, `compatible`, `validate_value`, `ContractViolationError`).
+
+- **Kind lattice**: `text | file | record | collection | handle` (+ optional refinement). There is
+  NO scalar bool/int/float kind — put such keys in `record` `required_keys` (presence, any), NOT
+  typed (a bool typed as `record` is a false v3 violation).
+- **Gradual + both-endpoints**: an undeclared side is `any` (compatible). A DirectLink boundary is
+  *covered* only when BOTH endpoints declare a contract. Make them compatible (consumer `required`
+  ⊆ producer guaranteed). **Passthrough inputs stay undeclared** — a key a generic producer only
+  forwards (not from its own logic) can't be statically guaranteed (decl-vs-decl limit).
+- **Enforcement is opt-in**: `config_version<3` WARNs at load (non-binding); `config_version: 3`
+  RAISES (load-checker + runtime `DataUnitMemory.set()` guard on the actual value).
+- **WARN-ratchet** (`tests/integration/test_contract_ratchet.py`, `BASELINE` — only ever LOWER it):
+  counts boundaries lacking both-endpoint coverage (`composition/contract_coverage.py`); a PR adding
+  an unannotated boundary fails. Corpus coverage is ~76% (baseline 34).
+- **Documented-feed bug-detector** (`tests/integration/test_documented_feed_compatibility.py`): a
+  wrapper that DOCUMENTS feeding a consumer's input DU must be contract-compatible with it. This
+  caught 2 real composer bugs (entity_extraction→assembly, analysis→summarize, both fixed). When you
+  add a component whose wrapper names another's input DU, ensure the shapes match.
+
 ## Design package
 
 Index: `docs/_design_index.md`. Implementation plan:
