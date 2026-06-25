@@ -132,6 +132,29 @@ def _available_from_item(item: Any) -> int:
     return rt if isinstance(rt, int) else 0
 
 
+def _health_from_item(item: Any) -> str:
+    """The per-index harmonization_health VERDICT ('broken' / 'zero_floor_unclear' /
+    'unharmonized_raw_fallback' / 'healthy_parity' / …), or '' when absent. The non-healthy
+    verdicts mean the taxon-harmonized leg returned nothing and the kept count is a taxon-
+    IMPRECISE raw free-text fallback (or a true miss) — a silent degrade the report must DISCLOSE,
+    not hide behind a clean count (the ProtaBank 'protabank: 1' that's actually a free-text match).
+    """
+    if not isinstance(item, dict):
+        return ""
+    env = item.get("envelope_input")
+    if not isinstance(env, dict):
+        env = item
+    data = env.get("data") if isinstance(env, dict) else None
+    parts = data.get("parts") if isinstance(data, dict) else None
+    if not isinstance(parts, dict):
+        return ""
+    health = parts.get("harmonization_health")
+    if isinstance(health, dict):
+        verdict = health.get("verdict")
+        return verdict if isinstance(verdict, str) else ""
+    return health if isinstance(health, str) else ""
+
+
 class HarmonizedBundleMergeStepConfig(StepConfig):
     """Config for HarmonizedBundleMergeStep.
 
@@ -193,11 +216,13 @@ class HarmonizedBundleMergeStep(BaseStep):
         globus_results: list[dict[str, Any]] = []
         per_index_counts: dict[str, int] = {}
         per_index_available: dict[str, int] = {}
+        per_index_health: dict[str, str] = {}
         for i, item in enumerate(items):
             recs = _records_from_item(item)
             label = index_names[i] if i < len(index_names) else f"index_{i}"
             per_index_counts[str(label)] = len(recs)
             per_index_available[str(label)] = _available_from_item(item)
+            per_index_health[str(label)] = _health_from_item(item)
             globus_results.extend(recs)
 
         # Derive taxon_id + resolved species name from the resolution plan.
@@ -218,6 +243,10 @@ class HarmonizedBundleMergeStep(BaseStep):
         bundle["harmonized_search_summary"] = {
             "per_index_kept": per_index_counts,
             "per_index_available": per_index_available,
+            # Per-index taxon-harmonization verdict ('broken'/'zero_floor_unclear'/… vs 'healthy_*').
+            # A non-healthy verdict on a NON-ZERO kept count = a taxon-imprecise raw free-text
+            # fallback the report must disclose (data_readiness reads this).
+            "per_index_health": per_index_health,
             # The full searched index set (all 9), so the report renders EVERY index — even one
             # that returned nothing — making "all indices searched (mandatory)" verifiable.
             "index_names": list(index_names),

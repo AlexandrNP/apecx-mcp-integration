@@ -52,6 +52,24 @@ same reason-aware distinction as the proceed-note degrades. To exercise the FULL
 + figures + the full artifact count), RHEA must be up (`apecx-setup infra` + `apecx-setup rhea`). Without a
 protein, the sequence leg degrades gracefully (proceed_note) and the run PASSES the reason-aware checks.
 
+## EF4 — taxon-harmonization silently degrades to raw free-text for strain-heavy viruses (FIXED: disclosed)
+The biggest silent failure, surfaced while fixing EF1's eval-side. The product COMPUTES a per-index
+`harmonization_health` verdict (`broken` = taxon-IRI leg 0, raw matched some) but was DISCARDING it — the
+report showed clean counts. For influenza A, the taxon-IRI filter (species `NCBITaxon_11320`) returns 0 on
+**5 of 9 indices** (bvbrc_protein, protabank, violin_gene/pathogen/vaccine) because the records are keyed by
+STRAIN taxids (probed: bvbrc_protein sample `1001772`; violin_pathogen `11309`; the species IRI matches 0).
+So "884 bvbrc_protein records" looked like influenza-specific taxon hits but were un-taxon-filtered free-text
+matches (could include wrong organisms) — the user was never told. VERIFIED real (probed the live indices).
+
+**Fix (shipped, safe, NO production write):** thread the per-index verdict into
+`harmonized_search_summary.per_index_health` (`HarmonizedBundleMergeStep._health_from_item`) → `DataReadinessStep`
+discloses `"<index>: N record(s) via taxon-IMPRECISE raw free-text (taxon-harmonization broken, not
+taxon-filtered)"`. The eval surfaces the count (`check_harmonization_disclosed`). Unit-tested
+(`test_taxon_imprecise_harmonization_disclosed`) + verified e2e (influenza report). **Underlying fix
+(harmonization arc, deferred):** the resolver should expand a species taxon to its strain/child taxids (or
+match a broader rank) so the taxon-IRI leg catches strain-keyed records — then the disclosure goes quiet
+because retrieval is correct. Until then, the user at least SEES when counts are taxon-imprecise.
+
 ## What PASSED (the eval is not just a bug-finder)
 chikungunya / dengue / Zika (bare-virus) PASS all 5 reason-aware checks: every step streams + completes,
 the structural + literature artifacts are non-empty, the report carries the 5-LLM + deterministic sections

@@ -161,3 +161,21 @@ def test_never_raises_on_missing_keys(tmp_path):
     dr = out["data_readiness"]
     assert dr["sources_available"] == 0
     assert len(dr["gaps"]) == 5
+
+
+def test_taxon_imprecise_harmonization_disclosed(tmp_path):
+    """EF4: when an index's kept count came from the taxon-IMPRECISE raw fallback (per_index_health
+    'broken'), data_readiness DISCLOSES it — a clean count must not hide an un-taxon-filtered free-text
+    match (e.g. influenza's species-vs-strain taxid mismatch breaks the taxon-IRI leg on ~5 indices)."""
+    step = _step(tmp_path)
+    bundle = _bundle(
+        harmonized_search_summary={
+            "per_index_kept": {"protabank": 1, "bvbrc_genome": 10},
+            "per_index_health": {"protabank": "broken", "bvbrc_genome": "healthy_parity"},
+        }
+    )
+    dr = asyncio.run(step.process(bundle))["data_readiness"]
+    # protabank (broken, non-zero) is disclosed taxon-imprecise; bvbrc_genome (healthy) is NOT
+    assert any("protabank" in g and "taxon-IMPRECISE" in g for g in dr["gaps"]), dr["gaps"]
+    assert not any("bvbrc_genome" in g and "taxon-IMPRECISE" in g for g in dr["gaps"])
+    assert dr["per_index_health"] == {"protabank": "broken", "bvbrc_genome": "healthy_parity"}

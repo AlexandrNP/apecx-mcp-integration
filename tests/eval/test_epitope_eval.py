@@ -127,3 +127,19 @@ def test_diagnose_and_parse_and_terminate():
     train, held = split_held_out(["c", "a", "b", "d"], every=2)
     assert held == ["a", "c"] and set(train).isdisjoint(held)
     assert should_terminate([{}, {}], max_iters=2) == (True, "max_iters")
+
+
+def test_harmonization_disclosed_parsing():
+    from tests.eval.epitope_checks import (
+        check_harmonization_disclosed,
+        harmonization_imprecise_indices,
+    )
+
+    md = (
+        "Coverage gaps: no antiviraldb record; protabank: 1 record(s) via taxon-IMPRECISE raw "
+        "free-text (taxon-harmonization broken); bvbrc_protein: 884 record(s) via taxon-IMPRECISE raw"
+    )
+    assert set(harmonization_imprecise_indices(md)) == {"protabank", "bvbrc_protein"}
+    c = check_harmonization_disclosed(md)
+    assert c.passed and "2" in c.evidence  # informational, surfaces the count
+    assert harmonization_imprecise_indices("clean report, no fallback") == []

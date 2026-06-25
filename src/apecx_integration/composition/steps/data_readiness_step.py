@@ -54,6 +54,10 @@ _LEGACY_STRUCTURED: tuple[tuple[str, str, str], ...] = (
     ("globus_results", "Globus record", "no Globus harvested-corpus record"),
 )
 
+# Per-index harmonization verdicts whose KEPT records came from the taxon-IMPRECISE raw free-text leg
+# (the taxon-IRI leg returned nothing). A non-zero count under these is NOT taxon-filtered — disclose it.
+_RAW_FALLBACK_HEALTH = frozenset({"broken", "unharmonized_raw_fallback"})
+
 
 class DataReadinessStepConfig(StepConfig):
     """Config — ``extra='forbid'`` (workspace rule): YAML typos raise at config-load."""
@@ -116,13 +120,22 @@ class DataReadinessStep(BaseStep):
         #    never reached hmerge has no summary → fall back to the legacy structured keys.
         summary = bundle.get("harmonized_search_summary")
         per_index = summary.get("per_index_kept") if isinstance(summary, dict) else None
+        per_index_health = summary.get("per_index_health") if isinstance(summary, dict) else None
         if isinstance(per_index, dict):
             for index in sorted(per_index):
                 n = int(per_index.get(index) or 0)
                 counts[index] = n
                 coverage.append((index, n))
+                verdict = (
+                    per_index_health.get(index) if isinstance(per_index_health, dict) else None
+                )
                 if n == 0:
                     gaps.append(f"no {index} record")
+                elif verdict in _RAW_FALLBACK_HEALTH:
+                    gaps.append(
+                        f"{index}: {n} record(s) via taxon-IMPRECISE raw free-text "
+                        f"(taxon-harmonization {verdict}, not taxon-filtered)"
+                    )
         else:
             for key, label, missing_phrase in _LEGACY_STRUCTURED:
                 val = bundle.get(key)
@@ -141,6 +154,7 @@ class DataReadinessStep(BaseStep):
             "sources_available": sources_available,
             "n_sources": n_sources,
             "total_records": total,
+            "per_index_health": per_index_health if isinstance(per_index_health, dict) else {},
         }
         bundle["data_readiness"] = result
 

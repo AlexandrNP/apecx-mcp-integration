@@ -161,3 +161,23 @@ def check_protabank_reported(markdown: str | None) -> CheckResult:
         n is not None,
         f"protabank_count={n} ({'reported' if n is not None else 'SILENTLY OMITTED'})",
     )
+
+
+def harmonization_imprecise_indices(markdown: str | None) -> list[str]:
+    """The indices the report DISCLOSES as taxon-IMPRECISE (raw free-text fallback, taxon-IRI leg empty).
+    Parsed from the data_readiness disclosure the product now emits."""
+    return re.findall(r"(\w+): \d+ record\(s\) via taxon-IMPRECISE", markdown or "")
+
+
+def check_harmonization_disclosed(markdown: str | None) -> CheckResult:
+    """INFORMATIONAL quality signal: how many indices are taxon-IMPRECISE (the taxon-IRI harmonization
+    returned nothing, so the count is an un-taxon-filtered free-text fallback). The product now DISCLOSING
+    this is the fix (EF4: e.g. influenza's species-vs-strain taxid mismatch breaks the filter on ~5 of 9
+    indices). Always passes — it surfaces the count so a degraded-harmonization virus is visible, not a
+    clean-looking miss."""
+    idx = harmonization_imprecise_indices(markdown)
+    return CheckResult(
+        "harmonization_disclosed",
+        True,
+        f"taxon-imprecise indices disclosed: {len(idx)} ({idx[:5]})",
+    )

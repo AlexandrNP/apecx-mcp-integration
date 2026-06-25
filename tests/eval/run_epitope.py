@@ -20,6 +20,7 @@ from tests.eval.epitope_checks import (
     CheckResult,
     check_completeness,
     check_full_artifacts,
+    check_harmonization_disclosed,
     check_protabank_reported,
     check_report_references,
     check_streaming,
@@ -144,6 +145,7 @@ def run_epitope(query: str, protein: str | None = None) -> EpitopeResult:
         else CheckResult("full_artifacts", False, "no run_dir / no run_id"),
         check_report_references(md),
         check_protabank_reported(md),
+        check_harmonization_disclosed(md),
     ]
     err = out.get("error")
     # RHEA is fail-closed REQUIRED for the protein/sequence leg (by design). When it's down, the 'align'
