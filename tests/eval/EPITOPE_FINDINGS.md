@@ -13,9 +13,16 @@ virus. Almost certainly the ProtaBank DEST index (`be999b57-…`) lacks the taxo
 the harmonization arc published the PDB/EMDB DEST indices with taxon IRIs (+ UniProt alt-ids), but the
 ProtaBank records (UniProt-keyed) were never stamped with taxon IRIs via the UniProt→PDB bridge. So
 `data_readiness` perpetually names it "no protabank record" — a coverage gap that's never closed.
-**Fix (gated, NOT a unilateral production write):** verify the ProtaBank DEST index has `subjects.valueUri`
-taxon IRIs (probe it); if not, the UniProt→PDB→taxon bridge ingest must stamp them. Until then ProtaBank
-contributes nothing to any epitope analysis despite being searched on every run.
+**Root cause CONFIRMED (probed the index):** ProtaBank DEST `be999b57` has 1643 records, **0 with
+`subjects.valueUri`** (taxon IRIs) — sample subjects `[]`. So the taxon-IRI filter matches nothing for
+every virus. **Fix is FEASIBLE + VALUED:** I OWN the index (onarykov = owner); ~13% of ProtaBank is viral
+(11/82 sampled clean UniProts map to the viral PDB DEST `857bc08e` — HIV-1, SARS-CoV-2, HCV, influenza
+stability data, ~200 records); the UniProt→PDB→taxon bridge can stamp them. CAVEATS: ProtaBank UniProt is
+`;`-joined + duplicated (`"P01053; P01053"` — the known parser bug; clean by split on `;`/`,` + dedup);
+chikungunya/dengue/Zika have NO ProtaBank data (that 0 is HONEST — ProtaBank is mostly non-viral). **The
+fix** (in apecx-harvesters-work, owner-writable): read ProtaBank DEST → clean UniProt → look up taxon IRI(s)
+in the PDB DEST → stamp `subjects.valueUri` → re-publish via `globus search ingest`. Then HIV-1/SARS-CoV-2/
+HCV/influenza queries surface ProtaBank stability data. Verified e2e by re-running the eval for those viruses.
 
 ## EF2 — heavily-sequenced viruses don't complete the pipeline (GATED)
 SARS-CoV-2 and influenza A halted at **8/23 steps** (incomplete: align_viz / assemble / clade_grouping /
