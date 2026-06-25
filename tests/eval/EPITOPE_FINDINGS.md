@@ -1,9 +1,15 @@
 # viral_epitope_analysis eval — findings
 
 Real findings surfaced by the self-refining epitope eval (`tests/eval/epitope_eval_loop.py`) over a 9-virus
-set (1 loop iteration, real runs against Ollama + local data; RHEA down). Verdict: 3/6 train viruses PASS
-(reason-aware graceful degrade); the gated worklist holds the real bugs below. GATED = a human/code fix;
-INFORMATIONAL = environment.
+set (real runs against Ollama + local data; RHEA down). GATED = a human/code fix; INFORMATIONAL = environment.
+
+**Status after fixes (re-run):** 4/6 train PASS + ALL held PASS, **0 gated findings**, only informational
+`rhea_unavailable` (the protein probe). The first run had gated EF2 (incomplete) + a confounded
+`protabank_never_retrieved`; both resolved — EF2 fixed (heavy viruses complete), EF4 disclosure makes the
+taxon-imprecise harmonization VISIBLE (no longer silent), and the ProtaBank verdict is sample-aware + now
+sees influenza's `1`. HONEST caveat: "green" = no SILENT failures (the mandate), NOT "retrieval is perfect" —
+strain-heavy viruses still get taxon-imprecise free-text, now DISCLOSED; the underlying resolver fix
+(species→strain taxid expansion) is deferred to the harmonization arc.
 
 ## EF1 — ProtaBank's harmonized (taxon-IRI) retrieval IS broken; raw free-text is an imprecise fallback
 **CODE-GROUNDED (authoritative). HONEST NOTE: I mis-stated this 3× — "dead bridge" → "works via free-text,
