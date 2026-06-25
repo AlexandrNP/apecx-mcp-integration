@@ -12,10 +12,12 @@ emit the SAME ``{"alignment": {alignment_fasta, n_sequences, alignment_length, a
 shape. Design §8 (aligner substitution); the user's "not confined purely to MUSCLE" steer — here
 realized as "MUSCLE is one of several interchangeable aligners".
 
-Real backend, NO mocks, NO silent degradation: if the Rhea server is unreachable, the rhea
-module is not importable, or the subworkflow yields no alignment, the step FAILS LOUD (it does
-not fall back to a local aligner or a fabricated alignment — substitution is the caller's
-explicit choice, surfaced honestly).
+Real backend, NO mocks, NO SILENT degradation. BY DEFAULT (``degrade_to_local_mafft=False``) the step
+FAILS LOUD if the Rhea server is unreachable / the rhea module is not importable / the subworkflow yields
+no alignment — it does not fall back to a local aligner or a fabricated alignment. The caller MAY OPT IN
+to a LOUD degrade-to-MAFFT (``degrade_to_local_mafft=True``, EF5): on a Rhea-unreachable failure it then
+aligns with local MAFFT (same shape) and stamps a ``degrade_note`` + a WARNING — substitution is the
+caller's explicit choice, surfaced honestly, never silent.
 
 Input  (after trigger-envelope unwrap): ``{"fasta_text": "<unaligned FASTA>", ...}``.
 Output: ``{"alignment": {alignment_fasta, n_sequences, alignment_length, aligner: "muscle", ...}}``.
@@ -57,6 +59,11 @@ class RheaMuscleAlignStepConfig(StepConfig):
     # The conda env build on the FIRST muscle run can take ~50s; allow generous headroom.
     timeout_seconds: float = Field(default=900.0, gt=0)
     settle_ms: int = Field(default=200, ge=0)
+    # EF5 OPT-IN (default False = fail-closed, the deliberate "NO silent degradation: raise" design).
+    # When True, a Rhea-unreachable failure DEGRADES LOUD to local MAFFT (same alignment shape) + a
+    # proceed-note, instead of raising — restoring reliability without RHEA. The degrade is LOUD (a
+    # WARNING + a degrade_note on the output), never silent. The default is unchanged.
+    degrade_to_local_mafft: bool = Field(default=False)
 
 
 class RheaMuscleAlignStep(BaseStep):
@@ -75,6 +82,7 @@ class RheaMuscleAlignStep(BaseStep):
         )
         self._timeout: float = float(getattr(config, "timeout_seconds", 900.0))
         self._settle_ms: int = int(getattr(config, "settle_ms", 200))
+        self._degrade_to_mafft: bool = bool(getattr(config, "degrade_to_local_mafft", False))
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
         payload = self._unwrap(input_data)
@@ -91,16 +99,26 @@ class RheaMuscleAlignStep(BaseStep):
             )
 
         self.emit_progress(f"aligning {fasta_text.count('>')} sequences (MUSCLE via Rhea)")
-        report_out = await self._drive_rhea_muscle(fasta_text)
+        try:
+            report_out = await self._drive_rhea_muscle(fasta_text)
+            aligned = report_out.get("alignment_fasta")
+            if not isinstance(aligned, str) or aligned.count(">") < 2:
+                raise ValueError(
+                    f"RheaMuscleAlignStep '{self.name}': Rhea muscle subworkflow returned no usable "
+                    f"alignment (got {report_out!r}). The Rhea server may be unreachable or the "
+                    f"muscle tool failed — NOT falling back to a mock or a local aligner."
+                )
+        except (ValueError, ConnectionError, TimeoutError, OSError, ImportError) as exc:
+            # Default (degrade_to_local_mafft=False): re-raise — the deliberate "NO silent
+            # degradation: raise" design (substitution is the caller's explicit choice).
+            if not self._degrade_to_mafft:
+                raise
+            # EF5 OPT-IN: degrade LOUD to local MAFFT (never silent — WARNING + a degrade_note). The caught
+            # types cover the rhea-UNAVAILABILITY modes (G127-swallowed empty output → ValueError; network
+            # ConnectionError/TimeoutError/OSError; rhea module absent → ImportError). A real code bug
+            # (TypeError/KeyError/…) is NOT caught — it still propagates, so degrade never masks a defect.
+            return await self._degrade_to_local_mafft(payload, exc)
         self.emit_progress("MUSCLE alignment complete")
-
-        aligned = report_out.get("alignment_fasta")
-        if not isinstance(aligned, str) or aligned.count(">") < 2:
-            raise ValueError(
-                f"RheaMuscleAlignStep '{self.name}': Rhea muscle subworkflow returned no usable "
-                f"alignment (got {report_out!r}). The Rhea server may be unreachable or the "
-                f"muscle tool failed — NOT falling back to a mock or a local aligner."
-            )
 
         out: dict[str, Any] = {
             "alignment_fasta": aligned,
@@ -160,6 +178,40 @@ class RheaMuscleAlignStep(BaseStep):
                 f"reachable at {mcp_url or 'the YAML default'}?"
             )
         return report_out
+
+    async def _degrade_to_local_mafft(
+        self, payload: dict[str, Any], cause: Exception
+    ) -> dict[str, Any]:
+        """EF5 OPT-IN degrade-LOUD: Rhea unreachable + ``degrade_to_local_mafft=True`` → align with local
+        MAFFT (the SAME ``{"alignment": {...}}`` shape) and stamp a LOUD degrade note + a WARNING (with the
+        underlying ``cause``). NOT silent — Rhea MUSCLE is still preferred when reachable; this fires ONLY on
+        the opt-in fallback."""
+        from apecx_integration.composition.steps.local_mafft_align_step import LocalMafftAlignStep
+
+        self.nb_logger.warning(
+            "RheaMuscleAlignStep %s: Rhea unavailable (%s: %s) — DEGRADING LOUD to local MAFFT "
+            "(degrade_to_local_mafft opt-in). Large-scale Rhea MUSCLE skipped; MAFFT alignment used.",
+            self.name,
+            type(cause).__name__,
+            cause,
+        )
+        self.emit_progress("Rhea unavailable — degraded LOUD to local MAFFT (opt-in)")
+        mafft = LocalMafftAlignStep.from_config({"name": f"{self.name}_mafft_fallback"})
+        passthrough = {
+            k: payload[k]
+            for k in ("taxon_id", "protein", "records", "n_fetched", "n_dropped_length_outlier")
+            if k in payload
+        }
+        result = await mafft.process({"fasta_text": payload["fasta_text"], **passthrough})
+        alignment = result.get("alignment", {})
+        if isinstance(alignment, dict):
+            alignment["degraded_from"] = "muscle"
+            alignment["degrade_note"] = (
+                f"RHEA MUSCLE unavailable ({type(cause).__name__}) — aligned with local MAFFT instead "
+                "(opt-in degrade, degrade_to_local_mafft=True). The MAFFT alignment is valid; the "
+                "large-scale Rhea MUSCLE conservation path did NOT run."
+            )
+        return {"alignment": alignment}
 
     def _unwrap(self, input_data: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(input_data, dict):
