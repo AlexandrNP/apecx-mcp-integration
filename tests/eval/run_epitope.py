@@ -98,9 +98,13 @@ def run_epitope(query: str, protein: str | None = None) -> EpitopeResult:
     art = tempfile.mkdtemp(prefix="epitope_eval_")
     os.environ["APECX_ARTIFACTS_DIR"] = art
     events: dict[str, set] = defaultdict(set)
+    failures: list[str] = []
 
     def cap(e) -> None:
         events[e.step_name].add(e.event_type)
+        if e.event_type == "step_failed":
+            msg = (e.payload or {}).get("exception", {}).get("message", "")
+            failures.append(f"{e.step_name}: {msg}")
 
     payload = {"query": query}
     if protein:
@@ -142,6 +146,17 @@ def run_epitope(query: str, protein: str | None = None) -> EpitopeResult:
         check_protabank_reported(md),
     ]
     err = out.get("error")
+    # RHEA is fail-closed REQUIRED for the protein/sequence leg (by design). When it's down, the 'align'
+    # step raises and the run errors. That is ENVIRONMENT (RHEA not running), not a code bug — flag it so
+    # the loop classifies it informational, not a gated silent-failure (the reason-aware distinction).
+    rhea_down = any(
+        "rhea" in f.lower() and ("reachable" in f.lower() or "workflow_output" in f.lower())
+        for f in failures
+    )
+    if out.get("status") == "error" and rhea_down:
+        err = "rhea_unavailable: " + (
+            failures[0] if failures else "RHEA server down (sequence leg requires it)"
+        )
     return EpitopeResult(
         query,
         status=out.get("status"),

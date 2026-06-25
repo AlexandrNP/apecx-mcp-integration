@@ -1,11 +1,16 @@
-# Virus|protein question set for the viral_epitope_analysis eval. The protein is REQUIRED for the full
-# sequence-conservation + figure legs (without it those degrade-loud, correctly). Diverse viruses so the
-# cross-virus ProtaBank verdict (never-retrieved) is meaningful. Lines: `virus|protein` (| optional).
+# Virus question set for the viral_epitope_analysis eval. RHEA (REQUIRED for the protein/sequence-
+# conservation leg, fail-closed by design) is often down in dev. Bare-virus runs COMPLETE via graceful
+# degrade (the reason-aware checks pass), exercise the structural + literature legs, and feed the
+# cross-virus ProtaBank verdict. Add `|protein` to drive the FULL sequence-conservation + figure legs —
+# that requires RHEA up (else it's classified rhea_unavailable = environment, informational). Lines:
+# `virus` or `virus|protein`.
+chikungunya virus
+dengue virus
+Zika virus
+SARS-CoV-2
+influenza A virus
+HIV-1
+Lassa virus
+West Nile virus
+# one protein probe — full pipeline; informational (rhea_unavailable) when RHEA is down:
 chikungunya virus|E1
-dengue virus|envelope protein
-Zika virus|NS1
-SARS-CoV-2|spike
-influenza A virus|hemagglutinin
-HIV-1|gp120
-Lassa virus|glycoprotein precursor
-West Nile virus|envelope protein

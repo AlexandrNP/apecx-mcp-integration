@@ -84,6 +84,18 @@ def test_protabank_never_retrieved_verdict():
     assert protabank_verdict(runs) is None
 
 
+def test_rhea_unavailable_is_informational():
+    # the protein/sequence leg requires RHEA (fail-closed); RHEA down → environment, not a gated bug
+    r = EpitopeResult(
+        "chikungunya virus|E1",
+        status="error",
+        error="rhea_unavailable: align: rhea subworkflow produced no 'workflow_output'",
+    )
+    items = diagnose([r])
+    assert len(items) == 1
+    assert items[0].category == "rhea_unavailable" and items[0].gate == "informational"
+
+
 def test_diagnose_and_parse_and_terminate():
     from tests.eval.epitope_checks import CheckResult
 

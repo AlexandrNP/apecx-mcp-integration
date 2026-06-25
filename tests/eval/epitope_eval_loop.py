@@ -25,6 +25,7 @@ _OUT = Path(__file__).resolve().parent / "output"
 
 _CATEGORY_GATE = {
     "transient": "auto_safe",
+    "rhea_unavailable": "informational",
     "no_streaming": "gated",
     "incomplete": "gated",
     "silent_empty_artifact": "gated",
@@ -56,6 +57,9 @@ def diagnose_run(r: EpitopeResult) -> list[FailureItem]:
         return []
     if r.transient:
         return [FailureItem(r.query, "transient", "auto_safe", (r.error or "")[:200])]
+    if r.error and r.error.startswith("rhea_unavailable"):
+        # the protein/sequence leg requires RHEA, which is down — environment, not a code bug
+        return [FailureItem(r.query, "rhea_unavailable", "informational", r.error[:200])]
     items = [
         FailureItem(
             r.query,
