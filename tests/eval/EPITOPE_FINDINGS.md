@@ -99,7 +99,13 @@ reliability/adoption blocker, and exactly the "diverse settings / edge cases" fr
   is ADDITIVE (large-scale). So degrade-LOUD-to-MAFFT (a clear "RHEA unavailable — large-scale conservation
   skipped, MAFFT used" note) would satisfy "no SILENT failures" (it's loud) AND restore reliability without
   RHEA. **RECOMMENDATION: revert RHEA-mandatory to degrade-loud — but it reverses a deliberate decision, so
-  it needs the design owner's call** (don't flip it silently).
+  it needs the design owner's call** (don't flip it silently). **Fix is a small change** —
+  `RheaMuscleAlignStep` (`rhea_muscle_align_step.py`) ALREADY has a local-MAFFT code path (`viral_conserved_sites`
+  chose RHEA-muscle *over* it); on Rhea-unreachable, fall back to that path + emit a loud proceed_note instead
+  of `raise`. BUT the step's docstring explicitly states *"NO silent degradation: if the Rhea server is
+  unreachable, the rhea [step] raises"* — the author considered degradation and chose fail-closed. A LOUD
+  degrade satisfies the "no SILENT failures" rationale; whether to override the author's explicit choice is
+  the design owner's decision. NOT changed here (deliberately — won't reverse a documented design unilaterally).
 - **Test hygiene (separable, safe):** these chain tests gate only on `@needs_globus`, not RHEA — so they
   false-RED in any no-RHEA env instead of skipping like `needs_llm`/`needs_globus` tests do. A `needs_rhea`
   skip gate (probe `:3001`) fixes the false red without hiding the design fact (documented here).
