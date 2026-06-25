@@ -5,30 +5,34 @@ set (1 loop iteration, real runs against Ollama + local data; RHEA down). Verdic
 (reason-aware graceful degrade); the gated worklist holds the real bugs below. GATED = a human/code fix;
 INFORMATIONAL = environment.
 
-## EF1 — ProtaBank "never retrieved" was a FALSE verdict, CONFOUNDED by EF2 (CORRECTED)
-**Initial (WRONG) verdict:** ProtaBank returned 0 on all 7 completing viruses → `protabank_never_retrieved`,
-"the taxon-IRI bridge is dead, needs a production re-ingest." **Two things were wrong, both caught by
-fixing EF2 + re-running — recorded here as the lesson:**
+## EF1 — ProtaBank's harmonized (taxon-IRI) retrieval IS broken; raw free-text is an imprecise fallback
+**CODE-GROUNDED (authoritative). HONEST NOTE: I mis-stated this 3× — "dead bridge" → "works via free-text,
+no fix" → this. Each flip came from INFERRING the retrieval mechanism from black-box run counts. Reading the
+retrieval code settled it. Lesson: read the retrieval code before claiming a retrieval bug.**
 
-1. **The cross-virus verdict was computed over a BIASED sample.** The 7 viruses that COMPLETED were the
-   light, ProtaBank-data-less ones (chikungunya/dengue/Zika/Lassa/WNV). The heavily-published viruses that
-   ACTUALLY have ProtaBank stability data (influenza A, SARS-CoV-2, HIV-1) were halting at the EF2 assemble
-   timeout BEFORE the ProtaBank count was recorded (`protabank=None`, excluded from the verdict). So one bug
-   (EF2) silently biased the eval's verdict about another (EF1). After the EF2 fix, **influenza A retrieves
-   `protabank 1/1`** (`1 available / 1 used`) — ProtaBank DOES surface data.
-2. **My index-probe led to a WRONG root cause.** I probed `be999b57` (1643 records, 0 `subjects.valueUri`)
-   and concluded "the taxon-IRI filter matches nothing → stamp taxon IRIs + re-publish." But the workflow
-   does NOT filter ProtaBank by taxon IRI — influenza got 1 record DESPITE 0 taxon IRIs, i.e. ProtaBank is
-   retrieved by **free-text** (virus name). So the "production write to stamp taxon IRIs" was addressing a
-   non-problem. The genuinely-low counts reflect ProtaBank's **sparse viral coverage** (mostly non-viral
-   stability data), NOT a broken bridge. **NO production write is needed.**
+The harmonized search filters ProtaBank by `subjects.valueUri` (taxon IRI) —
+`harmonized_search_execute_step.py:104` `{"field": "subjects.valueUri", "shape": "iri"}`. The ProtaBank DEST
+index `be999b57` has 1643 records, **0 with `subjects.valueUri`** (probed). So the **harmonized (taxon-
+correct) ProtaBank leg returns 0 for EVERY virus.** The code ALREADY diagnoses this: parity status `broken`
+(line 252, "harm filter returned 0 but raw matched some") / `zero_floor_unclear` (line 293, both 0).
 
-**Eval lesson (the real, reusable finding):** a cross-virus aggregate verdict is only valid if the
-completing sample is representative. When failed/incomplete runs are silently dropped from the denominator,
-the aggregate becomes a false signal — here the data-RICH viruses were exactly the ones excluded. The eval
-must surface "verdict computed over N of M viruses; K excluded (incomplete)" so a biased sample can't read
-as a clean conclusion. (Corrective code change: `protabank_verdict` should require a representative sample
-/ flag exclusions — see the controller.)
+The small non-zero counts (influenza `1/1`) are the **raw free-text leg** (`q=canonical_label`) — taxon-
+IMPRECISE (not taxon-filtered; can match wrong-organism records) AND label-FRAGILE: it matches "influenza"
+but NOT SARS-CoV-2's long NCBI canonical label, so SARS-CoV-2 + HIV-1 return `protabank=0` even though
+ProtaBank HAS their data (P06654 → 60 records). So the taxon-IRI bridge gap is **REAL** — my original
+finding's CORE was right; my mid-arc "works via free-text, no production write needed" was the over-
+correction (the free-text hits are an incidental, imprecise fallback, not correct retrieval).
+
+**Fix (valid; harmonization-arc; needs direction — a Globus production write):** stamp the ProtaBank DEST
+records with taxon IRIs via the UniProt→PDB→taxon bridge (I own `be999b57`; ~13% of records are viral). Then
+the harmonized leg surfaces the correct viral ProtaBank stability data for the right taxon. This belongs to
+the separate PDB/EMDB/ProtaBank harmonization arc, NOT the eval.
+
+**Two eval improvements (real):** (1) the protabank check should read the code's PARITY STATUS for ProtaBank
+(`broken`/`zero_floor_unclear`), NOT the raw count — the count is the flaky free-text fallback; the parity
+status is the authoritative "taxon bridge dead" signal. (2) the cross-virus verdict must be SAMPLE-AWARE —
+EF2 had biased it by excluding the data-rich heavy viruses (failed runs report `protabank=None`); now fixed
+(`protabank_verdict` flags exclusions). Both still hold; only the "no fix needed" conclusion was wrong.
 
 ## EF2 — heavily-sequenced viruses don't complete the pipeline (GATED)
 SARS-CoV-2 and influenza A halted at **8/23 steps** (incomplete: align_viz / assemble / clade_grouping /
