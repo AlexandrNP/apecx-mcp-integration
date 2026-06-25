@@ -63,7 +63,8 @@ The biggest silent failure, surfaced while fixing EF1's eval-side. The product C
 `harmonization_health` verdict (`broken` = taxon-IRI leg 0, raw matched some) but was DISCARDING it — the
 report showed clean counts. For influenza A, the taxon-IRI filter (species `NCBITaxon_11320`) returns 0 on
 **5 of 9 indices** (bvbrc_protein, protabank, violin_gene/pathogen/vaccine) because the records are keyed by
-STRAIN taxids (probed: bvbrc_protein sample `1001772`; violin_pathogen `11309`; the species IRI matches 0).
+taxids the `11320` IRI doesn't cover (**but the `1001772`/`11309` samples first cited here were a MISREAD —
+Influenza B / unidentified influenza; see the CORRECTED root-cause below**).
 So "884 bvbrc_protein records" looked like influenza-specific taxon hits but were un-taxon-filtered free-text
 matches (could include wrong organisms) — the user was never told. VERIFIED real (probed the live indices).
 
@@ -73,15 +74,27 @@ discloses `"<index>: N record(s) via taxon-IMPRECISE raw free-text (taxon-harmon
 taxon-filtered)"`. The eval surfaces the count (`check_harmonization_disclosed`). Unit-tested
 (`test_taxon_imprecise_harmonization_disclosed`) + verified e2e (influenza report).
 
-**Underlying fix — the naive approach is RULED OUT (investigated, dict-grounded):** a descendant post-filter
-(species → strain/child taxids via the dict's `taxon_hierarchy`, then keep raw records whose taxon is in that
-set) does NOT work for influenza and would make coverage WORSE. The resolved species `11320` has 112,867
-descendants, but the actual record taxids are NOT among them: `1001772` (bvbrc_protein) sits under parent
-11520, `11309` (violin_pathogen) under 35324 — DIFFERENT lineages (influenza ICTV-rename churn;
-`merged_taxons` has no mapping). The records use taxids incompatible with the modern species the query
-resolves to. The real fix is TAXONOMY-RECONCILIATION + re-ingest (map the legacy/divergent record taxids onto
-the modern species IRI, or re-stamp `subjects.valueUri` at harvest) — harmonization-arc, production-write, NOT
-a consumer-side change. The EF4 disclosure is the correct interim until that lands.
+**Underlying cause — CORRECTED 2026-06-25 (taxonomy-version skew; my earlier analysis in this section was
+WRONG, twice).** The "different lineages / rule-out the descendant filter" text was built on a MISREAD:
+`1001772` is *Influenza B virus (B/Chiba/1/2005)* and `11309` is *unidentified influenza virus* — NOT
+Influenza A; the species filter correctly excluded them. The real Influenza A strain taxids (e.g. `1000354`)
+ARE proper descendants of the species. The verified root cause is **taxonomy-version skew**:
+- The dict resolves "influenza A virus" → `11320`. After the ICTV rename, `11320 "Influenza A virus"` is now a
+  SUB-species node UNDER the species `2955291 "Alphainfluenzavirus influenzae"`.
+- **0** of 24,902 bvbrc_protein records carry `11320`. Records carry strain taxids + (inconsistently — only
+  884) the current species `2955291`. The dict's name→taxid snapshot differs from the records' taxon-stamp
+  snapshot. Chikungunya works ONLY because its query taxid `37124` happens to be exactly what its records carry.
+- A `taxon_species` strain→species map WAS built (nanobrain `TaxonSpeciesMapStep` on a dict COPY;
+  `species_iri_for(1000354)==2955291`) — kept as the prerequisite for the real fixes.
+
+**Why a one-shot re-ingest does NOT fix it (the 2026-06-25 plan was invalidated at its hard gate):** the
+harvester's Pass 3 stamps the species *ancestor* (`2955291`), but the query resolves to `11320` (a node BELOW
+the species), so species-stamping never yields `11320`, and stamping `2955291` everywhere still wouldn't match
+an `11320` query without ALSO normalizing the query side. The three real fixes — (A) full-lineage re-publish
+[harvester code change + write], (B) consumer query-normalize-to-species + species re-publish, (C) pure
+consumer facet-descendant-expansion [no write] — are all non-trivial. **EF4 is PARKED (2026-06-25)** pending a
+taxonomy-alignment decision; NO production write was made (live dict + indices untouched). The EF4 disclosure
+(above) remains the correct interim — and is now MORE valuable, since the skew is deeper than first thought.
 
 ## EF5 — viral_epitope_analysis HARD-FAILS without RHEA → breaks every downstream chain (adoption risk)
 Surfaced by extending the reliability probe to the OTHER product workflows. 3 of their real-chain e2e tests
