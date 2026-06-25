@@ -71,10 +71,17 @@ matches (could include wrong organisms) — the user was never told. VERIFIED re
 `harmonized_search_summary.per_index_health` (`HarmonizedBundleMergeStep._health_from_item`) → `DataReadinessStep`
 discloses `"<index>: N record(s) via taxon-IMPRECISE raw free-text (taxon-harmonization broken, not
 taxon-filtered)"`. The eval surfaces the count (`check_harmonization_disclosed`). Unit-tested
-(`test_taxon_imprecise_harmonization_disclosed`) + verified e2e (influenza report). **Underlying fix
-(harmonization arc, deferred):** the resolver should expand a species taxon to its strain/child taxids (or
-match a broader rank) so the taxon-IRI leg catches strain-keyed records — then the disclosure goes quiet
-because retrieval is correct. Until then, the user at least SEES when counts are taxon-imprecise.
+(`test_taxon_imprecise_harmonization_disclosed`) + verified e2e (influenza report).
+
+**Underlying fix — the naive approach is RULED OUT (investigated, dict-grounded):** a descendant post-filter
+(species → strain/child taxids via the dict's `taxon_hierarchy`, then keep raw records whose taxon is in that
+set) does NOT work for influenza and would make coverage WORSE. The resolved species `11320` has 112,867
+descendants, but the actual record taxids are NOT among them: `1001772` (bvbrc_protein) sits under parent
+11520, `11309` (violin_pathogen) under 35324 — DIFFERENT lineages (influenza ICTV-rename churn;
+`merged_taxons` has no mapping). The records use taxids incompatible with the modern species the query
+resolves to. The real fix is TAXONOMY-RECONCILIATION + re-ingest (map the legacy/divergent record taxids onto
+the modern species IRI, or re-stamp `subjects.valueUri` at harvest) — harmonization-arc, production-write, NOT
+a consumer-side change. The EF4 disclosure is the correct interim until that lands.
 
 ## What PASSED (the eval is not just a bug-finder)
 chikungunya / dengue / Zika (bare-virus) PASS all 5 reason-aware checks: every step streams + completes,
