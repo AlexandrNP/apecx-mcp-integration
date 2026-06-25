@@ -293,6 +293,11 @@ def _evidence_workflow_builder():
         skip_globus=True,
         skip_violin=True,
         skip_bvbrc=True,
+        # Heavily-published viruses (SARS-CoV-2, influenza A) have huge unbounded-PubMed corpora;
+        # the default 300s per-step ceiling FAIL-FASTs mid-assemble → the whole pipeline halts at
+        # 8/23 steps (no report). Raise the framework per-step ceiling to 600s — same pattern the
+        # ``sequence`` step uses below for its heavy inner workflow. (eval finding EF2, 2026-06-25.)
+        execution_timeout=600.0,
     )
     # Fold the 9-index harmonized results into globus_results + derive taxon_id /
     # resolved_species_name from the resolved plan (so the structural / sequence /
