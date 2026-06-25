@@ -35,8 +35,12 @@ import logging
 from dataclasses import dataclass, field
 from typing import Literal
 
+from apecx_integration.synonym_dictionary.disambiguation_overrides import (
+    DISAMBIGUATION_OVERRIDES,
+)
 from apecx_integration.synonym_dictionary.enums import EntityType, ResolutionStatus
 from apecx_integration.synonym_dictionary.loader import get_dictionary_index
+from apecx_integration.synonym_dictionary.normalization import normalize_surface_form
 from apecx_integration.synonym_dictionary.schema import DictionaryEntry
 
 log = logging.getLogger(__name__)
@@ -68,6 +72,10 @@ class LookupResult:
     """The outcome of a single Stage 2 entity lookup.
 
     ``path`` values:
+    - ``"override"``  — a curated disambiguation override resolved the surface
+                         form (see :mod:`disambiguation_overrides`); surfaced
+                         distinctly so the override is visible, never disguised
+                         as a plain dict hit.
     - ``"fast"``      — exact dictionary hit (canonical IRI or synonym),
                          single unambiguous candidate.
     - ``"ambiguous"`` — exact dictionary hit but the surface form maps to
@@ -83,7 +91,7 @@ class LookupResult:
     """
 
     surface_form: str
-    path: Literal["fast", "ambiguous", "ancestor", "slow", "miss"]
+    path: Literal["override", "fast", "ambiguous", "ancestor", "slow", "miss"]
     canonical_iri: str | None
     canonical_label: str | None
     canonical_ontology: str | None
@@ -148,6 +156,20 @@ def lookup_entity(
         return fast_miss(surface_form, reason="empty input")
 
     index, load_error = get_dictionary_index()
+
+    # Disambiguation overrides — a curated set of surface forms the published
+    # dictionary flags AMBIGUOUS (an organism's old vs new ICTV name kept as two
+    # entries, or a genuinely-ambiguous acronym) for which a single canonical
+    # resolution is intended. Consulted BEFORE the ambiguous path so the chosen
+    # taxon resolves cleanly; restores the prior dictionary's behavior without
+    # rebuilding the published dict. See :mod:`disambiguation_overrides`.
+    if index is not None:
+        override_iri = DISAMBIGUATION_OVERRIDES.get(normalize_surface_form(surface_form))
+        if override_iri is not None:
+            entry = index.lookup_by_iri(override_iri)
+            if entry is not None:
+                log.debug("disambiguation override: %r -> %s", surface_form, override_iri)
+                return _entry_to_result(surface_form, entry, path="override")
 
     # Fast path — IRI shortcut: if the caller already has a canonical IRI,
     # skip surface-form normalization and look it up directly.
@@ -320,7 +342,10 @@ def detect_ambiguity(
 
 
 def _entry_to_result(
-    surface_form: str, entry: DictionaryEntry, *, path: Literal["fast", "ancestor", "slow"]
+    surface_form: str,
+    entry: DictionaryEntry,
+    *,
+    path: Literal["override", "fast", "ancestor", "slow"],
 ) -> LookupResult:
     return LookupResult(
         surface_form=surface_form,
