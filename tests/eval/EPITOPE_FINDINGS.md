@@ -110,15 +110,20 @@ reliability/adoption blocker, and exactly the "diverse settings / edge cases" fr
   false-RED in any no-RHEA env instead of skipping like `needs_llm`/`needs_globus` tests do. A `needs_rhea`
   skip gate (probe `:3001`) fixes the false red without hiding the design fact (documented here).
 
-## EF7 — viral_epitope_analysis has a SECOND rhea hard-fail point (the EF5 flag is necessary, not sufficient)
-Surfaced building the full-artifact demo. With the EF5 sequence-`align` degrade enabled + rhea forced
-unreachable, the run reached 23/23 but ERRORED on `muscle_alignment` — a SEPARATE RheaMuscleAlignStep inside
-`RheaGenomicAnalysisStep` (the rhea_genomic ADDITIVE large-scale leg, builder.py:440). It hard-fails on
-rhea-unreachable WHEN A PROTEIN IS GIVEN (the no-protein case degrades loud, but the with-protein case
-raises). So EF5's flag fixes one of TWO rhea couplings; full rhea-independence needs the same opt-in degrade
-(or an additive-leg "degrade-loud-on-unreachable") in `RheaGenomicAnalysisStep`. VERIFIED: the demo's
-sequence `align` degraded correctly (EF5 works — conserved_regions WAS computed via MAFFT, just not persisted
-because the run errored on muscle_alignment).
+## EF7 — G127 honesty check flags a DEGRADED-loud step failure as a run error (framework-level)
+Surfaced building the full-artifact demo (CORRECTED root cause). With the EF5 sequence-`align` degrade
+enabled + rhea forced unreachable, the run reached 23/23 but `run_workflow` returned status=error → artifacts
+not persisted. NOT a product degrade bug: `RheaGenomicAnalysisStep` ALREADY degrades correctly
+(`rhea_genomic_analysis_step.py:196` `except Exception` → "do NOT fail" → a proceed_note). The rhea_genomic
+leg DID degrade. The error is `run_workflow`'s G127 honesty check (`eo_primitives.py:450-460`): it FAILS-LOUD
+on ANY `step_failed` event (the guard against silently-swallowed step failures) — but it CANNOT distinguish
+*swallowed-silently* (the real bug) from *caught-and-degraded-loud* (correct, here the inner `muscle_alignment`
+step the rhea_genomic leg caught). So a correct degrade-loud is reported as a run error + blocks the artifact
+write. **Fix (framework, careful):** teach G127 to ignore a step_failed that a degrade-loud handler caught
+(e.g. a proceed_note for that stage), OR have the rhea_genomic inner muscle step degrade so it emits no
+step_failed. NOT a rushed change — it touches the honesty contract. VERIFIED: EF5 works (sequence align
+degraded, conserved_regions computed); the only blocker to persisting the full artifacts is this G127
+false-positive.
 
 ## EF8 — the cascade timeout (600s default) is too short for the full RHEA-MUSCLE pipeline
 The REAL-RHEA demo (RHEA up, healthy) hit `cascade_timeout` at 13/23 — the first-run RHEA MUSCLE builds a
