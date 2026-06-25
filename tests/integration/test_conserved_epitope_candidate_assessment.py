@@ -156,7 +156,27 @@ needs_globus = pytest.mark.skipif(
 )
 
 
+def _rhea_reachable() -> bool:
+    """RHEA MCP server on :3001 (the YAML default). The upstream viral_epitope_analysis sequence leg is
+    fail-closed RHEA-required when it runs, so a no-RHEA env makes the real upstream run ERROR — skip (not
+    fail) when RHEA is absent, mirroring needs_globus/needs_llm (finding EF5)."""
+    import socket
+
+    try:
+        with socket.create_connection(("127.0.0.1", 3001), timeout=2):
+            return True
+    except OSError:
+        return False
+
+
+needs_rhea = pytest.mark.skipif(
+    not _rhea_reachable(),
+    reason="needs the RHEA MCP server (:3001) for the RHEA-required upstream run (EF5)",
+)
+
+
 @needs_globus
+@needs_rhea
 def test_real_upstream_handle_can_chain_into_candidate_assessment():
     """Real-data parity: upstream run -> data_handle -> gated follow-up -> approved follow-up."""
     from apecx_integration.mcp_surface.tools.eo_primitives import approve_design, run_workflow

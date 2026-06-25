@@ -83,6 +83,27 @@ resolves to. The real fix is TAXONOMY-RECONCILIATION + re-ingest (map the legacy
 the modern species IRI, or re-stamp `subjects.valueUri` at harvest) — harmonization-arc, production-write, NOT
 a consumer-side change. The EF4 disclosure is the correct interim until that lands.
 
+## EF5 — viral_epitope_analysis HARD-FAILS without RHEA → breaks every downstream chain (adoption risk)
+Surfaced by extending the reliability probe to the OTHER product workflows. 3 of their real-chain e2e tests
+FAIL (`test_conserved_epitope_candidate_assessment::test_real_upstream_handle_can_chain...`,
+`test_epitope_combination_real_chain::test_full_chain[dengue|mayaro]`) — ALL with the SAME upstream error:
+`RheaMuscleAlignStep 'align': rhea subworkflow produced no 'workflow_output'. Is the Rhea server reachable?`
+(confirmed in the log — NOT a regression from my EF2/EF4 changes). When the sequence leg RUNS (a protein is
+given, or a well-covered virus), the `align` step is fail-closed RHEA-required; RHEA down → the WHOLE run
+errors (status error, no artifacts) → every downstream consumer that chains off it also fails. So the entire
+epitope product is **unusable without RHEA** (heavy infra) for protein/well-covered queries — a major
+reliability/adoption blocker, and exactly the "diverse settings / edge cases" fragility the mandate targets.
+
+- **The design tension:** "RHEA mandatory" was a DELIBERATE 2026-06-18 decision (degrade→raise). But MAFFT
+  conservation ALREADY exists in the pipeline (the nested `viral_conserved_sites` leg); the RHEA MUSCLE leg
+  is ADDITIVE (large-scale). So degrade-LOUD-to-MAFFT (a clear "RHEA unavailable — large-scale conservation
+  skipped, MAFFT used" note) would satisfy "no SILENT failures" (it's loud) AND restore reliability without
+  RHEA. **RECOMMENDATION: revert RHEA-mandatory to degrade-loud — but it reverses a deliberate decision, so
+  it needs the design owner's call** (don't flip it silently).
+- **Test hygiene (separable, safe):** these chain tests gate only on `@needs_globus`, not RHEA — so they
+  false-RED in any no-RHEA env instead of skipping like `needs_llm`/`needs_globus` tests do. A `needs_rhea`
+  skip gate (probe `:3001`) fixes the false red without hiding the design fact (documented here).
+
 ## What PASSED (the eval is not just a bug-finder)
 chikungunya / dengue / Zika (bare-virus) PASS all 5 reason-aware checks: every step streams + completes,
 the structural + literature artifacts are non-empty, the report carries the 5-LLM + deterministic sections

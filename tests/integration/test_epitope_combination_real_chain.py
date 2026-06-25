@@ -44,6 +44,25 @@ needs_globus = pytest.mark.skipif(
 )
 
 
+def _rhea_reachable() -> bool:
+    """RHEA MCP server on :3001 (the YAML default). The upstream viral_epitope_analysis sequence leg is
+    fail-closed RHEA-required when it runs (these chain tests pass a protein), so a no-RHEA env makes the
+    upstream run ERROR — skip (not fail) when RHEA is absent, mirroring needs_globus (finding EF5)."""
+    import socket
+
+    try:
+        with socket.create_connection(("127.0.0.1", 3001), timeout=2):
+            return True
+    except OSError:
+        return False
+
+
+needs_rhea = pytest.mark.skipif(
+    not _rhea_reachable(),
+    reason="needs the RHEA MCP server (:3001) for the RHEA-required upstream run (EF5)",
+)
+
+
 # (query, protein, label) — chosen for a sharp strain-count contrast.
 _VIRUSES = [
     (
@@ -129,6 +148,7 @@ def _real_additional_epitopes(evidence_handle: str, exclude=None) -> list[dict]:
 
 
 @needs_globus
+@needs_rhea
 @pytest.mark.parametrize("query,protein,label", _VIRUSES, ids=[v[2] for v in _VIRUSES])
 def test_full_chain_combination_across_strain_counts(query, protein, label):
     """Both real paths, per virus, against a REAL candidate bundle (one expensive upstream run):
