@@ -26,6 +26,7 @@ _OUT = Path(__file__).resolve().parent / "output"
 _CATEGORY_GATE = {
     "transient": "auto_safe",
     "rhea_unavailable": "informational",
+    "protabank_zero_but_biased_sample": "informational",
     "no_streaming": "gated",
     "incomplete": "gated",
     "silent_empty_artifact": "gated",
@@ -76,19 +77,33 @@ def diagnose_run(r: EpitopeResult) -> list[FailureItem]:
 
 
 def protabank_verdict(results: list[EpitopeResult]) -> FailureItem | None:
-    """CROSS-VIRUS: ProtaBank is reported per run, but if it returns 0 for EVERY tested virus it is
-    reported-but-useless — a gated reliability gap (the UniProt→PDB→taxon bridge / the ProtaBank DEST
-    index likely lacks taxon IRIs). None if at least one virus surfaced ProtaBank records."""
+    """CROSS-VIRUS verdict on ProtaBank — SAMPLE-AWARE (lesson EF1): a run that didn't complete reports
+    protabank=None and is EXCLUDED from the count. The data-RICH viruses (heavily-published: SARS-CoV-2 /
+    influenza / HIV) are exactly the ones that tend to fail/halt — so "0 on all completing viruses" over a
+    sample that DROPPED them is a FALSE 'never retrieved'. Three outcomes:
+      • any completing virus retrieved >0  → None (ProtaBank works).
+      • all-0 AND some runs excluded       → informational (biased sample, not a reliable verdict).
+      • all-0 AND none excluded            → gated (genuinely never surfaces data).
+    """
     counts = [r.protabank for r in results if r.protabank is not None]
-    if counts and all(n == 0 for n in counts):
+    excluded = [r.query for r in results if r.protabank is None]
+    if not counts or any(n > 0 for n in counts):
+        return None
+    if excluded:
         return FailureItem(
-            "<all tested viruses>",
-            "protabank_never_retrieved",
-            "gated",
-            f"ProtaBank searched + reported on all {len(counts)} runs but returned 0 records "
-            "every time — reported-but-empty; the index never actually surfaces data.",
+            "<completing viruses>",
+            "protabank_zero_but_biased_sample",
+            "informational",
+            f"ProtaBank 0 on all {len(counts)} COMPLETING viruses, but {len(excluded)} excluded "
+            f"(incomplete: {excluded[:3]}) — the data-rich heavy viruses may be among them; not a "
+            "reliable 'never retrieved' verdict until they complete.",
         )
-    return None
+    return FailureItem(
+        "<all tested viruses>",
+        "protabank_never_retrieved",
+        "gated",
+        f"ProtaBank 0 on all {len(counts)} viruses (none excluded) — genuinely never surfaces data.",
+    )
 
 
 def diagnose(results: list[EpitopeResult]) -> list[FailureItem]:

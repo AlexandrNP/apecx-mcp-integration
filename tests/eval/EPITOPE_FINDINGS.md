@@ -5,24 +5,30 @@ set (1 loop iteration, real runs against Ollama + local data; RHEA down). Verdic
 (reason-aware graceful degrade); the gated worklist holds the real bugs below. GATED = a human/code fix;
 INFORMATIONAL = environment.
 
-## EF1 — ProtaBank is reported but NEVER retrieves (GATED) — the user's explicit ask
-ProtaBank was searched + reported on ALL 7 completing-virus runs and returned **0 records every time**
-(`protabank_counts` all 0). So ProtaBank is "wired in" (1 of 9 harmonized indices, filtered by
-`subjects.valueUri` taxon IRI) but **reported-but-useless** — it never actually surfaces data for any
-virus. Almost certainly the ProtaBank DEST index (`be999b57-…`) lacks the taxon IRIs the query filters on:
-the harmonization arc published the PDB/EMDB DEST indices with taxon IRIs (+ UniProt alt-ids), but the
-ProtaBank records (UniProt-keyed) were never stamped with taxon IRIs via the UniProt→PDB bridge. So
-`data_readiness` perpetually names it "no protabank record" — a coverage gap that's never closed.
-**Root cause CONFIRMED (probed the index):** ProtaBank DEST `be999b57` has 1643 records, **0 with
-`subjects.valueUri`** (taxon IRIs) — sample subjects `[]`. So the taxon-IRI filter matches nothing for
-every virus. **Fix is FEASIBLE + VALUED:** I OWN the index (onarykov = owner); ~13% of ProtaBank is viral
-(11/82 sampled clean UniProts map to the viral PDB DEST `857bc08e` — HIV-1, SARS-CoV-2, HCV, influenza
-stability data, ~200 records); the UniProt→PDB→taxon bridge can stamp them. CAVEATS: ProtaBank UniProt is
-`;`-joined + duplicated (`"P01053; P01053"` — the known parser bug; clean by split on `;`/`,` + dedup);
-chikungunya/dengue/Zika have NO ProtaBank data (that 0 is HONEST — ProtaBank is mostly non-viral). **The
-fix** (in apecx-harvesters-work, owner-writable): read ProtaBank DEST → clean UniProt → look up taxon IRI(s)
-in the PDB DEST → stamp `subjects.valueUri` → re-publish via `globus search ingest`. Then HIV-1/SARS-CoV-2/
-HCV/influenza queries surface ProtaBank stability data. Verified e2e by re-running the eval for those viruses.
+## EF1 — ProtaBank "never retrieved" was a FALSE verdict, CONFOUNDED by EF2 (CORRECTED)
+**Initial (WRONG) verdict:** ProtaBank returned 0 on all 7 completing viruses → `protabank_never_retrieved`,
+"the taxon-IRI bridge is dead, needs a production re-ingest." **Two things were wrong, both caught by
+fixing EF2 + re-running — recorded here as the lesson:**
+
+1. **The cross-virus verdict was computed over a BIASED sample.** The 7 viruses that COMPLETED were the
+   light, ProtaBank-data-less ones (chikungunya/dengue/Zika/Lassa/WNV). The heavily-published viruses that
+   ACTUALLY have ProtaBank stability data (influenza A, SARS-CoV-2, HIV-1) were halting at the EF2 assemble
+   timeout BEFORE the ProtaBank count was recorded (`protabank=None`, excluded from the verdict). So one bug
+   (EF2) silently biased the eval's verdict about another (EF1). After the EF2 fix, **influenza A retrieves
+   `protabank 1/1`** (`1 available / 1 used`) — ProtaBank DOES surface data.
+2. **My index-probe led to a WRONG root cause.** I probed `be999b57` (1643 records, 0 `subjects.valueUri`)
+   and concluded "the taxon-IRI filter matches nothing → stamp taxon IRIs + re-publish." But the workflow
+   does NOT filter ProtaBank by taxon IRI — influenza got 1 record DESPITE 0 taxon IRIs, i.e. ProtaBank is
+   retrieved by **free-text** (virus name). So the "production write to stamp taxon IRIs" was addressing a
+   non-problem. The genuinely-low counts reflect ProtaBank's **sparse viral coverage** (mostly non-viral
+   stability data), NOT a broken bridge. **NO production write is needed.**
+
+**Eval lesson (the real, reusable finding):** a cross-virus aggregate verdict is only valid if the
+completing sample is representative. When failed/incomplete runs are silently dropped from the denominator,
+the aggregate becomes a false signal — here the data-RICH viruses were exactly the ones excluded. The eval
+must surface "verdict computed over N of M viruses; K excluded (incomplete)" so a biased sample can't read
+as a clean conclusion. (Corrective code change: `protabank_verdict` should require a representative sample
+/ flag exclusions — see the controller.)
 
 ## EF2 — heavily-sequenced viruses don't complete the pipeline (GATED)
 SARS-CoV-2 and influenza A halted at **8/23 steps** (incomplete: align_viz / assemble / clade_grouping /

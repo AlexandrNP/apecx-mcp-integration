@@ -72,16 +72,21 @@ def test_protabank_count_parsing():
     assert protabank_count("no mention here") is None  # silently omitted
 
 
-def test_protabank_never_retrieved_verdict():
+def test_protabank_verdict_sample_aware():
+    # all-0 AND none excluded → gated (genuinely never surfaces data)
     runs = [
         EpitopeResult("a", protabank=0, checks=[], status="ok"),
         EpitopeResult("b", protabank=0, checks=[], status="ok"),
     ]
     v = protabank_verdict(runs)
     assert v is not None and v.category == "protabank_never_retrieved" and v.gate == "gated"
-    # one virus surfaced records → no verdict
-    runs[1] = EpitopeResult("b", protabank=3, checks=[], status="ok")
-    assert protabank_verdict(runs) is None
+    # any virus surfaced records → no verdict (ProtaBank works)
+    assert protabank_verdict([runs[0], EpitopeResult("b", protabank=3)]) is None
+    # all-0 BUT a run excluded (protabank=None, e.g. the data-rich heavy virus halted) → informational,
+    # NOT a reliable 'never retrieved' (lesson EF1: EF2 masked the data-rich viruses)
+    biased = protabank_verdict([runs[0], EpitopeResult("heavy-virus", protabank=None)])
+    assert biased is not None
+    assert biased.category == "protabank_zero_but_biased_sample" and biased.gate == "informational"
 
 
 def test_rhea_unavailable_is_informational():
