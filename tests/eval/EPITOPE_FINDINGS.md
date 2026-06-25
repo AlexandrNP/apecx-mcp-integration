@@ -110,6 +110,27 @@ reliability/adoption blocker, and exactly the "diverse settings / edge cases" fr
   false-RED in any no-RHEA env instead of skipping like `needs_llm`/`needs_globus` tests do. A `needs_rhea`
   skip gate (probe `:3001`) fixes the false red without hiding the design fact (documented here).
 
+## EF7 — viral_epitope_analysis has a SECOND rhea hard-fail point (the EF5 flag is necessary, not sufficient)
+Surfaced building the full-artifact demo. With the EF5 sequence-`align` degrade enabled + rhea forced
+unreachable, the run reached 23/23 but ERRORED on `muscle_alignment` — a SEPARATE RheaMuscleAlignStep inside
+`RheaGenomicAnalysisStep` (the rhea_genomic ADDITIVE large-scale leg, builder.py:440). It hard-fails on
+rhea-unreachable WHEN A PROTEIN IS GIVEN (the no-protein case degrades loud, but the with-protein case
+raises). So EF5's flag fixes one of TWO rhea couplings; full rhea-independence needs the same opt-in degrade
+(or an additive-leg "degrade-loud-on-unreachable") in `RheaGenomicAnalysisStep`. VERIFIED: the demo's
+sequence `align` degraded correctly (EF5 works — conserved_regions WAS computed via MAFFT, just not persisted
+because the run errored on muscle_alignment).
+
+## EF8 — the cascade timeout (600s default) is too short for the full RHEA-MUSCLE pipeline
+The REAL-RHEA demo (RHEA up, healthy) hit `cascade_timeout` at 13/23 — the first-run RHEA MUSCLE builds a
+conda env (~50s) + the distributed alignment + 23 steps exceeded the registry default `timeout_seconds=600`
+(workflow_registry.py:153; viral_epitope_analysis has no catalog override). A cached-conda re-run is faster,
+but the RHEA path needs a larger budget (≈1200s) than the MAFFT path. Also surfaced a fragile-infra conflict:
+run_epitope's own InfraOrchestrator SIGTERM'd the apecx-mcp-spawned rhea-server on exit (two managers of the
+shared :3001 server) — a demo-harness issue, not a product bug. **Net:** the full-artifact (figures) demo is
+blocked by the product's LAYERED rhea-coupling (EF5+EF7) + the RHEA-path timeout (EF8) — itself the
+adoption-risk story; a clean run needs RHEA fully up + a raised timeout, or the degrade extended to the
+rhea_genomic leg. RHEA bring-up itself WORKED (container healthy on :3001, MUSCLE leg ran to 13/23).
+
 ## What PASSED (the eval is not just a bug-finder)
 chikungunya / dengue / Zika (bare-virus) PASS all 5 reason-aware checks: every step streams + completes,
 the structural + literature artifacts are non-empty, the report carries the 5-LLM + deterministic sections
