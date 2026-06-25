@@ -49,7 +49,10 @@ def check_completeness(expected_steps, events_by_step) -> CheckResult:
     """Each expected step reached step_complete (none stuck/failed)."""
     expected = set(expected_steps)
     incomplete = [s for s in expected if "step_complete" not in events_by_step.get(s, set())]
-    failed = [s for s, ets in events_by_step.items() if "step_failed" in ets]
+    # Only TOP-LEVEL (expected) step failures count. A NESTED step that failed but was caught by its
+    # degrade-loud parent (e.g. muscle_alignment inside the rhea_genomic leg) is honest degradation, not a
+    # run failure — consistent with run_workflow's refined G127 honesty check (finding EF7).
+    failed = [s for s in expected if "step_failed" in events_by_step.get(s, set())]
     return CheckResult(
         "completeness",
         bool(expected) and not incomplete and not failed,

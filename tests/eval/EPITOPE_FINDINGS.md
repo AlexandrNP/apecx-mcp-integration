@@ -121,9 +121,14 @@ on ANY `step_failed` event (the guard against silently-swallowed step failures) 
 step the rhea_genomic leg caught). So a correct degrade-loud is reported as a run error + blocks the artifact
 write. **Fix (framework, careful):** teach G127 to ignore a step_failed that a degrade-loud handler caught
 (e.g. a proceed_note for that stage), OR have the rhea_genomic inner muscle step degrade so it emits no
-step_failed. NOT a rushed change — it touches the honesty contract. VERIFIED: EF5 works (sequence align
-degraded, conserved_regions computed); the only blocker to persisting the full artifacts is this G127
-false-positive.
+step_failed. **RESOLVED (apecx 6fe307e, review-gate PASS-WITH-NOTES):** `run_workflow`'s G127 check is now
+nesting-aware (`_flagged_step_failures`): a TOP-LEVEL failure always counts; a NESTED-only failure counts
+only when no envelope was produced (stalled); a caught nested failure with a produced envelope is honest
+degradation, not flagged. `top_level` is derived from BOTH child_steps step_ids AND child `.name` so the
+step_id==name precondition is not load-bearing. The eval's `check_completeness` was aligned to match (only
+top-level failures fail it). **VERIFIED e2e:** the full demo (rhea forced unreachable + the EF5 sequence-leg
+degrade) now returns **status=ok** with the FULL artifact dir persisted — **conserved_regions=5**,
+**conservation figures (PNG + vector PDF)**, **19 files**. The layered rhea-coupling demo is unblocked.
 
 ## EF8 — the cascade timeout (600s default) is too short for the full RHEA-MUSCLE pipeline
 The REAL-RHEA demo (RHEA up, healthy) hit `cascade_timeout` at 13/23 — the first-run RHEA MUSCLE builds a

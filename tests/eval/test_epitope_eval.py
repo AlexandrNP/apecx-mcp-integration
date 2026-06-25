@@ -33,6 +33,14 @@ def test_streaming_and_completeness():
     assert not check_streaming(steps, _events({"normalize"})).passed  # others silent
     assert check_completeness(steps, _events(steps)).passed
     assert not check_completeness(steps, _events(steps, complete=False)).passed  # never completed
+    # a NESTED step failure (not an expected top-level step) is caught/degraded → does NOT fail (EF7)
+    ev = _events(steps)
+    ev["muscle_alignment"] = {"step_start", "step_failed"}  # nested, not in expected
+    assert check_completeness(steps, ev).passed
+    # but a TOP-LEVEL (expected) step failure DOES fail completeness
+    ev2 = _events(steps)
+    ev2["review"] = {"step_start", "step_failed"}
+    assert not check_completeness(steps, ev2).passed
 
 
 def test_full_artifacts_reason_aware(tmp_path):
