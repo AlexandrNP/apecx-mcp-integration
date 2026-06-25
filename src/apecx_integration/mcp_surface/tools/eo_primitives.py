@@ -33,6 +33,49 @@ log = logging.getLogger(__name__)
 
 _SUCCESS_STATUSES = {"completed", "completed_no_await"}
 
+
+def _flagged_step_failures(
+    top_level_steps: set[str], failed_steps: list[str], has_workflow_output: bool
+) -> list[str]:
+    """G127 (refined): which ``step_failed`` events make a 'completed' run actually DISHONEST.
+
+    The guard's real target is a step that RAISED + was swallowed → the cascade STALLED → empty output. The
+    G37 ``step_failed`` events are the signal, but ``run_summary.steps`` aggregates NESTED sub-workflow steps
+    too. A degrade-loud TOP-LEVEL step (e.g. the rhea_genomic leg) CATCHES its nested failure and continues —
+    yet the nested step (e.g. ``muscle_alignment``) still emitted a ``step_failed`` event, false-flagging the
+    run (EF7). Classification:
+      • a TOP-LEVEL step failure ALWAYS counts — an uncaught failure of a direct child is a real run failure
+        (and an uncaught NESTED failure propagates to its top-level parent, which then also appears here).
+      • a NESTED-only failure counts ONLY when NO workflow output was produced (the cascade stalled). When an
+        envelope WAS produced, the nested failure was caught by its degrade-loud parent (honest degradation,
+        disclosed via proceed_notes) — not a silent failure.
+      • if the top-level set is unknown (empty), preserve the STRICT pre-fix guard (flag everything).
+    """
+    if not failed_steps:
+        return []
+    if not top_level_steps:
+        return list(
+            failed_steps
+        )  # cannot classify nesting → strict (never weaken the guard blindly)
+    top_level_failed = [s for s in failed_steps if s in top_level_steps]
+    if top_level_failed:
+        return top_level_failed
+    # only nested failures remain: a stalled cascade (no output) is the silent failure; a produced envelope
+    # means a degrade-loud parent caught them.
+    return [] if has_workflow_output else list(failed_steps)
+
+
+def _top_level_step_names(workflow: Any) -> set[str]:
+    """The TOP-LEVEL step identities to match against ``run_summary`` step_names. Includes BOTH the
+    ``child_steps`` step_id keys AND each child's ``.name`` — they coincide for WorkflowBuilder workflows
+    but may diverge for hand-authored YAML, so including both guarantees a top-level failure is never
+    misclassified as nested. Shared by ``run_workflow`` and its wiring test (single source of truth)."""
+    child = getattr(workflow, "child_steps", None) or {}
+    names = set(child.keys()) | {getattr(s, "name", None) for s in child.values()}
+    names.discard(None)
+    return names
+
+
 # A streamed stage report: the bundle's {stage, order, markdown, data} fields plus the
 # emitting step's identity (step_name, run_id). ``on_stage`` is a SYNCHRONOUS callback —
 # the G37 step-event subscriber fires synchronously inside the run.
@@ -455,9 +498,16 @@ async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None = None) 
     # empty/degraded output. NOTE: degrade-loud steps that CATCH + note (e.g. the
     # viral_epitope_analysis RHEA leg) emit no step_failed event, so they are unaffected.
     failed_steps = [s.step_name for s in outcome.run_summary.steps if s.status == "failed"]
-    if failed_steps:
+    # Top-level identity is matched against the run_summary step_name (== step.name). child_steps is keyed
+    # by step_id, which == step.name for WorkflowBuilder workflows but NOT necessarily for hand-authored
+    # YAML — so include BOTH the step_id keys AND each child's .name. If they diverge, this still catches a
+    # genuine top-level failure (never suppresses it as "nested"); the classifier falls back to strict on an
+    # empty set. (Review finding on the EF7 fix — the step_id==name precondition must not be load-bearing.)
+    top_level = _top_level_step_names(workflow)
+    flagged = _flagged_step_failures(top_level, failed_steps, outcome.workflow_result is not None)
+    if flagged:
         return WorkflowResult.failed(
-            error=f"workflow {name!r} had a step failure ({', '.join(failed_steps)}); the cascade "
+            error=f"workflow {name!r} had a step failure ({', '.join(flagged)}); the cascade "
             f"did not complete. Call inspect_run({record.run_id!r}) for the per-step breakdown "
             "(including the failing step's exception).",
             run_id=record.run_id,
