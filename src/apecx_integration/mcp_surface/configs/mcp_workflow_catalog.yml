@@ -167,4 +167,8 @@ workflows:
     # the MAFFT/structural/literature legs remain valid. So no `requires: rhea` gate here.
     # Concurrent network retrieval (Globus + PubMed + BV-BRC) + RHEA MUSCLE + one LLM round-trip.
     settle_ms: 3000
-    timeout_seconds: 600.0
+    # EF8: the full 23-step pipeline drives RHEA MUSCLE in TWO legs (sequence conservation +
+    # rhea_genomic); the first-run conda build (~50s) + the distributed alignment pushes the cascade past
+    # 600s (observed: cascade_timeout at 13/23 on a real RHEA run). 1200s gives the RHEA-MUSCLE path
+    # headroom; the MAFFT-degrade + no-protein paths finish well under it.
+    timeout_seconds: 1200.0

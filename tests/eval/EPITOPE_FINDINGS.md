@@ -132,9 +132,11 @@ degrade) now returns **status=ok** with the FULL artifact dir persisted — **co
 
 ## EF8 — the cascade timeout (600s default) is too short for the full RHEA-MUSCLE pipeline
 The REAL-RHEA demo (RHEA up, healthy) hit `cascade_timeout` at 13/23 — the first-run RHEA MUSCLE builds a
-conda env (~50s) + the distributed alignment + 23 steps exceeded the registry default `timeout_seconds=600`
-(workflow_registry.py:153; viral_epitope_analysis has no catalog override). A cached-conda re-run is faster,
-but the RHEA path needs a larger budget (≈1200s) than the MAFFT path. Also surfaced a fragile-infra conflict:
+conda env (~50s) + the distributed alignment + 23 steps exceeded the catalog entry's explicit
+`timeout_seconds: 600.0`. **RESOLVED (catalog tune):** raised viral_epitope_analysis's `timeout_seconds`
+600→1200 in `mcp_workflow_catalog.yml` (verified load_catalog returns 1200, settle_ms:3000 preserved) — the
+RHEA-MUSCLE path gets headroom; the MAFFT-degrade + no-protein paths finish well under it. Also surfaced a
+fragile-infra conflict:
 run_epitope's own InfraOrchestrator SIGTERM'd the apecx-mcp-spawned rhea-server on exit (two managers of the
 shared :3001 server) — a demo-harness issue, not a product bug. **Net:** the full-artifact (figures) demo is
 blocked by the product's LAYERED rhea-coupling (EF5+EF7) + the RHEA-path timeout (EF8) — itself the
