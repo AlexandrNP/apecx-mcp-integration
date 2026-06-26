@@ -162,7 +162,11 @@ def _group_publications_by_theme(
 
 
 def render_evidence_fallback(
-    query: str, publications: list[dict[str, Any]] | None, reason: str
+    query: str,
+    publications: list[dict[str, Any]] | None,
+    reason: str = "",
+    *,
+    host_synthesizes: bool = False,
 ) -> str:
     """Deterministic narrative body used when LLM synthesis FAILS its gate.
 
@@ -193,22 +197,36 @@ def render_evidence_fallback(
     # exception, embedded out-of-order contract headings.)
     reason = _sanitize_inline(reason, cap=500)
     pubs = publications or []
+    if host_synthesizes:
+        # Desktop locus: the connected assistant (host LLM) writes the narrative from the evidence
+        # below. The server deliberately does NOT run its small local LLM — a clean hand-off, NOT a
+        # failure-withhold. The full deterministic evidence report is still the durable deliverable.
+        answer_note = (
+            "> **The connected assistant synthesizes the narrative** from the retrieved evidence "
+            "below — the apecx server returns the full, cited evidence and defers the narrative to "
+            "the host LLM. Nothing is lost; all evidence is enumerated."
+        )
+        pubs_note = "the connected assistant synthesizes the analysis from this evidence"
+    else:
+        answer_note = (
+            f"> **Narrative synthesis was withheld** — {reason}. The retrieved evidence is "
+            f"preserved below and enumerated in the Sources and evidence section so nothing is lost."
+        )
+        pubs_note = (
+            "deterministic grouping — narrative synthesis was withheld, so this is the literature "
+            "organized, not analyzed"
+        )
     lines = [
         _ANSWER_HEADING,
         "",
-        f"> **Narrative synthesis was withheld** — {reason}. The retrieved evidence "
-        f"is preserved below and enumerated in the Sources and evidence section so "
-        f"nothing is lost.",
+        answer_note,
         "",
         f"Question: {_sanitize_inline(query)}",
         "",
     ]
     if pubs:
         grouped = _group_publications_by_theme(pubs)
-        lines.append(
-            f"Retrieved {len(pubs)} publication(s), organized by topic (deterministic grouping — "
-            f"narrative synthesis was withheld, so this is the literature organized, not analyzed):"
-        )
+        lines.append(f"Retrieved {len(pubs)} publication(s), organized by topic ({pubs_note}):")
         lines.append("")
         for theme, theme_pubs in grouped:
             lines.append(f"**{theme}** ({len(theme_pubs)}):")
@@ -222,20 +240,27 @@ def render_evidence_fallback(
             lines.append("")
     else:
         lines.append("_No publications were retrieved for this query._")
-    lines += [
-        "",
-        "## Cross-data reasoning",
-        "",
-        "> Cross-data reasoning was not generated because narrative synthesis was "
-        "withheld (see the reason above). The retrieved records and how they relate "
-        "are enumerated in the Sources and evidence section below.",
-        "",
-        _INSIGHT_HEADING,
-        "",
-        "> No integrated insight could be synthesized without the narrative model. "
-        "Re-run once the synthesis-gate condition named above is resolved; the "
-        "retrieved evidence itself is intact.",
-    ]
+    if host_synthesizes:
+        cross_note = (
+            "> The connected assistant performs the cross-data reasoning from the retrieved records "
+            "below — they are enumerated in the Sources and evidence section."
+        )
+        insight_note = (
+            "> The connected assistant synthesizes the integrated insight from the retrieved "
+            "evidence below, which is intact and enumerated."
+        )
+    else:
+        cross_note = (
+            "> Cross-data reasoning was not generated because narrative synthesis was withheld (see "
+            "the reason above). The retrieved records and how they relate are enumerated in the "
+            "Sources and evidence section below."
+        )
+        insight_note = (
+            "> No integrated insight could be synthesized without the narrative model. Re-run once "
+            "the synthesis-gate condition named above is resolved; the retrieved evidence itself is "
+            "intact."
+        )
+    lines += ["", "## Cross-data reasoning", "", cross_note, "", _INSIGHT_HEADING, "", insight_note]
     return "\n".join(lines)
 
 
@@ -1183,39 +1208,51 @@ class EvidenceReviewSynthesisStep(BaseStep):
         # each source list with its quality-ranked top-N, so the LLM reasons over the
         # digest, never the raw corpus. (Standalone review with no distill step upstream
         # — e.g. tests — simply uses whatever was passed.)
-        self.emit_progress("composing evidence review (LLM)")
-        try:
-            evidence_md = await asyncio.to_thread(
-                synthesize_response,
-                query.strip(),
-                config=self._synthesis_config,
-                # Evidence output-contract prompt (# Answer / ## Cross-data reasoning /
-                # ## Integrated insight). Overrides ONLY the system message; all gates
-                # stay sourced from the shared config.
-                system_prompt_override=self._evidence_system_prompt,
-                rag_chunks=input_data.get("rag_chunks") or [],
-                bvbrc_genomes=input_data.get("bvbrc_genomes") or [],
-                violin_mappings=input_data.get("violin_mappings") or [],
-                publications=input_data.get("publications") or [],
-                globus_results=input_data.get("globus_results") or [],
-            )
-        except Exception as exc:
-            # RELIABILITY: a narrative-synthesis failure (e.g. the strict
-            # citation-grounding gate rejecting a backtick-wrapped real ID, an
-            # empty-retrieval gate, or an LLM outage) must NOT discard the
-            # retrieved evidence. Degrade LOUD to a deterministic narrative body
-            # that names the reason and lists what was retrieved — still emitting
-            # the three contract headings so the document stays five-section shaped.
-            reason = f"{type(exc).__name__}: {exc}"
-            log.warning(
-                "EvidenceReviewSynthesisStep %s: narrative synthesis failed (%s); "
-                "degrading to deterministic evidence summary.",
-                self.name,
-                reason,
-            )
+        # Desktop locus: the connected assistant (host LLM) IS the synthesizer (CLAUDE.md "Two
+        # operating modes"). The small LOCAL apecx LLM can't satisfy the citation gate and would only
+        # ever "withhold" — so SKIP it and hand the host the full deterministic evidence report (a
+        # clean hand-off, NOT a failure). Agent/headless locus keeps the LLM synthesis path below.
+        from apecx_integration.composition.runtime.execution_locus import (
+            ExecutionLocus,
+            get_active_locus,
+        )
+
+        if get_active_locus() == ExecutionLocus.DESKTOP:
+            self.emit_progress("composing evidence review (host synthesizes the narrative)")
             evidence_md = render_evidence_fallback(
-                query.strip(), input_data.get("publications"), reason
+                query.strip(), input_data.get("publications"), host_synthesizes=True
             )
+        else:
+            self.emit_progress("composing evidence review (LLM)")
+            try:
+                evidence_md = await asyncio.to_thread(
+                    synthesize_response,
+                    query.strip(),
+                    config=self._synthesis_config,
+                    # Evidence output-contract prompt (# Answer / ## Cross-data reasoning /
+                    # ## Integrated insight). Overrides ONLY the system message; all gates
+                    # stay sourced from the shared config.
+                    system_prompt_override=self._evidence_system_prompt,
+                    rag_chunks=input_data.get("rag_chunks") or [],
+                    bvbrc_genomes=input_data.get("bvbrc_genomes") or [],
+                    violin_mappings=input_data.get("violin_mappings") or [],
+                    publications=input_data.get("publications") or [],
+                    globus_results=input_data.get("globus_results") or [],
+                )
+            except Exception as exc:
+                # RELIABILITY: a narrative-synthesis failure (the strict citation-grounding gate,
+                # an empty-retrieval gate, or an LLM outage) must NOT discard the retrieved
+                # evidence. Degrade LOUD to a deterministic body that names the reason.
+                reason = f"{type(exc).__name__}: {exc}"
+                log.warning(
+                    "EvidenceReviewSynthesisStep %s: narrative synthesis failed (%s); "
+                    "degrading to deterministic evidence summary.",
+                    self.name,
+                    reason,
+                )
+                evidence_md = render_evidence_fallback(
+                    query.strip(), input_data.get("publications"), reason
+                )
 
         # Assemble the full contract-shaped document. Sources + Follow-ups are
         # deterministic, so the five-section contract holds on BOTH the success and

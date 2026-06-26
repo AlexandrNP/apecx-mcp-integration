@@ -67,6 +67,28 @@ def test_render_defensive_both_none():
     assert "No PDB or EMDB structural records" in sec
 
 
+def test_render_evidence_fallback_host_synthesizes_no_withheld_framing():
+    """Desktop locus: host_synthesizes=True emits a POSITIVE host-synthesis framing over the same
+    evidence — never a 'withheld'-due-to-failure note, in ANY of the three contract sections. (The
+    bug this pins: # Answer was branched but ## Cross-data reasoning / ## Integrated insight still
+    said 'withheld'.)"""
+    md = mod.render_evidence_fallback(
+        "chikungunya E1", [{"title": "X", "pmid": "1"}], host_synthesizes=True
+    )
+    assert "withheld" not in md.lower()
+    assert all(h in md for h in ("# Answer", "## Cross-data reasoning", "## Integrated insight"))
+    assert md.lower().count("connected assistant") >= 3
+    assert "X" in md  # the evidence is preserved
+
+
+def test_render_evidence_fallback_failure_path_still_withheld_framed():
+    """Agent locus / a real synthesis failure keeps the loud 'withheld — <reason>' framing."""
+    md = mod.render_evidence_fallback(
+        "chikv", [{"title": "X", "pmid": "1"}], "ValueError: citation gate"
+    )
+    assert "withheld" in md.lower() and "citation gate" in md.lower()
+
+
 def test_render_embeds_pymol_visualization():
     """When the PyMOL SASA reasoning produced a PNG, the structural section embeds it."""
     sec = render_structural_section(
