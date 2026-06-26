@@ -1,0 +1,47 @@
+# Workflow MCP-tool-boundary — validation findings + fix backlog
+
+Harness: `scripts/validate_workflow_boundary.py` (recording-ctx, real stack, C1-C6 at the tool boundary).
+Baseline run: `viral_epitope_analysis` query=`influenza` (bare virus name), desktop locus.
+Dump: `/tmp/wf_boundary_influenza.json`.
+
+## Baseline scorecard (influenza, bare)
+- C1 every-step-valid: **FAIL** — report carries `not available` / `n/a` placeholders.
+- C2 progress-in-result: ~OK — 13 stage notifications + report has a steps section.
+- C3 artifacts-in-result: **FAIL** — only local server paths (`~/.apecx/artifacts/<run>/`); **content NOT in result**.
+- C4 full-report-in-result: report is 30 KB (full evidence) BUT the **narrative answer is WITHHELD** (citation gate).
+- C5 every-leg-non-empty: **FAIL** — conservation + 5 downstream legs empty (see cascade).
+- C6 prereq-honesty: SASA RAN here (Docker up + image pulled) — the false-negative is the image-absent case.
+
+## Fix backlog (by impact)
+1. **Bare-virus-name → conservation cascade (DOMINANT).** query=`influenza` has no protein → `sequence_conservation`
+   skips ("needs a protein to fetch per-strain sequences"); cascades to alignment_viz / clade_grouping /
+   cross_clade_breadth / rhea_genomic_analysis / functional_validation — half the report empty. The workflow
+   should AUTO-PICK a representative protein for a bare virus (influenza→HA, chikv→E1), not skip the whole arc.
+   Locus: the sequence_conservation subworkflow step (SequenceConservationSubworkflowStep) + the query intake.
+2. **Synthesis withheld in DESKTOP locus (#4) — DESIGN-vs-CODE MISMATCH (root-caused).**
+   `EvidenceReviewSynthesisStep` declares `LLM_ROLE="final_synthesis"` (should omit the apecx LLM in desktop
+   per CLAUDE.md), BUT `evidence_review_synthesis_step.py:1173-1201` ALWAYS calls `synthesize_response` "in
+   BOTH loci" (a 2026-06-15 change that removed the desktop scaffold because the host discarded it). So in
+   desktop locus the local **nemotron-4b** runs and CAN'T satisfy the citation gate (0 distinct citations) →
+   `except` at :1202 degrades to `render_evidence_fallback` → "# Answer: Narrative synthesis was withheld".
+   FIX: in desktop locus, SKIP the apecx LLM (the connected host IS the synthesizer per the docs) but KEEP
+   the full deterministic evidence report (the floor — NOT a stub, which was the 2026-06-15 concern) with a
+   POSITIVE host-synthesis note, not a "withheld due to failure" note. In agent locus keep the current
+   try-synthesize-then-degrade. This is a load-bearing change → next iteration does it with /feature rigor.
+3. **Artifact content not in result (#2).** `_attach_artifact` sets `artifact_dir`/`artifact_path` (local
+   paths) but never the CONTENT (eo_primitives.py:~275). Include report.md content (+ figure refs) in the result.
+4. **Docker probe false-negative (#3).** `_docker_available` uses `docker image inspect <image>` →
+   false-negative when the image isn't pulled locally even though the daemon is up. structural_reasoning_step.py:808.
+   Change to a daemon check (`docker ps`/`version`); let `docker run` pull on first use.
+5. **PubMed leg (#5).** context_assembly carries `publications`; confirm the count (Globus index UUID
+   globus_search/client.py:32 may be stale/unpopulated) + log Globus-vs-direct separately.
+6. **Nanobrain log flood (server hygiene).** ~95 MB/min of INFO/DEBUG ("BRUTAL TRUTH" logs) at default level —
+   floods the server log, slows the run. Reduce the default verbosity.
+7. **Broken harmonized_index_search subworkflow links** — workflow-graph warnings ("search_in/out not found,
+   Link source step 'None'"). Confirm the search isn't degraded by it.
+
+## Harness deepening (next)
+- C5/C6 must be DATA-based (per-stage `data` from the stream's stage_reports), not regex-on-report: assert
+  each leg's count (publications>0, conserved_regions>0, structures>0, SASA n_exposed>0).
+- Test BOTH a bare virus name AND a virus+protein query to isolate the cascade from real failures.
+- Run multiple viruses (chikungunya, dengue) — diverse inputs, not one example.
