@@ -581,8 +581,8 @@ async def _verify_control_plane_reachable() -> None:
       0 (default)                   yes               Log success
       0 (default)                   no, autostart=1   Spawn backend; poll; succeed
                                                       OR exit(2) on poll timeout
-      0 (default)                   no, autostart=0   Exit(2) with the
-                                                      ``set APECX_CONTROL_PLANE_URL``
+      0 (default)                   no, autostart=0   Exit(2) with a
+                                                      ``control_plane`` config
                                                       remediation hint
       ============================  ===============  ============================
 
