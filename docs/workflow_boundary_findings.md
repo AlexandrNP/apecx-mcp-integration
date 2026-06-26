@@ -53,11 +53,29 @@ Dump: `/tmp/wf_boundary_influenza.json`.
    rotavirus) extracted to [] → `build_focused_term` fell back to the raw verbose query → PubMed eSearch
    ANDs every token → 0 hits. Added `_VIRUS_SUFFIX_RE` (one-word `<X>virus`) + a denylist (antivirus,
    provirus). Verified: norovirus/ebolavirus/rotavirus now extract; chikungunya/SARS unchanged; 27 resolver
-   tests (3 new + a suffix-RE safety pin). e2e (norovirus → PubMed>0) IN FLIGHT — confirm next iteration.
+   tests (3 new + a suffix-RE safety pin). e2e ✅ CONFIRMED: norovirus → "Retrieved 15 publications" (was 0).
 6. **Nanobrain log flood (server hygiene).** ~95 MB/min of INFO/DEBUG ("BRUTAL TRUTH" logs) at default level —
    floods the server log, slows the run. Reduce the default verbosity.
-7. **Broken harmonized_index_search subworkflow links** — workflow-graph warnings ("search_in/out not found,
-   Link source step 'None'"). Confirm the search isn't degraded by it.
+7. ✅ **BENIGN (verified) — harmonized_index_search "Link source None" warnings.** These are the documented
+   workflow-level input/output link pattern ([[nanobrain_workflow_input_link_not_dead]]): `search_in`/`search_out`
+   are workflow-level DUs (builder.py:36-46) that don't map to a step in the STATIC graph → warns, but is
+   required by the validator. Verified NOT degraded: norovirus searched all 9 indices (antiviraldb/epitope/
+   genome/protein/protein_structure populated; violin/protabank genuinely sparse). Noise only; could be
+   suppressed nanobrain-side (out of scope). No apecx change.
+
+## Secondary findings (not the 5 user complaints; lower priority)
+- **No-protein cascade (the one remaining correctness gap).** A BARE virus name (no protein param) → conservation
+  skips → structural-reasoning "unavailable" (no conserved regions to map) + rhea "needs a protein". The legs
+  degrade HONESTLY but the report is partial. Enhancement: auto-pick a representative protein early (before the
+  conservation stage — needs an early protein source, e.g. a per-virus default or a BV-BRC protein lookup; the
+  structural PDB is selected too late in the stage order). Non-trivial; needs design.
+- **RHEA leg (chikungunya/E1): "ValueError: RHEA conserved-sites subworkflow produced no workflow_output".** RHEA
+  is reachable (the subworkflow runs) but its backend produces no output → the apecx leg degrades-loud
+  (additive, correct). This is RHEA bring-up/infra (out of scope), NOT an apecx code bug.
+- **rag_synthesis_step desktop-omit (#4 follow-up).** The other final_synthesis step; review-gate flagged it
+  still runs the LLM in desktop. Investigate whether the #4 desktop-omit applies (it may lack the deterministic
+  floor EvidenceReviewSynthesisStep has — the divergence may be intentional).
+- **Log flood (#6).** ~95 MB/min nanobrain INFO/DEBUG; server-log hygiene (set nanobrain logger → WARNING).
 
 ## Harness deepening (next)
 - C5/C6 must be DATA-based (per-stage `data` from the stream's stage_reports), not regex-on-report: assert
