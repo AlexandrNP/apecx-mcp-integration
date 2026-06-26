@@ -64,12 +64,9 @@ from __future__ import annotations
 
 import asyncio
 import gzip
-import json
 import logging
 import os
 import re
-import shutil
-import tempfile
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -79,7 +76,6 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.agents.globus_search._datacite import datacite_subjects, datacite_title
-from apecx_integration.composition.runtime.container_admission import acquire_container_slot
 from apecx_integration.composition.steps import _pymol_sasa as sasa
 from apecx_integration.composition.steps._stage_report import append_stage_report
 
@@ -454,15 +450,21 @@ class StructuralReasoningStep(BaseStep):
                 "note": note,
             }, note
 
-        # Probe Docker + the LOCALLY-BUILT PyMOL image off the event loop (the docker calls are
-        # sync). The reason is SPECIFIC (daemon-down vs image-not-built) so the note never
-        # misleadingly says "docker missing" when Docker is actually up.
-        unavailable = await asyncio.to_thread(_docker_unavailable_reason, self._image)
-        if unavailable is not None:
+        # Obtain the self-provisioning PyMOL tool and AUTO-BUILD its image if absent — this RESOLVES
+        # C6: an unbuilt image is no longer a terminal "unavailable", it builds itself on first use.
+        # Only docker-absent / daemon-down / a genuine build failure remain unavailable (named LOUD, G127).
+        from nanobrain.library.runtime.docker_image_builder import DockerImageBuildError
+
+        from apecx_integration.composition.steps.pymol_sasa_tool import PyMOLToolBackendAdapter
+
+        self._pymol_adapter = PyMOLToolBackendAdapter.register(image_tag=self._image)
+        try:
+            await self._pymol_adapter.ensure_image(on_progress=self.emit_progress)
+        except DockerImageBuildError as exc:
             note = (
-                f"Containerized PyMOL structural analysis is unavailable: {unavailable}. NO "
-                "per-residue SASA was computed — the evidence review continues with LLM-only "
-                "structural reasoning (no quantitative solvent-accessibility ranking)."
+                f"Containerized PyMOL structural analysis is unavailable: {exc}. NO per-residue "
+                "SASA was computed — the evidence review continues with LLM-only structural "
+                "reasoning (no quantitative solvent-accessibility ranking)."
             )
             return {
                 "available": False,
@@ -622,119 +624,32 @@ class StructuralReasoningStep(BaseStep):
         *,
         requested_chain: str | None = None,
     ) -> dict[str, Any]:
-        """Run the headless PyMOL job in a network-isolated container on a host-fetched
-        structure file. ``kind`` (``'assembly_1'`` | ``'mmcif_assembly'`` |
-        ``'asymmetric_unit'``) selects the load format and is recorded in the result.
-        ``requested_chain`` pins the analysed chain (default: the job auto-selects the
-        best motif-mapping chain — R3). Split from ``_run_container`` so the AU-vs-assembly
-        SASA comparison test can drive the same job on both files."""
-        ext = "pdb1" if kind == _KIND_ASSEMBLY else "cif"
-        with tempfile.TemporaryDirectory(prefix="apecx_pymol_") as tmp:
-            workdir = Path(tmp)
-            shutil.copy2(_JOB_SCRIPT, workdir / "_pymol_job.py")
-            shutil.copy2(_SASA_HELPER, workdir / "_pymol_sasa.py")
-            shutil.copy2(structure_path, workdir / f"{pdb_id}.{ext}")
-            job = {
-                "structure_path": f"/work/{pdb_id}.{ext}",
-                "structure_kind": kind,
-                "pdb_id": pdb_id,
-                "conserved_regions": regions,
-                "rsa_threshold": self._rsa_threshold,
-                "min_map_identity": self._min_map_identity,
-                "contact_cutoff": self._contact_cutoff,
-                # Ask the job to render an epitope-surface PNG into the (mounted) workdir.
-                "render_png": f"/work/{pdb_id}.png",
-            }
-            if requested_chain:
-                job["chain"] = requested_chain
-            (workdir / "job.json").write_text(json.dumps(job))
+        """Delegate the SASA run to the self-provisioning PyMOL tool
+        (``PyMOLToolBackendAdapter.run_sasa``). ``kind`` (``'assembly_1'`` |
+        ``'mmcif_assembly'`` | ``'asymmetric_unit'``) selects the load format and is
+        recorded in the result. ``requested_chain`` pins the analysed chain (default:
+        the job auto-selects the best motif-mapping chain — R3). Split from
+        ``_run_container`` so the AU-vs-assembly SASA comparison test can drive the same
+        job on both files."""
+        adapter = getattr(self, "_pymol_adapter", None)
+        if adapter is None:
+            from apecx_integration.composition.steps.pymol_sasa_tool import PyMOLToolBackendAdapter
 
-            argv = self._docker_argv(workdir)
-            # Bound simultaneous code-exec containers process-wide (open-endpoint
-            # exhaustion guard); hold the slot for the container's whole lifetime.
-            async with acquire_container_slot():
-                proc = await asyncio.create_subprocess_exec(
-                    *argv,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE,
-                )
-                try:
-                    _, stderr_b = await asyncio.wait_for(proc.communicate(), timeout=self._timeout)
-                except TimeoutError as exc:
-                    proc.kill()
-                    await proc.communicate()
-                    raise RuntimeError(
-                        f"PyMOL container exceeded {self._timeout:.0f}s timeout"
-                    ) from exc
-
-            result_path = workdir / "result.json"
-            if proc.returncode != 0 or not result_path.exists():
-                full = stderr_b.decode("utf-8", errors="replace")
-                # Keep a generous tail so the REAL container error survives (a libGL/import
-                # failure or a PyMOL traceback can be long); mark truncation honestly.
-                stderr = (("…(truncated)…\n" + full[-8000:]) if len(full) > 8000 else full).strip()
-                raise RuntimeError(
-                    f"docker run exited {proc.returncode}; result.json "
-                    f"{'present' if result_path.exists() else 'missing'}. stderr:\n{stderr}"
-                )
-            result = json.loads(result_path.read_text())
-            # Copy the rendered PNG out of the temp workdir (auto-deleted on block exit) into
-            # the durable artifacts dir, and record its path on the result for the report to
-            # embed. Best-effort: a copy failure never strands the SASA result.
-            viz = result.get("visualization_path")
-            if viz:
-                src = workdir / viz
-                if src.exists():
-                    try:
-                        dest = _artifacts_dir() / viz
-                        shutil.copy2(src, dest)
-                        # Record the BASENAME (not the absolute dest): the report .md is written
-                        # into the SAME artifacts dir, so a relative src resolves next to it and
-                        # survives the artifacts dir being moved/served from another root.
-                        result["visualization_artifact"] = dest.name
-                    except Exception as exc:  # noqa: BLE001 — artifact copy is best-effort
-                        log.warning("structural viz copy failed for %s: %s", pdb_id, exc)
-            return result
-
-    def _docker_argv(self, workdir: Path) -> list[str]:
-        """Hardened ``docker run`` argv for the PyMOL job.
-
-        Mirrors the hardening shape of ``composition/docker_sandbox.py``
-        (``--network none``, ``--cap-drop ALL``, ``--security-opt
-        no-new-privileges``, memory/pids caps) with two deliberate deviations: the
-        ``/work`` mount is read-WRITE (the job writes ``result.json`` back) and the
-        container runs as the HOST uid:gid so that result file is host-owned and
-        writable. The structure is pre-fetched on the host, so the container is
-        still fully network-isolated.
-        """
-        return [
-            "docker",
-            "run",
-            "--rm",
-            "--network",
-            "none",
-            "--cap-drop",
-            "ALL",
-            "--security-opt",
-            "no-new-privileges:true",
-            "--memory",
-            f"{self._memory_mb}m",
-            "--memory-swap",
-            f"{self._memory_mb}m",
-            "--pids-limit",
-            "256",
-            "--user",
-            f"{os.getuid()}:{os.getgid()}",
-            "--mount",
-            f"type=bind,source={workdir.resolve()},target=/work",
-            "--workdir",
-            "/work",
-            self._image,
-            "python",
-            "/work/_pymol_job.py",
-            "/work/job.json",
-            "/work/result.json",
-        ]
+            adapter = self._pymol_adapter = PyMOLToolBackendAdapter.register(image_tag=self._image)
+        return await adapter.run_sasa(
+            pdb_id=pdb_id,
+            structure_path=structure_path,
+            kind=kind,
+            regions=regions,
+            rsa_threshold=self._rsa_threshold,
+            min_map_identity=self._min_map_identity,
+            contact_cutoff=self._contact_cutoff,
+            memory_mb=self._memory_mb,
+            timeout=self._timeout,
+            artifacts_dir=_artifacts_dir(),
+            requested_chain=requested_chain,
+            on_progress=self.emit_progress,
+        )
 
     @staticmethod
     def _selection_prefix(result: dict[str, Any]) -> str:
@@ -805,38 +720,6 @@ class StructuralReasoningStep(BaseStep):
 
 
 # ----------------------------------------------------------------------- helpers
-
-
-def _docker_unavailable_reason(image: str) -> str | None:
-    """``None`` when the containerized PyMOL image is runnable; otherwise a SPECIFIC reason.
-
-    Distinguishes a down daemon from an unbuilt image so the degrade note is not misleading — the
-    user's actual #3 report was "Docker is up and running" yet the note said "docker missing". The
-    pinned ``apecx-pymol`` image is built LOCALLY (``apecx-setup pymol`` / ``docker build``), NOT
-    pulled from a registry, so an absent image means "not built", never "not pulled" — a ``docker
-    pull`` would just 404 (an earlier fix wrongly pulled here). The probe is sync; the caller runs
-    it via ``asyncio.to_thread`` so the (up to 30s) docker calls never block the event loop.
-    """
-    if shutil.which("docker") is None:
-        return "the docker CLI is not on PATH — install Docker, then run `apecx-setup pymol`"
-    try:
-        import subprocess
-
-        ver = subprocess.run(
-            ["docker", "version", "--format", "{{.Server.Version}}"],
-            capture_output=True,
-            timeout=15,
-        )
-        if ver.returncode != 0 or not ver.stdout.strip():
-            return "the Docker daemon is not running — start Docker, then run `apecx-setup pymol`"
-        present = subprocess.run(
-            ["docker", "image", "inspect", image], capture_output=True, timeout=15
-        )
-        if present.returncode != 0:
-            return f"Docker is up but the {image} image is not built — run `apecx-setup pymol`"
-        return None
-    except Exception as exc:  # noqa: BLE001 — any probe failure → degrade-loud with the cause
-        return f"the Docker probe failed ({type(exc).__name__}: {exc})"
 
 
 def _fetch_au_cif(pdb_id: str) -> Path:

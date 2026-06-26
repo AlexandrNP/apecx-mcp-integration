@@ -386,6 +386,22 @@ def _bundle(**over):
     return b
 
 
+async def _noop_async(self, **k):
+    return None
+
+
+@pytest.fixture(autouse=True)
+def _noop_ensure_image(monkeypatch):
+    """Make the PyMOL tool's image pre-flight a no-op so the step's process() runs WITHOUT
+    real Docker. The auto-build path is covered by nanobrain
+    ``tests/unit/test_docker_provisioning.py``; a per-test override (e.g.
+    ``test_degrade_loud_docker_unavailable``) replaces this with a raising stub."""
+    monkeypatch.setattr(
+        "apecx_integration.composition.steps.pymol_sasa_tool.PyMOLToolBackendAdapter.ensure_image",
+        _noop_async,
+    )
+
+
 def test_loads_via_from_config(tmp_path):
     step = _step(tmp_path, rsa_threshold=0.3, min_map_identity=0.8)
     assert step.name == "reasoning_test"
@@ -435,14 +451,20 @@ def test_analyze_one_surfaces_container_traceback(tmp_path):
 
 
 def test_degrade_loud_docker_unavailable(tmp_path, monkeypatch):
-    """Docker/image missing -> named note + passthrough, never raises (G127)."""
+    """Docker/image unbuildable -> named note + passthrough, never raises (G127). The pre-flight
+    auto-build (``ensure_image``) raises ``DockerImageBuildError``; the step degrades LOUD."""
+    from nanobrain.library.runtime.docker_image_builder import DockerImageBuildError
+
     step = _step(tmp_path)
+
+    async def _raise(self, **k):
+        raise DockerImageBuildError(
+            "Docker is up but the apecx-pymol:3.1.0 image is not built and the build failed"
+        )
+
     monkeypatch.setattr(
-        mod,
-        "_docker_unavailable_reason",
-        lambda image: (
-            "Docker is up but the apecx-pymol:3.1.0 image is not built — run `apecx-setup pymol`"
-        ),
+        "apecx_integration.composition.steps.pymol_sasa_tool.PyMOLToolBackendAdapter.ensure_image",
+        _raise,
     )
     out = asyncio.run(step.process(_bundle()))
     sr = out["structural_reasoning"]
@@ -451,72 +473,6 @@ def test_degrade_loud_docker_unavailable(tmp_path, monkeypatch):
     assert "unavailable" in sr["note"]
     assert "not built" in sr["note"]
     assert [r for r in out["stage_reports"] if r["stage"] == "structural_reasoning"]
-
-
-def _docker_run_stub(outcomes):
-    """A ``subprocess.run`` stub mapping the docker subcommand to a returncode + recording calls.
-
-    ``outcomes`` keys: ``version`` (rc of ``docker version``) + ``inspect`` (rc of ``docker image
-    inspect``). The locally-built apecx-pymol image is never pulled, so there is no ``pull`` arm."""
-    import types
-
-    calls = []
-
-    def run(argv, **_kw):
-        calls.append(list(argv))
-        if argv[:2] == ["docker", "version"]:
-            # rc0 -> a non-empty Server.Version means the daemon is up
-            stdout = b"24.0.0\n" if outcomes["version"] == 0 else b""
-            return types.SimpleNamespace(returncode=outcomes["version"], stdout=stdout, stderr=b"")
-        if argv[:3] == ["docker", "image", "inspect"]:
-            return types.SimpleNamespace(returncode=outcomes["inspect"], stdout=b"", stderr=b"")
-        return types.SimpleNamespace(returncode=1, stdout=b"", stderr=b"")
-
-    run.calls = calls
-    return run
-
-
-def test_docker_unavailable_reason_image_present_returns_none(monkeypatch):
-    """Daemon up (version rc0) + image built (inspect rc0) -> runnable -> None. Real-Docker parity for
-    the present->SASA path: tests/integration/test_structural_reasoning_pymol.py against a live
-    container."""
-    import subprocess
-
-    monkeypatch.setattr(mod.shutil, "which", lambda _n: "/usr/bin/docker")
-    stub = _docker_run_stub({"version": 0, "inspect": 0})  # daemon up, image present
-    monkeypatch.setattr(subprocess, "run", stub)
-    assert mod._docker_unavailable_reason("apecx-pymol:3.1.0") is None
-    assert not any(c[:2] == ["docker", "pull"] for c in stub.calls)  # never pulls
-
-
-def test_docker_unavailable_reason_daemon_down(monkeypatch):
-    """``docker version`` non-zero -> the daemon is not running -> a SPECIFIC reason (not "image")."""
-    import subprocess
-
-    monkeypatch.setattr(mod.shutil, "which", lambda _n: "/usr/bin/docker")
-    stub = _docker_run_stub({"version": 1, "inspect": 0})  # daemon down
-    monkeypatch.setattr(subprocess, "run", stub)
-    reason = mod._docker_unavailable_reason("apecx-pymol:3.1.0")
-    assert reason is not None and "daemon is not running" in reason
-
-
-def test_docker_unavailable_reason_image_not_built(monkeypatch):
-    """Daemon up but image absent (inspect rc1) -> "not built" reason (never "not pulled")."""
-    import subprocess
-
-    monkeypatch.setattr(mod.shutil, "which", lambda _n: "/usr/bin/docker")
-    stub = _docker_run_stub({"version": 0, "inspect": 1})  # daemon up, image absent
-    monkeypatch.setattr(subprocess, "run", stub)
-    reason = mod._docker_unavailable_reason("apecx-pymol:3.1.0")
-    assert reason is not None and "not built" in reason
-    assert not any(c[:2] == ["docker", "pull"] for c in stub.calls)  # absent != pull
-
-
-def test_docker_unavailable_reason_no_docker_on_path(monkeypatch):
-    """``shutil.which("docker")`` is None -> the CLI is not on PATH -> a SPECIFIC reason."""
-    monkeypatch.setattr(mod.shutil, "which", lambda _n: None)
-    reason = mod._docker_unavailable_reason("apecx-pymol:3.1.0")
-    assert reason is not None and "not on PATH" in reason
 
 
 def _au_job_result(pdb_id: str) -> dict:
@@ -554,7 +510,6 @@ def test_au_fallback_emits_named_caveat(tmp_path, monkeypatch):
     the step stays available with a NON-EMPTY classification AND emits a NAMED caveat in
     both the bundle and the stage report — never a silent AU substitution."""
     step = _step(tmp_path)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
 
     async def _au(self, pdb_id, regions):
         return _au_job_result(pdb_id)
@@ -577,7 +532,6 @@ def test_assembly_context_named_in_report(tmp_path, monkeypatch):
     """The happy path (SASA over the biological assembly) names the assembly context in
     the stage report so the synthesis trace can cite it."""
     step = _step(tmp_path)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
 
     async def _asm(self, pdb_id, regions):
         r = _au_job_result(pdb_id)
@@ -600,7 +554,6 @@ def test_assembly_context_named_in_report(tmp_path, monkeypatch):
 def test_container_failure_degrades_loud(tmp_path, monkeypatch):
     """A container/fetch error is caught and named, never propagated."""
     step = _step(tmp_path)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
 
     async def _boom(self, pdb_id, regions):
         raise RuntimeError("simulated docker run failure")
@@ -719,7 +672,6 @@ def test_mmcif_assembly_named_in_report_no_caveat(tmp_path, monkeypatch):
     provenance (structure_kind=mmcif_assembly, assembly_id=1) and emits NO misleading
     'asymmetric unit / no assembly' caveat."""
     step = _step(tmp_path)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
 
     async def _mmcif(self, pdb_id, regions):
         return _mmcif_job_result(pdb_id)
@@ -783,7 +735,6 @@ def test_step_analyzes_top_n_and_corroborates(tmp_path, monkeypatch):
     """The step analyses the top-N ranked structures and emits cross-structure corroboration;
     the PRIMARY structure still supplies the back-compat single-structure shape."""
     step = _step(tmp_path, max_structures=3)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
     jobs = {
         "3N40": _job_for("3N40", exposed=[100, 101, 102], buried=[], residues=[100, 101, 102]),
         "2XFB": _job_for("2XFB", exposed=[200, 201], buried=[202], residues=[200, 201, 202]),
@@ -829,7 +780,6 @@ def test_step_per_structure_failure_skips_and_continues(tmp_path, monkeypatch):
     """A per-structure container failure DEGRADES LOUD (named, available=False in
     analyzed_structures) and the rest still aggregate — never strands the run."""
     step = _step(tmp_path, max_structures=3)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
     jobs = {
         "3N40": _job_for("3N40", exposed=[100, 101], buried=[], residues=[100, 101]),
         "6NK7": _job_for("6NK7", exposed=[300], buried=[301], residues=[300, 301]),
@@ -860,7 +810,6 @@ def test_step_per_structure_failure_skips_and_continues(tmp_path, monkeypatch):
 def test_step_all_structures_fail_degrades_loud(tmp_path, monkeypatch):
     """All top-N fail -> the existing unavailable degrade, naming each per-structure failure."""
     step = _step(tmp_path, max_structures=2)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
 
     async def _boom(self, pdb_id, regions):
         raise RuntimeError(f"boom-{pdb_id}")
@@ -881,7 +830,6 @@ def test_step_n1_reproduces_single_structure(tmp_path, monkeypatch):
     """N=1 (max_structures=1) reproduces the single-structure path: only the primary is
     analysed, exposed_residues are the primary's, and corroboration is 1/1."""
     step = _step(tmp_path, max_structures=1)
-    monkeypatch.setattr(mod, "_docker_unavailable_reason", lambda image: None)
     jobs = {"3N40": _job_for("3N40", exposed=[100, 101], buried=[102], residues=[100, 101, 102])}
 
     seen: list[str] = []
@@ -977,13 +925,16 @@ def test_ranking_no_signal_falls_back_to_search_rank():
 def test_step_selects_surface_structure_not_first_by_rank(tmp_path, monkeypatch):
     """END-OF-STAGE proof (docker stubbed unavailable so it degrades but still records the
     chosen structure): the step picks the E1/E2 envelope record, NOT the rank-0 capsid."""
+    from nanobrain.library.runtime.docker_image_builder import DockerImageBuildError
+
     step = _step(tmp_path)
+
+    async def _raise(self, **k):
+        raise DockerImageBuildError("apecx-pymol:3.1.0 image is not built")
+
     monkeypatch.setattr(
-        mod,
-        "_docker_unavailable_reason",
-        lambda image: (
-            "Docker is up but the apecx-pymol:3.1.0 image is not built — run `apecx-setup pymol`"
-        ),
+        "apecx_integration.composition.steps.pymol_sasa_tool.PyMOLToolBackendAdapter.ensure_image",
+        _raise,
     )
     bundle = _bundle(
         structural_records=_chikv_corpus(),
