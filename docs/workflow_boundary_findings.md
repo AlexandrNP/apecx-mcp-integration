@@ -48,8 +48,12 @@ Dump: `/tmp/wf_boundary_influenza.json`.
    offloaded via `await asyncio.to_thread(...)` at structural_reasoning_step.py:457 (matches the in-file
    pattern). Verified: 50 unit tests + a real-Docker bogus-image parity test (absent→pull→fail→False) +
    e2e influenza SASA still runs (C6=False, no regression). Pull-SUCCESS branch parity = TODO T-2026-06-26-01.
-5. **PubMed leg (#5).** context_assembly carries `publications`; confirm the count (Globus index UUID
-   globus_search/client.py:32 may be stale/unpopulated) + log Globus-vs-direct separately.
+5. ✅ **FIXED (review-gate PASS-WITH-NOTES) — PubMed leg (#5).** Root cause: `extract_virus_names` matched
+   only alias-table + spaced `<X> virus` phrases, so single-token suffix names (norovirus/ebolavirus/
+   rotavirus) extracted to [] → `build_focused_term` fell back to the raw verbose query → PubMed eSearch
+   ANDs every token → 0 hits. Added `_VIRUS_SUFFIX_RE` (one-word `<X>virus`) + a denylist (antivirus,
+   provirus). Verified: norovirus/ebolavirus/rotavirus now extract; chikungunya/SARS unchanged; 27 resolver
+   tests (3 new + a suffix-RE safety pin). e2e (norovirus → PubMed>0) IN FLIGHT — confirm next iteration.
 6. **Nanobrain log flood (server hygiene).** ~95 MB/min of INFO/DEBUG ("BRUTAL TRUTH" logs) at default level —
    floods the server log, slows the run. Reduce the default verbosity.
 7. **Broken harmonized_index_search subworkflow links** — workflow-graph warnings ("search_in/out not found,

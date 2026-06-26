@@ -63,3 +63,33 @@ def test_no_virus_name_extracts_nothing():
     assert tr.extract_virus_names("envelope glycoprotein structure") == []
     assert tr.extract_virus_names("") == []
     assert tr.extract_virus_names("   ") == []
+
+
+def test_extract_single_token_suffix_virus_names():
+    """#5 regression: one-word "<X>virus" names (no space before "virus") are extracted. The phrase
+    RE needs a space, so before this they returned [] → the PubMed branch fell back to the raw
+    verbose query (ANDing every token) → 0 hits even when thousands of real papers exist."""
+    assert tr.extract_virus_names("norovirus capsid epitopes") == ["norovirus"]
+    assert tr.extract_virus_names("ebolavirus glycoprotein") == ["ebolavirus"]
+    assert tr.extract_virus_names("rotavirus VP7 antigenic sites") == ["rotavirus"]
+
+
+def test_suffix_virus_denylist_excludes_non_organisms():
+    """`antivirus` is software and `provirus` is a genomic state — neither is an organism, so neither
+    is extracted as a virus candidate."""
+    assert tr.extract_virus_names("antivirus drug resistance") == []
+    assert tr.extract_virus_names("provirus integration site") == []
+
+
+def test_standalone_virus_token_does_not_match_suffix_re():
+    """Safety property: the suffix RE requires a real prefix before "virus", so the bare tokens
+    "virus"/"viruses" never match IT (pins against a future regex loosening). A spaced "<x> virus"
+    phrase is still matched by the separate phrase RE — that is intended, out of scope here."""
+    assert tr._VIRUS_SUFFIX_RE.findall("a virus and many viruses") == []
+    assert tr.extract_virus_names("viruses in general") == []
+
+
+def test_suffix_form_does_not_double_add_spaced_phrase():
+    """A spaced "<X> virus" phrase stays a single candidate — the suffix RE must not also fire on
+    the standalone "virus" token next to it."""
+    assert tr.extract_virus_names("chikungunya virus E1") == ["Chikungunya virus"]

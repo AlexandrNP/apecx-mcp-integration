@@ -78,14 +78,22 @@ _VIRUS_PHRASE_RE = re.compile(
     r"\b([a-z][a-z0-9'-]*(?:\s+[a-z][a-z0-9'-]*){0,3})\s+virus(?:es)?\b",
     re.IGNORECASE,
 )
+# Single-token suffix-form names (norovirus, ebolavirus, rotavirus, …). The phrase RE above needs a
+# SPACE before "virus", so it MISSES a one-word "<X>virus" name → extraction returns [] → the PubMed
+# branch falls back to the raw verbose query and ANDs every token → 0 hits. Match the suffix form too.
+_VIRUS_SUFFIX_RE = re.compile(r"\b([a-z][a-z0-9'-]*virus)\b", re.IGNORECASE)
+# Suffix-form words that are NOT organism names: "antivirus" (software), "provirus" (a genomic
+# state — an integrated viral genome, not a taxon).
+_VIRUS_SUFFIX_DENYLIST = {"antivirus", "provirus"}
 
 
 def extract_virus_names(query: str) -> list[str]:
     """Pull candidate virus name(s) from free query text, most-specific first.
 
     Returns canonical scientific spellings (from the alias table) followed by any generic
-    ``"<X> virus"`` phrases, de-duplicated case-insensitively in priority order. The caller
-    resolves them (via ``build_resolution_plan``) and uses the first that resolves to a taxon.
+    ``"<X> virus"`` phrases and one-word suffix-form names (``norovirus``), de-duplicated
+    case-insensitively in priority order. The caller resolves them (via ``build_resolution_plan``)
+    and uses the first that resolves to a taxon.
     """
     if not isinstance(query, str) or not query.strip():
         return []
@@ -104,6 +112,10 @@ def extract_virus_names(query: str) -> list[str]:
             _add(canonical)
     for match in _VIRUS_PHRASE_RE.finditer(query):
         _add(f"{match.group(1).strip()} virus")
+    for match in _VIRUS_SUFFIX_RE.finditer(query):
+        name = match.group(1).strip()
+        if name.lower() not in _VIRUS_SUFFIX_DENYLIST:
+            _add(name)
     return out
 
 
