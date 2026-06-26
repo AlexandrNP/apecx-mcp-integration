@@ -200,38 +200,62 @@ env-var-driven and was reproduced end-to-end on non-default ports.
 
 ### Minimal bring-up (verified)
 
-```bash
-# 1. Control plane on 8000. SQLite state — no Docker/Postgres needed.
-#    APECX_CP_DB_URL must be a SYNC sqlite URL (sqlite:///…), NOT sqlite+aiosqlite:// —
-#    the alembic migration uses the sync driver; the runtime converts to async itself.
-APECX_CP_DB_URL="sqlite:////var/lib/apecx/cp.db" \
-  apecx-cp serve --host 127.0.0.1 --port 8000 &
-curl -s http://127.0.0.1:8000/healthz          # -> {"status":"ok","phase":"scaffold"}
+Ports + hosts come from the config file (next section); the defaults already give MCP `8001` +
+control plane `8000`, so the bare command works:
 
-# 2. MCP server over HTTP on a DISTINCT port, headless synthesis (agent locus),
-#    pointed at the control plane you just started.
-APECX_CONTROL_PLANE_URL=http://127.0.0.1:8000 \
-  apecx-mcp --transport streamable-http --host 0.0.0.0 --port 8001 --locus agent
-# -> "Control Plane at http://127.0.0.1:8000 reachable" ; "execution_locus=agent" ;
-#    "Uvicorn running on http://0.0.0.0:8001"  — MCP endpoint at http://<host>:8001/mcp
+```bash
+# One command: apecx-mcp reads ~/.apecx/config.yml, AUTOSTARTS the control plane on
+# control_plane.port (8000, SQLite — no Docker/Postgres), and serves /mcp on mcp.port (8001).
+# Agent locus = headless synthesis (the apecx LLM answers; omit for desktop-host synthesis).
+apecx-mcp --transport streamable-http --locus agent
+# -> "autostart succeeded — backend at http://127.0.0.1:8000" ; "execution_locus=agent" ;
+#    "Uvicorn running on http://127.0.0.1:8001"  — MCP endpoint at http://<host>:8001/mcp
 ```
 
-Use `--host 0.0.0.0` to accept remote connections (`127.0.0.1` is local-only). Point your MCP
-client at `http://<host>:8001/mcp`. For ChatGPT specifically, `apecx-setup chatgpt` writes the
-matching config.
+Set `mcp.host: 0.0.0.0` in the config (or `--host 0.0.0.0`) to accept remote connections
+(`127.0.0.1` is local-only). Point your MCP client at `http://<host>:8001/mcp`; for ChatGPT,
+`apecx-setup chatgpt` prints the connector steps. To run the control plane **separately** (or
+remote), start `apecx-cp serve --host <h> --port <p>` matching `control_plane` in the config and set
+`APECX_MCP_AUTOSTART_BACKEND=0`. (`apecx-cp` takes a **sync** `APECX_CP_DB_URL=sqlite:///…`, never
+`sqlite+aiosqlite://` — the alembic migration uses the sync driver.)
 
-### Non-default ports — the knobs
+### Configuring ports & hosts (the network config)
 
-| What | Flag | Env var | Default |
+All apecx ports + hosts come from ONE YAML file — there are **no env vars** for them. Precedence is
+**CLI flag > config file > built-in default**.
+
+```bash
+mkdir -p ~/.apecx
+cp "$(python -c 'import apecx_integration, pathlib as p; print(p.Path(apecx_integration.__file__).parent / "_configs/config.yml.example")')" ~/.apecx/config.yml
+$EDITOR ~/.apecx/config.yml
+```
+
+```yaml
+# ~/.apecx/config.yml — override only what you need; omitted keys use the defaults shown.
+mcp:           { host: 127.0.0.1, port: 8001 }   # the HTTP MCP server (0.0.0.0 = accept remote)
+control_plane: { host: 127.0.0.1, port: 8000 }   # the run-store backend apecx-mcp autostarts
+rhea:          { host: localhost,  port: 3001 }   # the Rhea MCP worker (exported as $RHEA_MCP_URL)
+backends:      { postgres_port: 5435, redis_port: 6379, minio_port: 9000,
+                 minio_console_port: 9001, ollama_port: 11434 }   # deploy/ container host ports
+```
+
+| Setting | Config key | Default | CLI override |
 |---|---|---|---|
-| MCP HTTP bind host | `--host` | `APECX_MCP_HOST` | FastMCP default (`127.0.0.1`) |
-| MCP HTTP port | `--port` | `APECX_MCP_PORT` | `8001` (distinct from the control plane) |
-| Control-plane host / port | `--host` / `--port` | — | `8000` |
-| Control-plane URL the MCP server checks | — | `APECX_CONTROL_PLANE_URL` | `http://localhost:8000` |
-| Rhea MCP probe | — | `RHEA_MCP_URL` | `http://localhost:3001/mcp/` |
+| MCP HTTP host / port | `mcp.host` / `mcp.port` | `127.0.0.1` / `8001` | `apecx-mcp --host` / `--port` |
+| Control plane host / port | `control_plane.host` / `control_plane.port` | `127.0.0.1` / `8000` | — |
+| Rhea worker host / port | `rhea.host` / `rhea.port` | `localhost` / `3001` | — |
+| Container backend ports | `backends.*` | 5435 / 6379 / 9000 / 9001 / 11434 | — (deploy only) |
 
-Whenever you move the control plane off 8000, set `APECX_CONTROL_PLANE_URL` to match, or the MCP
-server's startup health check won't find it.
+- A **typo or an out-of-range port FAILS LOUD** at startup (pydantic validation) — no silent fallback.
+- The **MCP port must differ from the control-plane port** (both loopback by default); an explicit
+  collision is rejected *before* the boot with an actionable message.
+- Point apecx at a different file with `apecx-mcp --config <path>` or `$APECX_CONFIG`
+  (the only env var in play — a path, not a port).
+- In the **server deploy** (`deploy/`), `deploy/config.yml` is the same source: `install-server.sh`
+  reads it and generates the container port env (`deploy/.env.network`) that docker-compose
+  interpolates, while `apecx-mcp` reads the config directly. One edit moves the publish + the
+  consumers together. The backend **bind host stays `127.0.0.1`** by design (unauthenticated
+  services → loopback only; the nginx `:443` proxy is the sole ingress).
 
 ### Headless synthesis (the `agent` locus) + the backend LLM
 
