@@ -72,9 +72,12 @@ Dump: `/tmp/wf_boundary_influenza.json`.
 - **RHEA leg (chikungunya/E1): "ValueError: RHEA conserved-sites subworkflow produced no workflow_output".** RHEA
   is reachable (the subworkflow runs) but its backend produces no output → the apecx leg degrades-loud
   (additive, correct). This is RHEA bring-up/infra (out of scope), NOT an apecx code bug.
-- **rag_synthesis_step desktop-omit (#4 follow-up).** The other final_synthesis step; review-gate flagged it
-  still runs the LLM in desktop. Investigate whether the #4 desktop-omit applies (it may lack the deterministic
-  floor EvidenceReviewSynthesisStep has — the divergence may be intentional).
+- ✅ **FIXED (review-gate PASS) — rag_synthesis_step desktop-omit (#4 follow-up).** It HAS a deterministic
+  floor (render_rag_evidence_fallback), so the #4 pattern applied cleanly: desktop skips the local LLM →
+  host-synthesis floor; agent keeps try-synthesize-then-degrade. Reconciled the stale 2026-06-15 comment.
+  10 step tests (2 new: desktop-skip-proven + agent-degrade) + 99-test rag/synthesis sweep green. (Residual,
+  cosmetic per review: the host note's "Nothing is lost" slightly oversells on an empty desktop retrieval —
+  left for #4 parity.)
 - **Log flood (#6).** ~95 MB/min nanobrain INFO/DEBUG; server-log hygiene (set nanobrain logger → WARNING).
 
 ## Harness deepening (next)

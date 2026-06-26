@@ -116,7 +116,9 @@ _SOURCE_RENDERERS: tuple[tuple[str, str, Any], ...] = (
 )
 
 
-def render_rag_evidence_fallback(query: str, bundle: dict[str, Any], reason: str = "") -> str:
+def render_rag_evidence_fallback(
+    query: str, bundle: dict[str, Any], reason: str = "", *, host_synthesizes: bool = False
+) -> str:
     """DETERMINISTIC report body when LLM synthesis cannot run (no reachable LLM, or a synth-gate
     failure) — degrade-loud, NOT a 'host writes it' scaffold.
 
@@ -127,12 +129,24 @@ def render_rag_evidence_fallback(query: str, bundle: dict[str, Any], reason: str
     so explicitly (loud, never an empty answer)."""
     q = " ".join(str(query or "").split())
     why = f" ({reason})" if reason else ""
+    if host_synthesizes:
+        # Desktop locus: the connected assistant (host LLM) writes the narrative from the evidence
+        # below — a clean hand-off, NOT a failure. The server still returns the full grounded body.
+        answer_note = (
+            "> **The connected assistant synthesizes the narrative** from the retrieved evidence "
+            "below — the server returns the full grounded evidence (every citable record, grouped "
+            "by source) and defers the written answer to the host LLM. Nothing is lost."
+        )
+    else:
+        answer_note = (
+            f"> **Narrative synthesis was not run{why}** — the retrieved evidence for the question "
+            "is enumerated below, grouped by source, with citable identifiers. Treat this as the "
+            "grounded answer material; re-run with a reachable LLM for a written narrative."
+        )
     lines = [
         "# Answer",
         "",
-        f"> **Narrative synthesis was not run{why}** — the retrieved evidence for the question "
-        "is enumerated below, grouped by source, with citable identifiers. Treat this as the "
-        "grounded answer material; re-run with a reachable LLM for a written narrative.",
+        answer_note,
         "",
         f"> Question: **{q}**",
         "",
@@ -332,29 +346,41 @@ class RagSynthesisStep(BaseStep):
             "globus_results": input_data.get("globus_results") or [],
         }
 
-        # The SERVER ALWAYS writes the report (the desktop 'defer to the host' scaffold was
-        # removed 2026-06-15 — it produced no durable artifact and the host LLM discarded it).
-        # Synthesize with the configured LLM; on no reachable LLM / a synth-gate failure, degrade
-        # LOUD to a deterministic rendering of the retrieved evidence (a complete answer body,
-        # never a 'you write it' scaffold). synthesize_response is sync → offload it.
-        self.emit_progress("synthesizing answer (LLM)")
-        try:
-            synthesis = await asyncio.to_thread(
-                synthesize_response,
-                query,
-                config=self._synthesis_config,
-                **kwargs_for_synth,
-            )
-            self.emit_progress("synthesis complete")
-        except Exception as exc:  # noqa: BLE001 — degrade-loud, never strand the retrieved evidence
-            log.warning(
-                "RagSynthesisStep %s: synthesis failed (%s); deterministic evidence fallback.",
-                self.name,
-                exc,
-            )
+        # The SERVER ALWAYS writes the report. In DESKTOP locus the connected host LLM is the
+        # synthesizer (CLAUDE.md "Two operating modes" + LLM_ROLE="final_synthesis"): skip the small
+        # local apecx LLM (it would only ever withhold on the citation gate) and hand the host the
+        # FULL deterministic evidence body — the complete grounded report, NOT the empty
+        # 'defer to the host' scaffold removed 2026-06-15. Agent/headless locus synthesizes with the
+        # configured LLM, degrading LOUD on no reachable LLM / a synth-gate failure.
+        from apecx_integration.composition.runtime.execution_locus import (
+            ExecutionLocus,
+            get_active_locus,
+        )
+
+        if get_active_locus() == ExecutionLocus.DESKTOP:
+            self.emit_progress("composing answer (host synthesizes the narrative)")
             synthesis = render_rag_evidence_fallback(
-                query.strip(), input_data, reason=f"{type(exc).__name__}: {exc}"
+                query.strip(), input_data, host_synthesizes=True
             )
+        else:
+            self.emit_progress("synthesizing answer (LLM)")
+            try:
+                synthesis = await asyncio.to_thread(
+                    synthesize_response,
+                    query,
+                    config=self._synthesis_config,
+                    **kwargs_for_synth,
+                )
+                self.emit_progress("synthesis complete")
+            except Exception as exc:  # noqa: BLE001 — degrade-loud, never strand the retrieved evidence
+                log.warning(
+                    "RagSynthesisStep %s: synthesis failed (%s); deterministic evidence fallback.",
+                    self.name,
+                    exc,
+                )
+                synthesis = render_rag_evidence_fallback(
+                    query.strip(), input_data, reason=f"{type(exc).__name__}: {exc}"
+                )
 
         log.info(
             "RagSynthesisStep %s: produced %d-char synthesis "

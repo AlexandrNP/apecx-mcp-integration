@@ -215,12 +215,44 @@ def test_synthesis_config_typo_caught_at_step_init(tmp_path):
         RagSynthesisStep.from_config(str(wrapper))
 
 
-def test_no_llm_degrades_to_deterministic_evidence_report_not_scaffold(tmp_path, monkeypatch):
-    """The SERVER always writes the report (the desktop 'defer to host' scaffold was removed
-    2026-06-15). When NO LLM is reachable, synthesis degrades LOUD to a deterministic rendering
-    of the retrieved evidence — a complete answer body with the records cited, NOT a 'you write
-    it' scaffold. Works with no apecx LLM configured."""
+_SINDBIS_BUNDLE = {
+    "query": "what is sindbis",
+    "publications": [{"doi": "10.1/x", "title": "T"}],
+    "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
+    "rag_chunks": [{"text": "a chunk about fusion", "source": "corpus"}],
+}
+
+
+def test_desktop_locus_hands_host_the_evidence_floor_without_calling_the_llm(tmp_path, monkeypatch):
+    """DESKTOP locus: the connected host LLM is the synthesizer, so the step does NOT call the local
+    apecx LLM (synthesize_response throws here to PROVE it is never invoked) and hands the host the
+    FULL deterministic evidence body with a host-synthesis header — NOT a 'you write it' scaffold,
+    NOT the failure 'not run' framing. Works with no apecx LLM configured."""
     set_active_locus(ExecutionLocus.DESKTOP)
+    try:
+        import apecx_integration.composition.steps.rag_synthesis_step as mod
+
+        monkeypatch.setattr(
+            mod,
+            "synthesize_response",
+            lambda q, **k: (_ for _ in ()).throw(RuntimeError("LLM must NOT be called in desktop")),
+        )
+        step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
+        md = asyncio.run(step.process(dict(_SINDBIS_BUNDLE)))["synthesis"]
+        assert md.startswith("# Answer")
+        assert "ACTION REQUIRED" not in md  # NOT a scaffold
+        assert "connected assistant synthesizes" in md.lower()  # host-synthesis hand-off
+        assert "not run" not in md.lower()  # NOT the failure-degrade framing
+        assert "10.1/x" in md and "[BV-BRC genome G1]" in md and "[RAG chunk #1]" in md
+    finally:
+        set_active_locus(ExecutionLocus.DESKTOP)
+
+
+def test_agent_locus_no_llm_degrades_loud_to_not_run_floor(tmp_path, monkeypatch):
+    """AGENT/headless locus: the apecx LLM IS the synthesizer; when it is unreachable (throws),
+    synthesis degrades LOUD to the deterministic evidence body with an honest 'not run' header and
+    the records cited — NOT a scaffold, never an empty answer."""
+    set_active_locus(ExecutionLocus.AGENT)
     try:
         import apecx_integration.composition.steps.rag_synthesis_step as mod
 
@@ -230,17 +262,7 @@ def test_no_llm_degrades_to_deterministic_evidence_report_not_scaffold(tmp_path,
             lambda q, **k: (_ for _ in ()).throw(RuntimeError("no LLM reachable")),
         )
         step = RagSynthesisStep.from_config(str(WRAPPER_YAML))
-        out = asyncio.run(
-            step.process(
-                {
-                    "query": "what is sindbis",
-                    "publications": [{"doi": "10.1/x", "title": "T"}],
-                    "bvbrc_genomes": [{"genome_id": "G1", "name": "n"}],
-                    "rag_chunks": [{"text": "a chunk about fusion", "source": "corpus"}],
-                }
-            )
-        )
-        md = out["synthesis"]
+        md = asyncio.run(step.process(dict(_SINDBIS_BUNDLE)))["synthesis"]
         assert md.startswith("# Answer")
         assert "ACTION REQUIRED" not in md  # NOT a scaffold
         assert "Narrative synthesis was not run" in md  # honest deterministic-fallback header
