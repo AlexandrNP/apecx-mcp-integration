@@ -27,6 +27,8 @@ from apecx_integration.mcp_surface.workflow_registry import (
     RegistrationReport,
     WorkflowCatalog,
     WorkflowRequirements,
+    _run_via_run_workflow,
+    _synthesize_tool_function,
     check_prerequisites,
     load_catalog,
     register_workflows,
@@ -255,11 +257,16 @@ def test_register_workflows_happy_path_flows_name_description_schema(
 
     sig = inspect.signature(cap.fn)
     params = sig.parameters
-    assert set(params.keys()) == {"q", "n"}
+    # The schema's properties plus the appended ``ctx`` (FastMCP injects a
+    # desktop Context into it and hides it from the client schema — see
+    # test_synthesized_tool_excludes_ctx_from_client_schema).
+    assert set(params.keys()) == {"q", "n", "ctx"}
     # q is required → no default
     assert params["q"].default is inspect.Parameter.empty
     # n is optional → has the default from JSON-Schema
     assert params["n"].default == 5
+    # ctx is appended last with a None default so it never reaches the client schema.
+    assert params["ctx"].default is None
 
 
 def test_register_workflows_unavailable_appears_in_description_and_runner(
@@ -512,3 +519,106 @@ def test_promote_discovered_skips_a_name_already_an_explicit_entry(tmp_path: Pat
 
     assert report.registered.count("stub_tool") == 1
     assert sum(1 for c in fake.captured if c.name == "stub_tool") == 1
+
+
+# ---------------------------------------------------------------------------
+# Desktop Context injection — the streaming-timeout regression guard
+# ---------------------------------------------------------------------------
+
+
+def test_synthesized_tool_excludes_ctx_from_client_schema(tmp_path: Path) -> None:
+    """A catalog tool registered on a REAL FastMCP server must expose its
+    workflow params in tools/list inputSchema but NOT ``ctx``.
+
+    FastMCP injects a desktop ``Context`` into any Context-typed param and
+    excludes it from the client-facing schema. The synthesized tool function
+    appends ``ctx: Context | None = None`` exactly so FastMCP injects it —
+    which is what routes the catalog tool through per-stage streaming instead
+    of running headless and timing the desktop client out on long workflows.
+
+    The schema alone can't catch a regression that DROPS the ctx param: the
+    inputSchema is byte-identical with or without it (FastMCP would just never
+    inject a Context, and streaming would silently die). So we ALSO assert,
+    via ``inspect.signature(_synthesize_tool_function(...))``, that the ctx
+    parameter IS present in the synthesized signature.
+    """
+    import inspect
+
+    from mcp.server.fastmcp import FastMCP
+
+    catalog = _make_yaml_catalog(tmp_path)  # one explicit entry 'stub_tool', params q + n
+    server = FastMCP("test-ctx-schema")
+    report = register_workflows(server, catalog)
+    assert report.registered == ["stub_tool"]
+
+    tools = asyncio.run(server.list_tools())
+    stub = next(t for t in tools if t.name == "stub_tool")
+    props = stub.inputSchema.get("properties") or {}
+    # Workflow params surface; the injected Context never does.
+    assert "q" in props
+    assert "n" in props
+    assert "ctx" not in props, (
+        "FastMCP must inject the Context and hide it from the client schema; "
+        f"got properties={sorted(props)}"
+    )
+
+    # Regression guard: the synthesized signature MUST carry the ctx param.
+    # If a future change drops it, the schema above is unchanged but FastMCP
+    # stops injecting a Context → streaming silently dies (the timeout bug).
+    async def _noop_runner(_entry, **kwargs):
+        return {}
+
+    entry = catalog.workflows[0]
+    sig = inspect.signature(_synthesize_tool_function(entry, _noop_runner))
+    assert "ctx" in sig.parameters, (
+        "synthesized tool function must declare a ctx param so FastMCP injects "
+        f"the desktop Context; got params={list(sig.parameters)}"
+    )
+
+
+def test_run_via_run_workflow_streams_with_ctx_and_headless_without(tmp_path: Path) -> None:
+    """``_run_via_run_workflow`` routes by the presence of a desktop ctx:
+
+    - ``ctx`` present  → the SAME streaming wrapper the generic run_workflow
+      uses (``_run_workflow_streaming_impl(tool_name, params, ctx)``); headless
+      core NOT called.
+    - ``ctx`` absent   → the headless ``_run_resolved_entry(entry, params)``;
+      streaming wrapper NOT called.
+
+    This pins ONLY the ctx-routing decision. The streaming impl itself is
+    covered by the existing run_workflow streaming tests
+    (test_mcp_stream_client.py). Both patched functions are INTERNAL apecx
+    seams (not external dependencies), so there is no unit-mock/integration
+    parity gap to record here.
+    """
+    from unittest.mock import AsyncMock, patch
+
+    entry = _make_yaml_catalog(tmp_path).workflows[0]  # tool_name == 'stub_tool'
+
+    streaming = AsyncMock(return_value={"markdown": "streamed"})
+    headless = AsyncMock(return_value={"markdown": "headless"})
+    with (
+        patch(
+            "apecx_integration.mcp_surface.tools.eo_primitives._run_workflow_streaming_impl",
+            new=streaming,
+        ),
+        patch(
+            "apecx_integration.mcp_surface.tools.eo_primitives._run_resolved_entry",
+            new=headless,
+        ),
+    ):
+        sentinel = object()  # stands in for the FastMCP-injected desktop Context
+        # Desktop: ctx present → streams.
+        result = asyncio.run(_run_via_run_workflow(entry, ctx=sentinel, q="x"))
+        assert result == {"markdown": "streamed"}
+        streaming.assert_awaited_once_with("stub_tool", {"q": "x"}, sentinel)
+        headless.assert_not_called()
+
+        streaming.reset_mock()
+        headless.reset_mock()
+
+        # Headless: no ctx → resolved-entry core, never the streamer.
+        result = asyncio.run(_run_via_run_workflow(entry, q="x"))
+        assert result == {"markdown": "headless"}
+        headless.assert_awaited_once_with(entry, {"q": "x"})
+        streaming.assert_not_called()

@@ -61,6 +61,7 @@ from textwrap import dedent
 from typing import Annotated, Any, Literal
 
 import yaml
+from mcp.server.fastmcp import Context
 from pydantic import BaseModel, ConfigDict, Field
 
 log = logging.getLogger(__name__)
@@ -575,6 +576,11 @@ def _synthesize_tool_function(
 
     forward_dict = "{" + ", ".join(f"{k!r}: {k}" for k in forward_keys) + "}"
     params_src = ", ".join(param_decls)
+    # FastMCP injects a Context for desktop clients into any Context-typed param and EXCLUDES it
+    # from the client-facing inputSchema (verified). Appending it (with a default) keeps it last —
+    # valid after any required/optional workflow params — so the catalog tool streams per-stage
+    # progress exactly like the generic run_workflow, instead of running headless and timing out.
+    ctx_sep = ", " if params_src else ""
 
     # Triple-quoted docstring carries the catalog description (also
     # passed as description= to FastMCP, but the docstring shows in
@@ -583,9 +589,9 @@ def _synthesize_tool_function(
 
     source = dedent(
         f'''
-        async def {fn_name}({params_src}) -> dict:
+        async def {fn_name}({params_src}{ctx_sep}ctx: Context | None = None) -> dict:
             """{doc_safe}"""
-            return await _runner_bound(**{forward_dict})
+            return await _runner_bound(ctx=ctx, **{forward_dict})
         '''
     ).strip()
 
@@ -594,6 +600,7 @@ def _synthesize_tool_function(
     # but pydantic / inspect resolve them lazily; expose the names.
     exec_globals: dict[str, Any] = {
         "_runner_bound": runner,
+        "Context": Context,
         "Any": Any,
         "dict": dict,
         "list": list,
@@ -668,18 +675,31 @@ def register_workflows(
     return report
 
 
-async def _run_via_run_workflow(entry: WorkflowCatalogEntry, **kwargs: Any) -> dict[str, Any]:
+async def _run_via_run_workflow(
+    entry: WorkflowCatalogEntry, *, ctx: Context | None = None, **kwargs: Any
+) -> dict[str, Any]:
     """The SINGLE workflow-tool runner: the shared guarded execution core.
 
-    Calls ``eo_primitives._run_resolved_entry`` with the entry ALREADY in hand (the registry
-    resolved it) — the same core ``run_workflow`` reaches after name-resolution, so a direct
-    first-class tool and ``run_workflow(name, …)`` are identical (full guard stack: requires_llm,
-    param-gap, G127 output-value check, run-store, provenance). No per-call catalog re-parse.
-    ``None``-valued optional params are dropped so an unset optional never reaches the workflow
-    as an explicit ``None``."""
+    Headless (``ctx is None``): calls ``eo_primitives._run_resolved_entry`` with the entry ALREADY
+    in hand (the registry resolved it) — the same core ``run_workflow`` reaches after
+    name-resolution, so a direct first-class tool and ``run_workflow(name, …)`` are identical (full
+    guard stack: requires_llm, param-gap, G127 output-value check, run-store, provenance). No
+    per-call catalog re-parse. ``None``-valued optional params are dropped so an unset optional
+    never reaches the workflow as an explicit ``None``.
+
+    Desktop (``ctx`` injected by FastMCP): routes through the SAME streaming wrapper the generic
+    ``run_workflow`` uses, so each catalog workflow streams per-stage progress + keepalive
+    heartbeats instead of running headless and timing out the client. The wrapper re-resolves by
+    ``entry.tool_name`` and reaches the identical ``_run_resolved_entry`` core."""
     from apecx_integration.mcp_surface.tools.eo_primitives import _run_resolved_entry
 
     params = {k: v for k, v in kwargs.items() if v is not None}
+    if ctx is not None:
+        from apecx_integration.mcp_surface.tools.eo_primitives import (
+            _run_workflow_streaming_impl,
+        )
+
+        return await _run_workflow_streaming_impl(entry.tool_name, params, ctx)
     return await _run_resolved_entry(entry, params)
 
 
