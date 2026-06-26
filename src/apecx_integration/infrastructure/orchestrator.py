@@ -53,6 +53,7 @@ import subprocess
 import threading
 import time
 from typing import Any
+from urllib.parse import urlparse
 
 from apecx_integration.infrastructure.backends import (
     BackendRuntime,
@@ -301,10 +302,16 @@ def _compose_rhea_env(
     if not embedding_url.rstrip("/").endswith("/v1"):
         embedding_url = embedding_url.rstrip("/") + "/v1"
     embedding_model = os.environ.get(_RHEA_EMBEDDING_MODEL_ENV, "mxbai-embed-large")
+    # Rhea's serve port follows $RHEA_MCP_URL (which apecx-mcp derives from the config's rhea.host/
+    # port), so the spawned server listens where the probe + workflow consumers expect it. Defaults
+    # to 3001 — the common path is unchanged. The container variant overrides HOST to 0.0.0.0.
+    rhea_serve_port = (
+        urlparse(os.environ.get(_RHEA_MCP_URL_ENV, "http://localhost:3001/mcp/")).port or 3001
+    )
     return {
         # Server bind (Rhea's own MCP host:port — not the upstream MCP URL).
         "HOST": "localhost",
-        "PORT": "3001",
+        "PORT": str(rhea_serve_port),
         # DB / object store / cache.
         "DATABASE_URL": database_url,
         "REDIS_HOST": infra_host,

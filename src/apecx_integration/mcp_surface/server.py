@@ -970,8 +970,10 @@ Environment variables (honored at startup):
   APECX_MCP_WORKFLOW_CATALOG   Override the packaged catalog of MCP-
                                exposed workflows. Path to YAML.
 
-  RHEA_MCP_URL                 Where the Rhea MCP probe connects.
-                               Default: http://localhost:3001/mcp/
+  RHEA_MCP_URL                 Where the Rhea MCP probe connects. DERIVED
+                               from the config's rhea.host/port at startup
+                               and exported for the Rhea machinery — set
+                               rhea.host/port in the config, not this var.
 
   RHEA_REPO_PATH, RHEA_PYTHON_PATH, RHEA_CONDA_BIN, RHEA_CONDA_ENVS_DIR
                                Required (and orchestrator-set) for
@@ -1177,6 +1179,11 @@ def main(argv: list[str] | None = None) -> None:
     # source. A malformed config / unknown key FAILS LOUD here, before the boot.
     network_config = load_network_config(args.config)
     set_network_config(network_config)
+
+    # Rhea is wired through the load-bearing $RHEA_MCP_URL interface (RheaAdapter.from_env, the
+    # workflow-YAML ${RHEA_MCP_URL} interpolation, the infra probe). Make the config the SOURCE by
+    # deriving + exporting it here — operators set rhea.host/port in the config, not this env var.
+    os.environ["RHEA_MCP_URL"] = network_config.rhea_mcp_url
 
     # E4-1a — durable HITL design approvals by default for the long-lived server: persist
     # issued/approved tokens so they survive a restart. Done in the entry point (NOT

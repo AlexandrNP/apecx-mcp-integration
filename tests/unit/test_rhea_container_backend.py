@@ -110,6 +110,21 @@ def test_container_env_container_specific_overrides(
     assert "RHEA_CONDA_ENVS_DIR" not in env
 
 
+def test_rhea_serve_port_follows_rhea_mcp_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The spawned Rhea server's PORT follows $RHEA_MCP_URL (which apecx-mcp derives from the
+    config's rhea.host/port), so a non-default rhea port keeps the server + the probe in sync."""
+    monkeypatch.setenv("RHEA_MCP_URL", "http://localhost:3009/mcp/")
+    env = dict(_rhea_spec(monkeypatch, "container").container.env)
+    assert env["PORT"] == "3009"
+
+
+def test_rhea_serve_port_defaults_to_3001(monkeypatch: pytest.MonkeyPatch) -> None:
+    """With no $RHEA_MCP_URL the spawned server keeps the 3001 default (common path unchanged)."""
+    monkeypatch.delenv("RHEA_MCP_URL", raising=False)
+    env = dict(_rhea_spec(monkeypatch, "container").container.env)
+    assert env["PORT"] == "3001"
+
+
 def test_container_run_args_matches_verified_command(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
