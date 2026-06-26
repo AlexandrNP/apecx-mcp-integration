@@ -130,3 +130,36 @@ def get_network_config() -> NetworkConfig:
     if _active is None:
         _active = load_network_config()
     return _active
+
+
+def deploy_env_lines(config: NetworkConfig) -> list[str]:
+    """The deploy-stack env lines docker compose interpolates, derived from the config.
+
+    ``install-server.sh`` writes these to ``deploy/.env.network`` and passes that file to both
+    ``docker compose --env-file`` and the host ``run-mcp.sh`` wrapper, so the config file is the
+    SINGLE source for the backend host-ports (compose interpolates env, not YAML)."""
+    b = config.backends
+    return [
+        f"POSTGRES_HOST_PORT={b.postgres_port}",
+        f"REDIS_HOST_PORT={b.redis_port}",
+        f"MINIO_HOST_PORT={b.minio_port}",
+        f"MINIO_CONSOLE_HOST_PORT={b.minio_console_port}",
+        f"OLLAMA_HOST_PORT={b.ollama_port}",
+        f"RHEA_HOST_PORT={config.rhea.port}",
+        f"APECX_LLM_BASE_URL=http://localhost:{b.ollama_port}/v1",
+    ]
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Emit deploy-stack env from the network config.")
+    parser.add_argument(
+        "--emit-deploy-env", action="store_true", help="print the deploy/.env.network lines"
+    )
+    parser.add_argument("path", nargs="?", help="config file path (default: resolve_config_path)")
+    args = parser.parse_args()
+
+    if args.emit_deploy_env:
+        for line in deploy_env_lines(load_network_config(args.path)):
+            print(line)
