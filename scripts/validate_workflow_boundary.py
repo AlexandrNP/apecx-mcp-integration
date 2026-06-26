@@ -116,7 +116,11 @@ def assess(ctx: RecordingCtx, result: dict) -> dict:
             re.search(r"no pubmed|0 (pubmed|literature|publication|record)", md_l)
         ),
         "C6_structural_unavailable_flag": bool(
-            re.search(r"sasa.*not available|not available.*docker|without docker", md_l)
+            re.search(
+                r"structural analysis is unavailable|image is not built|"
+                r"sasa.*not available|without docker",
+                md_l,
+            )
         ),
         "result_keys": sorted(result.keys()),
         "stage_names": [log["data"].get("stage") for log in stage_logs],

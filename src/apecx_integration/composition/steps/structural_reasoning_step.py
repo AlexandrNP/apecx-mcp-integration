@@ -454,15 +454,15 @@ class StructuralReasoningStep(BaseStep):
                 "note": note,
             }, note
 
-        # Offloaded: _docker_available may `docker pull` the image (up to its timeout) on first use;
-        # a blocking call here would freeze the event loop (and the server) — to_thread keeps it off.
-        if not await asyncio.to_thread(_docker_available, self._image):
+        # Probe Docker + the LOCALLY-BUILT PyMOL image off the event loop (the docker calls are
+        # sync). The reason is SPECIFIC (daemon-down vs image-not-built) so the note never
+        # misleadingly says "docker missing" when Docker is actually up.
+        unavailable = await asyncio.to_thread(_docker_unavailable_reason, self._image)
+        if unavailable is not None:
             note = (
-                f"Containerized PyMOL image {self._image!r} is not available "
-                "(docker missing or image not built): NO per-residue SASA was computed — "
-                "the evidence review continues with LLM-only structural reasoning (no "
-                "quantitative solvent-accessibility ranking). Run `apecx-setup pymol` "
-                "(needs Docker) to enable the real structural-analysis stage."
+                f"Containerized PyMOL structural analysis is unavailable: {unavailable}. NO "
+                "per-residue SASA was computed — the evidence review continues with LLM-only "
+                "structural reasoning (no quantitative solvent-accessibility ranking)."
             )
             return {
                 "available": False,
@@ -807,33 +807,36 @@ class StructuralReasoningStep(BaseStep):
 # ----------------------------------------------------------------------- helpers
 
 
-def _docker_available(image: str) -> bool:
-    """True when the docker CLI is on PATH and the pinned image is runnable — present locally, or
-    pulled once on first use.
+def _docker_unavailable_reason(image: str) -> str | None:
+    """``None`` when the containerized PyMOL image is runnable; otherwise a SPECIFIC reason.
 
-    The old probe used ``docker image inspect`` ALONE → it false-negatived when the Docker daemon
-    was up but the image had not been pulled (the user's "Docker is up but SASA not available").
-    We now pull the image once if it is absent, so SASA runs whenever Docker is actually up — not
-    only when someone pre-pulled the image. A daemon-down ``docker pull`` fails fast (cannot connect
-    to the daemon), so the generous pull timeout only ever applies to a genuine image fetch. The
-    pull happens HERE rather than letting ``docker run`` fetch lazily, so a slow first pull cannot
-    eat the SASA container's own ``self._timeout`` budget.
+    Distinguishes a down daemon from an unbuilt image so the degrade note is not misleading — the
+    user's actual #3 report was "Docker is up and running" yet the note said "docker missing". The
+    pinned ``apecx-pymol`` image is built LOCALLY (``apecx-setup pymol`` / ``docker build``), NOT
+    pulled from a registry, so an absent image means "not built", never "not pulled" — a ``docker
+    pull`` would just 404 (an earlier fix wrongly pulled here). The probe is sync; the caller runs
+    it via ``asyncio.to_thread`` so the (up to 30s) docker calls never block the event loop.
     """
     if shutil.which("docker") is None:
-        return False
+        return "the docker CLI is not on PATH — install Docker, then run `apecx-setup pymol`"
     try:
         import subprocess
 
+        ver = subprocess.run(
+            ["docker", "version", "--format", "{{.Server.Version}}"],
+            capture_output=True,
+            timeout=15,
+        )
+        if ver.returncode != 0 or not ver.stdout.strip():
+            return "the Docker daemon is not running — start Docker, then run `apecx-setup pymol`"
         present = subprocess.run(
             ["docker", "image", "inspect", image], capture_output=True, timeout=15
         )
-        if present.returncode == 0:
-            return True
-        log.info("PyMOL image %s absent locally; pulling once (daemon-down pull fails fast)", image)
-        pull = subprocess.run(["docker", "pull", image], capture_output=True, timeout=600)
-        return pull.returncode == 0
-    except Exception:  # noqa: BLE001
-        return False
+        if present.returncode != 0:
+            return f"Docker is up but the {image} image is not built — run `apecx-setup pymol`"
+        return None
+    except Exception as exc:  # noqa: BLE001 — any probe failure → degrade-loud with the cause
+        return f"the Docker probe failed ({type(exc).__name__}: {exc})"
 
 
 def _fetch_au_cif(pdb_id: str) -> Path:

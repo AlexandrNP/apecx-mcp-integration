@@ -26,16 +26,6 @@ steady state.
 > design — the render is additive/best-effort and the SASA correctness path is
 > already covered.
 
-> **T-2026-06-26-01** (`tests/unit/test_structural_reasoning_step.py::test_docker_available_pulls_when_image_absent_but_daemon_up`)
-> — The #3 probe fix's absent→pull→SUCCESS branch (`_docker_available` issues `docker pull` when
-> the image is absent and returns True on a 0 exit) is verified ONLY by a monkeypatched
-> `subprocess.run` unit test. The absent→pull→FAIL branch now HAS real-Docker parity
-> (`test_structural_reasoning_pymol.py::test_docker_available_false_for_unpullable_image_real_docker`),
-> but the SUCCESS branch has none — a real test needs a controlled `docker rmi <pinned> && pull`
-> that would churn the dev Docker cache (the pinned PyMOL image is large). Needed: a gated test
-> that pulls a TINY throwaway image (e.g. `hello-world`) from a clean state and asserts True.
-> Scope: ~8 lines, gated on the docker daemon being up.
-
 ---
 
 ### CLOSED: T-2026-04-23-03 — PubMed real API integration (closed 2026-05-04)

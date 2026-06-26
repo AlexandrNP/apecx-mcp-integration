@@ -67,14 +67,18 @@ _DOCKER_GATE = pytest.mark.skipif(shutil.which("docker") is None, reason="requir
 
 
 @_DOCKER_GATE
-def test_docker_available_false_for_unpullable_image_real_docker():
-    """Real-Docker parity for the #3 fix's absent->pull->fail branch: an image that exists in no
-    registry → inspect fails → pull fails → False (honest degrade). Non-destructive — never touches
-    the pinned image. The absent->pull->SUCCESS branch is recorded in tests/integration/TODO.md (it
-    needs a controlled rmi+pull dance that would pollute the dev Docker cache)."""
-    from apecx_integration.composition.steps.structural_reasoning_step import _docker_available
+def test_docker_unavailable_reason_for_unbuilt_image_real_docker():
+    """Real-Docker parity for the #3 fix: a bogus image that was never built → inspect fails → a
+    SPECIFIC non-None reason (honest degrade). Non-destructive — never touches the pinned image and
+    never pulls (the apecx-pymol image is built locally, not pulled)."""
+    from apecx_integration.composition.steps.structural_reasoning_step import (
+        _docker_unavailable_reason,
+    )
 
-    assert _docker_available("apecx-nonexistent-bogus-xyz:doesnotexist") is False
+    reason = _docker_unavailable_reason("apecx-nonexistent-bogus-xyz:doesnotexist")
+    # Docker is up in this env but the bogus image was never built → the SPECIFIC not-built reason
+    # (the user's #3 case), end-to-end against the real docker CLI — not just non-None.
+    assert reason is not None and "not built" in reason, reason
 
 
 def _step():

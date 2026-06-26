@@ -42,12 +42,16 @@ Dump: `/tmp/wf_boundary_influenza.json`.
    (data.json would duplicate the tool_outputs). Verified e2e: real chikungunya/E1 result carries 19 artifacts
    (figure/report/structured_data/tool_output), 14 with embedded text. (residual: 64KB cap kept a local —
    single-use, not promoted to a configurable constant; f.stat() outside the inner try is benign per review.)
-4. ✅ **FIXED (review-gate FAIL→addressed) — Docker probe false-negative (#3).** `_docker_available` kept the
-   image-present fast path but now `docker pull`s the image once if absent (so SASA runs whenever Docker is
-   up, not only when pre-pulled). review-gate caught a real bug: the 600s pull ran on the asyncio loop →
-   offloaded via `await asyncio.to_thread(...)` at structural_reasoning_step.py:457 (matches the in-file
-   pattern). Verified: 50 unit tests + a real-Docker bogus-image parity test (absent→pull→fail→False) +
-   e2e influenza SASA still runs (C6=False, no regression). Pull-SUCCESS branch parity = TODO T-2026-06-26-01.
+4. ✅ **FIXED (2 commits — the cumulative run caught a MISDIAGNOSIS) — Docker probe / SASA message (#3).**
+   FIRST cut (`ebbfdfa`) added a `docker pull` on absent + offloaded it via `to_thread` (review-gate caught
+   the 600s-on-event-loop bug). But the cumulative validation revealed the pull was FUTILE: `apecx-pymol:3.1.0`
+   is built LOCALLY (`apecx-setup pymol`), NOT in a registry → `docker pull` always 404s, and the note still
+   said "(docker missing or image not built)" which is MISLEADING when Docker is up — the user's ACTUAL #3
+   complaint ("Docker is up, system is fucked up"). SECOND cut: `_docker_available`→`_docker_unavailable_reason`
+   (None|specific reason), pull REMOVED, note now distinguishes daemon-down vs "Docker is up but the image is
+   not built — run apecx-setup pymol". Kept the offload (bounded ~30s now). 51 unit + real-Docker parity
+   (asserts "not built") + C6 regex updated; review-gate PASS. Lesson: a registry `pull` can't fix a
+   locally-built image — the fix was the MESSAGE, not the fetch.
 5. ✅ **FIXED (review-gate PASS-WITH-NOTES) — PubMed leg (#5).** Root cause: `extract_virus_names` matched
    only alias-table + spaced `<X> virus` phrases, so single-token suffix names (norovirus/ebolavirus/
    rotavirus) extracted to [] → `build_focused_term` fell back to the raw verbose query → PubMed eSearch
