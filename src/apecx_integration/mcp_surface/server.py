@@ -1019,9 +1019,10 @@ def _build_arg_parser():
         prog="apecx-mcp",
         description=(
             "APECX MCP server (stdio transport). Boots the FastMCP "
-            "tool surface (24 tools across workflows / discovery / "
-            "database / canonical entity / synthesis / approvals / "
-            "HPC), runs the Control Plane health check (auto-spawning "
+            "tool surface (15 tools across workflows / discovery / "
+            "database / canonical entity / synthesis / approvals; more "
+            "unlock with the local datasets), runs the Control Plane "
+            "health check (auto-spawning "
             "the backend if needed), boots the infra orchestrator, "
             "and lazy-builds the synonym dictionary on first run. "
             "Configuration is env-var-driven; see the epilog."

@@ -1,10 +1,12 @@
 # apecx-mcp-integration
 
-MCP server for the APECx scientific platform. Exposes **23
-scientist-facing tools** to Claude Desktop (or any MCP client): query
-VIOLIN + BV-BRC + Globus Search databases, compose workflows from
-natural-language descriptions, review diffs, execute locally, export
-to HPC.
+MCP server for the APECx scientific platform. Exposes **15 MCP tools** to
+Claude Desktop (or any MCP client): harmonized multi-source search across
+VIOLIN + BV-BRC + Globus, `run_workflow` to run any of the discoverable
+scientific workflows (viral epitope analysis, sequence conservation, RAG
+synthesis, …), and `compose_workflow` to build a new one from a
+natural-language description. (More tools — the direct DB query tools —
+unlock once you transfer the local datasets; see "Globus data access".)
 
 > **License: MIT.** See [`LICENSE`](LICENSE).
 
@@ -28,6 +30,24 @@ install script on Linux — every command printed before a y/N prompt),
 starts the daemon, pulls the configured model (`nemotron-3-nano:4b` by
 default), and patches `claude_desktop_config.json` with the right paths.
 
+### Required vs optional steps
+
+- ✅ **Required:** `uv tool install` + `apecx-setup`. That's the entire primary
+  path — the synonym dictionary auto-downloads on first launch (no action), and
+  Claude Desktop does the analysis. Nothing below is needed to start.
+- 🔵 **Optional — Ollama** (backend/headless LLM): `apecx-setup` offers to
+  install it. Decline it if Claude Desktop is your analysis LLM (the default);
+  it only powers the *internal*-synthesis path (`run_workflow` in `agent` locus,
+  `synthesize_query`). See [Headless synthesis](#headless-synthesis-the-agent-locus--the-backend-llm).
+- 🔵 **Optional — Globus data transfer** (`apecx-setup data`): only for the local
+  VIOLIN/BV-BRC datasets, which unlock the direct DB query tools. Skip it —
+  harmonized search (anonymous Globus index) covers the primary use cases. See
+  [Globus data access](#globus-data-access-optional--for-violin--bv-brc-datasets).
+- 🔵 **Optional — Docker**: unlocks a few advanced workflows (PyMOL structural
+  SASA, Rhea/MUSCLE tools). Not needed for the primary path.
+- 🔵 **Optional — HTTP / server deployment**: the default is local stdio for
+  Claude Desktop. See [Running as a backend server](#running-as-a-backend-server-http-mcp--control-plane).
+
 **Two LLM roles — don't conflate them.** In the **desktop / MCP** mode you'll
 normally use, **Claude Desktop itself is the analysis & synthesis LLM**: it
 calls the apecx tools, which return deterministic data + scaffolds for it to
@@ -41,8 +61,9 @@ desktop LLM covers the primary analysis path — not because some default
 endpoint exists.
 
 **The synonym dictionary auto-downloads anonymously** on first MCP launch
-(~47 MB compressed, ~30 s on a typical home connection) from a public
-Globus HTTPS path. No credentials, no env vars, no `apecx-globus-setup`
+(~135 MB compressed, expanding to ~735 MB on disk at
+`~/.apecx/dictionary/dictionary.sqlite`; ~20 s on a fast connection) from a
+public Globus HTTPS path. No credentials, no env vars, no `apecx-globus-setup`
 needed for this — it just works.
 
 **Globus authentication is OPTIONAL** and only required when you also want
@@ -60,7 +81,7 @@ If you skip Globus setup, the MCP server and all dictionary-backed
 lookup tools still work; only the domain-data transfer step is unavailable.
 
 After it finishes, **fully quit Claude Desktop** (Cmd-Q on macOS —
-closing the window is not enough) and reopen. The 23 apecx tools
+closing the window is not enough) and reopen. The 15 apecx tools
 appear in the tool picker after 2–5 seconds.
 
 ### Check what your install can do
@@ -150,15 +171,25 @@ to request access; re-run `apecx-setup data` once granted. Full operator guide:
 
 In Claude Desktop after restart, try:
 
-> *Use the apecx tools to find all VIOLIN entries for entity "EEEV".*
+> *Use the apecx tools to find harmonized records for chikungunya virus across
+> the curated databases.*
 
-Claude calls `resolve_entity` to canonicalize, then `query_vaccines`
-/ `query_pathogens` with the canonical name. Other working prompts:
+Claude calls `harmonized_search` — the anonymous public Globus index, no local
+data needed. Other working prompts, all on the primary path:
 
-- *How many genome records by organism?* → `query_bvbrc_genomes`.
-- *Compose a workflow that fetches BV-BRC genomes for VEEV and
-  exports an HPC bundle.* → `start_workflow` → `show_diff` →
-  `execute_workflow` → `export_hpc_bundle`.
+- *Run a viral epitope analysis for influenza.* → `run_workflow` (the
+  `viral_epitope_analysis` workflow: sequence retrieval, MAFFT conservation,
+  literature, a cited report).
+- *What can apecx run right now?* → `list_workflows` / `apecx_capabilities`
+  (runnable-now vs needs-config, with the honest fallback for each).
+- *Compose a workflow that fetches BV-BRC genomes for VEEV and synthesizes a
+  summary.* → `compose_workflow` builds + reviews a new workflow; you then run
+  it with `run_workflow`.
+
+The direct database tools (`resolve_entity`, `query_vaccines`, `query_pathogens`,
+`query_bvbrc_genomes`) register only **after** you transfer the local
+VIOLIN/BV-BRC datasets (`apecx-setup data`, optional); without them the
+harmonized-search + workflow path above already covers the primary use cases.
 
 ## When something doesn't work
 
