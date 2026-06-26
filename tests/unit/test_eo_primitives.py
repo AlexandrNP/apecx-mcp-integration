@@ -533,8 +533,10 @@ def test_run_workflow_streaming_emits_progress_and_log_per_stage(monkeypatch):
     ctx = _FakeContext()
     out = asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
 
-    # Result returned verbatim (streaming did not alter the envelope).
+    # Correctness-bearing envelope returned verbatim; streaming appends only a _diagnostics key.
+    diagnostics = out.pop("_diagnostics", None)
     assert out == {"status": "ok", "markdown": "final doc", "run_id": "r1", "error": None}
+    assert diagnostics is not None and "progress_token_present" in diagnostics
     # An immediate 'starting' ping (so the client timer resets at t=0), then one progress
     # notification per stage, increasing counter, naming the stage, in order.
     assert ctx.progress == [
@@ -587,6 +589,50 @@ def test_run_workflow_streaming_with_stages_emits_no_cache_notification(monkeypa
     ctx = _FakeContext()
     asyncio.run(eo_primitives.run_workflow("eo_stage_wf", {"q": "x"}, ctx))
     assert "served_from_cache" not in [lg["data"]["event"] for lg in ctx.session.logs]
+
+
+class _ReqCtxWithMeta:
+    """Stand-in for FastMCP's request_context carrying an optional progressToken in _meta."""
+
+    class _Meta:
+        def __init__(self, token):
+            self.progressToken = token
+
+    def __init__(self, token):
+        self.meta = self._Meta(token)
+
+
+class _FakeContextWithToken(_FakeContext):
+    def __init__(self, token):
+        super().__init__()
+        self.request_context = _ReqCtxWithMeta(token)
+
+
+def test_run_workflow_streaming_result_reports_progress_token_handshake(monkeypatch):
+    """The result's _diagnostics block reports whether the CLIENT sent a progressToken (the MCP
+    progress handshake) + how many notifications the server pushed — the operator-visible signal
+    in a log-less sandbox (Cowork). report_progress no-ops without a token per the MCP spec, so
+    this is exactly how you tell 'client never asked' from 'client asked but didn't render'."""
+    rep = _rep("data_readiness", 0)
+    rep.update(step_name="s", run_id="r1")
+
+    async def _fake_streamed(name, params, on_stage=None, on_heartbeat=None):
+        on_stage(rep)
+        return {"status": "ok", "markdown": "doc", "run_id": "r1", "error": None}
+
+    monkeypatch.setattr(eo_primitives, "run_workflow_streamed", _fake_streamed)
+
+    # Client SENT a progressToken → handshake present.
+    out = asyncio.run(
+        eo_primitives.run_workflow("wf", {"q": "x"}, _FakeContextWithToken("tok-abc"))
+    )
+    assert out["_diagnostics"]["progress_token_present"] is True
+    assert out["_diagnostics"]["progress_notifications_attempted"] >= 1  # 'starting' + stage
+    assert out["_diagnostics"]["stage_log_notifications_sent"] == 1
+
+    # Client did NOT send a progressToken (meta.progressToken is None) → handshake absent.
+    out2 = asyncio.run(eo_primitives.run_workflow("wf", {"q": "x"}, _FakeContextWithToken(None)))
+    assert out2["_diagnostics"]["progress_token_present"] is False
 
 
 def test_stage_streamer_emits_heartbeats_for_every_step_when_callback_given():

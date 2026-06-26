@@ -119,6 +119,13 @@ def test_real_stdio_client_consumes_streamed_stages_e2e():
     assert result.get("status") == "ok", result
     assert result.get("error") is None
     assert result.get("run_id")
+    # Real-FastMCP parity for the unit progress-handshake diagnostic: this client passes a
+    # progress_callback, so the SDK mints a progressToken → the server's _diagnostics must report
+    # the handshake as present and that it pushed notifications (this is the path a Cowork client
+    # that does NOT send a token would report as progress_token_present=False).
+    diag = result.get("_diagnostics") or {}
+    assert diag.get("progress_token_present") is True, diag
+    assert diag.get("progress_notifications_attempted", 0) >= 1, diag
     md = result["markdown"]
     headers = [
         "# Answer",

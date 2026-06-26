@@ -747,8 +747,10 @@ async def _run_workflow_streaming_impl(
     not request them (no ``progressToken``).
 
     RELIABILITY: streaming is observability, not correctness. Notification failures are
-    caught + logged and NEVER change the run — the returned ``WorkflowResult`` is identical
-    whether or not the client is listening.
+    caught + logged and NEVER change the run — the returned ``WorkflowResult``'s
+    correctness-bearing fields are identical whether or not the client is listening. The one
+    additive annotation is a ``_diagnostics`` key (progress-handshake counts) appended below,
+    so an operator in a log-less sandbox can read what the client requested.
     """
     loop = asyncio.get_running_loop()
     queue: asyncio.Queue[tuple[str, dict[str, Any]] | object] = asyncio.Queue()
@@ -871,6 +873,24 @@ async def _run_workflow_streaming_impl(
             )
         except Exception:  # noqa: BLE001 — observability must never break the run
             log.exception("run_workflow_streaming: failed to emit served_from_cache notification.")
+
+    # STREAMING DIAGNOSTIC (additive, non-correctness): surface the progress HANDSHAKE in the
+    # result itself. In sandboxed / Cowork clients the server log is unreachable but the result
+    # IS — so this is the one operator-visible place to learn whether the CLIENT requested
+    # progress (sent a ``progressToken``) and how many notifications the server pushed. The
+    # server streams identically regardless; whether the client RENDERS it is client-side. If
+    # ``progress_token_present`` is False, the client never asked for progress (report_progress
+    # no-ops per the MCP spec); if True but no progress shows, it is the client's render gap.
+    progress_token = None
+    with contextlib.suppress(Exception):
+        meta = ctx.request_context.meta
+        progress_token = getattr(meta, "progressToken", None) if meta is not None else None
+    if isinstance(result, dict):
+        result["_diagnostics"] = {
+            "progress_token_present": progress_token is not None,
+            "progress_notifications_attempted": state["n_progress"],
+            "stage_log_notifications_sent": state["n_stage"],
+        }
     return result
 
 
