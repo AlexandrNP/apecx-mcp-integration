@@ -454,7 +454,9 @@ class StructuralReasoningStep(BaseStep):
                 "note": note,
             }, note
 
-        if not _docker_available(self._image):
+        # Offloaded: _docker_available may `docker pull` the image (up to its timeout) on first use;
+        # a blocking call here would freeze the event loop (and the server) — to_thread keeps it off.
+        if not await asyncio.to_thread(_docker_available, self._image):
             note = (
                 f"Containerized PyMOL image {self._image!r} is not available "
                 "(docker missing or image not built): NO per-residue SASA was computed — "
@@ -806,18 +808,30 @@ class StructuralReasoningStep(BaseStep):
 
 
 def _docker_available(image: str) -> bool:
-    """True when the docker CLI is on PATH AND the pinned image is present locally."""
+    """True when the docker CLI is on PATH and the pinned image is runnable — present locally, or
+    pulled once on first use.
+
+    The old probe used ``docker image inspect`` ALONE → it false-negatived when the Docker daemon
+    was up but the image had not been pulled (the user's "Docker is up but SASA not available").
+    We now pull the image once if it is absent, so SASA runs whenever Docker is actually up — not
+    only when someone pre-pulled the image. A daemon-down ``docker pull`` fails fast (cannot connect
+    to the daemon), so the generous pull timeout only ever applies to a genuine image fetch. The
+    pull happens HERE rather than letting ``docker run`` fetch lazily, so a slow first pull cannot
+    eat the SASA container's own ``self._timeout`` budget.
+    """
     if shutil.which("docker") is None:
         return False
     try:
         import subprocess
 
-        out = subprocess.run(
-            ["docker", "image", "inspect", image],
-            capture_output=True,
-            timeout=15,
+        present = subprocess.run(
+            ["docker", "image", "inspect", image], capture_output=True, timeout=15
         )
-        return out.returncode == 0
+        if present.returncode == 0:
+            return True
+        log.info("PyMOL image %s absent locally; pulling once (daemon-down pull fails fast)", image)
+        pull = subprocess.run(["docker", "pull", image], capture_output=True, timeout=600)
+        return pull.returncode == 0
     except Exception:  # noqa: BLE001
         return False
 

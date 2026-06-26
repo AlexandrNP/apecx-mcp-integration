@@ -446,6 +446,59 @@ def test_degrade_loud_docker_unavailable(tmp_path, monkeypatch):
     assert [r for r in out["stage_reports"] if r["stage"] == "structural_reasoning"]
 
 
+def _docker_run_stub(outcomes):
+    """A ``subprocess.run`` stub mapping the docker subcommand to a returncode + recording calls."""
+    import types
+
+    calls = []
+
+    def run(argv, **_kw):
+        calls.append(list(argv))
+        if argv[:3] == ["docker", "image", "inspect"]:
+            return types.SimpleNamespace(returncode=outcomes["inspect"], stdout=b"", stderr=b"")
+        if argv[:2] == ["docker", "pull"]:
+            return types.SimpleNamespace(returncode=outcomes["pull"], stdout=b"", stderr=b"")
+        return types.SimpleNamespace(returncode=1, stdout=b"", stderr=b"")
+
+    run.calls = calls
+    return run
+
+
+def test_docker_available_pulls_when_image_absent_but_daemon_up(monkeypatch):
+    """Regression (#3): the probe no longer false-negatives when the daemon is up but the image was
+    NOT pre-pulled (the user's "Docker is up but SASA not available") — an absent image triggers a
+    one-time ``docker pull``. Real-Docker parity for the present->SASA path:
+    tests/integration/test_structural_reasoning_pymol.py against a live container."""
+    import subprocess
+
+    monkeypatch.setattr(mod.shutil, "which", lambda _n: "/usr/bin/docker")
+    stub = _docker_run_stub({"inspect": 1, "pull": 0})  # absent locally, pull succeeds
+    monkeypatch.setattr(subprocess, "run", stub)
+    assert mod._docker_available("apecx-pymol:3.1.0") is True
+    assert ["docker", "pull", "apecx-pymol:3.1.0"] in stub.calls
+
+
+def test_docker_available_fast_path_present_no_pull(monkeypatch):
+    """Image already present -> True immediately, NO pull (no regression for a pre-pulled host)."""
+    import subprocess
+
+    monkeypatch.setattr(mod.shutil, "which", lambda _n: "/usr/bin/docker")
+    stub = _docker_run_stub({"inspect": 0, "pull": 0})  # present locally
+    monkeypatch.setattr(subprocess, "run", stub)
+    assert mod._docker_available("apecx-pymol:3.1.0") is True
+    assert not any(c[:2] == ["docker", "pull"] for c in stub.calls)
+
+
+def test_docker_available_false_when_pull_fails(monkeypatch):
+    """Daemon down / image unpullable -> pull non-zero -> False (honest degrade, no false SASA claim)."""
+    import subprocess
+
+    monkeypatch.setattr(mod.shutil, "which", lambda _n: "/usr/bin/docker")
+    stub = _docker_run_stub({"inspect": 1, "pull": 1})  # absent locally, pull fails
+    monkeypatch.setattr(subprocess, "run", stub)
+    assert mod._docker_available("apecx-pymol:3.1.0") is False
+
+
 def _au_job_result(pdb_id: str) -> dict:
     """A realistic PyMOL-job result computed over the AU (no assembly available) — a data
     shape, not a mock of the PyMOL interface (real SASA parity is the 2XFB integration

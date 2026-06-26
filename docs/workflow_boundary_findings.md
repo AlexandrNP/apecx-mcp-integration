@@ -42,9 +42,12 @@ Dump: `/tmp/wf_boundary_influenza.json`.
    (data.json would duplicate the tool_outputs). Verified e2e: real chikungunya/E1 result carries 19 artifacts
    (figure/report/structured_data/tool_output), 14 with embedded text. (residual: 64KB cap kept a local —
    single-use, not promoted to a configurable constant; f.stat() outside the inner try is benign per review.)
-4. **Docker probe false-negative (#3).** `_docker_available` uses `docker image inspect <image>` →
-   false-negative when the image isn't pulled locally even though the daemon is up. structural_reasoning_step.py:808.
-   Change to a daemon check (`docker ps`/`version`); let `docker run` pull on first use.
+4. ✅ **FIXED (review-gate FAIL→addressed) — Docker probe false-negative (#3).** `_docker_available` kept the
+   image-present fast path but now `docker pull`s the image once if absent (so SASA runs whenever Docker is
+   up, not only when pre-pulled). review-gate caught a real bug: the 600s pull ran on the asyncio loop →
+   offloaded via `await asyncio.to_thread(...)` at structural_reasoning_step.py:457 (matches the in-file
+   pattern). Verified: 50 unit tests + a real-Docker bogus-image parity test (absent→pull→fail→False) +
+   e2e influenza SASA still runs (C6=False, no regression). Pull-SUCCESS branch parity = TODO T-2026-06-26-01.
 5. **PubMed leg (#5).** context_assembly carries `publications`; confirm the count (Globus index UUID
    globus_search/client.py:32 may be stale/unpopulated) + log Globus-vs-direct separately.
 6. **Nanobrain log flood (server hygiene).** ~95 MB/min of INFO/DEBUG ("BRUTAL TRUTH" logs) at default level —

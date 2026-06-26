@@ -62,6 +62,20 @@ def _require_rcsb(pdb_id: str = "3N40") -> None:
 # dependency is checked at runtime via _require_rcsb().
 _GATE = pytest.mark.skipif(not _image_present(), reason=f"requires the {_IMAGE} container image")
 
+# Docker CLI present (daemon may be up or down) — enough to exercise the absent->pull->fail branch.
+_DOCKER_GATE = pytest.mark.skipif(shutil.which("docker") is None, reason="requires the docker CLI")
+
+
+@_DOCKER_GATE
+def test_docker_available_false_for_unpullable_image_real_docker():
+    """Real-Docker parity for the #3 fix's absent->pull->fail branch: an image that exists in no
+    registry → inspect fails → pull fails → False (honest degrade). Non-destructive — never touches
+    the pinned image. The absent->pull->SUCCESS branch is recorded in tests/integration/TODO.md (it
+    needs a controlled rmi+pull dance that would pollute the dev Docker cache)."""
+    from apecx_integration.composition.steps.structural_reasoning_step import _docker_available
+
+    assert _docker_available("apecx-nonexistent-bogus-xyz:doesnotexist") is False
+
 
 def _step():
     import tempfile
