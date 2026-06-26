@@ -78,7 +78,10 @@ Dump: `/tmp/wf_boundary_influenza.json`.
   10 step tests (2 new: desktop-skip-proven + agent-degrade) + 99-test rag/synthesis sweep green. (Residual,
   cosmetic per review: the host note's "Nothing is lost" slightly oversells on an empty desktop retrieval —
   left for #4 parity.)
-- **Log flood (#6).** ~95 MB/min nanobrain INFO/DEBUG; server-log hygiene (set nanobrain logger → WARNING).
+- ✅ **FIXED — Log flood (#6).** `_configure_logging` (server.py) quiets the `nanobrain` tree to WARNING by
+  default (the important auto_transfer/G127 warnings still surface; root stays INFO for apecx startup logs).
+  Env-overridable: `APECX_LOG_LEVEL`, `APECX_NANOBRAIN_LOG_LEVEL`. The runtime MCP `logging/setLevel` still
+  works on top. 3 logging tests (1 new).
 
 ## Harness deepening (next)
 - C5/C6 must be DATA-based (per-stage `data` from the stream's stage_reports), not regex-on-report: assert

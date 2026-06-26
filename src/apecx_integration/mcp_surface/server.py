@@ -1148,6 +1148,20 @@ def _assert_mcp_port_distinct_from_control_plane(
         )
 
 
+def _configure_logging() -> None:
+    """Configure server logging. apecx's own INFO startup lines are useful, but nanobrain emits
+    per-step / per-trigger INFO+DEBUG that floods a long-lived server's log (~95 MB/min under load).
+    Keep the root at INFO but quiet the ``nanobrain`` tree to WARNING by default; both are
+    env-overridable (``APECX_LOG_LEVEL``, ``APECX_NANOBRAIN_LOG_LEVEL``). The runtime MCP
+    ``logging/setLevel`` method still works on top of this default."""
+    root_level = getattr(logging, os.environ.get("APECX_LOG_LEVEL", "INFO").upper(), logging.INFO)
+    nb_level = getattr(
+        logging, os.environ.get("APECX_NANOBRAIN_LOG_LEVEL", "WARNING").upper(), logging.WARNING
+    )
+    logging.basicConfig(level=root_level, stream=sys.stderr)
+    logging.getLogger("nanobrain").setLevel(nb_level)
+
+
 def main(argv: list[str] | None = None) -> None:
     """Entry point for the ``apecx-mcp`` console script.
 
@@ -1173,7 +1187,7 @@ def main(argv: list[str] | None = None) -> None:
     # validates a stray $APECX_EXECUTION_LOCUS before the server boots).
     resolved_locus = resolve_locus(args.locus)
 
-    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
+    _configure_logging()
 
     # Load the centralized network config (precedence CLI --config > $APECX_CONFIG >
     # ~/.apecx/config.yml > built-in defaults) and set it process-wide so every consumer reads ONE
