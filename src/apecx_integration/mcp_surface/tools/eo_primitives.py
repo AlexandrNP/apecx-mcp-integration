@@ -274,6 +274,37 @@ def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
 
         result["artifact_dir"] = str(run_dir)
         result["artifact_path"] = str(run_dir / "report.md")
+        # Manifest: enumerate EVERY written file so the client can surface + open each artifact.
+        # The result previously carried only the dir + report.md path, so the figures + per-tool
+        # native files were invisible to the user ("artifacts do not appear at all"). Embed the
+        # CONTENT of the per-tool native files (tool_outputs/*) so the data is reachable from the
+        # result itself, not only via a server-local path a remote client cannot open — but NOT
+        # report.md (already in result['markdown']), NOT data.json (its content is the sum of the
+        # tool_outputs → would duplicate the bundle in the result), NOT the binary figures.
+        text_cap = 64 * 1024
+        artifacts: list[dict[str, Any]] = []
+        for f in sorted(run_dir.rglob("*")):
+            if not f.is_file():
+                continue
+            rel = f.relative_to(run_dir).as_posix()
+            if rel == "report.md":
+                kind = "report"
+            elif rel == "data.json":
+                kind = "structured_data"
+            elif rel.startswith("figures/"):
+                kind = "figure"
+            elif rel.startswith("tool_outputs/"):
+                kind = "tool_output"
+            else:
+                kind = "other"
+            entry: dict[str, Any] = {"name": rel, "path": str(f), "kind": kind}
+            if kind == "tool_output" and f.stat().st_size <= text_cap:
+                try:
+                    entry["text"] = f.read_text(encoding="utf-8")
+                except Exception as exc:  # noqa: BLE001 — undecodable → path-only reference
+                    log.warning("artifact text embed failed for %s: %s", rel, exc)
+            artifacts.append(entry)
+        result["artifacts"] = artifacts
         # Bounded retention: keep only the N newest run dirs so the folder does not grow forever.
         prune_artifacts(base)
     except Exception as exc:  # noqa: BLE001 — artifact write must never strand a completed run

@@ -94,6 +94,42 @@ def test_attach_artifact_gathers_figures_and_splits_tool_outputs(tmp_path, monke
     assert not (tools / "alignment_fasta_artifact.json").exists()
 
 
+def test_attach_artifact_builds_manifest_with_text_for_data_artifacts(tmp_path, monkeypatch):
+    """The result carries an ``artifacts`` manifest enumerating EVERY written file (so the client can
+    surface them — "artifacts do not appear at all" was the bug), with the small text artifacts
+    embedding their content (reachable from the result), and binary figures path-referenced only."""
+    monkeypatch.setenv("APECX_ARTIFACTS_DIR", str(tmp_path))
+    (tmp_path / "conservation_E1.png").write_bytes(b"\x89PNG\r\n")
+    result = {
+        "markdown": "# Report\n\n![Sequence conservation — E1](conservation_E1.png)\n",
+        "data_preview": {
+            "kind": "bundle",
+            "parts": {"conserved_regions": [{"start": 1, "end": 9}]},
+        },
+        "run_id": "run-m",
+    }
+    _attach_artifact(result, "run-m")
+
+    manifest = result["artifacts"]
+    by_kind: dict = {}
+    for a in manifest:
+        by_kind.setdefault(a["kind"], []).append(a)
+    # every written file is enumerated, each with name + absolute path
+    assert all("path" in a and "name" in a for a in manifest)
+    assert {"report", "structured_data", "figure", "tool_output"} <= set(by_kind)
+    # the report is listed but its text is NOT duplicated (it is already result["markdown"])
+    assert "text" not in by_kind["report"][0]
+    # data.json (structured_data) is path-only — its content is the sum of the tool_outputs, so
+    # embedding it would duplicate the bundle in the result
+    assert "text" not in by_kind["structured_data"][0]
+    # binary figures are path-referenced only, under the self-contained figures/ path
+    assert all("text" not in a for a in by_kind["figure"])
+    assert by_kind["figure"][0]["name"].startswith("figures/")
+    # the per-tool native data file embeds its CONTENT — reachable from the result itself
+    tool = next(a for a in by_kind["tool_output"] if a["name"].endswith("conserved_regions.json"))
+    assert json.loads(tool["text"]) == [{"start": 1, "end": 9}]
+
+
 def test_tool_outputs_split_is_data_driven(tmp_path, monkeypatch):
     """Any bundle part — not just the viral-epitope keys — lands as its own ``<key>.json`` so
     every workflow (current + future) gets openable native files with no per-workflow wiring."""

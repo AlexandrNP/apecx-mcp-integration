@@ -101,9 +101,12 @@ def assess(ctx: RecordingCtx, result: dict) -> dict:
         "C2_progress_pings": len(ctx.progress),
         "C2_report_has_steps_section": bool(re.search(r"##.*step", md_l)),
         "C3_artifact_dir": result.get("artifact_dir"),
-        "C3_artifact_path": result.get("artifact_path"),
-        "C3_artifact_content_in_result": any(
-            "content" in k.lower() for k in result if "artifact" in k.lower()
+        "C3_artifacts_count": len(result.get("artifacts") or []),
+        "C3_artifact_kinds": sorted(
+            {a.get("kind") for a in (result.get("artifacts") or []) if isinstance(a, dict)}
+        ),
+        "C3_artifact_text_reachable": any(
+            a.get("text") for a in (result.get("artifacts") or []) if isinstance(a, dict)
         ),
         "C4_markdown_chars": len(md),
         "C4_looks_like_scaffold": (

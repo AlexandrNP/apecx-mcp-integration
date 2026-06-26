@@ -22,7 +22,11 @@ Dump: `/tmp/wf_boundary_influenza.json`.
    passes `protein` separately. Re-running `chikungunya/E1` to get the clean protein-given baseline.)
    Open question once the clean baseline lands: should a BARE virus name (no protein) AUTO-PICK a
    representative protein (influenza→HA, chikv→E1) so it doesn't return a half-empty report? — likely yes.
-2. **Synthesis withheld in DESKTOP locus (#4) — DESIGN-vs-CODE MISMATCH (root-caused).**
+2. ✅ **FIXED (4336b1a, review-gate PASS) — Synthesis withheld in DESKTOP locus (#4) — DESIGN-vs-CODE MISMATCH.**
+   Verified e2e: desktop now skips the local LLM, emits the full evidence report with a clean host-synthesis
+   note (withheld=False). FOLLOW-UP (review-gate note): `rag_synthesis_step.py` is the OTHER
+   `LLM_ROLE="final_synthesis"` step — still always runs the LLM in desktop; needs the same desktop-omit +
+   its stale 2026-06-15 comment reconciled.
    `EvidenceReviewSynthesisStep` declares `LLM_ROLE="final_synthesis"` (should omit the apecx LLM in desktop
    per CLAUDE.md), BUT `evidence_review_synthesis_step.py:1173-1201` ALWAYS calls `synthesize_response` "in
    BOTH loci" (a 2026-06-15 change that removed the desktop scaffold because the host discarded it). So in
@@ -32,8 +36,12 @@ Dump: `/tmp/wf_boundary_influenza.json`.
    the full deterministic evidence report (the floor — NOT a stub, which was the 2026-06-15 concern) with a
    POSITIVE host-synthesis note, not a "withheld due to failure" note. In agent locus keep the current
    try-synthesize-then-degrade. This is a load-bearing change → next iteration does it with /feature rigor.
-3. **Artifact content not in result (#2).** `_attach_artifact` sets `artifact_dir`/`artifact_path` (local
-   paths) but never the CONTENT (eo_primitives.py:~275). Include report.md content (+ figure refs) in the result.
+3. ✅ **FIXED (review-gate PASS-WITH-NOTES) — Artifact content not in result (#2).** `_attach_artifact` now
+   builds `result["artifacts"]` — a manifest of every written file {name, path, kind}, with the per-tool
+   native files (tool_outputs/*) embedding their text content (<=64KB); figures/report/data.json path-only
+   (data.json would duplicate the tool_outputs). Verified e2e: real chikungunya/E1 result carries 19 artifacts
+   (figure/report/structured_data/tool_output), 14 with embedded text. (residual: 64KB cap kept a local —
+   single-use, not promoted to a configurable constant; f.stat() outside the inner try is benign per review.)
 4. **Docker probe false-negative (#3).** `_docker_available` uses `docker image inspect <image>` →
    false-negative when the image isn't pulled locally even though the daemon is up. structural_reasoning_step.py:808.
    Change to a daemon check (`docker ps`/`version`); let `docker run` pull on first use.
