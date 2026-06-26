@@ -29,7 +29,7 @@ def test_chatgpt_guidance_is_minimal_and_uses_the_default_port():
     # ONE-arg serve command, the DEFAULT port (not a random example), the /mcp endpoint
     assert "apecx-mcp --transport streamable-http" in g
     assert "--port" not in g  # no extra argument in the instruction
-    assert ":8000/mcp" in g  # the actual default port apecx-mcp HTTP serves on
+    assert ":8001/mcp" in g  # the actual default port apecx-mcp HTTP serves on
     # a tunnel (noted as a separate install) + the UI add steps
     assert ("ngrok" in g or "cloudflared" in g) and "separately" in g.lower()
     assert "Apps & Connectors" in g and "Connector URL" in g

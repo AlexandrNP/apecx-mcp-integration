@@ -1643,7 +1643,10 @@ def _step_routing(interactive: bool = True) -> StepResult:
 
 # apecx-mcp's HTTP transport binds FastMCP's default port; the instruction uses the SAME
 # port so the served endpoint and the connector URL never disagree.
-_CHATGPT_PORT = 8000
+# The MCP HTTP server's default port (apecx-owned, server.py:_DEFAULT_MCP_HTTP_PORT) — DISTINCT
+# from the control plane (8000), which `apecx-mcp` autostarts. Co-locating both on 8000 self-
+# collides (the MCP can't bind a port the autostarted CP already holds). See deploy/SERVER_DEPLOYMENT.md.
+_CHATGPT_PORT = 8001
 
 
 def chatgpt_connector_guidance(port: int = _CHATGPT_PORT) -> str:

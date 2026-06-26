@@ -191,10 +191,12 @@ env-var-driven and was reproduced end-to-end on non-default ports.
 | Process | Command | Default port | Role |
 |---|---|---|---|
 | **Control plane** (`apecx-cp`) | `apecx-cp serve` | **8000** | run-store + state backend (SQLite by default; Postgres optional). The MCP server health-checks it. |
-| **MCP server** (`apecx-mcp`) | `apecx-mcp --transport streamable-http` | **8000** | the FastMCP tool surface over HTTP at `POST /mcp`. |
+| **MCP server** (`apecx-mcp`) | `apecx-mcp --transport streamable-http` | **8001** | the FastMCP tool surface over HTTP at `POST /mcp`. |
 
-> ⚠️ **Both default to 8000 — you MUST give them distinct ports** (the `apecx-mcp` help calls this
-> out explicitly). Below the control plane keeps 8000 and the MCP server takes 8001.
+> ✅ **Distinct by default** — `apecx-mcp` autostarts the control plane on **8000** and serves its
+> own HTTP on **8001**, so the bare command just works. If you explicitly point the MCP port at the
+> control plane's port, the server **fails fast** with an actionable message instead of a late
+> uvicorn "address already in use" crash that also tears down the autostarted control plane.
 
 ### Minimal bring-up (verified)
 
@@ -223,7 +225,7 @@ matching config.
 | What | Flag | Env var | Default |
 |---|---|---|---|
 | MCP HTTP bind host | `--host` | `APECX_MCP_HOST` | FastMCP default (`127.0.0.1`) |
-| MCP HTTP port | `--port` | `APECX_MCP_PORT` | `8000` |
+| MCP HTTP port | `--port` | `APECX_MCP_PORT` | `8001` (distinct from the control plane) |
 | Control-plane host / port | `--host` / `--port` | — | `8000` |
 | Control-plane URL the MCP server checks | — | `APECX_CONTROL_PLANE_URL` | `http://localhost:8000` |
 | Rhea MCP probe | — | `RHEA_MCP_URL` | `http://localhost:3001/mcp/` |

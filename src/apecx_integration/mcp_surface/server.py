@@ -1074,15 +1074,23 @@ def _build_arg_parser():
     return parser
 
 
-def _resolve_http_host_port(args: argparse.Namespace) -> tuple[str | None, int | None]:
-    """Resolve the HTTP-transport bind (host, port) with precedence flag > env > None.
+# The apecx MCP HTTP server defaults to 8001 — DISTINCT from the control plane (8000), which the
+# MCP autostarts + POSTs to. They are different services; co-locating both on 8000 is the shipped
+# footgun the collision guard below closes (deploy/SERVER_DEPLOYMENT.md).
+_DEFAULT_MCP_HTTP_PORT = 8001
 
-    None means "leave FastMCP's own default untouched". apecx resolves this itself instead of
-    deferring to FastMCP's $FASTMCP_HOST/$FASTMCP_PORT binding, which proved unreliable in a real
-    server deployment (the operator had to monkeypatch ``server.settings`` by hand).
 
-    FAIL-LOUD on a malformed $APECX_MCP_PORT — a typo'd port silently falling back to 8000 (which
-    collides with the control plane) is exactly the kind of silent misconfiguration to surface.
+def _resolve_http_host_port(args: argparse.Namespace) -> tuple[str | None, int]:
+    """Resolve the HTTP-transport bind (host, port) with precedence flag > env > default.
+
+    Host: ``None`` means "leave FastMCP's own default (127.0.0.1) untouched". Port: defaults to
+    ``_DEFAULT_MCP_HTTP_PORT`` (8001) when neither flag nor env is set — apecx owns this rather than
+    deferring to FastMCP's 8000, which collides with the control plane. apecx resolving the bind
+    itself (vs $FASTMCP_HOST/$FASTMCP_PORT) proved necessary in a real server deployment (the
+    operator had to monkeypatch ``server.settings`` by hand).
+
+    FAIL-LOUD on a malformed $APECX_MCP_PORT — a typo'd port silently falling back to a default is
+    exactly the kind of silent misconfiguration to surface.
     """
     host = args.host if args.host else os.environ.get("APECX_MCP_HOST") or None
 
@@ -1094,9 +1102,45 @@ def _resolve_http_host_port(args: argparse.Namespace) -> tuple[str | None, int |
                 port = int(env_port)
             except ValueError as exc:
                 raise ValueError(f"APECX_MCP_PORT must be an integer, got {env_port!r}") from exc
-    if port is not None and not (1 <= port <= 65535):
+        else:
+            port = _DEFAULT_MCP_HTTP_PORT
+    if not (1 <= port <= 65535):
         raise ValueError(f"port must be in 1..65535, got {port}")
     return host, port
+
+
+def _assert_mcp_port_distinct_from_control_plane(http_host: str | None, http_port: int) -> None:
+    """FAIL-LOUD (before the boot) when the MCP HTTP bind collides with the local control-plane port.
+
+    The MCP server autostarts + POSTs to the control plane (``$APECX_CONTROL_PLANE_URL``, default
+    ``localhost:8000``). If the MCP HTTP transport binds that same local port, uvicorn cannot bind
+    it — but only AFTER a full ~30s boot, as a cryptic "address already in use" that also tears down
+    the autostarted control plane. They are different services and must use different ports
+    (deploy/SERVER_DEPLOYMENT.md); surface it instantly with an actionable message.
+
+    Only a LOCAL collision counts: a remote control plane (non-loopback host) or an MCP bound to a
+    specific non-loopback interface does not contend for the same socket. The CP port is read
+    dynamically, so a CP relocated to another loopback port via the env var is still checked.
+
+    ``_LOOPBACK`` deliberately includes ``0.0.0.0`` — a wildcard bind contends with a loopback one
+    (so it is broader than the autostart-refusal set near the top of this module, which omits it).
+    Two edges are intentionally left to uvicorn's own bind error as a backstop: a specific-interface
+    MCP host vs a ``0.0.0.0``-bound CP (they DO contend), and ``::1`` vs ``127.0.0.1`` (different
+    address families that do NOT contend — this over-fires, erring toward a clear fail-fast).
+    """
+    cp = urlparse(os.environ.get("APECX_CONTROL_PLANE_URL", "http://localhost:8000"))
+    cp_host = (cp.hostname or "127.0.0.1").lower()
+    cp_port = cp.port or 8000
+    mcp_host = (http_host or "127.0.0.1").lower()
+    _LOOPBACK = {"127.0.0.1", "localhost", "::1", "0.0.0.0"}
+    if http_port == cp_port and cp_host in _LOOPBACK and mcp_host in _LOOPBACK:
+        raise ValueError(
+            f"MCP HTTP port {http_port} collides with the control plane "
+            f"(APECX_CONTROL_PLANE_URL={cp.geturl()}). The MCP server and the control plane are "
+            f"different services and must use different ports — set the MCP port "
+            f"(--port {http_port + 1} or $APECX_MCP_PORT={http_port + 1}), or move the control "
+            f"plane. See deploy/SERVER_DEPLOYMENT.md."
+        )
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -1140,6 +1184,15 @@ def main(argv: list[str] | None = None) -> None:
         DESIGN_APPROVAL_DIR_ENV, str(_Path.home() / ".cache" / "apecx" / "design_approvals")
     )
 
+    # Resolve + validate the HTTP bind UPFRONT — before the ~30s boot and before autostarting the
+    # control plane — so a port collision fails instantly with an actionable message instead of a
+    # cryptic late uvicorn bind error that also tears down the autostarted control plane.
+    http_host: str | None = None
+    http_port: int | None = None
+    if args.transport != "stdio":
+        http_host, http_port = _resolve_http_host_port(args)
+        _assert_mcp_port_distinct_from_control_plane(http_host, http_port)
+
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()
     _check_rag_index_or_warn()
@@ -1150,14 +1203,15 @@ def main(argv: list[str] | None = None) -> None:
         server.run()
     else:
         # HTTP transports (ChatGPT / remote deployment need streamable-http at /mcp). Apply the
-        # apecx-resolved host/port to FastMCP's settings BEFORE run() — see _resolve_http_host_port
-        # for why we don't defer to $FASTMCP_*. A PUBLIC HTTPS URL still requires a tunnel
-        # (see `apecx-setup chatgpt`).
-        http_host, http_port = _resolve_http_host_port(args)
+        # apecx-resolved host/port (computed + collision-checked upfront) to FastMCP's settings
+        # BEFORE run() — see _resolve_http_host_port for why we don't defer to $FASTMCP_*. A PUBLIC
+        # HTTPS URL still requires a tunnel (see `apecx-setup chatgpt`).
         if http_host is not None:
             server.settings.host = http_host
-        if http_port is not None:
-            server.settings.port = http_port
+        assert (
+            http_port is not None
+        )  # always resolved for HTTP above (defaults to 8001) — narrow type
+        server.settings.port = http_port
         log.info(
             "apecx-mcp serving %s at http://%s:%s%s",
             args.transport,
