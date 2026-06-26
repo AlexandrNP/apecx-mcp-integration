@@ -11,6 +11,8 @@ from __future__ import annotations
 import asyncio
 from pathlib import Path
 
+import pytest
+
 from apecx_integration.composition.steps._alignment_viz import (
     render_conservation_png,
     render_conservation_text,
@@ -41,6 +43,7 @@ def test_text_track_loud_when_no_regions():
 
 
 def test_png_renders_to_a_file_when_matplotlib_present(tmp_path):
+    pytest.importorskip("matplotlib")  # PNG path needs the [viz] extra; CI [dev] omits it
     name = render_conservation_png(
         _PER_COLUMN,
         _REGIONS,
@@ -57,6 +60,7 @@ def test_png_renders_to_a_file_when_matplotlib_present(tmp_path):
 
 
 def test_render_conservation_png_writes_pdf_sibling(tmp_path):
+    pytest.importorskip("matplotlib")  # PNG/PDF path needs the [viz] extra; CI [dev] omits it
     # The PNG is inlined in the report; a co-located vector .pdf sibling is written for the
     # durable per-run folder. The function still returns the PNG basename (the PDF rides along
     # by naming convention).
@@ -83,6 +87,7 @@ def test_png_returns_none_on_no_per_column(tmp_path):
 
 
 def test_step_threads_text_and_artifact_onto_bundle(tmp_path, monkeypatch):
+    pytest.importorskip("matplotlib")  # asserts the PNG artifact; needs the [viz] extra
     monkeypatch.setenv("APECX_ARTIFACTS_DIR", str(tmp_path))
     bundle = {
         "query": "chikv E1",
