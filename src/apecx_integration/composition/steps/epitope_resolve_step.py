@@ -153,31 +153,95 @@ class EpitopeResolveStep(BaseStep):
                 "evidence": "caller-supplied taxon_id (name resolution skipped)",
             }
         else:
-            # ``index`` here is just a plan placeholder — the real per-index value
-            # is set later by the downstream map.
-            try:
-                plan = build_resolution_plan(term, index="bvbrc_genome", entity_type_str="")
-            except Exception as exc:  # noqa: BLE001 — degrade-loud, never raise on a data miss
-                resolution_note = (
-                    f"Term resolution for {term!r} (from query {query!r}) could not run "
-                    f"({type(exc).__name__}: {exc}); proceeding with the unharmonized RAW "
-                    f"per-index fallback across all {len(index_names)} destination indices."
-                )
-                log.warning("EpitopeResolveStep %s: %s", self.name, resolution_note)
-                plan = {
-                    "term": term,
-                    "index": "bvbrc_genome",
-                    "resolution_path": "miss",
-                    "canonical_iri": None,
-                    "canonical_label": None,
-                    "canonical_ontology": None,
-                    "confidence": 0.0,
-                    "resolution_status": "unresolved",
-                    "synonyms": [],
-                    "candidates": [],
-                    "needs_disambiguation": False,
-                    "evidence": resolution_note,
-                }
+            # Resolve DETERMINISTICALLY (dict only — works in desktop locus with NO server LLM).
+            # Try the canonically-extracted names first, then a decomposition of the raw query:
+            # this rescues an arbitrary name not in the alias table AND a combined
+            # "<virus> <protein>" query. e.g. "Mayaro E1" walks ["Mayaro E1", "Mayaro E1 virus",
+            # "Mayaro", "Mayaro virus"✓] and recovers protein "E1" — where the old single-term path
+            # resolved the whole string as ONE (failing) entity. First EXACT, single-taxon hit wins;
+            # no LLM, no fuzzy match. ``index`` is a plan placeholder — the per-index value is set by
+            # the downstream map.
+            candidates: list[tuple[str, str | None]] = [(n, None) for n in names]
+            candidates += taxonomy_resolver.decompose_query_terms(query)
+            plan = None
+            recovered_protein: str | None = None
+            for cand_term, cand_protein in candidates:
+                try:
+                    cand_plan = build_resolution_plan(
+                        cand_term, index="bvbrc_genome", entity_type_str=""
+                    )
+                except Exception as exc:  # noqa: BLE001 — per-candidate best effort; skip + degrade
+                    log.warning(
+                        "EpitopeResolveStep %s: resolution probe for %r failed (%s); skipping.",
+                        self.name,
+                        cand_term,
+                        exc,
+                    )
+                    continue
+                # An AMBIGUOUS candidate is intentionally passed over (not a clean single-taxon
+                # hit); ambiguity is surfaced only via the final-fallback re-resolve of the
+                # original term below, preserving the loud ambiguous-degrade contract.
+                if cand_plan.get("canonical_iri") and not cand_plan.get("needs_disambiguation"):
+                    term, plan, recovered_protein = cand_term, cand_plan, cand_protein
+                    break
+            if plan is None:
+                # No clean single-taxon hit — preserve the legacy single-term behavior (carry an
+                # ambiguity / a named miss + the full raw fan-out for the unharmonized fallback).
+                try:
+                    plan = build_resolution_plan(term, index="bvbrc_genome", entity_type_str="")
+                except Exception as exc:  # noqa: BLE001 — degrade-loud, never raise on a data miss
+                    resolution_note = (
+                        f"Term resolution for {term!r} (from query {query!r}) could not run "
+                        f"({type(exc).__name__}: {exc}); proceeding with the unharmonized RAW "
+                        f"per-index fallback across all {len(index_names)} destination indices."
+                    )
+                    log.warning("EpitopeResolveStep %s: %s", self.name, resolution_note)
+                    plan = {
+                        "term": term,
+                        "index": "bvbrc_genome",
+                        "resolution_path": "miss",
+                        "canonical_iri": None,
+                        "canonical_label": None,
+                        "canonical_ontology": None,
+                        "confidence": 0.0,
+                        "resolution_status": "unresolved",
+                        "synonyms": [],
+                        "candidates": [],
+                        "needs_disambiguation": False,
+                        "evidence": resolution_note,
+                    }
+            else:
+                # Clean hit. Recover the protein a combined query carried so the conservation /
+                # structural / rhea legs (which read bundle['protein']) can run. If the resolving
+                # candidate already dropped it (decomposition path, e.g. "Mayaro E1"), use that;
+                # otherwise (resolved via an extracted alias name, e.g. "dengue NS1") find it as the
+                # LONGEST query-prefix that resolves to the SAME taxon — deterministic + same-taxon
+                # verified, so multi-word names are safe ("West Nile virus E" → "E", not "virus E").
+                if recovered_protein is None and not bundle.get("protein"):
+                    iri = plan.get("canonical_iri")
+                    # The protein is the suffix AFTER the LONGEST query-prefix that resolves to the
+                    # SAME taxon. Do NOT skip the full-query (None-suffix) candidate: longest-first
+                    # means a bare "<X> virus" query resolves the full name FIRST → suffix None → no
+                    # protein, so its trailing "virus" token is never mistaken for one.
+                    for cand_term, cand_suffix in taxonomy_resolver.decompose_query_terms(query):
+                        try:
+                            cp = build_resolution_plan(
+                                cand_term, index="bvbrc_genome", entity_type_str=""
+                            )
+                        except Exception:  # noqa: BLE001 — best effort; protein stays unrecovered
+                            continue
+                        if cp.get("canonical_iri") == iri and not cp.get("needs_disambiguation"):
+                            recovered_protein = cand_suffix
+                            break
+                    # Defensive: a degenerate "<X> virus virus" query could leave a lone "virus"
+                    # token as the suffix — that is part of the organism designation, not a protein.
+                    if recovered_protein and recovered_protein.strip().lower() in {
+                        "virus",
+                        "viruses",
+                    }:
+                        recovered_protein = None
+                if recovered_protein and not bundle.get("protein"):
+                    bundle["protein"] = recovered_protein
 
         # Spread the plan fields onto the bundle (excluding ``index``).
         for key in _FLATTENED_PLAN_KEYS:

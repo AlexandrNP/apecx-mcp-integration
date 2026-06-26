@@ -119,4 +119,28 @@ def extract_virus_names(query: str) -> list[str]:
     return out
 
 
-__all__ = ["extract_virus_names"]
+def decompose_query_terms(query: str) -> list[tuple[str, str | None]]:
+    """Ordered ``(candidate_term, recovered_suffix)`` for resolving an arbitrary/combined query.
+
+    Longest-prefix-first: for ``"Mayaro E1"`` yields ``[("Mayaro E1", None),
+    ("Mayaro E1 virus", None), ("Mayaro", "E1"), ("Mayaro virus", "E1")]``. The caller resolves
+    each candidate via the EXACT dictionary path and takes the first hit; the recovered suffix —
+    the trailing tokens dropped to reach that hit — is the protein name a combined query carried
+    (so the conservation leg can still run). Each prefix is also offered with ``" virus"`` appended
+    because the dict is keyed on the canonical ``"<virus> virus"`` form (bare ``"Mayaro"`` misses,
+    ``"Mayaro virus"`` hits). Fully deterministic — no LLM and no fuzzy matching, so it cannot
+    reintroduce the retired live name-matcher's false positives (Junin→Influenza)."""
+    if not isinstance(query, str) or not query.strip():
+        return []
+    toks = query.split()
+    out: list[tuple[str, str | None]] = []
+    for n in range(len(toks), 0, -1):
+        prefix = " ".join(toks[:n])
+        suffix = " ".join(toks[n:]) or None
+        out.append((prefix, suffix))
+        if not prefix.lower().endswith("virus"):
+            out.append((f"{prefix} virus", suffix))
+    return out
+
+
+__all__ = ["extract_virus_names", "decompose_query_terms"]

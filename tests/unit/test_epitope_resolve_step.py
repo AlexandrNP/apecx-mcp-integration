@@ -47,6 +47,40 @@ def _fast_plan(term: str = "Chikungunya virus") -> dict:
     }
 
 
+def _resolved_plan(term: str, iri_suffix: str, label: str) -> dict:
+    return {
+        "term": term,
+        "index": "bvbrc_genome",
+        "resolution_path": "dict",
+        "canonical_iri": f"http://purl.obolibrary.org/obo/NCBITaxon_{iri_suffix}",
+        "canonical_label": label,
+        "canonical_ontology": "ncbitaxon",
+        "confidence": 1.0,
+        "resolution_status": "id_anchored",
+        "synonyms": [],
+        "candidates": [],
+        "needs_disambiguation": False,
+        "evidence": "dict hit",
+    }
+
+
+def _unresolved_plan(term: str) -> dict:
+    return {
+        "term": term,
+        "index": "bvbrc_genome",
+        "resolution_path": "miss",
+        "canonical_iri": None,
+        "canonical_label": None,
+        "canonical_ontology": None,
+        "confidence": 0.0,
+        "resolution_status": "unresolved",
+        "synonyms": [],
+        "candidates": [],
+        "needs_disambiguation": False,
+        "evidence": "no hit",
+    }
+
+
 def _ambiguous_plan(term: str = "RSV") -> dict:
     return {
         "term": term,
@@ -120,23 +154,155 @@ def test_bare_name_flattens_plan_and_fans_out(tmp_path, _patches):
     assert "resolution_note" not in out
 
 
-def test_no_extracted_name_falls_back_to_query(tmp_path, _patches):
-    captured = {}
+def test_no_extracted_name_resolves_via_query_decomposition(tmp_path, _patches):
+    """No alias extracted → the raw query is the first decomposition candidate. With only the
+    full query resolving (realistic dict: sub-prefixes miss), the step resolves it and fans out
+    across all 9 indices; the protein recovery finds no dropped suffix to recover."""
 
     def _fake_extract(query):
         return []
 
     def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
-        captured["term"] = term
-        return _fast_plan(term)
+        if term == "some obscure pathogen xyz":
+            return _resolved_plan(term, "99999", "Some obscure pathogen")
+        return _unresolved_plan(term)
 
     _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
     _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
 
     step = _stage(tmp_path)
     out = asyncio.run(step.process({"query": "some obscure pathogen xyz"}))
-    assert captured["term"] == "some obscure pathogen xyz"
+    assert out["term"] == "some obscure pathogen xyz"
+    assert out["canonical_iri"].endswith("NCBITaxon_99999")
     assert out["index_names"] == sorted(_INDEX_UUIDS)
+    assert "protein" not in out  # full query resolved → no trailing suffix to recover
+
+
+def test_combined_virus_protein_query_decomposes_and_recovers_protein(tmp_path, _patches):
+    """A combined ``'<virus> <protein>'`` query for a virus NOT in the alias table must
+    resolve to the canonical ``'<virus> virus'`` taxon via deterministic decomposition
+    (drop the trailing token, append ``' virus'``, EXACT dict resolve — no LLM, no fuzzy
+    match) AND recover ``protein`` so the conservation leg can run. This reproduces the
+    real Claude-Desktop bug: ``run_workflow('viral_epitope_analysis', {'query': 'Mayaro E1'})``
+    used to resolve the whole string ``'Mayaro E1'`` as one entity → unresolved → dead workflow.
+    """
+    seen: list[str] = []
+
+    def _fake_extract(query):
+        return []  # "Mayaro" is not in the curated alias table (the bug's precondition)
+
+    def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
+        seen.append(term)
+        # Mimic the REAL dict: only the canonical "<virus> virus" form resolves.
+        if term == "Mayaro virus":
+            return _resolved_plan(term, "59301", "Mayaro virus")
+        return _unresolved_plan(term)
+
+    _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
+    _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
+
+    out = asyncio.run(_stage(tmp_path).process({"query": "Mayaro E1"}))
+
+    assert out["canonical_iri"].endswith("NCBITaxon_59301")
+    assert out["resolution_status"] == "id_anchored"
+    assert out["term"] == "Mayaro virus"
+    assert out["protein"] == "E1"  # recovered from the dropped suffix → feeds the sequence leg
+    assert out["index_names"] == sorted(_INDEX_UUIDS)  # the 9-index harmonized search runs
+    assert "Mayaro virus" in seen  # decomposition actually reached the canonical form
+    # the full combined string was tried first and missed (decomposition, not luck)
+    assert seen[0] == "Mayaro E1"
+
+
+def test_decomposition_resolves_bare_arbitrary_name_without_clobbering_protein(tmp_path, _patches):
+    """A bare arbitrary name ('Mayaro', alias-table miss) resolves deterministically to the
+    canonical form, and a caller-supplied ``protein`` is preserved (no suffix was dropped)."""
+
+    def _fake_extract(query):
+        return []
+
+    def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
+        if term == "Mayaro virus":
+            return _resolved_plan(term, "59301", "Mayaro virus")
+        return _unresolved_plan(term)
+
+    _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
+    _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
+
+    out = asyncio.run(_stage(tmp_path).process({"query": "Mayaro", "protein": "GPC"}))
+
+    assert out["canonical_iri"].endswith("NCBITaxon_59301")
+    assert out["term"] == "Mayaro virus"
+    assert out["protein"] == "GPC"  # caller-supplied protein NOT clobbered
+
+
+def test_alias_hit_combined_query_recovers_protein_via_same_taxon(tmp_path, _patches):
+    """When the virus resolves via an extracted ALIAS name ('dengue NS1' → 'Dengue virus'), the
+    protein is recovered as the longest query-prefix that resolves to the SAME taxon. This closes
+    the combined-query class for alias-table viruses too (not just the alias-miss 'Mayaro' case)."""
+
+    def _fake_extract(query):
+        return ["Dengue virus"]  # alias hit — protein is NOT in the canonical name
+
+    def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
+        # Real dict: both the alias canonical AND 'dengue virus' resolve to DENV; 'dengue NS1' misses.
+        if term in ("Dengue virus", "dengue virus"):
+            return _resolved_plan(term, "12637", "Dengue virus")
+        return _unresolved_plan(term)
+
+    _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
+    _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
+
+    out = asyncio.run(_stage(tmp_path).process({"query": "dengue NS1"}))
+
+    assert out["canonical_iri"].endswith("NCBITaxon_12637")
+    assert out["term"] == "Dengue virus"  # resolved via the alias, not the decomposition
+    assert out["protein"] == "NS1"  # recovered same-taxon
+
+
+def test_protein_recovery_is_safe_for_multiword_virus_names(tmp_path, _patches):
+    """'West Nile virus E' must recover protein 'E', NOT 'virus E' — longest-prefix-first picks
+    the full 'West Nile virus' before the shorter 'West Nile', so only the true trailing token is
+    dropped. This pins the exact heuristic trap that shortest-first ordering would fall into."""
+
+    def _fake_extract(query):
+        return ["West Nile virus"]
+
+    def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
+        if term == "West Nile virus":
+            return _resolved_plan(term, "11082", "West Nile virus")
+        return _unresolved_plan(term)
+
+    _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
+    _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
+
+    out = asyncio.run(_stage(tmp_path).process({"query": "West Nile virus E"}))
+
+    assert out["canonical_iri"].endswith("NCBITaxon_11082")
+    assert out["protein"] == "E"
+
+
+def test_bare_virus_name_recovers_no_protein(tmp_path, _patches):
+    """A BARE '<X> virus' query (the most common case) must NOT recover a protein. Even when a
+    shorter prefix ('West Nile') resolves to the same taxon, longest-prefix-first picks the full
+    name first → suffix None → no protein. Regression pin for the 'protein=virus' bug (the recovery
+    loop used to skip the None-suffix full query and drop the trailing 'virus' token as a protein)."""
+
+    def _fake_extract(query):
+        return ["West Nile virus"]
+
+    def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
+        # BOTH the full name AND the bare prefix resolve to the same taxon — the trap.
+        if term in ("West Nile virus", "West Nile"):
+            return _resolved_plan(term, "11082", "West Nile virus")
+        return _unresolved_plan(term)
+
+    _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
+    _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
+
+    out = asyncio.run(_stage(tmp_path).process({"query": "West Nile virus"}))
+
+    assert out["canonical_iri"].endswith("NCBITaxon_11082")
+    assert "protein" not in out  # nothing dropped → no protein (NOT 'virus')
 
 
 def test_ambiguous_plan_noops_the_map(tmp_path, _patches):

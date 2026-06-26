@@ -213,3 +213,61 @@ def test_full_fallback_chain_picks_covered_clade_not_thin_genus(tmp_path, query)
     )
     # production contract: a promoted taxon clears min_cds — covered, however sparsely.
     assert bundle["taxon_resolution"]["cds"] >= 2
+
+
+def _dict_resolves(term: str) -> bool:
+    """True when the synonym dictionary is built and resolves ``term`` to a canonical taxon."""
+    try:
+        from apecx_integration.composition.steps.harmonized_resolve_step import (
+            build_resolution_plan,
+        )
+
+        plan = build_resolution_plan(term, index="bvbrc_genome", entity_type_str="")
+        return bool(plan.get("canonical_iri"))
+    except Exception:
+        return False
+
+
+needs_dict = pytest.mark.skipif(
+    not _dict_resolves("Mayaro virus"),
+    reason="synonym dictionary not built / 'Mayaro virus' not resolvable",
+)
+
+
+@needs_dict
+def test_combined_virus_protein_query_resolves_deterministically_no_llm(tmp_path):
+    """REAL-DICT parity for the unit decomposition tests. A combined ``'<virus> <protein>'`` query
+    resolves to the canonical taxon AND recovers the protein using the EXACT dict path — NO LLM
+    (desktop locus), NO BV-BRC fallback. This is the precise path that died in real Claude Desktop:
+    ``run_workflow('viral_epitope_analysis', {'query': 'Mayaro E1'})`` resolved the whole string as
+    one entity → unresolved → dead workflow. Closes that gap for an alias-table MISS (Mayaro/Junin)
+    AND an alias-table HIT (dengue), the latter via same-taxon protein recovery."""
+    step = _step(
+        tmp_path, "apecx_integration.composition.steps.epitope_resolve_step", "EpitopeResolveStep"
+    )
+
+    # alias-table MISS + appended protein — the reported failure.
+    mayaro = asyncio.run(step.process({"query": "Mayaro E1"}))
+    assert mayaro["canonical_iri"].endswith("NCBITaxon_59301")  # Mayaro virus
+    assert mayaro["resolution_status"] == "id_anchored"
+    assert mayaro["protein"] == "E1"
+    assert mayaro["index_names"], "the 9-index harmonized fan-out must run on a clean hit"
+
+    # arenavirus whose canonical is '<x> mammarenavirus' — '<x> virus' still resolves via the dict.
+    junin = asyncio.run(step.process({"query": "Junin GPC"}))
+    assert junin["canonical_iri"].endswith("NCBITaxon_2169991")
+    assert junin["protein"] == "GPC"
+
+    # alias-table HIT + appended protein — same-taxon recovery keeps the protein for the conservation leg.
+    dengue = asyncio.run(step.process({"query": "dengue NS1"}))
+    assert dengue["canonical_iri"].endswith("NCBITaxon_12637")  # Dengue virus
+    assert dengue["protein"] == "NS1"
+
+    # BARE '<X> virus' queries (the most common case) must recover NO protein — the trailing
+    # 'virus' token is part of the organism name, never a protein (the 'protein=virus' regression).
+    for bare in ("West Nile virus", "dengue virus", "Mayaro virus"):
+        out = asyncio.run(step.process({"query": bare}))
+        assert out.get("canonical_iri"), f"{bare!r} should resolve"
+        assert out.get("protein") is None, (
+            f"{bare!r} must not recover a protein, got {out.get('protein')!r}"
+        )
