@@ -101,6 +101,12 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
         if self._digest is None:
             self._digest = await image_digest(self._image_tag)
 
+    async def ensure_established(self, *, on_progress: Any = None) -> None:
+        """Establish PyMOL from its docker source (build the image if absent) — the
+        ``Establishable`` hook the find-and-establish seam calls so PyMOL is provisioned
+        THROUGH the seam, not around it. Delegates to ``ensure_image`` (no new build logic)."""
+        await self.ensure_image(on_progress=on_progress)
+
     def _docker_argv(self, workdir: Path, memory_mb: int) -> list[str]:
         """Hardened ``docker run`` argv (moved verbatim from structural_reasoning_step): network-isolated,
         cap-dropped, memory/pids-capped, host-uid so the written result.json is host-owned; /work is

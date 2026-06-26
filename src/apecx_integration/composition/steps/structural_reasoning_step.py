@@ -454,12 +454,15 @@ class StructuralReasoningStep(BaseStep):
         # C6: an unbuilt image is no longer a terminal "unavailable", it builds itself on first use.
         # Only docker-absent / daemon-down / a genuine build failure remain unavailable (named LOUD, G127).
         from nanobrain.library.runtime.docker_image_builder import DockerImageBuildError
+        from nanobrain.library.tools.tool_discovery import find_and_establish_tool
 
         from apecx_integration.composition.steps.pymol_sasa_tool import PyMOLToolBackendAdapter
 
         self._pymol_adapter = PyMOLToolBackendAdapter.register(image_tag=self._image)
         try:
-            await self._pymol_adapter.ensure_image(on_progress=self.emit_progress)
+            # Establish PyMOL THROUGH the unified seam (docker source: auto-build the image).
+            # register() above put the adapter in the registry so the seam resolves "pymol".
+            await find_and_establish_tool("pymol:pymol_sasa", on_progress=self.emit_progress)
         except DockerImageBuildError as exc:
             note = (
                 f"Containerized PyMOL structural analysis is unavailable: {exc}. NO per-residue "

@@ -58,6 +58,33 @@ def _require_rcsb(pdb_id: str = "3N40") -> None:
         pytest.skip(f"RCSB not reachable: {exc}")
 
 
+def _docker_available() -> bool:
+    if shutil.which("docker") is None:
+        return False
+    try:
+        return (
+            subprocess.run(["docker", "version"], capture_output=True, timeout=20).returncode == 0
+        )
+    except Exception:
+        return False
+
+
+@pytest.mark.skipif(not _docker_available(), reason="docker not available")
+def test_find_and_establish_builds_pymol_image_through_the_seam():
+    """Phase-3a unification: the docker tool is established THROUGH the find_and_establish seam.
+    ``find_and_establish_tool('pymol:pymol_sasa')`` auto-builds apecx-pymol:3.1.0 if absent (vs the
+    old path where the adapter self-provisioned around the seam). Idempotent: a fast no-op image
+    probe when already present, a real build (~5 min) when absent."""
+    from nanobrain.library.tools.tool_discovery import find_and_establish_tool
+
+    from apecx_integration.composition.steps.pymol_sasa_tool import PyMOLToolBackendAdapter
+
+    PyMOLToolBackendAdapter.register()  # so the seam resolves the "pymol" backend
+    utds = asyncio.run(find_and_establish_tool("pymol:pymol_sasa"))
+    assert utds[0].descriptor_id == "pymol:pymol_sasa@0.0.0"
+    assert _image_present() is True  # the seam established (built-or-confirmed) the image
+
+
 # Gate on the (cheap, deterministic) image-present check at import; the network
 # dependency is checked at runtime via _require_rcsb().
 _GATE = pytest.mark.skipif(not _image_present(), reason=f"requires the {_IMAGE} container image")
