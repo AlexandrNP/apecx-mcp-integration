@@ -178,6 +178,117 @@ visible error — just an empty tool picker):
 For more on Claude Desktop wiring, env vars, per-tool inputs/outputs,
 or troubleshooting: [`docs/mcp_integration.md`](docs/mcp_integration.md).
 
+## Running as a backend server (HTTP MCP + control plane)
+
+The default install spawns a **stdio** MCP server that Claude Desktop launches per session. To
+instead run apecx as a **long-lived backend server** — reachable over HTTP by remote clients
+(ChatGPT, a hosted agent, your own service) and/or synthesizing answers **headlessly** (no desktop
+LLM) — run the two processes yourself on ports you choose. Everything below is flag- and
+env-var-driven and was reproduced end-to-end on non-default ports.
+
+### The two processes
+
+| Process | Command | Default port | Role |
+|---|---|---|---|
+| **Control plane** (`apecx-cp`) | `apecx-cp serve` | **8000** | run-store + state backend (SQLite by default; Postgres optional). The MCP server health-checks it. |
+| **MCP server** (`apecx-mcp`) | `apecx-mcp --transport streamable-http` | **8000** | the FastMCP tool surface over HTTP at `POST /mcp`. |
+
+> ⚠️ **Both default to 8000 — you MUST give them distinct ports** (the `apecx-mcp` help calls this
+> out explicitly). Below the control plane keeps 8000 and the MCP server takes 8001.
+
+### Minimal bring-up (verified)
+
+```bash
+# 1. Control plane on 8000. SQLite state — no Docker/Postgres needed.
+#    APECX_CP_DB_URL must be a SYNC sqlite URL (sqlite:///…), NOT sqlite+aiosqlite:// —
+#    the alembic migration uses the sync driver; the runtime converts to async itself.
+APECX_CP_DB_URL="sqlite:////var/lib/apecx/cp.db" \
+  apecx-cp serve --host 127.0.0.1 --port 8000 &
+curl -s http://127.0.0.1:8000/healthz          # -> {"status":"ok","phase":"scaffold"}
+
+# 2. MCP server over HTTP on a DISTINCT port, headless synthesis (agent locus),
+#    pointed at the control plane you just started.
+APECX_CONTROL_PLANE_URL=http://127.0.0.1:8000 \
+  apecx-mcp --transport streamable-http --host 0.0.0.0 --port 8001 --locus agent
+# -> "Control Plane at http://127.0.0.1:8000 reachable" ; "execution_locus=agent" ;
+#    "Uvicorn running on http://0.0.0.0:8001"  — MCP endpoint at http://<host>:8001/mcp
+```
+
+Use `--host 0.0.0.0` to accept remote connections (`127.0.0.1` is local-only). Point your MCP
+client at `http://<host>:8001/mcp`. For ChatGPT specifically, `apecx-setup chatgpt` writes the
+matching config.
+
+### Non-default ports — the knobs
+
+| What | Flag | Env var | Default |
+|---|---|---|---|
+| MCP HTTP bind host | `--host` | `APECX_MCP_HOST` | FastMCP default (`127.0.0.1`) |
+| MCP HTTP port | `--port` | `APECX_MCP_PORT` | `8000` |
+| Control-plane host / port | `--host` / `--port` | — | `8000` |
+| Control-plane URL the MCP server checks | — | `APECX_CONTROL_PLANE_URL` | `http://localhost:8000` |
+| Rhea MCP probe | — | `RHEA_MCP_URL` | `http://localhost:3001/mcp/` |
+
+Whenever you move the control plane off 8000, set `APECX_CONTROL_PLANE_URL` to match, or the MCP
+server's startup health check won't find it.
+
+### Headless synthesis (the `agent` locus) + the backend LLM
+
+`--locus agent` makes the apecx server synthesize answers itself instead of returning assembled
+evidence for a desktop LLM (the default `desktop` locus). The agent locus needs an
+OpenAI-compatible LLM backend — **there is no remote default**, so it is off until you set one:
+
+```bash
+export APECX_LLM_BASE_URL=http://localhost:11434/v1   # Ollama default; or vLLM / OpenAI / a proxy
+export APECX_LLM_MODEL=nemotron-3-nano:4b
+export APECX_LLM_API_KEY=EMPTY                          # for keyless local servers
+# optional tuning: APECX_LLM_TEMPERATURE, APECX_LLM_MAX_TOKENS, APECX_LLM_TIMEOUT,
+#                  APECX_LLM_MAX_RETRIES, APECX_LLM_MAX_VALIDATION_RETRIES
+```
+
+In `desktop` locus these are unused — the calling client is the synthesizer.
+
+### Control-plane database
+
+`apecx-cp` resolves its DB in order: `APECX_CP_DB_URL` → `APECX_CP_POSTGRES_URL` → a SQLite default
+(`sqlite:///$APECX_CP_HOME/cp.db`). For SQLite pass a **sync** URL (`sqlite:///abs/path.db`); for
+Postgres set `APECX_CP_POSTGRES_URL`. `apecx-cp teardown` stops a locally-managed Postgres
+container (a no-op for SQLite / bring-your-own).
+
+### Trimming the startup for a lean server
+
+The MCP server boots a control-plane health check, the infra orchestrator, and a lazy dictionary
+build. Skip what you run separately:
+
+| Env var | Effect |
+|---|---|
+| `APECX_MCP_SKIP_HEALTHCHECK=1` | skip the control-plane reachability check at startup |
+| `APECX_MCP_AUTOSTART_BACKEND=0` | do NOT auto-spawn the control plane (you run `apecx-cp` yourself) |
+| `APECX_MCP_AUTOSTART_INFRA=0` | run the infra orchestrator in probe-only mode (no Docker / Rhea autostart) |
+| `APECX_SKIP_DICT_BUILD=1` | skip the lazy dictionary build (assumes the SQLite already exists) |
+
+### Advanced capabilities
+
+**Optional Python extras** (`uv tool install 'apecx-mcp-integration[<extra>]'`, or
+`pip install -e '.[<extra>]'` from a checkout):
+
+| Extra | Unlocks |
+|---|---|
+| `viz` | the sequence-conservation **PNG/PDF** figures (matplotlib; degrades to a text track without it) |
+| `rag` | the **domain-RAG** synthesis branch (FAISS + sentence-transformers; build the index with `apecx-setup rag`) |
+| `hpc` | the **Globus Compute / PBS** HPC execution path (globus-compute-sdk, globus-sdk, keyring) |
+| `academy` | the **Academy** distributed-agent runtime |
+
+**Data, dictionary, and catalog overrides:**
+
+| Env var | Purpose |
+|---|---|
+| `APECX_DATA_ROOT` | path to the VIOLIN/BV-BRC data dir → enables the direct DB-lookup tools |
+| `APECX_SYNONYM_DICT_PATH` | override the synonym-dictionary SQLite path (default: the one `apecx-setup` provisions) |
+| `APECX_MCP_WORKFLOW_CATALOG` | override the packaged catalog of MCP-exposed workflows (path to YAML) |
+
+The full environment-variable table lives in
+[`docs/apecx_mcp_infrastructure.md`](docs/apecx_mcp_infrastructure.md) §3.
+
 ## Deeper pointers
 
 | Doc | When to read |
