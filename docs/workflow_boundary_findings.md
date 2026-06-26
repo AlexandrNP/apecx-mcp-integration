@@ -13,11 +13,15 @@ Dump: `/tmp/wf_boundary_influenza.json`.
 - C6 prereq-honesty: SASA RAN here (Docker up + image pulled) — the false-negative is the image-absent case.
 
 ## Fix backlog (by impact)
-1. **Bare-virus-name → conservation cascade (DOMINANT).** query=`influenza` has no protein → `sequence_conservation`
-   skips ("needs a protein to fetch per-strain sequences"); cascades to alignment_viz / clade_grouping /
-   cross_clade_breadth / rhea_genomic_analysis / functional_validation — half the report empty. The workflow
-   should AUTO-PICK a representative protein for a bare virus (influenza→HA, chikv→E1), not skip the whole arc.
-   Locus: the sequence_conservation subworkflow step (SequenceConservationSubworkflowStep) + the query intake.
+1. **No-protein → conservation cascade.** `protein` is a SEPARATE workflow param (builder.py:10
+   `{query, taxon_id?, protein?}`), NOT parsed from the query string. With no protein,
+   `sequence_conservation` skips ("needs a protein to fetch per-strain sequences") and cascades to
+   alignment_viz / clade_grouping / cross_clade_breadth / rhea_genomic_analysis / functional_validation
+   — half the report empty. (NOTE: the first harness test `"chikungunya E1"` was a HARNESS BUG — it put
+   the protein in the query string, not the param; FIXED — the harness now takes `virus/protein` and
+   passes `protein` separately. Re-running `chikungunya/E1` to get the clean protein-given baseline.)
+   Open question once the clean baseline lands: should a BARE virus name (no protein) AUTO-PICK a
+   representative protein (influenza→HA, chikv→E1) so it doesn't return a half-empty report? — likely yes.
 2. **Synthesis withheld in DESKTOP locus (#4) — DESIGN-vs-CODE MISMATCH (root-caused).**
    `EvidenceReviewSynthesisStep` declares `LLM_ROLE="final_synthesis"` (should omit the apecx LLM in desktop
    per CLAUDE.md), BUT `evidence_review_synthesis_step.py:1173-1201` ALWAYS calls `synthesize_response` "in

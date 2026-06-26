@@ -70,14 +70,18 @@ _PLACEHOLDERS = (
 )
 
 
-async def run_one(virus: str) -> tuple[RecordingCtx, dict]:
+async def run_one(virus: str, protein: str | None = None) -> tuple[RecordingCtx, dict]:
     from apecx_integration.mcp_surface.locus import ExecutionLocus, set_active_locus
     from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
 
-    # The user's case is the desktop client.
+    # The user's case is the desktop client. `protein` is a SEPARATE workflow param (the conservation
+    # arc needs it to fetch per-strain sequences) — NOT parsed from the query string.
     set_active_locus(ExecutionLocus.DESKTOP)
     ctx = RecordingCtx()
-    result = await run_workflow("viral_epitope_analysis", {"query": virus}, ctx)
+    params: dict = {"query": virus}
+    if protein:
+        params["protein"] = protein
+    result = await run_workflow("viral_epitope_analysis", params, ctx)
     return ctx, result
 
 
@@ -117,23 +121,26 @@ def assess(ctx: RecordingCtx, result: dict) -> dict:
 
 
 async def main() -> None:
-    viruses = sys.argv[1:] or ["influenza"]
+    # Each arg is `virus` or `virus/protein` (the protein is a separate workflow param).
+    specs = sys.argv[1:] or ["influenza"]
     scorecard = {}
-    for v in viruses:
-        print(f"\n===== {v} =====", flush=True)
+    for spec in specs:
+        virus, _, protein = spec.partition("/")
+        label = spec.replace("/", "_")
+        print(f"\n===== {spec} =====", flush=True)
         try:
-            ctx, result = await run_one(v)
+            ctx, result = await run_one(virus, protein or None)
         except Exception as exc:  # noqa: BLE001 — the harness must survive a run crash
             import traceback
 
             print(f"  RUN CRASHED: {type(exc).__name__}: {exc}")
             traceback.print_exc()
-            scorecard[v] = {"crashed": f"{type(exc).__name__}: {exc}"}
+            scorecard[spec] = {"crashed": f"{type(exc).__name__}: {exc}"}
             continue
         findings = assess(ctx, result)
-        scorecard[v] = findings
+        scorecard[spec] = findings
         dump = {"result": result, "progress": ctx.progress, "logs": ctx.logs, "findings": findings}
-        path = f"/tmp/wf_boundary_{v}.json"
+        path = f"/tmp/wf_boundary_{label}.json"
         with open(path, "w") as fh:
             json.dump(dump, fh, indent=2, default=str)
         for k, val in findings.items():
