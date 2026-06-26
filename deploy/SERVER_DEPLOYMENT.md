@@ -17,6 +17,13 @@ One `docker compose` stack on the `apecx-net` network:
 | ollama | `ollama/ollama` | 11434 | chat synthesis **+** Rhea tool-RAG embeddings |
 | rhea | built from your rhea checkout | 3001 | Rhea MCP worker (`/mcp/`) |
 
+The **Host port** column shows the defaults; each is configurable via a `*_HOST_PORT` var in
+`deploy/.env` (`POSTGRES_HOST_PORT`, `REDIS_HOST_PORT`, `MINIO_HOST_PORT`, `MINIO_CONSOLE_HOST_PORT`,
+`OLLAMA_HOST_PORT`, `RHEA_HOST_PORT`) — change one to avoid a host clash. The **bind host stays
+`127.0.0.1`** (not configurable by design: these backends are unauthenticated, so loopback-only is the
+threat-model boundary). The host-side `APECX_LLM_BASE_URL` / `RHEA_MCP_URL` derive from the Ollama/Rhea
+port vars, so one edit moves both the publish and the consumer.
+
 Plus three one-shot jobs that exit 0: `ollama-init` (pull models), `rhea-db-init` (create the
 `vector` extension + `galaxytools` schema), `rhea-ingest` (populate the Galaxy tool catalog).
 

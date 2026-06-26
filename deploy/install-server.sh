@@ -100,7 +100,7 @@ chmod 700 "$WRAPPER"  # owner-only: it sources deploy/.env (secrets)
 # --- 7. how to run + verify + expose ------------------------------------------------------
 cat <<EOF
 
-$(note "Stack is up. Backends: postgres:5435  redis:6379  minio:9000/9001  ollama:11434  rhea:3001/mcp/")
+$(note "Stack is up. Backends on 127.0.0.1, default ports postgres:5435  redis:6379  minio:9000/9001  ollama:11434  rhea:3001/mcp/  (override any via *_HOST_PORT in deploy/.env)")
 
 Run the MCP server over HTTP (the wrapper loads deploy/.env so autostart/Rhea/data vars apply):
 

@@ -53,7 +53,7 @@ services:
       # Loopback-only: the host apecx-mcp reaches Postgres via localhost; off-host
       # access goes through nothing (P1 two-layer wall — bind + firewall). A bare
       # "5435:5432" publishes on 0.0.0.0 AND inserts a DNAT rule that bypasses ufw.
-      - "127.0.0.1:5435:5432"
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5435}:5432"
     volumes:
       - apecx-rhea-postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -72,7 +72,7 @@ services:
     cpus: 1.0
     pids_limit: 256
     ports:
-      - "127.0.0.1:6379:6379"
+      - "127.0.0.1:${REDIS_HOST_PORT:-6379}:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -93,9 +93,9 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?set MINIO_ROOT_PASSWORD in deploy/.env (install-server.sh generates it)}
     command: server /data --console-address ":9001"
     ports:
-      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:${MINIO_HOST_PORT:-9000}:9000"
       # Console: loopback-only — reach it via an SSH tunnel for admin, never publicly.
-      - "127.0.0.1:9001:9001"
+      - "127.0.0.1:${MINIO_CONSOLE_HOST_PORT:-9001}:9001"
     volumes:
       - apecx-rhea-minio-data:/data
     # No healthcheck: the minio image ships no curl/wget/mc to probe /minio/health/live, and the
@@ -118,7 +118,7 @@ services:
       OLLAMA_MAX_QUEUE: "32"
       OLLAMA_KEEP_ALIVE: "5m"
     ports:
-      - "127.0.0.1:11434:11434"
+      - "127.0.0.1:${OLLAMA_HOST_PORT:-11434}:11434"
     volumes:
       - apecx-ollama-data:/root/.ollama
     healthcheck:
@@ -208,7 +208,7 @@ services:
     pids_limit: 512
     environment: *rhea-env
     ports:
-      - "127.0.0.1:3001:3001"
+      - "127.0.0.1:${RHEA_HOST_PORT:-3001}:3001"
     depends_on:
       postgres:
         condition: service_healthy
