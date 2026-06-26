@@ -1,0 +1,34 @@
+# apecx network configuration — ports + hosts. Copy to ~/.apecx/config.yml and edit.
+#   mkdir -p ~/.apecx && cp this-file ~/.apecx/config.yml
+#
+# Values here take precedence over the built-in defaults; a CLI flag (e.g. `apecx-mcp --port`)
+# overrides the config. There is NO env var for these settings — this file is the single source.
+# Override only the keys you need; omitted keys fall back to the defaults shown below.
+# Point apecx at a different file with `apecx-mcp --config <path>` or $APECX_CONFIG.
+
+# The MCP server's HTTP bind (streamable-http / sse). Use host 0.0.0.0 to accept remote
+# connections (loopback-only by default). The port MUST differ from control_plane.port.
+mcp:
+  host: 127.0.0.1
+  port: 8001
+
+# The Control Plane (run-store + state backend) the MCP server health-checks and POSTs to.
+# `apecx-mcp` autostarts it locally unless you run `apecx-cp serve` yourself.
+control_plane:
+  host: 127.0.0.1
+  port: 8000
+
+# The Rhea MCP worker (Galaxy bio-tools). apecx derives RHEA_MCP_URL from these at startup.
+rhea:
+  host: localhost
+  port: 3001
+
+# Container backend HOST ports for the deploy/ server stack. `install-server.sh` reads these to
+# generate deploy/.env (docker compose interpolates env vars, not YAML). The bind host stays
+# 127.0.0.1 in the compose by design — these backends are unauthenticated, so loopback only.
+backends:
+  postgres_port: 5435
+  redis_port: 6379
+  minio_port: 9000
+  minio_console_port: 9001
+  ollama_port: 11434

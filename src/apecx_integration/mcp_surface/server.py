@@ -59,6 +59,12 @@ from apecx_integration.mcp_surface.locus import (
     resolve_locus,
     set_active_locus,
 )
+from apecx_integration.mcp_surface.network_config import (
+    NetworkConfig,
+    get_network_config,
+    load_network_config,
+    set_network_config,
+)
 from apecx_integration.mcp_surface.tools import (
     database_tools,
 )
@@ -449,8 +455,8 @@ def _autostart_backend(base_url: str) -> subprocess.Popen[bytes] | None:
     if host not in {"127.0.0.1", "localhost", "::1"}:
         log.error(
             "MCP autostart: refusing to spawn backend for "
-            "non-loopback URL %s. Configure APECX_CONTROL_PLANE_URL "
-            "to a loopback address, or start the backend manually "
+            "non-loopback URL %s. Set control_plane.host to a loopback "
+            "address in your apecx config, or start the backend manually "
             "and set APECX_MCP_AUTOSTART_BACKEND=0.",
             base_url,
         )
@@ -589,7 +595,7 @@ async def _verify_control_plane_reachable() -> None:
         log.info("MCP startup: APECX_MCP_SKIP_HEALTHCHECK=1, skipping CP reachability check.")
         return
 
-    base_url = os.environ.get("APECX_CONTROL_PLANE_URL", "http://localhost:8000")
+    base_url = get_network_config().control_plane_url
 
     if await _ping_control_plane(base_url):
         log.info("MCP startup: Control Plane at %s reachable.", base_url)
@@ -936,10 +942,12 @@ _check_synonym_dict_or_warn = _ensure_synonym_dict_or_warn
 
 
 _HELP_EPILOG = """\
-Environment variables (honored at startup):
+Ports + hosts come from the centralized config file (--config / $APECX_CONFIG /
+~/.apecx/config.yml; built-in defaults apply when absent). Set mcp.host/mcp.port and
+control_plane.host/control_plane.port there — there are NO env vars for them. See the
+packaged config.yml.example.
 
-  APECX_CONTROL_PLANE_URL      Override the Control Plane base URL.
-                               Default: http://localhost:8000
+Environment variables (honored at startup):
 
   APECX_MCP_SKIP_HEALTHCHECK   When set to "1", skip the Control
                                Plane reachability check at startup.
@@ -1044,21 +1052,19 @@ def _build_arg_parser():
             "MCP transport. 'stdio' (default) — for Claude Desktop / IDE clients that spawn the "
             "server locally. 'streamable-http' — serve over HTTP at /mcp, REQUIRED by ChatGPT "
             "and for remote/server deployment (see `apecx-setup chatgpt`). 'sse' — legacy "
-            "HTTP+SSE transport. (For HTTP transports set the bind address with --host/--port or "
-            "$APECX_MCP_HOST/$APECX_MCP_PORT.)"
+            "HTTP+SSE transport. (For HTTP transports set the bind address with --host/--port, or "
+            "mcp.host/mcp.port in ~/.apecx/config.yml.)"
         ),
     )
-    # HTTP-transport bind address. apecx owns this resolution rather than relying on FastMCP's
-    # own $FASTMCP_HOST/$FASTMCP_PORT binding, which is version-fragile and was observed NOT to
-    # take effect in a real server deployment. Defaults are None → leave FastMCP's own defaults
-    # (0.0.0.0:8000) untouched. Ignored for stdio (no socket).
+    # HTTP-transport bind address. apecx owns this resolution (vs FastMCP's version-fragile
+    # $FASTMCP_HOST/$FASTMCP_PORT, observed NOT to take effect in a real deployment): a flag wins,
+    # else the config's mcp.host/mcp.port (defaults 127.0.0.1 / 8001). Ignored for stdio (no socket).
     parser.add_argument(
         "--host",
         default=None,
         help=(
-            "Bind address for HTTP transports (streamable-http / sse). Falls back to "
-            "$APECX_MCP_HOST, then FastMCP's default. Use 0.0.0.0 to accept remote connections. "
-            "Ignored for stdio."
+            "Bind address for HTTP transports (streamable-http / sse). Defaults to mcp.host in the "
+            "apecx config (127.0.0.1). Use 0.0.0.0 to accept remote connections. Ignored for stdio."
         ),
     )
     parser.add_argument(
@@ -1066,61 +1072,57 @@ def _build_arg_parser():
         type=int,
         default=None,
         help=(
-            "Port for HTTP transports (streamable-http / sse). Falls back to $APECX_MCP_PORT, "
-            "then FastMCP's default (8000). Pick a port distinct from the control plane (8000), "
-            "e.g. 8001. Ignored for stdio."
+            "Port for HTTP transports (streamable-http / sse). Defaults to mcp.port in the apecx "
+            "config (8001), distinct from the control plane (8000). Ignored for stdio."
+        ),
+    )
+    parser.add_argument(
+        "--config",
+        default=None,
+        help=(
+            "Path to the apecx network config (ports + hosts). Defaults to $APECX_CONFIG, then "
+            "~/.apecx/config.yml; built-in defaults apply when absent. See the packaged "
+            "config.yml.example."
         ),
     )
     return parser
 
 
-# The apecx MCP HTTP server defaults to 8001 — DISTINCT from the control plane (8000), which the
-# MCP autostarts + POSTs to. They are different services; co-locating both on 8000 is the shipped
-# footgun the collision guard below closes (deploy/SERVER_DEPLOYMENT.md).
-_DEFAULT_MCP_HTTP_PORT = 8001
+def _resolve_http_host_port(
+    args: argparse.Namespace, config: NetworkConfig | None = None
+) -> tuple[str, int]:
+    """Resolve the HTTP-transport bind (host, port) with precedence **CLI flag > config > built-in**.
 
+    There is NO env var for these — the centralized config file (``~/.apecx/config.yml``, see
+    ``network_config``) is the single source; ``mcp.host`` / ``mcp.port`` carry the defaults
+    (127.0.0.1 / 8001, the latter distinct from the control plane's 8000). apecx resolves the bind
+    itself rather than deferring to FastMCP's ``$FASTMCP_HOST/$FASTMCP_PORT``, which proved
+    unreliable in a real deployment (the operator had to monkeypatch ``server.settings`` by hand).
 
-def _resolve_http_host_port(args: argparse.Namespace) -> tuple[str | None, int]:
-    """Resolve the HTTP-transport bind (host, port) with precedence flag > env > default.
-
-    Host: ``None`` means "leave FastMCP's own default (127.0.0.1) untouched". Port: defaults to
-    ``_DEFAULT_MCP_HTTP_PORT`` (8001) when neither flag nor env is set — apecx owns this rather than
-    deferring to FastMCP's 8000, which collides with the control plane. apecx resolving the bind
-    itself (vs $FASTMCP_HOST/$FASTMCP_PORT) proved necessary in a real server deployment (the
-    operator had to monkeypatch ``server.settings`` by hand).
-
-    FAIL-LOUD on a malformed $APECX_MCP_PORT — a typo'd port silently falling back to a default is
-    exactly the kind of silent misconfiguration to surface.
+    The config port is range-validated by the pydantic model; an explicit ``--port`` is range-checked
+    here so a bad CLI value still FAILS LOUD instead of binding nonsense.
     """
-    host = args.host if args.host else os.environ.get("APECX_MCP_HOST") or None
-
-    port: int | None = args.port
-    if port is None:
-        env_port = os.environ.get("APECX_MCP_PORT")
-        if env_port:
-            try:
-                port = int(env_port)
-            except ValueError as exc:
-                raise ValueError(f"APECX_MCP_PORT must be an integer, got {env_port!r}") from exc
-        else:
-            port = _DEFAULT_MCP_HTTP_PORT
+    cfg = config or get_network_config()
+    host = args.host or cfg.mcp.host
+    port = args.port if args.port is not None else cfg.mcp.port
     if not (1 <= port <= 65535):
         raise ValueError(f"port must be in 1..65535, got {port}")
     return host, port
 
 
-def _assert_mcp_port_distinct_from_control_plane(http_host: str | None, http_port: int) -> None:
+def _assert_mcp_port_distinct_from_control_plane(
+    http_host: str, http_port: int, config: NetworkConfig | None = None
+) -> None:
     """FAIL-LOUD (before the boot) when the MCP HTTP bind collides with the local control-plane port.
 
-    The MCP server autostarts + POSTs to the control plane (``$APECX_CONTROL_PLANE_URL``, default
-    ``localhost:8000``). If the MCP HTTP transport binds that same local port, uvicorn cannot bind
-    it — but only AFTER a full ~30s boot, as a cryptic "address already in use" that also tears down
-    the autostarted control plane. They are different services and must use different ports
+    The MCP server autostarts + POSTs to the control plane (config ``control_plane.host/port``,
+    default ``127.0.0.1:8000``). If the MCP HTTP transport binds that same local port, uvicorn cannot
+    bind it — but only AFTER a full ~30s boot, as a cryptic "address already in use" that also tears
+    down the autostarted control plane. They are different services and must use different ports
     (deploy/SERVER_DEPLOYMENT.md); surface it instantly with an actionable message.
 
     Only a LOCAL collision counts: a remote control plane (non-loopback host) or an MCP bound to a
-    specific non-loopback interface does not contend for the same socket. The CP port is read
-    dynamically, so a CP relocated to another loopback port via the env var is still checked.
+    specific non-loopback interface does not contend for the same socket.
 
     ``_LOOPBACK`` deliberately includes ``0.0.0.0`` — a wildcard bind contends with a loopback one
     (so it is broader than the autostart-refusal set near the top of this module, which omits it).
@@ -1128,18 +1130,18 @@ def _assert_mcp_port_distinct_from_control_plane(http_host: str | None, http_por
     MCP host vs a ``0.0.0.0``-bound CP (they DO contend), and ``::1`` vs ``127.0.0.1`` (different
     address families that do NOT contend — this over-fires, erring toward a clear fail-fast).
     """
-    cp = urlparse(os.environ.get("APECX_CONTROL_PLANE_URL", "http://localhost:8000"))
-    cp_host = (cp.hostname or "127.0.0.1").lower()
-    cp_port = cp.port or 8000
-    mcp_host = (http_host or "127.0.0.1").lower()
+    cfg = config or get_network_config()
+    cp_host = cfg.control_plane.host.lower()
+    cp_port = cfg.control_plane.port
+    mcp_host = http_host.lower()
     _LOOPBACK = {"127.0.0.1", "localhost", "::1", "0.0.0.0"}
     if http_port == cp_port and cp_host in _LOOPBACK and mcp_host in _LOOPBACK:
         raise ValueError(
             f"MCP HTTP port {http_port} collides with the control plane "
-            f"(APECX_CONTROL_PLANE_URL={cp.geturl()}). The MCP server and the control plane are "
-            f"different services and must use different ports — set the MCP port "
-            f"(--port {http_port + 1} or $APECX_MCP_PORT={http_port + 1}), or move the control "
-            f"plane. See deploy/SERVER_DEPLOYMENT.md."
+            f"(control_plane.port={cp_port} in your apecx config). The MCP server and the control "
+            f"plane are different services and must use different ports — set mcp.port in the config "
+            f"(or pass --port {http_port + 1}) to a distinct value, or move the control plane. "
+            f"See deploy/SERVER_DEPLOYMENT.md."
         )
 
 
@@ -1170,6 +1172,12 @@ def main(argv: list[str] | None = None) -> None:
 
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 
+    # Load the centralized network config (precedence CLI --config > $APECX_CONFIG >
+    # ~/.apecx/config.yml > built-in defaults) and set it process-wide so every consumer reads ONE
+    # source. A malformed config / unknown key FAILS LOUD here, before the boot.
+    network_config = load_network_config(args.config)
+    set_network_config(network_config)
+
     # E4-1a — durable HITL design approvals by default for the long-lived server: persist
     # issued/approved tokens so they survive a restart. Done in the entry point (NOT
     # build_server, which tests call) so unit tests stay in-memory + pollution-free. An
@@ -1190,8 +1198,8 @@ def main(argv: list[str] | None = None) -> None:
     http_host: str | None = None
     http_port: int | None = None
     if args.transport != "stdio":
-        http_host, http_port = _resolve_http_host_port(args)
-        _assert_mcp_port_distinct_from_control_plane(http_host, http_port)
+        http_host, http_port = _resolve_http_host_port(args, network_config)
+        _assert_mcp_port_distinct_from_control_plane(http_host, http_port, network_config)
 
     asyncio.run(_verify_control_plane_reachable())
     _check_data_root_or_warn()

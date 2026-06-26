@@ -1,9 +1,10 @@
 """Unit tests for apecx-mcp HTTP-transport host/port resolution.
 
 The MCP server's HTTP bind address (for streamable-http / sse) is resolved by
-``_resolve_http_host_port`` with precedence: CLI flag > env var > default. The port
-defaults to 8001 (apecx-owned, distinct from the control plane on 8000); the host is
-left None (FastMCP's 127.0.0.1) when unset. apecx owns this rather than deferring to
+``_resolve_http_host_port`` with precedence: **CLI flag > config > built-in**. There is
+NO env layer — the centralized YAML config (``network_config.NetworkConfig``) is the
+single source; ``mcp.host`` / ``mcp.port`` carry the defaults (127.0.0.1 / 8001, the
+port distinct from the control plane on 8000). apecx owns this rather than deferring to
 FastMCP's $FASTMCP_HOST/$FASTMCP_PORT binding, which proved unreliable in a real
 server deployment (the operator had to monkeypatch ``server.settings`` by hand).
 ``_assert_mcp_port_distinct_from_control_plane`` then rejects a local MCP/CP port
@@ -21,6 +22,11 @@ import argparse
 
 import pytest
 
+from apecx_integration.mcp_surface.network_config import (
+    ControlPlaneConfig,
+    MCPConfig,
+    NetworkConfig,
+)
 from apecx_integration.mcp_surface.server import (
     _assert_mcp_port_distinct_from_control_plane,
     _build_arg_parser,
@@ -32,49 +38,51 @@ def _ns(host=None, port=None) -> argparse.Namespace:
     return argparse.Namespace(host=host, port=port)
 
 
-def test_flag_wins_over_env(monkeypatch):
-    monkeypatch.setenv("APECX_MCP_HOST", "127.0.0.1")
-    monkeypatch.setenv("APECX_MCP_PORT", "9999")
-    host, port = _resolve_http_host_port(_ns(host="0.0.0.0", port=8001))
+# ---------------------------------------------------------------------------
+# _resolve_http_host_port — precedence CLI flag > config > built-in
+# ---------------------------------------------------------------------------
+
+
+def test_flag_wins_over_config():
+    """An explicit --port beats the config's mcp.port."""
+    host, port = _resolve_http_host_port(_ns(port=9090), NetworkConfig())
+    assert port == 9090
+    # host falls back to the config default (no --host passed)
+    assert host == "127.0.0.1"
+
+
+def test_config_default_when_no_flag():
+    """With no flag, the bind comes from the config defaults (127.0.0.1 / 8001)."""
+    host, port = _resolve_http_host_port(_ns(), NetworkConfig())
+    assert host == "127.0.0.1"
+    assert port == 8001
+
+
+def test_config_override_used_when_no_flag():
+    """A config that sets mcp.host/mcp.port supplies the bind when no flag is passed."""
+    cfg = NetworkConfig(mcp=MCPConfig(host="0.0.0.0", port=9001))
+    host, port = _resolve_http_host_port(_ns(), cfg)
     assert host == "0.0.0.0"
-    assert port == 8001
+    assert port == 9001
 
 
-def test_env_used_when_no_flag(monkeypatch):
-    monkeypatch.setenv("APECX_MCP_HOST", "0.0.0.0")
-    monkeypatch.setenv("APECX_MCP_PORT", "8001")
-    host, port = _resolve_http_host_port(_ns())
+def test_flag_host_beats_config_host():
+    """An explicit --host beats the config's mcp.host."""
+    cfg = NetworkConfig(mcp=MCPConfig(host="127.0.0.1", port=8001))
+    host, port = _resolve_http_host_port(_ns(host="0.0.0.0"), cfg)
     assert host == "0.0.0.0"
-    assert port == 8001
+    assert port == 8001  # port falls back to config default
 
 
-def test_none_when_neither(monkeypatch):
-    """With no flag/env, host stays None but port defaults to the apecx MCP HTTP port 8001."""
-    monkeypatch.delenv("APECX_MCP_HOST", raising=False)
-    monkeypatch.delenv("APECX_MCP_PORT", raising=False)
-    host, port = _resolve_http_host_port(_ns())
-    assert host is None
-    assert port == 8001
-
-
-def test_partial_host_only(monkeypatch):
-    """A host without a port still gets the apecx MCP HTTP default port 8001."""
-    monkeypatch.delenv("APECX_MCP_PORT", raising=False)
-    host, port = _resolve_http_host_port(_ns(host="0.0.0.0"))
-    assert host == "0.0.0.0"
-    assert port == 8001
-
-
-def test_bad_env_port_fails_loud(monkeypatch):
-    monkeypatch.setenv("APECX_MCP_PORT", "not-a-number")
-    with pytest.raises(ValueError, match="APECX_MCP_PORT must be an integer"):
-        _resolve_http_host_port(_ns())
-
-
-def test_out_of_range_port_fails_loud(monkeypatch):
-    monkeypatch.delenv("APECX_MCP_PORT", raising=False)
+def test_out_of_range_cli_port_fails_loud():
+    """An explicit --port outside 1..65535 is range-checked at the resolver and FAILS LOUD."""
     with pytest.raises(ValueError, match="1..65535"):
-        _resolve_http_host_port(_ns(port=70000))
+        _resolve_http_host_port(_ns(port=70000), NetworkConfig())
+
+
+# ---------------------------------------------------------------------------
+# _build_arg_parser
+# ---------------------------------------------------------------------------
 
 
 def test_arg_parser_accepts_host_port():
@@ -94,26 +102,28 @@ def test_arg_parser_defaults_host_port_none():
     assert args.port is None
 
 
-def test_guard_default_mcp_port_vs_default_cp_no_raise(monkeypatch):
-    """The new default (8001) does NOT collide with the control plane's default 8000."""
-    monkeypatch.delenv("APECX_CONTROL_PLANE_URL", raising=False)
-    _assert_mcp_port_distinct_from_control_plane(None, 8001)
+# ---------------------------------------------------------------------------
+# _assert_mcp_port_distinct_from_control_plane — reads config.control_plane
+# ---------------------------------------------------------------------------
 
 
-def test_guard_explicit_8000_vs_default_cp_raises(monkeypatch):
+def test_guard_default_mcp_port_vs_default_cp_no_raise():
+    """The default MCP port (8001) does NOT collide with the control plane's default 8000."""
+    _assert_mcp_port_distinct_from_control_plane("127.0.0.1", 8001, NetworkConfig())
+
+
+def test_guard_explicit_8000_vs_default_cp_raises():
     """Binding MCP HTTP on the CP's loopback port 8000 fails loud before the boot."""
-    monkeypatch.delenv("APECX_CONTROL_PLANE_URL", raising=False)
     with pytest.raises(ValueError, match="collides with the control plane"):
-        _assert_mcp_port_distinct_from_control_plane(None, 8000)
+        _assert_mcp_port_distinct_from_control_plane("127.0.0.1", 8000, NetworkConfig())
 
 
-def test_guard_remote_cp_same_port_no_raise(monkeypatch):
+def test_guard_remote_cp_same_port_no_raise():
     """A REMOTE control plane (non-loopback host) on :8000 does not contend for the local socket."""
-    monkeypatch.setenv("APECX_CONTROL_PLANE_URL", "http://prod-cp.internal:8000")
-    _assert_mcp_port_distinct_from_control_plane(None, 8000)
+    cfg = NetworkConfig(control_plane=ControlPlaneConfig(host="prod-cp.internal", port=8000))
+    _assert_mcp_port_distinct_from_control_plane("127.0.0.1", 8000, cfg)
 
 
-def test_guard_specific_mcp_interface_same_port_no_raise(monkeypatch):
+def test_guard_specific_mcp_interface_same_port_no_raise():
     """An MCP bound to a specific non-loopback interface does not collide with the loopback CP."""
-    monkeypatch.delenv("APECX_CONTROL_PLANE_URL", raising=False)
-    _assert_mcp_port_distinct_from_control_plane("10.0.0.5", 8000)
+    _assert_mcp_port_distinct_from_control_plane("10.0.0.5", 8000, NetworkConfig())

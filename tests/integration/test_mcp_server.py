@@ -307,14 +307,27 @@ def test_list_pending_approvals_tool(mcp_client):
 # ---------------------------------------------------------------------------
 
 
-def test_get_client_builds_from_env(monkeypatch):
+def test_get_client_builds_from_network_config():
+    """get_client() builds the ControlPlaneClient from the centralized network config's
+    control_plane_url (the APECX_CONTROL_PLANE_URL env knob was retired in the Phase-1
+    config refactor)."""
+    from apecx_integration.mcp_surface.network_config import (
+        ControlPlaneConfig,
+        NetworkConfig,
+        set_network_config,
+    )
     from apecx_integration.mcp_surface.tools._shared import get_client, set_client
 
     set_client(None)
-    monkeypatch.setenv("APECX_CONTROL_PLANE_URL", "http://example.invalid")
-    client = get_client()
-    assert client._base_url == "http://example.invalid"
-    set_client(None)
+    set_network_config(
+        NetworkConfig(control_plane=ControlPlaneConfig(host="example.invalid", port=8000))
+    )
+    try:
+        client = get_client()
+        assert client._base_url == "http://example.invalid:8000"
+    finally:
+        set_client(None)
+        set_network_config(None)
 
 
 # ---------------------------------------------------------------------------

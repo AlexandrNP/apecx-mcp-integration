@@ -1,7 +1,8 @@
 """MCP server startup-health-check tests.
 
 From the 2026-04-24 codebase audit §3.2. Pre-fix the lazy
-``get_client()`` meant a misconfigured ``APECX_CONTROL_PLANE_URL``
+``get_client()`` meant a misconfigured control-plane URL (now
+``control_plane.host/port`` in the centralized network config)
 only surfaced when a scientist invoked a tool. After the fix,
 ``server.main()`` calls ``_verify_control_plane_reachable()`` which
 hits ``/healthz`` synchronously and exits with code 2 if unreachable
@@ -26,6 +27,7 @@ import asyncio
 
 import httpx
 import pytest
+
 from apecx_integration.mcp_surface.tools import _shared
 
 

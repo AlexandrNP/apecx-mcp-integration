@@ -16,7 +16,7 @@ def test_apecx_mcp_supports_streamable_http_transport_for_chatgpt():
     parser = _build_arg_parser()
     # MINIMUM arguments: only --transport. --host/--port are OPTIONAL (default None → FastMCP's
     # own default applies); a ChatGPT user need not pass them. Server deployments override the
-    # bind via --host/--port or $APECX_MCP_HOST/$APECX_MCP_PORT (see deploy/SERVER_DEPLOYMENT.md).
+    # bind via --host/--port or mcp.host/mcp.port in ~/.apecx/config.yml (see deploy/SERVER_DEPLOYMENT.md).
     ns = parser.parse_args(["--transport", "streamable-http"])
     assert ns.transport == "streamable-http"
     assert ns.host is None and ns.port is None  # optional, unset unless explicitly bound

@@ -1,17 +1,15 @@
 """Shared plumbing for the MCP tool modules.
 
-Each tool module gets a lazily-initialized ``ControlPlaneClient``
-built from ``APECX_CONTROL_PLANE_URL`` (default
-``http://localhost:8000``). The server's ``main`` entry point wires
-the tools in; tests inject a client via ``set_client`` to bypass
-env-var lookup.
+Each tool module gets a lazily-initialized ``ControlPlaneClient`` built from the centralized
+network config's ``control_plane_url`` (default ``http://127.0.0.1:8000``; see
+``mcp_surface.network_config``). The server's ``main`` entry point wires the tools in; tests
+inject a client via ``set_client`` to bypass the config lookup.
 
 Kept tiny on purpose — the tools are one-line delegations.
 """
 
 from __future__ import annotations
 
-import os
 from uuid import UUID
 
 from apecx_integration.mcp_surface.control_plane_client import (
@@ -29,13 +27,12 @@ def set_client(client: ControlPlaneClient | None) -> None:
 
 
 def get_client() -> ControlPlaneClient:
-    """Return the injected client, or build one lazily from env."""
+    """Return the injected client, or build one lazily from the centralized network config."""
     global _client
     if _client is None:
-        base_url = os.environ.get(
-            "APECX_CONTROL_PLANE_URL", "http://localhost:8000"
-        )
-        _client = ControlPlaneClient(base_url)
+        from apecx_integration.mcp_surface.network_config import get_network_config
+
+        _client = ControlPlaneClient(get_network_config().control_plane_url)
     return _client
 
 
