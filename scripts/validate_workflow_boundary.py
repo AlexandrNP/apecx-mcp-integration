@@ -70,6 +70,16 @@ _PLACEHOLDERS = (
 )
 
 
+def _placeholder_hits(md_l: str) -> list[str]:
+    """Placeholder strings present in the report as STANDALONE tokens (word-boundary match).
+
+    A bare ``p in md_l`` substring test false-flags 'n/a' INSIDE legitimate text: 'protei[n/a]ntigen'
+    and strain names like 'chicke[n/A]kita' / 'wigeo[n/A]ichi' (the influenza/norovirus C1 false
+    positive caught 2026-06-26). The (?<!\\w)…(?!\\w) guards require non-word chars on both sides so
+    only a genuine standalone placeholder counts."""
+    return [p for p in _PLACEHOLDERS if re.search(rf"(?<!\w){re.escape(p)}(?!\w)", md_l)]
+
+
 async def run_one(virus: str, protein: str | None = None) -> tuple[RecordingCtx, dict]:
     from apecx_integration.mcp_surface.locus import ExecutionLocus, set_active_locus
     from apecx_integration.mcp_surface.tools.eo_primitives import run_workflow
@@ -96,7 +106,7 @@ def assess(ctx: RecordingCtx, result: dict) -> dict:
     return {
         "C1_status": result.get("status"),
         "C1_error": result.get("error"),
-        "C1_placeholder_hits": [p for p in _PLACEHOLDERS if p in md_l],
+        "C1_placeholder_hits": _placeholder_hits(md_l),
         "C2_stages_streamed": len(stage_logs),
         "C2_progress_pings": len(ctx.progress),
         "C2_report_has_steps_section": bool(re.search(r"##.*step", md_l)),
