@@ -86,6 +86,52 @@ def test_non_taxon_locked_hits_are_dropped_not_rendered(tmp_path, monkeypatch):
     )  # the specific note, not the generic
 
 
+def test_species_name_from_dict_resolves_label(monkeypatch):
+    """The taxon_id -> canonical species label helper: hit returns the label; a miss / bad input /
+    outage returns None (never raises — a scope lookup must not break the structural leg)."""
+
+    class _Entry:
+        canonical_label = "Human immunodeficiency virus 1"
+
+    class _Idx:
+        def lookup_by_iri(self, iri):
+            return _Entry() if iri.endswith("NCBITaxon_11676") else None
+
+    monkeypatch.setattr(
+        "apecx_integration.synonym_dictionary.loader.get_dictionary_index",
+        lambda: (_Idx(), None),
+    )
+    assert mod._species_name_from_dict(11676) == "Human immunodeficiency virus 1"
+    assert mod._species_name_from_dict("11676") == "Human immunodeficiency virus 1"
+    assert mod._species_name_from_dict(99999999) is None  # dict miss
+    assert mod._species_name_from_dict("not-an-int") is None  # bad input
+
+
+def test_dict_routing_taxon_locks_arbitrary_virus(tmp_path, monkeypatch):
+    """Regression (SARS/HIV/Ebola, 2026-06-27): an arbitrary virus passed by taxon_id with NO
+    resolved_species_name and NOT in the curated map now taxon-locks — the step resolves taxon_id ->
+    canonical name via the dictionary so the facet pre-pass finds the organism (these used to get
+    ZERO structures and silently degrade)."""
+    step = _stage(tmp_path)
+    step._publishers = {"pdb": "RCSB PDB"}
+    monkeypatch.setattr(
+        mod, "_species_name_from_dict", lambda tid: "Human immunodeficiency virus 1"
+    )
+    monkeypatch.setattr(
+        "apecx_integration.agents.globus_search.client.facet",
+        lambda *a, **k: [("Human immunodeficiency virus 1", 9)],
+    )
+    monkeypatch.setattr(
+        "apecx_integration.agents.globus_search.client.search",
+        lambda *a, **k: [{"subject": "pdb:1CE0", "content": {"title": "HIV gp120"}, "score": None}],
+    )
+    out = asyncio.run(
+        step.process({"query": "HIV-1 gp120 epitopes", "taxon_id": 11676, "globus_results": []})
+    )
+    assert out["structural_note"] is None  # taxon-locked, NOT degraded
+    assert any(r.get("subject") == "pdb:1CE0" for r in out["structural_records"])
+
+
 def test_globus_outage_is_loud_and_distinct_from_no_hit(tmp_path, monkeypatch):
     """A Globus failure sets a DIFFERENT loud note ('unavailable') — not a no-hit."""
     step = _stage(tmp_path)

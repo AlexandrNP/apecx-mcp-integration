@@ -137,9 +137,15 @@ SARS-CoV-2 + influenza A to `_TAXON_SPECIES`, bridging taxon_id → the FULL PDB
 verified live: SARS → 16 real structures `6XEY/7VHN/8G70/7TPI`, note=None, excludes SARS-CoV-1; "influenza a
 virus" → the A-variants not the 84-org A/B/C mix). Regression test
 `test_structural_query_resolution.py::test_curated_bridge_resolves_sars_and_influenza_by_taxon_id`. **Deeper
-follow-up (NOT done):** the general gap is `resolved_species_name` being inconsistently populated for arbitrary
-taxa — the dict HAS taxon 2697049, so the structural leg should route taxon_id → name via the dict (the docstring's
-anticipated "lookup_by_iri" path), which would cover ALL arbitrary viruses without per-virus curation.
+follow-up — ✅ NOW DONE (general root-cause fix):** the general gap was `resolved_species_name` (the upstream
+BV-BRC canonical_label) not being forwarded for arbitrary directly-passed taxa. The dict HAS every taxon's label
+(`entries.canonical_label`, e.g. 2697049 → "Severe acute respiratory syndrome coronavirus 2"). `StructuralEvidenceStep`
+now routes taxon_id → NCBITaxon IRI → `lookup_by_iri().canonical_label` (`_species_name_from_dict`, the docstring's
+anticipated path) when `resolved_species_name` is absent — covering ALL dict-backed viruses, not just curated ones.
+Verified live through the real step: **HIV-1 (taxon 11676, non-curated) → 16 real structures `1CE0/2NXY/1UTS`** (was
+0); Ebola resolves too. Degrade-loud (any dict miss/outage → the existing named degrade). The curated `_TAXON_SPECIES`
+SARS/influenza entries are now superseded on the normal path, retained only as a no-dict fallback. Regression tests
+`test_species_name_from_dict_resolves_label` + `test_dict_routing_taxon_locks_arbitrary_virus`.
 
 Conclusion: the PyMOL render + SASA conservation plot **actually reach the host LLM as inline images
 after re-ingestion** — the loop's core directive, proven on real data. (Script:

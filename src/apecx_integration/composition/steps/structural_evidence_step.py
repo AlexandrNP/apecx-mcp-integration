@@ -45,6 +45,29 @@ from pydantic import ConfigDict, Field, model_validator
 
 log = logging.getLogger(__name__)
 
+
+def _species_name_from_dict(taxon_id: int | str) -> str | None:
+    """Resolve an NCBI taxon_id -> canonical species label via the synonym dictionary (the
+    ``lookup_by_iri`` path the resolver docstring anticipates), so the structural facet can taxon-lock
+    an arbitrary virus the upstream resolver did not name. Returns None on any miss / outage — a scope
+    lookup must NEVER break the structural leg (it falls through to the existing named degrade)."""
+    try:
+        tid = int(str(taxon_id).strip())
+    except (TypeError, ValueError):
+        return None
+    try:
+        from apecx_integration.synonym_dictionary.loader import get_dictionary_index
+
+        index_obj, _err = get_dictionary_index()
+        if index_obj is None:
+            return None
+        entry = index_obj.lookup_by_iri(f"http://purl.obolibrary.org/obo/NCBITaxon_{tid}")
+        label = getattr(entry, "canonical_label", None) if entry is not None else None
+        return label if isinstance(label, str) and label.strip() else None
+    except Exception:  # noqa: BLE001 — dict unavailable/offline -> fall back to the named degrade
+        return None
+
+
 # Verified 2026-06-12 (Phase 0 probe of e74bf12a): publisher.name is a clean,
 # server-side-filterable discriminator. PDB → 27,407 records, EMDB → 8,360.
 _DEFAULT_PUBLISHERS: dict[str, str] = {
@@ -160,6 +183,15 @@ class StructuralEvidenceStep(BaseStep):
         # SARS-CoV-2 / influenza / HIV whose taxon_id _TAXON_SPECIES does not carry.
         taxon_id = input_data.get("taxon_id")
         species_name = input_data.get("resolved_species_name")
+        # When the upstream resolver did NOT carry a canonical name (common when an arbitrary virus is
+        # passed by taxon_id — SARS-CoV-2 / HIV / Ebola: their canonical_label is not forwarded as
+        # resolved_species_name in every run), resolve taxon_id -> canonical species name via the
+        # synonym dictionary so the PDB/EMDB facet can taxon-lock. WITHOUT this the structural leg
+        # silently degraded to "no species" and returned ZERO structures for any non-curated virus
+        # (the SARS-CoV-2 bug, 2026-06-27). Best-effort: a dict miss/outage leaves species_name unset
+        # so the existing named-degrade path still fires — never a crash.
+        if not (isinstance(species_name, str) and species_name.strip()) and taxon_id is not None:
+            species_name = _species_name_from_dict(taxon_id) or species_name
 
         bundle = dict(input_data)  # shallow copy; we extend globus_results + add keys
 

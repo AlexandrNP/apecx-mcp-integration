@@ -48,12 +48,15 @@ _TAXON_SPECIES: dict[int, tuple[str, str]] = {
     11082: ("West Nile virus", "west nile"),
     64320: ("Zika virus", "zika"),
     12637: ("Dengue virus", "dengue"),
-    # Major viruses NOT named "<X> virus" (so the query-text parser can't resolve them) whose
-    # taxon_id also isn't reliably carried as resolved_species_name in every run — e.g. SARS-CoV-2
-    # silently got NO structural evidence (the structural leg degraded; a real Mayaro-class miss).
-    # Bridge taxon_id -> the FULL PDB scientific name (the facet matches it as a substring). Verified
-    # live on the aggregate index: SARS-CoV-2 -> 1 org (finds 6X2A/6X2B, excludes SARS-CoV-1);
-    # "influenza a virus" -> the 5 A-variants, NOT the 84-org "influenza" A/B/C mix.
+    # SARS-CoV-2 + influenza A — major viruses NOT named "<X> virus" (the query-text parser can't
+    # resolve them) whose taxon_id wasn't reliably carried as resolved_species_name, so SARS-CoV-2
+    # silently got NO structural evidence. SUPERSEDED on the normal workflow path by the dictionary
+    # taxon_id -> canonical_label routing in StructuralEvidenceStep (_species_name_from_dict), which
+    # covers ALL dict-backed viruses; retained here only as a no-dict / unwarmed-singleton fallback
+    # for the two viruses that caused the incident. Do NOT grow this full-name set — add coverage via
+    # the dictionary instead. Full PDB scientific name (facet substring-match), verified live:
+    # SARS-CoV-2 -> 1 org (finds 6X2A/6X2B, excludes SARS-CoV-1); "influenza a virus" -> the 5
+    # A-variants, NOT the 84-org "influenza" A/B/C mix.
     2697049: (
         "Severe acute respiratory syndrome coronavirus 2",
         "severe acute respiratory syndrome coronavirus 2",
