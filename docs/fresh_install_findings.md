@@ -151,6 +151,35 @@ Conclusion: the PyMOL render + SASA conservation plot **actually reach the host 
 after re-ingestion** — the loop's core directive, proven on real data. (Script:
 `scratchpad/e2e_reingestion.py`; this is a manual e2e gated by Docker + network + the dict.)
 
+## Scientific-protein-name probes (2026-06-27) — entity recognition + decomposition
+
+Probed `viral_epitope_analysis` with SCIENTIFIC protein names (protease/kinase/neuraminidase/
+glycoprotein, not abbreviations), cross-referenced with the BV-BRC schema (`genome_feature
+select(product)`) + web search.
+
+- **REAL BUG FIXED — structural leg analyzed the WRONG protein.** With an explicit protein, the
+  structural record selector (`structural_reasoning_step.rank_structural_records`) let the
+  surface-antigen vocabulary OVERRIDE the requested protein: `_PROTEIN_WEIGHT=5.0` (one term) lost to
+  surface keywords ACCUMULATING at 2.0 each — so a "neuraminidase" query selected hemagglutinin
+  (`3GBN`, 8 surface keywords = 16 > 5) and a "main protease" query selected spike (`6WPS`), then
+  mapped the (correct-protein) conserved residues onto the WRONG structure → "all buried" garbage SASA.
+  Fix: `_PROTEIN_WEIGHT=100.0` (must exceed `len(_SURFACE_KEYWORDS)*_SURFACE_WEIGHT`) so an explicit
+  protein is categorically dominant; surface/internal vocab is now only a tie-breaker / the sole signal
+  when no protein is given. Verified on the real influenza corpus + a synthetic repro; preserves the
+  no-protein heuristic and the original CHIKV E1-vs-capsid-protease case. Regression
+  `test_ranking_explicit_protein_dominates_famous_surface_antigen`.
+- **By-design (NOT bugs):** `protein` is an optional CALLER param (the host LLM passes it), so query-ONLY
+  conservation degrading "no protein/antigen name on the query" is correct; the spike pick under
+  query-only was just the no-protein heuristic.
+- **Honest LIMITATION (BV-BRC annotation granularity):** polyprotein viruses (corona/flavi) annotate
+  ONLY the polyprotein, so mature scientific names can't match BV-BRC `product` — SARS-CoV-2 "main
+  protease" / dengue "NS3 protease" (and "spike" ≠ "surface glycoprotein") get the too-few-sequences
+  SUBSTITUTION (loud "Low confidence — auto-substituted 'surface glycoprotein'" caveat ✓). Segmented /
+  separate-gene viruses match cleanly (influenza `neuraminidase`, HIV-1 `protease`, HSV-1 `thymidine
+  kinase`). RESIDUAL (noted, not yet fixed): when conservation substitutes, the conservation FIGURE is
+  still labeled with the REQUESTED protein (e.g. `main_protease`) though it was computed on the
+  substitute — the text caveat covers it but the figure label is misleading to a weak host LLM.
+
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
    `apecx-mafft:7.505` built on first use via `ensure_docker_image_built`; the host

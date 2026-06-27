@@ -922,6 +922,27 @@ def test_ranking_no_signal_falls_back_to_search_rank():
     assert all(r["score"] == 0 for r in ranked)
 
 
+def test_ranking_explicit_protein_dominates_famous_surface_antigen():
+    """Regression (2026-06-27 protein probes): a record matching the EXPLICITLY requested protein must
+    outrank a famous surface antigen whose rich annotation hits many surface keywords. Before the fix a
+    'neuraminidase' query picked hemagglutinin (3GBN: many surface keywords = 16 > a single 5.0 protein
+    match) and a 'main protease' query picked spike — silently analyzing the WRONG protein."""
+    ha = _struct_rec(
+        "pdb:3GBN",
+        "Influenza hemagglutinin glycoprotein with a broadly neutralizing antibody Fab (fusion)",
+        ["ENVELOPE", "SURFACE", "GLYCOPROTEIN"],
+    )
+    na = _struct_rec("pdb:8YVN", "Neuraminidase of influenza A H3N2", [])
+    ranked = mod.rank_structural_records([ha, na], protein="neuraminidase")
+    assert ranked[0]["subject"] == "pdb:8YVN", (
+        "explicit protein must beat the famous surface antigen"
+    )
+    assert any("matches query protein" in r for r in ranked[0]["reasons"])
+    # …but with NO protein hint the surface antigen still wins (the heuristic is preserved as the
+    # sole signal / tie-breaker — only an EXPLICIT request overrides it).
+    assert mod.rank_structural_records([ha, na], protein=None)[0]["subject"] == "pdb:3GBN"
+
+
 def test_step_selects_surface_structure_not_first_by_rank(tmp_path, monkeypatch):
     """END-OF-STAGE proof (docker stubbed unavailable so it degrades but still records the
     chosen structure): the step picks the E1/E2 envelope record, NOT the rank-0 capsid."""

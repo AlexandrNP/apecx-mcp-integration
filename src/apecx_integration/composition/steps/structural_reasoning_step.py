@@ -128,11 +128,20 @@ _KIND_AU = "asymmetric_unit"
 # structural corpus returns several records for a virus we must NOT blindly take the
 # first by search rank — on CHIKV that picked 2CXD (capsid protease), an internal
 # protein, instead of the E1/E2 envelope glycoprotein an epitope map needs. We score
-# each record's DataCite title+subjects: (a) the query's ``protein`` term(s) dominate,
+# each record's DataCite title+subjects: (a) the query's ``protein`` term(s) DOMINATE,
 # (b) surface-antigen vocabulary boosts, (c) internal-protein vocabulary penalizes.
 # Ties keep the upstream search rank (so a no-signal corpus still falls back to "first
 # loadable").
-_PROTEIN_WEIGHT = 5.0
+#
+# _PROTEIN_WEIGHT must EXCEED the maximum surface accumulation
+# (len(_SURFACE_KEYWORDS) * _SURFACE_WEIGHT) so a record matching the EXPLICIT requested
+# protein always outranks a famous surface antigen whose rich annotation hits many surface
+# keywords. Otherwise a "neuraminidase" query picks hemagglutinin (3GBN: 8 surface keywords
+# = 16 > a single 5.0 protein match) and a "main protease" query picks spike — the workflow
+# silently analyzes the WRONG protein (verified 2026-06-27). The surface/internal vocabulary
+# is then only a TIE-BREAKER within the same protein-match tier (and the sole signal when no
+# protein is specified). 100.0 >> 13 * 2.0 = 26.
+_PROTEIN_WEIGHT = 100.0
 _SURFACE_WEIGHT = 2.0
 _INTERNAL_WEIGHT = 2.0
 # Generic tokens that, used as a protein term, would match almost every structural
