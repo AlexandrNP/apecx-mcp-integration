@@ -34,13 +34,15 @@ from nanobrain.library.runtime.docker_image_builder import (
 )
 from nanobrain.library.steps.tool_execution_step import ToolBackendAdapter, ToolBackendRegistry
 
-# PyMOL container artifacts (apecx-owned). Mirror structural_reasoning_step's resolution: the SASA helper
-# sits next to this module; the job script + Dockerfile live under <repo>/docker/pymol.
-_REPO_ROOT = Path(__file__).resolve().parents[4]
+# PyMOL container artifacts (apecx-owned), packaged INSIDE the wheel so they resolve in EVERY
+# install mode (editable / uv tool / pip wheel): the SASA helper sits next to this module, and the
+# job script + Dockerfile live in the _pymol_container/ build context next to it (shipped via the
+# pyproject ``**/_pymol_container/*`` package-data glob — a repo-root path does not survive a
+# non-editable install).
 _SASA_HELPER = Path(__file__).resolve().parent / "_pymol_sasa.py"
-_JOB_SCRIPT = _REPO_ROOT / "docker" / "pymol" / "_pymol_job.py"
-_DOCKERFILE = _REPO_ROOT / "docker" / "pymol" / "Dockerfile"
-_BUILD_CONTEXT = _REPO_ROOT / "docker" / "pymol"
+_BUILD_CONTEXT = Path(__file__).resolve().parent / "_pymol_container"
+_JOB_SCRIPT = _BUILD_CONTEXT / "_pymol_job.py"
+_DOCKERFILE = _BUILD_CONTEXT / "Dockerfile"
 _DEFAULT_IMAGE = "apecx-pymol:3.1.0"
 _KIND_ASSEMBLY = "assembly_1"
 

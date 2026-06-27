@@ -97,12 +97,13 @@ _INPUT_KEY = "reasoning_input"
 _STAGE = "structural_reasoning"
 _STAGE_ORDER = 3
 # The pure mapping/SASA helpers live in the package (host-importable); the headless
-# PyMOL job script is a CONTAINER artifact that lives with its Dockerfile under
-# ``docker/pymol/`` (it imports ``pymol2`` + ``_pymol_sasa``, neither resolvable in
-# the host venv). Both are copied into the per-run workdir mounted into the container.
+# PyMOL job script is a CONTAINER artifact that lives with its Dockerfile in the packaged
+# ``_pymol_container/`` build context next to this module (it imports ``pymol2`` + ``_pymol_sasa``,
+# neither resolvable in the host venv). Both are copied into the per-run workdir mounted into the
+# container. Packaged in-wheel (pyproject ``**/_pymol_container/*``) so it resolves on a uv-tool /
+# wheel install too — a repo-root path does not survive a non-editable install.
 _SASA_HELPER = Path(__file__).resolve().parent / "_pymol_sasa.py"
-_REPO_ROOT = Path(__file__).resolve().parents[4]
-_JOB_SCRIPT = _REPO_ROOT / "docker" / "pymol" / "_pymol_job.py"
+_JOB_SCRIPT = Path(__file__).resolve().parent / "_pymol_container" / "_pymol_job.py"
 # Host-side cache for immutable RCSB structure files (keyed by PDB id).
 _STRUCTURE_CACHE = Path(
     os.environ.get("APECX_PYMOL_STRUCTURE_CACHE", str(Path.home() / ".cache" / "apecx_pymol"))

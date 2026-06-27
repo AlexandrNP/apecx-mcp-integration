@@ -7,8 +7,10 @@
 # image with `docker run`, the host pre-fetches the immutable RCSB structure and
 # mounts it in, so the container itself needs NO network.
 #
-# Build (one-time, ~5 min on first build; the conda solve dominates):
-#   docker build -t apecx-pymol:3.1.0 -f docker/pymol/Dockerfile docker/pymol
+# Build (one-time, ~5 min on first build; the conda solve dominates) — normally via
+# `apecx-setup pymol`, or manually from this packaged build context:
+#   CTX=src/apecx_integration/composition/steps/_pymol_container
+#   docker build -t apecx-pymol:3.1.0 -f $CTX/Dockerfile $CTX
 #
 # Verify headless PyMOL works (with the same hardening flags the stage uses):
 #   docker run --rm --network none --cap-drop ALL \

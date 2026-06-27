@@ -14,7 +14,7 @@ steady state.
 ## Current gaps
 
 > **T-2026-06-17-01** (`tests/integration/test_structural_reasoning_pymol.py`)
-> — The PyMOL surface-visualization render path (`docker/pymol/_pymol_job.py`
+> — The PyMOL surface-visualization render path (`composition/steps/_pymol_container/_pymol_job.py`
 > `cmd.png(ray=1)` → PNG → `structural_reasoning_step.py` copies it to the
 > artifacts dir as `visualization_artifact`) has NO assertion. The gated test
 > (`APECX_PYMOL_DOCKER=1`) now exercises the render because `render_png` is

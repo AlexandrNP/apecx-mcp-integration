@@ -1318,10 +1318,12 @@ def _step_pymol() -> StepResult:
             f"image {_PYMOL_IMAGE} already present (APECX_PYMOL_REBUILD=1 to rebuild)",
         )
 
-    # docker/pymol/ lives at the apecx repo root. This module is at
-    # src/apecx_integration/cli/setup.py → parents[3] is the repo root.
-    repo_root = Path(__file__).resolve().parents[3]
-    pymol_ctx = repo_root / "docker" / "pymol"
+    # The PyMOL build context is packaged under composition/steps/_pymol_container/ so it resolves
+    # in EVERY install mode (editable / uv tool / wheel) — the old repo-root path was absent from a
+    # non-editable install, so ``apecx-setup pymol`` could not find the Dockerfile to build the image.
+    import apecx_integration.composition.steps as _steps
+
+    pymol_ctx = Path(_steps.__file__).resolve().parent / "_pymol_container"
     dockerfile = pymol_ctx / "Dockerfile"
     if not dockerfile.is_file():
         return StepResult(

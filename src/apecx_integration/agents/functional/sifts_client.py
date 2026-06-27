@@ -7,7 +7,7 @@ frames are present per mapping segment:
 - ``residue_number`` — PDBe label numbering.
 - ``author_residue_number`` — the AUTHOR (auth_seq_id) numbering.
 
-The PyMOL job (``docker/pymol/_pymol_job.py``) emits ``at.resi`` = ``auth_seq_id``, so the
+The PyMOL job (``composition/steps/_pymol_container/_pymol_job.py``) emits ``at.resi`` = ``auth_seq_id``, so the
 candidate epitope residues in ``structural_reasoning.exposed_residues[].resi`` are in the
 AUTHOR frame. The bridge MUST therefore use ``author_residue_number`` — NOT
 ``residue_number`` (and NOT RCSB ``aligned_regions``, which is label/entity numbering and

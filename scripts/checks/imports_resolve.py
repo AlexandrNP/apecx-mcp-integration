@@ -80,6 +80,12 @@ def check(target: Path) -> list[tuple[str, Path]]:
     for py in py_files:
         if "__pycache__" in py.parts:
             continue
+        # Container build-artifact scripts (``_pymol_container/_pymol_job.py``) are NEVER imported
+        # on the host — they are copied into a docker image and run there, so they import
+        # container-only modules (``pymol2``, the sibling ``_pymol_sasa`` copied in alongside).
+        # They ship as packaged build-context data, not host code; skip them in this host-import lint.
+        if "_pymol_container" in py.parts:
+            continue
         for mod in _collect_top_level_imports(py):
             per_module_first_seen.setdefault(mod, py)
 
@@ -101,7 +107,9 @@ def check(target: Path) -> list[tuple[str, Path]]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0] if __doc__ else None)
-    parser.add_argument("target", nargs="?", default="src", help="Directory to scan (default: src).")
+    parser.add_argument(
+        "target", nargs="?", default="src", help="Directory to scan (default: src)."
+    )
     args = parser.parse_args(argv)
 
     target = Path(args.target).resolve()
@@ -113,7 +121,11 @@ def main(argv: list[str] | None = None) -> int:
     if failures:
         print(f"Unresolvable imports in {target}:", file=sys.stderr)
         for mod, first_py in failures:
-            rel = first_py.relative_to(Path.cwd()) if first_py.is_relative_to(Path.cwd()) else first_py
+            rel = (
+                first_py.relative_to(Path.cwd())
+                if first_py.is_relative_to(Path.cwd())
+                else first_py
+            )
             print(f"  {mod!r}  (first seen in {rel})", file=sys.stderr)
         return 1
     return 0

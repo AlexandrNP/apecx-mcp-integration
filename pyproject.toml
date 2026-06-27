@@ -172,6 +172,12 @@ apecx_integration = [
     "**/*.ini",
     "**/*.txt",
     "_alembic/migrations/versions/*",
+    # The headless-PyMOL docker build context (Dockerfile + _pymol_job.py) must ship in the wheel so
+    # the SASA leg + ``apecx-setup pymol`` image build work on a uv-tool / wheel install (not just
+    # editable dev). This glob ships the no-extension Dockerfile; setuptools also packages
+    # _pymol_job.py (the dir is discovered as a namespace package), but it is NEVER imported on the
+    # host (it imports pymol2) — it is copied into the container workdir and run there.
+    "**/_pymol_container/*",
 ]
 
 [tool.ruff]

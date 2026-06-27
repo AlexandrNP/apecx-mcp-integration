@@ -295,7 +295,7 @@ Depends: E3-4.3.
 ### E3-7 — PyMOL image build in apecx-setup
 Depends: none (but UNBLOCKS E3-1 real-data verification). Parallel any time.
 - Files: `apecx-mcp-integration/src/apecx_integration/cli/setup.py` (+ a `_step_pymol`
-  or fold into infra): `docker build -t apecx-pymol:3.1.0 docker/pymol/`; idempotent
+  or fold into infra): `docker build -t apecx-pymol:3.1.0 src/apecx_integration/composition/steps/_pymol_container/`; idempotent
   (skip if image present); daemon-down → `skipped`.
 - Tests (Docker-gated): after the step `docker image inspect apecx-pymol:3.1.0`
   succeeds; a smoke `pymol2` import inside the image returns the pinned version 3.1.0
