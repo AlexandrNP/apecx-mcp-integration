@@ -203,6 +203,14 @@ select(product)`) + web search.
   emits needs_input. CONFIRMED e2e: HSV thymidine kinase → `status=needs_input`, reason
   `ambiguous_entity`, message naming the under-specified taxon + HSV-1/HSV-2. Regressions
   `test_underspecified_taxon_requests_clarification`, `test_forwards_upstream_clarification_control_transfer`.
+  VALIDATED: SARS-CoV-2 spike (specific, dict-resolved) stays `status=ok` — NO false trigger (the
+  detector fires ONLY on the LLM-fallback umbrella-taxon path; dict hits bypass it). SCOPE LIMIT
+  (documented, not a regression): the detector is NAME-based (umbrella markers), so it catches the
+  HSV-class ("...unknown type" taxon) but NOT a generic FAMILY name that the fallback resolves to one
+  specific member (e.g. bare "hepatitis virus" → a specific Hepatitis taxon → `ok`). Broader
+  candidate-set ambiguity detection (query is a family umbrella spanning multiple distinct species) is
+  a larger, false-trigger-prone follow-up (the BV-BRC candidate lists are polluted — EBV/bacteria/
+  plants appeared for HSV), deliberately deferred to keep the safe no-false-trigger guarantee.
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
