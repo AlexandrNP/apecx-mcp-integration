@@ -98,15 +98,17 @@ From Claude Desktop (or any MCP client that wires the
 `apecx-mcp` server):
 
 ```
-tool: execute_workflow
+tool: inspect_run
   arg: run_id = "<run id>"
 ```
 
-Returns the same terminal-state JSON. Tools available:
-``start_workflow`` / ``show_diff`` / ``execute_workflow`` /
-``list_pending_approvals`` / ``approve`` / ``reject`` / ``correct``
-/ ``estimate_cost`` / ``confirm_allocation`` /
-``export_hpc_bundle`` / ``ingest_hpc_bundle``.
+Returns the same terminal-state JSON. To run a workflow use ``run_workflow``;
+to compose a new one, ``compose_workflow``; for operator approval of a gated
+design, ``approve_design``. The full live surface (15 tools) is in
+``list_workflows`` / ``apecx_capabilities`` and ``docs/architecture.md`` §4.
+(The old ``start_workflow`` / ``show_diff`` / ``execute_workflow`` / approval /
+HPC tools were retired 2026-06-15 — ``run_workflow`` + ``compose_workflow``
+supersede them.)
 
 ## What "trust this artifact" means
 

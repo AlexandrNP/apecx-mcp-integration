@@ -91,12 +91,19 @@ The full desktop chain was validated against REAL data + REAL containers (not a 
   instructions TextContent + a lean 7.5 KB structured-data block.
 
 **Diverse-input confirmation (the "test diverse inputs, not one example" lesson).** Re-ran the same
-e2e for a DIFFERENT, heavily-sequenced virus — **dengue envelope E (taxon 12637)** — to flush the
-silent timeout-truncation that once hit heavy viruses: status `ok` in **182 s** (well under the
-timeouts; no truncation), 39 KB report, a different real structure (`5N0A.png` PyMOL render) +
-conservation plot, **conservation + structural legs both ran with ZERO degrade/unavailable notes**,
-2 base64 `ImageContent` blocks. The heavy-virus silent-degrade regression is NOT present. (Script:
-`scratchpad/e2e_diverse.py <taxon> <protein> "<query>"`.)
+e2e across THREE viruses spanning light→heavy + three different viral folds — to flush the silent
+timeout-truncation that once hit heavy viruses. All `status: ok`, conservation + structural legs both
+ran with ZERO degrade/unavailable notes, each a different real PDB structure, each 2 base64
+`ImageContent` blocks:
+
+| Virus | Taxon | Protein | Wall time | Structure |
+|---|---|---|---|---|
+| Chikungunya (alphavirus) | 37124 | E1 | (baseline) | 2XFB |
+| Dengue (flavivirus) | 12637 | envelope E | 182 s | 5N0A |
+| Influenza A (orthomyxovirus) | 11320 | hemagglutinin HA | 227 s | 3GBN |
+
+The heavy-virus silent-degrade regression is NOT present even for the most heavily-sequenced virus
+(influenza). (Script: `scratchpad/e2e_diverse.py <taxon> <protein> "<query>"`.)
 
 Conclusion: the PyMOL render + SASA conservation plot **actually reach the host LLM as inline images
 after re-ingestion** — the loop's core directive, proven on real data. (Script:
