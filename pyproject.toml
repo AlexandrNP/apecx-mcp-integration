@@ -171,7 +171,14 @@ apecx_integration = [
     "**/*.md",
     "**/*.ini",
     "**/*.txt",
-    "_alembic/migrations/versions/*",
+    # Bundled per-workflow sample inputs (e.g. rhea_muscle_alignment/data/seqtest.fasta) that a step
+    # reads as its DEFAULT input so the workflow runs out-of-box — must ship, else FileNotFoundError
+    # on a wheel install (caught by scripts/validate_fresh_install.py's derived delivery check).
+    "**/*.fasta",
+    # The whole Alembic tree (versions/* + script.py.mako template + README + env). The mako is part
+    # of Alembic's ScriptDirectory machinery; shipping the tree keeps DB migrations whole on a wheel
+    # install. (Supersedes the narrower versions/* glob.)
+    "_alembic/**/*",
     # The headless-PyMOL docker build context (Dockerfile + _pymol_job.py) must ship in the wheel so
     # the SASA leg + ``apecx-setup pymol`` image build work on a uv-tool / wheel install (not just
     # editable dev). This glob ships the no-extension Dockerfile; setuptools also packages

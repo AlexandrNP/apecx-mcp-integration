@@ -1364,33 +1364,11 @@ def _step_verify() -> StepResult:
     workspace_root = Path(__file__).resolve().parents[4]
     checks: list[tuple[str, bool, str]] = []
 
-    # Data — local BV-BRC/VIOLIN CSVs are OPTIONAL. harmonized_search queries
-    # the PUBLIC Globus Search index ANONYMOUSLY (no creds, no download), which
-    # supersedes these CSVs for every search path. Only the offline `query_*`
-    # database tools need the local files. A clean install with NO local data
-    # is fully functional for search — so this is a 'partial', never a 'fail'.
-    default_data = _setup_data._DEFAULT_DATA_DIR
-    bvbrc_present = (default_data / "BVBRC_genome_alphavirus.csv").exists()
-    checks.append(
-        (
-            "data",
-            bvbrc_present,
-            f"local BV-BRC CSVs at {default_data} (offline query_* tools)"
-            if bvbrc_present
-            else "no local CSVs (optional) — harmonized_search uses the public "
-            "Globus index anonymously; run `apecx-setup data` only for offline query_* tools",
-        )
-    )
-    violin_present = (default_data / "violin" / "Vaccine_Information.csv").exists()
-    checks.append(
-        (
-            "violin",
-            violin_present,
-            f"VIOLIN data at {default_data}/violin"
-            if violin_present
-            else "missing (optional) — pending 'apecx-project-all' Globus Group access",
-        )
-    )
+    # NOTE: local BV-BRC/VIOLIN CSVs are deliberately NOT verified here (Globus-first / no-local-files).
+    # harmonized_search queries the PUBLIC Globus Search index ANONYMOUSLY (no creds, no download),
+    # which supersedes the local CSVs for every search path, and the primary viral_epitope_analysis
+    # workflow pulls its data over the network. The offline `query_*` database tools degrade-loud at
+    # CALL time when no data is present (database.get_store() → error), so no setup-time gate is needed.
 
     # Synonym dictionary — the artifact the `dict` step (Step 3) builds.
     # Closes the silent gap that left `apecx-mcp` paying a 10-15 min
@@ -1505,17 +1483,13 @@ def _step_verify() -> StepResult:
             "every component healthy",
         )
     # The ONLY required component is the synonym dictionary (it auto-downloads
-    # anonymously on first MCP launch). Everything else is an OPTIONAL unlock:
-    #   - data (local VIOLIN/BV-BRC CSVs): superseded by harmonized_search, which
-    #     queries the PUBLIC Globus Search index ANONYMOUSLY (no creds, no setup).
-    #     Only the offline `query_*` database tools need it.
+    # anonymously on first MCP launch). Everything else is an OPTIONAL unlock
+    # (local data CSVs are not even verified — see the Globus-first note above):
     #   - ollama: an LLM endpoint is needed for LLM analysis/synthesis, but it can be
     #     a REMOTE one (APECX_LLM_BASE_URL) — installing Ollama locally is optional.
     #   - postgres/redis/minio/faiss/rhea: opt-in infra (durable stores / RAG / Rhea).
     # See `apecx-setup capabilities` for the capability-by-capability view + unlocks.
     optional = {
-        "data",
-        "violin",
         "ollama",
         "postgres",
         "redis",

@@ -42,7 +42,9 @@ PKG_ROOT = REPO_ROOT / "src" / "apecx_integration"
 # installed wheel (i.e. must be declared in package-data). If you add
 # a new shippable resource type, add its extension here and to
 # pyproject.toml's package-data globs.
-EXPECTED_RESOURCE_EXTS: frozenset[str] = frozenset({".yml", ".yaml", ".md", ".ini", ".txt"})
+EXPECTED_RESOURCE_EXTS: frozenset[str] = frozenset(
+    {".yml", ".yaml", ".md", ".ini", ".txt", ".fasta"}
+)
 
 
 def _load_package_data_globs() -> list[str]:

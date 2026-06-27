@@ -1224,7 +1224,10 @@ def main(argv: list[str] | None = None) -> None:
         _assert_mcp_port_distinct_from_control_plane(http_host, http_port, network_config)
 
     asyncio.run(_verify_control_plane_reachable())
-    _check_data_root_or_warn()
+    # NOTE: the local BV-BRC/VIOLIN data-root banner is intentionally NOT run at boot (Globus-first /
+    # no-local-files): harmonized_search uses the public Globus index anonymously and the primary
+    # workflow pulls data over the network. The remaining DB query tools degrade-loud at CALL time
+    # (database.get_store() → error), so a startup banner about "missing" local data is misleading.
     _check_rag_index_or_warn()
     _check_rhea_status_or_warn()
     _ensure_synonym_dict_or_warn()
