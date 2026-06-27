@@ -59,6 +59,33 @@ def _is_underspecified_taxon(name: str) -> bool:
     return bool(name) and _UNDERSPECIFIED_TAXON_RE.search(name) is not None
 
 
+def _most_specific(cands: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Drop candidates that are an ANCESTOR of another candidate (their taxon_id appears in another's
+    ``lineage_ids``), keeping the most-specific per lineage. So a genus + its OWN clade (Norovirus +
+    Norovirus GII) collapses to the clade — NOT a false ambiguity — while true sibling species
+    (HSV-1 + HSV-2, where neither is in the other's lineage) both remain."""
+    out: list[dict[str, Any]] = []
+    for c in cands:
+        tid = c.get("taxon_id")
+        if tid is not None and any(
+            tid in (o.get("lineage_ids") or []) for o in cands if o is not c
+        ):
+            continue
+        out.append(c)
+    return out
+
+
+def _distinct_species_reps(cands: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """One representative candidate per distinct SPECIES (input order preserved, after collapsing
+    nested ancestors). len > 1 ⟺ the query spans multiple distinct viral species (ambiguous)."""
+    reps: dict[int, dict[str, Any]] = {}
+    for c in _most_specific(cands):
+        sp = c.get("species_taxon_id") or c.get("taxon_id")
+        if sp is not None and sp not in reps:
+            reps[sp] = c
+    return list(reps.values())
+
+
 def _clear_cache() -> None:
     """Test seam: drop the process-lifetime per-query verdict cache."""
     _REVIEW_CACHE.clear()
@@ -179,6 +206,15 @@ class TaxonCandidateReviewStep(BaseStep):
             (c for c in candidates if c.get("taxon_id") in matched),
             key=lambda c: (-(c.get("cds") or 0), -(c.get("genomes") or 0), c["taxon_id"]),
         )
+
+        # Broadened ambiguity (2026-06-27): if the LLM-confirmed candidates span MULTIPLE DISTINCT
+        # viral SPECIES (true siblings, not a genus + its own clade), the query is ambiguous — e.g.
+        # "hepatitis virus" → Hep A/B/C, "herpes simplex virus" → HSV-1/HSV-2. Ask the user to choose
+        # (listing the species) instead of silently picking the highest-coverage one.
+        species_reps = _distinct_species_reps(matched_cands)
+        if len(species_reps) > 1:
+            return self._needs_clarification_multi(bundle, species_reps)
+
         winner = matched_cands[0]
         chosen = winner["taxon_id"]
 
@@ -303,6 +339,47 @@ class TaxonCandidateReviewStep(BaseStep):
         )
         return self._set_miss(
             bundle, f"under-specified taxon {name!r} ({taxon_id}) — clarification requested"
+        )
+
+    def _needs_clarification_multi(
+        self, bundle: dict[str, Any], reps: list[dict[str, Any]]
+    ) -> dict[str, Any]:
+        """Clarification for a query matching MULTIPLE distinct viral species — list them as candidate
+        IRIs/labels so the host LLM asks the user which one, and mark a miss so the legs fast-degrade
+        (vs silently analyzing the highest-coverage species)."""
+        from apecx_integration.composition.schemas.control_transfer import ambiguous_entity_transfer
+
+        candidates = [
+            {
+                "canonical_iri": (
+                    "http://purl.obolibrary.org/obo/NCBITaxon_"
+                    f"{r.get('species_taxon_id') or r.get('taxon_id')}"
+                ),
+                "label": r.get("taxon_name", ""),
+                "genomes": r.get("genomes"),
+                "cds": r.get("cds"),
+            }
+            for r in reps[:8]
+        ]
+        labels = ", ".join(c["label"] for c in candidates if c["label"])
+        msg = (
+            f"The request is AMBIGUOUS — it matches {len(candidates)} distinct viral species: "
+            f"{labels}. Re-call viral_epitope_analysis with a SPECIFIC organism (one of these) or an "
+            f"explicit taxon_id so a meaningful epitope analysis can run."
+        )
+        bundle["control_transfer"] = ambiguous_entity_transfer(candidates, message=msg).model_dump(
+            mode="json"
+        )
+        log.warning(
+            "TaxonCandidateReviewStep %s: ambiguous — %d distinct viral species (%s) — "
+            "requesting clarification",
+            self.name,
+            len(candidates),
+            labels[:80],
+        )
+        return self._set_miss(
+            bundle,
+            f"ambiguous — {len(candidates)} distinct viral species — clarification requested",
         )
 
     @staticmethod

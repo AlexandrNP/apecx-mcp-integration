@@ -102,9 +102,25 @@ def test_selects_max_cds_among_matched(tmp_path, monkeypatch):
     # LLM lists the genus FIRST, the clade SECOND — listing order must not decide the winner.
     monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("142786\n122929"))
     step = _stage(tmp_path)
+    # The genus is an ANCESTOR of the clade (142786 ∈ 122929's lineage) — so the ambiguity guard
+    # collapses them (NESTED, not sibling species) and the coverage-max pick still wins.
     cands = [
-        {"taxon_id": 142786, "taxon_name": "Norovirus", "genomes": 9000, "cds": 0},
-        {"taxon_id": 122929, "taxon_name": "Norovirus GII", "genomes": 4000, "cds": 112058},
+        {
+            "taxon_id": 142786,
+            "taxon_name": "Norovirus",
+            "genomes": 9000,
+            "cds": 0,
+            "species_taxon_id": 142786,
+            "lineage_ids": [10239, 142786],
+        },
+        {
+            "taxon_id": 122929,
+            "taxon_name": "Norovirus GII",
+            "genomes": 4000,
+            "cds": 112058,
+            "species_taxon_id": 122929,
+            "lineage_ids": [10239, 142786, 122929],
+        },
     ]
     monkeypatch.setattr(step, "_cds_count", lambda tid: {142786: 0, 122929: 112058}[tid])
     bundle = {"query": "norovirus", "taxon_candidates": cands}
@@ -114,6 +130,46 @@ def test_selects_max_cds_among_matched(tmp_path, monkeypatch):
     assert out["taxon_resolution"]["cds"] == 112058
     assert out["taxon_resolution"]["genomes"] == 4000
     assert mod._REVIEW_CACHE["norovirus"] == 122929
+
+
+def test_multiple_distinct_species_requests_clarification(tmp_path, monkeypatch):
+    """Broadened ambiguity (2026-06-27): when the LLM confirms candidates spanning MULTIPLE distinct
+    viral SPECIES that are SIBLINGS (neither in the other's lineage — HSV-1 vs HSV-2), the query is
+    ambiguous → clarify listing the species, NOT a silent coverage-max pick. (Contrast the nested
+    genus+clade case above, which collapses and picks normally.)"""
+    monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("10298\n10310"))
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", lambda tid: 80)
+    cands = [
+        {
+            "taxon_id": 10298,
+            "taxon_name": "Human alphaherpesvirus 1",
+            "genomes": 60,
+            "cds": 80,
+            "species_taxon_id": 3050292,
+            "lineage_ids": [10239, 10294, 3050292, 10298],
+        },
+        {
+            "taxon_id": 10310,
+            "taxon_name": "Human alphaherpesvirus 2",
+            "genomes": 40,
+            "cds": 80,
+            "species_taxon_id": 3050293,
+            "lineage_ids": [10239, 10294, 3050293, 10310],
+        },
+    ]
+    out = asyncio.run(
+        step.process(
+            {"taxon_review_input": {"query": "herpes simplex virus", "taxon_candidates": cands}}
+        )
+    )
+    assert out["taxon_resolution"]["taxon_id"] is None  # MISS → legs fast-degrade
+    ct = out["control_transfer"]
+    assert ct["reason"] == "ambiguous_entity"
+    assert "ambiguous" in ct["message"].lower()
+    labels = {c["label"] for c in ct["next_action"]["candidates"]}
+    assert {"Human alphaherpesvirus 1", "Human alphaherpesvirus 2"} <= labels
 
 
 def test_underspecified_taxon_requests_clarification(tmp_path, monkeypatch):

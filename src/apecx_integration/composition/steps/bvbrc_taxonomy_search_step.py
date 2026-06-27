@@ -46,6 +46,18 @@ def _as_int(value: Any) -> int | None:
         return None
 
 
+def _species_taxon_id(row: dict[str, Any]) -> int | None:
+    """The SPECIES-rank ancestor taxon_id from a BV-BRC taxonomy row's lineage (``lineage_ids`` zipped
+    with ``lineage_ranks``). None when the lineage lacks a species rank — the caller falls back to the
+    taxon_id itself. Robust species identity for ambiguity detection (no name-stripping)."""
+    ids = row.get("lineage_ids") or []
+    ranks = row.get("lineage_ranks") or []
+    for tid, rank in zip(ids, ranks, strict=False):
+        if rank == "species":
+            return _as_int(tid)
+    return None
+
+
 class BvbrcTaxonomySearchStepConfig(StepConfig):
     """Config — ``extra='forbid'`` (workspace rule): YAML typos raise at config-load time."""
 
@@ -97,7 +109,7 @@ class BvbrcTaxonomySearchStep(BaseStep):
             query = (
                 f"eq(taxon_name,{quote(syn.strip())})"
                 f"&eq(division,Viruses)"
-                f"&select(taxon_id,taxon_name,genomes)"
+                f"&select(taxon_id,taxon_name,genomes,lineage_ids,lineage_ranks)"
                 f"&sort(-genomes)"
                 f"&limit({_PER_SYNONYM_LIMIT})"
             )
@@ -119,9 +131,24 @@ class BvbrcTaxonomySearchStep(BaseStep):
                     continue
                 genomes = _as_int(r.get("genomes")) or 0
                 name = r.get("taxon_name") or ""
+                # The SPECIES-rank ancestor (from the taxonomy lineage) — the level at which two
+                # candidates are "different viruses" vs strains of one. Lets the review step detect a
+                # genuinely AMBIGUOUS query (candidates spanning >1 species → ask the user) robustly,
+                # without fragile name-stripping (HSV "type 1/2" are distinct species; influenza
+                # "strain X/Y" are not).
+                species = _species_taxon_id(r) or tid
+                lineage_ids = [i for i in (_as_int(x) for x in (r.get("lineage_ids") or [])) if i]
                 cur = agg.get(tid)
                 if cur is None or genomes > cur["genomes"]:
-                    agg[tid] = {"taxon_id": tid, "taxon_name": name, "genomes": genomes}
+                    agg[tid] = {
+                        "taxon_id": tid,
+                        "taxon_name": name,
+                        "genomes": genomes,
+                        "species_taxon_id": species,
+                        # full ancestor chain — lets the review step drop a genus when its own clade is
+                        # also a candidate (nested ≠ ambiguous), so only true SIBLING species clarify.
+                        "lineage_ids": lineage_ids,
+                    }
 
         # COVERAGE-MAXIMIZING rank: a genus can have the most GENOMES yet ~0 fetchable CDS at the
         # exact taxon (the conservation leg fetches eq(taxon_id,X)&CDS), while a descendant

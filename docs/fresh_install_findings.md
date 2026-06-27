@@ -206,11 +206,25 @@ select(product)`) + web search.
   VALIDATED: SARS-CoV-2 spike (specific, dict-resolved) stays `status=ok` — NO false trigger (the
   detector fires ONLY on the LLM-fallback umbrella-taxon path; dict hits bypass it). SCOPE LIMIT
   (documented, not a regression): the detector is NAME-based (umbrella markers), so it catches the
-  HSV-class ("...unknown type" taxon) but NOT a generic FAMILY name that the fallback resolves to one
-  specific member (e.g. bare "hepatitis virus" → a specific Hepatitis taxon → `ok`). Broader
-  candidate-set ambiguity detection (query is a family umbrella spanning multiple distinct species) is
-  a larger, false-trigger-prone follow-up (the BV-BRC candidate lists are polluted — EBV/bacteria/
-  plants appeared for HSV), deliberately deferred to keep the safe no-false-trigger guarantee.
+  HSV-class ("...unknown type" taxon) — see the two follow-ups now SHIPPED below.
+- **FOLLOW-UP 1 — pollution cleanup (2026-06-27, 12696e4).** Candidate generation
+  (`bvbrc_taxonomy_search_step`) searched BV-BRC `eq(taxon_name,<synonym>)` which is Solr
+  keyword-matched, so a short synonym ("HSV"/"HHV") surfaced NON-viral taxa whose names merely contain
+  the token — plants ("Radula sp. HSV18846"), synthetic ("Expression vector …/HSV1 tk"), environmental
+  bacteria. Fix: server-side `eq(division,Viruses)` → only real viruses enter the candidate list.
+  Regression `test_query_constrains_to_viral_division`.
+- **FOLLOW-UP 2 — broadened ambiguity (2026-06-27).** The candidate now carries its SPECIES-rank
+  taxon_id + lineage (from the BV-BRC taxonomy lineage). `taxon_candidate_review_step` drops nested
+  ancestors (`_most_specific` — a genus + its OWN clade like Norovirus + Norovirus GII collapses, so
+  the coverage-max pick is preserved) and, if the LLM-confirmed candidates span >1 distinct SIBLING
+  viral species, returns a clarification LISTING the species (`_needs_clarification_multi`). Safe: SARS
+  stays `ok` (no false trigger); norovirus genus+clade still picks GII. Regression
+  `test_multiple_distinct_species_requests_clarification`. REMAINING limit (honest): this catches
+  TAXONOMIC sibling ambiguity, NOT SYNDROME ambiguity — bare "hepatitis virus" spans UNRELATED viral
+  families (HBV hepadnavirus / HCV flavivirus / HEV hepevirus), which the review LLM correctly does NOT
+  confirm as "the same virus", so they aren't flagged as siblings (the candidate-gen DOES surface all
+  three; the gap is the "same-virus" confirmation). Detecting syndrome terms (candidates span multiple
+  FAMILIES) is a further follow-up; using unconfirmed candidates risks false triggers, so deferred.
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
