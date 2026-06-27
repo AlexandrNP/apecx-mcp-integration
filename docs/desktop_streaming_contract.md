@@ -118,12 +118,36 @@ streamed reports render identically to the headless trace.
 3. On each **log** notification with `data.event == "stage_report"`: append a card to
    the pane keyed by `data.stage`, rendering `data.markdown`; keep `data.data` for a
    "details" disclosure. Sort cards by `data.order` if you want final-document layout.
-4. On tool return: replace the live pane with the final `WorkflowResult.markdown`
-   (the 5-section document). The streamed cards and the final `## Analysis steps`
-   are the same content — no second fetch needed; the live view simply becomes
-   authoritative.
+4. On tool return: replace the live pane with the final result. In **desktop** locus the tool
+   does NOT return bare markdown — it returns MCP **content** (see "Final-result re-ingestion"
+   below): a TextContent (host instructions + the full report), one `Image` content block per
+   generated figure (rendered inline), and a lean structured-data TextContent.
 5. `run_id` lets the app cross-link a streamed card to `inspect_run(run_id)` for the
    per-step "what ran" view.
+
+### Final-result re-ingestion (desktop) — NOT just markdown
+
+The per-stage stream above is observability DURING the run. The FINAL tool result is engineered for
+RE-INGESTION by the user-facing host LLM (often a WEAK model — Haiku — that, given markdown alone,
+crops it and drops the images). At the MCP tool boundary in desktop locus
+(`eo_primitives.maybe_desktop_payload`, applied by `run_workflow_tool` +
+`workflow_registry._live_dispatch`), a completed (`status in {ok, partial}`) result is returned as a
+list of MCP content blocks:
+
+- **[0] TextContent** — explicit `HOST_INSTRUCTIONS` (reproduce every section in full, do NOT crop,
+  include every attached image inline, keep citations, use the structured block for exact numbers) +
+  the FULL `markdown` report.
+- **[1..] `Image` content blocks** — each figure (PyMOL surface render `figures/<pdb>.png`,
+  conservation plot `figures/conservation_*.png`) as base64 → Claude Desktop renders it INLINE. This
+  is the only way the SASA/structural images actually reach the user (paths are unreadable to a
+  remote host).
+- **[-1] TextContent** — a LEAN structured-data JSON block (`run_id` / `data_handle` / `data_preview`
+  / `provenance` + a name·kind·path artifact manifest). The per-tool JSON `text` is STRIPPED so a
+  weak host's context is not blown (which would re-introduce the crop).
+
+Headless/agent callers + the run-store + tests keep the raw `WorkflowResult` dict (the transform is
+boundary-only). `error` / `needs_input` keep the dict too. Spec: `docs/desktop_reingestion_spec.md`;
+adapter + tests in `mcp_surface/tools/eo_primitives.py` + `tests/unit/test_desktop_reingestion.py`.
 
 ### Reliability (both halves)
 

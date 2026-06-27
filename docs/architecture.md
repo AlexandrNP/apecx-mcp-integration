@@ -8,7 +8,7 @@ purposes:
 
 | | This document (`architecture.md`) | Design package (`_design_index.md` and 17 docs) |
 |---|---|---|
-| **Describes** | What runs today (current 23 MCP tools, three-tier runtime, the violin_bvbrc workflow) | What's being built (four-tier multi-agent architecture, ExecutionPlan-driven workflows, Rhea integration) |
+| **Describes** | What runs today (current 15 MCP tools, three-tier runtime, the violin_bvbrc workflow) | What's being built (four-tier multi-agent architecture, ExecutionPlan-driven workflows, Rhea integration) |
 | **Authoritative for** | Operator onboarding, debugging current behavior, understanding code paths in `src/apecx_integration/` | Implementation planning, framework gap proposals (G1–G20), cross-doc design alignment |
 | **Updated when** | Code lands a behavior change; tests pin the new behavior | Design decisions evolve; new gaps surface; the alignment audit reveals duplicates |
 | **When in doubt** | Read this for "what does the running system do?" | Read the design package for "what are we building toward?" |
@@ -17,7 +17,7 @@ purposes:
 
 This document is the canonical map of the apecx-mcp-integration system.
 It covers the three runtime tiers (MCP surface, control plane, executor),
-the synthesis pipeline, all 23 MCP tools, all six ontologies, the
+the synthesis pipeline, all 15 MCP tools, all six ontologies, the
 mapping/resolution strategies, the test surface, and external service
 dependencies.
 
@@ -52,7 +52,7 @@ flowchart TB
     end
 
     subgraph Tier1["Tier 1 — MCP surface (this repo)"]
-        SRV["FastMCP server<br/>apecx-mcp-integration<br/>23 tools"]
+        SRV["FastMCP server<br/>apecx-mcp-integration<br/>15 tools"]
         ToolsW["workflow tools (3)<br/>start_workflow / show_diff / execute_workflow"]
         ToolsD["discovery tools (2)<br/>list_workflows / describe_workflow"]
         ToolsDB["database tools (7)<br/>query_vaccines / pathogens / genes / genomes / etc."]
@@ -265,64 +265,39 @@ in `tests/integration/test_rag_e2e_workflow_yaml.py`.
 
 ---
 
-## 4. The 23 MCP tools
+## 4. The MCP tools (15)
 
-Source: `src/apecx_integration/mcp_surface/server.py`. Every tool
-returns either a result dict or `{"error": "..."}`; tools never raise
-to the MCP transport.
+LIVE source of truth: `await build_server().list_tools()` — derive the count, never hardcode it (it
+drifted to 23/24/25 across docs before this rewrite). As of the 2026-06-15 workflow-object surface +
+the Globus-first trim, the server registers **15** scientist-facing tools. Every tool returns a
+result dict — or, in **desktop** locus, the re-ingestion content payload (instructions + full report +
+figure `Image` blocks + lean structured data; see `docs/desktop_streaming_contract.md`) — or
+`{"error": "..."}`; tools never raise to the MCP transport.
 
-### 4.1 Workflow tools (3)
-
-| Tool | Purpose | Input | Backend |
-|---|---|---|---|
-| `start_workflow` | Compose a workflow from a natural-language description (T-COMP) | `description, user_id, preferred_executor` | Composer LLM + Control Plane |
-| `show_diff` | Surface the differential-review payload (HITL approval prep) | `run_id` | Control Plane |
-| `execute_workflow` | Run a composed workflow locally (synchronous) | `run_id` | LocalExecutor + Control Plane |
-
-### 4.2 Discovery tools (2)
-
-| Tool | Purpose | Input | Backend |
-|---|---|---|---|
-| `list_workflows` | Enumerate workflows the composer can build | none | Manifest YAML parse |
-| `describe_workflow` | Per-component view of one workflow | `name` | Manifest YAML parse |
-
-### 4.3 Database tools (7) — direct DomainDB + GenomicsDB lookup
-
-| Tool | Purpose | Resolution | Backend |
-|---|---|---|---|
-| `query_vaccines` | Search Domain vaccine DB (~3,500 rows) | dict fast → substring slow | DatabaseStore (pandas) |
-| `query_pathogens` | Search Domain pathogen DB (~220 rows) | dict fast → ancestor walk → strict descendant expansion | DatabaseStore + DictionaryIndex |
-| `query_genes` | Search Domain gene DB (~4,000 rows) | dict fast → substring slow | DatabaseStore |
-| `query_bvbrc_genomes` | Search Genomics DB organism genomes (~17,000 rows) | dict fast → substring slow | DatabaseStore |
-| `get_vaccine_pathogen_genes` | Traverse Domain DB junction tables | direct lookup | DatabaseStore |
-| `resolve_entity` | Multi-table substring scan + dict lookup | dict + substring | DatabaseStore + DictionaryIndex |
-| `database_statistics` | Row counts + columns for all loaded tables | none | DatabaseStore metadata |
-
-### 4.4 Entity resolution + synthesis + Globus search (3)
-
-| Tool | Purpose | Output |
+| Tool | Group | Purpose |
 |---|---|---|
-| `resolve_canonical_entity` | Stage 2 fast path: lookup → ancestor → slow → miss | `{path, canonical_iri, canonical_label, confidence, ...}` |
-| `synthesize_query` | Drive the rag_e2e_synthesis pipeline directly | `{synthesis: markdown, retrieved: {counts}}` |
-| `query_globus_search` | Free-text query of the APECx harvested-corpus index | `{results: [{subject, content, score}], count, query}` |
+| `run_workflow` | run | Run ANY catalog/discovered workflow by name; streams per-stage in desktop |
+| `inspect_run` | run | Per-step "what ran" for a `run_id` |
+| `inspect_workflow` | run | Static structure of a workflow |
+| `compose_workflow` | run | Compose a NEW workflow from a description (composer) |
+| `apecx_context` | run | Session run history |
+| `list_workflows` | discovery | Enumerate runnable workflows + `available`/`missing_prerequisites` |
+| `describe_workflow` | discovery | Per-component view of one workflow |
+| `apecx_capabilities` | discovery | Capability + health aggregate (workflows + infra) |
+| `infrastructure_status` | discovery | Live backend roster (ollama/postgres/redis/minio/rhea) |
+| `viral_epitope_analysis` | workflow | Promoted catalog workflow — viral epitope evidence review |
+| `rhea_muscle_alignment` | workflow | Promoted catalog workflow — large-scale MUSCLE conservation |
+| `rag_e2e_synthesis` | workflow | Promoted catalog workflow — grounded RAG synthesis |
+| `harmonized_search` | data | Taxonomy-harmonized search across the 9 Globus DEST indices (anonymous) |
+| `database_statistics` | data | Local DomainDB stats (needs `APECX_DATA_ROOT`) |
+| `approve_design` | HITL | Operator approval of the evidence workflow's design gate (fail-closed) |
 
-### 4.5 Approval tools (4) — HITL gate
-
-| Tool | Purpose |
-|---|---|
-| `list_pending_approvals` | List pending HITL gates for a user |
-| `approve` | Approve a gate |
-| `reject` | Reject with required justification |
-| `correct` | Approve with reviewer modifications |
-
-### 4.6 HPC tools (4) — Polaris/Aurora bundle export
-
-| Tool | Purpose |
-|---|---|
-| `estimate_cost` | Estimate core-hours for a composed run |
-| `confirm_allocation` | Lock in operator-approved allocation |
-| `export_hpc_bundle` | Write qsub-able bundle to disk (no submission) |
-| `ingest_hpc_bundle` | Re-ingest provenance after offline run completes |
+**Retired (no longer registered):** `start_workflow` / `execute_workflow` / `show_diff` (split one
+decision across three tools → folded into `run_workflow` + `compose_workflow`); the six `query_*` /
+`resolve_entity` DomainDB+GenomicsDB tools and `query_globus_search` / `resolve_canonical_entity` /
+`synthesize_query` (Globus-first — `harmonized_search` + `run_workflow` supersede them); the four HPC
+tools (`/hpc/export` is a route, not an MCP tool). `create_approval` stays internal (nanobrain
+ApprovalStep). The composer is reached via `compose_workflow`, not a separate `start/execute` pair.
 
 ---
 
@@ -880,7 +855,8 @@ See `docs/figures/11_user_facing_workflow.png`.
 Three vertical bands:
 
 1. **MCP entry** — scientist query → MCP client → FastMCP server →
-   one of 23 tools (this figure expands `synthesize_query`).
+   one of 15 tools (this figure expands the RAG synthesis pipeline — reached today via
+   `run_workflow` → `rag_e2e_synthesis`; the standalone `synthesize_query` tool was retired).
 2. **`synthesize_query` expanded** — `SynthesisContextAssemblyStep`
    fans out to four retrieval branches via
    `asyncio.gather(return_exceptions=True)`:

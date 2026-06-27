@@ -6,8 +6,8 @@ Claude Desktop, the `mcp` CLI, custom MCP clients, etc. Scientists
 ask questions or describe workflows in natural language; the server
 composes, surfaces a diff for review, executes, and reports.
 
-The server registers **23 tools** with the connected MCP client (see
-"Tool reference" below for the per-tool input/output contracts).
+The server registers **15 tools** with the connected MCP client (the live count — derive it via
+`await build_server().list_tools()`; see `docs/architecture.md` §4 for the per-tool list).
 
 > **For install + first-run, see [`README.md`](../README.md) or
 > [`QUICKSTART.md`](QUICKSTART.md).** This file is the advanced
@@ -218,27 +218,20 @@ spawns the backend, the backend uses Postgres.
 
 ## Tool reference
 
-The server exposes 24+ tools across seven areas (workflow lifecycle,
-discovery, approvals, HPC, database, entity resolution, RAG synthesis,
-Globus Search, and infrastructure status). Each entry shows the signature,
-JSON return shape, and an example natural-language prompt.
+The LIVE surface is **15 tools** — the authoritative per-tool list is `docs/architecture.md` §4
+(derive the count via `await build_server().list_tools()`; the live names are `run_workflow`,
+`inspect_run`, `inspect_workflow`, `compose_workflow`, `apecx_context`, `list_workflows`,
+`describe_workflow`, `apecx_capabilities`, `infrastructure_status`, `viral_epitope_analysis`,
+`rhea_muscle_alignment`, `rag_e2e_synthesis`, `harmonized_search`, `database_statistics`,
+`approve_design`).
 
-The full enumerated set:
-
-- **Workflow lifecycle (3)**: `start_workflow`, `show_diff`, `execute_workflow`
-- **Discovery (2)**: `list_workflows`, `describe_workflow`
-- **Approvals (4)**: `list_pending_approvals`, `approve`, `reject`, `correct`
-- **HPC (4)**: `estimate_cost`, `confirm_allocation`, `export_hpc_bundle`, `ingest_hpc_bundle`
-- **Database tools (7)**: `query_vaccines`, `query_pathogens`, `query_genes`, `query_bvbrc_genomes`, `get_vaccine_pathogen_genes`, `resolve_entity`, `database_statistics`
-- **Entity resolution (1)**: `resolve_canonical_entity`
-- **RAG synthesis (1)**: `synthesize_query`
-- **Viral immunology (2)**: `analyze_viral_immunology`, `analyze_eeev_epitopes`
-- **Globus Search (1)**: `query_globus_search`
-- **Infrastructure status (1)**: `infrastructure_status` — health of the
-  5 backends apecx-mcp depends on. See `docs/apecx_mcp_infrastructure.md`.
-
-…plus any catalog-registered nanobrain-workflow tools (see
-`docs/running_nanobrain_workflows_via_mcp.md`).
+> **⚠️ STALE SECTION (doc-debt).** The detailed per-tool entries that follow document the
+> **pre-2026-06-15 RPC surface** — `start_workflow` / `execute_workflow` / `show_diff`, the `query_*`
+> DomainDB tools, the HPC tools, `synthesize_query`, `resolve_canonical_entity`, `query_globus_search`,
+> `analyze_*` — **MOST OF WHICH ARE RETIRED** (folded into `run_workflow` / `compose_workflow` /
+> `harmonized_search`, or made internal). They are kept here for historical reference only; for the
+> current surface use the 15 tools above + `docs/architecture.md` §4. A faithful rewrite of these
+> entries is tracked doc-debt — do NOT treat the signatures below as current.
 
 ### Workflow lifecycle
 

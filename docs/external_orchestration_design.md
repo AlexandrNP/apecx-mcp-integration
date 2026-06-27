@@ -120,6 +120,30 @@ which is not built. This generic markdown+handle envelope is the surface contrac
 external-orchestration direction. `#output-layer` is not deleted (it is code-cited); it
 simply does not govern this surface.
 
+### 5b. Desktop RE-INGESTION contract (the host LLM re-renders the result)
+
+The envelope above is the INTERNAL shape (headless/agent callers + the run-store + tests get it
+verbatim). But in **desktop** locus the user-facing host LLM RE-INGESTS the tool result and
+re-renders it for the user — and it is often a WEAK model (e.g. Haiku) that, given markdown alone,
+**crops it** and never surfaces the generated images (they were file paths it cannot read). So at the
+MCP **tool boundary** (and ONLY there — `eo_primitives.maybe_desktop_payload`, applied by
+`run_workflow_tool` + `workflow_registry._live_dispatch`), a completed (`status in {ok, partial}`)
+desktop result is returned as **MCP content**, not a dict:
+
+1. a TextContent = explicit **rendering INSTRUCTIONS for the host** (reproduce every section in full,
+   do not crop, include every attached image, keep citations, use the structured block for exact
+   numbers) + the **full** markdown report;
+2. each generated figure (PyMOL surface render, conservation plot) as a FastMCP **`Image`** content
+   block → base64 → Claude Desktop renders it **inline** (the SASA/structural images actually reach
+   the user, not as a path);
+3. a TextContent = a **lean** structured-data JSON block (`run_id` / `data_handle` / `data_preview` /
+   `provenance` + a name·kind·path artifact manifest). The per-tool JSON `text` is STRIPPED — dumping
+   hundreds of KB would blow a weak host's context and re-introduce the crop.
+
+Degrade-loud: any adapter or per-figure failure returns the dict / skips that figure (the tool never
+breaks). `error` / `needs_input` (which carry an error / a `control_transfer` gate, not a report) and
+all headless/agent paths keep the raw dict. Implementation spec: `docs/desktop_reingestion_spec.md`.
+
 ---
 
 ## 6. Local decomposition step (bounded, fallback)

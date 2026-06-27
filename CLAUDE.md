@@ -256,25 +256,26 @@ no-new-privileges`. `DockerSandboxRunner.run(...)` refuses unless
 
 ## MCP surface (Tier 1)
 
-`mcp_surface/server.py` — FastMCP, 25 scientist-facing tools. Entry:
+`mcp_surface/server.py` — FastMCP, **15** scientist-facing tools (the LIVE count — DERIVE it via
+`await build_server().list_tools()`; never trust a hardcoded number, three disagreed once). Entry:
 ```bash
 apecx-mcp                                       # stdio
 APECX_CONTROL_PLANE_URL=... apecx-mcp           # override CP URL
-APECX_DATA_ROOT=/path apecx-mcp                 # enable DB tools
+APECX_DATA_ROOT=/path apecx-mcp                 # enable the local DB tool (database_statistics)
 APECX_SYNONYM_DICT_PATH=/path apecx-mcp         # enable fast lookup
 ```
 
-Tools by module: workflows (3) / discovery (2) /
-database_tools (7 — pure pandas, no LLM) / canonical_entity (1) /
-synthesis (1) / globus_search (1) / approvals (4) / hpc (4) /
-eo_primitives (`approve_design` — operator HITL approval for the evidence
-workflow's design output; the design gate is fail-closed + scope-bound, see
-`composition/runtime/design_approval_store.py`).
+The 15 registered tools: run_workflow / inspect_run / inspect_workflow / compose_workflow /
+apecx_context (run + compose); list_workflows / describe_workflow / apecx_capabilities /
+infrastructure_status (discovery); viral_epitope_analysis / rhea_muscle_alignment / rag_e2e_synthesis
+(promoted catalog workflows, registered as first-class tools); harmonized_search / database_statistics
+(data); approve_design (operator HITL approval for the evidence workflow's design output — fail-closed +
+scope-bound, see `composition/runtime/design_approval_store.py`). The 6 `query_*` DB tools were
+deregistered 2026-06-15 (Globus-first); only `database_statistics` remains and needs `APECX_DATA_ROOT`
+(returns `{"error": ...}` when unset, never raises).
 
-`list_workflows` / `describe_workflow` read
-`composer_config.component_catalog_paths` so the model sees buildable
-workflows before `start_workflow`. Direct-lookup tools require
-`APECX_DATA_ROOT` (return `{"error": ...}` when unset, never raise).
+`list_workflows` / `describe_workflow` read `composer_config.component_catalog_paths` so the model sees
+buildable workflows before it drives one via `run_workflow`.
 
 Deliberately NOT exposed: `/hpc/submit` (501), `create_approval`
 (internal — nanobrain ApprovalStep).
