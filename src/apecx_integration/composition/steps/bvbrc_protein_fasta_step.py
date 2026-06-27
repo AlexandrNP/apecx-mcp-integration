@@ -45,6 +45,28 @@ def _product_matches_word_boundary(product: str, protein: str) -> bool:
     return re.search(pat, product, re.IGNORECASE) is not None
 
 
+# Non-informative BV-BRC product names. Substituting the sequence-conservation analysis to one of
+# these (the too-few-sequences fallback) is meaningless — e.g. taxon 126283 "Herpes simplex virus
+# unknown type" is poorly annotated and its most-covered product is "unnamed protein product", so a
+# request for "thymidine kinase" auto-substituted that JUNK name (2026-06-27 probe). Better to degrade
+# loud ("no informative alternate") than to label a conservation plot "unnamed protein product". Only
+# the GENERIC catch-all names are rejected; a named-but-putative product ("putative ORF1ab polyprotein")
+# is still informative and kept.
+_UNINFORMATIVE_PRODUCT_RE = re.compile(
+    r"^(unnamed protein product|hypothetical protein|uncharacteri[sz]ed protein|"
+    r"unknown protein|predicted protein|putative protein|protein|product)\s*$",
+    re.IGNORECASE,
+)
+
+
+def _is_informative_product(product: str) -> bool:
+    """True iff ``product`` is a SPECIFIC protein name (not a generic catch-all annotation) usable as
+    a conservation-leg substitute. Empty / generic ("unnamed protein product", "hypothetical protein")
+    → False."""
+    p = (product or "").strip()
+    return bool(p) and _UNINFORMATIVE_PRODUCT_RE.match(p) is None
+
+
 log = logging.getLogger(__name__)
 
 # feature_sequence batched lookups — keep each request URL well under server limits.
@@ -144,7 +166,9 @@ class BvbrcProteinFastaStep(BaseStep):
             candidates = [
                 (p, c)
                 for p, c in available
-                if p.strip().lower() != requested_protein.lower() and c >= 2
+                if p.strip().lower() != requested_protein.lower()
+                and c >= 2
+                and _is_informative_product(p)  # never substitute to "unnamed protein product" junk
             ]
             for cand_protein, cand_count in candidates[:_MAX_SUBSTITUTE_ATTEMPTS]:
                 sub_records, sub_fetched, sub_dropped = await asyncio.to_thread(

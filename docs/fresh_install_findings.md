@@ -167,7 +167,12 @@ select(product)`) + web search.
   protein is categorically dominant; surface/internal vocab is now only a tie-breaker / the sole signal
   when no protein is given. Verified on the real influenza corpus + a synthetic repro; preserves the
   no-protein heuristic and the original CHIKV E1-vs-capsid-protease case. Regression
-  `test_ranking_explicit_protein_dominates_famous_surface_antigen`.
+  `test_ranking_explicit_protein_dominates_famous_surface_antigen`. **CONFIRMED e2e + web-cross-referenced
+  on the real broad corpus:** influenza "neuraminidase" now selects `8G3P` (N2 neuraminidase + FNI9 Fab —
+  was `3GBN` hemagglutinin) from the SAME 776 candidates; HIV-1 "protease" selects `3OU1` (MDR769 HIV-1
+  protease — protein-dominance correctly overcame the internal-protein penalty). Both BV-BRC-matched (no
+  substitution), so conservation also ran on the correct protein. Figure-mislabel residual fixed
+  separately (781cbda: alignment_viz labels with `substituted_protein`).
 - **By-design (NOT bugs):** `protein` is an optional CALLER param (the host LLM passes it), so query-ONLY
   conservation degrading "no protein/antigen name on the query" is correct; the spike pick under
   query-only was just the no-protein heuristic.
@@ -176,9 +181,18 @@ select(product)`) + web search.
   protease" / dengue "NS3 protease" (and "spike" ≠ "surface glycoprotein") get the too-few-sequences
   SUBSTITUTION (loud "Low confidence — auto-substituted 'surface glycoprotein'" caveat ✓). Segmented /
   separate-gene viruses match cleanly (influenza `neuraminidase`, HIV-1 `protease`, HSV-1 `thymidine
-  kinase`). RESIDUAL (noted, not yet fixed): when conservation substitutes, the conservation FIGURE is
-  still labeled with the REQUESTED protein (e.g. `main_protease`) though it was computed on the
-  substitute — the text caveat covers it but the figure label is misleading to a weak host LLM.
+  kinase`). The figure-mislabel residual was FIXED (781cbda).
+- **REAL BUG FIXED — junk substitute on a poorly-annotated taxon (kinase probe).** "herpes simplex
+  virus thymidine kinase" is AMBIGUOUS (HSV-1 vs HSV-2): the dict correctly MISSES the bare name
+  (it has "HSV-1"/"herpes simplex virus 1" → taxon 10298, well-annotated, 18 TK seqs), so the
+  LLM-fallback picked taxon 126283 "Herpes simplex virus unknown type" (poorly annotated, 12 CDS) —
+  where "thymidine kinase" has <2 seqs, so the too-few-sequences fallback auto-substituted "**unnamed
+  protein product**" (a generic catch-all → meaningless conservation). Fix: `_is_informative_product`
+  gate so the substitution NEVER picks a generic name (unnamed/hypothetical/uncharacterized/predicted/
+  putative-protein/"protein"/"product"); if no SPECIFIC alternate has ≥2 seqs it degrades loud ("no
+  informative alternate") instead. Regression `tests/unit/test_bvbrc_product_filter.py`. (The ambiguous-
+  name → LLM-fallback → "unknown type" taxon is defensible behavior, not fixed — the user can pass
+  "HSV-1" / a taxon_id for the well-annotated species.)
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
