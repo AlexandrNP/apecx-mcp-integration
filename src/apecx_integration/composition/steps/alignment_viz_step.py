@@ -79,7 +79,13 @@ class AlignmentVizStep(BaseStep):
         per_column = bundle.get("per_column_conservation")
         regions = bundle.get("conserved_regions") or []
         alignment_fasta = bundle.get("alignment_fasta")
-        protein = str(bundle.get("protein") or "protein")
+        # Label the figure/text/fasta with the protein ACTUALLY analyzed. When the requested protein
+        # had <2 BV-BRC sequences (common for a mature protein of a POLYPROTEIN virus — SARS-CoV-2
+        # "main protease" lives inside ORF1ab), bvbrc_protein_fasta_step auto-substitutes a different
+        # product and rides it as ``substituted_protein``. Labeling with the REQUESTED protein then
+        # mislabels the plot (e.g. "main protease" over surface-glycoprotein conservation) — the
+        # report caveat names the swap, but the figure must not lie (2026-06-27 probe finding).
+        protein = str(bundle.get("substituted_protein") or bundle.get("protein") or "protein")
         summary = bundle.get("sequence_fetch_summary") or {}
         n_used = summary.get("n_used")
 

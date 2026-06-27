@@ -112,6 +112,31 @@ def test_step_threads_text_and_artifact_onto_bundle(tmp_path, monkeypatch):
     assert any(r["stage"] == "alignment_viz" for r in out["stage_reports"])
 
 
+def test_step_labels_figure_with_substituted_protein(tmp_path, monkeypatch):
+    """Regression (2026-06-27 protein probe): when conservation ran on an auto-SUBSTITUTED protein
+    (the requested one had <2 BV-BRC sequences — common for a mature protein of a polyprotein virus
+    like SARS-CoV-2 'main protease'), the figure/text must be labeled with the SUBSTITUTE actually
+    analyzed, not the requested protein (labeling it 'main protease' over surface-glycoprotein
+    conservation lies to a weak host LLM; the report caveat names the swap separately)."""
+    pytest.importorskip("matplotlib")
+    monkeypatch.setenv("APECX_ARTIFACTS_DIR", str(tmp_path))
+    bundle = {
+        "query": "SARS-CoV-2 main protease",
+        "protein": "main protease",  # requested
+        "substituted_protein": "surface glycoprotein",  # what conservation ACTUALLY ran on
+        "taxon_id": 2697049,
+        "per_column_conservation": _PER_COLUMN,
+        "conserved_regions": _REGIONS,
+        "alignment_fasta": _ALN,
+        "sequence_fetch_summary": {"n_used": 3},
+        "stage_reports": [],
+    }
+    out = asyncio.run(_stage(tmp_path).process(bundle))
+    art = out["alignment_viz_artifact"]
+    assert "surface_glycoprotein" in art and "main_protease" not in art
+    assert "surface glycoprotein" in out["alignment_viz_text"]
+
+
 def test_alignment_viz_step_records_fasta_artifact(tmp_path, monkeypatch):
     # The step stashes the raw MAFFT alignment as a durable native artifact and records only its
     # (content-addressed) basename on the bundle — the channel the MCP-layer gather uses to place
