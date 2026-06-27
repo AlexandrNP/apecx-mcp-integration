@@ -1,14 +1,16 @@
-"""LocalMafftAlignStep (EO-53) — real MAFFT alignment + FAIL-LOUD behavior.
+"""LocalMafftAlignStep (EO-53) — real MAFFT alignment (CONTAINER-ONLY) + FAIL-LOUD behavior.
 
-The FAIL-LOUD tests (missing input, <2 seqs, MAFFT binary absent) need no MAFFT and run
-unconditionally — they pin the anti-mock contract (no silent "mock alignment" fallback). The
-real-alignment test is gated on a MAFFT binary being installed.
+MAFFT is self-provisioning: it runs in the `apecx-mafft` docker image (built on first use, uniform
+with the PyMOL container) — there is NO host binary. The FAIL-LOUD tests (missing input, <2 seqs,
+Docker absent) pin the anti-mock contract (no silent "mock alignment" fallback). The real-alignment
+test is gated on Docker (which builds + runs the container).
 """
 
 from __future__ import annotations
 
 import asyncio
 import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -23,7 +25,19 @@ _TWO_PROTEINS = (
     ">c\nMKTAYIAKQRQISFVKSHFSRQLEERLGLIDVQ\n"
 )
 
-needs_mafft = pytest.mark.skipif(shutil.which("mafft") is None, reason="MAFFT not installed")
+
+def _docker_available() -> bool:
+    if shutil.which("docker") is None:
+        return False
+    try:
+        return subprocess.run(["docker", "info"], capture_output=True, timeout=10).returncode == 0
+    except Exception:
+        return False
+
+
+needs_docker = pytest.mark.skipif(
+    not _docker_available(), reason="Docker unavailable (MAFFT is container-only)"
+)
 
 
 def _stage(tmp_path: Path, **cfg) -> LocalMafftAlignStep:
@@ -48,11 +62,21 @@ def test_too_few_sequences_is_loud(tmp_path):
         asyncio.run(step.process({"fasta_text": ">only\nMKTAY\n"}))
 
 
-def test_absent_binary_fails_loud_not_mock(tmp_path):
-    # The defining test: when the aligner binary is missing, the step RAISES (with an install
-    # hint) — it does NOT silently copy input as a "mock alignment" like the abandoned step.
-    step = _stage(tmp_path, mafft_executable="definitely_not_a_real_binary_xyz")
-    with pytest.raises(ValueError, match="not found|No mock"):
+def test_no_docker_degrades_loud_not_mock(tmp_path, monkeypatch):
+    # The defining test: when the MAFFT image cannot be built (Docker absent / daemon down / build
+    # failure), the step RAISES a clear container-only error — it does NOT silently copy input as a
+    # "mock alignment". Simulated by making ensure_docker_image_built raise, so it needs no Docker.
+    import apecx_integration.composition.steps.local_mafft_align_step as mod
+
+    async def _boom(**kwargs):
+        raise RuntimeError("simulated: docker daemon unreachable")
+
+    monkeypatch.setattr(mod, "ensure_docker_image_built", _boom)
+    monkeypatch.setenv(
+        "APECX_CONSERVED_SITES_NOCACHE", "1"
+    )  # force the align path (skip a cache HIT)
+    step = _stage(tmp_path)
+    with pytest.raises(ValueError, match="container-only|Docker|could not be built"):
         asyncio.run(step.process({"fasta_text": _TWO_PROTEINS}))
 
 
@@ -64,7 +88,7 @@ def test_unwrap_single_key_envelope(tmp_path):
 # --------------------------------------------------------------------------- #
 # Real MAFFT alignment
 # --------------------------------------------------------------------------- #
-@needs_mafft
+@needs_docker
 def test_real_mafft_alignment(tmp_path):
     step = _stage(tmp_path)
     out = asyncio.run(

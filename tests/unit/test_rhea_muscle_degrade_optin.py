@@ -22,7 +22,7 @@ import pytest
 from apecx_integration.composition.steps.rhea_muscle_align_step import RheaMuscleAlignStep
 
 needs_mafft = pytest.mark.skipif(
-    shutil.which("mafft") is None, reason="needs the MAFFT binary for the degrade fallback"
+    shutil.which("docker") is None, reason="needs the MAFFT binary for the degrade fallback"
 )
 _FASTA = ">a\nMKTAYIAKQRQISFVK\n>b\nMKTAYIAKQRQISFVK\n>c\nMKTAYIAKQRQXSFVK\n"
 

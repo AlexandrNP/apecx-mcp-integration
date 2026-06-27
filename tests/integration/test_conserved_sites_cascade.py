@@ -44,7 +44,7 @@ def _bvbrc_reachable() -> bool:
 
 
 needs_deps = pytest.mark.skipif(
-    shutil.which("mafft") is None or not _bvbrc_reachable(),
+    shutil.which("docker") is None or not _bvbrc_reachable(),
     reason="needs MAFFT installed AND BV-BRC reachable",
 )
 

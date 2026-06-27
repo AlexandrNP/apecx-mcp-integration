@@ -32,13 +32,13 @@ def _bvbrc_reachable() -> bool:
 
 
 needs_deps = pytest.mark.skipif(
-    shutil.which("mafft") is None or not _bvbrc_reachable(),
+    shutil.which("docker") is None or not _bvbrc_reachable(),
     reason="needs MAFFT installed AND BV-BRC reachable",
 )
 
 # RoC-2c needs_input cases need only the mafft prerequisite met (so run_workflow passes its
 # availability gate and reaches the param check) — they return BEFORE any BV-BRC/MAFFT call.
-needs_mafft = pytest.mark.skipif(shutil.which("mafft") is None, reason="needs MAFFT installed")
+needs_mafft = pytest.mark.skipif(shutil.which("docker") is None, reason="needs MAFFT installed")
 
 
 def test_builder_produces_workflow_with_child_steps():
@@ -58,21 +58,24 @@ def test_builder_produces_workflow_with_child_steps():
     assert set(children) == {"fetch", "align", "conserve", "report", "envelope"}
 
 
-def test_in_catalog_and_listed_runnable():
+def test_discovered_and_listed_runnable():
     from apecx_integration.mcp_surface.tools.discovery import list_workflows
-    from apecx_integration.mcp_surface.workflow_registry import load_catalog
 
-    names = {e.tool_name for e in load_catalog().workflows}
-    assert "viral_conserved_sites" in names
-
+    # viral_conserved_sites was RETIRED as a first-class CATALOG tool (2026-06-16, see the catalog
+    # NOTE) but remains a DYNAMICALLY DISCOVERED runnable workflow (the epitope tool nests its
+    # builder) — so it must still surface in list_workflows as a run_workflow-invokable row.
     out = asyncio.run(list_workflows())
+    assert "viral_conserved_sites" in {r["name"] for r in out["runnable"]}
     row = next(r for r in out["runnable"] if r["name"] == "viral_conserved_sites")
     assert row["invoke_with"] == "run_workflow"
-    # Honest availability: mafft is a binary requirement now checked by the registry.
-    assert isinstance(row["available"], bool)
-    if shutil.which("mafft") is None:
-        assert row["available"] is False
-        assert any("mafft" in m for m in row["missing_prerequisites"])
+    # viral_conserved_sites is DYNAMICALLY discovered (not cataloged), so by design it lists as
+    # available:True with NO static prereq gate — a missing backend (here: Docker, for the now
+    # container-only MAFFT aligner) surfaces as a LOUD runtime failure, never a silent skip
+    # (discovery.py: "a real missing backend surfaces as a loud failure at run"). The container-only
+    # Docker requirement is enforced + degrades loud at RUN time — covered by
+    # test_local_mafft_align_step.test_no_docker_degrades_loud_not_mock — not by this static listing.
+    assert row["available"] is True
+    assert row["missing_prerequisites"] == []
 
 
 @needs_deps

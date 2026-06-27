@@ -130,7 +130,7 @@ def _bvbrc_reachable() -> bool:
 # The sequence-conservation leg (E2-C1) nests viral_conserved_sites: it needs a local MAFFT
 # binary AND a reachable BV-BRC, on top of the LLM, to prove the HAPPY path end-to-end.
 needs_llm_seq = pytest.mark.skipif(
-    not (_llm_reachable() and shutil.which("mafft") is not None and _bvbrc_reachable()),
+    not (_llm_reachable() and shutil.which("docker") is not None and _bvbrc_reachable()),
     reason="needs a reachable LLM (APECX_LLM_*) AND MAFFT installed AND BV-BRC reachable",
 )
 

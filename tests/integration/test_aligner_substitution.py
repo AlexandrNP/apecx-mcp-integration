@@ -63,7 +63,7 @@ def _rhea_reachable() -> bool:
 
 
 needs_both_aligners = pytest.mark.skipif(
-    shutil.which("mafft") is None or not _bvbrc_reachable() or not _rhea_reachable(),
+    shutil.which("docker") is None or not _bvbrc_reachable() or not _rhea_reachable(),
     reason="needs MAFFT + BV-BRC reachable + a live Rhea MCP server ($RHEA_MCP_URL)",
 )
 

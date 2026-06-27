@@ -183,8 +183,10 @@ apecx_integration = [
     # the SASA leg + ``apecx-setup pymol`` image build work on a uv-tool / wheel install (not just
     # editable dev). This glob ships the no-extension Dockerfile; setuptools also packages
     # _pymol_job.py (the dir is discovered as a namespace package), but it is NEVER imported on the
-    # host (it imports pymol2) — it is copied into the container workdir and run there.
-    "**/_pymol_container/*",
+    # host (it imports pymol2) — it is copied into the container workdir and run there. The generalized
+    # ``_*_container`` form also ships the MAFFT build context (`_mafft_container/Dockerfile`) and any
+    # future self-provisioning tool container, so a new container dir is delivered without a pyproject edit.
+    "**/_*_container/*",
 ]
 
 [tool.ruff]

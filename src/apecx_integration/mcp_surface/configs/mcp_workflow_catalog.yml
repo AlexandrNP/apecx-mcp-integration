@@ -54,11 +54,13 @@ workflows:
       unavailable_hint: >-
         This workflow runs MUSCLE inside Rhea and therefore needs Docker +
         the Rhea MCP server (run `apecx-setup rhea` and set RHEA_MCP_URL).
-        WITHOUT Docker it does NOT run — for sequence alignment use the
-        MAFFT path instead (`viral_conserved_sites`, needs only the `mafft`
-        binary, no Docker), or use `viral_epitope_analysis` for full epitope
-        analysis (sequence conservation + structural surface-exposure; the
-        structural PyMOL leg degrades loudly when Docker is absent).
+        WITHOUT Docker it does NOT run — and the MAFFT sequence-alignment path
+        (`viral_conserved_sites`) is ALSO containerized now, so it needs Docker
+        too (there is no host-binary alignment fallback). With Docker, use
+        `viral_epitope_analysis` for full epitope analysis (sequence
+        conservation + structural surface-exposure); without Docker that
+        workflow still runs but its conservation (MAFFT) and structural (PyMOL)
+        legs degrade loudly.
     timeout_seconds: 900.0
     # Workflow.run() deposits the input dict by FIRST-STEP input-data-unit
     # name, NOT by workflow-level input-data-unit name. The

@@ -122,12 +122,11 @@ def test_step_run1_aligns_run2_hits_byte_identical(tmp_path, monkeypatch):
     step = _stage(tmp_path)
     calls = {"n": 0}
 
-    def _fake_mafft(fasta_text):
+    async def _fake_mafft(fasta_text):
         calls["n"] += 1
         return _ALIGNED
 
-    monkeypatch.setattr(step, "_run_mafft", _fake_mafft)
-    monkeypatch.setattr(step, "_mafft_version", lambda: "v7.526 (fake)")
+    monkeypatch.setattr(step, "_run_mafft_container", _fake_mafft)
 
     payload = {"fasta_text": _FASTA_A, "taxon_id": 37124, "protein": "E1"}
     out1 = asyncio.run(step.process(dict(payload)))
@@ -142,10 +141,12 @@ def test_step_run1_aligns_run2_hits_byte_identical(tmp_path, monkeypatch):
 def test_step_nocache_forces_recompute(tmp_path, monkeypatch):
     step = _stage(tmp_path)
     calls = {"n": 0}
-    monkeypatch.setattr(
-        step, "_run_mafft", lambda f: calls.__setitem__("n", calls["n"] + 1) or _ALIGNED
-    )
-    monkeypatch.setattr(step, "_mafft_version", lambda: "v")
+
+    async def _fake_mafft(fasta_text):
+        calls["n"] += 1
+        return _ALIGNED
+
+    monkeypatch.setattr(step, "_run_mafft_container", _fake_mafft)
     monkeypatch.setenv("APECX_CONSERVED_SITES_NOCACHE", "1")
 
     payload = {"fasta_text": _FASTA_A, "taxon_id": 1, "protein": "X"}
@@ -158,8 +159,11 @@ def test_step_hit_reapplies_live_context(tmp_path, monkeypatch):
     # Same sequences, different protein label on run-2 → the HIT carries the LIVE label,
     # not the stored one (guarantees HIT == FRESH for the current payload).
     step = _stage(tmp_path)
-    monkeypatch.setattr(step, "_run_mafft", lambda f: _ALIGNED)
-    monkeypatch.setattr(step, "_mafft_version", lambda: "v")
+
+    async def _fake_mafft(fasta_text):
+        return _ALIGNED
+
+    monkeypatch.setattr(step, "_run_mafft_container", _fake_mafft)
 
     asyncio.run(step.process({"fasta_text": _FASTA_A, "taxon_id": 37124, "protein": "E1"}))
     out2 = asyncio.run(step.process({"fasta_text": _FASTA_A, "taxon_id": 37124, "protein": "E2"}))

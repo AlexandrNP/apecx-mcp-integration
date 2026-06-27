@@ -35,17 +35,27 @@ from __future__ import annotations
 
 import logging
 import os
-import shutil
 import subprocess
 import tempfile
+from pathlib import Path
 from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
+from nanobrain.library.runtime.container_admission import acquire_container_slot
+from nanobrain.library.runtime.docker_image_builder import ensure_docker_image_built
 from pydantic import Field
 
 from . import _align_cache
 
 log = logging.getLogger(__name__)
+
+# Self-provisioning MAFFT container (uniform with `_pymol_container`): built on first use by
+# `ensure_docker_image_built`, shipped in the wheel via the pyproject `**/_mafft_container/*`
+# package-data glob. CONTAINER-ONLY — no host `mafft` binary; the conservation leg degrades loud
+# when Docker is unavailable. The image tag PINS the MAFFT version for alignment determinism.
+_BUILD_CONTEXT = Path(__file__).resolve().parent / "_mafft_container"
+_DOCKERFILE = _BUILD_CONTEXT / "Dockerfile"
+_IMAGE_TAG = "apecx-mafft:7.505"  # Debian bookworm MAFFT (see _mafft_container/Dockerfile)
 
 
 class LocalMafftAlignStepConfig(StepConfig):
@@ -74,8 +84,6 @@ class LocalMafftAlignStep(BaseStep):
         self._timeout: float = float(getattr(config, "timeout_seconds", 300.0))
 
     async def process(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
-        import asyncio
-
         payload = self._unwrap(input_data)
         fasta_text = payload.get("fasta_text")
         if not isinstance(fasta_text, str) or not fasta_text.strip():
@@ -96,7 +104,7 @@ class LocalMafftAlignStep(BaseStep):
             aligner="mafft",
             mode=self._mode,
             amino=self._amino,
-            executable=self._mafft,
+            executable=_IMAGE_TAG,  # key on the pinned container image, not a host binary path
             fasta_text=fasta_text,
         )
         if not _align_cache.nocache_enabled():
@@ -110,8 +118,8 @@ class LocalMafftAlignStep(BaseStep):
                 )
                 return {"alignment": self._with_live_context(cached, payload)}
 
-        self.emit_progress(f"aligning {fasta_text.count('>')} sequences (MAFFT)")
-        aligned = await asyncio.to_thread(self._run_mafft, fasta_text)
+        self.emit_progress(f"aligning {fasta_text.count('>')} sequences (MAFFT, containerized)")
+        aligned = await self._run_mafft_container(fasta_text)
         n_seqs = aligned.count(">")
         self.emit_progress(f"alignment complete: {n_seqs} sequences")
         # All aligned records share one length; derive it from the first record.
@@ -121,16 +129,16 @@ class LocalMafftAlignStep(BaseStep):
             self.name,
             n_seqs,
             alignment_length,
-            self._mafft,
+            _IMAGE_TAG,
         )
         out: dict[str, Any] = {
             "alignment_fasta": aligned,
             "n_sequences": n_seqs,
             "alignment_length": alignment_length,
             "aligner": "mafft",
-            # E3-8 provenance: the exact MAFFT version (determinism-relevant — different
-            # MAFFT versions can produce different alignments → different conserved sites).
-            "aligner_version": await asyncio.to_thread(self._mafft_version),
+            # E3-8 provenance: the pinned MAFFT container tag (determinism-relevant — different MAFFT
+            # versions can produce different alignments → different conserved sites; the tag pins it).
+            "aligner_version": _IMAGE_TAG,
         }
         out = self._with_live_context(out, payload)
         if not _align_cache.nocache_enabled():
@@ -180,61 +188,93 @@ class LocalMafftAlignStep(BaseStep):
                 return only
         return input_data
 
-    def _mafft_version(self) -> str:
-        """The MAFFT version string (e.g. ``v7.526``) for the run provenance record.
+    async def _run_mafft_container(self, fasta_text: str) -> str:
+        """Align in the SELF-PROVISIONING MAFFT container (no host binary). Build the image if absent,
+        then ``docker run mafft … /work/input.fasta`` and capture the alignment from STDOUT.
+        CONTAINER-ONLY (uniform with the PyMOL container) — degrades LOUD when Docker is unavailable so
+        the conservation leg surfaces a named miss, never a silent skip."""
+        import asyncio
 
-        MAFFT prints its version to STDERR. Best-effort: returns ``"unknown"`` (a named
-        null) if the probe fails for any reason — a provenance probe must never break the
-        alignment that already succeeded.
-        """
-        if shutil.which(self._mafft) is None:
-            return "unknown"
         try:
-            proc = subprocess.run(
-                [self._mafft, "--version"], capture_output=True, text=True, timeout=15, check=False
+            await ensure_docker_image_built(
+                dockerfile_path=str(_DOCKERFILE),
+                build_context=str(_BUILD_CONTEXT),
+                image_tag=_IMAGE_TAG,
             )
-            out = (proc.stderr or proc.stdout or "").strip()
-            return out.splitlines()[0].strip() if out else "unknown"
-        except Exception:  # noqa: BLE001 — provenance probe must never break a good alignment
-            return "unknown"
-
-    def _run_mafft(self, fasta_text: str) -> str:
-        if shutil.which(self._mafft) is None:
+        except Exception as exc:  # noqa: BLE001 — Docker absent / daemon down / build failed → degrade
             raise ValueError(
-                f"LocalMafftAlignStep '{self.name}': MAFFT executable {self._mafft!r} not found "
-                f"on PATH. Install it (e.g. `brew install mafft` / `conda install -c bioconda "
-                f"mafft`), or use the Rhea alignment path. (No mock fallback — alignment is real.)"
-            )
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".fasta", delete=False) as fh:
-            fh.write(fasta_text)
-            in_path = fh.name
-        try:
-            cmd = [self._mafft, self._mode]
-            if self._amino:
-                cmd.append("--amino")
-            cmd.append(in_path)
-            proc = subprocess.run(
-                cmd, capture_output=True, text=True, timeout=self._timeout, check=False
-            )
-            if proc.returncode != 0:
-                raise ValueError(
-                    f"LocalMafftAlignStep '{self.name}': MAFFT exited {proc.returncode}. "
-                    f"stderr tail: {proc.stderr[-500:]!r}"
-                )
-            aligned = proc.stdout
-            if not aligned.strip() or aligned.count(">") < 2:
-                raise ValueError(
-                    f"LocalMafftAlignStep '{self.name}': MAFFT produced no usable alignment "
-                    f"(got {aligned.count('>')} records). stderr tail: {proc.stderr[-300:]!r}"
-                )
-            return aligned
-        except subprocess.TimeoutExpired as exc:
-            raise ValueError(
-                f"LocalMafftAlignStep '{self.name}': MAFFT timed out after {self._timeout}s"
+                f"LocalMafftAlignStep '{self.name}': the MAFFT container ({_IMAGE_TAG}) could not be "
+                f"built ({type(exc).__name__}: {exc}). MAFFT is container-only — install + start "
+                f"Docker. No host-binary fallback by design; the conservation leg degrades without it."
             ) from exc
-        finally:
-            if os.path.exists(in_path):
-                os.unlink(in_path)
+
+        with tempfile.TemporaryDirectory(prefix="apecx_mafft_") as tmp:
+            workdir = Path(tmp)
+            (workdir / "input.fasta").write_text(fasta_text, encoding="utf-8")
+            try:
+                async with acquire_container_slot():
+                    proc = await asyncio.to_thread(self._docker_run_mafft, workdir)
+            except subprocess.TimeoutExpired as exc:
+                raise ValueError(
+                    f"LocalMafftAlignStep '{self.name}': MAFFT (container) timed out after "
+                    f"{self._timeout}s"
+                ) from exc
+
+        if proc.returncode != 0:
+            hint = (
+                " (exit 137 = the container was OOM-killed — the 2 GB cap was exceeded by a large "
+                "alignment; reduce the sequence set or raise the container memory)"
+                if proc.returncode == 137
+                else ""
+            )
+            raise ValueError(
+                f"LocalMafftAlignStep '{self.name}': MAFFT (container) exited {proc.returncode}.{hint} "
+                f"stderr tail: {proc.stderr[-500:]!r}"
+            )
+        aligned = proc.stdout
+        if not aligned.strip() or aligned.count(">") < 2:
+            raise ValueError(
+                f"LocalMafftAlignStep '{self.name}': MAFFT (container) produced no usable alignment "
+                f"(got {aligned.count('>')} records). stderr tail: {proc.stderr[-300:]!r}"
+            )
+        return aligned
+
+    def _docker_run_mafft(self, workdir: Path) -> subprocess.CompletedProcess[str]:
+        """Hardened ``docker run`` of MAFFT (network-isolated, cap-dropped, mem/pids-capped, host-uid;
+        mirrors the PyMOL container's argv). MAFFT reads /work/input.fasta and writes the MSA to
+        STDOUT (captured here) — it writes nothing back to /work."""
+        mafft_cmd = ["mafft", self._mode]
+        if self._amino:
+            mafft_cmd.append("--amino")
+        mafft_cmd.append("/work/input.fasta")
+        argv = [
+            "docker",
+            "run",
+            "--rm",
+            "--network",
+            "none",
+            "--cap-drop",
+            "ALL",
+            "--security-opt",
+            "no-new-privileges:true",
+            "--memory",
+            "2048m",
+            "--memory-swap",
+            "2048m",
+            "--pids-limit",
+            "256",
+            "--user",
+            f"{os.getuid()}:{os.getgid()}",
+            "--mount",
+            f"type=bind,source={workdir.resolve()},target=/work",
+            "--workdir",
+            "/work",
+            _IMAGE_TAG,
+            *mafft_cmd,
+        ]
+        return subprocess.run(
+            argv, capture_output=True, text=True, timeout=self._timeout, check=False
+        )
 
 
 def _first_record_length(aligned_fasta: str) -> int:
