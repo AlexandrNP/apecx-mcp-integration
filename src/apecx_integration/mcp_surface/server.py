@@ -173,7 +173,10 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     # ONE tool to run any workflow. FastMCP injects a Context for desktop clients, so
     # run_workflow streams each reasoning stage automatically there; headless callers
     # (ctx=None) get the same result one-shot. No separate streaming tool to choose.
-    server.tool()(eo_primitive_tools.run_workflow)
+    # Register the thin DESKTOP-RE-INGESTION wrapper (run_workflow_tool): in desktop locus it returns
+    # MCP content (instructions + full report + figure images + structured data) so a weak host LLM
+    # re-renders everything; headless/agent callers still get the dict. Name it "run_workflow".
+    server.tool(name="run_workflow")(eo_primitive_tools.run_workflow_tool)
     server.tool()(eo_primitive_tools.inspect_run)
     server.tool()(eo_primitive_tools.inspect_workflow)
     server.tool()(eo_primitive_tools.apecx_context)

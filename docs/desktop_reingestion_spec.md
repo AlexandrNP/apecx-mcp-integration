@@ -1,6 +1,14 @@
 # Spec — desktop workflow output engineered for re-ingestion by a WEAK host LLM (Haiku)
 
-Status: SPEC (ready to implement). Branch off `main` (`6201506`): `desktop-reingestion-output`.
+Status: **IMPLEMENTED** (branch `desktop-reingestion-output`). `eo_primitives.py` carries
+`HOST_INSTRUCTIONS` + `_desktop_host_payload` + `_structured_subset` + `maybe_desktop_payload` +
+`run_workflow_tool`; the tool boundary applies it (server.py registers `run_workflow_tool`;
+`workflow_registry._live_dispatch` wraps catalog tools), desktop-locus + status in (ok, partial)
+only. Verified: a real result dict → adapter → FastMCP's real `_convert_to_content` →
+`[TextContent, ImageContent(base64 3GBN.png), TextContent]`; internal dict path unchanged (25
+eo_primitives tests green); review-gate PASS-WITH-NOTES, all notes fixed (structured block stripped
+of 64KB tool_output text to stay Haiku-context-safe; `partial` included; `data_handle` preserved;
+real `_convert_to_content` test committed). Remaining loop backlog below (doc audit + MAFFT).
 
 ## Problem (user, 2026-06-27)
 In desktop mode the host LLM (Claude Desktop, expect a WEAK model — Haiku) RE-INGESTS the

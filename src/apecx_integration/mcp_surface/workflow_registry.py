@@ -722,7 +722,13 @@ def _register_one_entry(
         if met:
 
             async def _live_dispatch(_entry=entry, _dispatch=dispatch, **kwargs):
-                return await _dispatch(_entry, **kwargs)
+                result = await _dispatch(_entry, **kwargs)
+                # DESKTOP re-ingestion: a completed desktop run returns MCP content (instructions +
+                # full report + figure images + structured data) so a weak host LLM re-renders all of
+                # it; headless/agent + non-ok runs pass through unchanged (see maybe_desktop_payload).
+                from apecx_integration.mcp_surface.tools.eo_primitives import maybe_desktop_payload
+
+                return maybe_desktop_payload(result, kwargs.get("ctx"))
 
             fn = _synthesize_tool_function(entry, _live_dispatch)
             server.tool(name=entry.tool_name, description=entry.description)(fn)
