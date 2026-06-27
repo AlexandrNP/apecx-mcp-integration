@@ -5,8 +5,9 @@ Claude Desktop (or any MCP client): harmonized multi-source search across
 VIOLIN + BV-BRC + Globus, `run_workflow` to run any of the discoverable
 scientific workflows (viral epitope analysis, sequence conservation, RAG
 synthesis, …), and `compose_workflow` to build a new one from a
-natural-language description. (More tools — the direct DB query tools —
-unlock once you transfer the local datasets; see "Globus data access".)
+natural-language description. (A local `database_statistics` tool also activates
+once you set `APECX_DATA_ROOT`; the older raw DB query tools were retired
+2026-06-15 — harmonized search supersedes them.)
 
 > **License: MIT.** See [`LICENSE`](LICENSE).
 
@@ -43,8 +44,10 @@ default), and patches `claude_desktop_config.json` with the right paths.
   VIOLIN/BV-BRC datasets, which unlock the direct DB query tools. Skip it —
   harmonized search (anonymous Globus index) covers the primary use cases. See
   [Globus data access](#globus-data-access-optional--for-violin--bv-brc-datasets).
-- 🔵 **Optional — Docker**: unlocks a few advanced workflows (PyMOL structural
-  SASA, Rhea/MUSCLE tools). Not needed for the primary path.
+- 🔵 **Optional — Docker (recommended)**: the `viral_epitope_analysis`
+  sequence-conservation (MAFFT) and structural-SASA (PyMOL) legs self-provision their own
+  Docker containers on first use (no manual bio-tool install); the Rhea/MUSCLE tools also use
+  Docker. Without it those legs degrade loudly while harmonized search + literature still run.
 - 🔵 **Optional — HTTP / server deployment**: the default is local stdio for
   Claude Desktop. See [Running as a backend server](#running-as-a-backend-server-http-mcp--control-plane).
 
@@ -97,12 +100,12 @@ MCP tool — same data, queried live over MCP (it also drives `list_workflows`
 + `infrastructure_status` under the hood).
 
 Both show: which workflows are **runnable now** versus **need configuration**
-(with the missing prerequisite *and* an honest fallback — e.g. a Docker/Rhea
-workflow points you at the MAFFT or LLM-only path), plus the backend roster.
+(with the missing prerequisite *and* an honest fallback — e.g. a Docker-requiring
+workflow points you at the harmonized-search or LLM-only path), plus the backend roster.
 A fresh install with zero infrastructure already covers the primary path:
 entity resolution + harmonized multi-source search (anonymous public Globus
 index, no credentials), with **Claude Desktop doing the analysis** (no
-apecx-side LLM needed). Sequence alignment (MAFFT), structural SASA (Docker +
+apecx-side LLM needed). Sequence alignment (Docker + MAFFT), structural SASA (Docker +
 PyMOL), Rhea/MUSCLE tools (Docker), and the internal-synthesis backend LLM
 (Ollama) are opt-in unlocks. `apecx-setup verify` re-checks component health
 and treats every component except the synonym dictionary as optional.
@@ -186,10 +189,11 @@ data needed. Other working prompts, all on the primary path:
   summary.* → `compose_workflow` builds + reviews a new workflow; you then run
   it with `run_workflow`.
 
-The direct database tools (`resolve_entity`, `query_vaccines`, `query_pathogens`,
-`query_bvbrc_genomes`) register only **after** you transfer the local
-VIOLIN/BV-BRC datasets (`apecx-setup data`, optional); without them the
-harmonized-search + workflow path above already covers the primary use cases.
+The local `database_statistics` tool activates when `APECX_DATA_ROOT` points at a
+transferred VIOLIN/BV-BRC dataset (`apecx-setup data`, optional). The older raw DB
+query tools (`query_vaccines`, `query_pathogens`, `query_bvbrc_genomes`,
+`resolve_entity`) were retired 2026-06-15 — the harmonized-search + workflow path
+above covers those use cases.
 
 ## When something doesn't work
 
