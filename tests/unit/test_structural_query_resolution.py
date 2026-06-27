@@ -42,15 +42,29 @@ def test_query_text_curated_token_without_the_word_virus():
 
 def test_species_name_resolves_arbitrary_virus_without_curated_taxon():
     """An arbitrary virus (taxon NOT in the curated map) taxon-locks via the canonical
-    species name the BV-BRC resolver produced — the SARS-CoV-2 / influenza / HIV path."""
+    species name the BV-BRC resolver produced — the resolved_species_name path."""
     res = resolve_species_terms(
-        "SARS-CoV-2 spike glycoprotein conserved epitopes",
-        taxon_id=2697049,  # not in _TAXON_SPECIES
-        species_name="Severe acute respiratory syndrome coronavirus 2",
+        "HIV-1 envelope glycoprotein conserved epitopes",
+        taxon_id=11676,  # HIV-1, not in _TAXON_SPECIES
+        species_name="Human immunodeficiency virus 1",
     )
     assert res.note is None
-    assert "severe acute respiratory syndrome coronavirus 2" in res.terms
-    assert "Severe acute respiratory syndrome coronavirus 2" in res.names
+    assert "human immunodeficiency virus 1" in res.terms
+    assert "Human immunodeficiency virus 1" in res.names
+
+
+def test_curated_bridge_resolves_sars_and_influenza_by_taxon_id():
+    """Regression (SARS-CoV-2 spike e2e, 2026-06-27): SARS-CoV-2 + influenza A are NOT named
+    "<X> virus" so the query-text parser can't resolve them, and resolved_species_name isn't carried
+    in every run — so their structural leg silently DEGRADED (0 structures, no SASA). The curated
+    bridge now resolves them by taxon_id alone to the FULL PDB scientific name (facet-precise:
+    SARS-CoV-2 excludes SARS-CoV-1; "influenza a virus" is the A-variants, not the broad mix)."""
+    sars = resolve_species_terms("spike glycoprotein epitopes", taxon_id=2697049)
+    assert sars.note is None
+    assert "severe acute respiratory syndrome coronavirus 2" in sars.terms
+    flu = resolve_species_terms("hemagglutinin epitopes", taxon_id=11320)
+    assert flu.note is None
+    assert "influenza a virus" in flu.terms
 
 
 def test_species_name_keyword_residual_excludes_species_words():

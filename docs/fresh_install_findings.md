@@ -125,6 +125,22 @@ too-few-sequences fallback (`bvbrc_protein_fasta_step.py:133-167`) — but it is
 substitutes a different PROTEIN OF THE SAME VIRUS, never a different taxon. The structural bug was unique to
 the structural leg's free-text degrade (which dropped the taxon filter). No analogous fix needed.
 
+**5th-virus e2e CAUGHT A SECOND BUG — SARS-CoV-2 got NO structural evidence (2026-06-27).** A SARS-CoV-2
+spike (taxon 2697049) run — a 5th viral family + the post-Mayaro-fix regression check — degraded its
+structural leg ("could not resolve a species … no virus name in the query text"), so SARS, one of the most
+important viruses, silently got 0 structures. Root cause (NOT the Mayaro fix over-dropping): the structural
+taxon-lock needs an ORGANISM NAME, which it gets from the curated `_TAXON_SPECIES` map, `resolved_species_name`,
+or a "<X> virus" query phrase. SARS-CoV-2 + influenza A are named so the query parser can't resolve them, were
+NOT in the 4-entry curated map, and `resolved_species_name` (the upstream BV-BRC canonical label) is not carried
+in every run — influenza only worked earlier because it happened to get the label; SARS didn't. **Fix**: added
+SARS-CoV-2 + influenza A to `_TAXON_SPECIES`, bridging taxon_id → the FULL PDB scientific name (facet-precise —
+verified live: SARS → 16 real structures `6XEY/7VHN/8G70/7TPI`, note=None, excludes SARS-CoV-1; "influenza a
+virus" → the A-variants not the 84-org A/B/C mix). Regression test
+`test_structural_query_resolution.py::test_curated_bridge_resolves_sars_and_influenza_by_taxon_id`. **Deeper
+follow-up (NOT done):** the general gap is `resolved_species_name` being inconsistently populated for arbitrary
+taxa — the dict HAS taxon 2697049, so the structural leg should route taxon_id → name via the dict (the docstring's
+anticipated "lookup_by_iri" path), which would cover ALL arbitrary viruses without per-virus curation.
+
 Conclusion: the PyMOL render + SASA conservation plot **actually reach the host LLM as inline images
 after re-ingestion** — the loop's core directive, proven on real data. (Script:
 `scratchpad/e2e_reingestion.py`; this is a manual e2e gated by Docker + network + the dict.)
