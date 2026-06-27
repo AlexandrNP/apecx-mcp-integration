@@ -131,6 +131,25 @@ class DesignGateStep(BaseStep):
         # surfaces as WorkflowResult.data_preview — emitted alongside the user-facing markdown.
         structured = review.get("data")
 
+        # A clarification raised UPSTREAM (e.g. an under-specified / ambiguous entity at the resolve
+        # step — "herpes simplex virus" → HSV-1 vs HSV-2) rides the control leg
+        # (gate.control_in ← taxon_review output). Surface it as the terminal needs_input, ahead of
+        # the design gate: the analysis legs already degraded on the unresolved taxon, so the
+        # actionable result is the clarification request, not a guessed analysis.
+        upstream_ct = control.get("control_transfer")
+        if isinstance(upstream_ct, dict) and upstream_ct:
+            log.info(
+                "DesignGateStep %s: forwarding upstream clarification control_transfer (reason=%s)",
+                self.name,
+                upstream_ct.get("reason"),
+            )
+            return {
+                "markdown": evidence_md,
+                "data": structured,
+                "control_transfer": upstream_ct,
+                "provenance": provenance,
+            }
+
         requested = control.get("requested_outputs") or "evidence_only"
         approval_id = control.get("design_approval_id")
         query = control.get("query") or ""

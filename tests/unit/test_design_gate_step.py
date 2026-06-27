@@ -57,6 +57,22 @@ def test_evidence_only_passes_markdown_no_control_transfer(tmp_path):
     assert "design" not in out["markdown"].lower()
 
 
+def test_forwards_upstream_clarification_control_transfer(tmp_path):
+    """An under-specified / ambiguous entity raised at the resolve step rides the control leg
+    (gate.control_in ← taxon_review output); the gate must surface it as the terminal needs_input
+    (control_transfer forwarded), ahead of the design gate (the HSV-1/HSV-2 clarification, 2026-06-27)."""
+    inp = _inp()
+    inp["control_in"]["control_transfer"] = {
+        "reason": "ambiguous_entity",
+        "next_action": {"kind": "choose_candidate", "candidates": []},
+        "message": "The request resolved only to an UNDER-SPECIFIED taxon — specify HSV-1 vs HSV-2.",
+    }
+    out = asyncio.run(_stage(tmp_path).process(inp))
+    assert out["control_transfer"]["reason"] == "ambiguous_entity"
+    assert "UNDER-SPECIFIED" in out["control_transfer"]["message"]
+    assert out["markdown"].startswith("# Evidence")  # the degraded report still rides along
+
+
 def test_design_without_approval_attaches_needs_prerequisite_keeps_evidence(tmp_path):
     out = asyncio.run(_stage(tmp_path).process(_inp(requested="evidence_plus_design")))
     assert out["control_transfer"]["reason"] == "needs_prerequisite"

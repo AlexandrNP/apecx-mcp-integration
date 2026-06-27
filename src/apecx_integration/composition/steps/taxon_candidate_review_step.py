@@ -44,6 +44,20 @@ _DEFAULT_PROMPT_FILENAME = "taxon_candidate_review_prompt.yml"
 # so a long-lived MCP server fielding many distinct queries does not grow without limit.
 _REVIEW_CACHE: BoundedDict = BoundedDict(maxsize=512)
 
+# An under-specified resolution: the fallback could only land on a non-specific UMBRELLA taxon
+# (e.g. "Herpes simplex virus unknown type" for the ambiguous "herpes simplex virus", which spans
+# HSV-1 vs HSV-2). Rather than silently analyze that poorly-defined taxon, the workflow returns a
+# CLARIFICATION (needs_input) so the host LLM asks the user for a specific organism / taxon_id.
+_UNDERSPECIFIED_TAXON_RE = re.compile(
+    r"\b(unknown|unclassified|unidentified|unspecified|untyped)\b|\bsp\.", re.IGNORECASE
+)
+
+
+def _is_underspecified_taxon(name: str) -> bool:
+    """True iff a resolved taxon name is a non-specific umbrella (so the analysis would run on a
+    poorly-defined taxon) — the cue to ask the user to disambiguate instead of guessing."""
+    return bool(name) and _UNDERSPECIFIED_TAXON_RE.search(name) is not None
+
 
 def _clear_cache() -> None:
     """Test seam: drop the process-lifetime per-query verdict cache."""
@@ -234,6 +248,10 @@ class TaxonCandidateReviewStep(BaseStep):
         genomes: int | None,
         cds: int | None,
     ) -> dict[str, Any]:
+        # Under-specified umbrella taxon (e.g. "...unknown type") → do NOT analyze a poorly-defined
+        # taxon; return a CLARIFICATION (needs_input) so the host LLM asks the user to disambiguate.
+        if _is_underspecified_taxon(name):
+            return self._needs_clarification(bundle, name, taxon_id)
         bundle["canonical_iri"] = f"http://purl.obolibrary.org/obo/NCBITaxon_{taxon_id}"
         bundle["taxon_id"] = taxon_id
         bundle["resolved_species_name"] = name
@@ -254,6 +272,38 @@ class TaxonCandidateReviewStep(BaseStep):
             cds,
         )
         return bundle
+
+    def _needs_clarification(
+        self, bundle: dict[str, Any], name: str, taxon_id: int
+    ) -> dict[str, Any]:
+        """Emit a needs_input CLARIFICATION: the request resolved only to an under-specified umbrella
+        taxon. Sets a ``control_transfer`` (ambiguous_entity) for the terminal EnvelopeStep to surface
+        as ``status=needs_input``, and marks the resolution a miss so the analysis legs fast-degrade
+        rather than run on a poorly-defined taxon."""
+        from apecx_integration.composition.schemas.control_transfer import ambiguous_entity_transfer
+
+        query = (bundle.get("query") or "").strip()
+        msg = (
+            f"The request resolved only to an UNDER-SPECIFIED taxon — {name!r} (taxon {taxon_id}). "
+            f"This name is ambiguous (it spans multiple types/strains — e.g. HSV-1 vs HSV-2 for "
+            f"'herpes simplex virus'), so a meaningful epitope analysis cannot be run on it. Re-call "
+            f"viral_epitope_analysis with a SPECIFIC organism name (a type or strain) or an explicit "
+            f"taxon_id."
+        )
+        bundle["control_transfer"] = ambiguous_entity_transfer([], message=msg).model_dump(
+            mode="json"
+        )
+        log.warning(
+            "TaxonCandidateReviewStep %s: under-specified taxon %r (%d) for query %r — "
+            "requesting clarification (needs_input)",
+            self.name,
+            name,
+            taxon_id,
+            query,
+        )
+        return self._set_miss(
+            bundle, f"under-specified taxon {name!r} ({taxon_id}) — clarification requested"
+        )
 
     @staticmethod
     def _set_miss(bundle: dict[str, Any], note: str) -> dict[str, Any]:

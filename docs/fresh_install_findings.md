@@ -190,9 +190,19 @@ select(product)`) + web search.
   protein product**" (a generic catch-all → meaningless conservation). Fix: `_is_informative_product`
   gate so the substitution NEVER picks a generic name (unnamed/hypothetical/uncharacterized/predicted/
   putative-protein/"protein"/"product"); if no SPECIFIC alternate has ≥2 seqs it degrades loud ("no
-  informative alternate") instead. Regression `tests/unit/test_bvbrc_product_filter.py`. (The ambiguous-
-  name → LLM-fallback → "unknown type" taxon is defensible behavior, not fixed — the user can pass
-  "HSV-1" / a taxon_id for the well-annotated species.)
+  informative alternate") instead. Regression `tests/unit/test_bvbrc_product_filter.py`.
+- **FEATURE — ambiguous request → CLARIFICATION (needs_input), not a silent guess (2026-06-27).** The
+  earlier "defensible" behavior (resolve ambiguous "herpes simplex virus" to the "unknown type" taxon)
+  was UPGRADED per user request: when the taxon fallback lands only on a non-specific UMBRELLA taxon,
+  the workflow now returns `status=needs_input` with an `ambiguous_entity` ControlTransfer asking the
+  host LLM to specify the organism (HSV-1 vs HSV-2) or a taxon_id — instead of analyzing a poorly-
+  defined taxon. Wiring: `taxon_candidate_review_step._is_underspecified_taxon` (unknown/unclassified/
+  unidentified/unspecified/untyped/sp.) + `_needs_clarification` sets `bundle["control_transfer"]` and
+  marks a miss (legs fast-degrade); the control_transfer rides `gate.control_in` ← taxon_review (the
+  direct link, epitope builder ~L557), and `design_gate_step` FORWARDS it → the terminal EnvelopeStep
+  emits needs_input. CONFIRMED e2e: HSV thymidine kinase → `status=needs_input`, reason
+  `ambiguous_entity`, message naming the under-specified taxon + HSV-1/HSV-2. Regressions
+  `test_underspecified_taxon_requests_clarification`, `test_forwards_upstream_clarification_control_transfer`.
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +

@@ -116,6 +116,32 @@ def test_selects_max_cds_among_matched(tmp_path, monkeypatch):
     assert mod._REVIEW_CACHE["norovirus"] == 122929
 
 
+def test_underspecified_taxon_requests_clarification(tmp_path, monkeypatch):
+    """An ambiguous query whose only same-virus candidate is a non-specific UMBRELLA ("...unknown
+    type") must NOT be silently analyzed — the step sets a control_transfer (ambiguous_entity) for
+    the gate to surface as needs_input, and marks the resolution a MISS so the analysis legs
+    fast-degrade rather than run on a poorly-defined taxon (the HSV-1/HSV-2 case, 2026-06-27)."""
+    monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("126283"))
+    step = _stage(tmp_path)
+    monkeypatch.setattr(step, "_cds_count", lambda tid: 50)  # passes min_cds → reaches finalize
+    cands = [
+        {
+            "taxon_id": 126283,
+            "taxon_name": "Herpes simplex virus unknown type",
+            "genomes": 338,
+            "cds": 50,
+        },
+    ]
+    bundle = {"query": "herpes simplex virus thymidine kinase", "taxon_candidates": cands}
+    out = asyncio.run(step.process({"taxon_review_input": bundle}))
+    assert out["taxon_resolution"]["taxon_id"] is None  # MISS → legs fast-degrade
+    assert "taxon_id" not in out or out.get("taxon_id") is None  # not promoted
+    ct = out["control_transfer"]
+    assert ct["reason"] == "ambiguous_entity"
+    assert "under-specified" in ct["message"].lower()
+
+
 def test_reject_all_is_a_named_miss(tmp_path, monkeypatch):
     monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
     monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("NONE"))
