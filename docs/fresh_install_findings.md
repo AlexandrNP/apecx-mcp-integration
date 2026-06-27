@@ -105,6 +105,20 @@ ran with ZERO degrade/unavailable notes, each a different real PDB structure, ea
 The heavy-virus silent-degrade regression is NOT present even for the most heavily-sequenced virus
 (influenza). (Script: `scratchpad/e2e_diverse.py <taxon> <protein> "<query>"`.)
 
+**Edge-case e2e CAUGHT A REAL SILENT BUG (2026-06-27).** A 4th run — **Mayaro nsP1 (taxon 59301)**, a
+virus/protein with NO taxon-matched PDB structure — surfaced a wrong-structure bug: `StructuralEvidenceStep`
+fell back to an UNRELATED organism's free-text hit (an influenza HA `3GBN`) and rendered + PyMOL-SASA-computed
+it AS IF it were Mayaro structural evidence (silent false evidence, worse than a crash; the "not taxon-locked"
+warning was logged but the hit was still used). Root cause: `structural_query.search_one_source` returns
+`note=None` ONLY on the taxon-locked path; every `_free_text_degrade` sets a note + carries unreliable
+free-text hits. **Fix** (StructuralEvidenceStep): include a source's hits in `structural_records` only when
+`result.note is None`; drop non-taxon-locked hits + name the specific degrade. After the fix the Mayaro run
+correctly produces **0** structural figures (3GBN gone), 1 ImageContent (conservation only), and an honest
+"Structural-level reasoning unavailable: No loadable PDB structure" degrade — `status: ok`, no crash.
+Regression test: `tests/unit/test_structural_evidence_step.py::test_non_taxon_locked_hits_are_dropped_not_rendered`.
+The sibling `harmonized_search` call site is correct as-is (it SHOWS such hits with a visible caveat — a human
+reads it; only the auto-render workflow leg needed the drop).
+
 Conclusion: the PyMOL render + SASA conservation plot **actually reach the host LLM as inline images
 after re-ingestion** — the loop's core directive, proven on real data. (Script:
 `scratchpad/e2e_reingestion.py`; this is a manual e2e gated by Docker + network + the dict.)

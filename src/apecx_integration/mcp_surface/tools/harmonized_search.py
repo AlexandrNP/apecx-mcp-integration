@@ -189,7 +189,11 @@ async def _aggregate_served_search(term: str, index: str) -> dict:
         "",
     ]
     if result.note:
-        # Records present but not taxon-locked — name the caveat (E3-2.5).
+        # Records present but not taxon-locked — name the caveat (E3-2.5). DELIBERATE divergence
+        # from StructuralEvidenceStep: this MCP tool SHOWS the non-taxon-locked hits with a visible
+        # caveat (a human / host LLM reads it and judges); the workflow leg DROPS them, because it
+        # auto-feeds a PyMOL-SASA render that cannot surface a caveat — so a wrong-organism hit there
+        # would become silent false evidence (the Mayaro-nsP1 / 3GBN bug, 2026-06-27).
         md_lines.append(f"> {result.note}")
         md_lines.append("")
     for h in result.hits:

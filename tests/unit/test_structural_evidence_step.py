@@ -55,6 +55,37 @@ def test_no_hit_is_loud_not_silent(tmp_path, monkeypatch):
     assert "chikungunya structural polyprotein" in out["structural_note"]
 
 
+def test_non_taxon_locked_hits_are_dropped_not_rendered(tmp_path, monkeypatch):
+    """Regression (Mayaro nsP1 e2e, 2026-06-27): when no PDB organism matches, the free-text degrade
+    can return an UNRELATED organism's structure (an influenza HA `3GBN` surfaced for a virus with no
+    PDB entry). Those non-taxon-locked hits MUST be dropped from structural_records — never rendered /
+    SASA-computed as this query's structural evidence — with the not-taxon-locked degrade named."""
+    step = _stage(tmp_path)
+    # PDB-only: PDB is the source that free-text-degrades to an unrelated organism (EMDB's q REQUIRES
+    # the taxon token, so it can't surface a wrong organism). Set the instance attr — the step already
+    # captured self._publishers from the default at init.
+    step._publishers = {"pdb": "RCSB PDB"}
+    # facet finds NO organism spelling -> PDB free-text degrade ...
+    monkeypatch.setattr("apecx_integration.agents.globus_search.client.facet", lambda *a, **k: [])
+    # ... whose free-text search returns an UNRELATED structure (the bug shape).
+    monkeypatch.setattr(
+        "apecx_integration.agents.globus_search.client.search",
+        lambda *a, **k: [
+            {"subject": "pdb:3GBN", "content": {"title": "Influenza HA"}, "score": None}
+        ],
+    )
+    out = asyncio.run(step.process(_bundle(query="conserved epitopes on Mayaro virus nsP1")))
+    # the unrelated structure is NOT passed downstream for rendering, NOT merged for citation
+    assert out["structural_records"] == [], "non-taxon-locked hits must be dropped, not rendered"
+    assert all(h.get("subject") != "pdb:3GBN" for h in out["globus_results"])
+    # ... but the degrade is named (loud), with the specific not-taxon-locked reason
+    assert out["structural_note"] is not None
+    assert "not taxon-locked" in out["structural_note"].lower()
+    assert (
+        "No PDB or EMDB structural records" not in out["structural_note"]
+    )  # the specific note, not the generic
+
+
 def test_globus_outage_is_loud_and_distinct_from_no_hit(tmp_path, monkeypatch):
     """A Globus failure sets a DIFFERENT loud note ('unavailable') — not a no-hit."""
     step = _stage(tmp_path)

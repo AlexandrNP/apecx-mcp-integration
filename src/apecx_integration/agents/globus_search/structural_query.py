@@ -277,7 +277,12 @@ def search_one_source(
         _tag(hits, source)
         return StructuralSearchResult(hits=hits, note=None, organisms=organisms, query_used=q)
 
-    # EMDB: require the taxon token AND a structural keyword in the free text.
+    # EMDB: require the taxon token AND a structural keyword in the free text. NOTE: this is a
+    # free-text ``q`` (EMDB has no scientific_name field), so the ``note=None`` returned below TRUSTS
+    # Globus AND-semantics to keep the hit taxon-relevant — a looser lock than PDB's structured
+    # ``match_any`` on scientific_name. Consumers that DROP non-taxon-locked hits (StructuralEvidenceStep)
+    # rely on this note=None meaning "taxon-relevant"; if the index ever loosens AND-semantics, an
+    # EMDB hit could slip past that guard. PDB (the structured-filter path) has no such caveat.
     kw = kw_tokens or list(_DEFAULT_STRUCTURAL_KEYWORDS)
     taxon_clause = " OR ".join(f'"{t}"' for t in resolution.terms)
     kw_clause = " OR ".join(f'"{w}"' for w in kw)

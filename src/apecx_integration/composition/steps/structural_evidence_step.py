@@ -166,6 +166,9 @@ class StructuralEvidenceStep(BaseStep):
         structural_records: list[dict[str, Any]] = []
         structural_note: str | None = None
         degrade_notes: list[str] = []
+        n_dropped_non_taxon = (
+            0  # hits from non-taxon-locked sources (DROPPED — may be a wrong organism)
+        )
         # E3-8: capture the structural query ACTUALLY ISSUED per source — the resolved
         # organism spellings, the keyword query string, and the hit count — so a run's
         # provenance can record exactly what structural retrieval ran (these are computed
@@ -181,9 +184,16 @@ class StructuralEvidenceStep(BaseStep):
                 )
             )
             for (src, _pub), result in zip(sources, results, strict=True):
-                structural_records.extend(result.hits)
-                if result.note:
+                if result.note is None:
+                    # Taxon-locked, organism-matched hits — reliable structural evidence.
+                    structural_records.extend(result.hits)
+                else:
+                    # NOT taxon-locked (free-text degrade): the hits may be an UNRELATED organism
+                    # (e.g. an influenza HA structure surfacing for a virus with no PDB entry). Name
+                    # the degrade but DROP the hits — never render another organism's structure as
+                    # this query's structural evidence (E3-2.5). Taxon-locked hits keep note=None.
                     degrade_notes.append(result.note)
+                    n_dropped_non_taxon += len(result.hits)
                 query_per_source[src] = {
                     "n_hits": len(result.hits),
                     "organisms": list(getattr(result, "organisms", []) or []),
@@ -202,15 +212,22 @@ class StructuralEvidenceStep(BaseStep):
         self.emit_progress(f"structural evidence: {len(structural_records)} records")
 
         if structural_note is None and not structural_records:
-            # LOUD no-hit — the absence is named, never a silent empty list.
-            structural_note = (
-                f"No PDB or EMDB structural records were found for {query!r} in the "
-                f"APECx structural corpus."
-            )
-            log.info("StructuralEvidenceStep %s: %s", self.name, structural_note)
+            if n_dropped_non_taxon:
+                # Records existed but NONE were taxon-matched — they were DROPPED as unreliable
+                # (a different organism's structure must never be rendered as this query's
+                # evidence). Name the specific not-taxon-locked degrade.
+                structural_note = " ".join(dict.fromkeys(degrade_notes))
+                log.warning("StructuralEvidenceStep %s: %s", self.name, structural_note)
+            else:
+                # LOUD no-hit — the absence is named, never a silent empty list.
+                structural_note = (
+                    f"No PDB or EMDB structural records were found for {query!r} in the "
+                    f"APECx structural corpus."
+                )
+                log.info("StructuralEvidenceStep %s: %s", self.name, structural_note)
         elif structural_note is None and degrade_notes:
-            # Records present, but the query could NOT be taxon-locked — name it,
-            # never a silent unfiltered dump (E3-2.5).
+            # Some sources taxon-locked (their hits kept); at least one could NOT — name the
+            # partial degrade, never a silent unfiltered dump (E3-2.5).
             structural_note = " ".join(dict.fromkeys(degrade_notes))
             log.warning("StructuralEvidenceStep %s: %s", self.name, structural_note)
 
