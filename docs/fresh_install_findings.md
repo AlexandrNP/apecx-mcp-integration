@@ -119,6 +119,12 @@ Regression test: `tests/unit/test_structural_evidence_step.py::test_non_taxon_lo
 The sibling `harmonized_search` call site is correct as-is (it SHOWS such hits with a visible caveat — a human
 reads it; only the auto-render workflow leg needed the drop).
 
+**Parallel-path check (the "no match → wrong match" bug CLASS).** The conservation leg has an analogous
+too-few-sequences fallback (`bvbrc_protein_fasta_step.py:133-167`) — but it is TAXON-SAFE by construction:
+`_query_available_proteins(taxon_id, …)` + `_fetch(taxon_id, candidate, …)` hold `taxon_id` constant, so it
+substitutes a different PROTEIN OF THE SAME VIRUS, never a different taxon. The structural bug was unique to
+the structural leg's free-text degrade (which dropped the taxon filter). No analogous fix needed.
+
 Conclusion: the PyMOL render + SASA conservation plot **actually reach the host LLM as inline images
 after re-ingestion** — the loop's core directive, proven on real data. (Script:
 `scratchpad/e2e_reingestion.py`; this is a manual e2e gated by Docker + network + the dict.)
