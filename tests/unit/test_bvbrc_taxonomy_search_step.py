@@ -82,6 +82,25 @@ def test_ranks_by_cds_surfacing_covered_clade_over_thin_genus(tmp_path):
     assert all("hits" not in c for c in cands)
 
 
+def test_query_constrains_to_viral_division(tmp_path):
+    """Pollution fix (2026-06-27): the taxonomy lookup must constrain to the Viruses division, so
+    Solr keyword-matching on a short synonym ("HSV") can't surface NON-viral taxa (plants like
+    'Radula sp. HSV…', synthetic 'Expression vector …/HSV1 tk', environmental bacteria) into the
+    candidate list."""
+    step = _stage(tmp_path)
+    seen_queries: list[str] = []
+
+    def fake(path, query):
+        seen_queries.append(query)
+        return [{"taxon_id": 10298, "taxon_name": "Human alphaherpesvirus 1", "genomes": 50}]
+
+    step._get_json = fake  # type: ignore[method-assign]
+    _cds_map(step, {10298: 70})
+    asyncio.run(step.process({"bvbrc_search_input": {"query": "hsv", "taxon_synonyms": ["HSV"]}}))
+    assert seen_queries, "no taxonomy query issued"
+    assert all("eq(division,Viruses)" in q for q in seen_queries)
+
+
 def test_aggregates_and_keeps_max_genomes_name(tmp_path):
     step = _stage(tmp_path)
 

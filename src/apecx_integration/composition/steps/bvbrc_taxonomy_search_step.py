@@ -89,8 +89,14 @@ class BvbrcTaxonomySearchStep(BaseStep):
         for syn in synonyms:
             if not isinstance(syn, str) or not syn.strip():
                 continue
+            # eq(taxon_name,...) is Solr keyword-matched, so a short synonym ("HSV", "HHV") matches
+            # NON-VIRAL taxa whose names merely contain the token — plants (Radula sp. HSV…),
+            # synthetic constructs (Expression vector …/HSV1 tk), environmental bacteria. Constrain
+            # server-side to the Viruses division so only real viruses enter the candidate list
+            # (the downstream LLM then picks the right virus among them). 2026-06-27 pollution fix.
             query = (
                 f"eq(taxon_name,{quote(syn.strip())})"
+                f"&eq(division,Viruses)"
                 f"&select(taxon_id,taxon_name,genomes)"
                 f"&sort(-genomes)"
                 f"&limit({_PER_SYNONYM_LIMIT})"
