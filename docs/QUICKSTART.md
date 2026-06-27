@@ -6,15 +6,18 @@ Assumes **macOS or Linux**. Windows works but the command syntax
 differs; see `mcp_integration.md` for Windows specifics.
 
 At the end you'll have:
-- An OpenAI-compatible LLM running locally (Ollama + mistral-nemo).
 - `apecx-mcp` and `apecx-setup` on your `PATH`.
-- Domain datasets unpacked in `~/.apecx/data` (~15 MB).
-- A patched `claude_desktop_config.json` with the `apecx` MCP server
-  registered.
-- 15 apecx tools visible in Claude Desktop's tool picker after a
-  relaunch.
+- The synonym dictionary downloaded to `~/.apecx/dictionary/` (anonymous download;
+  several hundred MB) + (optionally) domain data transferred via Globus to `~/.apecx/data`.
+- A patched `claude_desktop_config.json` with the `apecx` MCP server registered.
+- 15 apecx tools visible in Claude Desktop's tool picker after a relaunch.
 
-You will NOT need: Docker, Postgres, root/admin, GPU.
+You will NOT need: root/admin, GPU. **Docker is OPTIONAL but RECOMMENDED** — the
+`viral_epitope_analysis` sequence-conservation (MAFFT) and structural surface-exposure (PyMOL) legs
+SELF-PROVISION their own Docker containers (built on first use, no manual bio-tool install); without
+Docker those two legs degrade loudly while the literature + harmonized-search legs still run. **No
+local LLM is required in desktop mode** — Claude Desktop itself is the analysis LLM (Ollama is only
+for the headless/backend fallback; see Step 1).
 
 For depth on any step, see `INSTALL.md` (alt installers) and
 `mcp_integration.md` (env vars, troubleshooting, per-tool shapes).
@@ -60,10 +63,12 @@ OpenAI proper, Anthropic via a proxy). Set `APECX_LLM_BASE_URL` +
 `APECX_LLM_MODEL` before running `apecx-setup` and decline the
 Ollama install prompt.
 
-**Why no Docker?** apecx-mcp's Control Plane backend autostarts as a
-child process and persists state to SQLite. Docker is only useful for
-swapping to managed Postgres for shared/HA deployments — out of
-scope for quick-start.
+**What Docker is for.** apecx-mcp's Control Plane backend autostarts as a child process and persists
+to SQLite, so Docker is NOT required just to boot the server. Docker IS used (and recommended) for
+two things: (1) the self-provisioning bio-tool containers — `viral_epitope_analysis` builds + runs
+`apecx-mafft` (sequence conservation) and `apecx-pymol` (structural SASA) on first use, no manual
+install; (2) optional managed Postgres/Redis for shared/HA deployments. Without Docker the server +
+literature/search legs run fine; the conservation + structural legs degrade loudly.
 
 ---
 
@@ -171,19 +176,19 @@ Common failure banners (each clearly indicates the cause):
 
 In Claude Desktop, try:
 
-> *"Use the apecx tools to find all entries in the domain database
-> for a given entity name."*
+> *"What are the conserved, surface-exposed epitopes on chikungunya E1?"*
 
-Claude calls `resolve_entity` (canonicalize) then
-`query_vaccines` / `query_pathogens` with the canonical name.
-Other working starting prompts:
-- *"How many genome records by organism?"* → `query_bvbrc_genomes`.
-- *"Show me the gene-target relationships."* → `get_vaccine_pathogen_genes`.
+Claude calls `viral_epitope_analysis` — it pulls the data itself (BV-BRC sequences, PDB/EMDB
+structures, VIOLIN + PubMed), runs the MAFFT sequence-conservation and PyMOL surface-exposure legs in
+self-provisioning containers (Docker recommended), and returns ranked candidate epitopes with the
+surface render + conservation plot attached. Other working starting prompts:
+- *"What APECx workflows can I run?"* → `list_workflows`.
+- *"Search the harmonized corpus for dengue envelope structures."* → `harmonized_search`.
+- *"Synthesize what's known about Mayaro virus vaccines."* → `rag_e2e_synthesis`.
 
-Composer-orchestrated tools (`start_workflow`, `show_diff`,
-`execute_workflow`, approval/HPC tools) require an LLM that can
-reason about workflow YAML — `mistral-nemo` works; small or heavily
-quantized models do not.
+To compose a NEW workflow from a description, use `compose_workflow` — it needs an LLM that can
+reason about workflow YAML (`mistral-nemo` or larger in headless mode; in desktop mode the Claude
+Desktop model itself drives the composition).
 
 For the full tool inventory + per-tool input/output shapes, see
 `mcp_integration.md`.

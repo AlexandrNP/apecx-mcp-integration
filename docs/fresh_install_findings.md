@@ -76,13 +76,29 @@ Lesson recorded: a packaging loop must DERIVE its contract from the code, never 
   no-local-data install it was "missing" something it does not need — misleading under Globus-first).
 - Regression pin: `tests/unit/test_verify_no_local_data.py`.
 
+## Integrated end-to-end proof (2026-06-27, origin/main c41c4f3)
+
+The full desktop chain was validated against REAL data + REAL containers (not a unit harness):
+`viral_epitope_analysis` for chikungunya E1 (taxon 37124) in **desktop** locus →
+
+- status `ok`, 32 KB markdown report; artifacts on disk: `figures/2XFB.png` (PyMOL surface render),
+  `figures/conservation_37124_E1_*.png` + `.pdf` (conservation plot), report / structured_data /
+  tool_output. Both the MAFFT (sequence conservation) and PyMOL (structural SASA) legs ran in their
+  SELF-PROVISIONED containers (`apecx-mafft:7.505`, `apecx-pymol:3.1.0`) — no host bio-tool install.
+- `eo_primitives.maybe_desktop_payload(result, ctx)` → a 4-item content list → REAL FastMCP
+  `_convert_to_content` → **2 `ImageContent` blocks** (both `image/png`, both with base64 data —
+  the surface render + the conservation PNG; the vector PDF is correctly NOT inlined) + the host
+  instructions TextContent + a lean 7.5 KB structured-data block.
+
+Conclusion: the PyMOL render + SASA conservation plot **actually reach the host LLM as inline images
+after re-ingestion** — the loop's core directive, proven on real data. (Script:
+`scratchpad/e2e_reingestion.py`; this is a manual e2e gated by Docker + network + the dict.)
+
 ## Backlog (next, loop-driven)
-1. **MAFFT self-provisioning (container-only).** The conservation leg's default aligner is the host
-   `mafft` binary (`local_mafft_align_step.py` → `shutil.which('mafft')`) — a SEPARATE manual install,
-   the last bio-tool that isn't self-provisioning. Containerize it like PyMOL (the `_pymol_container`
-   pattern: packaged `_mafft_container/{Dockerfile,job}` + `ensure_docker_image_built` +
-   `container_admission`), so no `brew install mafft` is ever needed; degrade-loud when Docker absent.
-   This is the next arc.
+1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
+   `apecx-mafft:7.505` built on first use via `ensure_docker_image_built`; the host
+   `shutil.which('mafft')` path is removed; degrade-loud without Docker. Verified by the integrated
+   e2e above (a mafft-less host now self-provisions instead of failing the conservation leg).
 2. **Wire the harness into the loop cadence** — run the default tier alongside the boundary loop on
    every packaging-affecting change; run `--full` before a release.
 3. Consider extending the manifest as new module-relative resources are added (the manifest is the
