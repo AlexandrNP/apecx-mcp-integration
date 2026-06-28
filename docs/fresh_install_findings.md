@@ -225,6 +225,23 @@ select(product)`) + web search.
   confirm as "the same virus", so they aren't flagged as siblings (the candidate-gen DOES surface all
   three; the gap is the "same-virus" confirmation). Detecting syndrome terms (candidates span multiple
   FAMILIES) is a further follow-up; using unconfirmed candidates risks false triggers, so deferred.
+- **BUG — virus-name extraction captured leading article / sentence context (2026-06-27 alphavirus
+  probe).** `extract_virus_names` (taxonomy_resolver.py) used a greedy ≤4-word "<X> virus" phrase
+  window, so natural phrasing "...epitopes on the Eastern equine encephalitis virus" returned "the
+  Eastern equine encephalitis virus" (and a 1-word name like "...on the Sindbis virus" returned
+  "epitopes on the Sindbis"). Both MISS the article-free dict key → `resolved_taxon_id=null` → the
+  whole workflow degraded (no conservation, no taxon-locked structures) for EVERY NON-ALIASED virus in
+  natural phrasing. ALIASED viruses (CHIKV/dengue/WNV, alias table consulted first) MASKED it — why
+  earlier probes passed. Found ONLY by probing alphaviruses (none aliased) with full natural-language
+  queries; the cheap resolution probe missed it because it passed clean "Virus protein" strings that
+  bypass extract_virus_names. FIX: drop a leading run of articles/prepositions, then emit each trailing
+  SUFFIX (longest-first) so the most-specific real "<name> virus" resolves (first-resolving-wins
+  contract). VERIFIED e2e: EEEV "...on the Eastern equine encephalitis virus E2 glycoprotein" went from
+  resolved_taxon_id=null + 0 structures → 11021 + PDB 8XI5. Resolution confirmed for EEEV/WEEV/VEEV/
+  Sindbis/Ross River/O'nyong-nyong/Barmah/Getah/Madariaga/Una/Whataroa (entity recognition +
+  decomposition 12/12); CHIKV alias regression intact. Regression `tests/unit/test_extract_virus_names.py`.
+  Residual edge (resolves correctly, primary candidate suboptimal): a 1-word name with a content-word in
+  the 4-window (e.g. "epitopes on the Sindbis") keeps a junk names[0] but still resolves via a suffix.
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +

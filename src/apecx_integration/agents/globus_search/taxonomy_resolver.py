@@ -86,6 +86,35 @@ _VIRUS_SUFFIX_RE = re.compile(r"\b([a-z][a-z0-9'-]*virus)\b", re.IGNORECASE)
 # state — an integrated viral genome, not a taxon).
 _VIRUS_SUFFIX_DENYLIST = {"antivirus", "provirus"}
 
+# Leading articles/prepositions the greedy phrase window pulls in from the surrounding sentence
+# ("...epitopes on the Eastern equine encephalitis virus" → "the Eastern equine encephalitis"). Dropped
+# so the COMMON "...on the <name> virus" phrasing yields the clean name as the PRIMARY candidate (which
+# downstream consumers use as names[0]). 2026-06-27 alphavirus-probe finding.
+_LEADING_STOPWORDS = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "on",
+        "of",
+        "for",
+        "in",
+        "to",
+        "with",
+        "and",
+        "from",
+        "at",
+        "by",
+        "this",
+        "that",
+        "these",
+        "those",
+        "against",
+        "targeting",
+        "about",
+    }
+)
+
 
 def extract_virus_names(query: str) -> list[str]:
     """Pull candidate virus name(s) from free query text, most-specific first.
@@ -111,7 +140,20 @@ def extract_virus_names(query: str) -> list[str]:
         if pattern.search(lowered):
             _add(canonical)
     for match in _VIRUS_PHRASE_RE.finditer(query):
-        _add(f"{match.group(1).strip()} virus")
+        # The greedy ≤4-word window can prepend sentence context to a short name
+        # ("...epitopes on the Eastern equine encephalitis virus" → "the Eastern equine encephalitis";
+        # "...on the Sindbis virus" → "epitopes on the Sindbis"), which MISSES the article-free dict
+        # key. (1) Drop a leading run of articles/prepositions so the common phrasing yields the clean
+        # name as the PRIMARY candidate; (2) then emit each shorter trailing SUFFIX (longest-first) so a
+        # residual content-word prefix (1-word names) still resolves via a shorter suffix — matching
+        # this function's "first that resolves wins" contract. 2026-06-27 alphavirus-probe finding
+        # (broke every NON-aliased virus in natural phrasing).
+        words = match.group(1).split()
+        start = 0
+        while start < len(words) and words[start].lower() in _LEADING_STOPWORDS:
+            start += 1
+        for i in range(start, len(words)):
+            _add(f"{' '.join(words[i:])} virus")
     for match in _VIRUS_SUFFIX_RE.finditer(query):
         name = match.group(1).strip()
         if name.lower() not in _VIRUS_SUFFIX_DENYLIST:
