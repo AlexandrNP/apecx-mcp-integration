@@ -74,8 +74,11 @@ _VIRUS_ALIASES: list[tuple[re.Pattern[str], str]] = [
 # this pattern silently NEVER match (the trailing ``s?`` interacts pathologically with the
 # preceding greedy ``{0,3}`` word-run under CPython's backtracker — verified empirically).
 # ``virus(?:es)?`` is correct.
+# The word class allows a trailing/internal period so ABBREVIATED names survive ("St. Louis
+# encephalitis virus" → keep "St."; without "." the window starts at "Louis" and misses the dict key,
+# which IS "St. Louis encephalitis virus"). 2026-06-28 diverse-virus-probe finding.
 _VIRUS_PHRASE_RE = re.compile(
-    r"\b([a-z][a-z0-9'-]*(?:\s+[a-z][a-z0-9'-]*){0,3})\s+virus(?:es)?\b",
+    r"\b([a-z][a-z0-9'.-]*(?:\s+[a-z][a-z0-9'.-]*){0,3})\s+virus(?:es)?\b",
     re.IGNORECASE,
 )
 # Single-token suffix-form names (norovirus, ebolavirus, rotavirus, …). The phrase RE above needs a

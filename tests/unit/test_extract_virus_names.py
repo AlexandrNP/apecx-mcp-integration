@@ -39,6 +39,16 @@ def test_suffixes_are_longest_first():
     assert out.index(full) < out.index(short)
 
 
+def test_abbreviated_name_with_period_survives():
+    # "St." must stay attached — the dict key IS "St. Louis encephalitis virus"; dropping the period
+    # (window starting at "Louis") misses it entirely. 2026-06-28 diverse-virus-probe finding.
+    out = extract_virus_names(
+        "conserved epitopes on the St. Louis encephalitis virus NS5 polymerase"
+    )
+    assert "St. Louis encephalitis virus" in out
+    assert out[0] == "St. Louis encephalitis virus"
+
+
 def test_aliased_virus_unaffected():
     # Alias-table canonical spelling stays the highest-priority candidate.
     out = extract_virus_names("epitopes on the chikungunya virus E1")
