@@ -54,3 +54,28 @@ def test_aliased_virus_unaffected():
     out = extract_virus_names("epitopes on the chikungunya virus E1")
     assert "Chikungunya virus" in out
     assert out[0] == "Chikungunya virus"
+
+
+def test_virology_acronyms_resolve_via_alias_table():
+    # A bare acronym previously produced NO candidate (no alias, no "<X> virus" phrase, no suffix) →
+    # acronym-only queries MISSED even when the dict knew the taxon. 2026-06-28 acronym-probe finding.
+    for acr, expect in [
+        ("EEEV", "Eastern equine encephalitis virus"),
+        ("LASV", "Lassa mammarenavirus"),
+        ("NiV", "Nipah henipavirus"),
+        ("CCHFV", "Crimean-Congo hemorrhagic fever virus"),
+        ("MPXV", "Monkeypox virus"),
+    ]:
+        assert expect in extract_virus_names(f"conserved epitopes on the {acr} glycoprotein")
+
+
+def test_ambiguous_acronyms_deliberately_omitted():
+    # SFV (Semliki Forest vs Shope fibroma) + HEV (Hepatitis E vs Hendra) are NOT alias-mapped — the
+    # alias table must not assert a single canonical for them. The FULL name still works (phrase path).
+    assert "Semliki Forest virus" not in extract_virus_names("epitopes on the SFV E1 protein")
+    assert "Semliki Forest virus" in extract_virus_names("epitopes on the Semliki Forest virus E1")
+
+
+def test_no_false_positive_on_non_virus_caps():
+    # \b boundaries must keep acronyms from matching inside ordinary words / DNA/RNA mentions.
+    assert extract_virus_names("conserved epitopes analysis of DNA and RNA structure") == []

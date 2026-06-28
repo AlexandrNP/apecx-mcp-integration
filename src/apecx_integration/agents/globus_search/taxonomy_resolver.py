@@ -63,6 +63,29 @@ _VIRUS_ALIASES: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\blassa\b"), "Lassa mammarenavirus"),
     (re.compile(r"\bnipah\b"), "Nipah henipavirus"),
     (re.compile(r"\bvariola\b|\bsmallpox\b"), "Variola virus"),
+    # Standard virology ACRONYMS → canonical (2026-06-28 acronym-probe finding: a bare acronym
+    # produced NO extraction candidate, so acronym-only queries MISSED even when the dict knows the
+    # taxon). Only UNAMBIGUOUS acronyms — SFV (Semliki Forest vs Shope fibroma) and HEV (Hepatitis E
+    # vs Hendra) are deliberately OMITTED to avoid a wrong-taxon mapping. Each canonical verified to
+    # resolve in the dict before listing.
+    (re.compile(r"\beeev\b"), "Eastern equine encephalitis virus"),
+    (re.compile(r"\bweev\b"), "Western equine encephalitis virus"),
+    (re.compile(r"\bveev\b"), "Venezuelan equine encephalitis virus"),
+    (re.compile(r"\bonnv\b"), "Onyong-nyong virus"),
+    (re.compile(r"\brrv\b"), "Ross River virus"),
+    (re.compile(r"\blasv\b"), "Lassa mammarenavirus"),
+    (re.compile(r"\bmarv\b"), "Marburg marburgvirus"),
+    (re.compile(r"\bniv\b"), "Nipah henipavirus"),
+    (re.compile(r"\brabv\b"), "Rabies lyssavirus"),
+    (re.compile(r"\bhtnv\b"), "Hantaan virus"),
+    (re.compile(r"\brvfv\b"), "Rift Valley fever virus"),
+    (re.compile(r"\bcchfv\b"), "Crimean-Congo hemorrhagic fever virus"),
+    (re.compile(r"\bjev\b"), "Japanese encephalitis virus"),
+    (re.compile(r"\btbev\b"), "Tick-borne encephalitis virus"),
+    (re.compile(r"\byfv\b"), "Yellow fever virus"),
+    (re.compile(r"\bvarv\b"), "Variola virus"),
+    (re.compile(r"\bhpv\b"), "Human papillomavirus"),
+    (re.compile(r"\bmpxv\b"), "Monkeypox virus"),
 ]
 
 # Generic "<word(s)> virus(es)" phrase: group(1) is the distinctive part BEFORE "virus"
