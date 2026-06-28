@@ -241,7 +241,27 @@ select(product)`) + web search.
   Sindbis/Ross River/O'nyong-nyong/Barmah/Getah/Madariaga/Una/Whataroa (entity recognition +
   decomposition 12/12); CHIKV alias regression intact. Regression `tests/unit/test_extract_virus_names.py`.
   Residual edge (resolves correctly, primary candidate suboptimal): a 1-word name with a content-word in
-  the 4-window (e.g. "epitopes on the Sindbis") keeps a junk names[0] but still resolves via a suffix.
+  the 4-window (e.g. "epitopes on the Sindbis") keeps a junk names[0] but still resolves via a suffix —
+  assessed NON-harmful (epitope_resolve_step loops candidates and sets `term` to the first that RESOLVES;
+  PubMed OR-anchors all candidates), so NOT fixed.
+- **BUG — abbreviated name with a period dropped (2026-06-28, 7a50e97).** The phrase-window char class
+  was `[a-z0-9'-]` (no period), so "St. Louis encephalitis virus" extracted as "Louis encephalitis
+  virus" → MISS (dict key IS "St. Louis encephalitis virus", BV-BRC taxon 11080). Fix: add `.` to the
+  class. Regression in `test_extract_virus_names.py`.
+- **BUG — bare acronyms produced NO extraction candidate (2026-06-28, bb41784).** `extract_virus_names`
+  returned [] for an acronym-only query ("...on the LASV glycoprotein") — no alias, no "<X> virus"
+  phrase, no suffix — so the workflow MISSED, even for acronyms the dict knows (EEEV/HPV/JEV resolve via
+  direct lookup but were never emitted). Fix: 18 UNAMBIGUOUS acronym→canonical alias entries
+  (EEEV/WEEV/VEEV/ONNV/RRV/LASV/MARV/NiV/RABV/HTNV/RVFV/CCHFV/JEV/TBEV/YFV/VARV/HPV/MPXV; SFV+HEV omitted
+  as ambiguous). e2e: LASV→3052310 + structure. \b boundaries verified to avoid in-word false matches.
+- **NOT bugs (assessed 2026-06-28, defensible behavior, no change):** (a) serotype/subtype queries
+  resolve to the parent SPECIES (dengue serotype 2 / DENV-2 → Dengue virus 12637; HPV type 16 → Human
+  papillomavirus) — species-level conservation captures pan-serotype conserved epitopes; serotype-specific
+  resolution is a possible future ENHANCEMENT, not a fix. (b) multi-virus queries ("shared epitopes
+  between Zika and dengue") extract BOTH viruses correctly but the workflow resolves the first —
+  viral_epitope_analysis is single-virus BY DESIGN; cross-virus comparison is a feature, not a bug.
+  Entity-recognition probing has hit diminishing returns for clear bugs (path now robust: aliases +
+  acronyms + phrase + suffix + period + article-strip + suffix-emission).
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
