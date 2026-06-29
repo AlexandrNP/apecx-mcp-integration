@@ -223,8 +223,24 @@ select(product)`) + web search.
   TAXONOMIC sibling ambiguity, NOT SYNDROME ambiguity — bare "hepatitis virus" spans UNRELATED viral
   families (HBV hepadnavirus / HCV flavivirus / HEV hepevirus), which the review LLM correctly does NOT
   confirm as "the same virus", so they aren't flagged as siblings (the candidate-gen DOES surface all
-  three; the gap is the "same-virus" confirmation). Detecting syndrome terms (candidates span multiple
-  FAMILIES) is a further follow-up; using unconfirmed candidates risks false triggers, so deferred.
+  three; the gap is the "same-virus" confirmation).
+- **SYNDROME ambiguity — family-spread discriminator is UNSAFE (2026-06-28 NO-GO), shipped the SAFE
+  alternative instead.** Feasibility (gated before building): measured whether "candidates span ≥2
+  distinct FAMILY-rank lineages" cleanly separates a syndrome term from a specific virus. It does NOT —
+  the real nemotron synonym step emits SYNDROME synonyms for SPECIFIC hemorrhagic-fever viruses
+  (Crimean-Congo HF → "hemorrhagic fever virus", "fever virus"; Rift Valley fever → "Valley fever
+  virus", "fever virus"; Lassa → "Lassa fever virus"), which keyword-match `eq(taxon_name)` across
+  families → a SPECIFIC-virus query would false-trigger. Also, the synonym step silently collapses bare
+  "hepatitis virus" → Hepatitis B, so family-spread wouldn't even help it. So family-spread was NOT
+  built. SHIPPED instead: a curated **bare-syndrome-term** clarification in `taxon_candidate_review_step`
+  (`_syndrome_category` / `_needs_clarification_syndrome`) — a stopword-anchored regex
+  (hepatitis | encephalitis | (viral) h(a)emorrhagic fever | respiratory | gastroenteritis) `+ virus`
+  → `needs_input` with per-category examples, instead of the LLM fallback silently picking one member.
+  SAFE by construction: only reached on a dict MISS (specific viruses — JEV/HBV/CCHF/RVF/TBEV/RSV —
+  dict-resolve + short-circuit before this step), and the stopword anchor means a QUALIFIED name never
+  matches (verified: "Japanese encephalitis virus"/"Crimean-Congo hemorrhagic fever virus"/"Hepatitis B
+  virus" → None). Regressions `test_bare_syndrome_term_requests_clarification` +
+  `test_qualified_disease_name_not_flagged_as_syndrome`.
 - **BUG — virus-name extraction captured leading article / sentence context (2026-06-27 alphavirus
   probe).** `extract_virus_names` (taxonomy_resolver.py) used a greedy ≤4-word "<X> virus" phrase
   window, so natural phrasing "...epitopes on the Eastern equine encephalitis virus" returned "the

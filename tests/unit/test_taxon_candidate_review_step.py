@@ -198,6 +198,37 @@ def test_underspecified_taxon_requests_clarification(tmp_path, monkeypatch):
     assert "under-specified" in ct["message"].lower()
 
 
+def test_bare_syndrome_term_requests_clarification(tmp_path):
+    """A bare DISEASE/SYNDROME term ("hepatitis virus") is NOT a single virus — clarify instead of the
+    LLM fallback silently picking one member (the synonym step collapses it to HBV). Fires before any
+    LLM call. 2026-06-28 (the SAFE syndrome path; the family-spread discriminator was UNSAFE)."""
+    step = _stage(tmp_path)
+    out = asyncio.run(
+        step.process(
+            {"taxon_review_input": {"query": "epitopes on the hepatitis virus surface antigen"}}
+        )
+    )
+    assert out["taxon_resolution"]["taxon_id"] is None
+    ct = out["control_transfer"]
+    assert ct["reason"] == "ambiguous_entity"
+    assert "disease" in ct["message"].lower() or "syndrome" in ct["message"].lower()
+
+
+def test_qualified_disease_name_not_flagged_as_syndrome():
+    """A QUALIFIED name must NOT trip the syndrome check (those dict-resolve + short-circuit in
+    production); only a bare category does."""
+    assert mod._syndrome_category("on the Japanese encephalitis virus E protein") is None
+    assert (
+        mod._syndrome_category("on the Crimean-Congo hemorrhagic fever virus nucleoprotein") is None
+    )
+    assert mod._syndrome_category("on the Hepatitis B virus surface antigen") is None
+    assert mod._syndrome_category("on the hepatitis virus antigen") == "hepatitis"
+    assert mod._syndrome_category("on the encephalitis virus envelope") == "encephalitis"
+    assert (
+        mod._syndrome_category("on the hemorrhagic fever virus glycoprotein") == "hemorrhagic fever"
+    )
+
+
 def test_reject_all_is_a_named_miss(tmp_path, monkeypatch):
     monkeypatch.setattr(mod, "preflight_llm_model", lambda *a, **k: None)
     monkeypatch.setattr(mod, "build_chat_llm", lambda **k: _FakeLLM("NONE"))

@@ -86,6 +86,30 @@ def _distinct_species_reps(cands: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return list(reps.values())
 
 
+# A bare DISEASE/SYNDROME category that is NOT a single virus — multiple UNRELATED viral families cause
+# it (hepatitis → HAV/HBV/HCV/HEV; encephalitis → JEV/TBEV/EEEV; viral hemorrhagic fever →
+# Lassa/Ebola/CCHF/RVF). Stopword-anchored so a QUALIFIED name ("Japanese encephalitis virus",
+# "Hepatitis B virus", "Crimean-Congo hemorrhagic fever virus") never matches — and those resolve via
+# the dict and short-circuit before this step anyway. 2026-06-28 syndrome-ambiguity (the SAFE path,
+# after the family-spread discriminator was found UNSAFE — specific HF viruses get "fever virus"
+# synonyms). The family-spread no-go is recorded in docs/fresh_install_findings.md.
+_SYNDROME_RE = re.compile(
+    r"(?:^|\b(?:the|a|an|on|of|for|to|with|against|targeting)\s+)"
+    r"(hepatitis|encephalitis|(?:viral\s+)?ha?emorrhagic\s+fever|respiratory|gastroenteritis)"
+    r"\s+vir(?:us|al)\b",
+    re.IGNORECASE,
+)
+
+
+def _syndrome_category(query: str) -> str | None:
+    """The bare disease-category term in a query ("...the hepatitis virus...") that is NOT a specific
+    virus, or None. Used to ask the user to disambiguate instead of silently analyzing one member."""
+    if not isinstance(query, str):
+        return None
+    m = _SYNDROME_RE.search(query)
+    return m.group(1).lower() if m else None
+
+
 def _clear_cache() -> None:
     """Test seam: drop the process-lifetime per-query verdict cache."""
     _REVIEW_CACHE.clear()
@@ -152,6 +176,13 @@ class TaxonCandidateReviewStep(BaseStep):
 
         query = bundle.get("query") or ""
         key = query.strip().lower()
+
+        # Bare SYNDROME term (a disease category, not a virus) → CLARIFY instead of the LLM fallback
+        # silently picking one arbitrary member (the synonym step collapses "hepatitis virus" → HBV).
+        # Only reached on a dict MISS (specific viruses dict-resolve + returned above).
+        syndrome = _syndrome_category(query)
+        if syndrome:
+            return self._needs_clarification_syndrome(bundle, syndrome)
 
         # Cached verdict for this exact query (None = a remembered miss).
         if key in _REVIEW_CACHE:
@@ -381,6 +412,34 @@ class TaxonCandidateReviewStep(BaseStep):
             bundle,
             f"ambiguous — {len(candidates)} distinct viral species — clarification requested",
         )
+
+    def _needs_clarification_syndrome(
+        self, bundle: dict[str, Any], category: str
+    ) -> dict[str, Any]:
+        """Clarification for a bare DISEASE/SYNDROME query — name the category, give per-syndrome
+        examples so the host LLM can ask the user for a specific virus, and mark a miss."""
+        from apecx_integration.composition.schemas.control_transfer import ambiguous_entity_transfer
+
+        examples = {
+            "hepatitis": "Hepatitis A / B / C / E virus (HAV/HBV/HCV/HEV)",
+            "encephalitis": "Japanese / tick-borne / Eastern equine encephalitis virus",
+            "respiratory": "RSV, influenza A, SARS-CoV-2, a specific coronavirus",
+            "gastroenteritis": "norovirus, rotavirus, a specific astrovirus",
+        }.get(category, "Lassa, Ebola, Crimean-Congo, or Rift Valley fever virus")
+        msg = (
+            f"{category.title()!r} names a DISEASE/SYNDROME, not a single virus — multiple UNRELATED "
+            f"viruses cause it (e.g. {examples}). Re-call viral_epitope_analysis with a SPECIFIC virus "
+            f"(scientific name, acronym, or NCBI taxon_id)."
+        )
+        bundle["control_transfer"] = ambiguous_entity_transfer([], message=msg).model_dump(
+            mode="json"
+        )
+        log.warning(
+            "TaxonCandidateReviewStep %s: bare syndrome term %r — requesting clarification",
+            self.name,
+            category,
+        )
+        return self._set_miss(bundle, f"syndrome category {category!r} — clarification requested")
 
     @staticmethod
     def _set_miss(bundle: dict[str, Any], note: str) -> dict[str, Any]:
