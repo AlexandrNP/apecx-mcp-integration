@@ -152,6 +152,33 @@ class BvbrcProteinFastaStep(BaseStep):
 
         requested_protein = protein
         substituted_protein: str | None = None
+        if len(records) < 2 and feature_type != "mat_peptide":
+            # Mature-peptide retry (2026-06-29): a mature protein of a POLYPROTEIN virus (alphavirus
+            # capsid / E1 / E2 / 6K, flavivirus envelope, ...) is annotated as a mat_peptide feature,
+            # NOT a CDS — the CDS is the whole polyprotein — so the CDS fetch for the mature protein
+            # finds <2. Retry the SAME protein as mat_peptide BEFORE substituting a DIFFERENT product:
+            # this gives REAL per-mature-protein conservation (e.g. EEEV "capsid protein" → 0 CDS but
+            # ~1200 mat_peptide). NOTE: a short request whose name is not a substring of the verbose
+            # BV-BRC product ("E2 glycoprotein" vs "E2 envelope glycoprotein"; "NS3" vs "nonstructural
+            # protein 3") still misses here — protein-name normalization is a separate follow-up
+            # (recorded in docs/fresh_install_findings.md).
+            mp_records, mp_fetched, mp_dropped = await asyncio.to_thread(
+                self._fetch, taxon_id, protein, "mat_peptide"
+            )
+            if len(mp_records) >= 2:
+                log.info(
+                    "BvbrcProteinFastaStep %s: %r had <2 %s feature(s) for taxon %d; using %d "
+                    "mat_peptide feature(s) for the SAME protein (mature-peptide conservation).",
+                    self.name,
+                    requested_protein,
+                    feature_type,
+                    taxon_id,
+                    len(mp_records),
+                )
+                records = mp_records
+                n_fetched, n_dropped_length_outlier = mp_fetched, mp_dropped
+                feature_type = "mat_peptide"
+
         if len(records) < 2:
             # Too-few-sequences fallback: reverse-lookup the products that DO exist for this taxon,
             # and auto-retry the most-covered one (>=2). The substitute fixes ONLY the sequence-

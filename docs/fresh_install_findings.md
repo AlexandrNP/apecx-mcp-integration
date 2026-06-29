@@ -278,6 +278,24 @@ select(product)`) + web search.
   viral_epitope_analysis is single-virus BY DESIGN; cross-virus comparison is a feature, not a bug.
   Entity-recognition probing has hit diminishing returns for clear bugs (path now robust: aliases +
   acronyms + phrase + suffix + period + article-strip + suffix-emission).
+- **POLYPROTEIN mature-peptide conservation — partial fix shipped, normalization is the follow-up
+  (2026-06-29).** A mature protein of a polyprotein virus (alphavirus capsid/E1/E2/6K, flavivirus
+  NS3/NS5/envelope, coronavirus nsps) is annotated in BV-BRC as a `mat_peptide` feature, NOT a CDS (the
+  CDS is the whole polyprotein) — so the conservation leg's CDS fetch finds <2 sequences and SUBSTITUTES
+  a different product (the structural leg still works via PDB). mat_peptide is ABUNDANT (verified via the
+  CORRECT BV-BRC query — my first probes gave false zeros: `-G --data-urlencode` malforms BV-BRC RQL,
+  and `-I` HEAD is unreliable; use a raw-URL GET, encode spaces as %20): EEEV E2 1396, EEEV capsid 1212,
+  Sindbis E1 501, WNV NS3 2000, Zika NS5 2000, dengue NS5 63. SHIPPED (`bvbrc_protein_fasta_step`): when
+  CDS yields <2, retry the SAME protein as `mat_peptide` BEFORE substituting — real per-mature-protein
+  conservation when the request NAME substring-matches the BV-BRC product. Real e2e: EEEV "capsid
+  protein" → `feature_type=mat_peptide`, 50 sequences, no substitution (was: substitute). Zero
+  regression (only the existing <2 path). Tests `test_bvbrc_mat_peptide_retry.py`. REMAINING (feature-
+  scale follow-up, NOT done): protein-NAME NORMALIZATION — a short/variant request name that is NOT a
+  substring of the verbose BV-BRC product still misses ("E2 glycoprotein" vs "E2 envelope glycoprotein";
+  "NS3" vs "nonstructural protein 3"; "6K membrane protein" multi-space match → 0). This needs a
+  token/synonym protein-name resolver (analogous to the virus alias table) + a relaxed token-subset
+  match, with care to avoid aligning the wrong protein (the existing word-boundary filter guards against
+  'structural' ⊂ 'nonstructural'). Recommended as its own `/feature` flow, not an autonomous-loop edit.
 
 ## Backlog (next, loop-driven)
 1. **MAFFT self-provisioning (container-only).** ✅ DONE (origin/main c41c4f3) — `_mafft_container/` +
