@@ -61,7 +61,9 @@ class RheaConfig(BaseModel):
 class BackendsConfig(BaseModel):
     """Container backend HOST ports for the deploy/ stack. ``install-server.sh`` reads these to
     generate ``deploy/.env`` (docker compose interpolates env, not YAML). The bind host is fixed
-    at 127.0.0.1 in the compose by design (unauthenticated backends → loopback only)."""
+    at 127.0.0.1 by design (unauthenticated backends → loopback only): both the compose stack AND
+    the host-orchestrator / ``apecx-setup`` docker-run path bind loopback — the latter via the
+    ``bind_host`` default in ``containers.container_run_args`` / ``cli.setup._spec_to_run_args``."""
 
     model_config = ConfigDict(extra="forbid")
     postgres_port: int = _port_field(5435)

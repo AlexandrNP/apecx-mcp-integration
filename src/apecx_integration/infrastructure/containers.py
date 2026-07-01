@@ -101,22 +101,28 @@ def all_container_specs() -> tuple[ContainerSpec, ...]:
     return (APECX_RHEA_POSTGRES, APECX_REDIS, APECX_RHEA_MINIO)
 
 
-def container_run_args(spec: ContainerSpec) -> list[str]:
+def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> list[str]:
     """Build the ``docker run`` argv (without the leading ``docker run``).
 
     Produces a deterministic argv that round-trips through tests
     cleanly. Shape:
 
-    ``["docker", "run", "-d", "--name", <name>, "-p", "H:C", ...,
+    ``["docker", "run", "-d", "--name", <name>, "-p", "BIND:H:C", ...,
        "-e", "K=V", ..., "-v", "S:C", ..., *<extra_run_args>, <image>,
        *<command>]``
 
-    Callers prepend ``docker`` themselves so they can use ``shutil.which``
+    ``bind_host`` prefixes every published port so internal backends bind LOOPBACK
+    (``127.0.0.1``) by default rather than all interfaces — an unauthenticated
+    Postgres/Redis/MinIO/Ollama must not be world-visible, and a bare ``-p H:C`` also
+    inserts a DNAT rule that bypasses ufw. This matches the already-hardened
+    ``deploy/docker-compose.server.yml`` (every backend is ``127.0.0.1:...``). Pass
+    ``bind_host="0.0.0.0"`` ONLY for a real multi-host deploy that fronts the backends
+    with auth. Callers prepend ``docker`` themselves so they can use ``shutil.which``
     or a custom binary path.
     """
     args = ["run", "-d", "--name", spec.container_name]
     for host, container in spec.ports:
-        args.extend(["-p", f"{host}:{container}"])
+        args.extend(["-p", f"{bind_host}:{host}:{container}"])
     for key, value in spec.env:
         args.extend(["-e", f"{key}={value}"])
     for source, container_path in spec.volumes:

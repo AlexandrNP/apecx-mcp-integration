@@ -231,10 +231,10 @@ def test_container_run_args_shape():
     args = container_run_args(APECX_RHEA_MINIO)
     # leading docker run flags
     assert args[:5] == ["run", "-d", "--name", "apecx-rhea-minio"][:4] + ["-p"]
-    # ports
+    # ports — bind to LOOPBACK by default (internal backends not world-visible)
     assert "-p" in args
-    assert "9000:9000" in args
-    assert "9001:9001" in args
+    assert "127.0.0.1:9000:9000" in args
+    assert "127.0.0.1:9001:9001" in args
     # env
     assert "-e" in args
     assert "MINIO_ROOT_USER=minioadmin" in args
@@ -242,6 +242,33 @@ def test_container_run_args_shape():
     assert args[-2:] == ["server", "/data"]
     # image just before the command
     assert args[-3] == "minio/minio"
+
+
+def test_container_run_args_binds_loopback_by_default():
+    """Security pin (#8, 2026-07-01): every published backend port binds 127.0.0.1, NOT
+    0.0.0.0 — an unauthenticated Postgres/Redis/MinIO must not be world-visible, and a bare
+    ``-p H:C`` also inserts a ufw-bypassing DNAT rule."""
+    from apecx_integration.infrastructure.containers import (
+        APECX_REDIS,
+        APECX_RHEA_POSTGRES,
+    )
+
+    for spec in (APECX_RHEA_MINIO, APECX_RHEA_POSTGRES, APECX_REDIS):
+        args = container_run_args(spec)
+        pub = [args[i + 1] for i, a in enumerate(args) if a == "-p"]
+        assert pub, f"{spec.container_name} publishes no ports"
+        for mapping in pub:
+            assert mapping.startswith("127.0.0.1:"), (
+                f"{spec.container_name} port {mapping!r} is not loopback-bound"
+            )
+            assert not mapping.startswith("0.0.0.0:")
+
+
+def test_container_run_args_bind_host_override_exposes_world():
+    """The opt-in escape hatch for an auth-fronted multi-host deploy still works."""
+    args = container_run_args(APECX_REDIS, bind_host="0.0.0.0")
+    pub = [args[i + 1] for i, a in enumerate(args) if a == "-p"]
+    assert pub and all(m.startswith("0.0.0.0:") for m in pub)
 
 
 def test_container_run_args_emits_volume_flags_for_stateful_backends():

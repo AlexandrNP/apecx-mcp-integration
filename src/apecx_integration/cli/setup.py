@@ -391,19 +391,21 @@ def _step_data(*, interactive: bool = True) -> StepResult:
 # command lives here because it's a CLI concern (docker exec) — the
 # orchestrator uses real-probe paths (psycopg / redis-py / httpx)
 # instead. ``purpose`` is the human-facing description.
-def _spec_to_run_args(spec) -> list[str]:
-    """Translate a ContainerSpec into ``-p H:C / -e K=V / -v SRC:DST`` argv.
+def _spec_to_run_args(spec, *, bind_host: str = "127.0.0.1") -> list[str]:
+    """Translate a ContainerSpec into ``-p BIND:H:C / -e K=V / -v SRC:DST`` argv.
 
     The ``-v`` flag is the load-bearing one for stateful services
     (Postgres, MinIO): without it apecx-setup would create no-volume
     containers and the operator's data would silently live in the
     container's ephemeral layer. Matches the shape emitted by
     ``apecx_integration.infrastructure.containers.container_run_args``
-    so apecx-setup and the orchestrator produce equivalent containers.
+    so apecx-setup and the orchestrator produce equivalent containers —
+    including the ``bind_host`` LOOPBACK default (internal backends are not
+    world-visible; pass ``"0.0.0.0"`` only for an auth-fronted multi-host deploy).
     """
     args: list[str] = []
     for host, container in spec.ports:
-        args.extend(["-p", f"{host}:{container}"])
+        args.extend(["-p", f"{bind_host}:{host}:{container}"])
     for key, value in spec.env:
         args.extend(["-e", f"{key}={value}"])
     for source, container_path in spec.volumes:

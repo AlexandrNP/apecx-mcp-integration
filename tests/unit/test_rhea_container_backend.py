@@ -6,7 +6,7 @@ backend's generated ``docker run`` to the command that was verified end-to-end
 in the containerization spike (a real MUSCLE alignment through the containerized
 server, host conda broken):
 
-    docker run -d --name <name> -p 3001:3001 \
+    docker run -d --name <name> -p 127.0.0.1:3001:3001 \
       -e ...host.docker.internal endpoints... \
       -e PARSL_CONTAINER_BACKEND=local -e AGENT_HANDLE_TIMEOUT=900 \
       --add-host=host.docker.internal:host-gateway <image>
@@ -133,7 +133,9 @@ def test_container_run_args_matches_verified_command(
     argv = container_run_args(rhea.container)
     joined = " ".join(argv)
     assert argv[:2] == ["run", "-d"]
-    assert "-p" in argv and "3001:3001" in argv
+    # Host port binds LOOPBACK (#8) — Rhea is an internal worker, not world-visible. The
+    # container still binds 0.0.0.0 INTERNALLY (env HOST above) so the docker port map works.
+    assert "-p" in argv and "127.0.0.1:3001:3001" in argv
     # add-host must appear BEFORE the image (it is a run flag, not a CMD arg).
     assert "--add-host=host.docker.internal:host-gateway" in argv
     assert argv.index("--add-host=host.docker.internal:host-gateway") < argv.index(
