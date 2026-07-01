@@ -133,6 +133,8 @@ academy = [
 apecx-cp = "apecx_integration.control_plane.app:main"
 apecx-mcp = "apecx_integration.mcp_surface.server:main"
 apecx-setup = "apecx_integration.cli.setup:main"
+# W3: live terminal view of infra health (thin client of the control-plane GET /status).
+apecx-dashboard = "apecx_integration.cli.dashboard:main"
 # Regression metric reporting for the reliability arc shipped
 # 2026-05-11 (C1 compose_retries, C2 runtime_violations, A2
 # retrieval_gap). Reads the control-plane DB and prints a table or

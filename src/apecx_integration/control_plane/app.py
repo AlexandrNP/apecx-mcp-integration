@@ -43,6 +43,7 @@ from apecx_integration.control_plane.db import get_db_url, make_engine, make_ses
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
 from apecx_integration.control_plane.routes import (
     approval,
+    dashboard,
     hpc,
     metrics,
     status,
@@ -75,6 +76,7 @@ def create_app(
     approval_policy=None,
     local_executor=None,
     recorder: ProvenanceRecorder | None = None,
+    start_monitor: bool = False,
 ) -> FastAPI:
     """Build the FastAPI app.
 
@@ -108,6 +110,25 @@ def create_app(
     resolved_engine = engine or make_engine()
     session_factory = make_session_factory(resolved_engine)
 
+    # Optional always-on infra monitor daemon (W3). Only attached when serving (start_monitor=True);
+    # tests build the app WITHOUT it, so create_app stays infra-free (no docker polling in tests).
+    monitor_lifespan = None
+    if start_monitor:
+        import asyncio
+        from contextlib import asynccontextmanager, suppress
+
+        from apecx_integration.infrastructure.monitor import get_monitor
+
+        @asynccontextmanager
+        async def monitor_lifespan(_app: FastAPI):
+            task = asyncio.create_task(get_monitor().run_forever())
+            try:
+                yield
+            finally:
+                task.cancel()
+                with suppress(asyncio.CancelledError, Exception):
+                    await task
+
     app = FastAPI(
         title="APECx Control Plane",
         description=(
@@ -115,6 +136,7 @@ def create_app(
             "artifacts, allocation accountant. See architectural_plan.md §3.1 and §R3."
         ),
         version="0.0.1",
+        lifespan=monitor_lifespan,
     )
     app.state.engine = resolved_engine
     app.state.session_factory = session_factory
@@ -179,6 +201,7 @@ def create_app(
     app.include_router(hpc.router)
     app.include_router(metrics.router)
     app.include_router(verified_synonyms.router)
+    app.include_router(dashboard.router)
 
     return app
 
@@ -371,6 +394,7 @@ def _serve(args: argparse.Namespace) -> int:
         approval_policy=policy,
         local_executor=executor,
         recorder=serve_recorder,
+        start_monitor=True,  # W3: run the always-on infra monitor daemon while serving
     )
 
     import uvicorn
