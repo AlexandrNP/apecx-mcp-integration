@@ -94,6 +94,7 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
     async def ensure_image(self, *, on_progress: Any = None) -> None:
         """Auto-build the PyMOL image if absent (build-locked, off the event loop). FAIL-LOUD
         (DockerImageBuildError) on docker-absent / daemon-down / build-failure."""
+        self._verify_artifacts_present()
         await ensure_docker_image_built(
             dockerfile_path=self._dockerfile_path,
             build_context=self._build_context,
@@ -102,6 +103,32 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
         )
         if self._digest is None:
             self._digest = await image_digest(self._image_tag)
+
+    def _verify_artifacts_present(self) -> None:
+        """FAIL-LOUD with a reinstall hint when the packaged PyMOL container artifacts are missing
+        (#1, 2026-07-01). A stale/incomplete install — an MCP server process still running a pre-fix
+        build (the reported ``docker/pymol/_pymol_job.py`` FileNotFoundError), or a wheel that didn't
+        ship the ``_pymol_container/**`` package-data — would otherwise surface as a BARE
+        FileNotFoundError from ``shutil.copy2`` deep inside the run, with no hint that the fix is a
+        reinstall + server restart."""
+        missing = [
+            str(p)
+            for p in (
+                Path(self._dockerfile_path),
+                Path(self._job_script),
+                Path(self._sasa_helper),
+            )
+            if not p.is_file()
+        ]
+        if missing:
+            raise RuntimeError(
+                "PyMOL container artifacts not found: "
+                + ", ".join(missing)
+                + " — the installed apecx build is stale or incomplete (the `_pymol_container/**` "
+                "package-data did not ship, or a pre-fix MCP server process is still running). Fix: "
+                "reinstall + restart the server — `uv tool install --reinstall apecx-mcp-integration` "
+                "(or `pip install -e .` in a dev checkout), then restart apecx-mcp."
+            )
 
     async def ensure_established(self, *, on_progress: Any = None) -> None:
         """Establish PyMOL from its docker source (build the image if absent) — the

@@ -1226,6 +1226,14 @@ def main(argv: list[str] | None = None) -> None:
         http_host, http_port = _resolve_http_host_port(args, network_config)
         _assert_mcp_port_distinct_from_control_plane(http_host, http_port, network_config)
 
+    # Build-version stamp (#1, 2026-07-01): log the installed version + package location at startup
+    # so a STALE server (an old process still serving a pre-fix build) is visible at a glance — the
+    # exact confusion behind the reported PyMOL FileNotFoundError from a not-reinstalled deployment.
+    log.info(
+        "MCP startup: apecx-integration %s (package at %s)",
+        _resolve_package_version(),
+        Path(__file__).resolve().parents[1],
+    )
     asyncio.run(_verify_control_plane_reachable())
     # NOTE: the local BV-BRC/VIOLIN data-root banner is intentionally NOT run at boot (Globus-first /
     # no-local-files): harmonized_search uses the public Globus index anonymously and the primary
