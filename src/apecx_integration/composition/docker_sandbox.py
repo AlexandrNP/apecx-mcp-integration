@@ -119,6 +119,7 @@ def build_docker_sandbox_command(
     command: Sequence[str],
     *,
     input_host_path: Path | None,
+    output_host_path: Path | None = None,
     container_name: str | None = None,
     config: SandboxConfig | None = None,
 ) -> list[str]:
@@ -193,6 +194,17 @@ def build_docker_sandbox_command(
         argv += [
             "--mount",
             f"type=bind,source={src},target={cfg.workdir},readonly",
+        ]
+
+    if output_host_path is not None:
+        # The ONE writable host path — a dedicated /out mount (the rest of the fs is --read-only).
+        # The in-container job writes its result here (e.g. /out/result.json) for the host to read
+        # back. Kept separate from the read-only input mount so the sandboxed code cannot tamper with
+        # its own inputs. (#1c Phase 2 — completes the T13b scaffold's Phase-3 output gap.)
+        out = output_host_path.resolve()
+        argv += [
+            "--mount",
+            f"type=bind,source={out},target=/out",
         ]
 
     if container_name is not None:
