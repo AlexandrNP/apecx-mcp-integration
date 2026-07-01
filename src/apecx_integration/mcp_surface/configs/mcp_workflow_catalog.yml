@@ -174,3 +174,106 @@ workflows:
     # 600s (observed: cascade_timeout at 13/23 on a real RHEA run). 1200s gives the RHEA-MUSCLE path
     # headroom; the MAFFT-degrade + no-protein paths finish well under it.
     timeout_seconds: 1200.0
+
+  # Follow-up assessment workflows (#2, 2026-07-01). Discovery-only before this: they were runnable
+  # but had no catalog entry -> empty input_schema {} + a one-line AST description, so the frontier
+  # LLM had no signal about WHEN to pick them or WHAT params to pass (they need an evidence handle +
+  # an approval token). These curated entries surface their typed schemas (from the builders'
+  # *_INPUT_SCHEMA constants) + a "USE IT FOR" description. LLM_ROLE=none -> no apecx LLM needed.
+  - tool_name: conserved_epitope_candidate_assessment
+    description: |
+      Assess and rank the candidate B-cell epitopes / peptides produced by a PRIOR conserved-epitope
+      evidence run (e.g. viral_epitope_analysis). It does NOT pull data itself — it consumes the
+      evidence handle/bundle from that upstream run and returns a scored candidate-peptide assessment.
+
+      USE IT FOR follow-up queries AFTER an epitope evidence run, like: "assess the candidate epitopes
+      from that analysis", "which of these conserved sites are the best vaccine-peptide candidates?",
+      "rank the candidate peptides". Releasing actual candidate PEPTIDE SEQUENCES requires a
+      design_approval_id (approval token); without it the workflow returns needs_input for the
+      approval rather than the sequences.
+
+      Call with {assessment_input: {evidence_data_handle | evidence_bundle, assessment_question?,
+      design_approval_id?}}. No apecx LLM is required in desktop/MCP mode.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.conserved_epitope_candidate_assessment.builder
+      function: build_conserved_epitope_candidate_assessment_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        evidence_data_handle:
+          type: string
+          description: >-
+            The data_handle returned by the upstream conserved-region evidence workflow
+            (viral_epitope_analysis / viral_epitope_evidence_review). Preferred over an inline bundle.
+        evidence_bundle:
+          type: object
+          description: "Inline evidence Bundle payload; use only when no handle is available."
+        assessment_question:
+          type: string
+          description: "Optional follow-up assessment question."
+        design_approval_id:
+          type: string
+          description: >-
+            Approval token from the approval control plane; REQUIRED before candidate peptide sequence
+            output is released (else the workflow returns needs_input for the approval).
+      required: []
+    input_envelope_key: assessment_input
+    output_envelope_key: workflow_output
+    settle_ms: 500
+    timeout_seconds: 120.0
+
+  - tool_name: epitope_combination_feasibility_assessment
+    description: |
+      Assess whether MULTIPLE epitopes can be combined into a single multi-epitope construct, given
+      evidence-limited inputs. Consumes the evidence + APPROVED candidate-assessment handles/bundles
+      from prior runs plus any additional epitopes; does NOT pull data itself.
+
+      USE IT FOR follow-up queries like: "can these epitopes be combined into one construct?", "assess
+      the feasibility of a multi-epitope vaccine from these candidates", "combine the approved
+      candidates with these additional epitopes". Releasing epitope-level combination output requires
+      a design_approval_id (approval token); without it the workflow returns needs_input.
+
+      Call with {combination_request: {evidence_data_handle? | evidence_bundle?,
+      candidate_assessment_handle? | candidate_assessment_bundle?, additional_epitopes?,
+      assessment_question?, design_approval_id?}}. No apecx LLM is required in desktop/MCP mode.
+    source:
+      kind: lightweight
+      module: apecx_integration.composition.workflows.epitope_combination_feasibility_assessment.builder
+      function: build_epitope_combination_feasibility_assessment_workflow
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        evidence_data_handle:
+          type: string
+          description: "Optional data_handle from the upstream evidence run."
+        evidence_bundle:
+          type: object
+          description: "Inline evidence Bundle payload; use only when no handle exists."
+        candidate_assessment_handle:
+          type: string
+          description: "data_handle returned by the approved candidate-peptide assessment."
+        candidate_assessment_bundle:
+          type: object
+          description: "Inline approved candidate-peptide Bundle; use only when no handle exists."
+        additional_epitopes:
+          type: array
+          items:
+            type: object
+          description: >-
+            One or more additional epitopes with source metadata, coordinates, and optional sequence.
+        assessment_question:
+          type: string
+          description: "Optional follow-up assessment question used for approval scoping."
+        design_approval_id:
+          type: string
+          description: >-
+            Approval token from the approval control plane; REQUIRED before epitope-level combination
+            output is released (else the workflow returns needs_input).
+      required: []
+    input_envelope_key: combination_request
+    output_envelope_key: workflow_output
+    settle_ms: 500
+    timeout_seconds: 120.0

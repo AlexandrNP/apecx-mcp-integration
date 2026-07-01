@@ -53,11 +53,16 @@ EXPECTED_CATALOG = {
     # model calls it directly instead of via list_workflows → run_workflow. Routes THROUGH
     # run_workflow (not a shadow tool — same execution + gating). 2026-06-15.
     "rag_e2e_synthesis",
-    # NOTE (2026-06-23): conserved_epitope_candidate_assessment + epitope_combination_feasibility_
-    # assessment were RETIRED from first-class status (their catalog entries removed) — they are
-    # handle-driven FOLLOW-UPS (consume a prior run's data_handle, no free-text {query} entry), the
-    # same not-directly-invocable shape as the retired viral_conserved_sites above. They remain
-    # discoverable + runnable via list_workflows -> run_workflow; just not Layer-1 agentic tools.
+    # RE-INTRODUCED as first-class catalog tools (2026-07-01, #2). History: retired 2026-06-23 as
+    # handle-driven FOLLOW-UPS with thin/empty schemas (same shape as retired viral_conserved_sites).
+    # The project owner then reported they are "never called even for explicit tasks" and asked for
+    # them to be invocable. The re-introduced catalog entries carry TYPED input_schemas
+    # (evidence_data_handle / candidate_assessment_handle / design_approval_id) + "USE IT FOR ...
+    # AFTER an epitope evidence run" descriptions, so the model knows they consume a PRIOR run's
+    # handle (directly addressing the original retirement concern of "not-directly-invocable"). They
+    # route THROUGH run_workflow like every catalog tool.
+    "conserved_epitope_candidate_assessment",
+    "epitope_combination_feasibility_assessment",
 }
 
 EXPECTED = EXPECTED_STATIC | EXPECTED_CATALOG

@@ -65,6 +65,27 @@ async def compose_workflow(
                 f"preferred_executor={preferred_executor!r} is not a valid executor; "
                 f"expected one of {sorted(_VALID_EXECUTORS)}."
             )
+        # LLM-availability PREFLIGHT (#4, 2026-07-01). Composition ALWAYS needs the apecx LLM: the
+        # composer drives its OWN LLM factory (this is NOT the desktop final_synthesis inversion),
+        # so with Ollama off (the desktop default) start_workflow would die at the first compose
+        # call with a raw ConnectError (composer max_retries: 0) — an opaque traceback to the caller.
+        # Refuse LOUDLY + actionably instead. Reuse the single-source llm_policy.resolve_llm (real
+        # probe) per the "canonical surfaces — reuse, don't rebuild" rule; do NOT add a parallel probe.
+        from apecx_integration.composition.runtime.execution_locus import (  # noqa: PLC0415
+            get_active_locus,
+        )
+        from apecx_integration.mcp_surface.llm_policy import resolve_llm  # noqa: PLC0415
+
+        _llm = resolve_llm(get_active_locus())
+        if not _llm.available:
+            return {
+                "error": "compose_workflow needs an apecx LLM backend and none is reachable",
+                "detail": _llm.detail,
+                "hint": (
+                    "start a local Ollama server (localhost:11434) or set APECX_LLM_BASE_URL to a "
+                    "reachable OpenAI-compatible endpoint, then retry compose_workflow"
+                ),
+            }
         started = await client.start_workflow(
             StartWorkflowRequest(
                 description=description,
