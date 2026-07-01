@@ -258,6 +258,10 @@ class BackendRuntime:
     # replacement and they should know — ``ready`` from a probe does
     # NOT prove their data survived.
     fresh_create_warning: str | None = None
+    # Whether the LAST probe could contact the endpoint at all (vs connection-refused/timeout). Lets
+    # the dashboard monitor distinguish "up but degraded" (reachable — e.g. Ollama with no model, do
+    # NOT restart) from "genuinely down" (unreachable — e.g. a stopped container, restart). (#7 / W3)
+    reachable: bool = True
 
     def snapshot(self) -> dict[str, Any]:
         """Return a JSON-safe dict for the status tool."""
@@ -267,6 +271,7 @@ class BackendRuntime:
             "kind": self.spec.kind,
             "required": self.spec.required,
             "state": self.state.value,
+            "reachable": self.reachable,
             "detail": self.detail,
             "last_probe_at": self.last_probe_at,
             "latency_ms": self.last_latency_ms,

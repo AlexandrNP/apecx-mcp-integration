@@ -787,6 +787,20 @@ class InfraOrchestrator:
         self._start_all_done = True
         return await self.status()
 
+    async def reload_backend(self, name: str) -> dict[str, Any]:
+        """Re-establish ONE backend by name (probe → reuse-if-healthy → else spawn/restart) — the
+        per-component seam the dashboard monitor calls to auto-recover a single failed backend.
+
+        Unlike :meth:`reconcile` (docker-only, whole-roster, throttled), this targets ONE backend of
+        ANY kind. It applies no backoff itself — the caller (the monitor) owns the retry cadence — so
+        a tool/operator can force an immediate re-establish. Returns the backend's post-attempt
+        snapshot (same shape as one entry of :meth:`status`'s ``backends``). Raises ``KeyError`` for
+        an unknown name."""
+        rt = self._runtimes[name]
+        await self._bring_up(rt)
+        with self._lock:
+            return rt.snapshot()
+
     async def reconcile(self) -> dict[str, Any]:
         """Self-heal docker-dependent backends when Docker comes up AFTER startup.
 
@@ -1120,6 +1134,7 @@ class InfraOrchestrator:
         with self._lock:
             rt.last_probe_at = time.time()
             rt.last_latency_ms = first.latency_ms
+            rt.reachable = first.reachable
             if first.healthy:
                 rt.state = BackendState.REUSED
                 rt.detail = first.detail
@@ -1280,6 +1295,7 @@ class InfraOrchestrator:
         # a start failure is the kind of dishonest state this orchestrator exists to avoid. (#7)
         final = await spec.probe.run()
         with self._lock:
+            rt.reachable = final.reachable
             if final.reachable:
                 rt.state = BackendState.DEGRADED
                 rt.detail = f"{spec.display_name}: container up but not ready — {final.detail}"
@@ -1425,6 +1441,7 @@ class InfraOrchestrator:
         with self._lock:
             rt.last_probe_at = time.time()
             rt.last_latency_ms = result.latency_ms
+            rt.reachable = result.reachable
             if result.healthy:
                 rt.detail = result.detail
                 rt.error = None
