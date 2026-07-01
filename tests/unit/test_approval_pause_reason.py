@@ -137,3 +137,33 @@ def test_pause_reason_is_stable_across_reorderings():
         expert_review_required_steps=(),
     )
     assert d1.pause_reason == d2.pause_reason
+
+
+def test_pause_reason_names_reviewer_rejection():
+    """#6: when only the semantic reviewer rejected (no category driver), pause_reason still
+    blocks and names the reviewer so a PAUSED run with empty novel_python is not a mystery."""
+    decision = ApprovalDecision(
+        auto_approved_steps=(),
+        review_required_steps=(),
+        expert_review_required_steps=(),
+        reviewer_rejected=True,
+    )
+    assert decision.blocks is True
+    reason = decision.pause_reason
+    assert reason is not None
+    assert "reviewer" in reason.lower()
+    assert "REJECTED" in reason
+
+
+def test_pause_reason_joins_reviewer_and_category_drivers():
+    """When BOTH a category and the reviewer drive the pause, both segments are named."""
+    decision = ApprovalDecision(
+        auto_approved_steps=(),
+        review_required_steps=(),
+        expert_review_required_steps=(_step("novel_0", StepCategory.NOVEL),),
+        reviewer_rejected=True,
+    )
+    reason = decision.pause_reason
+    assert reason is not None
+    assert "reviewer" in reason.lower()
+    assert "expert review" in reason  # the category-driven segment is still present

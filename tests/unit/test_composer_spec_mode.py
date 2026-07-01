@@ -179,3 +179,69 @@ def test_env_var_override_flips_mode_to_spec(monkeypatch):
     monkeypatch.setenv("APECX_COMPOSER_MODE", "spec")
     composer = Composer.from_config(DEFAULT_CONFIG)
     assert composer._config.composer_mode == "spec"
+
+
+# --- Sandbox import scan runs in spec mode (2026-07-01 hoist) ----------------------------------
+# Before the hoist, _parse_spec_response returned novel_python WITHOUT scanning (the only
+# ImportScanner.scan lived on the monolithic branch of _invoke_and_parse), so LLM-authored Python
+# bypassed the import whitelist in the SHIPPED default mode. These pin that spec mode is scanned.
+
+_HOSTILE_NOVEL_SPEC = textwrap.dedent(
+    """\
+    ```json
+    {
+      "name": "evil_wf",
+      "description": "hostile novel python via spec",
+      "steps": [{"id": "evil", "class_name": "EvilStep"}],
+      "links": [
+        {"source": "workflow_input", "target": "evil.step_input"},
+        {"source": "evil.step_output", "target": "workflow_output"}
+      ],
+      "novel_python": {"evil": "import subprocess\\nclass EvilStep:\\n    async def process(self, input_data, **kwargs):\\n        return {}\\n"}
+    }
+    ```
+    """
+)
+
+_WHITELISTED_NOVEL_SPEC = textwrap.dedent(
+    """\
+    ```json
+    {
+      "name": "ok_wf",
+      "description": "whitelisted novel python via spec",
+      "steps": [{"id": "reshape", "class_name": "ReshapeStep"}],
+      "links": [
+        {"source": "workflow_input", "target": "reshape.step_input"},
+        {"source": "reshape.step_output", "target": "workflow_output"}
+      ],
+      "novel_python": {"reshape": "import numpy as np\\nclass ReshapeStep:\\n    async def process(self, input_data, **kwargs):\\n        return {}\\n"}
+    }
+    ```
+    """
+)
+
+
+def test_spec_mode_hostile_novel_python_import_is_scanned():
+    """Security regression: a non-whitelisted ``import subprocess`` in a spec's novel_python
+    raises ScanViolation from compose() in the DEFAULT spec mode — it used to bypass the scan."""
+    from apecx_integration.composition.sandbox import ScanViolation
+
+    llm = _StubLLM([_HOSTILE_NOVEL_SPEC])
+    composer = _composer_spec_mode(llm)
+    with pytest.raises(ScanViolation):
+        asyncio.run(composer.compose("do something with a shell"))
+
+
+def test_spec_mode_whitelisted_novel_python_not_scan_blocked():
+    """A whitelisted import (numpy) in a spec's novel_python does NOT raise ScanViolation in spec
+    mode (it may still trip later validators — we assert only that the scan GATE passes)."""
+    from apecx_integration.composition.sandbox import ScanViolation
+
+    llm = _StubLLM([_WHITELISTED_NOVEL_SPEC] * 4)
+    composer = _composer_spec_mode(llm)
+    try:
+        asyncio.run(composer.compose("reshape some arrays"))
+    except ScanViolation as exc:  # pragma: no cover - the failure we are guarding against
+        raise AssertionError(f"whitelisted numpy tripped the scanner: {exc}") from exc
+    except Exception:
+        pass  # downstream validators (structure/expander) may reject — not the scan gate

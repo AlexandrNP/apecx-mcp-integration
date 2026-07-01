@@ -50,11 +50,13 @@ def test_default_policy_loads_and_covers_every_category():
 
 def test_evaluate_partitions_steps_by_action():
     policy = ApprovalPolicy.load(DEFAULT_POLICY)
-    categorized = _make_categorized(**{
-        StepCategory.COMPOSED_STANDARD: 2,
-        StepCategory.COMPOSED_PARAMETERIZED: 1,
-        StepCategory.NOVEL: 1,
-    })
+    categorized = _make_categorized(
+        **{
+            StepCategory.COMPOSED_STANDARD: 2,
+            StepCategory.COMPOSED_PARAMETERIZED: 1,
+            StepCategory.NOVEL: 1,
+        }
+    )
     decision = policy.evaluate(categorized)
     assert len(decision.auto_approved_steps) == 2
     assert len(decision.review_required_steps) == 1
@@ -74,10 +76,12 @@ def test_all_auto_does_not_block_ac4_auto_branch():
 def test_any_novel_blocks_ac4_review_branch():
     """AC4: ``novel: require_expert_review`` actually blocks."""
     policy = ApprovalPolicy.load(DEFAULT_POLICY)
-    categorized = _make_categorized(**{
-        StepCategory.COMPOSED_STANDARD: 5,
-        StepCategory.NOVEL: 1,
-    })
+    categorized = _make_categorized(
+        **{
+            StepCategory.COMPOSED_STANDARD: 5,
+            StepCategory.NOVEL: 1,
+        }
+    )
     decision = policy.evaluate(categorized)
     assert decision.blocks is True
     assert decision.strongest_required_action is ApprovalAction.REQUIRE_EXPERT_REVIEW
@@ -89,10 +93,12 @@ def test_strongest_required_action_ladder():
     c1 = _make_categorized(**{StepCategory.COMPOSED_PARAMETERIZED: 1})
     assert policy.evaluate(c1).strongest_required_action is ApprovalAction.REQUIRE_REVIEW
     # Mix of parameterized + novel → expert review wins.
-    c2 = _make_categorized(**{
-        StepCategory.COMPOSED_PARAMETERIZED: 2,
-        StepCategory.NOVEL: 1,
-    })
+    c2 = _make_categorized(
+        **{
+            StepCategory.COMPOSED_PARAMETERIZED: 2,
+            StepCategory.NOVEL: 1,
+        }
+    )
     assert policy.evaluate(c2).strongest_required_action is ApprovalAction.REQUIRE_EXPERT_REVIEW
 
 
@@ -101,9 +107,9 @@ def test_policy_missing_category_rejected(tmp_path):
     bad.write_text(
         "composed_standard: auto\n"
         "composed_parameterized: require_review\n"
-        "composed_wrapped: require_review\n"
+        "composed_wrapped: require_review\n",
         # novel: missing
-        , encoding="utf-8",
+        encoding="utf-8",
     )
     with pytest.raises(ValueError, match="missing"):
         ApprovalPolicy.load(bad)
@@ -155,3 +161,32 @@ def test_end_to_end_from_categorize_to_decision():
     assert [s.step_id for s in decision.auto_approved_steps] == ["a"]
     assert [s.step_id for s in decision.expert_review_required_steps] == ["b"]
     assert decision.blocks is True
+
+
+def test_reviewer_reject_forces_block_on_all_auto_workflow():
+    """#6 (2026-07-01): a workflow whose steps are ALL auto-approvable by category still PAUSES
+    when the semantic reviewer rejected it — the reviewer can now stop a workflow, not just
+    annotate. Before this, the verdict was advisory and such a workflow auto-ran."""
+    policy = ApprovalPolicy.load(DEFAULT_POLICY)
+    categorized = _make_categorized(**{StepCategory.COMPOSED_STANDARD: 3})
+    decision = policy.evaluate(categorized, reviewer_approved=False)
+    assert decision.reviewer_rejected is True
+    assert decision.blocks is True
+    assert decision.strongest_required_action is ApprovalAction.REQUIRE_REVIEW
+
+
+def test_reviewer_approve_none_preserves_category_only_behavior():
+    """None (no reviewer ran) and True (approved) leave the category-only decision unchanged —
+    backward compatibility for every existing caller that omits reviewer_approved."""
+    policy = ApprovalPolicy.load(DEFAULT_POLICY)
+    all_auto = _make_categorized(**{StepCategory.COMPOSED_STANDARD: 3})
+    for verdict in (None, True):
+        decision = policy.evaluate(all_auto, reviewer_approved=verdict)
+        assert decision.reviewer_rejected is False
+        assert decision.blocks is False
+        assert decision.strongest_required_action is ApprovalAction.AUTO
+    # A reviewer-approved workflow with a genuinely blocking category still blocks on the category.
+    mixed = _make_categorized(**{StepCategory.COMPOSED_STANDARD: 2, StepCategory.NOVEL: 1})
+    d = policy.evaluate(mixed, reviewer_approved=True)
+    assert d.blocks is True
+    assert d.strongest_required_action is ApprovalAction.REQUIRE_EXPERT_REVIEW

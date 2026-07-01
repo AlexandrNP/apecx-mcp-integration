@@ -618,6 +618,19 @@ class Composer:
                 messages.append(HumanMessage(content=feedback))
                 continue
 
+            # T13 import-whitelist scan over novel Python — HOISTED here (2026-07-01) from
+            # _invoke_and_parse so it runs for BOTH composer modes (spec + monolithic); spec
+            # mode used to return before the scan and shipped UNSCANNED LLM Python. A
+            # ScanViolation is fail-closed: it is NOT a ComposerResponseError, so the
+            # parse-retry handler above does not catch it — it propagates out of compose().
+            # A whitelist violation must not be "retried" into compliance.
+            if novel_python and self._whitelist is not None:
+                scanner = ImportScanner(whitelist=self._whitelist)
+                for _step_id, source in novel_python.items():
+                    result = scanner.scan(source)
+                    if not result.ok:
+                        raise ScanViolation(result, suggestions=self._suggest_for_violation(source))
+
             # CPR (2026-05-11): catalog-grounded class-path repair.
             # Auto-corrects the dominant LLM hallucination shape
             # (leaf class name correct, module path drifted —
@@ -860,18 +873,10 @@ class Composer:
 
         yaml_text, novel_python = _parse_response(raw_content)
 
-        # T13 scanner over novel Python (if any). On violation,
-        # enrich the exception with "closest matches in component
-        # library" suggestions so the message steers toward
-        # composition instead of fighting the whitelist.
-        if novel_python and self._whitelist is not None:
-            scanner = ImportScanner(whitelist=self._whitelist)
-            for _step_id, source in novel_python.items():
-                result = scanner.scan(source)
-                if not result.ok:
-                    suggestions = self._suggest_for_violation(source)
-                    raise ScanViolation(result, suggestions=suggestions)
-
+        # NOTE (2026-07-01): the T13 import-whitelist scan over novel Python was HOISTED to
+        # compose() — the single post-parse chokepoint BOTH composer modes funnel through — so
+        # spec mode is scanned too. It used to live here, on the monolithic-only branch, and
+        # spec mode returned (in _invoke_and_parse) before reaching it, shipping unscanned Python.
         try:
             workflow_dict = yaml.safe_load(yaml_text)
         except yaml.YAMLError as exc:
@@ -1059,7 +1064,7 @@ class Composer:
         )
 
         # WS2b: AST-validate the LLM's novel Python BEFORE acceptance. The T13
-        # import-scan (in _invoke_and_parse) only checks imports; it does NOT
+        # import-scan (hoisted into compose(), runs before this) only checks imports; it does NOT
         # check the source parses, defines the referenced class, or obeys the
         # framework (no execute()/from_config override). Without this, a novel
         # step that imports-clean but is structurally broken passes compose and

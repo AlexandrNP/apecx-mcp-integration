@@ -178,7 +178,13 @@ async def start_workflow(
             categorized = CategorizedWorkflow(
                 categorizations=composed.composition_summary.step_categorizations,
             )
-            decision = policy.evaluate(categorized)
+            # Feed the semantic reviewer's verdict into the gate (2026-07-01): a REJECT forces
+            # PAUSED even when every step is auto-approvable by category — the reviewer can now
+            # STOP a workflow, not just annotate it. `review_verdict` is {"approved": bool, ...}
+            # or None when no reviewer ran.
+            verdict = composed.composition_summary.review_verdict
+            reviewer_approved = verdict.get("approved") if isinstance(verdict, dict) else None
+            decision = policy.evaluate(categorized, reviewer_approved=reviewer_approved)
             if decision.strongest_required_action is ApprovalAction.AUTO:
                 run.status = RunStatus.RUNNING
                 run.started_at = now

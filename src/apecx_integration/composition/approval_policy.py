@@ -47,16 +47,28 @@ class ApprovalDecision:
     auto_approved_steps: tuple[StepCategorization, ...]
     review_required_steps: tuple[StepCategorization, ...]
     expert_review_required_steps: tuple[StepCategorization, ...]
+    # The semantic reviewer (actor-critic) REJECTED the composition. A workflow-level signal
+    # (not per-step): even when every step is auto-approvable by category, a reviewer rejection
+    # forces a human-review pause — the reviewer can now STOP a workflow, not just annotate it.
+    # Default False = no reviewer ran / not applicable (backward-compatible with every existing
+    # evaluate() caller that omits reviewer_approved).
+    reviewer_rejected: bool = False
 
     @property
     def blocks(self) -> bool:
-        return bool(self.review_required_steps or self.expert_review_required_steps)
+        return bool(
+            self.review_required_steps
+            or self.expert_review_required_steps
+            or self.reviewer_rejected
+        )
 
     @property
     def strongest_required_action(self) -> ApprovalAction:
         if self.expert_review_required_steps:
             return ApprovalAction.REQUIRE_EXPERT_REVIEW
-        if self.review_required_steps:
+        # A reviewer rejection is human-review-grade (not expert); expert still wins when a
+        # category also demands it (handled above).
+        if self.review_required_steps or self.reviewer_rejected:
             return ApprovalAction.REQUIRE_REVIEW
         return ApprovalAction.AUTO
 
@@ -121,6 +133,8 @@ class ApprovalDecision:
                     self.review_required_steps,
                 )
             )
+        if self.reviewer_rejected:
+            segments.append("semantic reviewer REJECTED the composition")
         sentence = "Workflow paused: " + " | ".join(segments) + "."
         has_marked = any(
             s.retrieval_gap
@@ -179,7 +193,19 @@ class ApprovalPolicy:
     def action_for(self, category: StepCategory) -> ApprovalAction:
         return self._mapping[category]
 
-    def evaluate(self, categorized: CategorizedWorkflow) -> ApprovalDecision:
+    def evaluate(
+        self,
+        categorized: CategorizedWorkflow,
+        *,
+        reviewer_approved: bool | None = None,
+    ) -> ApprovalDecision:
+        """Map step categories → an approval decision.
+
+        ``reviewer_approved`` threads the semantic reviewer's verdict into the gate: when it is
+        ``False`` the decision blocks (PAUSED) even if every step is auto-approvable by category,
+        so a reviewer REJECT actually stops the workflow. ``None`` (default) = no reviewer ran /
+        not applicable, preserving the category-only behavior for every existing caller.
+        """
         auto: list[StepCategorization] = []
         review: list[StepCategorization] = []
         expert: list[StepCategorization] = []
@@ -195,6 +221,7 @@ class ApprovalPolicy:
             auto_approved_steps=tuple(auto),
             review_required_steps=tuple(review),
             expert_review_required_steps=tuple(expert),
+            reviewer_rejected=reviewer_approved is False,
         )
 
 

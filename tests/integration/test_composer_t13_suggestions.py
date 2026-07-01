@@ -29,13 +29,7 @@ pytestmark = pytest.mark.integration
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CONFIG = (
-    REPO_ROOT
-    / "src"
-    / "apecx_integration"
-    / "composition"
-    / "composer_config.yml"
-)
+DEFAULT_CONFIG = REPO_ROOT / "src" / "apecx_integration" / "composition" / "composer_config.yml"
 
 
 class _PlaceholderResponse:
@@ -96,6 +90,11 @@ BIO_INTENT_NOVEL_PYTHON_RESPONSE = textwrap.dedent(
 
 def test_scan_violation_carries_component_suggestions():
     composer = Composer.from_config(DEFAULT_CONFIG)
+    # Force MONOLITHIC mode: this canned response is the yaml+novel_python format, not a JSON
+    # spec. The shipped default is spec mode (this test predates it, which is why it silently
+    # broke). After the 2026-07-01 scan-hoist the import scan runs in compose() for BOTH modes;
+    # this asserts the monolithic path still raises ScanViolation with suggestions.
+    composer._config = composer._config.model_copy(update={"composer_mode": "monolithic"})  # noqa: SLF001
     composer._llm_factory = _make_factory(BIO_INTENT_NOVEL_PYTHON_RESPONSE)
 
     with pytest.raises(ScanViolation) as excinfo:
@@ -118,6 +117,11 @@ def test_scan_violation_carries_component_suggestions():
 
 def test_scan_violation_message_contains_closest_matches_header():
     composer = Composer.from_config(DEFAULT_CONFIG)
+    # Force MONOLITHIC mode: this canned response is the yaml+novel_python format, not a JSON
+    # spec. The shipped default is spec mode (this test predates it, which is why it silently
+    # broke). After the 2026-07-01 scan-hoist the import scan runs in compose() for BOTH modes;
+    # this asserts the monolithic path still raises ScanViolation with suggestions.
+    composer._config = composer._config.model_copy(update={"composer_mode": "monolithic"})  # noqa: SLF001
     composer._llm_factory = _make_factory(BIO_INTENT_NOVEL_PYTHON_RESPONSE)
 
     with pytest.raises(ScanViolation, match="Closest matches in component library"):
