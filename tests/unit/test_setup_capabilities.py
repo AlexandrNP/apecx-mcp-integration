@@ -36,11 +36,11 @@ def test_probe_llm_remote_endpoint_is_available_without_local_ollama(monkeypatch
     assert "remote endpoint configured" in detail
 
 
-def test_probe_llm_localhost_base_url_falls_through_to_ollama_probe(monkeypatch):
-    # A localhost base URL is NOT a remote endpoint — it must still require a
-    # reachable local Ollama with the model pulled.
+def test_probe_llm_localhost_base_url_requires_reachable_ollama(monkeypatch):
+    # A localhost base URL is NOT a remote endpoint — it must still require a reachable local Ollama
+    # (container OR host) with the model pulled. No host `ollama` binary is consulted (#7).
     monkeypatch.setenv("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
-    monkeypatch.setattr(setup_cli.shutil, "which", lambda _: None)
+    monkeypatch.setattr(setup_cli, "_ollama_reachable", lambda *a, **k: False)
     ok, detail = setup_cli._probe_llm()
     assert ok is False
     assert "no local Ollama" in detail

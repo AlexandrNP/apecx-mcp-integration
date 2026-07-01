@@ -76,14 +76,18 @@ def test_offer_start_daemon_skips_when_non_interactive_and_unreachable():
         popen_mock.assert_not_called()
 
 
-def test_step_llm_skips_gracefully_when_cli_missing_and_non_interactive():
-    """The load-bearing CI-safety property: ``_step_llm`` returns a
-    SKIP status (not a FAIL, not an exception) when ollama is
-    missing in non-interactive mode."""
-    with mock.patch.object(setup.shutil, "which", return_value=None):
+def test_step_llm_skips_gracefully_when_nothing_serving_and_no_docker():
+    """The load-bearing CI-safety property: ``_step_llm`` returns a SKIP status (not a FAIL, not an
+    exception) when it cannot provision Ollama — nothing serving AND no docker to start the
+    apecx-ollama container (#7 container-first flow; no host `ollama` binary is consulted)."""
+    with (
+        mock.patch.dict(setup.os.environ, {"APECX_LLM_BASE_URL": ""}),
+        mock.patch.object(setup, "_ollama_reachable", return_value=False),
+        mock.patch.object(setup, "_docker_available", return_value=False),
+    ):
         result = setup._step_llm(interactive=False)
     assert result.status == "skipped"
-    assert "install declined" in result.detail.lower() or "not found" in result.detail.lower()
+    assert "docker" in result.detail.lower()
 
 
 def test_step_llm_interactive_default_attribute_present():

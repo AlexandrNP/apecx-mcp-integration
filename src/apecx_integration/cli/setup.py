@@ -97,6 +97,7 @@ from pathlib import Path
 # We delegate the data step to the existing setup_data implementation.
 from apecx_integration.cli import setup_data as _setup_data
 from apecx_integration.infrastructure.containers import (
+    APECX_OLLAMA,
     APECX_REDIS,
     APECX_RHEA_MINIO,
     APECX_RHEA_POSTGRES,
@@ -754,6 +755,92 @@ def _ollama_daemon_reachable(timeout: float = 2.0) -> bool:
         return False
 
 
+def _ollama_reachable(timeout_s: float = 5.0) -> bool:
+    """True if something serves Ollama's REST API at the configured URL (container OR host)."""
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(_ollama_url() + "/api/tags", timeout=timeout_s):
+            return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _ollama_installed_models(timeout_s: float = 5.0) -> set[str]:
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(_ollama_url() + "/api/tags", timeout=timeout_s) as resp:
+            tags = json.loads(resp.read())
+        return {m.get("name", "") for m in tags.get("models") or []}
+    except Exception:  # noqa: BLE001
+        return set()
+
+
+def _pull_ollama_model_http(model: str, *, timeout_s: float = 1800.0) -> tuple[bool, str]:
+    """Pull an Ollama model via the REST API (POST /api/pull) — container-aware: works against the
+    apecx-ollama CONTAINER or a host Ollama, no host `ollama` binary required (#7 "setup provisions").
+    Streams the NDJSON progress; returns (ok, message)."""
+    import urllib.error
+    import urllib.request
+
+    url = _ollama_url() + "/api/pull"
+    payload = json.dumps({"name": model, "stream": True}).encode()
+    req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
+    last_status = ""
+    try:
+        with urllib.request.urlopen(req, timeout=timeout_s) as resp:
+            for raw in resp:
+                line = raw.decode("utf-8", "replace").strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if obj.get("error"):
+                    return False, f"pull error for {model}: {obj['error']}"
+                last_status = obj.get("status", last_status)
+    except urllib.error.URLError as exc:
+        return False, f"pull failed for {model}: {exc}"
+    return True, f"pulled {model} ({last_status or 'done'})"
+
+
+def _ensure_ollama_serving() -> tuple[bool, str]:
+    """Ensure Ollama is serving at the configured URL: ADOPT an already-running host/container Ollama
+    (no double-start / port conflict — the #7 edge case), else START the apecx-ollama container. Returns
+    (serving, message)."""
+    if _ollama_reachable():
+        return True, "ollama already serving (adopted)"
+    if not _docker_available():
+        return False, (
+            "no Ollama serving and docker unavailable — start Docker Desktop, or run a host "
+            "`ollama serve`, or set APECX_LLM_BASE_URL to a remote endpoint"
+        )
+    name = APECX_OLLAMA.container_name
+    if _container_exists(name):
+        subprocess.run(["docker", "start", name], capture_output=True, text=True, timeout=30)
+    else:
+        cmd = [
+            "docker",
+            "run",
+            "-d",
+            "--name",
+            name,
+            *_spec_to_run_args(APECX_OLLAMA),
+            APECX_OLLAMA.image,
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        if result.returncode != 0:
+            return False, f"failed to start {name}: {result.stderr[:150]}"
+    deadline = time.time() + 30
+    while time.time() < deadline:
+        if _ollama_reachable():
+            return True, f"started ollama container {name}"
+        time.sleep(1)
+    return False, f"{name} started but did not serve /api/tags within 30s"
+
+
 def _probe_llm() -> tuple[bool, str]:
     """Resolve whether an LLM endpoint is usable, and how — local OR remote.
 
@@ -774,24 +861,18 @@ def _probe_llm() -> tuple[bool, str]:
     if base and not any(h in base for h in ("localhost", "127.0.0.1", "0.0.0.0")):
         return True, f"remote endpoint configured: {base} (not actively probed)"
 
-    if shutil.which("ollama") is None:
+    # Local: probe /api/tags — works whether Ollama is the apecx-ollama CONTAINER or a host process
+    # (no host `ollama` binary required, #7). If nothing serves, guide to apecx-setup.
+    if not _ollama_reachable():
         return False, (
-            "no local Ollama and no remote APECX_LLM_BASE_URL — "
-            "run `apecx-setup llm`, or set APECX_LLM_BASE_URL to a remote "
-            "OpenAI-compatible endpoint (vLLM / OpenAI / Anthropic-proxy)"
+            "no local Ollama serving — run `apecx-setup llm` (starts the apecx-ollama container + "
+            "pulls the model), or set APECX_LLM_BASE_URL to a remote OpenAI-compatible endpoint"
         )
-    try:
-        import urllib.request
-
-        with urllib.request.urlopen(_ollama_url() + "/api/tags", timeout=5) as resp:
-            tags = json.loads(resp.read())
-        installed = {m.get("name") for m in tags.get("models") or []}
-    except Exception:  # noqa: BLE001
-        return False, "ollama daemon unreachable — `ollama serve`"
+    installed = _ollama_installed_models()
     model = _ollama_model()
     if model in installed:
         return True, f"local Ollama model {model} ready"
-    return False, f"local Ollama model {model} not pulled — `apecx-setup llm`"
+    return False, f"local Ollama serving but model {model} not pulled — `apecx-setup llm`"
 
 
 def _prompt_yes(question: str, default: bool = True) -> bool:
@@ -940,51 +1021,28 @@ def _offer_start_ollama_daemon(*, interactive: bool) -> bool:
 
 
 def _step_llm(*, interactive: bool = True) -> StepResult:
-    _print_header("Step 5 of 7 — LLM (Ollama install + check + model pull)")
+    _print_header("Step 5 of 7 — LLM (Ollama container + model pull)")
 
-    # 1. Ensure the CLI is installed (offer to install when missing).
-    if not _offer_install_ollama(interactive=interactive):
+    # Remote endpoint (operator-managed vLLM / OpenAI / Anthropic-proxy) → nothing to provision here.
+    base = os.environ.get("APECX_LLM_BASE_URL", "").strip()
+    if base and not any(h in base for h in ("localhost", "127.0.0.1", "0.0.0.0")):
         return StepResult(
-            "llm",
-            "skipped",
-            "`ollama` CLI not found and install declined / not "
-            "possible. Install from https://ollama.com/download (or "
-            "set APECX_LLM_BASE_URL to a remote OpenAI-compatible "
-            "endpoint to use vLLM / OpenAI / a hosted Anthropic-proxy).",
+            "llm", "ok", f"remote endpoint configured: {base} (operator-managed; not pulled here)"
         )
 
-    # 2. Ensure the daemon is reachable (offer to start when not).
-    if not _offer_start_ollama_daemon(interactive=interactive):
-        api_url = _ollama_url() + "/api/tags"
-        return StepResult(
-            "llm",
-            "skipped",
-            f"ollama daemon unreachable at {api_url}. Start with: ollama serve",
-        )
+    # Ensure Ollama is serving — adopt a running host/container Ollama (no port conflict), else start
+    # the apecx-ollama container (#7 "setup provisions"; no host `ollama` binary required).
+    serving, msg = _ensure_ollama_serving()
+    if not serving:
+        return StepResult("llm", "skipped", msg)
 
-    # 3. Ensure the model is pulled.
-    import urllib.request
-
-    api_url = _ollama_url() + "/api/tags"
-    with urllib.request.urlopen(api_url, timeout=5) as resp:
-        tags = json.loads(resp.read())
     model = _ollama_model()
-    installed = {m.get("name") for m in tags.get("models") or []}
-    if model in installed:
-        return StepResult("llm", "ok", f"model {model} already pulled")
+    if model in _ollama_installed_models():
+        return StepResult("llm", "ok", f"model {model} already pulled ({msg})")
 
-    print(f"  ▶  pulling {model} (this may take several minutes for first-time downloads)...")
-    result = subprocess.run(
-        ["ollama", "pull", model],
-        timeout=1800,  # 30 minutes worst-case for ~14 GB models
-    )
-    if result.returncode != 0:
-        return StepResult(
-            "llm",
-            "fail",
-            f"`ollama pull {model}` exited with {result.returncode}",
-        )
-    return StepResult("llm", "ok", f"pulled {model}")
+    print(f"  ▶  pulling {model} into Ollama (first-time downloads may take several minutes)...")
+    ok, pmsg = _pull_ollama_model_http(model)
+    return StepResult("llm", "ok" if ok else "fail", pmsg)
 
 
 # ---------------------------------------------------------------------------
