@@ -109,8 +109,10 @@ def summarize_run(prov_run: ProvenanceRun) -> RunSummary:
             status_by_step.setdefault(ev.step_name, "started")
 
     steps: list[StepRunSummary] = []
+    recorded: set[str] = set()
     for rec in prov_run.step_records:
         name = str(rec.get("step_name", "?"))
+        recorded.add(name)
         steps.append(
             StepRunSummary(
                 step_name=name,
@@ -120,5 +122,19 @@ def summarize_run(prov_run: ProvenanceRun) -> RunSummary:
                 n_llm_calls=len(rec.get("llm_calls") or []),
             )
         )
+    # #3 (2026-07-01): a step that STARTED but produced no completion RECORD — e.g. one that hung
+    # past the cascade timeout, or failed before recording — has a G37 event but no G4 record, so
+    # the record loop above drops it. Surface it from the events so a cascade_timeout RunSummary
+    # NAMES the in-flight / failed step instead of silently omitting it (event insertion order
+    # is preserved). Records are richer when present, so they win; this only adds the missing ones.
+    for name, status in status_by_step.items():
+        if name not in recorded:
+            steps.append(
+                StepRunSummary(
+                    step_name=name,
+                    status=status,
+                    duration_seconds=duration_by_step.get(name),
+                )
+            )
     workflow_status = prov_run.result.get("status") if isinstance(prov_run.result, dict) else None
     return RunSummary(workflow_status=workflow_status, steps=steps)

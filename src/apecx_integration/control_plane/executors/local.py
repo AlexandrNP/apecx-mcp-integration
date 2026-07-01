@@ -91,6 +91,27 @@ from apecx_integration.control_plane.schemas.enums import (
 log = logging.getLogger(__name__)
 
 
+def _format_step_diagnostics(
+    started: list[str], done: set[str], failures: list[tuple[str, str, str]]
+) -> str:
+    """Build a short suffix naming the in-flight and/or failed step(s) from captured G37 events.
+
+    ``started`` = step_start names in order; ``done`` = names that completed OR failed; ``failures``
+    = ``(name, exc_type, exc_message)`` triples. Returns ``" <diagnostics>."`` or ``""`` when nothing
+    was captured. Pulled out of ``LocalExecutor.run`` so the in-flight / failure naming is
+    unit-testable without driving a full cascade (#3, 2026-07-01).
+    """
+    inflight = [s for s in started if s not in done]
+    bits: list[str] = []
+    if inflight:
+        bits.append(f"in-flight step(s): {inflight}")
+    if failures:
+        bits.append(
+            "captured step failure(s): " + "; ".join(f"{n} raised {t}: {m}" for n, t, m in failures)
+        )
+    return (" " + " | ".join(bits) + ".") if bits else ""
+
+
 @dataclass(frozen=True, kw_only=True)
 class ExecutionResult:
     run_id: UUID
@@ -313,6 +334,34 @@ class LocalExecutor:
                     output_artifact_id=None,
                 )
 
+            # #3 (2026-07-01) — capture G37 step events during the run so a cascade TIMEOUT or a
+            # swallowed step exception names the in-flight / failed step, not just "partial output
+            # keys". Workflow.run(raise_on_cascade_timeout=False) returns status='cascade_timeout'
+            # with the workflow outputs EMPTY; without these events the executor could only report
+            # the missing output keys, never WHICH step hung or raised. Mirrors the capture pattern
+            # in cli/_globus_data_transfer.py.
+            from nanobrain.core.step_events import subscribe_to_step_events  # noqa: PLC0415
+
+            _started: list[str] = []
+            _done: set[str] = set()
+            _step_failures: list[tuple[str, str, str]] = []
+
+            def _capture_step(event: object) -> None:
+                et = getattr(event, "event_type", None)
+                name = getattr(event, "step_name", "?")
+                if et == "step_start":
+                    _started.append(name)
+                elif et in ("step_complete", "step_failed"):
+                    _done.add(name)
+                    if et == "step_failed":
+                        exc_info = (getattr(event, "payload", None) or {}).get("exception") or {}
+                        _step_failures.append(
+                            (name, exc_info.get("type", ""), exc_info.get("message", ""))
+                        )
+
+            def _step_diag() -> str:
+                return _format_step_diagnostics(_started, _done, _step_failures)
+
             try:
                 # G35 — adopt Workflow.run (G8) so the cascade is awaited
                 # and workflow-level output data units are collected. Pre-G35
@@ -326,14 +375,15 @@ class LocalExecutor:
                 # field while the cascade fired in the background and its
                 # results vanished. Source: eval_03_nanobrain_gap_inventory.md
                 # Round 4 G35 (2026-05-09).
-                raw_result = await workflow.run(
-                    payload,
-                    timeout=self._cascade_timeout_seconds,
-                    settle_ms=self._cascade_settle_ms,
-                    raise_on_cascade_timeout=False,
-                )
+                with subscribe_to_step_events(_capture_step):
+                    raw_result = await workflow.run(
+                        payload,
+                        timeout=self._cascade_timeout_seconds,
+                        settle_ms=self._cascade_settle_ms,
+                        raise_on_cascade_timeout=False,
+                    )
             except Exception as exc:
-                reason = f"workflow execution failed: {type(exc).__name__}: {exc}"
+                reason = f"workflow execution failed: {type(exc).__name__}: {exc}{_step_diag()}"
                 log.warning("Run %s: %s", run_id, reason)
                 transitioned = self._mark_failed(run_id, reason, failure_class="execute_failed")
                 return self._terminal_result(
@@ -359,7 +409,7 @@ class LocalExecutor:
                 )
                 reason = (
                     f"workflow returned non-completed status="
-                    f"{run_status!r}; cascade did not drain cleanly. "
+                    f"{run_status!r}; cascade did not drain cleanly.{_step_diag()} "
                     f"Partial output keys: {output_keys}"
                 )
                 log.warning("Run %s: %s", run_id, reason)
