@@ -33,10 +33,12 @@ _RECORD_STATES = {
     "external_missing",
     "external_unconfigured",
 }
-# Reload is driven by REACHABILITY, not the state name: a backend is restarted only when its last
-# probe could NOT contact it (genuinely down — e.g. a stopped container, which the orchestrator's
-# re-probe marks DEGRADED-but-unreachable). A reachable-but-degraded backend (e.g. Ollama serving with
-# no model) is UP — a restart would not help and would thrash — so it is recorded, not reloaded.
+# States a reload (re-establish via _bring_up) can actually FIX. Excludes external_missing (docker
+# daemon down) + external_unconfigured (host prereq env unset) — those need OPERATOR action, so
+# reloading them just thrashes every backoff forever. Reload also requires `not reachable` (genuinely
+# down, e.g. a stopped container that re-probes to DEGRADED-but-unreachable), which spares a
+# reachable-but-degraded backend (e.g. Ollama serving with no model — UP, a restart wouldn't help).
+_RELOADABLE_STATES = {"down", "degraded", "error_starting", "missing"}
 # Only backends we actually spawn can be reloaded; an external endpoint is operator-owned.
 _RELOADABLE_KINDS = {"docker_container", "host_process"}
 
@@ -103,6 +105,7 @@ class InfraMonitor:
             outcome = ""
             if (
                 not b.get("reachable", True)  # genuinely down (not merely up-but-degraded)
+                and state in _RELOADABLE_STATES  # a state _bring_up can fix (not operator-prereq)
                 and b.get("kind") in _RELOADABLE_KINDS
                 and (now - self._last_reload_at.get(name, -1e18)) >= self._backoff_s
             ):

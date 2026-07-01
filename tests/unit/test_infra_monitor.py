@@ -64,6 +64,16 @@ def test_tick_does_not_reload_external_backend(tmp_path):
     assert orch.reloaded == []  # external endpoint is operator-owned
 
 
+def test_operator_prereq_states_recorded_not_reloaded(tmp_path):
+    # external_missing (docker daemon down) / external_unconfigured (host prereq unset) can't be fixed
+    # by a reload — record them, don't thrash a restart every backoff (review-gate W2).
+    orch = _FakeOrch([{"backends": [_backend("postgres", "external_missing", reachable=False)]}])
+    m = _monitor(tmp_path, orch, backoff_s=0.0)
+    asyncio.run(m.tick(monotonic=1000.0))
+    assert orch.reloaded == []
+    assert m.recent_failures()[-1]["component"] == "postgres"
+
+
 def test_backoff_prevents_restart_storm(tmp_path):
     orch = _FakeOrch([{"backends": [_backend("redis", "down")]}])  # always down
     m = _monitor(tmp_path, orch, backoff_s=60.0)

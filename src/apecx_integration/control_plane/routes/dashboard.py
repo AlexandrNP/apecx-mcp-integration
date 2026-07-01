@@ -11,6 +11,7 @@ one consistent state.
 
 from __future__ import annotations
 
+import html
 from typing import Any
 
 from fastapi import APIRouter
@@ -48,15 +49,19 @@ def _dot(reachable: bool, state: str) -> str:
 
 
 def _render_html(data: dict[str, Any]) -> str:
+    # html.escape every interpolated value — `detail`/`error` can carry probe text from
+    # operator-configured remote endpoints; never inject it raw into the page.
+    e = html.escape
     rows = "".join(
-        f"<tr><td>{b.get('name', '')}</td>"
-        f"<td>{_dot(b.get('reachable', True), b.get('state', ''))} {b.get('state', '')}</td>"
-        f"<td>{b.get('detail', '')}</td></tr>"
+        f"<tr><td>{e(str(b.get('name', '')))}</td>"
+        f"<td>{_dot(b.get('reachable', True), b.get('state', ''))} {e(str(b.get('state', '')))}</td>"
+        f"<td>{e(str(b.get('detail', '')))}</td></tr>"
         for b in data.get("backends", [])
     )
     fails = "".join(
-        f"<li>{f.get('timestamp_iso', '')} — {f.get('component', '')} {f.get('state', '')}"
-        f"{' → ' + f['reload_outcome'] if f.get('reload_outcome') else ''}</li>"
+        f"<li>{e(str(f.get('timestamp_iso', '')))} — {e(str(f.get('component', '')))} "
+        f"{e(str(f.get('state', '')))}"
+        f"{' → ' + e(str(f['reload_outcome'])) if f.get('reload_outcome') else ''}</li>"
         for f in data.get("recent_failures", [])[-15:]
     )
     return f"""<!doctype html><html><head><meta charset="utf-8">
@@ -65,7 +70,7 @@ def _render_html(data: dict[str, Any]) -> str:
 <style>body{{font-family:monospace;margin:2rem}}table{{border-collapse:collapse}}
 td,th{{padding:.2rem .8rem;border-bottom:1px solid #ddd;text-align:left}}h2{{margin-top:1.5rem}}</style>
 </head><body>
-<h1>apecx-mcp infrastructure — overall: {data.get("overall", "?")}</h1>
+<h1>apecx-mcp infrastructure — overall: {e(str(data.get("overall", "?")))}</h1>
 <table><tr><th>component</th><th>state</th><th>detail</th></tr>{rows}</table>
 <h2>recent failures</h2><ul>{fails or "<li>(none recorded)</li>"}</ul>
 <p><small>auto-refresh {_REFRESH_S}s · JSON at <a href="/status">/status</a></small></p>

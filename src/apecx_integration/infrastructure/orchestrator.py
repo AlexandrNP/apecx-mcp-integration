@@ -1418,6 +1418,9 @@ class InfraOrchestrator:
             with self._lock:
                 rt.last_probe_at = time.time()
                 rt.last_latency_ms = result.latency_ms
+                rt.reachable = (
+                    result.reachable
+                )  # keep the field's contract on the poll-success path
                 if result.healthy:
                     rt.detail = result.detail
                     rt.error = None

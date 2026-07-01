@@ -55,3 +55,25 @@ def test_start_monitor_lifespan_launches_and_stops_the_daemon(monkeypatch):
     with TestClient(create_app(start_monitor=True)) as c:
         assert c.get("/status").status_code == 200
     assert launched["v"] is True
+
+
+def test_dashboard_html_escapes_interpolated_detail():
+    # A backend detail carrying HTML (e.g. probe error from a remote endpoint) must be escaped, not
+    # injected into the page (review-gate W3).
+    from apecx_integration.control_plane.routes.dashboard import _render_html
+
+    data = {
+        "overall": "down",
+        "backends": [
+            {
+                "name": "x",
+                "state": "down",
+                "reachable": False,
+                "detail": "<script>alert(1)</script>",
+            }
+        ],
+        "recent_failures": [],
+    }
+    out = _render_html(data)
+    assert "<script>alert(1)</script>" not in out
+    assert "&lt;script&gt;" in out
