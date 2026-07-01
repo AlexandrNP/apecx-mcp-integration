@@ -34,7 +34,7 @@ def test_mat_peptide_retry_recovers_same_protein_before_substituting(tmp_path, m
     step = _stage(tmp_path)
     calls: list[tuple[str, str]] = []
 
-    def fake_fetch(taxon_id, protein, feature_type):
+    def fake_fetch(taxon_id, protein, feature_type, exact=False):
         calls.append((protein, feature_type))
         if feature_type == "mat_peptide" and protein == "capsid protein":
             return _recs(3), 3, 0
@@ -60,7 +60,7 @@ def test_mat_peptide_retry_falls_through_to_substitute_when_also_empty(tmp_path,
     # runs (no regression to the too-few-sequences path).
     step = _stage(tmp_path)
 
-    def fake_fetch(taxon_id, protein, feature_type):
+    def fake_fetch(taxon_id, protein, feature_type, exact=False):
         if protein == "envelope glycoprotein E2":
             return _recs(4), 4, 0  # the substitute product DOES have sequences (CDS)
         return [], 0, 0  # requested protein: nothing in CDS or mat_peptide

@@ -26,6 +26,19 @@ steady state.
 > design — the render is additive/best-effort and the SASA correctness path is
 > already covered.
 
+> **T-2026-07-01-02** (`src/apecx_integration/composition/steps/bvbrc_protein_fasta_step.py`
+> `_fetch` substitute path, ~:206) — the too-few-sequences fallback picks an
+> alternate product from `_query_available_proteins` and re-queries it with the
+> WILDCARD `eq(product,*X*)`. Per the 2026-07-01 finding, BV-BRC's Solr returns 0
+> for a wildcarded MULTI-WORD phrase, so a multi-word substitute candidate (e.g.
+> "envelope glycoprotein E2") could silently retrieve 0 and be skipped even though
+> it exists — biasing substitution toward single-token products. Pre-existing (NOT
+> introduced by the normalization change; the primary path now uses exact match for
+> resolved names). Follow-up: have the substitute path query alternates with the
+> exact `eq(product,"X")` form too (the candidate names come verbatim from the
+> catalog, so they are exact), + a gated test that a multi-word alternate is
+> retrievable. Scope: ~5 lines + one test.
+
 ---
 
 ### CLOSED: T-2026-04-23-03 — PubMed real API integration (closed 2026-05-04)
