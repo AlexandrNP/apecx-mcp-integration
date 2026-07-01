@@ -107,6 +107,24 @@ BANNED_ATTRIBUTE_CALLS: frozenset[tuple[str, str]] = frozenset(
     }
 )
 
+# Dangerous CALLS on otherwise-whitelisted libraries (#1b, 2026-07-01). The import-name whitelist
+# can't see these — numpy/pandas are legitimately whitelisted for array/DataFrame work, but a few of
+# their functions unpickle untrusted input = arbitrary code execution. Keyed by (top_module, attr);
+# the value is an optional (kwarg_name, required_constant) condition — the call is flagged ONLY when
+# that kwarg is passed with that constant (None = always dangerous). This is a NARROW deny-list of
+# dangerous CALLS, not an import ban: benign pd.read_csv / pd.DataFrame / np.array / np.linalg.norm /
+# np.load("f.npy") (safe default allow_pickle=False) all still pass. Detection is alias-aware (see
+# _ImportVisitor.aliases) so `import numpy as np; np.load(...)` and `from numpy import load` both hit.
+DANGEROUS_CALLS: dict[tuple[str, str], tuple[str, object] | None] = {
+    ("numpy", "load"): ("allow_pickle", True),  # np.load(..., allow_pickle=True) unpickles -> RCE
+    ("pandas", "read_pickle"): None,  # pd.read_pickle -> RCE, no safe mode
+    ("pickle", "load"): None,  # future-proof: pickle/dill not currently whitelisted, cheap to guard
+    ("pickle", "loads"): None,
+    ("dill", "load"): None,
+    ("dill", "loads"): None,
+    ("joblib", "load"): None,  # joblib.load unpickles by default
+}
+
 
 # ---------------------------------------------------------------------------
 # Result types
@@ -170,12 +188,18 @@ class _ImportVisitor(ast.NodeVisitor):
     def __init__(self) -> None:
         self.imports: list[Import] = []
         self.violations: list[str] = []
+        # Local-name -> dotted module (or module.attr) binding, for alias-aware call-vector
+        # detection: `import numpy as np` -> {"np": "numpy"}; `from numpy import load` ->
+        # {"load": "numpy.load"}. Used only by _dangerous_call (#1b).
+        self.aliases: dict[str, str] = {}
 
     def visit_Import(self, node: ast.Import) -> None:
         for alias in node.names:
             full = alias.name
             top = full.split(".", 1)[0]
             self.imports.append(Import(module=top, full_path=full, lineno=node.lineno))
+            # `import a.b as c` binds `c` -> a.b; `import a.b` binds the top name `a` -> a.
+            self.aliases[alias.asname or top] = full if alias.asname else top
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
@@ -191,6 +215,9 @@ class _ImportVisitor(ast.NodeVisitor):
         for alias in node.names:
             child_full = f"{full}.{alias.name}" if full else alias.name
             self.imports.append(Import(module=top, full_path=child_full, lineno=node.lineno))
+            # `from numpy import load [as l]` -> local name resolves to numpy.load
+            if full:
+                self.aliases[alias.asname or alias.name] = child_full
         self.generic_visit(node)
 
     def visit_Call(self, node: ast.Call) -> None:
@@ -206,7 +233,46 @@ class _ImportVisitor(ast.NodeVisitor):
                     f"line {node.lineno}: banned dynamic-import construct: "
                     f"{func.value.id}.{func.attr}()"
                 )
+        # Alias-aware dangerous-CALL detection (#1b): pickle/deserialization vectors on whitelisted
+        # libraries that the import-name scan can't see. Runs for both `x.attr(...)` and a bare
+        # `attr(...)` bound via `from mod import attr`.
+        hit = self._dangerous_call(node)
+        if hit is not None:
+            mod, attr = hit
+            self.violations.append(
+                f"line {node.lineno}: dangerous call {mod}.{attr}() — deserialization / arbitrary-"
+                f"code vector on a whitelisted library that the import-name scan cannot see"
+            )
         self.generic_visit(node)
+
+    def _dangerous_call(self, node: ast.Call) -> tuple[str, str] | None:
+        """Return the (top_module, attr) DANGEROUS_CALLS hit for this call, else None — resolving
+        aliases so `np.load`, `numpy.load`, and `from numpy import load; load()` all map to
+        ('numpy','load'). Only flags when a name provably resolves to the dangerous module via an
+        import in THIS source (an unrelated object named ``np`` is not flagged)."""
+        func = node.func
+        module_attr: tuple[str, str] | None = None
+        if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name):
+            base = self.aliases.get(func.value.id, func.value.id)
+            module_attr = (base.split(".", 1)[0], func.attr)
+        elif isinstance(func, ast.Name):
+            resolved = self.aliases.get(func.id)
+            if resolved and "." in resolved:
+                parts = resolved.split(".")
+                module_attr = (parts[0], parts[-1])
+        if module_attr is None or module_attr not in DANGEROUS_CALLS:
+            return None
+        cond = DANGEROUS_CALLS[module_attr]
+        if cond is None or self._has_kwarg_constant(node, cond[0], cond[1]):
+            return module_attr
+        return None
+
+    @staticmethod
+    def _has_kwarg_constant(node: ast.Call, name: str, value: object) -> bool:
+        return any(
+            kw.arg == name and isinstance(kw.value, ast.Constant) and kw.value.value is value
+            for kw in node.keywords
+        )
 
 
 class ImportScanner:
