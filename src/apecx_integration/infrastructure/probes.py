@@ -232,17 +232,32 @@ async def minio_probe(
 # ---------------------------------------------------------------------------
 
 
+def _model_present(names: list[str], required: str) -> bool:
+    """True if ``required`` matches an installed Ollama model, tolerant of the ``:tag`` suffix
+    (a configured ``mistral-nemo`` matches an installed ``mistral-nemo:latest`` and vice-versa)."""
+    req_base = required.split(":", 1)[0]
+    return any(n == required or n.split(":", 1)[0] == req_base for n in names)
+
+
 async def ollama_probe(
     *,
     base_url: str,
+    required_model: str | None = None,
     timeout_s: float = _DEFAULT_TIMEOUT_S,
 ) -> ProbeResult:
-    """Probe Ollama via ``GET /api/tags`` and report installed-model count.
+    """Probe Ollama via ``GET /api/tags`` and report MODEL-AWARE readiness (#7).
 
     ``base_url`` is e.g. ``http://localhost:11434``. We tolerate a
     trailing ``/v1`` suffix (apecx's LLM env var convention) by
     stripping it — Ollama's REST API is rooted at the host, not at
     ``/v1``.
+
+    Model-aware readiness: a *reachable* Ollama that has 0 models — or that lacks the
+    ``required_model`` the synthesis runtime will ask for — is NOT usable (synthesis 404s). Such a
+    server is reported ``healthy=False`` with an actionable ``ollama pull`` hint, instead of the
+    old green-on-connectivity behaviour that let a model-less server look ready (the silent-failure
+    trap that deferred the ollama-as-container work). ``required_model=None`` falls back to a
+    "≥1 model present" floor.
     """
     base = base_url.rstrip("/")
     if base.endswith("/v1"):
@@ -260,9 +275,27 @@ async def ollama_probe(
         status, body = value
         if status == 200:
             models = body.get("models") or [] if isinstance(body, dict) else []
+            names = [m.get("name", "") for m in models if isinstance(m, dict)]
+            if required_model is not None and not _model_present(names, required_model):
+                return ProbeResult(
+                    healthy=False,
+                    detail=(
+                        f"ollama up at {base} but required model {required_model!r} not present "
+                        f"({len(names)} other model(s)); pull it: `ollama pull {required_model}`"
+                    ),
+                    latency_ms=latency_ms,
+                    error=f"required model {required_model!r} missing",
+                )
+            if not names:
+                return ProbeResult(
+                    healthy=False,
+                    detail=f"ollama up at {base} but 0 models loaded; pull a model to use it",
+                    latency_ms=latency_ms,
+                    error="no models loaded",
+                )
             return ProbeResult(
                 healthy=True,
-                detail=f"ollama OK at {base} — {len(models)} model(s) loaded",
+                detail=f"ollama OK at {base} — {len(names)} model(s) loaded",
                 latency_ms=latency_ms,
             )
         return ProbeResult(

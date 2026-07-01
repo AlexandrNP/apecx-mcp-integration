@@ -247,7 +247,12 @@ def _make_ollama_spec() -> BackendSpec:
     base_url = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1")
 
     async def _probe() -> ProbeResult:
-        return await ollama_probe(base_url=base_url)
+        # Model-aware readiness (#7): require the model the synthesis runtime resolves to, so a
+        # reachable-but-model-less Ollama reads DEGRADED, not ready. Lazy import + per-probe resolve
+        # so an env change (APECX_LLM_MODEL) is reflected without a restart.
+        from apecx_integration.agents._llm_config import resolve_llm_model
+
+        return await ollama_probe(base_url=base_url, required_model=resolve_llm_model())
 
     return BackendSpec(
         name="ollama",
