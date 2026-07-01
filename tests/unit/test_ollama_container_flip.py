@@ -57,3 +57,19 @@ def test_ollama_probe_unreachable_sets_reachable_false():
     r = asyncio.run(ollama_probe(base_url="http://localhost:1", required_model=None, timeout_s=2.0))
     assert not r.healthy
     assert r.reachable is False
+
+
+def test_infra_probes_set_reachable_false_when_unreachable():
+    # #7 review-gate fix: a genuinely-DOWN postgres/redis/minio container must set reachable=False on
+    # its connection-failure path, so the SHARED _bring_up_container branch reads ERROR_STARTING, not
+    # DEGRADED ("container up") — reachable defaults True, so an unset failure path would mislabel.
+    from apecx_integration.infrastructure.probes import minio_probe, postgres_probe, redis_probe
+
+    coros = [
+        postgres_probe(host="localhost", port=1, user="x", db="x", password="x", timeout_s=2.0),
+        redis_probe(host="localhost", port=1, timeout_s=2.0),
+        minio_probe(host="localhost", port=1, timeout_s=2.0),
+    ]
+    for coro in coros:
+        r = asyncio.run(coro)
+        assert not r.healthy and r.reachable is False, r

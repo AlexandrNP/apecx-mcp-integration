@@ -84,6 +84,7 @@ def test_step_llm_skips_gracefully_when_nothing_serving_and_no_docker():
         mock.patch.dict(setup.os.environ, {"APECX_LLM_BASE_URL": ""}),
         mock.patch.object(setup, "_ollama_reachable", return_value=False),
         mock.patch.object(setup, "_docker_available", return_value=False),
+        mock.patch.object(setup, "_offer_install_ollama", return_value=False),  # host fallback n/a
     ):
         result = setup._step_llm(interactive=False)
     assert result.status == "skipped"

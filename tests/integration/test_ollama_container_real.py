@@ -83,3 +83,42 @@ def test_orchestrator_reads_modelless_ollama_container_as_degraded(_throwaway_co
     rt = orch.get_runtime("ollama")
     assert rt.state == BackendState.DEGRADED, f"expected DEGRADED, got {rt.state}: {rt.detail}"
     assert "model" in rt.detail.lower()
+
+
+@pytest.mark.skipif(_SKIP, reason="docker not available")
+def test_unreachable_container_reads_error_starting(_throwaway_container):
+    # #7 review-gate fix: a container that spawns but NEVER serves the probed endpoint (probe points
+    # at a dead port → reachable=False) must read ERROR_STARTING, not DEGRADED. Guards the shared
+    # bring-up branch for non-ollama backends whose failure is a genuine start failure.
+    from apecx_integration.infrastructure.probes import postgres_probe
+
+    container = ContainerSpec(
+        image="ollama/ollama",  # spawns fine (already pulled); the probe below never reaches it
+        container_name=_NAME,
+        ports=((_PORT, 11434),),
+        volumes=(),
+        ready_timeout_s=6.0,
+    )
+
+    async def _probe():
+        # Dead port → connection refused → reachable=False on every poll.
+        return await postgres_probe(
+            host="localhost", port=15997, user="x", db="x", password="x", timeout_s=2.0
+        )
+
+    spec = BackendSpec(
+        name="pg",
+        display_name="Fake unreachable backend",
+        kind="docker_container",
+        required=False,
+        probe=Probe(name="pg", fn=_probe),
+        container=container,
+        actionable_message="x",
+    )
+    orch = InfraOrchestrator(specs=[spec], autostart_enabled=True, docker_binary=_DOCKER)
+
+    asyncio.run(orch.start_all())
+    rt = orch.get_runtime("pg")
+    assert rt.state == BackendState.ERROR_STARTING, (
+        f"expected ERROR_STARTING, got {rt.state}: {rt.detail}"
+    )

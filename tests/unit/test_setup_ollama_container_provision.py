@@ -29,11 +29,24 @@ def test_ensure_serving_adopts_running_ollama(monkeypatch):
     assert ok and "adopt" in msg.lower()
 
 
-def test_ensure_serving_skips_when_no_docker(monkeypatch):
+def test_ensure_serving_skips_when_no_docker_and_no_host(monkeypatch):
     monkeypatch.setattr(setup, "_ollama_reachable", lambda *a, **k: False)
     monkeypatch.setattr(setup, "_docker_available", lambda: False)
-    ok, msg = setup._ensure_ollama_serving()
+    monkeypatch.setattr(
+        setup, "_offer_install_ollama", lambda **k: False
+    )  # host fallback unavailable
+    ok, msg = setup._ensure_ollama_serving(interactive=False)
     assert not ok and "docker" in msg.lower()
+
+
+def test_ensure_serving_falls_back_to_host_when_no_docker(monkeypatch):
+    reach = iter([False, True])  # unreachable first, reachable after the host daemon starts
+    monkeypatch.setattr(setup, "_ollama_reachable", lambda *a, **k: next(reach, True))
+    monkeypatch.setattr(setup, "_docker_available", lambda: False)
+    monkeypatch.setattr(setup, "_offer_install_ollama", lambda **k: True)
+    monkeypatch.setattr(setup, "_offer_start_ollama_daemon", lambda **k: True)
+    ok, msg = setup._ensure_ollama_serving(interactive=False)
+    assert ok and "host" in msg.lower()
 
 
 def test_ensure_serving_starts_container_when_absent(monkeypatch):
@@ -76,6 +89,13 @@ def test_pull_http_error_line_is_failure(monkeypatch):
     assert not ok and "not found" in msg
 
 
+def test_pull_http_truncated_stream_without_success_is_failure(monkeypatch):
+    # Stream ends without the terminal `status: success` → must fail loud, not false-succeed.
+    _mock_urlopen(monkeypatch, b'{"status":"pulling"}\n{"status":"verifying"}\n')
+    ok, msg = setup._pull_ollama_model_http("m:1")
+    assert not ok and "without success" in msg
+
+
 def test_step_llm_remote_endpoint_is_ok(monkeypatch):
     monkeypatch.setenv("APECX_LLM_BASE_URL", "http://gpu.internal:8000/v1")
     r = setup._step_llm(interactive=False)
@@ -83,7 +103,7 @@ def test_step_llm_remote_endpoint_is_ok(monkeypatch):
 
 
 def test_step_llm_pulls_when_model_absent(monkeypatch):
-    monkeypatch.setattr(setup, "_ensure_ollama_serving", lambda: (True, "started"))
+    monkeypatch.setattr(setup, "_ensure_ollama_serving", lambda **k: (True, "started"))
     monkeypatch.setattr(setup, "_ollama_installed_models", lambda *a, **k: set())
     pulled = {}
 
@@ -98,7 +118,7 @@ def test_step_llm_pulls_when_model_absent(monkeypatch):
 
 
 def test_step_llm_ok_when_model_present(monkeypatch):
-    monkeypatch.setattr(setup, "_ensure_ollama_serving", lambda: (True, "adopted"))
+    monkeypatch.setattr(setup, "_ensure_ollama_serving", lambda **k: (True, "adopted"))
     monkeypatch.setattr(setup, "_ollama_installed_models", lambda *a, **k: {setup._ollama_model()})
     r = setup._step_llm(interactive=False)
     assert r.status == "ok" and "already pulled" in r.detail

@@ -414,6 +414,11 @@ def _spec_to_run_args(spec, *, bind_host: str = "127.0.0.1") -> list[str]:
     return args
 
 
+# Setup's generic "start + docker-exec ready-check" container roster. NOTE: APECX_OLLAMA is
+# deliberately NOT here even though it is in `all_container_specs()` — Ollama needs adopt-or-start
+# logic (a host Ollama on :11434 must be adopted, not collided with) + a model pull, handled by
+# `_ensure_ollama_serving` / `_step_llm`, not this generic loop. A future container added to
+# `all_container_specs()` must be added here too (or handled explicitly) to be provisioned by setup.
 _DOCKER_CONTAINERS = [
     {
         "name": APECX_RHEA_POSTGRES.container_name,
@@ -781,6 +786,7 @@ def _pull_ollama_model_http(model: str, *, timeout_s: float = 1800.0) -> tuple[b
     """Pull an Ollama model via the REST API (POST /api/pull) — container-aware: works against the
     apecx-ollama CONTAINER or a host Ollama, no host `ollama` binary required (#7 "setup provisions").
     Streams the NDJSON progress; returns (ok, message)."""
+    import http.client
     import urllib.error
     import urllib.request
 
@@ -788,6 +794,7 @@ def _pull_ollama_model_http(model: str, *, timeout_s: float = 1800.0) -> tuple[b
     payload = json.dumps({"name": model, "stream": True}).encode()
     req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
     last_status = ""
+    saw_success = False
     try:
         with urllib.request.urlopen(req, timeout=timeout_s) as resp:
             for raw in resp:
@@ -801,21 +808,40 @@ def _pull_ollama_model_http(model: str, *, timeout_s: float = 1800.0) -> tuple[b
                 if obj.get("error"):
                     return False, f"pull error for {model}: {obj['error']}"
                 last_status = obj.get("status", last_status)
-    except urllib.error.URLError as exc:
-        return False, f"pull failed for {model}: {exc}"
-    return True, f"pulled {model} ({last_status or 'done'})"
+                if last_status == "success":
+                    saw_success = True
+    except (urllib.error.URLError, http.client.IncompleteRead, OSError) as exc:
+        # A dropped / truncated stream must fail LOUD, not read as a successful pull.
+        return False, f"pull failed for {model}: {type(exc).__name__}: {exc}"
+    if not saw_success:
+        # Stream ended without Ollama's terminal `status: success` → incomplete, NOT success
+        # (guards the truncated-stream false-positive the review flagged).
+        return (
+            False,
+            f"pull of {model} ended without success (last status: {last_status or 'none'})",
+        )
+    return True, f"pulled {model} (success)"
 
 
-def _ensure_ollama_serving() -> tuple[bool, str]:
+def _ensure_ollama_serving(*, interactive: bool = True) -> tuple[bool, str]:
     """Ensure Ollama is serving at the configured URL: ADOPT an already-running host/container Ollama
-    (no double-start / port conflict — the #7 edge case), else START the apecx-ollama container. Returns
+    (no double-start / port conflict — the #7 edge case), else START the apecx-ollama container
+    (default), else FALL BACK to a host Ollama (install + serve) when docker is unavailable. Returns
     (serving, message)."""
     if _ollama_reachable():
         return True, "ollama already serving (adopted)"
     if not _docker_available():
+        # Docker-less fallback: offer a HOST Ollama (default is the container; this is the non-docker
+        # path — the standalone install the container replaces, kept for docker-less environments).
+        if (
+            _offer_install_ollama(interactive=interactive)
+            and _offer_start_ollama_daemon(interactive=interactive)
+            and _ollama_reachable()
+        ):
+            return True, "started host Ollama daemon (docker unavailable)"
         return False, (
-            "no Ollama serving and docker unavailable — start Docker Desktop, or run a host "
-            "`ollama serve`, or set APECX_LLM_BASE_URL to a remote endpoint"
+            "no Ollama serving and docker unavailable — install/start a host `ollama serve`, or set "
+            "APECX_LLM_BASE_URL to a remote endpoint"
         )
     name = APECX_OLLAMA.container_name
     if _container_exists(name):
@@ -1032,7 +1058,7 @@ def _step_llm(*, interactive: bool = True) -> StepResult:
 
     # Ensure Ollama is serving — adopt a running host/container Ollama (no port conflict), else start
     # the apecx-ollama container (#7 "setup provisions"; no host `ollama` binary required).
-    serving, msg = _ensure_ollama_serving()
+    serving, msg = _ensure_ollama_serving(interactive=interactive)
     if not serving:
         return StepResult("llm", "skipped", msg)
 

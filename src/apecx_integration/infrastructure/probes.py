@@ -122,6 +122,7 @@ async def postgres_probe(
         detail=f"postgres probe failed on {host}:{port} (db={db})",
         latency_ms=latency_ms,
         error=f"{type(exc).__name__}: {exc}",
+        reachable=False,  # connection failed → unreachable (bring-up: ERROR_STARTING, not DEGRADED)
     )
 
 
@@ -177,6 +178,7 @@ async def redis_probe(
         detail=f"redis probe failed on {host}:{port}",
         latency_ms=latency_ms,
         error=f"{type(exc).__name__}: {exc}",
+        reachable=False,  # connection failed → unreachable (bring-up: ERROR_STARTING, not DEGRADED)
     )
 
 
@@ -224,6 +226,7 @@ async def minio_probe(
         detail=f"minio probe failed on {host}:{port}",
         latency_ms=latency_ms,
         error=f"{type(exc).__name__}: {exc}",
+        reachable=False,  # connection failed → unreachable (bring-up: ERROR_STARTING, not DEGRADED)
     )
 
 
@@ -374,6 +377,7 @@ async def rhea_mcp_probe(
         detail=f"rhea MCP probe failed at {mcp_url}",
         latency_ms=latency_ms,
         error=f"{type(exc).__name__}: {exc}",
+        reachable=False,  # transport failed → unreachable (bring-up: ERROR_STARTING, not DEGRADED)
     )
 
 
