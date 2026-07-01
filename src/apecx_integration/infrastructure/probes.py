@@ -303,12 +303,14 @@ async def ollama_probe(
             detail=f"ollama at {base} returned HTTP {status}",
             latency_ms=latency_ms,
             error=f"non-200 response: {status}",
+            reachable=False,
         )
     return ProbeResult(
         healthy=False,
         detail=f"ollama probe failed at {base}",
         latency_ms=latency_ms,
         error=f"{type(exc).__name__}: {exc}" if exc else "unknown",
+        reachable=False,
     )
 
 

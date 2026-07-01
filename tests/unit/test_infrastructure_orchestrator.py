@@ -224,7 +224,7 @@ def test_minio_container_spec_pinned():
 def test_all_container_specs_deterministic_order():
     specs = all_container_specs()
     names = [s.container_name for s in specs]
-    assert names == ["apecx-rhea-postgres", "apecx-redis", "apecx-rhea-minio"]
+    assert names == ["apecx-rhea-postgres", "apecx-redis", "apecx-rhea-minio", "apecx-ollama"]
 
 
 def test_container_run_args_shape():

@@ -90,15 +90,33 @@ APECX_RHEA_MINIO: ContainerSpec = ContainerSpec(
 )
 
 
+APECX_OLLAMA: ContainerSpec = ContainerSpec(
+    image="ollama/ollama",
+    container_name="apecx-ollama",
+    ports=((11434, 11434),),
+    env=(),
+    command=(),
+    # Named volume so pulled models (multi-GB) survive container respawn — without it every respawn
+    # re-downloads the model. The model itself is pulled by `apecx-setup llm` (container-aware), NOT
+    # baked into the image; the orchestrator only brings the server up. A model-less container reads
+    # DEGRADED via the model-aware probe until provisioned (#7 — "setup provisions" model).
+    volumes=(("apecx-ollama-data", "/root/.ollama"),),
+    # `ollama serve` answers /api/tags within seconds; we do NOT wait on the model pull here (that is
+    # a separate setup step), so the default readiness window is enough to confirm the server is up.
+    ready_timeout_s=30.0,
+)
+
+
 def all_container_specs() -> tuple[ContainerSpec, ...]:
     """Return every container spec in a deterministic order.
 
     Order matches the dependency intent: Postgres first (everything
-    needs it), Redis second (caches + queues), MinIO last
-    (object storage). The orchestrator launches them in parallel
-    regardless — ordering here is for human-facing UI only.
+    needs it), Redis second (caches + queues), MinIO third
+    (object storage), Ollama last (LLM). The orchestrator launches
+    them in parallel regardless — ordering here is for human-facing
+    UI only.
     """
-    return (APECX_RHEA_POSTGRES, APECX_REDIS, APECX_RHEA_MINIO)
+    return (APECX_RHEA_POSTGRES, APECX_REDIS, APECX_RHEA_MINIO, APECX_OLLAMA)
 
 
 def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> list[str]:
@@ -134,6 +152,7 @@ def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> 
 
 
 __all__ = [
+    "APECX_OLLAMA",
     "APECX_REDIS",
     "APECX_RHEA_MINIO",
     "APECX_RHEA_POSTGRES",

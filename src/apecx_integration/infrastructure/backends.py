@@ -85,6 +85,12 @@ class ProbeResult:
     detail: str
     latency_ms: float
     error: str | None = None
+    # Whether the backend responded at all (vs. connection-refused / timeout). A backend can be
+    # ``reachable=True, healthy=False`` — up but not fully provisioned (e.g. an Ollama container that
+    # is serving but has not pulled its model yet). Bring-up uses this to mark such a spawn DEGRADED
+    # (up, needs provisioning) rather than ERROR_STARTING (failed to come up). Defaults True; a probe
+    # sets it False only when the endpoint could not be contacted. (#7)
+    reachable: bool = True
 
 
 # Async function signature shared by every probe.

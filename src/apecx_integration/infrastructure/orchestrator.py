@@ -65,6 +65,7 @@ from apecx_integration.infrastructure.backends import (
     ProbeResult,
 )
 from apecx_integration.infrastructure.containers import (
+    APECX_OLLAMA,
     APECX_REDIS,
     APECX_RHEA_MINIO,
     APECX_RHEA_POSTGRES,
@@ -254,20 +255,40 @@ def _make_ollama_spec() -> BackendSpec:
 
         return await ollama_probe(base_url=base_url, required_model=resolve_llm_model())
 
+    # Local endpoint → the orchestrator manages Ollama as a CONTAINER (#7 default — no manual host
+    # install). A REMOTE APECX_LLM_BASE_URL (operator points at their own Ollama elsewhere) stays
+    # probe-only external — we never containerize someone else's endpoint. The model is provisioned
+    # separately by `apecx-setup llm` (container-aware pull); a reachable-but-model-less container
+    # reads DEGRADED via the model-aware probe until then.
+    hostname = urlparse(base_url).hostname
+    if hostname in (None, "localhost", "127.0.0.1", "0.0.0.0"):
+        return BackendSpec(
+            name="ollama",
+            display_name="Ollama (container)",
+            kind="docker_container",
+            required=True,
+            probe=Probe(name="ollama", fn=_probe),
+            container=APECX_OLLAMA,
+            actionable_message=(
+                "The apecx-ollama container is not running or has no model. Ensure Docker is "
+                "running, then provision the model with `apecx-setup llm` (pulls the configured "
+                "model into the apecx-ollama container). A reachable container with no model reads "
+                "DEGRADED until the model is pulled."
+            ),
+            tags=("llm", "container"),
+        )
     return BackendSpec(
         name="ollama",
-        display_name="Ollama (host process)",
+        display_name="Ollama (remote)",
         kind="external",
         required=True,
         probe=Probe(name="ollama", fn=_probe),
         actionable_message=(
-            f"Ollama not found at {base_url}. Install Ollama from "
-            "https://ollama.com/download and run `ollama serve` (or "
-            "`brew services start ollama` on macOS). The orchestrator "
-            "cannot install or autostart Ollama — it is an operator "
-            "prerequisite."
+            f"Ollama not reachable at the configured remote endpoint {base_url}. Verify "
+            "APECX_LLM_BASE_URL and that the remote Ollama is running with the configured model "
+            "pulled. The orchestrator does not manage a remote endpoint — it is operator-owned."
         ),
-        tags=("llm", "operator-prereq"),
+        tags=("llm", "remote"),
     )
 
 
@@ -1251,14 +1272,26 @@ class InfraOrchestrator:
         if ok:
             with self._lock:
                 rt.state = BackendState.READY
-        else:
-            with self._lock:
+            return
+        # Poll never went healthy. Distinguish a container that is UP but not fully provisioned
+        # (reachable — e.g. the apecx-ollama container serving with no model pulled yet) from one
+        # that failed to come up (unreachable). The former is DEGRADED + actionable (provision it via
+        # `apecx-setup llm`), NOT ERROR_STARTING — mislabelling a live-but-unprovisioned container as
+        # a start failure is the kind of dishonest state this orchestrator exists to avoid. (#7)
+        final = await spec.probe.run()
+        with self._lock:
+            if final.reachable:
+                rt.state = BackendState.DEGRADED
+                rt.detail = f"{spec.display_name}: container up but not ready — {final.detail}"
+                rt.error = final.error
+            else:
                 rt.state = BackendState.ERROR_STARTING
                 rt.detail = (
                     f"{spec.display_name}: container "
                     f"{container_spec.container_name} spawned but did not "
-                    f"become healthy within {container_spec.ready_timeout_s}s."
+                    f"become reachable within {container_spec.ready_timeout_s}s."
                 )
+                rt.error = final.error
 
     async def _bring_up_host_process(self, rt: BackendRuntime) -> None:
         spec = rt.spec
