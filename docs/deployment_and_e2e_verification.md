@@ -41,6 +41,11 @@ uv tool install apecx-mcp-integration
 # OR a dev checkout
 git clone <repo> && cd apecx-mcp-integration && pip install -e '.[dev]'
 ```
+> **Venv hygiene (F1).** A deployment MUST use a FRESH venv. Do NOT reuse a developer's `.venv`: it is
+> often an editable install pointing at *some* worktree's `src/`, so `apecx-mcp` there runs whatever
+> branch that worktree is on — not what you think you deployed. Verify with
+> `python -c "import apecx_integration; print(apecx_integration.__file__)"` → it must resolve under the
+> venv's `site-packages/`, never a `…/wt-*/src/` path.
 
 ### 2.2 Run the setup chain
 `apecx-setup` orchestrates the whole install. Run subcommands individually to verify each, or
@@ -102,20 +107,23 @@ if reloadable, is auto-restarted by the monitor daemon (and the restart is recor
 (not a false "ready").
 
 ### 4.2 Per-tool usage checks (MCP surface)
-Drive these through the connected MCP client (or the control plane). Each row is a concrete
-call + the observable success signal:
+**These are EXECUTED by `tests/e2e_deploy/` — run it, don't hand-verify.** Every call below uses the
+parameter names the tool ACTUALLY declares; the earlier draft of this table guessed and got them wrong
+(`tests/e2e_deploy/DEPLOYMENT_FINDINGS.md` F2). Derive the live tool count from
+`await build_server().list_tools()`, never a hardcoded number (F7).
 
-| Tool | Call | Success signal |
+| Tool | Call (real signature) | Success signal |
 |---|---|---|
-| `apecx_capabilities` | (no args) | `backends`, `runnable_now`, `primitives`, `modes` present. |
-| `list_workflows` | (no args) | ≥30 workflows; `viral_epitope_analysis`, the two epitope-assessment workflows (#2) show `tuned=True` + typed `input_schema`. |
-| `describe_workflow` | `viral_epitope_analysis` | typed input schema + "USE IT FOR" description. |
-| `run_workflow` | `viral_epitope_analysis {query:"dengue E protein"}` | streamed stages + a non-empty result (NOT `status:completed` with empty output — check the output VALUE). |
-| `compose_workflow` | `{description, user_id}` (no LLM) | when no LLM reachable → **structured** `{error, detail, hint}` (#4), NOT a raw traceback. With LLM → `run_id` + `review`. |
-| `harmonized_search` | a bare virus name | dict-resolved hits across the harmonized indices. |
+| `apecx_capabilities` | (no args) | `how_to_run` / `runnable_now` / `backends` present. |
+| `list_workflows` | (no args) | the COMPOSABLE catalog (small set incl. `rag_e2e_synthesis_workflow`). **F8: does NOT list promoted tools** like `viral_epitope_analysis`. |
+| `describe_workflow` | `{name: "rag_e2e_synthesis_workflow"}` | its schema. **`name`, NOT `workflow_name`.** A non-catalog name → structured `{error:"unknown workflow"}` (F8). |
+| `inspect_workflow` | `{name: "viral_epitope_analysis"}` | lightweight/promoted → structured "run it + use `inspect_run`" hint. |
+| `run_workflow` | `{name: "viral_epitope_analysis", params: {query: "..."}}` | the report as presentation **TEXT** (NOT a `{status,markdown}` envelope — that's the internal fn; F9). Success = a substantial, on-topic report (G127: assert the VALUE). |
+| `harmonized_search` | `{term: "Zika virus", index: "bvbrc_genome"}` | dict-resolved hits. **`term` AND `index`** (index ∈ `bvbrc_genome/…/violin_*/pdb/emdb`); NOT `query`. |
+| `compose_workflow` | `{description, user_id}` (no LLM) | no LLM → structured `{error, detail, hint}` (#4). With LLM → a run. |
 | `database_statistics` | (with `APECX_DATA_ROOT`) | counts; `{error:...}` (never raises) when unset. |
-| `approve_design` | operator token | fail-closed + scope-bound gate for the evidence workflow. |
-| `rhea_muscle_alignment` / `rag_e2e_synthesis` | promoted catalog tools | route through `run_workflow`. |
+| `approve_design` | `{token, decided_by}` | fail-closed + scope-bound gate. |
+| `infrastructure_status` | (no args) | live backend roster (ollama/postgres/redis/minio/rhea). |
 
 ### 4.3 Novel-step sandbox (#1c) — the security boundary
 Compose a workflow that emits a **novel step** (bespoke `class:` in the `novel_python` fence),
@@ -141,6 +149,14 @@ A container that is up but has **no model** reads DEGRADED with an actionable `o
 The verification above is encoded as tests. Gated tests auto-skip when their dependency is
 absent, so `make unit` stays green on a bare box; the real checks run when docker/ollama/data
 are present.
+
+**The clean-deploy tool/workflow e2e (the executable form of §4) — run it against the INSTALLED
+artifact from a fresh venv (no `PYTHONPATH=src`), so it tests the deployed package, not the src tree:**
+```bash
+# 11 checks: tool surface, real tool calls (correct signatures), + 2 REAL workflow runs to a report.
+# Gated: ollama-reachability + dict-present sub-checks auto-skip; the rest always run.
+<fresh-venv>/bin/python -m pytest tests/e2e_deploy/ -q
+```
 
 ```bash
 # fast unit suite (no external deps) — must be green
@@ -171,6 +187,17 @@ Key gated e2e coverage:
 ---
 
 ## 6. Known-degraded states & follow-ups (honest)
+> Full evidence for the items below: `tests/e2e_deploy/DEPLOYMENT_FINDINGS.md`.
+- **F8 — discovery surface ≠ tool surface (GATED, UX decision).** `run_workflow("viral_epitope_analysis")`
+  works and the flagship is a registered tool, but `list_workflows`/`describe_workflow` (which see only
+  the composer catalog) do NOT list it, while `apecx_capabilities` tells the model to "discover names via
+  `list_workflows`." A model relying on discovery won't find the flagship. Owner decision needed (unify
+  the surfaces, or have `apecx_capabilities` name the promoted tools). Pinned by the e2e harness.
+- **F9 — `run_workflow` TOOL returns report TEXT, not a JSON envelope.** A client gets the presentation
+  report; the `{status, markdown, run_id}` dict is only on the internal function. Assert on the report
+  value, not `status`.
+- **F6 — E1/E2 relevance (investigate).** An E1-glycoprotein query returned E2-heavy evidence; may be
+  acceptable alphavirus cross-reference or a relevance gap. Not patched; needs a domain call.
 - **No LLM configured** — the *desktop* frontier LLM covers the primary analysis path with zero
   apecx LLM config; the backend Ollama is a bounded fallback. `compose_workflow` refuses loudly
   when it genuinely needs an LLM and none is reachable.
