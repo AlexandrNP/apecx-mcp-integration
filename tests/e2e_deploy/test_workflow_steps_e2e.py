@@ -73,14 +73,15 @@ def _report_text(res: dict, artifact_dir: Path) -> str:
 # --------------------------------------------------------- W1: viral_epitope_analysis (structural SASA)
 
 # Surface antigens on taxa with deposited PDB structures — each MUST produce real per-residue SASA.
-# SARS-CoV-2 spike is deliberately EXCLUDED (DF3b: whole-length-region vs EMDB-dominated structures → 0
-# exposed; tracked separately, xfail below) so this parametrization is the set that must be green.
+# SARS-CoV-2 spike is now included: DF3b (the gapped collinear-block fallback) fixed it — a whole-length
+# region maps across the structure's unresolved-residue gaps (verified n_exposed=384, was 0).
 _STRUCT_ENTITIES = [
     "chikungunya virus E1",
     "influenza A virus hemagglutinin",
     "Zika virus envelope",
     "dengue virus envelope",
     "HIV-1 gp120",
+    "SARS-CoV-2 spike",
 ]
 
 
@@ -90,15 +91,6 @@ def test_viral_epitope_produces_real_sasa(query):
     assert res.get("error") is None, f"{query}: {res.get('error')}"
     check = check_structural_reasoning_produced(ad, expect_structure=True)
     assert check.passed, f"{query}: structural analysis produced no SASA — {check.evidence}"
-
-
-@pytest.mark.xfail(
-    reason="DF3b: spike whole-length region vs EMDB-dominated structures → n_exposed=0",
-    strict=False,
-)
-def test_viral_epitope_spike_df3b():
-    _res, ad = _run("viral_epitope_analysis", {"query": "SARS-CoV-2 spike"})
-    assert check_structural_reasoning_produced(ad, expect_structure=True).passed
 
 
 # --------------------------------------------------------- W2: rag_e2e_synthesis (grounded synthesis)
