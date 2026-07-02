@@ -1233,6 +1233,27 @@ def _step_rhea() -> StepResult:
             f"`uv pip install -e .` exited with {result.returncode}",
         )
 
+    # Phase 2b (DF7): ALSO install rhea into the APECX venv. The install above lands in rhea's OWN
+    # `.venv`, but the apecx-mcp process (a DIFFERENT venv) is what runs the rhea_muscle_alignment
+    # workflow, and its RheaFileToolStep must import `rhea` + its client deps (cloudpickle / proxystore
+    # / filetype) IN-PROCESS — it pickles RheaFileProxy by module reference. Without this the workflow
+    # FAIL-FASTs ("No module named 'cloudpickle'") even with the Rhea server reachable — a real
+    # deployment gap (rhea up, workflow silently dead). Install via the RUNNING interpreter's pip
+    # (idempotent — a no-op once satisfied). Not `-e`: we want the runtime deps in the apecx venv.
+    print("  ▶  pip install rhea into the apecx venv (rhea_muscle_alignment client deps) ...")
+    apecx_install = subprocess.run(
+        [sys.executable, "-m", "pip", "install", str(rhea_repo)],
+        timeout=900,
+    )
+    if apecx_install.returncode != 0:
+        return StepResult(
+            "rhea",
+            "partial",
+            f"Rhea server + rhea .venv ready, but installing rhea into the apecx venv failed (exit "
+            f"{apecx_install.returncode}); rhea_muscle_alignment will FAIL-FAST until "
+            f"`{sys.executable} -m pip install {rhea_repo}` succeeds.",
+        )
+
     # Phase 3: ensure mxbai-embed-large is pulled. Ollama is the
     # ALSO embedding backend rhea uses; if the model is missing the
     # rhea ingestion step would fail downstream.
