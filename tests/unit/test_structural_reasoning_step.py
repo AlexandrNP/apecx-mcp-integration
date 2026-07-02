@@ -101,6 +101,38 @@ def test_map_motif_longer_than_chain_maps_resolved_subset():
     assert m["offset"] == motif.index("LLSVTLEP")  # offset indexes the motif here
 
 
+def test_map_motif_gapped_fallback_across_unresolved_gap():
+    # DF3b: a large cryo-EM structure drops UNRESOLVED residues, so the resolved chain_seq is gap-collapsed
+    # and chain_resis JUMPS (…15, then 50…). The region consensus spans the gap (the unresolved middle).
+    # The ungapped slide fails; the collinear-block fallback maps the resolved residues on BOTH sides of the
+    # gap to their REAL author numbers. This is the SARS-CoV-2 spike case in miniature.
+    motif = (
+        "AAAAAA" + "MMMMMM" + "KKKKKK"
+    )  # 18-aa consensus; the middle 'MMMMMM' is unresolved in the structure
+    chain_seq = "AAAAAA" + "KKKKKK"  # resolved = the two flanking blocks only
+    chain_resis = list(range(10, 16)) + list(
+        range(50, 56)
+    )  # a real gap: 10-15, then 50-55 (16..49 unresolved)
+    m = sasa.map_motif_to_chain(motif, chain_seq, chain_resis, min_identity=0.6)
+    assert m is not None
+    assert m.get("gapped") is True
+    assert [r["resi"] for r in m["residues"]] == list(range(10, 16)) + list(
+        range(50, 56)
+    )  # real author numbers
+    assert m["identity"] == round(12 / 18, 4)  # 12 matched / 18-aa consensus
+
+
+def test_gapped_fallback_rejects_scattered_short_matches():
+    # Guard: scattered coincidental 1-aa matches must NOT sum into a false map — each block < _MIN_BLOCK is
+    # dropped, so a low-complexity motif cannot map spurious out-of-context residues.
+    motif = "ACDEFGHIKLMNPQRS"  # 15 distinct residues
+    chain_seq = (
+        "AXCXEXGXIXKXMXP"  # only isolated 1-aa coincidences (A,C,E,G,I,K,M,P), no >=4-aa run
+    )
+    resis = list(range(15))
+    assert sasa.map_motif_to_chain(motif, chain_seq, resis, min_identity=0.4) is None
+
+
 def test_map_motif_lowest_offset_tiebreak():
     # Motif present twice; deterministic choice is the lowest offset.
     chain_seq = "MVMVMV"

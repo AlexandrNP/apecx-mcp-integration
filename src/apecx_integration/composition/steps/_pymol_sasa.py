@@ -29,6 +29,7 @@ residues are the candidate epitope residues.
 
 from __future__ import annotations
 
+import difflib
 import re
 from typing import Any
 
@@ -155,26 +156,42 @@ def map_motif_to_chain(
             f"map_motif_to_chain: chain_seq ({len(chain_seq)}) and chain_resis "
             f"({len(chain_resis)}) must be the same length."
         )
-    span = len(motif)
-    chain_len = len(chain_seq)
-    if chain_len == 0:
+    if len(chain_seq) == 0:
         return None
+    # Exact UNGAPPED slide first — unchanged behavior (every existing test + the mismatch-tolerant
+    # full-window map). Handles the common case where the region maps to a CONTIGUOUS run of residues.
+    ungapped = _ungapped_slide(motif, chain_seq, chain_resis, min_identity)
+    if ungapped is not None:
+        return ungapped
+    # DF3b: the ungapped slide fails when the RESOLVED chain_seq is non-contiguous vs the region consensus
+    # — a large cryo-EM structure (e.g. SARS-CoV-2 spike / 7K43 chain A) drops UNRESOLVED residues
+    # (disordered loops, cleaved signal peptide, flexible tail), so chain_resis has gaps and no single
+    # offset aligns the whole consensus. Fall back to a COLLINEAR-BLOCK alignment (stdlib difflib) that maps
+    # the region's resolved subset ACROSS those gaps → real per-residue SASA (n_exposed>0), staying in-order
+    # so no out-of-order / false residues are mapped.
+    return _gapped_block_map(motif, chain_seq, chain_resis, min_identity)
 
-    # DF3: when the conserved region is LONGER than the structure chain — a fully-conserved WHOLE-LENGTH
-    # region (e.g. SARS-CoV-2 spike, whose near-identical strains yield one region spanning the signal
-    # peptide + ectodomain + TM + tail) vs a fragment/ectodomain structure — the whole motif cannot slide
-    # inside the chain, so the OLD `span > chain_len → None` returned 0 mapped residues (n_exposed=0)
-    # despite valid PDBs. Generalize: slide the SHORTER sequence over the LONGER and map the CHAIN's
-    # structurally-resolved residues (those are what SASA needs) onto their best-aligned contiguous window.
+
+_MIN_BLOCK = 4  # gapped fallback: reject collinear matches shorter than this (spurious)
+
+
+def _ungapped_slide(
+    motif: str, chain_seq: str, chain_resis: list[Any], min_identity: float
+) -> dict[str, Any] | None:
+    """Best UNGAPPED offset of the shorter of motif/chain over the longer (the original mapping). Returns
+    the mapped residues + identity over the overlap window, or None below the bar. Assumes a CONTIGUOUS
+    overlap — the gapped fallback in map_motif_to_chain handles a resolved chain_seq that skips residues."""
+    span, chain_len = len(motif), len(chain_seq)
     window = min(span, chain_len)
+    if window == 0:
+        return None
     if span <= chain_len:
-        # motif is the needle; offset indexes the chain → mapped residues = chain[offset : offset+window].
         best_off, best_matches = -1, -1
         for off in range(chain_len - window + 1):
             matches = sum(1 for i in range(window) if chain_seq[off + i] == motif[i])
             if matches > best_matches:
                 best_matches, best_off = matches, off
-        identity = best_matches / window if window else 0.0
+        identity = best_matches / window
         if best_off < 0 or identity < min_identity:
             return None
         residues = [
@@ -187,15 +204,12 @@ def map_motif_to_chain(
             for i in range(window)
         ]
         return {"offset": best_off, "identity": round(identity, 4), "residues": residues}
-
-    # span > chain_len: the chain is the needle; offset indexes the MOTIF. Map ALL chain residues onto
-    # their best-aligned sub-window of the region consensus (the region CONTAINS the structure's residues).
     best_moff, best_matches = -1, -1
     for moff in range(span - window + 1):
         matches = sum(1 for i in range(window) if chain_seq[i] == motif[moff + i])
         if matches > best_matches:
             best_matches, best_moff = matches, moff
-    identity = best_matches / window if window else 0.0
+    identity = best_matches / window
     if best_moff < 0 or identity < min_identity:
         return None
     residues = [
@@ -208,6 +222,40 @@ def map_motif_to_chain(
         for i in range(window)
     ]
     return {"offset": best_moff, "identity": round(identity, 4), "residues": residues}
+
+
+def _gapped_block_map(
+    motif: str, chain_seq: str, chain_resis: list[Any], min_identity: float
+) -> dict[str, Any] | None:
+    """DF3b gapped fallback — a COLLINEAR-block alignment (stdlib difflib) of the region consensus onto the
+    resolved chain_seq, tolerating the gaps a large cryo-EM structure leaves (unresolved residues). Maps
+    each matched block's chain residues IN ORDER (no out-of-order / false matches); identity = total matched
+    / len(motif). Blocks shorter than _MIN_BLOCK are dropped as spurious. Returns the mapped residues, or
+    None when nothing substantial aligns."""
+    matcher = difflib.SequenceMatcher(a=motif, b=chain_seq, autojunk=False)
+    blocks = [b for b in matcher.get_matching_blocks() if b.size >= _MIN_BLOCK]
+    if not blocks:
+        return None
+    matched = sum(b.size for b in blocks)
+    identity = matched / len(motif) if motif else 0.0
+    if identity < min_identity:
+        return None
+    residues = [
+        {
+            "resi": chain_resis[b.b + k],
+            "chain_aa": chain_seq[b.b + k],
+            "motif_aa": motif[b.a + k],
+            "match": True,
+        }
+        for b in blocks
+        for k in range(b.size)
+    ]
+    return {
+        "offset": blocks[0].b,
+        "identity": round(identity, 4),
+        "residues": residues,
+        "gapped": True,
+    }
 
 
 def map_regions_on_chain(
