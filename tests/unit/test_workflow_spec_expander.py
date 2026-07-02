@@ -229,6 +229,20 @@ def test_novel_python_step_routed_through_sandboxed_proxy():
     assert out["_apecx_novel_python_by_step"] == {"reshape": "class ReshapeStep: ..."}
 
 
+def test_step_id_rejects_path_traversal():
+    """#1c security: step id is interpolated into a filesystem path (steps/<id>.yml), so a traversal
+    id must be rejected at spec validation (the host-write escape the review-gate flagged)."""
+    import pytest
+    from pydantic import ValidationError
+
+    for bad in ("../../evil", "a/b", "..", "with space", "dot.name"):
+        with pytest.raises(ValidationError):
+            WorkflowStepSpec(id=bad, class_name="X")
+    # normal identifier-ish ids are fine
+    WorkflowStepSpec(id="dbl_1", class_name="X")
+    WorkflowStepSpec(id="entity-extraction", class_name="X")
+
+
 def test_config_version_2_always_emitted():
     spec = MinimalWorkflowSpec(name="cv", steps=[], links=[])
     out, _ = expand_spec(spec, _catalog())

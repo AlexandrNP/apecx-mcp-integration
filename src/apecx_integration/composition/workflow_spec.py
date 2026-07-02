@@ -72,7 +72,12 @@ class WorkflowStepSpec(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    id: str = Field(min_length=1)
+    # SECURITY (#1c): ``id`` is interpolated into a filesystem path (the stager writes
+    # ``steps/<id>.yml``) and used as a YAML key / step name. It comes from the untrusted
+    # composer/LLM spec, so restrict it to a safe identifier charset — no ``/`` or ``.`` — to close
+    # the path-traversal-to-host-write escape (a novel step with id ``../../evil`` would otherwise
+    # write an attacker-controlled YAML outside the run root). Real step ids are identifiers anyway.
+    id: str = Field(min_length=1, pattern=r"^[A-Za-z0-9_-]+$")
     class_name: str = Field(min_length=1)
     config_override: str | None = None
 

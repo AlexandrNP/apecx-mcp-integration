@@ -622,8 +622,18 @@ class LocalExecutor:
                 for f in steps_src.iterdir():
                     if f.is_file():
                         shutil.copy2(f, steps_dir / f.name)
+            steps_dir_resolved = steps_dir.resolve()
             for step_id, cfg in novel_cfg.items():
-                (steps_dir / f"{step_id}.yml").write_text(_yaml.safe_dump(cfg, sort_keys=False))
+                dest = (steps_dir / f"{step_id}.yml").resolve()
+                # Defense-in-depth (WorkflowStepSpec.id already restricts the charset): NEVER write
+                # outside the staged steps/ dir, even if a traversal id somehow reached here — writing
+                # an attacker-controlled YAML (it embeds novel_source) outside run_root, or clobbering
+                # a trusted catalog step, is a host-write escape (#1c review-gate blocker).
+                if dest.parent != steps_dir_resolved:
+                    raise ValueError(
+                        f"refusing to stage novel-step config outside steps/: unsafe step id {step_id!r}"
+                    )
+                dest.write_text(_yaml.safe_dump(cfg, sort_keys=False))
             staged = run_root / "workflow.yml"
             staged.write_text(_yaml.safe_dump(doc, sort_keys=False))
             return staged

@@ -66,6 +66,35 @@ def test_stage_materializes_novel_config_and_strips_metadata_key(tmp_path):
     assert novel["name"] == "novel1"
 
 
+def test_stage_refuses_traversal_step_id(tmp_path):
+    """#1c defense-in-depth: even if a traversal step id reached the stager (the spec validator is the
+    primary guard), _stage_workflow must refuse to write outside steps/ — never clobber a trusted
+    catalog YAML or drop an attacker YAML on the host."""
+    import pytest
+
+    base = tmp_path / "base"
+    (base / "steps").mkdir(parents=True)
+    wf = {
+        "name": "w",
+        "steps": {},
+        "links": {},
+        "_apecx_sandboxed_novel_config": {
+            "../../evil": {
+                "class": "X",
+                "name": "evil",
+                "novel_source": "bad",
+                "target_class_name": "E",
+            }
+        },
+    }
+    yaml_path = tmp_path / "a.yml"
+    yaml_path.write_text(yaml.safe_dump(wf))
+    run_root = tmp_path / "run"
+    run_root.mkdir()
+    with pytest.raises(ValueError, match="outside steps/"):
+        LocalExecutor._stage_workflow(_Stub(base), yaml_path, run_root)
+
+
 def test_stage_symlinks_steps_when_no_novel_config(tmp_path):
     base = tmp_path / "base"
     (base / "steps").mkdir(parents=True)
