@@ -593,12 +593,51 @@ class LocalExecutor:
     def _stage_workflow(self, yaml_path: Path, run_root: Path) -> Path:
         """Build a staging directory that nanobrain can load from.
 
-        The composed YAML references ``steps/*.yml`` relative paths.
-        We symlink the configured ``workflow_base_dir/steps`` into the
-        staging dir and copy the YAML in, so relative resolution
+        The composed YAML references ``steps/*.yml`` relative paths. We symlink the configured
+        ``workflow_base_dir/steps`` into the staging dir and copy the YAML in, so relative resolution
         works without mutating the source tree.
+
+        NOVEL STEPS (#1c): when the composed YAML carries ``_apecx_sandboxed_novel_config`` (a
+        SandboxedNovelStep routed by the spec expander), each novel step needs its own
+        ``steps/<id>.yml`` file-path config (a BaseStep can't take inline config — G121). We can't add
+        files to a symlink pointing at the read-only catalog, so we build a REAL ``steps/`` dir (copy
+        the catalog steps in, then write the novel per-step YAMLs), and STRIP the metadata key before
+        writing the staged workflow so ``Workflow.from_config`` never sees it.
         """
         steps_src = self._workflow_base_dir / "steps"
+
+        import yaml as _yaml
+
+        doc = _yaml.safe_load(yaml_path.read_text())
+        novel_cfg = (
+            doc.pop("_apecx_sandboxed_novel_config", None) if isinstance(doc, dict) else None
+        )
+
+        if novel_cfg:
+            import shutil
+
+            steps_dir = run_root / "steps"
+            steps_dir.mkdir(exist_ok=True)
+            if steps_src.is_dir():
+                for f in steps_src.iterdir():
+                    if f.is_file():
+                        shutil.copy2(f, steps_dir / f.name)
+            steps_dir_resolved = steps_dir.resolve()
+            for step_id, cfg in novel_cfg.items():
+                dest = (steps_dir / f"{step_id}.yml").resolve()
+                # Defense-in-depth (WorkflowStepSpec.id already restricts the charset): NEVER write
+                # outside the staged steps/ dir, even if a traversal id somehow reached here — writing
+                # an attacker-controlled YAML (it embeds novel_source) outside run_root, or clobbering
+                # a trusted catalog step, is a host-write escape (#1c review-gate blocker).
+                if dest.parent != steps_dir_resolved:
+                    raise ValueError(
+                        f"refusing to stage novel-step config outside steps/: unsafe step id {step_id!r}"
+                    )
+                dest.write_text(_yaml.safe_dump(cfg, sort_keys=False))
+            staged = run_root / "workflow.yml"
+            staged.write_text(_yaml.safe_dump(doc, sort_keys=False))
+            return staged
+
         if steps_src.is_dir():
             (run_root / "steps").symlink_to(steps_src, target_is_directory=True)
         staged = run_root / "workflow.yml"

@@ -72,7 +72,12 @@ class WorkflowStepSpec(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    id: str = Field(min_length=1)
+    # SECURITY (#1c): ``id`` is interpolated into a filesystem path (the stager writes
+    # ``steps/<id>.yml``) and used as a YAML key / step name. It comes from the untrusted
+    # composer/LLM spec, so restrict it to a safe identifier charset — no ``/`` or ``.`` — to close
+    # the path-traversal-to-host-write escape (a novel step with id ``../../evil`` would otherwise
+    # write an attacker-controlled YAML outside the run root). Real step ids are identifiers anyway.
+    id: str = Field(min_length=1, pattern=r"^[A-Za-z0-9_-]+$")
     class_name: str = Field(min_length=1)
     config_override: str | None = None
 
@@ -128,6 +133,13 @@ class SpecExpansionError(ValueError):
     """
 
 
+# The on-disk proxy every novel step is routed through (#1c) — runs the untrusted novel source in a
+# hardened Docker sandbox rather than importing it into the host process.
+_SANDBOXED_NOVEL_STEP_CLASS = (
+    "apecx_integration.composition.steps.sandboxed_novel_step.SandboxedNovelStep"
+)
+
+
 def expand_spec(
     spec: MinimalWorkflowSpec,
     catalog: list[CatalogComponent],
@@ -175,16 +187,30 @@ def expand_spec(
     # ---- Steps -----------------------------------------------------------
     steps_block: dict[str, dict[str, Any]] = {}
     novel_python_classes: dict[str, str] = {}
+    sandboxed_novel_config: dict[str, dict[str, Any]] = {}
     for step in spec.steps:
         step_id = step.id
 
-        # Novel-Python path: caller provided source for this step.
+        # Novel-Python path: caller provided source for this step. Route it through the on-disk
+        # SandboxedNovelStep proxy (#1c) — the spec's class_name is a bare, unresolvable name whose
+        # implementation lives in the untrusted novel_python fence; we NEVER import that into the host.
+        # The proxy ships the source into the hardened container instead. Config is a FILE PATH (a
+        # BaseStep cannot take inline config — G121); the executor stager materializes steps/<id>.yml
+        # from `_apecx_sandboxed_novel_config` (threaded below, kept in the persisted YAML) at run time.
         if step_id in spec.novel_python:
-            # Class path mirrors the spec'd class_name verbatim —
-            # the novel-Python fence carries the implementation.
             steps_block[step_id] = {
-                "class": step.class_name,
-                "config": (step.config_override or {}),
+                "class": _SANDBOXED_NOVEL_STEP_CLASS,
+                "config": f"steps/{step_id}.yml",
+            }
+            sandboxed_novel_config[step_id] = {
+                # Self-describing config file (matches the catalog steps/<name>.yml format: class +
+                # name + fields at top level). SandboxedNovelStepConfig._strip_framework_keys pops
+                # `class` before validation.
+                "class": _SANDBOXED_NOVEL_STEP_CLASS,
+                "name": step_id,
+                "novel_source": spec.novel_python[step_id],
+                "target_class_name": step.class_name,
+                "step_config": step.config_override or {},
             }
             novel_python_classes[step_id] = spec.novel_python[step_id]
             continue
@@ -263,6 +289,12 @@ def expand_spec(
         # Threaded through to the composer so the
         # `novel_python` fence can be reconstructed.
         out["_apecx_novel_python_by_step"] = novel_python_classes
+    if sandboxed_novel_config:
+        # KEPT in the persisted YAML (unlike _apecx_novel_python_by_step, which the composer pops):
+        # the executor stager reads this to materialize each novel step's steps/<id>.yml file-path
+        # config, then strips it before Workflow.from_config. Self-contained artifact — the executor
+        # need not consult the composition record.
+        out["_apecx_sandboxed_novel_config"] = sandboxed_novel_config
     return out, warnings
 
 

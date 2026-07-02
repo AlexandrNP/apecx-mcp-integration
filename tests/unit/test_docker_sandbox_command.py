@@ -304,3 +304,33 @@ def test_extra_run_args_appended_before_image(tmp_path: Path):
     assert runsc_idx < img_idx
     # Label is a pair, confirm it is intact
     assert argv[argv.index("--label") + 1] == "t13b=phase3"
+
+
+def test_output_mount_is_writable_and_present_when_given(tmp_path):
+    # #1c Phase 2 — the writable /out mount (the job writes its result here; rest of fs is read-only).
+    argv = build_docker_sandbox_command(["true"], input_host_path=None, output_host_path=tmp_path)
+    joined = " ".join(argv)
+    assert f"type=bind,source={tmp_path.resolve()},target=/out" in joined
+    out_mount = next(a for a in argv if "target=/out" in a)
+    assert "readonly" not in out_mount  # the /out mount MUST be writable
+
+
+def test_no_output_mount_when_output_host_path_is_none():
+    argv = build_docker_sandbox_command(["true"], input_host_path=None, output_host_path=None)
+    assert not any("target=/out" in a for a in argv)
+
+
+def test_input_mount_stays_readonly_alongside_output(tmp_path):
+    # The input mount must remain readonly even when a writable /out is also present — sandboxed code
+    # cannot tamper with its own inputs.
+    inp = tmp_path / "in"
+    inp.mkdir()
+    out = tmp_path / "out"
+    out.mkdir()
+    argv = build_docker_sandbox_command(["true"], input_host_path=inp, output_host_path=out)
+    in_mount = next(
+        a for a in argv if "target=/work" in a or f"target={inp}" in a or "readonly" in a
+    )
+    assert "readonly" in in_mount
+    out_mount = next(a for a in argv if "target=/out" in a)
+    assert "readonly" not in out_mount

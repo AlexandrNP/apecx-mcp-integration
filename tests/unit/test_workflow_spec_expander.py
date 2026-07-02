@@ -206,21 +206,41 @@ def test_non_direct_link_type_is_forced_with_warning():
     assert any("forcing to direct" in w for w in warnings)
 
 
-def test_novel_python_step_emits_class_path_verbatim():
-    """Novel-Python steps don't need to be in the catalog — the
-    LLM authors them as part of the spec. The expander emits the
-    step entry with the LLM's class path AS-IS (no catalog lookup),
-    and threads the source onto a private key the composer reads."""
+def test_novel_python_step_routed_through_sandboxed_proxy():
+    """Novel-Python steps are routed through the on-disk SandboxedNovelStep proxy (#1c) — NOT emitted
+    with the LLM's bare (unresolvable, untrusted) class name. The step entry gets the real proxy class
+    path + a FILE-PATH config (G121: a BaseStep can't take inline config); the LLM's class name +
+    source are threaded onto `_apecx_sandboxed_novel_config` (for the executor stager to materialize
+    steps/<id>.yml) and the source stays on `_apecx_novel_python_by_step` (for the composer)."""
     spec = MinimalWorkflowSpec(
         name="novel",
-        steps=[
-            WorkflowStepSpec(id="reshape", class_name="ReshapeStep"),
-        ],
+        steps=[WorkflowStepSpec(id="reshape", class_name="ReshapeStep")],
         novel_python={"reshape": "class ReshapeStep: ..."},
     )
     out, _ = expand_spec(spec, _catalog())
-    assert out["steps"]["reshape"]["class"] == "ReshapeStep"
+    entry = out["steps"]["reshape"]
+    assert entry["class"].endswith(".SandboxedNovelStep")
+    assert entry["config"] == "steps/reshape.yml"  # file-path, not inline (G121)
+    cfg = out["_apecx_sandboxed_novel_config"]["reshape"]
+    assert cfg["target_class_name"] == "ReshapeStep"
+    assert cfg["novel_source"] == "class ReshapeStep: ..."
+    assert cfg["name"] == "reshape"
+    # The source is still threaded to the composer unchanged.
     assert out["_apecx_novel_python_by_step"] == {"reshape": "class ReshapeStep: ..."}
+
+
+def test_step_id_rejects_path_traversal():
+    """#1c security: step id is interpolated into a filesystem path (steps/<id>.yml), so a traversal
+    id must be rejected at spec validation (the host-write escape the review-gate flagged)."""
+    import pytest
+    from pydantic import ValidationError
+
+    for bad in ("../../evil", "a/b", "..", "with space", "dot.name"):
+        with pytest.raises(ValidationError):
+            WorkflowStepSpec(id=bad, class_name="X")
+    # normal identifier-ish ids are fine
+    WorkflowStepSpec(id="dbl_1", class_name="X")
+    WorkflowStepSpec(id="entity-extraction", class_name="X")
 
 
 def test_config_version_2_always_emitted():
