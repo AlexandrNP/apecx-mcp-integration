@@ -1022,7 +1022,7 @@ def _build_arg_parser():
         prog="apecx-mcp",
         description=(
             "APECX MCP server (stdio transport). Boots the FastMCP "
-            "tool surface (15 tools across workflows / discovery / "
+            "tool surface (17 tools across workflows / discovery / "
             "database / canonical entity / synthesis / approvals; more "
             "unlock with the local datasets), runs the Control Plane "
             "health check (auto-spawning "

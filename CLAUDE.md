@@ -256,8 +256,9 @@ no-new-privileges`. `DockerSandboxRunner.run(...)` refuses unless
 
 ## MCP surface (Tier 1)
 
-`mcp_surface/server.py` — FastMCP, **15** scientist-facing tools (the LIVE count — DERIVE it via
-`await build_server().list_tools()`; never trust a hardcoded number, three disagreed once). Entry:
+`mcp_surface/server.py` — FastMCP, **17** scientist-facing tools (the LIVE count — DERIVE it via
+`await build_server().list_tools()`; never trust a hardcoded number, three disagreed once — this line
+was one of them, F7). Entry:
 ```bash
 apecx-mcp                                       # stdio
 APECX_CONTROL_PLANE_URL=... apecx-mcp           # override CP URL
@@ -265,7 +266,7 @@ APECX_DATA_ROOT=/path apecx-mcp                 # enable the local DB tool (data
 APECX_SYNONYM_DICT_PATH=/path apecx-mcp         # enable fast lookup
 ```
 
-The 15 registered tools: run_workflow / inspect_run / inspect_workflow / compose_workflow /
+The registered tools (17 at present; the two epitope-assessment workflows landed via #2): run_workflow / inspect_run / inspect_workflow / compose_workflow /
 apecx_context (run + compose); list_workflows / describe_workflow / apecx_capabilities /
 infrastructure_status (discovery); viral_epitope_analysis / rhea_muscle_alignment / rag_e2e_synthesis
 (promoted catalog workflows, registered as first-class tools); harmonized_search / database_statistics

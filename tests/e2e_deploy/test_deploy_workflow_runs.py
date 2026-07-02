@@ -14,10 +14,14 @@ Gated on a reachable ollama with a model; slow by nature (real LLM + real data f
 from __future__ import annotations
 
 
-def _report_text(payload) -> str:
-    # The tool result is either the presentation text (`_text`) or, if some path returns the envelope,
-    # its `markdown`. Either way the report body is what a client renders.
-    return payload.get("_text") or payload.get("markdown") or ""
+def _report_body(payload) -> str:
+    # The tool result is either the presentation text (`_text`) or, if a path returns the envelope, its
+    # `markdown`. In DESKTOP locus (the default) the text is a ~907-char HOST_INSTRUCTIONS preamble +
+    # "\n\n---\n\n" + the actual report — so we STRIP the preamble and measure the REPORT BODY, else a
+    # length gate would be vacuously true on the preamble alone (review-gate note, F9).
+    txt = payload.get("_text") or payload.get("markdown") or ""
+    marker = "\n\n---\n\n"
+    return txt.split(marker, 1)[1] if marker in txt else txt
 
 
 def _assert_real_report(payload, workflow, must_mention):
@@ -25,15 +29,14 @@ def _assert_real_report(payload, workflow, must_mention):
     assert not err, f"{workflow} errored: {err}"
     status = payload.get("status")  # present only if the envelope leaked through
     assert status in (None, "ok", "partial"), f"{workflow} status={status!r}"
-    report = _report_text(payload)
-    assert len(report) > 400, (
-        f"{workflow} report suspiciously short ({len(report)} chars): {report[:200]!r}"
+    body = _report_body(payload)
+    # Measure the report BODY (preamble stripped) so this is a real substance gate, not a check on the
+    # fixed instruction preamble.
+    assert len(body) > 400, f"{workflow} report body too short ({len(body)} chars): {body[:200]!r}"
+    assert must_mention in body.lower(), (
+        f"{workflow} report never mentions {must_mention!r}: {body[:300]!r}"
     )
-    low = report.lower()
-    assert must_mention in low, (
-        f"{workflow} report never mentions {must_mention!r}: {report[:300]!r}"
-    )
-    return report
+    return body
 
 
 def test_run_rag_e2e_synthesis(call, ollama_or_skip):
