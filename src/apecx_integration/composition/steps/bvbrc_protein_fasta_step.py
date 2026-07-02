@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import logging
 import re
+import time
 from typing import Any
 
 import requests
@@ -90,7 +91,17 @@ class BvbrcProteinFastaStepConfig(StepConfig):
         "for mature peptides). The per-call input may override this.",
     )
     max_sequences: int = Field(default=50, ge=2)
-    request_timeout_seconds: float = Field(default=60.0, gt=0)
+    # BV-BRC (www.bv-brc.org) latency is HIGH + VARIABLE (measured 15s for a 1-row count, ~25s for a
+    # `*E1*` scan, ~160s for `*envelope*`). A single 60s attempt with no retry intermittently ReadTimeouts
+    # → the sequence-conservation + structural-analysis legs are silently starved (DF2). 90s + retries
+    # with backoff absorbs the common spikes.
+    request_timeout_seconds: float = Field(default=90.0, gt=0)
+    request_retries: int = Field(
+        default=2,
+        ge=0,
+        description="Retries (beyond the first attempt) on a transient BV-BRC network error "
+        "(ReadTimeout / ConnectionError), with exponential backoff. 0 disables retrying.",
+    )
     length_cluster_tolerance: float = Field(
         default=0.2,
         gt=0.0,
@@ -120,7 +131,8 @@ class BvbrcProteinFastaStep(BaseStep):
         self._api_base: str = getattr(config, "bvbrc_api_base", "https://www.bv-brc.org/api")
         self._feature_type: str = getattr(config, "feature_type", "CDS")
         self._max_sequences: int = int(getattr(config, "max_sequences", 50))
-        self._timeout: float = float(getattr(config, "request_timeout_seconds", 60.0))
+        self._timeout: float = float(getattr(config, "request_timeout_seconds", 90.0))
+        self._retries: int = int(getattr(config, "request_retries", 2))
         self._length_cluster_tolerance: float = float(
             getattr(config, "length_cluster_tolerance", 0.2)
         )
@@ -409,7 +421,31 @@ class BvbrcProteinFastaStep(BaseStep):
 
     def _get_json(self, path: str, query: str) -> list[dict[str, Any]]:
         url = f"{self._api_base}/{path}/?{query}&http_accept=application/json"
-        resp = requests.get(url, timeout=self._timeout)
+        # Retry on TRANSIENT BV-BRC network errors (ReadTimeout / ConnectionError) with exponential
+        # backoff (DF2): BV-BRC latency is high + variable, so a single attempt intermittently times out
+        # and SILENTLY starves the conservation + structural-analysis legs. HTTP errors are NOT retried
+        # (raise_for_status below) — a 4xx/5xx is deterministic and surfaced loud.
+        last_exc: Exception | None = None
+        for attempt in range(self._retries + 1):
+            try:
+                resp = requests.get(url, timeout=self._timeout)
+                break
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
+                last_exc = exc
+                if attempt < self._retries:
+                    backoff = 2.0 * (2**attempt)  # 2s, 4s, 8s, …
+                    log.warning(
+                        "BvbrcProteinFastaStep %s: %s on %s (attempt %d/%d); retrying in %.0fs.",
+                        self.name,
+                        type(exc).__name__,
+                        path,
+                        attempt + 1,
+                        self._retries + 1,
+                        backoff,
+                    )
+                    time.sleep(backoff)
+        else:  # every attempt raised a transient error — surface the last one loud
+            raise last_exc  # type: ignore[misc]
         resp.raise_for_status()  # FAIL-LOUD on HTTP error (never silently return [])
         data = resp.json()
         if not isinstance(data, list):
