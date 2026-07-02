@@ -51,6 +51,11 @@ import _pymol_sasa as sasa  # noqa: E402  (path set above)
 # that would make per-residue cmd.get_area prohibitively slow while changing no number.
 _NEIGHBOR_CUTOFF = 10.0
 
+# Camera perspectives for the structural figure — CUMULATIVE (axis, degrees) turns applied from the
+# epitope-oriented base view. Four angles (front, two 120° yaw rotations, one 90° pitch) cover residues
+# of interest that wrap around the surface. Each renders one PNG.
+_RENDER_VIEWS = (("y", 0), ("y", 120), ("y", 120), ("x", 90))
+
 
 def _assembly_context(cmd, raw_obj: str, work_obj: str, cutoff: float) -> tuple[str, int]:
     """Build the SASA-context object for the biological assembly and return
@@ -207,6 +212,7 @@ def run(job: dict) -> dict:
     notes: list[str] = []
     assembly_id = 1 if structure_kind in ("assembly_1", "mmcif_assembly") else None
     visualization_path: str | None = None
+    visualization_paths: list[str] = []
 
     with pymol2.PyMOL() as p:
         cmd = p.cmd
@@ -289,19 +295,39 @@ def run(job: dict) -> dict:
             try:
                 cmd.hide("everything", "work")
                 cmd.bg_color("white")
+                cmd.set("ray_opaque_background", 1)  # opaque WHITE background (not transparent)
                 cmd.show("surface", f"work and chain {chain} and polymer.protein")
                 cmd.color("grey80", f"work and chain {chain}")
-                if all_mapped_resis:
-                    resi_sel = "+".join(str(r) for r in all_mapped_resis)
+                # Residues of interest = the EXPOSED conserved residues (the candidate epitope). Highlight
+                # them + CENTRE the camera on THEM (not the whole chain) so every view actually shows them.
+                focus_resis = [e["resi"] for e in exposed] or all_mapped_resis
+                if focus_resis:
+                    resi_sel = "+".join(str(r) for r in focus_resis)
                     epitope = f"work and chain {chain} and resi {resi_sel}"
                     cmd.color("red", epitope)
                     cmd.show("sticks", epitope)
-                cmd.orient(f"work and chain {chain}")
-                cmd.png(png_target, width=900, height=700, dpi=120, ray=1)
-                if os.path.exists(png_target):
-                    visualization_path = os.path.basename(png_target)
+                    cmd.orient(epitope)
                 else:
-                    notes.append("visualization: cmd.png produced no file (headless render?)")
+                    cmd.orient(f"work and chain {chain}")
+                # MULTIPLE perspectives: the exposed residues wrap around the surface, so one angle can't
+                # cover them all. Render N views by rotating the camera (cumulatively) about the oriented
+                # epitope; each is written as {base}_view{i}.png.
+                base = os.path.splitext(png_target)[0]
+                for i, (axis, deg) in enumerate(_RENDER_VIEWS, start=1):
+                    if deg:
+                        cmd.turn(axis, deg)
+                    out = f"{base}_view{i}.png"
+                    cmd.png(out, width=900, height=700, dpi=120, ray=1)
+                    if os.path.exists(out):
+                        visualization_paths.append(os.path.basename(out))
+                    else:
+                        notes.append(
+                            f"visualization view {i}: cmd.png produced no file (headless render?)"
+                        )
+                if visualization_paths:
+                    visualization_path = visualization_paths[0]  # back-compat: first view
+                else:
+                    notes.append("visualization: no views rendered")
             except Exception as exc:  # noqa: BLE001 — viz is best-effort; SASA must survive
                 notes.append(f"visualization render failed: {type(exc).__name__}: {exc}")
 
@@ -319,6 +345,7 @@ def run(job: dict) -> dict:
         "pdb_id": pdb_id,
         "structure_kind": structure_kind,
         "visualization_path": visualization_path,
+        "visualization_paths": visualization_paths,
         "assembly_id": assembly_id,
         "n_assembly_copies": n_copies,
         "neighbor_cutoff": _NEIGHBOR_CUTOFF if structure_kind == "assembly_1" else None,

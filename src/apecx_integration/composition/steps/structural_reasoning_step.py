@@ -724,11 +724,22 @@ class StructuralReasoningStep(BaseStep):
             tail += f" Caveat: {result['assembly_caveat']}."
         if not result.get("n_mapped_regions"):
             tail += f" No conserved region mapped onto the structure ({note})."
+        # Inline the multi-perspective structural figures as BARE-basename image refs so
+        # eo_primitives._attach_artifact relocates them into <run_id>/figures/ + rewrites the links
+        # (without this the rendered PNGs are orphaned — never reach the report). Each view is one angle
+        # of the exposed epitope residues on a white background.
+        figs = result.get("visualization_artifacts") or (
+            [result["visualization_artifact"]] if result.get("visualization_artifact") else []
+        )
+        fig_md = "\n\n" + "\n\n".join(
+            f"![Structural view {i}: {pdb_id} chain {chain} exposed epitope residues (red), white bg]({name})"
+            for i, name in enumerate(figs, start=1)
+        )
         return (
             f"{prefix}Mapped conserved positions onto PDB {pdb_id} chain {chain} "
             f"({ctx}; PyMOL {pv}, dot_solvent=1/dot_density=3): {n_mapped} conserved "
             f"residue(s) mapped, {n_exposed} solvent-exposed (candidate epitope "
-            f"residues): {resi_list}{more}.{tail}"
+            f"residues): {resi_list}{more}.{tail}{fig_md if figs else ''}"
         )
 
 

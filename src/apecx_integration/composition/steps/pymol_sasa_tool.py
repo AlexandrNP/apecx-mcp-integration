@@ -233,20 +233,29 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
             # Provenance: stamp the built image's content digest so the SASA result records WHICH
             # container (by sha256, not just the mutable tag) computed it — HPC reproducibility.
             result["image_digest"] = self._digest
-            viz = result.get("visualization_path")
-            if viz:
+            # Copy out ALL rendered perspectives (DF3b/PyMOL multi-view); keep the singular
+            # visualization_artifact (first view) for back-compat + add the full list.
+            viz_list = result.get("visualization_paths") or (
+                [result["visualization_path"]] if result.get("visualization_path") else []
+            )
+            copied: list[str] = []
+            for viz in viz_list:
                 src = workdir / viz
-                if src.exists():
-                    try:
-                        dest = Path(artifacts_dir) / viz
-                        shutil.copy2(src, dest)
-                        result["visualization_artifact"] = dest.name
-                    except Exception as exc:  # noqa: BLE001 — artifact copy is best-effort
-                        import logging
+                if not src.exists():
+                    continue
+                try:
+                    dest = Path(artifacts_dir) / viz
+                    shutil.copy2(src, dest)
+                    copied.append(dest.name)
+                except Exception as exc:  # noqa: BLE001 — artifact copy is best-effort
+                    import logging
 
-                        logging.getLogger(__name__).warning(
-                            "structural viz copy failed for %s: %s", pdb_id, exc
-                        )
+                    logging.getLogger(__name__).warning(
+                        "structural viz copy failed for %s (%s): %s", pdb_id, viz, exc
+                    )
+            if copied:
+                result["visualization_artifacts"] = copied
+                result["visualization_artifact"] = copied[0]
             return result
 
     async def invoke(
