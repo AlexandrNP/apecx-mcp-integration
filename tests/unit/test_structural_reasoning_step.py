@@ -142,6 +142,46 @@ def test_map_motif_lowest_offset_tiebreak():
     assert [r["resi"] for r in m["residues"]] == [1, 2]
 
 
+def test_render_markdown_emits_bare_basename_figure_refs():
+    # N1 (review-gate): the multi-view structural figures MUST be inlined as BARE-basename image refs so
+    # eo_primitives._attach_artifact resolves `base/<name>` and relocates them into <run_id>/figures/. A
+    # pre-pathed ref ("figures/…") would fail that resolution and orphan the PNG. Pins the delivery seam
+    # (pure Python — no PyMOL/docker) that was previously covered only by a manual e2e.
+    result = {
+        "available": True,
+        "pdb_id": "7K4N",
+        "chain": "A",
+        "n_mapped_residues": 10,
+        "n_exposed": 5,
+        "exposed_residues": [{"resi": i} for i in range(5)],
+        "pymol_version": "2.5",
+        "structure_kind": "asymmetric_unit",
+        "n_mapped_regions": 1,
+        "visualization_artifacts": ["7K4N_view1.png", "7K4N_view2.png", "7K4N_view3.png"],
+    }
+    md = StructuralReasoningStep._render_markdown(result, None)
+    for name in result["visualization_artifacts"]:
+        assert f"]({name})" in md  # bare-basename ref → _attach_artifact relocates it
+    assert "](figures/" not in md  # NOT pre-pathed — base/<name> resolution needs the bare name
+
+
+def test_render_markdown_no_figure_refs_when_no_visualization():
+    # No rendered figure → no image ref (degrade-loud: the SASA report still renders without figures).
+    result = {
+        "available": True,
+        "pdb_id": "3N40",
+        "chain": "F",
+        "n_mapped_residues": 4,
+        "n_exposed": 2,
+        "exposed_residues": [{"resi": 1}, {"resi": 2}],
+        "pymol_version": "2.5",
+        "structure_kind": "asymmetric_unit",
+        "n_mapped_regions": 1,
+    }
+    md = StructuralReasoningStep._render_markdown(result, None)
+    assert "![" not in md
+
+
 # -------------------------------------------------------- R3: chain-pinning (best-chain)
 
 _MOTIF_REGION = {"start": 33, "end": 46, "consensus": "MVLEMELLSVTLEP"}

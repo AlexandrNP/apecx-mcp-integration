@@ -91,6 +91,18 @@ def test_viral_epitope_produces_real_sasa(query):
     assert res.get("error") is None, f"{query}: {res.get('error')}"
     check = check_structural_reasoning_produced(ad, expect_structure=True)
     assert check.passed, f"{query}: structural analysis produced no SASA — {check.evidence}"
+    # N2 (review-gate): the multi-perspective structural figures must actually REACH the run — the
+    # bare-basename refs survive only if the report is not rewritten. Guard that the views land + every
+    # inlined figure ref resolved to a real figures/ file (count parity: no orphaned/dangling ref).
+    figs_dir = ad / "figures"
+    views = list(figs_dir.glob("*_view*.png")) if figs_dir.is_dir() else []
+    assert len(views) >= 3, (
+        f"{query}: expected multi-view structural figures in figures/, got {len(views)}"
+    )
+    report = (ad / "report.md").read_text() if (ad / "report.md").is_file() else ""
+    refs = re.findall(r"!\[[^\]]*\]\(figures/([^)]+)\)", report)
+    dangling = [r for r in refs if not (figs_dir / r).is_file()]
+    assert not dangling, f"{query}: report references figures not on disk: {dangling}"
 
 
 # --------------------------------------------------------- W2: rag_e2e_synthesis (grounded synthesis)
