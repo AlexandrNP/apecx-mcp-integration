@@ -135,13 +135,17 @@ def map_motif_to_chain(
 ) -> dict[str, Any] | None:
     """Map a conserved-region consensus *motif* onto chain residues (ungapped).
 
-    Slides ``motif`` over ``chain_seq`` (same length as ``chain_resis``), scores
-    each offset by per-position identity, and returns the best offset's mapping
-    when its identity >= ``min_identity``. Tie-break: lowest offset (deterministic).
+    Slides the SHORTER of ``motif`` / ``chain_seq`` (same length as ``chain_resis``)
+    over the longer, scores each offset by per-position identity over the overlap
+    window, and returns the best offset's mapping when its identity >= ``min_identity``.
+    Tie-break: lowest offset (deterministic). When the motif is longer than the chain
+    (a fully-conserved whole-length region vs a fragment structure — DF3), the chain's
+    resolved residues map onto their best-aligned sub-window of the region consensus,
+    so a valid PDB still yields exposed residues instead of an empty map.
 
     Returns ``{"offset", "identity", "residues": [{"resi", "chain_aa", "motif_aa",
-    "match"}]}`` or ``None`` (motif empty, longer than the chain, or below the
-    identity bar — the caller reports that LOUD).
+    "match"}]}`` or ``None`` (motif empty, or below the identity bar — the caller
+    reports that LOUD).
     """
     motif = (motif or "").strip().upper()
     if not motif:
@@ -152,30 +156,58 @@ def map_motif_to_chain(
             f"({len(chain_resis)}) must be the same length."
         )
     span = len(motif)
-    if span > len(chain_seq):
+    chain_len = len(chain_seq)
+    if chain_len == 0:
         return None
 
-    best_offset = -1
-    best_matches = -1
-    for offset in range(0, len(chain_seq) - span + 1):
-        matches = sum(1 for i in range(span) if chain_seq[offset + i] == motif[i])
+    # DF3: when the conserved region is LONGER than the structure chain — a fully-conserved WHOLE-LENGTH
+    # region (e.g. SARS-CoV-2 spike, whose near-identical strains yield one region spanning the signal
+    # peptide + ectodomain + TM + tail) vs a fragment/ectodomain structure — the whole motif cannot slide
+    # inside the chain, so the OLD `span > chain_len → None` returned 0 mapped residues (n_exposed=0)
+    # despite valid PDBs. Generalize: slide the SHORTER sequence over the LONGER and map the CHAIN's
+    # structurally-resolved residues (those are what SASA needs) onto their best-aligned contiguous window.
+    window = min(span, chain_len)
+    if span <= chain_len:
+        # motif is the needle; offset indexes the chain → mapped residues = chain[offset : offset+window].
+        best_off, best_matches = -1, -1
+        for off in range(chain_len - window + 1):
+            matches = sum(1 for i in range(window) if chain_seq[off + i] == motif[i])
+            if matches > best_matches:
+                best_matches, best_off = matches, off
+        identity = best_matches / window if window else 0.0
+        if best_off < 0 or identity < min_identity:
+            return None
+        residues = [
+            {
+                "resi": chain_resis[best_off + i],
+                "chain_aa": chain_seq[best_off + i],
+                "motif_aa": motif[i],
+                "match": chain_seq[best_off + i] == motif[i],
+            }
+            for i in range(window)
+        ]
+        return {"offset": best_off, "identity": round(identity, 4), "residues": residues}
+
+    # span > chain_len: the chain is the needle; offset indexes the MOTIF. Map ALL chain residues onto
+    # their best-aligned sub-window of the region consensus (the region CONTAINS the structure's residues).
+    best_moff, best_matches = -1, -1
+    for moff in range(span - window + 1):
+        matches = sum(1 for i in range(window) if chain_seq[i] == motif[moff + i])
         if matches > best_matches:
-            best_matches = matches
-            best_offset = offset
-    identity = best_matches / span if span else 0.0
-    if best_offset < 0 or identity < min_identity:
+            best_matches, best_moff = matches, moff
+    identity = best_matches / window if window else 0.0
+    if best_moff < 0 or identity < min_identity:
         return None
-
     residues = [
         {
-            "resi": chain_resis[best_offset + i],
-            "chain_aa": chain_seq[best_offset + i],
-            "motif_aa": motif[i],
-            "match": chain_seq[best_offset + i] == motif[i],
+            "resi": chain_resis[i],
+            "chain_aa": chain_seq[i],
+            "motif_aa": motif[best_moff + i],
+            "match": chain_seq[i] == motif[best_moff + i],
         }
-        for i in range(span)
+        for i in range(window)
     ]
-    return {"offset": best_offset, "identity": round(identity, 4), "residues": residues}
+    return {"offset": best_moff, "identity": round(identity, 4), "residues": residues}
 
 
 def map_regions_on_chain(

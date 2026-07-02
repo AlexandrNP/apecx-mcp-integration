@@ -81,8 +81,24 @@ def test_map_motif_below_threshold_returns_none():
 
 
 def test_map_motif_longer_than_chain_or_empty():
+    # A motif longer than the chain is no longer auto-None (DF3): it now maps if a sub-window matches.
+    # These two still return None — 'AAA' matches no window of the motif (below threshold), and empty.
     assert sasa.map_motif_to_chain("MVLEMELLSVTLEP", "AAA", [1, 2, 3]) is None
     assert sasa.map_motif_to_chain("", "AAAA", [1, 2, 3, 4]) is None
+
+
+def test_map_motif_longer_than_chain_maps_resolved_subset():
+    # DF3: a fully-conserved WHOLE-LENGTH region (the motif) longer than the fragment structure chain
+    # must still map the chain's RESOLVED residues onto their aligned sub-window of the region consensus,
+    # so a valid PDB yields exposed residues instead of an empty map (SARS-CoV-2 spike → n_exposed=0).
+    motif = "MVLEMELLSVTLEPGGGKKKWWW"  # a 23-aa region consensus
+    chain_seq = "LLSVTLEP"  # an 8-aa fragment resolved in the structure, contained in the region
+    resis = list(range(100, 100 + len(chain_seq)))
+    m = sasa.map_motif_to_chain(motif, chain_seq, resis, min_identity=0.7)
+    assert m is not None
+    assert m["identity"] == 1.0  # the fragment matches its sub-window exactly
+    assert [r["resi"] for r in m["residues"]] == list(range(100, 108))  # ALL chain residues mapped
+    assert m["offset"] == motif.index("LLSVTLEP")  # offset indexes the motif here
 
 
 def test_map_motif_lowest_offset_tiebreak():
