@@ -10,6 +10,7 @@ from tests.eval.epitope_checks import (
     check_full_artifacts,
     check_report_references,
     check_streaming,
+    check_structural_reasoning_produced,
     protabank_count,
 )
 from tests.eval.epitope_eval_loop import (
@@ -20,6 +21,71 @@ from tests.eval.epitope_eval_loop import (
     split_held_out,
 )
 from tests.eval.run_epitope import EpitopeResult
+
+
+def _write_struct(tmp_path, *, records, regions, structural_reasoning):
+    """Materialize a tool_outputs/ dir with the three JSONs the structural check reads."""
+    to = tmp_path / "tool_outputs"
+    to.mkdir(exist_ok=True)
+    (to / "structural_records.json").write_text(json.dumps(records))
+    (to / "conserved_regions.json").write_text(json.dumps(regions))
+    (to / "structural_reasoning.json").write_text(json.dumps(structural_reasoning))
+    return tmp_path
+
+
+def test_structural_check_passes_when_real_sasa_produced(tmp_path):
+    # the FIXED chikungunya E1 state: valid PDB + regions + real SASA.
+    d = _write_struct(
+        tmp_path,
+        records=[{"pdb": "2XFB"}] * 10,
+        regions=[{"start": 1}] * 5,
+        structural_reasoning={"available": True, "n_exposed": 96, "pdb_id": "2XFB", "note": None},
+    )
+    assert check_structural_reasoning_produced(d, expect_structure=True).passed
+
+
+def test_structural_check_fails_on_valid_pdb_but_no_sasa(tmp_path):
+    # the DF1/DF2 state: valid PDB present, but structural analysis produced nothing (available False).
+    # A proceed_note explaining WHY does NOT excuse a structure-expected entity.
+    d = _write_struct(
+        tmp_path,
+        records=[{"pdb": "2XFB"}] * 10,
+        regions=[],
+        structural_reasoning={
+            "available": False,
+            "n_exposed": None,
+            "pdb_id": "2XFB",
+            "note": "No conserved regions were available to map onto structure 2XFB; skipped.",
+        },
+    )
+    r = check_structural_reasoning_produced(d, expect_structure=True)
+    assert not r.passed
+    assert "2XFB" in r.evidence  # the diagnosis surfaces the PDB + reason
+
+
+def test_structural_check_fails_on_pymol_infra_miss(tmp_path):
+    d = _write_struct(
+        tmp_path,
+        records=[{"pdb": "6M0J"}] * 8,
+        regions=[{"start": 3}] * 4,
+        structural_reasoning={
+            "available": False,
+            "n_exposed": None,
+            "pdb_id": "6M0J",
+            "note": "Containerized PyMOL structural analysis is unavailable: ...",
+        },
+    )
+    assert not check_structural_reasoning_produced(d, expect_structure=True).passed
+
+
+def test_structural_check_na_when_no_structure_expected(tmp_path):
+    d = _write_struct(
+        tmp_path,
+        records=[],
+        regions=[],
+        structural_reasoning={"available": False, "note": "No loadable PDB structure."},
+    )
+    assert check_structural_reasoning_produced(d, expect_structure=False).passed
 
 
 def _events(steps, complete=True):

@@ -108,6 +108,54 @@ def check_full_artifacts(run_dir: Path, proceed_stages: set[str]) -> CheckResult
     )
 
 
+def check_structural_reasoning_produced(run_dir: Path, *, expect_structure: bool) -> CheckResult:
+    """STRICT per-step check for the user's requirement: 'it is unacceptable to have errors in structural
+    analysis steps when there are valid PDBs'.
+
+    For an entity that SHOULD exercise structural analysis (``expect_structure`` — a named surface protein
+    on a taxon with deposited PDB structures, e.g. 'chikungunya virus E1', 'SARS-CoV-2 spike'), the
+    structural step MUST produce REAL SASA: ``structural_reasoning.available == True`` with
+    ``n_exposed > 0``. A False here is the forbidden failure, WHATEVER its cause — protein not extracted
+    (DF1), BV-BRC sequence fetch timed out (DF2), no conserved regions to map, or a PyMOL/Docker miss. The
+    ``note`` field is the DIAGNOSIS. This is DELIBERATELY stricter than the reason-aware full_artifacts
+    check: a proceed_note explaining WHY conservation was empty does NOT excuse a structure-expected entity
+    — that note IS the bug report. (This check was MISSING; structural_reasoning was in neither content
+    list, so every 'valid PDB but no SASA' run passed silently.)
+
+    ``expect_structure=False`` (an entity with no deposited structures) → available==False is legit N/A."""
+    tool_dir = Path(run_dir) / "tool_outputs"
+
+    def _load(name: str):
+        p = tool_dir / f"{name}.json"
+        if not p.is_file():
+            return None
+        try:
+            return json.loads(p.read_text())
+        except Exception:
+            return None
+
+    records = _load("structural_records") or []
+    regions = _load("conserved_regions") or []
+    sr = _load("structural_reasoning") or {}
+    available = bool(sr.get("available"))
+    n_exposed = sr.get("n_exposed")
+    diagnosis = str(sr.get("note") or "")[:130]
+
+    if not expect_structure:
+        return CheckResult(
+            "structural_reasoning_produced",
+            True,
+            f"N/A (no structure expected); records={len(records)} available={available}",
+        )
+    passed = available and isinstance(n_exposed, int) and n_exposed > 0
+    return CheckResult(
+        "structural_reasoning_produced",
+        passed,
+        f"records={len(records)} regions={len(regions)} available={available} "
+        f"n_exposed={n_exposed} pdb={sr.get('pdb_id')} diagnosis={diagnosis!r}",
+    )
+
+
 _CONTRACT_SECTIONS = (
     "# Answer",
     "## Data actually used",
