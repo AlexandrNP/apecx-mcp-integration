@@ -219,11 +219,20 @@ class EpitopeResolveStep(BaseStep):
                 # verified, so multi-word names are safe ("West Nile virus E" → "E", not "virus E").
                 if recovered_protein is None and not bundle.get("protein"):
                     iri = plan.get("canonical_iri")
-                    # The protein is the suffix AFTER the LONGEST query-prefix that resolves to the
-                    # SAME taxon. Do NOT skip the full-query (None-suffix) candidate: longest-first
-                    # means a bare "<X> virus" query resolves the full name FIRST → suffix None → no
-                    # protein, so its trailing "virus" token is never mistaken for one.
+                    # The protein is the suffix of the LONGEST query-prefix that resolves to the SAME
+                    # taxon AND leaves a non-empty suffix. We SKIP the full-query (None-suffix)
+                    # candidates: the REAL dict leniently matches the WHOLE "<X> virus <protein>"
+                    # string to the taxon (suffix None), which SWALLOWS the protein — DF1:
+                    # "chikungunya virus E1" resolved as one entity → protein None → conservation +
+                    # structural analysis silently skipped despite a valid PDB (2XFB). The strict-fake
+                    # unit tests never hit this because their fake resolver only matches the canonical
+                    # "<X> virus" form. A shorter prefix resolving to the SAME taxon proves the
+                    # trailing tokens are NOT part of the organism name → they are the protein. The
+                    # bare-"<X> virus" case is protected by the virus-token guard below (NOT by
+                    # preferring the None-suffix match), which also covers multi-token "A virus".
                     for cand_term, cand_suffix in taxonomy_resolver.decompose_query_terms(query):
+                        if cand_suffix is None:
+                            continue
                         try:
                             cp = build_resolution_plan(
                                 cand_term, index="bvbrc_genome", entity_type_str=""
@@ -233,12 +242,14 @@ class EpitopeResolveStep(BaseStep):
                         if cp.get("canonical_iri") == iri and not cp.get("needs_disambiguation"):
                             recovered_protein = cand_suffix
                             break
-                    # Defensive: a degenerate "<X> virus virus" query could leave a lone "virus"
-                    # token as the suffix — that is part of the organism designation, not a protein.
-                    if recovered_protein and recovered_protein.strip().lower() in {
-                        "virus",
-                        "viruses",
-                    }:
+                    # A bare "<X> virus" query (e.g. "West Nile virus") whose shorter prefix
+                    # ("West Nile") also resolves leaves the organism-designation token as the suffix,
+                    # not a protein. Null any suffix that IS or ENDS IN a "virus"/"viruses" token
+                    # (covers "virus" and multi-token "A virus"); real proteins never end in "virus".
+                    _suffix_lc = (recovered_protein or "").strip().lower()
+                    if _suffix_lc in {"virus", "viruses"} or _suffix_lc.endswith(
+                        (" virus", " viruses")
+                    ):
                         recovered_protein = None
                 if recovered_protein and not bundle.get("protein"):
                     bundle["protein"] = recovered_protein

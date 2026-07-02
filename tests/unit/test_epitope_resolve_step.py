@@ -305,6 +305,33 @@ def test_bare_virus_name_recovers_no_protein(tmp_path, _patches):
     assert "protein" not in out  # nothing dropped → no protein (NOT 'virus')
 
 
+def test_lenient_resolver_full_virus_protein_query_still_recovers_protein(tmp_path, _patches):
+    """DF1 regression: the REAL dict LENIENTLY resolves the WHOLE '<X> virus <protein>' string to the
+    taxon (unlike the strict canonical-only fakes above, whose fake resolver only matches '<X> virus').
+    The protein must STILL be recovered — recovery must prefer a shorter same-taxon prefix that leaves a
+    real suffix over the full-query None-suffix match. Without the fix, 'chikungunya virus E1' → protein
+    None → the conservation + structural-analysis legs are silently skipped despite a valid PDB. This is
+    the ONLY test here that mocks the resolver leniency, so it is the ONLY one that catches DF1."""
+
+    def _fake_extract(query):
+        return ["Chikungunya virus"]
+
+    def _fake_plan(term, index="bvbrc_genome", entity_type_str=""):
+        # LENIENT dict: the full 'chikungunya virus E1' ALSO resolves (the DF1 trigger), as do the
+        # canonical forms — mimicking the real resolver's substring tolerance.
+        if term.strip().lower() in ("chikungunya virus", "chikungunya virus e1"):
+            return _resolved_plan(term, "37124", "Chikungunya virus")
+        return _unresolved_plan(term)
+
+    _patches.setattr(taxonomy_resolver, "extract_virus_names", _fake_extract)
+    _patches.setattr(harmonized_resolve_step, "build_resolution_plan", _fake_plan)
+
+    out = asyncio.run(_stage(tmp_path).process({"query": "chikungunya virus E1"}))
+
+    assert out["canonical_iri"].endswith("NCBITaxon_37124")
+    assert out["protein"] == "E1"  # DF1 fix: recovered despite the lenient full-string match
+
+
 def test_ambiguous_plan_noops_the_map(tmp_path, _patches):
     def _fake_extract(query):
         return ["RSV"]
