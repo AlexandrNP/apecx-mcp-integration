@@ -21,9 +21,11 @@ The caller/executor owns the G127 degrade policy — this step never returns emp
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import os
 import tempfile
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -152,16 +154,20 @@ class SandboxedNovelStep(BaseStep):
             output_dir = Path(out_tmp)
             (input_dir / "job.json").write_text(json.dumps(job))
 
+            # Name the container so a timeout can `docker kill` it by name — killing only the
+            # `docker run` CLIENT (proc.kill) can leave the container running (orphan).
+            container_name = f"apecx-novel-{uuid.uuid4().hex[:12]}"
             argv = build_docker_sandbox_command(
                 ["python", _HARNESS_IN_CONTAINER, "/work/job.json", "/out/result.json"],
                 input_host_path=input_dir,
                 output_host_path=output_dir,
+                container_name=container_name,
                 config=SandboxConfig(
                     image=self._sandbox_image, timeout_seconds=self._timeout_seconds
                 ),
             )
 
-            returncode, stderr = await self._run_container(argv)
+            returncode, stderr = await self._run_container(argv, container_name)
 
             # The harness ALWAYS writes result.json (ok:true → exit 0; ok:false → exit 1, still with a
             # structured envelope). A MISSING result.json therefore means an infra-level crash (OOM,
@@ -189,12 +195,13 @@ class SandboxedNovelStep(BaseStep):
             f"{(result.get('traceback') or '')[-4000:]}"
         )
 
-    async def _run_container(self, argv: list[str]) -> tuple[int, str]:
+    async def _run_container(self, argv: list[str], container_name: str) -> tuple[int, str]:
         """Spawn the hardened container under the process-wide slot and return (returncode, stderr).
 
         Isolated so unit tests can monkeypatch it without a real Docker daemon. The slot is held for
         the container's whole lifetime (open-endpoint exhaustion guard, shared with DockerSandboxRunner
-        + PyMOL via ``acquire_container_slot``).
+        + PyMOL via ``acquire_container_slot``). On timeout we ``docker kill`` the container BY NAME
+        (best-effort) before killing the run client, so a hung novel step doesn't orphan a container.
         """
         async with acquire_container_slot():
             proc = await asyncio.create_subprocess_exec(
@@ -205,6 +212,7 @@ class SandboxedNovelStep(BaseStep):
                     proc.communicate(), timeout=self._timeout_seconds
                 )
             except TimeoutError as exc:
+                await self._docker_kill(container_name)
                 proc.kill()
                 await proc.communicate()
                 raise RuntimeError(
@@ -212,6 +220,20 @@ class SandboxedNovelStep(BaseStep):
                     f"{self._timeout_seconds:.0f}s timeout"
                 ) from exc
         return proc.returncode, stderr_b.decode("utf-8", errors="replace")
+
+    @staticmethod
+    async def _docker_kill(container_name: str) -> None:
+        """Best-effort ``docker kill <name>`` (a hung container must not outlive its run). Never
+        raises — the caller is already unwinding a timeout."""
+        with contextlib.suppress(Exception):
+            killer = await asyncio.create_subprocess_exec(
+                "docker",
+                "kill",
+                container_name,
+                stdout=asyncio.subprocess.DEVNULL,
+                stderr=asyncio.subprocess.DEVNULL,
+            )
+            await asyncio.wait_for(killer.communicate(), timeout=10)
 
 
 __all__ = ["SandboxedNovelStep", "SandboxedNovelStepConfig"]

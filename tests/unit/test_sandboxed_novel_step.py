@@ -61,7 +61,7 @@ def test_process_returns_output_and_writes_faithful_job_json(tmp_path, monkeypat
     step = _stage(tmp_path)
     captured: dict = {}
 
-    async def fake_run(argv):
+    async def fake_run(argv, container_name):
         input_dir = _mount_source(argv, "/work")
         output_dir = _mount_source(argv, "/out")
         captured["job"] = json.loads((input_dir / "job.json").read_text())
@@ -84,7 +84,7 @@ def test_process_raises_on_error_envelope(tmp_path, monkeypatch):
     monkeypatch.setenv(_EXECUTE_ENV_VAR, "1")
     step = _stage(tmp_path)
 
-    async def fake_run(argv):
+    async def fake_run(argv, container_name):
         output_dir = _mount_source(argv, "/out")
         (output_dir / "result.json").write_text(
             json.dumps(
