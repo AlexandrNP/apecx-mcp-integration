@@ -589,6 +589,32 @@ def render_cross_reference_section(bundle: dict[str, Any]) -> str:
     )
     lines.append("")
 
+    # Aggregate structural-coverage caveat: the analyzed structure often resolves only ONE domain of a
+    # multi-domain antigen (e.g. a DIII-only DENV E crystal), so most conserved regions get no structural
+    # assessment. Per-candidate `structure: —` discloses this one region at a time, but a reader skimming
+    # the exposed-residue headline can mistake partial coverage for full-antigen coverage. State it once,
+    # plainly, when coverage is partial. (self-refinement iter 004, logic-critic NOTE.)
+    mapped_regions = reasoning.get("mapped_regions") or []
+    n_mapped, n_total = len(mapped_regions), len(regions)
+    if reasoning.get("available") and primary_pdb and 0 < n_mapped < n_total:
+        span_resis = sorted(
+            r
+            for m in mapped_regions
+            if isinstance(m, dict)
+            for r in (m.get("residues") or [])
+            if isinstance(r, int)
+        )
+        span = (
+            f" (conserved-region residues {span_resis[0]}–{span_resis[-1]})" if span_resis else ""
+        )
+        lines.append(
+            f"> **Structural coverage is partial.** Only {n_mapped} of {n_total} conserved regions "
+            f"mapped onto {primary_pdb}{span}; the other {n_total - n_mapped} were NOT structurally "
+            f"evaluated — treat their epitope potential as sequence/literature-supported, not "
+            f"structurally confirmed."
+        )
+        lines.append("")
+
     for i, region in enumerate(regions[:12], 1):
         if not isinstance(region, dict):
             continue

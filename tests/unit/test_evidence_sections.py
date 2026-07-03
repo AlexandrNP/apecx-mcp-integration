@@ -396,6 +396,66 @@ def test_cross_reference_honest_gaps_and_empty():
     assert "No conserved regions" in md2
 
 
+def test_cross_reference_discloses_partial_structural_coverage():
+    """Self-refinement iter 004 (logic-critic NOTE): when the analyzed structure resolves only part of
+    the antigen (a DIII-only crystal), most conserved regions get no structural assessment. The section
+    must state coverage is PARTIAL once, plainly, with the covered span + the mapped/total counts — not
+    only per-candidate em-dashes a reader can skim past."""
+    regions = [
+        {"start": s, "end": s + 5, "consensus": "MTGKIA", "mean_identity": 0.9}
+        for s in (10, 200, 400)
+    ]
+    bundle = {
+        "protein": "envelope protein E",
+        "conserved_regions": regions,  # 3 total
+        "structural_reasoning": {
+            "available": True,
+            "pdb_id": "4L5F",
+            "mapped_regions": [
+                {"start": 400, "end": 405, "residues": [334, 350, 366]}
+            ],  # only 1 of 3
+        },
+    }
+    md = render_cross_reference_section(bundle)
+    assert "Structural coverage is partial" in md
+    assert "4L5F" in md and "residues 334–366" in md
+    assert "1 of 3 conserved regions" in md  # mapped/total made explicit
+
+    # Full coverage → NO caveat (all regions mapped).
+    full = dict(bundle)
+    full["structural_reasoning"] = {
+        "available": True,
+        "pdb_id": "4L5F",
+        "mapped_regions": [
+            {"start": s, "end": s + 5, "residues": [i]} for i, s in enumerate((10, 200, 400))
+        ],
+    }
+    assert "Structural coverage is partial" not in render_cross_reference_section(full)
+
+    # n_mapped == 0 → NO caveat (nothing mapped is the per-candidate "structure: —" case, not "partial").
+    none_mapped = dict(bundle)
+    none_mapped["structural_reasoning"] = {
+        "available": True,
+        "pdb_id": "4L5F",
+        "mapped_regions": [],
+    }
+    assert "Structural coverage is partial" not in render_cross_reference_section(none_mapped)
+
+    # Partial but residues missing / non-int → caveat still fires, WITHOUT the span parenthetical.
+    no_span = dict(bundle)
+    no_span["structural_reasoning"] = {
+        "available": True,
+        "pdb_id": "4L5F",
+        "mapped_regions": [
+            {"start": 400, "end": 405, "residues": []}
+        ],  # 1 of 3, but no int residues
+    }
+    md_no_span = render_cross_reference_section(no_span)
+    assert "Structural coverage is partial" in md_no_span
+    assert "1 of 3 conserved regions" in md_no_span
+    assert "conserved-region residues" not in md_no_span  # span parenthetical omitted
+
+
 def test_fallback_groups_publications_by_theme():
     """Phase 4: when narrative synthesis is withheld, the deterministic fallback ORGANIZES the
     publications by topic (the no-LLM literature-analysis floor) instead of a flat list."""
