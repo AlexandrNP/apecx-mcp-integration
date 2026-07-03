@@ -245,3 +245,61 @@ def test_spec_mode_whitelisted_novel_python_not_scan_blocked():
         raise AssertionError(f"whitelisted numpy tripped the scanner: {exc}") from exc
     except Exception:
         pass  # downstream validators (structure/expander) may reject — not the scan gate
+
+
+# --- class-not-found retry feedback (CP compose-500 fix) ---------------------
+
+
+def test_is_class_not_found_error():
+    """The predicate is TRUE for a hallucinated-class expander error, FALSE for a
+    YAML-shape error — so the retry can pick the right feedback."""
+    from apecx_integration.composition._composer_parsing import _is_class_not_found_error
+
+    class_err = ComposerResponseError(
+        "spec mode: expander could not realize the spec: step 'domain_search': "
+        "class_name 'RagDomainSearchOnly' has no catalog match. Pick from the "
+        "catalog's leaf names or pass a full dotted path."
+    )
+    shape_err = ComposerResponseError("must be a mapping at top level")
+    assert _is_class_not_found_error(class_err) is True
+    assert _is_class_not_found_error(shape_err) is False
+
+
+def test_class_not_found_feedback_lists_catalog_names():
+    """On a hallucinated class, the retry feedback NAMES the valid catalog leaf names
+    and drops the misleading 'emit a yaml mapping' shape hint."""
+    from apecx_integration.composition._composer_parsing import (
+        _format_class_not_found_feedback,
+    )
+
+    exc = ComposerResponseError(
+        "spec mode: expander could not realize the spec: step 'domain_search': "
+        "class_name 'RagDomainSearchOnly' has no catalog match."
+    )
+    fb = _format_class_not_found_feedback(exc, ["entity_extraction", "rag_synthesis"])
+    assert "entity_extraction" in fb and "rag_synthesis" in fb  # valid names listed
+    assert "has no catalog match" in fb  # the real cause is surfaced
+    assert "top level" not in fb and "MAPPING" not in fb  # NOT the shape-correction hint
+
+
+def test_class_not_found_retry_wires_catalog_names_into_llm_messages():
+    """WIRING (the fix that matters e2e): composer.py's retry loop MUST feed the LLM the
+    valid catalog class names on a class-not-found error, not the generic shape hint.
+    Attempt 1 hallucinates a class; the retry (attempt 2) must receive the catalog names."""
+    llm = _StubLLM([UNKNOWN_CLASS_SPEC, VALID_SPEC_RESPONSE])
+    composer = _composer_spec_mode(llm)
+    result = asyncio.run(composer.compose("synthesis prompt"))
+    assert result.composition_summary.compose_retries == 1  # it retried once
+    assert len(llm.invocations) == 2  # initial + retry
+    retry_text = " ".join(getattr(m, "content", str(m)) for m in llm.invocations[1])
+    assert "has no catalog match" in retry_text  # the real cause was fed back
+    assert "Emit exactly ONE fenced" not in retry_text  # NOT the generic shape hint
+    # The fed-back names must be RESOLVABLE class_name forms (class-path LEAVES the expander
+    # accepts, e.g. `RagSynthesisStep`), NOT the composite catalog ids (`.../rag_synthesis:A2`)
+    # which the expander cannot resolve. (review-gate FAIL: feeding `c.id` re-fails.)
+    leaf_names = {c.class_path.rsplit(".", 1)[-1] for c in composer._catalog.components}  # noqa: SLF001
+    assert any(leaf in retry_text for leaf in leaf_names)  # at least one resolvable leaf listed
+    assert "RagSynthesisStep" in retry_text  # a concrete leaf the catalog+expander accept
+    # NOT the composite catalog ids (which carry a `<manifest>/<name>:<suffix>` form); the
+    # ":A2"-style suffix is the tell that unresolvable `c.id`s leaked in.
+    assert ":A2" not in retry_text

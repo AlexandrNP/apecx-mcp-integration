@@ -87,6 +87,36 @@ def _format_parse_feedback(exc: ComposerResponseError) -> str:
     )
 
 
+def _is_class_not_found_error(exc: ComposerResponseError) -> bool:
+    """True iff the spec realized-but-referenced a step class the catalog does not
+    have (an LLM class-name hallucination). Distinct from a YAML-shape parse error:
+    the shape was fine, so the generic shape-correction feedback is the WRONG hint —
+    the LLM needs the list of valid class names instead."""
+    text = str(exc)
+    return "expander could not realize the spec" in text and "has no catalog match" in text
+
+
+def _format_class_not_found_feedback(
+    exc: ComposerResponseError, valid_class_names: list[str]
+) -> str:
+    """Retry feedback for a hallucinated class-name error. Unlike ``_format_parse_feedback``
+    (which corrects YAML SHAPE) this names the failure and lists the VALID catalog class
+    names so the LLM can pick a real one instead of re-inventing. Caller passes the names
+    (this module stays free of the catalog)."""
+    names = ", ".join(sorted(valid_class_names)) if valid_class_names else "(catalog empty)"
+    return (
+        "A step in your workflow referenced a `class_name` that does not exist. The "
+        "composer surfaced this error:\n\n"
+        f"    {exc}\n\n"
+        "The YAML shape was fine — the problem is the class name. Every step's "
+        "`class_name` MUST be one of these catalog leaf names (or a full dotted class "
+        "path); do NOT invent class names:\n\n"
+        f"    {names}\n\n"
+        "Re-emit the same workflow with each step's `class_name` replaced by the closest "
+        "matching catalog leaf name from that list."
+    )
+
+
 def _parse_response(content: str) -> tuple[str, dict[str, str]]:
     """Extract the single ``yaml`` fenced block and the optional
     ``novel_python`` fenced block from the LLM response.
@@ -149,6 +179,8 @@ __all__ = [
     "_FENCE_RE",
     "_REPAIRABLE_PARSE_MARKERS",
     "_format_parse_feedback",
+    "_format_class_not_found_feedback",
+    "_is_class_not_found_error",
     "_is_repairable_parse_error",
     "_parse_response",
 ]

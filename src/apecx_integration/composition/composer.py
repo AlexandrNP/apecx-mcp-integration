@@ -83,7 +83,9 @@ from apecx_integration.composition._composer_llm_factory import (  # noqa: E402
     _default_llm_factory,
 )
 from apecx_integration.composition._composer_parsing import (  # noqa: E402
+    _format_class_not_found_feedback,
     _format_parse_feedback,
+    _is_class_not_found_error,
     _is_repairable_parse_error,
     _parse_response,
 )
@@ -603,10 +605,24 @@ class Composer:
                 if compose_retries >= max_retries:
                     raise
                 compose_retries += 1
-                feedback = _format_parse_feedback(exc)
+                # A hallucinated class_name is repairable, but the generic shape-
+                # correction hint is the WRONG feedback (the YAML shape was fine) — feed
+                # back the VALID catalog leaf names so the LLM picks a real class instead
+                # of re-inventing one and exhausting the retries.
+                if _is_class_not_found_error(exc):
+                    # The expander resolves a step's class_name only by the class-path LEAF
+                    # (e.g. `RagSynthesisStep`) or a full dotted path — NOT the composite
+                    # catalog id (`rag_e2e_synthesis/rag_synthesis:A2`). Feed the LEAF names so
+                    # the LLM picks a name the expander can actually resolve.
+                    feedback = _format_class_not_found_feedback(
+                        exc,
+                        sorted({c.class_path.rsplit(".", 1)[-1] for c in self._catalog.components}),
+                    )
+                else:
+                    feedback = _format_parse_feedback(exc)
                 log.warning(
                     "Composer parse failed on attempt %d/%d: %s; "
-                    "retrying with shape-correction feedback.",
+                    "retrying with correction feedback.",
                     compose_retries,
                     max_retries + 1,
                     exc,
