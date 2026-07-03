@@ -206,6 +206,94 @@ def test_map_regions_on_chain_maps_dedups_and_notes_absent():
     assert any("WWWW" in n and "chain F of 3N40" in n for n in notes)
 
 
+# ---- self-refinement iter 002: mapping coherence (no many-to-one, no short-motif coincidence) ----
+
+
+def test_map_regions_on_chain_rejects_short_motifs():
+    """A 1-2 residue motif maps by coincidence anywhere the residue occurs — it must be SKIPPED
+    (loud note), while a >= _MIN_MOTIF_LEN motif still maps. Regression for the structural
+    many-to-one defect (self-refinement iter 001)."""
+    resis, seq = _chain_seq("GAGMTGKIADYNYKLPDDFT", start=300)  # G at 300,302,305; MTGK at 303..306
+    regions = [
+        {"start": 12, "end": 12, "consensus": "G"},  # length-1 -> coincidental, skip
+        {"start": 61, "end": 62, "consensus": "GA"},  # length-2 -> coincidental, skip
+        {"start": 308, "end": 311, "consensus": "MTGK"},  # length-4 -> genuine, maps to 303..306
+    ]
+    mapped, mapped_resis, notes = sasa.map_regions_on_chain(
+        resis, seq, regions, min_identity=0.7, chain="A", pdb_id="SYNTH"
+    )
+    assert [m["start"] for m in mapped] == [308]
+    assert mapped_resis == [303, 304, 305, 306]
+    assert sum("shorter than" in n for n in notes) == 2  # both short motifs reported LOUD
+
+
+def test_map_regions_on_chain_no_residue_claimed_twice():
+    """The confirmed DENV pathology: distant MSA columns whose motifs coincidentally hit the same
+    structure residue. No PDB residue may appear in more than one kept region's residue list; a region
+    left with only already-claimed residues is dropped LOUD."""
+    resis, seq = _chain_seq("MTGKAAAAAAMTGKAAAAAA", start=300)  # MTGK at 300..303 and 310..313
+    regions = [
+        {"start": 10, "end": 13, "consensus": "MTGK"},  # maps to the first MTGK (300..303)
+        {
+            "start": 500,
+            "end": 503,
+            "consensus": "MTGK",
+        },  # distant column, same best offset -> re-claims 300..303
+    ]
+    mapped, mapped_resis, notes = sasa.map_regions_on_chain(
+        resis, seq, regions, min_identity=0.7, chain="A", pdb_id="SYNTH"
+    )
+    from collections import Counter
+
+    claims = Counter(r for m in mapped for r in m["residues"])
+    assert claims and max(claims.values()) == 1  # no residue claimed by >1 column
+    assert any("coincidental" in n for n in notes)  # the fully-redundant region is reported LOUD
+
+
+def test_map_regions_on_chain_keeps_adjacent_overlap():
+    """N1 regression: two genuinely adjacent conserved regions that SHARE a boundary residue must
+    BOTH survive — the later keeps only its not-yet-claimed residues (the shared one is attributed to
+    the earlier column). The pre-fix monotonic-strict rule wrongly dropped the second."""
+    resis, seq = _chain_seq(
+        "MTGKIADYNY", start=300
+    )  # M300 T301 G302 K303 I304 A305 D306 Y307 N308 Y309
+    regions = [
+        {"start": 10, "end": 15, "consensus": "MTGKIA"},  # -> resi 300..305
+        {"start": 16, "end": 21, "consensus": "IADYNY"},  # -> resi 304..309, shares 304,305
+    ]
+    mapped, mapped_resis, notes = sasa.map_regions_on_chain(
+        resis, seq, regions, min_identity=0.7, chain="A", pdb_id="SYNTH"
+    )
+    from collections import Counter
+
+    assert [m["start"] for m in mapped] == [10, 16]  # BOTH survive
+    assert next(m for m in mapped if m["start"] == 16)["residues"] == [306, 307, 308, 309]
+    assert (
+        max(Counter(r for m in mapped for r in m["residues"]).values()) == 1
+    )  # 304,305 not doubled
+
+
+def test_map_regions_on_chain_keeps_region_inside_earlier_gap():
+    """N2 regression: a region whose residues fall BETWEEN an earlier region's residues (the gapped /
+    cryo-EM 'unresolved loop' case) must survive — attribution is per-residue-SET, not per-span. The
+    pre-fix ``last_max = max(residues)`` span rule wrongly dropped it."""
+    resis, seq = _chain_seq("MTGKAAAWNSN", start=300)  # M300..K303, A304..A306, W307 N308 S309 N310
+    regions = [
+        {"start": 10, "end": 13, "consensus": "MTGK"},  # -> 300..303
+        {"start": 20, "end": 23, "consensus": "WNSN"},  # -> 307..310 (last_max would be 310)
+        {
+            "start": 500,
+            "end": 502,
+            "consensus": "AAA",
+        },  # LATER column, maps INSIDE the gap -> 304..306
+    ]
+    mapped, mapped_resis, notes = sasa.map_regions_on_chain(
+        resis, seq, regions, min_identity=0.7, chain="A", pdb_id="SYNTH"
+    )
+    assert 500 in [m["start"] for m in mapped]  # the gap-internal region survives
+    assert next(m for m in mapped if m["start"] == 500)["residues"] == [304, 305, 306]
+
+
 def test_select_best_chain_picks_mapping_chain_over_nonmapping():
     """R3 / the real 6JO8 case: the E1 motif maps onto chain B (E1) but NOT chain A (a
     different protein — 6JO8's auto-picked 'Togavirin') → best-chain selects B, not first."""

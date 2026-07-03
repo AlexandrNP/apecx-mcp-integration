@@ -173,6 +173,9 @@ def map_motif_to_chain(
 
 
 _MIN_BLOCK = 4  # gapped fallback: reject collinear matches shorter than this (spurious)
+_MIN_MOTIF_LEN = (
+    3  # a conserved motif shorter than this maps by coincidence, not structural evidence
+)
 
 
 def _ungapped_slide(
@@ -269,20 +272,29 @@ def map_regions_on_chain(
 ) -> tuple[list[dict[str, Any]], list[Any], list[str]]:
     """Map every conserved region's consensus motif onto ONE chain's residues.
 
-    Returns ``(mapped_regions, mapped_resis, notes)``: the mapped regions (each carrying
-    this chain's author residue numbers + the map identity), the UNIQUE mapped residue set
-    (first-seen order — overlapping regions share residues, so SASA is computed once and the
-    exposed/buried lists carry no duplicate residue numbers), and a LOUD note per region that
-    did NOT clear the identity bar on this chain (reported, never silently dropped). Pure
-    (shared with the containerized PyMOL job) so the unit test exercises the exact arithmetic
-    the integration run uses.
+    Returns ``(mapped_regions, mapped_resis, notes)``: the mapped regions (each carrying this
+    chain's author residue numbers + the map identity), the mapped residue set (column-ordered,
+    deduped), and a LOUD note per region that was NOT kept — reported, never silently dropped. A
+    region is dropped when its motif is too short to be informative (< ``_MIN_MOTIF_LEN``), did not
+    clear the identity bar, or maps ONLY onto residues already attributed to an earlier (lower)
+    column. Each PDB residue is attributed to at most ONE alignment column (the first to map it), so
+    a later region keeps only its not-yet-claimed residues — this is the interim per-residue guard;
+    fuller column↔residue disambiguation is the deferred global SEQRES→MSA alignment. Pure (shared
+    with the containerized PyMOL job) so the unit test exercises the exact arithmetic the integration
+    run uses.
     """
     mapped_regions: list[dict[str, Any]] = []
-    mapped_resis: list[Any] = []
     notes: list[str] = []
     for region in conserved_regions:
         consensus = str(region.get("consensus", ""))
         motif = consensus.replace("-", "")
+        if len(motif) < _MIN_MOTIF_LEN:
+            notes.append(
+                f"Conserved region (alignment cols {region.get('start')}–"
+                f"{region.get('end')}, motif {motif[:24]!r}) is shorter than {_MIN_MOTIF_LEN} "
+                f"residues — too short to map unambiguously onto chain {chain} of {pdb_id}; skipped."
+            )
+            continue
         mapping = map_motif_to_chain(motif, chain_seq, resis, min_identity=min_identity)
         if mapping is None:
             notes.append(
@@ -291,9 +303,6 @@ def map_regions_on_chain(
                 f"{chain} of {pdb_id} at >= {min_identity:.0%} identity."
             )
             continue
-        for r in mapping["residues"]:
-            if r["resi"] not in mapped_resis:
-                mapped_resis.append(r["resi"])
         mapped_regions.append(
             {
                 "start": region.get("start"),
@@ -304,7 +313,34 @@ def map_regions_on_chain(
                 "residues": [r["resi"] for r in mapping["residues"]],
             }
         )
-    return mapped_regions, mapped_resis, notes
+
+    # Uniqueness (self-refinement iter 002): a PDB residue is attributed to at most ONE alignment
+    # column — the first (lowest) region to map it. Later regions keep only their not-yet-claimed
+    # residues; a region left with none is fully redundant and dropped LOUD. This eliminates the
+    # many-to-one collisions (distant, unrelated columns coincidentally hitting the same residue) that
+    # made short / unrelated motifs read as structural evidence, while PRESERVING genuine adjacent or
+    # gapped regions — they keep their own residues (a per-residue set, not a span, so a region inside
+    # an earlier region's unresolved gap is NOT dropped). Interim guard; the fuller column↔residue
+    # disambiguation is the deferred global SEQRES→MSA alignment follow-up.
+    mapped_regions.sort(
+        key=lambda m: (m["start"] if m["start"] is not None else -1, m["end"] or -1)
+    )
+    kept: list[dict[str, Any]] = []
+    mapped_resis: list[Any] = []
+    claimed: set[Any] = set()
+    for m in mapped_regions:
+        unique_rr = [r for r in m["residues"] if r not in claimed]
+        if not unique_rr:
+            notes.append(
+                f"Conserved region (alignment cols {m['start']}–{m['end']}, motif "
+                f"{m['consensus'].replace('-', '')[:24]!r}) maps only onto residues already attributed "
+                f"to earlier columns on chain {chain} of {pdb_id} — dropped as a coincidental match."
+            )
+            continue
+        claimed.update(unique_rr)
+        mapped_resis.extend(unique_rr)
+        kept.append({**m, "residues": unique_rr})
+    return kept, mapped_resis, notes
 
 
 def select_best_chain(
