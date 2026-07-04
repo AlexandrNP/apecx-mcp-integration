@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import httpx
 import pytest
+
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.schemas.api import (
     StartWorkflowRequest,
@@ -20,6 +21,7 @@ from apecx_integration.control_plane.schemas.api import (
 from apecx_integration.mcp_surface.control_plane_client import (
     ControlPlaneClient,
     ControlPlaneDependencyError,
+    WorkflowCompositionError,
 )
 
 
@@ -53,3 +55,35 @@ async def test_start_workflow_503_wraps_as_dependency_error(
         await client.start_workflow(body)
     assert "Composer is not configured" in str(exc.value)
     await client.close()
+
+
+async def test_422_raises_workflow_composition_error_with_detail() -> None:
+    """A 422 from the Control Plane (known composition failure) is wrapped
+    in ``WorkflowCompositionError`` carrying the server ``detail`` so an MCP
+    caller sees WHY instead of an opaque 500 / raw httpx traceback.
+
+    Uses ``httpx.MockTransport`` (an httpx-native fake response, not a mock
+    of the composer) to drive the client's 422 branch directly. The real
+    422-producing route path is covered by
+    ``tests/integration/test_api_workflow_errors.py``.
+    """
+    detail = (
+        "workflow composition failed: spec mode: expander could not "
+        "realize the spec: step 'x': class_name 'RagDomainSearchOnly' "
+        "has no catalog match."
+    )
+
+    def _handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(422, json={"detail": detail})
+
+    cp = ControlPlaneClient("http://testserver")
+    cp._client = httpx.AsyncClient(
+        transport=httpx.MockTransport(_handler),
+        base_url="http://testserver",
+    )
+    body = StartWorkflowRequest(description="x", user_id="alex")
+    with pytest.raises(WorkflowCompositionError) as exc:
+        await cp.start_workflow(body)
+    assert detail in str(exc.value)
+    assert "has no catalog match" in str(exc.value)
+    await cp.close()

@@ -15,6 +15,11 @@ raises on non-2xx. Status-code handling:
         a raw ``httpx.HTTPStatusError`` — confusing for MCP callers
         because the traceback exposed httpx internals; now wrapped
         for consistency with the 501 path. Audit §3.3.
+- 422 → ``WorkflowCompositionError`` (``detail`` as message). Means
+        the Control Plane could not compose a workflow from the
+        description (composer hallucinated an unknown class + exhausted
+        retries, a config error, or a T13 scan violation). Wrapped so
+        the cause is visible instead of an opaque 500 / httpx traceback.
 - other non-2xx → ``httpx.HTTPStatusError`` via ``raise_for_status()``.
 
 Real-backed endpoints (as of 2026-04-22):
@@ -87,6 +92,18 @@ class ControlPlaneDependencyError(RuntimeError):
     """
 
 
+class WorkflowCompositionError(RuntimeError):
+    """Raised when the Control Plane returns 422 because it could not
+    compose a workflow from the description (the composer hallucinated
+    an unknown class and exhausted retries, a config error, or a T13
+    security-scan violation).
+
+    Carries the server's ``detail`` so an MCP caller sees the actual
+    cause and can self-correct (e.g. simplify the description) instead
+    of an opaque 500 / a raw ``httpx.HTTPStatusError``.
+    """
+
+
 class ControlPlaneClient:
     """HTTP client to the Control Plane.
 
@@ -124,6 +141,13 @@ class ControlPlaneClient:
                 or f"Control Plane returned 503 from {path} "
                 "(composer / approval-policy / executor not configured)"
             )
+        if resp.status_code == httpx.codes.UNPROCESSABLE_ENTITY:
+            detail = self._extract_detail(resp.json())
+            raise WorkflowCompositionError(
+                detail
+                or f"Control Plane returned 422 from {path} "
+                "(could not compose a workflow from this description)"
+            )
         resp.raise_for_status()
         return response_model.model_validate(resp.json())
 
@@ -148,38 +172,22 @@ class ControlPlaneClient:
     async def show_yaml_diff(self, body: ShowYamlDiffRequest) -> ShowYamlDiffResponse:
         return await self._post("/workflows/diff", body, ShowYamlDiffResponse)
 
-    async def execute_workflow(
-        self, body: ExecuteWorkflowRequest
-    ) -> ExecuteWorkflowResponse:
+    async def execute_workflow(self, body: ExecuteWorkflowRequest) -> ExecuteWorkflowResponse:
         return await self._post("/workflows/execute", body, ExecuteWorkflowResponse)
 
     # ---- /hpc (T07 + T05) ---------------------------------------------
 
-    async def estimate_cost(
-        self, body: EstimateCostRequest
-    ) -> EstimateCostResponse:
+    async def estimate_cost(self, body: EstimateCostRequest) -> EstimateCostResponse:
         return await self._post("/hpc/estimate", body, EstimateCostResponse)
 
-    async def confirm_allocation(
-        self, body: ConfirmAllocationRequest
-    ) -> ConfirmAllocationResponse:
-        return await self._post(
-            "/hpc/confirm", body, ConfirmAllocationResponse
-        )
+    async def confirm_allocation(self, body: ConfirmAllocationRequest) -> ConfirmAllocationResponse:
+        return await self._post("/hpc/confirm", body, ConfirmAllocationResponse)
 
-    async def export_hpc_bundle(
-        self, body: ExportHpcBundleRequest
-    ) -> ExportHpcBundleResponse:
-        return await self._post(
-            "/hpc/export", body, ExportHpcBundleResponse
-        )
+    async def export_hpc_bundle(self, body: ExportHpcBundleRequest) -> ExportHpcBundleResponse:
+        return await self._post("/hpc/export", body, ExportHpcBundleResponse)
 
-    async def ingest_hpc_bundle(
-        self, body: IngestHpcBundleRequest
-    ) -> IngestHpcBundleResponse:
-        return await self._post(
-            "/hpc/ingest", body, IngestHpcBundleResponse
-        )
+    async def ingest_hpc_bundle(self, body: IngestHpcBundleRequest) -> IngestHpcBundleResponse:
+        return await self._post("/hpc/ingest", body, IngestHpcBundleResponse)
 
     async def create_approval(self, body: CreateApprovalRequest) -> CreateApprovalResponse:
         return await self._post("/approvals/", body, CreateApprovalResponse)

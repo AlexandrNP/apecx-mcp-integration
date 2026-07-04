@@ -10,6 +10,7 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated
@@ -18,8 +19,10 @@ from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, sessionmaker
 
+from apecx_integration.composition._errors import ComposerResponseError
 from apecx_integration.composition.approval_policy import ApprovalPolicy
 from apecx_integration.composition.composer import Composer
+from apecx_integration.composition.sandbox import ScanViolation
 from apecx_integration.control_plane.dependencies import (
     get_approval_policy_or_none,
     get_composer_or_none,
@@ -56,6 +59,8 @@ from apecx_integration.control_plane.schemas.enums import (
     RunStatus,
     StepCategory,
 )
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/workflows", tags=["workflow"])
 
@@ -135,13 +140,29 @@ async def start_workflow(
             body.description,
             context={"run_id": run_id},
         )
-    except Exception:
+    except Exception as exc:
         with session_factory() as session:
             run_row = session.get(RunORM, run_id)
             if run_row is not None:
                 run_row.status = RunStatus.FAILED
                 run_row.completed_at = datetime.now(UTC)
                 session.commit()
+        # A KNOWN, CLIENT-ADDRESSABLE composition failure (the composer
+        # couldn't realize a valid workflow from THIS description —
+        # hallucinated class + exhausted retries — or the description
+        # drove a T13-scan-violating construct) becomes a STRUCTURED 422
+        # carrying the cause, so the MCP client sees WHY and can
+        # self-correct (simplify/rephrase) instead of an opaque, body-less
+        # 500. NOT ComposerConfigurationError — that is an operator
+        # misconfiguration the client cannot fix, so it stays an unexpected
+        # 500 via the bare re-raise below (cluster U1: server traceback for
+        # the operator).
+        if isinstance(exc, (ComposerResponseError, ScanViolation)):
+            log.warning("workflow composition failed for run %s: %s", run_id, exc)
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"workflow composition failed: {exc}",
+            ) from exc
         raise
 
     # Step 3: fresh session for the back-link + status write.
