@@ -37,6 +37,7 @@ always be refused regardless of test environment.
 
 from __future__ import annotations
 
+import logging
 import os
 import socket
 
@@ -822,3 +823,81 @@ def test_background_drive_skips_prewarm_in_probe_only_mode(monkeypatch):
     assert fake.start_all_called is True
     # Probe-only must NOT build conda envs.
     assert fake.prewarm_called is False
+
+
+# --- bring-up verdict is logged LOUDLY at boot (observability hardening) ------
+
+
+def test_bringup_verdict_logs_error_on_down(caplog):
+    """overall=down (a required backend hard-failed) → ERROR naming the actionable
+    line, so the deployment failure is visible AT BOOT, not only on poll."""
+    snapshot = {
+        "overall": "down",
+        "actionable": ["[rhea] not reachable at :3001 — run apecx-setup"],
+    }
+    with caplog.at_level(logging.ERROR, logger=_orch_mod.log.name):
+        _orch_mod._log_bringup_verdict(snapshot)
+    errors = [r for r in caplog.records if r.levelno == logging.ERROR]
+    assert len(errors) == 1
+    msg = errors[0].getMessage()
+    assert "overall=down" in msg
+    assert "NOT functional" in msg
+    assert "[rhea] not reachable at :3001" in msg
+
+
+def test_bringup_verdict_logs_warning_on_degraded(caplog):
+    """overall=degraded (a REQUIRED backend not-ready-but-not-hard-down, e.g. externally
+    skipped in probe-only mode) → WARNING, not ERROR. (_compute_overall_state only
+    inspects required backends; a non-required backend down never changes overall.)"""
+    snapshot = {"overall": "degraded", "actionable": ["[rhea_mcp] not running (probe-only)"]}
+    with caplog.at_level(logging.WARNING, logger=_orch_mod.log.name):
+        _orch_mod._log_bringup_verdict(snapshot)
+    assert any(r.levelno == logging.WARNING for r in caplog.records)
+    assert not any(r.levelno == logging.ERROR for r in caplog.records)
+    assert "overall=degraded" in caplog.text
+
+
+def test_bringup_verdict_logs_info_when_ready(caplog):
+    """overall=ready (all required backends up) → INFO only; no ERROR/WARNING noise."""
+    snapshot = {"overall": "ready", "actionable": []}
+    with caplog.at_level(logging.INFO, logger=_orch_mod.log.name):
+        _orch_mod._log_bringup_verdict(snapshot)
+    assert any(
+        r.levelno == logging.INFO and "overall=ready" in r.getMessage() for r in caplog.records
+    )
+    assert not any(r.levelno >= logging.WARNING for r in caplog.records)
+
+
+async def test_bringup_verdict_error_bound_to_real_down_state(caplog):
+    """END-TO-END literal binding: a REAL orchestrator with a required backend in a hard-fail
+    state must (a) make _compute_overall_state return 'down' AND (b) make _log_bringup_verdict
+    emit ERROR. This catches a future rename of the 'down' literal in _compute_overall_state
+    that would otherwise silently downgrade the loud alarm to INFO (review-gate finding)."""
+
+    async def _ok() -> ProbeResult:
+        return ProbeResult(healthy=True, detail="ok", latency_ms=1.0)
+
+    specs = [
+        BackendSpec(
+            name="req",
+            display_name="Req",
+            kind="external",
+            required=True,
+            probe=Probe(name="req", fn=_ok),
+            actionable_message="fix req backend",
+        ),
+    ]
+    orch = InfraOrchestrator(specs=specs, autostart_enabled=True, docker_binary=None)
+    await orch.start_all()
+    # Force the required backend into a hard-fail state (as if autostart failed).
+    for rt in orch._runtimes.values():
+        rt.state = BackendState.ERROR_STARTING
+
+    overall = orch._compute_overall_state()  # real source literal, no re-probe
+    assert overall == "down"
+    snap = {"overall": overall, "actionable": orch._actionable_messages()}
+    with caplog.at_level(logging.ERROR, logger=_orch_mod.log.name):
+        _orch_mod._log_bringup_verdict(snap)
+    errors = [r for r in caplog.records if r.levelno == logging.ERROR]
+    assert len(errors) == 1
+    assert "NOT functional" in errors[0].getMessage()

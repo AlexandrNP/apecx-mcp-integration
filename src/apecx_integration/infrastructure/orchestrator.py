@@ -1544,6 +1544,36 @@ _BG_HANDLE_LOCK = threading.Lock()
 _BG_ATEXIT_REGISTERED = False
 
 
+def _log_bringup_verdict(snapshot: dict[str, Any]) -> None:
+    """Log the aggregate backend bring-up verdict LOUDLY so a required-backend
+    failure is visible AT BOOT — not only on-demand via the ``infrastructure_status``
+    tool. The background drive previously discarded ``start_all()``'s snapshot, so a
+    ``down``/``degraded`` deployment served tools while a mandatory backend was absent.
+
+    Reuses the ``overall`` (from ``_compute_overall_state``) + ``actionable`` (from
+    ``_actionable_messages``) already present in the snapshot — no re-probe.
+    """
+    overall = snapshot.get("overall")
+    actionable = snapshot.get("actionable") or []
+    lines = "\n  ".join(actionable) if actionable else "(no actionable detail)"
+    if overall == "down":
+        log.error(
+            "InfraOrchestrator: backend bring-up finished overall=%s — the deployment is "
+            "NOT functional (a required backend is down). Actionable:\n  %s",
+            overall,
+            lines,
+        )
+    elif overall == "degraded":
+        log.warning(
+            "InfraOrchestrator: backend bring-up finished overall=%s — one or more backends "
+            "are unavailable. Actionable:\n  %s",
+            overall,
+            lines,
+        )
+    else:
+        log.info("InfraOrchestrator: backend bring-up finished overall=%s.", overall)
+
+
 def start_orchestrator_in_background_thread() -> threading.Thread:
     """Kick off ``orchestrator.start_all()`` in a dedicated daemon thread.
 
@@ -1572,7 +1602,11 @@ def start_orchestrator_in_background_thread() -> threading.Thread:
     holder: dict[str, Any] = {}
 
     async def _drive() -> None:
-        await orch.start_all()
+        snapshot = await orch.start_all()
+        # Surface the aggregate bring-up verdict LOUDLY at boot — the drive
+        # previously discarded this snapshot, so a required-backend failure
+        # was silent until someone polled ``infrastructure_status``.
+        _log_bringup_verdict(snapshot)
         # After backends probe/spawn, run the Rhea tool pre-warm phase
         # (build + Redis-cache the per-tool conda envs declared in the
         # catalog). Pre-warm builds conda envs on disk — a system-
