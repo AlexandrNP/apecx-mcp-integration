@@ -18,12 +18,14 @@ auto-build + concurrency-slot live in nanobrain so any containerized tool reuses
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import os
 import shutil
 import tempfile
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from nanobrain.core.component_base import ComponentConfigurationError
 from nanobrain.core.unified_tool_descriptor import UnifiedToolDescriptor
@@ -136,14 +138,17 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
         THROUGH the seam, not around it. Delegates to ``ensure_image`` (no new build logic)."""
         await self.ensure_image(on_progress=on_progress)
 
-    def _docker_argv(self, workdir: Path, memory_mb: int) -> list[str]:
+    def _docker_argv(self, workdir: Path, memory_mb: int, container_name: str) -> list[str]:
         """Hardened ``docker run`` argv (moved verbatim from structural_reasoning_step): network-isolated,
         cap-dropped, memory/pids-capped, host-uid so the written result.json is host-owned; /work is
-        read-write (the job writes result.json back)."""
+        read-write (the job writes result.json back). ``--name`` makes the container killable-by-name so a
+        timeout can ``docker kill`` it instead of orphaning it (``--rm`` only removes it AFTER it stops)."""
         return [
             "docker",
             "run",
             "--rm",
+            "--name",
+            container_name,
             "--network",
             "none",
             "--cap-drop",
@@ -168,6 +173,20 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
             "/work/job.json",
             "/work/result.json",
         ]
+
+    @staticmethod
+    async def _docker_kill(container_name: str) -> None:
+        """Best-effort ``docker kill <name>`` (a hung container must not outlive its run). Never
+        raises — the caller is already unwinding a timeout. Mirrors sandboxed_novel_step._docker_kill."""
+        with contextlib.suppress(Exception):
+            killer = await asyncio.create_subprocess_exec(
+                "docker",
+                "kill",
+                container_name,
+                stdout=asyncio.subprocess.DEVNULL,
+                stderr=asyncio.subprocess.DEVNULL,
+            )
+            await asyncio.wait_for(killer.communicate(), timeout=10)
 
     async def run_sasa(
         self,
@@ -209,7 +228,8 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
                 job["chain"] = requested_chain
             (workdir / "job.json").write_text(json.dumps(job))
 
-            argv = self._docker_argv(workdir, memory_mb)
+            container_name = f"apecx-pymol-{uuid4().hex[:12]}"
+            argv = self._docker_argv(workdir, memory_mb, container_name)
             async with acquire_container_slot():
                 proc = await asyncio.create_subprocess_exec(
                     *argv, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
@@ -217,6 +237,10 @@ class PyMOLToolBackendAdapter(ToolBackendAdapter):
                 try:
                     _, stderr_b = await asyncio.wait_for(proc.communicate(), timeout=timeout)
                 except TimeoutError as exc:
+                    # Kill the CONTAINER by name (best-effort) before the run client — else the
+                    # timed-out container keeps running (proc.kill only kills the docker CLI; --rm
+                    # removes it only after it stops).
+                    await self._docker_kill(container_name)
                     proc.kill()
                     await proc.communicate()
                     raise RuntimeError(f"PyMOL container exceeded {timeout:.0f}s timeout") from exc

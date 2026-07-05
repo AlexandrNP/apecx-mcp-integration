@@ -55,3 +55,27 @@ def test_package_version_resolver_returns_a_string():
 
     v = _resolve_package_version()
     assert isinstance(v, str) and v  # a version string or the honest "unknown"
+
+
+def test_pymol_docker_argv_names_container_for_killability(tmp_path):
+    """Containerization-hardening (container-timeout-no-orphan): the docker-run argv must PIN the
+    container name via ``--name <container_name>`` so a timeout can ``docker kill`` it by name
+    instead of orphaning it (``--rm`` removes it only AFTER it stops). Pure argv-shape check — no
+    docker, no mock. Also asserts the pre-existing hardening (``--rm``, network isolation) survived
+    the edit that inserted ``--name``.
+    """
+    from pathlib import Path
+
+    adapter = PyMOLToolBackendAdapter()
+    argv = adapter._docker_argv(Path("/tmp/x"), 2048, "apecx-pymol-deadbeef")
+
+    # --name must be present AND immediately followed by the container name (so `docker kill <name>`
+    # targets THIS container).
+    assert "--name" in argv, argv
+    name_idx = argv.index("--name")
+    assert argv[name_idx + 1] == "apecx-pymol-deadbeef", argv
+
+    # Hardening intact: --rm still present, network still isolated to "none".
+    assert "--rm" in argv, argv
+    assert "--network" in argv, argv
+    assert argv[argv.index("--network") + 1] == "none", argv

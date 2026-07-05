@@ -33,12 +33,14 @@ with ``$APECX_CONSERVED_SITES_NOCACHE=1`` (see ``_align_cache`` for the full con
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import os
 import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from nanobrain.core.step import BaseStep, StepConfig
 from nanobrain.library.runtime.container_admission import acquire_container_slot
@@ -211,10 +213,22 @@ class LocalMafftAlignStep(BaseStep):
         with tempfile.TemporaryDirectory(prefix="apecx_mafft_") as tmp:
             workdir = Path(tmp)
             (workdir / "input.fasta").write_text(fasta_text, encoding="utf-8")
+            container_name = f"apecx-mafft-{uuid4().hex[:12]}"
             try:
                 async with acquire_container_slot():
-                    proc = await asyncio.to_thread(self._docker_run_mafft, workdir)
+                    proc = await asyncio.to_thread(self._docker_run_mafft, workdir, container_name)
             except subprocess.TimeoutExpired as exc:
+                # Kill the CONTAINER by name (best-effort, off-loop) — the subprocess timeout only
+                # SIGKILLs the docker CLI, leaving the container running (--rm removes it only after
+                # it stops).
+                with contextlib.suppress(Exception):
+                    await asyncio.to_thread(
+                        subprocess.run,
+                        ["docker", "kill", container_name],
+                        capture_output=True,
+                        timeout=10,
+                        check=False,
+                    )
                 raise ValueError(
                     f"LocalMafftAlignStep '{self.name}': MAFFT (container) timed out after "
                     f"{self._timeout}s"
@@ -239,10 +253,13 @@ class LocalMafftAlignStep(BaseStep):
             )
         return aligned
 
-    def _docker_run_mafft(self, workdir: Path) -> subprocess.CompletedProcess[str]:
+    def _docker_run_mafft(
+        self, workdir: Path, container_name: str
+    ) -> subprocess.CompletedProcess[str]:
         """Hardened ``docker run`` of MAFFT (network-isolated, cap-dropped, mem/pids-capped, host-uid;
         mirrors the PyMOL container's argv). MAFFT reads /work/input.fasta and writes the MSA to
-        STDOUT (captured here) — it writes nothing back to /work."""
+        STDOUT (captured here) — it writes nothing back to /work. ``--name`` makes the container
+        killable-by-name so a timeout can ``docker kill`` it instead of orphaning it."""
         mafft_cmd = ["mafft", self._mode]
         if self._amino:
             mafft_cmd.append("--amino")
@@ -251,6 +268,8 @@ class LocalMafftAlignStep(BaseStep):
             "docker",
             "run",
             "--rm",
+            "--name",
+            container_name,
             "--network",
             "none",
             "--cap-drop",
