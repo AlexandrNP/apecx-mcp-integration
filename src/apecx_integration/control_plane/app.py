@@ -34,6 +34,9 @@ import argparse
 import logging
 import os
 import sys
+import time
+import uuid
+from contextvars import ContextVar
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -52,6 +55,23 @@ from apecx_integration.control_plane.routes import (
 )
 
 log = logging.getLogger(__name__)
+
+# Per-request correlation id (set by the request-log middleware). A future logging
+# Filter can read this to stamp EVERY record with the request id; for now the access
+# line carries it explicitly.
+_request_id_var: ContextVar[str] = ContextVar("cp_request_id", default="-")
+
+
+def _sanitize_request_id(inbound: str | None) -> str:
+    """Sanitize a caller-supplied ``X-Request-ID`` (ASCII alnum/-/_ only, ≤64 chars) so it can't
+    inject newlines/control chars into the log line or response header; mint a short id when
+    absent/empty. Note ``c.isascii()`` is REQUIRED — bare ``isalnum()`` admits Unicode letters,
+    which then blow up latin-1 response-header encoding (a caller-controlled 500)."""
+    if inbound:
+        cleaned = "".join(c for c in inbound if (c.isascii() and c.isalnum()) or c in "-_")[:64]
+        if cleaned:
+            return cleaned
+    return uuid.uuid4().hex[:12]
 
 
 def _resolve_sweep_interval() -> float:
@@ -191,6 +211,30 @@ def create_app(
         version="0.0.1",
         lifespan=monitor_lifespan,
     )
+
+    @app.middleware("http")
+    async def _request_log(request, call_next):
+        """Mint/propagate a request id, emit a structured access line, echo the id on the
+        response so a client / load balancer / operator can correlate one request. Complements
+        (does not replace) uvicorn's access log; must NOT swallow handler exceptions."""
+        rid = _sanitize_request_id(request.headers.get("x-request-id"))
+        token = _request_id_var.set(rid)
+        start = time.monotonic()
+        try:
+            response = await call_next(request)
+        finally:
+            _request_id_var.reset(token)
+        log.info(
+            "cp-access rid=%s %s %s -> %d %.1fms",
+            rid,
+            request.method,
+            request.url.path,
+            response.status_code,
+            (time.monotonic() - start) * 1000.0,
+        )
+        response.headers["X-Request-ID"] = rid
+        return response
+
     app.state.engine = resolved_engine
     app.state.session_factory = session_factory
     app.state.recorder = recorder or ProvenanceRecorder(session_factory)
