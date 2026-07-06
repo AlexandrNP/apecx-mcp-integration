@@ -34,7 +34,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from apecx_integration.control_plane.dependencies import get_session
@@ -44,10 +44,17 @@ from apecx_integration.control_plane.models.entities import (
 from apecx_integration.control_plane.models.entities import (
     ProvenanceEvent as ProvenanceEventORM,
 )
-from apecx_integration.control_plane.schemas.api import ApprovalMetricsResponse
+from apecx_integration.control_plane.models.entities import (
+    Run as RunORM,
+)
+from apecx_integration.control_plane.schemas.api import (
+    ApprovalMetricsResponse,
+    RunMetricsResponse,
+)
 from apecx_integration.control_plane.schemas.enums import (
     ApprovalStatus,
     ProvenanceEventType,
+    RunStatus,
 )
 
 router = APIRouter(prefix="/metrics", tags=["metrics"])
@@ -202,3 +209,20 @@ def __import_uuid(s: str):
     from uuid import UUID
 
     return UUID(s)
+
+
+@router.get("/runs", response_model=RunMetricsResponse)
+def run_metrics(
+    session: Annotated[Session, Depends(get_session)],
+) -> RunMetricsResponse:
+    """Run counts by status + total — deployment run-health in one call, instead of
+    paging ``/runs/list`` and counting client-side. Operator/dashboard endpoint: a
+    GLOBAL aggregate across all users (like ``/metrics/approvals``), exposing only
+    integer counts, no per-run data."""
+    rows = session.execute(select(RunORM.status, func.count()).group_by(RunORM.status)).all()
+    # The ``run.status`` Enum column always reads back as a RunStatus (a corrupt DB
+    # value fails loud via the column's result processor, never reaching here).
+    by_status: dict[str, int] = {s.value: 0 for s in RunStatus}
+    for status, n in rows:
+        by_status[status.value] = int(n)
+    return RunMetricsResponse(by_status=by_status, total=sum(by_status.values()))

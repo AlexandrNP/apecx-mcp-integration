@@ -20,8 +20,9 @@ from __future__ import annotations
 from uuid import uuid4
 
 import pytest
-from apecx_integration.control_plane.app import create_app
 from fastapi.testclient import TestClient
+
+from apecx_integration.control_plane.app import create_app
 
 
 @pytest.fixture(name="client")
@@ -48,6 +49,7 @@ def test_openapi_schema_is_served(client: TestClient) -> None:
         "/runs/list",
         "/runs/status",
         "/runs/artifact",
+        "/metrics/runs",
         "/hpc/estimate",
         "/hpc/confirm",
         "/hpc/submit",
@@ -70,9 +72,7 @@ def test_healthz_is_the_only_non_stub(client: TestClient) -> None:
         ),
     ],
 )
-def test_hpc_submit_still_501(
-    client: TestClient, path: str, payload: dict[str, object]
-) -> None:
+def test_hpc_submit_still_501(client: TestClient, path: str, payload: dict[str, object]) -> None:
     """``/hpc/submit`` is the ONLY route still 501 — genuinely blocked
     on T04/T05-side executor runtime (actual qsub or Globus Compute
     submission). ``/hpc/export`` landed 2026-04-22 (T05 bundle
@@ -85,9 +85,9 @@ def test_hpc_submit_still_501(
     assert resp.status_code == 501
     detail = resp.json()["detail"]
     assert "not implemented" in detail.lower()
-    assert (
-        "implementation_plan.md" in detail or "T" in detail
-    ), f"501 detail for {path} does not reference a task: {detail!r}"
+    assert "implementation_plan.md" in detail or "T" in detail, (
+        f"501 detail for {path} does not reference a task: {detail!r}"
+    )
 
 
 def test_composer_backed_routes_return_503_without_composer(

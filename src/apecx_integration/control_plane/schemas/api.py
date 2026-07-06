@@ -350,6 +350,20 @@ class ApprovalMetricsResponse(_APIBase):
     window_start_iso: str = Field(description="Caller-supplied `since` timestamp, echoed.")
 
 
+class RunMetricsResponse(_APIBase):
+    """Aggregate run-health telemetry: run counts by status + total. A server-side
+    aggregate so an operator/dashboard sees deployment run health in one call instead of
+    paging `/runs/list` and counting client-side."""
+
+    by_status: dict[str, int] = Field(
+        description=(
+            "Run count keyed by RunStatus value (pending/running/paused/completed/failed/"
+            "cancelled). ALWAYS carries every status (0-filled) for a stable shape."
+        ),
+    )
+    total: int = Field(ge=0, description="Total runs = sum of by_status values.")
+
+
 # --- /verified_synonyms (T02: batched cache lookup + create + revoke) -----
 
 

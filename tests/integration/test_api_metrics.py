@@ -11,13 +11,14 @@ from datetime import UTC, datetime, timedelta
 from uuid import UUID, uuid4
 
 import pytest
+from sqlalchemy import text
+
 from apecx_integration.control_plane.db import make_session_factory
 from apecx_integration.control_plane.provenance.recorder import ProvenanceRecorder
 from apecx_integration.control_plane.schemas.enums import (
     ApprovalStatus,
     ProvenanceEventType,
 )
-from sqlalchemy import text
 
 pytestmark = pytest.mark.integration
 
@@ -283,3 +284,57 @@ def test_window_excludes_older_events(cp_client, cp_engine) -> None:
     resp = cp_client.get("/metrics/approvals", params={"since": since})
     assert resp.status_code == 200
     assert resp.json()["count"] == 1
+
+
+# --- GET /metrics/runs (run-health aggregate) --------------------------------
+
+
+def _seed_run_status(engine, status_name: str, *, user_id: str = "alex") -> None:
+    """Insert one run with the given enum-NAME status (the DB stores enum names,
+    e.g. 'RUNNING'; the endpoint returns the lowercase RunStatus VALUE, 'running')."""
+    with engine.begin() as conn:
+        conn.execute(
+            text("INSERT INTO run (id, user_id, status, created_at) VALUES (:id, :uid, :st, :ts)"),
+            {
+                "id": str(uuid4()),
+                "uid": user_id,
+                "st": status_name,
+                "ts": datetime.now(UTC).isoformat(),
+            },
+        )
+
+
+def test_runs_metrics_counts_by_status(cp_client, cp_engine) -> None:
+    for _ in range(2):
+        _seed_run_status(cp_engine, "RUNNING")
+    _seed_run_status(cp_engine, "FAILED")
+    for _ in range(3):
+        _seed_run_status(cp_engine, "COMPLETED")
+
+    resp = cp_client.get("/metrics/runs")
+    assert resp.status_code == 200, resp.text
+    body = resp.json()
+    assert body["total"] == 6
+    bs = body["by_status"]
+    assert bs["running"] == 2
+    assert bs["failed"] == 1
+    assert bs["completed"] == 3
+    # Stable shape: EVERY status present (0-filled), not just the non-zero ones.
+    for s in ("pending", "running", "paused", "completed", "failed", "cancelled"):
+        assert s in bs, f"status {s} missing from by_status: {bs}"
+    assert bs["pending"] == 0 and bs["paused"] == 0 and bs["cancelled"] == 0
+
+
+def test_runs_metrics_empty_is_all_zero(cp_client) -> None:
+    resp = cp_client.get("/metrics/runs")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["total"] == 0
+    assert body["by_status"] == {
+        "pending": 0,
+        "running": 0,
+        "paused": 0,
+        "completed": 0,
+        "failed": 0,
+        "cancelled": 0,
+    }
