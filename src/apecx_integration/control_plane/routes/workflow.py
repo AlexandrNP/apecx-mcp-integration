@@ -395,6 +395,7 @@ async def generate_plan(
 @router.post("/execute", response_model=ExecuteWorkflowResponse)
 async def execute_workflow(
     body: ExecuteWorkflowRequest,
+    session_factory: Annotated[sessionmaker[Session], Depends(get_session_factory)],
     executor: Annotated[LocalExecutor | None, Depends(get_local_executor_or_none)] = None,
 ) -> ExecuteWorkflowResponse:
     """T01 P2 HTTP surface — run a composed workflow to terminal state.
@@ -415,6 +416,17 @@ async def execute_workflow(
     run-state transitions and is the right place to surface failures).
     """
     executor = require_local_executor(executor)
+    # A NONEXISTENT run is a 404 — the executor itself flags this as a "404-equivalent"
+    # (case A), but returning it as 200 + status="failed" flattens "no such run" into the
+    # same shape as a run that actually executed and FAILED. Surface not-found at the HTTP
+    # layer; a run that EXISTS but fails execution still returns 200 + status="failed"
+    # (the correct "caller checks status" contract for real outcomes).
+    with session_factory() as session:
+        if session.get(RunORM, body.run_id) is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"run {body.run_id} not found; cannot execute a non-existent run.",
+            )
     result = await executor.execute(body.run_id)
     return ExecuteWorkflowResponse(
         run_id=result.run_id,

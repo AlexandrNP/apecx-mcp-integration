@@ -20,6 +20,10 @@ raises on non-2xx. Status-code handling:
         description (composer hallucinated an unknown class + exhausted
         retries, a config error, or a T13 scan violation). Wrapped so
         the cause is visible instead of an opaque 500 / httpx traceback.
+- 404 → ``ControlPlaneNotFoundError`` (``detail`` as message). A referenced
+        resource does not exist — commonly ``/workflows/execute`` on a stale
+        run_id (distinct from a run that executed and FAILED, a 200 with a
+        status), but covers any CP 404 (approval / allocation / status).
 - other non-2xx → ``httpx.HTTPStatusError`` via ``raise_for_status()``.
 
 Real-backed endpoints (as of 2026-04-22):
@@ -104,6 +108,17 @@ class WorkflowCompositionError(RuntimeError):
     """
 
 
+class ControlPlaneNotFoundError(RuntimeError):
+    """Raised when the Control Plane returns 404 — a referenced resource does not
+    exist. The common case is ``/workflows/execute`` on a stale/unknown run_id
+    (distinct from a run that executed and FAILED, which is a 200 with a ``status``
+    field), but this covers ANY CP 404 (approval / allocation / run / status
+    not-found) since it lives in the shared request path. Carries the server's
+    ``detail`` so an MCP caller sees the cause instead of an opaque
+    ``httpx.HTTPStatusError``.
+    """
+
+
 class ControlPlaneClient:
     """HTTP client to the Control Plane.
 
@@ -147,6 +162,11 @@ class ControlPlaneClient:
                 detail
                 or f"Control Plane returned 422 from {path} "
                 "(could not compose a workflow from this description)"
+            )
+        if resp.status_code == httpx.codes.NOT_FOUND:
+            detail = self._extract_detail(resp.json())
+            raise ControlPlaneNotFoundError(
+                detail or f"Control Plane returned 404 from {path} (resource not found)"
             )
         resp.raise_for_status()
         return response_model.model_validate(resp.json())

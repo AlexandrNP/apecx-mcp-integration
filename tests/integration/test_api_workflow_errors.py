@@ -14,12 +14,17 @@ failure modes (ComposerResponseError, etc.) are the injected inputs.
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
+from uuid import uuid4
+
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy import text
 
 from apecx_integration.composition._errors import ComposerResponseError
 from apecx_integration.control_plane.app import create_app
 from apecx_integration.control_plane.db import make_session_factory
+from apecx_integration.control_plane.executors.local import ExecutionResult
 from apecx_integration.control_plane.models.entities import Run as RunORM
 from apecx_integration.control_plane.schemas.enums import RunStatus
 
@@ -94,3 +99,108 @@ def test_start_workflow_unexpected_error_still_500(cp_engine) -> None:
     run = _only_run_row(cp_engine)
     assert run.status is RunStatus.FAILED
     assert run.completed_at is not None
+
+
+# --- /workflows/execute NOT-FOUND → 404 (branch execute-404-nonexistent-run) ---
+#
+# execute_workflow FIRST calls require_local_executor(executor) (503 if None),
+# THEN reads the DB and raises 404 when the run does not exist. A run that
+# EXISTS but fails execution still returns 200 + status="failed" (unchanged).
+# So we MUST inject a non-None executor; the 404 test never reaches its
+# execute() (404 raised first), the not-404 test does reach it.
+
+
+class _StubExecutor:
+    """LocalExecutor stand-in — the injected dependency (not a bypassed real
+    dep). ``require_local_executor`` only checks non-None; the route's 404
+    precondition + DB read are exercised for real against ``cp_engine``.
+    """
+
+    def __init__(self, result: ExecutionResult) -> None:
+        self._result = result
+
+    async def execute(self, run_id) -> ExecutionResult:
+        return self._result
+
+
+def _insert_run(cp_engine, run_id, *, status: str = "RUNNING") -> None:
+    with cp_engine.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO run (id, user_id, status, created_at) VALUES (:id, :uid, :status, :ts)"
+            ),
+            {
+                "id": str(run_id),
+                "uid": "alex",
+                "status": status,
+                "ts": datetime.now(UTC).isoformat(),
+            },
+        )
+
+
+def test_execute_nonexistent_run_returns_404(cp_engine) -> None:
+    """No run inserted → the 404 precondition fires and the executor is never
+    reached (the stub result would be COMPLETED, so a 404 proves not-found
+    short-circuits before execute()).
+    """
+    unreachable = ExecutionResult(
+        run_id=uuid4(),
+        status=RunStatus.COMPLETED,
+        reason=None,
+        output_artifact_id=None,
+    )
+    app = create_app(engine=cp_engine, local_executor=_StubExecutor(unreachable))
+    client = TestClient(app, raise_server_exceptions=False)
+
+    missing_id = uuid4()
+    resp = client.post("/workflows/execute", json={"run_id": str(missing_id)})
+
+    assert resp.status_code == 404, resp.text
+    assert "not found" in resp.json()["detail"], resp.json()["detail"]
+
+
+def test_execute_existing_run_is_not_404(cp_engine) -> None:
+    """A run that EXISTS reaches the executor: 200 (NOT 404), proving the
+    precondition only fires for genuine not-found.
+    """
+    run_id = uuid4()
+    _insert_run(cp_engine, run_id, status="RUNNING")
+
+    result = ExecutionResult(
+        run_id=run_id,
+        status=RunStatus.COMPLETED,
+        reason=None,
+        output_artifact_id=None,
+    )
+    app = create_app(engine=cp_engine, local_executor=_StubExecutor(result))
+    client = TestClient(app, raise_server_exceptions=False)
+
+    resp = client.post("/workflows/execute", json={"run_id": str(run_id)})
+
+    assert resp.status_code == 200, resp.text
+    assert resp.status_code != 404
+    assert resp.json()["status"] == RunStatus.COMPLETED.value
+
+
+def test_execute_existing_run_that_fails_is_still_200_not_404(cp_engine) -> None:
+    """A run that EXISTS but whose execution FAILS still returns 200 + status='failed'
+    — the 404 is existence-only, NOT a proxy for failure. Makes the differential airtight
+    (contrast test_execute_nonexistent_run_returns_404)."""
+    run_id = uuid4()
+    _insert_run(cp_engine, run_id, status="RUNNING")
+
+    result = ExecutionResult(
+        run_id=run_id,
+        status=RunStatus.FAILED,
+        reason="workflow step raised",
+        output_artifact_id=None,
+    )
+    app = create_app(engine=cp_engine, local_executor=_StubExecutor(result))
+    client = TestClient(app, raise_server_exceptions=False)
+
+    resp = client.post("/workflows/execute", json={"run_id": str(run_id)})
+
+    assert resp.status_code == 200, resp.text  # a real FAILED is 200, not 404
+    body = resp.json()
+    assert body["status"] == RunStatus.FAILED.value
+    assert body["reason"] == "workflow step raised"
