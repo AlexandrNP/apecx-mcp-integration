@@ -216,24 +216,32 @@ def create_app(
     async def _request_log(request, call_next):
         """Mint/propagate a request id, emit a structured access line, echo the id on the
         response so a client / load balancer / operator can correlate one request. Complements
-        (does not replace) uvicorn's access log; must NOT swallow handler exceptions."""
+        (does not replace) uvicorn's access log; must NOT swallow handler exceptions.
+
+        The access line is logged in ``finally`` so it fires on BOTH the success AND the
+        unhandled-exception (→500) path — correlation matters MOST when an operator is debugging
+        a 500. ``status`` defaults to 500 so a raised handler is logged as such before the
+        exception re-propagates (the X-Request-ID response header is only settable on the success
+        path — the 500 response is produced upstream by Starlette's error middleware)."""
         rid = _sanitize_request_id(request.headers.get("x-request-id"))
         token = _request_id_var.set(rid)
         start = time.monotonic()
+        status = 500
         try:
             response = await call_next(request)
+            status = response.status_code
+            response.headers["X-Request-ID"] = rid
+            return response
         finally:
             _request_id_var.reset(token)
-        log.info(
-            "cp-access rid=%s %s %s -> %d %.1fms",
-            rid,
-            request.method,
-            request.url.path,
-            response.status_code,
-            (time.monotonic() - start) * 1000.0,
-        )
-        response.headers["X-Request-ID"] = rid
-        return response
+            log.info(
+                "cp-access rid=%s %s %s -> %d %.1fms",
+                rid,
+                request.method,
+                request.url.path,
+                status,
+                (time.monotonic() - start) * 1000.0,
+            )
 
     app.state.engine = resolved_engine
     app.state.session_factory = session_factory

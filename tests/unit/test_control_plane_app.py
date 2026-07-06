@@ -133,3 +133,27 @@ def test_access_line_logged_with_rid(caplog):
         client.get("/healthz", headers={"X-Request-ID": "trace9"})
     lines = [r.getMessage() for r in caplog.records if "cp-access" in r.getMessage()]
     assert any("rid=trace9" in m and "GET /healthz -> 200" in m for m in lines), lines
+
+
+def test_access_line_logged_on_500_and_not_swallowed(caplog):
+    """On an unhandled handler exception (→500) the access line STILL logs (rid<->error
+    correlation matters most when debugging a 500), and the exception is NOT swallowed."""
+    a = app.create_app()
+
+    async def _boom():
+        raise RuntimeError("kaboom")
+
+    a.add_api_route("/_boom_test", _boom, methods=["GET"])
+    client = TestClient(a, raise_server_exceptions=False)  # return the 500, don't propagate
+    with caplog.at_level(logging.INFO, logger=app.log.name):
+        resp = client.get("/_boom_test", headers={"X-Request-ID": "errtrace"})
+    assert resp.status_code == 500  # not swallowed into a 200
+    # The 500 took the EXCEPTION path (Starlette built the response upstream), NOT the success
+    # path — so our header was never attached. This pins "re-raised, not caught-and-returned".
+    assert "X-Request-ID" not in resp.headers
+    assert any(
+        "cp-access" in r.getMessage()
+        and "rid=errtrace" in r.getMessage()
+        and "-> 500" in r.getMessage()
+        for r in caplog.records
+    ), [r.getMessage() for r in caplog.records if "cp-access" in r.getMessage()]
