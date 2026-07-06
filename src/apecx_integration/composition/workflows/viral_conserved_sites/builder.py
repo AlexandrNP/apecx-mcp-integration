@@ -9,6 +9,7 @@ Pipeline (each DirectLink inherits ``auto_transfer: true`` from config_version 2
 reads the one key it needs out of the prior step's output dict — no TransformLink):
 
     workflow_input {taxon_id, protein, feature_type?}
+      → normalize_protein  ProteinNameNormalizationSubworkflowStep  → {taxon_id, protein, feature_type}
       → fetch     BvbrcProteinFastaStep   → {fasta_text, ...}
       → align     <aligner step>          → {alignment_fasta, ...}   # mafft | muscle (EO-54b)
       → conserve  ConservationScoreStep   → conservation result
@@ -106,6 +107,24 @@ def _conserved_sites_core_builder(aligner: str, max_sequences: int = 25):
     )
     b.add_input("workflow_input", "DataUnitMemory")
 
+    # Protein-name normalization (front of the cascade): resolve the user's protein name to the
+    # taxon's actual BV-BRC product term BEFORE the fetch, so a name like "E2 glycoprotein" that the
+    # substring fetch can't match (BV-BRC annotates "E2 envelope glycoprotein") is rewritten instead
+    # of silently substituting a different protein. Degrade-loud: on any failure it passes the
+    # original name through, so the fetch behaves exactly as it would without this step. The workflow
+    # ENTRY data unit stays `fetch_in` (external callers + rhea_genomic_analysis_step deposit that
+    # key), and the authoritative input contract (RoC-2a / G6, the RoC-2b derivation source) moves
+    # here with it. The inner first-step DU is `norm_in` (G117: must differ from this step's own
+    # `fetch_in`).
+    b.add_step(
+        "normalize_protein",
+        f"{_STEPS}.protein_name_normalization_subworkflow_step.ProteinNameNormalizationSubworkflowStep",
+        step_input_schema=FETCH_INPUT_SCHEMA,
+        input_data_units=_du("fetch_in"),
+        output_data_units=_du("norm_out"),
+        triggers=_trig("fetch_in"),
+    )
+
     b.add_step(
         "fetch",
         f"{_STEPS}.bvbrc_protein_fasta_step.BvbrcProteinFastaStep",
@@ -114,11 +133,11 @@ def _conserved_sites_core_builder(aligner: str, max_sequences: int = 25):
         # records (partial genomes, mis-annotated polyproteins) don't gap-blur the MSA — and so a
         # single long outlier can't collapse the keep set to <2 (the dengue-envelope bug).
         length_cluster_tolerance=0.2,
-        # RoC-2a — authoritative input contract (G6, runtime FAIL-FAST + RoC-2b derivation source).
-        step_input_schema=FETCH_INPUT_SCHEMA,
-        input_data_units=_du("fetch_in"),
+        # Input arrives pre-normalized from `normalize_protein` (the entry contract + schema live on
+        # that step now); `seq_fetch_in` is this step's internal DU, distinct from the entry `fetch_in`.
+        input_data_units=_du("seq_fetch_in"),
         output_data_units=_du("protein_fasta"),
-        triggers=_trig("fetch_in"),
+        triggers=_trig("seq_fetch_in"),
     )
     b.add_step(
         "align",
@@ -143,7 +162,8 @@ def _conserved_sites_core_builder(aligner: str, max_sequences: int = 25):
         triggers=_trig("report_in"),
     )
 
-    b.add_link("workflow_input", "fetch.fetch_in", link_type="direct")
+    b.add_link("workflow_input", "normalize_protein.fetch_in", link_type="direct")
+    b.add_link("normalize_protein.norm_out", "fetch.seq_fetch_in", link_type="direct")
     b.add_link("fetch.protein_fasta", "align.align_in", link_type="direct")
     b.add_link("align.alignment", "conserve.conserve_in", link_type="direct")
     b.add_link("conserve.conservation_result", "report.report_in", link_type="direct")

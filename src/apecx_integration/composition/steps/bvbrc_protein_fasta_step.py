@@ -157,9 +157,13 @@ class BvbrcProteinFastaStep(BaseStep):
                 f"name/substring (e.g. 'E1', 'capsid'); got {protein!r}"
             )
         protein = protein.strip()
+        # product_exact (set by ProteinNameNormalizationStep when it resolved the name to a VERBATIM
+        # BV-BRC product) → retrieve with an EXACT eq(product,"…") query instead of the wildcard,
+        # which BV-BRC's Solr returns 0 for on a multi-word phrase. Absent → current wildcard behavior.
+        product_exact = bool(payload.get("product_exact"))
 
         records, n_fetched, n_dropped_length_outlier = await asyncio.to_thread(
-            self._fetch, taxon_id, protein, feature_type
+            self._fetch, taxon_id, protein, feature_type, product_exact
         )
 
         requested_protein = protein
@@ -175,7 +179,7 @@ class BvbrcProteinFastaStep(BaseStep):
             # protein 3") still misses here — protein-name normalization is a separate follow-up
             # (recorded in docs/fresh_install_findings.md).
             mp_records, mp_fetched, mp_dropped = await asyncio.to_thread(
-                self._fetch, taxon_id, protein, "mat_peptide"
+                self._fetch, taxon_id, protein, "mat_peptide", product_exact
             )
             if len(mp_records) >= 2:
                 log.info(
@@ -284,15 +288,15 @@ class BvbrcProteinFastaStep(BaseStep):
 
     # ----- real BV-BRC data-API access (no mocks; FAIL-LOUD on error) -----
     def _fetch(
-        self, taxon_id: int, protein: str, feature_type: str
+        self, taxon_id: int, protein: str, feature_type: str, exact: bool = False
     ) -> tuple[list[dict[str, Any]], int, int]:
         """Return ``(records, n_fetched, n_dropped_length_outlier)``.
 
         ``n_fetched`` = records that resolved to an AA sequence before the length-cluster cull;
         ``n_dropped_length_outlier`` = records culled as length outliers. Both feed the report's
-        fetched-vs-used disclosure.
+        fetched-vs-used disclosure. ``exact`` selects an exact vs wildcard BV-BRC product query.
         """
-        features = self._query_features(taxon_id, protein, feature_type)
+        features = self._query_features(taxon_id, protein, feature_type, exact)
         # The BV-BRC query is a SUBSTRING match (eq(product,*X*)); drop records where the
         # protein term only matches mid-word (e.g. "structural" inside "nonstructural
         # polyprotein") so we never silently align the wrong protein. If the boundary
@@ -481,14 +485,20 @@ class BvbrcProteinFastaStep(BaseStep):
         return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
 
     def _query_features(
-        self, taxon_id: int, protein: str, feature_type: str
+        self, taxon_id: int, protein: str, feature_type: str, exact: bool = False
     ) -> list[dict[str, Any]]:
         # Over-fetch features (some md5s resolve to no sequence) then cap in _fetch.
         limit = self._max_sequences * 3
+        # BV-BRC's Solr product field returns 0 for a WILDCARDED multi-word phrase (e.g.
+        # *E2 envelope glycoprotein*) even when that exact product exists, so a name resolved
+        # VERBATIM from the catalog (exact=True, via ProteinNameNormalizationStep's product_exact)
+        # is queried with an EXACT eq(product,"…") match; an unresolved user substring keeps the
+        # wildcard eq(product,*…*) (requests percent-encodes the quotes/spaces in the URL).
+        product_clause = f'eq(product,"{protein}")' if exact else f"eq(product,*{protein}*)"
         query = (
             f"eq(taxon_id,{taxon_id})"
             f"&eq(feature_type,{feature_type})"
-            f"&eq(product,*{protein}*)"
+            f"&{product_clause}"
             f"&select(patric_id,product,genome_name,aa_sequence_md5)"
             f"&limit({limit})"
         )
