@@ -53,6 +53,41 @@ from apecx_integration.control_plane.routes import (
 
 log = logging.getLogger(__name__)
 
+
+def _resolve_sweep_interval() -> float:
+    """Seconds between stuck-run sweeps. Overridable via ``APECX_RUN_SWEEP_INTERVAL_SECONDS``
+    (operators tune it; tests drive it fast). Falls back to 300 s on a missing/invalid/non-positive
+    value — a bad env var must never break serve startup."""
+    try:
+        val = float(os.environ.get("APECX_RUN_SWEEP_INTERVAL_SECONDS", "300"))
+    except ValueError:
+        return 300.0
+    # Must be finite + positive: `inf`/`nan`/≤0 would silently DISABLE the reaper (sleep(inf)
+    # never wakes) — the exact silent-non-execution class this whole fix exists to prevent.
+    return val if 0 < val < float("inf") else 300.0
+
+
+async def _run_sweep_loop(sweeper, *, interval_seconds: float, stale_after) -> None:
+    """Periodically run the RunStateSweeper so a run whose executor died mid-flight is reaped to
+    FAILED (with an actionable provenance note) instead of sitting in RUNNING forever. The sweeper
+    is fully built + tested but was never invoked at serve time until this wiring. ``sweep`` is
+    SYNC — run it off-loop via ``to_thread`` so it never blocks the event loop; a sweep exception
+    must never kill the loop (a transient DB hiccup should not stop future sweeps)."""
+    import asyncio
+    from contextlib import suppress
+
+    while True:
+        await asyncio.sleep(interval_seconds)
+        with suppress(Exception):
+            reaped = await asyncio.to_thread(sweeper.sweep, stale_after=stale_after)
+            if reaped:
+                log.warning(
+                    "RunStateSweeper reaped %d stale run(s) → FAILED (stale_after=%s).",
+                    len(reaped),
+                    stale_after,
+                )
+
+
 # Default config paths resolved RELATIVE TO this module file, so they
 # work in BOTH editable-install AND isolated-wheel install modes
 # (uv tool / pipx / pip --user). ``Path(__file__).resolve().parent.parent``
@@ -110,24 +145,42 @@ def create_app(
     resolved_engine = engine or make_engine()
     session_factory = make_session_factory(resolved_engine)
 
-    # Optional always-on infra monitor daemon (W3). Only attached when serving (start_monitor=True);
-    # tests build the app WITHOUT it, so create_app stays infra-free (no docker polling in tests).
+    # Optional always-on serve daemons (W3). Only attached when serving (start_monitor=True); tests
+    # build the app WITHOUT it, so create_app stays infra-free (no docker polling in tests). Two
+    # background loops run for the serving lifetime: the InfraMonitor (backend polling) and the
+    # RunStateSweeper (reaps runs stuck in RUNNING/PAUSED after a dead executor — see _run_sweep_loop;
+    # without this wiring the sweeper existed but was never called, so a dead run sat RUNNING forever).
     monitor_lifespan = None
     if start_monitor:
         import asyncio
         from contextlib import asynccontextmanager, suppress
 
+        from apecx_integration.control_plane.notifications.sweeper import (
+            DEFAULT_STALE_AFTER,
+            RunStateSweeper,
+        )
         from apecx_integration.infrastructure.monitor import get_monitor
+
+        sweeper = RunStateSweeper(session_factory, recorder or ProvenanceRecorder(session_factory))
+        sweep_interval = _resolve_sweep_interval()
 
         @asynccontextmanager
         async def monitor_lifespan(_app: FastAPI):
-            task = asyncio.create_task(get_monitor().run_forever())
+            monitor_task = asyncio.create_task(get_monitor().run_forever())
+            sweep_task = asyncio.create_task(
+                _run_sweep_loop(
+                    sweeper,
+                    interval_seconds=sweep_interval,
+                    stale_after=DEFAULT_STALE_AFTER,
+                )
+            )
             try:
                 yield
             finally:
-                task.cancel()
-                with suppress(asyncio.CancelledError, Exception):
-                    await task
+                for task in (monitor_task, sweep_task):
+                    task.cancel()
+                    with suppress(asyncio.CancelledError, Exception):
+                        await task
 
     app = FastAPI(
         title="APECx Control Plane",
@@ -394,7 +447,7 @@ def _serve(args: argparse.Namespace) -> int:
         approval_policy=policy,
         local_executor=executor,
         recorder=serve_recorder,
-        start_monitor=True,  # W3: run the always-on infra monitor daemon while serving
+        start_monitor=True,  # W3: run the always-on infra monitor + stuck-run sweeper while serving
     )
 
     import uvicorn
