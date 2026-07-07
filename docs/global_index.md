@@ -238,6 +238,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | File | Purpose |
 |---|---|
 | `src/apecx_integration/control_plane/__init__.py` | — |
+| `src/apecx_integration/control_plane/_serve_lifecycle.py` | Serve-process lifecycle — PID file + stale-bind detection + stop. |
 | `src/apecx_integration/control_plane/accounting/__init__.py` | — |
 | `src/apecx_integration/control_plane/accounting/cost_estimator.py` | T07 pre-submission allocation estimator (minimal implementation). |
 | `src/apecx_integration/control_plane/app.py` | FastAPI application entrypoint for the Control Plane (Tier 2). |

@@ -2256,6 +2256,19 @@ _(no module-level classes or functions)_
 
 _(no module-level classes or functions)_
 
+## `src/apecx_integration/control_plane/_serve_lifecycle.py`
+_Serve-process lifecycle — PID file + stale-bind detection + stop._
+
+- `def pid_file()`
+- `def _alive(pid: int)` — True iff a process with ``pid`` currently exists.
+- `def _read_record()` — Parse the pid file into ``(pid, host, port)``; None if absent/malformed.
+- `def read_running_pid()` — The live server's pid from the pid file, or None if absent/stale.
+- `def write_pid(host: str, port: int)` — Atomically record this process + the address it is serving (tmp + os.replace).
+- `def remove_pid()`
+- `def port_in_use(host: str, port: int)` — True iff something is already LISTENING on ``host:port``.
+- `def stop_running(*, timeout: float=10.0)` — Stop the pid-file server: SIGTERM, wait up to ``timeout``, then SIGKILL.
+- `def wait_port_free(host: str, port: int, *, timeout: float=10.0)` — Poll until ``host:port`` is free (post-stop) or ``timeout`` elapses.
+
 ## `src/apecx_integration/control_plane/accounting/__init__.py`
 
 _(no module-level classes or functions)_
@@ -2278,11 +2291,14 @@ _FastAPI application entrypoint for the Control Plane (Tier 2)._
 - `def _build_components_from_env(engine: Engine, *, recorder: ProvenanceRecorder | None=None)` — Build composer + approval policy + local executor from env vars.
 - `def _serve(args: argparse.Namespace)`
 - `def _teardown(args: argparse.Namespace)`
+- `def _stop(args: argparse.Namespace)`
+- `def _restart(args: argparse.Namespace)`
 - `def main(argv: list[str] | None=None)`
 
 ## `src/apecx_integration/control_plane/db.py`
 _Control Plane SQLAlchemy engine + session factory (T09)._
 
+- `def cp_home_dir()` — The apecx-cp home directory (holds ``cp.db`` and ``cp.pid``); created if missing.
 - `def get_db_url()` — Resolve the Control Plane DB URL.
 - `def make_engine(url: str | None=None, *, echo: bool=False)` — Create an engine with SQLite WAL mode wired in on connect.
 - `def _install_sqlite_pragmas(engine: Engine)` — Enable WAL journal mode and NORMAL sync on every new SQLite connection.

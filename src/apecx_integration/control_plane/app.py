@@ -472,9 +472,34 @@ def _build_components_from_env(
 
 
 def _serve(args: argparse.Namespace) -> int:
+    from apecx_integration.control_plane import _serve_lifecycle as life
     from apecx_integration.control_plane.infra.lifecycle import ensure_infra_ready
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+
+    # Preflight the bind BEFORE touching infra/migrations: a stale `serve` (or any
+    # process) on host:port used to make uvicorn crash with a bare "address already in
+    # use". Replace it on --replace, else exit with an actionable message (not a traceback).
+    if life.port_in_use(args.host, args.port):
+        running = life.read_running_pid()
+        if getattr(args, "replace", False) and running is not None:
+            log.info(
+                "apecx-cp: replacing running server (pid %s) on %s:%s",
+                running,
+                args.host,
+                args.port,
+            )
+            life.stop_running()
+            life.wait_port_free(args.host, args.port)
+        else:
+            who = f"apecx-cp (pid {running})" if running is not None else "another process"
+            print(
+                f"apecx-cp: {args.host}:{args.port} is already in use by {who}.\n"
+                f"  `apecx-cp restart` to replace it, `apecx-cp stop` to stop it, or "
+                f"`apecx-cp serve --port <N>` to use a different port."
+            )
+            return 1
+
     db_url = get_db_url()
     ensure_infra_ready(db_url)
 
@@ -504,12 +529,16 @@ def _serve(args: argparse.Namespace) -> int:
 
     import uvicorn
 
-    uvicorn.run(
-        wired_app,
-        host=args.host,
-        port=args.port,
-        log_level="info",
-    )
+    life.write_pid(args.host, args.port)  # record pid+addr so stop/restart/teardown find it
+    try:
+        uvicorn.run(
+            wired_app,
+            host=args.host,
+            port=args.port,
+            log_level="info",
+        )
+    finally:
+        life.remove_pid()
     return 0
 
 
@@ -554,8 +583,35 @@ def _teardown(args: argparse.Namespace) -> int:
                 print("Aborted.")
                 return 1
 
+    # Stop the HTTP server too — in sqlite_no_infra mode teardown_infra is a no-op, so
+    # without this the old `serve` keeps :8000 bound and the next serve fails to bind.
+    from apecx_integration.control_plane import _serve_lifecycle as life
+
+    stopped = life.stop_running()
+    if stopped is not None:
+        print(f"apecx-cp: stopped running server (pid {stopped}).")
+
     teardown_infra(db_url, remove_data=args.remove_data)
     return 0
+
+
+def _stop(args: argparse.Namespace) -> int:
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    from apecx_integration.control_plane import _serve_lifecycle as life
+
+    pid = life.stop_running()
+    if pid is None:
+        print("apecx-cp: no running server (nothing to stop).")
+    else:
+        print(f"apecx-cp: stopped server (pid {pid}).")
+    return 0
+
+
+def _restart(args: argparse.Namespace) -> int:
+    # Restart == serve-with-replace: reuse _serve's stop-then-bind path (DRY) rather than
+    # duplicating the stop logic here.
+    args.replace = True
+    return _serve(args)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -565,11 +621,26 @@ def main(argv: list[str] | None = None) -> int:
     serve_p = subparsers.add_parser("serve", help="Run the Control Plane HTTP server.")
     serve_p.add_argument("--host", default="127.0.0.1")
     serve_p.add_argument("--port", type=int, default=8000)
+    serve_p.add_argument(
+        "--replace",
+        action="store_true",
+        help="If a server is already bound to host:port, stop it first instead of failing.",
+    )
     serve_p.set_defaults(func=_serve)
+
+    stop_p = subparsers.add_parser("stop", help="Stop the running Control Plane HTTP server.")
+    stop_p.set_defaults(func=_stop)
+
+    restart_p = subparsers.add_parser(
+        "restart", help="Stop the running server (if any) and start a fresh one."
+    )
+    restart_p.add_argument("--host", default="127.0.0.1")
+    restart_p.add_argument("--port", type=int, default=8000)
+    restart_p.set_defaults(func=_restart)
 
     teardown_p = subparsers.add_parser(
         "teardown",
-        help="Stop the locally-managed Postgres container (no-op for BYO / SQLite).",
+        help="Stop the running server, and the locally-managed Postgres container if any.",
     )
     teardown_p.add_argument(
         "--remove-data",

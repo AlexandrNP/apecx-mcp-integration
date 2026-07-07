@@ -18,9 +18,28 @@ workflow tool and matches what SQLite's own docs recommend for WAL.
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 from sqlalchemy import Engine, create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
+
+
+def cp_home_dir() -> Path:
+    """The apecx-cp home directory (holds ``cp.db`` and ``cp.pid``); created if missing.
+
+    Precedence mirrors ``get_db_url``: ``$APECX_CP_HOME``, else
+    ``$XDG_DATA_HOME/apecx-cp``, else ``~/.apecx-cp``. Shared by the DB URL and the
+    serve-process lifecycle so both agree on where the pid file lives.
+    """
+    home = os.environ.get("APECX_CP_HOME")
+    if home:
+        base = Path(home)
+    elif os.environ.get("XDG_DATA_HOME"):
+        base = Path(os.environ["XDG_DATA_HOME"]) / "apecx-cp"
+    else:
+        base = Path.home() / ".apecx-cp"
+    base.mkdir(parents=True, exist_ok=True)
+    return base
 
 
 def get_db_url() -> str:
@@ -43,16 +62,7 @@ def get_db_url() -> str:
     explicit = os.environ.get("APECX_CP_DB_URL")
     if explicit:
         return explicit
-    from pathlib import Path
-    home = os.environ.get("APECX_CP_HOME")
-    if home:
-        base = Path(home)
-    elif os.environ.get("XDG_DATA_HOME"):
-        base = Path(os.environ["XDG_DATA_HOME"]) / "apecx-cp"
-    else:
-        base = Path.home() / ".apecx-cp"
-    base.mkdir(parents=True, exist_ok=True)
-    return f"sqlite:///{base / 'cp.db'}"
+    return f"sqlite:///{cp_home_dir() / 'cp.db'}"
 
 
 def make_engine(url: str | None = None, *, echo: bool = False) -> Engine:
