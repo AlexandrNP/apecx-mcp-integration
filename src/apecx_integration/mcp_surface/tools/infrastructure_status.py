@@ -45,7 +45,7 @@ async def infrastructure_status() -> dict[str, Any]:
                 {
                     "name": str,
                     "display_name": str,
-                    "kind": "docker_container" | "host_process" | "external",
+                    "kind": "docker_container" | "external",
                     "required": bool,
                     "state": <BackendState string>,
                     "detail": str,

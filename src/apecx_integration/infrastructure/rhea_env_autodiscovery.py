@@ -71,6 +71,10 @@ _RHEA_REPO_PATH = "RHEA_REPO_PATH"
 _RHEA_PYTHON_PATH = "RHEA_PYTHON_PATH"
 _RHEA_CONDA_ENVS_DIR = "RHEA_CONDA_ENVS_DIR"
 _PARSL_CONTAINER_BACKEND = "PARSL_CONTAINER_BACKEND"
+_RHEA_MCP_URL = "RHEA_MCP_URL"
+# The rhea-server always runs as a container published on :3001; the client
+# (RheaFileToolStep / rhea_adapter) resolves its endpoint from this URL.
+_RHEA_MCP_URL_DEFAULT = "http://localhost:3001/mcp/"
 
 
 def autodiscover_rhea_env(*, dry_run: bool = False) -> dict[str, str]:
@@ -120,7 +124,17 @@ def autodiscover_rhea_env(*, dry_run: bool = False) -> dict[str, str]:
                     venv_bin,
                 )
 
-    # 3. macOS-specific defaults — only the platform that needs them.
+    # 3. RHEA_MCP_URL — point the client at the container's :3001 endpoint
+    # when the operator hasn't set it explicitly.
+    if not _is_set(_RHEA_MCP_URL):
+        set_now[_RHEA_MCP_URL] = _RHEA_MCP_URL_DEFAULT
+        log.info(
+            "Rhea autodiscovery: %s=%s (default — client points at the container)",
+            _RHEA_MCP_URL,
+            _RHEA_MCP_URL_DEFAULT,
+        )
+
+    # 4. macOS-specific defaults — only the platform that needs them.
     if platform.system() == "Darwin":
         if not _is_set(_RHEA_CONDA_ENVS_DIR):
             # $TMPDIR/apecx-rhea/conda/envs — writable, persists for the
@@ -223,6 +237,16 @@ def _is_rhea_repo(path: Path) -> bool:
     return (path / "rhea" / "server" / "mcp_server.py").is_file()
 
 
+def rhea_clone_target() -> Path:
+    """Where ``apecx-setup rhea`` should ``git clone`` the Rhea source.
+
+    Returns the FIRST location ``_find_rhea_repo`` probes — the sibling of
+    the apecx-mcp-integration repo (``<workspace>/rhea``) — so a fresh clone
+    lands exactly where autodiscovery will subsequently find it.
+    """
+    return Path(__file__).resolve().parents[4] / "rhea"
+
+
 # ---------------------------------------------------------------------------
 # Opt-out hook
 # ---------------------------------------------------------------------------
@@ -240,4 +264,5 @@ def autodiscovery_enabled() -> bool:
 __all__ = [
     "autodiscover_rhea_env",
     "autodiscovery_enabled",
+    "rhea_clone_target",
 ]

@@ -38,8 +38,8 @@ always be refused regardless of test environment.
 from __future__ import annotations
 
 import logging
-import os
 import socket
+import subprocess
 
 import pytest
 
@@ -49,6 +49,7 @@ from apecx_integration.infrastructure import (
     APECX_RHEA_POSTGRES,
     BackendSpec,
     BackendState,
+    ContainerSpec,
     InfraOrchestrator,
     ProbeResult,
     get_orchestrator,
@@ -57,7 +58,6 @@ from apecx_integration.infrastructure import (
 from apecx_integration.infrastructure import orchestrator as _orch_mod
 from apecx_integration.infrastructure.backends import (
     BackendRuntime,
-    HostProcessSpec,
     Probe,
 )
 from apecx_integration.infrastructure.containers import (
@@ -136,20 +136,8 @@ def test_backend_spec_rejects_kind_mismatch():
             container=None,
         )
 
-    # host_process requires a HostProcessSpec
-    with pytest.raises(ValueError, match="kind='host_process' requires"):
-        BackendSpec(
-            name="x",
-            display_name="X",
-            kind="host_process",
-            required=True,
-            probe=Probe(name="x", fn=_noop_probe),
-            actionable_message="-",
-            process=None,
-        )
-
-    # external forbids container / process
-    with pytest.raises(ValueError, match="kind='external' must have neither"):
+    # external forbids a container (host_process was removed — single path)
+    with pytest.raises(ValueError, match="kind='external' must have no"):
         BackendSpec(
             name="x",
             display_name="X",
@@ -228,10 +216,34 @@ def test_all_container_specs_deterministic_order():
     assert names == ["apecx-rhea-postgres", "apecx-redis", "apecx-rhea-minio", "apecx-ollama"]
 
 
+def test_all_infra_specs_are_restart_policy_managed():
+    """The four infra containers survive an OS reboot: restart=unless-stopped.
+
+    A non-``"no"`` policy makes the Docker daemon auto-restart them on host reboot
+    (the stack is never left half-up) AND marks them Docker-lifecycle-owned so the
+    orchestrator never teardown-tracks them.
+
+    Integration parity: tests/integration/test_infra_bringup_live.py brings these up
+    through the orchestrator against a real Docker daemon.
+    """
+    for spec in all_container_specs():
+        assert spec.restart == "unless-stopped", (
+            f"{spec.container_name} must be restart-policy-managed"
+        )
+
+
 def test_container_run_args_shape():
     args = container_run_args(APECX_RHEA_MINIO)
-    # leading docker run flags
-    assert args[:5] == ["run", "-d", "--name", "apecx-rhea-minio"][:4] + ["-p"]
+    # leading docker run flags. MinIO is restart-policy-managed, so --restart
+    # unless-stopped follows -d, then --name.
+    assert args[:6] == [
+        "run",
+        "-d",
+        "--restart",
+        "unless-stopped",
+        "--name",
+        "apecx-rhea-minio",
+    ]
     # ports — bind to LOOPBACK by default (internal backends not world-visible)
     assert "-p" in args
     assert "127.0.0.1:9000:9000" in args
@@ -503,7 +515,6 @@ def _build_orchestrator_with_one_probe(
     *,
     kind: str = "external",
     required: bool = True,
-    process_prereqs: tuple[str, ...] = (),
 ) -> tuple[InfraOrchestrator, list[int]]:
     """Build an orchestrator with a single fake backend whose probe
     returns the queued results in order. ``probe_call_count`` is
@@ -528,26 +539,6 @@ def _build_orchestrator_with_one_probe(
             required=required,
             probe=probe,
             actionable_message="install + start fake",
-        )
-    elif kind == "host_process":
-        # A host_process with prereq vars; command_factory is never
-        # called in these tests (we never reach the spawn path).
-        def _never_called(env):
-            raise AssertionError("command_factory should not run")
-
-        process_spec = HostProcessSpec(
-            prereq_env_vars=process_prereqs,
-            command_factory=_never_called,
-            ready_timeout_s=1.0,
-        )
-        spec = BackendSpec(
-            name="fake",
-            display_name="Fake host proc",
-            kind="host_process",
-            required=required,
-            probe=probe,
-            actionable_message="set prereqs",
-            process=process_spec,
         )
     else:
         raise ValueError(f"unsupported kind for this helper: {kind}")
@@ -605,23 +596,6 @@ async def test_orchestrator_marks_external_skipped_when_autostart_off():
     snap = await orch.start_all()
     backend = snap["backends"][0]
     assert backend["state"] == "external_skipped"
-
-
-@pytest.mark.asyncio
-async def test_orchestrator_marks_host_process_unconfigured_when_prereqs_missing():
-    # Use a prereq var that definitely isn't set.
-    bogus_var = "NO_SUCH_VAR_ZZZ_2026_05_15"
-    os.environ.pop(bogus_var, None)
-
-    orch, _ = _build_orchestrator_with_one_probe(
-        [ProbeResult(healthy=False, detail="refused", latency_ms=1.0, error="x")],
-        kind="host_process",
-        process_prereqs=(bogus_var,),
-    )
-    snap = await orch.start_all()
-    backend = snap["backends"][0]
-    assert backend["state"] == "external_unconfigured"
-    assert bogus_var in backend["detail"]
 
 
 @pytest.mark.asyncio
@@ -751,7 +725,147 @@ async def test_orchestrator_does_not_track_reused_containers_for_atexit():
     )
     await orch.start_all()
     assert orch._spawned_containers == []
-    assert orch._spawned_processes == []
+
+
+# ---------------------------------------------------------------------------
+# Restart-policy teardown exemption (single-path refactor)
+# ---------------------------------------------------------------------------
+
+
+def _docker_container_spec(*, name: str, restart: str, probe: Probe) -> BackendSpec:
+    return BackendSpec(
+        name=name,
+        display_name=name,
+        kind="docker_container",
+        required=True,
+        probe=probe,
+        actionable_message="build the image",
+        container=ContainerSpec(
+            image="img:test",
+            container_name=name,
+            ports=((9999, 9999),),
+            ready_timeout_s=0.5,
+            restart=restart,
+        ),
+    )
+
+
+class _FakeDocker:
+    """Records every ``subprocess.run`` the orchestrator issues to the docker CLI.
+
+    Simulates: ``docker info`` (daemon up), ``docker ps -aq`` (no pre-existing
+    container → docker run path), ``docker run`` (spawn ok), and ``docker stop``
+    (teardown). Lets a unit test observe the atexit-tracking + shutdown behavior
+    WITHOUT touching a real Docker daemon.
+
+    Integration parity: the real spawn-and-teardown loop is exercised in
+    tests/integration/test_infra_bringup_live.py against a real daemon.
+    """
+
+    def __init__(self) -> None:
+        self.calls: list[list[str]] = []
+
+    def run(self, cmd, *args, **kwargs):
+        self.calls.append(list(cmd))
+        stdout = b""  # `docker ps -aq` empty → no existing container → docker run
+        return subprocess.CompletedProcess(cmd, 0, stdout=stdout, stderr=b"")
+
+    def stop_calls(self) -> list[list[str]]:
+        return [c for c in self.calls if len(c) > 1 and c[1] == "stop"]
+
+
+async def _bring_up_one_container(spec: BackendSpec, monkeypatch) -> tuple:
+    fake = _FakeDocker()
+    monkeypatch.setattr(_orch_mod.subprocess, "run", fake.run)
+    orch = InfraOrchestrator(
+        specs=[spec],
+        autostart_enabled=True,
+        docker_binary="docker",
+    )
+    await orch.start_all()
+    return orch, fake
+
+
+@pytest.mark.asyncio
+async def test_restart_policy_container_is_not_teardown_tracked(monkeypatch):
+    """A restart=unless-stopped container is Docker-lifecycle-owned: it is NOT
+    enrolled in ``_spawned_containers`` and ``shutdown()`` never ``docker stop``s it
+    (a stop would cancel its restart policy and defeat OS-reboot survival)."""
+
+    async def _probe() -> ProbeResult:
+        # First probe (start_all) unhealthy → triggers spawn; the poll then never
+        # needs to go green for the tracking decision, which happens right after spawn.
+        return ProbeResult(healthy=False, detail="down", latency_ms=1.0, error="x")
+
+    spec = _docker_container_spec(
+        name="apecx-restart-owned",
+        restart="unless-stopped",
+        probe=Probe(name="p", fn=_probe),
+    )
+    orch, fake = await _bring_up_one_container(spec, monkeypatch)
+
+    # The container was spawned (docker run issued) but NOT tracked for teardown.
+    assert any(c[:2] == ["docker", "run"] for c in fake.calls)
+    assert "apecx-restart-owned" not in orch._spawned_containers
+
+    await orch.shutdown()
+    assert fake.stop_calls() == [], "restart-policy container must never be docker-stopped"
+
+
+@pytest.mark.asyncio
+async def test_no_restart_policy_container_is_teardown_tracked(monkeypatch):
+    """Contrast: a restart="no" container IS enrolled for atexit teardown and
+    ``shutdown()`` ``docker stop``s it."""
+
+    async def _probe() -> ProbeResult:
+        return ProbeResult(healthy=False, detail="down", latency_ms=1.0, error="x")
+
+    spec = _docker_container_spec(
+        name="apecx-ephemeral",
+        restart="no",
+        probe=Probe(name="p", fn=_probe),
+    )
+    orch, fake = await _bring_up_one_container(spec, monkeypatch)
+
+    assert orch._spawned_containers == ["apecx-ephemeral"]
+
+    await orch.shutdown()
+    stops = fake.stop_calls()
+    assert len(stops) == 1
+    assert "apecx-ephemeral" in stops[0]
+
+
+# ---------------------------------------------------------------------------
+# _default_backend_specs single-path invariant
+# ---------------------------------------------------------------------------
+
+
+def test_default_backend_specs_rhea_is_container_ignoring_backend_env(monkeypatch):
+    """``_default_backend_specs`` always returns rhea as a ``docker_container`` and
+    reads NO ``APECX_RHEA_BACKEND`` env — proving the host/container switch is gone."""
+    monkeypatch.setenv("APECX_RHEA_BACKEND", "host")
+    specs = {s.name: s for s in _orch_mod._default_backend_specs()}
+    rhea = specs["rhea_mcp"]
+    assert rhea.kind == "docker_container"
+    assert rhea.container is not None
+    assert rhea.container.restart == "unless-stopped"
+
+
+def test_infrastructure_package_has_no_host_process_symbols():
+    """Single-path invariant: the removed host-process symbols must not reappear
+    anywhere under ``src/apecx_integration/infrastructure/``. A grep guard so a
+    future edit can't silently reintroduce the deleted two-path fork."""
+    import pathlib
+
+    infra_dir = pathlib.Path(_orch_mod.__file__).parent
+    forbidden = ("_make_rhea_mcp_spec", "APECX_RHEA_BACKEND", "HostProcessSpec")
+    offenders: dict[str, list[str]] = {}
+    for py in infra_dir.rglob("*.py"):
+        text = py.read_text(encoding="utf-8")
+        hits = [tok for tok in forbidden if tok in text]
+        if hits:
+            offenders[py.name] = hits
+    assert not offenders, f"removed host-process symbols still present: {offenders}"
 
 
 # ---------------------------------------------------------------------------

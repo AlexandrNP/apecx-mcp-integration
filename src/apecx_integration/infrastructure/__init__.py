@@ -8,7 +8,7 @@ This subpackage brings up (and probes for liveness) the five backends
 * MinIO (``apecx-rhea-minio``) — S3-compatible object store
 * Ollama — local LLM endpoint (operator-installed host process)
 * Rhea MCP — MCP server backing the structural-bioinformatics tools
-  (operator-installed host process)
+  (Docker container, built by ``apecx-setup rhea``)
 
 The orchestrator is **operational plumbing**, not a nanobrain workflow
 component. It is launched as a fire-and-forget asyncio task from
@@ -26,7 +26,6 @@ from apecx_integration.infrastructure.backends import (
     BackendSpec,
     BackendState,
     ContainerSpec,
-    HostProcessSpec,
     ProbeResult,
 )
 from apecx_integration.infrastructure.containers import (
@@ -48,7 +47,6 @@ __all__ = [
     "BackendSpec",
     "BackendState",
     "ContainerSpec",
-    "HostProcessSpec",
     "InfraOrchestrator",
     "ProbeResult",
     "all_container_specs",

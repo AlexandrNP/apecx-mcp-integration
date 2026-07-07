@@ -40,7 +40,7 @@ _RECORD_STATES = {
 # reachable-but-degraded backend (e.g. Ollama serving with no model — UP, a restart wouldn't help).
 _RELOADABLE_STATES = {"down", "degraded", "error_starting", "missing"}
 # Only backends we actually spawn can be reloaded; an external endpoint is operator-owned.
-_RELOADABLE_KINDS = {"docker_container", "host_process"}
+_RELOADABLE_KINDS = {"docker_container"}
 
 _DEFAULT_INTERVAL_S = 20.0
 _DEFAULT_BACKOFF_S = 60.0

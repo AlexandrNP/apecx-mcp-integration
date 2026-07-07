@@ -57,6 +57,9 @@ APECX_RHEA_POSTGRES: ContainerSpec = ContainerSpec(
     # `docker run` of this spec would silently drop all rows.
     volumes=(("apecx-rhea-postgres-data", "/var/lib/postgresql/data"),),
     ready_timeout_s=30.0,
+    # Survive an OS restart: Docker Desktop auto-restarts this on reboot so the
+    # stack is never left half-up after a machine restart.
+    restart="unless-stopped",
 )
 
 
@@ -72,6 +75,7 @@ APECX_REDIS: ContainerSpec = ContainerSpec(
     # durability, add a named volume here + an AOF/RDB config flag.)
     volumes=(),
     ready_timeout_s=15.0,
+    restart="unless-stopped",
 )
 
 
@@ -87,6 +91,7 @@ APECX_RHEA_MINIO: ContainerSpec = ContainerSpec(
     # Named volume so the object store survives container respawn.
     volumes=(("apecx-rhea-minio-data", "/data"),),
     ready_timeout_s=20.0,
+    restart="unless-stopped",
 )
 
 
@@ -104,6 +109,7 @@ APECX_OLLAMA: ContainerSpec = ContainerSpec(
     # `ollama serve` answers /api/tags within seconds; we do NOT wait on the model pull here (that is
     # a separate setup step), so the default readiness window is enough to confirm the server is up.
     ready_timeout_s=30.0,
+    restart="unless-stopped",
 )
 
 
@@ -125,9 +131,12 @@ def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> 
     Produces a deterministic argv that round-trips through tests
     cleanly. Shape:
 
-    ``["docker", "run", "-d", "--name", <name>, "-p", "BIND:H:C", ...,
-       "-e", "K=V", ..., "-v", "S:C", ..., *<extra_run_args>, <image>,
-       *<command>]``
+    ``["docker", "run", "-d", ["--restart", <policy>]?, "--name", <name>,
+       "-p", "BIND:H:C", ..., "-e", "K=V", ..., "-v", "S:C", ...,
+       *<extra_run_args>, <image>, *<command>]``
+
+    ``--restart <policy>`` is emitted only when ``spec.restart != "no"`` (a
+    long-lived container that must survive an OS reboot).
 
     ``bind_host`` prefixes every published port so internal backends bind LOOPBACK
     (``127.0.0.1``) by default rather than all interfaces — an unauthenticated
@@ -138,7 +147,10 @@ def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> 
     with auth. Callers prepend ``docker`` themselves so they can use ``shutil.which``
     or a custom binary path.
     """
-    args = ["run", "-d", "--name", spec.container_name]
+    args = ["run", "-d"]
+    if spec.restart and spec.restart != "no":
+        args.extend(["--restart", spec.restart])
+    args.extend(["--name", spec.container_name])
     for host, container in spec.ports:
         args.extend(["-p", f"{bind_host}:{host}:{container}"])
     for key, value in spec.env:

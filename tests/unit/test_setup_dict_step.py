@@ -252,7 +252,9 @@ def test_dict_runs_between_data_and_infra_in_full_chain(monkeypatch):
     # Suppress the summary-table print.
     monkeypatch.setattr(setup_cli, "_print_summary", lambda _: 0)
 
-    setup_cli._run_all(interactive=False, with_rag=False, with_rhea=False)
+    # rhea is default-on in the chain now; skip it so the real _step_rhea
+    # (docker/git) doesn't run in this unit test.
+    setup_cli._run_all(interactive=False, with_rag=False, skip_rhea=True)
 
     # Critical ordering: dict immediately after data, before infra.
     data_idx = call_order.index("data")

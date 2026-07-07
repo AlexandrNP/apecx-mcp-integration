@@ -1,13 +1,13 @@
 """Dataclasses + state enum that describe a managed backend.
 
 The orchestrator owns a list of :class:`BackendSpec` values. Each
-spec is one of three kinds:
+spec is one of two kinds:
 
 * ``docker_container`` — a long-lived container with a well-defined
   health probe (the container is reusable across MCP-server starts).
-* ``host_process`` — a process the operator runs on the host
-  (Rhea MCP, in practice). The orchestrator can spawn it when
-  ``RHEA_REPO_PATH`` is configured, but never installs it.
+  A container with a non-``"no"`` ``restart`` policy is Docker-lifecycle-
+  owned: the daemon auto-restarts it across reboots and the orchestrator
+  does NOT teardown-track it.
 * ``external`` — entirely operator-managed (Ollama). The orchestrator
   probes only.
 
@@ -154,42 +154,26 @@ class ContainerSpec:
     command: tuple[str, ...] = ()
     # How long to wait after spawning for the probe to flip green.
     ready_timeout_s: float = 30.0
+    # Docker ``--restart`` policy. A non-``"no"`` policy (e.g.
+    # ``"unless-stopped"``) makes the Docker daemon auto-restart the container
+    # on host reboot — the stack survives an OS restart WITHOUT anything
+    # relaunching apecx-mcp. It ALSO marks the container LONG-LIVED: the
+    # orchestrator must NOT ``docker stop`` it on apecx-mcp exit (a stop cancels
+    # the restart policy), so a restart-policy container is never enrolled in
+    # ``_spawned_containers`` for atexit teardown — Docker owns its lifecycle.
+    # ``"no"`` (the default) keeps the ephemeral/teardown-on-exit semantics.
+    restart: str = "no"
 
 
-@dataclass(frozen=True)
-class HostProcessSpec:
-    """A host-process specification (currently: Rhea MCP).
-
-    ``command_factory`` receives an ``env`` dict and returns the
-    (argv, env-additions) pair used to spawn the process. This is a
-    callable rather than a frozen tuple because Rhea's command line
-    depends on the operator's miniconda layout — we resolve it at
-    spawn time so a misconfigured environment is reported once, at
-    the moment we try to spawn, rather than serialized into the spec.
-
-    ``prereq_env_vars`` is the list of env vars that MUST be set for
-    the orchestrator to consider spawning this process. When any are
-    missing, the backend transitions to ``EXTERNAL_UNCONFIGURED`` with
-    an actionable message; we do not attempt to spawn.
-
-    ``log_path`` is where the spawned child's stderr/stdout is tee'd.
-    """
-
-    prereq_env_vars: tuple[str, ...]
-    command_factory: Callable[[dict[str, str]], tuple[list[str], dict[str, str]]]
-    ready_timeout_s: float = 60.0
-    log_path: str = "/tmp/apecx-rhea-mcp-autostart.log"
-
-
-BackendKind = Literal["docker_container", "host_process", "external"]
+BackendKind = Literal["docker_container", "external"]
 
 
 @dataclass(frozen=True)
 class BackendSpec:
     """A complete description of one managed backend.
 
-    Exactly one of ``container``, ``process`` is populated, depending
-    on ``kind``. ``probe`` is mandatory for every kind — even
+    ``container`` is populated for a ``docker_container`` kind and left
+    None for ``external``. ``probe`` is mandatory for every kind — even
     "external" backends need a probe so the orchestrator can report
     their state.
 
@@ -207,7 +191,6 @@ class BackendSpec:
     probe: Probe
     actionable_message: str
     container: ContainerSpec | None = None
-    process: HostProcessSpec | None = None
     # Free-form descriptive tags that surface in the status tool.
     tags: tuple[str, ...] = ()
 
@@ -217,15 +200,10 @@ class BackendSpec:
                 f"BackendSpec {self.name!r}: kind='docker_container' requires "
                 f"a ContainerSpec; got None"
             )
-        if self.kind == "host_process" and self.process is None:
+        if self.kind == "external" and self.container is not None:
             raise ValueError(
-                f"BackendSpec {self.name!r}: kind='host_process' requires a "
-                f"HostProcessSpec; got None"
-            )
-        if self.kind == "external" and (self.container is not None or self.process is not None):
-            raise ValueError(
-                f"BackendSpec {self.name!r}: kind='external' must have neither "
-                f"container nor process set; the operator manages it entirely."
+                f"BackendSpec {self.name!r}: kind='external' must have no "
+                f"container set; the operator manages it entirely."
             )
 
 
@@ -248,8 +226,6 @@ class BackendRuntime:
     # spawned (for atexit cleanup). When we reuse an existing container
     # this stays None.
     spawned_container: str | None = None
-    # Populated for host_process backends only.
-    spawned_pid: int | None = None
     # When the orchestrator created a container from scratch (``docker
     # run``, not ``docker start`` on a pre-existing stopped container),
     # this carries an operator-actionable warning. The status tool
@@ -284,8 +260,6 @@ class BackendRuntime:
             out["fresh_create_warning"] = self.fresh_create_warning
         if self.spawned_container:
             out["spawned_container"] = self.spawned_container
-        if self.spawned_pid:
-            out["spawned_pid"] = self.spawned_pid
         return out
 
 
@@ -295,7 +269,6 @@ __all__ = [
     "BackendSpec",
     "BackendState",
     "ContainerSpec",
-    "HostProcessSpec",
     "Probe",
     "ProbeCallable",
     "ProbeResult",

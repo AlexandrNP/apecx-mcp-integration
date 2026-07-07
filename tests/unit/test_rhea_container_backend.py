@@ -1,7 +1,8 @@
-"""Phase-2 rhea CONTAINER backend: deterministic spec/argv composition.
+"""rhea CONTAINER backend: deterministic spec/argv composition.
 
-The rhea-server can run as a host PROCESS (default, uses the host conda) or as a
-Docker CONTAINER (host-conda-independent). These tests pin the container
+The rhea-server runs ONLY as a Docker CONTAINER (host-conda-independent) — the
+host-process backend and the ``APECX_RHEA_BACKEND`` switch were deleted in the
+rhea-container single-path refactor. These tests pin the container
 backend's generated ``docker run`` to the command that was verified end-to-end
 in the containerization spike (a real MUSCLE alignment through the containerized
 server, host conda broken):
@@ -50,27 +51,32 @@ def _rhea_spec(monkeypatch: pytest.MonkeyPatch, backend: str | None):
 
 
 def test_default_backend_is_container(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Unset APECX_RHEA_BACKEND -> the CONTAINER backend (default, host-conda-independent)."""
+    """Rhea is ALWAYS the CONTAINER backend (single path, host-conda-independent).
+
+    The host-process backend and the ``APECX_RHEA_BACKEND`` switch were deleted
+    in the rhea-container single-path refactor — there is no other kind to select.
+    """
     rhea = _rhea_spec(monkeypatch, None)
     assert rhea.kind == "docker_container"
     assert rhea.container is not None
-    assert rhea.process is None
     assert rhea.container.ports == ((3001, 3001),)
 
 
-def test_host_backend_is_opt_in(monkeypatch: pytest.MonkeyPatch) -> None:
-    """APECX_RHEA_BACKEND=host -> the host-process backend (opt-out of the container default)."""
+def test_rhea_backend_env_is_ignored_switch_is_gone(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Single-path invariant: setting APECX_RHEA_BACKEND=host still yields a container.
+
+    The env switch that used to opt into a host-process backend was removed; proving
+    it is inert guards against a silent reintroduction of the two-path fork.
+
+    Integration parity: the real orchestrator-driven container bring-up is covered by
+    tests/integration/test_rhea_container_backend_live.py (orchestrator spawns the
+    real rhea-server image).
+    """
     rhea = _rhea_spec(monkeypatch, "host")
-    assert rhea.kind == "host_process"
-    assert rhea.process is not None
-    assert rhea.container is None
-
-
-def test_container_backend_selected_by_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    rhea = _rhea_spec(monkeypatch, "container")
     assert rhea.kind == "docker_container"
     assert rhea.container is not None
-    assert rhea.process is None
     assert rhea.container.ports == ((3001, 3001),)
 
 
@@ -145,6 +151,41 @@ def test_container_run_args_matches_verified_command(
     assert "PARSL_CONTAINER_BACKEND=local" in joined
     assert "host.docker.internal" in joined
     assert "localhost" not in joined
+
+
+def test_rhea_container_spec_has_restart_policy(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The rhea container is Docker-lifecycle-owned: restart=unless-stopped so it
+    survives an OS reboot without anything relaunching apecx-mcp, and it carries the
+    host-gateway add-host so it can reach the host-published infra ports.
+
+    Integration parity: tests/integration/test_rhea_container_backend_live.py brings
+    the real container up through the orchestrator and confirms the restart policy is
+    applied by the Docker daemon.
+    """
+    rhea = _rhea_spec(monkeypatch, None)
+    assert rhea.container.restart == "unless-stopped"
+    assert "--add-host=host.docker.internal:host-gateway" in rhea.container.extra_run_args
+
+
+def test_container_run_args_emits_restart_for_rhea(monkeypatch: pytest.MonkeyPatch) -> None:
+    """``--restart <policy>`` is emitted right after ``-d`` for a restart-policy spec."""
+    rhea = _rhea_spec(monkeypatch, None)
+    argv = container_run_args(rhea.container)
+    assert argv[:4] == ["run", "-d", "--restart", "unless-stopped"]
+
+
+def test_container_run_args_omits_restart_when_policy_is_no() -> None:
+    """A default (restart="no") spec emits NO ``--restart`` flag."""
+    spec = ContainerSpec(
+        image="img:tag",
+        container_name="c",
+        ports=((1, 2),),
+    )
+    argv = container_run_args(spec)
+    assert "--restart" not in argv
+    assert argv[:2] == ["run", "-d"]
+    # -d is immediately followed by --name (no restart flag between).
+    assert argv[2] == "--name"
 
 
 def test_extra_run_args_inserted_before_image() -> None:

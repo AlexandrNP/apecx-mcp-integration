@@ -1174,23 +1174,49 @@ def _step_rhea() -> StepResult:
     don't want Rhea-backed tools (muscle, future Galaxy tools) skip
     it. Same opt-in pattern as `_step_rag`.
     """
-    _print_header("Step 6b of 7 — Rhea (host MCP server, opt-in)")
+    _print_header("Step 6b of 7 — Rhea (containerized MCP server)")
 
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
+        rhea_clone_target,
     )
 
     rhea_repo = _find_rhea_repo()
     if rhea_repo is None:
-        return StepResult(
-            "rhea",
-            "skipped",
-            (
-                "no rhea checkout found in standard locations; "
-                "git clone https://github.com/AlexandrNP/rhea.git into the "
-                "workspace next to apecx-mcp-integration/ to enable"
-            ),
+        # No checkout — obtain the source. Clone into the canonical
+        # autodiscovery location so the subsequent _find_rhea_repo() resolves it.
+        git_binary = shutil.which("git")
+        if git_binary is None:
+            return StepResult(
+                "rhea",
+                "fail",
+                "git not on PATH — install git, then re-run `apecx-setup rhea` "
+                "(needed to clone the Rhea source).",
+            )
+        target = rhea_clone_target()
+        print(f"  ▶  cloning rhea into {target} (first run) ...")
+        clone = subprocess.run(
+            [git_binary, "clone", "https://github.com/AlexandrNP/rhea.git", str(target)],
+            timeout=600,
         )
+        if clone.returncode != 0:
+            return StepResult(
+                "rhea",
+                "fail",
+                f"`git clone https://github.com/AlexandrNP/rhea.git {target}` exited "
+                f"{clone.returncode}. If the repo is private, configure git credentials "
+                "(e.g. a GitHub token / SSH key), or clone it manually into that path, "
+                "then re-run `apecx-setup rhea`.",
+            )
+        rhea_repo = _find_rhea_repo()
+        if rhea_repo is None:
+            return StepResult(
+                "rhea",
+                "fail",
+                f"cloned into {target} but it does not look like a Rhea checkout "
+                "(missing pyproject.toml or rhea/server/mcp_server.py). Verify the "
+                "clone, then re-run.",
+            )
 
     print(f"  ▶  found rhea checkout at {rhea_repo}")
 
@@ -1316,30 +1342,24 @@ def _step_rhea() -> StepResult:
             "is apecx-rhea-postgres running? (run `apecx-setup infra` first)",
         )
 
-    # Phase 5 (container backend only): build the rhea-server image so the
-    # orchestrator's CONTAINER backend (APECX_RHEA_BACKEND=container, now the
-    # DEFAULT) can `docker run` it — tool execution then uses the container's
-    # conda, independent of a broken/missing HOST conda. The opt-in host-process
-    # backend (APECX_RHEA_BACKEND=host) needs no image, so we skip the multi-GB
-    # build for it. Mirrors _step_pymol: docker-available check, idempotent
-    # image-inspect, APECX_RHEA_IMAGE_REBUILD=1 to force, NEVER raises. The
-    # orchestrator only `docker run`s; this is where the image actually gets built.
-    rhea_backend = os.environ.get("APECX_RHEA_BACKEND", "container").strip().lower()
+    # Phase 5: build the rhea-server image so the orchestrator can `docker run`
+    # it — tool execution then uses the container's conda, independent of a
+    # broken/missing HOST conda. The container is the ONLY rhea backend (single
+    # path), so this build is unconditional. Mirrors _step_pymol: docker-available
+    # check, idempotent image-inspect, APECX_RHEA_IMAGE_REBUILD=1 to force, NEVER
+    # raises. The orchestrator only `docker run`s; this is where the image
+    # actually gets built.
     base_msg = (
         f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn "
         "rhea-server on next start"
     )
-    if rhea_backend != "container":
-        return StepResult("rhea", "ok", base_msg)
-
     image = os.environ.get("APECX_RHEA_IMAGE", "apecx-rhea-server:local")
     if not _docker_available():
         return StepResult(
             "rhea",
             "partial",
-            f"{base_msg}; but APECX_RHEA_BACKEND=container and docker is "
-            f"unreachable — image {image} NOT built. Start Docker, then re-run "
-            "`apecx-setup rhea`, or set APECX_RHEA_BACKEND=host.",
+            f"{base_msg}; but docker is unreachable — image {image} NOT built. "
+            "Start Docker, then re-run `apecx-setup rhea`.",
         )
     image_present = (
         subprocess.run(
@@ -1786,7 +1806,7 @@ def _run_all(
     *,
     interactive: bool = True,
     with_rag: bool = False,
-    with_rhea: bool = False,
+    skip_rhea: bool = False,
     with_pymol: bool = False,
 ) -> int:
     """Run the canonical install chain.
@@ -1845,16 +1865,16 @@ def _run_all(
                 "opt-in — run `apecx-setup rag` or `apecx-setup --with-rag` to build the FAISS index (~10 min, 689 MB)",
             )
         )
-    if with_rhea:
-        results.append(_step_rhea())
-    else:
+    if skip_rhea:
         results.append(
             StepResult(
                 "rhea",
                 "skipped",
-                "opt-in — run `apecx-setup rhea` or `apecx-setup --with-rhea` for Rhea-backed bioinformatics tools (~10 min one-time)",
+                "skipped via --skip-rhea — Rhea-backed bioinformatics tools will be UNAVAILABLE until you run `apecx-setup rhea`",
             )
         )
+    else:
+        results.append(_step_rhea())
     if with_pymol:
         results.append(_step_pymol())
     else:
@@ -1926,11 +1946,18 @@ def main(argv: list[str] | None = None) -> None:
         "--with-rhea",
         action="store_true",
         help=(
-            "Include the Rhea bring-up (uv sync + ingestion + embedding "
-            "model pull) in the default chain (G89: opt-in since "
-            "2026-05-16; ~10 min one-time). Run this if you want the "
-            "Rhea-backed bioinformatics tools (muscle, future Galaxy "
-            "tools) available via the apecx-mcp catalog."
+            "No-op — Rhea is now part of the default chain. Kept for "
+            "back-compat; the flag has no effect."
+        ),
+    )
+    parser.add_argument(
+        "--skip-rhea",
+        action="store_true",
+        help=(
+            "Skip the Rhea bring-up (clone + uv sync + ingestion + embedding "
+            "model pull + image build; ~10 min one-time). The Rhea-backed "
+            "bioinformatics tools (muscle, Galaxy tools) will be UNAVAILABLE "
+            "until you run `apecx-setup rhea` separately."
         ),
     )
     parser.add_argument(
@@ -1950,12 +1977,15 @@ def main(argv: list[str] | None = None) -> None:
         _setup_data._run_reconfigure_llm()
         return
 
+    if args.with_rhea:
+        print("note: --with-rhea is now a no-op — Rhea is part of the default chain.")
+
     if args.subcommand in (None, "all"):
         sys.exit(
             _run_all(
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
-                with_rhea=args.with_rhea,
+                skip_rhea=args.skip_rhea,
                 with_pymol=args.with_pymol,
             )
         )

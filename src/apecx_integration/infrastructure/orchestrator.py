@@ -10,9 +10,8 @@ Lifecycle
 2. Per backend, the orchestrator runs the probe. If it succeeds,
    the backend transitions to ``REUSED`` (we did not spawn it) and
    we keep its handle. If it fails AND ``APECX_MCP_AUTOSTART_INFRA``
-   is set, we attempt to bring it up — ``docker run`` for containers,
-   ``Popen`` for host processes — then poll the probe until healthy
-   or the timeout fires.
+   is set, we attempt to bring it up — ``docker run`` for containers —
+   then poll the probe until healthy or the timeout fires.
 3. The ``infrastructure_status`` MCP tool reads ``status()`` on each
    call, which RE-PROBES every ready backend (cheap; <50 ms each).
    This way a backend that died after startup is reported as
@@ -60,7 +59,6 @@ from apecx_integration.infrastructure.backends import (
     BackendSpec,
     BackendState,
     ContainerSpec,
-    HostProcessSpec,
     Probe,
     ProbeResult,
 )
@@ -83,15 +81,6 @@ log = logging.getLogger(__name__)
 
 
 _AUTOSTART_ENV_VAR = "APECX_MCP_AUTOSTART_INFRA"
-_RHEA_REPO_PATH = "RHEA_REPO_PATH"
-_RHEA_PYTHON_PATH = "RHEA_PYTHON_PATH"
-# Optional. Extra path prepended to the spawned Rhea process's PATH so
-# its downstream conda subprocesses (tool agents that run e.g. MUSCLE
-# via `conda run`) can find the `conda` binary. apecx-mcp is started by
-# Claude Desktop via Popen with NO shell — the operator's interactive
-# PATH is NOT inherited; the operator must declare PATH (or this var)
-# in claude_desktop_config.json's env block.
-_RHEA_CONDA_BIN_ENV = "RHEA_CONDA_BIN"
 # Optional embedding-model name for Rhea (used by the ToolShed catalog
 # embedding step). 1024-dim default matches the Ollama mxbai-embed-large
 # model bundled by apecx-setup; Rhea's bare default is for an HF
@@ -99,61 +88,15 @@ _RHEA_CONDA_BIN_ENV = "RHEA_CONDA_BIN"
 _RHEA_EMBEDDING_MODEL_ENV = "RHEA_EMBEDDING_MODEL"
 _OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
 _RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
-# Selects how the orchestrator brings up rhea-server:
-#   "container" (DEFAULT) — run the rhea-server Docker IMAGE. Tool execution +
-#                per-tool conda envs build INSIDE the container, independent of
-#                the host conda (the canonical Apple-Silicon broken-conda
-#                failure). Verified host-conda-independent + memory-flat across a
-#                4-virus viral_epitope_analysis multi-probe. Requires Docker; the
-#                orchestrator only `docker run`s — `apecx-setup rhea` builds the
-#                image; a missing image / no Docker surfaces a LOUD actionable
-#                error and RHEA-backed tools degrade-loud (the rest still runs).
-#   "host"      — spawn it as a host PROCESS using RHEA_PYTHON_PATH. No Docker
-#                needed, but tool execution uses the HOST conda (fragile if that
-#                conda is broken/missing). Set APECX_RHEA_BACKEND=host to opt in.
-_RHEA_BACKEND_ENV = "APECX_RHEA_BACKEND"
 # Image tag the container backend runs. Default matches what `apecx-setup rhea`
-# builds from $RHEA_REPO_PATH/Dockerfile.
+# builds from $RHEA_REPO_PATH/Dockerfile. The rhea-server ALWAYS runs as a Docker
+# container — there is no host-process alternative (single-path mandate).
 _RHEA_IMAGE_ENV = "APECX_RHEA_IMAGE"
 _RHEA_IMAGE_DEFAULT = "apecx-rhea-server:local"
 
 
 def _autostart_enabled() -> bool:
     return os.environ.get(_AUTOSTART_ENV_VAR, "1") != "0"
-
-
-def _terminate_process_group(pid: int, *, grace_seconds: float) -> None:
-    """SIGTERM the whole process group, then SIGKILL after grace.
-
-    The orchestrator Popen's host processes with
-    ``start_new_session=True`` so each spawned tree is its own session
-    leader. Killing JUST the parent pid leaves the parent's children
-    (uvicorn workers, parsl interchanges, ...) running and bound to
-    their ports — which makes the next orchestrator's probe see
-    ``reused`` against a "shutdown" backend. Group-kill closes that.
-    """
-    import signal as _signal
-
-    try:
-        pgid = os.getpgid(pid)
-    except (OSError, ProcessLookupError):
-        return
-    with contextlib.suppress(ProcessLookupError, PermissionError, OSError):
-        os.killpg(pgid, _signal.SIGTERM)
-    deadline = time.monotonic() + grace_seconds
-    while time.monotonic() < deadline:
-        try:
-            os.killpg(pgid, 0)  # signal 0 = "is anyone in the group still alive?"
-        except (ProcessLookupError, OSError):
-            return  # group is gone — clean exit
-        time.sleep(0.1)
-    # Grace expired; SIGKILL the group.
-    with contextlib.suppress(ProcessLookupError, PermissionError, OSError):
-        log.warning(
-            "InfraOrchestrator: process group %s did not exit on SIGTERM; sending SIGKILL",
-            pgid,
-        )
-        os.killpg(pgid, _signal.SIGKILL)
 
 
 # ---------------------------------------------------------------------------
@@ -425,160 +368,6 @@ def _compose_rhea_container_env(
     return env
 
 
-def _verify_rhea_python_can_import(python_exec: str) -> tuple[bool, str]:
-    """Sanity-check the configured Python BEFORE spawning rhea-server.
-
-    Without this, a wrong RHEA_PYTHON_PATH (e.g. plain miniconda
-    instead of the rhea uv-venv) leads to a 60-second
-    "did not become healthy" wait followed by an obscure ImportError
-    buried in the child log. With this check, we FAIL-LOUD upfront
-    with an actionable message.
-    """
-    try:
-        result = subprocess.run(
-            [python_exec, "-c", "import rhea; print(rhea.__file__ or 'ns-pkg')"],
-            capture_output=True,
-            timeout=10,
-        )
-    except (OSError, subprocess.TimeoutExpired) as exc:
-        return False, f"{type(exc).__name__}: {exc}"
-    if result.returncode != 0:
-        stderr = result.stderr.decode("utf-8", "replace")[:400]
-        return False, f"`{python_exec} -c 'import rhea'` exited {result.returncode}: {stderr}"
-    return True, result.stdout.decode("utf-8", "replace").strip()
-
-
-def _make_rhea_mcp_spec(
-    *,
-    postgres_container: ContainerSpec,
-    redis_container: ContainerSpec,
-    minio_container: ContainerSpec,
-    ollama_base_url: str,
-) -> BackendSpec:
-    mcp_url = os.environ.get(_RHEA_MCP_URL_ENV, "http://localhost:3001/mcp/")
-
-    async def _probe() -> ProbeResult:
-        return await rhea_mcp_probe(mcp_url=mcp_url)
-
-    def _command_factory(env: dict[str, str]) -> tuple[list[str], dict[str, str]]:
-        rhea_python_bin = env[_RHEA_PYTHON_PATH]
-        rhea_repo = env[_RHEA_REPO_PATH]
-        python_exec = (
-            f"{rhea_python_bin.rstrip('/')}/python"
-            if not rhea_python_bin.endswith("/python")
-            else rhea_python_bin
-        )
-
-        # Pre-spawn import check. FAIL-LOUD here turns a 60-second
-        # "did not become healthy" wait into an immediate actionable
-        # error naming the exact Python that couldn't import rhea.
-        ok, detail = _verify_rhea_python_can_import(python_exec)
-        if not ok:
-            raise RuntimeError(
-                f"the configured ${_RHEA_PYTHON_PATH}={rhea_python_bin!r} "
-                f"cannot import `rhea`. Most common cause: pointing at a "
-                f"bare miniconda bin/ dir; Rhea is installed in its uv "
-                f"venv. Try ${_RHEA_PYTHON_PATH}={rhea_repo}/.venv/bin. "
-                f"Underlying check: {detail}"
-            )
-
-        # Compose Rhea env from our other backend specs (single source
-        # of truth — no port/host drift between apecx-mcp's view and
-        # Rhea's Settings).
-        rhea_env = _compose_rhea_env(
-            postgres=postgres_container,
-            redis_c=redis_container,
-            minio=minio_container,
-            ollama_base_url=ollama_base_url,
-        )
-        # Extend PATH so:
-        #  1. the spawned rhea process resolves its own python
-        #     (RHEA_PYTHON_PATH bin first).
-        #  2. its downstream conda subprocesses can find `conda`
-        #     (optional RHEA_CONDA_BIN second; if unset, the
-        #     operator's existing PATH is preserved verbatim).
-        path_segments = [rhea_python_bin.rstrip("/")]
-        conda_bin = env.get(_RHEA_CONDA_BIN_ENV)
-        if conda_bin:
-            path_segments.append(conda_bin.rstrip("/"))
-        path_segments.append(env.get("PATH", ""))
-        # Hand Rhea an explicit conda binary via CONDA_EXE (conda's own
-        # canonical env var). Without this, Rhea's subprocess invocations
-        # resolve `conda` via PATH — and a stale Anaconda install at
-        # /opt/anaconda3/bin/conda can win even when miniconda is first,
-        # because some PATH-lookup contexts (parsl workers spawned from
-        # uvicorn) re-resolve through the wider operator env. Setting
-        # CONDA_EXE explicitly is the standard conda-shell convention.
-        conda_exe_env: dict[str, str] = {}
-        if conda_bin:
-            conda_exe_env["CONDA_EXE"] = f"{conda_bin.rstrip('/')}/conda"
-        env_additions: dict[str, str] = {
-            "PATH": ":".join(seg for seg in path_segments if seg),
-            "PYTHONUNBUFFERED": "1",
-            **conda_exe_env,
-            # Composed Rhea env (overrides any pre-existing values for
-            # determinism — operator who wants a different DB URL can
-            # set DATABASE_URL in claude_desktop_config.json's env
-            # block, but then they should NOT use apecx's postgres at
-            # all).
-            **rhea_env,
-            # Forward known RHEA_* env vars in case the operator wants
-            # to override anything composed above.
-            **{
-                k: env[k]
-                for k in env
-                if k.startswith("RHEA_")
-                and k
-                not in (
-                    _RHEA_REPO_PATH,
-                    _RHEA_PYTHON_PATH,
-                    _RHEA_CONDA_BIN_ENV,
-                    _RHEA_EMBEDDING_MODEL_ENV,
-                )
-            },
-        }
-        argv = [
-            python_exec,
-            "-m",
-            "rhea.server.mcp_server",
-            "--transport",
-            "streamable-http",
-        ]
-        # Run from the Rhea repo so any relative configs resolve.
-        env_additions["__CWD__"] = rhea_repo
-        return argv, env_additions
-
-    process_spec = HostProcessSpec(
-        prereq_env_vars=(_RHEA_REPO_PATH, _RHEA_PYTHON_PATH),
-        command_factory=_command_factory,
-        ready_timeout_s=60.0,
-    )
-
-    return BackendSpec(
-        name="rhea_mcp",
-        display_name="Rhea MCP (host process)",
-        kind="host_process",
-        required=True,
-        probe=Probe(name="rhea_mcp", fn=_probe),
-        actionable_message=(
-            f"Rhea MCP is unreachable at {mcp_url}. To enable autostart, "
-            f"set ${_RHEA_REPO_PATH} (path to the Rhea checkout) and "
-            f"${_RHEA_PYTHON_PATH} (path to Rhea's uv venv bin/ — "
-            "typically $RHEA_REPO_PATH/.venv/bin; NOT a bare miniconda "
-            "bin/ unless miniconda is itself the rhea project venv). "
-            f"Optionally set ${_RHEA_CONDA_BIN_ENV} (miniconda bin/ "
-            "needed for the conda subprocesses Rhea spawns to run "
-            "Galaxy tools like MUSCLE). Alternatively, start it "
-            "manually: cd $RHEA_REPO_PATH && uv run -m "
-            "rhea.server.mcp_server --transport streamable-http. "
-            "Without Rhea MCP, the Rhea-backed catalog tools return "
-            "UNAVAILABLE."
-        ),
-        process=process_spec,
-        tags=("mcp", "rhea"),
-    )
-
-
 def _make_rhea_container_spec(
     *,
     postgres_container: ContainerSpec,
@@ -623,6 +412,9 @@ def _make_rhea_container_spec(
         # The server boots (probe = :3001 health) in ~10s; the slow per-tool
         # conda build happens later, on the first tool CALL, not at startup.
         ready_timeout_s=120.0,
+        # Docker auto-restarts rhea-server across host reboots without anything
+        # relaunching apecx-mcp; also marks it long-lived (never teardown-tracked).
+        restart="unless-stopped",
     )
 
     return BackendSpec(
@@ -636,8 +428,7 @@ def _make_rhea_container_spec(
             f"runs the image {image!r} but does NOT build it. Build it once with "
             f"`apecx-setup rhea` (or `docker build -t {image} -f "
             f"$RHEA_REPO_PATH/Dockerfile $RHEA_REPO_PATH`), make sure Docker is "
-            f"running, then retry. To use the host-process backend instead, set "
-            f"${_RHEA_BACKEND_ENV}=host."
+            f"running, then retry."
         ),
         container=container_spec,
         tags=("mcp", "rhea"),
@@ -657,23 +448,14 @@ def _default_backend_specs() -> tuple[BackendSpec, ...]:
     minio_s = _make_minio_spec()
     ollama_s = _make_ollama_spec()
     ollama_base_url = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1")
-    # Backend selection: default "host" (unchanged behavior). "container" runs
-    # the rhea-server image so tool execution is independent of the host conda.
-    rhea_backend = os.environ.get(_RHEA_BACKEND_ENV, "container").strip().lower()
-    if rhea_backend == "container":
-        rhea = _make_rhea_container_spec(
-            postgres_container=pg.container,  # type: ignore[arg-type]
-            redis_container=redis_s.container,  # type: ignore[arg-type]
-            minio_container=minio_s.container,  # type: ignore[arg-type]
-            ollama_base_url=ollama_base_url,
-        )
-    else:
-        rhea = _make_rhea_mcp_spec(
-            postgres_container=pg.container,  # type: ignore[arg-type]
-            redis_container=redis_s.container,  # type: ignore[arg-type]
-            minio_container=minio_s.container,  # type: ignore[arg-type]
-            ollama_base_url=ollama_base_url,
-        )
+    # rhea-server ALWAYS runs as a Docker container — the single, host-conda-
+    # independent path (there is no host-process alternative).
+    rhea = _make_rhea_container_spec(
+        postgres_container=pg.container,  # type: ignore[arg-type]
+        redis_container=redis_s.container,  # type: ignore[arg-type]
+        minio_container=minio_s.container,  # type: ignore[arg-type]
+        ollama_base_url=ollama_base_url,
+    )
     return (pg, redis_s, minio_s, ollama_s, rhea)
 
 
@@ -732,10 +514,10 @@ class InfraOrchestrator:
         # diagnosing slow first-call latency or wedged Rhea actor
         # state can see which tools are pre-installed.
         self._prewarm_report: Any | None = None
-        # Track spawned children for atexit cleanup. We hold direct
-        # references so atexit can still reach them even if all other
-        # references go out of scope.
-        self._spawned_processes: list[subprocess.Popen[bytes]] = []
+        # Track spawned containers for atexit cleanup. We hold the names
+        # directly so atexit can still reach them even if all other
+        # references go out of scope. Restart-policy containers are
+        # Docker-lifecycle-owned and deliberately NOT enrolled here.
         self._spawned_containers: list[str] = []
         self._atexit_registered = False
         # Monotonic stamp of the last reconcile() that PASSED the stuck-scan and entered the
@@ -814,10 +596,9 @@ class InfraOrchestrator:
         ``docker info``. Only when a docker backend is actually stuck does it pay the
         re-detection cost, and that whole path is throttled (``_RECONCILE_THROTTLE_S``) so a
         persistently-down/absent daemon isn't probed on every call. ``start_all`` is
-        idempotent (re-probes healthy backends, re-attempts the stuck ones). NOTE: only a
-        stuck *docker container* triggers this; RHEA (a host_process) is re-attempted only as
-        a side effect of ``start_all`` firing for a stuck container — if ONLY RHEA is stuck,
-        reconcile is a no-op (out of scope: this heals the Docker-came-up-late case).
+        idempotent (re-probes healthy backends, re-attempts the stuck ones). Every backend
+        here is a docker container (RHEA included), so a stuck RHEA triggers reconcile
+        directly — this heals the Docker-came-up-late case.
         """
         # Cheap stuck-scan FIRST — a docker backend NOT in a healthy/in-flight state. The
         # happy path returns here, before any shutil.which / docker info / time call.
@@ -1034,35 +815,13 @@ class InfraOrchestrator:
             self._prewarm_report = report
 
     async def shutdown(self) -> None:
-        """Tear down ONLY backends we spawned.
+        """Tear down ONLY containers we spawned.
 
-        Spawned host processes get SIGTERM with a 5s grace, then
-        SIGKILL. Spawned containers get ``docker stop`` (10s grace)
-        followed by ``docker rm -f`` if stop fails. Pre-existing
-        containers + processes are never touched.
+        Spawned containers get ``docker stop`` (10s grace) followed by
+        ``docker rm -f`` if stop fails. Pre-existing containers and
+        restart-policy (Docker-lifecycle-owned) containers are never
+        touched.
         """
-        # Spawned host processes. We signal the entire PROCESS GROUP
-        # (not just the leader pid) because rhea-server's uvicorn
-        # parent forks worker children — SIGTERM to the parent alone
-        # leaves the workers serving on the bound port, and the next
-        # orchestrator's probe sees `reused` against a "shutdown" rhea.
-        # We Popen'd with start_new_session=True so each spawned tree
-        # is in its own session/group.
-        for proc in list(self._spawned_processes):
-            if proc.poll() is not None:
-                continue
-            try:
-                _terminate_process_group(proc.pid, grace_seconds=5.0)
-                with contextlib.suppress(subprocess.TimeoutExpired):
-                    proc.wait(timeout=2.0)
-            except Exception as exc:  # noqa: BLE001
-                log.warning(
-                    "InfraOrchestrator: error terminating child pid=%s: %s",
-                    proc.pid,
-                    exc,
-                )
-        self._spawned_processes.clear()
-
         # Spawned containers.
         if self._docker is not None:
             for container_name in list(self._spawned_containers):
@@ -1094,20 +853,6 @@ class InfraOrchestrator:
 
     def _atexit_shutdown(self) -> None:
         """atexit hook — sync-only wrapper around ``shutdown``."""
-        # Spawned host processes — terminate without awaiting.
-        for proc in list(self._spawned_processes):
-            try:
-                if proc.poll() is None:
-                    # Kill the whole process group so uvicorn workers
-                    # die along with the rhea-server parent — see the
-                    # same fix in shutdown() above.
-                    _terminate_process_group(proc.pid, grace_seconds=5.0)
-                    with contextlib.suppress(subprocess.TimeoutExpired):
-                        proc.wait(timeout=2.0)
-            except Exception:  # noqa: BLE001
-                pass
-        self._spawned_processes.clear()
-
         if self._docker is not None:
             for container_name in list(self._spawned_containers):
                 try:
@@ -1162,10 +907,6 @@ class InfraOrchestrator:
 
         if spec.kind == "docker_container":
             await self._bring_up_container(rt)
-            return
-
-        if spec.kind == "host_process":
-            await self._bring_up_host_process(rt)
             return
 
         with self._lock:
@@ -1254,7 +995,11 @@ class InfraOrchestrator:
         # Record what we spawned so atexit cleans it up. We register
         # both newly-run and previously-stopped containers as "spawned
         # by us" — we want to stop them on shutdown only if WE
-        # transitioned them from stopped to running.
+        # transitioned them from stopped to running. EXCEPTION: a
+        # restart-policy container (``restart != "no"``) is Docker-
+        # lifecycle-owned — a ``docker stop`` on exit would cancel its
+        # restart policy and defeat OS-reboot survival, so it is NOT
+        # enrolled for teardown (see the exemption below).
         with self._lock:
             rt.spawned_by_us = True
             rt.spawned_container = container_spec.container_name
@@ -1280,7 +1025,19 @@ class InfraOrchestrator:
                     f"(e.g. `docker volume ls`, application-level row counts) "
                     f"before relying on this backend."
                 )
-        self._spawned_containers.append(container_spec.container_name)
+        # Teardown exemption: only enroll for atexit ``docker stop`` when the
+        # container has NO restart policy. A restart-policy container must
+        # outlive apecx-mcp (and survive an OS reboot) — stopping it on exit
+        # would cancel the policy, so Docker owns its lifecycle instead.
+        if container_spec.restart == "no":
+            self._spawned_containers.append(container_spec.container_name)
+        else:
+            log.info(
+                "InfraOrchestrator: %s is restart-policy-managed (restart=%s) — "
+                "Docker owns its lifecycle; not tracked for atexit teardown.",
+                container_spec.container_name,
+                container_spec.restart,
+            )
 
         # Poll the probe until healthy or the per-spec timeout fires.
         ok = await self._poll_until_healthy(rt, container_spec.ready_timeout_s)
@@ -1308,101 +1065,6 @@ class InfraOrchestrator:
                     f"become reachable within {container_spec.ready_timeout_s}s."
                 )
                 rt.error = final.error
-
-    async def _bring_up_host_process(self, rt: BackendRuntime) -> None:
-        spec = rt.spec
-        process_spec: HostProcessSpec = spec.process  # type: ignore[assignment]
-
-        # Check that every prereq env var is set. If not, mark
-        # EXTERNAL_UNCONFIGURED — no spawn attempt.
-        missing = [var for var in process_spec.prereq_env_vars if not os.environ.get(var)]
-        if missing:
-            with self._lock:
-                rt.state = BackendState.EXTERNAL_UNCONFIGURED
-                rt.detail = (
-                    f"{spec.display_name}: missing prereq env var(s) "
-                    f"{missing}. {spec.actionable_message}"
-                )
-                rt.error = f"unset env vars: {missing}"
-            return
-
-        with self._lock:
-            rt.state = BackendState.STARTING
-            rt.detail = f"spawning host process for {spec.display_name} ..."
-
-        try:
-            argv, env_additions = process_spec.command_factory(dict(os.environ))
-        except Exception as exc:  # noqa: BLE001
-            with self._lock:
-                rt.state = BackendState.ERROR_STARTING
-                rt.detail = (
-                    f"{spec.display_name}: command_factory raised "
-                    f"{type(exc).__name__}: {exc}. {spec.actionable_message}"
-                )
-                rt.error = f"{type(exc).__name__}: {exc}"
-            return
-
-        cwd = env_additions.pop("__CWD__", None)
-        spawn_env = dict(os.environ)
-        spawn_env.update(env_additions)
-
-        # Tee stdout/stderr to a log file the operator can inspect.
-        try:
-            log_fh = open(process_spec.log_path, "ab")  # noqa: SIM115 — handle lives with the process
-        except OSError as exc:
-            with self._lock:
-                rt.state = BackendState.ERROR_STARTING
-                rt.detail = (
-                    f"{spec.display_name}: could not open log file "
-                    f"{process_spec.log_path}: {exc}. {spec.actionable_message}"
-                )
-                rt.error = str(exc)
-            return
-
-        try:
-            proc = subprocess.Popen(  # noqa: S603 — argv built from operator config
-                argv,
-                stdin=subprocess.DEVNULL,
-                stdout=log_fh,
-                stderr=log_fh,
-                env=spawn_env,
-                cwd=cwd,
-                start_new_session=True,
-            )
-        except OSError as exc:
-            log_fh.close()
-            with self._lock:
-                rt.state = BackendState.ERROR_STARTING
-                rt.detail = (
-                    f"{spec.display_name}: Popen failed with {type(exc).__name__}: "
-                    f"{exc}. {spec.actionable_message}"
-                )
-                rt.error = str(exc)
-            return
-
-        with self._lock:
-            rt.spawned_by_us = True
-            rt.spawned_pid = proc.pid
-        self._spawned_processes.append(proc)
-
-        # Poll the probe.
-        ok = await self._poll_until_healthy(rt, process_spec.ready_timeout_s)
-        if ok:
-            with self._lock:
-                rt.state = BackendState.READY
-            return
-
-        # Child failed to come up. Mark error state but keep the proc
-        # in _spawned_processes so atexit still cleans it up if it
-        # spawned a partial daemon.
-        with self._lock:
-            rt.state = BackendState.ERROR_STARTING
-            rt.detail = (
-                f"{spec.display_name}: process pid={proc.pid} spawned but "
-                f"did not become healthy within {process_spec.ready_timeout_s}s. "
-                f"Check {process_spec.log_path} for the child's stderr. "
-                f"{spec.actionable_message}"
-            )
 
     async def _poll_until_healthy(
         self,
