@@ -189,6 +189,7 @@ _Taxon-precise structural search over the aggregate Globus index (e74bf12a)._
 - class `SpeciesResolution` — Resolved species scoping for a structural query.
 - class `StructuralSearchResult` — One source's taxon-precise structural hits plus any NAMED degrade note.
 - `def resolve_species_terms(query: str, taxon_id: int | str | None=None, species_name: str | None=None)` — Resolve a query (+ optional NCBI taxon_id / canonical species name) to scoping terms.
+- `def _facet_fallback_term(query: str)` — Pick the most-specific query token that the PDB scientific_name facet recognizes.
 - `def _structural_keyword_tokens(query: str, terms: list[str])` — The query's protein/structural residual: query words minus species words.
 - `def enumerate_organisms(species_term: str | list[str], *, publisher: str='RCSB PDB')` — Facet pre-pass: every ``scientific_name`` spelling matching a species term.
 - `def search_one_source(query: str, source: str, publisher: str, *, taxon_id: int | str | None=None, species_name: str | None=None, max_results: int=0)` — Run a taxon-precise structural query for one source (``"pdb"`` / ``"emdb"``).
@@ -1771,6 +1772,7 @@ _RheaGenomicAnalysisStep — large-scale sequence-conservation analysis via RHEA
   - `def _params_unusable(self, bundle: dict[str, Any])` — Return a loud reason when the bundle can't feed the RHEA fetch, else None.
   - `async def _drive_rhea_conservation(self, taxon_id: Any, protein: str)` — Run the RHEA-MUSCLE conserved-sites inner workflow; return its report dict.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
+  - `async def _diagnose_rhea_failure(self, exc: Exception)` — Name the REAL cause of a RHEA-leg failure so the note points to the right fix.
   - `def _unavailable_warning(reason: str)`
 
 ## `src/apecx_integration/composition/steps/rhea_muscle_align_step.py`

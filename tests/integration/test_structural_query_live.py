@@ -156,3 +156,52 @@ def test_unresolvable_taxon_degrades_loud_not_silent():
     assert "not taxon-locked" in result.note
     # Degrade still returns real data (CC-1): it does not silently empty out.
     assert len(result.hits) >= 1
+
+
+@needs_globus
+def test_facet_fallback_resolves_single_token_species_lassa():
+    """Facet-validated token fallback: "Lassa mammarenavirus" (taxon 11620, NOT curated,
+    single-token name _VIRUS_RE can't match) resolves via the PDB scientific_name facet.
+
+    Regression for the dropped-hits bug: the most-specific token "lassa" (fewest facet
+    buckets) is chosen over the genus "mammarenavirus" (over-matches every mammarenavirus),
+    and because the facet match IS the taxon-lock, note MUST stay None so
+    StructuralEvidenceStep keeps the hits.
+    """
+    from apecx_integration.agents.globus_search.structural_query import (
+        resolve_species_terms,
+        search_one_source,
+    )
+
+    res = resolve_species_terms("Lassa mammarenavirus", taxon_id=11620)
+    assert res.note is None, res.note
+    assert res.terms == ["lassa"], res.terms  # most-specific token, not the genus
+
+    result = search_one_source(
+        "Lassa mammarenavirus", "pdb", "RCSB PDB", taxon_id=11620, max_results=8
+    )
+    assert result.note is None, result.note
+    assert len(result.hits) >= 1, "CC-1: facet-fallback query must return real structures"
+    assert any("lassa" in o.lower() for o in result.organisms), result.organisms
+
+
+@needs_globus
+def test_facet_fallback_finds_nothing_for_garbage_query():
+    """AC3: a query with no facetable token -> empty terms + a NAMED note (no false positive)."""
+    from apecx_integration.agents.globus_search.structural_query import resolve_species_terms
+
+    res = resolve_species_terms("asdfqwer zzzz", taxon_id=None)
+    assert res.terms == []
+    assert res.note is not None and "not taxon-locked" in res.note
+
+
+@needs_globus
+def test_curated_virus_name_path_unaffected_by_fallback():
+    """No-regression: Mayaro virus (taxon 59301) still resolves via the "<X> virus" path
+    with note=None and real hits — the fallback is only reached when that path is empty."""
+    from apecx_integration.agents.globus_search.structural_query import search_one_source
+
+    result = search_one_source("Mayaro virus", "pdb", "RCSB PDB", taxon_id=59301, max_results=8)
+    assert result.note is None, result.note
+    assert len(result.hits) >= 1
+    assert any("mayaro" in o.lower() for o in result.organisms), result.organisms

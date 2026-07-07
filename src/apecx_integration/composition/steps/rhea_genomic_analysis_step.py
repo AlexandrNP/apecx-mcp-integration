@@ -161,6 +161,9 @@ class RheaGenomicAnalysisStep(BaseStep):
         bundle = dict(input_data)  # shallow copy; we add rhea_conservation[_note]
         bundle["rhea_conservation"] = None
         note: str | None = None
+        # The diagnosed cause when the RHEA call raises (None on the params-unusable path); feeds
+        # the proceed_notes "why" so it names the true problem, not a generic "call failed".
+        failure_cause: str | None = None
 
         # RHEA genomic-analysis is a MANDATORY part of the analysis — always attempted, always
         # DISCLOSED in the output. But its absence DEGRADES LOUD, it does NOT fail the run: the
@@ -194,7 +197,12 @@ class RheaGenomicAnalysisStep(BaseStep):
                     len(bundle["rhea_conservation"]["conserved_regions"]),
                 )
             except Exception as exc:  # noqa: BLE001 — degrade-loud is the contract (do NOT fail)
-                note = self._unavailable_warning(f"{type(exc).__name__}: {exc}")
+                # G127: Workflow.run SWALLOWS the inner step's exception, so `exc` here is a
+                # generic "no workflow_output" ValueError — NOT the real ModuleNotFoundError
+                # (rhea client not importable) or connection error. Blaming "server unreachable"
+                # then sends the operator to the wrong fix. Probe the actual prerequisites.
+                failure_cause = await self._diagnose_rhea_failure(exc)
+                note = self._unavailable_warning(failure_cause)
                 log.warning("RheaGenomicAnalysisStep %s: %s", self.name, note)
 
         bundle["rhea_conservation_note"] = note
@@ -229,7 +237,7 @@ class RheaGenomicAnalysisStep(BaseStep):
                 {
                     "stage": "rhea genomic analysis",
                     "what": "RHEA large-scale MUSCLE conservation tools are not available",
-                    "why": reason if reason is not None else "the RHEA call failed",
+                    "why": reason or failure_cause or "the RHEA call failed",
                     "action": (
                         "run `apecx-setup rhea` and ensure the RHEA MCP server is reachable "
                         "(RHEA_MCP_URL); the rest of the analysis still completed and is valid"
@@ -240,14 +248,55 @@ class RheaGenomicAnalysisStep(BaseStep):
             bundle["proceed_notes"] = notes
         return bundle
 
+    async def _diagnose_rhea_failure(self, exc: Exception) -> str:
+        """Name the REAL cause of a RHEA-leg failure so the note points to the right fix.
+
+        Necessary because G127 makes ``Workflow.run`` SWALLOW the inner step's exception: the
+        ``exc`` the caller caught is a generic "no workflow_output" ValueError, so the underlying
+        cause (rhea client library not importable, or the MCP server unreachable) never
+        propagates. We probe the two real prerequisites and report whichever actually failed.
+        Reuses the canonical ``rhea_mcp_probe`` (do not roll a parallel probe)."""
+        import importlib
+
+        try:
+            importlib.import_module("rhea.utils.proxy")
+        except Exception:  # noqa: BLE001 — any import failure means the client library is unusable
+            return (
+                "the RHEA client library is not importable here (cannot import "
+                "'rhea.utils.proxy', which the MUSCLE file-staging step needs) — run "
+                "`apecx-setup rhea` to provision it. The RHEA server itself may be healthy."
+            )
+
+        mcp_url = os.environ.get("RHEA_MCP_URL", "http://localhost:3001/mcp/")
+        try:
+            # Import inside the try too: this runs in a NEVER-raise degrade path, so a future
+            # optional import added to probes.py module-top must not reintroduce a raise here.
+            from apecx_integration.infrastructure.probes import rhea_mcp_probe
+
+            probe = await rhea_mcp_probe(mcp_url=mcp_url)
+        except Exception as pe:  # noqa: BLE001 — a probe must never mask the original failure
+            return (
+                f"the RHEA MCP server could not be probed at {mcp_url} ({type(pe).__name__}: {pe})."
+            )
+        if not probe.healthy:
+            return (
+                f"the RHEA MCP server at {mcp_url} is unreachable or degraded "
+                f"({probe.error or probe.detail})."
+            )
+        return (
+            f"the RHEA client and MCP server at {mcp_url} are both reachable, but the MUSCLE run "
+            f"produced no result ({type(exc).__name__}: {exc})."
+        )
+
     @staticmethod
     def _unavailable_warning(reason: str) -> str:
         return (
             f"⚠️ RHEA genomic-analysis tools are NOT available ({reason}). The large-scale "
             "MUSCLE conservation leg did NOT run — but the rest of the end-to-end analysis "
             "(MAFFT sequence conservation, structural surface-exposure, literature) completed "
-            "and remains valid. To enable the RHEA leg: run `apecx-setup rhea` and ensure the "
-            "RHEA MCP server is reachable (set RHEA_MCP_URL)."
+            "and remains valid. To enable the RHEA leg: run `apecx-setup rhea` (RHEA runs only "
+            "as a Docker container) so the server AND the client library are provisioned — the "
+            "diagnosis above says which one is missing."
         )
 
 

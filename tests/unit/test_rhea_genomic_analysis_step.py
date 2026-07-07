@@ -55,13 +55,30 @@ def test_missing_protein_degrades_loud(tmp_path):
 
 
 def test_rhea_failure_degrades_loud_not_raises(tmp_path, monkeypatch):
-    """A failure inside the RHEA drive becomes a loud warning + fix instructions, NOT a raise."""
+    """A failure inside the RHEA drive becomes a loud warning + fix instructions, NOT a raise.
+
+    The note is produced by the honest _diagnose_rhea_failure probe, so we satisfy both prereqs
+    (client importable + server reachable) to drive the tool-failed branch, which surfaces the
+    underlying exception. The missing-prereq branches are covered by test_rhea_failure_diagnosis.py.
+    """
+    import sys
+    import types
+
     step = _stage(tmp_path)
 
     async def _boom(taxon_id, protein):
         raise RuntimeError("Rhea server unreachable")
 
     monkeypatch.setattr(step, "_drive_rhea_conservation", _boom)
+    for name in ("rhea", "rhea.utils", "rhea.utils.proxy"):
+        monkeypatch.setitem(sys.modules, name, types.ModuleType(name))
+    from apecx_integration.infrastructure import probes
+
+    async def _healthy(*, mcp_url, timeout_s=5.0):
+        return types.SimpleNamespace(healthy=True, detail="ok", error=None)
+
+    monkeypatch.setattr(probes, "rhea_mcp_probe", _healthy)
+
     out = asyncio.run(step.process({"query": "chikv", "taxon_id": 37124, "protein": "E1"}))
     assert out["rhea_conservation"] is None
     assert "RuntimeError" in out["rhea_conservation_note"]

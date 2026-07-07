@@ -79,6 +79,27 @@ _VIRUS_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Generic taxonomy-rank / boilerplate words that are NOT distinctive organism tokens.
+# Used to exclude noise from the facet-validated token fallback (a genus-rank word like
+# "virus" over-matches everything and is never the specific token we want).
+_RANK_STOPWORDS = frozenset(
+    {
+        "virus",
+        "viruses",
+        "viridae",
+        "virales",
+        "strain",
+        "isolate",
+        "species",
+        "genus",
+        "family",
+        "order",
+        "variant",
+        "serotype",
+        "genotype",
+    }
+)
+
 # Generic structural vocabulary used for the EMDB required-keyword AND-clause when
 # the query carries no protein/structural residual of its own.
 _DEFAULT_STRUCTURAL_KEYWORDS = (
@@ -176,6 +197,15 @@ def resolve_species_terms(
             _add(token, name)
 
     if not terms:
+        # FACET-VALIDATED TOKEN FALLBACK: the curated map, species_name, and query-text
+        # parsing all came up empty (e.g. single-token names like "Lassa mammarenavirus"
+        # that _VIRUS_RE can't match and taxon 11620 which isn't curated). Derive candidate
+        # tokens from the query and validate them against the PDB scientific_name facet —
+        # the SAME taxon-lock the normal path relies on — so a hit found here IS taxon-locked
+        # and MUST keep note=None (else StructuralEvidenceStep drops it).
+        fb_term, fb_name = _facet_fallback_term(text)
+        if fb_term is not None:
+            return SpeciesResolution(terms=[fb_term], names=[fb_name])
         return SpeciesResolution(
             note=(
                 "results not taxon-locked: could not resolve a species for "
@@ -183,6 +213,42 @@ def resolve_species_terms(
             )
         )
     return SpeciesResolution(terms=terms, names=names)
+
+
+def _facet_fallback_term(query: str) -> tuple[str | None, str | None]:
+    """Pick the most-specific query token that the PDB scientific_name facet recognizes.
+
+    Candidates are the query's alphabetic words of length >= 4 that are not generic
+    taxonomy-rank words (:data:`_RANK_STOPWORDS`). Each is faceted against
+    ``pdb.polymer_entities.scientific_name`` (via :func:`enumerate_organisms`); the
+    token with the FEWEST matching buckets but >= 1 is the most specific — so "lassa"
+    (a species token, few buckets) is chosen over "mammarenavirus" (a genus token that
+    over-matches every mammarenavirus). Returns ``(None, None)`` when no candidate matches
+    any bucket (a truly unresolvable query) or Globus is unreachable/disabled — the caller
+    then keeps the existing named degrade. The returned name records the facet-fallback origin.
+    """
+    from apecx_integration.agents.globus_search.client import GlobusSearchUnavailableError
+
+    seen: set[str] = set()
+    candidates: list[str] = []
+    for word in re.findall(r"[a-z]+", query.lower()):
+        if len(word) >= 4 and word not in _RANK_STOPWORDS and word not in seen:
+            seen.add(word)
+            candidates.append(word)
+
+    best_term: str | None = None
+    best_count = 0
+    for cand in candidates:
+        try:
+            n = len(enumerate_organisms([cand]))
+        except GlobusSearchUnavailableError:
+            return None, None
+        if n >= 1 and (best_term is None or n < best_count):
+            best_term, best_count = cand, n
+
+    if best_term is None:
+        return None, None
+    return best_term, f"{best_term} (PDB facet-matched)"
 
 
 def _structural_keyword_tokens(query: str, terms: list[str]) -> list[str]:
