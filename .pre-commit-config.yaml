@@ -55,6 +55,17 @@ repos:
         language: system
         pass_filenames: false
 
+      # Code index freshness — docs/global_index.md + docs/detailed_index.md are
+      # GENERATED from src/ by scripts/gen_index.py. This gate blocks a commit whose
+      # committed index drifted from the code, so "regenerate on every change" is an
+      # enforced re-run, not a memory-dependent discipline that silently rots.
+      - id: code-index-fresh
+        name: Code index (global_index.md + detailed_index.md) is up to date
+        entry: .venv/bin/python scripts/gen_index.py --check
+        language: system
+        pass_filenames: false
+        always_run: true
+
       # Hard review gate (commit-msg stage): BLOCKS a non-trivial commit whose
       # message has no `Reviewed:` trailer recording the self-review (necessity /
       # minimality / readability / DRY / what-was-deleted). The shared script lives
