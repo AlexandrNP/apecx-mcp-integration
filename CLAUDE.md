@@ -5,6 +5,15 @@ mocks policy, nanobrain constraints, session distillation). This file
 is repo-specific imperatives + pointers — keep it lean (probe 230 caps
 at 16 KB).
 
+**Session-start reads (this repo):** this file, then `docs/global_index.md`
+(generated code map — every source file → one-line purpose). Consult
+`docs/detailed_index.md` (generated per-class/function digest) on demand, not
+front-to-back. Regenerate both after code changes with
+`.venv/bin/python scripts/gen_index.py`; a pre-commit gate blocks a commit whose
+index is stale. NOTE: `CLAUDE.md` is auto-loaded from cwd upward but NOT from
+subdirectories — when working from the workspace root, THIS file is not in
+context until you read it. See `../CLAUDE.md` → "Multi-repo context loading".
+
 ## Python interpreter — MUST use the venv
 
 **`.venv/bin/python` is authoritative. `/opt/anaconda3/bin/python`
