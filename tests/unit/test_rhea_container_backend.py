@@ -10,7 +10,7 @@ server, host conda broken):
     docker run -d --name <name> -p 127.0.0.1:3001:3001 \
       -e ...host.docker.internal endpoints... \
       -e PARSL_CONTAINER_BACKEND=local -e AGENT_HANDLE_TIMEOUT=900 \
-      --add-host=host.docker.internal:host-gateway <image>
+      --add-host host.docker.internal:host-gateway <image>
 
 No real Docker/MinIO/Redis is touched — these exercise the PURE spec composition
 (the legit unit-test carve-out). The orchestrator-driven live bring-up is the
@@ -142,11 +142,12 @@ def test_container_run_args_matches_verified_command(
     # Host port binds LOOPBACK (#8) — Rhea is an internal worker, not world-visible. The
     # container still binds 0.0.0.0 INTERNALLY (env HOST above) so the docker port map works.
     assert "-p" in argv and "127.0.0.1:3001:3001" in argv
-    # add-host must appear BEFORE the image (it is a run flag, not a CMD arg).
-    assert "--add-host=host.docker.internal:host-gateway" in argv
-    assert argv.index("--add-host=host.docker.internal:host-gateway") < argv.index(
-        rhea.container.image
-    )
+    # add-host must appear BEFORE the image (it is a run flag, not a CMD arg). It is
+    # emitted as two tokens (`--add-host <val>`) from the dedicated `extra_hosts` field.
+    assert "--add-host" in argv
+    ah_i = argv.index("--add-host")
+    assert argv[ah_i + 1] == "host.docker.internal:host-gateway"
+    assert ah_i < argv.index(rhea.container.image)
     # Spot-check the load-bearing env made it onto the command line.
     assert "PARSL_CONTAINER_BACKEND=local" in joined
     assert "host.docker.internal" in joined
@@ -164,7 +165,15 @@ def test_rhea_container_spec_has_restart_policy(monkeypatch: pytest.MonkeyPatch)
     """
     rhea = _rhea_spec(monkeypatch, None)
     assert rhea.container.restart == "unless-stopped"
-    assert "--add-host=host.docker.internal:host-gateway" in rhea.container.extra_run_args
+    assert rhea.container.extra_hosts == ("host.docker.internal:host-gateway",)
+    # Autodeploy (P4-B): the spec carries the async build hook so the orchestrator
+    # auto-builds the image from local rhea source before `docker run` — no
+    # `apecx-setup rhea` build step.
+    from apecx_integration.infrastructure.rhea_server_provisioner import (
+        ensure_rhea_image_built,
+    )
+
+    assert rhea.container.image_builder is ensure_rhea_image_built
 
 
 def test_container_run_args_emits_restart_for_rhea(monkeypatch: pytest.MonkeyPatch) -> None:

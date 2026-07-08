@@ -76,6 +76,10 @@ from apecx_integration.infrastructure.probes import (
     redis_probe,
     rhea_mcp_probe,
 )
+from apecx_integration.infrastructure.rhea_server_provisioner import (
+    ensure_rhea_image_built,
+    resolve_rhea_image_tag,
+)
 
 log = logging.getLogger(__name__)
 
@@ -88,11 +92,11 @@ _AUTOSTART_ENV_VAR = "APECX_MCP_AUTOSTART_INFRA"
 _RHEA_EMBEDDING_MODEL_ENV = "RHEA_EMBEDDING_MODEL"
 _OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
 _RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
-# Image tag the container backend runs. Default matches what `apecx-setup rhea`
-# builds from $RHEA_REPO_PATH/Dockerfile. The rhea-server ALWAYS runs as a Docker
-# container — there is no host-process alternative (single-path mandate).
-_RHEA_IMAGE_ENV = "APECX_RHEA_IMAGE"
-_RHEA_IMAGE_DEFAULT = "apecx-rhea-server:local"
+# Image tag the container backend runs. The orchestrator AUTO-BUILDS this from the local
+# rhea source before `docker run` (the container spec's `image_builder` hook) — no
+# `apecx-setup rhea` needed. The tag is resolved via `resolve_rhea_image_tag()` (single
+# source of truth, shared with the builder) so the tag we RUN is always the tag it BUILDS.
+# The rhea-server ALWAYS runs as a Docker container — no host-process alternative.
 
 
 def _autostart_enabled() -> bool:
@@ -384,14 +388,16 @@ def _make_rhea_container_spec(
     Docker-Desktop interchange-reachability problem (the reason the sibling
     container WORKER backend fails on macOS).
 
-    The orchestrator only ``docker run``s — it does NOT build the image. A
-    missing image surfaces a LOUD actionable message (build via ``apecx-setup
-    rhea`` / ``docker build``). Reaching the host-published infra ports uses
-    ``--add-host=host.docker.internal:host-gateway`` (needed on Linux; a no-op
-    but harmless on Docker Desktop).
+    The orchestrator AUTO-BUILDS the image from the local rhea source before
+    ``docker run`` (the container spec's ``image_builder`` hook =
+    :func:`ensure_rhea_image_built`), so rhea is zero-config — no
+    ``apecx-setup rhea`` build step. A missing/unbuildable source surfaces a LOUD
+    ERROR_STARTING with the cause. Reaching the host-published infra ports uses
+    ``extra_hosts=("host.docker.internal:host-gateway",)`` (needed on Linux; a
+    no-op but harmless on Docker Desktop).
     """
     mcp_url = os.environ.get(_RHEA_MCP_URL_ENV, "http://localhost:3001/mcp/")
-    image = os.environ.get(_RHEA_IMAGE_ENV, _RHEA_IMAGE_DEFAULT)
+    image = resolve_rhea_image_tag()
 
     async def _probe() -> ProbeResult:
         return await rhea_mcp_probe(mcp_url=mcp_url)
@@ -408,7 +414,9 @@ def _make_rhea_container_spec(
         ports=((3001, 3001),),
         # Sorted for a deterministic argv (tests pin the generated docker run).
         env=tuple(sorted(rhea_env.items())),
-        extra_run_args=("--add-host=host.docker.internal:host-gateway",),
+        extra_hosts=("host.docker.internal:host-gateway",),
+        # Auto-build the image from local rhea source before `docker run` (zero-config).
+        image_builder=ensure_rhea_image_built,
         # The server boots (probe = :3001 health) in ~10s; the slow per-tool
         # conda build happens later, on the first tool CALL, not at startup.
         ready_timeout_s=120.0,
@@ -425,10 +433,10 @@ def _make_rhea_container_spec(
         probe=Probe(name="rhea_mcp", fn=_probe),
         actionable_message=(
             f"Rhea MCP container is unreachable at {mcp_url}. The orchestrator "
-            f"runs the image {image!r} but does NOT build it. Build it once with "
-            f"`apecx-setup rhea` (or `docker build -t {image} -f "
-            f"$RHEA_REPO_PATH/Dockerfile $RHEA_REPO_PATH`), make sure Docker is "
-            f"running, then retry."
+            f"auto-builds the image {image!r} from your local rhea source and runs "
+            f"it — no `apecx-setup rhea` build step. If this persists: make sure "
+            f"Docker is running and a rhea source checkout is present (set "
+            f"RHEA_REPO_PATH if it lives in a nonstandard location), then retry."
         ),
         container=container_spec,
         tags=("mcp", "rhea"),
@@ -971,6 +979,27 @@ class InfraOrchestrator:
             )
             spawn_action = "docker start"
         else:
+            # Ensure a LOCAL image exists before `docker run` (e.g. build rhea-server from
+            # source). Idempotent — a no-op when the image is already present. Only on the
+            # `docker run` path; a `docker start` reuses an existing container's image.
+            # A build failure is FAIL-LOUD (gather swallows exceptions), so we translate it
+            # into ERROR_STARTING rather than let the backend hang in STARTING.
+            if container_spec.image_builder is not None:
+                # Deliberately UNBOUNDED (no timeout): a first-time rhea-server build is a
+                # multi-minute `docker build`; a short cap would wrongly kill it. The builder
+                # (ensure_docker_image_built) owns its own lifecycle + build-lock; `on_progress`
+                # streams each build line to the log so a slow build is observable, not a stall.
+                try:
+                    await container_spec.image_builder(on_progress=log.info)
+                except Exception as exc:  # noqa: BLE001 — surface any build failure loudly
+                    with self._lock:
+                        rt.state = BackendState.ERROR_STARTING
+                        rt.detail = (
+                            f"{spec.display_name}: image build failed before "
+                            f"`docker run`. {spec.actionable_message}"
+                        )
+                        rt.error = f"{type(exc).__name__}: {exc}"[:300]
+                    return
             cmd = [self._docker] + container_run_args(container_spec)
             spawn = await asyncio.to_thread(
                 subprocess.run,

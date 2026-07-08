@@ -299,6 +299,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/infrastructure/probes.py` | Health probes for the five managed backends. |
 | `src/apecx_integration/infrastructure/rhea_env_autodiscovery.py` | Auto-discover the Rhea checkout + set RHEA_* env vars (G88, 2026-05-16). |
 | `src/apecx_integration/infrastructure/rhea_prewarm.py` | Per-tool pre-warm helpers — the install + report-shape primitives. |
+| `src/apecx_integration/infrastructure/rhea_server_provisioner.py` | Auto-build the rhea-server Docker image from local rhea source (P4-B autodeploy). |
 
 ## mcp_surface
 

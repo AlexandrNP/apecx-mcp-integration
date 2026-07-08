@@ -133,7 +133,7 @@ def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> 
 
     ``["docker", "run", "-d", ["--restart", <policy>]?, "--name", <name>,
        "-p", "BIND:H:C", ..., "-e", "K=V", ..., "-v", "S:C", ...,
-       *<extra_run_args>, <image>, *<command>]``
+       ["--add-host", <val>]*, *<extra_run_args>, <image>, *<command>]``
 
     ``--restart <policy>`` is emitted only when ``spec.restart != "no"`` (a
     long-lived container that must survive an OS reboot).
@@ -157,6 +157,8 @@ def container_run_args(spec: ContainerSpec, *, bind_host: str = "127.0.0.1") -> 
         args.extend(["-e", f"{key}={value}"])
     for source, container_path in spec.volumes:
         args.extend(["-v", f"{source}:{container_path}"])
+    for host_entry in spec.extra_hosts:
+        args.extend(["--add-host", host_entry])
     args.extend(spec.extra_run_args)
     args.append(spec.image)
     args.extend(spec.command)

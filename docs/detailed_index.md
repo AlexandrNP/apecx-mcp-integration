@@ -2803,6 +2803,13 @@ _Per-tool pre-warm helpers — the install + report-shape primitives._
 - `async def _fetch_tool_requirements(database_url: str, tool_id: str)` — Query Rhea's ``galaxytools`` table for one tool's requirements.
 - `async def prewarm_tool(tool_id: str, *, database_url: str, redis_host: str, redis_port: int, rhea_python: str | None=None)` — Pre-install a single Rhea tool's conda env.
 
+## `src/apecx_integration/infrastructure/rhea_server_provisioner.py`
+_Auto-build the rhea-server Docker image from local rhea source (P4-B autodeploy)._
+
+- `def resolve_rhea_image_tag()` — The image tag we BUILD and the orchestrator RUNs — single source of truth.
+- `def _resolve_rhea_repo()` — Locate the rhea source checkout (the docker build context). FAIL-LOUD if absent.
+- `async def ensure_rhea_image_built(*, on_progress: Callable[[str], None] | None=None)` — Build (idempotently) the rhea-server image from the local rhea checkout; return its tag.
+
 ## `src/apecx_integration/mcp_surface/__init__.py`
 
 _(no module-level classes or functions)_

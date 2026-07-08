@@ -149,6 +149,12 @@ class ContainerSpec:
     # reaching postgres/redis/minio/ollama). Each entry is one token, e.g.
     # ``("--add-host=host.docker.internal:host-gateway",)``.
     extra_run_args: tuple[str, ...] = ()
+    # Host→IP mappings, each emitted as ``--add-host <val>`` (e.g.
+    # ``"host.docker.internal:host-gateway"`` so a container the orchestrator spawns can
+    # reach the host-published infra ports — required on Linux, a harmless no-op on
+    # Docker Desktop). A dedicated typed field (vs stuffing the flag into
+    # ``extra_run_args``) so the add-host intent is explicit + independently assertable.
+    extra_hosts: tuple[str, ...] = ()
     # Ordered list of extra positional args appended after the image.
     # E.g. ``("server", "/data")`` for minio.
     command: tuple[str, ...] = ()
@@ -163,6 +169,12 @@ class ContainerSpec:
     # ``_spawned_containers`` for atexit teardown — Docker owns its lifecycle.
     # ``"no"`` (the default) keeps the ephemeral/teardown-on-exit semantics.
     restart: str = "no"
+    # Optional async hook the orchestrator awaits BEFORE ``docker run`` to guarantee a
+    # LOCAL image exists (e.g. build it from source — rhea-server). It takes an
+    # ``on_progress`` callback and returns the image tag it ensured. ``None`` (default)
+    # means "assume the image is already present or pullable" — no build step. It is NOT
+    # called on the ``docker start`` path (an existing container's image already exists).
+    image_builder: Callable[..., Awaitable[str]] | None = None
 
 
 BackendKind = Literal["docker_container", "external"]
