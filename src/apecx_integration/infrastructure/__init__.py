@@ -8,7 +8,9 @@ This subpackage brings up (and probes for liveness) the five backends
 * MinIO (``apecx-rhea-minio``) — S3-compatible object store
 * Ollama — local LLM endpoint (operator-installed host process)
 * Rhea MCP — MCP server backing the structural-bioinformatics tools
-  (Docker container, built by ``apecx-setup rhea``)
+  (Docker container; the orchestrator auto-builds its image from local
+  rhea source and runs it — no ``apecx-setup rhea`` build step. The tool
+  CATALOG is still seeded by the ``apecx-setup rhea`` ingestion.)
 
 The orchestrator is **operational plumbing**, not a nanobrain workflow
 component. It is launched as a fire-and-forget asyncio task from

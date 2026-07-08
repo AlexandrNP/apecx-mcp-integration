@@ -2923,7 +2923,7 @@ _MCP surface entry point — FastMCP-based server._
 - `async def _verify_control_plane_reachable()` — Ensure the Control Plane is reachable, autostarting it if
 - `def _check_data_root_or_warn()` — Log a loud banner when the VIOLIN/BV-BRC data dir is missing.
 - `def _check_rag_index_or_warn()` — Log a loud banner when the domain RAG index is missing (G81).
-- `def _check_rhea_status_or_warn()` — Log a banner reporting the Rhea bring-up state at MCP startup (G89).
+- `def _check_rhea_status_or_warn()` — Log a banner reporting the Rhea SOURCE-readiness state at MCP startup (G89; P4-B).
 - `def _try_public_download(sqlite_path: Path)` — Anonymous bootstrap of the dictionary from the public Globus path.
 - `def _ensure_synonym_dict_or_warn()` — Make the synonym dictionary available at startup — DOWNLOAD it from Globus.
 - `def _resolve_package_version()` — Return the installed package version, or 'unknown' if unresolvable.

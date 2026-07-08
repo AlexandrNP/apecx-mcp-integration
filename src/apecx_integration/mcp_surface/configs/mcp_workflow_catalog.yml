@@ -52,8 +52,14 @@ workflows:
         - rhea
         - rhea.utils.proxy
       unavailable_hint: >-
-        This workflow runs MUSCLE inside Rhea and therefore needs Docker +
-        the Rhea MCP server (run `apecx-setup rhea` and set RHEA_MCP_URL).
+        This workflow runs MUSCLE inside Rhea and therefore needs Docker + the
+        Rhea MCP server. The server auto-provisions: the orchestrator auto-builds
+        and runs the rhea-server container from a local rhea SOURCE checkout (git
+        clone it next to apecx-mcp-integration/, or set RHEA_REPO_PATH), so no
+        `apecx-setup rhea` build step is needed for the server. The workflow's rhea
+        CLIENT modules (`rhea`, `rhea.utils.proxy`) must also be importable in the
+        apecx venv, and the rhea TOOL CATALOG must be ingested — both are done by
+        `apecx-setup rhea` (that ingestion autodeploy is deferred).
         WITHOUT Docker it does NOT run — and the MAFFT sequence-alignment path
         (`viral_conserved_sites`) is ALSO containerized now, so it needs Docker
         too (there is no host-binary alignment fallback). With Docker, use
@@ -165,7 +171,8 @@ workflows:
     output_envelope_key: workflow_output
     # RHEA genomic-analysis is a mandatory PART of the analysis (always attempted + disclosed),
     # but it is NOT a hard prerequisite: when RHEA is unavailable the workflow DEGRADES LOUD
-    # (prominent warning + `apecx-setup rhea` instructions in the report) and still completes —
+    # (prominent warning + honest fix instructions in the report — the server auto-provisions;
+    # the rhea client library + tool-catalog ingestion are what `apecx-setup rhea` covers) and completes —
     # the MAFFT/structural/literature legs remain valid. So no `requires: rhea` gate here.
     # Concurrent network retrieval (Globus + PubMed + BV-BRC) + RHEA MUSCLE + one LLM round-trip.
     settle_ms: 3000

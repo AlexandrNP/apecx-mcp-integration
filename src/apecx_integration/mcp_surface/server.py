@@ -310,8 +310,11 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     # auto-spawn logic engages only when RHEA_REPO_PATH +
     # RHEA_PYTHON_PATH are populated; pre-G88 that was operator-only.
     # With this hook, an operator who has the rhea checkout next to
-    # apecx-mcp-integration (the standard workspace layout) and ran
-    # `apecx-setup rhea` once gets rhea-server auto-started here.
+    # apecx-mcp-integration (the standard workspace layout) gets
+    # rhea-server auto-started here — the orchestrator auto-builds the
+    # container image from that source, so no `apecx-setup rhea` build
+    # step is needed for the SERVER (the tool catalog still needs the
+    # `apecx-setup rhea` ingestion; see `_check_rhea_status_or_warn`).
     # Opt out via APECX_RHEA_AUTODISCOVER=0.
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         autodiscover_rhea_env,
@@ -750,23 +753,31 @@ def _check_rag_index_or_warn() -> None:
 
 
 def _check_rhea_status_or_warn() -> None:
-    """Log a banner reporting the Rhea bring-up state at MCP startup (G89).
+    """Log a banner reporting the Rhea SOURCE-readiness state at MCP startup (G89; P4-B).
 
-    Cheap stat-only probes — does NOT touch the orchestrator's live
+    Cheap stat-only probe — does NOT touch the orchestrator's live
     rhea-server probe (that runs in the background thread and surfaces
-    via the ``infrastructure_status`` MCP tool). What we surface here
-    is the STATIC state ``apecx-setup rhea`` would have produced, so an
-    operator seeing the boot logs can immediately diagnose why Rhea
-    isn't auto-spawning if they expected it to.
+    via the ``infrastructure_status`` MCP tool). What we surface here is
+    whether the rhea SOURCE checkout is present, because the orchestrator
+    AUTO-BUILDS the ``apecx-rhea-server`` container image from that source
+    (the Dockerfile build context; the image builds its own venv inside)
+    and runs it. So the ONLY server prerequisite is the source — there is
+    no host ``.venv`` to build and no ``apecx-setup rhea`` build step for
+    the SERVER.
 
-    Three states:
-      * ``Rhea: checkout missing`` — autodiscovery couldn't find the
-        rhea repo. Rhea-backed tools (muscle, future Galaxy tools)
-        will be UNAVAILABLE via the MCP catalog.
-      * ``Rhea: checkout found but venv missing`` — operator hasn't
-        run ``apecx-setup rhea`` yet. Same UNAVAILABLE state.
-      * ``Rhea: ready`` — bring-up done; the orchestrator's
-        background thread will auto-spawn rhea-server.
+    Two states:
+      * ``Rhea: source NOT FOUND`` — autodiscovery couldn't find the
+        rhea repo, so the orchestrator has nothing to build the
+        container image from. Rhea-backed tools (muscle, future Galaxy
+        tools) will be UNAVAILABLE.
+      * ``Rhea: source present`` — the orchestrator's background thread
+        will auto-build + auto-spawn the rhea-server container.
+
+    Note the SEPARATE, still-honest gap: even with the container running,
+    the rhea TOOL CATALOG (external postgres) is populated only by the
+    ``apecx-setup rhea`` ingestion (~10 min), which autodeploy does NOT
+    yet cover. On an unseeded machine the container runs but rhea tools
+    stay UNAVAILABLE until that ingestion has been done.
     """
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
@@ -775,33 +786,28 @@ def _check_rhea_status_or_warn() -> None:
     rhea_repo = _find_rhea_repo()
     if rhea_repo is None:
         log.warning("=" * 64)
-        log.warning("Rhea: checkout NOT FOUND in standard probe locations")
+        log.warning("Rhea: source checkout NOT FOUND in standard probe locations")
         log.warning("")
-        log.warning("Rhea-backed bioinformatics tools (e.g. muscle) will be")
-        log.warning("UNAVAILABLE via the MCP catalog until you:")
-        log.warning("  1. git clone https://github.com/AlexandrNP/rhea.git")
-        log.warning("     (into the workspace next to apecx-mcp-integration/)")
-        log.warning("  2. apecx-setup rhea")
-        log.warning("  3. restart this MCP server")
+        log.warning("The orchestrator auto-builds + runs the rhea-server container")
+        log.warning("from a local rhea SOURCE checkout, but none was found. Provide")
+        log.warning("the source so the auto-build has a build context:")
+        log.warning("  * git clone https://github.com/AlexandrNP/rhea.git")
+        log.warning("    (into the workspace next to apecx-mcp-integration/), OR")
+        log.warning("  * set RHEA_REPO_PATH to an existing checkout")
+        log.warning("")
+        log.warning("No host venv to build and no `apecx-setup rhea` step is needed")
+        log.warning("for the SERVER — the container builds its own venv internally.")
+        log.warning("(The rhea TOOL CATALOG still needs the `apecx-setup rhea`")
+        log.warning("ingestion; that autodeploy is deferred.)")
         log.warning("")
         log.warning("If you don't need Rhea-backed tools, this banner is benign.")
         log.warning("=" * 64)
         return
 
-    venv = rhea_repo / ".venv" / "bin" / "python"
-    if not venv.exists():
-        log.warning("=" * 64)
-        log.warning("Rhea: checkout at %s but venv NOT BUILT", rhea_repo)
-        log.warning("")
-        log.warning("Rhea-backed bioinformatics tools will be UNAVAILABLE.")
-        log.warning("To enable: `apecx-setup rhea` then restart this MCP server.")
-        log.warning("=" * 64)
-        return
-
     log.info(
-        "Rhea: ready (checkout=%s, venv=%s) — InfraOrchestrator will auto-spawn rhea-server",
+        "Rhea: source present (checkout=%s) — InfraOrchestrator will auto-build + "
+        "auto-spawn the rhea-server container",
         rhea_repo,
-        venv.parent,
     )
 
 

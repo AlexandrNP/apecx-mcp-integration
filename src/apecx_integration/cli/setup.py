@@ -12,7 +12,12 @@ Single entry point for the entire APECx deployment recipe:
     apecx-setup infra       # only start Postgres + Redis containers
     apecx-setup llm         # only check/pull the Ollama model
     apecx-setup rag         # only build the FAISS RAG index (opt-in)
-    apecx-setup rhea        # only run the Rhea one-time bring-up (opt-in, G89)
+    apecx-setup rhea        # Rhea INGESTION + client-lib install (opt-in, G89)
+                            #   NOTE: the rhea SERVER auto-provisions now —
+                            #   the orchestrator auto-builds + runs its container
+                            #   from local rhea source (P4-B). This step is no
+                            #   longer needed for the server; it seeds the tool
+                            #   catalog + installs the rhea client into the apecx venv.
     apecx-setup verify      # only run the post-setup verification
     apecx-setup --reconfigure-llm   # change LLM env vars in existing config
 
@@ -37,11 +42,14 @@ Each subcommand is idempotent + safe to re-run. The default
 Two slots in the chain are OPT-IN:
     * ``rag``  (G81, 2026-05-16) — FAISS index build for synthesis
                 workflows. ~10 min, 689 MB. Default-skipped.
-    * ``rhea`` (G89, 2026-05-16) — Rhea checkout sync + ingestion +
-                embedding-model pull for bioinformatics tools (muscle,
-                future Galaxy tools). ~10 min one-time. Default-skipped.
-                After running once, apecx-mcp auto-discovers + auto-
-                spawns the Rhea host process at every startup (G88).
+    * ``rhea`` (G89, 2026-05-16) — Rhea checkout sync + tool-catalog
+                ingestion + client-lib install + embedding-model pull for
+                bioinformatics tools (muscle, future Galaxy tools). ~10 min
+                one-time. Default-skipped. NOTE (P4-B): the rhea SERVER now
+                auto-provisions — apecx-mcp auto-discovers the rhea source
+                and the orchestrator auto-builds + runs its container at
+                startup, so this step is NOT needed for the server; it seeds
+                the tool catalog + installs the rhea client into the apecx venv.
 
 The ``rag`` step (FAISS index build, 689 MB, ~10 min) is **opt-in**
 since G81 (2026-05-16). The 80%-case (DB queries, MCP tools,

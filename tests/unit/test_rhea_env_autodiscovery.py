@@ -158,8 +158,10 @@ def test_python_path_not_derived_when_venv_missing(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """REPO_PATH set but no .venv yet (`uv sync` not run) → PYTHON_PATH
-    stays unset. The orchestrator's actionable message tells the operator
-    to run `apecx-setup rhea`."""
+    stays unset. The rhea SERVER no longer depends on this host venv (the
+    orchestrator auto-builds + runs the rhea-server container, which has its
+    own internal venv); PYTHON_PATH derivation is only for the legacy
+    host-process path."""
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         autodiscover_rhea_env,
     )

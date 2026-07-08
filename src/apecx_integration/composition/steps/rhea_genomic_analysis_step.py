@@ -239,8 +239,11 @@ class RheaGenomicAnalysisStep(BaseStep):
                     "what": "RHEA large-scale MUSCLE conservation tools are not available",
                     "why": reason or failure_cause or "the RHEA call failed",
                     "action": (
-                        "run `apecx-setup rhea` and ensure the RHEA MCP server is reachable "
-                        "(RHEA_MCP_URL); the rest of the analysis still completed and is valid"
+                        "the rhea-server auto-provisions (the orchestrator auto-builds + runs its "
+                        "container from your rhea source — ensure Docker is running and the source "
+                        "is present); if the diagnosis above names the rhea CLIENT library or an "
+                        "unseeded tool catalog, run `apecx-setup rhea`. The rest of the analysis "
+                        "still completed and is valid"
                     ),
                     "severity": "warning",
                 }
@@ -281,11 +284,14 @@ class RheaGenomicAnalysisStep(BaseStep):
         if not probe.healthy:
             return (
                 f"the RHEA MCP server at {mcp_url} is unreachable or degraded "
-                f"({probe.error or probe.detail})."
+                f"({probe.error or probe.detail}) — the orchestrator auto-builds + runs the "
+                f"rhea-server container, so this is often transient (still starting up) or means "
+                f"Docker/the rhea source is unavailable, not a missing `apecx-setup rhea` step."
             )
         return (
             f"the RHEA client and MCP server at {mcp_url} are both reachable, but the MUSCLE run "
-            f"produced no result ({type(exc).__name__}: {exc})."
+            f"produced no result ({type(exc).__name__}: {exc}) — the rhea TOOL CATALOG may not be "
+            f"ingested yet (run the `apecx-setup rhea` ingestion)."
         )
 
     @staticmethod
@@ -294,9 +300,12 @@ class RheaGenomicAnalysisStep(BaseStep):
             f"⚠️ RHEA genomic-analysis tools are NOT available ({reason}). The large-scale "
             "MUSCLE conservation leg did NOT run — but the rest of the end-to-end analysis "
             "(MAFFT sequence conservation, structural surface-exposure, literature) completed "
-            "and remains valid. To enable the RHEA leg: run `apecx-setup rhea` (RHEA runs only "
-            "as a Docker container) so the server AND the client library are provisioned — the "
-            "diagnosis above says which one is missing."
+            "and remains valid. To enable the RHEA leg: the rhea-server auto-provisions as a "
+            "Docker container (the orchestrator auto-builds it from your rhea source — no "
+            "`apecx-setup rhea` build step needed for the server; ensure Docker is running and "
+            "the source is present). If the diagnosis above names the rhea CLIENT library or an "
+            "unseeded tool catalog, run `apecx-setup rhea` to install the client into the apecx "
+            "venv and ingest the catalog — the diagnosis above says which piece is missing."
         )
 
 
