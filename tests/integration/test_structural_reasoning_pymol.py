@@ -7,7 +7,10 @@ structure (3N40, E1/E2 glycoprotein) with REAL conserved-region motifs, and asse
 that real solvent-exposed / buried residue NUMBERS come back from real PyMOL SASA —
 plus byte-level determinism across two runs.
 
-Build the image first (one-time, ~5 min) — or just run ``apecx-setup pymol``:
+In normal use the image AUTO-BUILDS on the first structural call
+(``pymol_sasa_tool.run_sasa`` → ``ensure_image``) — there is no manual install step.
+This test's image-present gate is a test-speed choice (it does NOT build); to build it
+directly first (one-time, ~5 min):
 
     CTX=src/apecx_integration/composition/steps/_pymol_container
     docker build -t apecx-pymol:3.1.0 -f $CTX/Dockerfile $CTX

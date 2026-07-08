@@ -147,8 +147,8 @@ def test_pymol_container_build_context_is_in_package_data() -> None:
     not as a module (the job imports ``pymol2``, unimportable on the host). The generic resource
     scan above only checks EXPECTED_RESOURCE_EXTS (yml/md/…), so a no-extension Dockerfile + a
     ``.py``-as-data would slip past it — assert them EXPLICITLY. This pins the exact hole that let
-    the old repo-root ``docker/pymol/`` ship a wheel missing ``_pymol_job.py`` → the SASA leg /
-    ``apecx-setup pymol`` crashed with FileNotFoundError on a uv-tool / wheel install."""
+    the old repo-root ``docker/pymol/`` ship a wheel missing ``_pymol_job.py`` → the SASA leg's
+    first-use auto-build (``ensure_image``) crashed with FileNotFoundError on a uv-tool / wheel install."""
     globs = _load_package_data_globs()
     container_dir = PKG_ROOT / "composition" / "steps" / "_pymol_container"
     assert container_dir.is_dir(), f"PyMOL build context missing at {container_dir}"
@@ -158,6 +158,6 @@ def test_pymol_container_build_context_is_in_package_data() -> None:
         rel = f.relative_to(PKG_ROOT)
         assert any(_glob_matches(rel, g) for g in globs), (
             f"{rel} is NOT covered by any [tool.setuptools.package-data] glob — the wheel would "
-            f"omit it and the PyMOL SASA leg / `apecx-setup pymol` would FileNotFoundError on a "
+            f"omit it and the PyMOL SASA leg's first-use auto-build would FileNotFoundError on a "
             f"non-editable install."
         )

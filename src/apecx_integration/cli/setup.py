@@ -1141,89 +1141,6 @@ def _step_rag() -> StepResult:
 # ---------------------------------------------------------------------------
 
 
-_PYMOL_IMAGE = "apecx-pymol:3.1.0"
-
-
-def _step_pymol() -> StepResult:
-    """Build the version-pinned headless PyMOL image (E3-7, 2026-06-13).
-
-    The structural-reasoning stage (``StructuralReasoningStep``) shells
-    out to ``apecx-pymol:3.1.0`` for real per-residue SASA. Without the
-    image the stage degrades to a named-skip; building it here makes the
-    real structural path run out of the box.
-
-    Idempotent: skips when the image already exists (unless
-    ``APECX_PYMOL_REBUILD=1``). NEVER raises — degrades to ``skipped``
-    when docker is down.
-    """
-    _print_header("PyMOL image (structural reasoning, opt-in)")
-
-    if not _docker_available():
-        return StepResult(
-            "pymol",
-            "skipped",
-            "docker daemon unreachable — PyMOL image not built. Install "
-            "Docker Desktop (https://docker.com/desktop), start it, then "
-            "re-run `apecx-setup pymol`. (Chain continues without it.)",
-        )
-
-    image_present = (
-        subprocess.run(
-            ["docker", "image", "inspect", _PYMOL_IMAGE],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        ).returncode
-        == 0
-    )
-    if image_present and os.environ.get("APECX_PYMOL_REBUILD") != "1":
-        return StepResult(
-            "pymol",
-            "ok",
-            f"image {_PYMOL_IMAGE} already present (APECX_PYMOL_REBUILD=1 to rebuild)",
-        )
-
-    # The PyMOL build context is packaged under composition/steps/_pymol_container/ so it resolves
-    # in EVERY install mode (editable / uv tool / wheel) — the old repo-root path was absent from a
-    # non-editable install, so ``apecx-setup pymol`` could not find the Dockerfile to build the image.
-    import apecx_integration.composition.steps as _steps
-
-    pymol_ctx = Path(_steps.__file__).resolve().parent / "_pymol_container"
-    dockerfile = pymol_ctx / "Dockerfile"
-    if not dockerfile.is_file():
-        return StepResult(
-            "pymol",
-            "fail",
-            f"PyMOL Dockerfile not found at {dockerfile}",
-        )
-
-    print(f"  ▶  docker build {_PYMOL_IMAGE} from {pymol_ctx} (~5 min, conda solve) ...")
-    build = subprocess.run(
-        [
-            "docker",
-            "build",
-            "-t",
-            _PYMOL_IMAGE,
-            "-f",
-            str(dockerfile),
-            str(pymol_ctx),
-        ],
-        timeout=1800,
-    )
-    if build.returncode != 0:
-        return StepResult(
-            "pymol",
-            "fail",
-            f"`docker build {_PYMOL_IMAGE}` exited {build.returncode}; "
-            "inspect the build output above",
-        )
-    return StepResult(
-        "pymol",
-        "ok",
-        f"built {_PYMOL_IMAGE} (headless open-source PyMOL, version-pinned)",
-    )
-
-
 def _step_verify() -> StepResult:
     _print_header("Step 7 of 7 — Verification")
     workspace_root = Path(__file__).resolve().parents[4]
@@ -1533,7 +1450,6 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
-    "pymol": lambda **_: _step_pymol(),
     "routing": _step_routing,
     "chatgpt": _step_chatgpt,
     "verify": lambda **_: _step_verify(),
@@ -1544,7 +1460,6 @@ def _run_all(
     *,
     interactive: bool = True,
     with_rag: bool = False,
-    with_pymol: bool = False,
 ) -> int:
     """Run the canonical install chain.
 
@@ -1604,16 +1519,8 @@ def _run_all(
         )
     # Rhea has NO chain step (P4): the rhea-server container auto-builds and the tool
     # catalog auto-seeds on the first `apecx-mcp` startup (InfraOrchestrator).
-    if with_pymol:
-        results.append(_step_pymol())
-    else:
-        results.append(
-            StepResult(
-                "pymol",
-                "skipped",
-                "opt-in — run `apecx-setup pymol` or `apecx-setup --with-pymol` to build the version-pinned PyMOL image for real structural-reasoning SASA",
-            )
-        )
+    # PyMOL likewise has NO chain step: the `apecx-pymol` image auto-builds on the first
+    # structural use (`pymol_sasa_tool.run_sasa` → `ensure_image`); nothing to install by hand.
     results.append(_step_routing(interactive=interactive))
     results.append(_step_chatgpt(interactive=interactive))
     results.append(_step_verify())
@@ -1641,7 +1548,6 @@ def main(argv: list[str] | None = None) -> None:
             "infra",
             "llm",
             "rag",
-            "pymol",
             "routing",
             "chatgpt",
             "verify",
@@ -1670,17 +1576,6 @@ def main(argv: list[str] | None = None) -> None:
             "Run this when you specifically need the synthesis RAG branch."
         ),
     )
-    parser.add_argument(
-        "--with-pymol",
-        action="store_true",
-        help=(
-            "Include the headless PyMOL image build (E3-7) in the default "
-            "chain (~5 min one-time, conda solve). Run this for real "
-            "per-residue SASA in the structural-reasoning stage of "
-            "viral_epitope_analysis (it degrades to a named-skip "
-            "without the image)."
-        ),
-    )
     args = parser.parse_args(argv)
 
     if args.reconfigure_llm:
@@ -1692,7 +1587,6 @@ def main(argv: list[str] | None = None) -> None:
             _run_all(
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
-                with_pymol=args.with_pymol,
             )
         )
     elif args.subcommand == "data":

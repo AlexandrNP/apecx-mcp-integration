@@ -378,13 +378,12 @@ _apecx-setup orchestrator (2026-05-09; RAG made opt-in 2026-05-16, G81)._
 - `def _offer_start_ollama_daemon(*, interactive: bool)` — Start the Ollama daemon in the background.
 - `def _step_llm(*, interactive: bool=True)`
 - `def _step_rag()`
-- `def _step_pymol()` — Build the version-pinned headless PyMOL image (E3-7, 2026-06-13).
 - `def _step_verify()`
 - `def _step_capabilities()` — Show what the install can do now + what infra unlocks — via the shared aggregator.
 - `def _step_routing(interactive: bool=True)` — Install the APECx tool-routing rule so the client LLM reaches for APECx first.
 - `def chatgpt_connector_guidance(port: int=_CHATGPT_PORT)` — Operator instructions to connect ChatGPT to apecx-mcp — minimal + exact.
 - `def _step_chatgpt(interactive: bool=True)` — Print how to connect ChatGPT to apecx-mcp (instructional — no file to auto-write).
-- `def _run_all(*, interactive: bool=True, with_rag: bool=False, with_pymol: bool=False)` — Run the canonical install chain.
+- `def _run_all(*, interactive: bool=True, with_rag: bool=False)` — Run the canonical install chain.
 - `def main(argv: list[str] | None=None)`
 
 ## `src/apecx_integration/cli/setup_data.py`

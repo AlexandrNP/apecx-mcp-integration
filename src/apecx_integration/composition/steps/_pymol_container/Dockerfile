@@ -7,8 +7,9 @@
 # image with `docker run`, the host pre-fetches the immutable RCSB structure and
 # mounts it in, so the container itself needs NO network.
 #
-# Build (one-time, ~5 min on first build; the conda solve dominates) — normally via
-# `apecx-setup pymol`, or manually from this packaged build context:
+# Build (one-time, ~5 min on first build; the conda solve dominates) — normally the
+# image AUTO-BUILDS on first structural use (`pymol_sasa_tool.run_sasa` -> `ensure_image`);
+# to build it manually from this packaged build context:
 #   CTX=src/apecx_integration/composition/steps/_pymol_container
 #   docker build -t apecx-pymol:3.1.0 -f $CTX/Dockerfile $CTX
 #
