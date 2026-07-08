@@ -92,6 +92,10 @@ _AUTOSTART_ENV_VAR = "APECX_MCP_AUTOSTART_INFRA"
 _RHEA_EMBEDDING_MODEL_ENV = "RHEA_EMBEDDING_MODEL"
 _OLLAMA_BASE_URL_ENV = "APECX_LLM_BASE_URL"
 _RHEA_MCP_URL_ENV = "RHEA_MCP_URL"
+# Which tool set the auto-ingestion seeds into the rhea catalog when it is empty.
+# Default "muscle" = the fast (~10s) zero-config path; an operator can widen it
+# (e.g. "muscle,blast") to seed more tools, at the cost of a slower first boot.
+_RHEA_INGEST_ONLY_ENV = "APECX_RHEA_INGEST_ONLY"
 # Image tag the container backend runs. The orchestrator AUTO-BUILDS this from the local
 # rhea source before `docker run` (the container spec's `image_builder` hook) — no
 # `apecx-setup rhea` needed. The tag is resolved via `resolve_rhea_image_tag()` (single
@@ -684,6 +688,164 @@ class InfraOrchestrator:
                         f"[prewarm:{tool_result.tool_name}] {tool_result.detail}"
                     )
         return snapshot
+
+    async def ensure_catalog_seeded(self, *, timeout_s: float = 600.0) -> dict[str, Any]:
+        """Auto-run the Rhea tool-catalog ingestion when the catalog is empty.
+
+        The rhea-server container auto-builds + runs (zero-config), but its
+        EXTERNAL postgres carries the tool catalog. On an unseeded machine that
+        catalog is empty, so the server answers ``tools/list`` with ZERO tools —
+        reachable but degraded — and every rhea tool is unavailable until an
+        operator runs ``apecx-setup rhea`` ingestion. This method closes that
+        gap: it detects the empty-catalog state via the rhea probe and, only
+        then, runs the ingestion INSIDE the running container, so rhea works
+        after nothing but ``uv install`` + ``apecx-setup``.
+
+        Idempotent + safe to call repeatedly:
+          * ``docker exec ... update_tools`` is an upsert (``session.merge``),
+            so a re-run on an already-seeded catalog is a no-op.
+          * We probe FIRST and return ``already_seeded`` without touching Docker
+            when the catalog already has tools.
+
+        Returns a small dict describing what happened (never raises for the
+        no-rhea / no-docker / server-down cases — those are surfaced by the
+        backend state machine, not by an exception here). It DOES raise on an
+        ingestion FAILURE (non-zero exit / timeout) — that is a real, actionable
+        problem the caller must not swallow silently.
+        """
+        rt = self._runtimes.get("rhea_mcp")
+        if rt is None or rt.spec.container is None:
+            return {"seeded": False, "action": "skipped", "reason": "no rhea backend in roster"}
+        if self._docker is None:
+            return {"seeded": False, "action": "skipped", "reason": "docker CLI not on PATH"}
+        container_name = rt.spec.container.container_name
+
+        # Detect seeded state via the postgres CATALOG ROW COUNT — NOT the MCP
+        # tools/list count. The rhea MCP tools/list ALWAYS lists ``find_tools``
+        # (the discovery meta-tool, count 1) at startup; catalog tool-wrappers are
+        # added dynamically only AFTER find_tools runs — so tools/list cannot tell
+        # an empty catalog from a seeded one (both read "1 tool"). The
+        # ``galaxytools`` row count is the ground truth. (An integration test that
+        # truncated the catalog caught the probe-based check wrongly reporting
+        # "already_seeded" and skipping the ingest.)
+        n_tools = await self._catalog_row_count()
+        if n_tools is None:
+            return {
+                "seeded": False,
+                "action": "skipped",
+                "reason": "no postgres backend in roster / catalog count unavailable",
+            }
+        if n_tools > 0:
+            return {
+                "seeded": True,
+                "action": "already_seeded",
+                "detail": f"{n_tools} tool(s) in catalog",
+            }
+
+        # Reachable but empty → run the ingestion inside the container.
+        ingest_only = os.environ.get(_RHEA_INGEST_ONLY_ENV, "muscle")
+        cmd = [
+            self._docker,
+            "exec",
+            "-e",
+            f"RHEA_INGEST_ONLY={ingest_only}",
+            container_name,
+            "sh",
+            "-lc",
+            "cd /app && uv run python -m rhea.preprocess.update_tools",
+        ]
+        log.info(
+            "InfraOrchestrator.ensure_catalog_seeded: rhea catalog empty — running ingestion "
+            "(RHEA_INGEST_ONLY=%s) in %s ...",
+            ingest_only,
+            container_name,
+        )
+        try:
+            result = await asyncio.to_thread(
+                subprocess.run,
+                cmd,
+                capture_output=True,
+                timeout=timeout_s,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise RuntimeError(
+                f"Rhea catalog ingestion timed out after {timeout_s}s "
+                f"(RHEA_INGEST_ONLY={ingest_only}). A default muscle-only ingest is normally "
+                "~10s; a timeout usually means a widened ingest set or a stalled dependency. "
+                "Check: (1) Ollama + the mxbai-embed-large embedding model reachable from the "
+                "container; (2) network to Galaxy ToolShed / GitHub for the tool source."
+            ) from exc
+
+        stdout = result.stdout.decode("utf-8", "replace") if result.stdout else ""
+        stderr = result.stderr.decode("utf-8", "replace") if result.stderr else ""
+        # Log the ingestion output so a slow widen-ingest is observable, not a stall.
+        for line in stdout.splitlines():
+            log.info("[rhea-ingest] %s", line)
+
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"Rhea catalog ingestion FAILED (exit {result.returncode}, "
+                f"RHEA_INGEST_ONLY={ingest_only}). Likely causes: (1) Ollama + the "
+                "mxbai-embed-large embedding model reachable from the container? "
+                "(2) network to Galaxy ToolShed / GitHub for the tool source? "
+                f"(3) rhea source built into the image behind {container_name!r}? "
+                f"stderr tail: {stderr[-500:]!r}"
+            )
+
+        # Re-count so the returned detail reflects the freshly-seeded catalog
+        # (ground truth, same reason as the detection above — not the MCP probe).
+        seeded_count = await self._catalog_row_count()
+        return {
+            "seeded": bool(seeded_count and seeded_count > 0),
+            "action": "ingested",
+            "ingest_only": ingest_only,
+            "detail": f"{seeded_count} tool(s) in catalog after ingestion",
+        }
+
+    async def _catalog_row_count(self) -> int | None:
+        """Row count of the rhea ``galaxytools`` catalog table — the seeded-state ground truth.
+
+        Runs ``psql ... SELECT COUNT(*) FROM galaxytools`` inside the postgres container (the
+        rhea catalog DB). Returns the count; 0 when the table is absent (fresh postgres, before
+        the first ingest) or the query is otherwise non-numeric; None when there is no postgres
+        backend or no docker CLI (caller treats None as "can't tell — skip").
+        """
+        pg_rt = self._runtimes.get("postgres")
+        if pg_rt is None or pg_rt.spec.container is None or self._docker is None:
+            return None
+        # DB name matches _compose_rhea_container_env's DATABASE_URL (default "rhea").
+        db_name = dict(pg_rt.spec.container.env or ()).get("POSTGRES_DB", "rhea")
+        cmd = [
+            self._docker,
+            "exec",
+            pg_rt.spec.container.container_name,
+            "psql",
+            "-U",
+            "postgres",
+            "-d",
+            db_name,
+            "-tAc",
+            "SELECT COUNT(*) FROM galaxytools;",
+        ]
+        try:
+            res = await asyncio.to_thread(subprocess.run, cmd, capture_output=True, timeout=15)
+        except subprocess.TimeoutExpired:
+            return None
+        out = (res.stdout or b"").decode("utf-8", "replace").strip()
+        if res.returncode == 0:
+            try:
+                return int(out)
+            except ValueError:
+                return 0
+        # Non-zero exit: distinguish a genuinely-unseeded catalog (the table hasn't
+        # been created yet — psql: relation "galaxytools" does not exist → 0, ingest)
+        # from a "can't tell" error (connection refused / auth / postgres still
+        # starting → None, skip — same as the TimeoutExpired path above; a spurious
+        # ingest on a transient postgres error would be wasteful, not just harmless).
+        stderr = (res.stderr or b"").decode("utf-8", "replace").lower()
+        if "does not exist" in stderr:
+            return 0
+        return None
 
     async def prewarm_workflow_tools(self) -> None:
         """Pre-install every Rhea tool conda env declared by the catalog.
@@ -1307,6 +1469,20 @@ def start_orchestrator_in_background_thread() -> threading.Thread:
         # Academy actor (direct ``install_conda_env`` call) so install
         # failures don't wedge the actor for the rest of the session.
         if orch._autostart:
+            # Seed the rhea tool catalog if it's empty (unseeded machine) BEFORE
+            # the pre-warm — pre-warm installs the per-tool conda envs the catalog
+            # declares, so it needs a seeded catalog. FAIL-LOUD but non-crashing:
+            # ensure_catalog_seeded raises on an ingestion failure; we log it and
+            # continue so one degraded backend doesn't take the whole drive down.
+            try:
+                seed_result = await orch.ensure_catalog_seeded()
+                log.info("InfraOrchestrator: rhea catalog seed check → %s", seed_result)
+            except Exception:  # noqa: BLE001
+                log.exception(
+                    "InfraOrchestrator: rhea catalog ingestion failed — rhea tools stay "
+                    "unavailable until the catalog is seeded (run `apecx-setup rhea`). "
+                    "Continuing startup."
+                )
             await orch.prewarm_workflow_tools()
         else:
             log.info(

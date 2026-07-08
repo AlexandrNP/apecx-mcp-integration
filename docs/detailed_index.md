@@ -2721,6 +2721,8 @@ _The process-singleton orchestrator that brings the stack up._
   - `async def reload_backend(self, name: str)` — Re-establish ONE backend by name (probe → reuse-if-healthy → else spawn/restart) — the
   - `async def reconcile(self)` — Self-heal docker-dependent backends when Docker comes up AFTER startup.
   - `async def status(self)` — Snapshot of every backend's current state.
+  - `async def ensure_catalog_seeded(self, *, timeout_s: float=600.0)` — Auto-run the Rhea tool-catalog ingestion when the catalog is empty.
+  - `async def _catalog_row_count(self)` — Row count of the rhea ``galaxytools`` catalog table — the seeded-state ground truth.
   - `async def prewarm_workflow_tools(self)` — Pre-install every Rhea tool conda env declared by the catalog.
   - `async def shutdown(self)` — Tear down ONLY containers we spawned.
   - `def _atexit_shutdown(self)` — atexit hook — sync-only wrapper around ``shutdown``.
