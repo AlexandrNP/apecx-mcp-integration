@@ -77,7 +77,9 @@ def test_rhea_unavailable_degrades_loud(monkeypatch):
     assert out["status"] == "ok", out  # degrade-loud: NOT an error
     md = out["markdown"] or ""
     assert "RHEA genomic-analysis tools are NOT available" in md, md[:2000]
-    assert "apecx-setup rhea" in md, md[:2000]  # fix instructions present
+    # honest autodeploy fix instructions present (no dead `apecx-setup rhea` command)
+    assert "auto-provisions" in md.lower() or "auto-builds" in md.lower(), md[:2000]
+    assert "apecx-setup rhea" not in md, md[:2000]
     # MANDATORY disclosure is STORED on the handle, not just rendered.
     parts = getattr(default_handle_store().get(out["data_handle"]), "parts", {}) or {}
     assert parts.get("rhea_conservation") is None, parts
@@ -86,7 +88,10 @@ def test_rhea_unavailable_degrades_loud(monkeypatch):
     )
 
 
-@pytest.mark.skipif(not _rhea_reachable(), reason="needs a LIVE rhea MCP server (apecx-setup rhea)")
+@pytest.mark.skipif(
+    not _rhea_reachable(),
+    reason="needs a LIVE rhea MCP server (auto-provisions on apecx-mcp startup)",
+)
 @needs_globus
 def test_rhea_live_real_muscle():
     """A real run with RHEA up computes a real MUSCLE alignment, surfaced in the report."""

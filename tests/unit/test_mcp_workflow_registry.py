@@ -76,8 +76,13 @@ def test_default_catalog_parses(tmp_path: Path) -> None:
     # MUSCLE has multi-second IO gaps; 200ms default would cause the
     # cascade-drain detector to return a partial result.
     assert rhea.settle_ms >= 1000
-    assert "RHEA_MCP_URL" in rhea.requires.env
-    assert "rhea" in rhea.requires.modules
+    # Docker is the real static prereq (rhea auto-provisions AS A CONTAINER). The apecx
+    # RHEA leg is a THIN HTTP client — so `rhea`/`rhea.utils.proxy` are NOT required in
+    # the apecx env and RHEA_MCP_URL is optional (client-defaulted). Those stale requires
+    # were retired; gating on them falsely marked this workflow unavailable on a fresh install.
+    assert "docker" in rhea.requires.binaries
+    assert "rhea" not in rhea.requires.modules
+    assert "rhea.utils.proxy" not in rhea.requires.modules
 
 
 def test_catalog_round_trip_yaml_and_lightweight_kinds(tmp_path: Path) -> None:

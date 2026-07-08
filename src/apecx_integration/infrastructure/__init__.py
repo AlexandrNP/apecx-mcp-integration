@@ -9,8 +9,8 @@ This subpackage brings up (and probes for liveness) the five backends
 * Ollama — local LLM endpoint (operator-installed host process)
 * Rhea MCP — MCP server backing the structural-bioinformatics tools
   (Docker container; the orchestrator auto-builds its image from local
-  rhea source and runs it — no ``apecx-setup rhea`` build step. The tool
-  CATALOG is still seeded by the ``apecx-setup rhea`` ingestion.)
+  rhea source and runs it, and the tool CATALOG auto-seeds on the first
+  startup via ``ensure_catalog_seeded`` — no manual rhea step.)
 
 The orchestrator is **operational plumbing**, not a nanobrain workflow
 component. It is launched as a fire-and-forget asyncio task from

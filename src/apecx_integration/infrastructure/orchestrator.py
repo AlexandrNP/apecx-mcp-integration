@@ -45,6 +45,7 @@ from __future__ import annotations
 import asyncio
 import atexit
 import contextlib
+import json
 import logging
 import os
 import shutil
@@ -695,11 +696,11 @@ class InfraOrchestrator:
         The rhea-server container auto-builds + runs (zero-config), but its
         EXTERNAL postgres carries the tool catalog. On an unseeded machine that
         catalog is empty, so the server answers ``tools/list`` with ZERO tools —
-        reachable but degraded — and every rhea tool is unavailable until an
-        operator runs ``apecx-setup rhea`` ingestion. This method closes that
-        gap: it detects the empty-catalog state via the rhea probe and, only
-        then, runs the ingestion INSIDE the running container, so rhea works
-        after nothing but ``uv install`` + ``apecx-setup``.
+        reachable but degraded — and every rhea tool would be unavailable. This
+        method closes that gap: it detects the empty-catalog state, pulls the
+        embedding model the ingestion needs (:meth:`_ensure_embedding_model`), and
+        runs the ingestion INSIDE the running container, so rhea works after
+        nothing but ``uv install`` + ``apecx-setup`` — no separate rhea step.
 
         Idempotent + safe to call repeatedly:
           * ``docker exec ... update_tools`` is an upsert (``session.merge``),
@@ -741,6 +742,12 @@ class InfraOrchestrator:
                 "action": "already_seeded",
                 "detail": f"{n_tools} tool(s) in catalog",
             }
+
+        # Reachable but empty → the ingestion embeds every tool description via
+        # Ollama, so the embedding model MUST be pulled first (autodeploy — no
+        # operator `ollama pull` step). Raises FAIL-LOUD if Ollama is unreachable;
+        # the startup call-site catches it and continues (degrade-loud).
+        await self._ensure_embedding_model()
 
         # Reachable but empty → run the ingestion inside the container.
         ingest_only = os.environ.get(_RHEA_INGEST_ONLY_ENV, "muscle")
@@ -801,6 +808,104 @@ class InfraOrchestrator:
             "ingest_only": ingest_only,
             "detail": f"{seeded_count} tool(s) in catalog after ingestion",
         }
+
+    async def _ensure_embedding_model(self) -> None:
+        """Ensure the Rhea catalog-ingestion embedding model is pulled in Ollama.
+
+        The ingestion (``rhea.preprocess.update_tools``, run inside the rhea
+        container) embeds every tool description via Ollama using the model named
+        in the rhea container spec's ``MODEL`` env (default ``mxbai-embed-large``).
+        On a fresh machine that model is not pulled, so the ingestion would fail
+        with an opaque embedding error. This pulls it first — autodeploy, no
+        operator ``ollama pull`` instruction (honors "autodeploy or degrade loud,
+        NO install-X instruction").
+
+        Reaches Ollama at the HOST-side base URL (``APECX_LLM_BASE_URL`` default
+        ``http://localhost:11434/v1`` → native API by stripping ``/v1``) — the same
+        Ollama the container reaches via ``host.docker.internal``, so a host-side
+        pull populates the model the container consumes. A no-op when the model is
+        already present. FAIL-LOUD (raises ``RuntimeError``) when Ollama is
+        unreachable or the pull ends without the terminal ``success`` status
+        (Ollama serving is an operator prerequisite).
+        """
+        import httpx
+
+        # Model name = whatever the rhea container will embed with (single source of truth).
+        rt = self._runtimes.get("rhea_mcp")
+        model = "mxbai-embed-large"
+        if rt is not None and rt.spec.container is not None:
+            model = dict(rt.spec.container.env or ()).get("MODEL", model)
+
+        base = os.environ.get(_OLLAMA_BASE_URL_ENV, "http://localhost:11434/v1").rstrip("/")
+        if base.endswith("/v1"):
+            base = base[: -len("/v1")]
+
+        def _model_matches(present: str) -> bool:
+            # Tolerate the ``:latest`` tag Ollama appends to an untagged pull.
+            return present == model or present.split(":", 1)[0] == model.split(":", 1)[0]
+
+        # Already present? → no-op.
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                resp = await client.get(f"{base}/api/tags")
+                resp.raise_for_status()
+                installed = {m.get("name", "") for m in (resp.json().get("models") or [])}
+        except (httpx.HTTPError, OSError) as exc:
+            raise RuntimeError(
+                f"Cannot reach Ollama at {base} to ensure the rhea embedding model "
+                f"{model!r} is present (GET /api/tags failed: {type(exc).__name__}: {exc}). "
+                "Ollama must be serving so the rhea catalog ingestion can embed tool "
+                "descriptions — start it (the apecx-ollama container / a host `ollama "
+                "serve`), then retry."
+            ) from exc
+
+        if any(_model_matches(name) for name in installed):
+            log.info("Rhea embedding model %r already present in Ollama (%s).", model, base)
+            return
+
+        # Missing → pull it, streaming the NDJSON progress. FAIL-LOUD if the stream
+        # ends without Ollama's terminal ``status: success`` (guards the
+        # truncated-stream false-positive).
+        log.info("Rhea embedding model %r missing — pulling via %s/api/pull ...", model, base)
+        last_status = ""
+        saw_success = False
+        try:
+            async with (
+                httpx.AsyncClient(timeout=1800.0) as client,
+                client.stream("POST", f"{base}/api/pull", json={"name": model}) as resp,
+            ):
+                resp.raise_for_status()
+                async for raw in resp.aiter_lines():
+                    line = raw.strip()
+                    if not line:
+                        continue
+                    try:
+                        obj = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    if obj.get("error"):
+                        raise RuntimeError(
+                            f"Ollama pull of the rhea embedding model {model!r} "
+                            f"reported an error: {obj['error']}"
+                        )
+                    status = obj.get("status")
+                    if status and status != last_status:
+                        last_status = status
+                        log.info("[ollama-pull %s] %s", model, status)
+                    if status == "success":
+                        saw_success = True
+        except (httpx.HTTPError, OSError) as exc:
+            raise RuntimeError(
+                f"Ollama pull of the rhea embedding model {model!r} failed "
+                f"({type(exc).__name__}: {exc}). Ollama must be serving at {base}."
+            ) from exc
+        if not saw_success:
+            raise RuntimeError(
+                f"Ollama pull of the rhea embedding model {model!r} ended without the "
+                f"terminal `status: success` (last status: {last_status or 'none'}); "
+                "treating as a failed pull rather than a truncated-stream false positive."
+            )
+        log.info("Rhea embedding model %r pulled successfully.", model)
 
     async def _catalog_row_count(self) -> int | None:
         """Row count of the rhea ``galaxytools`` catalog table — the seeded-state ground truth.
@@ -1479,9 +1584,10 @@ def start_orchestrator_in_background_thread() -> threading.Thread:
                 log.info("InfraOrchestrator: rhea catalog seed check → %s", seed_result)
             except Exception:  # noqa: BLE001
                 log.exception(
-                    "InfraOrchestrator: rhea catalog ingestion failed — rhea tools stay "
-                    "unavailable until the catalog is seeded (run `apecx-setup rhea`). "
-                    "Continuing startup."
+                    "InfraOrchestrator: rhea catalog auto-seed failed — rhea tools stay "
+                    "unavailable until the catalog is seeded. The catalog auto-seeds on "
+                    "startup; a failure here usually means Ollama (embedding backend) or "
+                    "Docker is unreachable. Continuing startup."
                 )
             await orch.prewarm_workflow_tools()
         else:

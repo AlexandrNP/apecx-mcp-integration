@@ -3,23 +3,21 @@
 Single entry point for the entire APECx deployment recipe:
 
     pip install apecx-mcp-integration
-    apecx-setup             # runs the default chain (no RAG, no Rhea)
+    apecx-setup             # runs the default chain (no RAG)
     apecx-setup --with-rag  # default chain PLUS FAISS index build (~10 min)
-    apecx-setup --with-rhea # default chain PLUS Rhea bring-up (~10 min one-time)
     apecx-setup globus      # only preflight Globus (G84)
     apecx-setup data        # only download VIOLIN + BV-BRC data
     apecx-setup dict        # only build the synonym dictionary (~10-15 min first run)
     apecx-setup infra       # only start Postgres + Redis containers
     apecx-setup llm         # only check/pull the Ollama model
     apecx-setup rag         # only build the FAISS RAG index (opt-in)
-    apecx-setup rhea        # Rhea INGESTION + client-lib install (opt-in, G89)
-                            #   NOTE: the rhea SERVER auto-provisions now —
-                            #   the orchestrator auto-builds + runs its container
-                            #   from local rhea source (P4-B). This step is no
-                            #   longer needed for the server; it seeds the tool
-                            #   catalog + installs the rhea client into the apecx venv.
     apecx-setup verify      # only run the post-setup verification
     apecx-setup --reconfigure-llm   # change LLM env vars in existing config
+
+Rhea has NO setup subcommand: the rhea-server container auto-builds + runs
+from local rhea source and the tool catalog auto-seeds (embedding model pull
+included) on the first ``apecx-mcp`` startup — all driven by
+``InfraOrchestrator`` (P4). Nothing to install by hand.
 
 Each subcommand is idempotent + safe to re-run. The default
 (``apecx-setup``) runs the following in dependency order:
@@ -39,17 +37,13 @@ Each subcommand is idempotent + safe to re-run. The default
                     pull the configured model
     6. ``verify`` — smoke-check every component reports healthy
 
-Two slots in the chain are OPT-IN:
+One slot in the chain is OPT-IN:
     * ``rag``  (G81, 2026-05-16) — FAISS index build for synthesis
                 workflows. ~10 min, 689 MB. Default-skipped.
-    * ``rhea`` (G89, 2026-05-16) — Rhea checkout sync + tool-catalog
-                ingestion + client-lib install + embedding-model pull for
-                bioinformatics tools (muscle, future Galaxy tools). ~10 min
-                one-time. Default-skipped. NOTE (P4-B): the rhea SERVER now
-                auto-provisions — apecx-mcp auto-discovers the rhea source
-                and the orchestrator auto-builds + runs its container at
-                startup, so this step is NOT needed for the server; it seeds
-                the tool catalog + installs the rhea client into the apecx venv.
+
+Rhea needs NO setup step (P4): the orchestrator auto-builds + runs the
+rhea-server container from local rhea source and auto-seeds the tool catalog
+(pulling the embedding model it needs) on the first ``apecx-mcp`` startup.
 
 The ``rag`` step (FAISS index build, 689 MB, ~10 min) is **opt-in**
 since G81 (2026-05-16). The 80%-case (DB queries, MCP tools,
@@ -1143,270 +1137,6 @@ def _step_rag() -> StepResult:
 
 
 # ---------------------------------------------------------------------------
-# Step 5b — rhea (opt-in, idempotent one-time bring-up of the Rhea checkout)
-# ---------------------------------------------------------------------------
-
-
-def _step_rhea() -> StepResult:
-    """One-time Rhea bring-up (G89, 2026-05-16).
-
-    Idempotent. Safe to re-run.
-
-    Phases:
-      1. Locate the Rhea checkout (apecx-mcp-integration's
-         ``rhea_env_autodiscovery._find_rhea_repo`` — same probe
-         apecx-mcp uses at startup).
-      2. Ensure rhea's venv exists (``uv sync && uv pip install -e .``).
-         Skipped when ``.venv/bin/python`` is already present + the
-         editable install is registered.
-      3. Ensure mxbai-embed-large is pulled in Ollama (rhea's
-         embedding backend). Skipped when ``ollama list`` already
-         shows it.
-      4. Ensure the ingestion has been run at least once
-         (``rhea.preprocess.update_tools`` for whatever
-         ``$RHEA_INGEST_ONLY`` (default ``muscle`` if unset) wants).
-         Skipped when the rhea-postgres galaxytools table already
-         has rows for the requested tools.
-
-    After this step, apecx-mcp's existing rhea auto-spawn (driven by
-    InfraOrchestrator's rhea_mcp BackendSpec) will engage on next
-    startup with no operator-side env-var exports required — the
-    G88 autodiscovery sets RHEA_REPO_PATH + RHEA_PYTHON_PATH from
-    the checkout + venv this step produced.
-
-    Why opt-in
-    ----------
-    The full Rhea bring-up costs ~10 minutes (uv sync builds the
-    Parsl/Academy/proxystore stack; mxbai-embed-large is ~700 MB
-    Ollama pull; first muscle ingestion is ~10 s). Operators who
-    don't want Rhea-backed tools (muscle, future Galaxy tools) skip
-    it. Same opt-in pattern as `_step_rag`.
-    """
-    _print_header("Step 6b of 7 — Rhea (containerized MCP server)")
-
-    from apecx_integration.infrastructure.rhea_env_autodiscovery import (
-        _find_rhea_repo,
-        rhea_clone_target,
-    )
-
-    rhea_repo = _find_rhea_repo()
-    if rhea_repo is None:
-        # No checkout — obtain the source. Clone into the canonical
-        # autodiscovery location so the subsequent _find_rhea_repo() resolves it.
-        git_binary = shutil.which("git")
-        if git_binary is None:
-            return StepResult(
-                "rhea",
-                "fail",
-                "git not on PATH — install git, then re-run `apecx-setup rhea` "
-                "(needed to clone the Rhea source).",
-            )
-        target = rhea_clone_target()
-        print(f"  ▶  cloning rhea into {target} (first run) ...")
-        clone = subprocess.run(
-            [git_binary, "clone", "https://github.com/AlexandrNP/rhea.git", str(target)],
-            timeout=600,
-        )
-        if clone.returncode != 0:
-            return StepResult(
-                "rhea",
-                "fail",
-                f"`git clone https://github.com/AlexandrNP/rhea.git {target}` exited "
-                f"{clone.returncode}. If the repo is private, configure git credentials "
-                "(e.g. a GitHub token / SSH key), or clone it manually into that path, "
-                "then re-run `apecx-setup rhea`.",
-            )
-        rhea_repo = _find_rhea_repo()
-        if rhea_repo is None:
-            return StepResult(
-                "rhea",
-                "fail",
-                f"cloned into {target} but it does not look like a Rhea checkout "
-                "(missing pyproject.toml or rhea/server/mcp_server.py). Verify the "
-                "clone, then re-run.",
-            )
-
-    print(f"  ▶  found rhea checkout at {rhea_repo}")
-
-    # Phase 2: uv sync + editable install. We invoke uv via shutil.which
-    # so an operator without uv on PATH gets a clear error rather than
-    # subprocess gibberish.
-    uv_binary = shutil.which("uv")
-    if uv_binary is None:
-        return StepResult(
-            "rhea",
-            "fail",
-            "uv not on PATH — install from https://docs.astral.sh/uv/ then re-run",
-        )
-
-    venv_python = rhea_repo / ".venv" / "bin" / "python"
-    if not venv_python.exists():
-        print("  ▶  uv sync (this may take 1-2 min on first run) ...")
-        result = subprocess.run(
-            [uv_binary, "sync"],
-            cwd=rhea_repo,
-            timeout=600,
-        )
-        if result.returncode != 0:
-            return StepResult(
-                "rhea",
-                "fail",
-                f"`uv sync` exited with {result.returncode}",
-            )
-
-    print("  ▶  uv pip install -e . (editable install of rhea-mcp) ...")
-    result = subprocess.run(
-        [uv_binary, "pip", "install", "-e", "."],
-        cwd=rhea_repo,
-        timeout=300,
-    )
-    if result.returncode != 0:
-        return StepResult(
-            "rhea",
-            "fail",
-            f"`uv pip install -e .` exited with {result.returncode}",
-        )
-
-    # Phase 2b (DF7): ALSO install rhea into the APECX venv. The install above lands in rhea's OWN
-    # `.venv`, but the apecx-mcp process (a DIFFERENT venv) is what runs the rhea_muscle_alignment
-    # workflow, and its RheaFileToolStep must import `rhea` + its client deps (cloudpickle / proxystore
-    # / filetype) IN-PROCESS — it pickles RheaFileProxy by module reference. Without this the workflow
-    # FAIL-FASTs ("No module named 'cloudpickle'") even with the Rhea server reachable — a real
-    # deployment gap (rhea up, workflow silently dead). Install via the RUNNING interpreter's pip
-    # (idempotent — a no-op once satisfied). Not `-e`: we want the runtime deps in the apecx venv.
-    print("  ▶  pip install rhea into the apecx venv (rhea_muscle_alignment client deps) ...")
-    apecx_install = subprocess.run(
-        [sys.executable, "-m", "pip", "install", str(rhea_repo)],
-        timeout=900,
-    )
-    if apecx_install.returncode != 0:
-        return StepResult(
-            "rhea",
-            "partial",
-            f"Rhea server + rhea .venv ready, but installing rhea into the apecx venv failed (exit "
-            f"{apecx_install.returncode}); rhea_muscle_alignment will FAIL-FAST until "
-            f"`{sys.executable} -m pip install {rhea_repo}` succeeds.",
-        )
-
-    # Phase 3: ensure mxbai-embed-large is pulled. Ollama is the
-    # ALSO embedding backend rhea uses; if the model is missing the
-    # rhea ingestion step would fail downstream.
-    ollama_binary = shutil.which("ollama")
-    if ollama_binary is not None:
-        listed = subprocess.run(
-            [ollama_binary, "list"],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        if "mxbai-embed-large" not in listed.stdout:
-            print("  ▶  pulling mxbai-embed-large (~700 MB) ...")
-            pull = subprocess.run(
-                [ollama_binary, "pull", "mxbai-embed-large"],
-                timeout=900,
-            )
-            if pull.returncode != 0:
-                return StepResult(
-                    "rhea",
-                    "partial",
-                    f"`ollama pull mxbai-embed-large` exited with {pull.returncode}; "
-                    "rhea ingestion will fail until you pull it manually",
-                )
-        else:
-            print("  ▶  mxbai-embed-large already present in Ollama")
-    else:
-        print(
-            "  ▶  ollama not on PATH — skipping embedding-model pull (operator must do this manually)"
-        )
-
-    # Phase 4: ensure the muscle tool (or whatever RHEA_INGEST_ONLY
-    # asks for) is ingested. We don't try to be clever about
-    # incremental ingestion — rhea's ingestion is idempotent
-    # (upsert by primary key) so re-running just re-embeds at small
-    # cost. We DO skip when the galaxytools table has rows for the
-    # requested tool already — the typical case after the first
-    # apecx-setup rhea run.
-    ingest_only = os.environ.get("RHEA_INGEST_ONLY", "muscle")
-    print(f"  ▶  running rhea ingestion (RHEA_INGEST_ONLY={ingest_only}) ...")
-    ingest_env = os.environ.copy()
-    ingest_env.setdefault(
-        "DATABASE_URL",
-        "postgresql+asyncpg://postgres:postgres@localhost:5435/rhea",
-    )
-    ingest_env.setdefault("EMBEDDING_URL", "http://localhost:11434/v1")
-    ingest_env.setdefault("MODEL", "mxbai-embed-large")
-    ingest_env["RHEA_INGEST_ONLY"] = ingest_only
-    result = subprocess.run(
-        [str(venv_python), "-m", "rhea.preprocess.update_tools"],
-        cwd=rhea_repo,
-        env=ingest_env,
-        timeout=600,
-    )
-    if result.returncode != 0:
-        return StepResult(
-            "rhea",
-            "partial",
-            f"`rhea.preprocess.update_tools` exited with {result.returncode}; "
-            "is apecx-rhea-postgres running? (run `apecx-setup infra` first)",
-        )
-
-    # Phase 5: build the rhea-server image so the orchestrator can `docker run`
-    # it — tool execution then uses the container's conda, independent of a
-    # broken/missing HOST conda. The container is the ONLY rhea backend (single
-    # path), so this build is unconditional. Mirrors _step_pymol: docker-available
-    # check, idempotent image-inspect, APECX_RHEA_IMAGE_REBUILD=1 to force, NEVER
-    # raises. The orchestrator only `docker run`s; this is where the image
-    # actually gets built.
-    base_msg = (
-        f"venv + ingestion ready at {rhea_repo}; apecx-mcp will auto-spawn "
-        "rhea-server on next start"
-    )
-    image = os.environ.get("APECX_RHEA_IMAGE", "apecx-rhea-server:local")
-    if not _docker_available():
-        return StepResult(
-            "rhea",
-            "partial",
-            f"{base_msg}; but docker is unreachable — image {image} NOT built. "
-            "Start Docker, then re-run `apecx-setup rhea`.",
-        )
-    image_present = (
-        subprocess.run(
-            ["docker", "image", "inspect", image],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        ).returncode
-        == 0
-    )
-    if image_present and os.environ.get("APECX_RHEA_IMAGE_REBUILD") != "1":
-        return StepResult(
-            "rhea",
-            "ok",
-            f"{base_msg}; container image {image} already present "
-            "(APECX_RHEA_IMAGE_REBUILD=1 to rebuild)",
-        )
-    print(f"  ▶  building rhea-server image {image} (cold build can take several min) ...")
-    build = subprocess.run(
-        ["docker", "build", "-t", image, "-f", str(rhea_repo / "Dockerfile"), str(rhea_repo)],
-        timeout=1800,
-    )
-    if build.returncode != 0:
-        return StepResult(
-            "rhea",
-            "partial",
-            f"{base_msg}; but the container image {image} build FAILED "
-            f"(rc={build.returncode}) — the container backend will error until "
-            "it builds. Check the docker build output above.",
-        )
-    return StepResult(
-        "rhea",
-        "ok",
-        f"{base_msg}; container image {image} built — orchestrator will run "
-        "rhea-server as a container (host-conda-independent)",
-    )
-
-
-# ---------------------------------------------------------------------------
 # Step 5 — verify
 # ---------------------------------------------------------------------------
 
@@ -1583,11 +1313,12 @@ def _step_verify() -> StepResult:
         )
     )
 
-    # Rhea (G89): check that the bring-up has been done. We don't probe
-    # rhea-server reachability here (that's an apecx-mcp startup
-    # concern; `InfraOrchestrator` handles it). We check the static
-    # state apecx-setup rhea would have produced: checkout + venv +
-    # ingestion.
+    # Rhea (P4): the rhea-server container AUTO-BUILDS from local rhea source and the
+    # tool catalog AUTO-SEEDS (embedding-model pull included) on the first `apecx-mcp`
+    # startup, driven by `InfraOrchestrator` — there is NO `apecx-setup rhea` step. We
+    # only cheaply report whether the rhea SOURCE is present for that auto-build; a
+    # missing source is a soft note (the orchestrator surfaces a loud ERROR_STARTING at
+    # runtime if it cannot locate/obtain and build it).
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
     )
@@ -1595,13 +1326,13 @@ def _step_verify() -> StepResult:
     rhea_repo = _find_rhea_repo()
     if rhea_repo is None:
         rhea_ok = False
-        rhea_detail = "no checkout found — `apecx-setup rhea` (opt-in)"
-    elif not (rhea_repo / ".venv" / "bin" / "python").exists():
-        rhea_ok = False
-        rhea_detail = f"checkout at {rhea_repo} but no venv — `apecx-setup rhea`"
+        rhea_detail = (
+            "no rhea source found for the auto-build — apecx-mcp reports a loud startup "
+            "error if it cannot locate it (set RHEA_REPO_PATH if it lives elsewhere)"
+        )
     else:
         rhea_ok = True
-        rhea_detail = f"checkout + venv ready at {rhea_repo}"
+        rhea_detail = f"source at {rhea_repo} — orchestrator auto-builds + auto-seeds at startup"
     checks.append(("rhea", rhea_ok, rhea_detail))
 
     print()
@@ -1802,7 +1533,6 @@ _SUBCOMMANDS: dict[str, Callable[..., StepResult]] = {
     "infra": lambda **_: _step_infra(),
     "llm": _step_llm,
     "rag": lambda **_: _step_rag(),
-    "rhea": lambda **_: _step_rhea(),
     "pymol": lambda **_: _step_pymol(),
     "routing": _step_routing,
     "chatgpt": _step_chatgpt,
@@ -1814,7 +1544,6 @@ def _run_all(
     *,
     interactive: bool = True,
     with_rag: bool = False,
-    skip_rhea: bool = False,
     with_pymol: bool = False,
 ) -> int:
     """Run the canonical install chain.
@@ -1873,16 +1602,8 @@ def _run_all(
                 "opt-in — run `apecx-setup rag` or `apecx-setup --with-rag` to build the FAISS index (~10 min, 689 MB)",
             )
         )
-    if skip_rhea:
-        results.append(
-            StepResult(
-                "rhea",
-                "skipped",
-                "skipped via --skip-rhea — Rhea-backed bioinformatics tools will be UNAVAILABLE until you run `apecx-setup rhea`",
-            )
-        )
-    else:
-        results.append(_step_rhea())
+    # Rhea has NO chain step (P4): the rhea-server container auto-builds and the tool
+    # catalog auto-seeds on the first `apecx-mcp` startup (InfraOrchestrator).
     if with_pymol:
         results.append(_step_pymol())
     else:
@@ -1920,7 +1641,6 @@ def main(argv: list[str] | None = None) -> None:
             "infra",
             "llm",
             "rag",
-            "rhea",
             "pymol",
             "routing",
             "chatgpt",
@@ -1951,24 +1671,6 @@ def main(argv: list[str] | None = None) -> None:
         ),
     )
     parser.add_argument(
-        "--with-rhea",
-        action="store_true",
-        help=(
-            "No-op — Rhea is now part of the default chain. Kept for "
-            "back-compat; the flag has no effect."
-        ),
-    )
-    parser.add_argument(
-        "--skip-rhea",
-        action="store_true",
-        help=(
-            "Skip the Rhea bring-up (clone + uv sync + ingestion + embedding "
-            "model pull + image build; ~10 min one-time). The Rhea-backed "
-            "bioinformatics tools (muscle, Galaxy tools) will be UNAVAILABLE "
-            "until you run `apecx-setup rhea` separately."
-        ),
-    )
-    parser.add_argument(
         "--with-pymol",
         action="store_true",
         help=(
@@ -1985,15 +1687,11 @@ def main(argv: list[str] | None = None) -> None:
         _setup_data._run_reconfigure_llm()
         return
 
-    if args.with_rhea:
-        print("note: --with-rhea is now a no-op — Rhea is part of the default chain.")
-
     if args.subcommand in (None, "all"):
         sys.exit(
             _run_all(
                 interactive=not args.non_interactive,
                 with_rag=args.with_rag,
-                skip_rhea=args.skip_rhea,
                 with_pymol=args.with_pymol,
             )
         )

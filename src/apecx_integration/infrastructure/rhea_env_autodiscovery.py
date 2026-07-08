@@ -41,12 +41,13 @@ Env vars handled
 Honest scope
 ------------
 
-This module **does not** ensure the rhea venv is built, the conda
-env tarballs are ingested, or mxbai-embed-large is pulled. Those
-are slow one-time operations and live in ``apecx-setup rhea`` (G89).
-This module is the cheap discovery layer that makes the existing
-``InfraOrchestrator`` engage without operator intervention WHEN
-the slow setup has already been done.
+This module **does not** build the rhea-server image, seed the tool
+catalog, or pull the embedding model. Those are handled by the
+``InfraOrchestrator`` at startup (the container auto-builds from local
+rhea source, and ``ensure_catalog_seeded`` pulls the embedding model +
+runs the ingestion when the catalog is empty). This module is the cheap
+discovery layer that makes that orchestrator engage without operator
+intervention by resolving the ``RHEA_*`` env vars from the source checkout.
 
 If the slow setup has NOT been done, the orchestrator's existing
 probes fail loud with their existing actionable error messages —
@@ -118,9 +119,9 @@ def autodiscover_rhea_env(*, dry_run: bool = False) -> dict[str, str]:
                 )
             else:
                 log.debug(
-                    "Rhea autodiscovery: %s/python missing — operator must run "
-                    "`cd $RHEA_REPO_PATH && uv sync && uv pip install -e .` "
-                    "(or `apecx-setup rhea`)",
+                    "Rhea autodiscovery: %s/python missing — this host-venv path is "
+                    "legacy; the rhea-server now runs as an auto-built container, so a "
+                    "host venv is not required",
                     venv_bin,
                 )
 
@@ -237,16 +238,6 @@ def _is_rhea_repo(path: Path) -> bool:
     return (path / "rhea" / "server" / "mcp_server.py").is_file()
 
 
-def rhea_clone_target() -> Path:
-    """Where ``apecx-setup rhea`` should ``git clone`` the Rhea source.
-
-    Returns the FIRST location ``_find_rhea_repo`` probes — the sibling of
-    the apecx-mcp-integration repo (``<workspace>/rhea``) — so a fresh clone
-    lands exactly where autodiscovery will subsequently find it.
-    """
-    return Path(__file__).resolve().parents[4] / "rhea"
-
-
 # ---------------------------------------------------------------------------
 # Opt-out hook
 # ---------------------------------------------------------------------------
@@ -264,5 +255,4 @@ def autodiscovery_enabled() -> bool:
 __all__ = [
     "autodiscover_rhea_env",
     "autodiscovery_enabled",
-    "rhea_clone_target",
 ]

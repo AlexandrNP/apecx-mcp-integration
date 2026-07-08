@@ -2,7 +2,7 @@
 
 RHEA genomic-analysis is a mandatory PART of the analysis (always attempted + DISCLOSED), but its
 absence DEGRADES LOUD — it does NOT fail the run. A missing taxon/protein or a RHEA runtime failure
-produces a prominent warning + `apecx-setup rhea` fix instructions (a named note + a proceed_notes
+produces a prominent warning + honest autodeploy fix instructions (a named note + a proceed_notes
 entry) and the bundle passes through so the rest of the analysis still completes.
 """
 
@@ -34,7 +34,9 @@ def test_loads_via_from_config(tmp_path):
 def _assert_loud_unavailable(out: dict) -> None:
     note = out["rhea_conservation_note"]
     assert note and "not available" in note.lower(), note
-    assert "apecx-setup rhea" in note, note  # fix instructions
+    # honest autodeploy fix instructions (no dead `apecx-setup rhea` command)
+    assert "docker" in note.lower() and "rhea source" in note.lower(), note
+    assert "apecx-setup rhea" not in note, note
     assert "still" in note.lower() or "remains valid" in note.lower(), note  # don't-fail framing
     # a loud "how to proceed" entry is appended for prominence
     pn = out.get("proceed_notes") or []

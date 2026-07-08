@@ -11,7 +11,7 @@ flaky-FAILS) when Docker / the infra / the pre-built image is absent. Given a he
 CONFIRMS the teardown: two real MUSCLE runs leave no net-new persisted ProxyStore Redis keys (the
 per-call eviction holds), deciding on output VALUES not the run's status field (G127).
 
-Requires the rhea-server image (``apecx-setup rhea`` / ``docker build``); skips with that hint when
+Requires the rhea-server image (auto-built by the orchestrator, or ``docker build``); skips with that hint when
 absent. The first MUSCLE call cold-builds the per-tool conda env INSIDE the container (~15-20s for
 MUSCLE); ``rhea_muscle_alignment``'s ``execution_timeout`` covers it.
 """
@@ -158,7 +158,8 @@ def live_rhea():
     # Otherwise provision the CONTAINER backend. Requires the pre-built image.
     if subprocess.run([docker, "image", "inspect", _IMAGE], capture_output=True).returncode != 0:
         pytest.skip(
-            f"rhea-server image {_IMAGE!r} not built; run `apecx-setup rhea` or "
+            f"rhea-server image {_IMAGE!r} not built; the orchestrator auto-builds it on "
+            f"apecx-mcp startup, or build it manually: "
             f"`docker build -t {_IMAGE} -f {_RHEA_REPO}/Dockerfile {_RHEA_REPO}`"
         )
     subprocess.run([docker, "rm", "-f", _TEST_CONTAINER], capture_output=True)

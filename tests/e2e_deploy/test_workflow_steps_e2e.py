@@ -137,7 +137,7 @@ _rhea_ready = (
 
 @pytest.mark.skipif(
     not _rhea_ready,
-    reason="needs the rhea module importable + RHEA_MCP_URL set (apecx-setup rhea; PYTHONPATH=../rhea)",
+    reason="needs the rhea module importable + RHEA_MCP_URL set (rhea installed in the apecx env; PYTHONPATH=../rhea)",
 )
 def test_rhea_muscle_alignment_produces_alignment():
     res, ad = _run("rhea_muscle_alignment", {})  # bundled default FASTA

@@ -240,10 +240,9 @@ class RheaGenomicAnalysisStep(BaseStep):
                     "why": reason or failure_cause or "the RHEA call failed",
                     "action": (
                         "the rhea-server auto-provisions (the orchestrator auto-builds + runs its "
-                        "container from your rhea source — ensure Docker is running and the source "
-                        "is present); if the diagnosis above names the rhea CLIENT library or an "
-                        "unseeded tool catalog, run `apecx-setup rhea`. The rest of the analysis "
-                        "still completed and is valid"
+                        "container from your rhea source, and the tool catalog auto-seeds on the "
+                        "first apecx-mcp startup — ensure Docker is running and the rhea source is "
+                        "present). The rest of the analysis still completed and is valid"
                     ),
                     "severity": "warning",
                 }
@@ -256,20 +255,11 @@ class RheaGenomicAnalysisStep(BaseStep):
 
         Necessary because G127 makes ``Workflow.run`` SWALLOW the inner step's exception: the
         ``exc`` the caller caught is a generic "no workflow_output" ValueError, so the underlying
-        cause (rhea client library not importable, or the MCP server unreachable) never
-        propagates. We probe the two real prerequisites and report whichever actually failed.
-        Reuses the canonical ``rhea_mcp_probe`` (do not roll a parallel probe)."""
-        import importlib
-
-        try:
-            importlib.import_module("rhea.utils.proxy")
-        except Exception:  # noqa: BLE001 — any import failure means the client library is unusable
-            return (
-                "the RHEA client library is not importable here (cannot import "
-                "'rhea.utils.proxy', which the MUSCLE file-staging step needs) — run "
-                "`apecx-setup rhea` to provision it. The RHEA server itself may be healthy."
-            )
-
+        cause (the MCP server unreachable, or the tool catalog unseeded) never propagates. We
+        probe the real prerequisite and report what failed. Reuses the canonical
+        ``rhea_mcp_probe`` (do not roll a parallel probe). NOTE: the apecx RHEA leg is a THIN
+        HTTP client (no in-process rhea import) — so there is no "rhea client not importable"
+        case to diagnose."""
         mcp_url = os.environ.get("RHEA_MCP_URL", "http://localhost:3001/mcp/")
         try:
             # Import inside the try too: this runs in a NEVER-raise degrade path, so a future
@@ -286,12 +276,14 @@ class RheaGenomicAnalysisStep(BaseStep):
                 f"the RHEA MCP server at {mcp_url} is unreachable or degraded "
                 f"({probe.error or probe.detail}) — the orchestrator auto-builds + runs the "
                 f"rhea-server container, so this is often transient (still starting up) or means "
-                f"Docker/the rhea source is unavailable, not a missing `apecx-setup rhea` step."
+                f"Docker/the rhea source is unavailable."
             )
         return (
             f"the RHEA client and MCP server at {mcp_url} are both reachable, but the MUSCLE run "
             f"produced no result ({type(exc).__name__}: {exc}) — the rhea TOOL CATALOG may not be "
-            f"ingested yet (run the `apecx-setup rhea` ingestion)."
+            f"seeded yet. It auto-seeds on the first apecx-mcp startup "
+            f"(InfraOrchestrator.ensure_catalog_seeded); a failure there usually means Ollama "
+            f"(embedding backend) or Docker was unreachable."
         )
 
     @staticmethod
@@ -301,11 +293,9 @@ class RheaGenomicAnalysisStep(BaseStep):
             "MUSCLE conservation leg did NOT run — but the rest of the end-to-end analysis "
             "(MAFFT sequence conservation, structural surface-exposure, literature) completed "
             "and remains valid. To enable the RHEA leg: the rhea-server auto-provisions as a "
-            "Docker container (the orchestrator auto-builds it from your rhea source — no "
-            "`apecx-setup rhea` build step needed for the server; ensure Docker is running and "
-            "the source is present). If the diagnosis above names the rhea CLIENT library or an "
-            "unseeded tool catalog, run `apecx-setup rhea` to install the client into the apecx "
-            "venv and ingest the catalog — the diagnosis above says which piece is missing."
+            "Docker container (the orchestrator auto-builds it from your rhea source and the "
+            "tool catalog auto-seeds on the first apecx-mcp startup — ensure Docker is running "
+            "and the rhea source is present). The diagnosis above says which piece is missing."
         )
 
 

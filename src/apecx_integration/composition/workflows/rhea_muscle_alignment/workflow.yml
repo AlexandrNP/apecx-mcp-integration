@@ -27,15 +27,15 @@
 # favor of the general catalog-driven mechanism — see
 # docs/running_nanobrain_workflows_via_mcp.md.)
 #
-# RUN PREREQUISITE: the muscle_alignment step (RheaFileToolStep) needs,
-# at process() time:
-#   - the `rhea` repo on PYTHONPATH (cloudpickle pickles RheaFileProxy
-#     by module reference — the genuine class must be importable);
+# RUN PREREQUISITE: the muscle_alignment step (RheaFileToolStep) is a
+# THIN HTTP client (no in-process rhea / cloudpickle / redis on the client
+# side — the redis-direct transport migration retired ProxyStore). At
+# process() time it needs only:
 #   - a reachable Rhea MCP server hosting the `muscle` tool (default
-#     http://localhost:3001/mcp/);
-#   - a reachable Redis (default localhost:6379) backing Rhea's
-#     rhea-input / rhea-output ProxyStores.
-# When those are absent the workflow LOADS + VALIDATES fine (no Rhea
+#     http://localhost:3001/mcp/), which the orchestrator auto-provisions
+#     (auto-built container + auto-seeded catalog) — so in practice the only
+#     operator prerequisite is Docker.
+# When it is absent the workflow LOADS + VALIDATES fine (no Rhea
 # work at load time) but a run FAILS LOUDLY at the muscle_alignment
 # step with a clear error — never a silent no-op.
 #

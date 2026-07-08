@@ -13,7 +13,7 @@ shape. Design §8 (aligner substitution); the user's "not confined purely to MUS
 realized as "MUSCLE is one of several interchangeable aligners".
 
 Real backend, NO mocks, NO SILENT degradation. BY DEFAULT (``degrade_to_local_mafft=False``) the step
-FAILS LOUD if the Rhea server is unreachable / the rhea module is not importable / the subworkflow yields
+FAILS LOUD if the Rhea server is unreachable / the subworkflow yields
 no alignment — it does not fall back to a local aligner or a fabricated alignment. The caller MAY OPT IN
 to a LOUD degrade-to-MAFFT (``degrade_to_local_mafft=True``, EF5): on a Rhea-unreachable failure it then
 aligns with local MAFFT (same shape) and stamps a ``degrade_note`` + a WARNING — substitution is the
@@ -23,9 +23,10 @@ Input  (after trigger-envelope unwrap): ``{"fasta_text": "<unaligned FASTA>", ..
 Output: ``{"alignment": {alignment_fasta, n_sequences, alignment_length, aligner: "muscle", ...}}``.
 Any ``taxon_id`` / ``protein`` present on the input are passed through for downstream context.
 
-Requires the Rhea MCP server reachable at ``$RHEA_MCP_URL`` (or the YAML default) and the ``rhea``
-package importable in this process — the same prerequisites the ``rhea_muscle_alignment`` catalog
-entry declares. See docs/return_of_control_implementation_plan.md §"EO-54a — VERIFIED".
+Requires the Rhea MCP server reachable at ``$RHEA_MCP_URL`` (or the YAML default) — which the
+orchestrator auto-provisions (container + auto-seeded catalog). The RHEA leg is a THIN HTTP client,
+so NO in-process ``rhea`` import is needed — same as the ``rhea_muscle_alignment`` catalog entry
+(``binaries: [docker]``). See docs/return_of_control_implementation_plan.md §"EO-54a — VERIFIED".
 """
 
 from __future__ import annotations

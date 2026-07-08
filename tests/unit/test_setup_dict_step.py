@@ -252,9 +252,8 @@ def test_dict_runs_between_data_and_infra_in_full_chain(monkeypatch):
     # Suppress the summary-table print.
     monkeypatch.setattr(setup_cli, "_print_summary", lambda _: 0)
 
-    # rhea is default-on in the chain now; skip it so the real _step_rhea
-    # (docker/git) doesn't run in this unit test.
-    setup_cli._run_all(interactive=False, with_rag=False, skip_rhea=True)
+    # Rhea has NO chain step now (it auto-provisions on apecx-mcp startup).
+    setup_cli._run_all(interactive=False, with_rag=False)
 
     # Critical ordering: dict immediately after data, before infra.
     data_idx = call_order.index("data")
@@ -287,7 +286,6 @@ def test_dict_appears_in_argparse_choices():
                 "infra",
                 "llm",
                 "rag",
-                "rhea",
                 "verify",
                 "all",
             ],

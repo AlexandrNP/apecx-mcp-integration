@@ -312,9 +312,9 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     # With this hook, an operator who has the rhea checkout next to
     # apecx-mcp-integration (the standard workspace layout) gets
     # rhea-server auto-started here — the orchestrator auto-builds the
-    # container image from that source, so no `apecx-setup rhea` build
-    # step is needed for the SERVER (the tool catalog still needs the
-    # `apecx-setup rhea` ingestion; see `_check_rhea_status_or_warn`).
+    # container image from that source, so no manual rhea build step is
+    # needed for the SERVER (the tool catalog also auto-seeds on startup;
+    # see `_check_rhea_status_or_warn`).
     # Opt out via APECX_RHEA_AUTODISCOVER=0.
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         autodiscover_rhea_env,
@@ -773,11 +773,10 @@ def _check_rhea_status_or_warn() -> None:
       * ``Rhea: source present`` — the orchestrator's background thread
         will auto-build + auto-spawn the rhea-server container.
 
-    Note the SEPARATE, still-honest gap: even with the container running,
-    the rhea TOOL CATALOG (external postgres) is populated only by the
-    ``apecx-setup rhea`` ingestion (~10 min), which autodeploy does NOT
-    yet cover. On an unseeded machine the container runs but rhea tools
-    stay UNAVAILABLE until that ingestion has been done.
+    The rhea TOOL CATALOG (external postgres) also AUTO-SEEDS on the first
+    ``apecx-mcp`` startup: ``InfraOrchestrator.ensure_catalog_seeded`` detects
+    an empty catalog, pulls the embedding model it needs, and runs the
+    ingestion inside the container — so there is no manual catalog step either.
     """
     from apecx_integration.infrastructure.rhea_env_autodiscovery import (
         _find_rhea_repo,
@@ -795,10 +794,9 @@ def _check_rhea_status_or_warn() -> None:
         log.warning("    (into the workspace next to apecx-mcp-integration/), OR")
         log.warning("  * set RHEA_REPO_PATH to an existing checkout")
         log.warning("")
-        log.warning("No host venv to build and no `apecx-setup rhea` step is needed")
-        log.warning("for the SERVER — the container builds its own venv internally.")
-        log.warning("(The rhea TOOL CATALOG still needs the `apecx-setup rhea`")
-        log.warning("ingestion; that autodeploy is deferred.)")
+        log.warning("No host venv and no manual rhea step is needed: the container")
+        log.warning("builds its own venv internally, and the rhea TOOL CATALOG")
+        log.warning("auto-seeds on startup (InfraOrchestrator.ensure_catalog_seeded).")
         log.warning("")
         log.warning("If you don't need Rhea-backed tools, this banner is benign.")
         log.warning("=" * 64)

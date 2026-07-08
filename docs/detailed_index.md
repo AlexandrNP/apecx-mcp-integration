@@ -378,14 +378,13 @@ _apecx-setup orchestrator (2026-05-09; RAG made opt-in 2026-05-16, G81)._
 - `def _offer_start_ollama_daemon(*, interactive: bool)` — Start the Ollama daemon in the background.
 - `def _step_llm(*, interactive: bool=True)`
 - `def _step_rag()`
-- `def _step_rhea()` — One-time Rhea bring-up (G89, 2026-05-16).
 - `def _step_pymol()` — Build the version-pinned headless PyMOL image (E3-7, 2026-06-13).
 - `def _step_verify()`
 - `def _step_capabilities()` — Show what the install can do now + what infra unlocks — via the shared aggregator.
 - `def _step_routing(interactive: bool=True)` — Install the APECx tool-routing rule so the client LLM reaches for APECx first.
 - `def chatgpt_connector_guidance(port: int=_CHATGPT_PORT)` — Operator instructions to connect ChatGPT to apecx-mcp — minimal + exact.
 - `def _step_chatgpt(interactive: bool=True)` — Print how to connect ChatGPT to apecx-mcp (instructional — no file to auto-write).
-- `def _run_all(*, interactive: bool=True, with_rag: bool=False, skip_rhea: bool=False, with_pymol: bool=False)` — Run the canonical install chain.
+- `def _run_all(*, interactive: bool=True, with_rag: bool=False, with_pymol: bool=False)` — Run the canonical install chain.
 - `def main(argv: list[str] | None=None)`
 
 ## `src/apecx_integration/cli/setup_data.py`
@@ -2722,6 +2721,7 @@ _The process-singleton orchestrator that brings the stack up._
   - `async def reconcile(self)` — Self-heal docker-dependent backends when Docker comes up AFTER startup.
   - `async def status(self)` — Snapshot of every backend's current state.
   - `async def ensure_catalog_seeded(self, *, timeout_s: float=600.0)` — Auto-run the Rhea tool-catalog ingestion when the catalog is empty.
+  - `async def _ensure_embedding_model(self)` — Ensure the Rhea catalog-ingestion embedding model is pulled in Ollama.
   - `async def _catalog_row_count(self)` — Row count of the rhea ``galaxytools`` catalog table — the seeded-state ground truth.
   - `async def prewarm_workflow_tools(self)` — Pre-install every Rhea tool conda env declared by the catalog.
   - `async def shutdown(self)` — Tear down ONLY containers we spawned.
@@ -2791,7 +2791,6 @@ _Auto-discover the Rhea checkout + set RHEA_* env vars (G88, 2026-05-16)._
 - `def _is_set(name: str)` — True iff the operator has set this env var to a non-empty value.
 - `def _find_rhea_repo()` — Search known locations for a Rhea checkout.
 - `def _is_rhea_repo(path: Path)` — Validate a candidate directory as a Rhea checkout.
-- `def rhea_clone_target()` — Where ``apecx-setup rhea`` should ``git clone`` the Rhea source.
 - `def autodiscovery_enabled()` — ``APECX_RHEA_AUTODISCOVER=0`` disables the discovery.
 
 ## `src/apecx_integration/infrastructure/rhea_prewarm.py`
