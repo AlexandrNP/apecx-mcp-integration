@@ -1,9 +1,12 @@
 # muscle_alignment — the Rhea tool-dispatch step of rhea_muscle_alignment.
 #
-# Wraps RheaFileToolStep (nanobrain.library.steps.rhea_file_tool_step):
-# stages the FASTA into Rhea's rhea-input ProxyStore, calls the MUSCLE
-# tool over MCP (find_tools -> tools/call), and fetches the alignment
-# output files back from the rhea-output ProxyStore.
+# Wraps RheaFileToolStep (nanobrain.library.steps.rhea_file_tool_step): a THIN
+# HTTP client — POSTs the FASTA to the rhea server's /upload endpoint, calls the
+# MUSCLE tool over MCP (find_tools -> tools/call), and GETs the alignment output
+# files back from /download. (The redis/ProxyStore staging is now entirely
+# server-side; the client configures only mcp_url — the redis_host/redis_port/
+# input_store_name/output_store_name fields are obsolete and were removed, since
+# RheaFileToolStepConfig sets extra='forbid' and rejects them.)
 #
 # The static_tool_args mirror rhea/scripts/run_muscle_e2e.py exactly —
 # the values MUSCLE's Cheetah <command> template needs to render fully.
@@ -14,13 +17,9 @@ class: "nanobrain.library.steps.rhea_file_tool_step.RheaFileToolStep"
 name: muscle_alignment
 description: >
   Dispatch the MUSCLE multiple-sequence-alignment Galaxy tool to a Rhea
-  MCP server via the file-input ProxyStore protocol.
+  MCP server via the thin HTTP file-input protocol.
 
 mcp_url: "http://localhost:3001/mcp/"
-redis_host: "localhost"
-redis_port: 6379
-input_store_name: "rhea-input"
-output_store_name: "rhea-output"
 
 tool_name: "muscle"
 find_tools_query: "MUSCLE multiple sequence alignment of protein fasta"
