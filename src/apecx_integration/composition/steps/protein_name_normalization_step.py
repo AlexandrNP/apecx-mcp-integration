@@ -199,7 +199,6 @@ class ProteinNameNormalizationStep(BaseStep):
             taxon_id,
             best_product,
             best_score,
-            taxon_id,
         )
         return self._emit(taxon_id, protein, feature_type, protein, "passthrough")
 
