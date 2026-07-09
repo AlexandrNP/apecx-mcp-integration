@@ -271,8 +271,22 @@ def test_rag_synthesis_step_yaml_loads():
     assert step.name == "rag_synthesis"
 
 
-def test_rag_synthesis_step_raises_on_empty_retrieval():
-    """fail_on_empty_retrieval gate fires without LLM contact."""
+def test_rag_synthesis_step_degrades_loud_on_empty_retrieval(caplog):
+    """Empty retrieval → the fail_on_empty_retrieval gate fires WITHOUT LLM contact, then the step
+    DEGRADES LOUD instead of raising (commit 79b0042b: never strand the retrieved evidence).
+
+    The gate still raises ``ValueError('every retrieval input is empty ...')`` inside
+    ``synthesize_response`` (before any LLM call), but ``RagSynthesisStep.process`` catches it, emits a
+    loud WARNING, and returns a deterministic ``render_rag_evidence_fallback`` synthesis whose text
+    names the empty-retrieval reason — so the workflow never fails on empty evidence.
+    """
+    import logging
+
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
     from apecx_integration.composition.steps.rag_synthesis_step import (
         RagSynthesisStep,
     )
@@ -288,8 +302,26 @@ def test_rag_synthesis_step_raises_on_empty_retrieval():
         / "rag_synthesis.yml"
     )
     step = RagSynthesisStep.from_config(str(step_yaml))
-    with pytest.raises(ValueError, match="every retrieval input is empty"):
-        asyncio.run(step.process({"query": "any query"}))
+
+    # AGENT locus takes the LLM-synthesis path where the empty-retrieval gate fires + is caught
+    # (DESKTOP locus never reaches synthesize_response, so it would not exercise the gate).
+    prior = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    try:
+        with caplog.at_level(logging.WARNING):
+            out = asyncio.run(step.process({"query": "any query"}))
+    finally:
+        set_active_locus(prior)
+
+    # Degrade-loud, not raise: a real fallback synthesis naming the empty-retrieval reason.
+    assert isinstance(out, dict) and isinstance(out.get("synthesis"), str) and out["synthesis"]
+    assert "every retrieval input is empty" in out["synthesis"]
+    # The degrade was LOUD (a WARNING was logged, no LLM was contacted for a real answer).
+    assert any(
+        "every retrieval input is empty" in r.getMessage() or "synthesis failed" in r.getMessage()
+        for r in caplog.records
+        if r.levelno >= logging.WARNING
+    ), "empty-retrieval degrade must log a loud WARNING"
 
 
 # ---------------------------------------------------------------------------

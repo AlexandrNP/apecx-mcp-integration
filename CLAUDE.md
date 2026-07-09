@@ -406,8 +406,13 @@ delegated to `nanobrain.library.runtime.workspace_root.locate_workflow_root`
 (G40-WA-1 retired).
 
 Failure contract per branch: warning + empty list. All-empty →
-synthesizer's `fail_on_empty_retrieval` ValueError → MCP tool returns
-`{"error": "synthesis gate failed: ..."}`.
+synthesizer's `fail_on_empty_retrieval` gate raises `ValueError` inside
+`synthesize_response`, which `RagSynthesisStep.process` CATCHES (commit
+`79b0042b`, degrade-loud — never strand the retrieved evidence): a loud
+WARNING + a deterministic `render_rag_evidence_fallback` synthesis naming
+the empty-retrieval reason. The step returns `{"synthesis": <fallback>}`
+(NOT a raise), so `run_workflow` returns `status: ok` with the loud
+fallback markdown — the workflow never fails on empty evidence.
 
 ## Authoring nanobrain code — skills
 
