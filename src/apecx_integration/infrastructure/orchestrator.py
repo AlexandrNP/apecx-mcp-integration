@@ -103,6 +103,13 @@ _RHEA_INGEST_ONLY_ENV = "APECX_RHEA_INGEST_ONLY"
 # source of truth, shared with the builder) so the tag we RUN is always the tag it BUILDS.
 # The rhea-server ALWAYS runs as a Docker container — no host-process alternative.
 
+# Per-tool container execution (rhea P2b): every Galaxy tool runs as its OWN container, launched by
+# the in-container direct agent via the mounted docker socket. This host dir is bind-mounted into the
+# rhea-server container at the SAME absolute path both sides so a tool's relative output — written by
+# the sibling tool container on the HOST daemon — resolves inside the server. Single source of truth
+# for the TMPDIR env value + the volume mount + the host-side mkdir.
+_RHEA_TOOL_TMPDIR = "/tmp/apecx-rhea-tmp"
+
 
 def _autostart_enabled() -> bool:
     return os.environ.get(_AUTOSTART_ENV_VAR, "1") != "0"
@@ -366,6 +373,16 @@ def _compose_rhea_container_env(
     )
     env["HOST"] = "0.0.0.0"
     env["AGENT_HANDLE_TIMEOUT"] = os.environ.get("AGENT_HANDLE_TIMEOUT", "900")
+    # Per-tool container execution (rhea P2b): each Galaxy tool runs as its OWN container — the direct
+    # agent `docker run`s the tool's biocontainer via the mounted docker socket. The engine is docker.
+    # In DIRECT mode (the laptop default; parsl_provider="local") `parsl_container_backend` is used
+    # ONLY as the tool container engine (rhea server/utils.py:147) — the parsl worker launcher, which
+    # a "docker" backend would break on Docker-Desktop-for-Mac, is gated on the HPC provider and never
+    # invoked here. So "docker" is the CORRECT tool engine, not a workaround. Operator can override.
+    env["PARSL_CONTAINER_BACKEND"] = os.environ.get("PARSL_CONTAINER_BACKEND", "docker")
+    # Point the tool work dir at the host-shared mount (see _RHEA_TOOL_TMPDIR) so a tool's relative
+    # output, written by the sibling tool container on the HOST daemon, resolves inside the server.
+    env["TMPDIR"] = _RHEA_TOOL_TMPDIR
     # Use the image's baked RHEA_CONDA_ENVS_DIR (/opt/rhea-conda/envs) by default
     # — the host-process variant's ~/.cache path does not exist in the container.
     # But HONOR an explicit operator override (e.g. a mounted persistent
@@ -420,10 +437,18 @@ def _make_rhea_container_spec(
         # Sorted for a deterministic argv (tests pin the generated docker run).
         env=tuple(sorted(rhea_env.items())),
         extra_hosts=("host.docker.internal:host-gateway",),
+        # Per-tool container execution (rhea P2b): mount the docker socket so the in-container direct
+        # agent's `docker run <biocontainer>` reaches the HOST daemon, plus a shared work dir at the
+        # SAME abs path both sides so a tool's relative output resolves. These are NOT stateful data
+        # volumes (rhea-server is stateless; its data lives in the separate postgres/minio containers).
+        volumes=(
+            ("/var/run/docker.sock", "/var/run/docker.sock"),
+            (_RHEA_TOOL_TMPDIR, _RHEA_TOOL_TMPDIR),
+        ),
         # Auto-build the image from local rhea source before `docker run` (zero-config).
         image_builder=ensure_rhea_image_built,
-        # The server boots (probe = :3001 health) in ~10s; the slow per-tool
-        # conda build happens later, on the first tool CALL, not at startup.
+        # The server boots (probe = :3001 health) in ~10s; the per-tool biocontainer is pulled + run
+        # later, on the first tool CALL, not at startup.
         ready_timeout_s=120.0,
         # Docker auto-restarts rhea-server across host reboots without anything
         # relaunching apecx-mcp; also marks it long-lived (never teardown-tracked).
@@ -1267,6 +1292,16 @@ class InfraOrchestrator:
                         )
                         rt.error = f"{type(exc).__name__}: {exc}"[:300]
                     return
+            # Ensure ABSOLUTE-PATH bind-mount sources exist before `docker run` — a missing bind
+            # source makes Docker create it ROOT-owned, which an unprivileged container process then
+            # cannot write (the rhea shared tool work dir is the live case). Only on the fresh-create
+            # (`docker run`) path; a `docker start` reuses an existing mount. Named-volume sources are
+            # bare names (not paths) — the daemon owns their lifecycle, so we skip them; the docker
+            # socket is an absolute path but already exists (the daemon-reachability check above
+            # passed), so the `exists` guard skips it too (we must never mkdir over the socket path).
+            for _src, _ in container_spec.volumes:
+                if _src.startswith("/") and not os.path.exists(_src):
+                    os.makedirs(_src, exist_ok=True)
             cmd = [self._docker] + container_run_args(container_spec)
             spawn = await asyncio.to_thread(
                 subprocess.run,
@@ -1308,10 +1343,16 @@ class InfraOrchestrator:
             # silently lost the operator's prior data is exactly the
             # silent-failure shape we're guarding against.
             if spawn_action == "docker run":
+                # Only NAMED volumes (bare-name sources) carry persistent operator STATE; absolute-path
+                # sources are bind mounts (e.g. rhea's docker-socket passthrough + scratch tool work
+                # dir) which are NOT stateful data — mislabeling them as "named volume(s) ... data
+                # persists" would tell the operator to hunt for state that a stateless server never had.
+                named_volumes = [
+                    source for source, _ in container_spec.volumes if not source.startswith("/")
+                ]
                 vol_note = (
-                    f"named volume(s) {[v[0] for v in container_spec.volumes]} "
-                    f"declared — data persists if the volume exists"
-                    if container_spec.volumes
+                    f"named volume(s) {named_volumes} declared — data persists if the volume exists"
+                    if named_volumes
                     else "NO persistent volume declared — data will be lost when the container is removed"
                 )
                 rt.fresh_create_warning = (

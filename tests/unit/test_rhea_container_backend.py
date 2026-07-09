@@ -9,8 +9,15 @@ server, host conda broken):
 
     docker run -d --name <name> -p 127.0.0.1:3001:3001 \
       -e ...host.docker.internal endpoints... \
-      -e PARSL_CONTAINER_BACKEND=local -e AGENT_HANDLE_TIMEOUT=900 \
+      -e PARSL_CONTAINER_BACKEND=docker -e TMPDIR=/tmp/apecx-rhea-tmp \
+      -e AGENT_HANDLE_TIMEOUT=900 \
+      -v /var/run/docker.sock:/var/run/docker.sock \
+      -v /tmp/apecx-rhea-tmp:/tmp/apecx-rhea-tmp \
       --add-host host.docker.internal:host-gateway <image>
+
+Per-tool container execution (rhea P2b): the socket mount lets the in-container
+direct agent `docker run` each tool's biocontainer on the host daemon, and the
+shared work dir (same abs path both sides) makes a tool's relative output resolve.
 
 No real Docker/MinIO/Redis is touched — these exercise the PURE spec composition
 (the legit unit-test carve-out). The orchestrator-driven live bring-up is the
@@ -103,10 +110,13 @@ def test_container_env_container_specific_overrides(
 ) -> None:
     rhea = _rhea_spec(monkeypatch, "container")
     env = dict(rhea.container.env)
-    # Parsl LOCAL backend -> worker is a subprocess INSIDE the container (uses
-    # the container's conda; shares the netns, no interchange problem).
-    assert env["PARSL_CONTAINER_BACKEND"] == "local"
-    # Generous handle timeout: first tool call cold-builds the conda env and the
+    # Per-tool container execution (P2b): the tool ENGINE is docker. In direct mode
+    # `parsl_container_backend` is ONLY the tool engine (the parsl worker launcher is gated on the
+    # HPC provider, never invoked here), so "docker" does not reintroduce the macOS worker problem.
+    assert env["PARSL_CONTAINER_BACKEND"] == "docker"
+    # The tool work dir is the host-shared mount so a tool's relative output resolves both sides.
+    assert env["TMPDIR"] == "/tmp/apecx-rhea-tmp"
+    # Generous handle timeout: first tool call cold-pulls + runs the biocontainer and the
     # handle is written only after; the 30s default would time out.
     assert int(env["AGENT_HANDLE_TIMEOUT"]) >= 300
     # Binds all interfaces so -p 3001:3001 is reachable from the host.
@@ -149,9 +159,49 @@ def test_container_run_args_matches_verified_command(
     assert argv[ah_i + 1] == "host.docker.internal:host-gateway"
     assert ah_i < argv.index(rhea.container.image)
     # Spot-check the load-bearing env made it onto the command line.
-    assert "PARSL_CONTAINER_BACKEND=local" in joined
+    assert "PARSL_CONTAINER_BACKEND=docker" in joined
     assert "host.docker.internal" in joined
     assert "localhost" not in joined
+    # Per-tool container execution (P2b): the docker socket + shared work dir are mounted so the
+    # in-container agent can `docker run` each tool's biocontainer and its relative output resolves.
+    assert "-v" in argv
+    assert "/var/run/docker.sock:/var/run/docker.sock" in argv
+    assert "/tmp/apecx-rhea-tmp:/tmp/apecx-rhea-tmp" in argv
+
+
+def test_rhea_container_spec_mounts_docker_socket_and_shared_tmp(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """P2a: the rhea ContainerSpec bind-mounts the docker socket + a shared tool work dir.
+
+    Without the socket mount the in-container direct agent's `docker run <biocontainer>` has no daemon
+    to reach (every tool run fails at `docker pull`); without the shared work dir at the SAME abs path
+    both sides, a tool's relative output is written where the server can't read it. Pins both mounts
+    independently of the argv spot-check so a regression naming only one is still caught.
+    """
+    rhea = _rhea_spec(monkeypatch, "container")
+    volumes = dict(rhea.container.volumes)
+    assert volumes.get("/var/run/docker.sock") == "/var/run/docker.sock"
+    assert volumes.get("/tmp/apecx-rhea-tmp") == "/tmp/apecx-rhea-tmp"
+
+
+def test_building_rhea_spec_has_no_filesystem_side_effect(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Spec composition is PURE — building the rhea spec must NOT touch the host filesystem.
+
+    The shared tool work dir is created at BRING-UP time (just before `docker run`), not at
+    spec-build time — `_default_backend_specs` runs on every roster build (reconcile/status/tests),
+    so a `makedirs` there would be an unconditional `/tmp` write during pure composition. Fail loud
+    if any spec-build path calls `os.makedirs`.
+    """
+
+    def _boom(*_a, **_k):
+        raise AssertionError("spec build must not touch the filesystem (os.makedirs)")
+
+    monkeypatch.setattr("apecx_integration.infrastructure.orchestrator.os.makedirs", _boom)
+    # Must not raise — spec composition is side-effect-free.
+    _rhea_spec(monkeypatch, "container")
 
 
 def test_rhea_container_spec_has_restart_policy(monkeypatch: pytest.MonkeyPatch) -> None:

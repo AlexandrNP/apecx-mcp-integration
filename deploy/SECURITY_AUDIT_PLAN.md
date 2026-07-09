@@ -46,6 +46,14 @@ row is `change → command → pass-condition`. Substitute `<host>` / `<COMPOSE>
   auth failure; recreate volumes (`down -v`) or keep the secrets.
 - **`nginx -t` + Trivy are Phase-L (deploy-time)**, not CI — the config + scan baseline are verified
   on the host, not in the repo pipeline.
+- **rhea-server is daemon-privileged** (per-tool-container execution). The orchestrator mounts
+  `/var/run/docker.sock` into `apecx-rhea-server` so the in-container agent can `docker run` each
+  Galaxy tool's biocontainer on the host daemon — this grants rhea-server root-equivalent control of
+  the host Docker daemon. It is INHERENT to the per-tool-container design, not a misconfiguration.
+  Compensating controls: rhea-server binds loopback + firewall only (never world-visible), and the
+  socket is NOT passed to the spawned tool containers (L5 still holds — the biocontainers rhea
+  launches carry no socket). On HPC the socket is not used at all (Apptainer is daemonless). Track a
+  least-privilege follow-up (rootless/socket-proxy) as a rhea T-ticket.
 
 ## Exit criteria (go-live gate)
 
