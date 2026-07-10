@@ -56,6 +56,7 @@ from typing import Any
 
 from nanobrain.core.step import BaseStep, StepConfig
 
+from apecx_integration.agents.globus_search.taxonomy_resolver import extract_virus_names
 from apecx_integration.synonym_dictionary.enums import EntityType
 from apecx_integration.synonym_dictionary.loader import (
     configure_dictionary_path,
@@ -113,6 +114,19 @@ def build_resolution_plan(term: str, index: str, entity_type_str: str = "") -> d
 
     result: LookupResult = lookup_entity(term, entity_type=entity_type)
 
+    # Acronym / virus-name expansion fallback. Bare virology acronyms (LASV, MARV, NiV, RABV, DENV, …)
+    # and free-text phrases are absent from the dictionary BY DESIGN — they expand in code via
+    # ``extract_virus_names`` (the same alias table the desktop normalize→resolve path uses). Without
+    # this, ``harmonized_search`` on "LASV" resolves to a MISS and serves a taxon-imprecise raw
+    # full-text fallback (measured precision 0.0). Only retry on a MISS, and only for pathogen-type
+    # lookups, so already-resolving names and non-virus entity types are untouched.
+    if result.path == "miss" and entity_type in (None, EntityType.PATHOGEN):
+        for name in extract_virus_names(term):
+            expanded = lookup_entity(name, entity_type=entity_type)
+            if expanded.path != "miss":
+                result = expanded
+                break
+
     # Ambiguity detection: the eo-mvp branch's LookupResult is the
     # "first match wins" shape; ambiguity requires a separate query
     # against the dictionary index. If multiple distinct canonical
@@ -127,6 +141,9 @@ def build_resolution_plan(term: str, index: str, entity_type_str: str = "") -> d
     # Only run the multi-candidate check for non-IRI surface inputs
     # (an IRI input is by construction unambiguous — it's already a
     # canonical identifier).
+    # NOTE: ambiguity is checked against the ORIGINAL ``term``, not any acronym-expanded name above.
+    # Safe today (acronyms are absent from the ambiguous-surface table); if a future alias ever
+    # expanded to an ambiguous canonical, this check would need the expanded surface form too.
     is_iri_input = term.startswith(("http://", "https://"))
     if not is_iri_input:
         try:

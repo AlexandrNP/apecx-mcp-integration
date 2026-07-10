@@ -243,3 +243,103 @@ def test_input_validation_loud(tmp_path, bad_input, expected_substr):
     step = _stage(tmp_path)
     with pytest.raises(ValueError, match=expected_substr):
         asyncio.run(step.process(bad_input))
+
+
+def _by_term(mapping: dict[str, LookupResult]):
+    """A lookup_entity stub keyed by term (unlike _stub_lookup, which is a FIFO queue). Needed for
+    the acronym-fallback tests, where lookup_entity is called twice: once on the bare acronym, then
+    on the expanded canonical name."""
+
+    def stub(term, *, entity_type=None):
+        if term not in mapping:
+            raise AssertionError(f"stub has no result for term={term!r}")
+        return mapping[term]
+
+    return stub
+
+
+def _miss(surface: str) -> LookupResult:
+    return LookupResult(
+        surface_form=surface,
+        path="miss",
+        canonical_iri=None,
+        canonical_label=None,
+        canonical_ontology=None,
+        confidence=0.0,
+        resolution_status=ResolutionStatus.UNRESOLVED,
+        synonyms=(),
+        evidence="",
+    )
+
+
+def test_acronym_miss_expands_via_extract_virus_names(tmp_path, _restore_lookup):
+    """A bare acronym ('LASV') that MISSES bare-lookup is retried through the REAL
+    ``extract_virus_names`` (→ 'Lassa mammarenavirus'); the expanded name's hit becomes the plan.
+    Pins the production wiring gap fixed here: harmonized_search on an acronym must resolve, not
+    fall back to the taxon-imprecise raw full-text leg."""
+    lassa = LookupResult(
+        surface_form="Lassa mammarenavirus",
+        path="fast",
+        canonical_iri="http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        canonical_label="Lassa mammarenavirus",
+        canonical_ontology="ncbitaxon",
+        confidence=1.0,
+        resolution_status=ResolutionStatus.ID_ANCHORED,
+        synonyms=("LASV", "Lassa mammarenavirus"),
+        evidence="dict hit",
+    )
+    _restore_lookup.setattr(
+        harmonized_resolve_step,
+        "lookup_entity",
+        _by_term({"LASV": _miss("LASV"), "Lassa mammarenavirus": lassa}),
+    )
+    step = _stage(tmp_path)
+    out = asyncio.run(step.process({"term": "LASV", "index": "bvbrc_genome"}))
+    plan = out["plan"]
+    assert plan["resolution_path"] == "fast"
+    assert plan["canonical_iri"].endswith("NCBITaxon_3052310")
+    assert plan["term"] == "LASV"  # the ORIGINAL query term rides through unchanged
+
+
+def test_resolving_name_is_not_reexpanded(tmp_path, _restore_lookup):
+    """A term that resolves on the FIRST bare lookup must NOT be re-expanded — the fallback only
+    fires on a MISS, so a normal name reaches lookup_entity exactly once (no behavior change for the
+    already-working path)."""
+    calls: list[str] = []
+
+    def stub(term, *, entity_type=None):
+        calls.append(term)
+        return LookupResult(
+            surface_form=term,
+            path="fast",
+            canonical_iri="http://purl.obolibrary.org/obo/NCBITaxon_37124",
+            canonical_label="Chikungunya virus",
+            canonical_ontology="ncbitaxon",
+            confidence=1.0,
+            resolution_status=ResolutionStatus.ID_ANCHORED,
+            synonyms=("chikungunya virus",),
+            evidence="dict hit",
+        )
+
+    _restore_lookup.setattr(harmonized_resolve_step, "lookup_entity", stub)
+    step = _stage(tmp_path)
+    out = asyncio.run(step.process({"term": "chikungunya virus", "index": "bvbrc_genome"}))
+    assert out["plan"]["canonical_iri"].endswith("NCBITaxon_37124")
+    assert calls == ["chikungunya virus"]  # exactly once — no expansion retry
+
+
+def test_junk_term_stays_a_miss(tmp_path, _restore_lookup):
+    """A genuine junk term must STAY a miss. The whole false-positive safety of the fallback rests on
+    the inner ``expanded.path != 'miss'`` gate: if extract_virus_names yields nothing (or its output
+    also misses), the original miss is preserved — never a garbage resolution. Pins that gate against
+    a future edit that adopts ``extract_virus_names(term)[0]`` unconditionally."""
+    _restore_lookup.setattr(
+        harmonized_resolve_step,
+        "lookup_entity",
+        _by_term({"asdfqwer nonsense": _miss("asdfqwer nonsense")}),
+    )
+    step = _stage(tmp_path)
+    out = asyncio.run(step.process({"term": "asdfqwer nonsense", "index": "bvbrc_genome"}))
+    plan = out["plan"]
+    assert plan["resolution_path"] == "miss"
+    assert plan["canonical_iri"] is None
