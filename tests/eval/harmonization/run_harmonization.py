@@ -31,7 +31,7 @@ from apecx_integration.synonym_dictionary.loader import (
     configure_dictionary_path,
     get_dictionary_index,
 )
-from tests.eval.harmonization import judges, llm_validate, metrics
+from tests.eval.harmonization import coverage_rootcause, judges, llm_validate, metrics
 from tests.eval.harmonization.probe import ALL_INDICES, probe_cell
 from tests.eval.harmonization.resolve import resolve_query
 
@@ -142,7 +142,7 @@ def _judge_cell(cell, subtree: set[int], synonyms, k: int) -> dict:
 
     prec = metrics.precision(verdicts)
     rec = metrics.recall_fractions(raw_ids, harm_ids, served_ids, gold)
-    return {
+    scored = {
         "index": cell.index,
         "raw_total": cell.raw_total,
         "harm_total": cell.harm_total,
@@ -156,6 +156,14 @@ def _judge_cell(cell, subtree: set[int], synonyms, k: int) -> dict:
         "fp_breakdown": fp_breakdown,
         "sample": sample_rows,
     }
+    # Root-cause every 0-coverage cell (harm empty) from its RAW-leg records — WHY did the taxon
+    # filter find nothing: a stamping mismatch, a missing source id, an off-target raw match, or a
+    # genuine absence. Only for harm_total==0 (a covered cell needs no diagnosis).
+    if cell.harm_total == 0:
+        scored["rootcause"] = coverage_rootcause.classify_cell(
+            cell.raw_records, cell.harm_total, cell.raw_total, subtree
+        )
+    return scored
 
 
 def run(
@@ -165,6 +173,7 @@ def run(
     max_queries: int | None,
     fetch_limit: int,
     out_path: str,
+    val_cap: int | None = None,
 ) -> dict:
     import globus_sdk
 
@@ -227,7 +236,9 @@ def run(
         "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "model": llm_validate._MODEL if llm else None,
         "k": k,
-        "fetch_limit": fetch_limit,  # recall is pool-relative at this depth: recall@fetch_limit
+        # Full-corpus recall where a cell's total <= fetch_limit (both legs fully enumerated → the
+        # raw∪harm gold pool IS the corpus); recall@fetch_limit only for `capped` cells (total > limit).
+        "fetch_limit": fetch_limit,
         "llm_validated": False,
         "n_queries": len(query_snaps),
         "n_cells": len(cells),
@@ -239,6 +250,7 @@ def run(
             "by_index": metrics.aggregate(cells, "index"),
         },
         "coverage": metrics.coverage_by_index(cells, n_resolved),
+        "coverage_rootcause": coverage_rootcause.rootcause_matrix(cells),
         "judge_agreement": None,
     }
     # Persist the CORE results (the expensive Globus data + all automated metrics) BEFORE the optional
@@ -246,44 +258,46 @@ def run(
     _OUTDIR.mkdir(parents=True, exist_ok=True)
     Path(out_path).write_text(json.dumps(result, indent=2))
     if llm:
-        agreement = _llm_validate(cells, query_snaps)
+        agreement = _llm_validate(cells, query_snaps, val_cap)
         if agreement:
             result["judge_agreement"] = agreement
-            result["llm_validated"] = True
+            # True only if the pass actually judged something — an n=0 agreement (LLM reachable but no
+            # judgeable rows) records transparently but must not read as "validated".
+            result["llm_validated"] = agreement.get("n", 0) > 0
             Path(out_path).write_text(json.dumps(result, indent=2))
     return result
 
 
 def _llm_validate(
-    cells: list[dict], query_snaps: list[dict], per_regime_cap: int = 10, budget_s: float = 180.0
+    cells: list[dict], query_snaps: list[dict], cap: int | None = None
 ) -> dict | None:
+    """UN-restrained cross-validation (was capped at ~43 by a 180s deadline + a per-regime cap of 10).
+
+    Judge EVERY scored sample row that carries usable text — all regimes, all cells — deduped to
+    distinct (record, pathogen) pairs so κ is not inflated by the same record recurring across cells.
+    No wall-clock deadline: the core JSON is persisted BEFORE this runs (see ``run``), so a slow model
+    delays only the optional κ enrichment, never the deliverable. ``cap`` (default None = unbounded)
+    is an operator override for a shorter pass; None honors the "do not restrain it" directive.
+    """
     if not llm_validate.llm_available():
         return None
-    deadline = time.monotonic() + budget_s  # hard wall-time cap so slow Ollama can't hang the run
-    # Validate the SAMPLE ROWS we already scored, feeding the LLM the record's real text. Oversample
-    # A/B disagreements (the ambiguous cases the automated judge is least sure about); add a per-regime
-    # baseline of confident verdicts. Rows with no usable text are skipped (the LLM needs signal).
     label_by_term = {
         q["term"]: (q.get("canonical_label") or q["resolved_term"]) for q in query_snaps
     }
     pairs: list[tuple[str, bool | None]] = []
-    seen_regime: dict[str, int] = {}
+    seen: set[tuple[str, str]] = set()
     for cell in cells:
-        if time.monotonic() > deadline:
-            break
         pathogen = label_by_term.get(cell["term"], cell["term"])
         for row in cell["sample"]:
-            if time.monotonic() > deadline:
-                break
+            if cap is not None and len(pairs) >= cap:
+                return metrics.judge_agreement(pairs)
             text = row.get("title") or row.get("organism") or row.get("subjects")
             if not text:
                 continue
-            want = row["verdict"] == "disagree" or (
-                seen_regime.get(cell["regime"], 0) < per_regime_cap
-            )
-            if not want:
+            key = (str(row.get("primary_id") or text), pathogen)
+            if key in seen:  # same record already judged for this pathogen — do not double-count κ
                 continue
-            seen_regime[cell["regime"]] = seen_regime.get(cell["regime"], 0) + 1
+            seen.add(key)
             verdict = llm_validate.llm_judge(
                 row.get("title") or "",
                 row.get("organism") or "",
@@ -302,13 +316,20 @@ def main() -> None:
         "--fetch-limit",
         type=int,
         default=None,
-        help="records pulled per leg for the recall pool (recall@fetch_limit); default 1500",
+        help="records pulled per leg; default 10000 (production's Globus ceiling → full-corpus "
+        "recall where total<=limit, recall@limit + capped flag beyond it)",
     )
     ap.add_argument(
         "--max-queries", type=int, default=None, help="cap queries per category (smoke)"
     )
     ap.add_argument("--llm-validate", dest="llm", action="store_true")
     ap.add_argument("--no-llm", dest="llm", action="store_false")
+    ap.add_argument(
+        "--val-cap",
+        type=int,
+        default=None,
+        help="cap the LLM cross-validation at N judged pairs (default: unbounded — validate all)",
+    )
     ap.add_argument("--out", default=str(_OUTDIR / "harmonization_precision.json"))
     ap.set_defaults(llm=True)
     args = ap.parse_args()
@@ -323,7 +344,13 @@ def main() -> None:
     fetch_limit = args.fetch_limit or _DEFAULT_FETCH_LIMIT
     # run() writes the core JSON before validation (crash/hang-safe) and updates it after.
     result = run(
-        args.categories.split(","), args.k, args.llm, args.max_queries, fetch_limit, args.out
+        args.categories.split(","),
+        args.k,
+        args.llm,
+        args.max_queries,
+        fetch_limit,
+        args.out,
+        args.val_cap,
     )
     agg = result["aggregate"]["by_category"]
     print(f"wrote {args.out}  ({result['n_cells']} cells, {result['n_queries']} queries)")

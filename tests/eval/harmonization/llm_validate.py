@@ -18,7 +18,9 @@ import urllib.error
 import urllib.request
 
 _BASE = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1").rstrip("/")
-_MODEL = os.environ.get("APECX_LLM_MODEL", "nemotron-3-nano:4b")
+# Default to the strongest locally-available judge (24B) — the prior 4B model gave κ=0.13 on n=43, a
+# weak external check. Override with APECX_LLM_MODEL. The judge's own reliability bounds κ's meaning.
+_MODEL = os.environ.get("APECX_LLM_MODEL", "devstral:24b")
 _KEY = os.environ.get("APECX_LLM_API_KEY", "")
 _CACHE: dict[tuple[str, str], dict] = {}
 

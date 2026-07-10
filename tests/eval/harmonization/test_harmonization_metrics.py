@@ -8,7 +8,7 @@ on. (This IS allowed to be a ``test_*.py`` — it is pure logic, per the eval-sc
 
 from __future__ import annotations
 
-from tests.eval.harmonization import judges, metrics
+from tests.eval.harmonization import coverage_rootcause, judges, metrics
 
 # ---- DataCite record fixtures (minimal shapes the real _datacite readers parse) -------------------
 
@@ -259,3 +259,75 @@ def test_aggregate_micro_mean_by_category():
     assert agg["abbr"]["precision"] == 0.6 and agg["abbr"]["judged"] == 20  # (8+4)/(10+10)
     assert agg["abbr"]["mean_recall_lift"] == round(0.3, 4)
     assert agg["real"]["precision"] == 0.9 and agg["real"]["mean_recall_lift"] is None
+
+
+# ---- coverage_rootcause.classify_cell (WHY a 0-coverage cell has no harmonized records) -----------
+
+_CHIKV_SUBTREE = {37124, 999001}  # queried species + a strain child
+
+
+def test_rootcause_covered_when_harm_present():
+    assert (
+        coverage_rootcause.classify_cell([_rec(ncbi=["37124"])], 5, 5, _CHIKV_SUBTREE)["class"]
+        == "covered"
+    )
+
+
+def test_rootcause_genuinely_absent_when_raw_zero():
+    rc = coverage_rootcause.classify_cell([], harm_total=0, raw_total=0, subtree_ids=_CHIKV_SUBTREE)
+    assert rc["class"] == "genuinely_absent" and rc["raw_n"] == 0
+
+
+def test_rootcause_stamping_mismatch_source_id_in_subtree():
+    """raw>0 & harm==0, and a raw record's SOURCE taxon id IS in the queried subtree → the record is
+    about the organism but was never stamped with subjects.valueUri (the fixable harmonization gap)."""
+    raw = [_rec(title="chik genome", ncbi=["37124"])]  # source id 37124 ∈ subtree
+    rc = coverage_rootcause.classify_cell(
+        raw, harm_total=0, raw_total=1, subtree_ids=_CHIKV_SUBTREE
+    )
+    assert rc["class"] == "stamping_mismatch" and rc["in_subtree"] == 1
+
+
+def test_rootcause_offtarget_when_ids_present_none_in_subtree():
+    """raw records carry taxon ids but NONE in the subtree → the raw text matched OTHER organisms;
+    the index holds no record about THIS organism (a precision hazard, not a coverage gap)."""
+    raw = [_rec(ncbi=["11021"]), _rec(subjects=[("x", _IRI)])]  # EEEV id + a bare valueUri stamp
+    rc = coverage_rootcause.classify_cell(
+        raw, harm_total=0, raw_total=2, subtree_ids=_CHIKV_SUBTREE
+    )
+    assert (
+        rc["class"] == "offtarget_raw_match" and rc["in_subtree"] == 0 and rc["with_taxon_id"] == 2
+    )
+
+
+def test_rootcause_missing_source_id_when_no_taxon_at_all():
+    """raw records carry NO taxon id (no valueUri, no NCBI-Taxonomy alt-id) — nothing to stamp; e.g. a
+    structure record whose only organism evidence is pdb.polymer_entities[].scientific_name."""
+    raw = [_rec(organisms=["Chikungunya virus"])]
+    rc = coverage_rootcause.classify_cell(
+        raw, harm_total=0, raw_total=1, subtree_ids=_CHIKV_SUBTREE
+    )
+    assert (
+        rc["class"] == "missing_source_id" and rc["with_taxon_id"] == 0 and rc["organism_only"] == 1
+    )
+
+
+def test_rootcause_miss_cell_empty_subtree_never_stamping_mismatch():
+    """A resolution-miss cell (no IRI → empty subtree) can never be `stamping_mismatch` — there was no
+    filter to mis-stamp against; it classifies by its raw records alone."""
+    raw = [_rec(ncbi=["37124"])]  # even a real chik id: with empty subtree, in_subtree==0
+    rc = coverage_rootcause.classify_cell(raw, harm_total=0, raw_total=1, subtree_ids=set())
+    assert rc["class"] == "offtarget_raw_match"
+
+
+def test_rootcause_matrix_tallies_per_index():
+    cells = [
+        {"index": "bvbrc_genome", "rootcause": {"class": "stamping_mismatch"}},
+        {"index": "bvbrc_genome", "rootcause": {"class": "genuinely_absent"}},
+        {"index": "bvbrc_genome", "rootcause": {"class": "stamping_mismatch"}},
+        {"index": "protabank", "rootcause": {"class": "missing_source_id"}},
+        {"index": "protabank"},  # harm>0 cell, no rootcause — skipped
+    ]
+    m = coverage_rootcause.rootcause_matrix(cells)
+    assert m["bvbrc_genome"] == {"stamping_mismatch": 2, "genuinely_absent": 1}
+    assert m["protabank"] == {"missing_source_id": 1}

@@ -49,12 +49,18 @@ def _classify_regime(result: LookupResult) -> str:
 def resolve_query(term: str, category: str) -> ResolvedQuery:
     """Resolve one corpus query. For ``real_world`` free-text phrases, extract the virus name first
     (mirroring the workflow's normalize→resolve), then look it up; other categories resolve directly."""
+    result = lookup_entity(term, entity_type=EntityType.PATHOGEN)
     resolved_term = term
-    if category == "real_world":
-        names = extract_virus_names(term)
-        if names:
-            resolved_term = names[0]  # most-specific first
-    result = lookup_entity(resolved_term, entity_type=EntityType.PATHOGEN)
+    # Mirror the production fix (harmonized_resolve_step): on a MISS, retry via extract_virus_names
+    # (acronym + free-text expansion) and adopt the first expansion that resolves. Applies to ALL
+    # categories (not just real_world) so the eval measures the FIXED product — bare acronyms in
+    # `abbreviations`/`mu_virus` (LASV/MARV/NiV/RABV/DENV) now resolve instead of hitting the raw leg.
+    if result.path == "miss":
+        for name in extract_virus_names(term):
+            expanded = lookup_entity(name, entity_type=EntityType.PATHOGEN)
+            if expanded.path != "miss":
+                result, resolved_term = expanded, name
+                break
     return ResolvedQuery(
         term=term,
         category=category,
