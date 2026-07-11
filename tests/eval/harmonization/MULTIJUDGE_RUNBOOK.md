@@ -22,7 +22,7 @@ partial results favour the cheap models first. It saturates the GPU for the dura
 cd /Users/onarykov/Downloads/apecx-cowork/wt-harmonization-eval
 # 1. The 6 panel models are present:
 curl -s localhost:11434/api/tags | python3 -c "import sys,json;print(sorted(m['name'] for m in json.load(sys.stdin)['models']))"
-#    expect: devstral:24b, gemma4:8b, medgemma:latest, medllama2:7b, mistral-nemo:12b, nemotron-3-nano:4b
+#    expect: devstral:24b, gemma4:latest, medgemma:latest, medllama2:7b, mistral-nemo:latest, nemotron-3-nano:4b
 # 2. The core results JSON exists (it holds the served-record sample rows + each record's automated
 #    Judge A / Judge B / combined verdict — the panel judges these, no Globus re-fetch):
 ls -la tests/eval/harmonization/output/harmonization_precision.json

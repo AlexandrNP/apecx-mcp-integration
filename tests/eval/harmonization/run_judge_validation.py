@@ -36,10 +36,10 @@ _OUTDIR = Path(__file__).parent / "output"
 # ignores instructions via completion; medgemma (Gemma-based) follows the JSON contract like gemma4.
 _PANEL = [
     "nemotron-3-nano:4b",
-    "gemma4:8b",
+    "gemma4:latest",
     "medgemma:latest",
     "medllama2:7b",
-    "mistral-nemo:12b",
+    "mistral-nemo:latest",
     "devstral:24b",
 ]
 
