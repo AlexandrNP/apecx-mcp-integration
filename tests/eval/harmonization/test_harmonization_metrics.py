@@ -8,7 +8,7 @@ on. (This IS allowed to be a ``test_*.py`` — it is pure logic, per the eval-sc
 
 from __future__ import annotations
 
-from tests.eval.harmonization import coverage_rootcause, judges, metrics
+from tests.eval.harmonization import coverage_rootcause, judge_stats, judges, llm_validate, metrics
 
 # ---- DataCite record fixtures (minimal shapes the real _datacite readers parse) -------------------
 
@@ -331,3 +331,153 @@ def test_rootcause_matrix_tallies_per_index():
     m = coverage_rootcause.rootcause_matrix(cells)
     assert m["bvbrc_genome"] == {"stamping_mismatch": 2, "genuinely_absent": 1}
     assert m["protabank"] == {"missing_source_id": 1}
+
+
+# ---- judge_stats: per-judge precision/recall vs a proxy-gold reference -----------------------------
+
+# Hand-built labeled records (ja, jb, verdict, llm) with pre-computed per-judge confusions.
+_LABELS = [
+    {"judge_a": True, "judge_b": True, "verdict": "relevant", "llm": True, "category": "a"},
+    {"judge_a": True, "judge_b": None, "verdict": "relevant", "llm": False, "category": "a"},
+    {"judge_a": False, "judge_b": None, "verdict": "false_positive", "llm": True, "category": "b"},
+    {"judge_a": False, "judge_b": None, "verdict": "false_positive", "llm": False, "category": "b"},
+    {"judge_a": None, "judge_b": None, "verdict": "unjudgeable", "llm": True, "category": "b"},
+]
+
+
+def test_judge_calls():
+    assert judge_stats.call_judge_b(True) is True and judge_stats.call_judge_b(None) is None
+    assert judge_stats.call_combined("relevant") is True
+    assert judge_stats.call_combined("false_positive") is False
+    assert judge_stats.call_combined("disagree") is None  # abstain
+
+
+def test_profile_judge_a_vs_llm():
+    a = judge_stats.profile_group(_LABELS)["judge_a"]
+    # TP=rec1, FP=rec2, FN=rec3+rec5(abstain), TN=rec4
+    assert (a["tp"], a["fp"], a["fn"], a["tn"]) == (1, 1, 2, 1)
+    assert a["precision"] == 0.5 and a["recall"] == round(1 / 3, 4)
+    assert a["abstained"] == 1
+
+
+def test_profile_judge_b_is_affirm_only_high_precision_low_recall():
+    b = judge_stats.profile_group(_LABELS)["judge_b"]
+    # B affirms only rec1 (TP); abstains on the other 4 → FN on the two llm-relevant, TN on the two not.
+    assert (b["tp"], b["fp"], b["fn"], b["tn"]) == (1, 0, 2, 2)
+    assert b["precision"] == 1.0 and b["recall"] == round(1 / 3, 4) and b["abstain_rate"] == 0.8
+
+
+def test_profile_llm_reference_is_combined_and_drops_undefined():
+    llm = judge_stats.profile_group(_LABELS)["llm"]
+    # ref=combined: rec5 verdict 'unjudgeable' → reference undefined → excluded.
+    assert llm["ref_undefined"] == 1 and llm["n_scored"] == 4
+    assert llm["precision"] == 0.5 and llm["recall"] == 0.5
+
+
+def test_profile_groups_by_category():
+    p = judge_stats.profile(_LABELS, "category")
+    assert set(p) == {"overall", "a", "b"}
+    assert p["a"]["judge_a"]["tp"] == 1 and p["a"]["judge_a"]["fp"] == 1  # both cat-a rows
+
+
+# ---- judge_stats PANEL (multi-model): majority reference, per-judge P/R, inter-judge kappa ----------
+
+
+def test_majority_vote():
+    assert judge_stats._majority([True, True, False]) is True
+    assert judge_stats._majority([False, False, True]) is False
+    assert judge_stats._majority([True, False]) is None  # tie
+    assert judge_stats._majority([]) is None  # no votes
+
+
+def test_panel_majority_leave_one_out():
+    rec = {"m_mA": True, "m_mB": True, "m_mC": False}
+    models = ["mA", "mB", "mC"]
+    assert judge_stats.panel_majority(rec, models) is True  # T,T,F → True
+    # scoring mA: exclude it → [mB=T, mC=F] → tie → None (never graded against its own vote)
+    assert judge_stats.panel_majority(rec, models, exclude="mA") is None
+
+
+def test_judge_binary_dispatch():
+    rec = {"judge_a": False, "judge_b": True, "verdict": "relevant", "m_mA": True}
+    assert judge_stats.judge_binary("judge_a", rec, ["mA"]) is False
+    assert judge_stats.judge_binary("judge_b", rec, ["mA"]) is True
+    assert judge_stats.judge_binary("combined", rec, ["mA"]) is True
+    assert judge_stats.judge_binary("mA", rec, ["mA"]) is True
+
+
+def test_profile_panel_precision_recall_vs_combined():
+    # A model vs the combined anchor: TP/FP/FN/TN one each → precision 0.5, recall 0.5.
+    recs = [
+        {"verdict": "relevant", "m_mA": True, "category": "x"},  # TP
+        {"verdict": "relevant", "m_mA": False, "category": "x"},  # FN
+        {"verdict": "false_positive", "m_mA": True, "category": "y"},  # FP
+        {"verdict": "false_positive", "m_mA": False, "category": "y"},  # TN
+    ]
+    p = judge_stats.profile_panel(recs, ["mA"], group_key="category", reference="combined")
+    m = p["overall"]["mA"]
+    assert m["precision"] == 0.5 and m["recall"] == 0.5
+    assert set(p) == {"overall", "x", "y"}
+    # every judge (automated + model) carries BOTH precision and recall keys — the mandatory contract
+    for judge_metrics in p["overall"].values():
+        assert "precision" in judge_metrics and "recall" in judge_metrics
+
+
+def test_kappa_matrix_symmetric_diagonal_and_identical():
+    recs = [
+        {"judge_a": True, "judge_b": None, "verdict": "relevant", "m_mA": True, "m_mB": False},
+        {
+            "judge_a": False,
+            "judge_b": None,
+            "verdict": "false_positive",
+            "m_mA": False,
+            "m_mB": True,
+        },
+        {"judge_a": True, "judge_b": None, "verdict": "relevant", "m_mA": True, "m_mB": False},
+    ]
+    mat = judge_stats.kappa_matrix(recs, ["mA", "mB"])
+    names = judge_stats.judge_names(["mA", "mB"])
+    assert set(mat) == set(names)
+    for a in names:  # diagonal 1.0, symmetric
+        assert mat[a][a] == 1.0
+        for b in names:
+            assert mat[a][b] == mat[b][a]
+    # combined and mA make identical calls here (relevant↔True) → perfect agreement
+    assert mat["combined"]["mA"] == 1.0
+    assert mat["mA"]["mB"] < 0  # mA and mB are perfectly opposed → negative kappa
+
+
+# ---- llm_validate._prose_belongs: fallback for models that answer in prose, not JSON ---------------
+
+
+def test_prose_belongs_parses_verdict_and_guards_echo():
+    # medllama2-style prose → a real verdict
+    assert llm_validate._prose_belongs("Therefore, the answer is false.") is False
+    assert llm_validate._prose_belongs("This record is not genuinely about the pathogen.") is False
+    assert (
+        llm_validate._prose_belongs("Yes, this is genuinely about the requested pathogen.") is True
+    )
+    assert llm_validate._prose_belongs("The record is about the requested pathogen.") is True
+    # meditron-style ECHO of the system prompt must NOT be mis-read as a verdict — echo guard → None.
+    echo = 'adjudicating a bioinformatics search result ... Respond ONLY with JSON: {"belongs": true or false}'
+    assert llm_validate._prose_belongs(echo) is None
+    assert llm_validate._prose_belongs("I'm not sure about this one.") is None  # hedge, no verdict
+
+
+def test_prose_belongs_review_gate_false_positive_traps():
+    """The three false-positive traps review-gate found — each must NOT become a wrong True verdict."""
+    # 1. BARE schema fragment (no anchor phrase) — the "belongs": true inside "true or false" trap.
+    assert (
+        llm_validate._prose_belongs('{"belongs": true or false, "reason": "<one short sentence>"}')
+        is None
+    )
+    # 2. Hedge that lists both options.
+    assert (
+        llm_validate._prose_belongs("It is hard to say whether the answer is true or false.")
+        is None
+    )
+    # 3. Semantic negative: about a DIFFERENT organism, not the query → False (not a naive "is about" True).
+    assert (
+        llm_validate._prose_belongs("This record is about a different flavivirus, not the query.")
+        is False
+    )

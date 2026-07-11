@@ -127,6 +127,29 @@ directional-but-solid (grounded in NCBI taxonomy), with the LLM as a corroborati
 
 ---
 
+## HF7 — Multi-judge panel: per-judge precision/recall across 6 models (GATED — run in progress)
+
+To move past a single-model κ, the relevance judgment is assessed by a **panel of 6 local LLM models**
+alongside the 3 automated judges, each scored on the SAME up-to-4000 records: general models
+`nemotron-4B`, `gemma-8B`, `mistral-nemo-12B`, `devstral-24B`, and two **bio-oriented** models
+`medgemma` (medical Gemma) + `medllama2-7B` (medical LLaMA-2). (`meditron-7B` was tried and DROPPED — it
+echoes the prompt via chat and ignores instructions via completion; `medgemma` replaced it. `medllama2`
+answers in prose, rescued by a prose-verdict parser.) The bio models are medical/clinical, NOT
+virology-specific — their abstain-rate + agreement are reported so their fit is measured, not assumed.
+
+**Every judge (3 automated + 6 models) gets precision + recall + F1 + confusion + abstain-rate, per
+request type (category + regime)**, against two proxy-gold references — the **panel-majority vote**
+(leave-one-out for the model being scored) and the **combined-automated** taxonomy anchor — plus an
+**inter-judge Cohen-κ matrix** showing which judges cluster (e.g. do the two bio models agree with each
+other more than with the general models?). No absolute ground truth exists, so these are agreement
+metrics (the κ caveat applies).
+
+This is a **~15–20 GPU-hour** local job (6 models × 4000 records, Ollama serialised, ~5s per 24B
+judgment), so it runs autonomously via the runbook (`MULTIJUDGE_RUNBOOK.md`), not interactively. **Results
+(the per-judge precision/recall tables + κ matrix) are written to `per_judge_stats` + `inter_judge_kappa`
+in the core JSON and filled in here on completion.** Acceptance: every judge carries non-null precision AND
+recall in `by_category_majority`, and `n_records ≈ 4000`.
+
 ## Raw-fallback deep-dive + mitigation (the ask #3 deliverable)
 
 **Mechanism (two paths, both precision-0.0 hazards):**

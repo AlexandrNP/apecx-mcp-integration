@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 
@@ -55,13 +56,21 @@ def _signature(title: str, organism: str, subjects: str) -> str:
 
 
 def llm_judge(
-    title: str, organism: str, subjects: str, pathogen: str, *, timeout: int = 20
+    title: str,
+    organism: str,
+    subjects: str,
+    pathogen: str,
+    *,
+    model: str | None = None,
+    timeout: int = 20,
 ) -> dict:
-    """Return {"belongs": bool|None, "reason": str}. Cached per (record-signature, pathogen); the same
-    record recurs across strata, so each distinct pair is judged once. ``belongs=None`` (error/unparse)
-    is NOT cached (may retry) and never counts as a verdict."""
+    """Return {"belongs": bool|None, "reason": str}. Cached per (record-signature, pathogen, model) — the
+    same record recurs across strata, and the panel judges each record with several models, so each
+    distinct (record, pathogen, model) is judged once. ``belongs=None`` (error/unparse) is NOT cached
+    (may retry) and never counts as a verdict."""
+    model = model or _MODEL
     sig = _signature(title, organism, subjects)
-    key = (sig, pathogen)
+    key = (sig, pathogen, model)
     if key in _CACHE:
         return _CACHE[key]
     user = (
@@ -73,7 +82,7 @@ def llm_judge(
     )
     body = json.dumps(
         {
-            "model": _MODEL,
+            "model": model,
             "temperature": 0,
             "messages": [{"role": "system", "content": _SYSTEM}, {"role": "user", "content": user}],
         }
@@ -85,9 +94,11 @@ def llm_judge(
     except Exception as exc:  # noqa: BLE001
         return {"belongs": None, "reason": f"LLM error: {type(exc).__name__}"}  # not cached
     parsed = _extract_json(content)
-    if not parsed or "belongs" not in parsed:
+    # Prefer JSON; fall back to prose parsing for models that answer in prose (some bio finetunes).
+    belongs = bool(parsed["belongs"]) if parsed and "belongs" in parsed else _prose_belongs(content)
+    if belongs is None:
         return {"belongs": None, "reason": f"unparseable: {content[:80]}"}  # not cached
-    out = {"belongs": bool(parsed["belongs"]), "reason": str(parsed.get("reason", ""))[:200]}
+    out = {"belongs": belongs, "reason": (parsed or {}).get("reason", content[:120])}
     _CACHE[key] = out
     return out
 
@@ -102,3 +113,42 @@ def _extract_json(text: str) -> dict | None:
         return obj if isinstance(obj, dict) else None
     except json.JSONDecodeError:
         return None
+
+
+def _prose_belongs(text: str) -> bool | None:
+    """Fallback verdict for models that answer in PROSE, not JSON (e.g. medllama2: "the answer is
+    false."). Conservative + high-precision — better to abstain (None) than mis-verdict, since these
+    feed a judge's precision/recall. Guards three false-positive traps found in review: a bare schema
+    echo ``{"belongs": true or false}``, a hedge "...true or false", and "about a different X, not the
+    query" (a semantic negative that a naive "is about" match would call positive)."""
+    t = text.lower()
+    # Schema-echo / instruction parrot / hedge that lists both options → NOT a verdict.
+    if (
+        "respond only with json" in t
+        or "adjudicating a bioinformatics" in t
+        or "true or false" in t
+    ):
+        return None
+    # Negative verdicts first — a negation of aboutness dominates a co-occurring "is about".
+    if (
+        re.search(r"answer is[:\-\s]*false\b", t)
+        or re.search(r'"?belongs"?\s*[:=]\s*false\b', t)
+        or re.search(
+            r"\bnot\s+(genuinely\s+)?about\b", t
+        )  # "not (genuinely) about" — not "not sure about"
+        or "not the requested" in t
+        or "not the query" in t
+        or re.search(r"\bdifferent\s+(species|virus|organism|pathogen|flavivirus|alphavirus)", t)
+        or "name collision" in t
+    ):
+        return False
+    # Positive verdicts — must affirm aboutness of THE requested/query pathogen, not "a different" one.
+    if (
+        re.search(r"answer is[:\-\s]*true\b", t)
+        or re.search(r'"?belongs"?\s*[:=]\s*true\b', t)
+        or re.search(r"\babout the (requested|query)\b", t)
+        or re.search(r"genuinely about the (requested|query)", t)
+        or re.search(r"^\s*yes\b", t)
+    ):
+        return True
+    return None
