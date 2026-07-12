@@ -127,28 +127,64 @@ directional-but-solid (grounded in NCBI taxonomy), with the LLM as a corroborati
 
 ---
 
-## HF7 — Multi-judge panel: per-judge precision/recall across 6 models (GATED — run in progress)
+## HF7 — Multi-judge panel: per-judge precision/recall across 6 models (COMPLETED, n=4000)
 
-To move past a single-model κ, the relevance judgment is assessed by a **panel of 6 local LLM models**
-alongside the 3 automated judges, each scored on the SAME up-to-4000 records: general models
-`nemotron-4B`, `gemma-8B`, `mistral-nemo-12B`, `devstral-24B`, and two **bio-oriented** models
-`medgemma` (medical Gemma) + `medllama2-7B` (medical LLaMA-2). (`meditron-7B` was tried and DROPPED — it
-echoes the prompt via chat and ignores instructions via completion; `medgemma` replaced it. `medllama2`
-answers in prose, rescued by a prose-verdict parser.) The bio models are medical/clinical, NOT
-virology-specific — their abstain-rate + agreement are reported so their fit is measured, not assumed.
+The relevance judgment was assessed by a **panel of 6 local LLM models** + the 3 automated judges, each
+scored on the SAME 4000 records: `nemotron-4B`, `gemma4-8B`, `mistral-nemo-12B`, `devstral-24B`, and two
+bio models `medgemma` (medical Gemma) + `medllama2-7B` (medical LLaMA-2). (`meditron-7B` was tried and
+DROPPED — echoes the prompt, 0 verdicts; `medgemma` replaced it.) Precision/recall are **agreement vs the
+panel-majority vote** (leave-one-out for the model being scored) — no absolute ground truth, so the κ
+caveat applies. A **~17-GPU-hour** local run (`MULTIJUDGE_RUNBOOK.md`); the raw stats live in the core
+JSON `per_judge_stats` + `inter_judge_kappa`.
 
-**Every judge (3 automated + 6 models) gets precision + recall + F1 + confusion + abstain-rate, per
-request type (category + regime)**, against two proxy-gold references — the **panel-majority vote**
-(leave-one-out for the model being scored) and the **combined-automated** taxonomy anchor — plus an
-**inter-judge Cohen-κ matrix** showing which judges cluster (e.g. do the two bio models agree with each
-other more than with the general models?). No absolute ground truth exists, so these are agreement
-metrics (the κ caveat applies).
+**Per-judge, overall (vs panel-majority):**
 
-This is a **~15–20 GPU-hour** local job (6 models × 4000 records, Ollama serialised, ~5s per 24B
-judgment), so it runs autonomously via the runbook (`MULTIJUDGE_RUNBOOK.md`), not interactively. **Results
-(the per-judge precision/recall tables + κ matrix) are written to `per_judge_stats` + `inter_judge_kappa`
-in the core JSON and filled in here on completion.** Acceptance: every judge carries non-null precision AND
-recall in `by_category_majority`, and `n_records ≈ 4000`.
+| judge | precision | recall | F1 | abstain | note |
+|---|---|---|---|---|---|
+| devstral-24B | 0.90 | 0.92 | **0.91** | 0.00 | best model judge |
+| mistral-nemo-12B | 0.93 | 0.86 | 0.89 | 0.00 | highest precision |
+| gemma4-8B | 0.85 | 0.95 | 0.89 | 0.00 | |
+| medgemma (bio) | 0.83 | 0.95 | 0.89 | 0.00 | **bio model that works** |
+| nemotron-4B | 0.87 | 0.89 | 0.88 | 0.00 | |
+| **medllama2 (bio)** | 0.86 | **0.014** | **0.03** | 0.12 | **failed judge — near-constant reject** |
+| combined (automated) | 0.82 | 0.72 | 0.77 | 0.19 | taxonomy+text |
+| judge_a (taxonomy) | 0.91 | 0.46 | 0.61 | 0.42 | high-precision, abstains a lot |
+| judge_b (text) | 0.79 | 0.72 | 0.75 | 0.31 | affirm-only |
+
+**Three findings:**
+
+1. **The 5 capable models are internally consistent.** Pairwise inter-judge **Cohen κ 0.48–0.65** among
+   {nemotron, gemma4, medgemma, mistral-nemo, devstral} (mistral-nemo↔devstral 0.65 = *substantial*), and
+   recall 0.86–0.95 vs the panel majority. Model family/size barely matters for THIS binary task — a 4B
+   and a 24B agree ~0.5 κ. The "LLM crowd" is a stable reference.
+2. **medllama2 is a failed judge — and it is NOT a "bio model" problem.** Recall **0.014**, κ ≈ 0.00 with
+   *every* other judge: it near-uniformly rejects. Spot-checking its raw output shows it **hallucinates
+   that the title/organism fields are blank** ("the fields are blank, indicating it is not a match") even
+   when they are clearly populated, and defaults to "not about". Its sibling bio model **medgemma judges
+   competently** (recall 0.95, κ 0.49–0.53) — so medical-domain fine-tuning is not the issue; medllama2
+   (a LLaMA-2 medical finetune) specifically does not transfer to this task. It is reported but excluded
+   from the "capable panel" conclusions.
+3. **The LLMs and the taxonomy judge measure DIFFERENT things — sharpest in the miss/raw-fallback regime.**
+   Across all 6 models, agreement with the taxonomy-grounded `judge_a` is only κ **0.14–0.28** (and with
+   `combined`, ≈0/negative) — the same modest LLM-vs-taxonomy divergence HF6 first saw at κ 0.23, now
+   robust across a 6-model panel. It is starkest on the **`miss_raw_fallback`** records (the raw-text
+   fallback, HF1): the LLM panel judges them **relevant** (devstral recall 0.94, medgemma 0.97), while the
+   automated `combined` judge scores them precision-0.0 (taxonomically off-target). The LLMs are swayed by
+   surface name/text match; the source-taxon-subtree judge is not. **This validates the non-circular
+   taxonomy judge**: it catches exactly the off-target records that fool a name-reading LLM.
+
+**vs the combined-automated (taxonomy) reference:** the capable models sit at precision ≈0.80, recall
+0.78–0.85 against `combined` — i.e. they agree with the deterministic pipeline ~80% of the time, diverging
+on the ~20% where surface text and taxonomy disagree (finding 3).
+
+**Limitations (honest):** (a) the 4000-record sample filled entirely from the **mu_virus** category (it
+is processed first and has >4000 sample rows), so the *category* breakdown is mu_virus-only — a
+stratified re-draw across abbreviations/real_world is a follow-up (change `_collect_rows` to round-robin
+categories). The *regime* breakdown (resolved_species vs miss_raw_fallback) IS populated and carries
+finding 3. (b) precision/recall are proxy-gold agreement (panel-majority), not absolute truth. (c) two
+tag typos (`gemma4:8b`, `mistral-nemo:12b`) initially produced 0-verdict holes — caught mid-run by the
+per-model progress check, fixed (`gemma4:latest`, `mistral-nemo:latest`), and both models re-judged; the
+final numbers are on the correct tags.
 
 ## Raw-fallback deep-dive + mitigation (the ask #3 deliverable)
 
