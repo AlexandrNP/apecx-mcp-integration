@@ -298,7 +298,131 @@ def fig_judge_pr():
     _save(fig, "fig6_judge_pr.png")
 
 
+def _fbox(ax, x, y, w, h, text, fc, ec, tc="#1f2933", fs=10, bold=False):
+    from matplotlib.patches import FancyBboxPatch
+
+    ax.add_patch(
+        FancyBboxPatch(
+            (x, y),
+            w,
+            h,
+            boxstyle="round,pad=0.01,rounding_size=1.5",
+            fc=fc,
+            ec=ec,
+            lw=1.6,
+            zorder=2,
+        )
+    )
+    ax.text(
+        x + w / 2,
+        y + h / 2,
+        text,
+        ha="center",
+        va="center",
+        fontsize=fs,
+        color=tc,
+        weight="bold" if bold else "normal",
+        zorder=3,
+    )
+
+
+def _farrow(ax, x1, y1, x2, y2, color="#8895a7", lw=2):
+    from matplotlib.patches import FancyArrowPatch
+
+    ax.add_patch(
+        FancyArrowPatch(
+            (x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=16, color=color, lw=lw, zorder=1
+        )
+    )
+
+
+# ---- FIG 0: the probe — how every number is produced --------------------------------------------
+def fig_method():
+    fig, ax = plt.subplots(figsize=(12, 5.4))
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 100)
+    ax.axis("off")
+    ax.text(
+        50,
+        96,
+        "The probe: how every number is produced (live on Globus)",
+        ha="center",
+        fontsize=15,
+        weight="bold",
+        color=INK,
+    )
+    _fbox(
+        ax,
+        2,
+        44,
+        17,
+        20,
+        "1 CELL =\n(pathogen × index)\n\n1,206 cells",
+        fc="#e8f0fb",
+        ec=BLUE,
+        bold=True,
+        fs=10.5,
+    )
+    _fbox(
+        ax,
+        27,
+        66,
+        27,
+        16,
+        'RAW leg\nq = "coronavirus"\n(plain text, NO filter)',
+        fc="#fbeceb",
+        ec=BAD,
+        fs=10,
+    )
+    _fbox(
+        ax,
+        27,
+        26,
+        27,
+        16,
+        "HARMONIZED leg\nfilter subjects.valueUri\n= canonical taxon IRI",
+        fc="#eef7f2",
+        ec=GOOD,
+        fs=10,
+    )
+    _farrow(ax, 19, 58, 27, 72, color=BAD)
+    _farrow(ax, 19, 50, 27, 36, color=GOOD)
+    _fbox(
+        ax,
+        60,
+        44,
+        20,
+        20,
+        "Globus returns\nper leg:\ntotal = EXACT\n# matches\n+ ≤10,000 records",
+        fc=BLUE,
+        ec=BLUE,
+        tc="white",
+        bold=True,
+        fs=10,
+    )
+    _farrow(ax, 54, 74, 60, 60, color=BAD)
+    _farrow(ax, 54, 34, 60, 48, color=GOOD)
+    outs = [
+        ("COVERAGE\nharm_total > 0 ?", GOOD, 74),
+        ("PRECISION\njudge served\nrecords", WARN, 50),
+        ("RECALL\ngold over\nraw ∪ harm", "#7a4fbf", 26),
+    ]
+    for t, c, y in outs:
+        _fbox(ax, 85, y, 13, 16, t, fc="white", ec=c, tc=c, bold=True, fs=9.5)
+        _farrow(ax, 80, 54, 85, y + 8, color=c, lw=1.6)
+    ax.text(
+        50,
+        2,
+        "`total` is returned on EVERY query regardless of how many records we fetch → coverage is a CENSUS, not a sample.",
+        ha="center",
+        fontsize=10,
+        color=NEUTRAL,
+    )
+    _save(fig, "fig0_method.png")
+
+
 if __name__ == "__main__":
+    fig_method()
     fig_precision()
     fig_fp()
     fig_rootcause()

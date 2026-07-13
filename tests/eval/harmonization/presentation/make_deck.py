@@ -233,7 +233,7 @@ _table(
     [
         "② Metric",
         "Definition",
-        "How it is estimated  (the key methodology — full detail in speaker notes)",
+        "How it is estimated  (the key methodology — SEE THE NEXT 3 SLIDES for formulas)",
     ],
     [
         [
@@ -296,6 +296,220 @@ Answer the methodological questions head-on.
   filters on — so it read 1.00 by construction. Judge A uses the record's own source taxon id (a different
   field); Judge B uses free text; the 6-model LLM panel is a third independent check. None can 'cheat.'
   Metrics are agreement vs a proxy-gold (no absolute truth) — same caveat as Cohen's kappa.
+""",
+)
+
+# ===================================== 2b — PROBE DIAGRAM =====================================
+s = new_slide(GOOD)
+_title(s, "How every number is produced — the probe", GOOD)
+_iw, _ih = Image.open(_FIG / "fig0_method.png").size
+_sc = min(IN(12.0) / _iw, IN(5.1) / _ih)
+_w, _h = int(_iw * _sc), int(_ih * _sc)
+s.shapes.add_picture(
+    str(_FIG / "fig0_method.png"), int((EMU_W - _w) / 2), IN(1.3), width=_w, height=_h
+)
+_notes(
+    s,
+    """
+Every result comes from probing 1,206 (pathogen × index) cells live on Globus. Each cell = TWO queries: a
+RAW leg (plain text q="name", no filter) and a HARMONIZED leg (filter subjects.valueUri = the canonical
+taxon IRI). Globus returns, per leg, `total` = the exact match count (independent of how many records we
+fetch) plus up to 10,000 records. Coverage comes from harm_total; precision from judging the served records;
+recall from the gold pool over raw∪harm. The next two slides give the exact formulas.
+""",
+)
+
+
+def _formula(slide, x, y, w, h, parts, ec):
+    box = slide.shapes.add_shape(1, x, y, w, h)
+    box.fill.solid()
+    box.fill.fore_color.rgb = LIGHT
+    box.line.color.rgb = ec
+    box.line.width = Pt(1.5)
+    tf = box.text_frame
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf.word_wrap = True
+    for i, (txt, sz, col, bold) in enumerate(parts):
+        p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+        p.alignment = PP_ALIGN.CENTER
+        _run(p, txt, sz, col, bold)
+    return box
+
+
+# ===================================== 2c — HOW COVERAGE IS CALCULATED =====================================
+s = new_slide(GOOD)
+_title(s, "How COVERAGE is calculated", GOOD)
+_formula(
+    s,
+    IN(0.9),
+    IN(1.4),
+    IN(11.5),
+    IN(1.25),
+    [
+        (
+            "coverage(index)  =  |{ pathogen : harm_total(pathogen, index) > 0 }|  ÷  N_probed",
+            19,
+            INK,
+            True,
+        ),
+        (
+            f"N_probed = {n_resolved} probed pathogens (non-paused queries)  ·  same denominator for every index",
+            12.5,
+            GREY,
+            False,
+        ),
+    ],
+    GOOD,
+)
+_steps = _tb(s, IN(0.75), IN(2.95), IN(11.9), IN(3.5))
+for _i, (_num, _txt) in enumerate(
+    [
+        (
+            "Step 1",
+            "For each (pathogen × index) cell, run the HARMONIZED query — filter records on "
+            "subjects.valueUri = the pathogen's canonical NCBI-Taxonomy IRI.",
+        ),
+        (
+            "Step 2",
+            "harm_total = the Globus response's `total` field = the EXACT count of matching records. "
+            "Globus returns `total` on EVERY query, independent of how many records we fetch → it is NOT "
+            "sampled and NOT estimated.",
+        ),
+        (
+            "Step 3",
+            "A pathogen is COVERED by that index  ⇔  harm_total > 0  (≥1 record carries the queried "
+            "taxon in its lineage stamp).",
+        ),
+        (
+            "Step 4",
+            "Per-index coverage rate = (number of COVERED pathogens) ÷ (number of probed pathogens = N_probed).",
+        ),
+    ]
+):
+    _p = _steps.paragraphs[0] if _i == 0 else _steps.add_paragraph()
+    _p.space_after = Pt(12)
+    _run(_p, _num + " — ", 14.5, GOOD, True)
+    _run(_p, _txt, 14.5, INK)
+_cbox = s.shapes.add_shape(1, IN(0.75), IN(6.35), IN(11.9), IN(0.55))
+_cbox.fill.solid()
+_cbox.fill.fore_color.rgb = RGBColor(0xEC, 0xF6, 0xF1)
+_cbox.line.fill.background()
+_ct = _cbox.text_frame
+_ct.vertical_anchor = MSO_ANCHOR.MIDDLE
+_pp = _ct.paragraphs[0]
+_pp.alignment = PP_ALIGN.CENTER
+_run(
+    _pp,
+    "Because `total` is exact and depth-independent, coverage is a CENSUS over all matches — "
+    "not a sample, not an estimate.",
+    12.5,
+    GOOD,
+    True,
+)
+_notes(
+    s,
+    """
+The slide the feedback demanded. Coverage answers 'does this index hold ANY record for this organism?' —
+not 'how many did we fetch?'. The key is that Globus's `total` is the true match count returned on every
+query regardless of the fetch limit, so harm_total>0 is a definitive yes/no census. N_probed = the distinct
+probed queries; it excludes ONLY the ambiguous queries we paused. A miss query is still probed — it just
+resolves to nothing, so harm_total=0 and it counts as not-covered. Coverage is therefore exact; precision
+and recall (next slide) are the sampled/estimated metrics.
+""",
+)
+
+# ===================================== 2d — HOW PRECISION & RECALL ARE CALCULATED =====================================
+s = new_slide(GOOD)
+_title(s, "How PRECISION & RECALL are calculated", GOOD)
+_run(
+    _tb(s, IN(0.65), IN(1.25), IN(12), IN(0.35)).paragraphs[0],
+    "PRECISION — non-circular, sampled per cell",
+    15,
+    BLUE,
+    True,
+)
+_formula(
+    s,
+    IN(0.75),
+    IN(1.65),
+    IN(11.85),
+    IN(0.72),
+    [
+        (
+            "precision  =  |relevant|  ÷  ( |relevant| + |false_positive| )    ·    'unjudgeable' EXCLUDED from the denominator",
+            15.5,
+            INK,
+            True,
+        )
+    ],
+    BLUE,
+)
+_pt = _tb(s, IN(0.85), IN(2.5), IN(11.7), IN(1.3))
+_run(
+    _pt.paragraphs[0],
+    "•  Sample K served records per cell → judge each: Judge A (record's SOURCE "
+    "NCBI-Taxonomy id ∈ queried subtree) OR Judge B (title/organism text names a dictionary synonym). "
+    "Neither reads subjects.valueUri — the field the query filtered on.",
+    12.5,
+    INK,
+)
+_p = _pt.add_paragraph()
+_p.space_before = Pt(5)
+_run(
+    _p,
+    "•  Aggregate = micro-mean: pool ALL judged records across cells (a larger cell weighs more).",
+    12.5,
+    INK,
+)
+_run(
+    _tb(s, IN(0.65), IN(4.05), IN(12), IN(0.35)).paragraphs[0],
+    "RECALL — full-corpus (pool-relative TREC estimate)",
+    15,
+    GOOD,
+    True,
+)
+_formula(
+    s,
+    IN(0.75),
+    IN(4.45),
+    IN(11.85),
+    IN(0.72),
+    [
+        (
+            "recall(leg)  =  |leg ∩ gold|  ÷  |gold|      ·    gold = records judged relevant across  raw ∪ harmonized",
+            15.5,
+            INK,
+            True,
+        )
+    ],
+    GOOD,
+)
+_rt = _tb(s, IN(0.85), IN(5.3), IN(11.7), IN(1.5))
+_run(
+    _rt.paragraphs[0],
+    "•  Fetch BOTH legs to 10,000 records = the hard Globus ceiling (limit + offset ≤ "
+    "10,000; one request returns EVERY match up to it).",
+    12.5,
+    INK,
+)
+_p = _rt.add_paragraph()
+_p.space_before = Pt(5)
+_run(
+    _p,
+    f"•  If a cell's total ≤ 10,000 → both legs are FULLY enumerated → gold = the ENTIRE corpus → this "
+    f"is TRUE full-corpus recall ({(d['n_cells'] - capped) / d['n_cells']:.0%} of cells). total > 10,000 → "
+    "'capped', reported as recall@10k.",
+    12.5,
+    INK,
+)
+_notes(
+    s,
+    """
+Precision is the SAMPLED metric (K served records per cell, judged non-circularly, unjudgeable excluded,
+micro-meaned). Recall is estimated pool-relatively (TREC-style): the gold set is the union of both legs'
+records that an independent judge marks relevant; recall is the fraction of that gold each leg retrieved.
+The 'full-corpus' claim holds because at 10k fetch depth both legs are fully enumerated for 98% of cells,
+so the pool IS the corpus. Contrast with COVERAGE (previous slide), which is an exact census via `total`.
 """,
 )
 
