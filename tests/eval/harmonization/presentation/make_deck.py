@@ -148,6 +148,28 @@ def figure_slide(title, fig, takeaway, notes, accent=BLUE):
 
 IN = Inches
 
+
+def data_slide(title_text, blocks, note, accent=BLUE):
+    """A results-in-TABLES slide: title + stacked (caption, headers, rows, col_w, font) tables + notes."""
+    s = new_slide(accent)
+    _title(s, title_text, accent)
+    y = IN(1.4)
+    for cap, headers, rows, col_w, font in blocks:
+        if cap:
+            _run(_tb(s, IN(0.55), y, IN(12), IN(0.3)).paragraphs[0], cap, 12.5, accent, bold=True)
+            y += IN(0.36)
+        _table(s, IN(0.55), y, headers, rows, col_w, font=font, accent=accent)
+        y += IN(0.31) * (len(rows) + 1) + IN(0.4)
+    _notes(s, note)
+    return s
+
+
+def _fnum(x, dp=3, signed=False):
+    if x is None:
+        return "—"
+    return f"{x:+.{dp}f}" if signed else f"{x:.{dp}f}"
+
+
 # ===================================== 1 — TITLE =====================================
 s = new_slide(BLUE)
 tf = _tb(s, IN(0.9), IN(2.4), IN(11.5), IN(2.2))
@@ -306,6 +328,59 @@ gap, now fixed in main; abbreviations precision rose 0.72→0.89.
     accent=BAD,
 )
 
+# ===================================== 4b — DATA: precision & FP =====================================
+_fp = {}
+for _c in d["cells"]:
+    for _k, _v in (_c.get("fp_breakdown") or {}).items():
+        _fp[_k] = _fp.get(_k, 0) + _v
+_fptot = sum(_fp.values()) or 1
+data_slide(
+    "Findings 1–2 — data: precision & false-positive attribution",
+    [
+        (
+            "① Precision by resolution regime",
+            ["Regime", "Precision", "Cells", "Mean recall-lift"],
+            [
+                [
+                    k,
+                    _fnum(v["precision"], 3),
+                    str(v["n_cells"]),
+                    _fnum(v["mean_recall_lift"], 2, True),
+                ]
+                for k, v in reg.items()
+            ],
+            [IN(3.4), IN(2.3), IN(2.0), IN(3.0)],
+            11.5,
+        ),
+        (
+            "② Precision by query category",
+            ["Category", "Precision", "Mean recall-lift"],
+            [
+                [k, _fnum(v["precision"], 3), _fnum(v["mean_recall_lift"], 2, True)]
+                for k, v in d["aggregate"]["by_category"].items()
+            ],
+            [IN(3.4), IN(2.3), IN(3.0)],
+            11.5,
+        ),
+        (
+            "③ False-positive attribution (across all judged false positives)",
+            ["Class", "Count", "% of all FPs"],
+            [
+                [k, str(_fp[k]), f"{_fp[k] / _fptot:.0%}"]
+                for k in sorted(_fp, key=lambda x: -_fp[x])
+            ],
+            [IN(5.2), IN(2.0), IN(2.5)],
+            11.5,
+        ),
+    ],
+    """
+Tabular twin of Findings 1–2. Precision by regime: resolved_species 0.930 (1107 cells) vs miss_raw_fallback
+0.000 (99 cells). By category: mu_virus 0.784, abbreviations 0.889, real_world 0.931. FP attribution:
+raw_substitution dominates (89%), multi_subject_incidental 11%. All values read verbatim from the run JSON.
+""",
+    accent=GOOD,
+)
+
 # ===================================== 5 — MISSED PRECISION EXAMPLES (table) =====================================
 s = new_slide(BAD)
 _title(s, "Examples of missed precision (real records served)", BAD)
@@ -405,6 +480,46 @@ indices simply hold few relevant records.
     accent=BLUE,
 )
 
+data_slide(
+    "Finding 3 — data: 0-coverage root-cause (every harm-empty cell)",
+    [
+        (
+            None,
+            ["Root cause", "Cells", "Meaning"],
+            [
+                [
+                    "genuinely_absent",
+                    str(rc.get("genuinely_absent", 0)),
+                    "raw == 0 & harm == 0 — the index holds no record for the organism",
+                ],
+                [
+                    "offtarget_raw_match",
+                    str(rc.get("offtarget_raw_match", 0)),
+                    "raw > 0 & harm == 0 — raw matched OTHER organisms; the filter correctly excluded them",
+                ],
+                [
+                    "missing_source_id",
+                    str(rc.get("missing_source_id", 0)),
+                    "raw records carry no taxon id at all — nothing to stamp (structure records)",
+                ],
+                [
+                    "stamping_mismatch",
+                    str(rc.get("stamping_mismatch", 0)),
+                    "record IS about the organism but was never stamped — a true harmonization failure",
+                ],
+            ],
+            [IN(3.0), IN(1.1), IN(8.0)],
+            11.5,
+        ),
+    ],
+    """
+Tabular twin of Finding 3. The load-bearing number is stamping_mismatch = 0: there are no harmonization
+failures. Coverage gaps are genuine absence (376) or off-target raw matches (131, correctly excluded); only
+5 cells lack a source identifier. Nothing to re-stamp.
+""",
+    accent=BLUE,
+)
+
 figure_slide(
     "Finding 3b — per-index coverage & precision",
     "fig4_per_index.png",
@@ -414,6 +529,50 @@ figure_slide(
 Per-index health dashboard. bvbrc_protein_structure/epitope best-covered; protabank/bvbrc_protein hold
 little viral-protein data (low coverage, not a bug). Caution on the 1.00 precisions — thin judged bases;
 two indices show NEGATIVE recall lift. violin_pathogen (0.52) is the one to actually audit.
+""",
+    accent=BLUE,
+)
+
+_cov = d["coverage"]
+_ia = d["aggregate"]["by_index"]
+_rcm = d["coverage_rootcause"]
+_pi_rows = []
+for _name in sorted(_cov, key=lambda n: -_cov[n]["coverage_rate"]):
+    _p = _ia.get(_name, {})
+    _r = _rcm.get(_name, {})
+    _pi_rows.append(
+        [
+            _name.replace("_", " "),
+            _fnum(_cov[_name]["coverage_rate"], 2),
+            _fnum(_p.get("precision"), 2),
+            _fnum(_p.get("mean_recall_lift"), 2, True),
+            _fnum(_p.get("unjudgeable_rate"), 2),
+            f"{_r.get('genuinely_absent', 0)} / {_r.get('offtarget_raw_match', 0)} / {_r.get('missing_source_id', 0)}",
+        ]
+    )
+data_slide(
+    "Finding 3b — data: per-index coverage, precision & root-cause",
+    [
+        (
+            None,
+            [
+                "Index",
+                "Coverage",
+                "Precision",
+                "Recall-lift",
+                "Unjudg.",
+                "Absent / Offtarget / MissID",
+            ],
+            _pi_rows,
+            [IN(2.7), IN(1.5), IN(1.5), IN(1.6), IN(1.4), IN(3.4)],
+            10.5,
+        ),
+    ],
+    """
+Tabular twin of Finding 3b (all 9 harmonized indices). Coverage 0.10 (protabank) → 0.89
+(bvbrc_protein_structure). violin_pathogen has the one genuinely low precision (0.52); the 1.00s carry high
+unjudgeable rates (thin judged base). violin_vaccine and protabank show NEGATIVE recall-lift. Last column =
+the 0-coverage root-cause split per index (genuinely-absent / off-target / missing-source-id).
 """,
     accent=BLUE,
 )
@@ -432,6 +591,33 @@ agree only weakly with the source-taxon judge. medllama2 row/column ~0: agrees w
     accent=WARN,
 )
 
+_km = d["per_judge_stats"]["inter_judge_kappa"]
+_kn = list(_km.keys())
+_ksh = {
+    "judge_a": "taxA",
+    "judge_b": "txtB",
+    "combined": "comb",
+    "nemotron-3-nano:4b": "nemo",
+    "gemma4:latest": "gem4",
+    "medgemma:latest": "medg",
+    "medllama2:7b": "medl",
+    "mistral-nemo:latest": "mist",
+    "devstral:24b": "dev",
+}
+_k_rows = [[_ksh[a]] + [_fnum(_km[a][b], 2) for b in _kn] for a in _kn]
+data_slide(
+    "Finding 4 — data: inter-judge Cohen κ matrix (all judges)",
+    [
+        (None, ["judge"] + [_ksh[n] for n in _kn], _k_rows, [IN(1.2)] + [IN(1.2)] * 9, 9),
+    ],
+    """
+Tabular twin of the κ heatmap. Read the capable-model block (nemo/gem4/medg/mist/dev): pairwise κ 0.48–0.65
+(mist↔dev 0.65). medllama2 (medl) row/column ≈ 0.00 — agrees with nobody. taxA column vs the models: 0.14–
+0.28 (weak). txtB (affirm-only) is degenerate for κ. Diagonal = 1.00.
+""",
+    accent=WARN,
+)
+
 figure_slide(
     "Finding 4b — judge quality, grouped by logic",
     "fig6_judge_pr.png",
@@ -443,6 +629,70 @@ Grouped by LOGIC, not per model. Green: five capable models, clustered top-right
 populated, and rejects. Its sibling bio model medgemma works fine (recall 0.95) → a medllama2-specific
 transfer failure, not a 'medical model' problem — an honest negative we report. Blue: automated judges; the
 taxonomy judge is high-precision but abstains on records with no source id.
+""",
+    accent=WARN,
+)
+
+_maj = d["per_judge_stats"]["by_category_majority"]["overall"]
+_comb = d["per_judge_stats"]["by_category_combined"]["overall"]
+_jorder = [
+    "nemotron-3-nano:4b",
+    "gemma4:latest",
+    "medgemma:latest",
+    "mistral-nemo:latest",
+    "devstral:24b",
+    "medllama2:7b",
+    "combined",
+    "judge_a",
+    "judge_b",
+]
+_jdisp = {
+    "nemotron-3-nano:4b": "nemotron-4B",
+    "gemma4:latest": "gemma4-8B",
+    "medgemma:latest": "medgemma (bio)",
+    "mistral-nemo:latest": "mistral-nemo-12B",
+    "devstral:24b": "devstral-24B",
+    "medllama2:7b": "medllama2 (bio)",
+    "combined": "combined (auto)",
+    "judge_a": "taxonomy (A)",
+    "judge_b": "text (B)",
+}
+_pj_rows = [
+    [
+        _jdisp[j],
+        _fnum(_maj[j]["precision"]),
+        _fnum(_maj[j]["recall"]),
+        _fnum(_maj[j]["f1"]),
+        _fnum(_maj[j]["abstain_rate"], 2),
+        _fnum(_comb[j]["precision"]),
+        _fnum(_comb[j]["recall"]),
+    ]
+    for j in _jorder
+]
+data_slide(
+    "Finding 4b — data: per-judge precision / recall / F1",
+    [
+        (
+            None,
+            [
+                "Judge",
+                "P (vs majority)",
+                "R (vs majority)",
+                "F1",
+                "Abstain",
+                "P (vs combined)",
+                "R (vs combined)",
+            ],
+            _pj_rows,
+            [IN(3.0), IN(1.7), IN(1.7), IN(1.3), IN(1.3), IN(1.6), IN(1.6)],
+            10.5,
+        ),
+    ],
+    """
+Tabular twin of Finding 4b (vs the panel-majority AND the combined-automated reference). Capable models:
+P 0.83–0.93, R 0.86–0.95, F1 0.88–0.91 (devstral best). medllama2: R 0.014 (near-constant reject) →
+F1 0.028. Automated judges trade recall for precision (taxonomy A: P 0.91, R 0.46, abstain 0.42). All
+verbatim from per_judge_stats in the run JSON.
 """,
     accent=WARN,
 )
