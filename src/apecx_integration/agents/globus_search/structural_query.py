@@ -33,6 +33,22 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
+
+def _quote_advanced_phrase(term: str) -> str:
+    r"""Render a term as a safe Lucene phrase for a Globus ADVANCED query_string.
+
+    Every structural query below runs in advanced mode (``search``/``facet`` set
+    ``advanced=True`` when filters/facets are present), so a raw term carrying query
+    reserved characters — parentheses, slashes, colons, quotes, e.g. an influenza
+    strain label ``A/Puerto Rico/8/1934(H1N1)`` — malforms the query_string and
+    SILENTLY returns zero structures. Double-quoting makes those characters literal;
+    the embedded ``\`` and ``"`` are escaped so the quotes themselves can't be
+    broken. Callers already skip empty terms upstream.
+    """
+    escaped = term.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
 # Curated taxon_id -> (canonical species name, distinctive lowercase token).
 #
 # REUSE NOTE (brutal honesty): the design plan points at a shared ``taxon_species``
@@ -295,7 +311,7 @@ def enumerate_organisms(
             continue
         buckets = globus_client.facet(
             _PDB_SCIENTIFIC_NAME_FIELD,
-            term_l,
+            _quote_advanced_phrase(term_l),
             filters=pub_filter,
             size=100,
         )
@@ -348,7 +364,7 @@ def search_one_source(
                 "results not taxon-locked: no PDB organism spelling matched "
                 f"{resolution.names!r} in the structural corpus for {query!r}."
             )
-        q = " ".join(kw_tokens) if kw_tokens else " ".join(resolution.terms)
+        q = " ".join(_quote_advanced_phrase(t) for t in (kw_tokens or resolution.terms))
         filters = [
             pub_filter,
             {"type": "match_any", "field_name": _PDB_SCIENTIFIC_NAME_FIELD, "values": organisms},
@@ -364,8 +380,8 @@ def search_one_source(
     # rely on this note=None meaning "taxon-relevant"; if the index ever loosens AND-semantics, an
     # EMDB hit could slip past that guard. PDB (the structured-filter path) has no such caveat.
     kw = kw_tokens or list(_DEFAULT_STRUCTURAL_KEYWORDS)
-    taxon_clause = " OR ".join(f'"{t}"' for t in resolution.terms)
-    kw_clause = " OR ".join(f'"{w}"' for w in kw)
+    taxon_clause = " OR ".join(_quote_advanced_phrase(t) for t in resolution.terms)
+    kw_clause = " OR ".join(_quote_advanced_phrase(w) for w in kw)
     q = f"({taxon_clause}) AND ({kw_clause})"
     hits = globus_client.search(q, max_results=max_results, filters=[pub_filter])
     _tag(hits, source)

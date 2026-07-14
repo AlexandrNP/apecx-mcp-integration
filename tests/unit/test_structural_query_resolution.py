@@ -93,3 +93,45 @@ def test_structural_keywords_strip_species_words():
     ]
     # A species-only query yields no residual keyword.
     assert _structural_keyword_tokens("chikungunya virus", ["chikungunya"]) == []
+
+
+# --- advanced-query escaping (a reserved-char term used to malform the query → 0 structures) ---
+
+
+def test_quote_advanced_phrase_makes_reserved_chars_literal():
+    from apecx_integration.agents.globus_search.structural_query import _quote_advanced_phrase
+
+    # parentheses / slashes / colons are literal INSIDE quotes — just wrapped
+    assert _quote_advanced_phrase("a/puerto rico/8/1934(h1n1)") == '"a/puerto rico/8/1934(h1n1)"'
+    # embedded quotes + backslashes are escaped so the phrase itself can't be broken
+    assert _quote_advanced_phrase('say "hi"') == '"say \\"hi\\""'
+    assert _quote_advanced_phrase("a\\b") == '"a\\\\b"'
+
+
+def test_emdb_query_is_wellformed_for_reserved_char_species(monkeypatch):
+    """A strain label with parentheses/slashes must NOT malform the EMDB advanced
+    query_string — the bug that silently returned zero structures before escaping."""
+    from apecx_integration.agents.globus_search import client as globus_client
+    from apecx_integration.agents.globus_search import structural_query
+
+    captured: dict[str, str] = {}
+    monkeypatch.setattr(globus_client, "search", lambda q, **kw: captured.setdefault("q", q) and [])
+    strain = "Influenza A virus (A/Puerto Rico/8/1934(H1N1))"
+    structural_query.search_one_source(
+        "hemagglutinin epitopes", "emdb", "Electron Microscopy Data Bank", species_name=strain
+    )
+    q = captured["q"]
+    assert structural_query._quote_advanced_phrase(strain.strip().lower()) in q
+    assert q.count('"') % 2 == 0  # every quote balanced → parser cannot choke
+
+
+def test_pdb_facet_scopes_with_a_quoted_phrase(monkeypatch):
+    from apecx_integration.agents.globus_search import client as globus_client
+    from apecx_integration.agents.globus_search import structural_query
+
+    captured: dict[str, str] = {}
+    monkeypatch.setattr(
+        globus_client, "facet", lambda field, q, **kw: captured.setdefault("q", q) and []
+    )
+    structural_query.enumerate_organisms(["mayaro virus"], publisher="RCSB PDB")
+    assert captured["q"] == structural_query._quote_advanced_phrase("mayaro virus")

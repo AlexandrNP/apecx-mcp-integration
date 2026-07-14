@@ -88,6 +88,19 @@ def test_structural_check_na_when_no_structure_expected(tmp_path):
     assert check_structural_reasoning_produced(d, expect_structure=False).passed
 
 
+def test_structural_check_is_wired_into_the_live_driver():
+    """Regression: check_structural_reasoning_produced was implemented + unit-tested but NEVER added to
+    run_epitope's live check list, so every 'valid PDB but zero SASA' run passed silently. Pin the wiring
+    (the check is invoked in the live driver AND the loop knows how to categorize its failure)."""
+    import inspect
+
+    from tests.eval import run_epitope as driver
+    from tests.eval.epitope_eval_loop import _CHECK_TO_CATEGORY
+
+    assert "check_structural_reasoning_produced(" in inspect.getsource(driver.run_epitope)
+    assert "structural_reasoning_produced" in _CHECK_TO_CATEGORY
+
+
 def _events(steps, complete=True):
     et = {"step_start", "step_complete"} if complete else {"step_start"}
     return {s: set(et) for s in steps}

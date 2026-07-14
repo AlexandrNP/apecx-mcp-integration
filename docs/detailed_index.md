@@ -186,6 +186,7 @@ _Globus Search index client — read-only access to the APECx corpus._
 ## `src/apecx_integration/agents/globus_search/structural_query.py`
 _Taxon-precise structural search over the aggregate Globus index (e74bf12a)._
 
+- `def _quote_advanced_phrase(term: str)` — Render a term as a safe Lucene phrase for a Globus ADVANCED query_string.
 - class `SpeciesResolution` — Resolved species scoping for a structural query.
 - class `StructuralSearchResult` — One source's taxon-precise structural hits plus any NAMED degrade note.
 - `def resolve_species_terms(query: str, taxon_id: int | str | None=None, species_name: str | None=None)` — Resolve a query (+ optional NCBI taxon_id / canonical species name) to scoping terms.

@@ -41,6 +41,7 @@ _CHECK_TO_CATEGORY = {
     "full_artifacts": "silent_empty_artifact",
     "report_references": "missing_references",
     "protabank_reported": "protabank_silently_omitted",
+    "structural_reasoning_produced": "structural_reasoning_empty",
 }
 
 
