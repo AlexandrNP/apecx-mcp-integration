@@ -361,36 +361,61 @@ _formula(
     ],
     GOOD,
 )
-_steps = _tb(s, IN(0.75), IN(2.95), IN(11.9), IN(3.5))
-for _i, (_num, _txt) in enumerate(
+# term-by-term legend: define EVERY symbol in the formula above
+_best_ix = max(d["coverage"], key=lambda ix: d["coverage"][ix]["pathogens_covered"])
+_best_n = d["coverage"][_best_ix]["pathogens_covered"]
+_best_d = d["coverage"][_best_ix]["pathogens_probed"]
+_run(
+    _tb(s, IN(0.65), IN(2.75), IN(12), IN(0.3)).paragraphs[0],
+    "What each term means ↓",
+    13,
+    GOOD,
+    True,
+)
+_table(
+    s,
+    IN(0.6),
+    IN(3.15),
+    ["Term in the formula", "What it means (what we actually calculated)"],
     [
-        (
-            "Step 1",
-            "For each (pathogen × index) cell, run the HARMONIZED query — filter records on "
-            "subjects.valueUri = the pathogen's canonical NCBI-Taxonomy IRI.",
-        ),
-        (
-            "Step 2",
-            "harm_total = the Globus response's `total` field = the EXACT count of matching records. "
-            "Globus returns `total` on EVERY query, independent of how many records we fetch → it is NOT "
-            "sampled and NOT estimated.",
-        ),
-        (
-            "Step 3",
-            "A pathogen is COVERED by that index  ⇔  harm_total > 0  (≥1 record carries the queried "
-            "taxon in its lineage stamp).",
-        ),
-        (
-            "Step 4",
-            "Per-index coverage rate = (number of COVERED pathogens) ÷ (number of probed pathogens = N_probed).",
-        ),
-    ]
-):
-    _p = _steps.paragraphs[0] if _i == 0 else _steps.add_paragraph()
-    _p.space_after = Pt(12)
-    _run(_p, _num + " — ", 14.5, GOOD, True)
-    _run(_p, _txt, 14.5, INK)
-_cbox = s.shapes.add_shape(1, IN(0.75), IN(6.35), IN(11.9), IN(0.55))
+        [
+            "coverage(index)",
+            "The RESULT, one per index: fraction 0–1 of probed pathogens this index holds ≥1 record for.",
+        ],
+        [
+            "index",
+            "One of the 9 harmonized DEST indices — bvbrc_genome, violin_pathogen, protabank, antiviraldb, …",
+        ],
+        [
+            "pathogen",
+            "One queried organism, resolved to its canonical NCBI-Taxonomy id (dengue virus → txid12637).",
+        ],
+        [
+            "harm_total(pathogen, index)",
+            "EXACT # of records for that taxon in that index — the Globus `total` field, NOT a fetched sample.",
+        ],
+        [
+            "|{ pathogen : harm_total > 0 }|",
+            "NUMERATOR — how many pathogens the index returns ≥1 record for (the size of its 'covered' set).",
+        ],
+        [
+            f"N_probed = {n_resolved}",
+            "DENOMINATOR — # of distinct probed (non-paused) pathogens; identical for every index.",
+        ],
+    ],
+    [IN(3.35), IN(9.05)],
+    font=10,
+    accent=GOOD,
+)
+_run(
+    _tb(s, IN(0.65), IN(5.95), IN(12), IN(0.35)).paragraphs[0],
+    f"Worked example — {_best_ix}:  covered {_best_n} of {_best_d} probed pathogens  "
+    f"→  coverage = {_best_n} ÷ {_best_d} = {_best_n / _best_d:.2f}.",
+    12.5,
+    INK,
+    True,
+)
+_cbox = s.shapes.add_shape(1, IN(0.75), IN(6.5), IN(11.9), IN(0.55))
 _cbox.fill.solid()
 _cbox.fill.fore_color.rgb = RGBColor(0xEC, 0xF6, 0xF1)
 _cbox.line.fill.background()
@@ -444,20 +469,25 @@ _formula(
     ],
     BLUE,
 )
-_pt = _tb(s, IN(0.85), IN(2.5), IN(11.7), IN(1.3))
+_pt = _tb(s, IN(0.85), IN(2.5), IN(11.7), IN(1.5))
+_run(_pt.paragraphs[0], "TERMS — ", 12.5, BLUE, True)
 _run(
     _pt.paragraphs[0],
-    "•  Sample K served records per cell → judge each: Judge A (record's SOURCE "
-    "NCBI-Taxonomy id ∈ queried subtree) OR Judge B (title/organism text names a dictionary synonym). "
-    "Neither reads subjects.valueUri — the field the query filtered on.",
+    "relevant = a judged served record an independent judge marks ON-target for the query · "
+    "false_positive = a judged record marked OFF-target · unjudgeable = neither judge can rule "
+    "(no source id AND no text hit) → EXCLUDED from the denominator, never counts as a miss.",
     12.5,
     INK,
 )
 _p = _pt.add_paragraph()
-_p.space_before = Pt(5)
+_p.space_before = Pt(6)
+_run(_p, "METHOD — ", 12.5, BLUE, True)
 _run(
     _p,
-    "•  Aggregate = micro-mean: pool ALL judged records across cells (a larger cell weighs more).",
+    "sample K served records per cell; judge each by Judge A (record's SOURCE NCBI-Taxonomy id ∈ "
+    "queried subtree) OR Judge B (title/organism text names a dictionary synonym) — neither reads "
+    "subjects.valueUri, the filtered field. Aggregate = micro-mean (pool all judged records; larger "
+    "cells weigh more).",
     12.5,
     INK,
 )
@@ -484,21 +514,24 @@ _formula(
     ],
     GOOD,
 )
-_rt = _tb(s, IN(0.85), IN(5.3), IN(11.7), IN(1.5))
+_rt = _tb(s, IN(0.85), IN(5.3), IN(11.7), IN(1.6))
+_run(_rt.paragraphs[0], "TERMS — ", 12.5, GOOD, True)
 _run(
     _rt.paragraphs[0],
-    "•  Fetch BOTH legs to 10,000 records = the hard Globus ceiling (limit + offset ≤ "
-    "10,000; one request returns EVERY match up to it).",
+    "leg = one retrieval arm: raw (plain-text query) or harmonized (taxon-IRI filter) · "
+    "gold = the records judged relevant across raw ∪ harmonized (the pooled relevant set) · "
+    "leg ∩ gold = the gold records THIS leg actually returned.",
     12.5,
     INK,
 )
 _p = _rt.add_paragraph()
-_p.space_before = Pt(5)
+_p.space_before = Pt(6)
+_run(_p, "METHOD — ", 12.5, GOOD, True)
 _run(
     _p,
-    f"•  If a cell's total ≤ 10,000 → both legs are FULLY enumerated → gold = the ENTIRE corpus → this "
-    f"is TRUE full-corpus recall ({(d['n_cells'] - capped) / d['n_cells']:.0%} of cells). total > 10,000 → "
-    "'capped', reported as recall@10k.",
+    f"fetch BOTH legs to 10,000 (the hard Globus ceiling; one request returns every match up to it). "
+    f"total ≤ 10k → both legs FULLY enumerated → gold = the ENTIRE corpus → TRUE full-corpus recall "
+    f"({(d['n_cells'] - capped) / d['n_cells']:.0%} of cells). total > 10k → 'capped', reported as recall@10k.",
     12.5,
     INK,
 )
