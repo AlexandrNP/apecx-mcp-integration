@@ -34,6 +34,20 @@ def _stop_infra_orchestrator_thread():
     stop_orchestrator_in_background_thread(timeout=10.0)
 
 
+@pytest.fixture(autouse=True)
+def _isolate_handle_store(tmp_path, monkeypatch):
+    """Point the disk-backed handle store at a throwaway dir for EVERY test + reset its process
+    singleton, so a test's ``default_handle_store().put()/clear()`` can NEVER touch the real
+    ``~/.apecx/handles`` (the durable store's default home since EO-11 durability). Without this,
+    ``clear()`` — now a real ``glob('*.json') + unlink`` — would delete a developer's live handle
+    files when the suite runs. Lazy import so non-apecx tests don't pull the module in."""
+    import apecx_integration.composition.handles.store as _handle_store
+
+    monkeypatch.setenv("APECX_HANDLE_STORE_DIR", str(tmp_path / "_handle_store"))
+    monkeypatch.setattr(_handle_store, "_DEFAULT_STORE", None)
+    yield
+
+
 def pytest_ignore_collect(collection_path) -> bool | None:
     """Exclude the codegen-benchmark problem TEMPLATES from normal collection.
 
