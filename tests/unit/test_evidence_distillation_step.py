@@ -94,6 +94,39 @@ def test_structural_records_list_is_also_capped(tmp_path):
     assert out["source_totals"]["structural_records"] == 10
 
 
+def test_structural_records_keep_emdb_when_pdb_would_crowd_it_out(tmp_path):
+    """Regression: for a heavily-crystallized virus, a source-blind top-N filled the whole
+    structural cap with X-ray PDB records and zeroed out cryo-EM EMDB (SARS-CoV-2 spike:
+    25 PDB / 0 EMDB in the report despite ~130 EMDB maps). The source-aware digest keeps
+    BOTH modalities represented."""
+    step = _stage(tmp_path, max_structural_records=6)
+    pdb = [
+        {"subject": f"pdb:{i}", "structural_source": "pdb", "title": "SARS-CoV-2 spike structure"}
+        for i in range(25)
+    ]
+    emdb = [
+        {"subject": f"emdb:EMD-{i}", "structural_source": "emdb", "title": "SARS-CoV-2 spike map"}
+        for i in range(20)
+    ]
+    out = asyncio.run(step.process(_bundle(structural_records=pdb + emdb)))
+    kept = out["structural_records"]
+    assert len(kept) == 6
+    srcs = {r["structural_source"] for r in kept}
+    assert srcs == {"pdb", "emdb"}  # both represented (was pdb-only)
+    assert out["source_totals"]["structural_records"] == 45
+
+
+def test_structural_records_single_modality_still_fills_cap(tmp_path):
+    """Back-compat: an all-PDB corpus still fills the cap fully (round-robin over one bucket)."""
+    step = _stage(tmp_path, max_structural_records=3)
+    recs = [
+        {"subject": f"pdb:{i}", "structural_source": "pdb", "title": "chikungunya structure"}
+        for i in range(10)
+    ]
+    out = asyncio.run(step.process(_bundle(structural_records=recs)))
+    assert len(out["structural_records"]) == 3
+
+
 def test_missing_sources_degrade_loud_not_crash(tmp_path):
     step = _stage(tmp_path)
     out = asyncio.run(step.process(_bundle()))  # no source keys at all

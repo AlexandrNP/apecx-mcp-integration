@@ -296,22 +296,30 @@ def run(job: dict) -> dict:
                 cmd.hide("everything", "work")
                 cmd.bg_color("white")
                 cmd.set("ray_opaque_background", 1)  # opaque WHITE background (not transparent)
-                cmd.show("surface", f"work and chain {chain} and polymer.protein")
-                cmd.color("grey80", f"work and chain {chain}")
-                # Residues of interest = the EXPOSED conserved residues (the candidate epitope). Highlight
-                # them + CENTRE the camera on THEM (not the whole chain) so every view actually shows them.
+                whole_chain = f"work and chain {chain}"
+                cmd.show("surface", f"{whole_chain} and polymer.protein")
+                cmd.color("grey80", whole_chain)
+                # Residues of interest = the EXPOSED conserved residues (the candidate epitope):
+                # highlight them (red surface + sticks) so they read against the grey domain.
                 focus_resis = [e["resi"] for e in exposed] or all_mapped_resis
                 if focus_resis:
                     resi_sel = "+".join(str(r) for r in focus_resis)
-                    epitope = f"work and chain {chain} and resi {resi_sel}"
+                    epitope = f"{whole_chain} and resi {resi_sel}"
                     cmd.color("red", epitope)
                     cmd.show("sticks", epitope)
-                    cmd.orient(epitope)
-                else:
-                    cmd.orient(f"work and chain {chain}")
-                # MULTIPLE perspectives: the exposed residues wrap around the surface, so one angle can't
-                # cover them all. Render N views by rotating the camera (cumulatively) about the oriented
-                # epitope; each is written as {base}_view{i}.png.
+                # Frame the WHOLE chain, not just the epitope. Orienting on the epitope selection
+                # alone zoomed so tight it clipped the rest of the structure (the "overly zoomed /
+                # missing parts" complaint) — the epitope's biological context (the domain it sits
+                # on) was cut off. Orient by the whole chain's principal axes, then zoom the whole
+                # chain with a generous buffer and complete=1 so NOTHING is clipped; the red epitope
+                # stays visible in situ. Reset the clipping slab wide so the front/back planes don't
+                # slice the domain either.
+                cmd.orient(whole_chain)
+                cmd.zoom(whole_chain, buffer=8.0, complete=1)
+                cmd.clip("slab", 200)
+                # MULTIPLE perspectives: the exposed residues wrap around the surface, so one angle
+                # can't cover them all. Render N views by rotating the camera (cumulatively) about the
+                # whole-chain-framed view; each is written as {base}_view{i}.png.
                 base = os.path.splitext(png_target)[0]
                 for i, (axis, deg) in enumerate(_RENDER_VIEWS, start=1):
                     if deg:

@@ -192,6 +192,44 @@ def _rank_truncate(
     return ranked[: max(top_n, 0)], total
 
 
+def _rank_truncate_by_source(
+    records: Any, scorer, terms: list[str], top_n: int
+) -> tuple[list[dict[str, Any]], int]:
+    """Like :func:`_rank_truncate` but keeps BOTH structural modalities represented.
+
+    A source-blind top-N crowds one modality out entirely when the other has many
+    high-scoring records: e.g. a heavily-crystallized virus (SARS-CoV-2) returns 25+ X-ray
+    ``pdb:`` records that fill the whole cap, dropping every cryo-EM ``emdb:`` record even
+    though EMDB has thousands of relevant maps. Partition by ``structural_source`` (pdb /
+    emdb / other), rank each partition, then ROUND-ROBIN by rank so each modality contributes
+    its best records in turn up to ``top_n`` — deterministic, and a modality present in the
+    corpus is never zeroed out of the kept set. Returns ``(kept, original_total)``."""
+    items = [r for r in (records or []) if isinstance(r, dict)]
+    total = len(items)
+    buckets: dict[str, list[dict[str, Any]]] = {}
+    for r in items:
+        src = (str(r.get("structural_source") or "").lower()) or "other"
+        buckets.setdefault(src, []).append(r)
+    for src in buckets:
+        buckets[src].sort(key=lambda r: (-scorer(r, terms), _identity(r)))
+    order = sorted(buckets)  # deterministic source order (e.g. 'emdb', 'other', 'pdb')
+    cap = max(top_n, 0)
+    kept: list[dict[str, Any]] = []
+    rank = 0
+    while len(kept) < cap:
+        progressed = False
+        for src in order:
+            if rank < len(buckets[src]):
+                kept.append(buckets[src][rank])
+                progressed = True
+                if len(kept) >= cap:
+                    break
+        if not progressed:
+            break
+        rank += 1
+    return kept, total
+
+
 class EvidenceDistillationStepConfig(StepConfig):
     """Config for EvidenceDistillationStep.
 
@@ -306,7 +344,11 @@ class EvidenceDistillationStep(BaseStep):
         totals: dict[str, int] = {}
         kept: dict[str, int] = {}
         for key, scorer, cap in specs:
-            top, total = _rank_truncate(bundle.get(key), scorer, terms, cap)
+            # Structural records keep BOTH modalities (PDB + EMDB) represented — a source-blind
+            # top-N lets X-ray PDB crowd cryo-EM EMDB out of the cap entirely. Other sources are
+            # single-modality, so plain rank-truncate.
+            truncate = _rank_truncate_by_source if key == "structural_records" else _rank_truncate
+            top, total = truncate(bundle.get(key), scorer, terms, cap)
             bundle[key] = top
             totals[key] = total
             kept[key] = len(top)

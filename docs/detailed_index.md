@@ -1404,6 +1404,7 @@ _EvidenceDistillationStep — rank and truncate the high-volume retrieval source
 - `def _score_globus(g: dict[str, Any], terms: list[str])` — Deterministic quality score for a Globus/DataCite record.
 - `def _score_generic(r: dict[str, Any], terms: list[str])` — Deterministic quality score for tabular rows (BV-BRC genomes, VIOLIN maps).
 - `def _rank_truncate(records: Any, scorer, terms: list[str], top_n: int)` — Return (top-N by descending score, original count). Stable + deterministic.
+- `def _rank_truncate_by_source(records: Any, scorer, terms: list[str], top_n: int)` — Like :func:`_rank_truncate` but keeps BOTH structural modalities represented.
 - class `EvidenceDistillationStepConfig(StepConfig)` — Config for EvidenceDistillationStep.
   - `def _strip_framework_keys(cls, data: Any)`
 - class `EvidenceDistillationStep(BaseStep)`
