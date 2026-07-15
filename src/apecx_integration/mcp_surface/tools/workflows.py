@@ -25,7 +25,7 @@ _VALID_EXECUTORS = {e.value for e in ExecutorKind}
 
 async def compose_workflow(
     description: str = "",
-    user_id: str = "",
+    user_id: str = "anonymous",
     preferred_executor: str = "local",
     run_id: str = "",
     execute: bool = False,
@@ -40,7 +40,7 @@ async def compose_workflow(
 
     Return-of-control flow — the T06 differential review is folded in:
 
-      1. **COMPOSE** — call with ``description`` + ``user_id`` (leave ``execute``
+      1. **COMPOSE** — call with ``description`` (leave ``execute``
          False). Returns ``run_id``, ``status``, ``generated_workflow_artifact_id``,
          and ``review`` (the T06 diff: ``yaml_text``, per-step ``categorization``,
          ``summary_sentence``, ``novel_python_by_step``) so the frontier LLM /
@@ -54,10 +54,10 @@ async def compose_workflow(
     out: dict = {}
 
     if not run_id:
-        if not description or not user_id:
+        if not description:
             raise ValueError(
-                "compose_workflow: provide `description` + `user_id` to compose a new "
-                "workflow, OR `run_id` (+ execute=True) to run a previously-composed one."
+                "compose_workflow: provide `description` to compose a new workflow, "
+                "OR `run_id` (+ execute=True) to run a previously-composed one."
             )
         if preferred_executor not in _VALID_EXECUTORS:
             # Echo the offending value back (vs the opaque Pydantic enum-coercion error).
