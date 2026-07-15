@@ -16,9 +16,10 @@ crystal vs cryo-EM vs antibody complex). Cross-structure correspondence uses the
 conserved-region coordinate ``(region_start, region_end, motif_index)``, NOT the PDB
 author residue number (which differs between deposits) — every structure is fed the
 IDENTICAL consensus motifs, so motif index *i* of a region is the SAME aligned position
-in every structure. The PRIMARY (best-ranked structure that SUCCEEDED) supplies the
-headline single-structure shape (``exposed_residues`` / ``pdb_id`` / ``chain``) that
-functional validation + provenance read, so N=1 reproduces today's result exactly; the
+in every structure. The PRIMARY (best-ranked structure that SUCCEEDED AND mapped ≥1
+conserved region; fallback: best-ranked success) supplies the headline single-structure
+shape (``exposed_residues`` / ``pdb_id`` / ``chain``) that functional validation +
+provenance read, so N=1 reproduces today's result exactly; the
 ``corroboration`` / ``corroborated_residues`` / ``analyzed_structures`` fields are
 ADDITIONAL. Per the per-structure analysis, each loaded structure
 
@@ -525,9 +526,21 @@ class StructuralReasoningStep(BaseStep):
                 "note": note,
             }, note
 
-        # PRIMARY = the best-ranked structure that SUCCEEDED → supplies the headline
-        # single-structure shape (back-compat). Aggregate corroboration across ALL successes.
-        primary_raw, primary_entry = successes[0]
+        # PRIMARY = the best-ranked structure that SUCCEEDED **and actually mapped a
+        # conserved region** → supplies the headline single-structure shape (exposed_residues
+        # / pdb_id / chain / figures) that functional validation + provenance read.
+        # A PyMOL job can SUCCEED (container ran, ``ok``) yet map 0 conserved regions — the
+        # top-ranked hit is often an antibody COMPLEX whose auto-selected chain is the Fab, not
+        # the antigen (RVFV Gn → 6I9I: 0 mapped, 0 exposed), while a lower-ranked plain-antigen
+        # deposit maps dozens of exposed residues (6F8P: 47, 5Y0W: 74). Anchoring the headline on
+        # the 0-mapping primary DISCARDS those real residues (and renders empty figures). Prefer
+        # the best-ranked success that mapped ≥1 region; fall back to ``successes[0]`` only when
+        # NO analysed structure mapped anything (preserves the single-structure / all-zero shape,
+        # so N=1 and the "no region mapped" caveat below are unchanged).
+        primary_raw, primary_entry = next(
+            ((raw, e) for raw, e in successes if raw.get("n_mapped_regions")),
+            successes[0],
+        )
         primary_pdb = primary_raw.get("pdb_id")
         selection = self._selection(primary_entry, len(ranked))
         success_raws = [raw for raw, _ in successes]

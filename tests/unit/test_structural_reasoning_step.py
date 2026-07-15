@@ -727,6 +727,100 @@ def test_assembly_context_named_in_report(tmp_path, monkeypatch):
     assert rep["data"]["n_assembly_copies"] == 60
 
 
+def _zero_mapped_job_result(pdb_id: str) -> dict:
+    """A PyMOL job that SUCCEEDED (container ran, ``ok``) but mapped NO conserved region — the
+    analysed chain is an antibody Fab, not the antigen (RVFV Gn → 6I9I). Same shape as
+    ``_au_job_result`` with an EMPTY mapping/classification."""
+    return {
+        "ok": True,
+        "pymol_version": "3.1.0",
+        "pdb_id": pdb_id,
+        "structure_kind": "assembly_1",
+        "assembly_id": 1,
+        "n_assembly_copies": 1,
+        "neighbor_cutoff": 10.0,
+        "chain": "A",
+        "chain_length": 100,
+        "sasa_settings": {"dot_solvent": 1, "dot_density": 3},
+        "n_conserved_regions": 1,
+        "n_mapped_regions": 0,
+        "n_mapped_residues": 0,
+        "n_exposed": 0,
+        "n_buried": 0,
+        "exposed_residues": [],
+        "buried_residues": [],
+        "mapped_regions": [],
+        "contacts": [],
+        "notes": ["Conserved region did not map onto chain A at >= 70% identity."],
+    }
+
+
+def test_primary_prefers_mapped_structure_over_zero_mapping(tmp_path, monkeypatch):
+    """Regression (RVFV Gn structural collapse): the top-RANKED structure succeeds but maps 0
+    conserved regions (antibody complex — chain A is the Fab); a lower-ranked plain-antigen
+    deposit maps real exposed residues. The headline (pdb_id / n_exposed / exposed_residues)
+    MUST come from the structure that MAPPED — not the empty top-ranked one — so the exposed
+    residues are not discarded. Both stay in ``analyzed_structures`` as corroboration provenance."""
+    step = _step(tmp_path)
+
+    async def _mixed(self, pdb_id, regions):
+        # 6I9I ranks first (list order, no DataCite content → tie → search-rank) but maps
+        # nothing; 6F8P maps a real exposed residue.
+        return _zero_mapped_job_result(pdb_id) if pdb_id == "6I9I" else _au_job_result(pdb_id)
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _mixed)
+    out = asyncio.run(
+        step.process(
+            _bundle(
+                structural_records=[
+                    {"subject": "pdb:6I9I", "structural_source": "pdb"},
+                    {"subject": "pdb:6F8P", "structural_source": "pdb"},
+                ]
+            )
+        )
+    )
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True
+    # Headline anchors on the structure that MAPPED, not the empty top-ranked one.
+    assert sr["pdb_id"] == "6F8P"
+    assert sr["n_exposed"] == 1
+    assert [r["resi"] for r in sr["exposed_residues"]] == [50]
+    # Both were still analysed (the empty one is retained, not dropped).
+    assert sr["n_analyzed_structures"] == 2
+    analyzed = {s["pdb_id"]: s for s in sr["analyzed_structures"]}
+    assert analyzed["6I9I"]["n_mapped_residues"] == 0
+    assert analyzed["6F8P"]["n_exposed"] == 1
+    # The stage report headline names the mapping structure, not the empty one.
+    rep = next(r for r in out["stage_reports"] if r["stage"] == "structural_reasoning")
+    assert "PDB 6F8P" in rep["markdown"]
+
+
+def test_primary_falls_back_to_top_ranked_when_nothing_maps(tmp_path, monkeypatch):
+    """When NO analysed structure maps a conserved region, the headline still falls back to the
+    top-ranked success (unchanged single-/all-zero behaviour) — the fix must not alter this
+    degrade shape."""
+    step = _step(tmp_path)
+
+    async def _all_zero(self, pdb_id, regions):
+        return _zero_mapped_job_result(pdb_id)
+
+    monkeypatch.setattr(StructuralReasoningStep, "_run_container", _all_zero)
+    out = asyncio.run(
+        step.process(
+            _bundle(
+                structural_records=[
+                    {"subject": "pdb:6I9I", "structural_source": "pdb"},
+                    {"subject": "pdb:6F8P", "structural_source": "pdb"},
+                ]
+            )
+        )
+    )
+    sr = out["structural_reasoning"]
+    assert sr["available"] is True
+    assert sr["pdb_id"] == "6I9I"  # top-ranked fallback, unchanged
+    assert sr["n_exposed"] == 0
+
+
 def test_container_failure_degrades_loud(tmp_path, monkeypatch):
     """A container/fetch error is caught and named, never propagated."""
     step = _step(tmp_path)
