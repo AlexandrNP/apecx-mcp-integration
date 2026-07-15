@@ -75,6 +75,21 @@ _TOPIC_TERMS: tuple[str, ...] = (
     "immunogenic",
 )
 
+# A virus can carry THOUSANDS of BV-BRC strain-isolate synonyms (CHIKV: 6653). OR-ing them all
+# built a 271 KB query that Globus rejected. Beyond length, Globus ADVANCED mode also 400s past
+# ~10 multi-word PHRASE clauses (empirically: 10 OK, 12 rejected). So keep only a SMALL set of
+# SHORT, GENERAL names/acronyms (e.g. "Chikungunya virus", "CHIKV") and drop strain isolates like
+# "Chikungunya virus CHIKV/Homo sapiens/USA/CKVHL_22/2014" — useless for a LITERATURE search
+# (papers cite the virus, not a single isolate). 6 leaves head-room under the phrase-count limit
+# for the AND-ed topical clause.
+_MAX_SYNONYMS = 6
+_MAX_SYNONYM_LEN = 60
+
+
+def _escape_phrase(term: str) -> str:
+    """Escape a term for use inside a double-quoted Globus ADVANCED (Lucene) phrase."""
+    return term.replace("\\", "\\\\").replace('"', '\\"')
+
 
 def _publisher_name(content: Any) -> str:
     """Return the publisher/journal name of a Globus DataCite record ('' when absent).
@@ -203,7 +218,19 @@ class GlobusLiteratureSearchStep(BaseStep):
                     terms.append(norm)
         if not terms:
             return ""
-        virus_clause = " OR ".join(f'"{t}"' for t in terms)
+        # Cap the synonym set: keep the SHORTEST general names/acronyms, drop strain-isolate names
+        # (a virus can have thousands — OR-ing them all overflows the Globus query / phrase-count
+        # limit, a 400). Strain synonyms are "<canonical label> <isolate suffix>"; drop those. If
+        # EVERY synonym is long/strain-like, keep the shortest few rather than degrade to nothing.
+        canon = str(canonical_label or "").strip().lower()
+
+        def _is_strain(t: str) -> bool:
+            tl = t.strip().lower()
+            return bool(canon) and tl != canon and tl.startswith(canon + " ")
+
+        general = [t for t in terms if len(t) <= _MAX_SYNONYM_LEN and not _is_strain(t)]
+        pool = sorted(general or terms, key=len)[:_MAX_SYNONYMS]
+        virus_clause = " OR ".join(f'"{_escape_phrase(t)}"' for t in pool)
         topic_terms: list[str] = []
         topic_seen: set[str] = set()
         for t in ([protein] if isinstance(protein, str) and protein.strip() else []) + list(
@@ -213,7 +240,7 @@ class GlobusLiteratureSearchStep(BaseStep):
             if norm and norm.lower() not in topic_seen:
                 topic_seen.add(norm.lower())
                 topic_terms.append(norm)
-        topic_clause = " OR ".join(f'"{t}"' for t in topic_terms)
+        topic_clause = " OR ".join(f'"{_escape_phrase(t)}"' for t in topic_terms)
         return f"({virus_clause}) AND ({topic_clause})"
 
     def _hit_to_publication(self, hit: dict[str, Any]) -> dict[str, Any]:

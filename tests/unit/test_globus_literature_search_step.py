@@ -162,6 +162,31 @@ def test_query_falls_back_to_tokens_when_no_synonyms(tmp_path, monkeypatch):
     assert '"dengue"' in captured["q"]
 
 
+def test_synonym_cap_bounds_query_and_drops_strain_names(tmp_path, monkeypatch):
+    """Regression: a virus can carry thousands of BV-BRC strain-isolate synonyms (CHIKV: 6653).
+    OR-ing them all built a 271 KB query and Globus 400s past ~10 multi-word phrases. The builder
+    must keep only a SMALL set of short general names/acronyms and DROP '<canonical> <suffix>'
+    strain names, so the query stays bounded."""
+    from apecx_integration.composition.steps.globus_literature_search_step import (
+        _MAX_SYNONYMS,
+        GlobusLiteratureSearchStep,
+    )
+
+    synonyms = ["Chikungunya virus", "CHIKV", "chikungunya"] + [
+        f"Chikungunya virus CKV_PHL_2013_CK13-{i:04d}" for i in range(5000)
+    ]
+    q = GlobusLiteratureSearchStep._build_synonym_query(
+        synonyms, "Chikungunya virus", "chikungunya E1", "E1"
+    )
+    virus_clause = q.split(" AND ")[0]
+    n_virus_terms = virus_clause.count(" OR ") + 1
+    assert n_virus_terms <= _MAX_SYNONYMS  # bounded phrase count (Globus 400s past ~10)
+    assert len(q) < 2000  # nowhere near the 271 KB blow-up
+    # strain-isolate names ("<canonical> <suffix>") are dropped; the general names survive
+    assert "CK13-" not in q
+    assert '"CHIKV"' in q and '"Chikungunya virus"' in q
+
+
 # --------------------------------------------------------------- literature filter
 
 

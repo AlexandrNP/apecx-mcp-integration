@@ -1496,6 +1496,7 @@ _FunctionalValidationStep — C3 cross-check (mandatory spec stage 3)._
 ## `src/apecx_integration/composition/steps/globus_literature_search_step.py`
 _GlobusLiteratureSearchStep — the PubMed/journal-literature leg via Globus synonym search._
 
+- `def _escape_phrase(term: str)` — Escape a term for use inside a double-quoted Globus ADVANCED (Lucene) phrase.
 - `def _publisher_name(content: Any)` — Return the publisher/journal name of a Globus DataCite record ('' when absent).
 - `def _year(content: Any)`
 - `def _doi(content: Any)` — Best DOI for a record: grouped ``relatedIdentifiers`` DOI first, else a DOI-typed
