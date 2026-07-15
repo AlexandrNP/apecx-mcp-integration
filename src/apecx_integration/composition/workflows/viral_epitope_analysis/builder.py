@@ -330,6 +330,21 @@ def _evidence_workflow_builder():
         triggers=_trig("structural_input"),
         max_per_source=0,
     )
+    # LITERATURE leg (PubMed/journal via Globus SYNONYM search): the aggregate Globus index
+    # holds the PubMed/journal corpus under journal-name publishers with NO taxon IRI, so it is
+    # findable only by free-text synonym match (an IRI filter returns 0). Searches by the
+    # resolved synonyms, DROPS structural hits (PDB/EMDB — owned by the structural leg), and
+    # folds the papers into ``publications`` alongside the direct-PubMed harvest. Degrade-loud:
+    # disabled / no-synonyms / Globus outage becomes a named note, never a raise. Runs in the
+    # linear chain after data_readiness (bundle carries resolution_plan.synonyms + publications).
+    b.add_step(
+        "globus_lit",
+        f"{_STEPS}.globus_literature_search_step.GlobusLiteratureSearchStep",
+        execution_timeout=120.0,
+        input_data_units=_du("lit_input"),
+        output_data_units=_du("lit_output"),
+        triggers=_trig("lit_input"),
+    )
     # SEQUENCE-CONSERVATION leg (E2-C1): a concrete SubworkflowStep nesting viral_conserved_sites
     # via the inner_workflow_builder seam. G117: this step's OWN input DU (sequence_params) MUST
     # differ from the inner workflow's first-step input DU (fetch_in). It NEVER raises (degrade-
@@ -561,7 +576,9 @@ def _evidence_workflow_builder():
     # C0: the merged bundle flows through the data-readiness coverage summary before
     # the structural lookup.
     b.add_link("hmerge.hmerge_output", "data_readiness.readiness_input", link_type="direct")
-    b.add_link("data_readiness.readiness_output", "structural.structural_input", link_type="direct")
+    # data_readiness -> globus_lit (literature by synonym) -> structural (linear chain).
+    b.add_link("data_readiness.readiness_output", "globus_lit.lit_input", link_type="direct")
+    b.add_link("globus_lit.lit_output", "structural.structural_input", link_type="direct")
     # FAN-IN #1 edges into `merge`: the structural bundle + the sequence-conservation result.
     b.add_link("structural.structural_bundle", "merge.structural_in", link_type="direct")
     b.add_link("sequence.sequence_result", "merge.sequence_in", link_type="direct")

@@ -179,7 +179,7 @@ _Globus Search index client — read-only access to the APECx corpus._
 - class `GlobusSearchUnavailableError(RuntimeError)` — Raised when the Globus Search query cannot be completed.
 - `def _resolve_index_uuid()`
 - `def _is_disabled()`
-- `def search(query: str, *, max_results: int=20, offset: int=0, filters: list[dict[str, Any]] | None=None)` — Query the APECx Globus Search index.
+- `def search(query: str, *, max_results: int=20, offset: int=0, filters: list[dict[str, Any]] | None=None, advanced: bool=False)` — Query the APECx Globus Search index.
 - `def _extract_hits(result: Any)` — Normalize one Globus ``post_search`` page into hit dicts.
 - `def facet(field_name: str, query: str, *, filters: list[dict[str, Any]] | None=None, size: int=100)` — Enumerate the distinct values of one indexed field (a Globus terms facet).
 
@@ -1492,6 +1492,25 @@ _FunctionalValidationStep — C3 cross-check (mandatory spec stage 3)._
   - `def _scan_residue_annotations(records: Any)` — Best-effort scan for residue-level functional annotation on assembled records.
   - `def _coerce_positions(fields: dict[str, Any])`
   - `def _assessment(result: dict[str, Any], sr: dict[str, Any], annotation_note: str | None=None)`
+
+## `src/apecx_integration/composition/steps/globus_literature_search_step.py`
+_GlobusLiteratureSearchStep — the PubMed/journal-literature leg via Globus synonym search._
+
+- `def _publisher_name(content: Any)` — Return the publisher/journal name of a Globus DataCite record ('' when absent).
+- `def _year(content: Any)`
+- `def _doi(content: Any)` — Best DOI for a record: grouped ``relatedIdentifiers`` DOI first, else a DOI-typed
+- `def _pmid(content: Any)`
+- `def _is_structural_hit(hit: dict[str, Any])` — True when the hit belongs to the PDB/EMDB structural leg (must be dropped here).
+- class `GlobusLiteratureSearchStepConfig(StepConfig)` — Config for GlobusLiteratureSearchStep.
+  - `def _strip_framework_keys(cls, data: Any)`
+- class `GlobusLiteratureSearchStep(BaseStep)`
+  - `def _get_config_class(cls)`
+  - `def extract_component_config(cls, config: GlobusLiteratureSearchStepConfig)`
+  - `def _init_from_config(self, config, component_config, dependencies)`
+  - `def _build_synonym_query(synonyms: Any, canonical_label: Any, query: Any, protein: Any=None)` — Build a Globus ADVANCED (Lucene) query: (virus SYNONYMS) AND (epitope-topical terms).
+  - `def _hit_to_publication(self, hit: dict[str, Any])`
+  - `def _degrade(self, bundle: dict[str, Any], note: str, query_used: str)` — Degrade-loud terminal: name the reason, empty the leg, report, pass through.
+  - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/steps/harmonized_bundle_merge_step.py`
 _HarmonizedBundleMergeStep — fan-in the per-index harmonized search results_

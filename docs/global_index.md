@@ -168,6 +168,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/composition/steps/fasta_collection_step.py` | FastaCollectionStep — the "collect data" leg of the MUSCLE workflow. |
 | `src/apecx_integration/composition/steps/framework_compliance_runner_step.py` | FrameworkComplianceRunnerStep — deterministic *runtime* validator. |
 | `src/apecx_integration/composition/steps/functional_validation_step.py` | FunctionalValidationStep — C3 cross-check (mandatory spec stage 3). |
+| `src/apecx_integration/composition/steps/globus_literature_search_step.py` | GlobusLiteratureSearchStep — the PubMed/journal-literature leg via Globus synonym search. |
 | `src/apecx_integration/composition/steps/harmonized_bundle_merge_step.py` | HarmonizedBundleMergeStep — fan-in the per-index harmonized search results |
 | `src/apecx_integration/composition/steps/harmonized_resolve_step.py` | HarmonizedResolveStep — resolve a biomedical term to a canonical IRI + classify HITL state. |
 | `src/apecx_integration/composition/steps/harmonized_search_execute_step.py` | HarmonizedSearchExecuteStep — run raw + harmonized Globus queries, emit envelope-shaped output. |

@@ -59,6 +59,7 @@ def search(
     max_results: int = 20,
     offset: int = 0,
     filters: list[dict[str, Any]] | None = None,
+    advanced: bool = False,
 ) -> list[dict[str, Any]]:
     """Query the APECx Globus Search index.
 
@@ -126,6 +127,13 @@ def search(
         # query degrades to free-text — exactly the silent-failure shape
         # we refuse. Set it explicitly whenever filters are present.
         base_payload["filters"] = filters
+    if filters or advanced:
+        # ``advanced`` makes Globus parse ``q`` as a Lucene query so quoted PHRASES and
+        # boolean ``AND``/``OR`` are honored. Without it, a phrase-OR query degrades to a
+        # loose token bag that matches almost the whole corpus and ranks off-topic records
+        # to the top (verified: a literature synonym-OR query returned HIV/OR-nurse papers in
+        # simple mode, on-topic virus papers in advanced mode). Callers passing a structured
+        # ``q`` (phrases / booleans) MUST set advanced=True; filters imply it.
         base_payload["advanced"] = True
 
     client = SearchClient()

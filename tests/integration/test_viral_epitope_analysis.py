@@ -159,6 +159,7 @@ def test_builder_produces_workflow_with_child_steps():
         "assemble",
         "hmerge",
         "data_readiness",
+        "globus_lit",
         "structural",
         "sequence",
         "merge",
