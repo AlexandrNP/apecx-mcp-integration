@@ -42,10 +42,9 @@ def test_generated_config_is_v2_with_no_auto_transfer_optout():
     assert cfg["config_version"] == 2, "config_version must be 2 (auto_transfer default-flip)"
 
     links = cfg["links"]
-    assert len(links) == 26, (
-        f"expected 26 links (the prior 23 + the 3-step LLM-fallback resolution chain "
-        f"resolve→synonym_gen→bvbrc_search→taxon_review, whose output replaces normalize/resolve "
-        f"as the source for map + sequence + gate.control_in), got {len(links)}"
+    assert len(links) == 27, (
+        f"expected 27 links (the 26 prior + the globus_lit literature leg inserted into the "
+        f"linear chain data_readiness→globus_lit→structural, a net +1 link), got {len(links)}"
     )
     for name, entry in links.items():
         link_cfg = entry["config"]
@@ -73,6 +72,7 @@ def test_lightweight_load_builds_expected_dag_via_from_config():
         "assemble",
         "hmerge",
         "data_readiness",
+        "globus_lit",
         "structural",
         "sequence",
         "merge",
