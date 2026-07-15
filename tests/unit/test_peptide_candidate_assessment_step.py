@@ -12,6 +12,11 @@ from apecx_integration.composition.handles.store import HandleNotFound, default_
 from apecx_integration.composition.runtime.design_approval_store import (
     get_design_approval_store,
 )
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 from apecx_integration.composition.schemas.data_shapes import Bundle
 from apecx_integration.composition.steps.peptide_candidate_assessment_step import (
     PeptideCandidateAssessmentStep,
@@ -25,11 +30,16 @@ _ALT = "QRSTVWYAA"
 
 @pytest.fixture(autouse=True)
 def _clean_stores():
+    # Pin AGENT locus so the ENFORCEMENT (withheld) tests run where the gate is fail-closed;
+    # the DESKTOP-mute release path is pinned by test_desktop_locus_releases_candidate.
+    prev_locus = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
     get_design_approval_store().clear()
     default_handle_store().clear()
     yield
     get_design_approval_store().clear()
     default_handle_store().clear()
+    set_active_locus(prev_locus)
 
 
 def _stage(tmp_path: Path) -> PeptideCandidateAssessmentStep:
@@ -126,6 +136,27 @@ def test_both_handle_and_inline_bundle_fail_loudly(tmp_path):
 def test_unknown_handle_fails_loudly(tmp_path):
     with pytest.raises(HandleNotFound):
         _run(_stage(tmp_path), {"evidence_data_handle": "missing-handle"})
+
+
+def test_preview_shape_bundle_gives_actionable_error(tmp_path):
+    """The keys-only data_preview ({kind:bundle, parts:[names]}) is rejected with guidance to
+    pass the resolvable evidence_data_handle — not the cryptic 'parts must be a dict'."""
+    with pytest.raises(ValueError, match="evidence_data_handle"):
+        _run(
+            _stage(tmp_path),
+            {"evidence_bundle": {"kind": "bundle", "parts": ["query", "protein"]}},
+        )
+
+
+def test_desktop_locus_releases_candidate(tmp_path):
+    """Under DESKTOP locus the gate is advisory: the candidate peptide is RELEASED with NO
+    approval token. The autouse fixture pins AGENT; this flips to DESKTOP."""
+    set_active_locus(ExecutionLocus.DESKTOP)
+    out = _run(
+        _stage(tmp_path), {"evidence_bundle": {"kind": "bundle", "parts": _evidence_parts()}}
+    )
+    assert "control_transfer" not in out  # released, not a needs_input pause
+    assert out["data"]["parts"]["candidate_released"] is True
 
 
 def test_missing_approval_withholds_all_candidate_sequence_output(tmp_path):

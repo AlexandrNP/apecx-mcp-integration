@@ -6,9 +6,36 @@ from apecx_integration.composition.runtime.design_approval_store import (
     DesignApprovalStore,
     get_design_approval_store,
 )
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 
 _Q = "conserved chikungunya structural epitopes"
 _P = "structural polyprotein"
+
+
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """`validate()` is fail-closed ONLY under AGENT locus (under DESKTOP it is advisory/muted).
+    Pin AGENT so the enforcement tests below assert the fail-closed contract; the DESKTOP-mute
+    path is pinned by test_desktop_locus_mutes_validation."""
+    prev = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    yield
+    set_active_locus(prev)
+
+
+def test_desktop_locus_mutes_validation():
+    """Under DESKTOP locus validate() returns approved for ANY input (even no token) — the gate
+    is advisory because the Desktop HITL round-trip is not interoperable with the connected LLM."""
+    set_active_locus(ExecutionLocus.DESKTOP)
+    s = DesignApprovalStore()
+    ok, reason = s.validate(token=None, query=_Q, protein=_P)
+    assert ok and "desktop" in reason.lower()
+    ok, _ = s.validate(token="dapprv-fabricated", query=_Q, protein=_P)
+    assert ok  # even a fabricated token passes on desktop (gate muted)
 
 
 def test_blank_or_unknown_token_is_not_approved():

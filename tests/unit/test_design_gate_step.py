@@ -14,6 +14,11 @@ import pytest
 from apecx_integration.composition.runtime.design_approval_store import (
     get_design_approval_store,
 )
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 from apecx_integration.composition.steps.design_gate_step import DesignGateStep
 
 _QUERY = "chikv E1"
@@ -23,10 +28,15 @@ _PROTEIN = "structural polyprotein"
 @pytest.fixture(autouse=True)
 def _clean_store():
     """The design-approval store is a process-wide singleton — clear it before each test so
-    a token issued in one test cannot leak into another."""
+    a token issued in one test cannot leak into another. Pin AGENT locus so these ENFORCEMENT
+    tests run in the mode where the gate is fail-closed (under the default DESKTOP locus the
+    gate is advisory/muted — that path is pinned by test_desktop_locus_mutes_the_gate)."""
+    prev_locus = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
     get_design_approval_store().clear()
     yield
     get_design_approval_store().clear()
+    set_active_locus(prev_locus)
 
 
 def _stage(tmp_path: Path) -> DesignGateStep:
@@ -79,6 +89,18 @@ def test_design_without_approval_attaches_needs_prerequisite_keeps_evidence(tmp_
     # evidence is NOT discarded on a pause (degrade-loud) + the withholding is named.
     assert "# Evidence" in out["markdown"]
     assert "WITHHELD" in out["markdown"]
+
+
+def test_desktop_locus_mutes_the_gate(tmp_path):
+    """Under DESKTOP locus the design gate is ADVISORY: design output is RELEASED without any
+    approval token (the HITL round-trip is not interoperable with the connected LLM). The
+    autouse fixture pins AGENT for the enforcement tests; this one flips to DESKTOP."""
+    set_active_locus(ExecutionLocus.DESKTOP)
+    out = asyncio.run(_stage(tmp_path).process(_inp(requested="evidence_plus_design")))
+    assert "control_transfer" not in out  # released, not a needs_input pause
+    assert "WITHHELD" not in out["markdown"]
+    assert "# Evidence" in out["markdown"]  # evidence retained
+    assert "design" in out["markdown"].lower()  # the design section is present
 
 
 def test_design_with_validated_approval_appends_section(tmp_path):

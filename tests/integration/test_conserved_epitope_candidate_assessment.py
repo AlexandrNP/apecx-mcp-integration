@@ -21,8 +21,18 @@ def _clean_stores():
     from apecx_integration.composition.runtime.design_approval_store import (
         get_design_approval_store,
     )
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
     from apecx_integration.mcp_surface.workflow_registry import _clear_workflow_cache
 
+    # These tests exercise the HITL approval FLOW (needs_input → approve_design → re-call), which
+    # is the AGENT-locus (enforcing) behavior. Under the default DESKTOP locus the gate is muted
+    # and the payload releases directly (covered by the unit desktop-mute tests + the real MCP probe).
+    prev_locus = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
     get_design_approval_store().clear()
     default_handle_store().clear()
     _clear_workflow_cache()
@@ -30,6 +40,7 @@ def _clean_stores():
     get_design_approval_store().clear()
     default_handle_store().clear()
     _clear_workflow_cache()
+    set_active_locus(prev_locus)
 
 
 def _evidence_parts() -> dict:

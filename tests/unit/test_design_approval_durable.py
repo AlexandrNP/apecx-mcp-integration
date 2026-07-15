@@ -2,10 +2,27 @@
 
 import json
 
+import pytest
+
 from apecx_integration.composition.runtime.design_approval_store import DesignApprovalStore
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 
 _Q = "conserved chikungunya structural epitopes"
 _P = "structural polyprotein"
+
+
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """These assert validate()'s fail-closed persistence semantics, which hold under AGENT locus
+    (under the default DESKTOP locus validate() is advisory/muted)."""
+    prev = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    yield
+    set_active_locus(prev)
 
 
 def test_approved_token_survives_restart(tmp_path):

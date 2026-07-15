@@ -14,12 +14,11 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
-from apecx_integration.composition.handles.store import default_handle_store
 from apecx_integration.composition.runtime.design_approval_store import (
     get_design_approval_store,
 )
 from apecx_integration.composition.schemas.control_transfer import needs_prerequisite_transfer
-from apecx_integration.composition.schemas.data_shapes import Bundle
+from apecx_integration.composition.steps._evidence_bundle import evidence_bundle_parts
 from apecx_integration.composition.steps._proceed import render_how_to_proceed
 
 log = logging.getLogger(__name__)
@@ -216,31 +215,8 @@ class PeptideCandidateAssessmentStep(BaseStep):
             )
         if not has_handle and not has_inline:
             return {}, True
-        if has_handle:
-            shape = default_handle_store().get(str(handle).strip())
-            if not isinstance(shape, Bundle):
-                raise ValueError(
-                    "PeptideCandidateAssessmentStep: evidence_data_handle must resolve to "
-                    f"a Bundle DataShape, got {type(shape).__name__}."
-                )
-            return dict(shape.parts), False
-        return self._bundle_parts(inline), False
-
-    @staticmethod
-    def _bundle_parts(raw: Any) -> dict[str, Any]:
-        if isinstance(raw, Bundle):
-            return dict(raw.parts)
-        if not isinstance(raw, dict):
-            raise ValueError(
-                "PeptideCandidateAssessmentStep: evidence_bundle must be a Bundle dict "
-                f"or parts dict, got {type(raw).__name__}."
-            )
-        if raw.get("kind") == "bundle":
-            parts = raw.get("parts")
-            if not isinstance(parts, dict):
-                raise ValueError("PeptideCandidateAssessmentStep: bundle.parts must be a dict.")
-            return dict(parts)
-        return dict(raw)
+        source = str(handle).strip() if has_handle else inline
+        return evidence_bundle_parts(source, ctx="PeptideCandidateAssessmentStep"), False
 
     @staticmethod
     def _readiness(parts: dict[str, Any]) -> dict[str, Any]:

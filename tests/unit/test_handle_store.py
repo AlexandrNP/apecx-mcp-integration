@@ -14,6 +14,17 @@ from apecx_integration.composition.schemas.data_shapes import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _tmp_handle_dir(tmp_path, monkeypatch):
+    """Isolate every test to a throwaway handle dir + a fresh default-store singleton, so the
+    disk-backed store never touches the real ~/.apecx/handles."""
+    import apecx_integration.composition.handles.store as store_mod
+
+    monkeypatch.setenv("APECX_HANDLE_STORE_DIR", str(tmp_path / "handles"))
+    monkeypatch.setattr(store_mod, "_DEFAULT_STORE", None)
+    yield
+
+
 def test_put_get_record_set_roundtrip():
     store = HandleStore()
     rs = RecordSet(records=[{"id": 1}, {"id": 2}], columns=["id"])
@@ -85,3 +96,33 @@ def test_inmemory_backend_rejects_bad_cap():
 
     with pytest.raises(ValueError):
         InMemoryBackend(max_handles=0)
+
+
+def test_disk_backed_resolves_across_a_fresh_instance(tmp_path):
+    """Durability (the workflow-chaining fix): a handle put by one store resolves from a FRESH
+    store instance with an empty cache — the cross-process / post-restart path an in-memory-only
+    backend cannot serve (the reproduced assessment-chain failure)."""
+    from apecx_integration.composition.handles.store import DiskBackedBackend
+
+    dir_ = tmp_path / "h"
+    handle = HandleStore(DiskBackedBackend(dir_=dir_)).put(
+        RecordSet(records=[{"id": 1}], columns=["id"])
+    )
+    got = HandleStore(DiskBackedBackend(dir_=dir_)).get(handle)  # empty cache → resolves off disk
+    assert isinstance(got, RecordSet) and got.records == [{"id": 1}]
+
+
+def test_disk_backed_is_bounded_fifo(tmp_path):
+    """Leak guard: the durable backend is ALSO FIFO-bounded on disk (a long-lived server must
+    not accumulate handle files forever). Newest survive; older are pruned from BOTH cache and disk."""
+    from apecx_integration.composition.handles.store import DiskBackedBackend
+
+    dir_ = tmp_path / "h"
+    b = DiskBackedBackend(dir_=dir_, max_handles=2)
+    handles = [b.put({"i": i}) for i in range(4)]
+    assert b.get(handles[-1]) == {"i": 3}
+    assert b.get(handles[-2]) == {"i": 2}
+    for old in handles[:2]:
+        with pytest.raises(HandleNotFound):
+            b.get(old)
+    assert len(list(dir_.glob("*.json"))) == 2  # disk pruned too

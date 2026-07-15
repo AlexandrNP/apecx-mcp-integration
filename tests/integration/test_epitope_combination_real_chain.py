@@ -28,6 +28,23 @@ import pytest
 pytestmark = pytest.mark.integration
 
 
+@pytest.fixture(autouse=True)
+def _agent_locus():
+    """This chain exercises the HITL approval FLOW (needs_input → approve_design → re-call), the
+    AGENT-locus enforcing behavior. Under the default DESKTOP locus the gate is muted and payloads
+    release directly (covered by the unit desktop-mute tests + the real MCP probe)."""
+    from apecx_integration.composition.runtime.execution_locus import (
+        ExecutionLocus,
+        get_active_locus,
+        set_active_locus,
+    )
+
+    prev = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
+    yield
+    set_active_locus(prev)
+
+
 def _globus_reachable() -> bool:
     try:
         import globus_sdk

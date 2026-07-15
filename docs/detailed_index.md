@@ -665,6 +665,15 @@ _Handle store — stash a structured ``DataShape``, get back an opaque handle (E
   - `def get(self, handle: str)`
   - `def delete(self, handle: str)`
   - `def clear(self)`
+- `def _handle_dir()` — Durable handle directory (``$APECX_HANDLE_STORE_DIR`` or ``~/.apecx/handles``), created.
+- class `DiskBackedBackend` — Durable backend: an in-memory hot cache write-through to per-handle JSON files.
+  - `def __init__(self, dir_: Path | None=None, max_handles: int=_DEFAULT_MAX_HANDLES)`
+  - `def _path(self, handle: str)`
+  - `def put(self, payload: dict)`
+  - `def get(self, handle: str)`
+  - `def delete(self, handle: str)`
+  - `def clear(self)`
+  - `def _prune_disk(self)` — Keep only the newest ``max_handles`` handle files (FIFO by mtime). Caller holds the lock.
 - class `HandleStore` — Typed facade: put a ``DataShape`` in, get the same typed shape back.
   - `def __init__(self, backend: HandleBackend | None=None)`
   - `def put(self, shape: DataShape)`
@@ -926,6 +935,11 @@ _Shared pass-through contract for the decomposed epitope-combination steps._
 
 - `def unwrap_single_key(input_data: dict[str, Any])` — Descend a single-key trigger envelope (``{du_name: payload}``) generically.
 - `def is_terminal(payload: dict[str, Any])` — True when ``payload`` already carries a terminal ``EnvelopeStep``-shaped output.
+
+## `src/apecx_integration/composition/steps/_evidence_bundle.py`
+_Shared evidence-bundle resolver for the downstream assessment steps._
+
+- `def evidence_bundle_parts(raw: Any, *, ctx: str)` — Resolve an evidence source to its ``parts`` dict. ``ctx`` names the caller for errors.
 
 ## `src/apecx_integration/composition/steps/_evidence_provenance.py`
 _Per-run provenance collection for viral_epitope_analysis (E3-8)._
@@ -1670,7 +1684,6 @@ _PeptideCandidateAssessmentStep - deterministic follow-up candidate assessment._
   - `def _init_from_config(self, config, component_config, dependencies)`
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
   - `def _load_evidence(self, payload: dict[str, Any])`
-  - `def _bundle_parts(raw: Any)`
   - `def _readiness(parts: dict[str, Any])`
   - `def _candidate_regions(self, raw_regions: Any)`
   - `def _scope_query(parts: dict[str, Any], payload: dict[str, Any])`

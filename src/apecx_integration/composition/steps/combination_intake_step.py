@@ -20,9 +20,8 @@ from typing import Any
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
-from apecx_integration.composition.handles.store import default_handle_store
 from apecx_integration.composition.schemas.control_transfer import needs_prerequisite_transfer
-from apecx_integration.composition.schemas.data_shapes import Bundle
+from apecx_integration.composition.steps._evidence_bundle import evidence_bundle_parts
 from apecx_integration.composition.steps._stage_report import append_stage_report
 
 log = logging.getLogger(__name__)
@@ -206,27 +205,7 @@ class CombinationIntakeStep(BaseStep):
 
     @staticmethod
     def _bundle_parts_from_source(raw: Any) -> dict[str, Any]:
-        if isinstance(raw, str):
-            shape = default_handle_store().get(raw.strip())
-            if not isinstance(shape, Bundle):
-                raise ValueError(
-                    "CombinationIntakeStep: handle must resolve to a Bundle "
-                    f"DataShape, got {type(shape).__name__}."
-                )
-            return dict(shape.parts)
-        if isinstance(raw, Bundle):
-            return dict(raw.parts)
-        if not isinstance(raw, dict):
-            raise ValueError(
-                "CombinationIntakeStep: bundle source must be a Bundle dict "
-                f"or parts dict, got {type(raw).__name__}."
-            )
-        if raw.get("kind") == "bundle":
-            parts = raw.get("parts")
-            if not isinstance(parts, dict):
-                raise ValueError("CombinationIntakeStep: bundle.parts must be a dict.")
-            return dict(parts)
-        return dict(raw)
+        return evidence_bundle_parts(raw, ctx="CombinationIntakeStep")
 
     @staticmethod
     def _candidate_is_released(candidate_parts: dict[str, Any]) -> bool:

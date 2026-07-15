@@ -11,6 +11,11 @@ import pytest
 from apecx_integration.composition.runtime.design_approval_store import (
     get_design_approval_store,
 )
+from apecx_integration.composition.runtime.execution_locus import (
+    ExecutionLocus,
+    get_active_locus,
+    set_active_locus,
+)
 from apecx_integration.composition.steps.combination_release_step import CombinationReleaseStep
 
 _SCOPE = "scope-A"
@@ -25,9 +30,14 @@ def _clean_stores(tmp_path, monkeypatch):
     from nanobrain.core import logging_system
 
     logging_system._system_log_manager = None
+    # Pin AGENT locus so the ENFORCEMENT (withheld) tests run where the gate is fail-closed;
+    # the DESKTOP-mute release path is pinned by test_desktop_locus_releases_without_approval.
+    prev_locus = get_active_locus()
+    set_active_locus(ExecutionLocus.AGENT)
     get_design_approval_store().clear()
     yield
     get_design_approval_store().clear()
+    set_active_locus(prev_locus)
     logging_system._system_log_manager = None
 
 
@@ -133,6 +143,17 @@ def test_scope_mismatched_token_remains_withheld(tmp_path):
     assert out["control_transfer"]["reason"] == "needs_prerequisite"
     assert "scope mismatch" in out["markdown"]
     assert _CANDIDATE not in json.dumps(out, sort_keys=True)
+
+
+def test_desktop_locus_releases_without_approval(tmp_path):
+    """Under DESKTOP locus the gate is advisory: the combination is RELEASED (epitope sequences
+    present) with NO approval token. The autouse fixture pins AGENT; this flips to DESKTOP."""
+    set_active_locus(ExecutionLocus.DESKTOP)
+    out = _run(_stage(tmp_path), {"release_input": _classified_payload()})  # no approval_id
+    assert "control_transfer" not in out  # released, not a needs_input pause
+    assert out["data"]["parts"]["combination_released"] is True
+    md = out["markdown"]
+    assert _CANDIDATE in md and _EPITOPE_A in md  # sequences released
 
 
 def test_approved_token_emits_combination_assessment(tmp_path):

@@ -124,6 +124,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/composition/steps/_bvbrc_cds.py` | Shared BV-BRC exact-CDS coverage probe for the taxon-resolution fallback steps. |
 | `src/apecx_integration/composition/steps/_clade_grouping.py` | Pure helpers for the per-clade conservation analysis (Req 5 — broad effectiveness). |
 | `src/apecx_integration/composition/steps/_combination_common.py` | Shared pass-through contract for the decomposed epitope-combination steps. |
+| `src/apecx_integration/composition/steps/_evidence_bundle.py` | Shared evidence-bundle resolver for the downstream assessment steps. |
 | `src/apecx_integration/composition/steps/_evidence_provenance.py` | Per-run provenance collection for viral_epitope_analysis (E3-8). |
 | `src/apecx_integration/composition/steps/_novel_step_container/_novel_step_job.py` | In-container job harness for a sandboxed novel step (#1c Phase 1). |
 | `src/apecx_integration/composition/steps/_proceed.py` | How-to-proceed guidance — turn a degradation into a diagnosis + recommended next action. |

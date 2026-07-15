@@ -106,6 +106,19 @@ def test_unknown_candidate_handle_fails_loudly(tmp_path):
         )
 
 
+def test_preview_shape_candidate_bundle_gives_actionable_error(tmp_path):
+    """The keys-only data_preview ({kind:bundle, parts:[names]}) passed as an inline bundle is
+    rejected with guidance to pass the resolvable handle — not the cryptic 'parts must be a dict'."""
+    with pytest.raises(ValueError, match="evidence_data_handle"):
+        _run(
+            _stage(tmp_path),
+            {
+                "candidate_assessment_bundle": {"kind": "bundle", "parts": ["candidate_released"]},
+                "additional_epitopes": _additional_epitopes(),
+            },
+        )
+
+
 def test_unreleased_candidate_returns_prerequisite(tmp_path):
     out = _run(
         _stage(tmp_path),
