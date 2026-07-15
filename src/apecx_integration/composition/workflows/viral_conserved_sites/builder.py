@@ -85,8 +85,16 @@ _ALIGNER_STEP_CLASSES: dict[str, str] = {
     "muscle": f"{_STEPS}.rhea_muscle_align_step.RheaMuscleAlignStep",
 }
 
+# BV-BRC per-strain subset each alignment leg fetches. The local-MAFFT leg (fast) uses the
+# small DEFAULT. The RHEA-MUSCLE leg uses a LARGER subset in AGENT/HPC locus (Parsl-distributed
+# — O(N²) MUSCLE stays bounded while spanning more strains), but the SAME reduced DEFAULT in
+# DESKTOP/MCP locus, where the Rhea server runs locally without the HPC scale-out (see
+# ``RheaGenomicAnalysisStep`` — "in MCP mode Rhea gets the same reduced workload as MAFFT").
+DEFAULT_MAX_SEQUENCES = 25
+RHEA_AGENT_MAX_SEQUENCES = 60
 
-def _conserved_sites_core_builder(aligner: str, max_sequences: int = 25):
+
+def _conserved_sites_core_builder(aligner: str, max_sequences: int = DEFAULT_MAX_SEQUENCES):
     """Build the shared fetch→align→conserve→report cascade (NO terminal step / output bound).
 
     The single source of topology truth for both the standalone catalog workflow (which adds an
@@ -212,17 +220,19 @@ def build_viral_conserved_sites_core_workflow(aligner: str = "mafft"):
     return b.load()
 
 
-def build_viral_conserved_sites_rhea_core_workflow():
-    """No-arg NESTING variant for the RHEA-MUSCLE path (large-scale genomic analysis leg).
+def build_viral_conserved_sites_rhea_core_workflow(max_sequences: int = RHEA_AGENT_MAX_SEQUENCES):
+    """NESTING variant for the RHEA-MUSCLE path (large-scale genomic analysis leg).
 
     Same fetch→align→conserve→report cascade as ``build_viral_conserved_sites_core_workflow``
     but the ``align`` step is ``RheaMuscleAlignStep`` (MUSCLE dispatched to the Rhea MCP server,
-    Parsl-distributed) and the BV-BRC fetch keeps a larger representative subset (60) than the
-    local-MAFFT default (25). Output is the ``report`` dict (no EnvelopeStep) so it composes
-    cleanly inside a ``SubworkflowStep``. Used by the epitope workflow's RHEA conserved-sites
-    leg; requires a reachable Rhea server + the ``rhea`` module importable in this process.
+    Parsl-distributed). ``max_sequences`` bounds the BV-BRC fetch: the caller
+    (``RheaGenomicAnalysisStep``) passes the AGENT-locus default (60, a larger representative
+    subset than local MAFFT) in headless/HPC mode and the reduced ``DEFAULT_MAX_SEQUENCES`` (25,
+    same as MAFFT) in DESKTOP/MCP mode. Output is the ``report`` dict (no EnvelopeStep) so it
+    composes cleanly inside a ``SubworkflowStep``. Requires a reachable Rhea server + the
+    ``rhea`` module importable in this process.
     """
-    b = _conserved_sites_core_builder("muscle", max_sequences=60)
+    b = _conserved_sites_core_builder("muscle", max_sequences=max_sequences)
     b.add_output("workflow_output", "DataUnitMemory")
     b.add_link("report.report", "workflow_output", link_type="direct")
     return b.load()

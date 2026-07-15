@@ -81,6 +81,16 @@ class RheaGenomicAnalysisStepConfig(StepConfig):
         description="Wall-clock budget for the nested RHEA conserved-sites run.",
     )
     settle_ms: int = Field(default=800, description="Cascade settle window for the inner run.")
+    max_sequences: int | None = Field(
+        default=None,
+        ge=1,
+        description=(
+            "BV-BRC per-strain subset the RHEA MUSCLE alignment fetches. None (default) = "
+            "locus-aware: DESKTOP/MCP mode uses the reduced MAFFT-matching subset "
+            "(DEFAULT_MAX_SEQUENCES=25), AGENT/HPC mode uses the larger Parsl-distributed subset "
+            "(RHEA_AGENT_MAX_SEQUENCES=60). Set an int to pin it regardless of locus."
+        ),
+    )
 
 
 class RheaGenomicAnalysisStep(BaseStep):
@@ -98,12 +108,36 @@ class RheaGenomicAnalysisStep(BaseStep):
             **base,
             "timeout_seconds": getattr(config, "timeout_seconds", 900.0),
             "settle_ms": getattr(config, "settle_ms", 800),
+            "max_sequences": getattr(config, "max_sequences", None),
         }
 
     def _init_from_config(self, config, component_config, dependencies) -> None:
         super()._init_from_config(config, component_config, dependencies)
         self._timeout: float = float(component_config.get("timeout_seconds", 900.0))
         self._settle_ms: int = int(component_config.get("settle_ms", 800))
+        cfg_max = component_config.get("max_sequences", None)
+        self._max_sequences: int | None = int(cfg_max) if cfg_max is not None else None
+
+    def _effective_max_sequences(self) -> int:
+        """The BV-BRC subset size to align. An explicit config value wins; else it is
+        locus-aware — DESKTOP/MCP mode reduces RHEA to the SAME subset the local MAFFT leg
+        uses (``DEFAULT_MAX_SEQUENCES``), while AGENT/HPC mode keeps the larger Parsl-
+        distributed subset (``RHEA_AGENT_MAX_SEQUENCES``). Resolved per-run so a server
+        started with ``--locus agent`` gets the full workload without reconfiguring the step."""
+        if self._max_sequences is not None:
+            return self._max_sequences
+        from apecx_integration.composition.runtime.execution_locus import (
+            ExecutionLocus,
+            get_active_locus,
+        )
+        from apecx_integration.composition.workflows.viral_conserved_sites.builder import (
+            DEFAULT_MAX_SEQUENCES,
+            RHEA_AGENT_MAX_SEQUENCES,
+        )
+
+        if get_active_locus() == ExecutionLocus.DESKTOP:
+            return DEFAULT_MAX_SEQUENCES
+        return RHEA_AGENT_MAX_SEQUENCES
 
     def _params_unusable(self, bundle: dict[str, Any]) -> str | None:
         """Return a loud reason when the bundle can't feed the RHEA fetch, else None."""
@@ -127,7 +161,10 @@ class RheaGenomicAnalysisStep(BaseStep):
 
         mod_path, _, fn_name = _RHEA_CORE_BUILDER.rpartition(".")
         builder = getattr(importlib.import_module(mod_path), fn_name)
-        wf = builder()  # loaded Workflow (no-arg); RheaMuscleAlignStep imports rhea lazily
+        max_sequences = self._effective_max_sequences()
+        self.emit_progress(f"aligning up to {max_sequences} sequences (locus-bounded)")
+        # RheaMuscleAlignStep imports rhea lazily; max_sequences bounds the inner BV-BRC fetch.
+        wf = builder(max_sequences=max_sequences)
         await wf.initialize()
         outputs = await wf.run(
             {"fetch_in": {"taxon_id": int(taxon_id), "protein": protein}},

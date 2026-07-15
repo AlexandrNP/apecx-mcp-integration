@@ -1768,6 +1768,7 @@ _RheaGenomicAnalysisStep — large-scale sequence-conservation analysis via RHEA
   - `def _get_config_class(cls)`
   - `def extract_component_config(cls, config: RheaGenomicAnalysisStepConfig)`
   - `def _init_from_config(self, config, component_config, dependencies)`
+  - `def _effective_max_sequences(self)` — The BV-BRC subset size to align. An explicit config value wins; else it is
   - `def _params_unusable(self, bundle: dict[str, Any])` — Return a loud reason when the bundle can't feed the RHEA fetch, else None.
   - `async def _drive_rhea_conservation(self, taxon_id: Any, protein: str)` — Run the RHEA-MUSCLE conserved-sites inner workflow; return its report dict.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
@@ -2227,10 +2228,10 @@ _viral_conserved_sites — the conserved-sites workflow, built the LIGHTWEIGHT w
 
 - `def _du(name: str)`
 - `def _trig(du: str)`
-- `def _conserved_sites_core_builder(aligner: str, max_sequences: int=25)` — Build the shared fetch→align→conserve→report cascade (NO terminal step / output bound).
+- `def _conserved_sites_core_builder(aligner: str, max_sequences: int=DEFAULT_MAX_SEQUENCES)` — Build the shared fetch→align→conserve→report cascade (NO terminal step / output bound).
 - `def build_viral_conserved_sites_workflow(aligner: str='mafft')` — Construct + load the viral_conserved_sites workflow (catalog lightweight entry-point).
 - `def build_viral_conserved_sites_core_workflow(aligner: str='mafft')` — No-arg NESTING variant (E2-C1): the same fetch→align→conserve→report cascade, but the
-- `def build_viral_conserved_sites_rhea_core_workflow()` — No-arg NESTING variant for the RHEA-MUSCLE path (large-scale genomic analysis leg).
+- `def build_viral_conserved_sites_rhea_core_workflow(max_sequences: int=RHEA_AGENT_MAX_SEQUENCES)` — NESTING variant for the RHEA-MUSCLE path (large-scale genomic analysis leg).
 - `def build_viral_conserved_sites_muscle_workflow()` — No-arg catalog entry-point for the MUSCLE-via-Rhea variant (EO-54b).
 - `def build_clade_conservation_core_workflow(aligner: str='mafft')` — No-arg NESTING variant for the PER-CLADE re-analysis loop (Req 5 looped execution).
 

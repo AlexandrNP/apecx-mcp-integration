@@ -128,3 +128,81 @@ def test_bad_input_raises(tmp_path):
     step = _stage(tmp_path)
     with pytest.raises(ValueError):
         asyncio.run(step.process(["not", "a", "dict"]))
+
+
+# --------------------------------------------------------- locus-aware workload cap
+
+
+@pytest.fixture
+def _restore_locus():
+    """Save/restore the process-wide active locus so a test's set_active_locus doesn't leak."""
+    from apecx_integration.composition.runtime.execution_locus import (
+        get_active_locus,
+        set_active_locus,
+    )
+
+    prev = get_active_locus()
+    yield set_active_locus
+    set_active_locus(prev)
+
+
+def test_effective_max_sequences_desktop_matches_mafft(tmp_path, _restore_locus):
+    """DESKTOP/MCP locus reduces RHEA to the SAME subset the local MAFFT leg uses (25)."""
+    from apecx_integration.composition.runtime.execution_locus import ExecutionLocus
+    from apecx_integration.composition.workflows.viral_conserved_sites.builder import (
+        DEFAULT_MAX_SEQUENCES,
+    )
+
+    _restore_locus(ExecutionLocus.DESKTOP)
+    step = _stage(tmp_path)
+    assert step._effective_max_sequences() == DEFAULT_MAX_SEQUENCES == 25
+
+
+def test_effective_max_sequences_agent_keeps_large_subset(tmp_path, _restore_locus):
+    """AGENT/HPC locus keeps the larger Parsl-distributed subset (60)."""
+    from apecx_integration.composition.runtime.execution_locus import ExecutionLocus
+    from apecx_integration.composition.workflows.viral_conserved_sites.builder import (
+        RHEA_AGENT_MAX_SEQUENCES,
+    )
+
+    _restore_locus(ExecutionLocus.AGENT)
+    step = _stage(tmp_path)
+    assert step._effective_max_sequences() == RHEA_AGENT_MAX_SEQUENCES == 60
+
+
+def test_effective_max_sequences_explicit_override_wins(tmp_path, _restore_locus):
+    """An explicit config value pins the subset regardless of locus."""
+    from apecx_integration.composition.runtime.execution_locus import ExecutionLocus
+
+    _restore_locus(ExecutionLocus.AGENT)  # would be 60 without the override
+    step = _stage(tmp_path, max_sequences=12)
+    assert step._effective_max_sequences() == 12
+
+
+def test_drive_rhea_passes_effective_cap_to_builder(tmp_path, monkeypatch, _restore_locus):
+    """The effective cap is threaded into the inner RHEA-MUSCLE builder (not the hardcoded 60)."""
+    from apecx_integration.composition.runtime.execution_locus import ExecutionLocus
+
+    _restore_locus(ExecutionLocus.DESKTOP)
+    step = _stage(tmp_path)
+
+    captured = {}
+
+    class _FakeWF:
+        async def initialize(self):
+            return None
+
+        async def run(self, *a, **k):
+            return {"workflow_output": {"n_sequences": 25, "conserved_regions": []}}
+
+    def _fake_builder(max_sequences=None):
+        captured["max_sequences"] = max_sequences
+        return _FakeWF()
+
+    monkeypatch.setattr(
+        "apecx_integration.composition.workflows.viral_conserved_sites.builder"
+        ".build_viral_conserved_sites_rhea_core_workflow",
+        _fake_builder,
+    )
+    asyncio.run(step._drive_rhea_conservation(37124, "E1"))
+    assert captured["max_sequences"] == 25  # desktop → MAFFT-matching reduced workload
