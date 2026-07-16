@@ -3042,8 +3042,7 @@ _EO thin-surface primitives (EO-03/04/05) — workflows as first-class objects._
 - `def prune_artifacts(base: Any=None, max_runs: int | None=None)` — Keep only the N newest run dirs under the artifacts base (FIFO by mtime). NEVER raises.
 - `async def run_workflow(name: str, params: dict[str, Any] | None=None, ctx: Context | None=None)` — Run the catalog workflow ``name`` with ``params``; return its result envelope.
 - `def _structured_subset(result: dict[str, Any])` — Bounded structured-data block: precise values + a LEAN artifact manifest. The per-tool_output
-- `def _figure_data_uri(path: str, *, max_px: int=400)` — A DOWNSCALED, palette-quantized PNG ``data:`` URI for a figure file, or ``None`` on failure.
-- `def _desktop_host_payload(result: dict[str, Any])` — Transform a completed result dict into MCP content (text-with-inline-images + structured json).
+- `def _desktop_host_payload(result: dict[str, Any])` — Transform a completed result dict into MCP content (text + Image blocks + structured json).
 - `def maybe_desktop_payload(result: Any, ctx: Context | None)` — Apply the desktop re-ingestion adapter at the MCP tool boundary, or pass the result through.
 - `async def run_workflow_tool(name: str, params: dict[str, Any] | None=None, ctx: Context | None=None)`
 - `async def _run_resolved_entry(entry: Any, params: dict[str, Any] | None=None)` — Guarded execution of an ALREADY-RESOLVED catalog entry — the SINGLE execution core.
@@ -3085,7 +3084,7 @@ _``infrastructure_status`` MCP tool._
 ## `src/apecx_integration/mcp_surface/tools/workflows.py`
 _MCP tools for the scientist-facing workflow lifecycle._
 
-- `async def compose_workflow(description: str='', user_id: str='anonymous', preferred_executor: str='local', run_id: str='', execute: bool=False)` — Compose (and optionally run) a NEW workflow from a natural-language description.
+- `async def compose_workflow(description: str='', user_id: str='', preferred_executor: str='local', run_id: str='', execute: bool=False)` — Compose (and optionally run) a NEW workflow from a natural-language description.
 
 ## `src/apecx_integration/mcp_surface/workflow_discovery.py`
 _Dynamic, registration-free discovery of nanobrain workflows on disk._

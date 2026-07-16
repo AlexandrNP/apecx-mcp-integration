@@ -305,9 +305,6 @@ def _attach_artifact(result: dict[str, Any], run_id: str | None) -> None:
                     log.warning("artifact text embed failed for %s: %s", rel, exc)
             artifacts.append(entry)
         result["artifacts"] = artifacts
-        # Absolute run dir (full-res PNGs + vector PDFs + raw data) — surfaced to the desktop host
-        # so a user with filesystem access can open the originals behind the inline data-URIs.
-        result["artifacts_dir"] = str(run_dir)
         # Bounded retention: keep only the N newest run dirs so the folder does not grow forever.
         prune_artifacts(base)
     except Exception as exc:  # noqa: BLE001 — artifact write must never strand a completed run
@@ -403,9 +400,8 @@ async def run_workflow(
 # this tool result and re-renders it for the user. A plain markdown dict gets CROPPED, and the
 # generated images (PyMOL surface map, conservation plot) never reach the user (they are file paths
 # the host cannot read). In DESKTOP locus we therefore return MCP CONTENT instead of a dict:
-#   [0]   explicit rendering INSTRUCTIONS + the FULL markdown report, with each figure embedded
-#         INLINE as a downscaled `data:image/png;base64,...` URI (→ TextContent; Desktop renders the
-#         images inline without needing filesystem access to the artifacts dir).
+#   [0]   explicit rendering INSTRUCTIONS + the FULL markdown report (→ TextContent)
+#   [1..] each generated figure as an Image content block (base64 → Desktop renders it INLINE)
 #   [-1]  a STRUCTURED DATA json block (exact SASA residues / conserved regions / counts + the
 #         artifact manifest) so a weak model cites precise values instead of guessing.
 # Internal callers (run_workflow / _run_workflow_streaming_impl / the run-store / tests) keep the
@@ -419,10 +415,9 @@ HOST_INSTRUCTIONS = (
     "IN FULL.\n"
     "1. Reproduce the ENTIRE report below in your reply — every section heading and its content. Do "
     "NOT summarize, shorten, paraphrase, or omit any section.\n"
-    "2. The report's figures (epitope surface map, sequence-conservation plot) are embedded INLINE "
-    "as data-URI images — `![...](data:image/png;base64,...)`. Reproduce each image markdown EXACTLY "
-    "as written, including the full base64 data, so the images render for the user. Do NOT drop, "
-    "truncate, summarize, or replace the image data.\n"
+    "2. This message includes attached IMAGE content blocks (e.g. the epitope surface map and the "
+    "sequence-conservation plot). INCLUDE every attached image in your reply, each next to the "
+    "section it illustrates.\n"
     "3. Keep every citation, DOI, PDB id, and accession exactly as written.\n"
     "4. A STRUCTURED DATA block (JSON) at the end carries exact values (SASA exposed residues, "
     "conserved regions, counts, the artifact list). Use it for precise numbers — never invent or "
@@ -433,9 +428,9 @@ HOST_INSTRUCTIONS = (
 
 def _structured_subset(result: dict[str, Any]) -> dict[str, Any]:
     """Bounded structured-data block: precise values + a LEAN artifact manifest. The per-tool_output
-    JSON ``text`` (up to 64 KB each) is STRIPPED — the figures are already embedded inline as data-URIs,
-    the values are already rendered in the report, and dumping hundreds of KB of raw JSON would blow a
-    weak host LLM's context (re-introducing the very crop this adapter prevents). The files stay on disk + are listed
+    JSON ``text`` (up to 64 KB each) is STRIPPED — the figures are already Image blocks, the values are
+    already rendered in the report, and dumping hundreds of KB of raw JSON would blow a weak host LLM's
+    context (re-introducing the very crop this adapter prevents). The files stay on disk + are listed
     (name/kind/path) so the host knows what exists; ``data_handle`` lets it fetch the full payload."""
     out: dict[str, Any] = {}
     for k in ("run_id", "status", "data_handle", "data_preview", "provenance"):
@@ -452,77 +447,32 @@ def _structured_subset(result: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
-def _figure_data_uri(path: str, *, max_px: int = 400) -> str | None:
-    """A DOWNSCALED, palette-quantized PNG ``data:`` URI for a figure file, or ``None`` on failure.
-
-    The full 900x700 PyMOL PNG is ~250 KB — far too large to embed inline per figure and relay
-    through the host LLM. We thumbnail to ``max_px`` and quantize to a 256-colour adaptive palette
-    (the surface renders are grey + red on white, so a palette is near-lossless yet ~10x smaller —
-    ~20 KB vs a plain 76 KB PNG), keeping the crisp red/grey edges that a lossy JPEG would ring.
-    Pillow is LAZY-imported (clean-install rule). Returns ``None`` on ANY failure (Pillow absent,
-    unreadable file) so the caller degrades — drops the broken link — rather than crashing."""
-    try:
-        import base64 as _b64
-        import io as _io
-
-        from PIL import Image as _PILImage
-
-        with _PILImage.open(path) as im:
-            im = im.convert("RGB")
-            im.thumbnail((max_px, max_px))
-            im = im.quantize(colors=256, method=_PILImage.Quantize.FASTOCTREE)
-            buf = _io.BytesIO()
-            im.save(buf, format="PNG", optimize=True)
-        b64 = _b64.b64encode(buf.getvalue()).decode("ascii")
-        return f"data:image/png;base64,{b64}"
-    except Exception:  # noqa: BLE001 — missing Pillow / bad file → degrade to a neutralized link
-        log.warning("desktop payload: could not build a data-URI for figure %r", path)
-        return None
-
-
 def _desktop_host_payload(result: dict[str, Any]) -> list[Any]:
-    """Transform a completed result dict into MCP content (text-with-inline-images + structured json).
-
-    Figures are embedded INLINE as downscaled ``data:image/png;base64,...`` URIs directly in the
-    report markdown, so they render in the host LLM's re-rendered narrative (a bare ``figures/x.png``
-    path-link points at a server-local file Desktop cannot read → blank square). A figure that can't
-    be encoded has its broken link DROPPED (never a blank)."""
+    """Transform a completed result dict into MCP content (text + Image blocks + structured json)."""
     import json as _json
-    import os as _os
-    import re as _re
+    from pathlib import Path as _Path
+
+    from mcp.server.fastmcp import Image
 
     md = result.get("markdown") or ""
-    # Map each on-disk figure's basename → its absolute path (the kind=="figure" artifact entries).
-    fig_paths: dict[str, str] = {}
+    items: list[Any] = [f"{HOST_INSTRUCTIONS}\n\n---\n\n{md}".strip()]
     for a in result.get("artifacts") or []:
-        if isinstance(a, dict) and a.get("kind") == "figure":
-            p = a.get("path")
-            if isinstance(p, str) and p.lower().endswith((".png", ".jpg", ".jpeg")):
-                fig_paths[_os.path.basename(p)] = p
-
-    def _embed(m: _re.Match[str]) -> str:
-        alt, ref = m.group(1), m.group(2).strip()
-        path = fig_paths.get(_os.path.basename(ref))
-        if path is None:
-            return m.group(0)  # not a local figure (external URL etc.) — leave untouched
-        uri = _figure_data_uri(path)
-        return f"![{alt}]({uri})" if uri else ""  # un-encodable → drop the broken link
-
-    md = _re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", _embed, md)
-
-    instructions = HOST_INSTRUCTIONS
-    art_dir = result.get("artifacts_dir")
-    if isinstance(art_dir, str) and art_dir:
-        instructions += (
-            f"\n6. Full-resolution figures (PNG + vector PDF) and the raw data files are saved on "
-            f"disk at `{art_dir}`. Mention this path so a user with filesystem access can open the "
-            f"originals."
-        )
-    return [
-        f"{instructions}\n\n---\n\n{md}".strip(),
+        if not isinstance(a, dict) or a.get("kind") != "figure":
+            continue
+        p = a.get("path")
+        if not isinstance(p, str) or not p.lower().endswith((".png", ".jpg", ".jpeg")):
+            continue  # raster only — skip the vector .pdf siblings (Desktop renders raster inline)
+        try:
+            fp = _Path(p)
+            if fp.is_file() and fp.stat().st_size <= 5 * 1024 * 1024:
+                items.append(Image(path=str(fp)))
+        except Exception:  # noqa: BLE001 — a bad figure must NEVER break the tool result
+            log.warning("desktop payload: skipping unreadable figure %r", p)
+    items.append(
         "STRUCTURED DATA (use for exact values; do not alter):\n"
-        + _json.dumps(_structured_subset(result), indent=2, default=str),
-    ]
+        + _json.dumps(_structured_subset(result), indent=2, default=str)
+    )
+    return items
 
 
 def maybe_desktop_payload(result: Any, ctx: Context | None) -> Any:

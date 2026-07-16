@@ -63,35 +63,6 @@ def test_compose_workflow_proceeds_past_preflight_when_llm_reachable(monkeypatch
         asyncio.run(wf.compose_workflow(description="make a thing", user_id="alex"))
 
 
-def test_compose_workflow_needs_only_description_not_user_id(monkeypatch):
-    """The MCP surface never supplies user_id — the sole required param is `description`. A call with
-    only `description` (no user_id) must pass the guard and reach the composer, not raise."""
-
-    class _Sentinel(Exception):
-        pass
-
-    class _StubClient:
-        async def start_workflow(self, req):
-            raise _Sentinel  # reaching here proves the user_id guard is gone
-
-    monkeypatch.setattr(wf, "get_client", lambda: _StubClient())
-    monkeypatch.setattr(
-        llm_policy,
-        "resolve_llm",
-        lambda locus, **k: LlmResolution(available=True, target="ollama:m", detail="ok"),
-    )
-
-    with pytest.raises(_Sentinel):
-        asyncio.run(wf.compose_workflow(description="count BV-BRC genomes"))  # NO user_id
-
-
-def test_compose_workflow_still_requires_description(monkeypatch):
-    """description remains the one genuinely-required param — an empty call is still a loud error."""
-    monkeypatch.setattr(wf, "get_client", lambda: object())
-    with pytest.raises(ValueError, match="provide `description`"):
-        asyncio.run(wf.compose_workflow())
-
-
 def test_compose_workflow_execute_only_recall_skips_llm_preflight(monkeypatch):
     def _boom(*a, **k):
         raise AssertionError("resolve_llm must not run on the execute-only recall")

@@ -51,14 +51,6 @@ dependencies = [
     "pandas>=2.0",
     "langchain-core>=0.3",
     "langchain-openai>=0.2",
-    # Pillow — the desktop MCP payload (mcp_surface/tools/eo_primitives.py
-    # ::_figure_data_uri) downscales + palette-quantizes each PyMOL figure
-    # and embeds it as a data-URI in the relayed report so Claude Desktop
-    # renders images inline (it can't reach the on-disk artifacts dir).
-    # The helper LAZY-imports PIL and degrades to a dropped link if absent,
-    # but declaring it here makes every install path (uv tool, editable,
-    # clean-install smoke) resolve it automatically. Added 2026-07-15.
-    "pillow>=10.0",
     # Sibling repos installed directly from git so a single
     # ``pipx install git+...apecx-mcp-integration`` brings the whole
     # tree. Workspace policy (CLAUDE.md): this repo's only
