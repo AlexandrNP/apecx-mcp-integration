@@ -86,6 +86,16 @@ _VIRUS_ALIASES: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\bvarv\b"), "Variola virus"),
     (re.compile(r"\bhpv\b"), "Human papillomavirus"),
     (re.compile(r"\bmpxv\b"), "Monkeypox virus"),
+    # Family-level umbrella surface forms -> family scientific name (I2 umbrella-resolution). LAST in the
+    # table so every specific pattern above wins first (a bare umbrella matches only these; "sars
+    # coronavirus" matches its specific pattern earlier and resolves to the species). Without these a bare
+    # "coronavirus" MISSED and its ~24k on-topic served records scored 0.0 by construction (empty judge
+    # subtree). Each family verified to resolve in the dict (Coronaviridae 11118 / Poxviridae 10240 /
+    # Herpesviridae 3044472). Non-taxonomic groupings (hemorrhagic fever / hepatitis virus) are NOT here —
+    # they fail-closed via taxon_candidate_review_step._syndrome_category.
+    (re.compile(r"\bcoronavirus(?:es)?\b"), "Coronaviridae"),
+    (re.compile(r"\bpoxvirus(?:es)?\b"), "Poxviridae"),
+    (re.compile(r"\bherpesvirus(?:es)?\b"), "Herpesviridae"),
 ]
 
 # Generic "<word(s)> virus(es)" phrase: group(1) is the distinctive part BEFORE "virus"
