@@ -423,12 +423,46 @@ def _raw_query(index: str, term: str) -> tuple[int, list[dict[str, Any]], str | 
         return 0, [], f"{type(exc).__name__}: {exc}"
 
 
+def _nontaxonomic_umbrella_envelope(term: str, index: str, syndrome: str) -> dict[str, Any]:
+    """Fail-closed diagnosis for a non-taxonomic grouping (I2 Option A). Serves NO records: a term that spans
+    multiple unrelated families cannot harmonize to one taxon, and serving its raw full-text matches would
+    score 0.0-by-construction. Mirrors ``_run_paused_envelope`` — no Globus query, a needs-input next_action."""
+    md = (
+        f"### `{term}` on `{index}` — not a single taxon\n\n"
+        f"`{term}` is a clinical/ecological grouping ('{syndrome}') that spans multiple unrelated families, "
+        f"not one taxon in the synonym dictionary. Harmonized search was NOT executed and no records were "
+        f"served — serving unresolved full-text matches here would misattribute heterogeneous biology. "
+        f"Re-call with a specific member (e.g. a species name) or an NCBI Taxonomy IRI."
+    )
+    bundle_parts = {
+        "resolution": {
+            "path": "nontaxonomic_umbrella",
+            "canonical_iri": None,
+            "term": term,
+            "syndrome": syndrome,
+        },
+        "harmonization_health": "nontaxonomic_umbrella_paused",
+        "status": "paused_awaiting_disambiguation",
+        "next_action": {"kind": "re-invoke_with_specific_member", "param_name": "term"},
+    }
+    return {_OUTPUT_KEY: {"markdown": md, "data": {"kind": "bundle", "parts": bundle_parts}}}
+
+
 def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
     """The term did not resolve to a taxon. DO NOT give up — fall back to a RAW full-text query
     so records that are present in the index are still pulled (a resolution miss must not mean
     'no results' when the data exists). Only when the raw query ALSO returns nothing is this a
     genuine no-data answer."""
     index, term = plan["index"], plan["term"]
+    # I2 Option A: a non-taxonomic grouping (hepatitis / hemorrhagic fever / … — spans multiple families)
+    # fails closed with a diagnosis rather than serving raw records that score 0.0-by-construction. Lazy
+    # import: module-level would be circular (taxon_candidate_review_step imports _iri_to_taxon_id from here).
+    from apecx_integration.composition.steps.taxon_candidate_review_step import _syndrome_category
+
+    syndrome = _syndrome_category(term)
+    if syndrome is not None:
+        return _nontaxonomic_umbrella_envelope(term, index, syndrome)
+
     raw_total, raw_records, raw_error = _raw_query(index, term)
 
     if raw_total > 0:

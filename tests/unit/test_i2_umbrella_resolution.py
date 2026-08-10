@@ -90,14 +90,14 @@ def test_junk_term_stays_a_miss():
 
 
 @pytest.mark.parametrize("term", ["hemorrhagic fever virus", "hepatitis virus"])
-def test_syndrome_seam_recognizes_but_harmonized_search_still_misses(term):
-    # HONEST gap (reviewer C): the syndrome seam _syndrome_category DOES recognize these bare terms, but it
-    # is wired ONLY into the epitope workflow's TaxonCandidateReviewStep — NOT the harmonized-search pipeline
-    # that AB_CONFOUND measured. There these still resolve to a miss and serve raw 0.0-FP records. Option A
-    # (a fail-closed diagnosis in the harmonized-search miss envelope) is a tracked follow-up, NOT done here.
+def test_syndrome_umbrella_misses_at_resolver_then_option_a_fail_closes(term):
+    # These non-taxonomic umbrellas do NOT resolve to a taxon — build_resolution_plan returns a miss. Option A
+    # (a separate change) then fail-closes them DOWNSTREAM inside _run_miss_envelope, so no records are served
+    # (asserted in test_harmonized_search_execute_step.py). This test pins the resolver-level miss + that the
+    # shared syndrome seam recognizes them.
     from apecx_integration.composition.steps.harmonized_resolve_step import build_resolution_plan
 
-    assert _syndrome_category(term) is not None  # recognized by the epitope-only seam
+    assert _syndrome_category(term) is not None  # recognized by the shared syndrome seam
     assert (
         build_resolution_plan(term, "bvbrc_genome")["resolution_path"] == "miss"
-    )  # harmonized-search gap
+    )  # miss at the resolver; Option A intercepts downstream

@@ -146,6 +146,63 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     assert parts["raw_sample"][0]["title"] == "Chikungunya virus strain S27"
 
 
+@pytest.mark.parametrize("term", ["hemorrhagic fever virus", "hepatitis virus"])
+def test_nontaxonomic_umbrella_fail_closes_without_serving_records(term, monkeypatch):
+    """I2 Option A: a non-taxonomic grouping (spans multiple families) must NOT serve raw records — those
+    would score 0.0-by-construction. It fails closed with a diagnosis, BEFORE any raw query runs."""
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    def _boom(*a, **k):
+        raise AssertionError("raw query must NOT run for a non-taxonomic umbrella")
+
+    monkeypatch.setattr(mod, "_raw_query", _boom)
+    env = mod._run_miss_envelope(
+        {"term": term, "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )["envelope_input"]
+    parts = env["data"]["parts"]
+    assert parts["resolution"]["path"] == "nontaxonomic_umbrella"
+    assert parts["harmonization_health"] == "nontaxonomic_umbrella_paused"
+    assert parts["status"] == "paused_awaiting_disambiguation"
+    assert "raw_records" not in parts and "raw_sample" not in parts  # nothing served
+    assert term in env["markdown"]
+
+
+def test_nontaxonomic_diagnosis_serves_no_records_in_merge(monkeypatch):
+    """The 0.0-FP fix, end-to-end: the diagnosis envelope contributes ZERO records to the merged corpus."""
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+    from apecx_integration.composition.steps.harmonized_bundle_merge_step import _records_from_item
+
+    monkeypatch.setattr(
+        mod, "_raw_query", lambda *a, **k: (_ for _ in ()).throw(AssertionError("no query"))
+    )
+    envelope = mod._run_miss_envelope(
+        {"term": "hemorrhagic fever virus", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    # pass the FULL item shape _records_from_item expects ({envelope_input: {data: {parts}}}), not bare parts
+    # (reviewer A: a bare-parts dict early-returns [] for ANY input, making the assertion vacuous).
+    assert _records_from_item(envelope) == []
+    # positive control: the SAME extractor DOES serve records when a raw fallback carries them — proves the
+    # assertion above actually discriminates.
+    served = {"data": {"parts": {"raw_records": [{"titles": [{"title": "x"}]}]}}}
+    assert _records_from_item(served) == [{"titles": [{"title": "x"}]}]
+
+
+@pytest.mark.parametrize(
+    "qualified", ["Hepatitis B virus", "Crimean-Congo hemorrhagic fever virus"]
+)
+def test_qualified_name_is_not_a_nontaxonomic_umbrella(qualified):
+    """Over-trigger guard: a QUALIFIED specific name must NOT be treated as a non-taxonomic umbrella."""
+    from apecx_integration.composition.steps.taxon_candidate_review_step import _syndrome_category
+
+    assert _syndrome_category(qualified) is None
+
+
+def test_nontaxonomic_verdict_is_not_a_raw_fallback():
+    from apecx_integration.composition.steps.data_readiness_step import _RAW_FALLBACK_HEALTH
+
+    assert "nontaxonomic_umbrella_paused" not in _RAW_FALLBACK_HEALTH
+
+
 def test_summarize_record_preserves_object_identifiers():
     """P0 fix: _summarize_record must carry a citation token (`subject`) + typed object
     IDs (`identifiers`) from the DataCite shape. The old code read a top-level `identifier`

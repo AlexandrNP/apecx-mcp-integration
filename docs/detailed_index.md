@@ -1560,6 +1560,7 @@ _HarmonizedSearchExecuteStep — run raw + harmonized Globus queries, emit envel
 - `def _summarize_record(record: dict[str, Any])` — Project a harmonized (DataCite-shaped) Globus record to a small preview dict.
 - `def _run_paused_envelope(plan: dict[str, Any])` — Emit a paused envelope when resolution is ambiguous.
 - `def _raw_query(index: str, term: str)` — Run the anonymous RAW full-text query (no IRI / no taxon filter needed) against an
+- `def _nontaxonomic_umbrella_envelope(term: str, index: str, syndrome: str)` — Fail-closed diagnosis for a non-taxonomic grouping (I2 Option A). Serves NO records: a term that spans
 - `def _run_miss_envelope(plan: dict[str, Any])` — The term did not resolve to a taxon. DO NOT give up — fall back to a RAW full-text query
 - `def _execute_globus_queries(plan: dict[str, Any])` — Run raw + harmonized queries and emit an ok envelope with divergence.
 - class `HarmonizedSearchExecuteStep(BaseStep)` — Execute the raw + harmonized Globus queries (or emit a paused envelope).
