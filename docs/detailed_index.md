@@ -956,8 +956,9 @@ _Per-run provenance collection for viral_epitope_analysis (E3-8)._
 ## `src/apecx_integration/composition/steps/_llm_last_resort_resolver.py`
 _Last-resort LLM taxon resolution for the harmonized-search miss path (I7)._
 
-- `def _clear_cache()` — Test seam: drop the per-term verdict cache AND the built step singletons.
+- `def _clear_cache()` — Test seam: drop the per-term verdict cache, in-flight locks, AND the built step singletons.
 - `def _get_steps()` — Build (once) and return the three chain steps as ``(step, input_key)`` pairs.
+- `def _resolve_uncached(query: str, key: str)` — Run preflight + the 3-step chain for ONE term. Returns ``(verdict, cacheable)``.
 - `def resolve_taxon_last_resort(query: str)` — Drive the existing 3-step LLM taxon-resolution chain for ONE miss term.
 
 ## `src/apecx_integration/composition/steps/_novel_step_container/_novel_step_job.py`

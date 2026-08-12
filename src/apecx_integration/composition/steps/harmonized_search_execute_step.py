@@ -472,41 +472,46 @@ def _run_llm_last_resort_retrieval(
         "confidence": plan.get("confidence", "llm_last_resort"),
         "synonyms": plan.get("synonyms", []) or [],
     }
+    # Degrade-loud on the WHOLE recovered path (I7 hardening): the try wraps BOTH the Globus query
+    # AND the post-query stamping (the `.get` chain, `harm_total`, `setdefault`, `["taxon_id"]`). A
+    # future malformed Globus shape reaching the stamping must not propagate out of
+    # `_run_miss_envelope` and skip the raw fallback — on ANY exception, return None so the caller
+    # falls through to the honest raw full-text fallback.
     try:
         result = _execute_globus_queries(resolved_plan)
+
+        parts = result.get(_OUTPUT_KEY, {}).get("data", {}).get("parts", {})
+        if not isinstance(parts, dict):
+            return None
+        harm = parts.get("harmonized_query", {})
+        harm_total = harm.get("total") if isinstance(harm, dict) else None
+        if not harm_total or harm_total <= 0:
+            # Taxon is real but absent from this index (or the harmonized leg errored) — let the raw
+            # full-text fallback still pull whatever text-matches are present, honestly unharmonized.
+            return None
+
+        inner = parts.get("harmonization_health")
+        parts["harmonization_health"] = {
+            "verdict": "llm_last_resort_resolved",
+            "reason": (
+                f"`{term}` did not resolve via the synonym dictionary; a bounded, CDS-gate-verified "
+                f"last-resort LLM resolution mapped it to NCBI taxon {taxon_id} and the harmonized "
+                f"IRI-filtered retrieval was re-run for that taxon ({harm_total} record(s))."
+            ),
+            "recommended_total": harm_total,
+            "underlying": inner,
+        }
+        parts.setdefault("resolution", {})["via"] = "llm_last_resort"
+        parts["resolution"]["taxon_id"] = taxon_id
+        return result
     except Exception as exc:  # noqa: BLE001 - degrade to raw fallback; never break the miss path
         log.warning(
-            "HarmonizedSearchExecuteStep: llm_last_resort harmonized retrieval for taxon %d "
+            "HarmonizedSearchExecuteStep: llm_last_resort recovered path for taxon %d "
             "failed (%s); falling through to raw fallback",
             taxon_id,
             exc,
         )
         return None
-
-    parts = result.get(_OUTPUT_KEY, {}).get("data", {}).get("parts", {})
-    if not isinstance(parts, dict):
-        return None
-    harm = parts.get("harmonized_query", {})
-    harm_total = harm.get("total") if isinstance(harm, dict) else None
-    if not harm_total or harm_total <= 0:
-        # Taxon is real but absent from this index (or the harmonized leg errored) — let the raw
-        # full-text fallback still pull whatever text-matches are present, honestly unharmonized.
-        return None
-
-    inner = parts.get("harmonization_health")
-    parts["harmonization_health"] = {
-        "verdict": "llm_last_resort_resolved",
-        "reason": (
-            f"`{term}` did not resolve via the synonym dictionary; a bounded, CDS-gate-verified "
-            f"last-resort LLM resolution mapped it to NCBI taxon {taxon_id} and the harmonized "
-            f"IRI-filtered retrieval was re-run for that taxon ({harm_total} record(s))."
-        ),
-        "recommended_total": harm_total,
-        "underlying": inner,
-    }
-    parts.setdefault("resolution", {})["via"] = "llm_last_resort"
-    parts["resolution"]["taxon_id"] = taxon_id
-    return result
 
 
 def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:

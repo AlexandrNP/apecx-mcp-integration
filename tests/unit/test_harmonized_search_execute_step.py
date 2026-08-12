@@ -320,6 +320,44 @@ def test_i7_resolver_miss_falls_through_to_raw(monkeypatch):
     assert parts["raw_total"] == 9
 
 
+def test_i7_recovered_path_exception_in_stamping_degrades_to_raw(monkeypatch):
+    """FIX 2 (degrade-loud on the recovered path): a malformed Globus shape that PASSES the
+    positive-total gate but breaks the post-query stamping must NOT propagate out of
+    _run_miss_envelope and skip the raw fallback. The whole recovered path (Globus query + stamping)
+    is wrapped, so ANY exception falls through to the honest raw full-text fallback.
+
+    FAILS before FIX 2 (stamping ran OUTSIDE the try → TypeError escapes _run_miss_envelope)."""
+    import apecx_integration.composition.steps._llm_last_resort_resolver as res
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    _fresh_resolver_caches()
+    monkeypatch.setattr(res, "resolve_taxon_last_resort", lambda term: 11620)
+    # A positive harmonized total (passes the >0 gate) BUT `resolution` is a non-dict, so the
+    # stamping `parts.setdefault("resolution", {})["via"] = ...` raises TypeError.
+    monkeypatch.setattr(
+        mod,
+        "_execute_globus_queries",
+        lambda plan: {
+            mod._OUTPUT_KEY: {
+                "markdown": "x",
+                "data": {
+                    "kind": "bundle",
+                    "parts": {"harmonized_query": {"total": 7}, "resolution": 123},
+                },
+            }
+        },
+    )
+    monkeypatch.setattr(
+        mod, "_raw_query", lambda index, term: (4, [{"titles": [{"title": "raw rec"}]}], None)
+    )
+    out = mod._run_miss_envelope(
+        {"term": "malformed agent", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    parts = out["envelope_input"]["data"]["parts"]
+    assert parts["resolution"]["path"] == "miss_raw_fallback"
+    assert parts["raw_total"] == 4
+
+
 @pytest.mark.parametrize("term", ["hemorrhagic fever virus", "hepatitis virus", "arbovirus"])
 def test_nontaxonomic_umbrella_fail_closes_without_serving_records(term, monkeypatch):
     """I2 Option A: a non-taxonomic grouping (spans multiple families) must NOT serve raw records — those

@@ -11,6 +11,9 @@ tests/integration/test_taxon_resolution_fallback.py (auto-skipped when either is
 
 from __future__ import annotations
 
+import threading
+import time
+
 import pytest
 
 import apecx_integration.agents._llm_config as llm_config
@@ -146,3 +149,115 @@ def test_empty_term_returns_none_without_llm(monkeypatch):
         ),
     )
     assert resolver.resolve_taxon_last_resort("   ") is None
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# I7 CONCURRENCY HARDENING (FIX 1). The single caller _run_miss_envelope runs
+# PER-INDEX and the ~9 destination indices fan out CONCURRENTLY on worker
+# threads, so ONE unresolved term produces up to ~9 concurrent same-term calls
+# sharing module-global state. These tests pin: (1b) in-flight dedup — the real
+# chain runs ONCE, not once-per-thread; (1a) the step-build race — _STEPS ends
+# with exactly 3 entries, never N×3.
+# ─────────────────────────────────────────────────────────────────────────
+
+
+def test_concurrent_same_term_resolves_chain_once_and_builds_steps_once(monkeypatch):
+    """FIX 1a+1b: N threads resolve the SAME term simultaneously. The real 3-step chain must run
+    exactly ONCE (in-flight dedup) — proven by counting synonym-step LLM builds — every thread must
+    get the same verdict, no exception, and _STEPS must hold exactly 3 entries (build-race guard),
+    not N×3. FAILS before FIX 1 (each thread races the cache+build → many chain runs / N×3 steps).
+    """
+    counts = {"syn": 0, "rev": 0}
+    counts_lock = threading.Lock()
+
+    monkeypatch.setattr(llm_config, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(llm_config, "llm_model_available", lambda *a, **k: True)
+    monkeypatch.setattr(syn_mod, "preflight_llm_model", lambda *a, **k: None)
+    monkeypatch.setattr(review_mod, "preflight_llm_model", lambda *a, **k: None)
+
+    def _syn_llm(**k):  # noqa: ANN003, ARG001
+        with counts_lock:
+            counts["syn"] += 1
+        return _FakeLLM("Lassa virus\nLassa mammarenavirus")
+
+    def _rev_llm(**k):  # noqa: ANN003, ARG001
+        with counts_lock:
+            counts["rev"] += 1
+        return _FakeLLM("11620")
+
+    monkeypatch.setattr(syn_mod, "build_chat_llm", _syn_llm)
+    monkeypatch.setattr(review_mod, "build_chat_llm", _rev_llm)
+    monkeypatch.setattr(
+        bvbrc_mod.BvbrcTaxonomySearchStep, "_get_json", lambda self, p, q: [_LASSA_ROW]
+    )
+    monkeypatch.setattr(bvbrc_mod, "cds_count", lambda *a, **k: 100)
+    monkeypatch.setattr(review_mod, "cds_count", lambda *a, **k: 100)
+
+    n = 12
+    barrier = threading.Barrier(n)
+    results: dict[int, int | None] = {}
+    errors: list[BaseException] = []
+    res_lock = threading.Lock()
+
+    def _worker(i: int) -> None:
+        try:
+            barrier.wait()  # release all threads at once to maximize the race window
+            verdict = resolver.resolve_taxon_last_resort("Lassa virus")
+            with res_lock:
+                results[i] = verdict
+        except BaseException as exc:  # noqa: BLE001 - record so the assertion can surface it
+            with res_lock:
+                errors.append(exc)
+
+    threads = [threading.Thread(target=_worker, args=(i,)) for i in range(n)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(timeout=30)
+
+    assert not errors, f"resolver raised under concurrency: {errors!r}"
+    assert len(results) == n
+    assert set(results.values()) == {11620}, results
+    # In-flight dedup (FIX 1b): the real chain ran exactly once regardless of the 12 callers.
+    assert counts["syn"] == 1, f"synonym chain ran {counts['syn']}x (expected 1 — dedup broken)"
+    assert counts["rev"] == 1, f"review chain ran {counts['rev']}x (expected 1 — dedup broken)"
+    # Build-race guard (FIX 1a): exactly the 3 chain steps, not N×3.
+    assert len(resolver._STEPS) == 3, f"_STEPS holds {len(resolver._STEPS)} entries (expected 3)"
+
+
+def test_concurrent_get_steps_build_race_publishes_exactly_three(monkeypatch):
+    """FIX 1a in isolation: many threads racing the FIRST _get_steps() build (with a slow
+    per-step construction to widen the window) must publish exactly 3 steps, never N×3. FAILS
+    before FIX 1a (check-then-act append lets every thread build+append its own 3)."""
+
+    class _FakeModule:
+        def __getattr__(self, _name):  # noqa: ANN001
+            class _Builder:
+                @staticmethod
+                def from_config(_cfg):  # noqa: ANN001
+                    time.sleep(0.01)  # widen the race window
+                    return object()
+
+            return _Builder
+
+    monkeypatch.setattr(resolver.importlib, "import_module", lambda _m: _FakeModule())
+
+    n = 10
+    barrier = threading.Barrier(n)
+    seen: list[int] = []
+    seen_lock = threading.Lock()
+
+    def _worker() -> None:
+        barrier.wait()
+        steps = resolver._get_steps()
+        with seen_lock:
+            seen.append(len(steps))
+
+    threads = [threading.Thread(target=_worker) for _ in range(n)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(timeout=30)
+
+    assert len(resolver._STEPS) == 3, f"_STEPS holds {len(resolver._STEPS)} entries (expected 3)"
+    assert seen == [3] * n, f"every caller must see exactly 3 steps, got {seen}"
