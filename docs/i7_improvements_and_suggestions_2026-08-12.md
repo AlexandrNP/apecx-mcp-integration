@@ -63,14 +63,26 @@ codebase's degrade-loud principle. One-line change; low risk.
 
 ---
 
-## 3. [actionable] Live probe of the abstain/degrade path
+## 3. [done + follow-up] Live probe of the abstain/degrade path
 
-The 2026-08-12 live run covered the *success* path (both probe terms exist upstream). The
-abstain path — a genuinely-absent term → resolver returns `None` + diagnostic, harmonized
-search degrades to raw fallback — is covered only by mocked unit tests. Add a live probe with
-a deliberately-nonexistent term (e.g. a coined nonsense string) to confirm the real
-degrade-loud path end-to-end, matching the workspace rule that a live-LLM component's degrade
-path deserves a live test, not only a mocked one.
+**Done 2026-08-12** — two nonsense tokens (`Zqxvitalis`, `Frobnicavir`) both correctly
+returned `None`. A real model hallucination was caught (`Zqxvitalis` → hallucinated "Zika
+virus (ZIKV)" synonyms → still abstained). See `i7_realdata_verification_2026-08-12.md`.
+
+**Follow-up [actionable]** — the term-1 rejection was partly incidental: the hallucinated
+parenthetical synonym hit a catalog `400` (transport error) rather than a pure semantic
+rejection. A cleaner probe should pick a nonsense token the model maps to a real taxon via a
+*non-parenthetical* synonym, so the semantic candidate-review gate is exercised in isolation.
+
+## 5. [actionable] Parenthetical synonyms are sent to the catalog URL unsanitized
+
+The abstain probe surfaced a latent robustness issue in `BvbrcTaxonomySearchStep`: a synonym
+containing parentheses (e.g. "Zika virus (ZIKV)") is placed directly into the BV-BRC taxonomy
+query URL, producing `400 Bad Request` rather than a sanitized query. Here it failed safe
+(the candidate was skipped), but a *legitimate* parenthetical synonym would also 400 and be
+silently dropped — a recall hole. Recommend stripping/normalizing parentheticals (or
+URL-escaping the taxon_name value) before the query. Independent of I7; affects the taxonomy
+search step generally.
 
 ---
 

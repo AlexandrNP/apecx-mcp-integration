@@ -50,11 +50,28 @@ No exception, no silently-empty result, exit code 0.
 - **The last-resort tier works end-to-end on real inputs.** The one proof that mocked unit
   tests structurally cannot provide is now on the record: real LLM synonyms, real catalog
   hits, real CDS-gate acceptance, correct ids.
-- **Degrade path not exercised here (by design).** Both probe terms exist in BV-BRC, so this
-  run covers the *success* path. The abstain/degrade-loud path (term genuinely absent
-  upstream → return `None` + diagnostic) is covered by the unit suite
-  (`tests/unit/test_llm_last_resort_resolver.py`) and is a candidate for a future live probe
-  with a deliberately-absent term.
+- **Abstain/degrade path — live-probed 2026-08-12 17:22, both PASS.** Two coined nonsense
+  tokens with no upstream entry both correctly returned `None`:
+
+  | probe term | result | verdict | wall-clock |
+  |---|---|---|---|
+  | Zqxvitalis  | `None` | abstained | 34 s |
+  | Frobnicavir | `None` | abstained | 7 s  |
+
+  **Notable — a real hallucination was caught.** For `Zqxvitalis` the model hallucinated,
+  emitting "Zika virus (ZIKV)" + strain synonyms. The resolver still abstained: the
+  candidate-review step concluded "no candidate matched the query" and returned `None`. This
+  is direct evidence that a model hallucination does not become a served match.
+
+  **Honest caveat — the term-1 rejection was partly incidental.** The hallucinated
+  "Zika virus (ZIKV)" synonym hit a `400 Bad Request` (the parenthetical broke the catalog
+  URL) and was skipped on a *transport* error, not purely a *semantic* rejection. Had the
+  model emitted a clean "Zika virus", the catalog would have returned real taxon 64320 as a
+  candidate and the semantic candidate-review check would have been the sole gate. The review
+  step did reject the candidates it received ("no candidate matched"), so the semantic gate
+  appears sound — but this run does not fully isolate it. A cleaner follow-up probe should use
+  a nonsense token the model maps to a real taxon via a **non-parenthetical** synonym, to
+  exercise the semantic gate alone.
 - **Cold-start cost is real but bounded.** First term 39 s (model cold-load), second term
   8 s (warm). A last-resort tier is only reached after the deterministic path misses, so this
   latency is paid rarely.
