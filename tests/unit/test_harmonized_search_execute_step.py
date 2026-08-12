@@ -146,7 +146,7 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     assert parts["raw_sample"][0]["title"] == "Chikungunya virus strain S27"
 
 
-@pytest.mark.parametrize("term", ["hemorrhagic fever virus", "hepatitis virus"])
+@pytest.mark.parametrize("term", ["hemorrhagic fever virus", "hepatitis virus", "arbovirus"])
 def test_nontaxonomic_umbrella_fail_closes_without_serving_records(term, monkeypatch):
     """I2 Option A: a non-taxonomic grouping (spans multiple families) must NOT serve raw records — those
     would score 0.0-by-construction. It fails closed with a diagnosis, BEFORE any raw query runs."""

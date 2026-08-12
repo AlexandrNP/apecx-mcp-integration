@@ -227,6 +227,13 @@ def test_qualified_disease_name_not_flagged_as_syndrome():
     assert (
         mod._syndrome_category("on the hemorrhagic fever virus glycoprotein") == "hemorrhagic fever"
     )
+    # Task #14: fail-close polyphyletic grouping (no single family taxon exists)
+    assert mod._syndrome_category("arbovirus") == "arbovirus"
+    assert mod._syndrome_category("arboviruses") == "arbovirus"
+    assert mod._syndrome_category("the arbovirus family") == "arbovirus"
+    # Control: a specific arbovirus-family species must NOT hit the grouping detector
+    # (it should resolve via the dict path before reaching _syndrome_category)
+    assert mod._syndrome_category("Eastern equine encephalitis virus") is None
 
 
 def test_reject_all_is_a_named_miss(tmp_path, monkeypatch):

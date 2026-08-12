@@ -100,6 +100,13 @@ _SYNDROME_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Ecological/functional grouping (I2 Task #14): a single-token form that is NOT a specific virus and
+# has no single family taxon (unlike Option B's coronavirus/poxvirus/herpesvirus, which each have one).
+# "arbovirus" = "arthropod-borne virus": spans Togaviridae, Bunyaviridae, Flaviviridae, Arenaviridae,
+# etc. — polyphyletic, no harmonization possible. Checked SEPARATELY from _SYNDROME_RE (which requires
+# a phrase "…virus" shape) so the existing group(1) contract is untouched.
+_ECOLOGICAL_GROUPING_RE = re.compile(r"\barbovirus(?:es)?\b", re.IGNORECASE)
+
 
 def _syndrome_category(query: str) -> str | None:
     """The bare disease-category term in a query ("...the hepatitis virus...") that is NOT a specific
@@ -107,7 +114,11 @@ def _syndrome_category(query: str) -> str | None:
     if not isinstance(query, str):
         return None
     m = _SYNDROME_RE.search(query)
-    return m.group(1).lower() if m else None
+    if m:
+        return m.group(1).lower()
+    if _ECOLOGICAL_GROUPING_RE.search(query):
+        return "arbovirus"
+    return None
 
 
 def _clear_cache() -> None:
@@ -425,6 +436,7 @@ class TaxonCandidateReviewStep(BaseStep):
             "encephalitis": "Japanese / tick-borne / Eastern equine encephalitis virus",
             "respiratory": "RSV, influenza A, SARS-CoV-2, a specific coronavirus",
             "gastroenteritis": "norovirus, rotavirus, a specific astrovirus",
+            "arbovirus": "Dengue, Chikungunya, West Nile, Zika, or a specific arbovirus",
         }.get(category, "Lassa, Ebola, Crimean-Congo, or Rift Valley fever virus")
         msg = (
             f"{category.title()!r} names a DISEASE/SYNDROME, not a single virus — multiple UNRELATED "
