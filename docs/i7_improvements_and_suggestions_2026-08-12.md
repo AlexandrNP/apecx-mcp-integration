@@ -6,7 +6,23 @@ manuscript-vs-shipped). Ordered by consequence. Each item is tagged **[decision 
 
 ---
 
-## 1. [decision needed] The shipped I7 feature contradicts the manuscript's central claim
+## 1. [RESOLVED 2026-08-12 — author chose "foreground the LLM"] I7 contradicted the manuscript's central claim
+
+**Resolution.** Author decided to foreground the model's last-resort role rather than qualify-
+and-preserve or omit. A critical edit-reviewer swept the whole paper and found the contradiction
+was repeated in 8 sites beyond the 4 originally identified. A reviewed 12-edit coordinated set
+was applied to `paper-data-repository-harmonization/latex/` (main text thesis paragraph,
+abstract :51, intro :100/:146, Figure 0 legend, SIB contrast + S6, agent vignette, Table 4 new
+"Model, verification-gated" row, Table 5 footnote; supplement S3.6 last-resort-tier paragraph,
+S7.2 heading → I1–I7, S7 I7 roadmap row + "already built" subsection). Independent verification
+(grep for residual absolutes + read-back of every site) also caught one site the apply pass
+missed — the absolute "it cannot hallucinate a match" was **baked into the Figure 0 caption in
+`make_main_figures.py`** and would have rendered into the image; the caption was softened and
+`fig0_schematic.png` regenerated + visually confirmed. Net: no residual false absolute in text
+or figure; the paper now presents I7 honestly as a bounded, verification-gated last resort.
+
+### Original finding (for record)
+
 
 **The conflict.** The main text asserts resolution is *fully deterministic* and that the
 model "never decides how an entity resolves or which records match... it cannot hallucinate
