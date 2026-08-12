@@ -448,6 +448,67 @@ def _nontaxonomic_umbrella_envelope(term: str, index: str, syndrome: str) -> dic
     return {_OUTPUT_KEY: {"markdown": md, "data": {"kind": "bundle", "parts": bundle_parts}}}
 
 
+def _run_llm_last_resort_retrieval(
+    plan: dict[str, Any], term: str, index: str, taxon_id: int
+) -> dict[str, Any] | None:
+    """Re-run the normal harmonized (IRI-filtered) retrieval for an LLM-recovered taxon (I7).
+
+    The last-resort resolver mapped a dict-miss ``term`` to a CDS-verified ``taxon_id``. Build the
+    resolved IRI and REUSE ``_execute_globus_queries`` so the recovered records are served
+    harmonized (rename-proof IRI filter), then stamp the resolution path (``llm_last_resort``) and
+    a distinct health verdict (``llm_last_resort_resolved``) so the consuming LLM knows the records
+    came from the last-resort resolver, not the deterministic dictionary.
+
+    Returns ``None`` (caller falls through to the raw full-text fallback) when the harmonized leg
+    could not run OR returned 0 records — a CDS-verified taxon that is not present in THIS Globus
+    index must not masquerade as a harmonized recovery that served nothing.
+    """
+    iri = f"http://purl.obolibrary.org/obo/NCBITaxon_{taxon_id}"
+    resolved_plan = {
+        **plan,
+        "canonical_iri": iri,
+        "canonical_label": plan.get("canonical_label") or term,
+        "resolution_path": "llm_last_resort",
+        "confidence": plan.get("confidence", "llm_last_resort"),
+        "synonyms": plan.get("synonyms", []) or [],
+    }
+    try:
+        result = _execute_globus_queries(resolved_plan)
+    except Exception as exc:  # noqa: BLE001 - degrade to raw fallback; never break the miss path
+        log.warning(
+            "HarmonizedSearchExecuteStep: llm_last_resort harmonized retrieval for taxon %d "
+            "failed (%s); falling through to raw fallback",
+            taxon_id,
+            exc,
+        )
+        return None
+
+    parts = result.get(_OUTPUT_KEY, {}).get("data", {}).get("parts", {})
+    if not isinstance(parts, dict):
+        return None
+    harm = parts.get("harmonized_query", {})
+    harm_total = harm.get("total") if isinstance(harm, dict) else None
+    if not harm_total or harm_total <= 0:
+        # Taxon is real but absent from this index (or the harmonized leg errored) — let the raw
+        # full-text fallback still pull whatever text-matches are present, honestly unharmonized.
+        return None
+
+    inner = parts.get("harmonization_health")
+    parts["harmonization_health"] = {
+        "verdict": "llm_last_resort_resolved",
+        "reason": (
+            f"`{term}` did not resolve via the synonym dictionary; a bounded, CDS-gate-verified "
+            f"last-resort LLM resolution mapped it to NCBI taxon {taxon_id} and the harmonized "
+            f"IRI-filtered retrieval was re-run for that taxon ({harm_total} record(s))."
+        ),
+        "recommended_total": harm_total,
+        "underlying": inner,
+    }
+    parts.setdefault("resolution", {})["via"] = "llm_last_resort"
+    parts["resolution"]["taxon_id"] = taxon_id
+    return result
+
+
 def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
     """The term did not resolve to a taxon. DO NOT give up — fall back to a RAW full-text query
     so records that are present in the index are still pulled (a resolution miss must not mean
@@ -462,6 +523,22 @@ def _run_miss_envelope(plan: dict[str, Any]) -> dict[str, Any]:
     syndrome = _syndrome_category(term)
     if syndrome is not None:
         return _nontaxonomic_umbrella_envelope(term, index, syndrome)
+
+    # I7 — last-resort LLM taxon resolution. Reached ONLY here: a genuine, non-umbrella
+    # deterministic dict miss. Reuses the existing 3-step taxon-resolution chain (bounded to a
+    # single cached attempt/term, CDS-gate-verified inside TaxonCandidateReviewStep). It is
+    # degrade-SILENT: any LLM unavailability (incl. desktop locus with no apecx LLM) returns None
+    # and we fall through to the raw full-text fallback below — today's behavior, untouched. Lazy
+    # import: keep the common resolved path (and clean-install) free of the resolver's cost.
+    from apecx_integration.composition.steps._llm_last_resort_resolver import (
+        resolve_taxon_last_resort,
+    )
+
+    taxon_id = resolve_taxon_last_resort(term)
+    if taxon_id is not None:
+        recovered = _run_llm_last_resort_retrieval(plan, term, index, taxon_id)
+        if recovered is not None:
+            return recovered
 
     raw_total, raw_records, raw_error = _raw_query(index, term)
 

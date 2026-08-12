@@ -84,7 +84,12 @@ def test_ambiguous_emits_paused_envelope_without_globus(tmp_path):
     assert "http://x/B" in md
 
 
-def test_miss_emits_miss_envelope(tmp_path):
+def test_miss_emits_miss_envelope(tmp_path, monkeypatch):
+    # Neutralize the I7 last-resort resolver so this test isolates the deterministic miss path
+    # (hermetic regardless of a local Ollama being up).
+    import apecx_integration.composition.steps._llm_last_resort_resolver as _res
+
+    monkeypatch.setattr(_res, "resolve_taxon_last_resort", lambda term: None)
     step = _stage(tmp_path)
     plan = {
         "term": "totally-made-up-term",
@@ -114,8 +119,11 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     """THE FIX: a term the dictionary cannot resolve must STILL pull the records that are present
     in the index via a raw full-text query — not return nothing. 'Empty output for data present
     in the index but not pulled is a failure' (the bvbrc/violin 0-except-PDB report)."""
+    import apecx_integration.composition.steps._llm_last_resort_resolver as _res
     import apecx_integration.composition.steps.harmonized_search_execute_step as mod
 
+    # Neutralize the I7 last-resort resolver — this test isolates the raw-fallback behavior.
+    monkeypatch.setattr(_res, "resolve_taxon_last_resort", lambda term: None)
     # The destination (harmonized) index returns DataCite-shaped records:
     # the title lives at titles[0].title, not a flat Genome_Name column.
     monkeypatch.setattr(
@@ -144,6 +152,172 @@ def test_miss_falls_back_to_raw_query_and_pulls_present_records(monkeypatch):
     assert parts["resolution"]["path"] == "miss_raw_fallback"
     assert parts["raw_total"] == 6687
     assert parts["raw_sample"][0]["title"] == "Chikungunya virus strain S27"
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# I7 — last-resort LLM taxon resolution on the harmonized-search miss path.
+# The resolver is wired BETWEEN the fail-close umbrella check and the raw
+# fallback; these tests pin the guard ordering + degrade-loud behavior at the
+# _run_miss_envelope seam. The resolver's own chain logic is covered in
+# tests/unit/test_llm_last_resort_resolver.py.
+# ─────────────────────────────────────────────────────────────────────────
+
+
+def _fresh_resolver_caches():
+    from apecx_integration.composition.steps import _llm_last_resort_resolver as res
+    from apecx_integration.composition.steps.taxon_candidate_review_step import _clear_cache
+
+    res._clear_cache()
+    _clear_cache()
+
+
+def test_i7_degrade_loud_llm_unavailable_behaves_exactly_as_today(monkeypatch):
+    """MOST IMPORTANT: with preflight raising (no Ollama), a genuine miss goes to _raw_query
+    EXACTLY as before I7 — no exception, the LLM never blocks the deterministic path."""
+    import apecx_integration.agents._llm_config as llm_config
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    _fresh_resolver_caches()
+    # The REAL resolver runs; its preflight gate raises -> it returns None -> raw fallback.
+    monkeypatch.setattr(
+        llm_config,
+        "preflight_llm_model",
+        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("no Ollama")),
+    )
+    monkeypatch.setattr(
+        mod,
+        "_raw_query",
+        lambda index, term: (7, [{"titles": [{"title": "present record"}]}], None),
+    )
+    out = mod._run_miss_envelope(
+        {"term": "some genuine miss term", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    parts = out["envelope_input"]["data"]["parts"]
+    assert parts["resolution"]["path"] == "miss_raw_fallback"  # went to raw, unchanged
+    assert parts["raw_total"] == 7
+
+
+def test_i7_syndrome_umbrella_never_reaches_the_llm(monkeypatch):
+    """Guard ordering: a syndrome umbrella fail-closes BEFORE the resolver — the last-resort LLM
+    is never invoked for a non-taxonomic grouping."""
+    import apecx_integration.composition.steps._llm_last_resort_resolver as res
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    _fresh_resolver_caches()
+    monkeypatch.setattr(
+        res,
+        "resolve_taxon_last_resort",
+        lambda term: (_ for _ in ()).throw(AssertionError("resolver must NOT run for an umbrella")),
+    )
+    monkeypatch.setattr(
+        mod, "_raw_query", lambda *a, **k: (_ for _ in ()).throw(AssertionError("no raw query"))
+    )
+    out = mod._run_miss_envelope(
+        {"term": "hepatitis virus", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    parts = out["envelope_input"]["data"]["parts"]
+    assert parts["resolution"]["path"] == "nontaxonomic_umbrella"
+
+
+def test_i7_success_serves_harmonized_bundle_not_raw(monkeypatch):
+    """Success path: the resolver maps the miss term to a CDS-verified taxon; the harmonized
+    IRI-filtered retrieval is re-run and its bundle is returned with the new resolution path +
+    health verdict — NOT the raw fallback."""
+    import apecx_integration.composition.steps._llm_last_resort_resolver as res
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    _fresh_resolver_caches()
+    monkeypatch.setattr(res, "resolve_taxon_last_resort", lambda term: 11620)
+    monkeypatch.setattr(
+        mod, "_raw_query", lambda *a, **k: (_ for _ in ()).throw(AssertionError("raw must NOT run"))
+    )
+
+    def _fake_harmonized(plan):
+        assert plan["resolution_path"] == "llm_last_resort"
+        assert plan["canonical_iri"].endswith("NCBITaxon_11620")
+        return {
+            mod._OUTPUT_KEY: {
+                "markdown": "harmonized md",
+                "data": {
+                    "kind": "bundle",
+                    "parts": {
+                        "resolution": {
+                            "path": "llm_last_resort",
+                            "canonical_iri": plan["canonical_iri"],
+                        },
+                        "harmonized_query": {"total": 42, "records": []},
+                        "harmonization_health": {"verdict": "harmonization_helped"},
+                    },
+                },
+            }
+        }
+
+    monkeypatch.setattr(mod, "_execute_globus_queries", _fake_harmonized)
+    out = mod._run_miss_envelope(
+        {"term": "Lassa fever agent", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    parts = out["envelope_input"]["data"]["parts"]
+    assert parts["resolution"]["path"] == "llm_last_resort"
+    assert parts["resolution"]["taxon_id"] == 11620
+    assert parts["harmonization_health"]["verdict"] == "llm_last_resort_resolved"
+    assert parts["harmonization_health"]["recommended_total"] == 42
+    # the underlying deterministic verdict is preserved for transparency
+    assert parts["harmonization_health"]["underlying"] == {"verdict": "harmonization_helped"}
+
+
+def test_i7_resolved_taxon_absent_from_index_falls_through_to_raw(monkeypatch):
+    """A CDS-verified taxon that is not present in THIS Globus index (harmonized total 0) must not
+    masquerade as a recovery serving nothing — fall through to the raw full-text fallback."""
+    import apecx_integration.composition.steps._llm_last_resort_resolver as res
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    _fresh_resolver_caches()
+    monkeypatch.setattr(res, "resolve_taxon_last_resort", lambda term: 11620)
+    monkeypatch.setattr(
+        mod,
+        "_execute_globus_queries",
+        lambda plan: {
+            mod._OUTPUT_KEY: {
+                "markdown": "x",
+                "data": {"kind": "bundle", "parts": {"harmonized_query": {"total": 0}}},
+            }
+        },
+    )
+    monkeypatch.setattr(
+        mod, "_raw_query", lambda index, term: (5, [{"titles": [{"title": "raw rec"}]}], None)
+    )
+    out = mod._run_miss_envelope(
+        {"term": "obscure agent", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    parts = out["envelope_input"]["data"]["parts"]
+    assert parts["resolution"]["path"] == "miss_raw_fallback"
+    assert parts["raw_total"] == 5
+
+
+def test_i7_resolver_miss_falls_through_to_raw(monkeypatch):
+    """When the resolver returns None (LLM unavailable / named miss / CDS-gate miss), the miss path
+    is unchanged from today — raw fallback."""
+    import apecx_integration.composition.steps._llm_last_resort_resolver as res
+    import apecx_integration.composition.steps.harmonized_search_execute_step as mod
+
+    _fresh_resolver_caches()
+    monkeypatch.setattr(res, "resolve_taxon_last_resort", lambda term: None)
+    monkeypatch.setattr(
+        mod,
+        "_execute_globus_queries",
+        lambda plan: (_ for _ in ()).throw(
+            AssertionError("harmonized retrieval must NOT run on a miss")
+        ),
+    )
+    monkeypatch.setattr(
+        mod, "_raw_query", lambda index, term: (9, [{"titles": [{"title": "raw rec"}]}], None)
+    )
+    out = mod._run_miss_envelope(
+        {"term": "unresolvable agent", "index": "bvbrc_genome", "evidence": "no dict entry"}
+    )
+    parts = out["envelope_input"]["data"]["parts"]
+    assert parts["resolution"]["path"] == "miss_raw_fallback"
+    assert parts["raw_total"] == 9
 
 
 @pytest.mark.parametrize("term", ["hemorrhagic fever virus", "hepatitis virus", "arbovirus"])
@@ -295,8 +469,11 @@ def test_process_emits_step_progress_on_miss_path(tmp_path, monkeypatch):
     query monkeypatched) under a G37 subscriber and asserts a progress event fires."""
     from nanobrain.core.step_events import subscribe_to_step_events
 
+    import apecx_integration.composition.steps._llm_last_resort_resolver as _res
     import apecx_integration.composition.steps.harmonized_search_execute_step as mod
 
+    # Neutralize the I7 last-resort resolver so the miss path deterministically reaches _raw_query.
+    monkeypatch.setattr(_res, "resolve_taxon_last_resort", lambda term: None)
     monkeypatch.setattr(
         mod,
         "_raw_query",

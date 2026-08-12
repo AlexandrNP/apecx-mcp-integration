@@ -70,6 +70,7 @@ _Single source of truth for the synthesis-path LLM model + a loud preflight._
 - `def resolve_llm_model()` — Return the synthesis-path model name: ``APECX_LLM_MODEL`` env > default.
 - `def resolve_llm_base_url()` — Return the LLM base URL: ``APECX_LLM_BASE_URL`` env > default.
 - `def _probe_model(model: str, base_url: str)` — Probe the endpoint's model list. Returns ``(reachable, model_pulled)``.
+- `def llm_model_available(model: str | None=None, base_url: str | None=None)` — True iff the synthesis LLM endpoint is REACHABLE and the model is PULLED.
 - `def preflight_llm_model(model: str | None=None, base_url: str | None=None)` — Fail loud, early, and clearly when the synthesis model is not pulled.
 
 ## `src/apecx_integration/agents/_llm_factory.py`
@@ -952,6 +953,13 @@ _Per-run provenance collection for viral_epitope_analysis (E3-8)._
 - `def _functional_provenance(bundle: dict[str, Any])` — UniProt accession + release, SIFTS pdb_id, IEDB/UniProt query date, #coincidences
 - `def collect_provenance(bundle: dict[str, Any])` — Fold the determinism-relevant params recorded by the science stages into ONE record.
 
+## `src/apecx_integration/composition/steps/_llm_last_resort_resolver.py`
+_Last-resort LLM taxon resolution for the harmonized-search miss path (I7)._
+
+- `def _clear_cache()` — Test seam: drop the per-term verdict cache AND the built step singletons.
+- `def _get_steps()` — Build (once) and return the three chain steps as ``(step, input_key)`` pairs.
+- `def resolve_taxon_last_resort(query: str)` — Drive the existing 3-step LLM taxon-resolution chain for ONE miss term.
+
 ## `src/apecx_integration/composition/steps/_novel_step_container/_novel_step_job.py`
 _In-container job harness for a sandboxed novel step (#1c Phase 1)._
 
@@ -1561,6 +1569,7 @@ _HarmonizedSearchExecuteStep — run raw + harmonized Globus queries, emit envel
 - `def _run_paused_envelope(plan: dict[str, Any])` — Emit a paused envelope when resolution is ambiguous.
 - `def _raw_query(index: str, term: str)` — Run the anonymous RAW full-text query (no IRI / no taxon filter needed) against an
 - `def _nontaxonomic_umbrella_envelope(term: str, index: str, syndrome: str)` — Fail-closed diagnosis for a non-taxonomic grouping (I2 Option A). Serves NO records: a term that spans
+- `def _run_llm_last_resort_retrieval(plan: dict[str, Any], term: str, index: str, taxon_id: int)` — Re-run the normal harmonized (IRI-filtered) retrieval for an LLM-recovered taxon (I7).
 - `def _run_miss_envelope(plan: dict[str, Any])` — The term did not resolve to a taxon. DO NOT give up — fall back to a RAW full-text query
 - `def _execute_globus_queries(plan: dict[str, Any])` — Run raw + harmonized queries and emit an ok envelope with divergence.
 - class `HarmonizedSearchExecuteStep(BaseStep)` — Execute the raw + harmonized Globus queries (or emit a paused envelope).

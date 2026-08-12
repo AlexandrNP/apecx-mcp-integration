@@ -113,6 +113,25 @@ def _probe_model(model: str, base_url: str) -> tuple[bool, bool]:
     return reachable, False
 
 
+def llm_model_available(model: str | None = None, base_url: str | None = None) -> bool:
+    """True iff the synthesis LLM endpoint is REACHABLE and the model is PULLED.
+
+    Stricter than ``preflight_llm_model`` (which returns — does NOT raise — on an UNREACHABLE
+    endpoint, treating offline development as legitimate). Callers that must NOT fire an OPTIONAL
+    LLM chain unless a local model is actually usable (e.g. the I7 harmonized-search last-resort
+    resolver, which otherwise wastes a BV-BRC round-trip in desktop/offline locus) gate on this.
+
+    Never raises: any probe error reads as "not available" (``False``).
+    """
+    model = model or resolve_llm_model()
+    base_url = (base_url or resolve_llm_base_url()).rstrip("/")
+    try:
+        reachable, pulled = _probe_model(model, base_url)
+    except Exception:  # noqa: BLE001 - a probe error means "not usable", never a crash
+        return False
+    return reachable and pulled
+
+
 def preflight_llm_model(model: str | None = None, base_url: str | None = None) -> None:
     """Fail loud, early, and clearly when the synthesis model is not pulled.
 
@@ -161,4 +180,5 @@ __all__ = [
     "resolve_llm_model",
     "resolve_llm_base_url",
     "preflight_llm_model",
+    "llm_model_available",
 ]
