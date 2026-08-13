@@ -16,7 +16,28 @@ import requests
 from apecx_integration.composition.steps.bvbrc_taxonomy_search_step import (
     _CDS_PROBE_CAP,
     BvbrcTaxonomySearchStep,
+    _rql_safe_name,
 )
+
+
+@pytest.mark.parametrize(
+    "raw, expected",
+    [
+        ("Zika virus (ZIKV)", "Zika virus"),
+        ("Foo (a) Bar (b)", "Foo Bar"),
+        ("no parens", "no parens"),
+        ("(ZIKV)", ""),
+        ("Powassan   virus", "Powassan virus"),  # internal-whitespace collapse
+        ("Zika virus (ZIKV) ", "Zika virus"),  # trailing space after strip
+        ("Foo (bar (baz))", "Foo"),  # nested: greedy inner strip + residual paren drop
+        ("Foo (bar", "Foo bar"),  # unbalanced open: stray '(' dropped, no residual delimiter
+    ],
+)
+def test_rql_safe_name_strips_parenthetical(raw, expected):
+    """Parenthetical segments break BV-BRC RQL (literal '(' inside eq(...) -> 400);
+    strip them and collapse whitespace. Empirically: the stripped form matches the
+    real taxon_name, so this closes the 400 AND recovers recall."""
+    assert _rql_safe_name(raw) == expected
 
 
 def _stage(tmp_path: Path, *, max_candidates: int | None = None) -> BvbrcTaxonomySearchStep:

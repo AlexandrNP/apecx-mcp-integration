@@ -1141,6 +1141,7 @@ _BvbrcProteinFastaStep — fetch REAL per-strain protein AA sequences from BV-BR
 ## `src/apecx_integration/composition/steps/bvbrc_taxonomy_search_step.py`
 _BvbrcTaxonomySearchStep — DETERMINISTIC BV-BRC taxonomy lookup over candidate names._
 
+- `def _rql_safe_name(s: str)` — Strip parenthetical segments (and any stray parens) that break BV-BRC RQL, and
 - `def _already_resolved(bundle: dict[str, Any])` — True when the deterministic dict resolver already won (the fallback is then skipped).
 - `def _as_int(value: Any)`
 - `def _species_taxon_id(row: dict[str, Any])` — The SPECIES-rank ancestor taxon_id from a BV-BRC taxonomy row's lineage (``lineage_ids`` zipped

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
 from typing import Any
 from urllib.parse import quote
 
@@ -31,6 +32,28 @@ _PER_SYNONYM_LIMIT = 5
 # Cap on how many distinct taxa get an exact-CDS probe (one HTTP call each), to bound cost on a
 # many-synonym run. The cap is applied to the genome-coverage-ranked taxa, so the richest are probed.
 _CDS_PROBE_CAP = 12
+
+
+def _rql_safe_name(s: str) -> str:
+    """Strip parenthetical segments (and any stray parens) that break BV-BRC RQL, and
+    collapse whitespace.
+
+    BV-BRC percent-DECODES the query value before RQL-parsing, so a literal ``(`` inside
+    ``eq(taxon_name,...)`` breaks delimiter matching and returns HTTP 400 (even when the
+    parens were percent-encoded by ``quote``). Removing the parenthetical also makes the
+    value match the real ``taxon_name`` — e.g. ``"Zika virus (ZIKV)"`` -> ``"Zika virus"``,
+    which the live catalog resolves (empirically verified 2026-08-12). So this closes the
+    400 AND recovers a synonym that the pre-fix path dropped (it logged a warning and
+    skipped on the 400 — a recall hole, not a fully silent drop).
+
+    Balanced groups are removed first; any residual bare ``(``/``)`` from nested or
+    unbalanced input is then dropped, so nothing paren-shaped reaches RQL and the result
+    matches this function's name. NOTE: a colon also breaks RQL (Solr's field:value
+    separator; ``"HHV: type 1"`` -> 400) but is not an observed LLM-output shape — deferred.
+    comma / ampersand / slash were probed and are RQL-safe (no strip needed).
+    """
+    without_groups = re.sub(r"\s*\([^)]*\)", " ", s)
+    return " ".join(without_groups.replace("(", " ").replace(")", " ").split())
 
 
 def _already_resolved(bundle: dict[str, Any]) -> bool:
@@ -101,13 +124,16 @@ class BvbrcTaxonomySearchStep(BaseStep):
         for syn in synonyms:
             if not isinstance(syn, str) or not syn.strip():
                 continue
+            name = _rql_safe_name(syn)
+            if not name:
+                continue  # synonym was entirely parenthetical -> nothing queryable
             # eq(taxon_name,...) is Solr keyword-matched, so a short synonym ("HSV", "HHV") matches
             # NON-VIRAL taxa whose names merely contain the token — plants (Radula sp. HSV…),
             # synthetic constructs (Expression vector …/HSV1 tk), environmental bacteria. Constrain
             # server-side to the Viruses division so only real viruses enter the candidate list
             # (the downstream LLM then picks the right virus among them). 2026-06-27 pollution fix.
             query = (
-                f"eq(taxon_name,{quote(syn.strip())})"
+                f"eq(taxon_name,{quote(name)})"
                 f"&eq(division,Viruses)"
                 f"&select(taxon_id,taxon_name,genomes,lineage_ids,lineage_ranks)"
                 f"&sort(-genomes)"
