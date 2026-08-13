@@ -51,4 +51,20 @@ Fix `bvbrc_protein_fasta_step.py:497`:
    test that a paren-bearing protein term resolves (does NOT raise) against real BV-BRC.
 4. review-gate + `Reviewed:` trailer + index regen, as with the taxonomy fix.
 
-Deferred (unchanged): the colon-case RQL break (constructed, not observed from real LLM output).
+Deferred (unchanged): the colon-case RQL break.
+
+## Colon deferral — now evidence-backed (synonym-generator audit)
+
+Ran the real synonym generator (`TaxonSynonymGenerationStep`, devstral:24b) over 6 diverse terms
+(Powassan, Mayaro, herpes simplex, influenza A, hepatitis B, tick-borne encephalitis) and audited
+every emitted synonym for the RQL-breaking chars `( ) :`:
+
+- **39 synonyms total; 1 carried a breaking char — and it was PARENS**: `"Influenza A virus (A/IV)"`
+  (a second independent real example of the `"Name (ACRONYM)"` gloss, after `"Zika virus (ZIKV)"`).
+  This is exactly the pattern the shipped strip handles.
+- **0 synonyms contained a colon.**
+
+So the paren fix targets the genuinely-observed failure mode, and the colon deferral is justified by
+real data (not a guess): colon is not an emitted pattern. `("A/IV")` also carries a slash, but it sits
+inside the stripped parenthetical, and slash is RQL-safe regardless. Colon stays deferred until/unless
+a real occurrence appears.
