@@ -102,3 +102,39 @@ def test_process_without_flag_uses_wildcard(tmp_path, monkeypatch):
     monkeypatch.setattr(step, "_fetch", fake_fetch)
     asyncio.run(step.process({"taxon_id": 11021, "protein": "E1"}))
     assert calls and all(exact is False for (_p, _ft, exact) in calls)
+
+
+# --- RQL parenthetical safety (2026-08-12 sweep; _bvbrc_rql.rql_safe_name) ----------------- #
+def test_query_features_strips_parenthetical_on_wildcard(tmp_path, monkeypatch):
+    # A paren-bearing gloss on the wildcard path -> stripped stem, no literal '(' reaches RQL.
+    step = _stage(tmp_path)
+    captured: dict[str, str] = {}
+    monkeypatch.setattr(
+        step, "_get_json", lambda path, query: captured.setdefault("query", query) or []
+    )
+    step._query_features(11021, "envelope glycoprotein (E1)", "CDS")  # exact defaults to False
+    assert "eq(product,*envelope glycoprotein*)" in captured["query"]
+    assert "(" not in captured["query"].split("eq(product,")[1].split(")&")[0]  # no paren in value
+
+
+def test_query_features_paren_exact_falls_back_to_wildcard(tmp_path, monkeypatch):
+    # exact=True but the name carries a paren (EC-number product, e.g. "thymidine kinase
+    # (EC 2.7.1.21)"): an exact paren match is impossible (400), and exact-on-the-stem would
+    # silently miss the paren-bearing product -> fall back to WILDCARD on the stem.
+    step = _stage(tmp_path)
+    captured: dict[str, str] = {}
+    monkeypatch.setattr(
+        step, "_get_json", lambda path, query: captured.setdefault("query", query) or []
+    )
+    step._query_features(10298, "thymidine kinase (EC 2.7.1.21)", "CDS", exact=True)
+    assert "eq(product,*thymidine kinase*)" in captured["query"]  # wildcard on the stem
+    assert 'eq(product,"' not in captured["query"]  # NOT an exact clause
+
+
+def test_query_features_all_parenthetical_returns_empty_without_query(tmp_path, monkeypatch):
+    # A name that strips to empty is unqueryable -> return [] without hitting BV-BRC.
+    step = _stage(tmp_path)
+    monkeypatch.setattr(
+        step, "_get_json", lambda *a, **k: (_ for _ in ()).throw(AssertionError("must not query"))
+    )
+    assert step._query_features(10298, "(EC 2.7.1.21)", "CDS") == []

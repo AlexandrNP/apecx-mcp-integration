@@ -921,6 +921,11 @@ _Shared BV-BRC exact-CDS coverage probe for the taxon-resolution fallback steps.
 - `def content_range_total(header: str | None)` — Parse the BV-BRC ``Content-Range: items a-b/N`` header, returning ``N`` (0 if absent).
 - `def cds_count(api_base: str, taxon_id: int, timeout: float)` — Total ``genome_feature`` CDS rows for a taxon (exact taxon_id match), from the
 
+## `src/apecx_integration/composition/steps/_bvbrc_rql.py`
+_Query-value safety helpers for BV-BRC RQL (Solr data-API) predicates._
+
+- `def rql_safe_name(s: str)` — Strip parenthetical segments (and any stray parens) that break BV-BRC RQL, and
+
 ## `src/apecx_integration/composition/steps/_clade_grouping.py`
 _Pure helpers for the per-clade conservation analysis (Req 5 — broad effectiveness)._
 

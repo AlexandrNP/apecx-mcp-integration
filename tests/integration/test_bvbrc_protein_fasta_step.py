@@ -99,6 +99,30 @@ def test_fetches_real_chikv_e1_sequences(tmp_path):
     assert bundle["fasta_text"].count(">") == bundle["n_sequences"]
 
 
+@needs_bvbrc
+def test_parenthetical_protein_name_resolves(tmp_path):
+    """A protein term with a parenthetical gloss must resolve, not 400-and-raise.
+
+    Pre-fix, "E1 (envelope glycoprotein)" built eq(product,*E1 (envelope glycoprotein)*) ->
+    HTTP 400 -> raise, failing the whole FASTA leg (louder than the taxonomy step's warn+skip).
+    After the fix the paren-stripped "E1" wildcard matches, identical to the plain-E1 path.
+    Regression for the 2026-08-12 RQL sweep finding (docs/bvbrc_rql_sweep_2026-08-12.md).
+    """
+    step = _stage(tmp_path, feature_type="mat_peptide", max_sequences="8")
+    out = asyncio.run(
+        step.process(
+            {
+                "taxon_id": _CHIKV_TAXON,
+                "protein": "E1 (envelope glycoprotein)",
+                "feature_type": "mat_peptide",
+            }
+        )
+    )
+    bundle = out["protein_fasta"]
+    assert bundle["n_sequences"] >= 2, bundle
+    assert bundle["taxon_id"] == _CHIKV_TAXON
+
+
 def _seq(n: int) -> str:
     return "M" * n
 

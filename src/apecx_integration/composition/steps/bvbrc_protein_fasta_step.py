@@ -25,6 +25,8 @@ import requests
 from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import Field
 
+from apecx_integration.composition.steps._bvbrc_rql import rql_safe_name
+
 
 def _product_matches_word_boundary(product: str, protein: str) -> bool:
     """True iff ``protein`` occurs in ``product`` at a WORD BOUNDARY — i.e. not as a
@@ -494,7 +496,18 @@ class BvbrcProteinFastaStep(BaseStep):
         # VERBATIM from the catalog (exact=True, via ProteinNameNormalizationStep's product_exact)
         # is queried with an EXACT eq(product,"…") match; an unresolved user substring keeps the
         # wildcard eq(product,*…*) (requests percent-encodes the quotes/spaces in the URL).
-        product_clause = f'eq(product,"{protein}")' if exact else f"eq(product,*{protein}*)"
+        # Strip RQL-breaking parentheticals from the product NAME before querying: a literal '('
+        # in eq(product,...) returns HTTP 400 regardless of escaping (see _bvbrc_rql). Some real
+        # catalog products DO carry parens (EC-number annotations, e.g. "thymidine kinase
+        # (EC 2.7.1.21)"), but a paren value can never be RQL-matched, so an EXACT match on such a
+        # name is impossible -> fall back to a WILDCARD on the stripped stem, which still retrieves
+        # the paren-bearing product. This keeps degradation loud-and-correct rather than turning a
+        # would-be 400 into a silent exact-miss.
+        name = rql_safe_name(protein)
+        if not name:
+            return []  # all-parenthetical term -> nothing queryable; degrade to no features
+        exact_ok = exact and "(" not in protein and ")" not in protein
+        product_clause = f'eq(product,"{name}")' if exact_ok else f"eq(product,*{name}*)"
         query = (
             f"eq(taxon_id,{taxon_id})"
             f"&eq(feature_type,{feature_type})"

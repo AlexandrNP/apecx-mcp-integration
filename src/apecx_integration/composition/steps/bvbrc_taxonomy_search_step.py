@@ -22,6 +22,7 @@ from nanobrain.core.step import BaseStep, StepConfig
 from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.composition.steps._bvbrc_cds import cds_count
+from apecx_integration.composition.steps._bvbrc_rql import rql_safe_name
 
 log = logging.getLogger(__name__)
 
@@ -101,13 +102,16 @@ class BvbrcTaxonomySearchStep(BaseStep):
         for syn in synonyms:
             if not isinstance(syn, str) or not syn.strip():
                 continue
+            name = rql_safe_name(syn)
+            if not name:
+                continue  # synonym was entirely parenthetical -> nothing queryable
             # eq(taxon_name,...) is Solr keyword-matched, so a short synonym ("HSV", "HHV") matches
             # NON-VIRAL taxa whose names merely contain the token — plants (Radula sp. HSV…),
             # synthetic constructs (Expression vector …/HSV1 tk), environmental bacteria. Constrain
             # server-side to the Viruses division so only real viruses enter the candidate list
             # (the downstream LLM then picks the right virus among them). 2026-06-27 pollution fix.
             query = (
-                f"eq(taxon_name,{quote(syn.strip())})"
+                f"eq(taxon_name,{quote(name)})"
                 f"&eq(division,Viruses)"
                 f"&select(taxon_id,taxon_name,genomes,lineage_ids,lineage_ranks)"
                 f"&sort(-genomes)"
