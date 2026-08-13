@@ -4,7 +4,7 @@ Regression for the 2026-08-12 recall hole: an LLM-proposed synonym carrying a pa
 acronym ("Zika virus (ZIKV)") broke BV-BRC RQL — the endpoint percent-DECODES the value then
 RQL-parses it, so the literal '(' inside eq(taxon_name,...) returns HTTP 400 and the synonym
 is dropped (logged as a warning then skipped — a recall hole, not a fully silent drop). The
-fix (`_rql_safe_name`) strips the parenthetical before querying; the
+fix (`rql_safe_name`, now shared via `_bvbrc_rql`) strips the parenthetical before querying; the
 stripped form ("Zika virus") also matches the real taxon_name. This live test hits the real
 BV-BRC data API (no mocks) and asserts the parenthetical synonym now yields real candidates.
 Auto-skips when the API is unreachable.

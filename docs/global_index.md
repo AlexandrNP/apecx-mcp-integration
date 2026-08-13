@@ -122,6 +122,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/composition/steps/_align_cache.py` | On-disk cache for the conserved-sites ALIGN step (E3-9, CC-2 / CC-4). |
 | `src/apecx_integration/composition/steps/_alignment_viz.py` | Sequence-conservation visualization helpers for the viral_epitope_analysis report. |
 | `src/apecx_integration/composition/steps/_bvbrc_cds.py` | Shared BV-BRC exact-CDS coverage probe for the taxon-resolution fallback steps. |
+| `src/apecx_integration/composition/steps/_bvbrc_rql.py` | Query-value safety helpers for BV-BRC RQL (Solr data-API) predicates. |
 | `src/apecx_integration/composition/steps/_clade_grouping.py` | Pure helpers for the per-clade conservation analysis (Req 5 — broad effectiveness). |
 | `src/apecx_integration/composition/steps/_combination_common.py` | Shared pass-through contract for the decomposed epitope-combination steps. |
 | `src/apecx_integration/composition/steps/_evidence_bundle.py` | Shared evidence-bundle resolver for the downstream assessment steps. |
