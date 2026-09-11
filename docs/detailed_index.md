@@ -212,7 +212,8 @@ _(no module-level classes or functions)_
 ## `src/apecx_integration/agents/literature/coverage.py`
 _Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton)._
 
-- `def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer)` — Aggregate matched surface forms across ``abstracts``.
+- `def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer)` — Aggregate matched surface forms across ``abstracts`` (deliverable-1 shape).
+- `def coverage_to_json(coverage: list[dict])` — Serialize coverage entries as pretty JSON with stable key order.
 - `def harvest_and_build(*args, **kwargs)` — Harvest abstracts (Globus/PubMed) then build coverage (TODO).
 
 ## `src/apecx_integration/agents/literature/gazetteer.py`
