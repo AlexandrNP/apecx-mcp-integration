@@ -10,15 +10,15 @@ reused from ``agents.literature`` (already on main):
     (retrieve + synthesize + cite, filtered vs whole mixed corpus, precision).
 
 What this script adds is ONLY the orchestration: build one shared gazetteer,
-harvest four organisms into ONE pooled corpus (so the unfiltered condition sees
-cross-organism papers — the point of the ablation), form one case per organism,
+harvest six organisms into ONE pooled corpus (so the unfiltered condition sees
+cross-organism papers — the point of the ablation), form two cases per organism,
 run the harness, and write the REAL numbers to a JSON. Nothing is tuned to force
 filtered >= unfiltered; a synthesis-gate failure (too few filtered records -> a
 short answer -> ``synthesis_failed`` -> 0 citations) is recorded as a real data
 point, never hidden.
 
 Run:
-    cd /Users/onarykov/Downloads/apecx-cowork/wt-lit-ablrun
+    cd /Users/onarykov/Downloads/apecx-cowork/wt-lit-scale
     PYTHONPATH=src \
       /Users/onarykov/Downloads/apecx-cowork/apecx-mcp-integration/.venv/bin/python \
       scripts/run_ablation_at_scale.py
@@ -45,26 +45,37 @@ _DICT_PATH = os.environ.get("APECX_SYNONYM_DICT_PATH") or (
     "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite"
 )
 
-# The four target organisms and a FALLBACK NCBITaxon IRI used ONLY if the live
+# The target organisms and a FALLBACK NCBITaxon IRI used ONLY if the live
 # dictionary resolution misses (resolve_organism_to_iri is the source of truth).
 _TARGETS: list[tuple[str, str]] = [
     ("Chikungunya virus", "http://purl.obolibrary.org/obo/NCBITaxon_37124"),
     ("Dengue virus", "http://purl.obolibrary.org/obo/NCBITaxon_12637"),
     ("Eastern equine encephalitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11021"),
     ("Rift Valley fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_11588"),
+    ("SARS-CoV-2", "http://purl.obolibrary.org/obo/NCBITaxon_2697049"),
+    ("Influenza A virus", "http://purl.obolibrary.org/obo/NCBITaxon_11320"),
 ]
 
-# Gazetteer build limits to try IN ORDER. Start at 350k (CHIKV's surface is ~row
-# 275k); escalate only if a target isn't tagged there. Some target surfaces sit
-# deeper in the pathogen table (RVFV past row 1M), so escalation is expected. The
-# gazetteer is still built ONCE for the harvest loop — this only picks the limit.
-_GAZ_LIMITS: list[int | None] = [350_000, 1_200_000, None]
+# Gazetteer build limits to try IN ORDER, FULL-WIDTH first so EVERY target tags.
+# A high bound (1.4M) covers the whole pathogen table on the current dictionary
+# (RVFV's surface sits ~row 1.05M, Dengue was missed at 350k); the whole-table
+# escalation (None) is the belt-and-braces fallback. The gazetteer is still built
+# ONCE for the harvest loop — this only picks the limit.
+_GAZ_LIMITS: list[int | None] = [1_400_000, None]
 
-_MAX_PAPERS = 15
+_MAX_PAPERS = 30
 _RETRIEVAL_K = 5
 # A target becomes a case only if the pooled corpus carries at least this many
 # records stamped with its IRI (otherwise the filtered condition is empty).
 _MIN_STAMPED_FOR_CASE = 1
+
+# Two varied real questions per qualifying organism (up to 6*2 = 12 cases). One
+# probes antibodies/vaccines, the other pathogenesis/transmission — different
+# retrieval targets over the same stamped corpus.
+_QUESTION_TEMPLATES: list[str] = [
+    "What is known about {name} and neutralizing antibodies or vaccines?",
+    "What is known about {name} pathogenesis and transmission?",
+]
 
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
 
@@ -131,7 +142,7 @@ def main() -> None:
         pooled.extend(records)
         print(f"[harvest] {name}: {len(records)} records, {stamped_for_iri} stamped with own IRI")
 
-    # 4. One case per organism that is tagged AND has enough stamped records.
+    # 4. Two cases per organism that is tagged AND has enough stamped records.
     cases: list[dict] = []
     skipped: list[dict] = []
     for name, iri in resolved:
@@ -147,13 +158,14 @@ def main() -> None:
                 }
             )
             continue
-        cases.append(
-            {
-                "organism": name,
-                "question": f"What is known about {name} and neutralizing antibodies or vaccines?",
-                "correct_iri": iri,
-            }
-        )
+        for template in _QUESTION_TEMPLATES:
+            cases.append(
+                {
+                    "organism": name,
+                    "question": template.format(name=name),
+                    "correct_iri": iri,
+                }
+            )
 
     print(f"[cases] {len(cases)} cases, {len(skipped)} skipped: {skipped}")
     if not cases:
