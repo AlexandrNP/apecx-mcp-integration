@@ -343,6 +343,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/mcp_surface/tools/harmonized_search.py` | MCP tool — drive the harmonized_search nanobrain workflow. |
 | `src/apecx_integration/mcp_surface/tools/hpc.py` | MCP tools for the optional HPC-export lane. |
 | `src/apecx_integration/mcp_surface/tools/infrastructure_status.py` | ``infrastructure_status`` MCP tool. |
+| `src/apecx_integration/mcp_surface/tools/literature_qa.py` | MCP tool — ``literature_qa``: organism-scoped, cited literature Q&A. |
 | `src/apecx_integration/mcp_surface/tools/workflows.py` | MCP tools for the scientist-facing workflow lifecycle. |
 | `src/apecx_integration/mcp_surface/workflow_discovery.py` | Dynamic, registration-free discovery of nanobrain workflows on disk. |
 | `src/apecx_integration/mcp_surface/workflow_inputs.py` | Derive a workflow's required inputs from its OWN schema (RoC-2b). |

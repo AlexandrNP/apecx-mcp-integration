@@ -3195,6 +3195,16 @@ _``infrastructure_status`` MCP tool._
 
 - `async def infrastructure_status()` — Returns the current health of every backend apecx-mcp depends on.
 
+## `src/apecx_integration/mcp_surface/tools/literature_qa.py`
+_MCP tool — ``literature_qa``: organism-scoped, cited literature Q&A._
+
+- `def _dict_path()` — Resolve the synonym dictionary SQLite path (same source as the resolver).
+- `def _gazetteer_limit()` — Row bound for the gazetteer build; ``None`` (full) unless overridden.
+- `def _get_gazetteer()` — Build (once) + cache the pathogen gazetteer over the synonym dictionary.
+- `def _get_reader_step()` — Load (once) + cache the LiteratureRagStep via ``from_config`` (framework rule).
+- `async def _read_filtered(question: str, filtered_records: list[dict])` — Read the IRI-filtered records into a cited answer via the reader step.
+- `async def literature_qa(organism: str, question: str, max_papers: int=20)` — Answer a question about ``organism`` from organism-filtered, cited literature.
+
 ## `src/apecx_integration/mcp_surface/tools/workflows.py`
 _MCP tools for the scientist-facing workflow lifecycle._
 

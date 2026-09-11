@@ -33,6 +33,9 @@ EXPECTED_STATIC = {
     "compose_workflow",
     # canonical retrieval primitive
     "harmonized_search",
+    # organism-scoped, PMID-cited literature Q&A (merged literature RAG pipeline:
+    # resolve -> harvest+stamp -> identifier-filter -> grounded synthesis).
+    "literature_qa",
     # the viral_epitope_analysis workflow's HITL design gate
     "approve_design",
     # meta / navigation

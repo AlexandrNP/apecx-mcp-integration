@@ -81,6 +81,9 @@ from apecx_integration.mcp_surface.tools import (
     infrastructure_status as infrastructure_status_tool,
 )
 from apecx_integration.mcp_surface.tools import (
+    literature_qa as literature_qa_tool,
+)
+from apecx_integration.mcp_surface.tools import (
     workflows as workflow_tools,
 )
 
@@ -254,6 +257,15 @@ def build_server(locus: ExecutionLocus | None = None) -> FastMCP:
     # harmonization path. See ``composition/workflows/harmonized_search/``
     # for the workflow YAML.
     server.tool()(harmonized_search_tools.harmonized_search)
+
+    # Literature Q&A — organism-scoped, PMID-cited answers over the merged
+    # literature RAG pipeline (resolve organism -> NCBITaxon IRI -> harvest+stamp
+    # PubMed -> identifier-filter to that IRI -> grounded synthesis). A focused
+    # single-pipeline primitive (like harmonized_search), NOT a super-tool: it
+    # answers "what does the literature say about ORGANISM re: QUESTION" with
+    # look-alike synonym-collision papers dropped by the identifier filter. See
+    # ``mcp_surface/tools/literature_qa.py``.
+    server.tool()(literature_qa_tool.literature_qa)
 
     # Operational control-plane tools — REMOVED from the agentic MCP surface
     # 2026-06-15 (Layer-1 trim, external_orchestration_design.md §4: "operational
