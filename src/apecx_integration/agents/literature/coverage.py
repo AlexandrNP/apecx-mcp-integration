@@ -7,6 +7,7 @@ stub (``harvest_and_build``).
 
 from __future__ import annotations
 
+import json
 from collections.abc import Iterable
 
 from apecx_integration.agents.literature.gazetteer import Gazetteer, _normalize
@@ -14,29 +15,43 @@ from apecx_integration.agents.literature.gazetteer import Gazetteer, _normalize
 _MAX_EXAMPLES = 3
 
 
-def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer) -> dict:
-    """Aggregate matched surface forms across ``abstracts``.
+def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer) -> list[dict]:
+    """Aggregate matched surface forms across ``abstracts`` (deliverable-1 shape).
 
-    Each abstract is a dict ``{pmid, title, abstract}``. Returns a map
-    ``normalized_surface -> {iri, doc_count, example_pmids: [..<=3]}`` where
-    ``doc_count`` counts DISTINCT documents mentioning the surface.
+    Each abstract is a dict ``{pmid, title, abstract}``. Returns one entry per
+    matched surface form, ``{term, iri, doc_count, example_pmids: [..<=3]}``,
+    where ``doc_count`` counts DISTINCT documents mentioning the surface. The
+    list is sorted by ``doc_count`` descending, then ``term`` ascending. Pure
+    over the injected list — NO network.
     """
-    coverage: dict[str, dict] = {}
+    aggregated: dict[str, dict] = {}
     for record in abstracts:
         pmid = record.get("pmid")
         text = f"{record.get('title', '')} {record.get('abstract', '')}"
         seen_here: set[str] = set()
         for tag in gazetteer.tag(text):
-            key = _normalize(tag.surface)
-            if key in seen_here:
+            term = _normalize(tag.surface)
+            if term in seen_here:
                 continue
-            seen_here.add(key)
-            entry = coverage.setdefault(key, {"iri": tag.iri, "doc_count": 0, "example_pmids": []})
+            seen_here.add(term)
+            entry = aggregated.setdefault(
+                term, {"term": term, "iri": tag.iri, "doc_count": 0, "example_pmids": []}
+            )
             entry["doc_count"] += 1
             examples = entry["example_pmids"]
             if pmid is not None and len(examples) < _MAX_EXAMPLES and pmid not in examples:
                 examples.append(pmid)
-    return coverage
+    return sorted(aggregated.values(), key=lambda e: (-e["doc_count"], e["term"]))
+
+
+def coverage_to_json(coverage: list[dict]) -> str:
+    """Serialize coverage entries as pretty JSON with stable key order.
+
+    Writes the ``literature_term_coverage.json`` artifact. Entry order (by
+    ``doc_count``) is preserved; keys within each entry are sorted so the
+    artifact diffs cleanly across runs.
+    """
+    return json.dumps(coverage, indent=2, sort_keys=True)
 
 
 def harvest_and_build(*args, **kwargs) -> dict:
