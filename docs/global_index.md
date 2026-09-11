@@ -49,6 +49,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/agents/literature/coverage.py` | Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton). |
 | `src/apecx_integration/agents/literature/gazetteer.py` | Deterministic surface-form → NCBITaxon IRI tagger (skeleton). |
 | `src/apecx_integration/agents/literature/harvest.py` | Bounded PubMed harvest → literature-record normalization. |
+| `src/apecx_integration/agents/literature/pipeline.py` | Harvest → stamp glue: the thin seam that turns a search term into stamped |
 | `src/apecx_integration/agents/literature/resolve.py` | Resolve an organism name to its NCBITaxon PURL IRI. |
 | `src/apecx_integration/agents/literature/stamped_corpus.py` | Per-abstract taxon stamping + an in-memory, IRI-filterable store, plus a |
 | `src/apecx_integration/agents/rag_synthesis/__init__.py` | rag_synthesis — LLM synthesis with retrieved RAG chunks + |

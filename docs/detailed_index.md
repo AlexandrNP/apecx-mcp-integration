@@ -233,6 +233,11 @@ _Bounded PubMed harvest → literature-record normalization._
 
 - `def harvest_pubmed(term: str, *, max_papers: int=20)` — Harvest up to ``max_papers`` PubMed records for ``term`` (bounded).
 
+## `src/apecx_integration/agents/literature/pipeline.py`
+_Harvest → stamp glue: the thin seam that turns a search term into stamped_
+
+- `def harvest_and_stamp(term: str, gazetteer: Gazetteer, *, max_papers: int=20)` — Harvest up to ``max_papers`` PubMed records for ``term`` and stamp each
+
 ## `src/apecx_integration/agents/literature/resolve.py`
 _Resolve an organism name to its NCBITaxon PURL IRI._
 
