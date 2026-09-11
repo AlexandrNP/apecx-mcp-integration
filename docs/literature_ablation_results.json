@@ -1,41 +1,53 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-11T20:17:30.872142+00:00",
+  "timestamp": "2026-09-11T20:34:31.055909+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
-  "gazetteer_limit_used": 1200000,
+  "gazetteer_limit_used": 1400000,
   "gazetteer_tagged": {
     "Chikungunya virus": true,
     "Dengue virus": true,
     "Eastern equine encephalitis virus": true,
-    "Rift Valley fever virus": true
+    "Rift Valley fever virus": true,
+    "SARS-CoV-2": true,
+    "Influenza A virus": true
   },
-  "max_papers_per_organism": 15,
+  "max_papers_per_organism": 30,
   "retrieval_k": 5,
-  "corpus_size": 48,
+  "corpus_size": 126,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
     "Eastern equine encephalitis virus": "dictionary",
-    "Rift Valley fever virus": "dictionary"
+    "Rift Valley fever virus": "dictionary",
+    "SARS-CoV-2": "dictionary",
+    "Influenza A virus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
-      "harvested": 15,
-      "stamped_with_own_iri": 11
+      "harvested": 30,
+      "stamped_with_own_iri": 22
     },
     "Dengue virus": {
       "harvested": 4,
       "stamped_with_own_iri": 0
     },
     "Eastern equine encephalitis virus": {
-      "harvested": 14,
-      "stamped_with_own_iri": 9
+      "harvested": 29,
+      "stamped_with_own_iri": 20
     },
     "Rift Valley fever virus": {
-      "harvested": 15,
-      "stamped_with_own_iri": 13
+      "harvested": 30,
+      "stamped_with_own_iri": 22
+    },
+    "SARS-CoV-2": {
+      "harvested": 25,
+      "stamped_with_own_iri": 19
+    },
+    "Influenza A virus": {
+      "harvested": 8,
+      "stamped_with_own_iri": 4
     }
   },
   "skipped_organisms": [
@@ -44,21 +56,47 @@
       "reason": "only 0 stamped records (< 1)"
     }
   ],
-  "mean_filtered_precision": 0.6666666666666666,
-  "mean_unfiltered_precision": 0.5555555555555555,
-  "n_cases": 3,
+  "mean_filtered_precision": 1.0,
+  "mean_unfiltered_precision": 0.89,
+  "n_cases": 10,
   "per_case": [
     {
       "organism": "Chikungunya virus",
       "question": "What is known about Chikungunya virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
-      "filtered_citations": [],
-      "unfiltered_citations": [],
-      "filtered_precision": 0.0,
-      "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
-      "filtered_status": "synthesis_failed",
-      "unfiltered_status": "synthesis_failed"
+      "filtered_citations": [
+        "42646798",
+        "42698790"
+      ],
+      "unfiltered_citations": [
+        "42646798",
+        "42698790"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 27,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [
+        "42302086",
+        "42685066",
+        "42712993"
+      ],
+      "unfiltered_citations": [
+        "42302086",
+        "42685066",
+        "42712993"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 27,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
     },
     {
       "organism": "Eastern equine encephalitis virus",
@@ -70,12 +108,33 @@
       ],
       "unfiltered_citations": [
         "42268796",
-        "42506617",
         "42515544"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6666666666666666,
-      "filtered_corpus_size": 9,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "42060520",
+        "42132354",
+        "42157587",
+        "42515544"
+      ],
+      "unfiltered_citations": [
+        "42060520",
+        "42132354",
+        "42157587",
+        "42515544"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -84,16 +143,125 @@
       "question": "What is known about Rift Valley fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
       "filtered_citations": [
-        "42519212",
+        "42328864",
+        "42347605",
         "42607044"
       ],
       "unfiltered_citations": [
-        "42519212",
+        "42328864",
+        "42347605",
         "42607044"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 23,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is known about Rift Valley fever virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42598172",
+        "42607044",
+        "42687974"
+      ],
+      "unfiltered_citations": [
+        "42598172",
+        "42607044",
+        "42687974"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 23,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "33226741",
+        "33355732",
+        "34014628",
+        "34014629",
+        "34014630"
+      ],
+      "unfiltered_citations": [
+        "33226741",
+        "33355732",
+        "34014628",
+        "34014629",
+        "34014630"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "32259829",
+        "34014628",
+        "34540312"
+      ],
+      "unfiltered_citations": [
+        "32259829",
+        "34014628",
+        "34014630"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "4246007"
+      ],
+      "unfiltered_citations": [
+        "34014629",
+        "4246007",
+        "5309456",
+        "5309457",
+        "5817556"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "4246007",
+        "42700361",
+        "5309457",
+        "5388496",
+        "5391162"
+      ],
+      "unfiltered_citations": [
+        "4246007",
+        "5309456",
+        "5391162",
+        "5817556"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.5,
+      "filtered_corpus_size": 5,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     }
