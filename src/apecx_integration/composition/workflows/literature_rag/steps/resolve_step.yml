@@ -1,0 +1,36 @@
+# literature_rag step 0 — ResolveOrganismStep (organism name -> NCBITaxon IRI)
+#
+# Turns the envelope's free-text ``organism`` into the canonical NCBITaxon PURL
+# the downstream OntologyFilterStep keys on, and passes the WHOLE envelope through
+# enriched with ``target_iri`` so later steps still see question/stamped_records.
+# The step OWNS its input/output data units + trigger (framework rule); the
+# workflow owns the links between steps.
+
+name: resolve_organism_step
+description: >
+  Organism-name -> NCBITaxon-IRI enricher. Reads ``organism`` from the input
+  envelope, resolves it via the shared dictionary resolver, and outputs the input
+  envelope enriched with ``target_iri`` (None on a miss — degrade-loud, no raise).
+
+input_data_units:
+  resolve_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: resolve_input
+    description: >
+      ``{organism: str, question?: str, stamped_records?: list, ...}`` — the input
+      envelope. Fed from the workflow input via the input_to_resolve link.
+    persistent: false
+
+output_data_units:
+  resolve_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: resolve_output
+    description: >
+      ``{**envelope, target_iri: str|null}`` — the input envelope enriched with the
+      resolved NCBITaxon IRI. Single output unit, so the framework writes the whole
+      returned dict here.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "resolve_input"

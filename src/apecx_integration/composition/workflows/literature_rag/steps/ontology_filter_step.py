@@ -23,6 +23,9 @@ Input envelope (carried by the ``filter_input`` data unit):
     ``http://purl.obolibrary.org/obo/NCBITaxon_37124``.
 
 Output envelope (written to the single ``filter_output`` data unit):
+  The WHOLE input envelope, passed through so accumulated fields (``question``,
+  ``organism``, ...) survive to the reader, PLUS the filter's own keys as a
+  superset:
   - ``filtered_records``: records whose ``iris`` contain ``target_iri``.
   - ``target_iri``: the IRI that was filtered on (None when absent).
   - ``status``: ``"ok"`` on a real filter, ``"no_target_iri"`` when degraded.
@@ -79,7 +82,15 @@ class OntologyFilterStep(BaseStep):
                 "cannot filter (organism->IRI resolution is an upstream concern); "
                 "returning empty filtered set with status=no_target_iri"
             )
-            return {"filtered_records": [], "target_iri": None, "status": "no_target_iri"}
+            # Pass the whole envelope through (enriched) so accumulated fields
+            # (question, organism, ...) survive to the reader even on the degrade
+            # path; overlay the filter's own keys as a superset.
+            return {
+                **envelope,
+                "filtered_records": [],
+                "target_iri": None,
+                "status": "no_target_iri",
+            }
 
         filtered_records = [r for r in stamped_records if target_iri in (r.get("iris") or [])]
         self.nb_logger.info(
@@ -88,7 +99,11 @@ class OntologyFilterStep(BaseStep):
             len(stamped_records),
             target_iri,
         )
+        # Pass the whole enriched envelope through so downstream fields (question,
+        # ...) accumulate; overlay filtered_records + target_iri + status as a
+        # superset of the prior 3-key output (existing unit test still passes).
         return {
+            **envelope,
             "filtered_records": filtered_records,
             "target_iri": target_iri,
             "status": "ok",

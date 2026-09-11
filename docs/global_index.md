@@ -232,6 +232,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/composition/workflows/literature_rag/steps/__init__.py` | Step classes for the literature_rag workflow skeleton. |
 | `src/apecx_integration/composition/workflows/literature_rag/steps/literature_rag_step.py` | LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer. |
 | `src/apecx_integration/composition/workflows/literature_rag/steps/ontology_filter_step.py` | OntologyFilterStep — narrow a stamped record set to one NCBITaxon IRI. |
+| `src/apecx_integration/composition/workflows/literature_rag/steps/resolve_step.py` | ResolveOrganismStep — enrich the envelope with a target NCBITaxon IRI. |
 | `src/apecx_integration/composition/workflows/open_rosalind_rhea_lightweight_builder.py` | Lightweight WorkflowBuilder variant of the open_rosalind_rhea workflow. |
 | `src/apecx_integration/composition/workflows/protein_name_normalization/__init__.py` | protein_name_normalization — resolve a user protein name to the BV-BRC product term. |
 | `src/apecx_integration/composition/workflows/protein_name_normalization/builder.py` | protein_name_normalization — resolve a user protein name to the BV-BRC product term. |

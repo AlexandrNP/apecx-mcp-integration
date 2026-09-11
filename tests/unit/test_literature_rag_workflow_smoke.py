@@ -1,17 +1,18 @@
-"""Loadability smoke test for the literature_rag workflow SKELETON.
+"""Loadability smoke test for the literature_rag workflow.
 
-Pins the from_config contract WITHOUT running the (stub) steps:
+Pins the from_config contract WITHOUT running the steps:
 
-  1. ``Workflow.from_config(<abs path>)`` loads the workflow + both step YAMLs
-     + all links without raising.
-  2. The loaded workflow has exactly two child steps
-     (ontology_filter_step, literature_rag_step).
+  1. ``Workflow.from_config(<abs path>)`` loads the workflow + all three step
+     YAMLs + all links without raising.
+  2. The loaded workflow has exactly three child steps
+     (resolve_organism_step, ontology_filter_step, literature_rag_step).
   3. Every DirectLink in the workflow YAML declares ``auto_transfer: true``
      — the dominant nanobrain silent-failure guard. Verified BOTH by parsing
      the YAML and against the loaded workflow's link objects.
 
 Hermetic: no network, no LLM, no real data. ``Workflow.run`` is intentionally
-NOT called — the steps are degrade-loud stubs.
+NOT called here — the end-to-end cascade is exercised by the Ollama-gated
+``tests/integration/test_literature_cascade_e2e.py``.
 """
 
 from __future__ import annotations
@@ -49,7 +50,7 @@ def test_workflow_yaml_exists():
 def test_every_direct_link_declares_auto_transfer_true():
     """Parse-the-YAML check: #DirectLinks == #auto_transfer:true (dominant silent-failure)."""
     configs = _direct_link_configs()
-    assert len(configs) == 3, f"expected 3 DirectLinks, found {len(configs)}"
+    assert len(configs) == 4, f"expected 4 DirectLinks, found {len(configs)}"
     with_flag = [c for c in configs if c.get("auto_transfer") is True]
     assert len(with_flag) == len(configs), (
         "every DirectLink MUST declare auto_transfer: true; "
@@ -63,12 +64,14 @@ def test_workflow_loads_from_config():
     assert wf is not None
 
 
-def test_workflow_has_exactly_two_steps():
+def test_workflow_has_exactly_three_steps():
     wf = Workflow.from_config(str(WORKFLOW_YAML))
     steps = wf.child_steps
-    assert set(steps.keys()) == {"ontology_filter_step", "literature_rag_step"}, (
-        f"expected exactly the two skeleton steps, got {sorted(steps.keys())}"
-    )
+    assert set(steps.keys()) == {
+        "resolve_organism_step",
+        "ontology_filter_step",
+        "literature_rag_step",
+    }, f"expected exactly the three cascade steps, got {sorted(steps.keys())}"
 
 
 def test_loaded_link_objects_have_auto_transfer_true():
@@ -76,7 +79,7 @@ def test_loaded_link_objects_have_auto_transfer_true():
     wf = Workflow.from_config(str(WORKFLOW_YAML))
     links = wf.step_links
     direct_links = [lk for lk in links.values() if type(lk).__name__ == "DirectLink"]
-    assert len(direct_links) == 3, f"expected 3 DirectLinks, got {len(direct_links)}"
+    assert len(direct_links) == 4, f"expected 4 DirectLinks, got {len(direct_links)}"
     for lk in direct_links:
         assert getattr(lk, "auto_transfer", False) is True, (
             f"DirectLink {lk!r} loaded with auto_transfer != True"

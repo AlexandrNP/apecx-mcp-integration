@@ -1,28 +1,31 @@
-# literature_rag workflow — ontology-filtered literature RAG (SKELETON)
+# literature_rag workflow — ontology-filtered literature RAG (enrich-the-envelope cascade)
 #
-# Two-step scaffold:
+# Linear "enrich-the-envelope" cascade: ONE Workflow.run(input) flows
+# organism -> IRI -> filtered papers -> cited answer. Each step passes the WHOLE
+# envelope through, ENRICHED with its own output, so fields accumulate:
 #
-#   workflow_input
-#       │  (input_to_filter)
+#   workflow_input  {organism, question, stamped_records}
+#       │  (input_to_resolve)
 #       ▼
-#   ontology_filter_step   ← narrows candidate records by ontology terms (STUB)
-#       │  {filtered_records, status}   (filter_to_rag)
+#   resolve_organism_step   ← adds target_iri (organism -> NCBITaxon IRI)
+#       │  {**envelope, target_iri}                (resolve_to_filter)
 #       ▼
-#   literature_rag_step    ← answers the query over the filtered set (STUB)
-#       │  {answer, citations, status}  (rag_to_output)
+#   ontology_filter_step    ← adds filtered_records + status (keeps records
+#       │                       stamped with target_iri)
+#       │  {**envelope, filtered_records, status}  (filter_to_rag)
+#       ▼
+#   literature_rag_step     ← answers the question over the filtered set
+#       │  {answer, citations, status}             (rag_to_output)
 #       ▼
 #   workflow_output
-#
-# Both steps are DEGRADE-LOUD STUBS in this skeleton (see their .py files). This
-# YAML pins the topology, the trigger cascade, and the link wiring so a from_config
-# smoke test can verify loadability WITHOUT running the steps.
 
 name: literature_rag_workflow
 description: >
-  Ontology-filtered literature RAG (skeleton). Two steps: (1) ontology filter over
-  a candidate record set; (2) literature RAG answer over the filtered set. Both are
-  stubs returning well-formed empty envelopes until the real logic lands.
-version: 0.1.0
+  Ontology-filtered literature RAG. Three steps: (0) resolve an organism name to a
+  NCBITaxon IRI; (1) filter a stamped candidate record set to that IRI; (2)
+  literature RAG answer over the filtered set. Each step enriches and forwards the
+  whole envelope so the question survives from input to the reader.
+version: 0.2.0
 
 # Schema v2: DirectLink auto_transfer defaults to true. We ALSO declare
 # auto_transfer: true explicitly on every link below — belt-and-suspenders against
@@ -39,8 +42,10 @@ input_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: workflow_input
     description: >
-      ``{query: str, records?: list}`` — the scientist question + optional candidate
-      records. Forwarded to ontology_filter_step.filter_input via input_to_filter.
+      ``{organism: str, question: str, stamped_records: list}`` — the organism to
+      resolve, the scientist question, and the candidate records (each stamped with
+      an ``iris: list[str]`` field). Forwarded to resolve_organism_step.resolve_input
+      via input_to_resolve.
     persistent: false
 
 output_data_units:
@@ -53,6 +58,10 @@ output_data_units:
     persistent: false
 
 steps:
+  resolve_organism_step:
+    class: "apecx_integration.composition.workflows.literature_rag.steps.resolve_step.ResolveOrganismStep"
+    config: "steps/resolve_step.yml"
+
   ontology_filter_step:
     class: "apecx_integration.composition.workflows.literature_rag.steps.ontology_filter_step.OntologyFilterStep"
     config: "steps/ontology_filter_step.yml"
@@ -64,16 +73,24 @@ steps:
 links:
   # ──────────────────────────────────────────────────────────────────
   # Every DirectLink MUST declare auto_transfer: true. Count of DirectLinks
-  # below (3) MUST equal the count of auto_transfer: true (verified in the
+  # below (4) MUST equal the count of auto_transfer: true (verified in the
   # smoke test and by scripts/lint_workflow_yamls.py).
   # ──────────────────────────────────────────────────────────────────
 
-  input_to_filter:
+  input_to_resolve:
     class: "nanobrain.core.link.DirectLink"
     config:
       auto_transfer: true
       link_type: "direct"
       source: "workflow_input"
+      target: "resolve_organism_step.resolve_input"
+
+  resolve_to_filter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      auto_transfer: true
+      link_type: "direct"
+      source: "resolve_organism_step.resolve_output"
       target: "ontology_filter_step.filter_input"
 
   filter_to_rag:

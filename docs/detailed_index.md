@@ -2322,6 +2322,14 @@ _OntologyFilterStep — narrow a stamped record set to one NCBITaxon IRI._
   - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the filter envelope.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
+## `src/apecx_integration/composition/workflows/literature_rag/steps/resolve_step.py`
+_ResolveOrganismStep — enrich the envelope with a target NCBITaxon IRI._
+
+- class `ResolveOrganismStep(BaseStep)` — Organism-name -> NCBITaxon-IRI enricher — adds ``target_iri`` to the envelope.
+  - `def _get_config_class(cls)`
+  - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the enrichment envelope.
+  - `async def process(self, input_data: dict[str, Any], **kwargs)`
+
 ## `src/apecx_integration/composition/workflows/open_rosalind_rhea_lightweight_builder.py`
 _Lightweight WorkflowBuilder variant of the open_rosalind_rhea workflow._
 
