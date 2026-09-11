@@ -2301,10 +2301,11 @@ _LiteratureRagStep — answer a query grounded in filtered literature (SKELETON 
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/ontology_filter_step.py`
-_OntologyFilterStep — narrow a candidate record set by ontology terms (SKELETON STUB)._
+_OntologyFilterStep — narrow a stamped record set to one NCBITaxon IRI._
 
-- class `OntologyFilterStep(BaseStep)` — Ontology-driven record filter — skeleton stub returning an empty filtered set.
+- class `OntologyFilterStep(BaseStep)` — NCBITaxon-IRI record filter — keeps records stamped with a target IRI.
   - `def _get_config_class(cls)`
+  - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the filter envelope.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/workflows/open_rosalind_rhea_lightweight_builder.py`
