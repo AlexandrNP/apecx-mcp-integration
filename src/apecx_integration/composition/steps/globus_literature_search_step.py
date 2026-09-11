@@ -50,6 +50,7 @@ from pydantic import ConfigDict, Field, model_validator
 
 from apecx_integration.agents.globus_search import client as globus_client
 from apecx_integration.agents.globus_search._datacite import (
+    datacite_description,
     datacite_identifiers,
     datacite_title,
 )
@@ -251,7 +252,7 @@ class GlobusLiteratureSearchStep(BaseStep):
             "pmid": _pmid(content),
             "journal": _publisher_name(content),
             "year": _year(content),
-            "abstract": "",
+            "abstract": datacite_description(content) or "",
             "provenance": "globus_literature",
         }
 

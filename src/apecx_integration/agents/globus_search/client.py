@@ -53,6 +53,30 @@ def _is_disabled() -> bool:
     return os.environ.get("APECX_GLOBUS_SEARCH_DISABLED") == "1"
 
 
+def _build_search_payload(
+    query: str,
+    *,
+    limit: int,
+    offset: int,
+    advanced: bool = False,
+    filters: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Build one Globus ``post_search`` payload — pure, no network (unit-testable).
+
+    ``advanced`` (or the presence of ``filters``) sets ``advanced: True`` so Globus
+    parses ``q`` as a Lucene query (quoted PHRASES + boolean ``AND``/``OR`` are honored);
+    structured field ``filters`` require advanced mode, so they imply it. The default
+    (``advanced=False``, no ``filters``) omits both keys and reproduces the original
+    free-text payload exactly — preserving backward compatibility.
+    """
+    payload: dict[str, Any] = {"q": query.strip(), "limit": limit, "offset": offset}
+    if filters:
+        payload["filters"] = filters
+    if filters or advanced:
+        payload["advanced"] = True
+    return payload
+
+
 def search(
     query: str,
     *,
@@ -120,22 +144,6 @@ def search(
     _CEILING = 10000
     target: int | None = None if int(max_results) <= 0 else int(max_results)
 
-    base_payload: dict[str, Any] = {}
-    if filters:
-        # Structured field filters require Globus "advanced" query mode;
-        # without advanced=true the filters are silently ignored and the
-        # query degrades to free-text — exactly the silent-failure shape
-        # we refuse. Set it explicitly whenever filters are present.
-        base_payload["filters"] = filters
-    if filters or advanced:
-        # ``advanced`` makes Globus parse ``q`` as a Lucene query so quoted PHRASES and
-        # boolean ``AND``/``OR`` are honored. Without it, a phrase-OR query degrades to a
-        # loose token bag that matches almost the whole corpus and ranks off-topic records
-        # to the top (verified: a literature synonym-OR query returned HIV/OR-nurse papers in
-        # simple mode, on-topic virus papers in advanced mode). Callers passing a structured
-        # ``q`` (phrases / booleans) MUST set advanced=True; filters imply it.
-        base_payload["advanced"] = True
-
     client = SearchClient()
     hits: list[dict[str, Any]] = []
     page_offset = int(offset)
@@ -155,7 +163,9 @@ def search(
             )
             break
         page_limit = min(remaining, _CEILING - page_offset)
-        payload = {**base_payload, "q": query.strip(), "limit": page_limit, "offset": page_offset}
+        payload = _build_search_payload(
+            query, limit=page_limit, offset=page_offset, advanced=advanced, filters=filters
+        )
         try:
             result = client.post_search(index_uuid, payload)
         except Exception as exc:

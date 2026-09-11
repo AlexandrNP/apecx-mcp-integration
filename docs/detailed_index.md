@@ -180,6 +180,7 @@ _Globus Search index client — read-only access to the APECx corpus._
 - class `GlobusSearchUnavailableError(RuntimeError)` — Raised when the Globus Search query cannot be completed.
 - `def _resolve_index_uuid()`
 - `def _is_disabled()`
+- `def _build_search_payload(query: str, *, limit: int, offset: int, advanced: bool=False, filters: list[dict[str, Any]] | None=None)` — Build one Globus ``post_search`` payload — pure, no network (unit-testable).
 - `def search(query: str, *, max_results: int=20, offset: int=0, filters: list[dict[str, Any]] | None=None, advanced: bool=False)` — Query the APECx Globus Search index.
 - `def _extract_hits(result: Any)` — Normalize one Globus ``post_search`` page into hit dicts.
 - `def facet(field_name: str, query: str, *, filters: list[dict[str, Any]] | None=None, size: int=100)` — Enumerate the distinct values of one indexed field (a Globus terms facet).
