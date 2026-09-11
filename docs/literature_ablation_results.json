@@ -1,0 +1,102 @@
+{
+  "experiment": "literature_organism_filter_ablation_at_scale",
+  "timestamp": "2026-09-11T20:17:30.872142+00:00",
+  "model": "mistral-nemo:latest",
+  "llm_base_url": "default(http://localhost:11434/v1)",
+  "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
+  "gazetteer_limit_used": 1200000,
+  "gazetteer_tagged": {
+    "Chikungunya virus": true,
+    "Dengue virus": true,
+    "Eastern equine encephalitis virus": true,
+    "Rift Valley fever virus": true
+  },
+  "max_papers_per_organism": 15,
+  "retrieval_k": 5,
+  "corpus_size": 48,
+  "resolution_source": {
+    "Chikungunya virus": "dictionary",
+    "Dengue virus": "dictionary",
+    "Eastern equine encephalitis virus": "dictionary",
+    "Rift Valley fever virus": "dictionary"
+  },
+  "harvested_counts": {
+    "Chikungunya virus": {
+      "harvested": 15,
+      "stamped_with_own_iri": 11
+    },
+    "Dengue virus": {
+      "harvested": 4,
+      "stamped_with_own_iri": 0
+    },
+    "Eastern equine encephalitis virus": {
+      "harvested": 14,
+      "stamped_with_own_iri": 9
+    },
+    "Rift Valley fever virus": {
+      "harvested": 15,
+      "stamped_with_own_iri": 13
+    }
+  },
+  "skipped_organisms": [
+    {
+      "organism": "Dengue virus",
+      "reason": "only 0 stamped records (< 1)"
+    }
+  ],
+  "mean_filtered_precision": 0.6666666666666666,
+  "mean_unfiltered_precision": 0.5555555555555555,
+  "n_cases": 3,
+  "per_case": [
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [],
+      "unfiltered_citations": [],
+      "filtered_precision": 0.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": "synthesis_failed",
+      "unfiltered_status": "synthesis_failed"
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "42268796",
+        "42515544"
+      ],
+      "unfiltered_citations": [
+        "42268796",
+        "42506617",
+        "42515544"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6666666666666666,
+      "filtered_corpus_size": 9,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is known about Rift Valley fever virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42519212",
+        "42607044"
+      ],
+      "unfiltered_citations": [
+        "42519212",
+        "42607044"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": "ok",
+      "unfiltered_status": "ok"
+    }
+  ],
+  "note": "Honest run: numbers are exactly as produced. 0 citations with status 'synthesis_failed' or 'no_evidence' means the synthesizer's min-length / no-evidence gate fired (too few filtered records) \u2014 a real data point, not tuned away."
+}
