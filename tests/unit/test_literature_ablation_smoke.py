@@ -1,0 +1,230 @@
+"""Tests for the organism-filter ablation harness.
+
+Two layers, per the workspace mocks policy:
+
+  1. OFFLINE unit (always runs, NO LLM, NO network): a hand-built 4-record corpus
+     + a FAKE reader that cites the top-1 record it is given (by input order).
+     Record order is arranged so the UNFILTERED reader's top-1 is a dengue record
+     (precision 0.0) while the FILTERED reader's top-1 is a CHIKV record
+     (precision 1.0). Asserts mean_filtered_precision > mean_unfiltered_precision,
+     and pins ``organism_precision`` on two hand-checked cases.
+
+  2. Ollama-GATED integration (real sentence-transformers retrieval + real LLM):
+     two cases (CHIKV, dengue) over a stamped fixture corpus, via
+     ``default_reader``. Asserts mean_filtered_precision >= mean_unfiltered_precision
+     (the filter must not hurt). The offline unit is authoritative; the integration
+     result is reported honestly and never faked.
+
+Run:
+    PYTHONPATH=src .venv/bin/python -m pytest \
+        tests/unit/test_literature_ablation_smoke.py -q
+"""
+
+from __future__ import annotations
+
+import os
+
+import httpx
+import pytest
+
+from apecx_integration.agents.literature.ablation import (
+    default_reader,
+    organism_precision,
+    run_ablation,
+)
+from apecx_integration.agents.literature.gazetteer import build_gazetteer
+from apecx_integration.agents.literature.stamped_corpus import stamp_abstract
+
+_CHIKV_IRI = "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+_DENGUE_IRI = "http://purl.obolibrary.org/obo/NCBITaxon_12637"
+
+
+# --------------------------------------------------------------------------- #
+# 1. OFFLINE unit — no LLM, no network, always runs.
+# --------------------------------------------------------------------------- #
+
+
+def _fake_top1_reader(question: str, records: list[dict], *, k: int = 5) -> dict:
+    """Cite the top-1 record by input order (no retrieval, no LLM)."""
+    return {"citations": [records[0]["pmid"]] if records else []}
+
+
+def test_organism_precision_hand_checked():
+    """Exact 1.0 / 0.0 on the two hand-checked citation sets."""
+    corpus_by_pmid = {
+        "c1": {"pmid": "c1", "iris": [_CHIKV_IRI]},
+        "d1": {"pmid": "d1", "iris": [_DENGUE_IRI]},
+    }
+    assert organism_precision(["c1"], corpus_by_pmid, _CHIKV_IRI) == 1.0
+    assert organism_precision(["d1"], corpus_by_pmid, _CHIKV_IRI) == 0.0
+    assert organism_precision([], corpus_by_pmid, _CHIKV_IRI) == 0.0
+
+
+def test_filter_lifts_organism_precision_offline():
+    """Filter isolates the on-organism records, so the fake top-1 reader cites a
+    CHIKV PMID when filtered but a dengue PMID over the whole mixed corpus."""
+    # Order matters: a dengue record is FIRST, so the unfiltered top-1 is off-organism.
+    corpus = [
+        {"pmid": "d1", "iris": [_DENGUE_IRI]},
+        {"pmid": "c1", "iris": [_CHIKV_IRI]},
+        {"pmid": "d2", "iris": [_DENGUE_IRI]},
+        {"pmid": "c2", "iris": [_CHIKV_IRI]},
+    ]
+    cases = [{"organism": "CHIKV", "question": "x", "correct_iri": _CHIKV_IRI}]
+
+    result = run_ablation(cases, corpus, _fake_top1_reader)
+
+    assert result["mean_filtered_precision"] == 1.0
+    assert result["mean_unfiltered_precision"] == 0.0
+    assert result["mean_filtered_precision"] > result["mean_unfiltered_precision"]
+    assert result["n_cases"] == 1
+    case = result["per_case"][0]
+    assert case["filtered_citations"] == ["c1"]
+    assert case["unfiltered_citations"] == ["d1"]
+
+
+# --------------------------------------------------------------------------- #
+# 2. Ollama-GATED integration — real retrieval + real LLM.
+# --------------------------------------------------------------------------- #
+
+_OLLAMA_URL = os.environ.get("APECX_LLM_BASE_URL", "http://localhost:11434/v1")
+_OLLAMA_ROOT = _OLLAMA_URL[:-3].rstrip("/") if _OLLAMA_URL.endswith("/v1") else _OLLAMA_URL
+_LLM_MODEL = os.environ.get("APECX_LLM_MODEL", "mistral-nemo:latest")
+
+
+def _ollama_reachable() -> bool:
+    """True iff the Ollama endpoint is reachable AND the target model is pulled."""
+    try:
+        r = httpx.get(f"{_OLLAMA_ROOT}/api/tags", timeout=3.0)
+        r.raise_for_status()
+        names = {m["name"] for m in r.json().get("models", [])}
+        stem = _LLM_MODEL.split(":", 1)[0]
+        return any(n == _LLM_MODEL or n.split(":", 1)[0] == stem for n in names)
+    except Exception:
+        return False
+
+
+# Realistic CHIKV + dengue abstracts with distinct PMIDs (real domain facts, not
+# synthetic noise). Each is stamped with its organism IRI via the gazetteer.
+_RAW_RECORDS = [
+    {
+        "pmid": "23300718",
+        "title": "Broadly neutralizing human monoclonal antibodies against Chikungunya virus",
+        "abstract": (
+            "Human monoclonal antibodies from convalescent Chikungunya virus (CHIKV) patients "
+            "potently neutralize the virus by targeting the E2 glycoprotein, blocking attachment "
+            "and fusion and protecting mice against lethal CHIKV challenge."
+        ),
+    },
+    {
+        "pmid": "24672035",
+        "title": "A live-attenuated Chikungunya virus vaccine candidate elicits protective immunity",
+        "abstract": (
+            "A live-attenuated Chikungunya virus vaccine candidate induced durable neutralizing "
+            "antibody titers and protected non-human primates from CHIKV viremia and arthritis, "
+            "with attenuating deletions in nsP3 and E2."
+        ),
+    },
+    {
+        "pmid": "26833106",
+        "title": "Neutralizing antibody responses to dengue virus serotypes in natural infection",
+        "abstract": (
+            "Following natural dengue virus (DENV) infection, neutralizing antibodies target the "
+            "envelope protein domain III and confer serotype-specific protection, informing "
+            "tetravalent dengue vaccine design."
+        ),
+    },
+    {
+        "pmid": "27339099",
+        "title": "A tetravalent dengue virus vaccine induces balanced neutralizing immunity",
+        "abstract": (
+            "A live tetravalent dengue virus vaccine elicited balanced neutralizing antibody "
+            "responses against all four DENV serotypes and reduced symptomatic dengue in a "
+            "controlled human infection setting."
+        ),
+    },
+    {
+        "pmid": "28481359",
+        "title": "Structural basis of Chikungunya virus neutralization by a human antibody",
+        "abstract": (
+            "The crystal structure of a broadly neutralizing human antibody bound to the "
+            "Chikungunya virus E2 glycoprotein reveals a conserved quaternary epitope spanning "
+            "adjacent envelope spikes, explaining potent CHIKV neutralization and guiding "
+            "structure-based immunogen design."
+        ),
+    },
+    {
+        "pmid": "29491387",
+        "title": "Human antibodies neutralize dengue virus by engaging the envelope dimer epitope",
+        "abstract": (
+            "Broadly neutralizing human antibodies isolated from dengue virus immune donors "
+            "recognize a quaternary envelope dimer epitope on DENV, neutralize all four "
+            "serotypes, and protect mice from lethal dengue challenge, defining a target for "
+            "dengue vaccine and therapeutic development."
+        ),
+    },
+]
+
+_GAZ_MAP = {
+    "chikv": _CHIKV_IRI,
+    "chikungunya virus": _CHIKV_IRI,
+    "denv": _DENGUE_IRI,
+    "dengue virus": _DENGUE_IRI,
+}
+
+
+@pytest.mark.slow
+@pytest.mark.skipif(
+    not _ollama_reachable(),
+    reason=f"Ollama endpoint {_OLLAMA_ROOT} / model {_LLM_MODEL} not reachable",
+)
+def test_filter_does_not_hurt_precision_real(monkeypatch):
+    """Real end-to-end: filter should not reduce mean organism-precision.
+
+    The offline unit is authoritative for the mechanism; this run reports the
+    measured filtered-vs-unfiltered numbers and asserts the filter does not hurt.
+    """
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("faiss")
+
+    monkeypatch.setenv("APECX_LLM_MODEL", _LLM_MODEL)
+    monkeypatch.setenv("APECX_LLM_TEMPERATURE", "0")
+
+    gaz = build_gazetteer(_GAZ_MAP)
+    corpus = [stamp_abstract(r, gaz) for r in _RAW_RECORDS]
+    # Guard the fixture: each record carries exactly its own organism IRI.
+    chikv_iris = [_CHIKV_IRI in r["iris"] for r in corpus]
+    dengue_iris = [_DENGUE_IRI in r["iris"] for r in corpus]
+    assert sum(chikv_iris) == 3 and sum(dengue_iris) == 3
+
+    cases = [
+        {
+            "organism": "CHIKV",
+            "question": "What antibodies neutralize Chikungunya virus?",
+            "correct_iri": _CHIKV_IRI,
+        },
+        {
+            "organism": "DENV",
+            "question": "What antibodies neutralize dengue virus?",
+            "correct_iri": _DENGUE_IRI,
+        },
+    ]
+
+    result = run_ablation(cases, corpus, default_reader())
+
+    print(
+        "\n[ablation] mean_filtered_precision="
+        f"{result['mean_filtered_precision']:.3f} "
+        f"mean_unfiltered_precision={result['mean_unfiltered_precision']:.3f}"
+    )
+    for c in result["per_case"]:
+        print(
+            f"[ablation] {c['organism']}: "
+            f"filtered={c['filtered_precision']:.3f} {c['filtered_citations']} | "
+            f"unfiltered={c['unfiltered_precision']:.3f} {c['unfiltered_citations']}"
+        )
+
+    assert result["mean_filtered_precision"] >= result["mean_unfiltered_precision"], (
+        f"filter must not hurt: {result['mean_filtered_precision']} < "
+        f"{result['mean_unfiltered_precision']}"
+    )

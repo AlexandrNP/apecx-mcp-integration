@@ -209,6 +209,13 @@ _Literature-agent package (skeleton) — deterministic taxon tagging of_
 
 _(no module-level classes or functions)_
 
+## `src/apecx_integration/agents/literature/ablation.py`
+_Headline ablation: does the organism-identifier filter improve the answers?_
+
+- `def organism_precision(citations: list[str], corpus_by_pmid: dict[str, dict], correct_iri: str)` — Fraction of cited PMIDs whose stamped record's ``iris`` contains
+- `def run_ablation(cases: list[dict], corpus: list[dict], reader: Reader, *, k: int=5)` — Run ``reader`` filtered-vs-unfiltered over each case; report mean precision.
+- `def default_reader()` — Adapt the real ``LiteratureRagStep`` into a ``reader(question, records)``.
+
 ## `src/apecx_integration/agents/literature/coverage.py`
 _Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton)._
 
