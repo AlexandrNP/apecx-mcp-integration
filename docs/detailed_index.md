@@ -2304,10 +2304,14 @@ _Step classes for the literature_rag workflow skeleton._
 _(no module-level classes or functions)_
 
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/literature_rag_step.py`
-_LiteratureRagStep — answer a query grounded in filtered literature (SKELETON STUB)._
+_LiteratureRagStep — turn ontology-filtered papers into a grounded, cited answer._
 
-- class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — skeleton stub returning an empty answer envelope.
+- class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — retrieve top-k records, synthesize a cited answer.
   - `def _get_config_class(cls)`
+  - `def _unwrap_envelope(self, input_data: dict[str, Any])` — Return the RAG envelope.
+  - `def _get_synthesis_config(self)` — Lazily load + cache the literature-tuned SynthesisConfig from YAML.
+  - `def _get_embed_model(self)` — Lazily load + cache the sentence-transformers model on the instance.
+  - `def _retrieve_topk(self, question: str, records: list[dict[str, Any]], k: int)` — Embed records + question, return the top-k records by cosine similarity.
   - `async def process(self, input_data: dict[str, Any], **kwargs)`
 
 ## `src/apecx_integration/composition/workflows/literature_rag/steps/ontology_filter_step.py`
