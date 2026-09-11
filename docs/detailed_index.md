@@ -214,7 +214,7 @@ _Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton)._
 
 - `def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer)` — Aggregate matched surface forms across ``abstracts`` (deliverable-1 shape).
 - `def coverage_to_json(coverage: list[dict])` — Serialize coverage entries as pretty JSON with stable key order.
-- `def harvest_and_build(*args, **kwargs)` — Harvest abstracts (Globus/PubMed) then build coverage (TODO).
+- `def harvest_and_build(term: str, gazetteer: Gazetteer, *, max_papers: int=20)` — Harvest PubMed abstracts for ``term`` then build coverage (deliverable-1).
 
 ## `src/apecx_integration/agents/literature/gazetteer.py`
 _Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
@@ -227,6 +227,11 @@ _Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
   - `def tag(self, text: str)` — Return non-overlapping longest-match tags, left to right.
 - `def build_gazetteer(term_iri_map: dict[str, str])` — Build a gazetteer from an INJECTED {surface_form: NCBITaxon_IRI} map.
 - `def build_from_dictionary(db_path: str, *, entity_type: str='pathogen', limit: int | None=None)` — Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
+
+## `src/apecx_integration/agents/literature/harvest.py`
+_Bounded PubMed harvest → literature-record normalization._
+
+- `def harvest_pubmed(term: str, *, max_papers: int=20)` — Harvest up to ``max_papers`` PubMed records for ``term`` (bounded).
 
 ## `src/apecx_integration/agents/literature/resolve.py`
 _Resolve an organism name to its NCBITaxon PURL IRI._

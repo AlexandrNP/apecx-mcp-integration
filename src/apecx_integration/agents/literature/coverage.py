@@ -54,13 +54,15 @@ def coverage_to_json(coverage: list[dict]) -> str:
     return json.dumps(coverage, indent=2, sort_keys=True)
 
 
-def harvest_and_build(*args, **kwargs) -> dict:
-    """Harvest abstracts (Globus/PubMed) then build coverage (TODO).
+def harvest_and_build(term: str, gazetteer: Gazetteer, *, max_papers: int = 20) -> list[dict]:
+    """Harvest PubMed abstracts for ``term`` then build coverage (deliverable-1).
 
-    Deferred: the real harvest hits Globus/PubMed. Not yet implemented; smoke
-    tests inject an in-memory abstract list into ``build_coverage`` instead.
+    The real path: :func:`harvest_pubmed` runs a bounded Entrez harvest and
+    normalizes each hit to ``{pmid, title, abstract}``; :func:`build_coverage`
+    aggregates gazetteer surface-form matches across those abstracts. Returns
+    the coverage-entry list (see :func:`build_coverage`).
     """
-    raise NotImplementedError(
-        "harvest_and_build: the Globus/PubMed abstract harvest is a later task; "
-        "call build_coverage(injected_abstracts, gazetteer) for now."
-    )
+    from apecx_integration.agents.literature.harvest import harvest_pubmed
+
+    abstracts = harvest_pubmed(term, max_papers=max_papers)
+    return build_coverage(abstracts, gazetteer)
