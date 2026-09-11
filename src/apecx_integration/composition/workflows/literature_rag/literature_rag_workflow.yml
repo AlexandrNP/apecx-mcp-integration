@@ -1,0 +1,93 @@
+# literature_rag workflow — ontology-filtered literature RAG (SKELETON)
+#
+# Two-step scaffold:
+#
+#   workflow_input
+#       │  (input_to_filter)
+#       ▼
+#   ontology_filter_step   ← narrows candidate records by ontology terms (STUB)
+#       │  {filtered_records, status}   (filter_to_rag)
+#       ▼
+#   literature_rag_step    ← answers the query over the filtered set (STUB)
+#       │  {answer, citations, status}  (rag_to_output)
+#       ▼
+#   workflow_output
+#
+# Both steps are DEGRADE-LOUD STUBS in this skeleton (see their .py files). This
+# YAML pins the topology, the trigger cascade, and the link wiring so a from_config
+# smoke test can verify loadability WITHOUT running the steps.
+
+name: literature_rag_workflow
+description: >
+  Ontology-filtered literature RAG (skeleton). Two steps: (1) ontology filter over
+  a candidate record set; (2) literature RAG answer over the filtered set. Both are
+  stubs returning well-formed empty envelopes until the real logic lands.
+version: 0.1.0
+
+# Schema v2: DirectLink auto_transfer defaults to true. We ALSO declare
+# auto_transfer: true explicitly on every link below — belt-and-suspenders against
+# the dominant nanobrain silent-failure (a link that silently no-ops on
+# auto_transfer=false, letting the workflow "load and run" while transferring nothing).
+config_version: 2
+
+# Workflow-level entry/exit ports. Required by the framework's integrity validator:
+# every step input must have a source (workflow input OR an upstream step's output),
+# and every step output must have a consumer. Without these bracketing links the
+# workflow FAIL-FASTs at load.
+input_data_units:
+  workflow_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_input
+    description: >
+      ``{query: str, records?: list}`` — the scientist question + optional candidate
+      records. Forwarded to ontology_filter_step.filter_input via input_to_filter.
+    persistent: false
+
+output_data_units:
+  workflow_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: workflow_output
+    description: >
+      ``{answer: str, citations: list, status: str}`` — the literature_rag_step answer
+      envelope, received via the rag_to_output link.
+    persistent: false
+
+steps:
+  ontology_filter_step:
+    class: "apecx_integration.composition.workflows.literature_rag.steps.ontology_filter_step.OntologyFilterStep"
+    config: "steps/ontology_filter_step.yml"
+
+  literature_rag_step:
+    class: "apecx_integration.composition.workflows.literature_rag.steps.literature_rag_step.LiteratureRagStep"
+    config: "steps/literature_rag_step.yml"
+
+links:
+  # ──────────────────────────────────────────────────────────────────
+  # Every DirectLink MUST declare auto_transfer: true. Count of DirectLinks
+  # below (3) MUST equal the count of auto_transfer: true (verified in the
+  # smoke test and by scripts/lint_workflow_yamls.py).
+  # ──────────────────────────────────────────────────────────────────
+
+  input_to_filter:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      auto_transfer: true
+      link_type: "direct"
+      source: "workflow_input"
+      target: "ontology_filter_step.filter_input"
+
+  filter_to_rag:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      auto_transfer: true
+      link_type: "direct"
+      source: "ontology_filter_step.filter_output"
+      target: "literature_rag_step.rag_input"
+
+  rag_to_output:
+    class: "nanobrain.core.link.DirectLink"
+    config:
+      auto_transfer: true
+      link_type: "direct"
+      source: "literature_rag_step.rag_output"
+      target: "workflow_output"

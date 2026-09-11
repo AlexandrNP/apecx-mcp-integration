@@ -1,0 +1,33 @@
+# literature_rag step 2 — LiteratureRagStep (SKELETON STUB)
+#
+# Answers a query grounded in the upstream ontology-filtered records. Stub for
+# now: process() logs "not yet implemented" and returns an empty answer
+# envelope. The step OWNS its input/output data units + trigger (framework
+# rule); the workflow owns the links between steps.
+
+name: literature_rag_step
+description: >
+  Literature RAG answerer (skeleton stub). Returns an empty answer envelope
+  until the real retrieval-augmented-generation logic lands in a later branch.
+
+input_data_units:
+  rag_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: rag_input
+    description: >
+      The filtered envelope from ontology_filter_step, fed via the
+      filter_to_rag link. (Ignored by the current stub.)
+    persistent: false
+
+output_data_units:
+  rag_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: rag_output
+    description: >
+      ``{answer: str, citations: list, status: str}`` — the answer envelope.
+      Single output unit, so the framework writes the whole returned dict here.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "rag_input"
