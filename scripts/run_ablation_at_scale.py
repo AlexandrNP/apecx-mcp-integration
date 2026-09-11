@@ -54,16 +54,20 @@ _TARGETS: list[tuple[str, str]] = [
     ("Rift Valley fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_11588"),
     ("SARS-CoV-2", "http://purl.obolibrary.org/obo/NCBITaxon_2697049"),
     ("Influenza A virus", "http://purl.obolibrary.org/obo/NCBITaxon_11320"),
+    ("Zika virus", "http://purl.obolibrary.org/obo/NCBITaxon_64320"),
+    ("Ebola virus", "http://purl.obolibrary.org/obo/NCBITaxon_1570291"),
+    ("Yellow fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_11089"),
 ]
 
 # Gazetteer build limits to try IN ORDER, FULL-WIDTH first so EVERY target tags.
-# A high bound (1.4M) covers the whole pathogen table on the current dictionary
-# (RVFV's surface sits ~row 1.05M, Dengue was missed at 350k); the whole-table
-# escalation (None) is the belt-and-braces fallback. The gazetteer is still built
-# ONCE for the harvest loop — this only picks the limit.
+# The SQL LIMIT applies to the entity_type='pathogen'-FILTERED stream (WHERE binds
+# before LIMIT), so it counts pathogen rows by rowid. Empirically 'dengue virus'
+# only enters the map by ~600k and 'chikungunya virus' by 330k; the whole pathogen
+# table (~1.34M) is loaded at 1.4M, with None as the belt-and-braces fallback. The
+# gazetteer is still built ONCE for the harvest loop — this only picks the limit.
 _GAZ_LIMITS: list[int | None] = [1_400_000, None]
 
-_MAX_PAPERS = 30
+_MAX_PAPERS = 20
 _RETRIEVAL_K = 5
 # A target becomes a case only if the pooled corpus carries at least this many
 # records stamped with its IRI (otherwise the filtered condition is empty).
