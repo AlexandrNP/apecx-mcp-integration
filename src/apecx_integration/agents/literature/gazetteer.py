@@ -12,6 +12,7 @@ stamped as a taxon.
 
 from __future__ import annotations
 
+import contextlib
 import re
 from typing import NamedTuple
 
@@ -93,14 +94,27 @@ def build_gazetteer(term_iri_map: dict[str, str]) -> Gazetteer:
     return Gazetteer(term_iri_map)
 
 
-def build_from_dictionary(db_path: str) -> Gazetteer:  # noqa: ARG001
-    """Build a gazetteer from dictionary.sqlite ``inverse_index`` (TODO).
+def build_from_dictionary(
+    db_path: str, *, entity_type: str = "pathogen", limit: int | None = None
+) -> Gazetteer:
+    """Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
 
-    Deferred: the real build streams the inverse index out of the 771MB
-    dictionary. Not yet implemented; do not call from smoke tests.
+    Reads ``(surface_form_normalized, canonical_iri)`` rows for ``entity_type``,
+    keeping only surfaces that pass the same precision guard as the tag path
+    (:func:`_is_taggable`), and returns a gazetteer over the resulting map.
+    ``limit`` bounds the number of rows read (SQL ``LIMIT``) for cheap builds.
     """
-    raise NotImplementedError(
-        "build_from_dictionary: streaming the dictionary.sqlite inverse_index "
-        "into a gazetteer is a later task; use build_gazetteer(injected_map) "
-        "for now."
-    )
+    import sqlite3
+
+    sql = "SELECT surface_form_normalized, canonical_iri FROM inverse_index WHERE entity_type = ?"
+    params: tuple[object, ...] = (entity_type,)
+    if limit is not None:
+        sql += " LIMIT ?"
+        params += (limit,)
+
+    uri = f"file:{db_path}?mode=ro"
+    with contextlib.closing(sqlite3.connect(uri, uri=True)) as conn:
+        term_iri_map = {
+            surface: iri for surface, iri in conn.execute(sql, params) if _is_taggable(surface)
+        }
+    return build_gazetteer(term_iri_map)

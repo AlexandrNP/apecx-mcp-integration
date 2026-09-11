@@ -225,7 +225,7 @@ _Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
   - `def __init__(self, term_iri_map: dict[str, str])`
   - `def tag(self, text: str)` — Return non-overlapping longest-match tags, left to right.
 - `def build_gazetteer(term_iri_map: dict[str, str])` — Build a gazetteer from an INJECTED {surface_form: NCBITaxon_IRI} map.
-- `def build_from_dictionary(db_path: str)` — Build a gazetteer from dictionary.sqlite ``inverse_index`` (TODO).
+- `def build_from_dictionary(db_path: str, *, entity_type: str='pathogen', limit: int | None=None)` — Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
 
 ## `src/apecx_integration/agents/literature/stamped_corpus.py`
 _Per-abstract taxon stamping + an in-memory, IRI-filterable store (skeleton)._
