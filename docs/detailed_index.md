@@ -234,14 +234,18 @@ _Resolve an organism name to its NCBITaxon PURL IRI._
 - `def resolve_organism_to_iri(term: str, db_path: str | os.PathLike | None=None)` — Return the NCBITaxon PURL IRI for ``term``, or ``None`` on a miss.
 
 ## `src/apecx_integration/agents/literature/stamped_corpus.py`
-_Per-abstract taxon stamping + an in-memory, IRI-filterable store (skeleton)._
+_Per-abstract taxon stamping + an in-memory, IRI-filterable store, plus a_
 
 - `def stamp_abstract(record: dict, gazetteer: Gazetteer)` — Return ``record`` plus an ``iris`` list: deduped IRIs (first-seen order)
 - class `StampedCorpus` — In-memory store of stamped records, filterable by taxon IRI.
   - `def __init__(self)`
   - `def add(self, record: dict)`
   - `def filter_by_iri(self, iri: str)`
-- `def build_faiss_subindex(*args, **kwargs)` — Build a FAISS sub-index over the stamped corpus (TODO).
+- `def _record_text(record: dict, text_key: str)` — ``"{title}. {abstract}"`` when both exist; else whichever one does.
+- class `SubIndex` — A tiny cosine-similarity FAISS sub-index over a list of records.
+  - `def __init__(self, records: list[dict], index: faiss.Index | None, model: SentenceTransformer | None)`
+  - `def search(self, query: str, k: int=5)`
+- `def build_faiss_subindex(records: list[dict], *, text_key: str='abstract', model_name: str=_DEFAULT_MODEL, model: SentenceTransformer | None=None)` — Build a cosine-similarity FAISS sub-index over ``records``.
 
 ## `src/apecx_integration/agents/rag_synthesis/__init__.py`
 _rag_synthesis — LLM synthesis with retrieved RAG chunks +_

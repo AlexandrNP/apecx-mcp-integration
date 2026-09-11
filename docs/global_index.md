@@ -49,7 +49,7 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/agents/literature/coverage.py` | Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton). |
 | `src/apecx_integration/agents/literature/gazetteer.py` | Deterministic surface-form → NCBITaxon IRI tagger (skeleton). |
 | `src/apecx_integration/agents/literature/resolve.py` | Resolve an organism name to its NCBITaxon PURL IRI. |
-| `src/apecx_integration/agents/literature/stamped_corpus.py` | Per-abstract taxon stamping + an in-memory, IRI-filterable store (skeleton). |
+| `src/apecx_integration/agents/literature/stamped_corpus.py` | Per-abstract taxon stamping + an in-memory, IRI-filterable store, plus a |
 | `src/apecx_integration/agents/rag_synthesis/__init__.py` | rag_synthesis — LLM synthesis with retrieved RAG chunks + |
 | `src/apecx_integration/agents/rag_synthesis/harvester_adapter.py` | Bridge from apecx-harvesters ``DataCite`` records to the flat |
 | `src/apecx_integration/agents/rag_synthesis/synthesizer.py` | LLM synthesis with retrieved RAG chunks + structured DB context. |
