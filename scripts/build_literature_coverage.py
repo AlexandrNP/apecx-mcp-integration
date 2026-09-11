@@ -10,8 +10,12 @@ terms by doc_count. Real-data glue script (network); not imported by tests.
 
 ``--db`` defaults to ``$APECX_SYNONYM_DICT_PATH`` then the workspace
 ``dictionary.sqlite``. ``--limit`` bounds the rows read into the gazetteer;
-the default (350000) covers the target organisms in the shipped dictionary's
-row order (Chikungunya sits ~275k).
+the default (1_400_000) spans the whole pathogen stream so every target tags
+('dengue virus' only enters the pathogen-filtered stream by ~600k). The report
+is scoped to the TARGET organisms' own IRIs — a (term, iri) entry is kept only
+when its IRI is one a queried organism resolves to, so incidental host/genus
+tags (e.g. "human", a genus name) that the gazetteer also matches are excluded
+by design; each target's own synonyms (which share its IRI) are kept.
 """
 
 from __future__ import annotations
@@ -28,6 +32,7 @@ if __name__ == "__main__" and __package__ in (None, ""):
 
 from apecx_integration.agents.literature.coverage import coverage_to_json, harvest_and_build
 from apecx_integration.agents.literature.gazetteer import build_from_dictionary
+from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
 
 _TARGET_ORGANISMS = (
     "Chikungunya virus",
@@ -36,10 +41,13 @@ _TARGET_ORGANISMS = (
     "Rift Valley fever virus",
     "SARS-CoV-2",
     "Influenza A virus",
+    "Zika virus",
+    "Ebola virus",
+    "Yellow fever virus",
 )
 
 _DEFAULT_DB = "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite"
-_DEFAULT_LIMIT = 350000
+_DEFAULT_LIMIT = 1_400_000
 _DEFAULT_OUT = Path(__file__).resolve().parents[1] / "docs" / "literature_term_coverage.json"
 
 
@@ -81,13 +89,24 @@ def main(argv: list[str] | None = None) -> int:
         )
         _merge(per_term, entries)
 
-    coverage = sorted(per_term.values(), key=lambda e: (-e["doc_count"], e["term"]))
+    # Scope the report to the TARGET organisms' own IRIs: keep a (term, iri) entry
+    # only when its IRI is one the queried organisms resolve to. This drops
+    # incidental host/genus tags (e.g. "human", a genus name) the gazetteer also
+    # matches — the deliverable is each target organism's own surface forms.
+    target_iris = {
+        iri for name in _TARGET_ORGANISMS if (iri := resolve_organism_to_iri(name, args.db))
+    }
+    all_entries = sorted(per_term.values(), key=lambda e: (-e["doc_count"], e["term"]))
+    coverage = [e for e in all_entries if e["iri"] in target_iris]
+    dropped = len(all_entries) - len(coverage)
 
     args.out.write_text(coverage_to_json(coverage))
 
     print()
     print(f"Organisms queried:            {len(_TARGET_ORGANISMS)}")
-    print(f"Distinct (term, iri) entries: {len(coverage)}")
+    print(
+        f"Target-IRI (term, iri) kept:  {len(coverage)}  (dropped {dropped} non-target host/genus tags)"
+    )
     print(f"Coverage JSON written:        {args.out} ({args.out.stat().st_size} bytes)")
     print()
     print("TOP 15 TERMS BY doc_count")
