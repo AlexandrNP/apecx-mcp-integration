@@ -1,0 +1,33 @@
+# literature_rag step 1 — OntologyFilterStep (SKELETON STUB)
+#
+# Narrows a candidate record set by ontology terms. Stub for now:
+# process() logs "not yet implemented" and returns an empty filtered set.
+# The step OWNS its input/output data units + trigger (framework rule);
+# the workflow owns the links between steps.
+
+name: ontology_filter_step
+description: >
+  Ontology-driven record filter (skeleton stub). Returns an empty filtered
+  set until the real ontology-filter logic lands in a later branch.
+
+input_data_units:
+  filter_input:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: filter_input
+    description: >
+      Candidate records + query context to filter. Fed from the workflow
+      input via the input_to_filter link. (Ignored by the current stub.)
+    persistent: false
+
+output_data_units:
+  filter_output:
+    class: "nanobrain.core.data_unit.DataUnitMemory"
+    name: filter_output
+    description: >
+      ``{filtered_records: list, status: str}`` — the filtered envelope.
+      Single output unit, so the framework writes the whole returned dict here.
+    persistent: false
+
+triggers:
+  - class: "nanobrain.core.trigger.DataUnitChangeTrigger"
+    data_unit: "filter_input"

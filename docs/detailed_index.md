@@ -2249,6 +2249,30 @@ _harmonized_index_search — a ONE-step inner workflow: run HarmonizedSearchExec
 - `def _du(name: str)`
 - `def build_harmonized_index_search_workflow()` — Build + load the 1-step harmonized-search-for-one-index inner workflow.
 
+## `src/apecx_integration/composition/workflows/literature_rag/__init__.py`
+_literature_rag — ontology-filtered literature RAG workflow (SKELETON)._
+
+_(no module-level classes or functions)_
+
+## `src/apecx_integration/composition/workflows/literature_rag/steps/__init__.py`
+_Step classes for the literature_rag workflow skeleton._
+
+_(no module-level classes or functions)_
+
+## `src/apecx_integration/composition/workflows/literature_rag/steps/literature_rag_step.py`
+_LiteratureRagStep — answer a query grounded in filtered literature (SKELETON STUB)._
+
+- class `LiteratureRagStep(BaseStep)` — Literature RAG answerer — skeleton stub returning an empty answer envelope.
+  - `def _get_config_class(cls)`
+  - `async def process(self, input_data: dict[str, Any], **kwargs)`
+
+## `src/apecx_integration/composition/workflows/literature_rag/steps/ontology_filter_step.py`
+_OntologyFilterStep — narrow a candidate record set by ontology terms (SKELETON STUB)._
+
+- class `OntologyFilterStep(BaseStep)` — Ontology-driven record filter — skeleton stub returning an empty filtered set.
+  - `def _get_config_class(cls)`
+  - `async def process(self, input_data: dict[str, Any], **kwargs)`
+
 ## `src/apecx_integration/composition/workflows/open_rosalind_rhea_lightweight_builder.py`
 _Lightweight WorkflowBuilder variant of the open_rosalind_rhea workflow._
 
