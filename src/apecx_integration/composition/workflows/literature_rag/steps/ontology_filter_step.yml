@@ -1,22 +1,24 @@
-# literature_rag step 1 — OntologyFilterStep (SKELETON STUB)
+# literature_rag step 1 — OntologyFilterStep (TRUE NCBITaxon-IRI filter)
 #
-# Narrows a candidate record set by ontology terms. Stub for now:
-# process() logs "not yet implemented" and returns an empty filtered set.
-# The step OWNS its input/output data units + trigger (framework rule);
-# the workflow owns the links between steps.
+# Keeps only the input records stamped with a given target NCBITaxon IRI.
+# Filtering is PURE over the provided input; organism->IRI RESOLUTION is a
+# separate upstream concern. The step OWNS its input/output data units +
+# trigger (framework rule); the workflow owns the links between steps.
 
 name: ontology_filter_step
 description: >
-  Ontology-driven record filter (skeleton stub). Returns an empty filtered
-  set until the real ontology-filter logic lands in a later branch.
+  NCBITaxon-IRI record filter. Keeps records whose stamped ``iris`` contain the
+  envelope's ``target_iri``; degrades loud (status=no_target_iri) when the IRI
+  is missing.
 
 input_data_units:
   filter_input:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: filter_input
     description: >
-      Candidate records + query context to filter. Fed from the workflow
-      input via the input_to_filter link. (Ignored by the current stub.)
+      ``{stamped_records: list[dict], target_iri: str}`` — records each already
+      stamped with an ``iris: list[str]`` field, plus the full NCBITaxon PURL to
+      filter on. Fed from the workflow input via the input_to_filter link.
     persistent: false
 
 output_data_units:
@@ -24,8 +26,9 @@ output_data_units:
     class: "nanobrain.core.data_unit.DataUnitMemory"
     name: filter_output
     description: >
-      ``{filtered_records: list, status: str}`` — the filtered envelope.
-      Single output unit, so the framework writes the whole returned dict here.
+      ``{filtered_records: list, target_iri: str|null, status: str}`` — the
+      filtered envelope. Single output unit, so the framework writes the whole
+      returned dict here.
     persistent: false
 
 triggers:
