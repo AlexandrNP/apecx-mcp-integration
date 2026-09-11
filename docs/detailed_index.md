@@ -203,6 +203,39 @@ _Extract candidate virus name(s) from free query text (for downstream taxon reso
 - `def extract_virus_names(query: str)` — Pull candidate virus name(s) from free query text, most-specific first.
 - `def decompose_query_terms(query: str)` — Ordered ``(candidate_term, recovered_suffix)`` for resolving an arbitrary/combined query.
 
+## `src/apecx_integration/agents/literature/__init__.py`
+_Literature-agent package (skeleton) — deterministic taxon tagging of_
+
+_(no module-level classes or functions)_
+
+## `src/apecx_integration/agents/literature/coverage.py`
+_Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton)._
+
+- `def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer)` — Aggregate matched surface forms across ``abstracts``.
+- `def harvest_and_build(*args, **kwargs)` — Harvest abstracts (Globus/PubMed) then build coverage (TODO).
+
+## `src/apecx_integration/agents/literature/gazetteer.py`
+_Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
+
+- class `Tag(NamedTuple)` — A single taxon match: the raw ``surface`` text at ``[start, end)`` and
+- `def _normalize(s: str)` — Canonicalize a surface form, reusing the dictionary normalizer when
+- `def _is_taggable(normalized: str)` — Precision guard: reject too-short, non-alphabetic, or blocklisted forms.
+- class `Gazetteer` — In-memory case-insensitive longest-match taxon tagger.
+  - `def __init__(self, term_iri_map: dict[str, str])`
+  - `def tag(self, text: str)` — Return non-overlapping longest-match tags, left to right.
+- `def build_gazetteer(term_iri_map: dict[str, str])` — Build a gazetteer from an INJECTED {surface_form: NCBITaxon_IRI} map.
+- `def build_from_dictionary(db_path: str)` — Build a gazetteer from dictionary.sqlite ``inverse_index`` (TODO).
+
+## `src/apecx_integration/agents/literature/stamped_corpus.py`
+_Per-abstract taxon stamping + an in-memory, IRI-filterable store (skeleton)._
+
+- `def stamp_abstract(record: dict, gazetteer: Gazetteer)` — Return ``record`` plus an ``iris`` list: deduped IRIs (first-seen order)
+- class `StampedCorpus` — In-memory store of stamped records, filterable by taxon IRI.
+  - `def __init__(self)`
+  - `def add(self, record: dict)`
+  - `def filter_by_iri(self, iri: str)`
+- `def build_faiss_subindex(*args, **kwargs)` — Build a FAISS sub-index over the stamped corpus (TODO).
+
 ## `src/apecx_integration/agents/rag_synthesis/__init__.py`
 _rag_synthesis — LLM synthesis with retrieved RAG chunks +_
 
