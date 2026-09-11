@@ -1,8 +1,8 @@
-"""Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton).
+"""Paper-coverage aggregation over a gazetteer-tagged corpus.
 
-Purely in-memory over an injected list of abstract dicts — NO network. The
-real Globus/PubMed harvest that feeds this is a documented ``NotImplementedError``
-stub (``harvest_and_build``).
+``build_coverage`` is pure and in-memory over a list of abstract dicts (NO
+network), so it stays trivially testable. ``harvest_and_build`` wires it to a
+real live-PubMed harvest (``harvest_pubmed``) plus gazetteer tagging.
 """
 
 from __future__ import annotations

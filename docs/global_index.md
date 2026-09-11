@@ -45,9 +45,9 @@ One row per source file: path -> module purpose (docstring line 1).
 | `src/apecx_integration/agents/globus_search/client.py` | Globus Search index client — read-only access to the APECx corpus. |
 | `src/apecx_integration/agents/globus_search/structural_query.py` | Taxon-precise structural search over the aggregate Globus index (e74bf12a). |
 | `src/apecx_integration/agents/globus_search/taxonomy_resolver.py` | Extract candidate virus name(s) from free query text (for downstream taxon resolution). |
-| `src/apecx_integration/agents/literature/__init__.py` | Literature-agent package (skeleton) — deterministic taxon tagging of |
+| `src/apecx_integration/agents/literature/__init__.py` | Literature-agent package — deterministic taxon tagging of abstracts for a |
 | `src/apecx_integration/agents/literature/ablation.py` | Headline ablation: does the organism-identifier filter improve the answers? |
-| `src/apecx_integration/agents/literature/coverage.py` | Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton). |
+| `src/apecx_integration/agents/literature/coverage.py` | Paper-coverage aggregation over a gazetteer-tagged corpus. |
 | `src/apecx_integration/agents/literature/gazetteer.py` | Deterministic surface-form → NCBITaxon IRI tagger (skeleton). |
 | `src/apecx_integration/agents/literature/harvest.py` | Bounded PubMed harvest → literature-record normalization. |
 | `src/apecx_integration/agents/literature/pipeline.py` | Harvest → stamp glue: the thin seam that turns a search term into stamped |

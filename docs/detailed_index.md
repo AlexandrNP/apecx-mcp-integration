@@ -205,7 +205,7 @@ _Extract candidate virus name(s) from free query text (for downstream taxon reso
 - `def decompose_query_terms(query: str)` — Ordered ``(candidate_term, recovered_suffix)`` for resolving an arbitrary/combined query.
 
 ## `src/apecx_integration/agents/literature/__init__.py`
-_Literature-agent package (skeleton) — deterministic taxon tagging of_
+_Literature-agent package — deterministic taxon tagging of abstracts for a_
 
 _(no module-level classes or functions)_
 
@@ -217,7 +217,7 @@ _Headline ablation: does the organism-identifier filter improve the answers?_
 - `def default_reader()` — Adapt the real ``LiteratureRagStep`` into a ``reader(question, records)``.
 
 ## `src/apecx_integration/agents/literature/coverage.py`
-_Paper-coverage aggregation over a gazetteer-tagged corpus (skeleton)._
+_Paper-coverage aggregation over a gazetteer-tagged corpus._
 
 - `def build_coverage(abstracts: Iterable[dict], gazetteer: Gazetteer)` — Aggregate matched surface forms across ``abstracts`` (deliverable-1 shape).
 - `def coverage_to_json(coverage: list[dict])` — Serialize coverage entries as pretty JSON with stable key order.
