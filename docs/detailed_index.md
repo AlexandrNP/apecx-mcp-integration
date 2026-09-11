@@ -227,6 +227,11 @@ _Deterministic surface-form → NCBITaxon IRI tagger (skeleton)._
 - `def build_gazetteer(term_iri_map: dict[str, str])` — Build a gazetteer from an INJECTED {surface_form: NCBITaxon_IRI} map.
 - `def build_from_dictionary(db_path: str, *, entity_type: str='pathogen', limit: int | None=None)` — Build a gazetteer by streaming the ``inverse_index`` of dictionary.sqlite.
 
+## `src/apecx_integration/agents/literature/resolve.py`
+_Resolve an organism name to its NCBITaxon PURL IRI._
+
+- `def resolve_organism_to_iri(term: str, db_path: str | os.PathLike | None=None)` — Return the NCBITaxon PURL IRI for ``term``, or ``None`` on a miss.
+
 ## `src/apecx_integration/agents/literature/stamped_corpus.py`
 _Per-abstract taxon stamping + an in-memory, IRI-filterable store (skeleton)._
 
