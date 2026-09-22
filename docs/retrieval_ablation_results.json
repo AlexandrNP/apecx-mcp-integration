@@ -1,0 +1,463 @@
+{
+  "experiment": "literature_organism_filter_ablation_at_scale",
+  "timestamp": "2026-09-22T17:21:42.674484+00:00",
+  "model": "mistral-nemo:latest",
+  "llm_base_url": "default(http://localhost:11434/v1)",
+  "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
+  "gazetteer_limit_used": 1400000,
+  "gazetteer_tagged": {
+    "Chikungunya virus": true,
+    "Dengue virus": true,
+    "Eastern equine encephalitis virus": true,
+    "Rift Valley fever virus": true,
+    "SARS-CoV-2": true,
+    "Influenza A virus": true,
+    "Zika virus": true,
+    "Ebola virus": true,
+    "Yellow fever virus": true
+  },
+  "max_papers_per_organism": 20,
+  "retrieval_k": 5,
+  "corpus_size": 131,
+  "resolution_source": {
+    "Chikungunya virus": "dictionary",
+    "Dengue virus": "dictionary",
+    "Eastern equine encephalitis virus": "dictionary",
+    "Rift Valley fever virus": "dictionary",
+    "SARS-CoV-2": "dictionary",
+    "Influenza A virus": "dictionary",
+    "Zika virus": "dictionary",
+    "Ebola virus": "dictionary",
+    "Yellow fever virus": "dictionary"
+  },
+  "harvested_counts": {
+    "Chikungunya virus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 14
+    },
+    "Dengue virus": {
+      "harvested": 4,
+      "stamped_with_own_iri": 0
+    },
+    "Eastern equine encephalitis virus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 13
+    },
+    "Rift Valley fever virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 17
+    },
+    "SARS-CoV-2": {
+      "harvested": 18,
+      "stamped_with_own_iri": 15
+    },
+    "Influenza A virus": {
+      "harvested": 4,
+      "stamped_with_own_iri": 3
+    },
+    "Zika virus": {
+      "harvested": 10,
+      "stamped_with_own_iri": 4
+    },
+    "Ebola virus": {
+      "harvested": 17,
+      "stamped_with_own_iri": 9
+    },
+    "Yellow fever virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 8
+    }
+  },
+  "skipped_organisms": [
+    {
+      "organism": "Dengue virus",
+      "reason": "only 0 stamped records (< 1)"
+    }
+  ],
+  "mean_filtered_precision": 1.0,
+  "mean_unfiltered_precision": 0.675,
+  "n_cases": 16,
+  "per_case": [
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [
+        "42734802",
+        "42734804",
+        "42748649",
+        "42749444",
+        "42734800"
+      ],
+      "unfiltered_citations": [
+        "42734802",
+        "42734804",
+        "42748649",
+        "42749444",
+        "42734801"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [
+        "42734802",
+        "42734804",
+        "42734807",
+        "42756906",
+        "42748151"
+      ],
+      "unfiltered_citations": [
+        "42734802",
+        "42734804",
+        "42734807",
+        "42734801",
+        "42734801"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "32491624",
+        "42515544",
+        "42268796",
+        "42132354",
+        "42157587"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "42515544",
+        "42268796",
+        "42132354",
+        "42506617"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "32491624",
+        "42515544",
+        "42157587",
+        "42132354",
+        "42268796"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "42515544",
+        "42157587",
+        "42132354",
+        "42506617"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is known about Rift Valley fever virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42607044",
+        "42519212",
+        "42693705",
+        "42687974",
+        "42757101"
+      ],
+      "unfiltered_citations": [
+        "42607044",
+        "42519212",
+        "42693705",
+        "42687974",
+        "42757101"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is known about Rift Valley fever virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42607044",
+        "42598172",
+        "42757101",
+        "42687974",
+        "42693705"
+      ],
+      "unfiltered_citations": [
+        "42607044",
+        "42598172",
+        "42757101",
+        "42687974",
+        "42693705"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "34014629",
+        "34014628",
+        "34014630",
+        "33355732",
+        "33226741"
+      ],
+      "unfiltered_citations": [
+        "34014629",
+        "34014628",
+        "34014630",
+        "33355732",
+        "33226741"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "32259829",
+        "34014628",
+        "34014629",
+        "34014630",
+        "34703640"
+      ],
+      "unfiltered_citations": [
+        "32259829",
+        "34014628",
+        "34014629",
+        "34014630",
+        "42770795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "4246007",
+        "5388496",
+        "5391162"
+      ],
+      "unfiltered_citations": [
+        "4246007",
+        "5817556",
+        "34014629",
+        "5388496",
+        "34014630"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 3,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "5391162",
+        "4246007",
+        "5388496"
+      ],
+      "unfiltered_citations": [
+        "5817556",
+        "5391162",
+        "4246007",
+        "5388496",
+        "35952300"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 3,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+      "filtered_citations": [
+        "35952299",
+        "42747226",
+        "7520190",
+        "14230895",
+        "42661761"
+      ],
+      "unfiltered_citations": [
+        "35952300",
+        "35952299",
+        "42506617",
+        "42641941",
+        "42747226"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+      "filtered_citations": [
+        "35952299",
+        "14230895",
+        "7520190",
+        "42623406",
+        "42623406"
+      ],
+      "unfiltered_citations": [
+        "35952300",
+        "35952299",
+        "14230895",
+        "7520190",
+        "42506617"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+      "filtered_citations": [
+        "42756240",
+        "42765626",
+        "42770795",
+        "42749758",
+        "42749758"
+      ],
+      "unfiltered_citations": [
+        "42742181",
+        "42756240",
+        "42765626",
+        "42732232",
+        "42770795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+      "filtered_citations": [
+        "42770795",
+        "42733752",
+        "42756240",
+        "42749758",
+        "42749758"
+      ],
+      "unfiltered_citations": [
+        "42770795",
+        "42732232",
+        "42733752",
+        "42756240",
+        "42742179"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+      "filtered_citations": [
+        "42708070",
+        "30000198",
+        "42747226",
+        "42661761",
+        "42652146"
+      ],
+      "unfiltered_citations": [
+        "42708070",
+        "30000198",
+        "42727590",
+        "42607044",
+        "42641941"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+      "filtered_citations": [
+        "42708070",
+        "30000198",
+        "42623406",
+        "42623406",
+        "42747226"
+      ],
+      "unfiltered_citations": [
+        "42708070",
+        "42767744",
+        "30000198",
+        "5312525",
+        "4249614"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    }
+  ],
+  "note": "Honest run: numbers are exactly as produced. 0 citations with status 'synthesis_failed' or 'no_evidence' means the synthesizer's min-length / no-evidence gate fired (too few filtered records) \u2014 a real data point, not tuned away."
+}
