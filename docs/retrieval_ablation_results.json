@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T23:00:33.971649+00:00",
+  "timestamp": "2026-09-22T23:11:53.858153+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -39,11 +39,14 @@
     "Human alphaherpesvirus 3": true,
     "Hepacivirus hominis": true,
     "Hepatitis A virus": true,
-    "Hepatitis E virus": true
+    "Hepatitis E virus": true,
+    "Human immunodeficiency virus 1": true,
+    "Rabies lyssavirus": true,
+    "Mumps orthorubulavirus": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 625,
+  "corpus_size": 672,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -78,7 +81,10 @@
     "Human alphaherpesvirus 3": "dictionary",
     "Hepacivirus hominis": "dictionary",
     "Hepatitis A virus": "dictionary",
-    "Hepatitis E virus": "dictionary"
+    "Hepatitis E virus": "dictionary",
+    "Human immunodeficiency virus 1": "dictionary",
+    "Rabies lyssavirus": "dictionary",
+    "Mumps orthorubulavirus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -216,6 +222,18 @@
     "Hepatitis E virus": {
       "harvested": 20,
       "stamped_with_own_iri": 17
+    },
+    "Human immunodeficiency virus 1": {
+      "harvested": 19,
+      "stamped_with_own_iri": 11
+    },
+    "Rabies lyssavirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 14
+    },
+    "Mumps orthorubulavirus": {
+      "harvested": 8,
+      "stamped_with_own_iri": 4
     }
   },
   "skipped_organisms": [
@@ -225,8 +243,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.4533333333333333,
-  "n_cases": 165,
+  "mean_unfiltered_precision": 0.46222222222222226,
+  "n_cases": 180,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -608,7 +626,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 56,
+      "filtered_corpus_size": 57,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -632,7 +650,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 56,
+      "filtered_corpus_size": 57,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -656,7 +674,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 56,
+      "filtered_corpus_size": 57,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -680,7 +698,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 56,
+      "filtered_corpus_size": 57,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -704,7 +722,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 56,
+      "filtered_corpus_size": 57,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3004,7 +3022,7 @@
         "34014629",
         "34014628",
         "42282816",
-        "42658828"
+        "42758862"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3600,11 +3618,11 @@
         "9875375"
       ],
       "unfiltered_citations": [
+        "2010483",
         "42004740",
         "42671937",
         "41608126",
-        "42728254",
-        "41832144"
+        "42728254"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3675,8 +3693,8 @@
         "15560054",
         "42241276",
         "42616815",
-        "42573240",
-        "41452936"
+        "2014229",
+        "42573240"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3696,11 +3714,11 @@
         "9930199"
       ],
       "unfiltered_citations": [
+        "1850256",
         "42580486",
         "41936880",
         "41600866",
-        "41596714",
-        "41394564"
+        "41596714"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3723,12 +3741,12 @@
         "42004740",
         "42671937",
         "41608126",
-        "42728254",
-        "41832144"
+        "2010483",
+        "42728254"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 15,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3740,8 +3758,8 @@
         "42693145",
         "42599190",
         "42742725",
-        "42621909",
-        "42545991"
+        "42737859",
+        "42621909"
       ],
       "unfiltered_citations": [
         "42369187",
@@ -3752,7 +3770,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 15,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3776,7 +3794,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 15,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3800,7 +3818,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 15,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3812,8 +3830,8 @@
         "42693145",
         "42599190",
         "42669504",
-        "42742725",
-        "42687142"
+        "42737859",
+        "42742725"
       ],
       "unfiltered_citations": [
         "42580486",
@@ -3824,7 +3842,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 15,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4185,6 +4203,361 @@
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
       "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "1707875",
+        "2014229",
+        "1850256",
+        "1707532",
+        "1707692"
+      ],
+      "unfiltered_citations": [
+        "2010483",
+        "2014246",
+        "1672248",
+        "1707875",
+        "2014240"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "2014229",
+        "1707692",
+        "1826686",
+        "1850256",
+        "1707694"
+      ],
+      "unfiltered_citations": [
+        "2014240",
+        "1672248",
+        "2014229",
+        "2010483",
+        "1707692"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "1707532",
+        "2014229",
+        "1707692",
+        "1707875",
+        "1850256"
+      ],
+      "unfiltered_citations": [
+        "15560057",
+        "1707532",
+        "15560063",
+        "42391156",
+        "2010483"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "2014229",
+        "1707532",
+        "2015625",
+        "1707875",
+        "2017258"
+      ],
+      "unfiltered_citations": [
+        "2014229",
+        "2014240",
+        "1707532",
+        "15560054",
+        "2015625"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "1707532",
+        "1850256",
+        "1707692",
+        "2018518",
+        "41600866"
+      ],
+      "unfiltered_citations": [
+        "1707532",
+        "1850256",
+        "2010483",
+        "1707692",
+        "15560062"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is known about Rabies lyssavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42758862",
+        "42758589",
+        "42717284",
+        "42720246",
+        "42761642"
+      ],
+      "unfiltered_citations": [
+        "42758862",
+        "42758589",
+        "42764163",
+        "42717284",
+        "42720246"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is known about Rabies lyssavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42730534",
+        "42758862",
+        "42752353",
+        "42758589",
+        "42761642"
+      ],
+      "unfiltered_citations": [
+        "42730534",
+        "42758862",
+        "42752353",
+        "42758589",
+        "42761642"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What diagnostic assays or laboratory tests detect Rabies lyssavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42730534",
+        "42717284",
+        "42611357",
+        "42611357",
+        "42611357"
+      ],
+      "unfiltered_citations": [
+        "42730534",
+        "42764163",
+        "42717284",
+        "42611357",
+        "42611357"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genome organization and replication cycle of Rabies lyssavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42758589",
+        "42720246",
+        "42758862",
+        "42717496",
+        "42770873"
+      ],
+      "unfiltered_citations": [
+        "42758589",
+        "41452936",
+        "9891810",
+        "34668744",
+        "42720246"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What antiviral drugs or treatments are effective against Rabies lyssavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42770873",
+        "42758862",
+        "42761642",
+        "42758589",
+        "42717284"
+      ],
+      "unfiltered_citations": [
+        "42770873",
+        "42758862",
+        "42764163",
+        "42761642",
+        "35138784"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "35521982",
+        "36961236",
+        "41593743",
+        "39088577"
+      ],
+      "unfiltered_citations": [
+        "35521982",
+        "36961236",
+        "41593743",
+        "42042791",
+        "33355732"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "36961236",
+        "41593743",
+        "35521982",
+        "39088577"
+      ],
+      "unfiltered_citations": [
+        "36961236",
+        "41593743",
+        "35521982",
+        "40929366",
+        "39088577"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "36961236",
+        "35521982",
+        "41593743",
+        "39088577"
+      ],
+      "unfiltered_citations": [
+        "36961236",
+        "35521982",
+        "41593743",
+        "42709838",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the genome organization and replication cycle of Mumps orthorubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "41593743",
+        "36961236",
+        "35521982",
+        "39088577"
+      ],
+      "unfiltered_citations": [
+        "41593743",
+        "36961236",
+        "35521982",
+        "40929366",
+        "41452936"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "39088577",
+        "35521982",
+        "36961236",
+        "41593743"
+      ],
+      "unfiltered_citations": [
+        "39088577",
+        "35138784",
+        "34014630",
+        "41936880",
+        "42693145"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 4,
       "filtered_status": null,
       "unfiltered_status": null
     }
