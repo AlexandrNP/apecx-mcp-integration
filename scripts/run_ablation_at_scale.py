@@ -101,6 +101,8 @@ _MIN_STAMPED_FOR_CASE = 1
 _QUESTION_TEMPLATES: list[str] = [
     "What is known about {name} and neutralizing antibodies or vaccines?",
     "What is known about {name} pathogenesis and transmission?",
+    "What diagnostic assays or laboratory tests detect {name}?",
+    "What is the genome organization and replication cycle of {name}?",
 ]
 
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
