@@ -70,6 +70,10 @@ _TARGETS: list[tuple[str, str]] = [
         "Crimean-Congo hemorrhagic fever orthonairovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
     ),
+    ("Hendra henipavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052223"),
+    ("Tick-borne encephalitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11084"),
+    ("Hantaan orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052480"),
+    ("Junin mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_2169991"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
