@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T18:23:14.222091+00:00",
-  "runs": 2,
+  "updated": "2026-09-22T18:52:29.778239+00:00",
+  "runs": 3,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 29,
-  "n_false_negatives": 26,
+  "n_false_positives": 64,
+  "n_false_negatives": 60,
   "new_this_run": {
-    "false_positives": 10,
-    "false_negatives": 10
+    "false_positives": 35,
+    "false_negatives": 34
   },
   "false_positives": [
     {
@@ -300,6 +300,396 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "cited_pmid": "5313066",
+      "title": "A multipurpose serological survey in Kenya. 2. Results of arbovirus serological tests.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Yellow fever virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "Nipah henipavirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42641941",
+      "title": "EYRAplex platform for quantification of viral antigen-specific IgG responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42584108",
+      "title": "Metagenomic sequencing detects viruses and bacteria in a cross-sectional clinical cohort of undifferentiated febrile illness in Nigeria.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "Nipah henipavirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What diagnostic assays or laboratory tests detect Ebola virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "cited_pmid": "42598172",
+      "title": "Persistent circulation of Rift Valley fever virus lineage C in Rwanda, 2022-2025.",
+      "actual_organisms": [
+        "Rift Valley fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42598172",
+      "title": "Persistent circulation of Rift Valley fever virus lineage C in Rwanda, 2022-2025.",
+      "actual_organisms": [
+        "Rift Valley fever virus"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "32259829",
+      "title": "COVID-19 Outbreak: An Overview.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42679643",
+      "title": "FilmArray Meningitis/Encephalitis Panel accelerates central nervous system infection diagnosis and reduces empirical acyclovir use: A Japanese prospective study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42268796",
+      "title": "Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Dengue virus",
+        "Yellow fever virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42679643",
+      "title": "FilmArray Meningitis/Encephalitis Panel accelerates central nervous system infection diagnosis and reduces empirical acyclovir use: A Japanese prospective study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42391156",
+      "title": "Development and qualification of an enzyme-linked immunosorbent assay to detect human serum immunoglobulin G reactive to multiple lineages of Lassa virus nucleoprotein.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genome organization and replication cycle of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42598172",
+      "title": "Persistent circulation of Rift Valley fever virus lineage C in Rwanda, 2022-2025.",
+      "actual_organisms": [
+        "Rift Valley fever virus"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genome organization and replication cycle of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "42742179",
+      "title": "Emergence of a Bundibugyo virus variant in the 2026 outbreak in the Democratic Republic of the Congo and Uganda.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052458",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -458,6 +848,210 @@
       "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus pathogenesis and transmission?",
       "missed_pmid": "42655658",
       "title": "Long-Term Epidemiological Trends and Risk Factors of Crimean-Congo Hemorrhagic Fever in Kazakhstan: An Integrated Epidemiological and Entomological Analysis."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "missed_pmid": "2559514",
+      "title": "Arbovirus infections and viral haemorrhagic fevers in Uganda: a serological survey in Karamoja district, 1984."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "missed_pmid": "42748649",
+      "title": "A rapid and quantitative time-resolved fluorescence immunoassay for chikungunya virus detection based on nanoparticle-enhanced antibody pairing."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "missed_pmid": "42734809",
+      "title": "Protocol for Detecting and Sequencing Chikungunya Virus from Field-Collected Mosquitoes."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "missed_pmid": "42607044",
+      "title": "Opportunities and challenges for countermeasures against Rift Valley fever virus: A quintessential One Health pathogen."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "missed_pmid": "42519212",
+      "title": "NanoLuc-based microneutralization assay for high-throughput detection of neutralizing antibodies against rift valley fever virus."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "missed_pmid": "42693705",
+      "title": "Survey of Rift Valley Fever Virus Antibodies and Risk Factors in Small Ruminants in Maiduguri, Borno State, Nigeria: A Cross-Sectional Serological Study."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Rift Valley fever virus?",
+      "missed_pmid": "42757101",
+      "title": "Spatio-temporal dynamics of Rift Valley fever virus circulation in sentinel livestock herds (2021-2024) before the initial fatal human outbreaks in Senegal."
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "missed_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "missed_pmid": "34014628",
+      "title": "Covid-19 Monoclonal Antibodies: \nMonoclonal Antibodies to SARS-CoV-2"
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "missed_pmid": "32259829",
+      "title": "COVID-19 Outbreak: An Overview."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "missed_pmid": "33355732",
+      "title": "COVID-19 Vaccines"
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "34014630",
+      "title": "Covid-19 Drugs"
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "missed_pmid": "5388496",
+      "title": "The inhibitory activity of an isoquinoline derivative on growth of an influenza A virus in tissue culture."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "missed_pmid": "4246007",
+      "title": "A new influenza A virus infection in turkeys. VI. Artificial immunization against the malignant virus strain turkey-Ontario 7732-66."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "missed_pmid": "42767552",
+      "title": "A multiplex serological survey highlights differences in population immunity to mosquito-borne diseases in Vanuatu, Pacific region, 2023."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "42756240",
+      "title": "Mapping the research landscape of antibody therapy for Ebola virus disease: a bibliometric analysis."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "42733752",
+      "title": "A generalized multi-population model for Ebola virus transmission incorporating environmental reservoir dynamics."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "42583857",
+      "title": "[Yellow Fever Vaccine-Associated Viscerotropic Disease: A Case Report From T\u00fcrkiye]."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "8099299",
+      "title": "[Surveillance of the circulation of arbovirus of medical interest in the region of eastern Senegal]."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "8758061",
+      "title": "Epidemic dengue 2 in the city of Djibouti 1991-1992."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "30000198",
+      "title": "Yellow Fever Vaccine"
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "missed_pmid": "42706263",
+      "title": "Evidence of dengue transmission and a diverse Aedes mosquito virome on the Congo's Angola border."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "missed_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "missed_pmid": "42680695",
+      "title": "Neuronal Apoptotic Bodies Facilitate Japanese Encephalitis Virus Infection and Pathogenicity."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "missed_pmid": "42423846",
+      "title": "Local Knowledge of Land Use Effects on Human-Rodent Interfaces in Lassa-Endemic Nigeria."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "missed_pmid": "42391156",
+      "title": "Development and qualification of an enzyme-linked immunosorbent assay to detect human serum immunoglobulin G reactive to multiple lineages of Lassa virus nucleoprotein."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42600205",
+      "title": "One health, one goal: Global imperatives for Nipah virus vaccine development."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42744055",
+      "title": "Sustaining Kerala's Progress against the Nipah virus: Operational strategies for long-term preparedness face to a recurrent zoonotic threat."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42623407",
+      "title": "Nipah virus Malaysia and Bangladesh strain-induced pathogenesis in mice lacking type I interferon receptor signaling."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42637838",
+      "title": "Viral dissemination and diagnostic insights from experimental infection of sheep with Crimean-Congo hemorrhagic fever virus."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "8099299",
+      "title": "[Surveillance of the circulation of arbovirus of medical interest in the region of eastern Senegal]."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genome organization and replication cycle of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42589392",
+      "title": "Circular RNA Expression Profiles in Crimean-Congo Hemorrhagic Fever: Insights into Disease Pathogenesis and Fatal Outcomes."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genome organization and replication cycle of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "42551222",
+      "title": "Analytical validation and clinical evaluation of digital PCR for absolute quantification of Crimean-Congo Hemorrhagic fever virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
