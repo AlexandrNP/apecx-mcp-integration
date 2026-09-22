@@ -72,7 +72,7 @@ _TARGETS: list[tuple[str, str]] = [
 # gazetteer is still built ONCE for the harvest loop — this only picks the limit.
 _GAZ_LIMITS: list[int | None] = [1_400_000, None]
 
-_MAX_PAPERS = 20
+_MAX_PAPERS = int(os.environ.get("APECX_ABLATION_MAX_PAPERS", "20"))
 _RETRIEVAL_K = 5
 # A target becomes a case only if the pooled corpus carries at least this many
 # records stamped with its IRI (otherwise the filtered condition is empty).
