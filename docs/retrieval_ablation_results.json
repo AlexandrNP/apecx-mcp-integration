@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T18:52:29.779686+00:00",
+  "timestamp": "2026-09-22T19:46:55.375891+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -99,8 +99,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.6333333333333334,
-  "n_cases": 48,
+  "mean_unfiltered_precision": 0.59,
+  "n_cases": 60,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -194,6 +194,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 22,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [
+        "42765537",
+        "42734804",
+        "42742313",
+        "42734802",
+        "42623406"
+      ],
+      "unfiltered_citations": [
+        "42515883",
+        "42765537",
+        "42606356",
+        "42734804",
+        "35138784"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
@@ -295,6 +319,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Eastern equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "42515544",
+        "32491624",
+        "42132354",
+        "42268796",
+        "42611357"
+      ],
+      "unfiltered_citations": [
+        "42515544",
+        "32491624",
+        "42132354",
+        "42268796",
+        "42506617"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Rift Valley fever virus",
       "question": "What is known about Rift Valley fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
@@ -386,6 +434,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What antiviral drugs or treatments are effective against Rift Valley fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42607044",
+        "42757101",
+        "42687974",
+        "42693705",
+        "42598172"
+      ],
+      "unfiltered_citations": [
+        "42607044",
+        "42515883",
+        "42606356",
+        "35138784",
+        "2559514"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
@@ -487,6 +559,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "SARS-CoV-2",
+      "question": "What antiviral drugs or treatments are effective against SARS-CoV-2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "34014630",
+        "35138784",
+        "34014629",
+        "34014628",
+        "35138785"
+      ],
+      "unfiltered_citations": [
+        "34014630",
+        "35138784",
+        "34014629",
+        "42606356",
+        "34014628"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Influenza A virus",
       "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
@@ -567,6 +663,28 @@
         "42753873",
         "5388496",
         "42726904"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 3,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "5388496",
+        "4246007",
+        "5391162"
+      ],
+      "unfiltered_citations": [
+        "34014630",
+        "5388496",
+        "35138784",
+        "35138785",
+        "4246007"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -671,6 +789,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+      "filtered_citations": [
+        "42765537",
+        "42742313",
+        "42623406",
+        "42623406",
+        "7520190"
+      ],
+      "unfiltered_citations": [
+        "35952300",
+        "42765537",
+        "42515883",
+        "42742313",
+        "42606356"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Ebola virus",
       "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
@@ -759,6 +901,30 @@
         "42732232",
         "42770795",
         "42726904"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What antiviral drugs or treatments are effective against Ebola virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+      "filtered_citations": [
+        "42756240",
+        "42577745",
+        "42577745",
+        "42749758",
+        "42749758"
+      ],
+      "unfiltered_citations": [
+        "42742181",
+        "42606356",
+        "42756240",
+        "42515883",
+        "42577745"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -863,6 +1029,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+      "filtered_citations": [
+        "42708070",
+        "42583857",
+        "42623406",
+        "42623406",
+        "30000198"
+      ],
+      "unfiltered_citations": [
+        "42708070",
+        "42606356",
+        "34014630",
+        "42515883",
+        "35138784"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Japanese encephalitis virus",
       "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11072",
@@ -954,6 +1144,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Japanese encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+      "filtered_citations": [
+        "42709838",
+        "42680695",
+        "42655691",
+        "42733724",
+        "42660474"
+      ],
+      "unfiltered_citations": [
+        "42515544",
+        "42709838",
+        "42762120",
+        "42680695",
+        "42606356"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
@@ -1055,6 +1269,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Lassa mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lassa mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+      "filtered_citations": [
+        "42382775",
+        "42606356",
+        "42391156",
+        "42583999",
+        "42489459"
+      ],
+      "unfiltered_citations": [
+        "42382775",
+        "42606356",
+        "35138784",
+        "33630482",
+        "42511143"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Nipah henipavirus",
       "question": "What is known about Nipah henipavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
@@ -1151,6 +1389,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Nipah henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Nipah henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+      "filtered_citations": [
+        "42620721",
+        "42665761",
+        "42605787",
+        "42732490",
+        "42600205"
+      ],
+      "unfiltered_citations": [
+        "35138784",
+        "42620721",
+        "42665761",
+        "42515883",
+        "42606356"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
       "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
@@ -1242,6 +1504,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+      "filtered_citations": [
+        "42583854",
+        "42637838",
+        "8099299",
+        "42577745",
+        "42577745"
+      ],
+      "unfiltered_citations": [
+        "42583854",
+        "42515883",
+        "2559514",
+        "35138784",
+        "42742180"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
