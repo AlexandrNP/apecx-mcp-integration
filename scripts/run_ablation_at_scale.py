@@ -94,6 +94,10 @@ _TARGETS: list[tuple[str, str]] = [
     ("Human immunodeficiency virus 1", "http://purl.obolibrary.org/obo/NCBITaxon_11676"),
     ("Rabies lyssavirus", "http://purl.obolibrary.org/obo/NCBITaxon_11292"),
     ("Mumps orthorubulavirus", "http://purl.obolibrary.org/obo/NCBITaxon_2560602"),
+    ("Sin Nombre orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052499"),
+    ("Puumala orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052493"),
+    ("Seoul orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052498"),
+    ("Norovirus", "http://purl.obolibrary.org/obo/NCBITaxon_142786"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
