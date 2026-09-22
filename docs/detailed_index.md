@@ -217,6 +217,7 @@ _Headline ablation: does the organism-identifier filter improve the answers?_
 - `def mine_rag_failures(per_case: list[dict], corpus_by_pmid: dict[str, dict], iri_to_name: dict[str, str])` — Extract the CONCRETE citations where the unfiltered ("pure RAG") condition
 - `def merge_failure_catalogs(existing: dict[str, list[dict]], new: dict[str, list[dict]])` — Union two pure-RAG failure catalogs, so the benchmark ACCUMULATES across
 - `def default_reader()` — Adapt the real ``LiteratureRagStep`` into a ``reader(question, records)``.
+- `def retrieval_reader()` — A pure-RETRIEVAL reader: the top-k PMIDs a semantic search surfaces for the
 
 ## `src/apecx_integration/agents/literature/coverage.py`
 _Paper-coverage aggregation over a gazetteer-tagged corpus._

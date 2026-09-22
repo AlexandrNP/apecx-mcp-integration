@@ -32,6 +32,7 @@ from apecx_integration.agents.literature.ablation import (
     merge_failure_catalogs,
     mine_rag_failures,
     organism_precision,
+    retrieval_reader,
     run_ablation,
 )
 from apecx_integration.agents.literature.gazetteer import build_gazetteer
@@ -299,3 +300,33 @@ def test_filter_does_not_hurt_precision_real(monkeypatch):
         f"filter must not hurt: {result['mean_filtered_precision']} < "
         f"{result['mean_unfiltered_precision']}"
     )
+
+
+@pytest.mark.slow
+def test_retrieval_reader_is_llm_free_and_on_organism_when_filtered():
+    """The retrieval-only reader (no LLM) returns real corpus PMIDs, and over the
+    CHIKV-filtered corpus every retrieved paper is on-organism (precision 1.0)."""
+    pytest.importorskip("sentence_transformers")
+    pytest.importorskip("faiss")
+
+    gaz = build_gazetteer(_GAZ_MAP)
+    corpus = [stamp_abstract(r, gaz) for r in _RAW_RECORDS]
+    reader = retrieval_reader()
+
+    pmids = {r["pmid"] for r in corpus}
+    out = reader("What antibodies neutralize Chikungunya virus?", corpus, k=3)
+    assert out["citations"] and all(c in pmids for c in out["citations"])
+
+    result = run_ablation(
+        [
+            {
+                "organism": "CHIKV",
+                "question": "What antibodies neutralize Chikungunya virus?",
+                "correct_iri": _CHIKV_IRI,
+            }
+        ],
+        corpus,
+        reader,
+        k=3,
+    )
+    assert result["mean_filtered_precision"] == 1.0

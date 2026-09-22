@@ -36,6 +36,7 @@ from apecx_integration.agents.literature.ablation import (
     default_reader,
     merge_failure_catalogs,
     mine_rag_failures,
+    retrieval_reader,
     run_ablation,
 )
 from apecx_integration.agents.literature.gazetteer import Gazetteer, build_from_dictionary
@@ -97,6 +98,17 @@ _QUESTION_TEMPLATES: list[str] = [
 
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
 _FAILURES_PATH = Path(__file__).resolve().parent.parent / "docs" / "rag_failure_examples.json"
+_RETRIEVAL_RESULTS_PATH = (
+    Path(__file__).resolve().parent.parent / "docs" / "retrieval_ablation_results.json"
+)
+_RETRIEVAL_FAILURES_PATH = (
+    Path(__file__).resolve().parent.parent / "docs" / "retrieval_failure_examples.json"
+)
+
+# APECX_ABLATION_MODE: "llm" (default, full retrieve+synthesize+cite) or "retrieval"
+# (semantic search only, NO LLM — isolates pure RAG's retrieval-stage failures and
+# runs where the synthesis path is too heavy). The mode picks the reader + outputs.
+_MODE = os.environ.get("APECX_ABLATION_MODE", "llm").strip().lower()
 
 
 def _is_tagged(gaz: Gazetteer, name: str, iri: str) -> bool:
@@ -193,7 +205,9 @@ def main() -> None:
     # 5. Run the harness. Wrap default_reader to CAPTURE each call's status
     #    honestly (run_ablation itself keeps only citations). Calls are ordered
     #    per case: filtered first, then unfiltered — so statuses pair up 2-by-2.
-    base_reader = default_reader()
+    base_reader = retrieval_reader() if _MODE == "retrieval" else default_reader()
+    failures_path = _RETRIEVAL_FAILURES_PATH if _MODE == "retrieval" else _FAILURES_PATH
+    results_path = _RETRIEVAL_RESULTS_PATH if _MODE == "retrieval" else _RESULTS_PATH
     call_statuses: list[str | None] = []
 
     def reader(question: str, records: list[dict], *, k: int = _RETRIEVAL_K) -> dict[str, Any]:
@@ -247,7 +261,7 @@ def main() -> None:
             "synthesized."
         ),
     }
-    _FAILURES_PATH.write_text(json.dumps(failure_record, indent=2) + "\n", encoding="utf-8")
+    failures_path.write_text(json.dumps(failure_record, indent=2) + "\n", encoding="utf-8")
 
     # 6. Assemble the full result record and write it.
     record = {
@@ -277,7 +291,7 @@ def main() -> None:
         ),
     }
 
-    _RESULTS_PATH.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    results_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
 
     # 7. Print the headline numbers.
     print("\n===== ABLATION RESULT =====")
@@ -304,8 +318,8 @@ def main() -> None:
             f"  FP [{fp['organism']}] cited PMID {fp['cited_pmid']} "
             f"(actually about {', '.join(fp['actual_organisms'])}): {fp['title'][:70]}"
         )
-    print(f"\nWrote {_RESULTS_PATH}")
-    print(f"Wrote {_FAILURES_PATH}")
+    print(f"\nWrote {results_path}")
+    print(f"Wrote {failures_path}")
 
 
 if __name__ == "__main__":

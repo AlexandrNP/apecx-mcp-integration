@@ -213,3 +213,32 @@ def default_reader() -> Reader:
         return asyncio.run(step.process({"question": question, "filtered_records": records}))
 
     return _read
+
+
+def retrieval_reader() -> Reader:
+    """A pure-RETRIEVAL reader: the top-k PMIDs a semantic search surfaces for the
+    question, with NO language model.
+
+    This exposes pure RAG's *retrieval-stage* failure — an off-organism paper
+    ranked into the candidate set before any LLM sees it — using only the ``rag``
+    extra (sentence-transformers + faiss). Because it needs no LLM, it runs where
+    the full synthesis path is too heavy, and it isolates the failure to retrieval
+    rather than generation. The embedding model is loaded once and reused across
+    cases. ``citations`` are the retrieved PMIDs, so ``organism_precision`` and
+    ``mine_rag_failures`` apply unchanged.
+    """
+    from sentence_transformers import SentenceTransformer  # noqa: I001 — order load-bearing
+
+    from apecx_integration.agents.literature.stamped_corpus import (
+        _DEFAULT_MODEL,
+        build_faiss_subindex,
+    )
+
+    model = SentenceTransformer(_DEFAULT_MODEL, device="cpu")
+
+    def _read(question: str, records: list[dict], *, k: int = 5) -> dict[str, Any]:
+        subindex = build_faiss_subindex(records, model=model)
+        hits = subindex.search(question, k=k)
+        return {"citations": [str(h["pmid"]) for h in hits]}
+
+    return _read
