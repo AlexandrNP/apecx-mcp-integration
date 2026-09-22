@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T19:46:55.375891+00:00",
+  "timestamp": "2026-09-22T21:37:03.112281+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -18,11 +18,15 @@
     "Japanese encephalitis virus": true,
     "Lassa mammarenavirus": true,
     "Nipah henipavirus": true,
-    "Crimean-Congo hemorrhagic fever orthonairovirus": true
+    "Crimean-Congo hemorrhagic fever orthonairovirus": true,
+    "Hendra henipavirus": true,
+    "Tick-borne encephalitis virus": true,
+    "Hantaan orthohantavirus": true,
+    "Junin mammarenavirus": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 209,
+  "corpus_size": 288,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -36,7 +40,11 @@
     "Japanese encephalitis virus": "dictionary",
     "Lassa mammarenavirus": "dictionary",
     "Nipah henipavirus": "dictionary",
-    "Crimean-Congo hemorrhagic fever orthonairovirus": "dictionary"
+    "Crimean-Congo hemorrhagic fever orthonairovirus": "dictionary",
+    "Hendra henipavirus": "dictionary",
+    "Tick-borne encephalitis virus": "dictionary",
+    "Hantaan orthohantavirus": "dictionary",
+    "Junin mammarenavirus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -90,6 +98,22 @@
     "Crimean-Congo hemorrhagic fever orthonairovirus": {
       "harvested": 20,
       "stamped_with_own_iri": 15
+    },
+    "Hendra henipavirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 11
+    },
+    "Tick-borne encephalitis virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 7
+    },
+    "Hantaan orthohantavirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 14
+    },
+    "Junin mammarenavirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 6
     }
   },
   "skipped_organisms": [
@@ -99,8 +123,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.59,
-  "n_cases": 60,
+  "mean_unfiltered_precision": 0.54,
+  "n_cases": 80,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -213,11 +237,11 @@
         "42515883",
         "42765537",
         "42606356",
-        "42734804",
-        "35138784"
+        "42606356",
+        "41936880"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
@@ -348,21 +372,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
       "filtered_citations": [
         "42607044",
+        "41936880",
         "42519212",
         "42693705",
-        "42687974",
-        "42757101"
+        "42687974"
       ],
       "unfiltered_citations": [
         "42607044",
+        "41936880",
         "42519212",
         "42693705",
-        "42687974",
-        "42757101"
+        "42687974"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -386,7 +410,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -410,7 +434,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -422,19 +446,19 @@
         "42598172",
         "42607044",
         "42757101",
-        "42726904",
+        "41936880",
         "42726904"
       ],
       "unfiltered_citations": [
         "42598172",
         "42607044",
         "42757101",
-        "42753873",
-        "42747226"
+        "41936880",
+        "42753873"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 21,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -443,22 +467,22 @@
       "question": "What antiviral drugs or treatments are effective against Rift Valley fever virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
       "filtered_citations": [
+        "41936880",
         "42607044",
         "42757101",
         "42687974",
-        "42693705",
-        "42598172"
+        "42693705"
       ],
       "unfiltered_citations": [
+        "41936880",
         "42607044",
         "42515883",
         "42606356",
-        "35138784",
-        "2559514"
+        "42606356"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -471,18 +495,18 @@
         "34014628",
         "34014630",
         "33355732",
-        "33226741"
+        "42115643"
       ],
       "unfiltered_citations": [
         "34014629",
         "34014628",
         "34014630",
         "33355732",
-        "33226741"
+        "42115643"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -494,19 +518,19 @@
         "32259829",
         "34014628",
         "34014629",
-        "34014630",
-        "42489459"
+        "42115643",
+        "34014630"
       ],
       "unfiltered_citations": [
         "32259829",
         "34014628",
         "34014629",
-        "34014630",
-        "42489459"
+        "42115643",
+        "34014630"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -530,7 +554,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -543,7 +567,7 @@
         "42489459",
         "34014629",
         "34014628",
-        "34014630"
+        "42115643"
       ],
       "unfiltered_citations": [
         "32259829",
@@ -554,7 +578,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -566,19 +590,19 @@
         "34014630",
         "35138784",
         "34014629",
-        "34014628",
-        "35138785"
+        "42115643",
+        "34014628"
       ],
       "unfiltered_citations": [
         "34014630",
         "35138784",
         "34014629",
-        "42606356",
-        "34014628"
+        "42115643",
+        "42606356"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -640,7 +664,7 @@
         "42709838",
         "5817556",
         "42641941",
-        "42584108"
+        "42641941"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -661,8 +685,8 @@
         "5817556",
         "5391162",
         "42753873",
-        "5388496",
-        "42726904"
+        "42391226",
+        "5388496"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -683,11 +707,11 @@
         "34014630",
         "5388496",
         "35138784",
-        "35138785",
-        "4246007"
+        "41936880",
+        "42580486"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 3,
       "filtered_status": null,
       "unfiltered_status": null
@@ -700,8 +724,8 @@
         "35952299",
         "42759937",
         "42747226",
-        "7520190",
-        "14230895"
+        "42747226",
+        "7520190"
       ],
       "unfiltered_citations": [
         "35952300",
@@ -712,7 +736,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -736,7 +760,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -760,7 +784,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -773,7 +797,7 @@
         "42759937",
         "7520190",
         "42747226",
-        "14230895"
+        "42747226"
       ],
       "unfiltered_citations": [
         "35952300",
@@ -784,7 +808,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -797,18 +821,18 @@
         "42742313",
         "42623406",
         "42623406",
-        "7520190"
+        "41734835"
       ],
       "unfiltered_citations": [
         "35952300",
         "42765537",
+        "41936880",
         "42515883",
-        "42742313",
-        "42606356"
+        "42742313"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -921,13 +945,13 @@
       ],
       "unfiltered_citations": [
         "42742181",
+        "41936880",
         "42606356",
-        "42756240",
-        "42515883",
-        "42577745"
+        "42606356",
+        "42756240"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
@@ -941,7 +965,7 @@
         "30000198",
         "42583857",
         "42747226",
-        "42661761"
+        "42747226"
       ],
       "unfiltered_citations": [
         "42708070",
@@ -952,7 +976,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -976,7 +1000,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1000,7 +1024,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1010,21 +1034,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
       "filtered_citations": [
         "42747226",
+        "42747226",
         "42708070",
         "42706263",
-        "42583857",
-        "42652146"
+        "42583857"
       ],
       "unfiltered_citations": [
         "42598172",
         "42747226",
+        "42747226",
         "42753873",
-        "42708070",
-        "32259829"
+        "42708070"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 14,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1041,14 +1065,14 @@
       ],
       "unfiltered_citations": [
         "42708070",
+        "41936880",
         "42606356",
-        "34014630",
-        "42515883",
-        "35138784"
+        "42606356",
+        "34014630"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1113,10 +1137,10 @@
       ],
       "unfiltered_citations": [
         "42709838",
+        "42683038",
         "42611357",
         "42515544",
-        "42679643",
-        "42268796"
+        "42679643"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -1139,11 +1163,11 @@
         "42733724",
         "42655691",
         "42747226",
-        "42703622",
-        "42753873"
+        "42747226",
+        "42703622"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
@@ -1163,8 +1187,8 @@
         "42515544",
         "42709838",
         "42762120",
-        "42680695",
-        "42606356"
+        "42762120",
+        "42680695"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -1177,22 +1201,22 @@
       "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
       "filtered_citations": [
+        "42161271",
         "42382775",
         "42391156",
-        "42606356",
-        "42583999",
-        "42598737"
+        "41754545",
+        "41659533"
       ],
       "unfiltered_citations": [
+        "42161271",
         "42382775",
         "42501279",
-        "33355732",
-        "42391156",
-        "33630482"
+        "42042791",
+        "33355732"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 9,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1201,22 +1225,22 @@
       "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
       "filtered_citations": [
+        "42161271",
         "42382775",
         "42391156",
-        "42583999",
-        "42606356",
-        "42489459"
+        "41754545",
+        "41659533"
       ],
       "unfiltered_citations": [
+        "42161271",
         "42511143",
         "42382775",
-        "42391156",
-        "42501279",
-        "42583999"
+        "41960312",
+        "42061821"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 9,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1227,9 +1251,9 @@
       "filtered_citations": [
         "42382775",
         "42391156",
-        "42606356",
-        "42583999",
-        "42423846"
+        "42161271",
+        "41754545",
+        "41659533"
       ],
       "unfiltered_citations": [
         "42382775",
@@ -1240,7 +1264,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 9,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1249,22 +1273,22 @@
       "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
       "filtered_citations": [
+        "42161271",
         "42489459",
         "42382775",
-        "42606356",
-        "42583999",
-        "42391156"
+        "41659533",
+        "41754545"
       ],
       "unfiltered_citations": [
         "42511143",
+        "42161271",
+        "42496116",
         "42489459",
-        "42382775",
-        "42606356",
-        "42501279"
+        "42382775"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 9,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1273,22 +1297,22 @@
       "question": "What antiviral drugs or treatments are effective against Lassa mammarenavirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
       "filtered_citations": [
-        "42382775",
-        "42606356",
-        "42391156",
-        "42583999",
-        "42489459"
+        "41754545",
+        "41659533",
+        "41600866",
+        "41394564",
+        "42382775"
       ],
       "unfiltered_citations": [
-        "42382775",
-        "42606356",
-        "35138784",
-        "33630482",
-        "42511143"
+        "41754545",
+        "41659533",
+        "41600866",
+        "41394564",
+        "42382775"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 9,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1298,21 +1322,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
       "filtered_citations": [
         "42620721",
+        "42198690",
         "42600205",
         "42732490",
-        "42605787",
-        "42701709"
+        "42605787"
       ],
       "unfiltered_citations": [
         "42620721",
-        "42600205",
-        "42732490",
-        "42605787",
-        "42701709"
+        "42268934",
+        "42215462",
+        "42422560",
+        "42198690"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 20,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1329,14 +1353,14 @@
       ],
       "unfiltered_citations": [
         "42605787",
+        "42422560",
         "42620721",
         "42732490",
-        "42674244",
-        "42600205"
+        "42674244"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 20,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1346,21 +1370,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
       "filtered_citations": [
         "42605787",
+        "42381667",
         "42600205",
-        "42744055",
-        "42732490",
-        "42623407"
+        "42052926",
+        "42744055"
       ],
       "unfiltered_citations": [
         "42605787",
         "42709838",
-        "42679643",
-        "42391156",
-        "42611357"
+        "42422560",
+        "42683038",
+        "42291516"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1372,7 +1396,7 @@
         "42620721",
         "42732490",
         "42605787",
-        "42726904",
+        "42541310",
         "42726904"
       ],
       "unfiltered_citations": [
@@ -1380,11 +1404,11 @@
         "42732490",
         "42753873",
         "42605787",
-        "42726904"
+        "42523513"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 20,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1393,22 +1417,22 @@
       "question": "What antiviral drugs or treatments are effective against Nipah henipavirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
       "filtered_citations": [
+        "42052926",
+        "42580486",
         "42620721",
         "42665761",
-        "42605787",
-        "42732490",
-        "42600205"
+        "42605787"
       ],
       "unfiltered_citations": [
-        "35138784",
-        "42620721",
-        "42665761",
-        "42515883",
-        "42606356"
+        "42052926",
+        "42580486",
+        "42422560",
+        "41936880",
+        "42268934"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1432,7 +1456,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1456,7 +1480,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1480,7 +1504,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1504,7 +1528,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1513,22 +1537,502 @@
       "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
       "filtered_citations": [
+        "41936880",
         "42583854",
         "42637838",
         "8099299",
-        "42577745",
         "42577745"
       ],
       "unfiltered_citations": [
+        "41936880",
         "42583854",
         "42515883",
         "2559514",
-        "35138784",
-        "42742180"
+        "35138784"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42689109",
+        "42198690",
+        "42580486",
+        "42381667",
+        "42541310"
+      ],
+      "unfiltered_citations": [
+        "42422560",
+        "42268934",
+        "42689109",
+        "42198690",
+        "42215462"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42689109",
+        "42541310",
+        "42381667",
+        "42198690",
+        "42580486"
+      ],
+      "unfiltered_citations": [
+        "42422560",
+        "42689109",
+        "42395906",
+        "42523513",
+        "42261208"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42291516",
+        "42689109",
+        "42381667",
+        "42580486",
+        "42198690"
+      ],
+      "unfiltered_citations": [
+        "42422560",
+        "42605787",
+        "42291516",
+        "42689109",
+        "42709838"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42689109",
+        "42541310",
+        "42580486",
+        "42468517",
+        "42430468"
+      ],
+      "unfiltered_citations": [
+        "42523513",
+        "42689109",
+        "42395906",
+        "42422560",
+        "42578546"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42580486",
+        "42052926",
+        "42689109",
+        "42198690",
+        "42381667"
+      ],
+      "unfiltered_citations": [
+        "42580486",
+        "42422560",
+        "42052926",
+        "42268934",
+        "42515883"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42764039",
+        "42703614",
+        "42747226",
+        "42747226",
+        "42696092"
+      ],
+      "unfiltered_citations": [
+        "42683038",
+        "42764039",
+        "42703614",
+        "42506617",
+        "42515544"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42696092",
+        "42764039",
+        "42703614",
+        "42645659",
+        "42685838"
+      ],
+      "unfiltered_citations": [
+        "42655738",
+        "42655738",
+        "42683038",
+        "42696092",
+        "42764039"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42703614",
+        "42764039",
+        "42696092",
+        "42645659",
+        "42685838"
+      ],
+      "unfiltered_citations": [
+        "42683038",
+        "42703614",
+        "42764039",
+        "42709838",
+        "42655738"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Tick-borne encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42696092",
+        "42747226",
+        "42747226",
+        "42685838",
+        "42764039"
+      ],
+      "unfiltered_citations": [
+        "42696092",
+        "42747226",
+        "42747226",
+        "42685838",
+        "42661313"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Tick-borne encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42685838",
+        "42645659",
+        "42703614",
+        "42764039",
+        "42696092"
+      ],
+      "unfiltered_citations": [
+        "42515544",
+        "42683038",
+        "42762120",
+        "42762120",
+        "42685838"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "41832144",
+        "42297226",
+        "42415885",
+        "42391226",
+        "41930440"
+      ],
+      "unfiltered_citations": [
+        "41832144",
+        "42297226",
+        "42415885",
+        "42412999",
+        "42198690"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "42415885",
+        "41930440",
+        "42391226",
+        "42347213",
+        "42008533"
+      ],
+      "unfiltered_citations": [
+        "42415885",
+        "41930440",
+        "42391226",
+        "42347213",
+        "42008533"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "42415885",
+        "41856193",
+        "42104899",
+        "42391226",
+        "41930440"
+      ],
+      "unfiltered_citations": [
+        "42415885",
+        "42709838",
+        "41856193",
+        "42605787",
+        "42291516"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "42008533",
+        "41930440",
+        "42347213",
+        "42415885",
+        "42391226"
+      ],
+      "unfiltered_citations": [
+        "42008533",
+        "41930440",
+        "42347213",
+        "42415885",
+        "42391226"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "42415885",
+        "41930440",
+        "42391226",
+        "41832144",
+        "42297226"
+      ],
+      "unfiltered_citations": [
+        "41936880",
+        "42415885",
+        "41930440",
+        "42580486",
+        "42515883"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41754545",
+        "41659533",
+        "41600866",
+        "41930240",
+        "41394564"
+      ],
+      "unfiltered_citations": [
+        "42061821",
+        "42042791",
+        "41960312",
+        "42327048",
+        "42496116"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41754545",
+        "41659533",
+        "41600866",
+        "41394564",
+        "41930240"
+      ],
+      "unfiltered_citations": [
+        "41960312",
+        "42061821",
+        "42327048",
+        "42042791",
+        "41596714"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41754545",
+        "41659533",
+        "41600866",
+        "41394564",
+        "42606356"
+      ],
+      "unfiltered_citations": [
+        "42709838",
+        "42391156",
+        "42061821",
+        "42683038",
+        "42679643"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Junin mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41659533",
+        "41754545",
+        "41600866",
+        "42606356",
+        "42606356"
+      ],
+      "unfiltered_citations": [
+        "42496116",
+        "41960312",
+        "41659533",
+        "41754545",
+        "42511143"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Junin mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41754545",
+        "41600866",
+        "41659533",
+        "41394564",
+        "42606356"
+      ],
+      "unfiltered_citations": [
+        "41754545",
+        "41600866",
+        "41659533",
+        "41394564",
+        "41596714"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 7,
       "filtered_status": null,
       "unfiltered_status": null
     }

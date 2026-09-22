@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T19:46:55.374290+00:00",
-  "runs": 4,
+  "updated": "2026-09-22T21:36:11.137539+00:00",
+  "runs": 5,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 91,
-  "n_false_negatives": 69,
+  "n_false_positives": 146,
+  "n_false_negatives": 106,
   "new_this_run": {
-    "false_positives": 27,
-    "false_negatives": 9
+    "false_positives": 55,
+    "false_negatives": 37
   },
   "false_positives": [
     {
@@ -973,6 +973,591 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_565995"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What antiviral drugs or treatments are effective against Ebola virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "42061821",
+      "title": "Efficacy of an Fc-silent antibody targeting the apical domain of human transferrin receptor 1 in transgenic mouse models of Jun\u00edn virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is known about Nipah henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42268934",
+      "title": "A cocktail of human mAbs targeting the henipavirus fusion and receptor binding proteins provides cross-species neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is known about Nipah henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42215462",
+      "title": "Highly potent C-type nanoantibodies neutralize Nipah and Hendra viruses by cavity filling on fusion glycoprotein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is known about Nipah henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42422560",
+      "title": "Henipavirus evidence gaps: a Rapid Research Needs Appraisal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42291516",
+      "title": "Evaluation of two point-of-care molecular diagnostic platforms for rapid detection of equine Hendra virus.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "42523513",
+      "title": "Jamaican fruit bats are susceptible to henipaviruses but rapidly control infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Nipah henipavirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42422560",
+      "title": "Henipavirus evidence gaps: a Rapid Research Needs Appraisal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42268934",
+      "title": "A cocktail of human mAbs targeting the henipavirus fusion and receptor binding proteins provides cross-species neutralization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42215462",
+      "title": "Highly potent C-type nanoantibodies neutralize Nipah and Hendra viruses by cavity filling on fusion glycoprotein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "cited_pmid": "42395906",
+      "title": "A risk-gate mechanistic-ecological framework for assessing emergence potential of henipa-related viruses.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "cited_pmid": "42523513",
+      "title": "Jamaican fruit bats are susceptible to henipaviruses but rapidly control infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "cited_pmid": "42261208",
+      "title": "Henipaviruses at the threshold: preparedness in the era of recurrent spillover.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "cited_pmid": "42605787",
+      "title": "The Role of the Medical Laboratory in Identifying 'Super-Spreaders': Correlation Between Viral Load Kinetics and Human-to-Human Infectivity.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "42578546",
+      "title": "Sequence-encoded determinants drive distinct early aggregation pathways and different structural outcomes in PNT1 fibrils across Henipavirus members.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42655738",
+      "title": "Trends in Tick-Borne Virus Ecology: Vector Incrimination, Focal Distribution, and Reservoir Associations.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Tick-borne encephalitis virus?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Tick-borne encephalitis virus?",
+      "cited_pmid": "42762120",
+      "title": "Scrub typhus as a leading cause of acute encephalitis syndrome in North India: A changing paradigm.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_69474"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42198690",
+      "title": "Heterologous Sequential mRNA Vaccination of Indian Rhesus Macaques Elicits Broad Binding and Neutralizing Antibody Responses Against Diverse Henipaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1474807",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2847089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42605787",
+      "title": "The Role of the Medical Laboratory in Identifying 'Super-Spreaders': Correlation Between Viral Load Kinetics and Human-to-Human Infectivity.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42291516",
+      "title": "Evaluation of two point-of-care molecular diagnostic platforms for rapid detection of equine Hendra virus.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42061821",
+      "title": "Efficacy of an Fc-silent antibody targeting the apical domain of human transferrin receptor 1 in transgenic mouse models of Jun\u00edn virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42327048",
+      "title": "Computationally hybridized pathogenic mammarenavirus receptor binding domains reveal cryptic variants that elicit cross-neutralizing immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "41596714",
+      "title": "Effect of the AHR Inhibitor CH223191 as an Adjunct Treatment for Mammarenavirus Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052328"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "42391156",
+      "title": "Development and qualification of an enzyme-linked immunosorbent assay to detect human serum immunoglobulin G reactive to multiple lineages of Lassa virus nucleoprotein.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "42679643",
+      "title": "FilmArray Meningitis/Encephalitis Panel accelerates central nervous system infection diagnosis and reduces empirical acyclovir use: A Japanese prospective study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Junin mammarenavirus?",
+      "cited_pmid": "42511143",
+      "title": "Emerging Mammarenaviruses in Wildlife: Expanding Host Range and Implications.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2800209",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
     }
   ],
   "false_negatives": [
@@ -1389,6 +1974,228 @@
       "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
       "missed_pmid": "42577745",
       "title": "Bacterial Infection in Ebola Virus Disease, Marburg Virus Disease, Crimean-Congo Hemorrhagic Fever, and Lassa Fever."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "missed_pmid": "42734804",
+      "title": "Assessing the Vector Competence for Chikungunya Virus in Mosquitoes."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "missed_pmid": "41734835",
+      "title": "Bovine serum albumin nanoparticles as a long-acting antiviral delivery platform for mycophenolic acid and ribavirin against emerging RNA viruses."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "missed_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41659533",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "missed_pmid": "42161271",
+      "title": "Decoding the human CD4+ T cell epitope repertoire for Lassa fever virus reveals T cell-based pan-mammarenavirus vaccine candidates."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42381667",
+      "title": "Hendra and Nipah viruses: Biosafety evidence for risk-based containment, inactivation practices, and one health preparedness."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42052926",
+      "title": "Repurposing Clinical Candidates for Nipah and Hendra Viruses."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "missed_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "missed_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Nipah henipavirus?",
+      "missed_pmid": "42620721",
+      "title": "Current advances in the development of Nipah virus vaccines."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Nipah henipavirus?",
+      "missed_pmid": "42665761",
+      "title": "Machine learning-driven drug repurposing and computational validation for Nipah virus."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42381667",
+      "title": "Hendra and Nipah viruses: Biosafety evidence for risk-based containment, inactivation practices, and one health preparedness."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus pathogenesis and transmission?",
+      "missed_pmid": "42198690",
+      "title": "Heterologous Sequential mRNA Vaccination of Indian Rhesus Macaques Elicits Broad Binding and Neutralizing Antibody Responses Against Diverse Henipaviruses."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "missed_pmid": "42468517",
+      "title": "Cysteine Redox State Governs the Condensation Pathway of Hendra Virus W Protein and Differentially Impacts Type I IFN and NF-\u03baB Signaling."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "missed_pmid": "42430468",
+      "title": "Periodic shifts in viral load increase risk of Hendra virus spillover from Pteropus bats."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "missed_pmid": "42689109",
+      "title": "Hendra virus: research progress on a bat-borne threat lurking at the human-animal interface."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42696092",
+      "title": "Surveillance of tick-borne encephalitis virus and Tribe\u010d Virus in Ixodes ricinus ticks from Slovakia."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42703614",
+      "title": "Under-ascertainment of medically attended tick-borne encephalitis virus infections by tick-borne encephalitis surveillance in selected areas of Austria, Denmark, Finland, Germany, Latvia, Sweden, and Switzerland."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42645659",
+      "title": "African tick-borne viruses: A systematic review of diversity, epidemiology, clinical impact, and one health strategies."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42685838",
+      "title": "Field-isolate recombinant tick-borne encephalitis viruses define reporter-stability guidelines for antiviral testing in flaviviruses."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Tick-borne encephalitis virus?",
+      "missed_pmid": "42764039",
+      "title": "Prevalence of antibodies against Tick-Borne Encephalitis Virus in blood donors in the states of Saxony and Berlin/Brandenburg, eastern Germany."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41930440",
+      "title": "[Establishment of an integrin \u03b23-overexpressing cell line and its influence on Hantaan virus infection and replication]."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "missed_pmid": "42104899",
+      "title": "Temporal Dynamics of Viremia in Hemorrhagic Fever With Renal Syndrome Patients."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "missed_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "missed_pmid": "42297226",
+      "title": "Integrated analysis on immunoreactivity and immunogenetics of Hantaan virus glycoprotein epitopes."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41659533",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41600866",
+      "title": "Screening of the Pandemic Response Box Library Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41930240",
+      "title": "Harnessing immunoinformatics for the rational design of mRNA vaccines against the emerging Junin virus."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41394564",
+      "title": "Pandemic Response Box Screening Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target."
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "missed_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
