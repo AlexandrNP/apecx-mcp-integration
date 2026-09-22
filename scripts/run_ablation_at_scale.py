@@ -114,6 +114,7 @@ _RETRIEVAL_RESULTS_PATH = (
 _RETRIEVAL_FAILURES_PATH = (
     Path(__file__).resolve().parent.parent / "docs" / "retrieval_failure_examples.json"
 )
+_KSWEEP_PATH = Path(__file__).resolve().parent.parent / "docs" / "retrieval_k_sweep.json"
 
 # APECX_ABLATION_MODE: "llm" (default, full retrieve+synthesize+cite) or "retrieval"
 # (semantic search only, NO LLM — isolates pure RAG's retrieval-stage failures and
@@ -272,6 +273,49 @@ def main() -> None:
         ),
     }
     failures_path.write_text(json.dumps(failure_record, indent=2) + "\n", encoding="utf-8")
+
+    # 5c. Retrieval-DEPTH sweep (retrieval mode only): how does pure-RAG organism
+    #     precision degrade as we retrieve MORE documents? Embed the pooled corpus
+    #     once, then search each unfiltered question at k in {1,3,5,10}. This is the
+    #     RAG-oversaturation thesis measured on our own data — the filtered side is
+    #     1.00 by construction, so only the unfiltered curve is informative.
+    if _MODE == "retrieval":
+        from apecx_integration.agents.literature.ablation import organism_precision
+        from apecx_integration.agents.literature.stamped_corpus import build_faiss_subindex
+
+        sub = build_faiss_subindex(pooled)  # embed the whole pool once
+        sweep = {}
+        for k in (1, 3, 5, 10):
+            precs = []
+            for case in cases:
+                hits = sub.search(case["question"], k=k)
+                cites = [str(h["pmid"]) for h in hits]
+                precs.append(organism_precision(cites, corpus_by_pmid, case["correct_iri"]))
+            sweep[k] = sum(precs) / len(precs) if precs else 0.0
+        _KSWEEP_PATH.write_text(
+            json.dumps(
+                {
+                    "experiment": "retrieval_depth_sweep",
+                    "timestamp": datetime.now(UTC).isoformat(),
+                    "n_cases": len(cases),
+                    "corpus_size": len(pooled),
+                    "filtered_precision_all_k": 1.0,
+                    "unfiltered_precision_by_k": {str(k): v for k, v in sweep.items()},
+                    "note": (
+                        "Pure semantic search over the whole mixed pool: mean share of the top-k "
+                        "papers about the right organism, at increasing retrieval depth k. The "
+                        "organism-filtered side stays 1.00 at every k by construction."
+                    ),
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        print(
+            "k-sweep (unfiltered precision): "
+            + "  ".join(f"k={k}:{v:.3f}" for k, v in sweep.items())
+        )
 
     # 6. Assemble the full result record and write it.
     record = {
