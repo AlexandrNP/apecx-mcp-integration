@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-11T21:12:06.821415+00:00",
+  "timestamp": "2026-09-22T16:48:58.538092+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -32,8 +32,8 @@
   },
   "harvested_counts": {
     "Chikungunya virus": {
-      "harvested": 20,
-      "stamped_with_own_iri": 15
+      "harvested": 19,
+      "stamped_with_own_iri": 14
     },
     "Dengue virus": {
       "harvested": 4,
@@ -45,7 +45,7 @@
     },
     "Rift Valley fever virus": {
       "harvested": 20,
-      "stamped_with_own_iri": 15
+      "stamped_with_own_iri": 17
     },
     "SARS-CoV-2": {
       "harvested": 18,
@@ -60,12 +60,12 @@
       "stamped_with_own_iri": 4
     },
     "Ebola virus": {
-      "harvested": 15,
-      "stamped_with_own_iri": 10
+      "harvested": 16,
+      "stamped_with_own_iri": 8
     },
     "Yellow fever virus": {
       "harvested": 20,
-      "stamped_with_own_iri": 9
+      "stamped_with_own_iri": 8
     }
   },
   "skipped_organisms": [
@@ -75,7 +75,7 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.890625,
+  "mean_unfiltered_precision": 0.7604166666666666,
   "n_cases": 16,
   "per_case": [
     {
@@ -83,12 +83,10 @@
       "question": "What is known about Chikungunya virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
       "filtered_citations": [
-        "42698790",
-        "42712993",
-        "42720322"
+        "42748649"
       ],
       "unfiltered_citations": [
-        "42700279"
+        "42748649"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -101,21 +99,18 @@
       "question": "What is known about Chikungunya virus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
       "filtered_citations": [
-        "42683070",
-        "42685066",
-        "42698790",
-        "42700279",
-        "42712993"
+        "42734802",
+        "42734804",
+        "42748151",
+        "42756906"
       ],
       "unfiltered_citations": [
-        "42683070",
-        "42685066",
-        "42698790",
-        "42700279",
-        "42712993"
+        "42734801",
+        "42734802",
+        "42734804"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 1.0,
+      "unfiltered_precision": 0.6666666666666666,
       "filtered_corpus_size": 21,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
@@ -178,7 +173,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -187,14 +182,20 @@
       "question": "What is known about Rift Valley fever virus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
       "filtered_citations": [
-        "42607044"
+        "42607044",
+        "42687974",
+        "42693705",
+        "42757101"
       ],
       "unfiltered_citations": [
-        "42607044"
+        "42607044",
+        "42687974",
+        "42693705",
+        "42757101"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 19,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -218,7 +219,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 15,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -236,7 +237,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 15,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -252,7 +253,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 4,
+      "filtered_corpus_size": 3,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -262,8 +263,6 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
         "4246007",
-        "42700361",
-        "5388496",
         "5391162"
       ],
       "unfiltered_citations": [
@@ -274,7 +273,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.75,
-      "filtered_corpus_size": 4,
+      "filtered_corpus_size": 3,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -283,16 +282,17 @@
       "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
       "filtered_citations": [
-        "42661761"
+        "42747226",
+        "7520190"
       ],
       "unfiltered_citations": [
         "42506617",
         "42641941",
-        "7520190"
+        "42747226"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.3333333333333333,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 13,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -302,17 +302,16 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
       "filtered_citations": [
         "14230895",
-        "35952299",
         "42623406",
-        "42708066"
+        "7520190"
       ],
       "unfiltered_citations": [
         "14230895",
-        "42708066"
+        "7520190"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 13,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -321,17 +320,15 @@
       "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
       "filtered_citations": [
-        "42702625"
+        "42756240",
+        "42765626"
       ],
       "unfiltered_citations": [
-        "42674293",
-        "42702625",
-        "42703692",
-        "42708069"
+        "42742181"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.75,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -340,17 +337,17 @@
       "question": "What is known about Ebola virus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
       "filtered_citations": [
-        "42506597",
-        "42708069"
+        "42733752",
+        "42765626"
       ],
       "unfiltered_citations": [
-        "42660412",
-        "42708069",
-        "42715270"
+        "42732232",
+        "42733752",
+        "42742181"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6666666666666666,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.3333333333333333,
+      "filtered_corpus_size": 11,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -360,18 +357,17 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
       "filtered_citations": [
         "30000198",
-        "42583857",
-        "42661761",
-        "42708070"
+        "42708070",
+        "42747226"
       ],
       "unfiltered_citations": [
         "30000198",
-        "42583857",
-        "42708070"
+        "42708070",
+        "42727590"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 14,
+      "unfiltered_precision": 0.6666666666666666,
+      "filtered_corpus_size": 12,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     },
@@ -381,17 +377,17 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
       "filtered_citations": [
         "30000198",
-        "42580329",
         "42623406",
         "42708070"
       ],
       "unfiltered_citations": [
         "30000198",
-        "42708070"
+        "42708070",
+        "42767744"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 14,
+      "unfiltered_precision": 0.6666666666666666,
+      "filtered_corpus_size": 12,
       "filtered_status": "ok",
       "unfiltered_status": "ok"
     }

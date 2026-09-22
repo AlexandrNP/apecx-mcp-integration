@@ -1,0 +1,166 @@
+{
+  "experiment": "pure_rag_failure_examples",
+  "timestamp": "2026-09-22T16:48:58.535289+00:00",
+  "model": "mistral-nemo:latest",
+  "corpus_size": 130,
+  "n_cases": 16,
+  "n_false_positives": 10,
+  "n_false_negatives": 9,
+  "false_positives": [
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "cited_pmid": "42734801",
+      "title": "Analysis of Cell Populations from Arbovirus-Infected Tissues by Flow Cytometry.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "5817556",
+      "title": "Functional significance of sialidase during influenza virus multiplication: an electron microscope study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11313"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11039"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42641941",
+      "title": "EYRAplex platform for quantification of viral antigen-specific IgG responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42742181",
+      "title": "Post-Exposure Prophylaxis with a monoclonal antibody cocktail Following Bundibugyo Ebolavirus Exposure in Adults and Children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "cited_pmid": "42732232",
+      "title": "Pathogenesis and natural history of the Bundibugyo species of Orthoebolavirus in nonhuman primates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "cited_pmid": "42742181",
+      "title": "Post-Exposure Prophylaxis with a monoclonal antibody cocktail Following Bundibugyo Ebolavirus Exposure in Adults and Children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42727590",
+      "title": "Immunogenicity of fractional one-fifth and one-half doses of 17DD yellow fever vaccine compared with full dose in children aged 9-23 months in Uganda: a phase 4, single-blind, randomised clinical trial.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "42767744",
+      "title": "Projecting the future spread of yellow fever vectors and implications for epidemic risk: a scoping review of climate change and human behaviour.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    }
+  ],
+  "false_negatives": [
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "missed_pmid": "42748151",
+      "title": "Unraveling the epidemiological and dispersal dynamics of the 2024-2025 chikungunya virus epidemic on R\u00e9union Island."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "missed_pmid": "42756906",
+      "title": "Predictors of chronic arthralgia following chikungunya virus infection."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "7520190",
+      "title": "Identification of mosquito-borne flavivirus sequences using universal primers and reverse transcription/polymerase chain reaction."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus pathogenesis and transmission?",
+      "missed_pmid": "42623406",
+      "title": "Viral and host determinants of arboviral disease severity in African populations: A systematic review with meta-analysis."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42756240",
+      "title": "Mapping the research landscape of antibody therapy for Ebola virus disease: a bibliometric analysis."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42765626",
+      "title": "Systemic and Mucosal Immune Responses From Serotype-Switched Viral-Vectored Ebola Vaccines."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "missed_pmid": "42765626",
+      "title": "Systemic and Mucosal Immune Responses From Serotype-Switched Viral-Vectored Ebola Vaccines."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "missed_pmid": "42623406",
+      "title": "Viral and host determinants of arboviral disease severity in African populations: A systematic review with meta-analysis."
+    }
+  ],
+  "note": "A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Extracted from the same run's real citations, not synthesized."
+}
