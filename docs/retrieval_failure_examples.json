@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T21:36:11.137539+00:00",
-  "runs": 5,
+  "updated": "2026-09-22T22:36:46.006746+00:00",
+  "runs": 6,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 146,
-  "n_false_negatives": 106,
+  "n_false_positives": 226,
+  "n_false_negatives": 157,
   "new_this_run": {
-    "false_positives": 55,
-    "false_negatives": 37
+    "false_positives": 80,
+    "false_negatives": 51
   },
   "false_positives": [
     {
@@ -1558,6 +1558,927 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2800209",
         "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "cited_pmid": "41297433",
+      "title": "A storm is born: immune activation and pathogenesis in arthritogenic alphavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42743201",
+      "title": "Correction: Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is known about Rift Valley fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "41537597",
+      "title": "Impact of mutations affecting 4'-fluorouridine susceptibility on fitness and treatment outcomes for Venezuelan equine encephalitis virus.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42419220",
+      "title": "Discovery of broad-spectrum antiviral activity in Amaryllidaceae alkaloids.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "cited_pmid": "42020326",
+      "title": "[Development of a cell-based imaging assay for evaluating neutralizing antibodies against western equine encephalitis virus].",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is known about Venezuelan equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "32491624",
+      "title": "Eastern Equine Encephalitis",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42521468",
+      "title": "Epidemiologic, Entomologic, and Virologic Findings during Reemergence of Western Equine Encephalitis Virus, Argentina.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32491624",
+      "title": "Eastern Equine Encephalitis",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42743201",
+      "title": "Correction: Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42157587",
+      "title": "Eastern equine encephalitis virus infection in an American pygmy goat.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426299"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42132354",
+      "title": "Eastern equine encephalitis-104 horses (1979-2017).",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11079",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "42395906",
+      "title": "A risk-gate mechanistic-ecological framework for assessing emergence potential of henipa-related viruses.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42551222",
+      "title": "Analytical validation and clinical evaluation of digital PCR for absolute quantification of Crimean-Congo Hemorrhagic fever virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42291516",
+      "title": "Evaluation of two point-of-care molecular diagnostic platforms for rapid detection of equine Hendra virus.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42620721",
+      "title": "Current advances in the development of Nipah virus vaccines.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "42605787",
+      "title": "The Role of the Medical Laboratory in Identifying 'Super-Spreaders': Correlation Between Viral Load Kinetics and Human-to-Human Infectivity.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "42241276",
+      "title": "nsP3-FXR co-condensation enables alphavirus replication and reveals a targetable alphavirus vulnerability.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42742180",
+      "title": "A case of Bundibugyo virus disease treated with monoclonal antibodies and remdesivir.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42020326",
+      "title": "[Development of a cell-based imaging assay for evaluating neutralizing antibodies against western equine encephalitis virus].",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What antiviral drugs or treatments are effective against Sindbis virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41263682",
+      "title": "O'nyong'nyong Virus Infections in Nigeria: A Case Series.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus pathogenesis and transmission?",
+      "cited_pmid": "42428059",
+      "title": "The national burden from O'nyong'nyong and chikungunya viruses in Cameroon.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Mayaro virus"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42734802",
+      "title": "Chikungunya Virus Infection in Paraffin-Embedded Tissue: Analysis of Histological Alterations and Viral Detection by Immunohistochemistry.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
     }
   ],
   "false_negatives": [
@@ -2196,6 +3117,312 @@
       "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
       "missed_pmid": "42606356",
       "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus pathogenesis and transmission?",
+      "missed_pmid": "42352370",
+      "title": "Molecular Determinants of O'Nyong-Nyong Virus Infection in Mammalian Hosts and Anopheles Mosquitoes."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Eastern equine encephalitis virus?",
+      "missed_pmid": "42132354",
+      "title": "Eastern equine encephalitis-104 horses (1979-2017)."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus pathogenesis and transmission?",
+      "missed_pmid": "42439134",
+      "title": "[Emerging infectious diseases in France: what are the risks for pregnancy?]."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What diagnostic assays or laboratory tests detect Zika virus?",
+      "missed_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "missed_pmid": "42631866",
+      "title": "Identification of 4-Amino-7-chloroquinoline Derivative with In Vitro Activity Against Chikungunya Virus."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "missed_pmid": "41593197",
+      "title": "Links between infrastructure for human movement and early Ebola outbreak trajectories."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "42770795",
+      "title": "Differential glycosylation in the envelope glycoprotein enhances DC-SIGN-mediated cell entry of the West African Ebolavirus Makona."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "missed_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "missed_pmid": "42708070",
+      "title": "Yellow Fever, an Arboviral Disease with Public Health Impacts: General Aspects and the Use of the One Health Approach in the Context of This Zoonosis."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "missed_pmid": "42484256",
+      "title": "Integrated surveillance of arboviruses in febrile patients from the Brazilian Amazon reveals complex co-circulation dynamics and hidden viral diversity."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "missed_pmid": "42703622",
+      "title": "Detection of Japanese encephalitis virus in Culex tritaeniorhynchus following the 2024 Noto Peninsula earthquake, Japan."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "41263688",
+      "title": "Descriptive Epidemiology of Acute Febrile Illness Patients in Nigeria: Pathogens of Global Public Health Significance Detected Using a Multi-Pathogen Detection Tool."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is known about Venezuelan equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "missed_pmid": "41537597",
+      "title": "Impact of mutations affecting 4'-fluorouridine susceptibility on fitness and treatment outcomes for Venezuelan equine encephalitis virus."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "missed_pmid": "41849539",
+      "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "missed_pmid": "42268796",
+      "title": "Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses."
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Venezuelan equine encephalitis virus?",
+      "missed_pmid": "42743201",
+      "title": "Correction: Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42268796",
+      "title": "Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "missed_pmid": "42521468",
+      "title": "Epidemiologic, Entomologic, and Virologic Findings during Reemergence of Western Equine Encephalitis Virus, Argentina."
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "missed_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41650846",
+      "title": "Mosquito-borne viruses in Australia: An emerging trend of increasing prevalence in Northern Queensland."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42619960",
+      "title": "Lachesin is a mosquito receptor for multiple arthritogenic alphaviruses."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "missed_pmid": "42333966",
+      "title": "Antigenic Multi-Epitope Vaccine Against Ross River Virus Using Capsid and Envelope Proteins via Immunoinformatics and Reverse Vaccinology Approaches."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "missed_pmid": "42767552",
+      "title": "A multiplex serological survey highlights differences in population immunity to mosquito-borne diseases in Vanuatu, Pacific region, 2023."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "missed_pmid": "41407624",
+      "title": "The impact of temperature on Ross River virus and Barmah Forest virus infection in Australia: A scoping review."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "missed_pmid": "42647575",
+      "title": "Potential threats of porcine Getah virus outbreaks and its specific antagonism of host antiviral response through proteasome-dependent degradation of P46 by nsP2."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42257709",
+      "title": "Immunopathogenesis of Mayaro Virus-Induced Chronic Arthritis: From Inflammatory Pathways to Targeted Therapeutic Strategies."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus pathogenesis and transmission?",
+      "missed_pmid": "42497147",
+      "title": "Viral replication dynamics: Coinfection and superinfection of Vero cells with Zika virus and West Nile virus or Zika virus and Mayaro virus."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus pathogenesis and transmission?",
+      "missed_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "missed_pmid": "42610905",
+      "title": "Multiplexed RT-LAMP Assays in Handheld Devices for In-Situ Detection of Chikungunya, Dengue, Mayaro, and Zika Viruses."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "missed_pmid": "42584711",
+      "title": "Pyridin-3-carbohydrazide strongly impairs Mayaro and Chikungunya virus replication in vitro."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "missed_pmid": "42539173",
+      "title": "Productive Mayaro Virus Infection Requires Host Fatty Acid Synthase for nsP1 S-palmitoylation."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "missed_pmid": "42198655",
+      "title": "Discovery of Synthetic Imine-Chalcones Targeting Mayaro Virus Replication."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42436853",
+      "title": "Sindbis virus self-amplifying replicon is compatible with modified nucleotides mediating expression and vaccine responses in vivo."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42278338",
+      "title": "Shigella flexneri-Encoded E3 Ubiquitin Ligase IpaH2 Reveals Plakophilin-2 as a Host Restriction Factor for Sindbis Virus."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42563423",
+      "title": "The Mechanism of Monolaurate Derived Glycolipids Inhibit Sindbis Virus Replication and Release."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus pathogenesis and transmission?",
+      "missed_pmid": "42250266",
+      "title": "Pathogen-Specific Evasion of Innate Immunity by Alphaviruses (CHIKV, VEEV, and SINV)."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "missed_pmid": "42434987",
+      "title": "Molecular evidence of neuroinvasive Sindbis virus infection in humans: detection in cerebrospinal fluid by next generation sequencing."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "missed_pmid": "42750482",
+      "title": "Lipid raft protein Flotillin 2 facilitates alphavirus infection through promoting viral release."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42352370",
+      "title": "Molecular Determinants of O'Nyong-Nyong Virus Infection in Mammalian Hosts and Anopheles Mosquitoes."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41000967",
+      "title": "A fold switch regulates conformation of an alphavirus virus RNA-dependent RNA polymerase."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41556341",
+      "title": "A fold switch regulates conformation of an alphavirus RNA-dependent RNA polymerase."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus pathogenesis and transmission?",
+      "missed_pmid": "42616815",
+      "title": "O'nyong-nyong virus adaptive mutations in non-structural protein 1 and 3 enhance RNA replication and overcome FHL1 requirement."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus pathogenesis and transmission?",
+      "missed_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "missed_pmid": "42430456",
+      "title": "Infection of Rhesus Macaques with O'nyong-nyong virus UVRI-0804 recapitulates key aspects of human clinical disease."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "missed_pmid": "41394611",
+      "title": "Infection Of Rhesus Macaques With O'nyong-nyong Virus UVIR-O804 Recapitulates Key Aspects of Human Clinical Disease."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "missed_pmid": "41986360",
+      "title": "Investigating antibody cross-reactivity and transmission dynamics of alphaviruses and flaviviruses using a multiplex serological assay."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "missed_pmid": "42514955",
+      "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
