@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T17:35:45.537245+00:00",
+  "timestamp": "2026-09-22T18:23:14.223062+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -14,11 +14,15 @@
     "Influenza A virus": true,
     "Zika virus": true,
     "Ebola virus": true,
-    "Yellow fever virus": true
+    "Yellow fever virus": true,
+    "Japanese encephalitis virus": true,
+    "Lassa mammarenavirus": true,
+    "Nipah henipavirus": true,
+    "Crimean-Congo hemorrhagic fever orthonairovirus": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 131,
+  "corpus_size": 209,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -28,7 +32,11 @@
     "Influenza A virus": "dictionary",
     "Zika virus": "dictionary",
     "Ebola virus": "dictionary",
-    "Yellow fever virus": "dictionary"
+    "Yellow fever virus": "dictionary",
+    "Japanese encephalitis virus": "dictionary",
+    "Lassa mammarenavirus": "dictionary",
+    "Nipah henipavirus": "dictionary",
+    "Crimean-Congo hemorrhagic fever orthonairovirus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -66,6 +74,22 @@
     "Yellow fever virus": {
       "harvested": 20,
       "stamped_with_own_iri": 8
+    },
+    "Japanese encephalitis virus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 10
+    },
+    "Lassa mammarenavirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 9
+    },
+    "Nipah henipavirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 19
+    },
+    "Crimean-Congo hemorrhagic fever orthonairovirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 15
     }
   },
   "skipped_organisms": [
@@ -75,8 +99,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.675,
-  "n_cases": 16,
+  "mean_unfiltered_precision": 0.725,
+  "n_cases": 24,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -94,11 +118,11 @@
         "42734804",
         "42748649",
         "42749444",
-        "42734801"
+        "42620721"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -122,7 +146,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -194,7 +218,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 19,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -218,7 +242,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 19,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -242,7 +266,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 15,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -255,18 +279,18 @@
         "34014628",
         "34014629",
         "34014630",
-        "34703640"
+        "42489459"
       ],
       "unfiltered_citations": [
         "32259829",
         "34014628",
         "34014629",
         "34014630",
-        "42770795"
+        "42489459"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 15,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -305,8 +329,8 @@
         "5817556",
         "5391162",
         "4246007",
-        "5388496",
-        "35952300"
+        "42707764",
+        "5388496"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -320,21 +344,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
       "filtered_citations": [
         "35952299",
+        "42759937",
         "42747226",
         "7520190",
-        "14230895",
-        "42661761"
+        "14230895"
       ],
       "unfiltered_citations": [
         "35952300",
         "35952299",
+        "42759937",
         "42506617",
-        "42641941",
-        "42747226"
+        "42641941"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -343,22 +367,22 @@
       "question": "What is known about Zika virus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
       "filtered_citations": [
+        "42759937",
         "35952299",
         "14230895",
         "7520190",
-        "42623406",
         "42623406"
       ],
       "unfiltered_citations": [
         "35952300",
+        "42759937",
         "35952299",
         "14230895",
-        "7520190",
-        "42506617"
+        "7520190"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 13,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -382,7 +406,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -394,8 +418,8 @@
         "42770795",
         "42733752",
         "42756240",
-        "42749758",
-        "42749758"
+        "42577745",
+        "42577745"
       ],
       "unfiltered_citations": [
         "42770795",
@@ -406,7 +430,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -417,20 +441,20 @@
       "filtered_citations": [
         "42708070",
         "30000198",
+        "42583857",
         "42747226",
-        "42661761",
-        "42652146"
+        "42661761"
       ],
       "unfiltered_citations": [
         "42708070",
         "30000198",
+        "42583857",
         "42727590",
-        "42607044",
-        "42641941"
+        "42607044"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -441,20 +465,212 @@
       "filtered_citations": [
         "42708070",
         "30000198",
+        "42583857",
         "42623406",
-        "42623406",
-        "42747226"
+        "42623406"
       ],
       "unfiltered_citations": [
         "42708070",
         "42767744",
         "30000198",
-        "5312525",
-        "4249614"
+        "42583857",
+        "5312525"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+      "filtered_citations": [
+        "42655691",
+        "42680695",
+        "42709838",
+        "42660474",
+        "42733724"
+      ],
+      "unfiltered_citations": [
+        "42728503",
+        "42655691",
+        "42680695",
+        "42709838",
+        "42515544"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+      "filtered_citations": [
+        "42680695",
+        "42655691",
+        "42709838",
+        "42733724",
+        "42660474"
+      ],
+      "unfiltered_citations": [
+        "42680695",
+        "42655691",
+        "42709838",
+        "42515544",
+        "42728503"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+      "filtered_citations": [
+        "42382775",
+        "42391156",
+        "42606356",
+        "42583999",
+        "42598737"
+      ],
+      "unfiltered_citations": [
+        "42382775",
+        "42501279",
+        "33355732",
+        "42391156",
+        "33630482"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+      "filtered_citations": [
+        "42382775",
+        "42391156",
+        "42583999",
+        "42606356",
+        "42489459"
+      ],
+      "unfiltered_citations": [
+        "42511143",
+        "42382775",
+        "42391156",
+        "42501279",
+        "42583999"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is known about Nipah henipavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+      "filtered_citations": [
+        "42620721",
+        "42600205",
+        "42732490",
+        "42605787",
+        "42701709"
+      ],
+      "unfiltered_citations": [
+        "42620721",
+        "42600205",
+        "42732490",
+        "42605787",
+        "42701709"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is known about Nipah henipavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+      "filtered_citations": [
+        "42605787",
+        "42620721",
+        "42732490",
+        "42674244",
+        "42600205"
+      ],
+      "unfiltered_citations": [
+        "42605787",
+        "42620721",
+        "42732490",
+        "42674244",
+        "42600205"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+      "filtered_citations": [
+        "42583854",
+        "42637838",
+        "42734360",
+        "42728254",
+        "42762379"
+      ],
+      "unfiltered_citations": [
+        "42583854",
+        "42637838",
+        "42734360",
+        "42607044",
+        "42728254"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+      "filtered_citations": [
+        "42583854",
+        "42637838",
+        "42762379",
+        "42551222",
+        "42655658"
+      ],
+      "unfiltered_citations": [
+        "42583854",
+        "42637838",
+        "42762379",
+        "2559514",
+        "42551222"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     }

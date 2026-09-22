@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T17:35:45.536314+00:00",
-  "runs": 1,
+  "updated": "2026-09-22T18:23:14.222091+00:00",
+  "runs": 2,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 19,
-  "n_false_negatives": 16,
+  "n_false_positives": 29,
+  "n_false_negatives": 26,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 16
+    "false_positives": 10,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -195,6 +195,111 @@
       "actual_organisms": [
         "unknown"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is known about Chikungunya virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42620721",
+      "title": "Current advances in the development of Nipah virus vaccines.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42707764",
+      "title": "IFITM3 at the viral fusion-pore checkpoint: membrane energetics and entry-route-dependent outcomes.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42501279",
+      "title": "Computational Design of a Broad-Spectrum Multi-Epitope mRNA Vaccine Candidate for Mammarenaviruses.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33355732",
+      "title": "COVID-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33630482",
+      "title": "Etesevimab and Bamlanivimab",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "42511143",
+      "title": "Emerging Mammarenaviruses in Wildlife: Expanding Host Range and Implications.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2800209",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42607044",
+      "title": "Opportunities and challenges for countermeasures against Rift Valley fever virus: A quintessential One Health pathogen.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus pathogenesis and transmission?",
+      "cited_pmid": "2559514",
+      "title": "Arbovirus infections and viral haemorrhagic fevers in Uganda: a serological survey in Karamoja district, 1984.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Dengue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
     }
   ],
   "false_negatives": [
@@ -293,6 +398,66 @@
       "question": "What is known about Yellow fever virus pathogenesis and transmission?",
       "missed_pmid": "42623406",
       "title": "Viral and host determinants of arboviral disease severity in African populations: A systematic review with meta-analysis."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "missed_pmid": "42577745",
+      "title": "Bacterial Infection in Ebola Virus Disease, Marburg Virus Disease, Crimean-Congo Hemorrhagic Fever, and Lassa Fever."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42660474",
+      "title": "Epidemiological characteristics of Japanese encephalitis virus in Taiwan: Insights from long-term monthly mosquito surveillance, 2009-2025."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42733724",
+      "title": "Japanese encephalitis virus reprograms host pyrimidine metabolism to facilitate viral replication."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42583999",
+      "title": "Research Output and Global Trends in Lassa Fever: A 50-Year Bibliometric Analysis (1975-2025)."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42598737",
+      "title": "Canonical Antibodies Adopt Distinct Binding Modes to Recognize Viral Glycan Shields."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "42489459",
+      "title": "Distinct modes of RNA degradation by the structurally related coronavirus and arenavirus exoribonucleases."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42762379",
+      "title": "Tick-host-virus triad in Crimean-Congo hemorrhagic fever transmission: global patterns across vector and reservoir species."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus pathogenesis and transmission?",
+      "missed_pmid": "42655658",
+      "title": "Long-Term Epidemiological Trends and Risk Factors of Crimean-Congo Hemorrhagic Fever in Kazakhstan: An Integrated Epidemiological and Entomological Analysis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
