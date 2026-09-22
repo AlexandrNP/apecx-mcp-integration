@@ -80,6 +80,12 @@ _TARGETS: list[tuple[str, str]] = [
     ("Mayaro virus", "http://purl.obolibrary.org/obo/NCBITaxon_59301"),
     ("Sindbis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11034"),
     ("O'nyong-nyong virus", "http://purl.obolibrary.org/obo/NCBITaxon_2169701"),
+    ("Human coronavirus OC43", "http://purl.obolibrary.org/obo/NCBITaxon_31631"),
+    ("Human coronavirus NL63", "http://purl.obolibrary.org/obo/NCBITaxon_277944"),
+    ("Human coronavirus 229E", "http://purl.obolibrary.org/obo/NCBITaxon_11137"),
+    ("Murray Valley encephalitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11079"),
+    ("Usutu virus", "http://purl.obolibrary.org/obo/NCBITaxon_64286"),
+    ("Powassan virus", "http://purl.obolibrary.org/obo/NCBITaxon_11083"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
