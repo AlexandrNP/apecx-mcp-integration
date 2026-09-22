@@ -99,6 +99,68 @@ def run_ablation(
     }
 
 
+def mine_rag_failures(
+    per_case: list[dict],
+    corpus_by_pmid: dict[str, dict],
+    iri_to_name: dict[str, str],
+) -> dict[str, list[dict]]:
+    """Extract the CONCRETE citations where the unfiltered ("pure RAG") condition
+    fails, turning each aggregate precision drop into a named example.
+
+    A *false positive* is an off-organism paper pure RAG cited: a PMID in a case's
+    ``unfiltered_citations`` whose stamped record's ``iris`` does NOT contain the
+    case's ``correct_iri``. It is labelled with the organism(s) the paper is
+    actually about (mapped from its stamped iris via ``iri_to_name``) and its title
+    — a query -> specific wrong record the organism filter would have excluded.
+
+    A *false negative* is an on-organism paper pure RAG missed: a PMID in a case's
+    ``filtered_citations`` that is stamped with ``correct_iri`` yet absent from
+    ``unfiltered_citations`` — the right paper crowded out of the mixed pile.
+
+    Pure function (no LLM, no network): reads only the ablation ``per_case`` rows
+    plus the stamped corpus, so it is unit-testable and re-runnable on a saved run.
+    """
+    false_positives: list[dict] = []
+    false_negatives: list[dict] = []
+    for case in per_case:
+        correct_iri = case["correct_iri"]
+        organism = case.get("organism")
+        question = case.get("question")
+        unfiltered = [str(p) for p in (case.get("unfiltered_citations") or [])]
+        filtered = [str(p) for p in (case.get("filtered_citations") or [])]
+        unfiltered_set = set(unfiltered)
+
+        for pmid in unfiltered:
+            record = corpus_by_pmid.get(pmid, {})
+            iris = record.get("iris") or []
+            if correct_iri not in iris:
+                actual = sorted({iri_to_name.get(i, i) for i in iris}) or ["unknown"]
+                false_positives.append(
+                    {
+                        "organism": organism,
+                        "question": question,
+                        "cited_pmid": pmid,
+                        "title": record.get("title", ""),
+                        "actual_organisms": actual,
+                    }
+                )
+
+        for pmid in filtered:
+            record = corpus_by_pmid.get(pmid, {})
+            iris = record.get("iris") or []
+            if correct_iri in iris and pmid not in unfiltered_set:
+                false_negatives.append(
+                    {
+                        "organism": organism,
+                        "question": question,
+                        "missed_pmid": pmid,
+                        "title": record.get("title", ""),
+                    }
+                )
+
+    return {"false_positives": false_positives, "false_negatives": false_negatives}
+
+
 def default_reader() -> Reader:
     """Adapt the real ``LiteratureRagStep`` into a ``reader(question, records)``.
 

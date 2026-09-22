@@ -29,6 +29,7 @@ import pytest
 
 from apecx_integration.agents.literature.ablation import (
     default_reader,
+    mine_rag_failures,
     organism_precision,
     run_ablation,
 )
@@ -81,6 +82,41 @@ def test_filter_lifts_organism_precision_offline():
     case = result["per_case"][0]
     assert case["filtered_citations"] == ["c1"]
     assert case["unfiltered_citations"] == ["d1"]
+
+
+def test_mine_rag_failures_offline():
+    """From per-case citations, surface the concrete pure-RAG false positive and
+    false negative, each labelled with the paper it actually concerns."""
+    corpus_by_pmid = {
+        "c1": {"pmid": "c1", "iris": [_CHIKV_IRI], "title": "CHIKV antibody"},
+        "c2": {"pmid": "c2", "iris": [_CHIKV_IRI], "title": "CHIKV vaccine"},
+        "d1": {"pmid": "d1", "iris": [_DENGUE_IRI], "title": "Dengue antibody"},
+    }
+    iri_to_name = {_CHIKV_IRI: "Chikungunya virus", _DENGUE_IRI: "Dengue virus"}
+    # For a CHIKV question: filtered cites two CHIKV papers; pure RAG cites one
+    # CHIKV paper (c1) plus an off-organism dengue paper (d1), and misses c2.
+    per_case = [
+        {
+            "organism": "Chikungunya virus",
+            "question": "What antibodies neutralize Chikungunya virus?",
+            "correct_iri": _CHIKV_IRI,
+            "filtered_citations": ["c1", "c2"],
+            "unfiltered_citations": ["c1", "d1"],
+        }
+    ]
+
+    out = mine_rag_failures(per_case, corpus_by_pmid, iri_to_name)
+
+    assert len(out["false_positives"]) == 1
+    fp = out["false_positives"][0]
+    assert fp["cited_pmid"] == "d1"
+    assert fp["actual_organisms"] == ["Dengue virus"]
+    assert fp["title"] == "Dengue antibody"
+
+    assert len(out["false_negatives"]) == 1
+    fn = out["false_negatives"][0]
+    assert fn["missed_pmid"] == "c2"
+    assert fn["title"] == "CHIKV vaccine"
 
 
 # --------------------------------------------------------------------------- #

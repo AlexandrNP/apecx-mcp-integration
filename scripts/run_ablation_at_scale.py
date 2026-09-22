@@ -32,7 +32,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from apecx_integration.agents.literature.ablation import default_reader, run_ablation
+from apecx_integration.agents.literature.ablation import (
+    default_reader,
+    mine_rag_failures,
+    run_ablation,
+)
 from apecx_integration.agents.literature.gazetteer import Gazetteer, build_from_dictionary
 from apecx_integration.agents.literature.pipeline import harvest_and_stamp
 from apecx_integration.agents.literature.resolve import resolve_organism_to_iri
@@ -82,6 +86,7 @@ _QUESTION_TEMPLATES: list[str] = [
 ]
 
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
+_FAILURES_PATH = Path(__file__).resolve().parent.parent / "docs" / "rag_failure_examples.json"
 
 
 def _is_tagged(gaz: Gazetteer, name: str, iri: str) -> bool:
@@ -199,6 +204,31 @@ def main() -> None:
             call_statuses[2 * i + 1] if 2 * i + 1 < len(call_statuses) else None
         )
 
+    # 5b. Mine the CONCRETE pure-RAG failures from the per-case citations: the
+    #     specific off-organism papers the unfiltered reader cited (false positives)
+    #     and the on-organism papers it missed (false negatives).
+    corpus_by_pmid = {str(r["pmid"]): r for r in pooled}
+    iri_to_name = {iri: name for name, iri in resolved}
+    failures = mine_rag_failures(result["per_case"], corpus_by_pmid, iri_to_name)
+    failure_record = {
+        "experiment": "pure_rag_failure_examples",
+        "timestamp": datetime.now(UTC).isoformat(),
+        "model": model,
+        "corpus_size": len(pooled),
+        "n_cases": result["n_cases"],
+        "n_false_positives": len(failures["false_positives"]),
+        "n_false_negatives": len(failures["false_negatives"]),
+        "false_positives": failures["false_positives"],
+        "false_negatives": failures["false_negatives"],
+        "note": (
+            "A false positive is an off-organism paper the unfiltered (pure RAG) "
+            "reader cited; a false negative is an on-organism paper it missed but "
+            "the organism-filtered reader cited. Extracted from the same run's real "
+            "citations, not synthesized."
+        ),
+    }
+    _FAILURES_PATH.write_text(json.dumps(failure_record, indent=2) + "\n", encoding="utf-8")
+
     # 6. Assemble the full result record and write it.
     record = {
         "experiment": "literature_organism_filter_ablation_at_scale",
@@ -243,7 +273,17 @@ def main() -> None:
             f"unfiltered={c['unfiltered_precision']:.3f} "
             f"(status={c['unfiltered_status']}) cites={c['unfiltered_citations']}"
         )
+    print(
+        f"\npure-RAG failures: {failure_record['n_false_positives']} false positive(s), "
+        f"{failure_record['n_false_negatives']} false negative(s)"
+    )
+    for fp in failures["false_positives"][:5]:
+        print(
+            f"  FP [{fp['organism']}] cited PMID {fp['cited_pmid']} "
+            f"(actually about {', '.join(fp['actual_organisms'])}): {fp['title'][:70]}"
+        )
     print(f"\nWrote {_RESULTS_PATH}")
+    print(f"Wrote {_FAILURES_PATH}")
 
 
 if __name__ == "__main__":
