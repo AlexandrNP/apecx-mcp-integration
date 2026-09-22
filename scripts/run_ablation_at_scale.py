@@ -63,6 +63,13 @@ _TARGETS: list[tuple[str, str]] = [
     ("Zika virus", "http://purl.obolibrary.org/obo/NCBITaxon_64320"),
     ("Ebola virus", "http://purl.obolibrary.org/obo/NCBITaxon_1570291"),
     ("Yellow fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_11089"),
+    ("Japanese encephalitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11072"),
+    ("Lassa mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052310"),
+    ("Nipah henipavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052225"),
+    (
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+    ),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
