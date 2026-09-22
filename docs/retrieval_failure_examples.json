@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T23:19:48.154890+00:00",
-  "runs": 10,
+  "updated": "2026-09-22T23:30:08.929038+00:00",
+  "runs": 11,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 554,
-  "n_false_negatives": 326,
+  "n_false_positives": 662,
+  "n_false_negatives": 357,
   "new_this_run": {
-    "false_positives": 114,
-    "false_negatives": 39
+    "false_positives": 108,
+    "false_negatives": 31
   },
   "false_positives": [
     {
@@ -6188,6 +6188,1194 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
         "http://purl.obolibrary.org/obo/NCBITaxon_260964"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42632300",
+      "title": "Of mice and men: Updates on hantavirus disease and diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "cited_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41370398",
+      "title": "Antigen-agnostic identification of poxvirus broadly neutralizing antibodies targeting OPG153.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147672"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "42677399",
+      "title": "Insights into the Life Cycle and Therapeutic Agents for Monkeypox Virus Infection.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42632300",
+      "title": "Of mice and men: Updates on hantavirus disease and diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42576544",
+      "title": "ACAM2000 vaccine safety and immunogenicity considerations for smallpox and mpox.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42690165",
+      "title": "Andes Virus: From Transmission Dynamics to Pandemic Potential.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Sin Nombre orthohantavirus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41370398",
+      "title": "Antigen-agnostic identification of poxvirus broadly neutralizing antibodies targeting OPG153.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147672"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Puumala orthohantavirus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Puumala orthohantavirus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Puumala orthohantavirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "42632300",
+      "title": "Of mice and men: Updates on hantavirus disease and diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Seoul orthohantavirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Seoul orthohantavirus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41370398",
+      "title": "Antigen-agnostic identification of poxvirus broadly neutralizing antibodies targeting OPG153.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147672"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42576544",
+      "title": "ACAM2000 vaccine safety and immunogenicity considerations for smallpox and mpox.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "41472220",
+      "title": "Molecular Aspects of the Emergence of Monkeypox Virus Clades.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "42723126",
+      "title": "A comprehensive overview of monkeypox virus disease.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2200830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42291516",
+      "title": "Evaluation of two point-of-care molecular diagnostic platforms for rapid detection of equine Hendra virus.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "41566003",
+      "title": "Efficient whole-genome sequencing of Monkeypox virus using a novel nuclease-multiple displacement amplification enrichment method.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "42677399",
+      "title": "Insights into the Life Cycle and Therapeutic Agents for Monkeypox Virus Infection.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Cowpox virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "42213706",
+      "title": "Maternal antibody-mediated elimination of a Puumala hantavirus outbreak in a bank vole colony.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42412999",
+      "title": "The Orthohantavirus GN/GC Spikes: Molecular Determinants of Infection and Targets for Antiviral Immune Interventions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus pathogenesis and transmission?",
+      "cited_pmid": "42579986",
+      "title": "Detection of new world hantaviruses by a broadly reactive rRT-PCR assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052470",
+        "http://purl.obolibrary.org/obo/NCBITaxon_69294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_118655",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "41570236",
+      "title": "The first identification of Orthohantavirus dobravaense, Kurkino virus (Hantaviridae: Orthohantavirus) in the Volga Federal District.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3116880"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "42113832",
+      "title": "Identification and genetic characterization of a distinct genotype of Puumala orthohantavirus in Hebei Province, China.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "42008533",
+      "title": "A molecular survey of orthohantaviruses in rodents across the tri-border region of China, Russia, and North Korea.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "Seoul orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86782"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "40295699",
+      "title": "Genome sequencing identifies \"Limestone Canyon virus\" as Monta\u00f1o virus (Hantaviridae: Orthohantavirus montanoense) circulating in brush deermice in New Mexico.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3062814"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "41566003",
+      "title": "Efficient whole-genome sequencing of Monkeypox virus using a novel nuclease-multiple displacement amplification enrichment method.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35969682",
+      "title": "Tecovirimat",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "42511143",
+      "title": "Emerging Mammarenaviruses in Wildlife: Expanding Host Range and Implications.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2800209",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052330"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Machupo mammarenavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Machupo mammarenavirus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Machupo mammarenavirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Machupo mammarenavirus?",
+      "cited_pmid": "41600866",
+      "title": "Screening of the Pandemic Response Box Library Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Machupo mammarenavirus?",
+      "cited_pmid": "41659533",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Machupo mammarenavirus?",
+      "cited_pmid": "41394564",
+      "title": "Pandemic Response Box Screening Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -8146,6 +9334,192 @@
       "question": "What antiviral drugs or treatments are effective against Norovirus?",
       "missed_pmid": "42708932",
       "title": "Hydroxyl Radical Inactivation of Vesicle-Cloaked and Free Murine Norovirus: Linking Biomolecular Oxidation to Lifecycle Disruption and Infectivity Loss."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "42112905",
+      "title": "Lassa and Mopeia viruses produce different RIG-I-activating RNA in the absence of a functional viral exoribonuclease domain."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "missed_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Seoul orthohantavirus?",
+      "missed_pmid": "42629989",
+      "title": "Plasmon-Driven Gene Amplification-Integrated Lateral Flow Assay for Ultrafast Diagnosis of Seoul Orthohantavirus."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42271160",
+      "title": "Immunogenicity of poxvirus A16/G9 entry-fusion subcomplex and its restriction by A56/K2 protein informs vaccine design."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42317376",
+      "title": "Zoonotic Orthopoxvirus Infection."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42313104",
+      "title": "Discovery and characterization of a hydroxypyridone-3-carboxamide analog as an antiviral lead against orthopoxviruses."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "missed_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "missed_pmid": "42627681",
+      "title": "Targeting \u03b22-Adrenergic Receptor Stability With Lycorine Reveals a Host-Directed Pathway for Antiviral Defense Against Poxviruses."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "missed_pmid": "41446169",
+      "title": "Discovery and Characterization of a Hydroxypyridone-3-carboxamide Analog as an Antiviral Lead against Orthopoxviruses."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42576544",
+      "title": "ACAM2000 vaccine safety and immunogenicity considerations for smallpox and mpox."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "missed_pmid": "42108251",
+      "title": "Diversity of fecal viromes and zoonotic risk assessment in captive wild felids using viral metagenomics."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "missed_pmid": "42531407",
+      "title": "Ancient DNA shows how smallpox got to the Americas."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What diagnostic assays or laboratory tests detect Variola virus?",
+      "missed_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "missed_pmid": "42531397",
+      "title": "The genomic identity of early smallpox in South America."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "missed_pmid": "42332827",
+      "title": "Evaluation of a portable multiplex real-time pcr assay for the detection of monkeypox virus and non-variola orthopoxviruses."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "missed_pmid": "42135325",
+      "title": "Digitization of Historical Data from Somalia's Last Smallpox Outbreaks 1976-1977."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "missed_pmid": "41600836",
+      "title": "Novel 2-Aryl-1H-Benzimidazole Derivatives and Their Aza-Analogues as Promising Anti-Poxvirus Agents."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "missed_pmid": "42389234",
+      "title": "Exploring drug repurposing for monkeypox virus: A structural and computational approach."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus pathogenesis and transmission?",
+      "missed_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Andes orthohantavirus?",
+      "missed_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "missed_pmid": "42690165",
+      "title": "Andes Virus: From Transmission Dynamics to Pandemic Potential."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "missed_pmid": "42347213",
+      "title": "Integrated Downstream Analysis and Epidemiological Modelling of Hantavirus Infection: From Host Transcriptomics to Transmission Dynamics."
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Andes orthohantavirus?",
+      "missed_pmid": "42578775",
+      "title": "Andes Hantavirus at FIFA World Cup 2026: No vaccine, no protocol, no time."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is known about Machupo mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Machupo mammarenavirus?",
+      "missed_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus."
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "missed_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
