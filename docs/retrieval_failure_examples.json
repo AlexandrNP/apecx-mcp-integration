@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T22:36:46.006746+00:00",
-  "runs": 6,
+  "updated": "2026-09-22T22:48:19.479932+00:00",
+  "runs": 7,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 226,
-  "n_false_negatives": 157,
+  "n_false_positives": 314,
+  "n_false_negatives": 217,
   "new_this_run": {
-    "false_positives": 80,
-    "false_negatives": 51
+    "false_positives": 88,
+    "false_negatives": 60
   },
   "false_positives": [
     {
@@ -2479,6 +2479,1003 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11572"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42314620",
+      "title": "Stimulation of fibroblast proliferation by growth factors from HCoV-229E-infected human nasal epithelial cells and influenza virus-infected alveolar epithelial cells: Roles of TGF-\u03b21 and FGF-basic.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42438688",
+      "title": "Respiratory virus genomic epidemiology during post-pandemic re-emergence of influenza in Australia.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40127699",
+      "title": "Prevalence of Murray Valley encephalitis virus antibodies in northern Victoria following the 2023 outbreak: a cross-sectional serological survey.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "40609048",
+      "title": "Genetic diversity of Murray Valley encephalitis virus 1951-2020 identified via phylogenetic and evolutionary analyses.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What antiviral drugs or treatments are effective against Ross River virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014629",
+      "title": "Covid-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 pathogenesis and transmission?",
+      "cited_pmid": "32259829",
+      "title": "COVID-19 Outbreak: An Overview.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "40097290",
+      "title": "Rapid and efficient CRISPR-based detection of dengue virus in a single-tube.",
+      "actual_organisms": [
+        "Dengue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "42244924",
+      "title": "Circulation of Human Coronaviruses in SARS-CoV-2 and Influenza-negative patients with respiratory infections during Ghana's 2021 COVID-19 pandemic.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "cited_pmid": "41754577",
+      "title": "Development of a Complementation Assay to Monitor Pan-Coronavirus 3C-like Protease Activity.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41857372",
+      "title": "SARS-CoV-2 crossreactive B-cells outnumber seasonal coronavirus spike-specific clones at the end of the COVID-19 pandemic.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014629",
+      "title": "Covid-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014628",
+      "title": "Covid-19 Monoclonal Antibodies: \nMonoclonal Antibodies to SARS-CoV-2",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42282816",
+      "title": "A phage display library to dissect antibody responses to human coronavirus spike proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42658828",
+      "title": "Correction: AI-guided prefusion stabilization of the human coronavirus OC43 spike protein enables universal embecovirus antigen design.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2509481"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 pathogenesis and transmission?",
+      "cited_pmid": "42733987",
+      "title": "Epidemiologic and Seasonal Trends of Four Endemic Human Coronaviruses in Korea from 2018 to 2024.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 pathogenesis and transmission?",
+      "cited_pmid": "32259829",
+      "title": "COVID-19 Outbreak: An Overview.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus NL63?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "cited_pmid": "42489459",
+      "title": "Distinct modes of RNA degradation by the structurally related coronavirus and arenavirus exoribonucleases.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "41754577",
+      "title": "Development of a Complementation Assay to Monitor Pan-Coronavirus 3C-like Protease Activity.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014629",
+      "title": "Covid-19 Vaccines",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41857372",
+      "title": "SARS-CoV-2 crossreactive B-cells outnumber seasonal coronavirus spike-specific clones at the end of the COVID-19 pandemic.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014628",
+      "title": "Covid-19 Monoclonal Antibodies: \nMonoclonal Antibodies to SARS-CoV-2",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42658828",
+      "title": "Correction: AI-guided prefusion stabilization of the human coronavirus OC43 spike protein enables universal embecovirus antigen design.",
+      "actual_organisms": [
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2509481"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E pathogenesis and transmission?",
+      "cited_pmid": "32259829",
+      "title": "COVID-19 Outbreak: An Overview.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E pathogenesis and transmission?",
+      "cited_pmid": "42444019",
+      "title": "Clinical Characteristics of Seasonal Human Coronavirus Infections Among Children in the Post-COVID-19 Pandemic Era: A Retrospective Study Comparing HCoV Species and SARS-CoV-2 in Hokkaido, Japan, From April 2021 to September 2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "cited_pmid": "42244924",
+      "title": "Circulation of Human Coronaviruses in SARS-CoV-2 and Influenza-negative patients with respiratory infections during Ghana's 2021 COVID-19 pandemic.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genome organization and replication cycle of Human coronavirus 229E?",
+      "cited_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "42115643",
+      "title": "Endolysosomal trafficking regulator SH-BC-893 inhibits coronavirus entry in vitro and in vivo.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_137443",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "32491624",
+      "title": "Eastern Equine Encephalitis",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "cited_pmid": "42020326",
+      "title": "[Development of a cell-based imaging assay for evaluating neutralizing antibodies against western equine encephalitis virus].",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Murray Valley encephalitis virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Murray Valley encephalitis virus?",
+      "cited_pmid": "41537597",
+      "title": "Impact of mutations affecting 4'-fluorouridine susceptibility on fitness and treatment outcomes for Venezuelan equine encephalitis virus.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murray Valley encephalitis virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42330958",
+      "title": "Analysis of West Nile disease convalescents identifies human monoclonal antibodies protective against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42241276",
+      "title": "nsP3-FXR co-condensation enables alphavirus replication and reveals a targetable alphavirus vulnerability.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728254",
+      "title": "Dual-antigen AdV5 vaccines against Crimean-Congo hemorrhagic fever virus induce superior humoral and Th1-biased cellular immunity.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
     }
   ],
   "false_negatives": [
@@ -3423,6 +4420,366 @@
       "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
       "missed_pmid": "42514955",
       "title": "Fusion Inhibition of Zika Virus Entry by a Teicoplanin Pseudoaglycone Derivative with Broad Antiviral Activity."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "34014629",
+      "title": "Covid-19 Vaccines"
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42562331",
+      "title": "The L-type calcium channel Cav1.2 mediates influenza A virus infection by regulating viral internalization and endoplasmic reticulum homeostasis."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42714404",
+      "title": "A novel ursodeoxycholic acid derivative exhibits broad-spectrum antiviral activity against influenza A virus and coronaviruses by multiphasic disruption of the viral life cycle."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "missed_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "missed_pmid": "42393766",
+      "title": "A yellow fever 17D and Usutu virus chimera with rationally designed mutations in the envelope protein is lethal in an Ifnar-/- mouse model."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "missed_pmid": "39480108",
+      "title": "Emerging mosquito-borne flaviviruses."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "missed_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "missed_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Japanese encephalitis virus?",
+      "missed_pmid": "39597552",
+      "title": "Experimental Infections of Pigs with Japanese Encephalitis Virus Genotype 4."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "missed_pmid": "42382775",
+      "title": "Development and validation of a pseudotyped virus neutralization assay for quantification of anti-Lassa virus neutralizing antibodies."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42532414",
+      "title": "A replication-defective tick-borne encephalitis virus generated by NS1 trans-complementation confers robust protective efficacy."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "missed_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What diagnostic assays or laboratory tests detect Sindbis virus?",
+      "missed_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42655636",
+      "title": "Human Coronavirus Photodynamic Inactivation and In Silico Mechanisms Induced by Ga(III) vs. Zn(II) Phthalocyanines."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 pathogenesis and transmission?",
+      "missed_pmid": "42444019",
+      "title": "Clinical Characteristics of Seasonal Human Coronavirus Infections Among Children in the Post-COVID-19 Pandemic Era: A Retrospective Study Comparing HCoV Species and SARS-CoV-2 in Hokkaido, Japan, From April 2021 to September 2025."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "missed_pmid": "42455848",
+      "title": "Systemic and lung-resident memory elicited by OC43 coronavirus infection in mice."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "missed_pmid": "42733987",
+      "title": "Epidemiologic and Seasonal Trends of Four Endemic Human Coronaviruses in Korea from 2018 to 2024."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "missed_pmid": "42511676",
+      "title": "Extracts from Valsonectria inflata, a Soil-Derived Fungus, Inhibit Human Coronavirus OC43 Replication."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "missed_pmid": "42658828",
+      "title": "Correction: AI-guided prefusion stabilization of the human coronavirus OC43 spike protein enables universal embecovirus antigen design."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "missed_pmid": "42714404",
+      "title": "A novel ursodeoxycholic acid derivative exhibits broad-spectrum antiviral activity against influenza A virus and coronaviruses by multiphasic disruption of the viral life cycle."
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "missed_pmid": "42607444",
+      "title": "Rabeprazole exhibits broad-spectrum fusion inhibition against Nipah pseudovirus and authentic HCoV-OC43 and RSV."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41968577",
+      "title": "Transient Postictal Hemispheric Hypoperfusion Associated With Human Coronavirus NL63 in a Child."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42167496",
+      "title": "Symptomatology of SARS-CoV-2 versus seasonal coronavirus infection in healthy young children."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42444019",
+      "title": "Clinical Characteristics of Seasonal Human Coronavirus Infections Among Children in the Post-COVID-19 Pandemic Era: A Retrospective Study Comparing HCoV Species and SARS-CoV-2 in Hokkaido, Japan, From April 2021 to September 2025."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 pathogenesis and transmission?",
+      "missed_pmid": "42244924",
+      "title": "Circulation of Human Coronaviruses in SARS-CoV-2 and Influenza-negative patients with respiratory infections during Ghana's 2021 COVID-19 pandemic."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "missed_pmid": "42357687",
+      "title": "Genomic Surveillance of Endemic Human Coronaviruses in C\u00f4te d'Ivoire Using Targeted Hybrid-Capture Sequencing."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "missed_pmid": "42225939",
+      "title": "IFI16 restricts SARS-CoV-2 replication by disrupting nucleocapsid-driven phase separation."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42341040",
+      "title": "Temperature and developmental stage govern intestinal susceptibility to human coronavirus 229E."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42639089",
+      "title": "High prevalence of human coronaviruses in rural and urban Ghana in the post-COVID-19 era."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42693617",
+      "title": "Decoding Viral Transmission Dynamics in Structured Populations Using a Microfluidic Herd-Immunity-on-a-Chip Platform."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E pathogenesis and transmission?",
+      "missed_pmid": "42285904",
+      "title": "Evaluating Coronavirus Stability: Insights From Raman Spectroscopy and Multivariate Analysis."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "missed_pmid": "42160828",
+      "title": "Structure-activity relationship and nsp15-dependent mechanism of spirothiazolidinone derivatives with pan-coronavirus activity."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "missed_pmid": "42607444",
+      "title": "Rabeprazole exhibits broad-spectrum fusion inhibition against Nipah pseudovirus and authentic HCoV-OC43 and RSV."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "missed_pmid": "42395790",
+      "title": "Design and synthesis of benzothiazole-sulfonate conjugates targeting influenza A (H1N1) and human coronavirus HCoV-229E: in silico and in vitro assessments."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39617074",
+      "title": "From bytes to bites: In-silico creation of a novel multi-epitope vaccine against Murray Valley Encephalitis Virus."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39597552",
+      "title": "Experimental Infections of Pigs with Japanese Encephalitis Virus Genotype 4."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "39802065",
+      "title": "Orthoflavivirus circulation in South-East Queensland, Australia, before and during the 2021-2022 incursion of Japanese encephalitis virus assessed through sero-epidemiological survey of a sentinel equine population."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "missed_pmid": "40550235",
+      "title": "Diagnostic and phylogenetic perspectives of the 2023 Murray Valley encephalitis virus outbreak in Australia: an observational study."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "missed_pmid": "40127699",
+      "title": "Prevalence of Murray Valley encephalitis virus antibodies in northern Victoria following the 2023 outbreak: a cross-sectional serological survey."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Murray Valley encephalitis virus?",
+      "missed_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42426896",
+      "title": "A highly sensitive amplicon sequencing workflow for genomic surveillance of Usutu virus."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42442484",
+      "title": "On-site serological screening of Usutu virus in wild birds: Field evaluation of a lateral flow microarray immunoassay using the WHO REASSURED framework."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42604688",
+      "title": "A lateral flow microarray immunoassay to detect USUV NS1-specific antibodies in tissues of deceased blackbirds in the Netherlands."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "missed_pmid": "42483709",
+      "title": "Emergence of Usutu virus in Southern Italy: phylogenetic profiling of potential introduction and dissemination routes."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "missed_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "missed_pmid": "42529624",
+      "title": "Phylodynamic analyses reveal persistence and extensive intermixing of Usutu virus in the Netherlands."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "missed_pmid": "42523457",
+      "title": "Bravo! A Mosquito Antiviral Protein that Restricts Arboviruses through an RRM3-Dependent Nuclear Mechanism."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "missed_pmid": "42393766",
+      "title": "A yellow fever 17D and Usutu virus chimera with rationally designed mutations in the envelope protein is lethal in an Ifnar-/- mouse model."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "missed_pmid": "42565978",
+      "title": "Molecular and Serological Screening of West Nile and Usutu Virus in Birds and Humans: A Sentinel Study in Finland."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "missed_pmid": "39480108",
+      "title": "Emerging mosquito-borne flaviviruses."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42671191",
+      "title": "Pathogenesis and neurotropism of a contemporary Powassan virus lineage II strain in mice."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus pathogenesis and transmission?",
+      "missed_pmid": "42523276",
+      "title": "Powassan virus infects mouse testes and reveals a protective role for phagocytic cells."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "missed_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "missed_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
