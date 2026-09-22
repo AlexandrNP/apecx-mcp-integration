@@ -237,8 +237,8 @@ def main() -> None:
     # ACCUMULATE: merge this run's failures into the committed catalog (dedupe by
     # (organism, pmid)) so the benchmark grows across runs instead of overwriting.
     existing = {}
-    if _FAILURES_PATH.exists():
-        existing = json.loads(_FAILURES_PATH.read_text())
+    if failures_path.exists():
+        existing = json.loads(failures_path.read_text())
     merged = merge_failure_catalogs(existing, failures)
     new_fp = len(merged["false_positives"]) - len(existing.get("false_positives") or [])
     new_fn = len(merged["false_negatives"]) - len(existing.get("false_negatives") or [])
