@@ -86,6 +86,11 @@ _TARGETS: list[tuple[str, str]] = [
     ("Murray Valley encephalitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11079"),
     ("Usutu virus", "http://purl.obolibrary.org/obo/NCBITaxon_64286"),
     ("Powassan virus", "http://purl.obolibrary.org/obo/NCBITaxon_11083"),
+    ("Human alphaherpesvirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_10298"),
+    ("Human alphaherpesvirus 3", "http://purl.obolibrary.org/obo/NCBITaxon_10335"),
+    ("Hepacivirus hominis", "http://purl.obolibrary.org/obo/NCBITaxon_3052230"),
+    ("Hepatitis A virus", "http://purl.obolibrary.org/obo/NCBITaxon_12092"),
+    ("Hepatitis E virus", "http://purl.obolibrary.org/obo/NCBITaxon_291484"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
