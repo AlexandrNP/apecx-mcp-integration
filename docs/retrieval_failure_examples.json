@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T22:48:19.479932+00:00",
-  "runs": 7,
+  "updated": "2026-09-22T22:58:46.507252+00:00",
+  "runs": 8,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 314,
-  "n_false_negatives": 217,
+  "n_false_positives": 411,
+  "n_false_negatives": 266,
   "new_this_run": {
-    "false_positives": 88,
-    "false_negatives": 60
+    "false_positives": 97,
+    "false_negatives": 49
   },
   "false_positives": [
     {
@@ -3476,6 +3476,1067 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11618",
         "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "10325533",
+      "title": "Antiviral efficacy of disinfectant solution MRI-1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_90371",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728254",
+      "title": "Dual-antigen AdV5 vaccines against Crimean-Congo hemorrhagic fever virus induce superior humoral and Th1-biased cellular immunity.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "42241276",
+      "title": "nsP3-FXR co-condensation enables alphavirus replication and reveals a targetable alphavirus vulnerability.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "42616815",
+      "title": "O'nyong-nyong virus adaptive mutations in non-structural protein 1 and 3 enhance RNA replication and overcome FHL1 requirement.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "41600866",
+      "title": "Screening of the Pandemic Response Box Library Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "41596714",
+      "title": "Effect of the AHR Inhibitor CH223191 as an Adjunct Treatment for Mammarenavirus Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052328"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "cited_pmid": "41394564",
+      "title": "Pandemic Response Box Screening Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728254",
+      "title": "Dual-antigen AdV5 vaccines against Crimean-Congo hemorrhagic fever virus induce superior humoral and Th1-biased cellular immunity.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42291516",
+      "title": "Evaluation of two point-of-care molecular diagnostic platforms for rapid detection of equine Hendra virus.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42241276",
+      "title": "nsP3-FXR co-condensation enables alphavirus replication and reveals a targetable alphavirus vulnerability.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "Nipah henipavirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42198690",
+      "title": "Heterologous Sequential mRNA Vaccination of Indian Rhesus Macaques Elicits Broad Binding and Neutralizing Antibody Responses Against Diverse Henipaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1474807",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2847089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42600205",
+      "title": "One health, one goal: Global imperatives for Nipah virus vaccine development.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42689109",
+      "title": "Hendra virus: research progress on a bat-borne threat lurking at the human-animal interface.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42291516",
+      "title": "Evaluation of two point-of-care molecular diagnostic platforms for rapid detection of equine Hendra virus.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "42268796",
+      "title": "Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42008533",
+      "title": "A molecular survey of orthohantaviruses in rodents across the tri-border region of China, Russia, and North Korea.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052498",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86782"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "15560064",
+      "title": "Treatment of HCV: approach to difficult cases.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "15617253",
+      "title": "[The establishment of antigen sandwiched ELISA for detection of total antibodies to hepatitis C virus].",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "cited_pmid": "15560055",
+      "title": "Pathogenesis of hepatocellular damage in chronic hepatitis C virus infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "cited_pmid": "15560060",
+      "title": "The natural history of chronic hepatitis C virus infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "cited_pmid": "15560056",
+      "title": "Histopathology of HCV infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "15560063",
+      "title": "Clinical application of hepatitis C virus genotyping and quantitation.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "42742532",
+      "title": "Use of Dried Blood Spots for Identifying Hepatitis E Infections in an Outbreak Setting.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "18372522",
+      "title": "HBV genome integration and genetic instability in HBsAg-negative and anti-HCV-positive hepatocellular carcinoma in Japan.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "15617335",
+      "title": "[Cloning and sequencing of cDNA of E2/NS1 gene of hepatitis C virus].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "42676516",
+      "title": "Hepatitis A and E in rural northern India: clinico-epidemiological and molecular surveillance from a tertiary care hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "42713301",
+      "title": "Reduction of immunosuppressants fails to clear hepatitis E virus infection in a heart transplant recipient.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is known about Hepatitis E virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42654721",
+      "title": "Clinical Guidelines for Hepatitis E Vaccination in India: An Expert Panel Consensus Report on the Recombinant Hepatitis E Vaccine, HEV 239.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis E virus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis E virus?",
+      "cited_pmid": "15560063",
+      "title": "Clinical application of hepatitis C virus genotyping and quantitation.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "cited_pmid": "15617335",
+      "title": "[Cloning and sequencing of cDNA of E2/NS1 gene of hepatitis C virus].",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "cited_pmid": "42676516",
+      "title": "Hepatitis A and E in rural northern India: clinico-epidemiological and molecular surveillance from a tertiary care hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis E virus?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis E virus?",
+      "cited_pmid": "15560064",
+      "title": "Treatment of HCV: approach to difficult cases.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
     }
   ],
   "false_negatives": [
@@ -4780,6 +5841,300 @@
       "question": "What is the genome organization and replication cycle of Powassan virus?",
       "missed_pmid": "42573240",
       "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "missed_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management."
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "missed_pmid": "42308287",
+      "title": "A conserved in-frame stop codon acts as a multipotent defense mechanism in alphaviruses."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9930199",
+      "title": "Induction of apoptosis in HEp-2 cells by infection with herpes simplex virus type 2."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12160245",
+      "title": "Use of the highly sensitive PCR method to detect the Herpes simplex virus type 1 genome and its expression in samples from Beh\u00e7et disease patients."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12549379",
+      "title": "[The experimental study on competitive PCR for quantitation of herpesviruses]."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15617234",
+      "title": "[Expression of foreign genes in adult rats' central nervous system by use of defective herpes simplex virus type 1 vectors]."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9875375",
+      "title": "Alkylthioglycerol prodrugs of foscarnet: synthesis, oral bioavailability and structure-activity studies in human cytomegalovirus-, herpes simplex virus type 1- and human immunodeficiency virus type 1-infected cells."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "9875372",
+      "title": "Inhibition of virus-encoded thymidine kinase suppresses herpes simplex virus replication in vitro and in vivo."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "missed_pmid": "10225987",
+      "title": "Prevalence of herpes simplex type 2 antibodies and a clinical history of herpes in three different populations in Campinas City, Brazil."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "missed_pmid": "9875405",
+      "title": "Inhibitory effects of podophyllotoxin derivatives on herpes simplex virus replication."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "missed_pmid": "9875371",
+      "title": "The design, synthesis and properties of highly potent and selective inhibitors of herpes simplex virus types 1 and 2 thymidine kinase."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42693145",
+      "title": "Varicella zoster virus infection."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42742725",
+      "title": "Screening and identification of B-cell epitopes on the gH protein of varicella-zoster virus."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42534944",
+      "title": "KA101 outperforms other clinical adjuvants in inducing balanced Th1/Th2 immunity and robust B cell responses to varicella-zoster virus glycoprotein E."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42580145",
+      "title": "Enhanced cellular immunity against varicella-zoster virus by \u03b2-sitosterol-substituted lipid nanoparticles in mRNA vaccines."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42621909",
+      "title": "Post-COVID varicella-zoster virus reactivation: lowering the immunological threshold for latency breakdown."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "missed_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "missed_pmid": "42545991",
+      "title": "Analysis of the genotyping of circulating strains and characteristics of Glycoprotein E of Varicella-Zoster Virus in Shanxi Province, China."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "missed_pmid": "42723024",
+      "title": "Rashless varicella-zoster virus encephalitis diagnosed by metagenomic next-generation sequencing: two case reports."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "missed_pmid": "42702024",
+      "title": "Ratio of varicella-zoster virus-specific immunoglobulin G antibody titre in the late acute phase to that in the early acute phase as a novel indicator of postherpetic neuralgia in patients with herpes zoster: a single-centre retrospective cohort study."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "missed_pmid": "42669504",
+      "title": "[Intrathecal immunoglobulin administration for refractory viral central nervous system infection after allogeneic hematopoietic stem cell transplantation]."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "missed_pmid": "42687142",
+      "title": "Clinical and epidemiological characteristics of herpes zoster at a tertiary care center compared to population-based data: a ten-year retrospective cohort study."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15617253",
+      "title": "[The establishment of antigen sandwiched ELISA for detection of total antibodies to hepatitis C virus]."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15560054",
+      "title": "Virology of hepatitis C virus."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15560055",
+      "title": "Pathogenesis of hepatocellular damage in chronic hepatitis C virus infection."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15560064",
+      "title": "Treatment of HCV: approach to difficult cases."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15560066",
+      "title": "Hepatitis C virus infection in pediatric patients."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "missed_pmid": "15560060",
+      "title": "The natural history of chronic hepatitis C virus infection."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "missed_pmid": "15617246",
+      "title": "[An analysis of the infection state of hepatitis C virus in liver diseases]."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "missed_pmid": "15560058",
+      "title": "The epidemiology of acute and chronic hepatitis C."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "missed_pmid": "15560063",
+      "title": "Clinical application of hepatitis C virus genotyping and quantitation."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "missed_pmid": "18372522",
+      "title": "HBV genome integration and genetic instability in HBsAg-negative and anti-HCV-positive hepatocellular carcinoma in Japan."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "missed_pmid": "15617335",
+      "title": "[Cloning and sequencing of cDNA of E2/NS1 gene of hepatitis C virus]."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "missed_pmid": "15617334",
+      "title": "[Variation in hepatitis C virus NS 5b nucleotide sequence and its relationship with interferon treatment]."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "missed_pmid": "15617329",
+      "title": "[Core protein of hepatitis C virus expressed in transgenic mice is associated with the expression of Fas molecule]."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42626622",
+      "title": "Standard-Volume Therapeutic Plasma Exchange Followed by High-Dose Continuous Renal Replacement Therapy in Patients With Hepatitis A Virus-Related Acute Liver Failure."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42765539",
+      "title": "Hospital Admissions for Hepatitis A and E in Spain: Nationwide Trends and In-Hospital Outcomes."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42770520",
+      "title": "Seroprevalence and Associated Factors of Hepatitis A Virus and Hepatitis E Virus Infection Among Blood Donors in Argentina: A Multicentre Study."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "missed_pmid": "42721393",
+      "title": "Hospitalized Hepatitis A Cases in Jordan: A 10-Year Retrospective Comparison Between Pediatric and Adult Populations."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "missed_pmid": "42639517",
+      "title": "Laboratory-Confirmed Hepatitis A, Hepatitis E, and Rotavirus Infections at a Tertiary Care Center in Eastern Rajasthan, India: A Prospective Observational Study."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "missed_pmid": "42630887",
+      "title": "Genetic and autoimmune predispositions to fulminant viral hepatitis in children."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is known about Hepatitis E virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42657185",
+      "title": "Optimized Buffer for Preservation of Hepatitis E Virus During Freeze-Thaw Cycles."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is known about Hepatitis E virus pathogenesis and transmission?",
+      "missed_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis E virus?",
+      "missed_pmid": "42683547",
+      "title": "PYGL as a Novel Biomarker for Disease Progression and Prognosis in HEV-ALF Patients."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis E virus?",
+      "missed_pmid": "42668655",
+      "title": "Sequential Immune-Mediated Extrahepatic Complications of Hepatitis E Virus: A Case Report."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "missed_pmid": "42725563",
+      "title": "Whole-Genome Analysis of HEV Under Sequential Ribavirin Pressure Reveals Early Minor Variants Predicting Resistance."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "missed_pmid": "42764916",
+      "title": "Molecular and serological evidence of hepatitis E virus genotype 3 circulation in pigs in Senegal."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis E virus?",
+      "missed_pmid": "42653065",
+      "title": "Extra-Hepatic Manifestations of Hepatitis E Virus (HEV): A Narrative Review on Meningoencephalitis."
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis E virus?",
+      "missed_pmid": "42765539",
+      "title": "Hospital Admissions for Hepatitis A and E in Spain: Nationwide Trends and In-Hospital Outcomes."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."

@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T22:49:52.591770+00:00",
+  "timestamp": "2026-09-22T23:00:33.971649+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -34,11 +34,16 @@
     "Human coronavirus 229E": true,
     "Murray Valley encephalitis virus": true,
     "Usutu virus": true,
-    "Powassan virus": true
+    "Powassan virus": true,
+    "Human alphaherpesvirus 1": true,
+    "Human alphaherpesvirus 3": true,
+    "Hepacivirus hominis": true,
+    "Hepatitis A virus": true,
+    "Hepatitis E virus": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 527,
+  "corpus_size": 625,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -68,7 +73,12 @@
     "Human coronavirus 229E": "dictionary",
     "Murray Valley encephalitis virus": "dictionary",
     "Usutu virus": "dictionary",
-    "Powassan virus": "dictionary"
+    "Powassan virus": "dictionary",
+    "Human alphaherpesvirus 1": "dictionary",
+    "Human alphaherpesvirus 3": "dictionary",
+    "Hepacivirus hominis": "dictionary",
+    "Hepatitis A virus": "dictionary",
+    "Hepatitis E virus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -186,6 +196,26 @@
     "Powassan virus": {
       "harvested": 20,
       "stamped_with_own_iri": 8
+    },
+    "Human alphaherpesvirus 1": {
+      "harvested": 18,
+      "stamped_with_own_iri": 10
+    },
+    "Human alphaherpesvirus 3": {
+      "harvested": 20,
+      "stamped_with_own_iri": 14
+    },
+    "Hepacivirus hominis": {
+      "harvested": 20,
+      "stamped_with_own_iri": 18
+    },
+    "Hepatitis A virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 9
+    },
+    "Hepatitis E virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 17
     }
   },
   "skipped_organisms": [
@@ -195,8 +225,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.5085714285714286,
-  "n_cases": 140,
+  "mean_unfiltered_precision": 0.4533333333333333,
+  "n_cases": 165,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -578,7 +608,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 54,
+      "filtered_corpus_size": 56,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -602,7 +632,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 54,
+      "filtered_corpus_size": 56,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -626,7 +656,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 54,
+      "filtered_corpus_size": 56,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -650,7 +680,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 54,
+      "filtered_corpus_size": 56,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -674,7 +704,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 54,
+      "filtered_corpus_size": 56,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -693,11 +723,11 @@
         "4246007",
         "5817556",
         "41608126",
-        "34014629",
-        "5388496"
+        "10325533",
+        "42671937"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
@@ -738,11 +768,11 @@
         "42714404"
       ],
       "unfiltered_citations": [
+        "15560057",
         "4246007",
         "42709838",
         "5817556",
-        "42641941",
-        "42641941"
+        "42671937"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -766,7 +796,7 @@
         "42438688",
         "42438688",
         "5391162",
-        "42497147"
+        "15560054"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -1460,8 +1490,8 @@
       "unfiltered_citations": [
         "42605787",
         "42709838",
+        "15560057",
         "42422560",
-        "42683038",
         "42683038"
       ],
       "filtered_precision": 1.0,
@@ -1485,11 +1515,11 @@
         "41452936",
         "42620721",
         "42732490",
-        "42753873",
-        "42605787"
+        "15560054",
+        "42753873"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
@@ -1699,10 +1729,10 @@
       ],
       "unfiltered_citations": [
         "42422560",
+        "15560057",
         "42605787",
         "42291516",
-        "42689109",
-        "42709838"
+        "42689109"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -1722,11 +1752,11 @@
         "42468517"
       ],
       "unfiltered_citations": [
+        "15560054",
         "42523513",
         "42689109",
         "42395906",
-        "42422560",
-        "42578546"
+        "42422560"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -1939,10 +1969,10 @@
       ],
       "unfiltered_citations": [
         "42415885",
+        "15560057",
         "42709838",
         "41037964",
-        "41856193",
-        "42605787"
+        "41856193"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -1966,10 +1996,10 @@
         "41930440",
         "42573240",
         "42347213",
-        "42415885"
+        "15560054"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
@@ -2058,10 +2088,10 @@
         "42606356"
       ],
       "unfiltered_citations": [
+        "15560057",
         "42709838",
         "42391156",
         "42061821",
-        "42683038",
         "42683038"
       ],
       "filtered_precision": 1.0,
@@ -2444,9 +2474,9 @@
       "unfiltered_citations": [
         "42240370",
         "41452936",
+        "9891810",
         "42753873",
-        "42497147",
-        "40609048"
+        "42497147"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -2683,13 +2713,13 @@
       ],
       "unfiltered_citations": [
         "42573240",
+        "9891810",
         "41452936",
         "42434987",
-        "42753873",
-        "42308287"
+        "42753873"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
@@ -3405,8 +3435,8 @@
         "42426896",
         "41452936",
         "42753873",
-        "42241276",
-        "42573240"
+        "9891810",
+        "42241276"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -3525,11 +3555,11 @@
         "42661313",
         "42661313",
         "41452936",
-        "42671191",
+        "9891810",
         "42671191"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
@@ -3555,6 +3585,606 @@
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
       "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "9930199",
+        "12160245",
+        "12549379",
+        "15617234",
+        "9875375"
+      ],
+      "unfiltered_citations": [
+        "42004740",
+        "42671937",
+        "41608126",
+        "42728254",
+        "41832144"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "12160245",
+        "15617234",
+        "9930199",
+        "12549379",
+        "9875372"
+      ],
+      "unfiltered_citations": [
+        "41608126",
+        "42369187",
+        "41037964",
+        "12160245",
+        "42506617"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "12160245",
+        "12549379",
+        "10225987",
+        "9930199",
+        "15617234"
+      ],
+      "unfiltered_citations": [
+        "42599190",
+        "15560057",
+        "41037964",
+        "12160245",
+        "42671937"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "12160245",
+        "12549379",
+        "15617234",
+        "9875372",
+        "9930199"
+      ],
+      "unfiltered_citations": [
+        "15560054",
+        "42241276",
+        "42616815",
+        "42573240",
+        "41452936"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "9875375",
+        "9875405",
+        "9875371",
+        "9875372",
+        "9930199"
+      ],
+      "unfiltered_citations": [
+        "42580486",
+        "41936880",
+        "41600866",
+        "41596714",
+        "41394564"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "42693145",
+        "42742725",
+        "42534944",
+        "42580145",
+        "42621909"
+      ],
+      "unfiltered_citations": [
+        "42004740",
+        "42671937",
+        "41608126",
+        "42728254",
+        "41832144"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "42693145",
+        "42599190",
+        "42742725",
+        "42621909",
+        "42545991"
+      ],
+      "unfiltered_citations": [
+        "42369187",
+        "41608126",
+        "42506617",
+        "42506617",
+        "42506617"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "42599190",
+        "42693145",
+        "42723024",
+        "42742725",
+        "42702024"
+      ],
+      "unfiltered_citations": [
+        "15560057",
+        "42599190",
+        "41037964",
+        "42291516",
+        "42671937"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "42545991",
+        "42693145",
+        "42742725",
+        "42599190",
+        "42723024"
+      ],
+      "unfiltered_citations": [
+        "42241276",
+        "15560054",
+        "41452936",
+        "42726904",
+        "42726904"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "42693145",
+        "42599190",
+        "42669504",
+        "42742725",
+        "42687142"
+      ],
+      "unfiltered_citations": [
+        "42580486",
+        "41936880",
+        "42606356",
+        "42606356",
+        "42515883"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15617253",
+        "15560054",
+        "15560055",
+        "15560064",
+        "15560066"
+      ],
+      "unfiltered_citations": [
+        "42198690",
+        "42506617",
+        "42506617",
+        "42506617",
+        "42600205"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15560054",
+        "15560055",
+        "15560060",
+        "15617246",
+        "15560058"
+      ],
+      "unfiltered_citations": [
+        "42415885",
+        "42541310",
+        "41640223",
+        "42689109",
+        "42395044"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15560057",
+        "15560063",
+        "15617253",
+        "15560054",
+        "15617246"
+      ],
+      "unfiltered_citations": [
+        "42709838",
+        "42291516",
+        "15560057",
+        "42521678",
+        "42268796"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15560054",
+        "18372522",
+        "15617335",
+        "15617334",
+        "15617329"
+      ],
+      "unfiltered_citations": [
+        "15560054",
+        "42753873",
+        "42008533",
+        "42573240",
+        "9891810"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15560064",
+        "15560066",
+        "15560058",
+        "15560054",
+        "15560063"
+      ],
+      "unfiltered_citations": [
+        "41936880",
+        "42606356",
+        "42606356",
+        "41640223",
+        "42580486"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42721393",
+        "42626622",
+        "42765539",
+        "42765539",
+        "42770520"
+      ],
+      "unfiltered_citations": [
+        "42671937",
+        "15560064",
+        "42721393",
+        "41832144",
+        "15617253"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42721393",
+        "42626622",
+        "42765539",
+        "42765539",
+        "42770520"
+      ],
+      "unfiltered_citations": [
+        "42721393",
+        "15560054",
+        "15560055",
+        "15560060",
+        "15560056"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42721393",
+        "42765539",
+        "42765539",
+        "42626622",
+        "42639517"
+      ],
+      "unfiltered_citations": [
+        "15560057",
+        "15560063",
+        "42742532",
+        "15617253",
+        "42671937"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42721393",
+        "42765539",
+        "42765539",
+        "42626622",
+        "42630887"
+      ],
+      "unfiltered_citations": [
+        "15560054",
+        "18372522",
+        "15617335",
+        "42676516",
+        "42676516"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42765539",
+        "42765539",
+        "42626622",
+        "42721393",
+        "42639517"
+      ],
+      "unfiltered_citations": [
+        "15560062",
+        "15560064",
+        "34014630",
+        "42713301",
+        "42765539"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is known about Hepatitis E virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42671937",
+        "42713301",
+        "42727860",
+        "42668655",
+        "42657185"
+      ],
+      "unfiltered_citations": [
+        "42671937",
+        "42654721",
+        "42713301",
+        "42727860",
+        "42668655"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is known about Hepatitis E virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42727860",
+        "42653065",
+        "42663480",
+        "42668655",
+        "42671937"
+      ],
+      "unfiltered_citations": [
+        "42727860",
+        "42653065",
+        "42654721",
+        "42663480",
+        "42668655"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis E virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42742532",
+        "42671937",
+        "42766967",
+        "42683547",
+        "42668655"
+      ],
+      "unfiltered_citations": [
+        "15560057",
+        "42742532",
+        "42671937",
+        "15560063",
+        "42766967"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis E virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42727860",
+        "42663480",
+        "42725563",
+        "42671937",
+        "42764916"
+      ],
+      "unfiltered_citations": [
+        "15560054",
+        "42727860",
+        "42663480",
+        "15617335",
+        "42676516"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis E virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis E virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42713301",
+        "42766967",
+        "42671937",
+        "42653065",
+        "42765539"
+      ],
+      "unfiltered_citations": [
+        "42713301",
+        "15560062",
+        "42766967",
+        "15560064",
+        "42654721"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     }

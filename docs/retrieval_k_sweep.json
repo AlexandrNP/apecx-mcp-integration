@@ -1,14 +1,14 @@
 {
   "experiment": "retrieval_depth_sweep",
-  "timestamp": "2026-09-22T22:49:52.587161+00:00",
-  "n_cases": 140,
-  "corpus_size": 527,
+  "timestamp": "2026-09-22T23:00:33.970089+00:00",
+  "n_cases": 165,
+  "corpus_size": 625,
   "filtered_precision_all_k": 1.0,
   "unfiltered_precision_by_k": {
-    "1": 0.6428571428571429,
-    "3": 0.55,
-    "5": 0.5085714285714286,
-    "10": 0.42214285714285715
+    "1": 0.5696969696969697,
+    "3": 0.4929292929292929,
+    "5": 0.4533333333333333,
+    "10": 0.38545454545454544
   },
   "note": "Pure semantic search over the whole mixed pool: mean share of the top-k papers about the right organism, at increasing retrieval depth k. The organism-filtered side stays 1.00 at every k by construction."
 }
