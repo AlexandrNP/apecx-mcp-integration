@@ -64,6 +64,15 @@ _TARGETS: list[tuple[str, str]] = [
     ("Yellow fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_11089"),
 ]
 
+# Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
+# comma-separated list of organism names; only those are run this pass. The
+# accumulating failure catalog means rotating subsets across runs still covers the
+# full set over time. Empty = run every target.
+_ORG_FILTER = os.environ.get("APECX_ABLATION_ORGANISMS", "").strip()
+if _ORG_FILTER:
+    _wanted = {n.strip().lower() for n in _ORG_FILTER.split(",") if n.strip()}
+    _TARGETS = [t for t in _TARGETS if t[0].lower() in _wanted]
+
 # Gazetteer build limits to try IN ORDER, FULL-WIDTH first so EVERY target tags.
 # The SQL LIMIT applies to the entity_type='pathogen'-FILTERED stream (WHERE binds
 # before LIMIT), so it counts pathogen rows by rowid. Empirically 'dengue virus'
