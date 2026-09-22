@@ -161,6 +161,38 @@ def mine_rag_failures(
     return {"false_positives": false_positives, "false_negatives": false_negatives}
 
 
+def merge_failure_catalogs(
+    existing: dict[str, list[dict]],
+    new: dict[str, list[dict]],
+) -> dict[str, list[dict]]:
+    """Union two pure-RAG failure catalogs, so the benchmark ACCUMULATES across
+    runs instead of overwriting.
+
+    False positives dedupe on ``(organism, cited_pmid)`` and false negatives on
+    ``(organism, missed_pmid)`` — the same question citing the same wrong (or
+    missing the same right) paper on a later run is not a new example. Existing
+    entries are kept first (their first-seen labelling wins); genuinely new
+    failures from ``new`` are appended. Pure function, order-preserving.
+    """
+
+    def _dedup(items: list[dict], key_fields: tuple[str, ...]) -> list[dict]:
+        seen: set[tuple] = set()
+        out: list[dict] = []
+        for item in items:
+            key = tuple(item.get(f) for f in key_fields)
+            if key not in seen:
+                seen.add(key)
+                out.append(item)
+        return out
+
+    fps = (existing.get("false_positives") or []) + (new.get("false_positives") or [])
+    fns = (existing.get("false_negatives") or []) + (new.get("false_negatives") or [])
+    return {
+        "false_positives": _dedup(fps, ("organism", "cited_pmid")),
+        "false_negatives": _dedup(fns, ("organism", "missed_pmid")),
+    }
+
+
 def default_reader() -> Reader:
     """Adapt the real ``LiteratureRagStep`` into a ``reader(question, records)``.
 

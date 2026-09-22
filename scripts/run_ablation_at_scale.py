@@ -34,6 +34,7 @@ from typing import Any
 
 from apecx_integration.agents.literature.ablation import (
     default_reader,
+    merge_failure_catalogs,
     mine_rag_failures,
     run_ablation,
 )
@@ -210,21 +211,31 @@ def main() -> None:
     corpus_by_pmid = {str(r["pmid"]): r for r in pooled}
     iri_to_name = {iri: name for name, iri in resolved}
     failures = mine_rag_failures(result["per_case"], corpus_by_pmid, iri_to_name)
+    # ACCUMULATE: merge this run's failures into the committed catalog (dedupe by
+    # (organism, pmid)) so the benchmark grows across runs instead of overwriting.
+    existing = {}
+    if _FAILURES_PATH.exists():
+        existing = json.loads(_FAILURES_PATH.read_text())
+    merged = merge_failure_catalogs(existing, failures)
+    new_fp = len(merged["false_positives"]) - len(existing.get("false_positives") or [])
+    new_fn = len(merged["false_negatives"]) - len(existing.get("false_negatives") or [])
     failure_record = {
         "experiment": "pure_rag_failure_examples",
-        "timestamp": datetime.now(UTC).isoformat(),
+        "updated": datetime.now(UTC).isoformat(),
+        "runs": (existing.get("runs") or 0) + 1,
         "model": model,
-        "corpus_size": len(pooled),
-        "n_cases": result["n_cases"],
-        "n_false_positives": len(failures["false_positives"]),
-        "n_false_negatives": len(failures["false_negatives"]),
-        "false_positives": failures["false_positives"],
-        "false_negatives": failures["false_negatives"],
+        "n_false_positives": len(merged["false_positives"]),
+        "n_false_negatives": len(merged["false_negatives"]),
+        "new_this_run": {"false_positives": new_fp, "false_negatives": new_fn},
+        "false_positives": merged["false_positives"],
+        "false_negatives": merged["false_negatives"],
         "note": (
-            "A false positive is an off-organism paper the unfiltered (pure RAG) "
-            "reader cited; a false negative is an on-organism paper it missed but "
-            "the organism-filtered reader cited. Extracted from the same run's real "
-            "citations, not synthesized."
+            "Accumulating catalog: a deduped union across benchmark runs, keyed on "
+            "(organism, pmid). A false positive is an off-organism paper the "
+            "unfiltered (pure RAG) reader cited; a false negative is an on-organism "
+            "paper it missed but the organism-filtered reader cited. Every entry is "
+            "a real citation cross-referenced against the stamped corpus, not "
+            "synthesized."
         ),
     }
     _FAILURES_PATH.write_text(json.dumps(failure_record, indent=2) + "\n", encoding="utf-8")
@@ -274,8 +285,10 @@ def main() -> None:
             f"(status={c['unfiltered_status']}) cites={c['unfiltered_citations']}"
         )
     print(
-        f"\npure-RAG failures: {failure_record['n_false_positives']} false positive(s), "
-        f"{failure_record['n_false_negatives']} false negative(s)"
+        f"\npure-RAG failure catalog (run {failure_record['runs']}): "
+        f"{failure_record['n_false_positives']} false positive(s), "
+        f"{failure_record['n_false_negatives']} false negative(s) "
+        f"(+{new_fp} FP, +{new_fn} FN new this run)"
     )
     for fp in failures["false_positives"][:5]:
         print(

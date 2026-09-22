@@ -29,6 +29,7 @@ import pytest
 
 from apecx_integration.agents.literature.ablation import (
     default_reader,
+    merge_failure_catalogs,
     mine_rag_failures,
     organism_precision,
     run_ablation,
@@ -117,6 +118,40 @@ def test_mine_rag_failures_offline():
     fn = out["false_negatives"][0]
     assert fn["missed_pmid"] == "c2"
     assert fn["title"] == "CHIKV vaccine"
+
+
+def test_merge_failure_catalogs_accumulates_and_dedupes():
+    """A second run adds genuinely new failures but does not double-count a repeat
+    of the same (organism, pmid) example — the catalog grows, not churns."""
+    existing = {
+        "false_positives": [
+            {"organism": "Zika virus", "cited_pmid": "d1", "actual_organisms": ["Dengue virus"]},
+        ],
+        "false_negatives": [
+            {"organism": "Ebola virus", "missed_pmid": "e9", "title": "missed"},
+        ],
+    }
+    new = {
+        "false_positives": [
+            # exact repeat — must NOT be added again
+            {"organism": "Zika virus", "cited_pmid": "d1", "actual_organisms": ["Dengue virus"]},
+            # genuinely new
+            {"organism": "Ebola virus", "cited_pmid": "b7", "actual_organisms": ["Bundibugyo"]},
+        ],
+        "false_negatives": [
+            {"organism": "Ebola virus", "missed_pmid": "e9", "title": "missed"},  # repeat
+            {"organism": "Yellow fever virus", "missed_pmid": "y3", "title": "new"},  # new
+        ],
+    }
+
+    merged = merge_failure_catalogs(existing, new)
+
+    assert len(merged["false_positives"]) == 2  # d1 kept once + b7 added
+    assert {fp["cited_pmid"] for fp in merged["false_positives"]} == {"d1", "b7"}
+    assert len(merged["false_negatives"]) == 2  # e9 kept once + y3 added
+    assert {fn["missed_pmid"] for fn in merged["false_negatives"]} == {"e9", "y3"}
+    # empty existing (first run) is a no-op union
+    assert merge_failure_catalogs({}, new)["false_positives"] == new["false_positives"]
 
 
 # --------------------------------------------------------------------------- #

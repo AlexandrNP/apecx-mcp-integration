@@ -215,6 +215,7 @@ _Headline ablation: does the organism-identifier filter improve the answers?_
 - `def organism_precision(citations: list[str], corpus_by_pmid: dict[str, dict], correct_iri: str)` — Fraction of cited PMIDs whose stamped record's ``iris`` contains
 - `def run_ablation(cases: list[dict], corpus: list[dict], reader: Reader, *, k: int=5)` — Run ``reader`` filtered-vs-unfiltered over each case; report mean precision.
 - `def mine_rag_failures(per_case: list[dict], corpus_by_pmid: dict[str, dict], iri_to_name: dict[str, str])` — Extract the CONCRETE citations where the unfiltered ("pure RAG") condition
+- `def merge_failure_catalogs(existing: dict[str, list[dict]], new: dict[str, list[dict]])` — Union two pure-RAG failure catalogs, so the benchmark ACCUMULATES across
 - `def default_reader()` — Adapt the real ``LiteratureRagStep`` into a ``reader(question, records)``.
 
 ## `src/apecx_integration/agents/literature/coverage.py`
