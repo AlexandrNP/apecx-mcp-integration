@@ -155,6 +155,38 @@ def test_merge_failure_catalogs_accumulates_and_dedupes():
     assert merge_failure_catalogs({}, new)["false_positives"] == new["false_positives"]
 
 
+def test_retrieval_reader_caches_subindex_by_pmid_set(monkeypatch):
+    """The reader builds one sub-index per DISTINCT record set and reuses it, so an
+    ablation that calls it once per case does not re-embed the same pool each time."""
+    import sentence_transformers
+
+    import apecx_integration.agents.literature.stamped_corpus as sc
+
+    monkeypatch.setattr(sentence_transformers, "SentenceTransformer", lambda *a, **k: object())
+    calls = {"n": 0}
+
+    class _FakeSub:
+        def __init__(self, records):
+            self._records = list(records)
+
+        def search(self, query, k=5):
+            return self._records[:k]
+
+    def _fake_build(records, **kwargs):
+        calls["n"] += 1
+        return _FakeSub(records)
+
+    monkeypatch.setattr(sc, "build_faiss_subindex", _fake_build)
+
+    reader = retrieval_reader()
+    pool = [{"pmid": "a"}, {"pmid": "b"}, {"pmid": "c"}]
+    reader("q1", pool)
+    reader("q2", pool)  # same PMID set -> reuse, no new build
+    assert calls["n"] == 1
+    reader("q3", pool[:2])  # different PMID set -> one new build
+    assert calls["n"] == 2
+
+
 # --------------------------------------------------------------------------- #
 # 2. Ollama-GATED integration — real retrieval + real LLM.
 # --------------------------------------------------------------------------- #

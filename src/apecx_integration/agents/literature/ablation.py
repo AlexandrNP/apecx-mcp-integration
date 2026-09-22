@@ -226,6 +226,11 @@ def retrieval_reader() -> Reader:
     rather than generation. The embedding model is loaded once and reused across
     cases. ``citations`` are the retrieved PMIDs, so ``organism_precision`` and
     ``mine_rag_failures`` apply unchanged.
+
+    A sub-index is CACHED by the set of record PMIDs it covers, so an ablation that
+    calls the reader once per case does not re-embed the same record set every time
+    — the unfiltered condition reuses one whole-pool index across all cases, turning
+    the cost from O(cases x pool) embeddings into O(distinct record sets).
     """
     from sentence_transformers import SentenceTransformer  # noqa: I001 — order load-bearing
 
@@ -235,9 +240,14 @@ def retrieval_reader() -> Reader:
     )
 
     model = SentenceTransformer(_DEFAULT_MODEL, device="cpu")
+    cache: dict[frozenset, Any] = {}
 
     def _read(question: str, records: list[dict], *, k: int = 5) -> dict[str, Any]:
-        subindex = build_faiss_subindex(records, model=model)
+        key = frozenset(str(r["pmid"]) for r in records)
+        subindex = cache.get(key)
+        if subindex is None:
+            subindex = build_faiss_subindex(records, model=model)
+            cache[key] = subindex
         hits = subindex.search(question, k=k)
         return {"citations": [str(h["pmid"]) for h in hits]}
 
