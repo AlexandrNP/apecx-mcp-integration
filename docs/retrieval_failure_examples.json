@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T15:02:29.135987+00:00",
-  "runs": 18,
+  "updated": "2026-09-23T15:23:47.419863+00:00",
+  "runs": 19,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 1286,
-  "n_false_negatives": 606,
+  "n_false_positives": 1334,
+  "n_false_negatives": 636,
   "new_this_run": {
-    "false_positives": 78,
+    "false_positives": 48,
     "false_negatives": 30
   },
   "false_positives": [
@@ -14276,6 +14276,523 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11618",
         "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
       ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "42373647",
+      "title": "The structural mechanism of HIV-2 Vif antagonism of human APOBEC3H.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Human immunodeficiency virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42685700",
+      "title": "Preferential engagement of the anti-inflammatory ATP/adenosine axis by HIV vaccine candidate with V1-deleted envelope in male rhesus macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human parechovirus?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis delta virus?",
+      "cited_pmid": "42568142",
+      "title": "In vitro investigation of host Synaptogyrin-2 role in BVDV-1 replication.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42655794",
+      "title": "Development of a Competitive Chemiluminescent Enzyme Immunoassay Based on Recombinant FMDV VP2 Protein for Rapid and Simultaneous Detection of Antibodies Against Foot-and-Mouth Disease Virus Serotypes O and A.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus D?",
+      "cited_pmid": "42655794",
+      "title": "Development of a Competitive Chemiluminescent Enzyme Immunoassay Based on Recombinant FMDV VP2 Protein for Rapid and Simultaneous Detection of Antibodies Against Foot-and-Mouth Disease Virus Serotypes O and A.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2010483",
+      "title": "The prospects for AIDS vaccines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2014246",
+      "title": "Production of site-selected neutralizing human monoclonal antibodies against the third variable domain of the human immunodeficiency virus type 1 envelope glycoprotein.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42693271",
+      "title": "BCL-2 inhibition at antiretroviral therapy initiation reduces the intact SIV reservoir in macaques.",
+      "actual_organisms": [
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2014229",
+      "title": "Identification of a determinant within the human immunodeficiency virus 1 surface envelope glycoprotein critical for productive infection of primary monocytes.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "cited_pmid": "2014240",
+      "title": "Effect of mutations affecting the p6 gag protein on human immunodeficiency virus particle release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "cited_pmid": "42570664",
+      "title": "Evaluation of a Rapid Confirmatory Human Immunodeficiency Virus Test: Overall Performance and Band Analysis.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "cited_pmid": "42363475",
+      "title": "False-positive results in the Elecsys HIV combi PT assay: A retrospective analysis of contributing factors and cutoff index values.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "cited_pmid": "42689488",
+      "title": "Anti-HIV Serological Profiles and Concordance of Chemiluminescent Immunoassay Screening With a Supplemental Rapid Test Among Blood Donors in C\u00f4te d'Ivoire.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 2?",
+      "cited_pmid": "1707532",
+      "title": "Detection of human immunodeficiency virus type 1 clinical isolates with reduced sensitivity to zidovudine and dideoxyinosine by RNA.RNA hybridization.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2014254",
+      "title": "Observations after human immunodeficiency virus immunization and challenge of human immunodeficiency virus seropositive and seronegative chimpanzees.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2010483",
+      "title": "The prospects for AIDS vaccines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42685700",
+      "title": "Preferential engagement of the anti-inflammatory ATP/adenosine axis by HIV vaccine candidate with V1-deleted envelope in male rhesus macaques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "cited_pmid": "2014240",
+      "title": "Effect of mutations affecting the p6 gag protein on human immunodeficiency virus particle release.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42570664",
+      "title": "Evaluation of a Rapid Confirmatory Human Immunodeficiency Virus Test: Overall Performance and Band Analysis.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42689488",
+      "title": "Anti-HIV Serological Profiles and Concordance of Chemiluminescent Immunoassay Screening With a Supplemental Rapid Test Among Blood Donors in C\u00f4te d'Ivoire.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42363475",
+      "title": "False-positive results in the Elecsys HIV combi PT assay: A retrospective analysis of contributing factors and cutoff index values.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42391156",
+      "title": "Development and qualification of an enzyme-linked immunosorbent assay to detect human serum immunoglobulin G reactive to multiple lineages of Lassa virus nucleoprotein.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "2014229",
+      "title": "Identification of a determinant within the human immunodeficiency virus 1 surface envelope glycoprotein critical for productive infection of primary monocytes.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "cited_pmid": "42431766",
+      "title": "Is the HIV-2 pandemic going extinct 40 years after virus discovery?",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Human immunodeficiency virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "cited_pmid": "1707532",
+      "title": "Detection of human immunodeficiency virus type 1 clinical isolates with reduced sensitivity to zidovudine and dideoxyinosine by RNA.RNA hybridization.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is the genome organization and replication cycle of Bovine viral diarrhea virus 1?",
+      "cited_pmid": "42663734",
+      "title": "Development of a rapid antiviral screening assay based on GFP reporter virus of bovine enterovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42347176",
+      "title": "Prescribed RNA Particle Vaccine Against Porcine Sapovirus Enhances Virus-Neutralizing Antibody Titers in Colostrum and Milk.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1454551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "cited_pmid": "32414152",
+      "title": "Early Pathogenesis of Wesselsbron Disease in Pregnant Ewes.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "cited_pmid": "42637838",
+      "title": "Viral dissemination and diagnostic insights from experimental infection of sheep with Crimean-Congo hemorrhagic fever virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42568142",
+      "title": "In vitro investigation of host Synaptogyrin-2 role in BVDV-1 replication.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "35458522",
+      "title": "Molecular Organisation of Tick-Borne Encephalitis Virus.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
     }
   ],
   "false_negatives": [
@@ -17914,6 +18431,186 @@
       "question": "What is the genome organization and replication cycle of Human bocavirus?",
       "missed_pmid": "42442081",
       "title": "Identification of enteric viral pathogens in Tanzanian children under the age of five with diarrhea using nanopore-based metagenomic sequencing."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42431766",
+      "title": "Is the HIV-2 pandemic going extinct 40 years after virus discovery?"
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
+      "missed_pmid": "42671187",
+      "title": "A novel biomarker signature based on circulating transfer RNA (tRNA) can detect and differentiate HIV-2 infection from HIV-1."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "missed_pmid": "42695427",
+      "title": "Naturally Occurring ZCCHC3 Variants Modulate Antiretroviral Activity in Cynomolgus Macaques."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42648302",
+      "title": "Epidemiology and management of HIV-2."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "1850256",
+      "title": "The inhibitory activity of a peptide derivative against the growth of simian immunodeficiency virus in C8166 cells."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42373647",
+      "title": "The structural mechanism of HIV-2 Vif antagonism of human APOBEC3H."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42722809",
+      "title": "The interaction between HIV-1 central polypurine tract and host SAMHD1 dNTPase during HIV-1 vector transduction in human primary nondividing monocyte-derived macrophages."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "missed_pmid": "42671187",
+      "title": "A novel biomarker signature based on circulating transfer RNA (tRNA) can detect and differentiate HIV-2 infection from HIV-1."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "missed_pmid": "42413946",
+      "title": "Reconstructing the viral histories of human, simian and prosimian immunodeficiency viruses across multiple evolutionary timescales."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "missed_pmid": "42413395",
+      "title": "Regulation of HIV-2 Vpx/Vpr expression by the poly-proline motif: Enhancement of protein dimerization and translation."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42579895",
+      "title": "Constructing a novel chimeric multiepitope vaccine against Simian immunodeficiency virus accessory proteins: Using hybrid deep learning algorithms and bioinformatics-driven tools."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42611705",
+      "title": "Phenotypic analysis of productively SIV-infected cells in blood and lymphoid tissues of rhesus macaques."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42693271",
+      "title": "BCL-2 inhibition at antiretroviral therapy initiation reduces the intact SIV reservoir in macaques."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "missed_pmid": "42413946",
+      "title": "Reconstructing the viral histories of human, simian and prosimian immunodeficiency viruses across multiple evolutionary timescales."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "missed_pmid": "42596509",
+      "title": "Nonpathogenic SIV Infection in Sooty Mangabeys Is Characterized by a Lack of Activation and Expansion of Monocytes."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "missed_pmid": "42655673",
+      "title": "Preferential Exhaustion and Loss of Predominant Reservoir in Gut-Associated Lymph Nodes of a SIVmac239-Infected Rhesus Macaque with Terminal AIDS."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "missed_pmid": "1850256",
+      "title": "The inhibitory activity of a peptide derivative against the growth of simian immunodeficiency virus in C8166 cells."
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is the genome organization and replication cycle of Bovine viral diarrhea virus 1?",
+      "missed_pmid": "41392238",
+      "title": "Outbreak of BVDV-1b associated with persistent infection, reproductive losses, and congenital malformations in beef cattle in Southern Brazil."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42349522",
+      "title": "Genome-wide transcriptome profiling in crossbred pigs after challenge with Classical Swine Fever Virus."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "missed_pmid": "42643321",
+      "title": "Porcine genetic markers of immunocompetence shape the immune response to a classical swine fever virus subunit vaccine."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "missed_pmid": "42556298",
+      "title": "Enhancing secretory expression of CSFV E2 glycoprotein via signal peptide engineering in a recombinant PRRSV vector platform."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "missed_pmid": "42357728",
+      "title": "Establishment and Application of an Indirect ELISA for Detecting Getah Virus IgG Antibodies in Swine Based on the E2EP3 Peptide."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "missed_pmid": "42515614",
+      "title": "Validation of a Broad-Range Conventional RT-PCR Assay for Pestivirus Surveillance and Molecular Detection of BVDV-2a in Pigs in Costa Rica."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "missed_pmid": "42738429",
+      "title": "Development and Application of a Triplex RT-qPCR Assay for Differentiating Major Lineages of Porcine Reproductive and Respiratory Syndrome Virus."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "missed_pmid": "42484329",
+      "title": "Analysis of host factors for internal ribosomal entry site-mediated translation of foot and mouth disease virus and classical swine fever virus: an in vivo evaluation in single- and double-knockout mice."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "missed_pmid": "42501659",
+      "title": "Multi-copy expression of classical swine fever virus E2 in a recombinant pseudorabies virus enhances immunogenicity and supports its potential as a PRV-CSFV bivalent vaccine candidate."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "missed_pmid": "42462662",
+      "title": "Classical swine fever virus hijacks triglyceride metabolism via the NS5B-PLIN5 axis to facilitate viral replication."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "missed_pmid": "42655702",
+      "title": "Efficient Biosafe Inactivation of Classical Swine Fever Virus While Preserving Viral RNA for Molecular Diagnosis."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "missed_pmid": "42514627",
+      "title": "Preparation of Monoclonal Antibodies Against Porcine Circovirus Type 2 Capsid Protein and Development of a Blocking ELISA for Detection of the Antibody Against the Virus."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "missed_pmid": "42537723",
+      "title": "An E2 glycoprotein-based recombinant subunit vaccine confers protective immunity against classical swine fever virus in piglets."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."

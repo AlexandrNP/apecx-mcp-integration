@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-23T15:02:29.145925+00:00",
+  "timestamp": "2026-09-23T15:23:47.432062+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -80,11 +80,15 @@
     "Human mastadenovirus B": true,
     "Human mastadenovirus D": true,
     "Saffold virus": true,
-    "Human bocavirus": true
+    "Human bocavirus": true,
+    "Human immunodeficiency virus 2": true,
+    "Simian immunodeficiency virus": true,
+    "Bovine viral diarrhea virus 1": true,
+    "Classical swine fever virus": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 1414,
+  "corpus_size": 1493,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -160,7 +164,11 @@
     "Human mastadenovirus B": "dictionary",
     "Human mastadenovirus D": "dictionary",
     "Saffold virus": "dictionary",
-    "Human bocavirus": "dictionary"
+    "Human bocavirus": "dictionary",
+    "Human immunodeficiency virus 2": "dictionary",
+    "Simian immunodeficiency virus": "dictionary",
+    "Bovine viral diarrhea virus 1": "dictionary",
+    "Classical swine fever virus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -462,6 +470,22 @@
     "Human bocavirus": {
       "harvested": 19,
       "stamped_with_own_iri": 7
+    },
+    "Human immunodeficiency virus 2": {
+      "harvested": 19,
+      "stamped_with_own_iri": 8
+    },
+    "Simian immunodeficiency virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 10
+    },
+    "Bovine viral diarrhea virus 1": {
+      "harvested": 20,
+      "stamped_with_own_iri": 20
+    },
+    "Classical swine fever virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 16
     }
   },
   "skipped_organisms": [
@@ -471,8 +495,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.3627027027027028,
-  "n_cases": 370,
+  "mean_unfiltered_precision": 0.3733333333333333,
+  "n_cases": 390,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -1454,7 +1478,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1478,7 +1502,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1502,7 +1526,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1526,7 +1550,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1550,7 +1574,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4042,7 +4066,7 @@
         "42167235",
         "41603610",
         "42736308",
-        "15560054"
+        "42373647"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -4094,7 +4118,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4118,7 +4142,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4142,7 +4166,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4166,7 +4190,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4190,7 +4214,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4441,20 +4465,20 @@
       "filtered_citations": [
         "1707875",
         "2014229",
+        "42431766",
         "1850256",
-        "1707532",
-        "1707692"
+        "1707532"
       ],
       "unfiltered_citations": [
         "2010483",
         "2014246",
         "1707875",
-        "2014240",
-        "2014229"
+        "42685700",
+        "2014240"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 17,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 32,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4464,21 +4488,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
       "filtered_citations": [
         "2014229",
+        "42431766",
         "1707692",
         "1826686",
-        "1850256",
-        "1707694"
+        "1850256"
       ],
       "unfiltered_citations": [
         "2014240",
         "2014229",
+        "42431766",
         "2010483",
-        "1707692",
-        "2014254"
+        "1707692"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 17,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 32,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4487,22 +4511,22 @@
       "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
       "filtered_citations": [
+        "42570664",
+        "42363475",
+        "42689488",
         "1707532",
-        "2014229",
-        "1707692",
-        "1707875",
-        "1850256"
+        "42671187"
       ],
       "unfiltered_citations": [
+        "42570664",
+        "42363475",
+        "42689488",
         "15560057",
-        "1707532",
-        "15560063",
-        "42378730",
-        "42391156"
+        "1707532"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 17,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 32,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4512,21 +4536,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
       "filtered_citations": [
         "2014229",
+        "42373647",
         "1707532",
         "2015625",
-        "1707875",
-        "2017258"
+        "42695427"
       ],
       "unfiltered_citations": [
         "2014229",
         "2014240",
+        "42373647",
         "1707532",
-        "41603610",
-        "15560054"
+        "41603610"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 17,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 32,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4535,22 +4559,22 @@
       "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 1?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
       "filtered_citations": [
+        "42431766",
         "1707532",
         "1850256",
-        "1707692",
-        "2018518",
-        "41600866"
+        "42467805",
+        "1707692"
       ],
       "unfiltered_citations": [
+        "42431766",
         "1707532",
         "1850256",
         "2010483",
-        "1707692",
-        "15560062"
+        "42467805"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 17,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 32,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5452,8 +5476,8 @@
         "42132395",
         "42332827",
         "42378730",
-        "42291516",
-        "42638066"
+        "42626706",
+        "42291516"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -5889,7 +5913,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 13,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5913,7 +5937,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 13,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5937,7 +5961,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 13,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5961,7 +5985,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 13,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5985,7 +6009,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 13,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7371,9 +7395,9 @@
       "unfiltered_citations": [
         "42378730",
         "42375660",
+        "42626706",
         "42638066",
-        "42669541",
-        "41966613"
+        "42669541"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -7517,7 +7541,7 @@
         "42678147",
         "42684008",
         "41603610",
-        "18372522"
+        "42568142"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -8910,10 +8934,10 @@
       ],
       "unfiltered_citations": [
         "42378730",
+        "42655794",
         "41966613",
         "42185971",
-        "40400688",
-        "42638066"
+        "40400688"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -9031,9 +9055,9 @@
       "unfiltered_citations": [
         "42378730",
         "40400688",
+        "42655794",
         "41966613",
-        "42185971",
-        "42663377"
+        "42185971"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -9326,6 +9350,486 @@
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
       "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42431766",
+        "42648302",
+        "1850256",
+        "42373647",
+        "42722809"
+      ],
+      "unfiltered_citations": [
+        "2010483",
+        "42431766",
+        "2014246",
+        "42693271",
+        "2014229"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42431766",
+        "42648302",
+        "42373647",
+        "1850256",
+        "42671187"
+      ],
+      "unfiltered_citations": [
+        "42431766",
+        "2014240",
+        "2014229",
+        "42648302",
+        "2010483"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42431766",
+        "42648302",
+        "42671187",
+        "1850256",
+        "42373647"
+      ],
+      "unfiltered_citations": [
+        "42570664",
+        "42363475",
+        "42689488",
+        "42431766",
+        "42648302"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42373647",
+        "42431766",
+        "42413946",
+        "42413395",
+        "42648302"
+      ],
+      "unfiltered_citations": [
+        "2014229",
+        "42373647",
+        "42431766",
+        "41603610",
+        "42684008"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human immunodeficiency virus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42431766",
+        "42648302",
+        "1850256",
+        "42373647",
+        "42671187"
+      ],
+      "unfiltered_citations": [
+        "42431766",
+        "42648302",
+        "1850256",
+        "1707532",
+        "42693271"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "42555626",
+        "42596509",
+        "42579895",
+        "42611705",
+        "42693271"
+      ],
+      "unfiltered_citations": [
+        "2014254",
+        "2010483",
+        "42555626",
+        "42596509",
+        "42685700"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "42596509",
+        "42611705",
+        "42655673",
+        "42413946",
+        "42579895"
+      ],
+      "unfiltered_citations": [
+        "2014254",
+        "42596509",
+        "42611705",
+        "42655673",
+        "2014240"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "42596509",
+        "42611705",
+        "42655673",
+        "1850256",
+        "42413946"
+      ],
+      "unfiltered_citations": [
+        "42570664",
+        "42689488",
+        "2014254",
+        "42363475",
+        "42391156"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "42413946",
+        "42611705",
+        "42655673",
+        "42596509",
+        "42579895"
+      ],
+      "unfiltered_citations": [
+        "41603610",
+        "2014229",
+        "42413946",
+        "41452936",
+        "42611705"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "1850256",
+        "42693271",
+        "42579895",
+        "42611705",
+        "42596509"
+      ],
+      "unfiltered_citations": [
+        "1850256",
+        "42431766",
+        "1707532",
+        "42693271",
+        "41936880"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is known about Bovine viral diarrhea virus 1 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "42357663",
+        "42561832",
+        "42233013",
+        "41192064",
+        "41952167"
+      ],
+      "unfiltered_citations": [
+        "42357663",
+        "42561832",
+        "42233013",
+        "41192064",
+        "41952167"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is known about Bovine viral diarrhea virus 1 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "41392238",
+        "41558100",
+        "41192064",
+        "42357663",
+        "42561832"
+      ],
+      "unfiltered_citations": [
+        "41392238",
+        "41558100",
+        "41192064",
+        "42357663",
+        "42561832"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine viral diarrhea virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "41192064",
+        "41205761",
+        "41391720",
+        "42694081",
+        "41558100"
+      ],
+      "unfiltered_citations": [
+        "41192064",
+        "41205761",
+        "41391720",
+        "42694081",
+        "41558100"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is the genome organization and replication cycle of Bovine viral diarrhea virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "41272668",
+        "41472275",
+        "42568142",
+        "41558100",
+        "41392238"
+      ],
+      "unfiltered_citations": [
+        "41272668",
+        "41472275",
+        "42568142",
+        "41558100",
+        "42663734"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine viral diarrhea virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "42357663",
+        "42561832",
+        "41192064",
+        "41558100",
+        "42233013"
+      ],
+      "unfiltered_citations": [
+        "42357663",
+        "42561832",
+        "41192064",
+        "41558100",
+        "42233013"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42537723",
+        "42643321",
+        "42501659",
+        "42655702",
+        "42349522"
+      ],
+      "unfiltered_citations": [
+        "42537723",
+        "42643321",
+        "42347176",
+        "42501659",
+        "42655702"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is known about Classical swine fever virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42349522",
+        "42655702",
+        "42537723",
+        "42643321",
+        "42556298"
+      ],
+      "unfiltered_citations": [
+        "42349522",
+        "42655702",
+        "32414152",
+        "42637838",
+        "42537723"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42655702",
+        "42382115",
+        "42357728",
+        "42515614",
+        "42738429"
+      ],
+      "unfiltered_citations": [
+        "42655702",
+        "42626706",
+        "40822308",
+        "42378730",
+        "42382115"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42349522",
+        "42484329",
+        "42738429",
+        "42501659",
+        "42462662"
+      ],
+      "unfiltered_citations": [
+        "42684008",
+        "41603610",
+        "42568142",
+        "42753873",
+        "35458522"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42655702",
+        "42514627",
+        "42537723",
+        "42501659",
+        "42357728"
+      ],
+      "unfiltered_citations": [
+        "42606356",
+        "42606356",
+        "41936880",
+        "42716004",
+        "34014630"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
     }
