@@ -184,6 +184,13 @@ _TARGETS: list[tuple[str, str]] = [
     ),
     ("Bovine coronavirus", "http://purl.obolibrary.org/obo/NCBITaxon_11128"),
     ("Feline calicivirus", "http://purl.obolibrary.org/obo/NCBITaxon_11978"),
+    ("Enterovirus D68", "http://purl.obolibrary.org/obo/NCBITaxon_42789"),
+    ("Seneca Valley virus", "http://purl.obolibrary.org/obo/NCBITaxon_390157"),
+    ("Yaba monkey tumor virus", "http://purl.obolibrary.org/obo/NCBITaxon_38804"),
+    ("Salivirus A", "http://purl.obolibrary.org/obo/NCBITaxon_1330524"),
+    ("Human cosavirus", "http://purl.obolibrary.org/obo/NCBITaxon_1233383"),
+    ("Torovirus", "http://purl.obolibrary.org/obo/NCBITaxon_11155"),
+    ("Aichi virus 1", "http://purl.obolibrary.org/obo/NCBITaxon_1313215"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
