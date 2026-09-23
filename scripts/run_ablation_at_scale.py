@@ -171,6 +171,9 @@ _TARGETS: list[tuple[str, str]] = [
     ("Rocio virus", "http://purl.obolibrary.org/obo/NCBITaxon_64315"),
     ("Punta Toro virus", "http://purl.obolibrary.org/obo/NCBITaxon_11587"),
     ("Heartland virus", "http://purl.obolibrary.org/obo/NCBITaxon_1216928"),
+    ("Merkel cell polyomavirus", "http://purl.obolibrary.org/obo/NCBITaxon_493803"),
+    ("Torque teno virus", "http://purl.obolibrary.org/obo/NCBITaxon_68887"),
+    ("Human pegivirus", "http://purl.obolibrary.org/obo/NCBITaxon_1758225"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
