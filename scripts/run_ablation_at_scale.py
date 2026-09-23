@@ -161,6 +161,11 @@ _TARGETS: list[tuple[str, str]] = [
     ("Tai Forest ebolavirus", "http://purl.obolibrary.org/obo/NCBITaxon_186541"),
     ("Rubella virus", "http://purl.obolibrary.org/obo/NCBITaxon_11041"),
     ("Primate erythroparvovirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_3052189"),
+    ("La Crosse virus", "http://purl.obolibrary.org/obo/NCBITaxon_11577"),
+    ("Oropouche virus", "http://purl.obolibrary.org/obo/NCBITaxon_118655"),
+    ("Banna virus", "http://purl.obolibrary.org/obo/NCBITaxon_77763"),
+    ("Rotavirus B", "http://purl.obolibrary.org/obo/NCBITaxon_28876"),
+    ("Human astrovirus", "http://purl.obolibrary.org/obo/NCBITaxon_1868658"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
