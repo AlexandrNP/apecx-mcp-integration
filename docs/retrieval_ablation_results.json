@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T23:43:53.346227+00:00",
+  "timestamp": "2026-09-23T00:53:40.091801+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -55,11 +55,17 @@
     "Human respirovirus 3": true,
     "Human metapneumovirus": true,
     "Sendai virus": true,
-    "Lymphocytic choriomeningitis mammarenavirus": true
+    "Lymphocytic choriomeningitis mammarenavirus": true,
+    "Influenza B virus": true,
+    "Influenza C virus": true,
+    "Bundibugyo ebolavirus": true,
+    "BK polyomavirus": true,
+    "JC polyomavirus": true,
+    "Human papillomavirus 16": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 928,
+  "corpus_size": 1045,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -110,7 +116,13 @@
     "Human respirovirus 3": "dictionary",
     "Human metapneumovirus": "dictionary",
     "Sendai virus": "dictionary",
-    "Lymphocytic choriomeningitis mammarenavirus": "dictionary"
+    "Lymphocytic choriomeningitis mammarenavirus": "dictionary",
+    "Influenza B virus": "dictionary",
+    "Influenza C virus": "dictionary",
+    "Bundibugyo ebolavirus": "dictionary",
+    "BK polyomavirus": "dictionary",
+    "JC polyomavirus": "dictionary",
+    "Human papillomavirus 16": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -312,6 +324,30 @@
     "Lymphocytic choriomeningitis mammarenavirus": {
       "harvested": 20,
       "stamped_with_own_iri": 17
+    },
+    "Influenza B virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 9
+    },
+    "Influenza C virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 14
+    },
+    "Bundibugyo ebolavirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 17
+    },
+    "BK polyomavirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 12
+    },
+    "JC polyomavirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 3
+    },
+    "Human papillomavirus 16": {
+      "harvested": 20,
+      "stamped_with_own_iri": 14
     }
   },
   "skipped_organisms": [
@@ -321,8 +357,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.43020408163265306,
-  "n_cases": 245,
+  "mean_unfiltered_precision": 0.4341818181818182,
+  "n_cases": 275,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -704,7 +740,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 65,
+      "filtered_corpus_size": 71,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -728,7 +764,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 65,
+      "filtered_corpus_size": 71,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -752,7 +788,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 65,
+      "filtered_corpus_size": 71,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -776,7 +812,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 65,
+      "filtered_corpus_size": 71,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -800,7 +836,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 65,
+      "filtered_corpus_size": 71,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -810,21 +846,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
         "4246007",
-        "5388496",
-        "5391162",
-        "42717575",
-        "42562331"
+        "39113298",
+        "42700662",
+        "42428244",
+        "5388496"
       ],
       "unfiltered_citations": [
-        "4246007",
-        "5817556",
-        "41608126",
-        "10325533",
-        "42536013"
+        "42674419",
+        "42674419",
+        "42696304",
+        "42671552",
+        "4246007"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -834,21 +870,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
         "5391162",
+        "39113298",
         "4246007",
-        "5388496",
-        "42717575",
-        "42562331"
+        "42700662",
+        "5388496"
       ],
       "unfiltered_citations": [
+        "40741060",
         "5817556",
-        "5391162",
-        "4246007",
-        "42746828",
-        "42314620"
+        "42674419",
+        "42674419",
+        "5391162"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 10,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -857,22 +893,22 @@
       "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
+        "42700662",
         "4246007",
         "42739216",
-        "5391162",
-        "5388496",
-        "42700659"
+        "42747795",
+        "39113298"
       ],
       "unfiltered_citations": [
-        "15560057",
-        "41734221",
-        "41864935",
-        "4246007",
-        "42709838"
+        "42700662",
+        "40526871",
+        "42715193",
+        "41033150",
+        "38923307"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -881,22 +917,22 @@
       "question": "What is the genome organization and replication cycle of Influenza A virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
+        "42655029",
+        "39113298",
         "5391162",
-        "5388496",
-        "4246007",
-        "42562331",
-        "42714404"
+        "42428244",
+        "40232535"
       ],
       "unfiltered_citations": [
-        "5817556",
-        "42438688",
-        "42438688",
-        "5391162",
-        "15560054"
+        "41105524",
+        "40741060",
+        "41169699",
+        "42655029",
+        "42674419"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -905,22 +941,22 @@
       "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
+        "39113298",
         "5388496",
         "42714404",
         "4246007",
-        "42624304",
-        "42562331"
+        "42624304"
       ],
       "unfiltered_citations": [
+        "39113298",
         "34014630",
-        "5388496",
-        "35138784",
-        "42714404",
-        "42419220"
+        "42674419",
+        "42674419",
+        "42671552"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 10,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1049,22 +1085,22 @@
       "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
       "filtered_citations": [
+        "42560595",
         "42756240",
-        "42765626",
-        "42770795",
-        "42749758",
-        "42749758"
+        "42756240",
+        "42641631",
+        "42765626"
       ],
       "unfiltered_citations": [
+        "42560595",
+        "42742181",
         "42742181",
         "42756240",
-        "42765626",
-        "42732232",
-        "42770795"
+        "42756240"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1073,22 +1109,22 @@
       "question": "What is known about Ebola virus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
       "filtered_citations": [
-        "42770795",
-        "42733752",
-        "42756240",
-        "41593197",
-        "42577745"
+        "42728358",
+        "42560595",
+        "42708069",
+        "42565265",
+        "42770795"
       ],
       "unfiltered_citations": [
-        "42770795",
-        "42732232",
-        "42733752",
-        "42756240",
-        "42742179"
+        "42728358",
+        "42560595",
+        "42708069",
+        "42562123",
+        "42565265"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 18,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1100,19 +1136,19 @@
         "42749758",
         "42749758",
         "42749758",
-        "42739260",
-        "42577745"
+        "42560595",
+        "42739260"
       ],
       "unfiltered_citations": [
         "42749758",
         "42749758",
         "42749758",
-        "40822308",
-        "42709838"
+        "42560595",
+        "40822308"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 18,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1121,22 +1157,22 @@
       "question": "What is the genome organization and replication cycle of Ebola virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
       "filtered_citations": [
-        "42770795",
-        "42726904",
-        "42726904",
-        "42756240",
-        "42733752"
+        "42728358",
+        "42542607",
+        "42708069",
+        "42560595",
+        "42703692"
       ],
       "unfiltered_citations": [
         "42742179",
-        "42598172",
-        "41452936",
-        "42732232",
-        "42497147"
+        "42728358",
+        "42542607",
+        "42708069",
+        "42598172"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 18,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1145,22 +1181,22 @@
       "question": "What antiviral drugs or treatments are effective against Ebola virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
       "filtered_citations": [
-        "42756240",
-        "42577745",
-        "42577745",
-        "42749758",
-        "42749758"
+        "42560595",
+        "42728358",
+        "42542607",
+        "42703692",
+        "42708069"
       ],
       "unfiltered_citations": [
+        "42560595",
+        "42728358",
         "42742181",
-        "41936880",
-        "42606356",
-        "42606356",
-        "42756240"
+        "42742181",
+        "41936880"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 18,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2545,10 +2581,10 @@
       ],
       "unfiltered_citations": [
         "42240370",
+        "42747795",
         "41525354",
         "41864935",
-        "41407624",
-        "42332827"
+        "41407624"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -3147,7 +3183,7 @@
         "42244924",
         "42709838",
         "41968577",
-        "42733987",
+        "42715193",
         "42733987"
       ],
       "filtered_precision": 1.0,
@@ -3824,7 +3860,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3837,7 +3873,7 @@
         "42599190",
         "42742725",
         "42737859",
-        "42621909"
+        "42737859"
       ],
       "unfiltered_citations": [
         "42369187",
@@ -3848,7 +3884,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3872,7 +3908,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3896,7 +3932,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3909,7 +3945,7 @@
         "42599190",
         "42669504",
         "42737859",
-        "42742725"
+        "42737859"
       ],
       "unfiltered_citations": [
         "42580486",
@@ -3920,7 +3956,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3944,7 +3980,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3968,7 +4004,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3992,7 +4028,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4016,7 +4052,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4040,7 +4076,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 23,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4424,7 +4460,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4448,7 +4484,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4472,7 +4508,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4496,7 +4532,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4520,7 +4556,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 18,
+      "filtered_corpus_size": 20,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5781,9 +5817,9 @@
       "unfiltered_citations": [
         "42687618",
         "41864935",
+        "42751279",
         "41525354",
-        "42709838",
-        "15560057"
+        "42709838"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -5859,7 +5895,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5883,7 +5919,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5907,7 +5943,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5931,7 +5967,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5955,7 +5991,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6099,7 +6135,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6123,7 +6159,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6147,7 +6183,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6171,7 +6207,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6195,7 +6231,722 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "42696304",
+        "42671552",
+        "42762643",
+        "42700662",
+        "42428244"
+      ],
+      "unfiltered_citations": [
+        "42696304",
+        "42674419",
+        "42674419",
+        "42671552",
+        "39113298"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "42696304",
+        "42762643",
+        "42671552",
+        "42700662",
+        "42428244"
+      ],
+      "unfiltered_citations": [
+        "42696304",
+        "40741060",
+        "42674419",
+        "42674419",
+        "5817556"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "42700662",
+        "42747795",
+        "42716072",
+        "42696304",
+        "42698509"
+      ],
+      "unfiltered_citations": [
+        "42700662",
+        "40526871",
+        "42715193",
+        "38923307",
+        "41033150"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "40143347",
+        "42696304",
+        "42762643",
+        "42428244",
+        "42671552"
+      ],
+      "unfiltered_citations": [
+        "41105524",
+        "42655029",
+        "42677869",
+        "40741060",
+        "41169699"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "42671552",
+        "40143347",
+        "42696304",
+        "42700662",
+        "42428244"
+      ],
+      "unfiltered_citations": [
+        "39113298",
+        "34014630",
+        "42674419",
+        "42674419",
+        "42671552"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40741060",
+        "42674419",
+        "42674419",
+        "39142019",
+        "41033150"
+      ],
+      "unfiltered_citations": [
+        "40741060",
+        "42696304",
+        "42674419",
+        "42674419",
+        "42698621"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40741060",
+        "40526871",
+        "39142019",
+        "41033150",
+        "41392358"
+      ],
+      "unfiltered_citations": [
+        "40741060",
+        "40526871",
+        "41105524",
+        "39142019",
+        "41033150"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza C virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40526871",
+        "41033150",
+        "40741060",
+        "38923307",
+        "39142019"
+      ],
+      "unfiltered_citations": [
+        "40526871",
+        "41033150",
+        "42700662",
+        "40741060",
+        "38923307"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is the genome organization and replication cycle of Influenza C virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40741060",
+        "41169699",
+        "40143279",
+        "41033150",
+        "40526871"
+      ],
+      "unfiltered_citations": [
+        "41105524",
+        "40741060",
+        "15560054",
+        "41169699",
+        "40143279"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza C virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40741060",
+        "39142019",
+        "42674419",
+        "42674419",
+        "41033150"
+      ],
+      "unfiltered_citations": [
+        "39113298",
+        "15560062",
+        "34014630",
+        "40741060",
+        "39142019"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is known about Bundibugyo ebolavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42742181",
+        "42742181",
+        "42560595",
+        "42632830",
+        "42641631"
+      ],
+      "unfiltered_citations": [
+        "42742181",
+        "42742181",
+        "42560595",
+        "42632830",
+        "42641631"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is known about Bundibugyo ebolavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42562123",
+        "42565265",
+        "42560595",
+        "42708069",
+        "42732232"
+      ],
+      "unfiltered_citations": [
+        "42562123",
+        "42565265",
+        "42560595",
+        "42708069",
+        "42732232"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bundibugyo ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42560595",
+        "42562123",
+        "42565265",
+        "42742181",
+        "42742181"
+      ],
+      "unfiltered_citations": [
+        "42560595",
+        "42562123",
+        "42565265",
+        "42749758",
+        "42749758"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is the genome organization and replication cycle of Bundibugyo ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42742179",
+        "42562123",
+        "42728358",
+        "42708069",
+        "42542607"
+      ],
+      "unfiltered_citations": [
+        "42742179",
+        "42562123",
+        "42728358",
+        "42708069",
+        "42542607"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Bundibugyo ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42560595",
+        "42742181",
+        "42742181",
+        "42565265",
+        "42632830"
+      ],
+      "unfiltered_citations": [
+        "42560595",
+        "42742181",
+        "42742181",
+        "42515883",
+        "42565265"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42652202",
+        "42671253",
+        "42767667",
+        "42722200",
+        "42668624"
+      ],
+      "unfiltered_citations": [
+        "42652202",
+        "42099555",
+        "42099555",
+        "41608126",
+        "42671253"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42652202",
+        "42671253",
+        "42767667",
+        "42722200",
+        "42704656"
+      ],
+      "unfiltered_citations": [
+        "42652202",
+        "42671253",
+        "42767667",
+        "42661313",
+        "42661313"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42652202",
+        "42767667",
+        "42668624",
+        "42722200",
+        "42671253"
+      ],
+      "unfiltered_citations": [
+        "42652202",
+        "41864935",
+        "42132395",
+        "42767667",
+        "41525354"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42671253",
+        "42652202",
+        "42767667",
+        "42704656",
+        "42722200"
+      ],
+      "unfiltered_citations": [
+        "41452936",
+        "42686903",
+        "42478811",
+        "42478811",
+        "42418326"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42652202",
+        "42767667",
+        "42671253",
+        "42722200",
+        "42732395"
+      ],
+      "unfiltered_citations": [
+        "42515883",
+        "41936880",
+        "41606733",
+        "42425227",
+        "42719836"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42715497",
+        "42737859",
+        "42737859",
+        "42744829"
+      ],
+      "unfiltered_citations": [
+        "42604648",
+        "42042791",
+        "42042791",
+        "42099555",
+        "42099555"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42737859",
+        "42737859",
+        "42715497",
+        "42744829"
+      ],
+      "unfiltered_citations": [
+        "41640223",
+        "41640223",
+        "42496116",
+        "42496116",
+        "41472220"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42715497",
+        "42737859",
+        "42737859",
+        "42744829"
+      ],
+      "unfiltered_citations": [
+        "42132395",
+        "42652202",
+        "15560057",
+        "40822308",
+        "41525354"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42744829",
+        "42737859",
+        "42737859",
+        "42715497"
+      ],
+      "unfiltered_citations": [
+        "42686903",
+        "41452936",
+        "42478811",
+        "42478811",
+        "41472220"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42715497",
+        "42737859",
+        "42737859",
+        "42744829"
+      ],
+      "unfiltered_citations": [
+        "42715497",
+        "42719836",
+        "42719836",
+        "35138784",
+        "41606733"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "42627231",
+        "42511592",
+        "42589622",
+        "42663706",
+        "42670618"
+      ],
+      "unfiltered_citations": [
+        "42627231",
+        "42660319",
+        "42511592",
+        "42589622",
+        "42663706"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "42627231",
+        "42640348",
+        "42589622",
+        "42663706",
+        "42685315"
+      ],
+      "unfiltered_citations": [
+        "42627231",
+        "42640348",
+        "42589622",
+        "9820868",
+        "42663706"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "42763141",
+        "42663706",
+        "42670618",
+        "42685315",
+        "42640348"
+      ],
+      "unfiltered_citations": [
+        "42763141",
+        "42663706",
+        "42660319",
+        "9820868",
+        "15560057"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "42640348",
+        "42685315",
+        "42663706",
+        "42627231",
+        "42763141"
+      ],
+      "unfiltered_citations": [
+        "42640348",
+        "42685315",
+        "42766580",
+        "42418326",
+        "9820868"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "42663706",
+        "42627231",
+        "42670618",
+        "42685315",
+        "42511592"
+      ],
+      "unfiltered_citations": [
+        "42663706",
+        "1850256",
+        "35138784",
+        "42627231",
+        "42670618"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     }

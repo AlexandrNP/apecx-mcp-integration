@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T23:41:16.723783+00:00",
-  "runs": 12,
+  "updated": "2026-09-23T00:50:40.325072+00:00",
+  "runs": 13,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 728,
-  "n_false_negatives": 387,
+  "n_false_positives": 804,
+  "n_false_negatives": 431,
   "new_this_run": {
-    "false_positives": 66,
-    "false_negatives": 30
+    "false_positives": 76,
+    "false_negatives": 44
   },
   "false_positives": [
     {
@@ -8118,6 +8118,841 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11276",
         "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42674419",
+      "title": "Report on influenza viruses received and tested by the Melbourne WHO Collaborating Centre for Reference and Research on Influenza during 2025.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42696304",
+      "title": "Broadly reactive antibodies against influenza B virus hemagglutinin neutralize and protect through distinct structural mechanisms.",
+      "actual_organisms": [
+        "Influenza B virus"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671552",
+      "title": "A neuraminidase-targeting nanobody as a therapeutic candidate against influenza A and B viruses.",
+      "actual_organisms": [
+        "Influenza B virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_102796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "40741060",
+      "title": "Influenza C virus in humans and animals.",
+      "actual_organisms": [
+        "Influenza C virus"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "40526871",
+      "title": "Clinical Impact of Co-pathogens in Children Infected With Influenza C Virus Based on Viral Load in Clinical Specimens.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "41033150",
+      "title": "Design and performance of a real-time RT-PCR assay for detection of influenza C viruses.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "38923307",
+      "title": "Monitoring Influenza C and D Viruses in Patients With Respiratory Diseases in Japan, January 2018 to March 2023.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1511084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "41105524",
+      "title": "Cytoplasmic domain of CM2 is involved in the replication of influenza C virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "41169699",
+      "title": "Complete genome analysis of human influenza C virus co-infection with WU polyomavirus in a Sri Lankan child: A brief report.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_440266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "cited_pmid": "42562123",
+      "title": "Bundibugyo virus disease: Transmission dynamics, infectiousness and viral persistence.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What diagnostic assays or laboratory tests detect Ross River virus?",
+      "cited_pmid": "42747795",
+      "title": "Wastewater Respiratory Virus Surveillance in Remote Community, Alaska, USA, 2022-2024.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "Influenza B virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus NL63?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42751279",
+      "title": "The Impact of Respiratory Syncytial Virus Undertesting on Estimates of Disease Burden and Vaccine Effectiveness in a Large Integrated Healthcare System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42674419",
+      "title": "Report on influenza viruses received and tested by the Melbourne WHO Collaborating Centre for Reference and Research on Influenza during 2025.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39113298",
+      "title": "The Development History, Structural Composition, and Functions of Influenza Viruses and the Progress of Influenza Virus Inhibitors in Clinics and Clinical Trials.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1511083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197913"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus pathogenesis and transmission?",
+      "cited_pmid": "40741060",
+      "title": "Influenza C virus in humans and animals.",
+      "actual_organisms": [
+        "Influenza C virus"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus pathogenesis and transmission?",
+      "cited_pmid": "5817556",
+      "title": "Functional significance of sialidase during influenza virus multiplication: an electron microscope study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11313"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "40526871",
+      "title": "Clinical Impact of Co-pathogens in Children Infected With Influenza C Virus Based on Viral Load in Clinical Specimens.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "38923307",
+      "title": "Monitoring Influenza C and D Viruses in Patients With Respiratory Diseases in Japan, January 2018 to March 2023.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1511084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "cited_pmid": "41033150",
+      "title": "Design and performance of a real-time RT-PCR assay for detection of influenza C viruses.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "41105524",
+      "title": "Cytoplasmic domain of CM2 is involved in the replication of influenza C virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "42655029",
+      "title": "Ubiquitin-Dependent Regulation of Influenza A Virus Polymerase and vRNP Function: Mechanisms and Therapeutic Opportunities.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "42677869",
+      "title": "Genomic Characterization of Influenza B Victoria Lineage Viruses Circulating in Saudi Arabia During the 2024-2025 Season.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "41169699",
+      "title": "Complete genome analysis of human influenza C virus co-infection with WU polyomavirus in a Sri Lankan child: A brief report.",
+      "actual_organisms": [
+        "Influenza C virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_440266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42696304",
+      "title": "Broadly reactive antibodies against influenza B virus hemagglutinin neutralize and protect through distinct structural mechanisms.",
+      "actual_organisms": [
+        "Influenza B virus"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42698621",
+      "title": "Intranasal delivery of a COBRA-based protein vaccine adjuvanted with c-di-AMP enhances breadth of protective immune responses against seasonal influenza viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus pathogenesis and transmission?",
+      "cited_pmid": "41105524",
+      "title": "Cytoplasmic domain of CM2 is involved in the replication of influenza C virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza C virus?",
+      "cited_pmid": "42700662",
+      "title": "Evaluation of the clinical performance of the JETest Influenza A/B Antigen Rapid Test Kit versus real-time reverse transcription-PCR for influenza detection.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "Influenza B virus"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is the genome organization and replication cycle of Influenza C virus?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza C virus?",
+      "cited_pmid": "39113298",
+      "title": "The Development History, Structural Composition, and Functions of Influenza Viruses and the Progress of Influenza Virus Inhibitors in Clinics and Clinical Trials.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1511083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197913"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza C virus?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza C virus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bundibugyo ebolavirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Bundibugyo ebolavirus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "41640223",
+      "title": "Chapare Virus: A Re-Emerging Zoonotic Arenavirus With Limited Preparedness.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "41472220",
+      "title": "Molecular Aspects of the Emergence of Monkeypox Virus Clades.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42132395",
+      "title": "Evaluation and comparison of three qPCR commercial assays and three automated platforms for the detection of monkeypox virus DNA.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42652202",
+      "title": "Divergent Cellular and Humoral Immunity to BK Polyomavirus in Healthy Adults and Renal Transplant Recipients Based on Blood and Urine Samples: Implications for Immune-Guided Monitoring.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42686903",
+      "title": "Structure and operating principles of a monkeypox virus replisome.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757790"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "42478811",
+      "title": "Ewing sarcoma breakpoint region 1 (EWSR1) protein binds to nonstructural protein 2 and non-coding regions of chikungunya virus genome to inhibit virus replication.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "41606733",
+      "title": "Targeting endolysosomal acidification inhibits poxvirus entry and replication.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42660319",
+      "title": "Quantification of HPV-16 and HPV-18 neutralizing antibodies via a magnetic bead-based competitive chemiluminescence platform.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "9820868",
+      "title": "Detection of human papillomavirus in warty carcinoma of the uterine cervix: comparison of immunohistochemistry, in situ hybridization and in situ polymerase chain reaction methods.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "42766580",
+      "title": "Phosphorylated HPV\u201116 E7 disrupts planar cell polarity in cervical cancer cells through vangl1 dysregulation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 16?",
+      "cited_pmid": "1850256",
+      "title": "The inhibitory activity of a peptide derivative against the growth of simian immunodeficiency virus in C8166 cells.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 16?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
     }
   ],
   "false_negatives": [
@@ -10442,6 +11277,270 @@
       "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
       "missed_pmid": "42635387",
       "title": "A Bacterial Microbiome Is Dispensable for the Induction of CD8 T Cell Exhaustion."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39113298",
+      "title": "The Development History, Structural Composition, and Functions of Influenza Viruses and the Progress of Influenza Virus Inhibitors in Clinics and Clinical Trials."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42700662",
+      "title": "Evaluation of the clinical performance of the JETest Influenza A/B Antigen Rapid Test Kit versus real-time reverse transcription-PCR for influenza detection."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42428244",
+      "title": "The application of CRISPR gene-editing technology in influenza prevention and control."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "missed_pmid": "42747795",
+      "title": "Wastewater Respiratory Virus Surveillance in Remote Community, Alaska, USA, 2022-2024."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "missed_pmid": "40232535",
+      "title": "Epigallocatechin-3-gallate inhibits replication of influenza A virus via restoring the host methylated genes following infection."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42641631",
+      "title": "Bundibugyo virus glycoprotein seroreactivity following recombinant vesicular stomatitis virus-Zaire Ebola virus glycoprotein vaccination in outbreak-affected populations of the Democratic Republic of the Congo: a longitudinal cohort study."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42765626",
+      "title": "Systemic and Mucosal Immune Responses From Serotype-Switched Viral-Vectored Ebola Vaccines."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "42560595",
+      "title": "On the 50th year responding to Ebola: mapping diagnostic, vaccine, and therapeutic gaps across ebolavirus species."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "42703692",
+      "title": "Implementing an intra outbreak ring vaccination clinical trial for Sudan Ebola virus disease within four days of outbreak notification in Uganda."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What antiviral drugs or treatments are effective against Ebola virus?",
+      "missed_pmid": "42542607",
+      "title": "Closing Critical Gaps in the 2026 Bundibugyo Ebola Response: Five Actionable Priorities."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What antiviral drugs or treatments are effective against Ebola virus?",
+      "missed_pmid": "42708069",
+      "title": "The Re-Emergence of Bundibugyo Ebolavirus in Uganda and the Democratic Republic of Congo: Epidemiological Drivers, Response Strategies, and Implications for Global Health Security."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42762643",
+      "title": "Transcriptional decoupling of the epithelial-immune bridge is associated with suboptimal influenza B virus immunogenicity."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42700662",
+      "title": "Evaluation of the clinical performance of the JETest Influenza A/B Antigen Rapid Test Kit versus real-time reverse transcription-PCR for influenza detection."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42428244",
+      "title": "The application of CRISPR gene-editing technology in influenza prevention and control."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus pathogenesis and transmission?",
+      "missed_pmid": "42671552",
+      "title": "A neuraminidase-targeting nanobody as a therapeutic candidate against influenza A and B viruses."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "missed_pmid": "42747795",
+      "title": "Wastewater Respiratory Virus Surveillance in Remote Community, Alaska, USA, 2022-2024."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "missed_pmid": "42716072",
+      "title": "Bacterial co-detection in individuals with acute respiratory infections through a direct-to-consumer platform in China: a retrospective cross-sectional study."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "missed_pmid": "42696304",
+      "title": "Broadly reactive antibodies against influenza B virus hemagglutinin neutralize and protect through distinct structural mechanisms."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza B virus?",
+      "missed_pmid": "42698509",
+      "title": "Population Surveillance of Respiratory Viral Diseases among Arrivals at National Airports and Seaports in the Republic of Korea, February-September 2025."
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "missed_pmid": "40143347",
+      "title": "Bunyaviral Cap-Snatching Endonuclease Activity and Inhibition with Baloxavir-like Inhibitors in the Context of Full-Length L Proteins."
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39142019",
+      "title": "Influenza C virus in U.S. children with acute respiratory infection 2016-2019."
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41033150",
+      "title": "Design and performance of a real-time RT-PCR assay for detection of influenza C viruses."
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus pathogenesis and transmission?",
+      "missed_pmid": "41392358",
+      "title": "Influenza C Virus in Children With Acute Bronchiolitis and Febrile Seizures."
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is the genome organization and replication cycle of Influenza C virus?",
+      "missed_pmid": "40526871",
+      "title": "Clinical Impact of Co-pathogens in Children Infected With Influenza C Virus Based on Viral Load in Clinical Specimens."
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza C virus?",
+      "missed_pmid": "42674419",
+      "title": "Report on influenza viruses received and tested by the Melbourne WHO Collaborating Centre for Reference and Research on Influenza during 2025."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bundibugyo ebolavirus?",
+      "missed_pmid": "42742181",
+      "title": "Post-Exposure Prophylaxis with a monoclonal antibody cocktail Following Bundibugyo Ebolavirus Exposure in Adults and Children."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Bundibugyo ebolavirus?",
+      "missed_pmid": "42632830",
+      "title": "Vaccine preparedness for Bundibugyo virus and lessons learned."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42767667",
+      "title": "Native Versus Allograft BK Polyomavirus Nephropathy: A Matched Cohort Study of Clinicopathological Features and Outcomes."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42722200",
+      "title": "BK virus-associated haemorrhagic cystitis following allogeneic haematopoietic stem cell transplantation in a paediatric patient with \u03b2-thalassaemia major: A case report."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42668624",
+      "title": "Serial Donor-derived Cell-free DNA Monitoring in a Kidney Transplant Recipient With Adenovirus Nephritis."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "missed_pmid": "42704656",
+      "title": "Urinary microbiome in renal transplant patients with BK polyomavirus reactivation."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect BK polyomavirus?",
+      "missed_pmid": "42671253",
+      "title": "BKV activates the interferon-\u03b2 response in primary and immortalized microvascular endothelial cells late in the infectious cycle, resulting in persistence."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "missed_pmid": "42652202",
+      "title": "Divergent Cellular and Humoral Immunity to BK Polyomavirus in Healthy Adults and Renal Transplant Recipients Based on Blood and Urine Samples: Implications for Immune-Guided Monitoring."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "missed_pmid": "42732395",
+      "title": "Belatacept and the Risk of Cytomegalovirus, BK Polyomavirus, and Epstein-Barr Virus Post-transplant Lymphoproliferative Disease After Kidney Transplantation: A Meta-Analysis and Systematic Review."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42744829",
+      "title": "PD-1 regulates CD4+ T cell-mediated CD8+ T cell responses in the brain to balance viral control and neuroinflammation."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42670618",
+      "title": "Evidence for type replacement as a consequence of vaccination and implications for cervical screening."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "missed_pmid": "42685315",
+      "title": "Heterogeneity in Risk of Recurrent CIN2+ Among Women With Genotype-Specific HPV Detected After Excision: A Cohort Study."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "missed_pmid": "42640348",
+      "title": "Multifocal HPV16-positive squamous cell carcinomas in CTLA-4 haploinsufficiency: expanding the spectrum of virus-associated malignancies."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "42663706",
+      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 16?",
+      "missed_pmid": "42511592",
+      "title": "A Spike-Linked HPV16 E7 DNA Vaccine Induces Potent Antitumor and Anti-Spike Immune Responses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
