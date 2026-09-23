@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-22T23:30:08.929038+00:00",
-  "runs": 11,
+  "updated": "2026-09-22T23:41:16.723783+00:00",
+  "runs": 12,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 662,
-  "n_false_negatives": 357,
+  "n_false_positives": 728,
+  "n_false_negatives": 387,
   "new_this_run": {
-    "false_positives": 108,
-    "false_negatives": 31
+    "false_positives": 66,
+    "false_negatives": 30
   },
   "false_positives": [
     {
@@ -7376,6 +7376,748 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "cited_pmid": "42746828",
+      "title": "Synergistic Effect of Ambient Ozone, Relative Humidity, and Temperature on Epidemic Patterns of Influenza: A Hypothesis and Its Verification.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Junin mammarenavirus?",
+      "cited_pmid": "42539047",
+      "title": "Sirtuin 1 Is Required for Optimal Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42581065",
+      "title": "IRO-203: a novel intranasal COVID-19 vaccine showing immunogenicity and viral suppression in African green monkey challenge study.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42581065",
+      "title": "IRO-203: a novel intranasal COVID-19 vaccine showing immunogenicity and viral suppression in African green monkey challenge study.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "32809745",
+      "title": "Human metapneumovirus Respiratory Infection",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus pathogenesis and transmission?",
+      "cited_pmid": "32809745",
+      "title": "Human metapneumovirus Respiratory Infection",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "42572296",
+      "title": "Varicella-Zoster Virus Vasculopathy with Extension from the Cranial Nerves to the Brainstem: A Case Report.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42620721",
+      "title": "Current advances in the development of Nipah virus vaccines.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 pathogenesis and transmission?",
+      "cited_pmid": "32809745",
+      "title": "Human metapneumovirus Respiratory Infection",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "42241276",
+      "title": "nsP3-FXR co-condensation enables alphavirus replication and reveals a targetable alphavirus vulnerability.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "41901774",
+      "title": "A Fatal Case of Puumala Virus Infection with Pulmonary and Renal Syndrome in Moscow Region, Russia.",
+      "actual_organisms": [
+        "Puumala orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "42350480",
+      "title": "A drug repurposing screen identifies antiviral compounds against Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "42052926",
+      "title": "Repurposing Clinical Candidates for Nipah and Hendra Viruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "cited_pmid": "41743993",
+      "title": "Cerebrospinal Fluid Metagenomic Next-Generation Sequencing in Pediatric Central Nervous System Infection: Clinical Experience and Diagnostic Stewardship Strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3409772"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "42698459",
+      "title": "Genomic characterization of avian metapneumovirus subtypes A and B in United States poultry by targeted amplicon sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42052926",
+      "title": "Repurposing Clinical Candidates for Nipah and Hendra Viruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "41037964",
+      "title": "Syndromic approach for rapid detection and differentiation of human pathogenic alphaviruses.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "O'nyong-nyong virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "42605787",
+      "title": "The Role of the Medical Laboratory in Identifying 'Super-Spreaders': Correlation Between Viral Load Kinetics and Human-to-Human Infectivity.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42061821",
+      "title": "Efficacy of an Fc-silent antibody targeting the apical domain of human transferrin receptor 1 in transgenic mouse models of Jun\u00edn virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus pathogenesis and transmission?",
+      "cited_pmid": "41960312",
+      "title": "A Transgenic Syrian Hamster Model for New World Hemorrhagic Fever Mammarenavirus Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "9539315",
+      "title": "A study of the viral etiology of histiocytic necrotizing lymphadenitis (Kikuchi-Fujimoto disease).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41743993",
+      "title": "Cerebrospinal Fluid Metagenomic Next-Generation Sequencing in Pediatric Central Nervous System Infection: Clinical Experience and Diagnostic Stewardship Strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3409772"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "42496116",
+      "title": "Immunogenicity of recombinant vesicular stomatitis virus-vectored vaccines expressing the Machupo virus glycoprotein in different genome positions.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
     }
   ],
   "false_negatives": [
@@ -9520,6 +10262,186 @@
       "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
       "missed_pmid": "41525354",
       "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42717575",
+      "title": "AXL mediates influenza A virus entry and drives virus-induced inflammation."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "missed_pmid": "42739216",
+      "title": "Clinician-Reported Respiratory Viral Testing and Intended Management of Community-Acquired Respiratory Viral Infections in Haematology and Haematopoietic Cell Transplantation: An International Exploratory Survey."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "missed_pmid": "42700659",
+      "title": "Clinical Impact of Acute Respiratory Virus Infections in Nursing Home Residents."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41979349",
+      "title": "A fusion protein's weak link: functional constraints revealed by inhibitory peptide interaction with the parainfluenza fusion protein."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3]."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "missed_pmid": "41810598",
+      "title": "Differential Induction and Signaling of Type I and III Interferons During Infection of Human Nasal Epithelial Cells With the Four Human Parainfluenza Virus Types."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "missed_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "missed_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "missed_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "missed_pmid": "42570380",
+      "title": "The discovery of potent and selective N6-modified adenosine derivatives as effective chemotherapeutic agents to overcome p53-dependent drug resistance in cancer and HPIV-3/AdV5 respiratory tract infections."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42749451",
+      "title": "RNAi-based therapeutics targeting the F gene in human metapneumovirus: An in-silico approach."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "missed_pmid": "42683042",
+      "title": "Human Metapneumovirus-Associated Hospitalization Burden in Children Aged Under 5 Years in Scotland Between 2017 and 2023: a Retrospective Analysis."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "missed_pmid": "42723722",
+      "title": "Molecular Epidemiology of Human Metapneumovirus in Kilifi, Coastal Kenya, 2016-2017 and 2021-2024."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "missed_pmid": "42743349",
+      "title": "Computational prediction of a multi-epitope Human Metapneumovirus vaccine candidate through integrated reverse vaccinology and pan-genomic approaches."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "missed_pmid": "42737877",
+      "title": "The Silent War of hMPV: Viral Interference with Host Immunity."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41631834",
+      "title": "Immunostimulatory nucleic acid nanoparticles establish antiviral state to inhibit viral infection and replication."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42734748",
+      "title": "Generation of Transgene-Free Naive Human Induced Pluripotent Stem Cells from Somatic Cells Using a Modified Temperature-Sensitive Sendai Virus System."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42764718",
+      "title": "Magnetic bead induces surface tension change at the gas-solid-liquid interface to manipulate the reciprocating flow of a droplet for rapid immunoassay of viruses."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "missed_pmid": "42581065",
+      "title": "IRO-203: a novel intranasal COVID-19 vaccine showing immunogenicity and viral suppression in African green monkey challenge study."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "missed_pmid": "41784610",
+      "title": "An Optimized Protocol for the Generation of iPSC Lines from Lymphoblastoid Cell Lines Using the Non-integrative Sendai Virus."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "missed_pmid": "42594645",
+      "title": "Generation and characterization of two iPSC lines INDBi002-A and INDBi002-B from human keratinocytes of a healthy female using Sendai Virus reprogramming."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42539047",
+      "title": "Sirtuin 1 Is Required for Optimal Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41600866",
+      "title": "Screening of the Pandemic Response Box Library Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "42161271",
+      "title": "Decoding the human CD4+ T cell epitope repertoire for Lassa fever virus reveals T cell-based pan-mammarenavirus vaccine candidates."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "41394564",
+      "title": "Pandemic Response Box Screening Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "42426565",
+      "title": "Serologic Evidence of Hantavirus Exposure in Humans, Italy, 2004-2018."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "42635387",
+      "title": "A Bacterial Microbiome Is Dispensable for the Induction of CD8 T Cell Exhaustion."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."

@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-22T23:32:39.090872+00:00",
+  "timestamp": "2026-09-22T23:43:53.346227+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -51,11 +51,15 @@
     "Cowpox virus": true,
     "Variola virus": true,
     "Andes orthohantavirus": true,
-    "Machupo mammarenavirus": true
+    "Machupo mammarenavirus": true,
+    "Human respirovirus 3": true,
+    "Human metapneumovirus": true,
+    "Sendai virus": true,
+    "Lymphocytic choriomeningitis mammarenavirus": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 849,
+  "corpus_size": 928,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -102,7 +106,11 @@
     "Cowpox virus": "dictionary",
     "Variola virus": "dictionary",
     "Andes orthohantavirus": "dictionary",
-    "Machupo mammarenavirus": "dictionary"
+    "Machupo mammarenavirus": "dictionary",
+    "Human respirovirus 3": "dictionary",
+    "Human metapneumovirus": "dictionary",
+    "Sendai virus": "dictionary",
+    "Lymphocytic choriomeningitis mammarenavirus": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -288,6 +296,22 @@
     "Machupo mammarenavirus": {
       "harvested": 20,
       "stamped_with_own_iri": 4
+    },
+    "Human respirovirus 3": {
+      "harvested": 20,
+      "stamped_with_own_iri": 12
+    },
+    "Human metapneumovirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 15
+    },
+    "Sendai virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 8
+    },
+    "Lymphocytic choriomeningitis mammarenavirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 17
     }
   },
   "skipped_organisms": [
@@ -297,8 +321,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.43733333333333335,
-  "n_cases": 225,
+  "mean_unfiltered_precision": 0.43020408163265306,
+  "n_cases": 245,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -668,19 +692,19 @@
         "34014629",
         "34014628",
         "41857372",
-        "34014630",
-        "33355732"
+        "42581065",
+        "34014630"
       ],
       "unfiltered_citations": [
         "34014629",
         "34014628",
         "41857372",
-        "34014630",
-        "40431735"
+        "42581065",
+        "34014630"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 58,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 65,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -704,7 +728,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 58,
+      "filtered_corpus_size": 65,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -728,7 +752,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 58,
+      "filtered_corpus_size": 65,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -752,7 +776,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 58,
+      "filtered_corpus_size": 65,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -776,7 +800,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 58,
+      "filtered_corpus_size": 65,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -788,19 +812,19 @@
         "4246007",
         "5388496",
         "5391162",
-        "42562331",
-        "42714404"
+        "42717575",
+        "42562331"
       ],
       "unfiltered_citations": [
         "4246007",
         "5817556",
         "41608126",
         "10325533",
-        "42671937"
+        "42536013"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 6,
+      "filtered_corpus_size": 10,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -812,19 +836,19 @@
         "5391162",
         "4246007",
         "5388496",
-        "42562331",
-        "42714404"
+        "42717575",
+        "42562331"
       ],
       "unfiltered_citations": [
         "5817556",
         "5391162",
         "4246007",
-        "42314620",
-        "40872260"
+        "42746828",
+        "42314620"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 6,
+      "filtered_corpus_size": 10,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -834,10 +858,10 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
       "filtered_citations": [
         "4246007",
+        "42739216",
         "5391162",
         "5388496",
-        "42562331",
-        "42714404"
+        "42700659"
       ],
       "unfiltered_citations": [
         "15560057",
@@ -848,7 +872,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 6,
+      "filtered_corpus_size": 10,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -872,7 +896,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 6,
+      "filtered_corpus_size": 10,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -896,7 +920,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 6,
+      "filtered_corpus_size": 10,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2186,12 +2210,12 @@
       "unfiltered_citations": [
         "42496116",
         "42496116",
+        "42539047",
         "41960312",
-        "41659533",
-        "41754545"
+        "41659533"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 8,
       "filtered_status": null,
       "unfiltered_status": null
@@ -2668,7 +2692,7 @@
         "42320796",
         "41452936",
         "42753873",
-        "42241276"
+        "42728501"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -3076,7 +3100,7 @@
         "34014629",
         "34014628",
         "42282816",
-        "42758862"
+        "42581065"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3194,9 +3218,9 @@
       "unfiltered_citations": [
         "34014629",
         "41857372",
+        "42581065",
         "34014628",
-        "34014630",
-        "42658828"
+        "34014630"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3792,15 +3816,15 @@
         "42621909"
       ],
       "unfiltered_citations": [
+        "42536013",
         "42716004",
         "42004740",
         "42671937",
-        "40431735",
-        "41608126"
+        "40431735"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3817,14 +3841,14 @@
       ],
       "unfiltered_citations": [
         "42369187",
+        "32809745",
         "41608126",
-        "42506617",
         "42506617",
         "42506617"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3843,12 +3867,12 @@
         "15560057",
         "42599190",
         "41037964",
-        "41864935",
-        "41525354"
+        "42522621",
+        "41864935"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3872,7 +3896,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3896,7 +3920,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 17,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3920,7 +3944,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3944,7 +3968,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3968,7 +3992,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3992,7 +4016,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4016,7 +4040,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 20,
+      "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4537,11 +4561,11 @@
         "36961236",
         "41593743",
         "35521982",
-        "40929366",
-        "39088577"
+        "32809745",
+        "40929366"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 4,
       "filtered_status": null,
       "unfiltered_status": null
@@ -4606,8 +4630,8 @@
         "39088577",
         "35138784",
         "34014630",
-        "41936880",
-        "42693145"
+        "42172325",
+        "41936880"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -5372,13 +5396,13 @@
       ],
       "unfiltered_citations": [
         "42693145",
+        "42572296",
         "41734221",
         "40701750",
-        "42213706",
-        "42332827"
+        "42213706"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
@@ -5692,6 +5716,486 @@
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
       "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "42536013",
+        "42172325",
+        "42687618",
+        "41979349",
+        "42522621"
+      ],
+      "unfiltered_citations": [
+        "42536013",
+        "40431735",
+        "42716004",
+        "42620721",
+        "42172325"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "42687618",
+        "41810598",
+        "42233639",
+        "42055251",
+        "41979349"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42687618",
+        "41810598",
+        "42233639",
+        "42055251"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "42687618",
+        "42522621",
+        "41810598",
+        "42219293",
+        "42536013"
+      ],
+      "unfiltered_citations": [
+        "42687618",
+        "41864935",
+        "41525354",
+        "42709838",
+        "15560057"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "42219293",
+        "42687618",
+        "41979349",
+        "41810598",
+        "42536013"
+      ],
+      "unfiltered_citations": [
+        "41452936",
+        "42753873",
+        "42241276",
+        "42537890",
+        "41901774"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "42172325",
+        "42570380",
+        "42536013",
+        "42687618",
+        "41979349"
+      ],
+      "unfiltered_citations": [
+        "35138784",
+        "41936880",
+        "42350480",
+        "42515883",
+        "42052926"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42743349",
+        "42741467",
+        "42737877",
+        "42749451"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42743349",
+        "42741467",
+        "42737877",
+        "42536013"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42741467",
+        "42737877",
+        "42723722",
+        "42683042"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42741467",
+        "42737877",
+        "42723722",
+        "42683042"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42741467",
+        "42739216",
+        "42683042",
+        "42723722"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42741467",
+        "41743993",
+        "42739216",
+        "42709838"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42723722",
+        "42741467",
+        "42743349",
+        "42737877"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42723722",
+        "42698459",
+        "41452936",
+        "42741467"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42749451",
+        "42741467",
+        "42737877",
+        "42743349"
+      ],
+      "unfiltered_citations": [
+        "35138784",
+        "32809745",
+        "42749451",
+        "42052926",
+        "42741467"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "42581065",
+        "41631834",
+        "42172325",
+        "42734748",
+        "42764718"
+      ],
+      "unfiltered_citations": [
+        "40431735",
+        "41608126",
+        "42716004",
+        "42581065",
+        "42655691"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "42581065",
+        "41631834",
+        "42734748",
+        "41784610",
+        "42764718"
+      ],
+      "unfiltered_citations": [
+        "42541310",
+        "42708795",
+        "42708795",
+        "39799084",
+        "42391226"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "42764718",
+        "42581065",
+        "41631834",
+        "42172325",
+        "41784610"
+      ],
+      "unfiltered_citations": [
+        "42709838",
+        "40822308",
+        "41037964",
+        "42605787",
+        "41525354"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "41631834",
+        "42581065",
+        "41784610",
+        "42734748",
+        "42594645"
+      ],
+      "unfiltered_citations": [
+        "41452936",
+        "42573240",
+        "42753873",
+        "9891810",
+        "42728501"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "42172325",
+        "41631834",
+        "42581065",
+        "42734748",
+        "41784610"
+      ],
+      "unfiltered_citations": [
+        "42716004",
+        "42606356",
+        "42606356",
+        "41936880",
+        "42702719"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "42161271",
+        "42161271",
+        "42539047",
+        "41600866",
+        "41754545"
+      ],
+      "unfiltered_citations": [
+        "42042791",
+        "42042791",
+        "42161271",
+        "42161271",
+        "42061821"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 26,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "42539047",
+        "42161271",
+        "42161271",
+        "41600866",
+        "41394564"
+      ],
+      "unfiltered_citations": [
+        "42539047",
+        "41960312",
+        "42061821",
+        "42061821",
+        "42042791"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 26,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lymphocytic choriomeningitis mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "42426565",
+        "42426565",
+        "41600866",
+        "41394564",
+        "42539047"
+      ],
+      "unfiltered_citations": [
+        "15560057",
+        "42683038",
+        "42683038",
+        "9539315",
+        "41743993"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 26,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "42539047",
+        "42379809",
+        "42161271",
+        "42161271",
+        "42635387"
+      ],
+      "unfiltered_citations": [
+        "42539047",
+        "42496116",
+        "42496116",
+        "42379809",
+        "42161271"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 26,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What antiviral drugs or treatments are effective against Lymphocytic choriomeningitis mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "41600866",
+        "41394564",
+        "41754545",
+        "41754545",
+        "41659533"
+      ],
+      "unfiltered_citations": [
+        "41600866",
+        "41394564",
+        "41754545",
+        "41754545",
+        "41659533"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     }
