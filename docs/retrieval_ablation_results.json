@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-23T17:58:38.457853+00:00",
+  "timestamp": "2026-09-23T18:17:46.017705+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -643,8 +643,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.3782178217821782,
-  "n_cases": 606,
+  "mean_unfiltered_precision": 0.3702970297029703,
+  "n_cases": 707,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -791,6 +791,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Chikungunya virus",
+      "question": "What are the clinical symptoms and disease presentation of Chikungunya virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [
+        "42734802",
+        "42756906",
+        "42623406",
+        "42623406",
+        "42428059"
+      ],
+      "unfiltered_citations": [
+        "42734802",
+        "42756906",
+        "41263682",
+        "42708795",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 67,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Eastern equine encephalitis virus",
       "question": "What is known about Eastern equine encephalitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
@@ -913,6 +937,30 @@
     {
       "organism": "Eastern equine encephalitis virus",
       "question": "What is the epidemiology and outbreak history of Eastern equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "32491624",
+        "42515544",
+        "42132354",
+        "42157587",
+        "42157587"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "42515544",
+        "42132354",
+        "42157587",
+        "42157587"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Eastern equine encephalitis virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
       "filtered_citations": [
         "32491624",
@@ -1079,6 +1127,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rift Valley fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Rift Valley fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42607044",
+        "42693705",
+        "42515574",
+        "42687974",
+        "42757101"
+      ],
+      "unfiltered_citations": [
+        "32633998",
+        "4249614",
+        "42607044",
+        "2559514",
+        "42531165"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "SARS-CoV-2",
       "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
@@ -1215,6 +1287,30 @@
         "34014629",
         "42524579",
         "42639089"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 99,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What are the clinical symptoms and disease presentation of SARS-CoV-2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "42167496",
+        "34014630",
+        "34014629",
+        "42244924",
+        "41683701"
+      ],
+      "unfiltered_citations": [
+        "42167496",
+        "34014630",
+        "34014629",
+        "42244924",
+        "41968577"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
@@ -1367,6 +1463,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "42700662",
+        "42739216",
+        "5391162",
+        "4246007",
+        "39113298"
+      ],
+      "unfiltered_citations": [
+        "40526871",
+        "42700662",
+        "39142019",
+        "41392358",
+        "40741060"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Zika virus",
       "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
@@ -1503,6 +1623,30 @@
         "31105130",
         "31448988",
         "33815457"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 53,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+      "filtered_citations": [
+        "28613699",
+        "33815457",
+        "31105130",
+        "31448988",
+        "30731153"
+      ],
+      "unfiltered_citations": [
+        "35952300",
+        "28613699",
+        "33815457",
+        "31105130",
+        "31448988"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
@@ -1655,6 +1799,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Ebola virus",
+      "question": "What are the clinical symptoms and disease presentation of Ebola virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+      "filtered_citations": [
+        "42565265",
+        "42577745",
+        "42577745",
+        "42560595",
+        "35776140"
+      ],
+      "unfiltered_citations": [
+        "42565265",
+        "42577745",
+        "42577745",
+        "37992431",
+        "32633998"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 44,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Yellow fever virus",
       "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
@@ -1790,6 +1958,30 @@
         "42767744",
         "4249614",
         "42583857",
+        "5312525"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Yellow fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+      "filtered_citations": [
+        "42583857",
+        "42708070",
+        "41608126",
+        "42623406",
+        "42623406"
+      ],
+      "unfiltered_citations": [
+        "42583857",
+        "32633998",
+        "4249614",
+        "42708070",
         "5312525"
       ],
       "filtered_precision": 1.0,
@@ -1943,6 +2135,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Japanese encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+      "filtered_citations": [
+        "41246380",
+        "39597552",
+        "42709838",
+        "39799084",
+        "42680695"
+      ],
+      "unfiltered_citations": [
+        "41246380",
+        "39429370",
+        "39597552",
+        "42708795",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Lassa mammarenavirus",
       "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
@@ -2082,6 +2298,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+      "filtered_citations": [
+        "42382775",
+        "42391156",
+        "42161271",
+        "42161271",
+        "42112905"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "42382775",
+        "42391156",
+        "42683038",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
@@ -2231,6 +2471,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Nipah henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Nipah henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+      "filtered_citations": [
+        "42605787",
+        "39799084",
+        "42623407",
+        "42732490",
+        "42674244"
+      ],
+      "unfiltered_citations": [
+        "42422560",
+        "42605787",
+        "41246380",
+        "42708795",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
       "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
@@ -2370,6 +2634,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What are the clinical symptoms and disease presentation of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+      "filtered_citations": [
+        "42583854",
+        "42637838",
+        "39229478",
+        "42551222",
+        "42655658"
+      ],
+      "unfiltered_citations": [
+        "42583854",
+        "32633998",
+        "42637838",
+        "2559514",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
@@ -2519,6 +2807,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hendra henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hendra henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42689109",
+        "39799084",
+        "42381667",
+        "42580486",
+        "42541310"
+      ],
+      "unfiltered_citations": [
+        "42422560",
+        "9919918",
+        "41914137",
+        "42677107",
+        "15560059"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Tick-borne encephalitis virus",
       "question": "What is known about Tick-borne encephalitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
@@ -2658,6 +2970,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Tick-borne encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42593751",
+        "42593751",
+        "42703614",
+        "42764039",
+        "42645659"
+      ],
+      "unfiltered_citations": [
+        "42683038",
+        "42683038",
+        "42593751",
+        "42593751",
+        "42515544"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
@@ -2807,6 +3143,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "42415885",
+        "42415885",
+        "42415885",
+        "42104899",
+        "41930440"
+      ],
+      "unfiltered_citations": [
+        "9919918",
+        "42708795",
+        "42708795",
+        "42632300",
+        "42415885"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Junin mammarenavirus",
       "question": "What is known about Junin mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
@@ -2943,6 +3303,30 @@
         "4249614",
         "42761034",
         "5312525"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Junin mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41754545",
+        "41754545",
+        "41659533",
+        "41600866",
+        "41394564"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "5358980",
+        "41246380",
+        "41914137",
+        "4249614"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3095,6 +3479,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Venezuelan equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+      "filtered_citations": [
+        "42743201",
+        "42369187",
+        "42268796",
+        "42268796",
+        "42268796"
+      ],
+      "unfiltered_citations": [
+        "42515544",
+        "32491624",
+        "42743201",
+        "42132354",
+        "42369187"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 31,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Western equine encephalitis virus",
       "question": "What is known about Western equine encephalitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11039",
@@ -3230,6 +3638,30 @@
         "42132354",
         "42515544",
         "39802065",
+        "42157587"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Western equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+      "filtered_citations": [
+        "42611357",
+        "42611357",
+        "42611357",
+        "42268796",
+        "42268796"
+      ],
+      "unfiltered_citations": [
+        "42515544",
+        "32491624",
+        "42132354",
+        "42157587",
         "42157587"
       ],
       "filtered_precision": 1.0,
@@ -3383,6 +3815,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+      "filtered_citations": [
+        "42240370",
+        "41407624",
+        "36201547",
+        "42494843",
+        "42494843"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "42240370",
+        "42531165",
+        "42572296"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 22,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Mayaro virus",
       "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_59301",
@@ -3522,6 +3978,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What are the clinical symptoms and disease presentation of Mayaro virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+      "filtered_citations": [
+        "42657456",
+        "42257709",
+        "42539076",
+        "42539076",
+        "42539076"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "42657456",
+        "35952300",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
@@ -3671,6 +4151,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Sindbis virus",
+      "question": "What are the clinical symptoms and disease presentation of Sindbis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+      "filtered_citations": [
+        "42434987",
+        "40430233",
+        "42343382",
+        "42250266",
+        "42278338"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42572296",
+        "42708795",
+        "42708795",
+        "9919918"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "O'nyong-nyong virus",
       "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
@@ -3810,6 +4314,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What are the clinical symptoms and disease presentation of O'nyong-nyong virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
+      "filtered_citations": [
+        "41394611",
+        "42430456",
+        "42352370",
+        "41037964",
+        "42616815"
+      ],
+      "unfiltered_citations": [
+        "41263682",
+        "5358980",
+        "42708795",
+        "42708795",
+        "41914137"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
@@ -3959,6 +4487,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human coronavirus OC43",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus OC43?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+      "filtered_citations": [
+        "42444019",
+        "42444019",
+        "42444019",
+        "42455848",
+        "42733987"
+      ],
+      "unfiltered_citations": [
+        "41968577",
+        "42444019",
+        "42444019",
+        "42444019",
+        "42455848"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human coronavirus NL63",
       "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_277944",
@@ -4103,6 +4655,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human coronavirus NL63",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus NL63?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_277944",
+      "filtered_citations": [
+        "41968577",
+        "42244924",
+        "42167496",
+        "42444019",
+        "42444019"
+      ],
+      "unfiltered_citations": [
+        "41968577",
+        "42244924",
+        "42167496",
+        "42733987",
+        "42733987"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human coronavirus 229E",
       "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11137",
@@ -4239,6 +4815,30 @@
         "42733987",
         "32259829",
         "42444019"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What are the clinical symptoms and disease presentation of Human coronavirus 229E?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11137",
+      "filtered_citations": [
+        "42639089",
+        "42639089",
+        "42639089",
+        "42341040",
+        "42285904"
+      ],
+      "unfiltered_citations": [
+        "41968577",
+        "42444019",
+        "42444019",
+        "42444019",
+        "42244924"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -4391,6 +4991,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murray Valley encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11079",
+      "filtered_citations": [
+        "39429370",
+        "41246380",
+        "40127699",
+        "39597552",
+        "40550235"
+      ],
+      "unfiltered_citations": [
+        "39429370",
+        "41246380",
+        "42708795",
+        "42708795",
+        "42515544"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Usutu virus",
       "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64286",
@@ -4530,6 +5154,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64286",
+      "filtered_citations": [
+        "42499780",
+        "42426896",
+        "42565978",
+        "34358049",
+        "42726902"
+      ],
+      "unfiltered_citations": [
+        "42499780",
+        "41914137",
+        "42715497",
+        "42708795",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
@@ -4679,6 +5327,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Powassan virus",
+      "question": "What are the clinical symptoms and disease presentation of Powassan virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+      "filtered_citations": [
+        "42661313",
+        "42661313",
+        "42661313",
+        "42683038",
+        "42683038"
+      ],
+      "unfiltered_citations": [
+        "42661313",
+        "42661313",
+        "42661313",
+        "42683038",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human alphaherpesvirus 1",
       "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
@@ -4814,6 +5486,30 @@
         "42671285",
         "41608126",
         "42393705",
+        "42507119"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 34,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "12160245",
+        "42507627",
+        "9930199",
+        "42364901",
+        "42222536"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42677107",
+        "40911481",
+        "41496662",
         "42507119"
       ],
       "filtered_precision": 1.0,
@@ -4967,6 +5663,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "42599190",
+        "42599190",
+        "42693145",
+        "42222536",
+        "42572296"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42677107",
+        "40911481",
+        "41496662",
+        "42507119"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Hepacivirus hominis",
       "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
@@ -5102,6 +5822,30 @@
         "42325048",
         "42773773",
         "42521678",
+        "42415885"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 30,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What are the clinical symptoms and disease presentation of Hepacivirus hominis?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15560056",
+        "15560060",
+        "15560055",
+        "15617246",
+        "15560066"
+      ],
+      "unfiltered_citations": [
+        "9919918",
+        "42708795",
+        "42708795",
+        "42415885",
         "42415885"
       ],
       "filtered_precision": 1.0,
@@ -5255,6 +5999,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hepatitis A virus",
+      "question": "What are the clinical symptoms and disease presentation of Hepatitis A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42721393",
+        "42765539",
+        "42765539",
+        "42626622",
+        "42639517"
+      ],
+      "unfiltered_citations": [
+        "42721393",
+        "15560059",
+        "15560056",
+        "15560060",
+        "42765539"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Hepatitis E virus",
       "question": "What is known about Hepatitis E virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
@@ -5399,6 +6167,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hepatitis E virus",
+      "question": "What are the clinical symptoms and disease presentation of Hepatitis E virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42668655",
+        "42653065",
+        "42766967",
+        "42713301",
+        "42765539"
+      ],
+      "unfiltered_citations": [
+        "42668655",
+        "42653065",
+        "42766967",
+        "15560059",
+        "42713301"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human immunodeficiency virus 1",
       "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
@@ -5535,6 +6327,30 @@
         "2014240",
         "42774934",
         "37942579"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 33,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "42431766",
+        "1707692",
+        "42570664",
+        "1707532",
+        "2014229"
+      ],
+      "unfiltered_citations": [
+        "42431766",
+        "42677107",
+        "41914137",
+        "42648302",
+        "40911481"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -5687,6 +6503,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rabies lyssavirus",
+      "question": "What are the clinical symptoms and disease presentation of Rabies lyssavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42762969",
+        "42762969",
+        "42761642",
+        "42730534",
+        "42758862"
+      ],
+      "unfiltered_citations": [
+        "42764163",
+        "42762969",
+        "42762969",
+        "42708795",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Mumps orthorubulavirus",
       "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
@@ -5817,6 +6657,29 @@
         "41593743",
         "42605787",
         "42439134"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "36961236",
+        "35521982",
+        "41593743",
+        "39088577"
+      ],
+      "unfiltered_citations": [
+        "36961236",
+        "35521982",
+        "41593743",
+        "32809745",
+        "42683038"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -5969,6 +6832,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Sin Nombre orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+      "filtered_citations": [
+        "42415885",
+        "42415885",
+        "42415885",
+        "39983702",
+        "42655732"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "41914137",
+        "9919918",
+        "41263682"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Puumala orthohantavirus",
       "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
@@ -6105,6 +6992,30 @@
         "42671285",
         "42213706",
         "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Puumala orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+      "filtered_citations": [
+        "41901774",
+        "42708795",
+        "42708795",
+        "42130922",
+        "9919918"
+      ],
+      "unfiltered_citations": [
+        "41901774",
+        "42708795",
+        "42708795",
+        "42130922",
+        "9919918"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -6257,6 +7168,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Seoul orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Seoul orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052498",
+      "filtered_citations": [
+        "9541619",
+        "42008533",
+        "12078291",
+        "42566355",
+        "12078290"
+      ],
+      "unfiltered_citations": [
+        "9919918",
+        "42708795",
+        "42708795",
+        "32475874",
+        "9541619"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Norovirus",
       "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_142786",
@@ -6401,6 +7336,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+      "filtered_citations": [
+        "42538721",
+        "42712646",
+        "32475874",
+        "42747833",
+        "42129318"
+      ],
+      "unfiltered_citations": [
+        "42538721",
+        "42708795",
+        "42708795",
+        "42712646",
+        "32827319"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 32,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Monkeypox virus",
       "question": "What is known about Monkeypox virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10244",
@@ -6537,6 +7496,30 @@
         "42474038",
         "41472220",
         "42719836"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 48,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What are the clinical symptoms and disease presentation of Monkeypox virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+      "filtered_citations": [
+        "42752865",
+        "42723126",
+        "42775090",
+        "42332827",
+        "42132395"
+      ],
+      "unfiltered_citations": [
+        "42752865",
+        "42723126",
+        "42775090",
+        "42332827",
+        "42132395"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -6689,6 +7672,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Cowpox virus",
+      "question": "What are the clinical symptoms and disease presentation of Cowpox virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10243",
+      "filtered_citations": [
+        "42317376",
+        "42604648",
+        "41606733",
+        "42627681",
+        "42271160"
+      ],
+      "unfiltered_citations": [
+        "42317376",
+        "42752865",
+        "42430403",
+        "4249614",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Variola virus",
       "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10255",
@@ -6833,6 +7840,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Variola virus",
+      "question": "What are the clinical symptoms and disease presentation of Variola virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+      "filtered_citations": [
+        "42332827",
+        "35969682",
+        "42135325",
+        "42604648",
+        "42099555"
+      ],
+      "unfiltered_citations": [
+        "42572296",
+        "42693145",
+        "41914137",
+        "42583857",
+        "42591038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Andes orthohantavirus",
       "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
@@ -6969,6 +8000,30 @@
         "42662010",
         "42657456",
         "42539076"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Andes orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+      "filtered_citations": [
+        "42708795",
+        "42708795",
+        "42690165",
+        "42702719",
+        "42415885"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "42690165",
+        "42657456",
+        "9919918"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -7121,6 +8176,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Machupo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Machupo mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+      "filtered_citations": [
+        "42395044",
+        "42395044",
+        "42042791",
+        "42042791",
+        "42496116"
+      ],
+      "unfiltered_citations": [
+        "5358980",
+        "30123198",
+        "41914137",
+        "42395044",
+        "42395044"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human respirovirus 3",
       "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
@@ -7265,6 +8344,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human respirovirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human respirovirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "42687618",
+        "37734534",
+        "41305396",
+        "37875452",
+        "41810598"
+      ],
+      "unfiltered_citations": [
+        "42501735",
+        "32809745",
+        "42771068",
+        "40911481",
+        "41914137"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human metapneumovirus",
       "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
@@ -7401,6 +8504,30 @@
         "42501735",
         "42775853",
         "42723722"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 26,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42501735",
+        "42741467",
+        "42771068",
+        "42737877"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42501735",
+        "42741467",
+        "42771068",
+        "42715497"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
@@ -7553,6 +8680,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "42581065",
+        "42172325",
+        "41631834",
+        "42764718",
+        "42734748"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "32633998",
+        "9919918",
+        "41246380"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Lymphocytic choriomeningitis mammarenavirus",
       "question": "What is known about Lymphocytic choriomeningitis mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
@@ -7692,6 +8843,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 32,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lymphocytic choriomeningitis mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "42539047",
+        "34925303",
+        "42426565",
+        "42426565",
+        "42635387"
+      ],
+      "unfiltered_citations": [
+        "42677107",
+        "9539315",
+        "5358980",
+        "41914137",
+        "40911481"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 32,
       "filtered_status": null,
       "unfiltered_status": null
@@ -7841,6 +9016,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Influenza B virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza B virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "42700662",
+        "42238043",
+        "42429635",
+        "42696304",
+        "42723125"
+      ],
+      "unfiltered_citations": [
+        "40526871",
+        "42700662",
+        "41392358",
+        "32633998",
+        "39142019"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Influenza C virus",
       "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
@@ -7985,6 +9184,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Influenza C virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza C virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40526871",
+        "40741060",
+        "39142019",
+        "41392358",
+        "41033150"
+      ],
+      "unfiltered_citations": [
+        "40526871",
+        "40741060",
+        "39142019",
+        "41392358",
+        "15560059"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Bundibugyo ebolavirus",
       "question": "What is known about Bundibugyo ebolavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
@@ -8121,6 +9344,30 @@
         "42708069",
         "42658870",
         "42728358"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What are the clinical symptoms and disease presentation of Bundibugyo ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42565265",
+        "42562123",
+        "42742180",
+        "42560595",
+        "37992431"
+      ],
+      "unfiltered_citations": [
+        "42565265",
+        "42562123",
+        "42742180",
+        "42560595",
+        "37992431"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -8273,6 +9520,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "BK polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of BK polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42767667",
+        "42722200",
+        "42671253",
+        "42668624",
+        "42732395"
+      ],
+      "unfiltered_citations": [
+        "42767667",
+        "41914137",
+        "42715497",
+        "42683038",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "JC polyomavirus",
       "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
@@ -8412,6 +9683,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of JC polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42715497",
+        "42744829",
+        "42737859",
+        "42737859",
+        "42654301"
+      ],
+      "unfiltered_citations": [
+        "42715497",
+        "41914137",
+        "40911481",
+        "42677107",
+        "32633998"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
@@ -8561,6 +9856,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "36933562",
+        "38066444",
+        "42663706",
+        "42663706",
+        "38025679"
+      ],
+      "unfiltered_citations": [
+        "37658312",
+        "36933562",
+        "41346095",
+        "40516276",
+        "37805467"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 40,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Coxsackievirus B3",
       "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12072",
@@ -8697,6 +10016,30 @@
         "42671285",
         "42524579",
         "42643680"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+      "filtered_citations": [
+        "42643682",
+        "42530471",
+        "42492293",
+        "42382355",
+        "42733473"
+      ],
+      "unfiltered_citations": [
+        "42677107",
+        "42733848",
+        "41914137",
+        "40911481",
+        "41511094"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -8849,6 +10192,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+      "filtered_citations": [
+        "42735468",
+        "39799084",
+        "42338686",
+        "38588959",
+        "42458209"
+      ],
+      "unfiltered_citations": [
+        "42596048",
+        "15560059",
+        "42538721",
+        "32633998",
+        "15560056"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human parechovirus",
       "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
@@ -8988,6 +10355,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human parechovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
+      "filtered_citations": [
+        "42669541",
+        "42278884",
+        "42648245",
+        "32475874",
+        "42129318"
+      ],
+      "unfiltered_citations": [
+        "42669541",
+        "42375660",
+        "42708795",
+        "42708795",
+        "9919918"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
@@ -9137,6 +10528,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hepatitis delta virus",
+      "question": "What are the clinical symptoms and disease presentation of Hepatitis delta virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+      "filtered_citations": [
+        "42663377",
+        "42608674",
+        "42723136",
+        "42678147",
+        "42623246"
+      ],
+      "unfiltered_citations": [
+        "15560059",
+        "42663377",
+        "41914137",
+        "15560060",
+        "9919918"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Coxsackievirus A16",
       "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_31704",
@@ -9276,6 +10691,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+      "filtered_citations": [
+        "42185971",
+        "42377031",
+        "42347592",
+        "42376602",
+        "42485496"
+      ],
+      "unfiltered_citations": [
+        "42677107",
+        "40911481",
+        "41914137",
+        "42185971",
+        "41968577"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
@@ -9425,6 +10864,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rhinovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Rhinovirus B?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_147712",
+      "filtered_citations": [
+        "36762370",
+        "37951882",
+        "39772231",
+        "36539100",
+        "37515294"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42501735",
+        "42507119",
+        "36762370",
+        "42572839"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Semliki Forest virus",
       "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11033",
@@ -9561,6 +11024,30 @@
         "42488857",
         "39205153",
         "41334543"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What are the clinical symptoms and disease presentation of Semliki Forest virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+      "filtered_citations": [
+        "42167235",
+        "42355501",
+        "41591303",
+        "42750482",
+        "42750482"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "32633998",
+        "4249614",
+        "9919918"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -9713,6 +11200,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Wesselsbron virus",
+      "question": "What are the clinical symptoms and disease presentation of Wesselsbron virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_164416",
+      "filtered_citations": [
+        "28616499",
+        "32414152",
+        "35336125",
+        "40439475",
+        "39652585"
+      ],
+      "unfiltered_citations": [
+        "42499780",
+        "41914137",
+        "42683038",
+        "42683038",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Spondweni virus",
       "question": "What is known about Spondweni virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64318",
@@ -9852,6 +11363,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What are the clinical symptoms and disease presentation of Spondweni virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64318",
+      "filtered_citations": [
+        "30124422",
+        "30726740",
+        "39480108",
+        "39480108",
+        "39480108"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42572296",
+        "40911481",
+        "32633998",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
@@ -10001,6 +11536,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Kyasanur Forest disease virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_33743",
+      "filtered_citations": [
+        "42763584",
+        "37293222",
+        "42658574",
+        "42658574",
+        "42658574"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "42763584",
+        "9919918",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Sapovirus",
       "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_95341",
@@ -10136,6 +11695,30 @@
         "42336878",
         "42479772",
         "41334543",
+        "31334978"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What are the clinical symptoms and disease presentation of Sapovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_95341",
+      "filtered_citations": [
+        "42596048",
+        "42763194",
+        "42538721",
+        "42479772",
+        "42336878"
+      ],
+      "unfiltered_citations": [
+        "42596048",
+        "42763194",
+        "42538721",
+        "32827319",
         "31334978"
       ],
       "filtered_precision": 1.0,
@@ -10289,6 +11872,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Orf virus",
+      "question": "What are the clinical symptoms and disease presentation of Orf virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+      "filtered_citations": [
+        "42604199",
+        "42762843",
+        "42536682",
+        "42655115",
+        "42511150"
+      ],
+      "unfiltered_citations": [
+        "42604199",
+        "41263682",
+        "42708795",
+        "42708795",
+        "9919918"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Molluscum contagiosum virus",
       "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10279",
@@ -10433,6 +12040,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What are the clinical symptoms and disease presentation of Molluscum contagiosum virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10279",
+      "filtered_citations": [
+        "40847879",
+        "42272618",
+        "42101337",
+        "42746578",
+        "42385547"
+      ],
+      "unfiltered_citations": [
+        "28722927",
+        "40847879",
+        "40842764",
+        "40801024",
+        "41551115"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus 18",
       "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333761",
@@ -10557,6 +12188,28 @@
         "36933562",
         "37658312",
         "37896791"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 3,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 18?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333761",
+      "filtered_citations": [
+        "42339905",
+        "37582106",
+        "42362901"
+      ],
+      "unfiltered_citations": [
+        "37658312",
+        "36933562",
+        "40516276",
+        "37805467",
+        "41346095"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -10709,6 +12362,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 11?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10580",
+      "filtered_citations": [
+        "41696954",
+        "41484898",
+        "42576002",
+        "40619310",
+        "42233768"
+      ],
+      "unfiltered_citations": [
+        "40516276",
+        "42547256",
+        "37658312",
+        "41346095",
+        "41696954"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human mastadenovirus B",
       "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_108098",
@@ -10848,6 +12525,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_108098",
+      "filtered_citations": [
+        "40916329",
+        "41780169",
+        "42720153",
+        "41574296",
+        "40285019"
+      ],
+      "unfiltered_citations": [
+        "40400688",
+        "41914137",
+        "40911481",
+        "32809745",
+        "41246380"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
@@ -10997,6 +12698,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human mastadenovirus D",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus D?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_130310",
+      "filtered_citations": [
+        "40400688",
+        "40911481",
+        "40980888",
+        "42048387",
+        "40367285"
+      ],
+      "unfiltered_citations": [
+        "40400688",
+        "40911481",
+        "41914137",
+        "32809745",
+        "41246380"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Saffold virus",
       "question": "What is known about Saffold virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_434309",
@@ -11133,6 +12858,30 @@
         "37805831",
         "33165867",
         "41334543"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What are the clinical symptoms and disease presentation of Saffold virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_434309",
+      "filtered_citations": [
+        "32827319",
+        "31742735",
+        "37550694",
+        "37805831",
+        "35096871"
+      ],
+      "unfiltered_citations": [
+        "32827319",
+        "31742735",
+        "37550694",
+        "41914137",
+        "9919918"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -11285,6 +13034,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_329641",
+      "filtered_citations": [
+        "42507119",
+        "32475874",
+        "42577398",
+        "36762370",
+        "42374528"
+      ],
+      "unfiltered_citations": [
+        "42507119",
+        "42708795",
+        "42708795",
+        "41914137",
+        "31334978"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human immunodeficiency virus 2",
       "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
@@ -11421,6 +13194,30 @@
         "37942579",
         "42774934",
         "2014240"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42431766",
+        "42648302",
+        "42671187",
+        "1850256",
+        "42373647"
+      ],
+      "unfiltered_citations": [
+        "42431766",
+        "42648302",
+        "42677107",
+        "41914137",
+        "42570664"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -11573,6 +13370,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "42655673",
+        "42611705",
+        "42596509",
+        "42555626",
+        "1850256"
+      ],
+      "unfiltered_citations": [
+        "2014254",
+        "41263682",
+        "42677107",
+        "41914137",
+        "42431766"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Bovine viral diarrhea virus 1",
       "question": "What is known about Bovine viral diarrhea virus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
@@ -11709,6 +13530,30 @@
         "41392238",
         "42357663",
         "41192064"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 37,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Bovine viral diarrhea virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "41392238",
+        "41192064",
+        "41558100",
+        "42515575",
+        "42357663"
+      ],
+      "unfiltered_citations": [
+        "41392238",
+        "41192064",
+        "41558100",
+        "42515575",
+        "42357663"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -11861,6 +13706,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Classical swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Classical swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42655702",
+        "42484329",
+        "42349522",
+        "42382115",
+        "42643321"
+      ],
+      "unfiltered_citations": [
+        "32633998",
+        "41539551",
+        "4249614",
+        "9919918",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human alphaherpesvirus 2",
       "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
@@ -11997,6 +13866,30 @@
         "42393705",
         "42431766",
         "41608126"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42507627",
+        "42497092",
+        "42532196",
+        "42541847",
+        "42319912"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42677107",
+        "40911481",
+        "9930199",
+        "41496662"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -12149,6 +14042,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Human betaherpesvirus 7?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "41914137",
+        "42555674",
+        "41496662",
+        "41523194",
+        "42143222"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42555674",
+        "42677107",
+        "41496662",
+        "41523194"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human gammaherpesvirus 8",
       "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
@@ -12285,6 +14202,30 @@
         "39799084",
         "41734221",
         "42605787"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What are the clinical symptoms and disease presentation of Human gammaherpesvirus 8?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "41683701",
+        "42515039",
+        "41396190",
+        "42489446",
+        "42479845"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42677107",
+        "40911481",
+        "41496662",
+        "42715497"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -12437,6 +14378,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Suid alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42474184",
+        "42423462",
+        "42642744",
+        "42393705",
+        "42461965"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42677107",
+        "40911481",
+        "9539315",
+        "42507627"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Bovine alphaherpesvirus 1",
       "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
@@ -12576,6 +14541,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Bovine alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42626012",
+        "42628886",
+        "42573861",
+        "42514709",
+        "42625301"
+      ],
+      "unfiltered_citations": [
+        "42626012",
+        "42628886",
+        "42573861",
+        "42514709",
+        "41914137"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
       "filtered_corpus_size": 24,
       "filtered_status": null,
       "unfiltered_status": null
@@ -12725,6 +14714,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What are the clinical symptoms and disease presentation of Gallid alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "40694389",
+        "40367867",
+        "41861695",
+        "42475862"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42677107",
+        "40911481",
+        "9539315",
+        "15560059"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Porcine epidemic diarrhea virus",
       "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_28295",
@@ -12869,6 +14882,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine epidemic diarrhea virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+      "filtered_citations": [
+        "42734722",
+        "42734722",
+        "42683631",
+        "42702239",
+        "42730980"
+      ],
+      "unfiltered_citations": [
+        "42734722",
+        "42734722",
+        "42683631",
+        "32475874",
+        "41539551"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Avian infectious bronchitis virus",
       "question": "What is known about Avian infectious bronchitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11120",
@@ -13005,6 +15042,30 @@
         "42634768",
         "42731210",
         "42736223"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Avian infectious bronchitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11120",
+      "filtered_citations": [
+        "42772140",
+        "42716083",
+        "42731210",
+        "42634820",
+        "42709010"
+      ],
+      "unfiltered_citations": [
+        "42772140",
+        "42716083",
+        "42634768",
+        "42731210",
+        "42634820"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
@@ -13157,6 +15218,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Feline infectious peritonitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+      "filtered_citations": [
+        "42648114",
+        "42767337",
+        "42731278",
+        "42749190",
+        "42589191"
+      ],
+      "unfiltered_citations": [
+        "42532773",
+        "42620651",
+        "42590897",
+        "42622352",
+        "42648114"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Canine distemper virus",
       "question": "What is known about Canine distemper virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
@@ -13293,6 +15378,30 @@
         "42654997",
         "42671264",
         "42539248"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 22,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Canine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+      "filtered_citations": [
+        "42511110",
+        "42671264",
+        "42515586",
+        "42464370",
+        "42668364"
+      ],
+      "unfiltered_citations": [
+        "42511110",
+        "42671264",
+        "42515586",
+        "42464370",
+        "42668364"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -13445,6 +15554,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+      "filtered_citations": [
+        "42666653",
+        "42771287",
+        "42655794",
+        "42754172",
+        "42730613"
+      ],
+      "unfiltered_citations": [
+        "42391430",
+        "42375050",
+        "42347592",
+        "42666653",
+        "42771287"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "African swine fever virus",
       "question": "What is known about African swine fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10497",
@@ -13589,6 +15722,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "African swine fever virus",
+      "question": "What are the clinical symptoms and disease presentation of African swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+      "filtered_citations": [
+        "42761983",
+        "42698426",
+        "42757426",
+        "42773363",
+        "42645659"
+      ],
+      "unfiltered_citations": [
+        "32633998",
+        "41539551",
+        "42761983",
+        "2559514",
+        "42698426"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Mammalian orthoreovirus",
       "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_351073",
@@ -13725,6 +15882,30 @@
         "42511143",
         "42671285",
         "42008533"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mammalian orthoreovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_351073",
+      "filtered_citations": [
+        "42137780",
+        "41526494",
+        "41511094",
+        "42105076",
+        "41408047"
+      ],
+      "unfiltered_citations": [
+        "42708795",
+        "42708795",
+        "42632300",
+        "42317376",
+        "9919918"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -13877,6 +16058,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+      "filtered_citations": [
+        "42709478",
+        "42453008",
+        "42387563",
+        "42361785",
+        "42517987"
+      ],
+      "unfiltered_citations": [
+        "42566128",
+        "9919918",
+        "41914137",
+        "42708795",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Colorado tick fever virus",
       "question": "What is known about Colorado tick fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_46839",
@@ -14016,6 +16221,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Colorado tick fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_46839",
+      "filtered_citations": [
+        "36443864",
+        "37862094",
+        "40512309",
+        "36732081",
+        "37293222"
+      ],
+      "unfiltered_citations": [
+        "36443864",
+        "37862094",
+        "38981504",
+        "40512309",
+        "42683038"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 8,
       "filtered_status": null,
       "unfiltered_status": null
@@ -14165,6 +16394,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rotavirus C",
+      "question": "What are the clinical symptoms and disease presentation of Rotavirus C?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_36427",
+      "filtered_citations": [
+        "38659036",
+        "40231817",
+        "41653780",
+        "41168817",
+        "39358760"
+      ],
+      "unfiltered_citations": [
+        "15560059",
+        "38659036",
+        "42496142",
+        "40231817",
+        "41653780"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus type 31",
       "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10585",
@@ -14304,6 +16557,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 31?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10585",
+      "filtered_citations": [
+        "41346095",
+        "36085531",
+        "37896881",
+        "38980042",
+        "41759606"
+      ],
+      "unfiltered_citations": [
+        "41346095",
+        "37658312",
+        "37805467",
+        "40516276",
+        "38025679"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 8,
       "filtered_status": null,
       "unfiltered_status": null
@@ -14453,6 +16730,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 33?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10586",
+      "filtered_citations": [
+        "42267101",
+        "37461035",
+        "38346260",
+        "38385450",
+        "39396813"
+      ],
+      "unfiltered_citations": [
+        "37658312",
+        "41346095",
+        "40287740",
+        "37805467",
+        "37535949"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus type 45",
       "question": "What is known about Human papillomavirus type 45 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10593",
@@ -14597,6 +16898,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10593",
+      "filtered_citations": [
+        "41805182",
+        "37535949",
+        "37535949",
+        "40323272",
+        "41722563"
+      ],
+      "unfiltered_citations": [
+        "37658312",
+        "37805467",
+        "41346095",
+        "38025679",
+        "38025679"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Tai Forest ebolavirus",
       "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_186541",
@@ -14727,6 +17052,29 @@
         "37992431",
         "42708069",
         "42658870"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What are the clinical symptoms and disease presentation of Tai Forest ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_186541",
+      "filtered_citations": [
+        "37992431",
+        "41082575",
+        "37470396",
+        "40173257"
+      ],
+      "unfiltered_citations": [
+        "42565265",
+        "35657325",
+        "37992431",
+        "42560595",
+        "42230576"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -14879,6 +17227,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Lujo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lujo mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052314",
+      "filtered_citations": [
+        "34925303",
+        "42075721",
+        "31906112",
+        "34999003",
+        "41118368"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "41246380",
+        "5358980",
+        "41914137",
+        "34925303"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human parainfluenza virus 1",
       "question": "What is known about Human parainfluenza virus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12730",
@@ -15023,6 +17395,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+      "filtered_citations": [
+        "41305396",
+        "42300833",
+        "39223668",
+        "37734534",
+        "39684830"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "38900074",
+        "41305396",
+        "9919918",
+        "42300833"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Enterovirus A71",
       "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_39054",
@@ -15162,6 +17558,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 37,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+      "filtered_citations": [
+        "42639682",
+        "42751544",
+        "42751544",
+        "42375050",
+        "42205485"
+      ],
+      "unfiltered_citations": [
+        "42639682",
+        "42751544",
+        "42751544",
+        "42596048",
+        "42375050"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
       "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
