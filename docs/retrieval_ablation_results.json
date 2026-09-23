@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-23T17:38:12.496290+00:00",
+  "timestamp": "2026-09-23T17:58:38.457853+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -643,8 +643,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.36554455445544554,
-  "n_cases": 505,
+  "mean_unfiltered_precision": 0.3782178217821782,
+  "n_cases": 606,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -759,6 +759,30 @@
         "42631866",
         "42540242",
         "42584711"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 67,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the epidemiology and outbreak history of Chikungunya virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+      "filtered_citations": [
+        "42428059",
+        "42748151",
+        "42734804",
+        "42734802",
+        "42623406"
+      ],
+      "unfiltered_citations": [
+        "42428059",
+        "42748151",
+        "42734804",
+        "42734802",
+        "42623406"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -887,6 +911,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Eastern equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11021",
+      "filtered_citations": [
+        "32491624",
+        "42515544",
+        "42132354",
+        "42157587",
+        "42157587"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "42515544",
+        "42132354",
+        "42157587",
+        "42157587"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Rift Valley fever virus",
       "question": "What is known about Rift Valley fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
@@ -1002,6 +1050,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the epidemiology and outbreak history of Rift Valley fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+      "filtered_citations": [
+        "42607044",
+        "42598172",
+        "42757101",
+        "42687974",
+        "28616499"
+      ],
+      "unfiltered_citations": [
+        "42607044",
+        "42598172",
+        "42757101",
+        "42687974",
+        "42708070"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
       "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
@@ -1127,6 +1199,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "SARS-CoV-2",
+      "question": "What is the epidemiology and outbreak history of SARS-CoV-2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+      "filtered_citations": [
+        "32259829",
+        "42167496",
+        "34014629",
+        "42639089",
+        "42639089"
+      ],
+      "unfiltered_citations": [
+        "32259829",
+        "42167496",
+        "34014629",
+        "42524579",
+        "42639089"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 99,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Influenza A virus",
       "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
@@ -1247,6 +1343,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+      "filtered_citations": [
+        "4246007",
+        "39113298",
+        "42700662",
+        "42747795",
+        "5391162"
+      ],
+      "unfiltered_citations": [
+        "42674419",
+        "42674419",
+        "40741060",
+        "42674416",
+        "42674417"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Zika virus",
       "question": "What is known about Zika virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
@@ -1359,6 +1479,30 @@
         "31105130",
         "31448988",
         "42514955"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 53,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the epidemiology and outbreak history of Zika virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+      "filtered_citations": [
+        "28613699",
+        "31105130",
+        "31448988",
+        "33815457",
+        "42439134"
+      ],
+      "unfiltered_citations": [
+        "28613699",
+        "35952300",
+        "31105130",
+        "31448988",
+        "33815457"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
@@ -1487,6 +1631,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Ebola virus",
+      "question": "What is the epidemiology and outbreak history of Ebola virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1570291",
+      "filtered_citations": [
+        "42728358",
+        "42708069",
+        "42703692",
+        "42565265",
+        "42542607"
+      ],
+      "unfiltered_citations": [
+        "37992431",
+        "42728358",
+        "42708069",
+        "42658870",
+        "42703692"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 44,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Yellow fever virus",
       "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
@@ -1602,6 +1770,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the epidemiology and outbreak history of Yellow fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+      "filtered_citations": [
+        "42708070",
+        "42583857",
+        "42393766",
+        "8099299",
+        "42623406"
+      ],
+      "unfiltered_citations": [
+        "42708070",
+        "42767744",
+        "4249614",
+        "42583857",
+        "5312525"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
@@ -1727,6 +1919,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Japanese encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+      "filtered_citations": [
+        "39597552",
+        "42709838",
+        "39799084",
+        "40425079",
+        "39802065"
+      ],
+      "unfiltered_citations": [
+        "39597552",
+        "42709838",
+        "39799084",
+        "40425079",
+        "32491624"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Lassa mammarenavirus",
       "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
@@ -1842,6 +2058,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lassa mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+      "filtered_citations": [
+        "42583999",
+        "42382775",
+        "42161271",
+        "42161271",
+        "34999003"
+      ],
+      "unfiltered_citations": [
+        "42511143",
+        "42583999",
+        "30123198",
+        "42382775",
+        "42161271"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 25,
       "filtered_status": null,
       "unfiltered_status": null
@@ -1967,6 +2207,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Nipah henipavirus",
+      "question": "What is the epidemiology and outbreak history of Nipah henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052225",
+      "filtered_citations": [
+        "42605787",
+        "42732490",
+        "42381667",
+        "42600205",
+        "42744055"
+      ],
+      "unfiltered_citations": [
+        "42605787",
+        "42422560",
+        "42732490",
+        "42261208",
+        "42395906"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
       "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
@@ -2087,6 +2351,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the epidemiology and outbreak history of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+      "filtered_citations": [
+        "42583854",
+        "42637838",
+        "39229478",
+        "42655658",
+        "42762379"
+      ],
+      "unfiltered_citations": [
+        "42583854",
+        "42637838",
+        "39229478",
+        "42655658",
+        "42762379"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Hendra henipavirus",
       "question": "What is known about Hendra henipavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
@@ -2199,6 +2487,30 @@
         "42268934",
         "42716004",
         "42425227"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the epidemiology and outbreak history of Hendra henipavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+      "filtered_citations": [
+        "42689109",
+        "42381667",
+        "39799084",
+        "42492241",
+        "42541310"
+      ],
+      "unfiltered_citations": [
+        "42422560",
+        "42261208",
+        "42689109",
+        "42395906",
+        "42605787"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -2327,6 +2639,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Tick-borne encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+      "filtered_citations": [
+        "42593751",
+        "42593751",
+        "42703614",
+        "42764039",
+        "42696092"
+      ],
+      "unfiltered_citations": [
+        "42593751",
+        "42593751",
+        "42703614",
+        "42764039",
+        "42655738"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Hantaan orthohantavirus",
       "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
@@ -2442,6 +2778,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Hantaan orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052480",
+      "filtered_citations": [
+        "42415885",
+        "42415885",
+        "42415885",
+        "42347213",
+        "42347213"
+      ],
+      "unfiltered_citations": [
+        "42415885",
+        "42415885",
+        "42415885",
+        "9919918",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
@@ -2567,6 +2927,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Junin mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Junin mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+      "filtered_citations": [
+        "41754545",
+        "41754545",
+        "41659533",
+        "41600866",
+        "41394564"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "42511143",
+        "4249614",
+        "42761034",
+        "5312525"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Venezuelan equine encephalitis virus",
       "question": "What is known about Venezuelan equine encephalitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11036",
@@ -2679,6 +3063,30 @@
         "42268796",
         "42268796",
         "42268796"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 31,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Venezuelan equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+      "filtered_citations": [
+        "42268796",
+        "42268796",
+        "42268796",
+        "42743201",
+        "42369187"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "42268796",
+        "42268796",
+        "42268796",
+        "42515544"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -2807,6 +3215,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Western equine encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11039",
+      "filtered_citations": [
+        "42268796",
+        "42268796",
+        "42268796",
+        "42506617",
+        "42506617"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "42132354",
+        "42515544",
+        "39802065",
+        "42157587"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Ross River virus",
       "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11029",
@@ -2927,6 +3359,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Ross River virus",
+      "question": "What is the epidemiology and outbreak history of Ross River virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+      "filtered_citations": [
+        "42240370",
+        "41407624",
+        "41650846",
+        "42767552",
+        "42767552"
+      ],
+      "unfiltered_citations": [
+        "42240370",
+        "41407624",
+        "33165867",
+        "40127699",
+        "42531165"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 22,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Mayaro virus",
       "question": "What is known about Mayaro virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_59301",
@@ -3039,6 +3495,30 @@
         "42765537",
         "42765537",
         "34203149"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the epidemiology and outbreak history of Mayaro virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+      "filtered_citations": [
+        "42657456",
+        "42539076",
+        "42539076",
+        "42539076",
+        "42484256"
+      ],
+      "unfiltered_citations": [
+        "42657456",
+        "42539076",
+        "42539076",
+        "42539076",
+        "35952300"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
@@ -3167,6 +3647,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+      "filtered_citations": [
+        "42434987",
+        "40430233",
+        "42638521",
+        "42638521",
+        "41779810"
+      ],
+      "unfiltered_citations": [
+        "42434987",
+        "39983702",
+        "41115422",
+        "42135325",
+        "42562123"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "O'nyong-nyong virus",
       "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
@@ -3279,6 +3783,30 @@
         "42719836",
         "41394611",
         "42430456"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the epidemiology and outbreak history of O'nyong-nyong virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2169701",
+      "filtered_citations": [
+        "42430456",
+        "41394611",
+        "42352370",
+        "41037964",
+        "42616815"
+      ],
+      "unfiltered_citations": [
+        "41263682",
+        "42428059",
+        "42430456",
+        "41394611",
+        "5313066"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -3407,6 +3935,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the epidemiology and outbreak history of Human coronavirus OC43?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+      "filtered_citations": [
+        "42733987",
+        "42733987",
+        "42733987",
+        "42444019",
+        "42444019"
+      ],
+      "unfiltered_citations": [
+        "42733987",
+        "42733987",
+        "42733987",
+        "42444019",
+        "42444019"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human coronavirus NL63",
       "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_277944",
@@ -3527,6 +4079,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the epidemiology and outbreak history of Human coronavirus NL63?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_277944",
+      "filtered_citations": [
+        "42709773",
+        "42709773",
+        "42167496",
+        "42244924",
+        "42444019"
+      ],
+      "unfiltered_citations": [
+        "42733987",
+        "42733987",
+        "42733987",
+        "42709773",
+        "42709773"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human coronavirus 229E",
       "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11137",
@@ -3639,6 +4215,30 @@
         "42115643",
         "42115643",
         "42744079"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the epidemiology and outbreak history of Human coronavirus 229E?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11137",
+      "filtered_citations": [
+        "42639089",
+        "42639089",
+        "42639089",
+        "42357687",
+        "42357687"
+      ],
+      "unfiltered_citations": [
+        "42733987",
+        "42733987",
+        "42733987",
+        "32259829",
+        "42444019"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3767,6 +4367,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Murray Valley encephalitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11079",
+      "filtered_citations": [
+        "40127699",
+        "39429370",
+        "39802065",
+        "40550235",
+        "40609048"
+      ],
+      "unfiltered_citations": [
+        "32491624",
+        "40127699",
+        "39799084",
+        "39429370",
+        "39802065"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Usutu virus",
       "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64286",
@@ -3887,6 +4511,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64286",
+      "filtered_citations": [
+        "42499780",
+        "42426896",
+        "42483709",
+        "42565978",
+        "42726902"
+      ],
+      "unfiltered_citations": [
+        "42499780",
+        "42426896",
+        "42531165",
+        "42483709",
+        "42671285"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Powassan virus",
       "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11083",
@@ -3999,6 +4647,30 @@
         "42661313",
         "42719836",
         "42719836"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the epidemiology and outbreak history of Powassan virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+      "filtered_citations": [
+        "42661313",
+        "42661313",
+        "42661313",
+        "42671191",
+        "42671191"
+      ],
+      "unfiltered_citations": [
+        "42661313",
+        "42661313",
+        "42661313",
+        "42135325",
+        "41334543"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -4127,6 +4799,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+      "filtered_citations": [
+        "12160245",
+        "9930199",
+        "12549379",
+        "42501232",
+        "42364901"
+      ],
+      "unfiltered_citations": [
+        "42628886",
+        "42671285",
+        "41608126",
+        "42393705",
+        "42507119"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 34,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human alphaherpesvirus 3",
       "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
@@ -4239,6 +4935,30 @@
         "42532196",
         "34197863",
         "41936880"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+      "filtered_citations": [
+        "38588959",
+        "42693145",
+        "42222536",
+        "42599190",
+        "42599190"
+      ],
+      "unfiltered_citations": [
+        "42671285",
+        "42507119",
+        "42628886",
+        "42393705",
+        "41608126"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -4367,6 +5087,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the epidemiology and outbreak history of Hepacivirus hominis?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+      "filtered_citations": [
+        "15560060",
+        "15560054",
+        "37193348",
+        "42655679",
+        "15560058"
+      ],
+      "unfiltered_citations": [
+        "42671285",
+        "42325048",
+        "42773773",
+        "42521678",
+        "42415885"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 30,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Hepatitis A virus",
       "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
@@ -4482,6 +5226,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the epidemiology and outbreak history of Hepatitis A virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+      "filtered_citations": [
+        "42721393",
+        "42765539",
+        "42765539",
+        "42770520",
+        "42770520"
+      ],
+      "unfiltered_citations": [
+        "15560060",
+        "42721393",
+        "42765539",
+        "42765539",
+        "42676516"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 16,
       "filtered_status": null,
       "unfiltered_status": null
@@ -4607,6 +5375,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Hepatitis E virus",
+      "question": "What is the epidemiology and outbreak history of Hepatitis E virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+      "filtered_citations": [
+        "42774552",
+        "42765539",
+        "42765539",
+        "42742532",
+        "42591169"
+      ],
+      "unfiltered_citations": [
+        "42654721",
+        "42774552",
+        "15560060",
+        "42765539",
+        "42765539"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human immunodeficiency virus 1",
       "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
@@ -4722,6 +5514,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 33,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+      "filtered_citations": [
+        "42431766",
+        "42413946",
+        "2014229",
+        "1707532",
+        "1707692"
+      ],
+      "unfiltered_citations": [
+        "42431766",
+        "42648302",
+        "2014240",
+        "42774934",
+        "37942579"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
@@ -4847,6 +5663,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the epidemiology and outbreak history of Rabies lyssavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+      "filtered_citations": [
+        "42730534",
+        "42758862",
+        "42762969",
+        "42762969",
+        "42758589"
+      ],
+      "unfiltered_citations": [
+        "42393705",
+        "42730534",
+        "42764163",
+        "34668744",
+        "42733759"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Mumps orthorubulavirus",
       "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
@@ -4957,6 +5797,29 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
+      "filtered_citations": [
+        "35521982",
+        "36961236",
+        "41593743",
+        "39088577"
+      ],
+      "unfiltered_citations": [
+        "35521982",
+        "36961236",
+        "41593743",
+        "42605787",
+        "42439134"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 4,
       "filtered_status": null,
       "unfiltered_status": null
@@ -5082,6 +5945,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Sin Nombre orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+      "filtered_citations": [
+        "39983702",
+        "41115422",
+        "42415885",
+        "42415885",
+        "42415885"
+      ],
+      "unfiltered_citations": [
+        "42690165",
+        "39983702",
+        "42662010",
+        "42662010",
+        "41115422"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Puumala orthohantavirus",
       "question": "What is known about Puumala orthohantavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
@@ -5197,6 +6084,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Puumala orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+      "filtered_citations": [
+        "41901774",
+        "42113832",
+        "42671285",
+        "42213706",
+        "42708795"
+      ],
+      "unfiltered_citations": [
+        "41901774",
+        "42113832",
+        "42671285",
+        "42213706",
+        "42708795"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
       "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
@@ -5322,6 +6233,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Seoul orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052498",
+      "filtered_citations": [
+        "9541619",
+        "42008533",
+        "42566355",
+        "42486304",
+        "12078291"
+      ],
+      "unfiltered_citations": [
+        "42761034",
+        "9541619",
+        "42733987",
+        "42733987",
+        "42733987"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Norovirus",
       "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_142786",
@@ -5442,6 +6377,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Norovirus",
+      "question": "What is the epidemiology and outbreak history of Norovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+      "filtered_citations": [
+        "42747833",
+        "42763644",
+        "42774977",
+        "42679649",
+        "42129318"
+      ],
+      "unfiltered_citations": [
+        "42747833",
+        "42763644",
+        "42774977",
+        "42679649",
+        "42671285"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 32,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Monkeypox virus",
       "question": "What is known about Monkeypox virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10244",
@@ -5554,6 +6513,30 @@
         "42723126",
         "42395043",
         "42395043"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 48,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the epidemiology and outbreak history of Monkeypox virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+      "filtered_citations": [
+        "42723126",
+        "42752865",
+        "42474038",
+        "41472220",
+        "42719836"
+      ],
+      "unfiltered_citations": [
+        "42723126",
+        "42752865",
+        "42474038",
+        "41472220",
+        "42719836"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
@@ -5682,6 +6665,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10243",
+      "filtered_citations": [
+        "42317376",
+        "42604648",
+        "41606733",
+        "42271160",
+        "42627681"
+      ],
+      "unfiltered_citations": [
+        "42723126",
+        "42430403",
+        "42135325",
+        "42317376",
+        "42708070"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Variola virus",
       "question": "What is known about Variola virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10255",
@@ -5802,6 +6809,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Variola virus",
+      "question": "What is the epidemiology and outbreak history of Variola virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+      "filtered_citations": [
+        "42135325",
+        "41666136",
+        "42531407",
+        "42531397",
+        "42332827"
+      ],
+      "unfiltered_citations": [
+        "41734221",
+        "42135325",
+        "42553282",
+        "42708070",
+        "42693145"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Andes orthohantavirus",
       "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
@@ -5914,6 +6945,30 @@
         "42662010",
         "42719836",
         "42719836"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 25,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Andes orthohantavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+      "filtered_citations": [
+        "42690165",
+        "42662010",
+        "42662010",
+        "42325048",
+        "42578775"
+      ],
+      "unfiltered_citations": [
+        "42690165",
+        "42662010",
+        "42662010",
+        "42657456",
+        "42539076"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -6042,6 +7097,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Machupo mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052317",
+      "filtered_citations": [
+        "42395044",
+        "42395044",
+        "41525354",
+        "42496116",
+        "42496116"
+      ],
+      "unfiltered_citations": [
+        "42395044",
+        "42395044",
+        "30123198",
+        "42511143",
+        "34999003"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human respirovirus 3",
       "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
@@ -6157,6 +7236,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the epidemiology and outbreak history of Human respirovirus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+      "filtered_citations": [
+        "41305396",
+        "37734534",
+        "42219293",
+        "39264196",
+        "42687618"
+      ],
+      "unfiltered_citations": [
+        "41305396",
+        "32809745",
+        "42374528",
+        "39772231",
+        "41334543"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 21,
       "filtered_status": null,
       "unfiltered_status": null
@@ -6282,6 +7385,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human metapneumovirus",
+      "question": "What is the epidemiology and outbreak history of Human metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+      "filtered_citations": [
+        "32809745",
+        "42741467",
+        "42501735",
+        "42723722",
+        "42771068"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "42741467",
+        "42501735",
+        "42775853",
+        "42723722"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 26,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Sendai virus",
       "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
@@ -6394,6 +7521,30 @@
         "42606356",
         "41936880",
         "42702719"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 13,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
+      "filtered_citations": [
+        "42581065",
+        "42172325",
+        "41784610",
+        "41631834",
+        "42734748"
+      ],
+      "unfiltered_citations": [
+        "42671285",
+        "42486304",
+        "42661313",
+        "42661313",
+        "42661313"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -6522,6 +7673,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lymphocytic choriomeningitis mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+      "filtered_citations": [
+        "42379809",
+        "42426565",
+        "42426565",
+        "42539047",
+        "34925303"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "42511143",
+        "42379809",
+        "4249614",
+        "42430403"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 32,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Influenza B virus",
       "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
@@ -6637,6 +7812,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the epidemiology and outbreak history of Influenza B virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11520",
+      "filtered_citations": [
+        "42238043",
+        "42700662",
+        "42696304",
+        "42723125",
+        "42747795"
+      ],
+      "unfiltered_citations": [
+        "42674419",
+        "42674419",
+        "42674416",
+        "40741060",
+        "42674417"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
@@ -6762,6 +7961,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Influenza C virus",
+      "question": "What is the epidemiology and outbreak history of Influenza C virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11552",
+      "filtered_citations": [
+        "40741060",
+        "40526871",
+        "39142019",
+        "42674419",
+        "42674419"
+      ],
+      "unfiltered_citations": [
+        "40741060",
+        "40526871",
+        "39142019",
+        "42674419",
+        "42674419"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Bundibugyo ebolavirus",
       "question": "What is known about Bundibugyo ebolavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
@@ -6882,6 +8105,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is the epidemiology and outbreak history of Bundibugyo ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_565995",
+      "filtered_citations": [
+        "42565265",
+        "42562123",
+        "42708069",
+        "42658870",
+        "42728358"
+      ],
+      "unfiltered_citations": [
+        "42565265",
+        "42562123",
+        "42708069",
+        "42658870",
+        "42728358"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "BK polyomavirus",
       "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
@@ -6994,6 +8241,30 @@
         "41606733",
         "42425227",
         "42719836"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1891762",
+      "filtered_citations": [
+        "42671253",
+        "42767667",
+        "42704656",
+        "42722200",
+        "42732395"
+      ],
+      "unfiltered_citations": [
+        "42761034",
+        "42661313",
+        "42661313",
+        "42661313",
+        "41334543"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -7122,6 +8393,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+      "filtered_citations": [
+        "42715497",
+        "42737859",
+        "42737859",
+        "42744829",
+        "42217080"
+      ],
+      "unfiltered_citations": [
+        "41334543",
+        "42761034",
+        "5312525",
+        "42135325",
+        "42723126"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus 16",
       "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
@@ -7237,6 +8532,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 40,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+      "filtered_citations": [
+        "36933562",
+        "38025679",
+        "38025679",
+        "38066444",
+        "37179021"
+      ],
+      "unfiltered_citations": [
+        "36933562",
+        "38025679",
+        "38025679",
+        "37658312",
+        "40287740"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
@@ -7362,6 +8681,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+      "filtered_citations": [
+        "42643682",
+        "42530471",
+        "42733473",
+        "42382355",
+        "42492293"
+      ],
+      "unfiltered_citations": [
+        "42704207",
+        "42733848",
+        "42671285",
+        "42524579",
+        "42643680"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Enterovirus C",
       "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_138950",
@@ -7477,6 +8820,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+      "filtered_citations": [
+        "42735468",
+        "39799084",
+        "42338686",
+        "38588959",
+        "42458209"
+      ],
+      "unfiltered_citations": [
+        "42751544",
+        "42751544",
+        "42735468",
+        "40741060",
+        "42129318"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 9,
       "filtered_status": null,
       "unfiltered_status": null
@@ -7602,6 +8969,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human parechovirus",
+      "question": "What is the epidemiology and outbreak history of Human parechovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_1803956",
+      "filtered_citations": [
+        "42669541",
+        "42648245",
+        "42129318",
+        "36533933",
+        "32475874"
+      ],
+      "unfiltered_citations": [
+        "42669541",
+        "42375660",
+        "42648245",
+        "39799084",
+        "42671285"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Hepatitis delta virus",
       "question": "What is known about Hepatitis delta virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12475",
@@ -7717,6 +9108,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the epidemiology and outbreak history of Hepatitis delta virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+      "filtered_citations": [
+        "42655132",
+        "42663377",
+        "42678147",
+        "42715288",
+        "42608708"
+      ],
+      "unfiltered_citations": [
+        "15560060",
+        "42655132",
+        "42663377",
+        "42678147",
+        "42605787"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
@@ -7842,6 +9257,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A16?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+      "filtered_citations": [
+        "42643680",
+        "42185971",
+        "42376602",
+        "42322358",
+        "42377031"
+      ],
+      "unfiltered_citations": [
+        "42643680",
+        "42671285",
+        "42185971",
+        "42743357",
+        "42702719"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 21,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Rhinovirus B",
       "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_147712",
@@ -7962,6 +9401,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rhinovirus B",
+      "question": "What is the epidemiology and outbreak history of Rhinovirus B?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_147712",
+      "filtered_citations": [
+        "37515294",
+        "39772231",
+        "36762370",
+        "36539100",
+        "37951882"
+      ],
+      "unfiltered_citations": [
+        "35303167",
+        "34988244",
+        "42414917",
+        "42767550",
+        "42767550"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Semliki Forest virus",
       "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11033",
@@ -8073,6 +9536,30 @@
         "42719836",
         "42719836",
         "34203149",
+        "41334543"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the epidemiology and outbreak history of Semliki Forest virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+      "filtered_citations": [
+        "42167235",
+        "42750482",
+        "42750482",
+        "42355501",
+        "42647575"
+      ],
+      "unfiltered_citations": [
+        "42325048",
+        "42671285",
+        "42488857",
+        "39205153",
         "41334543"
       ],
       "filtered_precision": 1.0,
@@ -8202,6 +9689,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Wesselsbron virus",
+      "question": "What is the epidemiology and outbreak history of Wesselsbron virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_164416",
+      "filtered_citations": [
+        "28616499",
+        "35336125",
+        "39652585",
+        "39547415",
+        "40439475"
+      ],
+      "unfiltered_citations": [
+        "28616499",
+        "35336125",
+        "39652585",
+        "39547415",
+        "40439475"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Spondweni virus",
       "question": "What is known about Spondweni virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64318",
@@ -8322,6 +9833,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Spondweni virus",
+      "question": "What is the epidemiology and outbreak history of Spondweni virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_64318",
+      "filtered_citations": [
+        "30124422",
+        "39480108",
+        "39480108",
+        "39480108",
+        "30726740"
+      ],
+      "unfiltered_citations": [
+        "30124422",
+        "30574581",
+        "41334543",
+        "42531165",
+        "42761034"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 11,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Kyasanur Forest disease virus",
       "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_33743",
@@ -8434,6 +9969,30 @@
         "42719836",
         "42719836",
         "34203149"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the epidemiology and outbreak history of Kyasanur Forest disease virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_33743",
+      "filtered_citations": [
+        "42763584",
+        "37293222",
+        "42658574",
+        "42658574",
+        "42658574"
+      ],
+      "unfiltered_citations": [
+        "42763584",
+        "42325048",
+        "42488857",
+        "42671285",
+        "39205153"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -8562,6 +10121,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Sapovirus",
+      "question": "What is the epidemiology and outbreak history of Sapovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_95341",
+      "filtered_citations": [
+        "42763194",
+        "42336878",
+        "42479772",
+        "42596048",
+        "42444377"
+      ],
+      "unfiltered_citations": [
+        "42763194",
+        "42336878",
+        "42479772",
+        "41334543",
+        "31334978"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Orf virus",
       "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10258",
@@ -8674,6 +10257,30 @@
         "42719836",
         "42719836",
         "42350480"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+      "filtered_citations": [
+        "42762843",
+        "42604199",
+        "42536682",
+        "42655115",
+        "42511150"
+      ],
+      "unfiltered_citations": [
+        "42671285",
+        "41334543",
+        "42690165",
+        "41734221",
+        "32827319"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -8802,6 +10409,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the epidemiology and outbreak history of Molluscum contagiosum virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10279",
+      "filtered_citations": [
+        "42272618",
+        "40847879",
+        "42101337",
+        "42746578",
+        "42385547"
+      ],
+      "unfiltered_citations": [
+        "28722927",
+        "40801024",
+        "42272618",
+        "40842764",
+        "40847879"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus 18",
       "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333761",
@@ -8907,6 +10538,28 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 3,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 18?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_333761",
+      "filtered_citations": [
+        "42339905",
+        "37582106",
+        "42362901"
+      ],
+      "unfiltered_citations": [
+        "38025679",
+        "38025679",
+        "36933562",
+        "37658312",
+        "37896791"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 3,
       "filtered_status": null,
       "unfiltered_status": null
@@ -9032,6 +10685,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 11?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10580",
+      "filtered_citations": [
+        "41484898",
+        "41696954",
+        "40619310",
+        "41454963",
+        "42576002"
+      ],
+      "unfiltered_citations": [
+        "38025679",
+        "38025679",
+        "36933562",
+        "41346095",
+        "37896791"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human mastadenovirus B",
       "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_108098",
@@ -9152,6 +10829,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus B?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_108098",
+      "filtered_citations": [
+        "40916329",
+        "41780169",
+        "42720153",
+        "41574296",
+        "40285019"
+      ],
+      "unfiltered_citations": [
+        "40916329",
+        "40400688",
+        "32809745",
+        "42671285",
+        "41780169"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 6,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human mastadenovirus D",
       "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_130310",
@@ -9264,6 +10965,30 @@
         "41935577",
         "40581051",
         "40400688"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 7,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_130310",
+      "filtered_citations": [
+        "40400688",
+        "40911481",
+        "40285019",
+        "40980888",
+        "42048387"
+      ],
+      "unfiltered_citations": [
+        "40400688",
+        "40916329",
+        "32809745",
+        "42671285",
+        "41780169"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -9392,6 +11117,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Saffold virus",
+      "question": "What is the epidemiology and outbreak history of Saffold virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_434309",
+      "filtered_citations": [
+        "31742735",
+        "32827319",
+        "37805831",
+        "35096871",
+        "37550694"
+      ],
+      "unfiltered_citations": [
+        "31742735",
+        "32827319",
+        "37805831",
+        "33165867",
+        "41334543"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 15,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human bocavirus",
       "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_329641",
@@ -9504,6 +11253,30 @@
         "34197863",
         "42507119",
         "35138784"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_329641",
+      "filtered_citations": [
+        "42507119",
+        "42577398",
+        "32475874",
+        "36762370",
+        "42374528"
+      ],
+      "unfiltered_citations": [
+        "42507119",
+        "42357695",
+        "41640223",
+        "41640223",
+        "42539076"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -9632,6 +11405,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11709",
+      "filtered_citations": [
+        "42431766",
+        "42648302",
+        "42413946",
+        "42373647",
+        "1850256"
+      ],
+      "unfiltered_citations": [
+        "42431766",
+        "42648302",
+        "37942579",
+        "42774934",
+        "2014240"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 10,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Simian immunodeficiency virus",
       "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
@@ -9747,6 +11544,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the epidemiology and outbreak history of Simian immunodeficiency virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11723",
+      "filtered_citations": [
+        "42413946",
+        "42611705",
+        "42596509",
+        "42579895",
+        "42655673"
+      ],
+      "unfiltered_citations": [
+        "42413946",
+        "42431766",
+        "29845522",
+        "42774934",
+        "42562123"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
@@ -9872,6 +11693,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is the epidemiology and outbreak history of Bovine viral diarrhea virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+      "filtered_citations": [
+        "42515575",
+        "41558100",
+        "41392238",
+        "42357663",
+        "41192064"
+      ],
+      "unfiltered_citations": [
+        "42515575",
+        "41558100",
+        "41392238",
+        "42357663",
+        "41192064"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 37,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Classical swine fever virus",
       "question": "What is known about Classical swine fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
@@ -9984,6 +11829,30 @@
         "42075721",
         "41936880",
         "34203149"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the epidemiology and outbreak history of Classical swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11096",
+      "filtered_citations": [
+        "42655702",
+        "42382115",
+        "42349522",
+        "42643321",
+        "42537723"
+      ],
+      "unfiltered_citations": [
+        "42683631",
+        "42393705",
+        "42761983",
+        "42698426",
+        "42773363"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -10112,6 +11981,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42497092",
+        "42507627",
+        "42532196",
+        "42541847",
+        "42319912"
+      ],
+      "unfiltered_citations": [
+        "42671285",
+        "42628886",
+        "42393705",
+        "42431766",
+        "41608126"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human betaherpesvirus 7",
       "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
@@ -10232,6 +12125,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the epidemiology and outbreak history of Human betaherpesvirus 7?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "41914137",
+        "41523194",
+        "41496662",
+        "42555674",
+        "42090422"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "42671285",
+        "41523194",
+        "42507119",
+        "41496662"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human gammaherpesvirus 8",
       "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
@@ -10344,6 +12261,30 @@
         "42515883",
         "35138784",
         "42744079"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the epidemiology and outbreak history of Human gammaherpesvirus 8?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "41683701",
+        "42515039",
+        "42489446",
+        "40967090",
+        "42655695"
+      ],
+      "unfiltered_citations": [
+        "42671285",
+        "41334543",
+        "39799084",
+        "41734221",
+        "42605787"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -10472,6 +12413,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42393705",
+        "42357635",
+        "42474184",
+        "42599182",
+        "42377026"
+      ],
+      "unfiltered_citations": [
+        "42393705",
+        "42671285",
+        "42628886",
+        "42357635",
+        "41608126"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 27,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Bovine alphaherpesvirus 1",
       "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
@@ -10587,6 +12552,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Bovine alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42628886",
+        "42573861",
+        "42625301",
+        "42626012",
+        "42515575"
+      ],
+      "unfiltered_citations": [
+        "42628886",
+        "42573861",
+        "42625301",
+        "42626012",
+        "42515575"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
       "filtered_corpus_size": 24,
       "filtered_status": null,
       "unfiltered_status": null
@@ -10712,6 +12701,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is the epidemiology and outbreak history of Gallid alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "42540703",
+        "40367867",
+        "40694389",
+        "42475862"
+      ],
+      "unfiltered_citations": [
+        "40559546",
+        "42671285",
+        "42540703",
+        "39799084",
+        "41640223"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Porcine epidemic diarrhea virus",
       "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_28295",
@@ -10827,6 +12840,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 29,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the epidemiology and outbreak history of Porcine epidemic diarrhea virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+      "filtered_citations": [
+        "42683631",
+        "42734722",
+        "42734722",
+        "42730980",
+        "42702239"
+      ],
+      "unfiltered_citations": [
+        "42683631",
+        "42734722",
+        "42734722",
+        "42730980",
+        "42273270"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
       "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
@@ -10952,6 +12989,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What is the epidemiology and outbreak history of Avian infectious bronchitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11120",
+      "filtered_citations": [
+        "42716083",
+        "42693188",
+        "42731210",
+        "42736223",
+        "42772140"
+      ],
+      "unfiltered_citations": [
+        "42716083",
+        "42693188",
+        "42634768",
+        "42731210",
+        "42736223"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Feline infectious peritonitis virus",
       "question": "What is known about Feline infectious peritonitis virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11135",
@@ -11064,6 +13125,30 @@
         "42620651",
         "42589191",
         "42648114"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What is the epidemiology and outbreak history of Feline infectious peritonitis virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+      "filtered_citations": [
+        "42648114",
+        "42749190",
+        "42767337",
+        "42731278",
+        "42669354"
+      ],
+      "unfiltered_citations": [
+        "42532773",
+        "42648114",
+        "42620651",
+        "42590897",
+        "42749190"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -11192,6 +13277,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Canine distemper virus",
+      "question": "What is the epidemiology and outbreak history of Canine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+      "filtered_citations": [
+        "42515586",
+        "42464370",
+        "42654997",
+        "42671264",
+        "42539248"
+      ],
+      "unfiltered_citations": [
+        "42515586",
+        "42464370",
+        "42654997",
+        "42671264",
+        "42539248"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 22,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Foot-and-mouth disease virus",
       "question": "What is known about Foot-and-mouth disease virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12110",
@@ -11307,6 +13416,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the epidemiology and outbreak history of Foot-and-mouth disease virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+      "filtered_citations": [
+        "42666653",
+        "42771287",
+        "42730613",
+        "42655794",
+        "42754172"
+      ],
+      "unfiltered_citations": [
+        "42466633",
+        "42466633",
+        "42391430",
+        "42666653",
+        "42722613"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
@@ -11432,6 +13565,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "African swine fever virus",
+      "question": "What is the epidemiology and outbreak history of African swine fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+      "filtered_citations": [
+        "42761983",
+        "42698426",
+        "42757426",
+        "42773363",
+        "42757425"
+      ],
+      "unfiltered_citations": [
+        "42761983",
+        "42698426",
+        "42757426",
+        "28616499",
+        "42708070"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 28,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Mammalian orthoreovirus",
       "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_351073",
@@ -11544,6 +13701,30 @@
         "42719836",
         "42719836",
         "41936880"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the epidemiology and outbreak history of Mammalian orthoreovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_351073",
+      "filtered_citations": [
+        "41526494",
+        "42137780",
+        "41630840",
+        "41511094",
+        "41436454"
+      ],
+      "unfiltered_citations": [
+        "42655680",
+        "41570236",
+        "42511143",
+        "42671285",
+        "42008533"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -11672,6 +13853,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Bluetongue virus",
+      "question": "What is the epidemiology and outbreak history of Bluetongue virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+      "filtered_citations": [
+        "42453008",
+        "42709478",
+        "42655042",
+        "42517987",
+        "42361785"
+      ],
+      "unfiltered_citations": [
+        "42566128",
+        "42453008",
+        "42709478",
+        "42655042",
+        "42517987"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 16,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Colorado tick fever virus",
       "question": "What is known about Colorado tick fever virus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_46839",
@@ -11782,6 +13987,30 @@
         "37862094",
         "38981504",
         "36443864",
+        "40512309",
+        "37293222"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is the epidemiology and outbreak history of Colorado tick fever virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_46839",
+      "filtered_citations": [
+        "37862094",
+        "36732081",
+        "40512309",
+        "37293222",
+        "36443864"
+      ],
+      "unfiltered_citations": [
+        "37862094",
+        "38981504",
+        "36732081",
         "40512309",
         "37293222"
       ],
@@ -11912,6 +14141,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rotavirus C",
+      "question": "What is the epidemiology and outbreak history of Rotavirus C?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_36427",
+      "filtered_citations": [
+        "41653780",
+        "40231817",
+        "42699683",
+        "38659036",
+        "39358760"
+      ],
+      "unfiltered_citations": [
+        "42496142",
+        "41653780",
+        "40231817",
+        "42699683",
+        "38659036"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 9,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus type 31",
       "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10585",
@@ -12024,6 +14277,30 @@
         "38025679",
         "38025679",
         "36085531"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 8,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 31?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10585",
+      "filtered_citations": [
+        "41346095",
+        "36085531",
+        "37896881",
+        "38980042",
+        "41759606"
+      ],
+      "unfiltered_citations": [
+        "41346095",
+        "36085531",
+        "38025679",
+        "38025679",
+        "40287740"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -12152,6 +14429,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 33?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10586",
+      "filtered_citations": [
+        "42267101",
+        "37461035",
+        "38346260",
+        "38385450",
+        "39396813"
+      ],
+      "unfiltered_citations": [
+        "40287740",
+        "38025679",
+        "38025679",
+        "41346095",
+        "42267101"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human papillomavirus type 45",
       "question": "What is known about Human papillomavirus type 45 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10593",
@@ -12272,6 +14573,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 45?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10593",
+      "filtered_citations": [
+        "41805182",
+        "40323272",
+        "37535949",
+        "37535949",
+        "41722563"
+      ],
+      "unfiltered_citations": [
+        "38025679",
+        "38025679",
+        "37896791",
+        "41805182",
+        "40287740"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Tai Forest ebolavirus",
       "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_186541",
@@ -12379,6 +14704,29 @@
         "41936880",
         "37992431",
         "42230576"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 4,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the epidemiology and outbreak history of Tai Forest ebolavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_186541",
+      "filtered_citations": [
+        "37992431",
+        "41082575",
+        "37470396",
+        "40173257"
+      ],
+      "unfiltered_citations": [
+        "42728358",
+        "35657325",
+        "37992431",
+        "42708069",
+        "42658870"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -12507,6 +14855,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lujo mammarenavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052314",
+      "filtered_citations": [
+        "34999003",
+        "34925303",
+        "42075721",
+        "31906112",
+        "41118368"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "34999003",
+        "42511143",
+        "41334543",
+        "42395044"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 12,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Human parainfluenza virus 1",
       "question": "What is known about Human parainfluenza virus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12730",
@@ -12627,6 +14999,30 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is the epidemiology and outbreak history of Human parainfluenza virus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+      "filtered_citations": [
+        "41305396",
+        "41065204",
+        "39223668",
+        "39684830",
+        "39819338"
+      ],
+      "unfiltered_citations": [
+        "41305396",
+        "41065204",
+        "39223668",
+        "39684830",
+        "39819338"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Enterovirus A71",
       "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_39054",
@@ -12742,6 +15138,30 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 37,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+      "filtered_citations": [
+        "42751544",
+        "42751544",
+        "42639682",
+        "42391430",
+        "39799084"
+      ],
+      "unfiltered_citations": [
+        "42751544",
+        "42751544",
+        "42376602",
+        "42639682",
+        "42129318"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
