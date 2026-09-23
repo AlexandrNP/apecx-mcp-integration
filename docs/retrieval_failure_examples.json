@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T12:21:37.305218+00:00",
-  "runs": 16,
+  "updated": "2026-09-23T14:02:22.601389+00:00",
+  "runs": 17,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 1117,
-  "n_false_negatives": 546,
+  "n_false_positives": 1208,
+  "n_false_negatives": 576,
   "new_this_run": {
-    "false_positives": 101,
-    "false_negatives": 41
+    "false_positives": 91,
+    "false_negatives": 30
   },
   "false_positives": [
     {
@@ -12435,6 +12435,985 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10245",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "42515653",
+      "title": "Toxic Relationships: Characterization of a Putative Virally Encoded Toxin in the Thermophilic Archaeal Fusellovirus SSV1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2100760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_244589"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "42515653",
+      "title": "Toxic Relationships: Characterization of a Putative Virally Encoded Toxin in the Thermophilic Archaeal Fusellovirus SSV1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2100760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_244589"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus pathogenesis and transmission?",
+      "cited_pmid": "42536682",
+      "title": "Host-Orf virus interactions: A comprehensive review of pathogenesis and immune evasion mechanisms.",
+      "actual_organisms": [
+        "Orf virus"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Puumala orthohantavirus?",
+      "cited_pmid": "42629476",
+      "title": "Complete genome sequence of the first alphahypovirus from the phytopathogenic fungus Curvularia americana on Poa pratensis in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1424291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2511840",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946791",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42515653",
+      "title": "Toxic Relationships: Characterization of a Putative Virally Encoded Toxin in the Thermophilic Archaeal Fusellovirus SSV1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2100760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_244589"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "42536682",
+      "title": "Host-Orf virus interactions: A comprehensive review of pathogenesis and immune evasion mechanisms.",
+      "actual_organisms": [
+        "Orf virus"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What diagnostic assays or laboratory tests detect Cowpox virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42163577",
+      "title": "Memory Cell and Antibody Responses Following a Single Versus Two Doses of Escherichia coli-Produced Vaccine Against Human Papillomavirus Types 16 and 18: A Real-World Study in Chinese Girls.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42424856",
+      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "41484898",
+      "title": "Clinical, virological, and immunohistochemical features of laryngeal papilloma with low-risk human papillomavirus infection: insights from a 13-year institutional cohort.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "42576002",
+      "title": "Sialadenoma papilliferum of the floor of the mouth with HPV Positivity: a rare case report and literature review.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "40619310",
+      "title": "High- and low-risk human papillomavirus prevalence in sinonasal inverted papilloma, a retrospective study.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "cited_pmid": "42178528",
+      "title": "PAX1 methylation for triage of HR-HPV-positive women: a comparative analysis with cytology and HPV16/18 genotyping.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "41077352",
+      "title": "Comparative Analysis Reveals Recurrent Molecular Alterations in Low-Risk Human Papillomavirus 6 and Human Papillomavirus 11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333754"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "41754573",
+      "title": "HaCaT Keratinocytes: A Differentiation-Competent Platform for Episomal Replication of HPV Type 11.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "42233768",
+      "title": "Sublineage-Specific A45S Polymorphism Alters the Biological Function of the Human Papillomavirus 11 E7 Protein.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "41454963",
+      "title": "Codon usage bias of low-risk human papillomavirus types 6 and 11.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42479772",
+      "title": "Human Sapovirus in the Post-Rotavirus Vaccine Era: From an Overlooked Gastroenteritis Pathogen to a Target for Precision Surveillance.",
+      "actual_organisms": [
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42514064",
+      "title": "Diagnostic and Microbiological Impact of Multiplex Syndromic Testing for Acute Infectious Gastroenteritis in a Regional Laboratory Network: A Real-World Before-After Study.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_620",
+        "http://purl.obolibrary.org/obo/NCBITaxon_629",
+        "http://purl.obolibrary.org/obo/NCBITaxon_642"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human parechovirus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genome organization and replication cycle of Semliki Forest virus?",
+      "cited_pmid": "42536258",
+      "title": "Molecular characterization and complete genome of a putative novel Vigna Yellow Mottle Soymovirus infecting wild red cowpea (Vigna angularis var. nipponensis).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_187214",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "42629476",
+      "title": "Complete genome sequence of the first alphahypovirus from the phytopathogenic fungus Curvularia americana on Poa pratensis in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1424291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2511840",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946791",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "42536258",
+      "title": "Molecular characterization and complete genome of a putative novel Vigna Yellow Mottle Soymovirus infecting wild red cowpea (Vigna angularis var. nipponensis).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_187214",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42347176",
+      "title": "Prescribed RNA Particle Vaccine Against Porcine Sapovirus Enhances Virus-Neutralizing Antibody Titers in Colostrum and Milk.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1454551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655653",
+      "title": "A Panel of VHH Antibodies Against Sabin Type 1 Poliovirus D-Antigen Reveals Strain-Specific and Cross-Serotype Reactivity.",
+      "actual_organisms": [
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "40822308",
+      "title": "Multiplex nucleic acid polymerase assay for eight severe hemorrhagic fever viruses based on dual-probe hybridization and melting curve analysis.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052505",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42684933",
+      "title": "Quantitative and molecular adjudication of BioFire FilmArray and QIAstat-Dx discordance in meningitis/encephalitis diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "42515653",
+      "title": "Toxic Relationships: Characterization of a Putative Virally Encoded Toxin in the Thermophilic Archaeal Fusellovirus SSV1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2100760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_244589"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "cited_pmid": "41754545",
+      "title": "Prolyl tRNA Synthetase Is Required for Mammarenavirus Multiplication.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42604648",
+      "title": "Cross-reactive immunity against orthopoxviruses after monkeypox virus infection or smallpox vaccination.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208086",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41370398",
+      "title": "Antigen-agnostic identification of poxvirus broadly neutralizing antibodies targeting OPG153.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147672"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus pathogenesis and transmission?",
+      "cited_pmid": "32100137",
+      "title": "Common and unique mechanisms of filamentous actin formation by viruses of the genus Orthorubulavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "42684933",
+      "title": "Quantitative and molecular adjudication of BioFire FilmArray and QIAstat-Dx discordance in meningitis/encephalitis diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "42350480",
+      "title": "A drug repurposing screen identifies antiviral compounds against Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "28722927",
+      "title": "Molluscum Contagiosum",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40801024",
+      "title": "Molecular Characterization of Molluscum Contagiosum Virus: Identification of a Putative New Clade Through MC021L Gene Analysis in Diyala Province, Iraq.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41017098",
+      "title": "ZELSUVMI: Pioneering At-Home Treatment for Molluscum Contagiosum.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus pathogenesis and transmission?",
+      "cited_pmid": "40842764",
+      "title": "Genital Giant Molluscum Contagiosum in an Immunocompetent Male Patient: A Case Report and Literature Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What antiviral drugs or treatments are effective against Molluscum contagiosum virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What antiviral drugs or treatments are effective against Molluscum contagiosum virus?",
+      "cited_pmid": "41497136",
+      "title": "Zelsuvmi for Molluscum Contagiosum: Clinical Evidence, Mechanisms, and Therapeutic Significance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42424856",
+      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42163577",
+      "title": "Memory Cell and Antibody Responses Following a Single Versus Two Doses of Escherichia coli-Produced Vaccine Against Human Papillomavirus Types 16 and 18: A Real-World Study in Chinese Girls.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "41077352",
+      "title": "Comparative Analysis Reveals Recurrent Molecular Alterations in Low-Risk Human Papillomavirus 6 and Human Papillomavirus 11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333754"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "40619310",
+      "title": "High- and low-risk human papillomavirus prevalence in sinonasal inverted papilloma, a retrospective study.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "41484898",
+      "title": "Clinical, virological, and immunohistochemical features of laryngeal papilloma with low-risk human papillomavirus infection: insights from a 13-year institutional cohort.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "42474801",
+      "title": "Type-specific sensitivity versus detection breadth in HPV diagnostics: improved analytical detection of HPV16/18 by nested PCR.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "42178528",
+      "title": "PAX1 methylation for triage of HR-HPV-positive women: a comparative analysis with cytology and HPV16/18 genotyping.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "42663706",
+      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "42303463",
+      "title": "Integrative analysis of the m6A epitranscriptome in HeLa-expressed HPV18 early transcripts reveals its potential impact on splicing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "41754573",
+      "title": "HaCaT Keratinocytes: A Differentiation-Competent Platform for Episomal Replication of HPV Type 11.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 18?",
+      "cited_pmid": "42233768",
+      "title": "Sublineage-Specific A45S Polymorphism Alters the Biological Function of the Human Papillomavirus 11 E7 Protein.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 18?",
+      "cited_pmid": "42143352",
+      "title": "Prevalence and persistence of high-risk HPV genotypes in unvaccinated asymptomatic women: a six-year study in Peru.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42424856",
+      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 pathogenesis and transmission?",
+      "cited_pmid": "42547256",
+      "title": "Giant anogenital condyloma acuminata with extragenital involvement in an immunocompetent host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "42474801",
+      "title": "Type-specific sensitivity versus detection breadth in HPV diagnostics: improved analytical detection of HPV16/18 by nested PCR.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "42178528",
+      "title": "PAX1 methylation for triage of HR-HPV-positive women: a comparative analysis with cytology and HPV16/18 genotyping.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12211"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "42663706",
+      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "41754573",
+      "title": "HaCaT Keratinocytes: A Differentiation-Competent Platform for Episomal Replication of HPV Type 11.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "41077352",
+      "title": "Comparative Analysis Reveals Recurrent Molecular Alterations in Low-Risk Human Papillomavirus 6 and Human Papillomavirus 11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333754"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 11?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
     }
   ],
   "false_negatives": [
@@ -15713,6 +16692,186 @@
       "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "42658574",
       "title": "Pericyte dysfunction alone may be insufficient to drive tick-borne orthoflavivirus non-structural protein 1-mediated microvascular permeability."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "missed_pmid": "42636668",
+      "title": "Evaluation of false positive enteric viruses results from the BIOFIRE\u00ae FILMARRAY\u00ae gastrointestinal PCR panel."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "42538721",
+      "title": "Norovirus and Sapovirus Infection-Associated Gastroenteritis in Pediatric Kidney Transplant Recipients: Report of Three Cases."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42589622",
+      "title": "Experimental Analysis of HPV16 L1/L2 Chimeric VLP Internalization by Human Peripheral Blood Leukocytes."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42525775",
+      "title": "CD36 is a receptor for human sapovirus."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42596048",
+      "title": "Sapovirus Infection in Kidney Transplant Recipients: A Case Series Demonstrating the Burden of an Enteric Viral Pathogen."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42763194",
+      "title": "[Molecular epidemiological characteristics of Sapovirus infection in pediatric diarrhea cases aged 5 years and under in Guangdong Province, 2022-2024]."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42336878",
+      "title": "Epidemiological and genetic characteristics of a sapovirus GI.6 acute gastroenteritis outbreak in Jiangxi, China."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "missed_pmid": "42479772",
+      "title": "Human Sapovirus in the Post-Rotavirus Vaccine Era: From an Overlooked Gastroenteritis Pathogen to a Target for Precision Surveillance."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "missed_pmid": "42636668",
+      "title": "Evaluation of false positive enteric viruses results from the BIOFIRE\u00ae FILMARRAY\u00ae gastrointestinal PCR panel."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "missed_pmid": "42199979",
+      "title": "Metaviromics reveals a high diversity of viruses belonging to the Caliciviridae family in seal feces."
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "missed_pmid": "42538721",
+      "title": "Norovirus and Sapovirus Infection-Associated Gastroenteritis in Pediatric Kidney Transplant Recipients: Report of Three Cases."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42536682",
+      "title": "Host-Orf virus interactions: A comprehensive review of pathogenesis and immune evasion mechanisms."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42604199",
+      "title": "Progressive Human Orf Virus Infection in a Kidney Transplant Recipient Successfully Treated with Cryotherapy Without Modification of Immunosuppression: A Case Report."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42762843",
+      "title": "Genetic characterization of Orf virus isolates targeting PACR gene: Optimization of a diagnostic PCR for host-specific differentiation of goat and sheep origin isolates."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "missed_pmid": "42655115",
+      "title": "Expression of Orf Virus B2L Protein and Monoclonal Antibody Preparation."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "missed_pmid": "42511150",
+      "title": "An ORFV F1L mRNA Vaccine Candidate: Preparation, Immunogenicity, and Comparison with a Commercial Live Vaccine."
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42272618",
+      "title": "First identification of Molluscum contagiosum poxvirus from human in Senegal."
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42101337",
+      "title": "Dupilumab for the treatment of eczema molluscatum: A pediatric case report and systematic literature review."
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42385547",
+      "title": "Divergent poxvirus identified in a non-native black rat from Madagascar."
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is known about Molluscum contagiosum virus pathogenesis and transmission?",
+      "missed_pmid": "42746578",
+      "title": "Reverse vaccinology and immunoinformatics identify multi-epitope vaccine candidates against molluscum contagiosum virus."
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What diagnostic assays or laboratory tests detect Molluscum contagiosum virus?",
+      "missed_pmid": "40847879",
+      "title": "Molluscum contagiosum: a comprehensive review of treatment modalities."
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42362901",
+      "title": "Human papillomavirus 18 E6-specific Affibody inhibits cervical cancer cell proliferation and induces apoptosis."
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42339905",
+      "title": "Early colposcopy in non-16/18 high-risk human papillomavirus positivity with normal cytology."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41484898",
+      "title": "Clinical, virological, and immunohistochemical features of laryngeal papilloma with low-risk human papillomavirus infection: insights from a 13-year institutional cohort."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41454963",
+      "title": "Codon usage bias of low-risk human papillomavirus types 6 and 11."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42233768",
+      "title": "Sublineage-Specific A45S Polymorphism Alters the Biological Function of the Human Papillomavirus 11 E7 Protein."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42576002",
+      "title": "Sialadenoma papilliferum of the floor of the mouth with HPV Positivity: a rare case report and literature review."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "missed_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "missed_pmid": "40619310",
+      "title": "High- and low-risk human papillomavirus prevalence in sinonasal inverted papilloma, a retrospective study."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
