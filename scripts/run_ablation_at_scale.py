@@ -208,6 +208,13 @@ _TARGETS: list[tuple[str, str]] = [
     ("Guaroa virus", "http://purl.obolibrary.org/obo/NCBITaxon_80941"),
     ("Modoc virus", "http://purl.obolibrary.org/obo/NCBITaxon_64300"),
     ("Rio Bravo virus", "http://purl.obolibrary.org/obo/NCBITaxon_64285"),
+    ("Ectromelia virus", "http://purl.obolibrary.org/obo/NCBITaxon_12643"),
+    ("Myxoma virus", "http://purl.obolibrary.org/obo/NCBITaxon_10273"),
+    ("Fowlpox virus", "http://purl.obolibrary.org/obo/NCBITaxon_10261"),
+    ("Sheeppox virus", "http://purl.obolibrary.org/obo/NCBITaxon_10266"),
+    ("Lumpy skin disease virus", "http://purl.obolibrary.org/obo/NCBITaxon_59509"),
+    ("Swinepox virus", "http://purl.obolibrary.org/obo/NCBITaxon_10276"),
+    ("Deerpox virus", "http://purl.obolibrary.org/obo/NCBITaxon_304399"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
