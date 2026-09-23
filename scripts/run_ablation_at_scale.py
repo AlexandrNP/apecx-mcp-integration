@@ -155,13 +155,21 @@ _TARGETS: list[tuple[str, str]] = [
     ("Bluetongue virus", "http://purl.obolibrary.org/obo/NCBITaxon_40051"),
     ("Colorado tick fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_46839"),
     ("Rotavirus C", "http://purl.obolibrary.org/obo/NCBITaxon_36427"),
-    ("Human papillomavirus type 16", "http://purl.obolibrary.org/obo/NCBITaxon_333760"),
     ("Human papillomavirus type 31", "http://purl.obolibrary.org/obo/NCBITaxon_10585"),
     ("Human papillomavirus type 33", "http://purl.obolibrary.org/obo/NCBITaxon_10586"),
     ("Human papillomavirus type 45", "http://purl.obolibrary.org/obo/NCBITaxon_10593"),
-    ("Bundibugyo ebolavirus", "http://purl.obolibrary.org/obo/NCBITaxon_565995"),
     ("Tai Forest ebolavirus", "http://purl.obolibrary.org/obo/NCBITaxon_186541"),
 ]
+
+# Fail-fast on a duplicate target: the same organism listed twice (by name OR by
+# IRI) silently inflates the corpus and double-counts its failures in the catalog
+# (the failure dedup keys on the organism NAME, so a second name for the same IRI
+# is NOT deduped). Guard here so an expansion that re-adds an existing organism
+# stops immediately instead of quietly corrupting the numbers.
+_dup_names = sorted({n for n in [t[0] for t in _TARGETS] if [t[0] for t in _TARGETS].count(n) > 1})
+_dup_iris = sorted({i for i in [t[1] for t in _TARGETS] if [t[1] for t in _TARGETS].count(i) > 1})
+if _dup_names or _dup_iris:
+    raise SystemExit(f"duplicate targets — names={_dup_names} iris={_dup_iris}")
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
 # comma-separated list of organism names; only those are run this pass. The
