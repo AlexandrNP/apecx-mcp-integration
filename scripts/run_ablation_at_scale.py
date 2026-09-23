@@ -159,6 +159,8 @@ _TARGETS: list[tuple[str, str]] = [
     ("Human papillomavirus type 31", "http://purl.obolibrary.org/obo/NCBITaxon_10585"),
     ("Human papillomavirus type 33", "http://purl.obolibrary.org/obo/NCBITaxon_10586"),
     ("Human papillomavirus type 45", "http://purl.obolibrary.org/obo/NCBITaxon_10593"),
+    ("Bundibugyo ebolavirus", "http://purl.obolibrary.org/obo/NCBITaxon_565995"),
+    ("Tai Forest ebolavirus", "http://purl.obolibrary.org/obo/NCBITaxon_186541"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
