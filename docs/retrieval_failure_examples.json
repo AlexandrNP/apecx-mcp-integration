@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T16:48:07.502099+00:00",
-  "runs": 23,
+  "updated": "2026-09-23T17:15:23.516617+00:00",
+  "runs": 24,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 1734,
-  "n_false_negatives": 812,
+  "n_false_positives": 1758,
+  "n_false_negatives": 813,
   "new_this_run": {
-    "false_positives": 91,
-    "false_negatives": 34
+    "false_positives": 35,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -18608,116 +18608,6 @@
       ]
     },
     {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 and neutralizing antibodies or vaccines?",
-      "cited_pmid": "42424856",
-      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 and neutralizing antibodies or vaccines?",
-      "cited_pmid": "42163577",
-      "title": "Memory Cell and Antibody Responses Following a Single Versus Two Doses of Escherichia coli-Produced Vaccine Against Human Papillomavirus Types 16 and 18: A Real-World Study in Chinese Girls.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
-        "http://purl.obolibrary.org/obo/NCBITaxon_173087",
-        "http://purl.obolibrary.org/obo/NCBITaxon_561"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 pathogenesis and transmission?",
-      "cited_pmid": "9732239",
-      "title": "High-risk human papillomavirus infection and E6 protein expression in lesions of the uterine cervix.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 pathogenesis and transmission?",
-      "cited_pmid": "37658312",
-      "title": "Clinical and epidemiological features of high-risk human papillomavirus infection in patients with cervical intraepithelial lesions.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 pathogenesis and transmission?",
-      "cited_pmid": "40287740",
-      "title": "Study on the detection rate, genetic polymorphism, viral load, persistent infection capacity, and pathogenicity of human papillomavirus type 33.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 16?",
-      "cited_pmid": "36786174",
-      "title": "Head-to-head comparison of genotyping of human papillomavirus by real-time multiplex PCR assay using type-specific primers and SPF10-PCR-based line probe assay.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
-        "http://purl.obolibrary.org/obo/NCBITaxon_10590",
-        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is the genome organization and replication cycle of Human papillomavirus type 16?",
-      "cited_pmid": "38980042",
-      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
-      "actual_organisms": [
-        "Human papillomavirus type 31",
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
-        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is the genome organization and replication cycle of Human papillomavirus type 16?",
-      "cited_pmid": "41805182",
-      "title": "Complete genome sequence of human papillomavirus type 45 identified from a cervical cancer patient in Bangladesh.",
-      "actual_organisms": [
-        "Human papillomavirus type 45",
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
-        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is the genome organization and replication cycle of Human papillomavirus type 16?",
-      "cited_pmid": "37461035",
-      "title": "Transcriptional activity of the long control region in human papillomavirus type 33 intratype variants.",
-      "actual_organisms": [
-        "Human papillomavirus type 33",
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
-        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is the genome organization and replication cycle of Human papillomavirus type 16?",
-      "cited_pmid": "36085531",
-      "title": "Analysis of the genomic diversity of human papillomavirus type 31 in cervical samples reveals the presence of novel sublineages in clade C.",
-      "actual_organisms": [
-        "Human papillomavirus type 31",
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
-      ]
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 16?",
-      "cited_pmid": "40516276",
-      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
-      "actual_organisms": [
-        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
-      ]
-    },
-    {
       "organism": "Human papillomavirus type 31",
       "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
       "cited_pmid": "42627231",
@@ -19100,6 +18990,395 @@
       "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "cited_pmid": "37992431",
+      "title": "Case fatality rate for Ebola disease, 1976-2022: A meta-analysis of global data.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "Tai Forest ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus pathogenesis and transmission?",
+      "cited_pmid": "39205153",
+      "title": "Non-Ebola Filoviruses: Potential Threats to Global Health Security.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2997411"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "40379380",
+      "title": "Molecular virulence determinants of human-pathogenic filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186539"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 pathogenesis and transmission?",
+      "cited_pmid": "40379380",
+      "title": "Molecular virulence determinants of human-pathogenic filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186539"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is the genome organization and replication cycle of Bundibugyo ebolavirus?",
+      "cited_pmid": "38297087",
+      "title": "Selective replication and vertical transmission of Ebola virus in experimentally infected Angolan free-tailed bats.",
+      "actual_organisms": [
+        "Ebola virus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "40379380",
+      "title": "Molecular virulence determinants of human-pathogenic filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186539"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37470396",
+      "title": "Single-dose VSV-based vaccine protects cynomolgus macaques from disease after Ta\u00ef Forest virus infection.",
+      "actual_organisms": [
+        "Tai Forest ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is known about Semliki Forest virus pathogenesis and transmission?",
+      "cited_pmid": "39205153",
+      "title": "Non-Ebola Filoviruses: Potential Threats to Global Health Security.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2997411"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genome organization and replication cycle of Wesselsbron virus?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is known about Spondweni virus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37470396",
+      "title": "Single-dose VSV-based vaccine protects cynomolgus macaques from disease after Ta\u00ef Forest virus infection.",
+      "actual_organisms": [
+        "Tai Forest ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus pathogenesis and transmission?",
+      "cited_pmid": "41082575",
+      "title": "Mucosal Ta\u00ef Forest virus infection causes disease in ferrets.",
+      "actual_organisms": [
+        "Ebola virus",
+        "Tai Forest ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 pathogenesis and transmission?",
+      "cited_pmid": "37658312",
+      "title": "Clinical and epidemiological features of high-risk human papillomavirus infection in patients with cervical intraepithelial lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genome organization and replication cycle of Foot-and-mouth disease virus?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is known about African swine fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36123040",
+      "title": "Detection of anti-ebolavirus antibodies in Ghanaian pigs.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42560595",
+      "title": "On the 50th year responding to Ebola: mapping diagnostic, vaccine, and therapeutic gaps across ebolavirus species.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42230576",
+      "title": "Recombinant Bombali ebolavirus in cynomolgus macaques as a survival model of Ebola virus disease.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2010960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus pathogenesis and transmission?",
+      "cited_pmid": "35657325",
+      "title": "Natural history of Sudan ebolavirus infection in rhesus and cynomolgus macaques.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus pathogenesis and transmission?",
+      "cited_pmid": "42728358",
+      "title": "The 2026 Bundibugyo Ebola Outbreak: A Warning for Global Preparedness for Future Epidemics.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186538",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "cited_pmid": "42749758",
+      "title": "Strengthening diagnostic capacity for viral hemorrhagic fevers in Forest Guinea: advances in Lassa fever case detection.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "cited_pmid": "34748613",
+      "title": "Species-specific quantification of circulating ebolavirus burden using VP40-derived peptide variants.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186539",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2010960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the genome organization and replication cycle of Tai Forest ebolavirus?",
+      "cited_pmid": "42742179",
+      "title": "Emergence of a Bundibugyo virus variant in the 2026 outbreak in the Democratic Republic of the Congo and Uganda.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052458",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the genome organization and replication cycle of Tai Forest ebolavirus?",
+      "cited_pmid": "38297087",
+      "title": "Selective replication and vertical transmission of Ebola virus in experimentally infected Angolan free-tailed bats.",
+      "actual_organisms": [
+        "Ebola virus"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the genome organization and replication cycle of Tai Forest ebolavirus?",
+      "cited_pmid": "39205153",
+      "title": "Non-Ebola Filoviruses: Potential Threats to Global Health Security.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2997411"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What antiviral drugs or treatments are effective against Tai Forest ebolavirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
       ]
     }
   ],
@@ -23833,60 +24112,6 @@
       "title": "KSHV and HPV modulate epithelial-to-mesenchymal transition in oral epithelial cells."
     },
     {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 and neutralizing antibodies or vaccines?",
-      "missed_pmid": "36933562",
-      "title": "Prevalence of human papillomavirus DNA and p16INK4a positivity in vulvar cancer and vulvar intraepithelial neoplasia: a systematic review and meta-analysis."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 and neutralizing antibodies or vaccines?",
-      "missed_pmid": "38314927",
-      "title": "Effectiveness of prophylactic HPV vaccines against cervical abnormalities and HPV infection in Japan: The J-HERS 2021 multicenter study."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 and neutralizing antibodies or vaccines?",
-      "missed_pmid": "42663706",
-      "title": "Frequent detection of high-risk HPV types other than HPV 16/18 in a cohort of French women who claimed to have been vaccinated."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 pathogenesis and transmission?",
-      "missed_pmid": "15617346",
-      "title": "[Human papillomavirus type 16 E6 oncogene and expression of P53, RB and PCNA in human cervical carcinoma]."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 pathogenesis and transmission?",
-      "missed_pmid": "38066444",
-      "title": "Immediate histologic correlation in patients with different HPV genotypes and ages: a single center analysis in China."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is known about Human papillomavirus type 16 pathogenesis and transmission?",
-      "missed_pmid": "42267101",
-      "title": "Association between multiple infection patterns of HPV33 and the risk of cervical carcinogenesis."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 16?",
-      "missed_pmid": "37276242",
-      "title": "High Specificity of HPV Cell-Free DNA Tests in Persons With HIV for the Detection of HPV-Related Cancer."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is the genome organization and replication cycle of Human papillomavirus type 16?",
-      "missed_pmid": "9600817",
-      "title": "Detection of human papillomavirus type 16 E6/E7 oncogene transcripts in dysplastic and nondysplastic cervical scrapes by nested RT-PCR."
-    },
-    {
-      "organism": "Human papillomavirus type 16",
-      "question": "What is the genome organization and replication cycle of Human papillomavirus type 16?",
-      "missed_pmid": "37179021",
-      "title": "Diversity of cervicovaginal human papillomavirus (HPV) genotypes and naturally occurring E6/E7 DNA polymorphisms of HPV-16 in Ghana."
-    },
-    {
       "organism": "Human papillomavirus type 31",
       "question": "What is known about Human papillomavirus type 31 and neutralizing antibodies or vaccines?",
       "missed_pmid": "36085531",
@@ -23975,6 +24200,66 @@
       "question": "What is known about Human papillomavirus type 45 pathogenesis and transmission?",
       "missed_pmid": "41722563",
       "title": "Structural and biochemical characterization of neutralizing antibodies targeting human papillomavirus type 45."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "missed_pmid": "38297087",
+      "title": "Selective replication and vertical transmission of Ebola virus in experimentally infected Angolan free-tailed bats."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "missed_pmid": "35657325",
+      "title": "Natural history of Sudan ebolavirus infection in rhesus and cynomolgus macaques."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bundibugyo ebolavirus?",
+      "missed_pmid": "34748613",
+      "title": "Species-specific quantification of circulating ebolavirus burden using VP40-derived peptide variants."
+    },
+    {
+      "organism": "Bundibugyo ebolavirus",
+      "question": "What is the genome organization and replication cycle of Bundibugyo ebolavirus?",
+      "missed_pmid": "42542607",
+      "title": "Closing Critical Gaps in the 2026 Bundibugyo Ebola Response: Five Actionable Priorities."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "missed_pmid": "38066444",
+      "title": "Immediate histologic correlation in patients with different HPV genotypes and ages: a single center analysis in China."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "missed_pmid": "40640817",
+      "title": "Genetic variability in HPV 33 and 35 E6 and E7 genes from South African and Mozambican women with different cervical cytology status."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37992431",
+      "title": "Case fatality rate for Ebola disease, 1976-2022: A meta-analysis of global data."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is known about Tai Forest ebolavirus pathogenesis and transmission?",
+      "missed_pmid": "40173257",
+      "title": "Ebola virus vaccination elicits Ebola virus-specific immune responses without substantial cross-reactivity to other filoviruses."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "missed_pmid": "41082575",
+      "title": "Mucosal Ta\u00ef Forest virus infection causes disease in ferrets."
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What diagnostic assays or laboratory tests detect Tai Forest ebolavirus?",
+      "missed_pmid": "37470396",
+      "title": "Single-dose VSV-based vaccine protects cynomolgus macaques from disease after Ta\u00ef Forest virus infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
