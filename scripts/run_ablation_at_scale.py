@@ -181,6 +181,10 @@ _KSWEEP_PATH = Path(__file__).resolve().parent.parent / "docs" / "retrieval_k_sw
 # (semantic search only, NO LLM — isolates pure RAG's retrieval-stage failures and
 # runs where the synthesis path is too heavy). The mode picks the reader + outputs.
 _MODE = os.environ.get("APECX_ABLATION_MODE", "llm").strip().lower()
+# The retrieval-depth k-sweep re-embeds the whole pool (roughly a third of a large
+# run's time). Its output (the depth curve) is qualitatively stable, so it can be
+# skipped on routine expansion runs and refreshed occasionally. Default: on.
+_KSWEEP = os.environ.get("APECX_ABLATION_KSWEEP", "1") != "0"
 
 
 def _is_tagged(gaz: Gazetteer, name: str, iri: str) -> bool:
@@ -340,7 +344,7 @@ def main() -> None:
     #     once, then search each unfiltered question at k in {1,3,5,10}. This is the
     #     RAG-oversaturation thesis measured on our own data — the filtered side is
     #     1.00 by construction, so only the unfiltered curve is informative.
-    if _MODE == "retrieval":
+    if _MODE == "retrieval" and _KSWEEP:
         from apecx_integration.agents.literature.ablation import organism_precision
         from apecx_integration.agents.literature.stamped_corpus import build_faiss_subindex
 
