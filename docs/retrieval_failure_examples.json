@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T23:18:21.978770+00:00",
-  "runs": 37,
+  "updated": "2026-09-23T23:49:06.007519+00:00",
+  "runs": 38,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 3489,
-  "n_false_negatives": 1299,
+  "n_false_positives": 3634,
+  "n_false_negatives": 1340,
   "new_this_run": {
-    "false_positives": 213,
-    "false_negatives": 54
+    "false_positives": 145,
+    "false_negatives": 41
   },
   "false_positives": [
     {
@@ -39025,6 +39025,1695 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "20219898",
+      "title": "Replication of not-known-vector flaviviruses in mosquito cells is restricted by intracellular host factors rather than by the viral envelope proteins.",
+      "actual_organisms": [
+        "Modoc virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "15661139",
+      "title": "Genetic characterization of Yokose virus, a flavivirus isolated from the bat in Japan.",
+      "actual_organisms": [
+        "Rio Bravo virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Japanese encephalitis virus?",
+      "cited_pmid": "15661139",
+      "title": "Genetic characterization of Yokose virus, a flavivirus isolated from the bat in Japan.",
+      "actual_organisms": [
+        "Rio Bravo virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Japanese encephalitis virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Nipah henipavirus?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What antiviral drugs or treatments are effective against O'nyong-nyong virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What are the clinical symptoms and disease presentation of Rabies lyssavirus?",
+      "cited_pmid": "12946018",
+      "title": "Acute encephalitis, a poliomyelitis-like syndrome and neurological sequelae in a hamster model for flavivirus infections.",
+      "actual_organisms": [
+        "Modoc virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is known about Sin Nombre orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Puumala orthohantavirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is known about Seoul orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What antiviral drugs or treatments are effective against Variola virus?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is known about Andes orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Andes orthohantavirus?",
+      "cited_pmid": "20706628",
+      "title": "Arboviral etiologies of acute febrile illnesses in Western South America, 2000-2007.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Mayaro virus",
+        "Oropouche virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11052",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the epidemiology and outbreak history of Andes orthohantavirus?",
+      "cited_pmid": "25695188",
+      "title": "Spatiotemporal analysis of Guaroa virus diversity, evolution, and spread in South America.",
+      "actual_organisms": [
+        "Guaroa virus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus pathogenesis and transmission?",
+      "cited_pmid": "23358636",
+      "title": "Pathogenesis of Modoc virus (Flaviviridae; Flavivirus) in persistently infected hamsters.",
+      "actual_organisms": [
+        "Modoc virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against BK polyomavirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B3?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genome organization and replication cycle of Semliki Forest virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What antiviral drugs or treatments are effective against Semliki Forest virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What antiviral drugs or treatments are effective against Wesselsbron virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What antiviral drugs or treatments are effective against Spondweni virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What antiviral drugs or treatments are effective against Kyasanur Forest disease virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is known about Orf virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33730454",
+      "title": "Two Randomized Trials of Neutralizing Antibodies to Prevent HIV-1 Acquisition.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 2?",
+      "cited_pmid": "38663013",
+      "title": "Trends in Mortality in People With HIV From 1999 through 2020: A Multicohort Collaboration.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses.",
+      "actual_organisms": [
+        "Bunyamwera virus",
+        "Guaroa virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What antiviral drugs or treatments are effective against Punta Toro virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against Merkel cell polyomavirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What antiviral drugs or treatments are effective against Torque teno virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tula orthohantavirus",
+      "question": "What is known about Tula orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is known about Thottapalayam orthohantavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What is known about Yaba monkey tumor virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is known about KI polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What antiviral drugs or treatments are effective against Tacaribe virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the genome organization and replication cycle of Pichinde virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What antiviral drugs or treatments are effective against Pichinde virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus pathogenesis and transmission?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is known about Cocal virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus pathogenesis and transmission?",
+      "cited_pmid": "42327211",
+      "title": "No-known-vector flaviviruses exhibit diverse replication and virulence phenotypes in mice.",
+      "actual_organisms": [
+        "Modoc virus",
+        "Rio Bravo virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_161675",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64280",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64283",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64294",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64299",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64311",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64312",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64894",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus pathogenesis and transmission?",
+      "cited_pmid": "30882310",
+      "title": "Differences in Neuropathogenesis of Encephalitic California Serogroup Viruses.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus pathogenesis and transmission?",
+      "cited_pmid": "42523513",
+      "title": "Jamaican fruit bats are susceptible to henipaviruses but rapidly control infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus pathogenesis and transmission?",
+      "cited_pmid": "34486974",
+      "title": "The host range restriction of bat-associated no-known-vector flaviviruses occurs post-entry.",
+      "actual_organisms": [
+        "Rio Bravo virus",
+        "Yellow fever virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "35631056",
+      "title": "Laboratory Validation of a Real-Time RT-PCR Assay for the Detection of Jamestown Canyon Virus.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "La Crosse virus",
+        "Snowshoe hare virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35514"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "cited_pmid": "39570990",
+      "title": "Development of a seroepidemiological tool for bat-borne and shrew-borne hantaviruses and its application using samples from Zambia.",
+      "actual_organisms": [
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genome organization and replication cycle of Batai virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the genome organization and replication cycle of Batai virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "24486952",
+      "title": "Favipiravir (T-705) protects against peracute Rift Valley fever virus infection and reduces delayed-onset neurologic disease observed with ribavirin treatment.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What antiviral drugs or treatments are effective against Batai virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the epidemiology and outbreak history of Batai virus?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "Enterovirus C",
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the epidemiology and outbreak history of Batai virus?",
+      "cited_pmid": "36975587",
+      "title": "A Brief History of Bunyaviral Family Hantaviridae.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is the epidemiology and outbreak history of Batai virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "cited_pmid": "35952300",
+      "title": "Virus del Zika",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is known about Guaroa virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genome organization and replication cycle of Guaroa virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genome organization and replication cycle of Guaroa virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genome organization and replication cycle of Guaroa virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What antiviral drugs or treatments are effective against Guaroa virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What antiviral drugs or treatments are effective against Guaroa virus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What antiviral drugs or treatments are effective against Guaroa virus?",
+      "cited_pmid": "34197863",
+      "title": "Potent inhibition of arenavirus infection by a novel fusion inhibitor.",
+      "actual_organisms": [
+        "Tacaribe virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the epidemiology and outbreak history of Guaroa virus?",
+      "cited_pmid": "42661362",
+      "title": "Emergence of Oropouche Virus, Venezuela, 2025.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the epidemiology and outbreak history of Guaroa virus?",
+      "cited_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What are the clinical symptoms and disease presentation of Guaroa virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What are the clinical symptoms and disease presentation of Guaroa virus?",
+      "cited_pmid": "28418305",
+      "title": "Clinical Manifestations of Punta Toro Virus Species Complex Infections, Panama, 2009.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is known about Modoc virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42099555",
+      "title": "An improved and high-throughput mpox virus microneutralization assay.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147673"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is known about Modoc virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What diagnostic assays or laboratory tests detect Modoc virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What diagnostic assays or laboratory tests detect Modoc virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What diagnostic assays or laboratory tests detect Modoc virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What diagnostic assays or laboratory tests detect Modoc virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "cited_pmid": "42418326",
+      "title": "Double-ring assembly of mpox virus I3L reveals an unconventional mechanism for ssDNA engagement.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What antiviral drugs or treatments are effective against Modoc virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What antiviral drugs or treatments are effective against Modoc virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What antiviral drugs or treatments are effective against Modoc virus?",
+      "cited_pmid": "34925303",
+      "title": "Screening and Identification of Lujo Virus Entry Inhibitors From an Food and Drug Administration-Approved Drugs Library.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the epidemiology and outbreak history of Modoc virus?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the epidemiology and outbreak history of Modoc virus?",
+      "cited_pmid": "42135325",
+      "title": "Digitization of Historical Data from Somalia's Last Smallpox Outbreaks 1976-1977.",
+      "actual_organisms": [
+        "Variola virus"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the epidemiology and outbreak history of Modoc virus?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the epidemiology and outbreak history of Modoc virus?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What are the clinical symptoms and disease presentation of Modoc virus?",
+      "cited_pmid": "32809745",
+      "title": "Human metapneumovirus Respiratory Infection",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What are the clinical symptoms and disease presentation of Modoc virus?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34578299",
+      "title": "Further Characterization of Rio Grande Virus and Potential for Cross Reactivity with Rift Valley Fever Virus Assays.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_629740",
+        "http://purl.obolibrary.org/obo/NCBITaxon_904722",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515606",
+      "title": "Antiviral Candidates and Vaccine Development for the Neglected Oropouche Virus.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42662010",
+      "title": "Andes virus and sin nombre virus: Similarities and distinctive features.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1932363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus pathogenesis and transmission?",
+      "cited_pmid": "41612555",
+      "title": "Detection of Oropouche and Punta Toro Virus Infections by Enhanced Surveillance, Panama, 2023-2024.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "Punta Toro virus"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus pathogenesis and transmission?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is the genome organization and replication cycle of Rio Bravo virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is the genome organization and replication cycle of Rio Bravo virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is the genome organization and replication cycle of Rio Bravo virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is the genome organization and replication cycle of Rio Bravo virus?",
+      "cited_pmid": "25934793",
+      "title": "Characterization of the Punta Toro species complex (genus Phlebovirus, family Bunyaviridae).",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1649830",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206377",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is the genome organization and replication cycle of Rio Bravo virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What antiviral drugs or treatments are effective against Rio Bravo virus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What antiviral drugs or treatments are effective against Rio Bravo virus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is the epidemiology and outbreak history of Rio Bravo virus?",
+      "cited_pmid": "42661362",
+      "title": "Emergence of Oropouche Virus, Venezuela, 2025.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What are the clinical symptoms and disease presentation of Rio Bravo virus?",
+      "cited_pmid": "28418305",
+      "title": "Clinical Manifestations of Punta Toro Virus Species Complex Infections, Panama, 2009.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978"
+      ]
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What are the clinical symptoms and disease presentation of Rio Bravo virus?",
+      "cited_pmid": "42742818",
+      "title": "Expanding the spectrum of oropouche virus neurological disease: emerging evidence from the 2025 Panama outbreak.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -46821,6 +48510,252 @@
       "question": "What are the clinical symptoms and disease presentation of Cocal virus?",
       "missed_pmid": "33396704",
       "title": "Limbic Encephalitis Brain Damage Induced by Cocal Virus in Adult Mice Is Reduced by Environmental Enrichment: Neuropathological and Behavioral Studies."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the epidemiology and outbreak history of SARS-CoV-2?",
+      "missed_pmid": "42639089",
+      "title": "High prevalence of human coronaviruses in rural and urban Ghana in the post-COVID-19 era."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genome organization and replication cycle of Zika virus?",
+      "missed_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "missed_pmid": "12565155",
+      "title": "A rapid and convenient variant of fusion-PCR to construct chimeric flaviviruses."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "missed_pmid": "34486974",
+      "title": "The host range restriction of bat-associated no-known-vector flaviviruses occurs post-entry."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
+      "missed_pmid": "15220415",
+      "title": "Exchanging the yellow fever virus envelope proteins with Modoc virus prM and E proteins results in a chimeric virus that is neuroinvasive in SCID mice."
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What diagnostic assays or laboratory tests detect Mayaro virus?",
+      "missed_pmid": "20706628",
+      "title": "Arboviral etiologies of acute febrile illnesses in Western South America, 2000-2007."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 1?",
+      "missed_pmid": "33730454",
+      "title": "Two Randomized Trials of Neutralizing Antibodies to Prevent HIV-1 Acquisition."
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "missed_pmid": "18414685",
+      "title": "[Molecular characterization of hantavirus Zhejiang isolate ZT10 strain from M. fartis]."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "34166792",
+      "title": "The burden of norovirus disease in children: a multi-country study in Chile, Brazil, Thailand and the Philippines."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "missed_pmid": "26872864",
+      "title": "Lactimidomycin is a broad-spectrum inhibitor of dengue and other RNA viruses."
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "11222097",
+      "title": "The Bunyamwera virus nonstructural protein NSs inhibits viral RNA synthesis in a minireplicon system."
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What diagnostic assays or laboratory tests detect Bunyamwera virus?",
+      "missed_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41921255",
+      "title": "Molecular mechanisms of Batai virus entry into mouse neuroblastoma N2a cells via Clathrin-Mediated Endocytosis."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41754537",
+      "title": "Unbiased Sequencing Identifies Batai Virus as an Emerging Orthobunyavirus in Hungarian Cattle."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus pathogenesis and transmission?",
+      "missed_pmid": "40445997",
+      "title": "Probing orthobunyavirus reassortment using Bunyamwera and Batai viruses as models."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What is known about Batai virus pathogenesis and transmission?",
+      "missed_pmid": "42368258",
+      "title": "Mechanistic mathematical model of the in vitro infection dynamics of Bunyamwera and Batai viruses including MOI-dependent shortening of the eclipse phase."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What diagnostic assays or laboratory tests detect Batai virus?",
+      "missed_pmid": "42655032",
+      "title": "Arbovirus Seropositivity in UK Zoo-Housed Birds, with Evidence for Autochthonous Exposure to Batai Virus."
+    },
+    {
+      "organism": "Batai virus",
+      "question": "What are the clinical symptoms and disease presentation of Batai virus?",
+      "missed_pmid": "39772143",
+      "title": "Innate Immune Response Against Batai Virus, Bunyamwera Virus, and Their Reassortants."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is known about Guaroa virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15448370",
+      "title": "Analysis of the medium (M) segment sequence of Guaroa virus and its comparison to other orthobunyaviruses."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "missed_pmid": "40971375",
+      "title": "Guaroa virus, a forgotten Latin American orthobunyavirus: A narrative review."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "missed_pmid": "14197886",
+      "title": "VIRUS BIOGRAPHIES. I. GROWTH OF WEST NILE AND GUAROA VIRUSES IN TISSUE CULTURE."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "missed_pmid": "5498601",
+      "title": "Enhancement of Friend leukemia virus infection in mice by Guaroa virus: quantitation and action of various oncogenic and nononcogenic viruses."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What diagnostic assays or laboratory tests detect Guaroa virus?",
+      "missed_pmid": "32186493",
+      "title": "Guaroa Virus and Plasmodium vivax Co-Infections, Peruvian Amazon."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genome organization and replication cycle of Guaroa virus?",
+      "missed_pmid": "11222097",
+      "title": "The Bunyamwera virus nonstructural protein NSs inhibits viral RNA synthesis in a minireplicon system."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the genome organization and replication cycle of Guaroa virus?",
+      "missed_pmid": "20810845",
+      "title": "Guaroa virus infection among humans in Bolivia and Peru."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What antiviral drugs or treatments are effective against Guaroa virus?",
+      "missed_pmid": "25695188",
+      "title": "Spatiotemporal analysis of Guaroa virus diversity, evolution, and spread in South America."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What is the epidemiology and outbreak history of Guaroa virus?",
+      "missed_pmid": "20706628",
+      "title": "Arboviral etiologies of acute febrile illnesses in Western South America, 2000-2007."
+    },
+    {
+      "organism": "Guaroa virus",
+      "question": "What are the clinical symptoms and disease presentation of Guaroa virus?",
+      "missed_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is known about Modoc virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12587070",
+      "title": "Impact of direct virus-induced neuronal dysfunction and immunological damage on the progression of flavivirus (Modoc) encephalitis in a murine model."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is known about Modoc virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35632766",
+      "title": "Increased Ifng and Il10 Expression Correlate with Disease in Rodent Models Experimentally Infected with Modoc Virus."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is known about Modoc virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "15220415",
+      "title": "Exchanging the yellow fever virus envelope proteins with Modoc virus prM and E proteins results in a chimeric virus that is neuroinvasive in SCID mice."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is known about Modoc virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12946018",
+      "title": "Acute encephalitis, a poliomyelitis-like syndrome and neurological sequelae in a hamster model for flavivirus infections."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What diagnostic assays or laboratory tests detect Modoc virus?",
+      "missed_pmid": "12565155",
+      "title": "A rapid and convenient variant of fusion-PCR to construct chimeric flaviviruses."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "missed_pmid": "23358636",
+      "title": "Pathogenesis of Modoc virus (Flaviviridae; Flavivirus) in persistently infected hamsters."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "missed_pmid": "20219898",
+      "title": "Replication of not-known-vector flaviviruses in mosquito cells is restricted by intracellular host factors rather than by the viral envelope proteins."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "missed_pmid": "25151534",
+      "title": "Substitution of the premembrane and envelope protein genes of Modoc virus with the homologous sequences of West Nile virus generates a chimeric virus that replicates in vertebrate but not mosquito cells."
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What antiviral drugs or treatments are effective against Modoc virus?",
+      "missed_pmid": "19622863",
+      "title": "Structure of the methyltransferase domain from the Modoc virus, a flavivirus with no known vector."
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34486974",
+      "title": "The host range restriction of bat-associated no-known-vector flaviviruses occurs post-entry."
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42327211",
+      "title": "No-known-vector flaviviruses exhibit diverse replication and virulence phenotypes in mice."
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What is known about Rio Bravo virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41162790",
+      "title": "Exchanging the stem-loop A promoter of Zika virus with the corresponding region of tick-borne encephalitis virus generates a chimeric virus that replicates in vertebrate and mosquito cells."
+    },
+    {
+      "organism": "Rio Bravo virus",
+      "question": "What diagnostic assays or laboratory tests detect Rio Bravo virus?",
+      "missed_pmid": "15661139",
+      "title": "Genetic characterization of Yokose virus, a flavivirus isolated from the bat in Japan."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
