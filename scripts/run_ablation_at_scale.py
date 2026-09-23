@@ -145,6 +145,12 @@ _TARGETS: list[tuple[str, str]] = [
     ("Suid alphaherpesvirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_10345"),
     ("Bovine alphaherpesvirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_10320"),
     ("Gallid alphaherpesvirus 2", "http://purl.obolibrary.org/obo/NCBITaxon_10390"),
+    ("Porcine epidemic diarrhea virus", "http://purl.obolibrary.org/obo/NCBITaxon_28295"),
+    ("Avian infectious bronchitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11120"),
+    ("Feline infectious peritonitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11135"),
+    ("Canine distemper virus", "http://purl.obolibrary.org/obo/NCBITaxon_3139435"),
+    ("Foot-and-mouth disease virus", "http://purl.obolibrary.org/obo/NCBITaxon_12110"),
+    ("African swine fever virus", "http://purl.obolibrary.org/obo/NCBITaxon_10497"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
