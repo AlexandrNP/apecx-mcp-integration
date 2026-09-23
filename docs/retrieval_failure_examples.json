@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T19:08:46.651566+00:00",
-  "runs": 29,
+  "updated": "2026-09-23T19:29:11.962172+00:00",
+  "runs": 30,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 2472,
-  "n_false_negatives": 965,
+  "n_false_positives": 2543,
+  "n_false_negatives": 985,
   "new_this_run": {
-    "false_positives": 192,
-    "false_negatives": 45
+    "false_positives": 71,
+    "false_negatives": 20
   },
   "false_positives": [
     {
@@ -27317,6 +27317,806 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the epidemiology and outbreak history of Sindbis virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the epidemiology and outbreak history of Powassan virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Kyasanur Forest disease virus?",
+      "cited_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges.",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42623526",
+      "title": "A randomized trial of viral vector and adjuvanted protein HBV therapeutic vaccine in people with chronic hepatitis B on nucleos(t)ide analogs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is known about Saffold virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669355",
+      "title": "Validation of SARS-CoV-2 neutralization assay using VSV-based pseudovirus system.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42198690",
+      "title": "Heterologous Sequential mRNA Vaccination of Indian Rhesus Macaques Elicits Broad Binding and Neutralizing Antibody Responses Against Diverse Henipaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1474807",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2847089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "Enterovirus C",
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus pathogenesis and transmission?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "35336125",
+      "title": "Development of Real-Time Molecular Assays for the Detection of Wesselsbron Virus in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "41452936",
+      "title": "Trans-complementation of chikungunya virus replicase mutants reveals alphavirus replication complexity and supports antiviral tool development.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Mayaro virus",
+        "Zika virus"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the epidemiology and outbreak history of Chandipura virus?",
+      "cited_pmid": "42605787",
+      "title": "The Role of the Medical Laboratory in Identifying 'Super-Spreaders': Correlation Between Viral Load Kinetics and Human-to-Human Infectivity.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the epidemiology and outbreak history of Chandipura virus?",
+      "cited_pmid": "5312525",
+      "title": "Virological study of an epidemic of febrile illness with haemorrhagic manifestations at Kanpur, India, during 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What are the clinical symptoms and disease presentation of Chandipura virus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669354",
+      "title": "Recombinant Toxoplasma gondii expressing FIPV spike protein S1 subunit: A proof-of-concept approach against toxoplasmosis and feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus pathogenesis and transmission?",
+      "cited_pmid": "40701750",
+      "title": "The significance of studying high-consequence pathogens in their natural reservoirs.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "9891810",
+      "title": "How do animal DNA viruses get to the nucleus?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the epidemiology and outbreak history of Toscana virus?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the epidemiology and outbreak history of Toscana virus?",
+      "cited_pmid": "42620593",
+      "title": "Rapid response and surveillance for high-risk contacts during May 2026 Andes hantavirus outbreak: a Northern Italy experience.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the epidemiology and outbreak history of Toscana virus?",
+      "cited_pmid": "42325048",
+      "title": "Hantaviruses in Southeast Europe: Climate change, rodent reservoirs, and One Health challenges.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the clinical symptoms and disease presentation of Toscana virus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What are the clinical symptoms and disease presentation of Toscana virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "Enterovirus C",
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "42395044",
+      "title": "Understanding machupo virus: A neglected arenavirus with global health importance.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3065501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What diagnostic assays or laboratory tests detect Rocio virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What antiviral drugs or treatments are effective against Rocio virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "42620593",
+      "title": "Rapid response and surveillance for high-risk contacts during May 2026 Andes hantavirus outbreak: a Northern Italy experience.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "41334543",
+      "title": "[Addition of Three Viruses to the High-risk Pathogens of the Infectious Disease Prevention and Management Act].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the epidemiology and outbreak history of Rocio virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the clinical symptoms and disease presentation of Rocio virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the clinical symptoms and disease presentation of Rocio virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What are the clinical symptoms and disease presentation of Rocio virus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
     }
   ],
   "false_negatives": [
@@ -33109,6 +33909,126 @@
       "question": "What diagnostic assays or laboratory tests detect Human astrovirus?",
       "missed_pmid": "42269744",
       "title": "Environmental surveillance of enteric viruses in mussels reveals reduced contamination during the pandemic restriction period."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "missed_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "missed_pmid": "42379809",
+      "title": "Detection of lymphocytic choriomeningitis virus (LCMV) in the common house mice (Mus musculus) in Italy: an underrecognized threat to human health."
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis delta virus?",
+      "missed_pmid": "42162913",
+      "title": "Progression to cirrhosis in chronic hepatitis D with mild-to-moderate fibrosis: Insights from a multicenter European cohort."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42546036",
+      "title": "Unravelling the genomic epidemiology and antigenic evolution of Chandipura virus: A genetically constrained neurotropic threat."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42132128",
+      "title": "LRP-1 as Target of Broad-Specific Antivirals: Benefits, Risks and Challenges."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42749243",
+      "title": "DNA barcoding of sand flies from Chandipura-affected districts of Gujarat, India."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "missed_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges."
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "missed_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\"."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42294738",
+      "title": "Toscana Virus Diagnosis via a Point-of-Care Tool Based on Disposable Optical Fiber Biosensors."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42467473",
+      "title": "Human pegivirus, Toscana virus and herpesviruses identified in cerebrospinal fluid from adults with unexplained neurologic disease, Spain, 2022-2023."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is known about Toscana virus pathogenesis and transmission?",
+      "missed_pmid": "42625297",
+      "title": "Natural Infection by Toscana Virus and Other Phleboviruses in Wild Sand Flies From Spain: Prevalence, Genetic Characterization and Tripartite Interactions With Leishmania infantum and Wolbachia."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "missed_pmid": "42516877",
+      "title": "Clinical review of Toscana virus: a Mediterranean Neuroinvasive Phlebovirus."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What diagnostic assays or laboratory tests detect Toscana virus?",
+      "missed_pmid": "34990710",
+      "title": "Viral capture sequencing detects unexpected viruses in the cerebrospinal fluid of adults with meningitis."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "missed_pmid": "42163416",
+      "title": "Toscana virus infection acquired in Campania, Italy, in a Hungarian traveller: case report with mini-review."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "missed_pmid": "41849539",
+      "title": "Investigation of neurotropic arboviruses in wild and domestic animals in Amazon region, 2023-2024."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What antiviral drugs or treatments are effective against Toscana virus?",
+      "missed_pmid": "42686067",
+      "title": "From gibson assembly to cell-free expression: A guide to recombinant plasmid and toscana virus N protein production."
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the epidemiology and outbreak history of Toscana virus?",
+      "missed_pmid": "42002815",
+      "title": "Catching up with old friends: a 2-year survey of phlebotomine sand\u00a0fly-borne phleboviruses presence in southern Portugal."
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease."
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39480108",
+      "title": "Emerging mosquito-borne flaviviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
