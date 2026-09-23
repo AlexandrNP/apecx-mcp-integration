@@ -246,7 +246,10 @@ def retrieval_reader() -> Reader:
         key = frozenset(str(r["pmid"]) for r in records)
         subindex = cache.get(key)
         if subindex is None:
-            subindex = build_faiss_subindex(records, model=model)
+            # Small encode batch bounds the transient memory spike when embedding
+            # the large pooled corpus (the whole-pool index covers thousands of
+            # records); embeddings are unchanged, only the peak allocation drops.
+            subindex = build_faiss_subindex(records, model=model, encode_batch_size=8)
             cache[key] = subindex
         hits = subindex.search(question, k=k)
         return {"citations": [str(h["pmid"]) for h in hits]}

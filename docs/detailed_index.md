@@ -265,7 +265,7 @@ _Per-abstract taxon stamping + an in-memory, IRI-filterable store, plus a_
 - class `SubIndex` — A tiny cosine-similarity FAISS sub-index over a list of records.
   - `def __init__(self, records: list[dict], index: faiss.Index | None, model: SentenceTransformer | None)`
   - `def search(self, query: str, k: int=5)`
-- `def build_faiss_subindex(records: list[dict], *, text_key: str='abstract', model_name: str=_DEFAULT_MODEL, model: SentenceTransformer | None=None)` — Build a cosine-similarity FAISS sub-index over ``records``.
+- `def build_faiss_subindex(records: list[dict], *, text_key: str='abstract', model_name: str=_DEFAULT_MODEL, model: SentenceTransformer | None=None, encode_batch_size: int=32)` — Build a cosine-similarity FAISS sub-index over ``records``.
 
 ## `src/apecx_integration/agents/rag_synthesis/__init__.py`
 _rag_synthesis — LLM synthesis with retrieved RAG chunks +_

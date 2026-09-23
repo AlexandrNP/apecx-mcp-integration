@@ -99,6 +99,7 @@ def build_faiss_subindex(
     text_key: str = "abstract",
     model_name: str = _DEFAULT_MODEL,
     model: SentenceTransformer | None = None,
+    encode_batch_size: int = 32,
 ) -> SubIndex:
     """Build a cosine-similarity FAISS sub-index over ``records``.
 
@@ -129,8 +130,13 @@ def build_faiss_subindex(
         model = SentenceTransformer(model_name, device="cpu")
 
     texts = [_record_text(r, text_key) for r in records]
+    # ``encode_batch_size`` bounds the transient allocation per forward pass;
+    # lowering it (e.g. for a large pooled corpus) shrinks the memory spike
+    # WITHOUT changing the embeddings, which are computed per-text. Default 32
+    # matches SentenceTransformer's own default, so callers see no change.
     embeddings = model.encode(
         texts,
+        batch_size=encode_batch_size,
         convert_to_numpy=True,
         normalize_embeddings=True,
         show_progress_bar=False,
