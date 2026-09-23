@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-23T18:17:46.017705+00:00",
+  "timestamp": "2026-09-23T18:49:00.443533+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -105,6 +105,8 @@
     "Human papillomavirus type 33": true,
     "Human papillomavirus type 45": true,
     "Tai Forest ebolavirus": true,
+    "Rubella virus": true,
+    "Primate erythroparvovirus 1": true,
     "Lujo mammarenavirus": true,
     "Middle East respiratory syndrome-related coronavirus": false,
     "Human parainfluenza virus 1": true,
@@ -112,7 +114,7 @@
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 1971,
+  "corpus_size": 2010,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -213,6 +215,8 @@
     "Human papillomavirus type 33": "dictionary",
     "Human papillomavirus type 45": "dictionary",
     "Tai Forest ebolavirus": "dictionary",
+    "Rubella virus": "dictionary",
+    "Primate erythroparvovirus 1": "dictionary",
     "Lujo mammarenavirus": "dictionary",
     "Middle East respiratory syndrome-related coronavirus": "dictionary",
     "Human parainfluenza virus 1": "dictionary",
@@ -615,6 +619,14 @@
       "harvested": 20,
       "stamped_with_own_iri": 4
     },
+    "Rubella virus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 5
+    },
+    "Primate erythroparvovirus 1": {
+      "harvested": 20,
+      "stamped_with_own_iri": 0
+    },
     "Lujo mammarenavirus": {
       "harvested": 20,
       "stamped_with_own_iri": 12
@@ -638,13 +650,17 @@
       "reason": "only 0 stamped records (< 1)"
     },
     {
+      "organism": "Primate erythroparvovirus 1",
+      "reason": "only 0 stamped records (< 1)"
+    },
+    {
       "organism": "Middle East respiratory syndrome-related coronavirus",
       "reason": "not tagged at any gazetteer limit"
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.3702970297029703,
-  "n_cases": 707,
+  "mean_unfiltered_precision": 0.3714285714285714,
+  "n_cases": 714,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -2346,7 +2362,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2370,7 +2386,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2394,7 +2410,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2418,7 +2434,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2442,7 +2458,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2466,7 +2482,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2490,7 +2506,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 29,
+      "filtered_corpus_size": 30,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5527,7 +5543,7 @@
         "42742725",
         "42534944",
         "42580145",
-        "42621909"
+        "42664849"
       ],
       "unfiltered_citations": [
         "42536013",
@@ -5538,7 +5554,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5562,7 +5578,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5586,7 +5602,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5610,7 +5626,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5634,7 +5650,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5658,7 +5674,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5682,7 +5698,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 29,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6531,21 +6547,22 @@
       "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
       "filtered_citations": [
+        "30521206",
         "35521982",
         "36961236",
         "41593743",
         "39088577"
       ],
       "unfiltered_citations": [
+        "30521206",
         "35521982",
         "36961236",
         "41593743",
-        "42604648",
-        "42576544"
+        "42604648"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 4,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6554,21 +6571,22 @@
       "question": "What is known about Mumps orthorubulavirus pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
       "filtered_citations": [
+        "30521206",
         "36961236",
         "41593743",
         "35521982",
         "39088577"
       ],
       "unfiltered_citations": [
+        "30521206",
         "36961236",
         "41593743",
         "35521982",
-        "32809745",
-        "42536682"
+        "32809745"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 4,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6578,20 +6596,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
       "filtered_citations": [
         "36961236",
+        "30521206",
         "35521982",
         "41593743",
         "39088577"
       ],
       "unfiltered_citations": [
         "36961236",
+        "30521206",
         "35521982",
         "42378730",
-        "42761597",
-        "41593743"
+        "42761597"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 4,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6603,6 +6622,7 @@
         "41593743",
         "36961236",
         "35521982",
+        "30521206",
         "39088577"
       ],
       "unfiltered_citations": [
@@ -6610,11 +6630,11 @@
         "36961236",
         "35521982",
         "30123198",
-        "42684008"
+        "30521206"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 4,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6623,21 +6643,22 @@
       "question": "What antiviral drugs or treatments are effective against Mumps orthorubulavirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
       "filtered_citations": [
+        "30521206",
         "39088577",
         "35521982",
         "36961236",
         "41593743"
       ],
       "unfiltered_citations": [
+        "30521206",
         "39088577",
         "35138784",
         "34014630",
-        "42172325",
-        "41936880"
+        "42172325"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 4,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6646,21 +6667,22 @@
       "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
       "filtered_citations": [
+        "30521206",
         "35521982",
         "36961236",
         "41593743",
         "39088577"
       ],
       "unfiltered_citations": [
+        "30521206",
         "35521982",
         "36961236",
         "41593743",
-        "42605787",
-        "42439134"
+        "42490629"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 4,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6669,21 +6691,22 @@
       "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2560602",
       "filtered_citations": [
+        "30521206",
         "36961236",
         "35521982",
         "41593743",
         "39088577"
       ],
       "unfiltered_citations": [
+        "30521206",
         "36961236",
         "35521982",
         "41593743",
-        "32809745",
-        "42683038"
+        "32809745"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 4,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8207,8 +8230,8 @@
         "42536013",
         "42172325",
         "42687618",
-        "41979349",
-        "42522621"
+        "42687618",
+        "41979349"
       ],
       "unfiltered_citations": [
         "42536013",
@@ -8219,7 +8242,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8229,10 +8252,10 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
       "filtered_citations": [
         "42687618",
+        "42687618",
         "41810598",
         "41810598",
-        "42233639",
-        "42055251"
+        "42233639"
       ],
       "unfiltered_citations": [
         "40379380",
@@ -8243,7 +8266,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8253,21 +8276,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
       "filtered_citations": [
         "42687618",
+        "42687618",
         "42522621",
         "37734534",
-        "41305396",
-        "37875452"
+        "41305396"
       ],
       "unfiltered_citations": [
         "42378730",
         "41966613",
         "42687618",
-        "41436454",
-        "41864935"
+        "42687618",
+        "41436454"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8279,8 +8302,8 @@
         "39264196",
         "42219293",
         "42687618",
-        "41979349",
-        "41810598"
+        "42687618",
+        "41979349"
       ],
       "unfiltered_citations": [
         "30123198",
@@ -8291,7 +8314,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8304,7 +8327,7 @@
         "42570380",
         "42536013",
         "42687618",
-        "41979349"
+        "42687618"
       ],
       "unfiltered_citations": [
         "35138784",
@@ -8315,7 +8338,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8339,7 +8362,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8349,10 +8372,10 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11216",
       "filtered_citations": [
         "42687618",
+        "42687618",
         "37734534",
         "41305396",
-        "37875452",
-        "41810598"
+        "37875452"
       ],
       "unfiltered_citations": [
         "42501735",
@@ -8363,7 +8386,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 21,
+      "filtered_corpus_size": 22,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8836,10 +8859,10 @@
       ],
       "unfiltered_citations": [
         "30123198",
+        "30521206",
         "42511143",
         "42379809",
-        "4249614",
-        "42430403"
+        "4249614"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -9395,7 +9418,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9419,7 +9442,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9443,7 +9466,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9467,7 +9490,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9491,7 +9514,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9515,7 +9538,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9539,7 +9562,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 11,
+      "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9942,8 +9965,8 @@
         "42185971",
         "41864935",
         "42378730",
-        "41436454",
-        "42775090"
+        "42579901",
+        "41436454"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -10037,9 +10060,9 @@
       "unfiltered_citations": [
         "42677107",
         "42733848",
+        "42579901",
         "41914137",
-        "40911481",
-        "41511094"
+        "40911481"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -10229,9 +10252,9 @@
       "unfiltered_citations": [
         "42536013",
         "40431735",
-        "42716004",
-        "42060533",
-        "42671937"
+        "42534940",
+        "42466599",
+        "42716004"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -10301,8 +10324,8 @@
       "unfiltered_citations": [
         "42383739",
         "30123198",
+        "42710491",
         "42648245",
-        "42573240",
         "42573240"
       ],
       "filtered_precision": 1.0,
@@ -10350,8 +10373,8 @@
         "42669541",
         "42375660",
         "42648245",
-        "39799084",
-        "42671285"
+        "42710491",
+        "39799084"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -10371,11 +10394,11 @@
         "42129318"
       ],
       "unfiltered_citations": [
+        "42703548",
+        "42627371",
+        "42466599",
         "42669541",
-        "42375660",
-        "42708795",
-        "42708795",
-        "9919918"
+        "42515626"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -10711,7 +10734,7 @@
         "40911481",
         "41914137",
         "42185971",
-        "41968577"
+        "42627371"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -11379,11 +11402,11 @@
         "39480108"
       ],
       "unfiltered_citations": [
+        "42627371",
+        "42729421",
+        "42703548",
         "41914137",
-        "42572296",
-        "40911481",
-        "32633998",
-        "42683038"
+        "42572296"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -12545,7 +12568,7 @@
         "41914137",
         "40911481",
         "32809745",
-        "41246380"
+        "42703548"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -17083,6 +17106,174 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42490629",
+        "42707121",
+        "42748122",
+        "42512603",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "42490629",
+        "42707121",
+        "34041391",
+        "42333966",
+        "42042791"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42490629",
+        "42707121",
+        "42748122",
+        "42512603",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "42490629",
+        "42707121",
+        "32100137",
+        "31334978",
+        "42240370"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42707121",
+        "42490629",
+        "42512603",
+        "42748122",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "42707121",
+        "41525354",
+        "42378730",
+        "42638066",
+        "42638066"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42490629",
+        "42707121",
+        "42748122",
+        "42512603",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "30123198",
+        "41861695",
+        "42490629",
+        "36394457",
+        "41603610"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42490629",
+        "42707121",
+        "42748122",
+        "42512603",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "42490629",
+        "41936880",
+        "41600866",
+        "41394564",
+        "42707121"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the epidemiology and outbreak history of Rubella virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42490629",
+        "42707121",
+        "42748122",
+        "42512603",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "42490629",
+        "42707121",
+        "42748122",
+        "42475728",
+        "35521982"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the clinical symptoms and disease presentation of Rubella virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11041",
+      "filtered_citations": [
+        "42707121",
+        "42490629",
+        "42748122",
+        "42512603",
+        "42611114"
+      ],
+      "unfiltered_citations": [
+        "42707121",
+        "42490629",
+        "42475728",
+        "32633998",
+        "41914137"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Lujo mammarenavirus",
       "question": "What is known about Lujo mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052314",
@@ -17242,10 +17433,10 @@
         "41246380",
         "5358980",
         "41914137",
-        "34925303"
+        "42703548"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 12,
       "filtered_status": null,
       "unfiltered_status": null
@@ -17313,11 +17504,11 @@
         "42378730",
         "42522621",
         "42687618",
-        "38900074",
-        "42300833"
+        "42687618",
+        "38900074"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
@@ -17410,10 +17601,10 @@
         "38900074",
         "41305396",
         "9919918",
-        "42300833"
+        "42627371"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null

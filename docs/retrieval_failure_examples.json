@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T18:17:46.001526+00:00",
-  "runs": 27,
+  "updated": "2026-09-23T18:49:00.427658+00:00",
+  "runs": 28,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 2244,
-  "n_false_negatives": 913,
+  "n_false_positives": 2280,
+  "n_false_negatives": 920,
   "new_this_run": {
-    "false_positives": 200,
-    "false_negatives": 30
+    "false_positives": 36,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -24694,6 +24694,397 @@
       "actual_organisms": [
         "Sapovirus"
       ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
+      "cited_pmid": "42490629",
+      "title": "Progress Toward Rubella and Congenital Rubella Syndrome Elimination - Worldwide, 2012-2024.",
+      "actual_organisms": [
+        "Rubella virus"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the epidemiology and outbreak history of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "30521206",
+      "title": "Mumps",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42534940",
+      "title": "Persistent Parvovirus B19 Viremia Despite Repeated Intravenous Immunoglobulin Therapy After Kidney Transplantation: A Case Report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42466599",
+      "title": "Persistent parvovirus B19 infection in an older patient with rheumatoid arthritis receiving immunosuppressive therapy: A case report and literature review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human parechovirus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human parechovirus?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human parechovirus?",
+      "cited_pmid": "42515626",
+      "title": "Distinctive Inflammatory Traits of Parvovirus B19 Infection Associated with Persisting Autoimmunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A16?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What are the clinical symptoms and disease presentation of Spondweni virus?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What are the clinical symptoms and disease presentation of Spondweni virus?",
+      "cited_pmid": "42729421",
+      "title": "Dropped head syndrome as the sole presenting manifestation of probable post-cytomegalovirus immune-mediated brainstem encephalitis in an immunocompetent woman: a case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What are the clinical symptoms and disease presentation of Spondweni virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34041391",
+      "title": "Combination of highly antigenic nucleoproteins to inaugurate a cross-reactive next generation vaccine candidate against Arenaviridae family.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "Lujo mammarenavirus",
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907957",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052307",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42333966",
+      "title": "Antigenic Multi-Epitope Vaccine Against Ross River Virus Using Capsid and Envelope Proteins via Immunoinformatics and Reverse Vaccinology Approaches.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus pathogenesis and transmission?",
+      "cited_pmid": "32100137",
+      "title": "Common and unique mechanisms of filamentous actin formation by viruses of the genus Orthorubulavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560525",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus pathogenesis and transmission?",
+      "cited_pmid": "42240370",
+      "title": "Ross River virus transmission, infection, and disease: two and a half decades of research progress-an updated cross-disciplinary review.",
+      "actual_organisms": [
+        "Ross River virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "41525354",
+      "title": "Isothermal real-time RT-RPA for Machupo virus detection: Field-adaptable sensitivity comparable with laboratory PCR.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "41600866",
+      "title": "Screening of the Pandemic Response Box Library Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What antiviral drugs or treatments are effective against Rubella virus?",
+      "cited_pmid": "41394564",
+      "title": "Pandemic Response Box Screening Identified CRM1/XPO1 as an Anti-Mammarenavirus Druggable Target.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the epidemiology and outbreak history of Rubella virus?",
+      "cited_pmid": "42475728",
+      "title": "Australian Paediatric Surveillance Unit (APSU) Annual Surveillance Report 2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the epidemiology and outbreak history of Rubella virus?",
+      "cited_pmid": "35521982",
+      "title": "[Genetic diversity of the mumps viruses (Paramyxoviridae: Orthorubulavirus: Mumps orthorubulavirus): an overview].",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the clinical symptoms and disease presentation of Rubella virus?",
+      "cited_pmid": "32633998",
+      "title": "An overview of the viral haemorrhagic fevers for the primary care doctor.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What are the clinical symptoms and disease presentation of Rubella virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lujo mammarenavirus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 1?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
     }
   ],
   "false_negatives": [
@@ -30174,6 +30565,48 @@
       "question": "What are the clinical symptoms and disease presentation of Human parainfluenza virus 1?",
       "missed_pmid": "37734534",
       "title": "Clinical impact of human parainfluenza virus infections before and during the COVID-19 pandemic in Southern China."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42664849",
+      "title": "Viral seropositivity in a Brazilian cohort of patients with multiple sclerosis: A retrospective descriptive study."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42748122",
+      "title": "Progress towards measles and rubella elimination in Lesotho, 2011-2025."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42512603",
+      "title": "Socio-Demographic and Prenatal Care Factors Associated with TORCH Screening During Pregnancy in Romania: A Cross-Sectional Study."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42611114",
+      "title": "Longitudinal analysis of iridian anterior segment OCT biomarkers in Fuchs uveitis syndrome and Posner-Schlossman syndrome."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What diagnostic assays or laboratory tests detect Rubella virus?",
+      "missed_pmid": "42490629",
+      "title": "Progress Toward Rubella and Congenital Rubella Syndrome Elimination - Worldwide, 2012-2024."
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "missed_pmid": "42707121",
+      "title": "Trends of congenital rubella syndrome among infants (0-11 months old) in India: a multicentre hospital-based sentinel surveillance (2016-2025)."
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 1?",
+      "missed_pmid": "42300833",
+      "title": "High prevalence and clinical impact of microbial co-detection in hospitalized children with human parainfluenza virus type 1."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
