@@ -116,6 +116,9 @@ _TARGETS: list[tuple[str, str]] = [
     ("BK polyomavirus", "http://purl.obolibrary.org/obo/NCBITaxon_1891762"),
     ("JC polyomavirus", "http://purl.obolibrary.org/obo/NCBITaxon_10632"),
     ("Human papillomavirus 16", "http://purl.obolibrary.org/obo/NCBITaxon_333760"),
+    ("Coxsackievirus B3", "http://purl.obolibrary.org/obo/NCBITaxon_12072"),
+    ("Enterovirus C", "http://purl.obolibrary.org/obo/NCBITaxon_138950"),
+    ("Human parechovirus", "http://purl.obolibrary.org/obo/NCBITaxon_1803956"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
