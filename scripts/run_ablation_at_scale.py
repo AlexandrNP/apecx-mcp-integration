@@ -178,6 +178,12 @@ _TARGETS: list[tuple[str, str]] = [
     ("Tula orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052503"),
     ("Prospect Hill virus", "http://purl.obolibrary.org/obo/NCBITaxon_3052492"),
     ("Thottapalayam orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_1980493"),
+    (
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009",
+    ),
+    ("Bovine coronavirus", "http://purl.obolibrary.org/obo/NCBITaxon_11128"),
+    ("Feline calicivirus", "http://purl.obolibrary.org/obo/NCBITaxon_11978"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
