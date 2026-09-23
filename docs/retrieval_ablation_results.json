@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-23T15:23:47.432062+00:00",
+  "timestamp": "2026-09-23T15:59:25.052343+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -84,11 +84,17 @@
     "Human immunodeficiency virus 2": true,
     "Simian immunodeficiency virus": true,
     "Bovine viral diarrhea virus 1": true,
-    "Classical swine fever virus": true
+    "Classical swine fever virus": true,
+    "Human alphaherpesvirus 2": true,
+    "Human betaherpesvirus 7": true,
+    "Human gammaherpesvirus 8": true,
+    "Suid alphaherpesvirus 1": true,
+    "Bovine alphaherpesvirus 1": true,
+    "Gallid alphaherpesvirus 2": true
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 1493,
+  "corpus_size": 1613,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -168,7 +174,13 @@
     "Human immunodeficiency virus 2": "dictionary",
     "Simian immunodeficiency virus": "dictionary",
     "Bovine viral diarrhea virus 1": "dictionary",
-    "Classical swine fever virus": "dictionary"
+    "Classical swine fever virus": "dictionary",
+    "Human alphaherpesvirus 2": "dictionary",
+    "Human betaherpesvirus 7": "dictionary",
+    "Human gammaherpesvirus 8": "dictionary",
+    "Suid alphaherpesvirus 1": "dictionary",
+    "Bovine alphaherpesvirus 1": "dictionary",
+    "Gallid alphaherpesvirus 2": "dictionary"
   },
   "harvested_counts": {
     "Chikungunya virus": {
@@ -486,6 +498,30 @@
     "Classical swine fever virus": {
       "harvested": 20,
       "stamped_with_own_iri": 16
+    },
+    "Human alphaherpesvirus 2": {
+      "harvested": 20,
+      "stamped_with_own_iri": 5
+    },
+    "Human betaherpesvirus 7": {
+      "harvested": 20,
+      "stamped_with_own_iri": 19
+    },
+    "Human gammaherpesvirus 8": {
+      "harvested": 20,
+      "stamped_with_own_iri": 16
+    },
+    "Suid alphaherpesvirus 1": {
+      "harvested": 20,
+      "stamped_with_own_iri": 20
+    },
+    "Bovine alphaherpesvirus 1": {
+      "harvested": 20,
+      "stamped_with_own_iri": 18
+    },
+    "Gallid alphaherpesvirus 2": {
+      "harvested": 20,
+      "stamped_with_own_iri": 18
     }
   },
   "skipped_organisms": [
@@ -495,8 +531,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.3733333333333333,
-  "n_cases": 390,
+  "mean_unfiltered_precision": 0.3623809523809524,
+  "n_cases": 420,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -638,7 +674,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -662,7 +698,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -686,7 +722,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -710,7 +746,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -734,7 +770,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -878,7 +914,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 84,
+      "filtered_corpus_size": 85,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -902,7 +938,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 84,
+      "filtered_corpus_size": 85,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -926,7 +962,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 84,
+      "filtered_corpus_size": 85,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -950,7 +986,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 84,
+      "filtered_corpus_size": 85,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -974,7 +1010,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 84,
+      "filtered_corpus_size": 85,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1118,7 +1154,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 51,
+      "filtered_corpus_size": 52,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1142,7 +1178,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 51,
+      "filtered_corpus_size": 52,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1166,7 +1202,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 51,
+      "filtered_corpus_size": 52,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1190,7 +1226,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 51,
+      "filtered_corpus_size": 52,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1214,7 +1250,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 51,
+      "filtered_corpus_size": 52,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2362,7 +2398,7 @@
         "42378730",
         "42709838",
         "42391156",
-        "40822308"
+        "42364901"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -3705,8 +3741,8 @@
         "42684008",
         "42426896",
         "41603610",
-        "41452936",
-        "42418326"
+        "41861695",
+        "41452936"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -3863,11 +3899,11 @@
       "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
       "filtered_citations": [
+        "42348550",
+        "42532197",
+        "42461965",
         "9930199",
-        "12160245",
-        "12549379",
-        "15617234",
-        "9875375"
+        "42501232"
       ],
       "unfiltered_citations": [
         "42716004",
@@ -3878,7 +3914,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
+      "filtered_corpus_size": 34,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3887,22 +3923,22 @@
       "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
       "filtered_citations": [
+        "42423462",
         "12160245",
         "15617234",
-        "9930199",
-        "12549379",
-        "9875372"
+        "42461965",
+        "41544776"
       ],
       "unfiltered_citations": [
-        "41608126",
-        "42369187",
-        "42507119",
-        "41037964",
-        "12160245"
+        "42628886",
+        "42474184",
+        "40559546",
+        "42515039",
+        "42475862"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 34,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3911,22 +3947,22 @@
       "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
       "filtered_citations": [
+        "42364901",
         "12160245",
         "12549379",
-        "10225987",
-        "9930199",
-        "15617234"
+        "42761597",
+        "42222536"
       ],
       "unfiltered_citations": [
         "42378730",
+        "42364901",
         "42599190",
-        "15560057",
-        "42185971",
-        "41037964"
+        "42599190",
+        "15560057"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 34,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3935,22 +3971,22 @@
       "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
       "filtered_citations": [
+        "41544776",
+        "42423462",
+        "42497092",
         "12160245",
-        "12549379",
-        "15617234",
-        "9875372",
-        "9930199"
+        "42461965"
       ],
       "unfiltered_citations": [
-        "41603610",
-        "42684008",
-        "15560054",
-        "42241276",
-        "42167235"
+        "42628886",
+        "41861695",
+        "41544776",
+        "42090422",
+        "41603610"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 34,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3959,22 +3995,22 @@
       "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 1?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10298",
       "filtered_citations": [
+        "42532196",
+        "42532197",
         "9875375",
         "9875405",
-        "9875371",
-        "9875372",
-        "9930199"
+        "9875371"
       ],
       "unfiltered_citations": [
         "1850256",
         "42580486",
+        "42532196",
         "41936880",
-        "42716004",
-        "42350480"
+        "42716004"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 12,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 34,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3998,7 +4034,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4009,20 +4045,20 @@
       "filtered_citations": [
         "42693145",
         "42599190",
+        "42599190",
         "42742725",
-        "42737859",
-        "42737859"
+        "42222536"
       ],
       "unfiltered_citations": [
+        "42628886",
+        "40559546",
+        "42474184",
         "42507119",
-        "42369187",
-        "32809745",
-        "41608126",
-        "42506617"
+        "41496662"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4033,20 +4069,20 @@
       "filtered_citations": [
         "42378730",
         "42599190",
+        "42599190",
         "42332827",
-        "42693145",
-        "38588959"
+        "42222536"
       ],
       "unfiltered_citations": [
         "42378730",
+        "42364901",
         "15560057",
         "42599190",
-        "41037964",
-        "41966613"
+        "42599190"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 26,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4063,14 +4099,14 @@
       ],
       "unfiltered_citations": [
         "42241276",
-        "42167235",
-        "41603610",
-        "42736308",
-        "42373647"
+        "41544776",
+        "42628886",
+        "41861695",
+        "42167235"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4081,20 +4117,20 @@
       "filtered_citations": [
         "42693145",
         "42599190",
+        "42599190",
         "42669504",
-        "42737859",
         "42737859"
       ],
       "unfiltered_citations": [
         "42580486",
+        "42532196",
         "41936880",
         "42606356",
-        "42606356",
-        "42515883"
+        "42606356"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 28,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4640,12 +4676,12 @@
       "unfiltered_citations": [
         "42730534",
         "42764163",
-        "42611357",
+        "42542241",
         "42611357",
         "42611357"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 19,
       "filtered_status": null,
       "unfiltered_status": null
@@ -4664,9 +4700,9 @@
       "unfiltered_citations": [
         "41603610",
         "42684008",
+        "42732060",
         "42758589",
-        "41452936",
-        "9891810"
+        "41452936"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -4758,8 +4794,8 @@
         "36961236",
         "35521982",
         "42378730",
-        "41593743",
-        "41743993"
+        "42761597",
+        "41593743"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -4782,7 +4818,7 @@
         "36961236",
         "35521982",
         "42684008",
-        "40929366"
+        "41861695"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -5260,8 +5296,8 @@
         "42684008",
         "42573240",
         "42573240",
-        "42515653",
-        "42753873"
+        "41861695",
+        "42515653"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -5618,10 +5654,10 @@
       ],
       "unfiltered_citations": [
         "42684008",
+        "41861695",
         "9891810",
         "42418326",
-        "15560054",
-        "42686903"
+        "15560054"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -5913,7 +5949,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5937,7 +5973,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5948,9 +5984,9 @@
       "filtered_citations": [
         "42687618",
         "42522621",
+        "42514709",
         "41810598",
-        "42219293",
-        "42536013"
+        "42219293"
       ],
       "unfiltered_citations": [
         "42378730",
@@ -5961,7 +5997,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -5985,7 +6021,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6009,7 +6045,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -6341,10 +6377,10 @@
         "42496116",
         "42496116",
         "42379809",
-        "42161271"
+        "41610489"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
+      "unfiltered_precision": 0.4,
       "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
@@ -6772,7 +6808,7 @@
         "42671253",
         "42767667",
         "42763584",
-        "42661313",
+        "40967090",
         "42661313"
       ],
       "filtered_precision": 1.0,
@@ -7659,12 +7695,12 @@
       "unfiltered_citations": [
         "42322358",
         "42684008",
+        "42413680",
         "41603610",
-        "42377031",
-        "41452936"
+        "41861695"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
+      "unfiltered_precision": 0.2,
       "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
@@ -7713,7 +7749,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7737,7 +7773,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7754,14 +7790,14 @@
       ],
       "unfiltered_citations": [
         "37951882",
+        "42514709",
         "42700662",
         "42448046",
-        "42378730",
-        "42715193"
+        "42378730"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7785,7 +7821,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7809,7 +7845,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 10,
+      "filtered_corpus_size": 11,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8495,7 +8531,7 @@
         "42684008",
         "42762843",
         "9891810",
-        "42573240",
+        "41861695",
         "42573240"
       ],
       "filtered_precision": 1.0,
@@ -9319,12 +9355,12 @@
       "unfiltered_citations": [
         "42684008",
         "42357695",
+        "41861695",
         "41603610",
-        "15560054",
-        "42577398"
+        "15560054"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 10,
       "filtered_status": null,
       "unfiltered_status": null
@@ -9602,18 +9638,18 @@
         "42561832",
         "42233013",
         "41192064",
-        "41952167"
+        "42459547"
       ],
       "unfiltered_citations": [
         "42357663",
         "42561832",
         "42233013",
         "41192064",
-        "41952167"
+        "42459547"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9625,19 +9661,19 @@
         "41392238",
         "41558100",
         "41192064",
-        "42357663",
-        "42561832"
+        "42515575",
+        "42357663"
       ],
       "unfiltered_citations": [
         "41392238",
         "41558100",
         "41192064",
-        "42357663",
-        "42561832"
+        "42515575",
+        "42357663"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9661,7 +9697,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9685,7 +9721,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9697,19 +9733,19 @@
         "42357663",
         "42561832",
         "41192064",
-        "41558100",
-        "42233013"
+        "42515575",
+        "41558100"
       ],
       "unfiltered_citations": [
         "42357663",
         "42561832",
         "41192064",
-        "41558100",
-        "42233013"
+        "42515575",
+        "41558100"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 28,
+      "filtered_corpus_size": 37,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9721,19 +9757,19 @@
         "42537723",
         "42643321",
         "42501659",
-        "42655702",
-        "42349522"
+        "42501659",
+        "42655702"
       ],
       "unfiltered_citations": [
         "42537723",
         "42643321",
         "42347176",
         "42501659",
-        "42655702"
+        "42501659"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9757,7 +9793,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9777,11 +9813,11 @@
         "42626706",
         "40822308",
         "42378730",
-        "42382115"
+        "42377026"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 16,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9794,18 +9830,18 @@
         "42484329",
         "42738429",
         "42501659",
-        "42462662"
+        "42501659"
       ],
       "unfiltered_citations": [
         "42684008",
         "41603610",
+        "42357635",
         "42568142",
-        "42753873",
-        "35458522"
+        "42753873"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 17,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9818,7 +9854,7 @@
         "42514627",
         "42537723",
         "42501659",
-        "42357728"
+        "42501659"
       ],
       "unfiltered_citations": [
         "42606356",
@@ -9829,7 +9865,727 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 16,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42532196",
+        "42319912",
+        "42507627",
+        "42541847",
+        "42497092"
+      ],
+      "unfiltered_citations": [
+        "42627231",
+        "42671937",
+        "42728254",
+        "42348550",
+        "42004740"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42497092",
+        "42507627",
+        "42532196",
+        "42541847",
+        "42319912"
+      ],
+      "unfiltered_citations": [
+        "42628886",
+        "42474184",
+        "40559546",
+        "9930199",
+        "42475862"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42532196",
+        "42507627",
+        "42497092",
+        "42541847",
+        "42319912"
+      ],
+      "unfiltered_citations": [
+        "42378730",
+        "42364901",
+        "15560057",
+        "42638066",
+        "42599190"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42497092",
+        "42532196",
+        "42541847",
+        "42507627",
+        "42319912"
+      ],
+      "unfiltered_citations": [
+        "42628886",
+        "41603610",
+        "41861695",
+        "42684008",
+        "41544776"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10310",
+      "filtered_citations": [
+        "42532196",
+        "42541847",
+        "42507627",
+        "42319912",
+        "42497092"
+      ],
+      "unfiltered_citations": [
+        "42532196",
+        "42580486",
+        "35138784",
+        "1850256",
+        "42172325"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "41915177",
+        "41905024",
+        "42555674",
+        "41523194",
+        "41496662"
+      ],
+      "unfiltered_citations": [
+        "41915177",
+        "41905024",
+        "42716004",
+        "42060533",
+        "40431735"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "41914137",
+        "41523194",
+        "41496662",
+        "42090422",
+        "42555674"
+      ],
+      "unfiltered_citations": [
+        "41914137",
+        "41523194",
+        "42671253",
+        "41496662",
+        "42090422"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "41496662",
+        "41914137",
+        "41523194",
+        "42198709",
+        "42555674"
+      ],
+      "unfiltered_citations": [
+        "42378730",
+        "15560057",
+        "42364901",
+        "42663377",
+        "42599190"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "42090422",
+        "41905024",
+        "41915177",
+        "41523194",
+        "41914137"
+      ],
+      "unfiltered_citations": [
+        "42090422",
+        "42684008",
+        "42628886",
+        "15560054",
+        "42625301"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+      "filtered_citations": [
+        "41905024",
+        "42555674",
+        "41915177",
+        "42090422",
+        "41496662"
+      ],
+      "unfiltered_citations": [
+        "41936880",
+        "42515883",
+        "42580486",
+        "35138784",
+        "42532196"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "42515039",
+        "41683701",
+        "42489446",
+        "42492765",
+        "41396190"
+      ],
+      "unfiltered_citations": [
+        "42716004",
+        "42671937",
+        "42004740",
+        "42638709",
+        "40431735"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "42515039",
+        "41683701",
+        "42489446",
+        "42492765",
+        "42507754"
+      ],
+      "unfiltered_citations": [
+        "42515039",
+        "41861695",
+        "40559546",
+        "42655691",
+        "42475862"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "42515039",
+        "41683701",
+        "42655695",
+        "38655084",
+        "42489446"
+      ],
+      "unfiltered_citations": [
+        "42378730",
+        "42185971",
+        "42709838",
+        "42684933",
+        "42364901"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "42515039",
+        "42443199",
+        "41805193",
+        "42489446",
+        "41873763"
+      ],
+      "unfiltered_citations": [
+        "41861695",
+        "42684008",
+        "41610489",
+        "41544776",
+        "42090422"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_37296",
+      "filtered_citations": [
+        "42515039",
+        "41396190",
+        "42655695",
+        "41252598",
+        "41683701"
+      ],
+      "unfiltered_citations": [
+        "42580486",
+        "41936880",
+        "42515883",
+        "35138784",
+        "42744079"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 17,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42474184",
+        "42461965",
+        "42659736",
+        "42726283",
+        "42501659"
+      ],
+      "unfiltered_citations": [
+        "42716004",
+        "41950307",
+        "42004740",
+        "40431735",
+        "41608126"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42474184",
+        "42461965",
+        "42357635",
+        "42423462",
+        "42642744"
+      ],
+      "unfiltered_citations": [
+        "42474184",
+        "41861695",
+        "42628886",
+        "40559546",
+        "41914886"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42542241",
+        "42377026",
+        "42599182",
+        "42357728",
+        "42738429"
+      ],
+      "unfiltered_citations": [
+        "42378730",
+        "42364901",
+        "42599190",
+        "42599190",
+        "42185971"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42653105",
+        "42423462",
+        "42357635",
+        "42474184",
+        "42461965"
+      ],
+      "unfiltered_citations": [
+        "41861695",
+        "41610489",
+        "41544776",
+        "41603610",
+        "42628886"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+      "filtered_citations": [
+        "42474184",
+        "42423462",
+        "42461965",
+        "42514627",
+        "42642744"
+      ],
+      "unfiltered_citations": [
+        "35138784",
+        "42693145",
+        "35138785",
+        "41936880",
+        "42606356"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42459547",
+        "42625301",
+        "42628886",
+        "42537337",
+        "42626012"
+      ],
+      "unfiltered_citations": [
+        "42459547",
+        "42625301",
+        "42628886",
+        "42561832",
+        "42233013"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42628886",
+        "42625301",
+        "42459547",
+        "42537337",
+        "42489478"
+      ],
+      "unfiltered_citations": [
+        "42628886",
+        "42625301",
+        "42459547",
+        "42537337",
+        "42489478"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42514709",
+        "42626012",
+        "42628886",
+        "42573861",
+        "42464218"
+      ],
+      "unfiltered_citations": [
+        "42514709",
+        "41205761",
+        "42492780",
+        "41192064",
+        "42694081"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Bovine alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42628886",
+        "42625301",
+        "42537337",
+        "42551989",
+        "42489478"
+      ],
+      "unfiltered_citations": [
+        "42628886",
+        "42625301",
+        "42537337",
+        "42663734",
+        "42551989"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+      "filtered_citations": [
+        "42625301",
+        "42459547",
+        "42628886",
+        "42551989",
+        "42626012"
+      ],
+      "unfiltered_citations": [
+        "42625301",
+        "42459547",
+        "42628886",
+        "42357663",
+        "41936880"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 24,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "41894092",
+        "41468646",
+        "42475862",
+        "41610489"
+      ],
+      "unfiltered_citations": [
+        "40559546",
+        "42716004",
+        "40431735",
+        "42671937",
+        "42004740"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "42475862",
+        "40694389",
+        "41861695",
+        "40367867"
+      ],
+      "unfiltered_citations": [
+        "40559546",
+        "42475862",
+        "42474184",
+        "42628886",
+        "40694389"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "40694389",
+        "40367867",
+        "41894092",
+        "42540703"
+      ],
+      "unfiltered_citations": [
+        "42364901",
+        "42638066",
+        "42378730",
+        "15560057",
+        "42599190"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Gallid alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "41861695",
+        "42475862",
+        "41610489",
+        "41544776"
+      ],
+      "unfiltered_citations": [
+        "40559546",
+        "41861695",
+        "42475862",
+        "41610489",
+        "41544776"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 18,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+      "filtered_citations": [
+        "40559546",
+        "41544776",
+        "42338683",
+        "41894092",
+        "41610489"
+      ],
+      "unfiltered_citations": [
+        "35138784",
+        "40185285",
+        "42693145",
+        "42716004",
+        "42172325"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 18,
       "filtered_status": null,
       "unfiltered_status": null
     }

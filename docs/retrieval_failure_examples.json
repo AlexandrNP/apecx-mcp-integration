@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T15:23:47.419863+00:00",
-  "runs": 19,
+  "updated": "2026-09-23T15:54:38.117063+00:00",
+  "runs": 20,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 1334,
-  "n_false_negatives": 636,
+  "n_false_positives": 1475,
+  "n_false_negatives": 706,
   "new_this_run": {
-    "false_positives": 48,
-    "false_negatives": 30
+    "false_positives": 141,
+    "false_negatives": 70
   },
   "false_positives": [
     {
@@ -14793,6 +14793,1560 @@
       "actual_organisms": [
         "SARS-CoV-2"
       ]
+    },
+    {
+      "organism": "Junin mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Junin mammarenavirus?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42474184",
+      "title": "Nectin4 restricts pseudorabies virus infection by blocking gD-Nectin1 interaction.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "40559546",
+      "title": "The Requirement of Turkey Herpesvirus (HVT) Glycoprotein C During Natural Infection in Chickens and Turkeys.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37108"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42515039",
+      "title": "Omics-Level Approaches to Studying Gammaherpesvirus Infection.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10374",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440122",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42475862",
+      "title": "A conserved alphaherpesvirus UL20 homolog is required for cytoplasmic virion maturation and secondary envelopment of Marek's disease virus.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "40559546",
+      "title": "The Requirement of Turkey Herpesvirus (HVT) Glycoprotein C During Natural Infection in Chickens and Turkeys.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37108"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "42474184",
+      "title": "Nectin4 restricts pseudorabies virus infection by blocking gD-Nectin1 interaction.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "41496662",
+      "title": "Betaherpesvirus Incidence in Saliva Samples From Patients With Hematological Neoplasms: Frequency, Clinic and Diagnostic Insights.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10357",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 3?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 3?",
+      "cited_pmid": "42532196",
+      "title": "A high-throughput screen to identify potential inhibitors of HSV-2.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "Human alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What diagnostic assays or laboratory tests detect Rabies lyssavirus?",
+      "cited_pmid": "42542241",
+      "title": "Development of a fluorescence immunochromatographic assay based on quantum dot labeling for detection of pseudorabies virus gB protein.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genome organization and replication cycle of Rabies lyssavirus?",
+      "cited_pmid": "42732060",
+      "title": "LY6E regulates Pseudorabies virus early infection via impairing viral internalization.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42761597",
+      "title": "Development and analytical validation of a multiplex qPCR assay for Toxoplasma gondii, Treponema pallidum, cytomegalovirus, and herpes simplex virus types 1 and 2 in neonates.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the genome organization and replication cycle of Mumps orthorubulavirus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lymphocytic choriomeningitis mammarenavirus?",
+      "cited_pmid": "41610489",
+      "title": "UL24 deletion attenuates Marek's disease virus replication and pathogenicity.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10389"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "40967090",
+      "title": "Sequence variability of the K1 gene in Kaposi's sarcoma-associated herpesvirus and its role in pathogenesis.",
+      "actual_organisms": [
+        "Human gammaherpesvirus 8",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "42413680",
+      "title": "Marek's disease virus-encoded microRNA-M6-5p suppresses viral replication by targeting UL42.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rhinovirus B?",
+      "cited_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Bovine viral diarrhea virus 1",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "42377026",
+      "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1586324",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "42357635",
+      "title": "Metaviromic Profiling of Genetic Diversity and Prevalence of Suid Herpesviruses Circulating in China.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1608255"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728254",
+      "title": "Dual-antigen AdV5 vaccines against Crimean-Congo hemorrhagic fever virus induce superior humoral and Th1-biased cellular immunity.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42348550",
+      "title": "HSV-2 gC2 mRNA immunization in mice protects by producing antibodies that bind immune evasion epitopes.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42474184",
+      "title": "Nectin4 restricts pseudorabies virus infection by blocking gD-Nectin1 interaction.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "40559546",
+      "title": "The Requirement of Turkey Herpesvirus (HVT) Glycoprotein C During Natural Infection in Chickens and Turkeys.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37108"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "9930199",
+      "title": "Induction of apoptosis in HEp-2 cells by infection with herpes simplex virus type 2.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42475862",
+      "title": "A conserved alphaherpesvirus UL20 homolog is required for cytoplasmic virion maturation and secondary envelopment of Marek's disease virus.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "cited_pmid": "1850256",
+      "title": "The inhibitory activity of a peptide derivative against the growth of simian immunodeficiency virus in C8166 cells.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Human immunodeficiency virus 2",
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Human alphaherpesvirus 2?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 pathogenesis and transmission?",
+      "cited_pmid": "42671253",
+      "title": "BKV activates the interferon-\u03b2 response in primary and immortalized microvascular endothelial cells late in the infectious cycle, resulting in persistence.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42663377",
+      "title": "A Novel Quantitative ELISA Demonstrates Lack of Correlation Between Serum HDV-RNA and Anti-HDV Antibody Levels in Chronic HDV Infection.",
+      "actual_organisms": [
+        "Hepatitis delta virus"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "cited_pmid": "42625301",
+      "title": "Whole-genome analysis of bovine alphaherpesvirus 1 associated with abortion in a vaccinated U.S. cattle herd.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10319"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "cited_pmid": "42532196",
+      "title": "A high-throughput screen to identify potential inhibitors of HSV-2.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "Human alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42638709",
+      "title": "A conserved VP1-286 epitope governs neutralization and immune escape in Coxsackievirus A6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "40559546",
+      "title": "The Requirement of Turkey Herpesvirus (HVT) Glycoprotein C During Natural Infection in Chickens and Turkeys.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37108"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "cited_pmid": "42475862",
+      "title": "A conserved alphaherpesvirus UL20 homolog is required for cytoplasmic virion maturation and secondary envelopment of Marek's disease virus.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "42684933",
+      "title": "Quantitative and molecular adjudication of BioFire FilmArray and QIAstat-Dx discordance in meningitis/encephalitis diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "cited_pmid": "41610489",
+      "title": "UL24 deletion attenuates Marek's disease virus replication and pathogenicity.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10389"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "cited_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "cited_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2681586",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41950307",
+      "title": "Design of a neutralizing and protective pan-encephalitic alphavirus receptor decoy protein.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "40559546",
+      "title": "The Requirement of Turkey Herpesvirus (HVT) Glycoprotein C During Natural Infection in Chickens and Turkeys.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37108"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "41914886",
+      "title": "Role of Src family kinases Fyn and Lyn in arenavirus infection.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208896",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "41610489",
+      "title": "UL24 deletion attenuates Marek's disease virus replication and pathogenicity.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10389"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development.",
+      "actual_organisms": [
+        "Gallid alphaherpesvirus 2",
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "35138785",
+      "title": "Paxlovid",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42561832",
+      "title": "Immunogenicity and post-challenge virological outcomes of a multivalent subunit vaccine in sheep challenged with cytopathic BVDV-1a.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192452",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233013",
+      "title": "Novel BPI3Vc-vectored chimeric BVDV antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41205761",
+      "title": "Development of multiplex reverse-transcription digital PCR assay for co-detection of bovine leukemia virus and bovine viral diarrhea virus in cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42492780",
+      "title": "Standardization of a quantitative multiplex real-time PCR system for the detection of bovine respiratory disease pathogens in clinical samples of dairy cattle from southern Brazil.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_214906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2767358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_745",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75984"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41192064",
+      "title": "Colostrum-derived immunity reduces detection of calves persistently infected with bovine viral diarrhea virus by common diagnostic tests.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42694081",
+      "title": "Development and epidemiological investigation of a TaqMan-based multiplex real-time quantitative PCR assay for simultaneous detection of five bovine viruses (BVDV, AKAV, BNoV, BEV, and BCoV).",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42663734",
+      "title": "Development of a rapid antiviral screening assay based on GFP reporter virus of bovine enterovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42357663",
+      "title": "Evaluation of Safety, Immunogenicity and Efficacy of an Inactivated Bovine Viral Diarrhea Virus (BVDV-1) Vaccine Candidate in Cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_381707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42474184",
+      "title": "Nectin4 restricts pseudorabies virus infection by blocking gD-Nectin1 interaction.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42364901",
+      "title": "Type-specific antibody detection of herpes simplex virus types 1&2 (HSV-1&2) in fingerstick blood at point-of-care sites by a rapid and sensitive lateral flow immunochromatographic assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "40185285",
+      "title": "Salicylamide derivative JMX0312 protects immunosuppressed Syrian hamsters against adenovirus lethal challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -18611,6 +20165,426 @@
       "question": "What antiviral drugs or treatments are effective against Classical swine fever virus?",
       "missed_pmid": "42537723",
       "title": "An E2 glycoprotein-based recombinant subunit vaccine confers protective immunity against classical swine fever virus in piglets."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42348550",
+      "title": "HSV-2 gC2 mRNA immunization in mice protects by producing antibodies that bind immune evasion epitopes."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42532197",
+      "title": "Susceptibility of clinical isolates, laboratory-adapted and drug-resistant herpes simplex virus strains to helicase-primase inhibitor adibelivir (IM-250) and its synergy in combination therapy with acyclovir, penciclovir and foscarnet."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42461965",
+      "title": "The antiviral GTPase MxB is packaged into virions and binds via its N-terminal domain to alphaherpesvirus capsids."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42501232",
+      "title": "HSV, HIV, and Pregnancy: Epidemiology, Viral Interactions, Management, and Prevention."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "42423462",
+      "title": "The targeted cytosolic degradation of class I histone deacetylases is essential for efficient alphaherpesvirus replication."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "missed_pmid": "42761597",
+      "title": "Development and analytical validation of a multiplex qPCR assay for Toxoplasma gondii, Treponema pallidum, cytomegalovirus, and herpes simplex virus types 1 and 2 in neonates."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 1?",
+      "missed_pmid": "42222536",
+      "title": "Clinical characteristics and prognostic analysis of patients with herpesvirus meningitis/encephalitis based on cerebrospinal fluid mNGS positivity."
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "missed_pmid": "42497092",
+      "title": "Comparative Genomics of Herpes Simplex Virus 2 Isolated from a Maternal-Neonatal Dyad Reveals High Consensus Sequence Homology as Well as Minor Variant Diversity."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "missed_pmid": "42222536",
+      "title": "Clinical characteristics and prognostic analysis of patients with herpesvirus meningitis/encephalitis based on cerebrospinal fluid mNGS positivity."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "missed_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells."
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "missed_pmid": "42382115",
+      "title": "Evaluation of an E2-based indirect ELISA for the serological differentiation of ovine Italy pestivirus from classical swine fever virus in pigs."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42532196",
+      "title": "A high-throughput screen to identify potential inhibitors of HSV-2."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42319912",
+      "title": "Bioactive enhanced adjuvant chemokine oligonucleotide nanoparticles (BEACONs) for mucosal vaccination against genital herpes."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42507627",
+      "title": "Recurrent Ischemic Strokes Caused by HSV-2-Associated Cerebral Vasculitis in Antisynthetase Syndrome."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42541847",
+      "title": "Targeting oxysterol-binding protein (OSBP) as a novel strategy to inhibit herpes simplex virus 2 (HSV-2) replication: First structure-activity relationship study of antiviral cholenamide derivatives."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42497092",
+      "title": "Comparative Genomics of Herpes Simplex Virus 2 Isolated from a Maternal-Neonatal Dyad Reveals High Consensus Sequence Homology as Well as Minor Variant Diversity."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42555674",
+      "title": "HHV-7 encephalitis following allogeneic hematopoietic stem cell transplantation: A case report and literature review."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41523194",
+      "title": "Human herpesvirus 7 and the risk of developing multiple sclerosis."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41496662",
+      "title": "Betaherpesvirus Incidence in Saliva Samples From Patients With Hematological Neoplasms: Frequency, Clinic and Diagnostic Insights."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "missed_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Human betaherpesvirus 7?",
+      "missed_pmid": "42198709",
+      "title": "Presence of EBV and HHV-7 Genomic Sequences in Saliva and Virus-Specific Antibodies in Sera of Oral Lichen Planus and Aphthous Stomatitis Patients: A Comparative Observational Study."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "missed_pmid": "41905024",
+      "title": "Identification of a novel multi epitope vaccine against human herpes virus 7 (HHV-7) to combat CNS disorders in children and adolescents using subtractive proteomics and immunoinformatic approaches."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the genome organization and replication cycle of Human betaherpesvirus 7?",
+      "missed_pmid": "41915177",
+      "title": "Integrative immunoinformatics and molecular modeling approaches for the rational design and in silico validation of a multi-epitope vaccine candidate against human herpesvirus 7."
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What antiviral drugs or treatments are effective against Human betaherpesvirus 7?",
+      "missed_pmid": "42090422",
+      "title": "Human herpesvirus 7 integrates into host telomeres via its telomeric repeat arrays."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42515039",
+      "title": "Omics-Level Approaches to Studying Gammaherpesvirus Infection."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41683701",
+      "title": "Assessing Seroprevalence and Infection Dynamics of Oncogenic Gammaherpesviruses in South African Paediatric Patients Presenting with Inflammatory Conditions."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42489446",
+      "title": "Repression of productive viral replication by KSHV LANA correlates with reduced adaptive immune activation: potential implications for KSHV immune evasion."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42492765",
+      "title": "Promiscuous binding of CXC chemokines to ORF74 receptors enables immunotoxin approaches in Gammaherpesvirus models."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41396190",
+      "title": "Treatment With PD-1/PD-L1 Inhibitors for Kaposi Sarcoma:A Systematic Review and Meta-Analysis."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is known about Human gammaherpesvirus 8 pathogenesis and transmission?",
+      "missed_pmid": "42507754",
+      "title": "VRK3 promotes KSHV infection by suppressing the antiviral type I interferon response."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "missed_pmid": "42655695",
+      "title": "Metabolomic Analysis of Lytic KSHV Infection: Induced Host Nucleotide Metabolism Is Required for Infectious Virus Production."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What diagnostic assays or laboratory tests detect Human gammaherpesvirus 8?",
+      "missed_pmid": "38655084",
+      "title": "Next-generation sequencing survey of acute febrile illness in Senegal (2020-2022)."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "missed_pmid": "42443199",
+      "title": "Antibody reveals conformational latch regulating dimerization in \u03b2- and \u03b3-herpesvirus proteases."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "missed_pmid": "41805193",
+      "title": "Repression of EEF1D by KSHV RTA promotes viral lytic reactivation."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What is the genome organization and replication cycle of Human gammaherpesvirus 8?",
+      "missed_pmid": "41873763",
+      "title": "m5C RNA methylation is dysregulated by oncogenic herpesviruses via c-Myc signaling to counteract host antiviral factors."
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What antiviral drugs or treatments are effective against Human gammaherpesvirus 8?",
+      "missed_pmid": "41252598",
+      "title": "Toward Anti-Herpesviral PROTACs: Assessing the Challenges for Targeted Protein Degradation on the Example of Kaposi's Sarcoma-Associated Herpesvirus Latency-Associated Nuclear Antigen."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42474184",
+      "title": "Nectin4 restricts pseudorabies virus infection by blocking gD-Nectin1 interaction."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42461965",
+      "title": "The antiviral GTPase MxB is packaged into virions and binds via its N-terminal domain to alphaherpesvirus capsids."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42659736",
+      "title": "A novel TK/gE-deleted pseudorabies virus vaccine expressing CCL3L1 enhances humoral immunity by stimulating the dendritic cell-T follicular helper-germinal center axis."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42726283",
+      "title": "Characterization of a monoclonal antibody recognizing a conserved linear neutralizing epitope of pseudorabies virus gB protein."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42501659",
+      "title": "Multi-copy expression of classical swine fever virus E2 in a recombinant pseudorabies virus enhances immunogenicity and supports its potential as a PRV-CSFV bivalent vaccine candidate."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "42357635",
+      "title": "Metaviromic Profiling of Genetic Diversity and Prevalence of Suid Herpesviruses Circulating in China."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "42423462",
+      "title": "The targeted cytosolic degradation of class I histone deacetylases is essential for efficient alphaherpesvirus replication."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "42642744",
+      "title": "Pseudorabies virus pUL40 drives inflammatory signaling through competitive hijacking of EphA2 from the Akt-EphA2 interaction."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "missed_pmid": "42542241",
+      "title": "Development of a fluorescence immunochromatographic assay based on quantum dot labeling for detection of pseudorabies virus gB protein."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "missed_pmid": "42377026",
+      "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "missed_pmid": "42599182",
+      "title": "Development and application of a novel TaqMan qPCR assay targeting the gN gene for genotyping pseudorabies virus."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "missed_pmid": "42357728",
+      "title": "Establishment and Application of an Indirect ELISA for Detecting Getah Virus IgG Antibodies in Swine Based on the E2EP3 Peptide."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "missed_pmid": "42738429",
+      "title": "Development and Application of a Triplex RT-qPCR Assay for Differentiating Major Lineages of Porcine Reproductive and Respiratory Syndrome Virus."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "missed_pmid": "42653105",
+      "title": "Integrated Analysis of Chromatin Accessibility and Transcriptional Dynamics of the Viral Genome Following Pseudorabies Virus Infection."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "missed_pmid": "42514627",
+      "title": "Preparation of Monoclonal Antibodies Against Porcine Circovirus Type 2 Capsid Protein and Development of a Blocking ELISA for Detection of the Antibody Against the Virus."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42537337",
+      "title": "Two divergent BoHV-1 isolates from yaks show distinct biological properties and neutralization profiles."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is known about Bovine alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42626012",
+      "title": "Seroprevalence of Bovine Herpesvirus Type 1 Among the Cattle Population in Iran: A Systematic Review and Meta-Analysis."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "missed_pmid": "42628886",
+      "title": "Emergence and molecular characterization of bovine alphaherpesvirus 1 subtype 1.1 in China, with in vivo characterization in a rabbit model."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "missed_pmid": "42573861",
+      "title": "Seroprevalence and risk factors associated with Bovine herpesvirus-1 in T\u00fcrkiye."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Bovine alphaherpesvirus 1?",
+      "missed_pmid": "42464218",
+      "title": "Development of an RT-RAA-CRISPR/Cas12a fluorescent detection method for the detection of bovine viral diarrhea virus 1."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Bovine alphaherpesvirus 1?",
+      "missed_pmid": "42489478",
+      "title": "Time-resolved mapping in calves reveals bovine herpesvirus 1 shift from mucosal replication to trigeminal ganglion neuroinvasion with promyelocytic leukemia protein-centered host-virus antagonism."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "missed_pmid": "42551989",
+      "title": "Eukaryotic translation elongation factor 1 delta alleviates DNA damage during bovine alphaherpesvirus 1 infection."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41894092",
+      "title": "The use of an avian macrophage-like cell line (HD11) transduced with recombinant lentiviruses to dissect the immunomodulatory role of Marek's disease virus gene products."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41468646",
+      "title": "Transcriptomic profiling reveals early immune activation and metabolic remodeling in lymphoid tissues following in ovo Marek's disease virus mRNA vaccination in chickens."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42475862",
+      "title": "A conserved alphaherpesvirus UL20 homolog is required for cytoplasmic virion maturation and secondary envelopment of Marek's disease virus."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41610489",
+      "title": "UL24 deletion attenuates Marek's disease virus replication and pathogenicity."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "missed_pmid": "41861695",
+      "title": "Marek's disease virus UL16 tegument protein is essential for secondary envelopment and infectious virion formation."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "missed_pmid": "40367867",
+      "title": "First report on the molecular characterization and phylogenetic analysis of meq oncogene from virulent serotype-1 Marek's disease virus in laying hen flocks and broiler breeders in Algeria."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "missed_pmid": "40559546",
+      "title": "The Requirement of Turkey Herpesvirus (HVT) Glycoprotein C During Natural Infection in Chickens and Turkeys."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "missed_pmid": "40694389",
+      "title": "Marek's disease virus replication in chicken skin reconstructed in vitro: evidence for viral particles in corneocytes."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Gallid alphaherpesvirus 2?",
+      "missed_pmid": "42540703",
+      "title": "Molecular Characterization of Highly Pathogenic Marek's Disease Virus Strain in Vaccinated Iraqi Pullets."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "missed_pmid": "41544776",
+      "title": "The UL23 thymidine kinase of Marek's disease virus is a target for anti-HSV drug development."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What antiviral drugs or treatments are effective against Gallid alphaherpesvirus 2?",
+      "missed_pmid": "42338683",
+      "title": "Structural Insights Into the Nuclear Import of Marek's Disease Virus Large Tegument Protein."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
