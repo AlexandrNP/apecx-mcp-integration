@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T16:15:48.474474+00:00",
-  "runs": 21,
+  "updated": "2026-09-23T16:33:23.579441+00:00",
+  "runs": 22,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 1543,
-  "n_false_negatives": 744,
+  "n_false_positives": 1643,
+  "n_false_negatives": 778,
   "new_this_run": {
-    "false_positives": 68,
-    "false_negatives": 38
+    "false_positives": 100,
+    "false_negatives": 34
   },
   "false_positives": [
     {
@@ -17062,6 +17062,1107 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_11618",
         "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
       ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What is the genome organization and replication cycle of Rift Valley fever virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "cited_pmid": "39999459",
+      "title": "Exploring Routes of Infection of Severe Fever with Thrombocytopenia Syndrome Virus Using Experimentally Infected Animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "37293222",
+      "title": "Geographical distribution and pathogenesis of ticks and tick-borne viral diseases.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Kyasanur Forest disease virus",
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1618189"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus NL63?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 pathogenesis and transmission?",
+      "cited_pmid": "41511094",
+      "title": "Long-term effects of reovirus strain T3D on the myocardium.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the genome organization and replication cycle of Mumps orthorubulavirus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Sin Nombre orthohantavirus?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Sin Nombre orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Sin Nombre orthohantavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "41408047",
+      "title": "Ataxin-2-like promotes translation of nonpolyadenylated reovirus mRNA.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Cowpox virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Andes orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Andes orthohantavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41511094",
+      "title": "Long-term effects of reovirus strain T3D on the myocardium.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "cited_pmid": "41511094",
+      "title": "Long-term effects of reovirus strain T3D on the myocardium.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B3?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genome organization and replication cycle of Semliki Forest virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genome organization and replication cycle of Wesselsbron virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is the genome organization and replication cycle of Spondweni virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What diagnostic assays or laboratory tests detect Orf virus?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "cited_pmid": "41408047",
+      "title": "Ataxin-2-like promotes translation of nonpolyadenylated reovirus mRNA.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is known about Saffold virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine viral diarrhea virus 1?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Classical swine fever virus?",
+      "cited_pmid": "41539551",
+      "title": "Diagnostic and pathological characterization of senecavirus A-associated epidemic transient neonatal losses in swine.",
+      "actual_organisms": [
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119602",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_713"
+      ]
+    },
+    {
+      "organism": "Classical swine fever virus",
+      "question": "What is the genome organization and replication cycle of Classical swine fever virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genome organization and replication cycle of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42321797",
+      "title": "High genetic diversity of porcine rotavirus A, B, and C in Hungary with putative novel VP4 genotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_626776"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What antiviral drugs or treatments are effective against Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What antiviral drugs or treatments are effective against Avian infectious bronchitis virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42511150",
+      "title": "An ORFV F1L mRNA Vaccine Candidate: Preparation, Immunogenicity, and Comparison with a Commercial Live Vaccine.",
+      "actual_organisms": [
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655115",
+      "title": "Expression of Orf Virus B2L Protein and Monoclonal Antibody Preparation.",
+      "actual_organisms": [
+        "Orf virus"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "cited_pmid": "42536682",
+      "title": "Host-Orf virus interactions: A comprehensive review of pathogenesis and immune evasion mechanisms.",
+      "actual_organisms": [
+        "Orf virus"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "cited_pmid": "42377061",
+      "title": "Maintenance of Hokkaido virus, a genotype of Orthohantavirus puumalaense, in the rodent host Myodes rufocanus bedfordiae under natural conditions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1100878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "cited_pmid": "42655680",
+      "title": "Pan-Viral Sequencing Surveillance Identifies Mammalian Orthoreovirus 2 in United States Wastewater.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32611",
+        "http://purl.obolibrary.org/obo/NCBITaxon_538121"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "cited_pmid": "42720549",
+      "title": "Molecular pathogenesis, global epidemiological trends, and treatment strategies for pteropine orthoreoviruses: a narrative review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "42632300",
+      "title": "Of mice and men: Updates on hantavirus disease and diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "cited_pmid": "41570236",
+      "title": "The first identification of Orthohantavirus dobravaense, Kurkino virus (Hantaviridae: Orthohantavirus) in the Volga Federal District.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3116880"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "cited_pmid": "42762843",
+      "title": "Genetic characterization of Orf virus isolates targeting PACR gene: Optimization of a diagnostic PCR for host-specific differentiation of goat and sheep origin isolates.",
+      "actual_organisms": [
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus pathogenesis and transmission?",
+      "cited_pmid": "42566128",
+      "title": "Prevalence of bluetongue in sheep and goats across different climatic regions and zones in India: a meta-analysis.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "35336125",
+      "title": "Development of Real-Time Molecular Assays for the Detection of Wesselsbron Virus in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "42725733",
+      "title": "African swine fever virus A151R protein antagonizes the antiviral activity of barrier-to-autointegration factor (BAF) by targeting its dsDNA-binding activity.",
+      "actual_organisms": [
+        "African swine fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "42425227",
+      "title": "Effectiveness of lignans against severe fever with thrombocytopenia syndrome virus infection.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3366332"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38981504",
+      "title": "Colorado Tick Fever in the United States, 2013-2022.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus pathogenesis and transmission?",
+      "cited_pmid": "42655738",
+      "title": "Trends in Tick-Borne Virus Ecology: Vector Incrimination, Focal Distribution, and Reservoir Associations.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is the genome organization and replication cycle of Colorado tick fever virus?",
+      "cited_pmid": "40512126",
+      "title": "Genome report: whole-genome assembly of the relapsing fever tick Ornithodoros turicata Dug\u00e8s (Acari: Argasidae).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42496142",
+      "title": "Human rotavirus C strain detected in wastewater in Leuven, Belgium.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10943"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41386619",
+      "title": "Interaction of the VP8* protein of a bovine rotavirus C with the H type-2 antigen and its precursor N-acetyl-lactosamine.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus C?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus C?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
     }
   ],
   "false_negatives": [
@@ -21528,6 +22629,210 @@
       "question": "What antiviral drugs or treatments are effective against African swine fever virus?",
       "missed_pmid": "42756600",
       "title": "Adapting current protocols is necessary to eradicate the novel ASFV variant in the peri-urban wild boar population of Barcelona, Spain."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is known about Crimean-Congo hemorrhagic fever orthonairovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42728254",
+      "title": "Dual-antigen AdV5 vaccines against Crimean-Congo hemorrhagic fever virus induce superior humoral and Th1-biased cellular immunity."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What diagnostic assays or laboratory tests detect Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "39229478",
+      "title": "Control strategies for emerging infectious diseases: Crimean-Congo hemorrhagic fever management."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36201547",
+      "title": "Transfusion-transmitted arboviruses: Update and systematic review."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "missed_pmid": "42217080",
+      "title": "Detection of Viruses of Public Health Importance in Wastewater Samples Using Conventional PCR Techniques and a Targeted Enrichment Whole Genome Sequencing Panel."
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is known about Kyasanur Forest disease virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37293222",
+      "title": "Geographical distribution and pathogenesis of ticks and tick-borne viral diseases."
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "missed_pmid": "37550694",
+      "title": "Generation of a recombinant Saffold Virus expressing UnaG as a marker for the visualization of viral infection."
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine viral diarrhea virus 1?",
+      "missed_pmid": "42515575",
+      "title": "Seroprevalence, Dual Seropositivity, and Associated Risk Factors of BVDV and BoHV-1 in Dual-Purpose Cattle from the Colombian Eastern Plains."
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What antiviral drugs or treatments are effective against Porcine epidemic diarrhea virus?",
+      "missed_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What antiviral drugs or treatments are effective against Avian infectious bronchitis virus?",
+      "missed_pmid": "42772140",
+      "title": "Comparative pathogenesis, tissue tropism, and immune dynamics of infectious bronchitis virus genotypes GI\u20111 and GI\u201124 in broiler chickens."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41526494",
+      "title": "Isolation and phylogenomic characterization of two novel, dissimilar orthoreoviruses from Northern Alaskan Sea otters (Enhydra lutris kenyoni)."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41304878",
+      "title": "Computational Development of Multi-Epitope Reovirus Vaccine with Potent Predicted Binding to TLR2 and TLR4."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42137780",
+      "title": "Molecular survey of mammalian orthoreovirus and Rotavirus A in Italian dogs and cats."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42248646",
+      "title": "Operation oncolysis: Reoviruses in the theater of cancer war."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42467368",
+      "title": "Non-Cytopathic Mammalian Orthoreovirus Infection Triggers Innate Immune Responses in Human Tonsil-Derived Mesenchymal Stem Cells: Implications for Cell Therapy Quality Control."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "missed_pmid": "41511094",
+      "title": "Long-term effects of reovirus strain T3D on the myocardium."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "missed_pmid": "41408047",
+      "title": "Ataxin-2-like promotes translation of nonpolyadenylated reovirus mRNA."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "missed_pmid": "42105076",
+      "title": "Identification of reovirus reassortants with enhanced oncolytic activity in human fibrosarcoma cells."
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "missed_pmid": "41630840",
+      "title": "Molecular detection of zoonotic RNA viruses in guinea pigs (Cavia porcellus) from small-scale family farming in the region of Cusco, Peru."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42709478",
+      "title": "Bluetongue virus: current perspectives on characterisation and the need to formalise nomenclature in an era of rapidly evolving technology."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42453008",
+      "title": "Bluetongue Virus Surveillance in Yunnan, China, 2025: Isolation of Multiple Serotypes From Culicoides and Seasonal Seroepidemiology in Cattle."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus pathogenesis and transmission?",
+      "missed_pmid": "42517987",
+      "title": "Bluetongue virus in Middle Eastern ruminants: vector evidence, surveillance gaps, and research priorities."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "missed_pmid": "42597933",
+      "title": "Comparative effectiveness of UV-LED light and CO2 using a 3D-printed suction trap for Culicoides surveillance and bluetongue virus detection in central Thailand."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "missed_pmid": "42423817",
+      "title": "Engineering a high-affinity multiple antigenic peptide dendrimer for group-specific detection of bluetongue virus antibodies targeting the VP7 epitope."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "missed_pmid": "42655042",
+      "title": "Molecular Epidemiological Characteristics and Genetic Evolution of Bluetongue Virus in Yunnan Province, China."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "missed_pmid": "42303268",
+      "title": "Mechanistic insights into Bluetongue virus immunodynamics: a Bayesian within-host modelling approach."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "missed_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025]."
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37293222",
+      "title": "Geographical distribution and pathogenesis of ticks and tick-borne viral diseases."
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus pathogenesis and transmission?",
+      "missed_pmid": "36443864",
+      "title": "Dermatological manifestations of tick-borne viral infections found in the United States."
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus pathogenesis and transmission?",
+      "missed_pmid": "36732081",
+      "title": "Increase in Colorado Tick Fever Virus Disease Cases and Effect of COVID-19 Pandemic on Behaviors and Testing Practices, Montana, 2020."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42699683",
+      "title": "Genomic characteristics and tracing analysis of an acute gastroenteritis outbreak associated with rotavirus C in a boarding high school."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41168817",
+      "title": "Prevalence and impact of Rotavirus A and C in suckling piglets from Spanish farms: an epidemiological study."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C pathogenesis and transmission?",
+      "missed_pmid": "39358760",
+      "title": "Genomic analysis of an acute gastroenteritis outbreak caused by rotavirus C in Hebei, China."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is the genome organization and replication cycle of Rotavirus C?",
+      "missed_pmid": "38659036",
+      "title": "Evaluation of different genomic regions of rotavirus B and rotavirus C for development of real-time RT\u2012PCR assays."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus C?",
+      "missed_pmid": "41653780",
+      "title": "Rotavirus C genotypes in pigs - On their occurrence and distribution in Europe."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
