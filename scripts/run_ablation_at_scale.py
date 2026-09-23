@@ -131,6 +131,10 @@ _TARGETS: list[tuple[str, str]] = [
     ("Molluscum contagiosum virus", "http://purl.obolibrary.org/obo/NCBITaxon_10279"),
     ("Human papillomavirus 18", "http://purl.obolibrary.org/obo/NCBITaxon_333761"),
     ("Human papillomavirus 11", "http://purl.obolibrary.org/obo/NCBITaxon_10580"),
+    ("Human mastadenovirus B", "http://purl.obolibrary.org/obo/NCBITaxon_108098"),
+    ("Human mastadenovirus D", "http://purl.obolibrary.org/obo/NCBITaxon_130310"),
+    ("Saffold virus", "http://purl.obolibrary.org/obo/NCBITaxon_434309"),
+    ("Human bocavirus", "http://purl.obolibrary.org/obo/NCBITaxon_329641"),
 ]
 
 # Optional subset for memory-constrained runs: APECX_ABLATION_ORGANISMS is a
