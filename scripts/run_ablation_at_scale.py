@@ -199,6 +199,11 @@ _TARGETS: list[tuple[str, str]] = [
     ("Mopeia virus", "http://purl.obolibrary.org/obo/NCBITaxon_3052320"),
     ("Human papillomavirus type 58", "http://purl.obolibrary.org/obo/NCBITaxon_10598"),
     ("Human papillomavirus type 52", "http://purl.obolibrary.org/obo/NCBITaxon_10618"),
+    ("Bunyamwera virus", "http://purl.obolibrary.org/obo/NCBITaxon_35304"),
+    ("Cache Valley virus", "http://purl.obolibrary.org/obo/NCBITaxon_80935"),
+    ("Snowshoe hare virus", "http://purl.obolibrary.org/obo/NCBITaxon_11580"),
+    ("Piry virus", "http://purl.obolibrary.org/obo/NCBITaxon_11274"),
+    ("Cocal virus", "http://purl.obolibrary.org/obo/NCBITaxon_50713"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
