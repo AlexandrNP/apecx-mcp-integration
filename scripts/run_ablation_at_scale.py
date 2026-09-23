@@ -210,6 +210,7 @@ _QUESTION_TEMPLATES: list[str] = [
     "What diagnostic assays or laboratory tests detect {name}?",
     "What is the genome organization and replication cycle of {name}?",
     "What antiviral drugs or treatments are effective against {name}?",
+    "What is the epidemiology and outbreak history of {name}?",
 ]
 
 _RESULTS_PATH = Path(__file__).resolve().parent.parent / "docs" / "literature_ablation_results.json"
