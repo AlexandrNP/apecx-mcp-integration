@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-23T20:46:10.265926+00:00",
-  "runs": 33,
+  "updated": "2026-09-23T21:17:27.095583+00:00",
+  "runs": 34,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 2843,
-  "n_false_negatives": 1090,
+  "n_false_positives": 2879,
+  "n_false_negatives": 1108,
   "new_this_run": {
-    "false_positives": 148,
-    "false_negatives": 40
+    "false_positives": 36,
+    "false_negatives": 18
   },
   "false_positives": [
     {
@@ -31675,6 +31675,395 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31931",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "23185609",
+      "title": "Human monoclonal antibodies against highly conserved HR1 and HR2 domains of the SARS-CoV spike protein are more broadly neutralizing.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "cited_pmid": "22820404",
+      "title": "Severe acute respiratory syndrome coronavirus accessory proteins 6 and 9b interact in vivo.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "cited_pmid": "23029269",
+      "title": "Lack of innate interferon responses during SARS coronavirus infection in a vaccination and reinfection ferret model.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2901879"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "cited_pmid": "22983073",
+      "title": "Potential cross-reactivity of severe acute respiratory syndrome-associated coronavirus (SARS-CoV) nucleocapsid (N)-based IgG ELISA assay for plasma samples from HIV-1 positive intravenous drug users (IDUs).",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "cited_pmid": "22615777",
+      "title": "Mechanism of nucleic acid unwinding by SARS-CoV helicase.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genome organization and replication cycle of Human coronavirus OC43?",
+      "cited_pmid": "42429749",
+      "title": "A coding-complete genome sequence of bovine-like coronavirus identified in white-tailed deer (Odocoileus virginianus) in the United States.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2509481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971260"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "23185609",
+      "title": "Human monoclonal antibodies against highly conserved HR1 and HR2 domains of the SARS-CoV spike protein are more broadly neutralizing.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 pathogenesis and transmission?",
+      "cited_pmid": "22820404",
+      "title": "Severe acute respiratory syndrome coronavirus accessory proteins 6 and 9b interact in vivo.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus NL63?",
+      "cited_pmid": "22983073",
+      "title": "Potential cross-reactivity of severe acute respiratory syndrome-associated coronavirus (SARS-CoV) nucleocapsid (N)-based IgG ELISA assay for plasma samples from HIV-1 positive intravenous drug users (IDUs).",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "cited_pmid": "22635272",
+      "title": "RNA 3'-end mismatch excision by the severe acute respiratory syndrome coronavirus nonstructural protein nsp10/nsp14 exoribonuclease complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genome organization and replication cycle of Human coronavirus 229E?",
+      "cited_pmid": "42429749",
+      "title": "A coding-complete genome sequence of bovine-like coronavirus identified in white-tailed deer (Odocoileus virginianus) in the United States.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2509481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971260"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "42429749",
+      "title": "A coding-complete genome sequence of bovine-like coronavirus identified in white-tailed deer (Odocoileus virginianus) in the United States.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2509481",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971260"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42568498",
+      "title": "Identification and characterization of new B cell epitopes on the nucleocapsid protein of bovine coronavirus using monoclonal antibodies.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42568498",
+      "title": "Identification and characterization of new B cell epitopes on the nucleocapsid protein of bovine coronavirus using monoclonal antibodies.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42568498",
+      "title": "Identification and characterization of new B cell epitopes on the nucleocapsid protein of bovine coronavirus using monoclonal antibodies.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852"
+      ]
+    },
+    {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What is known about Feline infectious peritonitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42374805",
+      "title": "Development and Application of a Blocking ELISA for the Detection of Feline Calicivirus Antibodies Based on Monoclonal Antibodies Against VP1 Protein.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785"
+      ]
+    },
+    {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What is known about Feline infectious peritonitis virus pathogenesis and transmission?",
+      "cited_pmid": "42376619",
+      "title": "Molecular and Clinical Screening of Selected Feline Viral Infections in Sulaymaniyah, Kurdistan Region, Iraq.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is known about Bovine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233013",
+      "title": "Novel BPI3Vc-vectored chimeric BVDV antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is known about Bovine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42561832",
+      "title": "Immunogenicity and post-challenge virological outcomes of a multivalent subunit vaccine in sheep challenged with cytopathic BVDV-1a.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192452",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is known about Bovine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1586324"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "cited_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Bovine viral diarrhea virus 1",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is the genome organization and replication cycle of Bovine coronavirus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42357663",
+      "title": "Evaluation of Safety, Immunogenicity and Efficacy of an Inactivated Bovine Viral Diarrhea Virus (BVDV-1) Vaccine Candidate in Cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_381707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is known about Feline calicivirus pathogenesis and transmission?",
+      "cited_pmid": "42648114",
+      "title": "FECV and FIPV: What biotype labels can, and cannot, tell us about feline coronavirus biology.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "cited_pmid": "42622352",
+      "title": "EXPRESS: Agreement between point-of-care and external reference laboratory RT-qPCR testing for feline coronavirus in cats with suspected feline infectious peritonitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "cited_pmid": "42728694",
+      "title": "Quantitative multiplex detection of 9 feline respiratory pathogens with enhanced sensitivity: a cost-effective integrated platform combining RT-PCR/PCR and capillary electrophoresis.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10334",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33923",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40041",
+        "http://purl.obolibrary.org/obo/NCBITaxon_518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83556"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "cited_pmid": "42532773",
+      "title": "The Shifting Paradigm of Feline Infectious Peritonitis: New Diagnostics and Therapeutics.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is the genome organization and replication cycle of Feline calicivirus?",
+      "cited_pmid": "42749190",
+      "title": "Molecular epidemiological surveillance of the feline coronavirus reveals novel recombinant FCoV strains with evidence of ongoing viral evolution.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is the genome organization and replication cycle of Feline calicivirus?",
+      "cited_pmid": "42514671",
+      "title": "Cross-Species Transmission and Recombination Between Feline and Canine Coronaviruses in Jiangsu-Zhejiang Region in 2025.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "cited_pmid": "42620651",
+      "title": "Sustained clinical remission and long-term safety of molnupiravir as first-line therapy for effusive feline infectious peritonitis: a 40-week retrospective study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "cited_pmid": "42590897",
+      "title": "EXPRESS: Renal Health in Cats with Feline Infectious Peritonitis treated with GS-441524: Baseline Findings and Longitudinal Effects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -38217,6 +38606,114 @@
       "question": "What are the clinical symptoms and disease presentation of Thottapalayam orthohantavirus?",
       "missed_pmid": "21820021",
       "title": "Comparison of innate immune responses to pathogenic and putative non-pathogenic hantaviruses in vitro."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41857372",
+      "title": "SARS-CoV-2 crossreactive B-cells outnumber seasonal coronavirus spike-specific clones at the end of the COVID-19 pandemic."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What antiviral drugs or treatments are effective against Hepacivirus hominis?",
+      "missed_pmid": "22733076",
+      "title": "Severe acute respiratory syndrome coronavirus replication inhibitor that interferes with the nucleic acid unwinding of the viral helicase."
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genome organization and replication cycle of Rabies lyssavirus?",
+      "missed_pmid": "42706610",
+      "title": "Immunogenicity evaluation of recombinant rabies virus-vectored multivalent vaccines expressing feline calicivirus VP1 and feline herpesvirus 1 gB/gD genes."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "missed_pmid": "42278666",
+      "title": "Broad-Spectrum Virucidal Activity of Polymer Cryogel-Loaded Formic Acid Against a Panel of Naked and Enveloped Viruses."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is known about Bovine coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42515557",
+      "title": "Genetic and Antigenic Characterization of Bovine and Porcine Respiratory Coronaviruses Circulating in Western Europe, 2020-2023."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is known about Bovine coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42772549",
+      "title": "Detection and Genomic Characterization of an Emerging Bovine Coronavirus in Southwest China."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "missed_pmid": "42564716",
+      "title": "Measuring the efficiency of a solids-based wastewater extraction using BCoV and validation of a BCoV and PMMoV RT-qPCR duplex assay."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42655726",
+      "title": "A Review: Bovine Coronavirus Evolution, Molecular Epidemiology, and Genetic Variation."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42606349",
+      "title": "Epidemiological characteristics and structural-functional implications of spike protein variations in a bovine coronavirus isolate from diarrheic calves."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42429749",
+      "title": "A coding-complete genome sequence of bovine-like coronavirus identified in white-tailed deer (Odocoileus virginianus) in the United States."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42694081",
+      "title": "Development and epidemiological investigation of a TaqMan-based multiplex real-time quantitative PCR assay for simultaneous detection of five bovine viruses (BVDV, AKAV, BNoV, BEV, and BCoV)."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is known about Feline calicivirus pathogenesis and transmission?",
+      "missed_pmid": "42328412",
+      "title": "Corneal Lesions Associated With Feline Herpesvirus-1 Modified Live Vaccine Strain F2 in Two Cats."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline calicivirus?",
+      "missed_pmid": "42768131",
+      "title": "Molecular detection of feline viruses in free-ranging European wildcats (Felis s. silvestris) of the Harz Mountains, Germany."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is the genome organization and replication cycle of Feline calicivirus?",
+      "missed_pmid": "42376619",
+      "title": "Molecular and Clinical Screening of Selected Feline Viral Infections in Sulaymaniyah, Kurdistan Region, Iraq."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "missed_pmid": "42506662",
+      "title": "Development of a New Feline Combination Vaccine Including a Novel RNA Particle Vaccine Against Feline Leukemia Virus."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What are the clinical symptoms and disease presentation of Feline calicivirus?",
+      "missed_pmid": "42374805",
+      "title": "Development and Application of a Blocking ELISA for the Detection of Feline Calicivirus Antibodies Based on Monoclonal Antibodies Against VP1 Protein."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What are the clinical symptoms and disease presentation of Feline calicivirus?",
+      "missed_pmid": "42717346",
+      "title": "Isolation of feline-derived scFvs against the VP1-CDE region of feline calicivirus from a phage display library and characterization of their antigen-binding and antiviral potential in vitro."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
