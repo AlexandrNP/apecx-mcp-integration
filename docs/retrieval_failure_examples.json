@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-24T03:29:05.961807+00:00",
-  "runs": 45,
+  "updated": "2026-09-24T04:25:42.587527+00:00",
+  "runs": 46,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 4613,
-  "n_false_negatives": 1684,
+  "n_false_positives": 4743,
+  "n_false_negatives": 1744,
   "new_this_run": {
-    "false_positives": 141,
-    "false_negatives": 47
+    "false_positives": 130,
+    "false_negatives": 60
   },
   "false_positives": [
     {
@@ -51436,6 +51436,1473 @@
       "actual_organisms": [
         "Human alphaherpesvirus 3"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What are the clinical symptoms and disease presentation of Chikungunya virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genome organization and replication cycle of Yellow fever virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus pathogenesis and transmission?",
+      "cited_pmid": "42778521",
+      "title": "Comparative pathogenicity study of monkeypox virus Clade Ib and Clade IIb in a rabbit model.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "41288374",
+      "title": "Isolation and identification of a genotype F bovine enterovirus in western China.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35130139",
+      "title": "Bovine rhinitis B virus is highly prevalent in acute bovine respiratory disease and causes upper respiratory tract infection in calves.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B pathogenesis and transmission?",
+      "cited_pmid": "39066186",
+      "title": "Bovine Rhinitis B Virus Variant as the Putative Cause of Bronchitis in Goat Kids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12109",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B pathogenesis and transmission?",
+      "cited_pmid": "39006745",
+      "title": "Discovery and characterization of BRBV-sheep virus in nasal swabs from domestic sheep in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "34631852",
+      "title": "Genome Characterization and Phylogenetic Analysis of the First Bovine Rhinitis B Virus Isolate in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is known about Spondweni virus pathogenesis and transmission?",
+      "cited_pmid": "40872784",
+      "title": "Thirteenth International Foamy Virus Conference-Meeting Report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What is the genome organization and replication cycle of Feline infectious peritonitis virus?",
+      "cited_pmid": "42584933",
+      "title": "Longitudinal detection and genetic characterization of feline coronavirus in a captive cheetah population.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genome organization and replication cycle of Foot-and-mouth disease virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "African swine fever virus",
+      "question": "What is the genome organization and replication cycle of African swine fever virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Tai Forest ebolavirus",
+      "question": "What is the genome organization and replication cycle of Tai Forest ebolavirus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is the genome organization and replication cycle of Feline calicivirus?",
+      "cited_pmid": "42662021",
+      "title": "First molecular detection and genetic characterization of feline coronavirus from India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus D68?",
+      "cited_pmid": "41423171",
+      "title": "Development of a rapid, real-time RT-RAA assay for sensitive detection of bovine enterovirus in fecal samples.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mopeia virus",
+      "question": "What is the genome organization and replication cycle of Mopeia virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genome organization and replication cycle of Snowshoe hare virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is known about Sheeppox virus pathogenesis and transmission?",
+      "cited_pmid": "42778521",
+      "title": "Comparative pathogenicity study of monkeypox virus Clade Ib and Clade IIb in a rabbit model.",
+      "actual_organisms": [
+        "Monkeypox virus"
+      ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Feline herpesvirus 1?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus pathogenesis and transmission?",
+      "cited_pmid": "35130139",
+      "title": "Bovine rhinitis B virus is highly prevalent in acute bovine respiratory disease and causes upper respiratory tract infection in calves.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus pathogenesis and transmission?",
+      "cited_pmid": "36851669",
+      "title": "Characterisation of the Upper Respiratory Tract Virome of Feedlot Cattle and Its Association with Bovine Respiratory Disease.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus pathogenesis and transmission?",
+      "cited_pmid": "38508364",
+      "title": "Co-infecting viruses of species Bovine rhinitis B virus (Picornaviridae) and Bovine nidovirus 1 (Tobaniviridae) identified for the first time from a post-mortem respiratory sample of a sheep (Ovis aries) in Hungary.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1986112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2508209",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3142829",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "cited_pmid": "34631852",
+      "title": "Genome Characterization and Phylogenetic Analysis of the First Bovine Rhinitis B Virus Isolate in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "cited_pmid": "39006745",
+      "title": "Discovery and characterization of BRBV-sheep virus in nasal swabs from domestic sheep in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12663"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What is known about Caprine arthritis encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "41411011",
+      "title": "The association between virus-induced spinal cord pathology and the genetic background of the host.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus"
+      ]
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What is known about Caprine arthritis encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42270907",
+      "title": "Biological risk assessment related to intracerebral injection of TMEV-DA.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is the genome organization and replication cycle of Simian foamy virus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42292462",
+      "title": "Behind the mask of relapsing bimodal encephalitis: herpesvirus 7 and Epstein-Barr virus associated with Hashimoto's encephalopathy: a case report.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus pathogenesis and transmission?",
+      "cited_pmid": "41511094",
+      "title": "Long-term effects of reovirus strain T3D on the myocardium.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10882",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus pathogenesis and transmission?",
+      "cited_pmid": "42655732",
+      "title": "Cardiopulmonary Failure in Hantavirus Disease: Mechanisms, Recognition, and ECMO-Based Management.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2758660"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "42684933",
+      "title": "Quantitative and molecular adjudication of BioFire FilmArray and QIAstat-Dx discordance in meningitis/encephalitis diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "42743296",
+      "title": "Metagenomic sequencing in encephalitis diagnostics: Challenges and opportunities in clinical settings.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "Human alphaherpesvirus 3",
+        "Human pegivirus",
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What antiviral drugs or treatments are effective against Encephalomyocarditis virus?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What antiviral drugs or treatments are effective against Encephalomyocarditis virus?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What antiviral drugs or treatments are effective against Encephalomyocarditis virus?",
+      "cited_pmid": "41471867",
+      "title": "Unraveling the Potential Antiviral Activity of Isoxazoline-Carbocyclic Monophosphate Nucleotides Against Echovirus 11.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the epidemiology and outbreak history of Encephalomyocarditis virus?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "Enterovirus C",
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the epidemiology and outbreak history of Encephalomyocarditis virus?",
+      "cited_pmid": "32965919",
+      "title": "La Crosse Encephalitis",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the epidemiology and outbreak history of Encephalomyocarditis virus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What are the clinical symptoms and disease presentation of Encephalomyocarditis virus?",
+      "cited_pmid": "39429370",
+      "title": "Therapeutic Plasma Exchange for Murray Valley Encephalitis: A Case Report and Review of Clinical Features, Diagnosis, and Challenges in Management.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What are the clinical symptoms and disease presentation of Encephalomyocarditis virus?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is known about Theiler's murine encephalomyelitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42004740",
+      "title": "Current status on encephalitic alphavirus vaccines development: Advances, challenges, and global health perspectives.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is known about Theiler's murine encephalomyelitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is known about Theiler's murine encephalomyelitis virus pathogenesis and transmission?",
+      "cited_pmid": "42369187",
+      "title": "R\u00edo Negro virus (Venezuelan equine encephalitis virus complex) shows pathogenic potential in a permissive murine model.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42743296",
+      "title": "Metagenomic sequencing in encephalitis diagnostics: Challenges and opportunities in clinical settings.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "Human alphaherpesvirus 3",
+        "Human pegivirus",
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42020326",
+      "title": "[Development of a cell-based imaging assay for evaluating neutralizing antibodies against western equine encephalitis virus].",
+      "actual_organisms": [
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genome organization and replication cycle of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42573240",
+      "title": "Nuclear activities and interactome of the NS5 protein of tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Powassan virus",
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genome organization and replication cycle of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "41537597",
+      "title": "Impact of mutations affecting 4'-fluorouridine susceptibility on fitness and treatment outcomes for Venezuelan equine encephalitis virus.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the epidemiology and outbreak history of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "32491624",
+      "title": "Eastern Equine Encephalitis",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the epidemiology and outbreak history of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "Enterovirus C",
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the epidemiology and outbreak history of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "32965919",
+      "title": "La Crosse Encephalitis",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "39429370",
+      "title": "Therapeutic Plasma Exchange for Murray Valley Encephalitis: A Case Report and Review of Clinical Features, Diagnosis, and Challenges in Management.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42357663",
+      "title": "Evaluation of Safety, Immunogenicity and Efficacy of an Inactivated Bovine Viral Diarrhea Virus (BVDV-1) Vaccine Candidate in Cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_381707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42561832",
+      "title": "Immunogenicity and post-challenge virological outcomes of a multivalent subunit vaccine in sheep challenged with cytopathic BVDV-1a.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_192452",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42233013",
+      "title": "Novel BPI3Vc-vectored chimeric BVDV antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine enterovirus?",
+      "cited_pmid": "42591061",
+      "title": "Comparison of 2 commercial antibody ELISA kits for identification of high proviral load carrier cattle in strategic control of bovine leukemia virus infection.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428211"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine enterovirus?",
+      "cited_pmid": "39935536",
+      "title": "Development of a one-step multiplex RT-qPCR method for rapid detection of bovine diarrhea viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1435485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is the genome organization and replication cycle of Bovine enterovirus?",
+      "cited_pmid": "42771225",
+      "title": "Shotgun metagenomic sequencing and genetic characterization of four enteric viruses in a dairy farm suffering a diarrhea outbreak of undetermined cause in adult cattle.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine enterovirus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "Bovine respiratory syncytial virus",
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What are the clinical symptoms and disease presentation of Bovine enterovirus?",
+      "cited_pmid": "39609153",
+      "title": "Small Ruminant Lentiviruses and Caseous Lymphadenitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41077721",
+      "title": "Hantavirus GnH Nanoparticle Immunogen Elicits a Cross-Neutralizing Antibody Response in Mice.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052474",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42060533",
+      "title": "Development of a novel hybrid alphavirus-Nipah virus pseudovirion for rapid quantification of vaccine-induced neutralization antibodies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "Semliki Forest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "32809745",
+      "title": "Human metapneumovirus Respiratory Infection",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "39799084",
+      "title": "Emerging and re-emerging viral infections of the central nervous system in Australasia and beyond.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "Enterovirus C",
+        "Hendra henipavirus",
+        "Japanese encephalitis virus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "21820021",
+      "title": "Comparison of innate immune responses to pathogenic and putative non-pathogenic hantaviruses in vitro.",
+      "actual_organisms": [
+        "Seoul orthohantavirus",
+        "Thottapalayam orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42684933",
+      "title": "Quantitative and molecular adjudication of BioFire FilmArray and QIAstat-Dx discordance in meningitis/encephalitis diagnostics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_482",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5206",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "40192289",
+      "title": "An intra-family conserved high-order RNA structure within the M ORF is important for arterivirus subgenomic RNA accumulation and infectious virus production.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "Porcine reproductive and respiratory syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Mayaro virus",
+        "Zika virus"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42761034",
+      "title": "Mpox in the Republic of Korea from 2022 to June 2026: Epidemiological Trends and the First Clade Ib Case.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41115422",
+      "title": "Epidemiologic and Environmental Investigations of Reported Hantavirus Cases Inform Exposure Risk in California, 1993-2020.",
+      "actual_organisms": [
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "35962680",
+      "title": "A STUDY OF THE NOVEL WU AND KI POLYOMAVIRUSES, BOCAVIRUS ADENOVIRUS IN CHILDREN WITH UPPER RESPIRATORY TRACT INFECTIONS.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35130139",
+      "title": "Bovine rhinitis B virus is highly prevalent in acute bovine respiratory disease and causes upper respiratory tract infection in calves.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42459547",
+      "title": "A novel bovine viral vaccine for reproductive safety and performance in cattle.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Bovine viral diarrhea virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655844",
+      "title": "Suspected Type III Hypersensitivity Post-Inactivated Vaccination Leukocytoclastic Vasculitis in Two Sows.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1965066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42590789",
+      "title": "Comparative clinical, immunological, and pulmonary responses to virulent bovine respiratory syncytial virus infection in colostrum-fed, intranasally vaccinated calves.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus pathogenesis and transmission?",
+      "cited_pmid": "39066186",
+      "title": "Bovine Rhinitis B Virus Variant as the Putative Cause of Bronchitis in Goat Kids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12109",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus pathogenesis and transmission?",
+      "cited_pmid": "36670851",
+      "title": "Detection and Genomic Characterization of Bovine Rhinitis Virus in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_46473",
+        "http://purl.obolibrary.org/obo/NCBITaxon_65743",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus pathogenesis and transmission?",
+      "cited_pmid": "36851669",
+      "title": "Characterisation of the Upper Respiratory Tract Virome of Feedlot Cattle and Its Association with Bovine Respiratory Disease.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine rhinitis A virus?",
+      "cited_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells.",
+      "actual_organisms": [
+        "Akabane virus",
+        "Bovine alphaherpesvirus 1",
+        "Bovine viral diarrhea virus 1",
+        "Human respirovirus 3",
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine rhinitis A virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is the genome organization and replication cycle of Bovine rhinitis A virus?",
+      "cited_pmid": "34631852",
+      "title": "Genome Characterization and Phylogenetic Analysis of the First Bovine Rhinitis B Virus Isolate in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is the genome organization and replication cycle of Bovine rhinitis A virus?",
+      "cited_pmid": "38753082",
+      "title": "Detection and genetic analysis of bovine rhinitis B virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_693066"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine rhinitis A virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "Bovine respiratory syncytial virus",
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine rhinitis A virus?",
+      "cited_pmid": "39609153",
+      "title": "Small Ruminant Lentiviruses and Caseous Lymphadenitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is the epidemiology and outbreak history of Bovine rhinitis A virus?",
+      "cited_pmid": "42430403",
+      "title": "Clinico-epidemiological insights and treatment practices of bovine lumpy skin disease in Bangladesh.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "cited_pmid": "38782261",
+      "title": "Development of a M\u011bngl\u00e0 virus minigenome and comparison of its polymerase complexes with those of other filoviruses.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "41423171",
+      "title": "Development of a rapid, real-time RT-RAA assay for sensitive detection of bovine enterovirus in fecal samples.",
+      "actual_organisms": [
+        "Bovine enterovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
     }
   ],
   "false_negatives": [
@@ -61542,6 +63009,366 @@
       "question": "What is the genome organization and replication cycle of Rous sarcoma virus?",
       "missed_pmid": "39861886",
       "title": "Role of the Psi Packaging Signal and Dimerization Initiation Sequence in the Organization of Rous Sarcoma Virus Gag-gRNA Co-Condensates."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "missed_pmid": "42765537",
+      "title": "Eugenol-Derived Piperazine Mannich Bases as Selective Inhibitors of Mayaro Virus: In Vitro Antiviral Evaluation and Mechanistic Insights."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "missed_pmid": "42778062",
+      "title": "MEK/ERK signaling and Bcl-2 family protein changes in influenza-infected cells with differing sulfatide levels."
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31578242",
+      "title": "Vaccines inducing immunity to Lassa virus glycoprotein and nucleoprotein protect macaques after a single shot."
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "missed_pmid": "36554466",
+      "title": "Calibration of Methods for SARS-CoV-2 Environmental Surveillance: A Case Study from Northwest Tuscany."
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is known about Hepacivirus hominis and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34834966",
+      "title": "The Stem-Loop I of Senecavirus A IRES Is Essential for Cap-Independent Translation Activity and Virus Recovery."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "missed_pmid": "41328592",
+      "title": "Genome-scale CRISPR screen identifies host factors associated with bovine parainfluenza virus 3 infection."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "missed_pmid": "42738593",
+      "title": "Whole-Genome Sequencing Reveals Co-Infection with Bovine Viral Diarrhea Virus, Bovine Enterovirus, and Caprine Parainfluenza Virus Type 3 in a Calf from a Cattle Herd in Xizang, China."
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "missed_pmid": "42745525",
+      "title": "New 1,3-Oxazole and 1,2,4-Oxadiazole Derivatives as Novel Agents Against Human Rhinovirus and Cytomegalovirus."
+    },
+    {
+      "organism": "Lymphocytic choriomeningitis mammarenavirus",
+      "question": "What is known about Lymphocytic choriomeningitis mammarenavirus pathogenesis and transmission?",
+      "missed_pmid": "42777316",
+      "title": "Extended IL-4 priming of macrophages induces an antiviral state that restricts lymphocytic choriomeningitis virus replication."
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What is the genome organization and replication cycle of Bovine viral diarrhea virus 1?",
+      "missed_pmid": "42738593",
+      "title": "Whole-Genome Sequencing Reveals Co-Infection with Bovine Viral Diarrhea Virus, Bovine Enterovirus, and Caprine Parainfluenza Virus Type 3 in a Calf from a Cattle Herd in Xizang, China."
+    },
+    {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What is known about Feline infectious peritonitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is the epidemiology and outbreak history of Bovine coronavirus?",
+      "missed_pmid": "36851669",
+      "title": "Characterisation of the Upper Respiratory Tract Virome of Feedlot Cattle and Its Association with Bovine Respiratory Disease."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "missed_pmid": "42459353",
+      "title": "Administration of porcine surfactant in the treatment of a fatal case of acute respiratory distress syndrome in a cat with calicivirus pneumonia."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is known about Seneca Valley virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42054148",
+      "title": "Senecavirus A non-structural protein 2C and 3A-specific T cell-epitopes promote inactivated vaccine efficacy in pigs via synergistic cellular and humoral immunity."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What diagnostic assays or laboratory tests detect Seneca Valley virus?",
+      "missed_pmid": "41866176",
+      "title": "Development of a conformation-specific nanobody-based ELISA for quantitative detection of intact Senecavirus A virions and virus-like particles."
+    },
+    {
+      "organism": "Seneca Valley virus",
+      "question": "What is the genome organization and replication cycle of Seneca Valley virus?",
+      "missed_pmid": "34834966",
+      "title": "The Stem-Loop I of Senecavirus A IRES Is Essential for Cap-Independent Translation Activity and Virus Recovery."
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is known about Lumpy skin disease virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42777920",
+      "title": "Comparative evaluation of recombinant A4L, A27L, and A36R proteins for ELISA-based serodiagnosis of lumpy skin disease virus."
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is known about Lumpy skin disease virus pathogenesis and transmission?",
+      "missed_pmid": "40630510",
+      "title": "Replication and Virulence in Cattle of the First Lumpy Skin Disease Virus Isolated in Xinjiang, China (2019)."
+    },
+    {
+      "organism": "Porcine circovirus 2",
+      "question": "What is known about Porcine circovirus 2 pathogenesis and transmission?",
+      "missed_pmid": "42777477",
+      "title": "Genetic evolution and identification of an unclassified cluster of porcine circovirus type 2 in southern China."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus pathogenesis and transmission?",
+      "missed_pmid": "42138810",
+      "title": "Inducing Antigen-Specific and Functional Immune Responses in Mice Toward Bovine Herpesvirus 1 and Bovine Respiratory Syncytial Virus by Chimeric Peptides Delivered by Bovine Herpesvirus 4-Based Vector."
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "missed_pmid": "42590789",
+      "title": "Comparative clinical, immunological, and pulmonary responses to virulent bovine respiratory syncytial virus infection in colostrum-fed, intranasally vaccinated calves."
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "missed_pmid": "42437631",
+      "title": "Diagnostic utility of serum amyloid A, procalcitonin and hematology-derived inflammatory indices in cats naturally infected with feline panleukopenia virus."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42453577",
+      "title": "Curcumol alleviates cardiac and cerebral injury caused by encephalomyocarditis virus (EMCV) in Kunming mice via suppressing NF-\u03baB/NLRP3 inflammasome pathway."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38662794",
+      "title": "Picornavirus security proteins promote the release of extracellular vesicle enclosed viruses via the modulation of host kinases."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42397844",
+      "title": "Encephalomyocarditis virus impairs the blood-brain barrier by degrading tight junction proteins via AKT3-dependent autophagic and apoptotic pathways."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is known about Encephalomyocarditis virus pathogenesis and transmission?",
+      "missed_pmid": "42484329",
+      "title": "Analysis of host factors for internal ribosomal entry site-mediated translation of foot and mouth disease virus and classical swine fever virus: an in vivo evaluation in single- and double-knockout mice."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "missed_pmid": "42335074",
+      "title": "Encephalomyocarditis virus (EMCV): An overlooked threat to primates."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What diagnostic assays or laboratory tests detect Encephalomyocarditis virus?",
+      "missed_pmid": "41866176",
+      "title": "Development of a conformation-specific nanobody-based ELISA for quantitative detection of intact Senecavirus A virions and virus-like particles."
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "missed_pmid": "42183758",
+      "title": "Encephalomyocarditis virus evades IFN-mediated antiviral response by RNF149 targeting JAK1 for ubiquitination and degradation."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is known about Theiler's murine encephalomyelitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42004492",
+      "title": "Theiler's murine encephalomyelitis virus as the infectious agent for a virally induced mouse model of Parkinson's disease."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is known about Theiler's murine encephalomyelitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41226761",
+      "title": "Comparative Analysis of Genetic Risk for Viral-Induced Axonal Loss in Genetically Diverse Mice."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "41411011",
+      "title": "The association between virus-induced spinal cord pathology and the genetic background of the host."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "20038206",
+      "title": "Interferon-alpha/beta genes are up-regulated in murine brain astrocytes after infection with Theiler's murine encephalomyelitis virus."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "42528072",
+      "title": "Neurofilament Light Chain (Nfl) Level in Serum as a Suitable In\u00a0Vivo Biomaker for Axonal Damage in a Murine Viral Model of Multiple Sclerosis."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What is the genome organization and replication cycle of Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "41707920",
+      "title": "In silico and in vivo studies reveal that Theiler's murine encephalomyelitis virus induces upregulation of miR-155-5p in the hippocampus."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What antiviral drugs or treatments are effective against Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "42270907",
+      "title": "Biological risk assessment related to intracerebral injection of TMEV-DA."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41276054",
+      "title": "Preparation of monoclonal antibodies for the VP1 protein of bovine enterovirus and precise mapping of linear B-cell epitopes."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42627561",
+      "title": "Isolation and partial 5'UTR-based molecular characterization of bovine enterovirus F from non-diarrheic cattle in T\u00fcrkiye."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is known about Bovine enterovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42663734",
+      "title": "Development of a rapid antiviral screening assay based on GFP reporter virus of bovine enterovirus."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine enterovirus?",
+      "missed_pmid": "42694081",
+      "title": "Development and epidemiological investigation of a TaqMan-based multiplex real-time quantitative PCR assay for simultaneous detection of five bovine viruses (BVDV, AKAV, BNoV, BEV, and BCoV)."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is the genome organization and replication cycle of Bovine enterovirus?",
+      "missed_pmid": "41992312",
+      "title": "Construction of a reverse genetics and fluorescent reporter system for a bovine enterovirus isolated from cattle with diarrhea."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine enterovirus?",
+      "missed_pmid": "42092639",
+      "title": "Characteristics of bovine enterovirus F in four provinces of China: isolation, pathogenicity and immunogenicity."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is the epidemiology and outbreak history of Bovine enterovirus?",
+      "missed_pmid": "42445853",
+      "title": "Detection and molecular characterization of bovine enterovirus E2 from dairy calves with respiratory disease in Urumqi, Xinjiang, China."
+    },
+    {
+      "organism": "Bovine enterovirus",
+      "question": "What is the epidemiology and outbreak history of Bovine enterovirus?",
+      "missed_pmid": "42757737",
+      "title": "Characterization and Evolutionary Analysis of Type E4 Bovine Enterovirus From Clinical Cattle With Diarrhea in Inner Mongolia, China."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34589580",
+      "title": "MicroRNA-detargeting proves more effective than leader gene deletion for improving safety of oncolytic Mengovirus in a nude mouse model."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35504966",
+      "title": "Improved methods for the detection and quantification of SARS-CoV-2 RNA in wastewater."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33268258",
+      "title": "Recovering coronavirus from large volumes of water."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36127560",
+      "title": "Comparison of Extraction Methods for the Detection of Tick-Borne Encephalitis Virus RNA in Goat Raw Milk and Cream Cheese."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33338788",
+      "title": "Comparing analytical methods to detect SARS-CoV-2 in wastewater."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "missed_pmid": "41505093",
+      "title": "Binding of Glycyl-tRNA synthetase to Mengovirus RNA stimulates translation."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "missed_pmid": "34990611",
+      "title": "SARS-CoV-2 circulation in Croatian wastewaters and the absence of SARS-CoV-2 in bivalve molluscan shellfish."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "missed_pmid": "35592728",
+      "title": "Approaches applied to detect SARS-CoV-2 in wastewater and perspectives post-COVID-19."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "missed_pmid": "33974212",
+      "title": "Comparison of Skimmed Milk and Lanthanum Flocculation for Concentration of Pathogenic Viruses in Water."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "missed_pmid": "39683758",
+      "title": "Virus Removal from Real Wastewater as an Environmental Management Approach."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "missed_pmid": "36619293",
+      "title": "Polycytidine tract deletion from microRNA-detargeted oncolytic Mengovirus optimizes the therapeutic index in a murine multiple myeloma model."
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "missed_pmid": "36554466",
+      "title": "Calibration of Methods for SARS-CoV-2 Environmental Surveillance: A Case Study from Northwest Tuscany."
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42248256",
+      "title": "Development and application of a dual RT-qPCR assay for the differential detection of bovine rhinitis virus genotypes A and B."
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40757499",
+      "title": "Development of a Conventional Reverse Transcription-PCR System for Broad Detection of Bovine Rhinitis A Virus."
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41295733",
+      "title": "A Comprehensive Review: Molecular Diagnostics and Multi-Omics Approaches to Understanding Bovine Respiratory Disease."
+    },
+    {
+      "organism": "Bovine rhinitis A virus",
+      "question": "What is known about Bovine rhinitis A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42137610",
+      "title": "Detection and Genomic Characterization of Novel Respiratory Viruses in US and Mexican Cattle Farms."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
