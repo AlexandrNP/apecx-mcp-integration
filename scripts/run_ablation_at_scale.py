@@ -388,6 +388,13 @@ _TARGETS: list[tuple[str, str]] = [
     ("Common midwife toad virus", "http://purl.obolibrary.org/obo/NCBITaxon_540070"),
     ("Santee-Cooper ranavirus", "http://purl.obolibrary.org/obo/NCBITaxon_198068"),
     ("Soft-shelled turtle iridovirus", "http://purl.obolibrary.org/obo/NCBITaxon_365144"),
+    # 4 more human viruses (2026-09-24) — catalog volume growth, no new domain.
+    # Preflight-qualified; Human parvovirus B19 dropped (same virus as the existing
+    # Primate erythroparvovirus 1 target, different taxon id - would double-count).
+    ("Human parainfluenza virus 2", "http://purl.obolibrary.org/obo/NCBITaxon_2560525"),
+    ("Human parainfluenza virus 4", "http://purl.obolibrary.org/obo/NCBITaxon_2560526"),
+    ("GB virus C", "http://purl.obolibrary.org/obo/NCBITaxon_54290"),
+    ("Torque teno midi virus", "http://purl.obolibrary.org/obo/NCBITaxon_432261"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
