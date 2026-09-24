@@ -375,6 +375,19 @@ _TARGETS: list[tuple[str, str]] = [
     ("Rosellinia necatrix megabirnavirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_1285598"),
     ("Sclerotinia sclerotiorum hypovirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_1074325"),
     ("Ustilago maydis virus H1", "http://purl.obolibrary.org/obo/NCBITaxon_28882"),
+    # 9 REPTILE/AMPHIBIAN viruses (2026-09-24) — a FIFTH host domain (ectothermic
+    # vertebrates). Their literature is wildlife-disease/conservation-framed mixed
+    # with iridovirus genomics — an uncertain prediction (fish-like ~70% if ecology
+    # framing resists, higher if molecular-framed). All qualify.
+    ("Ranavirus", "http://purl.obolibrary.org/obo/NCBITaxon_10492"),
+    ("Bohle iridovirus", "http://purl.obolibrary.org/obo/NCBITaxon_100220"),
+    ("Chelonid herpesvirus 5", "http://purl.obolibrary.org/obo/NCBITaxon_702736"),
+    ("Ambystoma tigrinum virus", "http://purl.obolibrary.org/obo/NCBITaxon_265294"),
+    ("Epizootic hematopoietic necrosis virus", "http://purl.obolibrary.org/obo/NCBITaxon_100217"),
+    ("Ranid herpesvirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_85655"),
+    ("Common midwife toad virus", "http://purl.obolibrary.org/obo/NCBITaxon_540070"),
+    ("Santee-Cooper ranavirus", "http://purl.obolibrary.org/obo/NCBITaxon_198068"),
+    ("Soft-shelled turtle iridovirus", "http://purl.obolibrary.org/obo/NCBITaxon_365144"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
