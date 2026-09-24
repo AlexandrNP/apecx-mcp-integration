@@ -237,6 +237,8 @@ _TARGETS: list[tuple[str, str]] = [
     ("Echovirus 30", "http://purl.obolibrary.org/obo/NCBITaxon_41846"),
     ("Coxsackievirus A6", "http://purl.obolibrary.org/obo/NCBITaxon_86107"),
     ("Coxsackievirus B5", "http://purl.obolibrary.org/obo/NCBITaxon_12074"),
+    ("Echovirus 7", "http://purl.obolibrary.org/obo/NCBITaxon_46018"),
+    ("Echovirus 11", "http://purl.obolibrary.org/obo/NCBITaxon_12078"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
