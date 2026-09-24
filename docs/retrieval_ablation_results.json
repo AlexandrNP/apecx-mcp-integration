@@ -1,6 +1,6 @@
 {
   "experiment": "literature_organism_filter_ablation_at_scale",
-  "timestamp": "2026-09-24T06:26:36.830815+00:00",
+  "timestamp": "2026-09-24T07:27:29.721707+00:00",
   "model": "mistral-nemo:latest",
   "llm_base_url": "default(http://localhost:11434/v1)",
   "dictionary_path": "/Users/onarykov/Downloads/apecx-cowork/dictionary.sqlite",
@@ -208,6 +208,12 @@
     "Porcine deltacoronavirus": true,
     "Murine hepatitis virus": true,
     "Rinderpest virus": true,
+    "Phocine distemper virus": true,
+    "Cetacean morbillivirus": true,
+    "Bovine parainfluenza virus 3": true,
+    "Avian metapneumovirus": true,
+    "Fer-de-Lance virus": true,
+    "Porcine rubulavirus": true,
     "Lujo mammarenavirus": true,
     "Middle East respiratory syndrome-related coronavirus": false,
     "Human parainfluenza virus 1": true,
@@ -215,7 +221,7 @@
   },
   "max_papers_per_organism": 20,
   "retrieval_k": 5,
-  "corpus_size": 3960,
+  "corpus_size": 4069,
   "resolution_source": {
     "Chikungunya virus": "dictionary",
     "Dengue virus": "dictionary",
@@ -419,6 +425,12 @@
     "Porcine deltacoronavirus": "dictionary",
     "Murine hepatitis virus": "dictionary",
     "Rinderpest virus": "dictionary",
+    "Phocine distemper virus": "dictionary",
+    "Cetacean morbillivirus": "dictionary",
+    "Bovine parainfluenza virus 3": "dictionary",
+    "Avian metapneumovirus": "dictionary",
+    "Fer-de-Lance virus": "dictionary",
+    "Porcine rubulavirus": "dictionary",
     "Lujo mammarenavirus": "dictionary",
     "Middle East respiratory syndrome-related coronavirus": "dictionary",
     "Human parainfluenza virus 1": "dictionary",
@@ -1233,6 +1245,30 @@
       "harvested": 19,
       "stamped_with_own_iri": 4
     },
+    "Phocine distemper virus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 17
+    },
+    "Cetacean morbillivirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 16
+    },
+    "Bovine parainfluenza virus 3": {
+      "harvested": 20,
+      "stamped_with_own_iri": 5
+    },
+    "Avian metapneumovirus": {
+      "harvested": 19,
+      "stamped_with_own_iri": 2
+    },
+    "Fer-de-Lance virus": {
+      "harvested": 11,
+      "stamped_with_own_iri": 2
+    },
+    "Porcine rubulavirus": {
+      "harvested": 20,
+      "stamped_with_own_iri": 19
+    },
     "Lujo mammarenavirus": {
       "harvested": 20,
       "stamped_with_own_iri": 12
@@ -1285,8 +1321,8 @@
     }
   ],
   "mean_filtered_precision": 1.0,
-  "mean_unfiltered_precision": 0.3624819624819625,
-  "n_cases": 1386,
+  "mean_unfiltered_precision": 0.3680672268907563,
+  "n_cases": 1428,
   "per_case": [
     {
       "organism": "Chikungunya virus",
@@ -1308,7 +1344,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1332,7 +1368,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1356,7 +1392,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1380,7 +1416,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1404,7 +1440,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1428,7 +1464,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1452,7 +1488,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 73,
+      "filtered_corpus_size": 74,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1644,7 +1680,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 45,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1668,7 +1704,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 45,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1678,21 +1714,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11588",
       "filtered_citations": [
         "34578299",
+        "40345597",
         "27029488",
         "42687974",
-        "24486952",
-        "42607044"
+        "24486952"
       ],
       "unfiltered_citations": [
         "34578299",
+        "40345597",
         "39561397",
         "27029488",
-        "42687974",
-        "40822308"
+        "42687974"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 45,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1716,7 +1752,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 45,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1740,7 +1776,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 45,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1764,7 +1800,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 45,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1788,7 +1824,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 45,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1812,7 +1848,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1836,7 +1872,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1860,7 +1896,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1884,7 +1920,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1908,7 +1944,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1932,7 +1968,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1956,7 +1992,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 155,
+      "filtered_corpus_size": 158,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -1980,7 +2016,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2004,7 +2040,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2017,7 +2053,7 @@
         "42654740",
         "4246007",
         "42739216",
-        "37348715"
+        "42739216"
       ],
       "unfiltered_citations": [
         "42700662",
@@ -2028,7 +2064,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2052,7 +2088,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2076,7 +2112,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2088,8 +2124,8 @@
         "4246007",
         "39113298",
         "42700662",
-        "42747795",
-        "5391162"
+        "36986279",
+        "42747795"
       ],
       "unfiltered_citations": [
         "42674419",
@@ -2100,7 +2136,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2111,9 +2147,9 @@
       "filtered_citations": [
         "42700662",
         "42739216",
+        "42739216",
         "5391162",
-        "4246007",
-        "39113298"
+        "4246007"
       ],
       "unfiltered_citations": [
         "40526871",
@@ -2124,7 +2160,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 45,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2148,7 +2184,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2172,7 +2208,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2196,7 +2232,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2220,7 +2256,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2244,7 +2280,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2268,7 +2304,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2292,7 +2328,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 62,
+      "filtered_corpus_size": 63,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2484,7 +2520,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 32,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2508,7 +2544,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 32,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2517,22 +2553,22 @@
       "question": "What diagnostic assays or laboratory tests detect Yellow fever virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11089",
       "filtered_citations": [
+        "40345597",
         "42708070",
         "42583857",
         "12565155",
-        "15220415",
-        "41608126"
+        "15220415"
       ],
       "unfiltered_citations": [
         "40822308",
+        "40345597",
         "42749758",
         "42749758",
-        "42749758",
-        "39561397"
+        "42749758"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 32,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2556,7 +2592,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 32,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2580,7 +2616,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 32,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2604,7 +2640,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 32,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -2628,7 +2664,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 32,
+      "filtered_corpus_size": 33,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3324,7 +3360,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3348,7 +3384,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3372,7 +3408,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3396,7 +3432,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3420,7 +3456,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3444,7 +3480,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -3468,7 +3504,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 13,
+      "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -4398,9 +4434,9 @@
       "unfiltered_citations": [
         "36394457",
         "40192289",
+        "14747569",
         "42240370",
-        "30123198",
-        "42684008"
+        "30123198"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -6413,10 +6449,10 @@
       ],
       "unfiltered_citations": [
         "30123198",
+        "14747569",
         "26822138",
         "38782261",
-        "17711577",
-        "31100884"
+        "17711577"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -7188,7 +7224,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7212,7 +7248,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7236,7 +7272,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7260,7 +7296,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7284,7 +7320,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7308,7 +7344,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -7332,7 +7368,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 5,
+      "filtered_corpus_size": 6,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8868,7 +8904,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 30,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8886,13 +8922,13 @@
       "unfiltered_citations": [
         "40379380",
         "32809745",
+        "32809745",
         "31334978",
-        "41511094",
-        "42687618"
+        "41511094"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 30,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8904,8 +8940,8 @@
         "42687618",
         "42687618",
         "42522621",
-        "37734534",
-        "41305396"
+        "42100657",
+        "42327696"
       ],
       "unfiltered_citations": [
         "42378730",
@@ -8916,7 +8952,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 30,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8927,9 +8963,9 @@
       "filtered_citations": [
         "39264196",
         "42219293",
+        "41793875",
         "41328592",
-        "42738593",
-        "42687618"
+        "42755548"
       ],
       "unfiltered_citations": [
         "39036953",
@@ -8940,7 +8976,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 30,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8964,7 +9000,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 30,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -8982,13 +9018,13 @@
       "unfiltered_citations": [
         "41305396",
         "32809745",
+        "32809745",
         "42374528",
-        "39772231",
-        "42535290"
+        "39772231"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 30,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9006,13 +9042,13 @@
       "unfiltered_citations": [
         "42501735",
         "32809745",
+        "32809745",
         "42771068",
-        "40911481",
-        "41914137"
+        "42771068"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 30,
+      "filtered_corpus_size": 39,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9022,21 +9058,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
+        "32809745",
         "42743349",
-        "42741467",
-        "42737877",
-        "42501735"
+        "42743349",
+        "42741467"
       ],
       "unfiltered_citations": [
         "32809745",
+        "32809745",
         "42743349",
-        "42741467",
-        "42737877",
-        "42501735"
+        "42743349",
+        "42741467"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9046,21 +9082,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
+        "32809745",
         "42741467",
-        "42501735",
-        "42737877",
-        "42723722"
+        "42741467",
+        "42501735"
       ],
       "unfiltered_citations": [
         "32809745",
+        "32809745",
         "42741467",
-        "42501735",
-        "42737877",
-        "23358636"
+        "42741467",
+        "42501735"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 27,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9070,21 +9106,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
+        "32809745",
         "42501735",
         "42741467",
-        "42739216",
-        "42771068"
+        "42741467"
       ],
       "unfiltered_citations": [
         "32809745",
+        "32809745",
         "42378730",
         "42501735",
-        "42743296",
-        "42514684"
+        "42743296"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 27,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9094,21 +9130,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
+        "32809745",
         "42723722",
-        "42741467",
-        "42743349",
-        "42737877"
+        "42723722",
+        "42741467"
       ],
       "unfiltered_citations": [
         "32809745",
+        "32809745",
         "30123198",
         "39036953",
-        "42775853",
-        "42723722"
+        "42775853"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 27,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9118,21 +9154,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
+        "32809745",
         "42749451",
-        "42741467",
-        "42501735",
-        "42737877"
+        "42749451",
+        "42741467"
       ],
       "unfiltered_citations": [
         "35138784",
         "32809745",
+        "32809745",
         "42749451",
-        "40581051",
-        "42741467"
+        "42749451"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 27,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9142,21 +9178,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
+        "32809745",
         "42741467",
-        "42501735",
-        "42723722",
-        "42771068"
+        "42741467",
+        "42501735"
       ],
       "unfiltered_citations": [
         "32809745",
+        "32809745",
         "42741467",
-        "42501735",
-        "42775853",
-        "42723722"
+        "42741467",
+        "42501735"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 27,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9166,21 +9202,21 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_162145",
       "filtered_citations": [
         "32809745",
-        "42501735",
-        "42741467",
-        "42771068",
-        "42737877"
-      ],
-      "unfiltered_citations": [
         "32809745",
         "42501735",
         "42741467",
-        "42771068",
-        "42715497"
+        "42741467"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "32809745",
+        "42501735",
+        "42741467",
+        "42741467"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 27,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 42,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9204,7 +9240,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9214,10 +9250,10 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
       "filtered_citations": [
         "42581065",
+        "11597749",
         "41631834",
         "42734748",
-        "41784610",
-        "42764718"
+        "41784610"
       ],
       "unfiltered_citations": [
         "30882310",
@@ -9228,7 +9264,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9239,9 +9275,9 @@
       "filtered_citations": [
         "42764718",
         "42581065",
+        "11597749",
         "41631834",
-        "42172325",
-        "41784610"
+        "42172325"
       ],
       "unfiltered_citations": [
         "42378730",
@@ -9252,7 +9288,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9261,11 +9297,11 @@
       "question": "What is the genome organization and replication cycle of Sendai virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
       "filtered_citations": [
+        "11597749",
         "41631834",
         "42581065",
         "41784610",
-        "42734748",
-        "42594645"
+        "42734748"
       ],
       "unfiltered_citations": [
         "36394457",
@@ -9276,7 +9312,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9288,8 +9324,8 @@
         "42172325",
         "41631834",
         "42581065",
-        "42734748",
-        "41784610"
+        "11597749",
+        "42734748"
       ],
       "unfiltered_citations": [
         "42716004",
@@ -9300,7 +9336,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9310,10 +9346,10 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
       "filtered_citations": [
         "42581065",
+        "11597749",
         "42172325",
         "41784610",
-        "41631834",
-        "42734748"
+        "41631834"
       ],
       "unfiltered_citations": [
         "42671285",
@@ -9324,7 +9360,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -9334,10 +9370,10 @@
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052731",
       "filtered_citations": [
         "42581065",
+        "11597749",
         "42172325",
         "41631834",
-        "42764718",
-        "42734748"
+        "42764718"
       ],
       "unfiltered_citations": [
         "42708795",
@@ -9348,7 +9384,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 14,
+      "filtered_corpus_size": 15,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -13169,7 +13205,7 @@
         "40916329",
         "40400688",
         "32809745",
-        "41915124",
+        "32809745",
         "41915124"
       ],
       "filtered_precision": 1.0,
@@ -13194,7 +13230,7 @@
         "41914137",
         "40911481",
         "32809745",
-        "42703548"
+        "32809745"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -13362,7 +13398,7 @@
         "40911481",
         "41914137",
         "32809745",
-        "41246380"
+        "32809745"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -14062,7 +14098,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14086,7 +14122,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14110,7 +14146,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14134,7 +14170,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14158,7 +14194,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14182,7 +14218,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14206,7 +14242,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 83,
+      "filtered_corpus_size": 89,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14902,7 +14938,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14926,7 +14962,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14950,7 +14986,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14974,7 +15010,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -14998,7 +15034,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15022,7 +15058,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15046,7 +15082,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 40,
+      "filtered_corpus_size": 43,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15070,7 +15106,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15094,7 +15130,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15106,8 +15142,8 @@
         "42514709",
         "42514709",
         "42514709",
-        "42626012",
-        "42628886"
+        "42327696",
+        "42626012"
       ],
       "unfiltered_citations": [
         "42514709",
@@ -15118,7 +15154,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15142,7 +15178,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15166,7 +15202,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15190,7 +15226,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15202,7 +15238,7 @@
         "42626012",
         "42628886",
         "42573861",
-        "42514709",
+        "42327696",
         "42514709"
       ],
       "unfiltered_citations": [
@@ -15214,7 +15250,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 44,
+      "filtered_corpus_size": 49,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15714,7 +15750,7 @@
         "42716083",
         "42634768",
         "42634768",
-        "42096910"
+        "41588689"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -15910,7 +15946,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15934,7 +15970,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15958,7 +15994,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -15970,19 +16006,19 @@
         "39202744",
         "42464370",
         "42401952",
-        "37375523",
-        "37979697"
+        "39827673",
+        "37375523"
       ],
       "unfiltered_citations": [
         "39202744",
         "42464370",
         "42401952",
-        "37375523",
-        "37979697"
+        "39827673",
+        "37375523"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -16006,7 +16042,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -16030,7 +16066,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -16054,7 +16090,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 37,
+      "filtered_corpus_size": 46,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -16623,9 +16659,9 @@
       ],
       "unfiltered_citations": [
         "42378730",
+        "34181967",
         "39561397",
         "41619618",
-        "42514684",
         "42514684"
       ],
       "filtered_precision": 1.0,
@@ -17745,9 +17781,9 @@
       "unfiltered_citations": [
         "42490629",
         "42707121",
-        "34041391",
-        "41288181",
-        "27248570"
+        "36273875",
+        "32976525",
+        "34041391"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -17769,9 +17805,9 @@
       "unfiltered_citations": [
         "42490629",
         "42707121",
-        "32100137",
-        "39264155",
-        "31334978"
+        "26584829",
+        "23770154",
+        "28104449"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -17791,11 +17827,11 @@
         "42611114"
       ],
       "unfiltered_citations": [
+        "23305816",
         "41619618",
         "42707121",
         "42514684",
-        "42514684",
-        "39697169"
+        "42514684"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -17816,13 +17852,13 @@
       ],
       "unfiltered_citations": [
         "30123198",
+        "28185101",
         "38421167",
         "39036953",
-        "41861695",
-        "42490629"
+        "41861695"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 5,
       "filtered_status": null,
       "unfiltered_status": null
@@ -17865,9 +17901,9 @@
       "unfiltered_citations": [
         "42490629",
         "42707121",
+        "26584829",
         "42748122",
-        "42475728",
-        "35521982"
+        "42475728"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -17891,7 +17927,7 @@
         "42490629",
         "42475728",
         "32633998",
-        "39609153"
+        "23770154"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
@@ -20607,7 +20643,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 41,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -20631,7 +20667,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 41,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -20643,7 +20679,7 @@
         "42492780",
         "42492780",
         "42492780",
-        "42694081",
+        "42492780",
         "42694081"
       ],
       "unfiltered_citations": [
@@ -20651,11 +20687,11 @@
         "42492780",
         "42492780",
         "42492780",
-        "42591061"
+        "42492780"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 41,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -20679,7 +20715,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 41,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -20703,7 +20739,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 41,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -20727,7 +20763,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 41,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -20751,7 +20787,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 41,
+      "filtered_corpus_size": 44,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -23062,9 +23098,9 @@
       "unfiltered_citations": [
         "42146327",
         "32809745",
+        "32809745",
         "42742818",
-        "41914137",
-        "28722927"
+        "41914137"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -24744,7 +24780,7 @@
         "12946018",
         "12587070",
         "32809745",
-        "42715497"
+        "32809745"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
@@ -30149,11 +30185,11 @@
         "42514627",
         "42514627",
         "42671895",
-        "42551978",
-        "42732726"
+        "23305816",
+        "42551978"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
+      "unfiltered_precision": 0.6,
       "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
@@ -30261,20 +30297,20 @@
       "filtered_citations": [
         "42590789",
         "42138810",
+        "41584247",
         "42497673",
-        "42385734",
-        "42385734"
+        "42497673"
       ],
       "unfiltered_citations": [
         "42590789",
         "42138810",
         "42459547",
         "42459547",
-        "42233013"
+        "41584247"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 31,
+      "unfiltered_precision": 0.6,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -30285,20 +30321,20 @@
       "filtered_citations": [
         "42590789",
         "42376562",
-        "39143403",
-        "42138810",
-        "42137610"
+        "41557093",
+        "41584247",
+        "39143403"
       ],
       "unfiltered_citations": [
         "42590789",
         "35130139",
         "42376562",
         "36851669",
-        "39143403"
+        "41557093"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 31,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -30311,18 +30347,18 @@
         "42492780",
         "42492780",
         "42492780",
-        "42376562"
+        "42492780"
       ],
       "unfiltered_citations": [
         "42590789",
         "42492780",
         "42492780",
         "42492780",
-        "39668324"
+        "42492780"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 31,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -30346,7 +30382,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 31,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -30370,7 +30406,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 31,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -30379,22 +30415,22 @@
       "question": "What is the epidemiology and outbreak history of Bovine respiratory syncytial virus?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11246",
       "filtered_citations": [
+        "41557093",
         "42590789",
         "42376562",
         "39143403",
-        "41726388",
         "41726388"
       ],
       "unfiltered_citations": [
+        "41557093",
         "42590789",
         "42376562",
         "39143403",
-        "36851669",
-        "35130139"
+        "36851669"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 31,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -30405,20 +30441,20 @@
       "filtered_citations": [
         "42590789",
         "42376562",
+        "41584247",
         "39143403",
-        "42497673",
-        "41726388"
+        "41557093"
       ],
       "unfiltered_citations": [
         "42590789",
         "42376562",
         "35130139",
-        "39143403",
-        "42207763"
+        "41588689",
+        "42327696"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 31,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 40,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -31442,11 +31478,11 @@
         "41407624"
       ],
       "unfiltered_citations": [
+        "41766820",
         "42233013",
         "42233013",
         "42561832",
-        "42357663",
-        "37093892"
+        "42357663"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -31586,11 +31622,11 @@
         "40911282"
       ],
       "unfiltered_citations": [
+        "41588689",
         "39609153",
         "39609153",
         "39143403",
-        "41630718",
-        "41392238"
+        "41630718"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -31954,7 +31990,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -31978,7 +32014,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32002,7 +32038,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32026,7 +32062,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32050,7 +32086,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32061,9 +32097,9 @@
       "filtered_citations": [
         "42335074",
         "41701746",
+        "23734711",
         "38662794",
-        "42183758",
-        "42453577"
+        "42183758"
       ],
       "unfiltered_citations": [
         "42335074",
@@ -32074,7 +32110,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32098,7 +32134,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 26,
+      "filtered_corpus_size": 27,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32290,7 +32326,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32314,7 +32350,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 1.0,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32338,7 +32374,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32362,7 +32398,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.8,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32386,7 +32422,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32410,7 +32446,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32434,7 +32470,7 @@
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.6,
-      "filtered_corpus_size": 25,
+      "filtered_corpus_size": 26,
       "filtered_status": null,
       "unfiltered_status": null
     },
@@ -32475,10 +32511,10 @@
       ],
       "unfiltered_citations": [
         "32809745",
+        "32809745",
         "42541310",
         "31334978",
-        "39799084",
-        "21820021"
+        "39799084"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -32598,7 +32634,7 @@
         "42708795",
         "9919918",
         "32809745",
-        "35962680"
+        "32809745"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -32741,8 +32777,8 @@
         "35130139",
         "36670851",
         "39143403",
-        "39066186",
-        "36851669"
+        "41557093",
+        "39066186"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -32766,7 +32802,7 @@
         "39609153",
         "39609153",
         "42655844",
-        "39143403"
+        "41588689"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -33603,10 +33639,10 @@
       ],
       "unfiltered_citations": [
         "42551610",
+        "23770154",
         "41038248",
         "41038248",
-        "41038248",
-        "9919918"
+        "41038248"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.2,
@@ -33944,6 +33980,993 @@
       "unfiltered_status": null
     },
     {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "32215955",
+        "41490911",
+        "31917631",
+        "37458158",
+        "34702073"
+      ],
+      "unfiltered_citations": [
+        "32215955",
+        "41490911",
+        "42671264",
+        "42671264",
+        "42498819"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "32215955",
+        "41490911",
+        "31917631",
+        "37458158",
+        "34702073"
+      ],
+      "unfiltered_citations": [
+        "32215955",
+        "41490911",
+        "31917631",
+        "37458158",
+        "34702073"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Phocine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "32215955",
+        "41490911",
+        "35491822",
+        "31917631",
+        "40345597"
+      ],
+      "unfiltered_citations": [
+        "42378730",
+        "42514684",
+        "42514684",
+        "31549301",
+        "42705086"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the genome organization and replication cycle of Phocine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "32215955",
+        "34702073",
+        "34753354",
+        "41490911",
+        "31917631"
+      ],
+      "unfiltered_citations": [
+        "39036953",
+        "42684008",
+        "32215955",
+        "42383739",
+        "34702073"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "32215955",
+        "41490911",
+        "31917631",
+        "34702073",
+        "35491822"
+      ],
+      "unfiltered_citations": [
+        "42580486",
+        "32215955",
+        "41606733",
+        "41490911",
+        "40581051"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the epidemiology and outbreak history of Phocine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "41490911",
+        "34702073",
+        "34753354",
+        "32215955",
+        "31917631"
+      ],
+      "unfiltered_citations": [
+        "41490911",
+        "34702073",
+        "34753354",
+        "32215955",
+        "31917631"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+      "filtered_citations": [
+        "41490911",
+        "32215955",
+        "31917631",
+        "34152961",
+        "34702073"
+      ],
+      "unfiltered_citations": [
+        "41490911",
+        "28418305",
+        "5358980",
+        "32215955",
+        "42703548"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 20,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "39949182",
+        "38781986",
+        "40063531",
+        "42593857",
+        "42593857"
+      ],
+      "unfiltered_citations": [
+        "39949182",
+        "38781986",
+        "40063531",
+        "42593857",
+        "42593857"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is known about Cetacean morbillivirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "38781986",
+        "39949182",
+        "40063531",
+        "40285024",
+        "41413883"
+      ],
+      "unfiltered_citations": [
+        "38781986",
+        "39949182",
+        "40063531",
+        "40285024",
+        "42095928"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What diagnostic assays or laboratory tests detect Cetacean morbillivirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "41743080",
+        "38781986",
+        "38140663",
+        "39949182",
+        "39199951"
+      ],
+      "unfiltered_citations": [
+        "41743080",
+        "38781986",
+        "38140663",
+        "39949182",
+        "39199951"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is the genome organization and replication cycle of Cetacean morbillivirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "40285024",
+        "38781986",
+        "40063531",
+        "37769814",
+        "39949182"
+      ],
+      "unfiltered_citations": [
+        "42095928",
+        "40285024",
+        "38781986",
+        "40063531",
+        "37769814"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What antiviral drugs or treatments are effective against Cetacean morbillivirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "39949182",
+        "38781986",
+        "40063531",
+        "42593857",
+        "42593857"
+      ],
+      "unfiltered_citations": [
+        "39949182",
+        "38781986",
+        "40063531",
+        "42593857",
+        "42593857"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What is the epidemiology and outbreak history of Cetacean morbillivirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "39949182",
+        "38781986",
+        "40063531",
+        "40285024",
+        "41413883"
+      ],
+      "unfiltered_citations": [
+        "39949182",
+        "38781986",
+        "40063531",
+        "40285024",
+        "39335313"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Cetacean morbillivirus",
+      "question": "What are the clinical symptoms and disease presentation of Cetacean morbillivirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052344",
+      "filtered_citations": [
+        "38781986",
+        "39949182",
+        "39204284",
+        "39441833",
+        "39199951"
+      ],
+      "unfiltered_citations": [
+        "38781986",
+        "39949182",
+        "39204284",
+        "39441833",
+        "39199951"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "41328592",
+        "42327696",
+        "41751098",
+        "39143403",
+        "42720819"
+      ],
+      "unfiltered_citations": [
+        "41766820",
+        "42100657",
+        "42233013",
+        "42233013",
+        "42484905"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "39143403",
+        "42327696",
+        "41328592",
+        "41751098",
+        "41726388"
+      ],
+      "unfiltered_citations": [
+        "42484905",
+        "41932427",
+        "41766820",
+        "42100657",
+        "42755548"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What diagnostic assays or laboratory tests detect Bovine parainfluenza virus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "42327696",
+        "41751098",
+        "39143403",
+        "41726388",
+        "41726388"
+      ],
+      "unfiltered_citations": [
+        "42100657",
+        "39668324",
+        "42591061",
+        "42327696",
+        "42484905"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the genome organization and replication cycle of Bovine parainfluenza virus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "41328592",
+        "39143403",
+        "42137610",
+        "42137610",
+        "42327696"
+      ],
+      "unfiltered_citations": [
+        "41932427",
+        "41793875",
+        "42755548",
+        "41637037",
+        "41078497"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What antiviral drugs or treatments are effective against Bovine parainfluenza virus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "42720819",
+        "42720819",
+        "42720819",
+        "42720819",
+        "41328592"
+      ],
+      "unfiltered_citations": [
+        "42385734",
+        "42385734",
+        "42385734",
+        "24486952",
+        "41766820"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the epidemiology and outbreak history of Bovine parainfluenza virus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "39143403",
+        "42327696",
+        "41726388",
+        "41726388",
+        "41726388"
+      ],
+      "unfiltered_citations": [
+        "42484905",
+        "41557093",
+        "42755548",
+        "41932427",
+        "39143403"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What are the clinical symptoms and disease presentation of Bovine parainfluenza virus 3?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052729",
+      "filtered_citations": [
+        "42327696",
+        "39143403",
+        "41751098",
+        "41328592",
+        "41726388"
+      ],
+      "unfiltered_citations": [
+        "42484905",
+        "42327696",
+        "42100657",
+        "41588689",
+        "41584247"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 14,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42436537",
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459"
+      ],
+      "unfiltered_citations": [
+        "42436537",
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "42436537"
+      ],
+      "unfiltered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "32809745"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "42436537"
+      ],
+      "unfiltered_citations": [
+        "40438408",
+        "42731233",
+        "42514684",
+        "42514684",
+        "42604688"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Avian metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "42436537"
+      ],
+      "unfiltered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "40127066"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Avian metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42775853",
+        "42775853",
+        "42436537",
+        "42698459",
+        "42698459"
+      ],
+      "unfiltered_citations": [
+        "35138784",
+        "42775853",
+        "42775853",
+        "32809745",
+        "32809745"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the epidemiology and outbreak history of Avian metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "42436537"
+      ],
+      "unfiltered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "32809745"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.8,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What are the clinical symptoms and disease presentation of Avian metapneumovirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_38525",
+      "filtered_citations": [
+        "42775853",
+        "42775853",
+        "42698459",
+        "42698459",
+        "42436537"
+      ],
+      "unfiltered_citations": [
+        "32809745",
+        "32809745",
+        "42501735",
+        "42775853",
+        "42775853"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.4,
+      "filtered_corpus_size": 5,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "14747569",
+        "10509717"
+      ],
+      "unfiltered_citations": [
+        "42655696",
+        "42655696",
+        "42060533",
+        "42716004",
+        "41608126"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "14747569",
+        "10509717"
+      ],
+      "unfiltered_citations": [
+        "31334978",
+        "521797",
+        "40379380",
+        "42327211",
+        "42327211"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What diagnostic assays or laboratory tests detect Fer-de-Lance virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "10509717",
+        "14747569"
+      ],
+      "unfiltered_citations": [
+        "42514684",
+        "42514684",
+        "42378730",
+        "41619618",
+        "42519721"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the genome organization and replication cycle of Fer-de-Lance virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "14747569",
+        "10509717"
+      ],
+      "unfiltered_citations": [
+        "521797",
+        "30123198",
+        "14747569",
+        "40192289",
+        "42728501"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.2,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What antiviral drugs or treatments are effective against Fer-de-Lance virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "14747569",
+        "10509717"
+      ],
+      "unfiltered_citations": [
+        "41936880",
+        "24486952",
+        "42606356",
+        "42606356",
+        "35138784"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the epidemiology and outbreak history of Fer-de-Lance virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "14747569",
+        "10509717"
+      ],
+      "unfiltered_citations": [
+        "31334978",
+        "39205153",
+        "521797",
+        "29845522",
+        "9919918"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What are the clinical symptoms and disease presentation of Fer-de-Lance virus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_2907837",
+      "filtered_citations": [
+        "14747569",
+        "10509717"
+      ],
+      "unfiltered_citations": [
+        "31334978",
+        "9919918",
+        "40911481",
+        "41246380",
+        "41914137"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 0.0,
+      "filtered_corpus_size": 2,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What is known about Porcine rubulavirus and neutralizing antibodies or vaccines?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "36273875",
+        "23770154",
+        "28104449",
+        "27496728",
+        "23201243"
+      ],
+      "unfiltered_citations": [
+        "36273875",
+        "23770154",
+        "28104449",
+        "27496728",
+        "23201243"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What is known about Porcine rubulavirus pathogenesis and transmission?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "26584829",
+        "23770154",
+        "23201243",
+        "28104449",
+        "28185101"
+      ],
+      "unfiltered_citations": [
+        "26584829",
+        "23770154",
+        "23201243",
+        "28104449",
+        "28185101"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine rubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "23305816",
+        "23525730",
+        "28104449",
+        "23201243",
+        "23770154"
+      ],
+      "unfiltered_citations": [
+        "23305816",
+        "23525730",
+        "28104449",
+        "23201243",
+        "23770154"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What is the genome organization and replication cycle of Porcine rubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "28185101",
+        "26728078",
+        "26584829",
+        "22754092",
+        "24768705"
+      ],
+      "unfiltered_citations": [
+        "28185101",
+        "26728078",
+        "26584829",
+        "22754092",
+        "24768705"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What antiviral drugs or treatments are effective against Porcine rubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "28104449",
+        "26584829",
+        "23525730",
+        "23201243",
+        "36273875"
+      ],
+      "unfiltered_citations": [
+        "28104449",
+        "26584829",
+        "23525730",
+        "23201243",
+        "36273875"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What is the epidemiology and outbreak history of Porcine rubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "26584829",
+        "28185101",
+        "23201243",
+        "23770154",
+        "24768705"
+      ],
+      "unfiltered_citations": [
+        "26584829",
+        "28185101",
+        "23201243",
+        "23770154",
+        "24768705"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine rubulavirus?",
+      "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052562",
+      "filtered_citations": [
+        "23770154",
+        "28104449",
+        "23201243",
+        "24768705",
+        "26584829"
+      ],
+      "unfiltered_citations": [
+        "23770154",
+        "28104449",
+        "23201243",
+        "24768705",
+        "26584829"
+      ],
+      "filtered_precision": 1.0,
+      "unfiltered_precision": 1.0,
+      "filtered_corpus_size": 19,
+      "filtered_status": null,
+      "unfiltered_status": null
+    },
+    {
       "organism": "Lujo mammarenavirus",
       "question": "What is known about Lujo mammarenavirus and neutralizing antibodies or vaccines?",
       "correct_iri": "http://purl.obolibrary.org/obo/NCBITaxon_3052314",
@@ -34125,12 +35148,12 @@
       "unfiltered_citations": [
         "42536013",
         "42522621",
+        "41766820",
         "42060533",
-        "41608126",
-        "39078148"
+        "41608126"
       ],
       "filtered_precision": 1.0,
-      "unfiltered_precision": 0.2,
+      "unfiltered_precision": 0.0,
       "filtered_corpus_size": 14,
       "filtered_status": null,
       "unfiltered_status": null
@@ -34173,9 +35196,9 @@
       "unfiltered_citations": [
         "42378730",
         "42522621",
+        "42100657",
         "42687618",
-        "42687618",
-        "38900074"
+        "42687618"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.0,
@@ -34198,8 +35221,8 @@
         "41065204",
         "39684830",
         "30123198",
-        "41603610",
-        "31334978"
+        "14747569",
+        "41603610"
       ],
       "filtered_precision": 1.0,
       "unfiltered_precision": 0.4,
