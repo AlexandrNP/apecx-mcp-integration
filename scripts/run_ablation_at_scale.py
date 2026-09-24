@@ -230,6 +230,13 @@ _TARGETS: list[tuple[str, str]] = [
     ("Schmallenberg virus", "http://purl.obolibrary.org/obo/NCBITaxon_1133363"),
     ("Chuzan virus", "http://purl.obolibrary.org/obo/NCBITaxon_77204"),
     ("Infectious bursal disease virus", "http://purl.obolibrary.org/obo/NCBITaxon_10995"),
+    ("Human papillomavirus type 59", "http://purl.obolibrary.org/obo/NCBITaxon_37115"),
+    ("Human papillomavirus type 68", "http://purl.obolibrary.org/obo/NCBITaxon_45240"),
+    ("Human papillomavirus type 51", "http://purl.obolibrary.org/obo/NCBITaxon_10595"),
+    ("Human papillomavirus type 39", "http://purl.obolibrary.org/obo/NCBITaxon_10588"),
+    ("Echovirus 30", "http://purl.obolibrary.org/obo/NCBITaxon_41846"),
+    ("Coxsackievirus A6", "http://purl.obolibrary.org/obo/NCBITaxon_86107"),
+    ("Coxsackievirus B5", "http://purl.obolibrary.org/obo/NCBITaxon_12074"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
