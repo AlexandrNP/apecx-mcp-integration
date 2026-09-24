@@ -395,6 +395,14 @@ _TARGETS: list[tuple[str, str]] = [
     ("Human parainfluenza virus 4", "http://purl.obolibrary.org/obo/NCBITaxon_2560526"),
     ("GB virus C", "http://purl.obolibrary.org/obo/NCBITaxon_54290"),
     ("Torque teno midi virus", "http://purl.obolibrary.org/obo/NCBITaxon_432261"),
+    # 6 more arboviruses (2026-09-24) — catalog volume growth, no new domain.
+    # Canary-preflight-qualified (thin/no-stamp candidates dropped).
+    ("Bagaza virus", "http://purl.obolibrary.org/obo/NCBITaxon_64290"),
+    ("Tembusu virus", "http://purl.obolibrary.org/obo/NCBITaxon_64293"),
+    ("Vesicular stomatitis New Jersey virus", "http://purl.obolibrary.org/obo/NCBITaxon_11280"),
+    ("Bwamba orthobunyavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052384"),
+    ("Ngari virus", "http://purl.obolibrary.org/obo/NCBITaxon_273357"),
+    ("Inkoo virus", "http://purl.obolibrary.org/obo/NCBITaxon_45269"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
