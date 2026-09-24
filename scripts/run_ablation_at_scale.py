@@ -331,6 +331,26 @@ _TARGETS: list[tuple[str, str]] = [
     ("Invertebrate iridescent virus 6", "http://purl.obolibrary.org/obo/NCBITaxon_176652"),
     ("Nodamura virus", "http://purl.obolibrary.org/obo/NCBITaxon_12288"),
     ("Acute bee paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_92444"),
+    # 11 MORE invertebrate viruses (2026-09-24) — shrimp/crustacean + more bee/moth.
+    # Tests the SUPPLY half of the distance-x-supply law: does the insect crossing
+    # rate (91% at 12 members) drop as intra-invertebrate supply grows to 23? All qualify.
+    ("White spot syndrome virus", "http://purl.obolibrary.org/obo/NCBITaxon_342409"),
+    ("Taura syndrome virus", "http://purl.obolibrary.org/obo/NCBITaxon_142102"),
+    (
+        "Infectious hypodermal and hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1513224",
+    ),
+    ("Yellow head virus", "http://purl.obolibrary.org/obo/NCBITaxon_96029"),
+    ("Chronic bee paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_180822"),
+    ("Kashmir bee virus", "http://purl.obolibrary.org/obo/NCBITaxon_68876"),
+    ("Slow bee paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_458132"),
+    ("Aphid lethal paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_209529"),
+    ("Helicoverpa armigera nucleopolyhedrovirus", "http://purl.obolibrary.org/obo/NCBITaxon_51313"),
+    ("Cydia pomonella granulovirus", "http://purl.obolibrary.org/obo/NCBITaxon_28289"),
+    (
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10455",
+    ),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
