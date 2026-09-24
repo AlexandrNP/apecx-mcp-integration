@@ -260,6 +260,8 @@ _TARGETS: list[tuple[str, str]] = [
     ("Bovine enterovirus", "http://purl.obolibrary.org/obo/NCBITaxon_12064"),
     ("Mengovirus", "http://purl.obolibrary.org/obo/NCBITaxon_12107"),
     ("Bovine rhinitis A virus", "http://purl.obolibrary.org/obo/NCBITaxon_1155188"),
+    ("Bovine viral diarrhea virus 2", "http://purl.obolibrary.org/obo/NCBITaxon_54315"),
+    ("Kokobera virus", "http://purl.obolibrary.org/obo/NCBITaxon_44024"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
