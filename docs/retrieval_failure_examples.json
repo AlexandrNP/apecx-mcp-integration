@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-24T01:22:09.860888+00:00",
-  "runs": 41,
+  "updated": "2026-09-24T01:58:05.760951+00:00",
+  "runs": 42,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 4065,
-  "n_false_negatives": 1519,
+  "n_false_positives": 4299,
+  "n_false_negatives": 1579,
   "new_this_run": {
-    "false_positives": 131,
-    "false_negatives": 65
+    "false_positives": 234,
+    "false_negatives": 60
   },
   "false_positives": [
     {
@@ -45407,6 +45407,2509 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12066",
         "http://purl.obolibrary.org/obo/NCBITaxon_138948"
       ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Japanese encephalitis virus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is known about Sindbis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the epidemiology and outbreak history of Norovirus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the clinical symptoms and disease presentation of Norovirus?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the epidemiology and outbreak history of Human respirovirus 3?",
+      "cited_pmid": "42535290",
+      "title": "Emergence of an echovirus 17 subtype causing a viral meningitis outbreak, Israel, 2025 to 2026.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47505"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 16?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41631248",
+      "title": "An attenuated coxsackievirus B5 mutant carrying VP1-N157K retains oncolytic potency against non-small cell lung cancer.",
+      "actual_organisms": [
+        "Coxsackievirus B5"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 pathogenesis and transmission?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B3?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B3?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 pathogenesis and transmission?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A16?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A16?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the epidemiology and outbreak history of Sapovirus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 18?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 18?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 18?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 18?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "37772799",
+      "title": "A rapid HPV typing assay to support global cervical cancer screening and risk-based management: A cross-sectional study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus 11?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 11?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 11?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is known about Human betaherpesvirus 7 pathogenesis and transmission?",
+      "cited_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human betaherpesvirus 7",
+      "question": "What is the epidemiology and outbreak history of Human betaherpesvirus 7?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human gammaherpesvirus 8",
+      "question": "What are the clinical symptoms and disease presentation of Human gammaherpesvirus 8?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genome organization and replication cycle of Foot-and-mouth disease virus?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What is known about Human papillomavirus type 31 pathogenesis and transmission?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 31?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 31?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 31?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 31?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 pathogenesis and transmission?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 33?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 33?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 33?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 33?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is known about Human papillomavirus type 45 pathogenesis and transmission?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is known about Human papillomavirus type 45 pathogenesis and transmission?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 45?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 45?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is known about Rubella virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is known about Enterovirus D68 pathogenesis and transmission?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the epidemiology and outbreak history of Enterovirus D68?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is known about Pichinde virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is known about Human papillomavirus type 58 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is known about Human papillomavirus type 58 pathogenesis and transmission?",
+      "cited_pmid": "14554084",
+      "title": "Human papillomavirus type 59 immortalized keratinocytes express late viral proteins and infectious virus after calcium stimulation.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 58?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 58?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 58?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 58?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 58?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 58?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 58",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 58?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 pathogenesis and transmission?",
+      "cited_pmid": "14554084",
+      "title": "Human papillomavirus type 59 immortalized keratinocytes express late viral proteins and infectious virus after calcium stimulation.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 52?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 52?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 52?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 52?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is known about Ectromelia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the epidemiology and outbreak history of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro].",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38037452",
+      "title": "Genetic variability analysis of human\u00a0papillomavirus 58: Novel sublineage identification and persistent infection association.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "36786174",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by real-time multiplex PCR assay using type-specific primers and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "38980042",
+      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "38952402",
+      "title": "Variant analysis of human papillomavirus type 52 in Iranian women during 2018-2020: A case-control study.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "39363161",
+      "title": "Lineage and sublineage analysis of human papillomavirus type 58 in iranian women.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "41805182",
+      "title": "Complete genome sequence of human papillomavirus type 45 identified from a cervical cancer patient in Bangladesh.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 59?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 59?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 59?",
+      "cited_pmid": "37658312",
+      "title": "Clinical and epidemiological features of high-risk human papillomavirus infection in patients with cervical intraepithelial lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 59?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 59?",
+      "cited_pmid": "38025679",
+      "title": "Characteristic of persistent human papillomavirus infection in women worldwide: a meta-analysis.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 59?",
+      "cited_pmid": "37805467",
+      "title": "Epidemiologic characteristics of high-risk HPV and the correlation between multiple infections and cervical lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42424856",
+      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "14554084",
+      "title": "Human papillomavirus type 59 immortalized keratinocytes express late viral proteins and infectious virus after calcium stimulation.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "38037452",
+      "title": "Genetic variability analysis of human\u00a0papillomavirus 58: Novel sublineage identification and persistent infection association.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 68?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 68?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 68?",
+      "cited_pmid": "36786174",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by real-time multiplex PCR assay using type-specific primers and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "38980042",
+      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "38952402",
+      "title": "Variant analysis of human papillomavirus type 52 in Iranian women during 2018-2020: A case-control study.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "41805182",
+      "title": "Complete genome sequence of human papillomavirus type 45 identified from a cervical cancer patient in Bangladesh.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 68?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 68?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 68?",
+      "cited_pmid": "37658312",
+      "title": "Clinical and epidemiological features of high-risk human papillomavirus infection in patients with cervical intraepithelial lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 68?",
+      "cited_pmid": "38619081",
+      "title": "Pattern of multiple human papillomavirus infection and type competition: An analysis in healthy Chinese women aged 18-45 years.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 68?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 68?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 68?",
+      "cited_pmid": "38025679",
+      "title": "Characteristic of persistent human papillomavirus infection in women worldwide: a meta-analysis.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 68?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42424856",
+      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "40243019",
+      "title": "Patterns of Co-infection of HPV52 With Other HPV Genotypes and Their Risks of Cervical Precancer and Carcinoma.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "38037452",
+      "title": "Genetic variability analysis of human\u00a0papillomavirus 58: Novel sublineage identification and persistent infection association.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "38952402",
+      "title": "Variant analysis of human papillomavirus type 52 in Iranian women during 2018-2020: A case-control study.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "36786174",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by real-time multiplex PCR assay using type-specific primers and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection.",
+      "actual_organisms": [
+        "Human papillomavirus type 68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "38980042",
+      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "41805182",
+      "title": "Complete genome sequence of human papillomavirus type 45 identified from a cervical cancer patient in Bangladesh.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "37896881",
+      "title": "Intra-Patient Genomic Variations of Human Papillomavirus Type 31 in Cervical Cancer and Precancer.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "Human papillomavirus type 31"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 51?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 51?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 51?",
+      "cited_pmid": "38619081",
+      "title": "Pattern of multiple human papillomavirus infection and type competition: An analysis in healthy Chinese women aged 18-45 years.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 51?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 51?",
+      "cited_pmid": "38025679",
+      "title": "Characteristic of persistent human papillomavirus infection in women worldwide: a meta-analysis.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 51?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 51?",
+      "cited_pmid": "37658312",
+      "title": "Clinical and epidemiological features of high-risk human papillomavirus infection in patients with cervical intraepithelial lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 51?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42424856",
+      "title": "Immunogenicity and safety of Papilloguard\u00ae 4, the first quadrivalent HPV vaccine combined with adjuvant system 04, versus Gardasil\u00ae in healthy 15-25-year-old individuals: a phase III, randomized, double-blind, non-inferiority trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38619081",
+      "title": "Pattern of multiple human papillomavirus infection and type competition: An analysis in healthy Chinese women aged 18-45 years.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "14554084",
+      "title": "Human papillomavirus type 59 immortalized keratinocytes express late viral proteins and infectious virus after calcium stimulation.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "42750682",
+      "title": "Human papilloma virus as causal in breast cancer.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "36786174",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by real-time multiplex PCR assay using type-specific primers and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "37772799",
+      "title": "A rapid HPV typing assay to support global cervical cancer screening and risk-based management: A cross-sectional study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "38980042",
+      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "41805182",
+      "title": "Complete genome sequence of human papillomavirus type 45 identified from a cervical cancer patient in Bangladesh.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "37896881",
+      "title": "Intra-Patient Genomic Variations of Human Papillomavirus Type 31 in Cervical Cancer and Precancer.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "Human papillomavirus type 31"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "36085531",
+      "title": "Analysis of the genomic diversity of human papillomavirus type 31 in cervical samples reveals the presence of novel sublineages in clade C.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 39?",
+      "cited_pmid": "40516276",
+      "title": "Pathogenesis of recurrent respiratory papillomatosis and potential novel treatment strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 39?",
+      "cited_pmid": "38606779",
+      "title": "Impact of a carrageenan gel on viral load of genital human papillomavirus infections in sexually active women: Findings from the Carrageenan-gel Against Transmission of Cervical Human papillomavirus (CATCH) trial.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10590"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 39?",
+      "cited_pmid": "38025679",
+      "title": "Characteristic of persistent human papillomavirus infection in women worldwide: a meta-analysis.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 39?",
+      "cited_pmid": "37658312",
+      "title": "Clinical and epidemiological features of high-risk human papillomavirus infection in patients with cervical intraepithelial lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 39?",
+      "cited_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 39?",
+      "cited_pmid": "41346095",
+      "title": "Clinical Outcomes and Risk Implications of HPV 31 Infection: A 10-Year Retrospective Cohort Study.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 39?",
+      "cited_pmid": "37805467",
+      "title": "Epidemiologic characteristics of high-risk HPV and the correlation between multiple infections and cervical lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is known about Echovirus 30 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42535290",
+      "title": "Emergence of an echovirus 17 subtype causing a viral meningitis outbreak, Israel, 2025 to 2026.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47505"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 30?",
+      "cited_pmid": "41061222",
+      "title": "Enterovirus-associated deafness and myositis in an immunocompromised patient with in vivo and in vitro efficacy of intravenous immunoglobulins and remdesivir: Case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46018"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 30?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 30?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the epidemiology and outbreak history of Echovirus 30?",
+      "cited_pmid": "40439544",
+      "title": "A One Health Approach to Investigating Cache Valley Virus, Arkansas, USA, July 20231.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 30?",
+      "cited_pmid": "42572296",
+      "title": "Varicella-Zoster Virus Vasculopathy with Extension from the Cranial Nerves to the Brainstem: A Case Report.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 30?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 pathogenesis and transmission?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 pathogenesis and transmission?",
+      "cited_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_111551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "41436454",
+      "title": "Evaluation of high-throughput sequencing for replacing the conventional adventitious virus detection assays used for biologics.",
+      "actual_organisms": [
+        "Mammalian orthoreovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "39697169",
+      "title": "The complexity of the interpretation of ELISA and RT-PCR results in the diagnosis of a reticuloendotheliosis virus infection: an extended case study.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153135"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "cited_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China.",
+      "actual_organisms": [
+        "Coxsackievirus B5",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12078"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "cited_pmid": "42643680",
+      "title": "Spatiotemporal dynamics and genotypic shift of Coxsackievirus A16 in Fujian, China, from 2010 to 2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A6?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A6?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus A6?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42638709",
+      "title": "A conserved VP1-286 epitope governs neutralization and immune escape in Coxsackievirus A6.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41888844",
+      "title": "Coxsackie B1 virus-like particle that lacks VP4 protein demonstrates improved vaccine scalability, stability and immunogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 pathogenesis and transmission?",
+      "cited_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 pathogenesis and transmission?",
+      "cited_pmid": "42377031",
+      "title": "Neurotropism and interferon-dominated immune responses in a mouse-adapted coxsackievirus A16 infection model.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "42185971",
+      "title": "Highly sensitive and rapid determination of Coxsackievirus A16 using restriction endonuclease-mediated reverse transcription multiple cross displacement amplification.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "41864935",
+      "title": "A Standardized workflow for Orthohantavirus production, detection, and antiviral screening.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B5?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B5?",
+      "cited_pmid": "42322358",
+      "title": "Molecular characterization and whole-genome sequencing-based genetic evolution of coxsackievirus A16 in Taiyuan City, 2023-2025.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "42382355",
+      "title": "Abietic acid targets RAN to restrict coxsackievirus B3 infection.",
+      "actual_organisms": [
+        "Coxsackievirus B3"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "42350480",
+      "title": "A drug repurposing screen identifies antiviral compounds against Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "cited_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "cited_pmid": "42704207",
+      "title": "Genetic Variation and Evolutionary Characteristics of Coxsackievirus B1: F3 Subtype Associated With Hand, Foot and Mouth Disease in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "40012477",
+      "title": "Severe coxsackie virus B5 encephalitis mimics autoimmune limbic encephalitis in a young woman under long-term B-cell depletion with ocrelizumab: A case report.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "41778566",
+      "title": "A newborn boy with fever and seizures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -54523,6 +57026,366 @@
       "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
       "missed_pmid": "42775583",
       "title": "Rapid Identification and Differential Detection of Infectious Bursal Disease Virus by an Innovative ARMS-qRT-PCR Assay."
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 3?",
+      "missed_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41949652",
+      "title": "Response of dendritic cells and T cells to virus-like particles formed from norovirus viral protein-1 (VP1N) or chimeric molecules containing a fragment of VP1N and polypeptides of echovirus 30."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)]."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37666475",
+      "title": "High-risk human papillomavirus distribution in different cytological classification women."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "missed_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "missed_pmid": "36755053",
+      "title": "Characteristics of human papillomavirus infection among females and the genetic variations of HPV18 and HPV58 in Henan province, China."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "missed_pmid": "42474801",
+      "title": "Type-specific sensitivity versus detection breadth in HPV diagnostics: improved analytical detection of HPV16/18 by nested PCR."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "missed_pmid": "36636851",
+      "title": "[Determination of Human Papilloma Virus (HPV) Genotype Prevalance and Distrubution in Adana: A Hospital-Based Study Between 2014-2021]."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40806298",
+      "title": "The Expression Pattern of the Splice Variants of Coxsackievirus and Adenovirus Receptor Impacts CV-B3-Induced Encephalitis and Myocarditis in Neonatal Mice."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "missed_pmid": "41753616",
+      "title": "Genetic Diversity and Excretion Kinetics of Enteroviruses Excreted by Patients with Primary Immunodeficiency in Tunisia over a Five-Year Period (2020-2024)."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "missed_pmid": "42050725",
+      "title": "Molecular Epidemiology of Non-Polio Enterovirus: Insights From L20B Cell Line Adaptation From Children With Acute Flaccid Paralysis in Pakistan."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A16?",
+      "missed_pmid": "40548730",
+      "title": "Wastewater monitoring allows the detection of uncommon and highly pathogenic enterovirus types."
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A16?",
+      "missed_pmid": "41811867",
+      "title": "A clinical SARS-CoV-2 Mpro inhibitor blocks replication of multiple enteroviruses and confers oral in vivo protection in animal models."
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is known about Human papillomavirus 11 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope."
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human alphaherpesvirus 2?",
+      "missed_pmid": "37376627",
+      "title": "Diversity of Anal HPV and Non-HPV Sexually Transmitted Infections and Concordance with Genital Infections in HIV-Infected and HIV-Uninfected Women in the Tapaj\u00f3s Region, Amazon, Brazil."
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is known about Pichinde virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38140210",
+      "title": "Assessment of Immune Responses to a Trivalent Pichinde Virus-Vectored Vaccine Expressing Hemagglutinin Genes from Three Co-Circulating Influenza A Virus Subtypes in Pigs."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "16709488",
+      "title": "Human papillomavirus type 59 identified in a verrucous cyst of the flank."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is known about Human papillomavirus type 59 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "9085547",
+      "title": "Identification of cis-regulatory elements in the upstream regulatory region of human papillomavirus type 59."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "missed_pmid": "14554084",
+      "title": "Human papillomavirus type 59 immortalized keratinocytes express late viral proteins and infectious virus after calcium stimulation."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "missed_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium."
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "missed_pmid": "40038214",
+      "title": "Decoding codon usage in human papillomavirus type 59."
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31381580",
+      "title": "Pitfalls of commercially available HPV tests in HPV68a detection."
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34942562",
+      "title": "Human papillomavirus 68 prevalence and genetic variability based on E6/E7 genes in Sichuan."
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37385433",
+      "title": "A time-resolved fluorescence immunoassay for rapid and precise automatic quality control of human papillomavirus type 68 VLPs in human papillomavirus vaccine."
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42399367",
+      "title": "Human papillomavirus 68 subtypes among people with human immunodeficiency virus and implications for anal screening."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42243154",
+      "title": "Epidemiological and pathogen characteristics of symptomatic male reproductive tract infections in Hunan province: retrospective study."
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is known about Echovirus 30 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40732088",
+      "title": "Complete-Genome Analysis of Echovirus-30 Isolated from an Encephalitis Case in India Revealed Distinct Mutations."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is known about Echovirus 30 pathogenesis and transmission?",
+      "missed_pmid": "41163005",
+      "title": "ARFGAP1 serves as a critical host factor during E30 infection: QS11 inhibits viral pathogenesis in hFcRn-IFNAR-/- mice."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "missed_pmid": "41147580",
+      "title": "[Immunological properties of a chimeric protein containing the major capsid protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie)]."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "missed_pmid": "41288181",
+      "title": "[Antibodies against VP3 protein of echovirus 30 (Picornaviridae: Enterovirus: Enterovirus betacoxsackie) neutralize virus in vitro]."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "missed_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "missed_pmid": "42390272",
+      "title": "Genetic variation, recombinant characteristics, and seroprevalence analysis of echovirus 3 causing severe and mild cases of hand, foot, and mouth disease in Guizhou Province."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 30?",
+      "missed_pmid": "42084379",
+      "title": "A chimeric trivalent Echovirus vaccine designed by loop substitution elicits cross-neutralizing immunity against serotypes 11, 18, and 30."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the epidemiology and outbreak history of Echovirus 30?",
+      "missed_pmid": "42248306",
+      "title": "Global epidemiology and pathogen spectrum of enterovirus-associated encephalitis and meningitis outbreaks from 1960 to 2025: A systematic review and meta-analysis."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42332748",
+      "title": "Gasdermin D-dependent neutrophil pyroptosis exacerbates Coxsackievirus A6-induced neuroinflammation through NET formation."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42415164",
+      "title": "Coxsackievirus A6 infection exacerbates kidney injury in mice through the p38-MAPK pathway."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 pathogenesis and transmission?",
+      "missed_pmid": "42357688",
+      "title": "Epidemiological Characteristics of Coxsackievirus A6 in Baotou, Inner Mongolia, China, 2023-2024."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "42638709",
+      "title": "A conserved VP1-286 epitope governs neutralization and immune escape in Coxsackievirus A6."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "missed_pmid": "42240318",
+      "title": "Targeted sequence capture of coxsackievirus A6 using nanopore sequencing directly from clinical specimens."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "missed_pmid": "42376602",
+      "title": "Surveillance of enterovirus infection and genotypes/subgenotypes of enteroviruses in Dak Lak, Vietnam in 2022-2024."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42347177",
+      "title": "Emergence of Two Porcine Variants of Human Coxsackievirus B5 and B4 in the 20th Century That Caused Swine Vesicular Disease: A Retrospective Review."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41705593",
+      "title": "The Common Immune Responses Differences from Transcriptomic Profiling in Cardiomyocytes upon Coxsackievirus B5 and Echovirus 6 Infection."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40626722",
+      "title": "LINC2781 enhances antiviral immunity against coxsackievirus B5 infection by activating the JAK-STAT pathway and blocking G3BP2-mediated STAT1 degradation."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42528137",
+      "title": "Capless self-amplifying mRNA vaccine induces dose-sparing protective immunity against HPAI clade 2.3.4.4 H5 virus in mice."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 pathogenesis and transmission?",
+      "missed_pmid": "41746284",
+      "title": "Full-genome analysis of emerging Coxsackievirus B4 genotype D strains associated with herpangina in eastern China."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "missed_pmid": "41631248",
+      "title": "An attenuated coxsackievirus B5 mutant carrying VP1-N157K retains oncolytic potency against non-small cell lung cancer."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "missed_pmid": "42198716",
+      "title": "Rapid Construction and Characterization of Infectious cDNA Clones and Reporter Viruses of Enteroviruses, Including Enterovirus A71 and Coxsackievirus B5, with Systematic Identification of Critical Determinants for Successful Reporter Virus Generation."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "missed_pmid": "40548730",
+      "title": "Wastewater monitoring allows the detection of uncommon and highly pathogenic enterovirus types."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus B5?",
+      "missed_pmid": "40425923",
+      "title": "A 3-Year Environmental Surveillance Reveals Multiple Enteroviruses Including Types A76, A89, A90 and C113 in Eastern China."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the clinical symptoms and disease presentation of Coxsackievirus B5?",
+      "missed_pmid": "42522919",
+      "title": "Coxsackievirus B Infections Are Associated With the Risk of Islet Autoimmunity in Children With Strong Genetic Susceptibility to Type 1 Diabetes-Results From the TRIGR Divia Study."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42312839",
+      "title": "Coxsackievirus A6 on the rise: epidemiology, pathogenicity, evolutionary dynamics, and antiviral strategy."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "missed_pmid": "42198716",
+      "title": "Rapid Construction and Characterization of Infectious cDNA Clones and Reporter Viruses of Enteroviruses, Including Enterovirus A71 and Coxsackievirus B5, with Systematic Identification of Critical Determinants for Successful Reporter Virus Generation."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "missed_pmid": "41135722",
+      "title": "Genotype-dependent cell tropism of EV-A71 at the human blood cerebrospinal fluid and blood brain barrier."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus A71?",
+      "missed_pmid": "41811867",
+      "title": "A clinical SARS-CoV-2 Mpro inhibitor blocks replication of multiple enteroviruses and confers oral in vivo protection in animal models."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
