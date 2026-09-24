@@ -298,6 +298,21 @@ _TARGETS: list[tuple[str, str]] = [
     ),
     ("Human parainfluenza virus 1", "http://purl.obolibrary.org/obo/NCBITaxon_12730"),
     ("Enterovirus A71", "http://purl.obolibrary.org/obo/NCBITaxon_39054"),
+    # 12 more PLANT viruses (2026-09-24) — triple the plant set to firm up the
+    # framing-driven cross-domain split (run 51 finding) and add fresh FP/FN edges.
+    # All preflight-qualify (resolve + >=1 stamped-with-own-IRI paper).
+    ("Plum pox virus", "http://purl.obolibrary.org/obo/NCBITaxon_12211"),
+    ("Citrus tristeza virus", "http://purl.obolibrary.org/obo/NCBITaxon_12162"),
+    ("Turnip mosaic virus", "http://purl.obolibrary.org/obo/NCBITaxon_12230"),
+    ("Rice yellow mottle virus", "http://purl.obolibrary.org/obo/NCBITaxon_31744"),
+    ("Beet curly top virus", "http://purl.obolibrary.org/obo/NCBITaxon_10840"),
+    ("African cassava mosaic virus", "http://purl.obolibrary.org/obo/NCBITaxon_10817"),
+    ("Grapevine fanleaf virus", "http://purl.obolibrary.org/obo/NCBITaxon_12274"),
+    ("Wheat streak mosaic virus", "http://purl.obolibrary.org/obo/NCBITaxon_31741"),
+    ("Bean common mosaic virus", "http://purl.obolibrary.org/obo/NCBITaxon_12196"),
+    ("Banana bunchy top virus", "http://purl.obolibrary.org/obo/NCBITaxon_12585"),
+    ("Watermelon mosaic virus", "http://purl.obolibrary.org/obo/NCBITaxon_146500"),
+    ("Cotton leaf curl virus", "http://purl.obolibrary.org/obo/NCBITaxon_53010"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
