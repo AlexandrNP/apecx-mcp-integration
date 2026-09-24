@@ -248,6 +248,13 @@ _TARGETS: list[tuple[str, str]] = [
     ("Bovine respiratory syncytial virus", "http://purl.obolibrary.org/obo/NCBITaxon_11246"),
     ("Canine parvovirus", "http://purl.obolibrary.org/obo/NCBITaxon_10788"),
     ("Feline panleukopenia virus", "http://purl.obolibrary.org/obo/NCBITaxon_10786"),
+    ("Visna-maedi virus", "http://purl.obolibrary.org/obo/NCBITaxon_2169971"),
+    ("Caprine arthritis encephalitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11660"),
+    ("Jaagsiekte sheep retrovirus", "http://purl.obolibrary.org/obo/NCBITaxon_11746"),
+    ("Simian foamy virus", "http://purl.obolibrary.org/obo/NCBITaxon_11642"),
+    ("Bovine foamy virus", "http://purl.obolibrary.org/obo/NCBITaxon_207343"),
+    ("Avian leukosis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11864"),
+    ("Rous sarcoma virus", "http://purl.obolibrary.org/obo/NCBITaxon_11886"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
