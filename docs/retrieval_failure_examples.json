@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-24T05:26:22.805592+00:00",
-  "runs": 47,
+  "updated": "2026-09-24T06:26:36.798800+00:00",
+  "runs": 48,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 4791,
-  "n_false_negatives": 1760,
+  "n_false_positives": 4908,
+  "n_false_negatives": 1809,
   "new_this_run": {
-    "false_positives": 48,
-    "false_negatives": 16
+    "false_positives": 117,
+    "false_negatives": 49
   },
   "false_positives": [
     {
@@ -53424,6 +53424,1289 @@
       "actual_organisms": [
         "Powassan virus"
       ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42575249",
+      "title": "SARS-CoV-2 3CLpro inhibits the replication of influenza viruses through the cleavage of NP and PA.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "cited_pmid": "42219288",
+      "title": "Fluvoxamine Exerts Anti-influenza A Virus Effects through Inhibiting Apoptosis Pathway.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 pathogenesis and transmission?",
+      "cited_pmid": "42496115",
+      "title": "Identification of TMEM41B TM6 as a critical domain for coronavirus replication in vitro and in vivo.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus NL63?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus 229E?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "cited_pmid": "42506980",
+      "title": "Viral entry defines the hepatitis E virus species barrier in murine hepatocytes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678145"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus pathogenesis and transmission?",
+      "cited_pmid": "42218309",
+      "title": "Pathogen-specific immune responses might underlie divergent outcomes of coronavirus and influenza infection in the natural porcine host.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the genome organization and replication cycle of Influenza B virus?",
+      "cited_pmid": "42575249",
+      "title": "SARS-CoV-2 3CLpro inhibits the replication of influenza viruses through the cleavage of NP and PA.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "cited_pmid": "42219288",
+      "title": "Fluvoxamine Exerts Anti-influenza A Virus Effects through Inhibiting Apoptosis Pathway.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is known about Hepatitis delta virus pathogenesis and transmission?",
+      "cited_pmid": "42551610",
+      "title": "A strain of high cell-adapted porcine deltacoronavirus: Isolation, genetic evolution, and pathogenicity analysis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is known about Hepatitis delta virus pathogenesis and transmission?",
+      "cited_pmid": "42506980",
+      "title": "Viral entry defines the hepatitis E virus species barrier in murine hepatocytes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678145"
+      ]
+    },
+    {
+      "organism": "Feline infectious peritonitis virus",
+      "question": "What antiviral drugs or treatments are effective against Feline infectious peritonitis virus?",
+      "cited_pmid": "42456221",
+      "title": "A novel oral prodrug (CK301) for effusive feline infectious peritonitis: An open-label study evaluating dose optimization and therapeutic efficacy.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What is known about Rotavirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What diagnostic assays or laboratory tests detect Heartland virus?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is known about Feline calicivirus pathogenesis and transmission?",
+      "cited_pmid": "42357726",
+      "title": "Prevalence of Protoparvovirus carnivoran1/Feline Coronavirus and Associated Risk Factors in Cats Admitted to a Public Shelter in Southern Italy.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052707"
+      ]
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What antiviral drugs or treatments are effective against Feline calicivirus?",
+      "cited_pmid": "42456221",
+      "title": "A novel oral prodrug (CK301) for effusive feline infectious peritonitis: An open-label study evaluating dose optimization and therapeutic efficacy.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus D68?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Feline herpesvirus 1?",
+      "cited_pmid": "42456221",
+      "title": "A novel oral prodrug (CK301) for effusive feline infectious peritonitis: An open-label study evaluating dose optimization and therapeutic efficacy.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
+      "cited_pmid": "41925494",
+      "title": "Animal Trauma and the Creation of a Rinderpest Epidemic in German East Africa.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is known about Infectious bursal disease virus pathogenesis and transmission?",
+      "cited_pmid": "38539942",
+      "title": "Viral Diseases in Water Buffalo (Bubalus bubalis): New Insights and Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "cited_pmid": "42456221",
+      "title": "A novel oral prodrug (CK301) for effusive feline infectious peritonitis: An open-label study evaluating dose optimization and therapeutic efficacy.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What is known about Bovine foamy virus pathogenesis and transmission?",
+      "cited_pmid": "38539942",
+      "title": "Viral Diseases in Water Buffalo (Bubalus bubalis): New Insights and Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the epidemiology and outbreak history of Rous sarcoma virus?",
+      "cited_pmid": "40559594",
+      "title": "The Challenge of Lyssavirus Infections in Domestic and Other Animals: A Mix of Virological Confusion, Consternation, Chagrin, and Curiosity.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42660184",
+      "title": "Canine parvovirus monoclonal antibody successfully prevented disease when administered before canine parvovirus experimental challenge.",
+      "actual_organisms": [
+        "Canine parvovirus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42741611",
+      "title": "Canine parvovirus in Africa: Explaining persistent disease despite vaccination.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42706610",
+      "title": "Immunogenicity evaluation of recombinant rabies virus-vectored multivalent vaccines expressing feline calicivirus VP1 and feline herpesvirus 1 gB/gD genes.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "Feline herpesvirus 1",
+        "Rabies lyssavirus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42514671",
+      "title": "Cross-Species Transmission and Recombination Between Feline and Canine Coronaviruses in Jiangsu-Zhejiang Region in 2025.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42357726",
+      "title": "Prevalence of Protoparvovirus carnivoran1/Feline Coronavirus and Associated Risk Factors in Cats Admitted to a Public Shelter in Southern Italy.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052707"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "37766287",
+      "title": "Development and Validation of a Panel of One-Step Four-Plex qPCR/RT-qPCR Assays for Simultaneous Detection of SARS-CoV-2 and Other Pathogens Associated with Canine Infectious Respiratory Disease Complex.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1336",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_517"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "cited_pmid": "40417353",
+      "title": "Development of one-step multiplex real-time PCR for the detection of CHV-1, CAdV-2, and CDV.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10515"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "cited_pmid": "38053622",
+      "title": "Validation of a real-time PCR panel for detection and quantification of nine pathogens commonly associated with canine infectious respiratory disease.",
+      "actual_organisms": [
+        "Canine herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_215681",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_517"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "cited_pmid": "35753509",
+      "title": "Development of a three-panel multiplex real-time PCR assay for simultaneous detection of nine canine respiratory pathogens.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Canine herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10514",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_215681",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_517"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42198720",
+      "title": "Oncolytic Viruses for Cancer Therapy in Dogs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is the epidemiology and outbreak history of Canine coronavirus?",
+      "cited_pmid": "42674009",
+      "title": "Canine parvovirus cases (2010-2023): a retrospective study of 78,977 cases demonstrates declining incidence, but mortality risk remains.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Canine coronavirus?",
+      "cited_pmid": "41259018",
+      "title": "Prevalence and Clinical Impacts of Canine Herpesvirus-1 (CHV-1) in Dogs: A Review of Reproductive Effects and Ocular Lesions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Canine coronavirus?",
+      "cited_pmid": "37820620",
+      "title": "[Fatalities in a litter of French bulldogs puppies due canine herpesvirus 1].",
+      "actual_organisms": [
+        "Canine herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Canine coronavirus?",
+      "cited_pmid": "42398201",
+      "title": "Peripheral polyneuropathy in three puppies temporally associated with canine parvovirus infection resembling acute polyradiculoneuritis.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_197"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is known about Feline coronavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506662",
+      "title": "Development of a New Feline Combination Vaccine Including a Novel RNA Particle Vaccine Against Feline Leukemia Virus.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "Feline herpesvirus 1",
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_810"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline coronavirus?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33397461",
+      "title": "Systemic and intestinal porcine epidemic diarrhea virus-specific antibody response and distribution of antibody-secreting cells in experimentally infected conventional pigs.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42613835",
+      "title": "Mucosal Immunity: The Key to Combating Enteroviruses and Beyond.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus pathogenesis and transmission?",
+      "cited_pmid": "38767190",
+      "title": "Ten different viral agents infecting and co-infecting children with acute gastroenteritis in Southern Italy: Role of known pathogens and emerging viruses during and after COVID-19 pandemic.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "Norovirus",
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus pathogenesis and transmission?",
+      "cited_pmid": "34960634",
+      "title": "Composition of Eukaryotic Viruses and Bacteriophages in Individuals with Acute Gastroenteritis.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus pathogenesis and transmission?",
+      "cited_pmid": "34731182",
+      "title": "From a case-control survey to a diagnostic viral gastroenteritis panel for testing of general practitioners' patients.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "Sapovirus",
+        "Torovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What diagnostic assays or laboratory tests detect Transmissible gastroenteritis virus?",
+      "cited_pmid": "42556538",
+      "title": "Adapting an in-house viral gastroenteritis multiplex PCR for use on the Hologic Panther Fusion\u00ae system.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42159811",
+      "title": "Three-dimensional peptide modeling and subcellular localization of the VPg protein of human astrovirus 8 in infected Caco-2 cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_39733",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "41078497",
+      "title": "Bovine viral diarrhea virus 2 strains generate deletion viral genomes primarily in the NS2 region of the viral genome.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bovine viral diarrhea virus 2"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "42636668",
+      "title": "Evaluation of false positive enteric viruses results from the BIOFIRE\u00ae FILMARRAY\u00ae gastrointestinal PCR panel.",
+      "actual_organisms": [
+        "Norovirus",
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "33940330",
+      "title": "HUMAN COSAVIRUS INFECTION IN HIV SUBJECTS WITH DIARRHOEA: PERSISTENT DETECTION ASSOCIATED WITH FATAL OUTCOME.",
+      "actual_organisms": [
+        "Human cosavirus",
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the epidemiology and outbreak history of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42679649",
+      "title": "A 4-year longitudinal wastewater surveillance of five gastroenteritis viruses and the correlation with clinical cases in Alberta, Canada.",
+      "actual_organisms": [
+        "Norovirus",
+        "Sapovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_45767"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the clinical symptoms and disease presentation of Transmissible gastroenteritis virus?",
+      "cited_pmid": "33784689",
+      "title": "Bufavirus, Cosavirus, and Salivirus in Diarrheal Italian Infants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586418",
+        "http://purl.obolibrary.org/obo/NCBITaxon_688449"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the clinical symptoms and disease presentation of Transmissible gastroenteritis virus?",
+      "cited_pmid": "32475874",
+      "title": "Prevalence of Eleven Infectious Viruses Causing Diarrhea in Korea.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "Human parechovirus",
+        "Norovirus",
+        "Saffold virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122929",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine deltacoronavirus?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine deltacoronavirus?",
+      "cited_pmid": "42009545",
+      "title": "[Development of a colloidal gold immunochromatographic test strip for detecting gB antibodies of porcine pseudorabies virus].",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the epidemiology and outbreak history of Porcine deltacoronavirus?",
+      "cited_pmid": "42393705",
+      "title": "Pseudorabies virus in wild swine: current evidence and interpretations from monitoring studies.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine deltacoronavirus?",
+      "cited_pmid": "41038248",
+      "title": "Cache Valley virus serologically identified in sheep with congenitally malformed lambs in Alabama.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine deltacoronavirus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42671937",
+      "title": "Hepatitis E Virus Fluorescence Reduction Neutralization Test for Measuring Neutralizing Antibody Titers.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37602681",
+      "title": "Alternating Arenavirus Vector Immunization Generates Robust Polyfunctional Genotype Cross-Reactive Hepatitis B Virus-Specific CD8 T-Cell Responses and High Anti-Hepatitis B Surface Antigen Titers.",
+      "actual_organisms": [
+        "Lymphocytic choriomeningitis mammarenavirus",
+        "Pichinde virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42744081",
+      "title": "Monoclonal antibodies targeting HBsAg as anti-HDV: clinical prospects.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41832144",
+      "title": "Prefusion-stabilized Hantaan virus glycoprotein nucleic acid vaccine elicits potent neutralizing antibody responses via germinal center activation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42663377",
+      "title": "A Novel Quantitative ELISA Demonstrates Lack of Correlation Between Serum HDV-RNA and Anti-HDV Antibody Levels in Chronic HDV Infection.",
+      "actual_organisms": [
+        "Hepatitis delta virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42506980",
+      "title": "Viral entry defines the hepatitis E virus species barrier in murine hepatocytes.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678145"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42727860",
+      "title": "Mouse models of acute and chronic hepatitis E virus infection.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42678147",
+      "title": "Natural immune escape mutations in the envelope proteins of hepatitis B virus (HBV) regulate the assembly and infectivity of human hepatitis delta virus (HDV).",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "15560055",
+      "title": "Pathogenesis of hepatocellular damage in chronic hepatitis C virus infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "15560054",
+      "title": "Virology of hepatitis C virus.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "15560057",
+      "title": "Use and interpretation of HCV diagnostic tests in the clinical setting.",
+      "actual_organisms": [
+        "Hepacivirus hominis",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "15560063",
+      "title": "Clinical application of hepatitis C virus genotyping and quantitation.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "15560062",
+      "title": "Treatment of acute and chronic hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "15560060",
+      "title": "The natural history of chronic hepatitis C virus infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "40736615",
+      "title": "Absence of hepatitis E virus RNA in bovines from Portugal.",
+      "actual_organisms": [
+        "Hepatitis E virus",
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42655132",
+      "title": "An Exploratory Evaluation of the Present Prevalence of Hepatitis D Infection in Selected Populations from Venezuela, Contrasted with Past Studies in the Country.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "15560056",
+      "title": "Histopathology of HCV infection.",
+      "actual_organisms": [
+        "Hepacivirus hominis"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "15560059",
+      "title": "Clinical manifestations of hepatitis C.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38453548",
+      "title": "Rinderpest: A Disease of the Past, and a Present Threat.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41608126",
+      "title": "Auto-Abs against type I IFNs: Strong, common, and global determinants of severe arboviral diseases.",
+      "actual_organisms": [
+        "Yellow fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42448046",
+      "title": "Rapid neutralization test based on ELISPOT for detecting antibodies against rhinovirus 1B.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "10325533",
+      "title": "Antiviral efficacy of disinfectant solution MRI-1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_90371",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus pathogenesis and transmission?",
+      "cited_pmid": "39713836",
+      "title": "Rinderpest and peste des petits ruminants: a century of progress and the future.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus pathogenesis and transmission?",
+      "cited_pmid": "41925494",
+      "title": "Animal Trauma and the Creation of a Rinderpest Epidemic in German East Africa.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus pathogenesis and transmission?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "39697169",
+      "title": "The complexity of the interpretation of ELISA and RT-PCR results in the diagnosis of a reticuloendotheliosis virus infection: an extended case study.",
+      "actual_organisms": [
+        "Feline panleukopenia virus",
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153135"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "42278084",
+      "title": "Development of a Closed One-Tube Colorimetric and Fluorescent LAMP Assay for the Rapid Detection of Feline Herpesvirus 1.",
+      "actual_organisms": [
+        "Feline herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "40192289",
+      "title": "An intra-family conserved high-order RNA structure within the M ORF is important for arterivirus subgenomic RNA accumulation and infectious virus production.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "Porcine reproductive and respiratory syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "41603610",
+      "title": "The ability of alphavirus replicases to synthesize non-viral type I interferon-inducing RNAs correlates with viral RNA synthesis and has a diverse impact on virus replication and pathogenicity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "35138785",
+      "title": "Paxlovid",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "24486952",
+      "title": "Favipiravir (T-705) protects against peracute Rift Valley fever virus infection and reduces delayed-onset neurologic disease observed with ribavirin treatment.",
+      "actual_organisms": [
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the epidemiology and outbreak history of Rinderpest virus?",
+      "cited_pmid": "39872819",
+      "title": "A bibliometric and visualized analysis of heartland virus.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "42572296",
+      "title": "Varicella-Zoster Virus Vasculopathy with Extension from the Cranial Nerves to the Brainstem: A Case Report.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
     }
   ],
   "false_negatives": [
@@ -63986,6 +65269,300 @@
       "question": "What is the epidemiology and outbreak history of Kokobera virus?",
       "missed_pmid": "24048209",
       "title": "Natural exposure of horses to mosquito-borne flaviviruses in south-east Queensland, Australia."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "42575249",
+      "title": "SARS-CoV-2 3CLpro inhibits the replication of influenza viruses through the cleavage of NP and PA."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza A virus?",
+      "missed_pmid": "42310234",
+      "title": "Enhanced virucidal activity of quaternary ammonium compound-thymol combinations: influence of mucin and mucoadhesive polymers."
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What diagnostic assays or laboratory tests detect Rabies lyssavirus?",
+      "missed_pmid": "37252063",
+      "title": "Rabies in a postpandemic world: resilient reservoirs, redoubtable riposte, recurrent roadblocks, and resolute recidivism."
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is known about Variola virus pathogenesis and transmission?",
+      "missed_pmid": "40559594",
+      "title": "The Challenge of Lyssavirus Infections in Domestic and Other Animals: A Mix of Virological Confusion, Consternation, Chagrin, and Curiosity."
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Canine distemper virus?",
+      "missed_pmid": "39202744",
+      "title": "Canine Distemper Virus: Origins, Mutations, Diagnosis, and Epidemiology in Mexico."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42360527",
+      "title": "Activities of fungal metabolites sphaeropsidin A and B to fight against canine coronavirus."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is the epidemiology and outbreak history of Bovine coronavirus?",
+      "missed_pmid": "42683047",
+      "title": "Molecular and Clinical Study of Bovine Coronavirus and Staphylococcus aureus Co-Infection Associated With Bovine Respiratory Disease in Iraqi Calves."
+    },
+    {
+      "organism": "Feline calicivirus",
+      "question": "What is known about Feline calicivirus pathogenesis and transmission?",
+      "missed_pmid": "42570535",
+      "title": "Functional divergence of feline calicivirus genotypes shapes virulence and antigenic diversity."
+    },
+    {
+      "organism": "Feline herpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Feline herpesvirus 1?",
+      "missed_pmid": "42328412",
+      "title": "Corneal Lesions Associated With Feline Herpesvirus-1 Modified Live Vaccine Strain F2 in Two Cats."
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline panleukopenia virus?",
+      "missed_pmid": "42357726",
+      "title": "Prevalence of Protoparvovirus carnivoran1/Feline Coronavirus and Associated Risk Factors in Cats Admitted to a Public Shelter in Southern Italy."
+    },
+    {
+      "organism": "Feline panleukopenia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline panleukopenia virus?",
+      "missed_pmid": "42515602",
+      "title": "Advances in Feline Panleukopenia Virus Vaccines: Immunological Mechanisms, Current Challenges, and Future Perspectives."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42375302",
+      "title": "Beneficial immunomodulatory and hematological effects of bifidobacterium and lactobacillus probiotics in canine coronavirus vaccine induction in a murine model."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42413860",
+      "title": "Phylogenetic characterization of partial spike gene sequences of canine coronavirus from shelter dogs in the Republic of Korea."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42662021",
+      "title": "First molecular detection and genetic characterization of feline coronavirus from India."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "missed_pmid": "42749190",
+      "title": "Molecular epidemiological surveillance of the feline coronavirus reveals novel recombinant FCoV strains with evidence of ongoing viral evolution."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "missed_pmid": "42654809",
+      "title": "Preliminary Screening for Selected Viral Pathogens in Red Fox Carcasses from Pisa Province, Italy."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "missed_pmid": "42360527",
+      "title": "Activities of fungal metabolites sphaeropsidin A and B to fight against canine coronavirus."
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "missed_pmid": "42579946",
+      "title": "Design and preclinical evaluation of a multi-epitope circular RNA vaccine targeting the spike protein of canine coronavirus genotype II."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What is known about Feline coronavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42648114",
+      "title": "FECV and FIPV: What biotype labels can, and cannot, tell us about feline coronavirus biology."
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Feline coronavirus?",
+      "missed_pmid": "42767337",
+      "title": "De Ritis Ratio and L-FABP as Supportive Biomarkers of Hepatic Involvement in Cats with Effusive FIP."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42347619",
+      "title": "Next-Generation Vaccine Design for Porcine Enteric Coronaviruses: Aligning Antigenic Breadth, Mucosal Immunity, and Translational Evaluation."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42734722",
+      "title": "Establishment of a blocking ELISA for assessing neutralizing antibody levels against porcine epidemic diarrhea virus."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus pathogenesis and transmission?",
+      "missed_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus pathogenesis and transmission?",
+      "missed_pmid": "42330810",
+      "title": "Infectious stability of animal gastrointestinal coronaviruses in fasted-state simulated gastric fluid."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "missed_pmid": "41323144",
+      "title": "Severe Diarrhea Outbreaks in Newborn Piglets in China Associated With Porcine Rotavirus B."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "missed_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "missed_pmid": "42370845",
+      "title": "Coding-complete genome sequence of transmissible gastroenteritis virus isolated from a diarrheic piglet in South Korea."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the clinical symptoms and disease presentation of Transmissible gastroenteritis virus?",
+      "missed_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine deltacoronavirus?",
+      "missed_pmid": "42514627",
+      "title": "Preparation of Monoclonal Antibodies Against Porcine Circovirus Type 2 Capsid Protein and Development of a Blocking ELISA for Detection of the Antibody Against the Virus."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine deltacoronavirus?",
+      "missed_pmid": "42734722",
+      "title": "Establishment of a blocking ELISA for assessing neutralizing antibody levels against porcine epidemic diarrhea virus."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the epidemiology and outbreak history of Porcine deltacoronavirus?",
+      "missed_pmid": "42515629",
+      "title": "Susceptibility of Cell Lines from Different Species to Porcine Deltacoronavirus."
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine deltacoronavirus?",
+      "missed_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42628199",
+      "title": "The immunoproteasome is protective during acute murine hepatitis virus respiratory infection but dispensable for adaptive immunity."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42439623",
+      "title": "Combination of Remdesivir and Ivermectin Exerts Highly Potent and Synergistic Antiviral Activity Against Murine Coronavirus and SARS-CoV-2 Infections."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41893634",
+      "title": "Multiplex One-Step qPCR/RT-qPCR Assays for Detection of Ectromelia Virus, Murine Hepatitis Virus, Reovirus Type 3, and Parvoviruses."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42501563",
+      "title": "Adoptive transfer of interleukin-4 programmed macrophages reduces lung inflammation during betacoronavirus infection."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "missed_pmid": "22617024",
+      "title": "Comparative in vivo analysis of the nsp15 endoribonuclease of murine, porcine and severe acute respiratory syndrome coronaviruses."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "missed_pmid": "42714166",
+      "title": "Mutations in the macrodomain 1 of nsp3 attenuate PEDV virulence in vivo without impairing in vitro replication."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "missed_pmid": "42611143",
+      "title": "Performance evaluation of methods for detecting enteric viruses in meat products."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "missed_pmid": "42528224",
+      "title": "Changes in microbial prevalence in mice within Japanese academic animal facilities between 2011 and 2024."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "missed_pmid": "42535959",
+      "title": "Coronavirus Nsp15 endoribonuclease: linking viral RNA regulation to immune evasion and viral fitness."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "missed_pmid": "22787216",
+      "title": "Severe acute respiratory syndrome coronavirus replication is severely impaired by MG132 due to proteasome-independent inhibition of M-calpain."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "missed_pmid": "42496115",
+      "title": "Identification of TMEM41B TM6 as a critical domain for coronavirus replication in vitro and in vivo."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "missed_pmid": "42160828",
+      "title": "Structure-activity relationship and nsp15-dependent mechanism of spirothiazolidinone derivatives with pan-coronavirus activity."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37375523",
+      "title": "Canine Distemper Virus Infection in the Free-Living Wild Canines, the Red Fox (Vulpes vulpes) and Jackal (Canis aureus moreoticus), in Croatia."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39202744",
+      "title": "Canine Distemper Virus: Origins, Mutations, Diagnosis, and Epidemiology in Mexico."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41267756",
+      "title": "Lethal Canine Distemper Virus (Morbillivirus canis) Outbreak in Free-Ranging Black-Tufted Marmosets (Callithrix penicillata) in Brazil: Clinical, Pathological, Genotypical Evaluation, and Assessment of Viral Tropism."
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "missed_pmid": "39713835",
+      "title": "Rinderpest and peste des petits ruminants: state of play in disease eradication efforts."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
