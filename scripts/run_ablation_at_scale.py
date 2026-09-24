@@ -366,6 +366,15 @@ _TARGETS: list[tuple[str, str]] = [
     ("Nervous necrosis virus", "http://purl.obolibrary.org/obo/NCBITaxon_1906674"),
     ("Largemouth bass virus", "http://purl.obolibrary.org/obo/NCBITaxon_176656"),
     ("Atlantic salmon paramyxovirus", "http://purl.obolibrary.org/obo/NCBITaxon_381543"),
+    # 6 FUNGAL viruses / mycoviruses (2026-09-24) — a FOURTH host domain, a second
+    # non-animal KINGDOM (like plants). Prediction: crossing near the plant end
+    # (fungal virology is lexically distant from the mammalian corpus). All qualify.
+    ("Cryphonectria hypovirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_40281"),
+    ("Penicillium chrysogenum virus", "http://purl.obolibrary.org/obo/NCBITaxon_158372"),
+    ("Saccharomyces cerevisiae virus L-A", "http://purl.obolibrary.org/obo/NCBITaxon_11008"),
+    ("Rosellinia necatrix megabirnavirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_1285598"),
+    ("Sclerotinia sclerotiorum hypovirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_1074325"),
+    ("Ustilago maydis virus H1", "http://purl.obolibrary.org/obo/NCBITaxon_28882"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
