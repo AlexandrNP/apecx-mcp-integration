@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-24T00:50:41.516099+00:00",
-  "runs": 40,
+  "updated": "2026-09-24T01:22:09.860888+00:00",
+  "runs": 41,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 3934,
-  "n_false_negatives": 1454,
+  "n_false_positives": 4065,
+  "n_false_negatives": 1519,
   "new_this_run": {
-    "false_positives": 129,
-    "false_negatives": 37
+    "false_positives": 131,
+    "false_negatives": 65
   },
   "false_positives": [
     {
@@ -43933,6 +43933,1480 @@
         "Human T-cell leukemia virus type 2",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is known about Eastern equine encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42347183",
+      "title": "Isolation and Identification of Emerging Equine Encephalosis Virus Serotype 6 in Israel, 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_201490"
+      ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Eastern equine encephalitis virus?",
+      "cited_pmid": "31100884",
+      "title": "Phylogenetic Characterization of the Palyam Serogroup Orbiviruses.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42347183",
+      "title": "Isolation and Identification of Emerging Equine Encephalosis Virus Serotype 6 in Israel, 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_201490"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is known about Western equine encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42347183",
+      "title": "Isolation and Identification of Emerging Equine Encephalosis Virus Serotype 6 in Israel, 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_201490"
+      ]
+    },
+    {
+      "organism": "Western equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Western equine encephalitis virus?",
+      "cited_pmid": "31100884",
+      "title": "Phylogenetic Characterization of the Palyam Serogroup Orbiviruses.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is known about Human alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42449959",
+      "title": "Recombinant Alphaherpesvirus Vectors in Veterinary Vaccinology: Platforms, Applications, and Translational Challenges.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Equine herpesvirus 1",
+        "Gallid alphaherpesvirus 2",
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_104388"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is known about Human alphaherpesvirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42449959",
+      "title": "Recombinant Alphaherpesvirus Vectors in Veterinary Vaccinology: Platforms, Applications, and Translational Challenges.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Equine herpesvirus 1",
+        "Gallid alphaherpesvirus 2",
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_104388"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What diagnostic assays or laboratory tests detect Hepacivirus hominis?",
+      "cited_pmid": "41908956",
+      "title": "Occurrence of viral and bacterial pathogens in South American camelids in representative German flocks.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1714621",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1770",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1773",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3682093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_776",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90371",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "31100884",
+      "title": "Phylogenetic Characterization of the Palyam Serogroup Orbiviruses.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Seoul orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Seoul orthohantavirus?",
+      "cited_pmid": "39893347",
+      "title": "Emergence of a natural reassortant between Shamonda and Sathuperi viruses of the species Orthobunyavirus schmallenbergense in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052437"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is known about BK polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B3?",
+      "cited_pmid": "42617217",
+      "title": "MARK1 suppresses infectious bursal disease virus replication via phosphorylating VP3.",
+      "actual_organisms": [
+        "Infectious bursal disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10993",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is known about Human parechovirus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is known about Human alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42449959",
+      "title": "Recombinant Alphaherpesvirus Vectors in Veterinary Vaccinology: Platforms, Applications, and Translational Challenges.",
+      "actual_organisms": [
+        "Bovine alphaherpesvirus 1",
+        "Equine herpesvirus 1",
+        "Gallid alphaherpesvirus 2",
+        "Suid alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_104388"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What is known about Avian infectious bronchitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42436537",
+      "title": "A new recombinant avian metapneumovirus vaccine candidate provides complete protection against the novel variant infectious bursal disease virus in chickens.",
+      "actual_organisms": [
+        "Infectious bursal disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Avian infectious bronchitis virus?",
+      "cited_pmid": "42775583",
+      "title": "Rapid Identification and Differential Detection of Infectious Bursal Disease Virus by an Innovative ARMS-qRT-PCR Assay.",
+      "actual_organisms": [
+        "Infectious bursal disease virus"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42190918",
+      "title": "Development of an alternative neutralization assay using Akabane virus-based transcription and replication-competent virus-like particles.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "cited_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "38492201",
+      "title": "Isolation and whole-genome sequence analysis of Balagodu virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is known about Torque teno virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genome organization and replication cycle of Prospect Hill virus?",
+      "cited_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genome organization and replication cycle of Prospect Hill virus?",
+      "cited_pmid": "26733292",
+      "title": "Complete genome sequence of a Chuzan virus strain isolated for the first time in mainland China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "Palyam virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41462271",
+      "title": "Genetic evolution of Akabane virus isolates and the protective efficacy of inactivated vaccines.",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "42009539",
+      "title": "[Dynamics of the replication process of Akabane virus GZTS-1 strain in Vero cells].",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is known about Pichinde virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What is known about Bunyamwera virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is known about Cache Valley virus pathogenesis and transmission?",
+      "cited_pmid": "30457543",
+      "title": "Chuzan Virus in Yaks, Qinghai-Tibetan Plateau, China.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What is known about African horse sickness virus pathogenesis and transmission?",
+      "cited_pmid": "42763783",
+      "title": "Correction: Villalba et al. Development and Validation of Three Triplex Real-Time RT-PCR Assays for Typing African Horse Sickness Virus: Utility for Disease Control and Other Laboratory Applications. Viruses 2024, 16, 470.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What is the epidemiology and outbreak history of African horse sickness virus?",
+      "cited_pmid": "42092728",
+      "title": "Global prevalence and epidemiological determinants of African horse sickness: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "31334978",
+      "title": "Filovirus (Archived)",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42075721",
+      "title": "Hemorrhagic Fever Disease in STAT-1 Knockout Mice Infected with Lujo Virus.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the epidemiology and outbreak history of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "32491624",
+      "title": "Eastern Equine Encephalitis",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the epidemiology and outbreak history of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the epidemiology and outbreak history of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "32633998",
+      "title": "An overview of the viral haemorrhagic fevers for the primary care doctor.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus pathogenesis and transmission?",
+      "cited_pmid": "31100884",
+      "title": "Phylogenetic Characterization of the Palyam Serogroup Orbiviruses.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922332"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus pathogenesis and transmission?",
+      "cited_pmid": "39057776",
+      "title": "Genetic Characterization of Palyam Serogroup Viruses Isolated in Japan from 1984 to 2018 and Development of a Real-Time RT-PCR Assay for Broad Detection of Palyam Serogroup Viruses and Specific Detection of Chuzan (Kasba) and D'Aguilar Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108088"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "cited_pmid": "38492201",
+      "title": "Isolation and whole-genome sequence analysis of Balagodu virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "cited_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What antiviral drugs or treatments are effective against Palyam virus?",
+      "cited_pmid": "42584711",
+      "title": "Pyridin-3-carbohydrazide strongly impairs Mayaro and Chikungunya virus replication in vitro.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What antiviral drugs or treatments are effective against Palyam virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What antiviral drugs or treatments are effective against Palyam virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What are the clinical symptoms and disease presentation of Palyam virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What are the clinical symptoms and disease presentation of Palyam virus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "cited_pmid": "35336125",
+      "title": "Development of Real-Time Molecular Assays for the Detection of Wesselsbron Virus in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What antiviral drugs or treatments are effective against Akabane virus?",
+      "cited_pmid": "34203149",
+      "title": "Screening and Identification of Lujo Virus Inhibitors Using a Recombinant Reporter Virus Platform.",
+      "actual_organisms": [
+        "Lujo mammarenavirus"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What antiviral drugs or treatments are effective against Akabane virus?",
+      "cited_pmid": "34197863",
+      "title": "Potent inhibition of arenavirus infection by a novel fusion inhibitor.",
+      "actual_organisms": [
+        "Tacaribe virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What antiviral drugs or treatments are effective against Akabane virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What antiviral drugs or treatments are effective against Akabane virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the epidemiology and outbreak history of Akabane virus?",
+      "cited_pmid": "29845522",
+      "title": "Historical Perspective of Arboviruses in Mozambique and Its Implication for Current and Future Epidemics.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What are the clinical symptoms and disease presentation of Akabane virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What are the clinical symptoms and disease presentation of Akabane virus?",
+      "cited_pmid": "42657456",
+      "title": "Neglected arboviruses in South America: clinical manifestations and diagnostic challenges.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40431735",
+      "title": "Evaluating Neutralizing Antibodies in Hantavirus-Infected Patients Using Authentic Virus and Recombinant Vesicular Stomatitis Virus Systems.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus pathogenesis and transmission?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Rift Valley fever virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "39697169",
+      "title": "The complexity of the interpretation of ELISA and RT-PCR results in the diagnosis of a reticuloendotheliosis virus infection: an extended case study.",
+      "actual_organisms": [
+        "Fowlpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153135"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "41734221",
+      "title": "[A brief history and significance of the Czechoslovak army's Antiviral Serum Bank].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "39893347",
+      "title": "Emergence of a natural reassortant between Shamonda and Sathuperi viruses of the species Orthobunyavirus schmallenbergense in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052437"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "36394457",
+      "title": "ICTV Virus Taxonomy Profile: Spinareoviridae 2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "9875405",
+      "title": "Inhibitory effects of podophyllotoxin derivatives on herpes simplex virus replication.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10306",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10359",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "41155676",
+      "title": "New Assay Systems to Characterize the Broad-Spectrum Antiherpesviral and Non-Herpesviral Activity of Cyclin-Dependent Kinase (CDK) 8 Inhibitors.",
+      "actual_organisms": [
+        "Equine herpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_32603",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
+      "cited_pmid": "39872819",
+      "title": "A bibliometric and visualized analysis of heartland virus.",
+      "actual_organisms": [
+        "Heartland virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "cited_pmid": "42572296",
+      "title": "Varicella-Zoster Virus Vasculopathy with Extension from the Cranial Nerves to the Brainstem: A Case Report.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "cited_pmid": "41914137",
+      "title": "Atypical exanthem associated with human herpesvirus 7 active infection in a 24-year-old man.",
+      "actual_organisms": [
+        "Human betaherpesvirus 7"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is known about Chuzan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What diagnostic assays or laboratory tests detect Chuzan virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What diagnostic assays or laboratory tests detect Chuzan virus?",
+      "cited_pmid": "39561397",
+      "title": "Development of a Diagnostic IgM Antibody Capture ELISA for Detection of Anti-Cache Valley Virus Human IgM.",
+      "actual_organisms": [
+        "Cache Valley virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845707",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "8126455",
+      "title": "The S RNA genome segments of Batai, Cache Valley, Guaroa, Kairi, Lumbo, Main Drain and Northway bunyaviruses: sequence determination and analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80940"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What antiviral drugs or treatments are effective against Chuzan virus?",
+      "cited_pmid": "41936880",
+      "title": "Preclinical efficacy of a favipiravir and nitazoxanide combination against Rift Valley Fever Virus.",
+      "actual_organisms": [
+        "Crimean-Congo hemorrhagic fever orthonairovirus",
+        "Rift Valley fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What antiviral drugs or treatments are effective against Chuzan virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What are the clinical symptoms and disease presentation of Chuzan virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is known about Infectious bursal disease virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42742180",
+      "title": "A case of Bundibugyo virus disease treated with monoclonal antibodies and remdesivir.",
+      "actual_organisms": [
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "cited_pmid": "42378730",
+      "title": "Automating laboratory developed tests using the panther fusion open access: Analytical and clinical evaluation of assays for the detection of viral causes of meningitis and encephalitis.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "cited_pmid": "41619618",
+      "title": "Detection of La Crosse virus RNA in clinical specimens obtained from children with La Crosse infection.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "cited_pmid": "42565905",
+      "title": "Development and diagnostic evaluation of a reverse passive latex agglutination test for rapid field detection of lumpy skin disease virus antigen.",
+      "actual_organisms": [
+        "Lumpy skin disease virus"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is the genome organization and replication cycle of Infectious bursal disease virus?",
+      "cited_pmid": "30123198",
+      "title": "Review of Mammarenavirus Biology and Replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653394",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052302",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is the genome organization and replication cycle of Infectious bursal disease virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "Hepatitis delta virus",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is the genome organization and replication cycle of Infectious bursal disease virus?",
+      "cited_pmid": "39036953",
+      "title": "Structural basis for a highly conserved RNA-mediated enteroviral genome replication.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12131",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1418033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "cited_pmid": "42515883",
+      "title": "Repurposing Small-molecule Inhibitors against Bunyaviruses: Advances, Mechanisms, and Therapeutic Prospects.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Junin mammarenavirus",
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is the epidemiology and outbreak history of Infectious bursal disease virus?",
+      "cited_pmid": "42562123",
+      "title": "Bundibugyo virus disease: Transmission dynamics, infectiousness and viral persistence.",
+      "actual_organisms": [
+        "Bovine viral diarrhea virus 1",
+        "Bundibugyo ebolavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious bursal disease virus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious bursal disease virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious bursal disease virus?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
     }
   ],
   "false_negatives": [
@@ -52659,6 +54133,396 @@
       "question": "What antiviral drugs or treatments are effective against Mouse mammary tumor virus?",
       "missed_pmid": "41751420",
       "title": "MMTV-like Viruses and Human Breast Cancer: Evidence for Causality."
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Eastern equine encephalitis virus?",
+      "missed_pmid": "41600727",
+      "title": "Isolation of Madariaga Virus (MADV) in a Horse Coinfected with Equine Infectious Anemia in Venezuela: A Review of MADV Circulation in the Country."
+    },
+    {
+      "organism": "Crimean-Congo hemorrhagic fever orthonairovirus",
+      "question": "What is the genome organization and replication cycle of Crimean-Congo hemorrhagic fever orthonairovirus?",
+      "missed_pmid": "41112156",
+      "title": "Genetic evidence of regional circulation of Crimean-Congo hemorrhagic fever virus in ixodid ticks from southern Kazakhstan."
+    },
+    {
+      "organism": "Bovine viral diarrhea virus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine viral diarrhea virus 1?",
+      "missed_pmid": "41192064",
+      "title": "Colostrum-derived immunity reduces detection of calves persistently infected with bovine viral diarrhea virus by common diagnostic tests."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "missed_pmid": "42449959",
+      "title": "Recombinant Alphaherpesvirus Vectors in Veterinary Vaccinology: Platforms, Applications, and Translational Challenges."
+    },
+    {
+      "organism": "Bovine alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Bovine alphaherpesvirus 1?",
+      "missed_pmid": "42449959",
+      "title": "Recombinant Alphaherpesvirus Vectors in Veterinary Vaccinology: Platforms, Applications, and Translational Challenges."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42617354",
+      "title": "Recombinant Marek's disease virus expressing the VP2 gene provides effective protection against novel variant infectious bursal disease virus."
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is known about Gallid alphaherpesvirus 2 pathogenesis and transmission?",
+      "missed_pmid": "42449959",
+      "title": "Recombinant Alphaherpesvirus Vectors in Veterinary Vaccinology: Platforms, Applications, and Translational Challenges."
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "missed_pmid": "33397461",
+      "title": "Systemic and intestinal porcine epidemic diarrhea virus-specific antibody response and distribution of antibody-secreting cells in experimentally infected conventional pigs."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Avian infectious bronchitis virus?",
+      "missed_pmid": "42654740",
+      "title": "Development and Analytical Validation of a Multiplex Real-Time RT-PCR Assay for Simultaneous Detection of Avian Influenza A Virus and Newcastle Disease Virus."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What is the epidemiology and outbreak history of Avian infectious bronchitis virus?",
+      "missed_pmid": "42736223",
+      "title": "Molecular characteristics, phylodynamics, and evolutionary changes of avian infectious bronchitis virus detected from chickens in Yunnan Province, 2021-2024."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41987248",
+      "title": "Multivalent Disabled Infectious Single Animal (DISA)-DIVA vaccine for all nine serotypes of African horse sickness virus (AHSV) is broadly protective in IFNAR (-/-) mice."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42007470",
+      "title": "Bluetongue Virus Serotype 3 Follow-Up of the 2024 Outbreak in Two Belgian Zoos."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus pathogenesis and transmission?",
+      "missed_pmid": "41060278",
+      "title": "Silent circulation of Bluetongue and Schmallenberg viruses in Culicoides biting midges in northwestern Italy: implications for the 2024 BTV outbreak."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "missed_pmid": "19500619",
+      "title": "A single-tube RT-PCR for rapid detection and differentiation of some African isolates of palyam serogroup orbiviruses."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus pathogenesis and transmission?",
+      "missed_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies."
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What is the epidemiology and outbreak history of Equine infectious anemia virus?",
+      "missed_pmid": "40732013",
+      "title": "Development of a Broad-Spectrum Antigen-Capture ELISA Using Combined Anti-p26 Polyclonal and Monoclonal Antibodies for Detection of Equine Infectious Anemia Virus."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What is known about African horse sickness virus pathogenesis and transmission?",
+      "missed_pmid": "42418026",
+      "title": "Seroprevalence and risk factors of African horse sickness in equines in central Gondar, Ethiopia."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What is the genome organization and replication cycle of African horse sickness virus?",
+      "missed_pmid": "42569661",
+      "title": "Molecular detection of African horse sickness virus from selected areas in Ethiopia."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What is the epidemiology and outbreak history of African horse sickness virus?",
+      "missed_pmid": "19442836",
+      "title": "PCR detection of African horse sickness virus serogroup based on genome segment three sequence analysis."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "42031765",
+      "title": "Molecular evolution and antigenic stability of ibaraki virus: evidence for regional circulation from a South Korean whole-genome analysis."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "34248104",
+      "title": "Isolation of epizootic hemorrhagic disease virus serotype 7 from cattle showing fever in Japan in 2016 and improvement of a reverse transcription-polymerase chain reaction assay to detect epizootic hemorrhagic disease virus."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus]."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the epidemiology and outbreak history of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "42387563",
+      "title": "Unveiling the clinical signs and pathology in red deer (Cervus elaphus) naturally infected with epizootic haemorrhagic disease virus serotype 8."
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Epizootic hemorrhagic disease virus?",
+      "missed_pmid": "37578645",
+      "title": "Complete genome sequences of epizootic hemorrhagic disease virus serotypes 5 and 6 isolated in Japan."
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42357648",
+      "title": "Genomic Epidemiology and National Seroprevalence Reveal the Widespread Distribution of Palyam Viruses in China."
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26733292",
+      "title": "Complete genome sequence of a Chuzan virus strain isolated for the first time in mainland China."
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26601440",
+      "title": "Zoonotic and emerging orbivirus infections."
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "missed_pmid": "39994809",
+      "title": "Searching for potential Culicoides vectors of four orbiviruses in Yunnan Province, China."
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "missed_pmid": "19500619",
+      "title": "A single-tube RT-PCR for rapid detection and differentiation of some African isolates of palyam serogroup orbiviruses."
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "missed_pmid": "34554079",
+      "title": "Orbiviruses in biting midges and mosquitoes from the Zambezi region, Namibia."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "missed_pmid": "41613592",
+      "title": "Development of a HiBiT-tagged reporter Akabane virus and its application in antiviral drug screening."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "missed_pmid": "41462271",
+      "title": "Genetic evolution of Akabane virus isolates and the protective efficacy of inactivated vaccines."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "missed_pmid": "42009539",
+      "title": "[Dynamics of the replication process of Akabane virus GZTS-1 strain in Vero cells]."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "missed_pmid": "37831381",
+      "title": "Congenital malformations caused by Akabane virus in porcine fetuses in southern Japan."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "missed_pmid": "41337974",
+      "title": "Host protein interactome profiling of Akabane virus glycoprotein Gc reveals specific mitochondrial genes regulate viral replication."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "missed_pmid": "42277345",
+      "title": "The complete nucleoprotein gene molecular characterization of Akabane Virus in T\u00fcrkiye."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the genome organization and replication cycle of Akabane virus?",
+      "missed_pmid": "42515622",
+      "title": "The Changing Landscape of Akabane Virus: A Comprehensive Review."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What antiviral drugs or treatments are effective against Akabane virus?",
+      "missed_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What antiviral drugs or treatments are effective against Akabane virus?",
+      "missed_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What is the epidemiology and outbreak history of Akabane virus?",
+      "missed_pmid": "41452411",
+      "title": "Seroprevalence of Akabane, border, and Rift Valley fever diseases and their risk factors in small ruminants of Fars Province, Southern Iran."
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What are the clinical symptoms and disease presentation of Akabane virus?",
+      "missed_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41105457",
+      "title": "A nanoluciferase-tagged Schmallenberg virus (SBV): an efficient tool for measuring and tracking viral infection dynamics."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41547537",
+      "title": "Development and preliminary validation of a rapid on-site detection method for Schmallenberg virus using RT-RAA-LFD."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41497882",
+      "title": "Significant Impact of Schmallenberg Virus in Three Ruminant Farms: A Laboratory Experience."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42654802",
+      "title": "Development, Characterization, and Validation of an MS2 Phage-Based Armored RNA Control for Schmallenberg Virus Detection."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus pathogenesis and transmission?",
+      "missed_pmid": "24313924",
+      "title": "Evaluating the protective efficacy of a trivalent vaccine containing Akabane virus, Aino virus and Chuzan virus against Schmallenberg virus infection."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is known about Schmallenberg virus pathogenesis and transmission?",
+      "missed_pmid": "41805942",
+      "title": "Conserved non-coding RNA motifs influence the neuropathogenicity of Simbuviruses: Molecular dissection in the Schmallenberg virus model."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "missed_pmid": "42077792",
+      "title": "Seroepidemiological Investigation and Risk Factors of Schmallenberg Virus Infection in Sheep and Goats in Bangladesh."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "missed_pmid": "42412878",
+      "title": "The Bunyamwera orthobunyavirus Gc glycoprotein head and stalk drives an infectious virion assembly pathway specific for the insect host."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "missed_pmid": "41217955",
+      "title": "Orthobunyaviruses: Epidemiology, innate immune escape, and intervention strategies."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
+      "missed_pmid": "41838272",
+      "title": "Seroprevalence and risk factors associated with bluetongue and Schmallenberg virus infections in domestic small ruminants in T\u00fcrkiye."
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "missed_pmid": "41092918",
+      "title": "[Polymelia in a female calf - a case report with surgical removal]."
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is known about Chuzan virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26822138",
+      "title": "Isolation, complete genome sequencing, and phylogenetic analysis of the first Chuzan virus in China."
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What diagnostic assays or laboratory tests detect Chuzan virus?",
+      "missed_pmid": "19500619",
+      "title": "A single-tube RT-PCR for rapid detection and differentiation of some African isolates of palyam serogroup orbiviruses."
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "missed_pmid": "37018550",
+      "title": "Epidemiology of Chuzan Virus Infection in Free-Ranging and Farmed Cervids in South Korea: A Seroprevalence Survey."
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What antiviral drugs or treatments are effective against Chuzan virus?",
+      "missed_pmid": "26733292",
+      "title": "Complete genome sequence of a Chuzan virus strain isolated for the first time in mainland China."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is known about Infectious bursal disease virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42734168",
+      "title": "Molecular Epidemiology, Genogroup Classification and Diversity of Infectious Bursal Disease Virus."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "missed_pmid": "42570975",
+      "title": "Passive surveillance of infectious bursal disease virus circulating in Egyptian chicken flocks in 2025."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "missed_pmid": "42480476",
+      "title": "Comparative efficacy of commercial infectious bursal disease vaccination strategies against emerging novel variant IBDV (Genotype A2d)."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "missed_pmid": "42544918",
+      "title": "Identification of a reassortant infectious bursal disease virus (genotype A3B1) in the United Kingdom: pathogenicity and immune complex vaccine efficacy."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is the genome organization and replication cycle of Infectious bursal disease virus?",
+      "missed_pmid": "42515598",
+      "title": "Infectious Bursal Disease Virus Genotypic Diversity from Poultry in Latin America."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "missed_pmid": "42436537",
+      "title": "A new recombinant avian metapneumovirus vaccine candidate provides complete protection against the novel variant infectious bursal disease virus in chickens."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "missed_pmid": "42617217",
+      "title": "MARK1 suppresses infectious bursal disease virus replication via phosphorylating VP3."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious bursal disease virus?",
+      "missed_pmid": "42775583",
+      "title": "Rapid Identification and Differential Detection of Infectious Bursal Disease Virus by an Innovative ARMS-qRT-PCR Assay."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
