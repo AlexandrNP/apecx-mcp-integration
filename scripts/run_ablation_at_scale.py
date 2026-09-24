@@ -351,6 +351,21 @@ _TARGETS: list[tuple[str, str]] = [
         "Spodoptera frugiperda nucleopolyhedrovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_10455",
     ),
+    # 11 FISH viruses (2026-09-24) — a THIRD non-mammalian host domain (aquaculture).
+    # Fish are vertebrates (closer to mammals than plants/insects): does the crossing
+    # rate land between plant (36%) and insect (79%), or high because vertebrate
+    # pathology vocabulary is shared? A new distance point. All qualify.
+    ("Infectious salmon anemia virus", "http://purl.obolibrary.org/obo/NCBITaxon_55987"),
+    ("Infectious hematopoietic necrosis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11290"),
+    ("Viral hemorrhagic septicemia virus", "http://purl.obolibrary.org/obo/NCBITaxon_11287"),
+    ("Infectious pancreatic necrosis virus", "http://purl.obolibrary.org/obo/NCBITaxon_11002"),
+    ("Cyprinid herpesvirus 3", "http://purl.obolibrary.org/obo/NCBITaxon_180230"),
+    ("Channel catfish virus", "http://purl.obolibrary.org/obo/NCBITaxon_10401"),
+    ("Red sea bream iridovirus", "http://purl.obolibrary.org/obo/NCBITaxon_65424"),
+    ("Grass carp reovirus", "http://purl.obolibrary.org/obo/NCBITaxon_128987"),
+    ("Nervous necrosis virus", "http://purl.obolibrary.org/obo/NCBITaxon_1906674"),
+    ("Largemouth bass virus", "http://purl.obolibrary.org/obo/NCBITaxon_176656"),
+    ("Atlantic salmon paramyxovirus", "http://purl.obolibrary.org/obo/NCBITaxon_381543"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
