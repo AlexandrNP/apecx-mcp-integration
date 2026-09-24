@@ -313,6 +313,24 @@ _TARGETS: list[tuple[str, str]] = [
     ("Banana bunchy top virus", "http://purl.obolibrary.org/obo/NCBITaxon_12585"),
     ("Watermelon mosaic virus", "http://purl.obolibrary.org/obo/NCBITaxon_146500"),
     ("Cotton leaf curl virus", "http://purl.obolibrary.org/obo/NCBITaxon_53010"),
+    # 12 INSECT / INVERTEBRATE-host viruses (2026-09-24) — extend the domain-anchor
+    # test to a second non-mammalian host domain (bees, silkworms, Drosophila, larvae):
+    # does the framing-driven kingdom-crossing generalize beyond plants? All qualify.
+    ("Deformed wing virus", "http://purl.obolibrary.org/obo/NCBITaxon_198112"),
+    ("Cricket paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_12136"),
+    ("Flock House virus", "http://purl.obolibrary.org/obo/NCBITaxon_12287"),
+    ("Drosophila C virus", "http://purl.obolibrary.org/obo/NCBITaxon_64279"),
+    ("Israeli acute paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_294365"),
+    ("Black queen cell virus", "http://purl.obolibrary.org/obo/NCBITaxon_92395"),
+    ("Sacbrood virus", "http://purl.obolibrary.org/obo/NCBITaxon_89463"),
+    ("Bombyx mori nucleopolyhedrovirus", "http://purl.obolibrary.org/obo/NCBITaxon_271108"),
+    (
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015",
+    ),
+    ("Invertebrate iridescent virus 6", "http://purl.obolibrary.org/obo/NCBITaxon_176652"),
+    ("Nodamura virus", "http://purl.obolibrary.org/obo/NCBITaxon_12288"),
+    ("Acute bee paralysis virus", "http://purl.obolibrary.org/obo/NCBITaxon_92444"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
