@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-24T14:26:53.331963+00:00",
-  "runs": 55,
+  "updated": "2026-09-24T15:27:25.082682+00:00",
+  "runs": 56,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 7733,
-  "n_false_negatives": 2635,
+  "n_false_positives": 8040,
+  "n_false_negatives": 2667,
   "new_this_run": {
-    "false_positives": 318,
-    "false_negatives": 79
+    "false_positives": 307,
+    "false_negatives": 32
   },
   "false_positives": [
     {
@@ -86627,6 +86627,3813 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_2"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "15218197",
+      "title": "Molecular characterization of Penicillium chrysogenum virus: reconsideration of the taxonomy of the genus Chrysovirus.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5076"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Mayaro virus",
+      "question": "What is the genome organization and replication cycle of Mayaro virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Sindbis virus",
+      "question": "What is the genome organization and replication cycle of Sindbis virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is the genome organization and replication cycle of O'nyong-nyong virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genome organization and replication cycle of Human coronavirus OC43?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is the genome organization and replication cycle of Human coronavirus 229E?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 1?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 3?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Hepacivirus hominis",
+      "question": "What is the genome organization and replication cycle of Hepacivirus hominis?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Puumala orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Puumala orthohantavirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Variola virus",
+      "question": "What is the genome organization and replication cycle of Variola virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Machupo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Machupo mammarenavirus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B3?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What is the genome organization and replication cycle of Human parechovirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Hepatitis delta virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis delta virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A16?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Semliki Forest virus",
+      "question": "What is the genome organization and replication cycle of Semliki Forest virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genome organization and replication cycle of Wesselsbron virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Wesselsbron virus",
+      "question": "What is the genome organization and replication cycle of Wesselsbron virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is the genome organization and replication cycle of Spondweni virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Spondweni virus",
+      "question": "What is the genome organization and replication cycle of Spondweni virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Kyasanur Forest disease virus",
+      "question": "What is the genome organization and replication cycle of Kyasanur Forest disease virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Molluscum contagiosum virus",
+      "question": "What is the genome organization and replication cycle of Molluscum contagiosum virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Saffold virus",
+      "question": "What is the genome organization and replication cycle of Saffold virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 2?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Human alphaherpesvirus 2?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Gallid alphaherpesvirus 2",
+      "question": "What is the genome organization and replication cycle of Gallid alphaherpesvirus 2?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Rubella virus",
+      "question": "What is the genome organization and replication cycle of Rubella virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genome organization and replication cycle of Oropouche virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the genome organization and replication cycle of Human astrovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2930201",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919"
+      ]
+    },
+    {
+      "organism": "Toscana virus",
+      "question": "What is the genome organization and replication cycle of Toscana virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is known about Rocio virus pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Rocio virus",
+      "question": "What is the genome organization and replication cycle of Rocio virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Punta Toro virus",
+      "question": "What is the genome organization and replication cycle of Punta Toro virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What is the genome organization and replication cycle of Heartland virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Heartland virus",
+      "question": "What is the genome organization and replication cycle of Heartland virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human pegivirus",
+      "question": "What is the genome organization and replication cycle of Human pegivirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genome organization and replication cycle of Prospect Hill virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Prospect Hill virus",
+      "question": "What is the genome organization and replication cycle of Prospect Hill virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Thottapalayam orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Thottapalayam orthohantavirus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What is the genome organization and replication cycle of Enterovirus D68?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is the genome organization and replication cycle of Salivirus A?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Salivirus A",
+      "question": "What is the genome organization and replication cycle of Salivirus A?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is the genome organization and replication cycle of Human cosavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is the genome organization and replication cycle of Human cosavirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Human cosavirus",
+      "question": "What is the genome organization and replication cycle of Human cosavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What is the genome organization and replication cycle of Torovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is the genome organization and replication cycle of KI polyomavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Tacaribe virus",
+      "question": "What is the genome organization and replication cycle of Tacaribe virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the genome organization and replication cycle of Pichinde virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Pichinde virus",
+      "question": "What is the genome organization and replication cycle of Pichinde virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Mopeia virus",
+      "question": "What is known about Mopeia virus pathogenesis and transmission?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Mopeia virus",
+      "question": "What is the genome organization and replication cycle of Mopeia virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What is the genome organization and replication cycle of Cache Valley virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Snowshoe hare virus",
+      "question": "What is the genome organization and replication cycle of Snowshoe hare virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genome organization and replication cycle of Piry virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genome organization and replication cycle of Piry virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Modoc virus",
+      "question": "What is the genome organization and replication cycle of Modoc virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the genome organization and replication cycle of Ectromelia virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Ectromelia virus",
+      "question": "What is the genome organization and replication cycle of Ectromelia virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Fowlpox virus",
+      "question": "What is the genome organization and replication cycle of Fowlpox virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Sheeppox virus",
+      "question": "What is the genome organization and replication cycle of Sheeppox virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the genome organization and replication cycle of Lumpy skin disease virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the genome organization and replication cycle of Lumpy skin disease virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Deerpox virus",
+      "question": "What is the genome organization and replication cycle of Deerpox virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What is the genome organization and replication cycle of Mouse mammary tumor virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What is the genome organization and replication cycle of Schmallenberg virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus A6?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genome organization and replication cycle of Coxsackievirus B5?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genome organization and replication cycle of Echovirus 11?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Porcine circovirus 2",
+      "question": "What is the genome organization and replication cycle of Porcine circovirus 2?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Caprine arthritis encephalitis virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is the genome organization and replication cycle of Simian foamy virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genome organization and replication cycle of Rous sarcoma virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genome organization and replication cycle of Rous sarcoma virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What is the genome organization and replication cycle of Encephalomyocarditis virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genome organization and replication cycle of Porcine deltacoronavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genome organization and replication cycle of Porcine deltacoronavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the genome organization and replication cycle of Phocine distemper virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the genome organization and replication cycle of Phocine distemper virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the genome organization and replication cycle of Fer-de-Lance virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Bourbon virus",
+      "question": "What is the genome organization and replication cycle of Bourbon virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Dhori virus",
+      "question": "What is the genome organization and replication cycle of Dhori virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Dhori virus",
+      "question": "What is the genome organization and replication cycle of Dhori virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What is the genome organization and replication cycle of Uukuniemi virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genome organization and replication cycle of Cauliflower mosaic virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the genome organization and replication cycle of Barley yellow dwarf virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Lujo mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lujo mammarenavirus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 1?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "39205177",
+      "title": "New Detection Methods for Cryphonectria Hypovirus 1 (CHV1) through SYBR Green-Based Real-Time PCR and Loop-Mediated Isothermal Amplification (LAMP).",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the genome organization and replication cycle of Beet curly top virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the genome organization and replication cycle of Beet curly top virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is the genome organization and replication cycle of Grapevine fanleaf virus?",
+      "cited_pmid": "20172578",
+      "title": "Deep sequencing analysis of viruses infecting grapevines: Virome of a vineyard.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_196400",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5076",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55951"
+      ]
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What is the genome organization and replication cycle of Grapevine fanleaf virus?",
+      "cited_pmid": "37765456",
+      "title": "The First Virome of a Russian Vineyard.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_156630",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2219105",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38404",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40559"
+      ]
+    },
+    {
+      "organism": "Banana bunchy top virus",
+      "question": "What is the genome organization and replication cycle of Banana bunchy top virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the genome organization and replication cycle of Cotton leaf curl virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the genome organization and replication cycle of Cotton leaf curl virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What is the genome organization and replication cycle of Drosophila C virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is known about Bombyx mori nucleopolyhedrovirus pathogenesis and transmission?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Autographa californica nucleopolyhedrovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What is the genome organization and replication cycle of Invertebrate iridescent virus 6?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What is known about Nodamura virus pathogenesis and transmission?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genome organization and replication cycle of Taura syndrome virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What is the genome organization and replication cycle of Aphid lethal paralysis virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is the genome organization and replication cycle of Cydia pomonella granulovirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Cyprinid herpesvirus 3?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Cyprinid herpesvirus 3?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the genome organization and replication cycle of Channel catfish virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genome organization and replication cycle of Nervous necrosis virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is known about Cryphonectria hypovirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is known about Cryphonectria hypovirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "cited_pmid": "42519721",
+      "title": "Establishment of a loop-mediated isothermal amplification-lateral flow dipstick assay for the point-of-care testing of feline herpesvirus-1.",
+      "actual_organisms": [
+        "Feline herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "cited_pmid": "42278084",
+      "title": "Development of a Closed One-Tube Colorimetric and Fluorescent LAMP Assay for the Rapid Detection of Feline Herpesvirus 1.",
+      "actual_organisms": [
+        "Feline herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Cryphonectria hypovirus 1?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Cryphonectria hypovirus 1?",
+      "cited_pmid": "42702719",
+      "title": "Incidence, pathogenesis, clinical manifestations, and pharmacological management of the 2026 Andes virus outbreak.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Cryphonectria hypovirus 1?",
+      "cited_pmid": "42350480",
+      "title": "A drug repurposing screen identifies antiviral compounds against Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Cryphonectria hypovirus 1?",
+      "cited_pmid": "42604199",
+      "title": "Progressive Human Orf Virus Infection in a Kidney Transplant Recipient Successfully Treated with Cryotherapy Without Modification of Immunosuppression: A Case Report.",
+      "actual_organisms": [
+        "Orf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10257",
+        "http://purl.obolibrary.org/obo/NCBITaxon_240708",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Cryphonectria hypovirus 1?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Cryphonectria hypovirus 1?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Cryphonectria hypovirus 1?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "6408610",
+      "title": "A circular dichroism study of the structure of Penicillium chrysogenum mycovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5076"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42576544",
+      "title": "ACAM2000 vaccine safety and immunogenicity considerations for smallpox and mpox.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus pathogenesis and transmission?",
+      "cited_pmid": "31376081",
+      "title": "Blue-White Colony Selection of Virus-Infected Isogenic Recipients Based on a Chrysovirus Isolated from Penicillium italicum.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2587492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40296",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5076"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "39205177",
+      "title": "New Detection Methods for Cryphonectria Hypovirus 1 (CHV1) through SYBR Green-Based Real-Time PCR and Loop-Mediated Isothermal Amplification (LAMP).",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42761597",
+      "title": "Development and analytical validation of a multiplex qPCR assay for Toxoplasma gondii, Treponema pallidum, cytomegalovirus, and herpes simplex virus types 1 and 2 in neonates.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "40910687",
+      "title": "Molnupiravir inhibits Bourbon virus infection and disease-associated pathology in mice.",
+      "actual_organisms": [
+        "Bourbon virus",
+        "Dhori virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Largemouth bass virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "42318631",
+      "title": "GC-MS Analysis and Antiviral Efficacy of Lactiplantibacillus plantarum Postbiotic Extracts Against Infectious Haematopoietic Necrosis Virus.",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2767842"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is the epidemiology and outbreak history of Penicillium chrysogenum virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is the epidemiology and outbreak history of Penicillium chrysogenum virus?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What are the clinical symptoms and disease presentation of Penicillium chrysogenum virus?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What are the clinical symptoms and disease presentation of Penicillium chrysogenum virus?",
+      "cited_pmid": "28418305",
+      "title": "Clinical Manifestations of Punta Toro Virus Species Complex Infections, Panama, 2009.",
+      "actual_organisms": [
+        "Punta Toro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187978"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What are the clinical symptoms and disease presentation of Penicillium chrysogenum virus?",
+      "cited_pmid": "42559165",
+      "title": "Concurrent Papular-Purpuric Gloves-and-Socks Syndrome and Petechial Bathing-Trunk Eruption Associated With Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What are the clinical symptoms and disease presentation of Penicillium chrysogenum virus?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30232190",
+      "title": "Characterization of Antibody Interactions with the G Protein of Vesicular Stomatitis Virus Indiana Strain and Other Vesiculovirus G Proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37497616",
+      "title": "RNA viruses, M satellites, chromosomal killer genes, and killer/nonkiller phenotypes in the 100-genomes S. cerevisiae strains.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12877",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70698"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42183979",
+      "title": "Optimization of cultivation strategies for production of recombinant human papillomavirus type 58 major capsid protein L1 in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_460523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655737",
+      "title": "The L-A dsRNA Virus and Its Satellites: Totiviruses and Killers in Saccharomyces cerevisiae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A pathogenesis and transmission?",
+      "cited_pmid": "35389250",
+      "title": "Expression of the K74 Killer Toxin from Saccharomyces paradoxus Is Modulated by the Toxin-Encoding M74 Double-Stranded RNA 5' Untranslated Terminal Region.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_27291",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3152141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What diagnostic assays or laboratory tests detect Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "42566024",
+      "title": "Visual typing detection of bovine leukemia virus with a lateral flow immunoassay based on latex microspheres.",
+      "actual_organisms": [
+        "Bovine leukemia virus"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What diagnostic assays or laboratory tests detect Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "40228716",
+      "title": "Establishment of triple-RPA-LFS detection method for three common shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What diagnostic assays or laboratory tests detect Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What diagnostic assays or laboratory tests detect Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "26872864",
+      "title": "Lactimidomycin is a broad-spectrum inhibitor of dengue and other RNA viruses.",
+      "actual_organisms": [
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11077",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "40910687",
+      "title": "Molnupiravir inhibits Bourbon virus infection and disease-associated pathology in mice.",
+      "actual_organisms": [
+        "Bourbon virus",
+        "Dhori virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "37633192",
+      "title": "Inhibitors of cannabinoid receptor 1 suppress the cellular entry of Lujo virus.",
+      "actual_organisms": [
+        "Lujo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845776"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What are the clinical symptoms and disease presentation of Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "39609153",
+      "title": "Small Ruminant Lentiviruses and Caseous Lymphadenitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31418675",
+      "title": "ICTV Virus Taxonomy Profile: Megabirnaviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285596",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "27338447",
+      "title": "Phleboviruses and the Type I Interferon Response.",
+      "actual_organisms": [
+        "Heartland virus",
+        "Punta Toro virus",
+        "Rift Valley fever virus",
+        "Toscana virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_206160",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42042791",
+      "title": "Comparison of Vaccine Platforms for Machupo Virus.",
+      "actual_organisms": [
+        "Machupo mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "42514684",
+      "title": "Rapid Visual Detection of Feline Panleukopenia Virus Using Colorimetric Loop-Mediated Isothermal Amplification Assay.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "Feline panleukopenia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "41537285",
+      "title": "Development and Validation of a Multienzyme Isothermal Rapid Amplification-Based Fluorescence Assay for Detection of Megalocytivirus pagrus 1.",
+      "actual_organisms": [
+        "Red sea bream iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_273651",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308906"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What antiviral drugs or treatments are effective against Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "40910687",
+      "title": "Molnupiravir inhibits Bourbon virus infection and disease-associated pathology in mice.",
+      "actual_organisms": [
+        "Bourbon virus",
+        "Dhori virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What antiviral drugs or treatments are effective against Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "17368573",
+      "title": "In vitro and in vivo studies of the Interferon-alpha action on distinct Orthobunyavirus.",
+      "actual_organisms": [
+        "Guaroa virus",
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is the epidemiology and outbreak history of Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "40559594",
+      "title": "The Challenge of Lyssavirus Infections in Domestic and Other Animals: A Mix of Virological Confusion, Consternation, Chagrin, and Curiosity.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "Variola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "41902248",
+      "title": "Neurological Signs and Symptoms in Human T-Lymphotropic Viruses 1 and 2 Infected Patients Living in the Amazon Region, Northern Brazil.",
+      "actual_organisms": [
+        "Human T-cell leukemia virus type 1",
+        "Human T-cell leukemia virus type 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is known about Sclerotinia sclerotiorum hypovirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "25694604",
+      "title": "Transfection of Sclerotinia sclerotiorum with in vitro transcripts of a naturally occurring interspecific recombinant of Sclerotinia sclerotiorum hypovirus 2 significantly reduces virulence of the fungus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1353016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1423347",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1928361",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39749",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5180"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is known about Sclerotinia sclerotiorum hypovirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34826002",
+      "title": "A novel alphahypovirus that infects the fungal plant pathogen Sclerotinia sclerotiorum.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2879905",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946791",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5179",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5180"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is known about Sclerotinia sclerotiorum hypovirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is known about Sclerotinia sclerotiorum hypovirus 1 pathogenesis and transmission?",
+      "cited_pmid": "27891121",
+      "title": "Hypovirulence of Sclerotium rolfsii Caused by Associated RNA Mycovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_109384",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1423347",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39291"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "42599190",
+      "title": "Multicenter clinical evaluation of a fully automated multiplex HSV-1, HSV-2, and VZV real-time PCR assay.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "10892424",
+      "title": "Assessment trials of the therapeutic efficacy of the drug \"Zovirax\" in some recurrent ocular and genital herpetic infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "42532197",
+      "title": "Susceptibility of clinical isolates, laboratory-adapted and drug-resistant herpes simplex virus strains to helicase-primase inhibitor adibelivir (IM-250) and its synergy in combination therapy with acyclovir, penciclovir and foscarnet.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "42693145",
+      "title": "Varicella zoster virus infection.",
+      "actual_organisms": [
+        "Human alphaherpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Sclerotinia sclerotiorum hypovirus 1?",
+      "cited_pmid": "42677107",
+      "title": "Probable Coxsackievirus Infection in an Immunocompetent Adult With Genital and Oral Ulcerations Mimicking Herpes Simplex Virus Infection and Beh\u00e7et's Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42716004",
+      "title": "Toward medical countermeasures against hantaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36851747",
+      "title": "Characterization of a Panel of Cross-Reactive Hantavirus Nucleocapsid Protein-Specific Monoclonal Antibodies.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "Tula orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052789"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "2728615",
+      "title": "Semiconservative strand-displacement transcription of the M2 dsRNA segment of Ustilago maydis virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47930",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "21830071",
+      "title": "Genetic and antigenic relationships of vesicular stomatitis viruses from South America.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11277",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11280"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "33201342",
+      "title": "Serological methods for detection of infection with shrew-borne hantaviruses: Thottapalayam, Seewis, Altai, and Asama viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052789"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "35336125",
+      "title": "Development of Real-Time Molecular Assays for the Detection of Wesselsbron Virus in Africa.",
+      "actual_organisms": [
+        "Wesselsbron virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "41437794",
+      "title": "Detection of Anti-Orthohantavirus Antibodies in Febrile Patients in India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "42278084",
+      "title": "Development of a Closed One-Tube Colorimetric and Fluorescent LAMP Assay for the Rapid Detection of Feline Herpesvirus 1.",
+      "actual_organisms": [
+        "Feline herpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "42413394",
+      "title": "Distinct virus-specific regulation of RNA synthesis across genome segments by thogotovirus polymerases: insights from Oz virus and Dhori virus.",
+      "actual_organisms": [
+        "Dhori virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2137161",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35323"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "40910687",
+      "title": "Molnupiravir inhibits Bourbon virus infection and disease-associated pathology in mice.",
+      "actual_organisms": [
+        "Bourbon virus",
+        "Dhori virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42350480",
+      "title": "A drug repurposing screen identifies antiviral compounds against Puumala Orthohantavirus.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "20416341",
+      "title": "A novel nucleoside analog, 1-beta-d-ribofuranosyl-3-ethynyl-[1,2,4]triazole (ETAR), exhibits efficacy against a broad range of flaviviruses in vitro.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11085",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "42671285",
+      "title": "Hantavirus infections in Southeastern Europe - Epidemiology, outbreak dynamics, and One Health preparedness: A narrative review.",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052477",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "9919918",
+      "title": "[Diseases caused by hantaviruses].",
+      "actual_organisms": [
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Hantaan orthohantavirus",
+        "Sin Nombre orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "42708795",
+      "title": "Central nervous system involvement of hantaviruses: clinical presentations, neuroimaging findings, and current implications.",
+      "actual_organisms": [
+        "Andes orthohantavirus",
+        "Puumala orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "42499780",
+      "title": "Severe Usutu Virus Encephalitis Treated With Corticosteroids: A Case Report.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -102439,6 +106246,198 @@
       "question": "What is the genome organization and replication cycle of Atlantic salmon paramyxovirus?",
       "missed_pmid": "12867650",
       "title": "Isolation and partial characterization of a novel paramyxovirus from the gills of diseased seawater-reared Atlantic salmon (Salmo salar L)."
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the genome organization and replication cycle of Myxoma virus?",
+      "missed_pmid": "42007473",
+      "title": "Enrichment and Reduction of Microsatellite Regions in the Myxoma Virus Genome Following Species Jump to the Iberian Hare (Lepus granatensis)."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is known about Cryphonectria hypovirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37888292",
+      "title": "Cryphonectria parasitica Detections in England, Jersey, and Guernsey during 2020-2023 Reveal Newly Affected Areas and Infections by the CHV1 Mycovirus."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is known about Cryphonectria hypovirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36762926",
+      "title": "Hypoviral-regulated HSP90 co-chaperone p23 (CpCop23) determines the colony morphology, virulence, and viral response of chestnut blight fungus Cryphonectria parasitica."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "missed_pmid": "37376560",
+      "title": "Temperature Effects on the Cryphonectria hypovirus 1 Accumulation and Recovery within Its Fungal Host, the Chestnut Blight Pathogen Cryphonectria parasitica."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "missed_pmid": "39596093",
+      "title": "Transmission of Cryphonectria Hypovirus 1 (CHV1) to Cryphonectria radicalis and In Vitro and In Vivo Testing of Its Potential for Use as Biocontrol Against C. parasitica."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "missed_pmid": "38476955",
+      "title": "Molecular genetic variability of Cryphonectria hypovirus 1 associated with Cryphonectria parasitica in South Tyrol (northern Italy)."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "missed_pmid": "22366520",
+      "title": "Molecular characterization of a new hypovirus infecting a phytopathogenic fungus, Valsa ceratosperma."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "missed_pmid": "41693261",
+      "title": "Hypovirus-Induced Phosphorylation of CpIre1 Modulates Unfolded Protein Response and Virulence in Cryphonectria parasitica."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Cryphonectria hypovirus 1?",
+      "missed_pmid": "39205177",
+      "title": "New Detection Methods for Cryphonectria Hypovirus 1 (CHV1) through SYBR Green-Based Real-Time PCR and Loop-Mediated Isothermal Amplification (LAMP)."
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication."
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "24821769",
+      "title": "Cryo-EM near-atomic structure of a dsRNA fungal virus shows ancient structural motifs preserved in the dsRNA viral lineage."
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "12888349",
+      "title": "Three-dimensional structure of penicillium chrysogenum virus: a double-stranded RNA virus with a genuine T=1 capsid."
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication."
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "missed_pmid": "15218197",
+      "title": "Molecular characterization of Penicillium chrysogenum virus: reconsideration of the taxonomy of the genus Chrysovirus."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41219846",
+      "title": "Genome-wide screen uncovers novel host factors for L-A virus maintenance and a potential mutualistic-symbiosis relationship in yeast."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35448612",
+      "title": "Adaptive Response of Saccharomyces Hosts to Totiviridae L-A dsRNA Viruses Is Achieved through Intrinsically Balanced Action of Targeted Transcription Factors."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42569216",
+      "title": "Genomic characterization and diversity of dsRNA viruses and their killer satellites in a natural population of the yeast Saccharomyces paradoxus."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38730276",
+      "title": "Delineating organizational principles of the endogenous L-A virus by cryo-EM and computational analysis of native cell extracts."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What diagnostic assays or laboratory tests detect Saccharomyces cerevisiae virus L-A?",
+      "missed_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What are the clinical symptoms and disease presentation of Saccharomyces cerevisiae virus L-A?",
+      "missed_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses."
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "24259190",
+      "title": "Biological properties and expression strategy of rosellinia necatrix megabirnavirus 1 analysed in an experimental host, Cryphonectria parasitica."
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "24503094",
+      "title": "Genome rearrangement of a mycovirus Rosellinia necatrix megabirnavirus 1 affecting its ability to attenuate virulence of the host fungus."
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26133296",
+      "title": "Molecular characterization of a novel mycovirus from Rhizoctonia fumigata AG-Ba isolate C-314 Baishi."
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What is known about Rosellinia necatrix megabirnavirus 1 pathogenesis and transmission?",
+      "missed_pmid": "29688132",
+      "title": "Draft Genome Sequence and Transcriptional Analysis of Rosellinia necatrix Infected with a Virulent Mycovirus."
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is known about Sclerotinia sclerotiorum hypovirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31338072",
+      "title": "Discovery of Two Mycoviruses by High-Throughput Sequencing and Assembly of Mycovirus-Derived Small Silencing RNAs From a Hypovirulent Strain of Sclerotinia sclerotiorum."
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is known about Sclerotinia sclerotiorum hypovirus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "22366520",
+      "title": "Molecular characterization of a new hypovirus infecting a phytopathogenic fungus, Valsa ceratosperma."
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Sclerotinia sclerotiorum hypovirus 1?",
+      "missed_pmid": "32316519",
+      "title": "ORF \u0399 of Mycovirus SsNSRV-1 is Associated with Debilitating Symptoms of Sclerotinia sclerotiorum."
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Sclerotinia sclerotiorum hypovirus 1?",
+      "missed_pmid": "23498908",
+      "title": "Viruses of the plant pathogenic fungus Sclerotinia sclerotiorum."
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "27208846",
+      "title": "Reprint of \"Sequence and phylogenetic analyses of novel totivirus-like double-stranded RNAs from field-collected powdery mildew fungi\"."
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "26592174",
+      "title": "Sequence and phylogenetic analyses of novel totivirus-like double-stranded RNAs from field-collected powdery mildew fungi."
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "missed_pmid": "17030880",
+      "title": "Phylogeography of Ustilago maydis virus H1 in the USA and Mexico."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
