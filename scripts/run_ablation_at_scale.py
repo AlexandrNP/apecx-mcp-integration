@@ -414,6 +414,17 @@ _TARGETS: list[tuple[str, str]] = [
     ("Sepik virus", "http://purl.obolibrary.org/obo/NCBITaxon_44026"),
     ("Ilesha virus", "http://purl.obolibrary.org/obo/NCBITaxon_273341"),
     ("Whitewater Arroyo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052331"),
+    # 9 more animal viruses (2026-09-24) - pox/circo/retro/herpes - catalog volume growth.
+    # Canary-preflight-qualified (Camelpox/Beak-and-feather/Cercopithecine dropped).
+    ("Tanapox virus", "http://purl.obolibrary.org/obo/NCBITaxon_99000"),
+    ("Pseudocowpox virus", "http://purl.obolibrary.org/obo/NCBITaxon_129726"),
+    ("Bovine papular stomatitis virus", "http://purl.obolibrary.org/obo/NCBITaxon_129727"),
+    ("Koala retrovirus", "http://purl.obolibrary.org/obo/NCBITaxon_394239"),
+    ("Gibbon ape leukemia virus", "http://purl.obolibrary.org/obo/NCBITaxon_11840"),
+    ("Porcine circovirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_133704"),
+    ("Duck circovirus", "http://purl.obolibrary.org/obo/NCBITaxon_324685"),
+    ("Gallid alphaherpesvirus 1", "http://purl.obolibrary.org/obo/NCBITaxon_10386"),
+    ("Equine herpesvirus 4", "http://purl.obolibrary.org/obo/NCBITaxon_10331"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
