@@ -223,6 +223,13 @@ _TARGETS: list[tuple[str, str]] = [
     ("Feline leukemia virus", "http://purl.obolibrary.org/obo/NCBITaxon_11768"),
     ("Equine infectious anemia virus", "http://purl.obolibrary.org/obo/NCBITaxon_11665"),
     ("Mouse mammary tumor virus", "http://purl.obolibrary.org/obo/NCBITaxon_11757"),
+    ("African horse sickness virus", "http://purl.obolibrary.org/obo/NCBITaxon_40050"),
+    ("Epizootic hemorrhagic disease virus", "http://purl.obolibrary.org/obo/NCBITaxon_40054"),
+    ("Palyam virus", "http://purl.obolibrary.org/obo/NCBITaxon_40059"),
+    ("Akabane virus", "http://purl.obolibrary.org/obo/NCBITaxon_70566"),
+    ("Schmallenberg virus", "http://purl.obolibrary.org/obo/NCBITaxon_1133363"),
+    ("Chuzan virus", "http://purl.obolibrary.org/obo/NCBITaxon_77204"),
+    ("Infectious bursal disease virus", "http://purl.obolibrary.org/obo/NCBITaxon_10995"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
