@@ -274,6 +274,15 @@ _TARGETS: list[tuple[str, str]] = [
     ("Avian metapneumovirus", "http://purl.obolibrary.org/obo/NCBITaxon_38525"),
     ("Fer-de-Lance virus", "http://purl.obolibrary.org/obo/NCBITaxon_2907837"),
     ("Porcine rubulavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052562"),
+    (
+        "Severe fever with thrombocytopenia syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1003835",
+    ),
+    ("Bourbon virus", "http://purl.obolibrary.org/obo/NCBITaxon_1618189"),
+    ("Dhori virus", "http://purl.obolibrary.org/obo/NCBITaxon_11318"),
+    ("Thogoto virus", "http://purl.obolibrary.org/obo/NCBITaxon_11569"),
+    ("Nairobi sheep disease virus", "http://purl.obolibrary.org/obo/NCBITaxon_194540"),
+    ("Uukuniemi virus", "http://purl.obolibrary.org/obo/NCBITaxon_11591"),
     ("Lujo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052314"),
     (
         "Middle East respiratory syndrome-related coronavirus",
