@@ -403,6 +403,17 @@ _TARGETS: list[tuple[str, str]] = [
     ("Bwamba orthobunyavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052384"),
     ("Ngari virus", "http://purl.obolibrary.org/obo/NCBITaxon_273357"),
     ("Inkoo virus", "http://purl.obolibrary.org/obo/NCBITaxon_45269"),
+    # 9 more HF-arena / hanta / orthobunya viruses (2026-09-24) — catalog volume growth.
+    # Canary-preflight-qualified (Guanarito/Dobrava/Edge-Hill dropped, no-stamp).
+    ("Sabia mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_2907957"),
+    ("Chapare mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052302"),
+    ("Laguna Negra orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052489"),
+    ("Choclo orthohantavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052474"),
+    ("Germiston virus", "http://purl.obolibrary.org/obo/NCBITaxon_11574"),
+    ("Shuni virus", "http://purl.obolibrary.org/obo/NCBITaxon_3052440"),
+    ("Sepik virus", "http://purl.obolibrary.org/obo/NCBITaxon_44026"),
+    ("Ilesha virus", "http://purl.obolibrary.org/obo/NCBITaxon_273341"),
+    ("Whitewater Arroyo mammarenavirus", "http://purl.obolibrary.org/obo/NCBITaxon_3052331"),
 ]
 
 # Fail-fast on a duplicate target: the same organism listed twice (by name OR by
