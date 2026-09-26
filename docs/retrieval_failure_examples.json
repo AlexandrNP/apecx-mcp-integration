@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T13:38:02.128527+00:00",
-  "runs": 66,
+  "updated": "2026-09-26T13:47:11.764208+00:00",
+  "runs": 67,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 10161,
-  "n_false_negatives": 3040,
+  "n_false_positives": 10312,
+  "n_false_negatives": 3062,
   "new_this_run": {
-    "false_positives": 123,
-    "false_negatives": 20
+    "false_positives": 151,
+    "false_negatives": 22
   },
   "false_positives": [
     {
@@ -114097,6 +114097,1723 @@
       "actual_organisms": [
         "Tomato yellow leaf curl virus"
       ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797790",
+      "title": "Aligning Licensure and Recommended Use to Expedite Vaccine Access in Response to the Ongoing Bundibugyo Ebolavirus Epidemic in Central Africa.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus pathogenesis and transmission?",
+      "cited_pmid": "42784552",
+      "title": "Notes from the Field: The First 100 Days of Five Ebola Outbreaks - Democratic Republic of the Congo, Uganda, and West Africa, 2007-2026.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What diagnostic assays or laboratory tests detect Ebola virus?",
+      "cited_pmid": "42771287",
+      "title": "Comparative evaluation of bionote FMD NSP Ab and PrioCHECK\u00ae FMDV NS Ab ELISA kits for detection of foot-and-mouth disease virus non-structural proteins antibodies in SAT serotypes.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "42655737",
+      "title": "The L-A dsRNA Virus and Its Satellites: Totiviruses and Killers in Saccharomyces cerevisiae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "38730276",
+      "title": "Delineating organizational principles of the endogenous L-A virus by cryo-EM and computational analysis of native cell extracts.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What antiviral drugs or treatments are effective against Hepatitis A virus?",
+      "cited_pmid": "40431698",
+      "title": "Investigation of \u03b2-Carboline Alkaloid Harmaline Against Cyvirus cyprinidallo3 Infection In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3050271"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the clinical symptoms and disease presentation of Hepatitis A virus?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is known about Rabies lyssavirus pathogenesis and transmission?",
+      "cited_pmid": "42788597",
+      "title": "Temporal changes in rabies epidemiology in Brazil: an analysis of notifications of suspected and confirmed human rabies cases, 2010-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the epidemiology and outbreak history of Rabies lyssavirus?",
+      "cited_pmid": "42784342",
+      "title": "Rabies in Military Personnel: Epidemiology, Clinical Challenges, and Strategies for Prevention and Management.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42782466",
+      "title": "Long-Term Survival of Human Enteric Virus Surrogates (Murine Norovirus, Rhesus Rotavirus, and Porcine Sapovirus) in Bottled Drinking Water.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1454551",
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_444185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771794",
+      "title": "Self-Assembled PEDV Virus-Like Particle Nanovaccines Elicit Potent Neutralizing Antibodies and Confer Full Protection in Piglets.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus pathogenesis and transmission?",
+      "cited_pmid": "42791717",
+      "title": "Molecular Characterization of a Feline Panleukopenia Virus Strain Isolated from a Dog with Clinical Gastroenteritis in Spain.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2930201",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "cited_pmid": "42655737",
+      "title": "The L-A dsRNA Virus and Its Satellites: Totiviruses and Killers in Saccharomyces cerevisiae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "40431698",
+      "title": "Investigation of \u03b2-Carboline Alkaloid Harmaline Against Cyvirus cyprinidallo3 Infection In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3050271"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42646719",
+      "title": "The Vaccine-Field Strain Gap in Bovine Neonatal Diarrhea: Molecular Epidemiology of Rotavirus, Coronavirus, and Enterotoxigenic Escherichia coli and Priorities for Vaccine Updating.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is known about Porcine epidemic diarrhea virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42741611",
+      "title": "Canine parvovirus in Africa: Explaining persistent disease despite vaccination.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42795591",
+      "title": "Multicentre Evaluation of Cepheid Xpert\u00ae Research-Use-Only Panel for Molecular Rapid Detection of Gastrointestinal Pathogens.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_590"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42694081",
+      "title": "Development and epidemiological investigation of a TaqMan-based multiplex real-time quantitative PCR assay for simultaneous detection of five bovine viruses (BVDV, AKAV, BNoV, BEV, and BCoV).",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the epidemiology and outbreak history of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42786517",
+      "title": "Occurrence of respiratory and enteric bacteria and viruses in calves in Iceland.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1661",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75985"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What are the clinical symptoms and disease presentation of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genome organization and replication cycle of Foot-and-mouth disease virus?",
+      "cited_pmid": "42790233",
+      "title": "CaMKII\u03b3-mediated vimentin structural rearrangement regulates FMDV replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the epidemiology and outbreak history of Foot-and-mouth disease virus?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What is the genome organization and replication cycle of Bovine coronavirus?",
+      "cited_pmid": "27540051",
+      "title": "Complete Genome Sequence of a Bohle iridovirus Isolate from Ornate Burrowing Frogs (Limnodynastes ornatus) in Australia.",
+      "actual_organisms": [
+        "Bohle iridovirus"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is known about Canine parvovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797816",
+      "title": "Molecular Mechanisms Between Canine Parvovirus 2 and Host Interactions: From Viruses to Innate Immune Signaling Pathways.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_246878",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine parvovirus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42385953",
+      "title": "Fish immunization by duckweed biomass accumulating recombinant cyprinid herpesvirus 3 antigens induces specific immune response.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y pathogenesis and transmission?",
+      "cited_pmid": "41326719",
+      "title": "Structural characterization of plum pox virus by cryo-electron microscopy.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "41621718",
+      "title": "Rapid colorimetric detection of Citrus tristeza virus combining portable sample preparation and reverse transcription-loop mediated isothermal amplification.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "42465764",
+      "title": "Rapid, non-invasive, visual point-of-care detection of koi herpesvirus using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2930201",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42704488",
+      "title": "Transgenic overexpression of GmAPC7-CT improves seed yield and reduces susceptibility to soybean mosaic virus and Meloidogyne incognita in soybean.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_189290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6306"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "cited_pmid": "40431698",
+      "title": "Investigation of \u03b2-Carboline Alkaloid Harmaline Against Cyvirus cyprinidallo3 Infection In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3050271"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "41318412",
+      "title": "Citrus Tristeza Virus: From Devastating Epidemics to Effective Management in Citrus-Producing Regions Around the World.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "41034970",
+      "title": "Bayesian phylogenetic and recombination analyses of plum pox virus provide a refined vision of its evolutionary history.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the clinical symptoms and disease presentation of Potato virus Y?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Plum pox virus",
+      "question": "What diagnostic assays or laboratory tests detect Plum pox virus?",
+      "cited_pmid": "41621718",
+      "title": "Rapid colorimetric detection of Citrus tristeza virus combining portable sample preparation and reverse transcription-loop mediated isothermal amplification.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Plum pox virus",
+      "question": "What diagnostic assays or laboratory tests detect Plum pox virus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the genome organization and replication cycle of Citrus tristeza virus?",
+      "cited_pmid": "42704488",
+      "title": "Transgenic overexpression of GmAPC7-CT improves seed yield and reduces susceptibility to soybean mosaic virus and Meloidogyne incognita in soybean.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_189290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6306"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What antiviral drugs or treatments are effective against Citrus tristeza virus?",
+      "cited_pmid": "40431698",
+      "title": "Investigation of \u03b2-Carboline Alkaloid Harmaline Against Cyvirus cyprinidallo3 Infection In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3050271"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the epidemiology and outbreak history of Citrus tristeza virus?",
+      "cited_pmid": "41901422",
+      "title": "The Effect of Viral Infection on the Growth of HoneySweet GM Plum Trees.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12175",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33760"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42348559",
+      "title": "Co-inoculation with deformed wing virus and sacbrood virus affects viral and immune dynamics and synergistically increases honey bee mortality.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "30530928",
+      "title": "Co-exposure to multiple ranavirus types enhances viral infectivity and replication in a larval amphibian system.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1914855",
+        "http://purl.obolibrary.org/obo/NCBITaxon_315953"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genome organization and replication cycle of Cricket paralysis virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "26530419",
+      "title": "Comparative Genomics of an Emerging Amphibian Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_315953",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "42788597",
+      "title": "Temporal changes in rabies epidemiology in Brazil: an analysis of notifications of suspected and confirmed human rabies cases, 2010-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "30686212",
+      "title": "Pathogenesis of Bohle Iridovirus (Genus Ranavirus) in Experimentally Infected Juvenile Eastern Water Dragons ( Intellagama lesueurii lesueurii).",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "31483246",
+      "title": "Dose-dependent morbidity of freshwater turtle hatchlings, Emydura macquarii krefftii, inoculated with Ranavirus isolate (Bohle iridovirus, Iridoviridae).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "23642863",
+      "title": "Selected emerging diseases of amphibia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_109871",
+        "http://purl.obolibrary.org/obo/NCBITaxon_160691",
+        "http://purl.obolibrary.org/obo/NCBITaxon_174715",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_308865",
+        "http://purl.obolibrary.org/obo/NCBITaxon_528",
+        "http://purl.obolibrary.org/obo/NCBITaxon_544",
+        "http://purl.obolibrary.org/obo/NCBITaxon_642",
+        "http://purl.obolibrary.org/obo/NCBITaxon_810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99802"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771794",
+      "title": "Self-Assembled PEDV Virus-Like Particle Nanovaccines Elicit Potent Neutralizing Antibodies and Confer Full Protection in Piglets.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus pathogenesis and transmission?",
+      "cited_pmid": "28097494",
+      "title": "Establishment and characterization of a heart-derived cell line from goldfish (Carassius auratus).",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_100217",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_128987"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus pathogenesis and transmission?",
+      "cited_pmid": "42655737",
+      "title": "The L-A dsRNA Virus and Its Satellites: Totiviruses and Killers in Saccharomyces cerevisiae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus pathogenesis and transmission?",
+      "cited_pmid": "30993463",
+      "title": "Genomic sequence of a Bohle iridovirus strain isolated from a diseased boreal toad (Anaxyrus boreas boreas) in a North American aquarium.",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1419340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1620702"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus pathogenesis and transmission?",
+      "cited_pmid": "42797954",
+      "title": "Rabies Virus Glycoprotein G Variation Is Associated with Neurovirulence and Reduced Vamp2 Abundance in a Mouse Model of Direct CNS Infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "42771287",
+      "title": "Comparative evaluation of bionote FMD NSP Ab and PrioCHECK\u00ae FMDV NS Ab ELISA kits for detection of foot-and-mouth disease virus non-structural proteins antibodies in SAT serotypes.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2930201",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "27540051",
+      "title": "Complete Genome Sequence of a Bohle iridovirus Isolate from Ornate Burrowing Frogs (Limnodynastes ornatus) in Australia.",
+      "actual_organisms": [
+        "Bohle iridovirus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "42788597",
+      "title": "Temporal changes in rabies epidemiology in Brazil: an analysis of notifications of suspected and confirmed human rabies cases, 2010-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "41318412",
+      "title": "Citrus Tristeza Virus: From Devastating Epidemics to Effective Management in Citrus-Producing Regions Around the World.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What are the clinical symptoms and disease presentation of Sacbrood virus?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What are the clinical symptoms and disease presentation of Sacbrood virus?",
+      "cited_pmid": "42674009",
+      "title": "Canine parvovirus cases (2010-2023): a retrospective study of 78,977 cases demonstrates declining incidence, but mortality risk remains.",
+      "actual_organisms": [
+        "Canine parvovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_764599"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What are the clinical symptoms and disease presentation of Sacbrood virus?",
+      "cited_pmid": "30686212",
+      "title": "Pathogenesis of Bohle Iridovirus (Genus Ranavirus) in Experimentally Infected Juvenile Eastern Water Dragons ( Intellagama lesueurii lesueurii).",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Cyprinid herpesvirus 3?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Cyprinid herpesvirus 3?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Cyprinid herpesvirus 3?",
+      "cited_pmid": "42795568",
+      "title": "Targeting the 3C Protease of Hepatitis A Virus Subgenotype IB: Virtual Screening and Identification of Potent Lead Candidates.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Cyprinid herpesvirus 3?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42761642",
+      "title": "Biological barriers underlying the extremely high fatality of symptomatic rabies: neuroinvasion, immune evasion, and blood-brain barrier restriction.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42762969",
+      "title": "Rabies and distemper exhibit distinct patterns of axonal damage and apoptotic cell death in the central nervous system of dogs and foxes.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus pathogenesis and transmission?",
+      "cited_pmid": "42797954",
+      "title": "Rabies Virus Glycoprotein G Variation Is Associated with Neurovirulence and Reduced Vamp2 Abundance in a Mouse Model of Direct CNS Infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Nervous necrosis virus?",
+      "cited_pmid": "42655647",
+      "title": "Single-Tube Reverse Transcription-Loop-Mediated Isothermal Amplification Assay for Rapid Detection of Red-Spotted Grouper Nervous Necrosis Virus in Fish Species.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1549864",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Nervous necrosis virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genome organization and replication cycle of Nervous necrosis virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genome organization and replication cycle of Nervous necrosis virus?",
+      "cited_pmid": "42790233",
+      "title": "CaMKII\u03b3-mediated vimentin structural rearrangement regulates FMDV replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the genome organization and replication cycle of Nervous necrosis virus?",
+      "cited_pmid": "42651684",
+      "title": "LncRNA-miRNA-mRNA Regulatory Network Reveals Potential Immune Responses in Larval Tomato Hind (Cephalopholis sonnerati) Infected with RGNNV.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Nervous necrosis virus?",
+      "cited_pmid": "40431698",
+      "title": "Investigation of \u03b2-Carboline Alkaloid Harmaline Against Cyvirus cyprinidallo3 Infection In Vitro and In Vivo.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3050271"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Nervous necrosis virus?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Nervous necrosis virus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Nervous necrosis virus?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Nervous necrosis virus?",
+      "cited_pmid": "42788597",
+      "title": "Temporal changes in rabies epidemiology in Brazil: an analysis of notifications of suspected and confirmed human rabies cases, 2010-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "42795568",
+      "title": "Targeting the 3C Protease of Hepatitis A Virus Subgenotype IB: Virtual Screening and Identification of Potent Lead Candidates.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797850",
+      "title": "Development of a Recombinant O/CATHAY Topotype Foot-and-Mouth Disease Virus as a Resource for Vaccine Matching and Efficacy Evaluation.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "42797780",
+      "title": "Dahlia Virome Analysis Reveals Multiple Novel Viruses in Mixed Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 pathogenesis and transmission?",
+      "cited_pmid": "25999933",
+      "title": "Molecular characterization of a bipartite double-stranded RNA virus and its satellite-like RNA co-infecting the phytopathogenic fungus Sclerotinia sclerotiorum.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1918013",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5179",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_87229"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "28826930",
+      "title": "User-friendly Taqman probe coupled-insulated isothermal PCR (iiPCR) for rapid detection of emerging Ambystoma tigrinum virus (ATV) in western tiger salamanders (Ambystoma mavortium) on a compact, portable instrument.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_315953"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "42465764",
+      "title": "Rapid, non-invasive, visual point-of-care detection of koi herpesvirus using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "42771287",
+      "title": "Comparative evaluation of bionote FMD NSP Ab and PrioCHECK\u00ae FMDV NS Ab ELISA kits for detection of foot-and-mouth disease virus non-structural proteins antibodies in SAT serotypes.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What diagnostic assays or laboratory tests detect Ustilago maydis virus H1?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2930201",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the genome organization and replication cycle of Ustilago maydis virus H1?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42795568",
+      "title": "Targeting the 3C Protease of Hepatitis A Virus Subgenotype IB: Virtual Screening and Identification of Potent Lead Candidates.",
+      "actual_organisms": [
+        "Hepatitis A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_60875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is the epidemiology and outbreak history of Ustilago maydis virus H1?",
+      "cited_pmid": "42797759",
+      "title": "Beyond Ebola Virus in the Largest Documented Bundibugyo Virus Outbreak.",
+      "actual_organisms": [
+        "Ebola virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_565995"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "42789612",
+      "title": "Foodborne Illness: Diagnosis and Management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "42668364",
+      "title": "Placentitis and abortion caused by canine distemper virus in a Linnaeus's two-toed sloth.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is known about Bohle iridovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is known about Bohle iridovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "42694081",
+      "title": "Development and epidemiological investigation of a TaqMan-based multiplex real-time quantitative PCR assay for simultaneous detection of five bovine viruses (BVDV, AKAV, BNoV, BEV, and BCoV).",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Foot-and-mouth disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "27025572",
+      "title": "Identification of essential and non-essential genes in Ambystoma tigrinum virus.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What antiviral drugs or treatments are effective against Bohle iridovirus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What antiviral drugs or treatments are effective against Bohle iridovirus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What antiviral drugs or treatments are effective against Bohle iridovirus?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "42465764",
+      "title": "Rapid, non-invasive, visual point-of-care detection of koi herpesvirus using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What is the genome organization and replication cycle of Ambystoma tigrinum virus?",
+      "cited_pmid": "11410317",
+      "title": "The H1 double-stranded RNA genome of Ustilago maydis virus-H1 encodes a polyprotein that contains structural motifs for capsid polypeptide, papain-like protease, and RNA-dependent RNA polymerase.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What is the genome organization and replication cycle of Ambystoma tigrinum virus?",
+      "cited_pmid": "35337001",
+      "title": "The Characterization of a Novel Virus Discovered in the Yeast Pichia membranifaciens.",
+      "actual_organisms": [
+        "Saccharomyces cerevisiae virus L-A",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2930201",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4893",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What is the genome organization and replication cycle of Ambystoma tigrinum virus?",
+      "cited_pmid": "25999933",
+      "title": "Molecular characterization of a bipartite double-stranded RNA virus and its satellite-like RNA co-infecting the phytopathogenic fungus Sclerotinia sclerotiorum.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1918013",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5179",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_87229"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What antiviral drugs or treatments are effective against Ambystoma tigrinum virus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What is the epidemiology and outbreak history of Ambystoma tigrinum virus?",
+      "cited_pmid": "26530419",
+      "title": "Comparative Genomics of an Emerging Amphibian Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10492",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_315953",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What are the clinical symptoms and disease presentation of Ambystoma tigrinum virus?",
+      "cited_pmid": "42668364",
+      "title": "Placentitis and abortion caused by canine distemper virus in a Linnaeus's two-toed sloth.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
     }
   ],
   "false_negatives": [
@@ -132339,6 +134056,138 @@
       "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
       "missed_pmid": "42796733",
       "title": "Host-Dependent Cytopathological Responses to Beet Curly Top Virus Infection in Four Plant Species."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42776651",
+      "title": "Field Investigation of the Bundibugyo Ebola Virus Disease (BDBV) Outbreak in Ituri Province, Democratic Republic of the Congo: Challenges, Strategies, and Priority Actions for Outbreak Control-An Outbreak Investigation Review."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What diagnostic assays or laboratory tests detect Ebola virus?",
+      "missed_pmid": "42797814",
+      "title": "Ebola Virus RNA Persists in Reproductive Tissues and Sperm of Male Ifnar1-/- Mice After Resolution of Viremia."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What antiviral drugs or treatments are effective against Ebola virus?",
+      "missed_pmid": "42779995",
+      "title": "Mapping First In Vivo Ebolavirus Infection Events."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What diagnostic assays or laboratory tests detect Hepatitis A virus?",
+      "missed_pmid": "42795679",
+      "title": "Occurrence of Human Enteric Viruses in Retail Mussels Marketed in Burgos, Spain."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is the genome organization and replication cycle of Hepatitis A virus?",
+      "missed_pmid": "42784526",
+      "title": "Hepatitis A Outbreak Associated with Cuba - Florida, June 2024-February 2026."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the clinical symptoms and disease presentation of Hepatitis A virus?",
+      "missed_pmid": "42797587",
+      "title": "High Hepatitis A Virus Seroprevalence and Low Self-Reported Vaccination Coverage Among Waste Collection Workers in Sardinia, Italy: A Retrospective Cross-Sectional Study."
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the epidemiology and outbreak history of Rabies lyssavirus?",
+      "missed_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42784887",
+      "title": "Systematic evaluation of the micro-volume PEG-enrichment pretreatment for norovirus detection across seven commercially available bivalve species."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42774977",
+      "title": "Wastewater surveillance as an early warning indicator for norovirus: Validating wastewater signals against clinical indicators in British Columbia, Canada, 2021-2025."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42797624",
+      "title": "Clinical and Public Health Lessons from a Point-Source Polymicrobial Foodborne Outbreak: Implications for Vaccination of Vulnerable Populations."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus pathogenesis and transmission?",
+      "missed_pmid": "42797831",
+      "title": "Occurrence of Enteric Viruses in Multi-Component Salad Bowls."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "missed_pmid": "42788732",
+      "title": "Bile and capsid variation coregulate histo-blood group antigen recognition and serum neutralization potency in GII.12 human norovirus."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the genome organization and replication cycle of Norovirus?",
+      "missed_pmid": "42795679",
+      "title": "Occurrence of Human Enteric Viruses in Retail Mussels Marketed in Burgos, Spain."
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine epidemic diarrhea virus?",
+      "missed_pmid": "42753880",
+      "title": "Fe-Co bimetallic nanozyme-amplified lateral-flow immunoassay for the sensitive detection of porcine rotavirus."
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is known about Foot-and-mouth disease virus pathogenesis and transmission?",
+      "missed_pmid": "42787502",
+      "title": "Correction: Foot-and-mouth disease virus non-structural protein 2B downregulates the RLR signaling pathway via degradation of RIG-I and MDA5."
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the epidemiology and outbreak history of Foot-and-mouth disease virus?",
+      "missed_pmid": "42797846",
+      "title": "Functional Evaluation of Neutralizing Antibodies Against Foot-and-Mouth Disease Virus Serotype O Using a Luciferase-Based Surrogate Neutralization Assay."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine coronavirus?",
+      "missed_pmid": "42786517",
+      "title": "Occurrence of respiratory and enteric bacteria and viruses in calves in Iceland."
+    },
+    {
+      "organism": "Bovine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Bovine coronavirus?",
+      "missed_pmid": "42746356",
+      "title": "Evaluation of the Therapeutic Potential of Natural Peptides Against Hemagglutinin-Esterase of Bovine Coronavirus Based on Molecular Dynamics Simulation Studies."
+    },
+    {
+      "organism": "Canine parvovirus",
+      "question": "What is known about Canine parvovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42791717",
+      "title": "Molecular Characterization of a Feline Panleukopenia Virus Strain Isolated from a Dog with Clinical Gastroenteritis in Spain."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is known about Potato virus Y and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42794618",
+      "title": "Experimental Confirmation of the Role of the \u03b11-\u03b12 Hairpin PVY VPg in eIF4E Interaction."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "missed_pmid": "42643394",
+      "title": "Seasonal dynamics of honey bee pathogens and Varroa destructor infestation in South Korea: results from a National Active Surveillance Program."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "missed_pmid": "41825512",
+      "title": "Investigation of viral and parasitic pathogens in Bombus terrestris (Hymenoptera: Apidae) populations."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
