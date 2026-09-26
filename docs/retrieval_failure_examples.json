@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T13:08:07.876231+00:00",
-  "runs": 63,
+  "updated": "2026-09-26T13:15:58.276228+00:00",
+  "runs": 64,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 9784,
-  "n_false_negatives": 2994,
+  "n_false_positives": 9882,
+  "n_false_negatives": 2997,
   "new_this_run": {
-    "false_positives": 177,
-    "false_negatives": 22
+    "false_positives": 98,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -109915,6 +109915,1137 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10508",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the epidemiology and outbreak history of BK polyomavirus?",
+      "cited_pmid": "41548497",
+      "title": "Molecular detection and phylogenetic analysis of KI polyomavirus and WU polyomavirus in respiratory tract samples from children under five.",
+      "actual_organisms": [
+        "KI polyomavirus",
+        "WU polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "42242065",
+      "title": "Molecular epidemiology and humoral immunity of BK polyomavirus in the general population of Southern China.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against JC polyomavirus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "41291018",
+      "title": "Systematic review and meta-analysis of virome profiles and quantification of Torque teno virus load in blood of acute febrile illness patients.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of JC polyomavirus?",
+      "cited_pmid": "40654580",
+      "title": "The boundaries between PML and PML-IRIS: difficult to define, pathology may predict.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "38229145",
+      "title": "Epidemiology and genotypes analysis of human papillomavirus infection in Beijing, China.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42755684",
+      "title": "Innate immune activation profiles are associated with polarization of the T cell response to recombinant arenaviral vectors.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905917",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "4311216",
+      "title": "Simian virus 40 in polio vaccine: follow-up of newborn recipients.",
+      "actual_organisms": [
+        "Simian virus 40"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "38281930",
+      "title": "The mysterious anelloviruses: investigating its role in human diseases.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "41427949",
+      "title": "Significant diversity of human anelloviruses revealed by novel viral sequences identified in human metagenomic data.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_687332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "36268708",
+      "title": "Absence of pathogenic viruses in COVID-19 convalescent plasma.",
+      "actual_organisms": [
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "42788568",
+      "title": "Salivary Excretion Of Torque Teno Virus And Sars-Cov-2 In Children Who Underwent Kidney Transplantation.",
+      "actual_organisms": [
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "37199659",
+      "title": "Human Anelloviruses: Influence of Demographic Factors, Recombination, and Worldwide Diversity.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "42167014",
+      "title": "KI and WU polyomaviruses in urine, vaginal and nasopharyngeal swabs of Portuguese individuals.",
+      "actual_organisms": [
+        "KI polyomavirus",
+        "WU polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is known about Merkel cell polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is known about Merkel cell polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "15218197",
+      "title": "Molecular characterization of Penicillium chrysogenum virus: reconsideration of the taxonomy of the genus Chrysovirus.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5076"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of Merkel cell polyomavirus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of Merkel cell polyomavirus?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Torque teno virus",
+      "question": "What is the genome organization and replication cycle of Torque teno virus?",
+      "cited_pmid": "41427949",
+      "title": "Significant diversity of human anelloviruses revealed by novel viral sequences identified in human metagenomic data.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_687332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42242065",
+      "title": "Molecular epidemiology and humoral immunity of BK polyomavirus in the general population of Southern China.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is known about WU polyomavirus pathogenesis and transmission?",
+      "cited_pmid": "41725820",
+      "title": "Characterization of viral diversity in wild marmot blood from the Qinghai-Tibet Plateau.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "41732984",
+      "title": "Repeat Donor-Derived Cell-Free DNA Monitoring for Adjunctive Assessment of BK Polyomavirus Nephropathy Clinical Courses.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "Simian virus 40",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "cited_pmid": "30205532",
+      "title": "Capsid Structure of dsRNA Fungal Viruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "39182450",
+      "title": "Association of polyomavirus infection with lung cancer: A systematic review and meta-analysis.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is known about KI polyomavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42787867",
+      "title": "Early BK Polyomavirus-Specific Immunity and Viral Clearance.",
+      "actual_organisms": [
+        "BK polyomavirus"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is the genome organization and replication cycle of KI polyomavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is the genome organization and replication cycle of KI polyomavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is the genome organization and replication cycle of KI polyomavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is the genome organization and replication cycle of KI polyomavirus?",
+      "cited_pmid": "38980042",
+      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41722563",
+      "title": "Structural and biochemical characterization of neutralizing antibodies targeting human papillomavirus type 45.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40170153",
+      "title": "The h4 coil surface region of human papillomavirus type 58 L1 virus-like particle serves as a potential location for presenting the RG1 epitope peptide.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "38281930",
+      "title": "The mysterious anelloviruses: investigating its role in human diseases.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is known about Simian virus 40 pathogenesis and transmission?",
+      "cited_pmid": "37199659",
+      "title": "Human Anelloviruses: Influence of Demographic Factors, Recombination, and Worldwide Diversity.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "37989845",
+      "title": "A novel tailed primer nucleic acid test for detection of HPV 16, 18 and 45 DNA at the point of care.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42788568",
+      "title": "Salivary Excretion Of Torque Teno Virus And Sars-Cov-2 In Children Who Underwent Kidney Transplantation.",
+      "actual_organisms": [
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What diagnostic assays or laboratory tests detect Simian virus 40?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "38980042",
+      "title": "Complete genome sequence of human papillomavirus 31 isolated from the human cervical cell line, CIN612 9E.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the genome organization and replication cycle of Simian virus 40?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What antiviral drugs or treatments are effective against Simian virus 40?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What is the epidemiology and outbreak history of Simian virus 40?",
+      "cited_pmid": "41291018",
+      "title": "Systematic review and meta-analysis of virome profiles and quantification of Torque teno virus load in blood of acute febrile illness patients.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian virus 40",
+      "question": "What are the clinical symptoms and disease presentation of Simian virus 40?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "40677200",
+      "title": "Detection Rate, Genetic Polymorphism, Viral Load, Persistent Infection Capacity, and Pathogenicity of Human Papillomavirus Type 58.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 pathogenesis and transmission?",
+      "cited_pmid": "40677200",
+      "title": "Detection Rate, Genetic Polymorphism, Viral Load, Persistent Infection Capacity, and Pathogenicity of Human Papillomavirus Type 58.",
+      "actual_organisms": [
+        "Human papillomavirus type 58",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "4311216",
+      "title": "Simian virus 40 in polio vaccine: follow-up of newborn recipients.",
+      "actual_organisms": [
+        "Simian virus 40"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41722563",
+      "title": "Structural and biochemical characterization of neutralizing antibodies targeting human papillomavirus type 45.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "cited_pmid": "41427949",
+      "title": "Significant diversity of human anelloviruses revealed by novel viral sequences identified in human metagenomic data.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_687332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "42205806",
+      "title": "Molecular epidemiology and characterization of goose polyomavirus in China: insights into its impact on hatchability and susceptibility to co-infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_123358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_146032",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208491"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "37199659",
+      "title": "Human Anelloviruses: Influence of Demographic Factors, Recombination, and Worldwide Diversity.",
+      "actual_organisms": [
+        "Torque teno midi virus",
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "42627371",
+      "title": "Acute parvovirus B19-associated inflammatory musculoskeletal disease: clinical phenotypes and remission trajectories from the GIRRCS network.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "42559165",
+      "title": "Concurrent Papular-Purpuric Gloves-and-Socks Syndrome and Petechial Bathing-Trunk Eruption Associated With Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42763141",
+      "title": "UPCRISPR: an ultrafast, one-tube multiplexed nucleic acid detection system for resolving the diagnostic gray zone in HPV16/18 detection.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "38402627",
+      "title": "Analytical evaluation of the automated genotyping system (GenPlex) compared to a traditional real-time PCR assay for the detection of high-risk human papillomaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What are the clinical symptoms and disease presentation of Penicillium chrysogenum virus?",
+      "cited_pmid": "42703548",
+      "title": "Bilateral Parsonage-Turner Syndrome in a Young Adult Man Due to Parvovirus B19 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is known about Torque teno midi virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42788568",
+      "title": "Salivary Excretion Of Torque Teno Virus And Sars-Cov-2 In Children Who Underwent Kidney Transplantation.",
+      "actual_organisms": [
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the genome organization and replication cycle of Torque teno midi virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the genome organization and replication cycle of Torque teno midi virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the genome organization and replication cycle of Torque teno midi virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is the genome organization and replication cycle of Torque teno midi virus?",
+      "cited_pmid": "41427949",
+      "title": "Significant diversity of human anelloviruses revealed by novel viral sequences identified in human metagenomic data.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_687332",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -127881,6 +129012,24 @@
       "question": "What is known about Avian metapneumovirus pathogenesis and transmission?",
       "missed_pmid": "42791819",
       "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genome organization and replication cycle of BK polyomavirus?",
+      "missed_pmid": "42787867",
+      "title": "Early BK Polyomavirus-Specific Immunity and Viral Clearance."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect Merkel cell polyomavirus?",
+      "missed_pmid": "41541068",
+      "title": "MCPyV small T antigen enhances HPV16 oncogene expression, promotes Ca Ski cell proliferation, and reduces 5-fluorouracil-induced apoptosis in cervical cancer cells."
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "missed_pmid": "42785685",
+      "title": "Merkel Cell Polyomavirus in colorectal cancer: exploring the Wnt/\u03b2-catenin pathway."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
