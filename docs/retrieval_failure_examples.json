@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T13:47:11.764208+00:00",
-  "runs": 67,
+  "updated": "2026-09-26T14:05:45.840511+00:00",
+  "runs": 68,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 10312,
-  "n_false_negatives": 3062,
+  "n_false_positives": 10432,
+  "n_false_negatives": 3086,
   "new_this_run": {
-    "false_positives": 151,
-    "false_negatives": 22
+    "false_positives": 120,
+    "false_negatives": 24
   },
   "false_positives": [
     {
@@ -115814,6 +115814,1410 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
         "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
       ]
+    },
+    {
+      "organism": "Eastern equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Eastern equine encephalitis virus?",
+      "cited_pmid": "42521468",
+      "title": "Epidemiologic, Entomologic, and Virologic Findings during Reemergence of Western Equine Encephalitis Virus, Argentina.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42797791",
+      "title": "Nipah Virus: A Neurotropic Zoonosis-From Molecular Biology to Clinical Manifestations and Translational Advances.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "cited_pmid": "42542241",
+      "title": "Development of a fluorescence immunochromatographic assay based on quantum dot labeling for detection of pseudorabies virus gB protein.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the epidemiology and outbreak history of Hendra henipavirus?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hendra henipavirus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42776647",
+      "title": "Powassan Virus in the United States: An AI-Integrative One Health Scoping Review of Ecological Drivers, Zoonotic Interactions, Symptom Profiles, and Public Health Implications.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "cited_pmid": "42268796",
+      "title": "Development of an indirect ELISA for the detection of venezuelan equine encephalitis virus specific antibodies in horses.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Venezuelan equine encephalitis virus",
+      "question": "What is the genome organization and replication cycle of Venezuelan equine encephalitis virus?",
+      "cited_pmid": "42456440",
+      "title": "Alphavirus madariaga-associated encephalomyelitis in equines from the Brazilian Pantanal reveals arbovirus circulation in a peri-urban environment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3426305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murray Valley encephalitis virus?",
+      "cited_pmid": "42786511",
+      "title": "Establishment of an in vitro human blood-brain barrier model for antiviral screening against neurotropic viruses.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murray Valley encephalitis virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "cited_pmid": "32965919",
+      "title": "La Crosse Encephalitis",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "cited_pmid": "42542241",
+      "title": "Development of a fluorescence immunochromatographic assay based on quantum dot labeling for detection of pseudorabies virus gB protein.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What diagnostic assays or laboratory tests detect Usutu virus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "Rabies lyssavirus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "cited_pmid": "42747226",
+      "title": "Internal poly(A) replacement strategy within 3' UTR for live-attenuated tick-borne encephalitis virus.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42589228",
+      "title": "Efficacy and Mechanisms of Alkaloids Against Enterovirus A71: A Systematic Review and Meta-Analysis of Preclinical Evidence Integrated with Network Pharmacology and Molecular Docking.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42796720",
+      "title": "Endothelial Collapse as a Convergent Immunovascular Phenotype in Sepsis and Severe Arboviral Disease: The SIMVAC Model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus pathogenesis and transmission?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42542241",
+      "title": "Development of a fluorescence immunochromatographic assay based on quantum dot labeling for detection of pseudorabies virus gB protein.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What diagnostic assays or laboratory tests detect Powassan virus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "Rabies lyssavirus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42739317",
+      "title": "Prevalence, Species Diversity, and Molecular Characterization of Viruses Infecting Phlox (Phlox paniculata) from Botanical Gardens in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12321",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290031",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is the genome organization and replication cycle of Powassan virus?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What antiviral drugs or treatments are effective against Powassan virus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What are the clinical symptoms and disease presentation of Powassan virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655691",
+      "title": "Cross-Reactivity of 15 JEV Antigen-Directed Rabbit Antisera with Three Clinically Important JEV Serogroup Members: WNV, MVEV, and SLEV.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42778504",
+      "title": "Near pan-alphavirus neutralization by an antibody-nanobody bispecific.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42671191",
+      "title": "Pathogenesis and neurotropism of a contemporary Powassan virus lineage II strain in mice.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39137"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is known about Suid alphaherpesvirus 1 pathogenesis and transmission?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "Rabies lyssavirus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Suid alphaherpesvirus 1?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42685838",
+      "title": "Field-isolate recombinant tick-borne encephalitis viruses define reporter-stability guidelines for antiviral testing in flaviviruses.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29263",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42773483",
+      "title": "SAMSN1 restricts Japanese encephalitis virus replication by recruiting TRIM21 to degrade viral proteins and activate the interferon pathway.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42589228",
+      "title": "Efficacy and Mechanisms of Alkaloids Against Enterovirus A71: A Systematic Review and Meta-Analysis of Preclinical Evidence Integrated with Network Pharmacology and Molecular Docking.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What antiviral drugs or treatments are effective against Suid alphaherpesvirus 1?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Suid alphaherpesvirus 1?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42778420",
+      "title": "[The importance of varicella-zoster virus reactivation in adult central nervous system diseases].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335"
+      ]
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Suid alphaherpesvirus 1?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is known about La Crosse virus pathogenesis and transmission?",
+      "cited_pmid": "42265108",
+      "title": "LRP4 is an entry receptor for multiple encephalitic alphaviruses.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What diagnostic assays or laboratory tests detect La Crosse virus?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "Rabies lyssavirus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genome organization and replication cycle of La Crosse virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What antiviral drugs or treatments are effective against La Crosse virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What antiviral drugs or treatments are effective against La Crosse virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the epidemiology and outbreak history of La Crosse virus?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42539076",
+      "title": "Endemic and epidemic human alphavirus infections in Eastern Panama; An Analysis of Population-based Cross-Sectional Surveys.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42661313",
+      "title": "Powassan Virus in Ixodes scapularis Tick Populations, Illinois, USA, 2025.",
+      "actual_organisms": [
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "42683038",
+      "title": "A case study of Powassan virus encephalitis in an immunocompromised host.",
+      "actual_organisms": [
+        "Powassan virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42542241",
+      "title": "Development of a fluorescence immunochromatographic assay based on quantum dot labeling for detection of pseudorabies virus gB protein.",
+      "actual_organisms": [
+        "Suid alphaherpesvirus 1"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "42611357",
+      "title": "An experimental multiplex PCR/RT-PCR for detection of the main viruses associated with equine neurological disease.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "Japanese encephalitis virus",
+        "Rabies lyssavirus",
+        "Venezuelan equine encephalitis virus",
+        "Western equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10326",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1440170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64315"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "cited_pmid": "42780118",
+      "title": "The La Crosse virus M segment determines virus isolate cell-to-cell spread and virulence.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "cited_pmid": "42647575",
+      "title": "Potential threats of porcine Getah virus outbreaks and its specific antagonism of host antiviral response through proteasome-dependent degradation of P46 by nsP2.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11033",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59300",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "cited_pmid": "42306944",
+      "title": "Genetic mechanisms underlying the structural elaboration and dissemination of viral internal ribosomal entry sites.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_324901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39738",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus A71?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "42521678",
+      "title": "Western Equine Encephalitis Virus in Blood Donors during Outbreak, Argentina, 2023-2024.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41993435",
+      "title": "Human antibodies against West Nile and related orthoflaviviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42523513",
+      "title": "Jamaican fruit bats are susceptible to henipaviruses but rapidly control infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential.",
+      "actual_organisms": [
+        "Venezuelan equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "42541310",
+      "title": "Parahenipavirus langyaense (Langya virus): Spillover ecology, noncanonical receptor-mediated entry, and future control strategies.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2971765",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3153022",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431360",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay.",
+      "actual_organisms": [
+        "Usutu virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genome organization and replication cycle of Cricket paralysis virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "42515544",
+      "title": "Eastern Equine Encephalitis Virus Complex: Human Disease, Diagnosis and Treatment.",
+      "actual_organisms": [
+        "Eastern equine encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "42531165",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2024.",
+      "actual_organisms": [
+        "La Crosse virus",
+        "Powassan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "32965919",
+      "title": "La Crosse Encephalitis",
+      "actual_organisms": [
+        "La Crosse virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35305"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "42744055",
+      "title": "Sustaining Kerala's Progress against the Nipah virus: Operational strategies for long-term preparedness face to a recurrent zoonotic threat.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "42506617",
+      "title": "Encephalitic Alphaviruses: Epidemiology, Pathogenesis and Vaccine Development.",
+      "actual_organisms": [
+        "Western equine encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "42537890",
+      "title": "Synergistic antiviral effect of asunaprevir and ribavirin in combination against Murray Valley encephalitis virus replication.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Israeli acute paralysis virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Israeli acute paralysis virus?",
+      "cited_pmid": "41246380",
+      "title": "Anti-NMDA receptor encephalitis following Murray Valley encephalitis: a case report.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Acute bee paralysis virus?",
+      "cited_pmid": "40859294",
+      "title": "Construction of a portable multiplex detection system for four bee viral paralysis diseases based on RT-PCR-microfluidic chip integrated technology.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Israeli acute paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Acute bee paralysis virus?",
+      "cited_pmid": "42797771",
+      "title": "Tissue-Resolved Virome Analysis of Natural Chronic Bee Paralysis Virus Outbreak in Apis mellifera Reveals Segment Stoichiometry Shifts and Divergent Covert Infections.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Acute bee paralysis virus?",
+      "cited_pmid": "42797781",
+      "title": "Genome Characterization of a Novel Bisegmented Positive-Sense RNA Virus Infecting the Bean Flower Thrips (Megalurothrips usitatus) Reveals an Active Antiviral RNAi Response.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1398939",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Chronic bee paralysis virus?",
+      "cited_pmid": "39835498",
+      "title": "Stimulation of IRES-Dependent Translation by Rocaglamide A Increases the Replication and Virulence of Cricket Paralysis Virus in Lepidopteran Insect Cells.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Chronic bee paralysis virus?",
+      "cited_pmid": "42437985",
+      "title": "Seasonal dynamics of seven viruses and Varroa destructor in Apis mellifera colonies: a 4-year survey in Tokyo.",
+      "actual_organisms": [
+        "Israeli acute paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Chronic bee paralysis virus?",
+      "cited_pmid": "41825512",
+      "title": "Investigation of viral and parasitic pathogens in Bombus terrestris (Hymenoptera: Apidae) populations.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Israeli acute paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1100043",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977",
+        "http://purl.obolibrary.org/obo/NCBITaxon_288676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_670782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
     }
   ],
   "false_negatives": [
@@ -134188,6 +135592,150 @@
       "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
       "missed_pmid": "41825512",
       "title": "Investigation of viral and parasitic pathogens in Bombus terrestris (Hymenoptera: Apidae) populations."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "missed_pmid": "42797861",
+      "title": "Defining Challenge Conditions for Nipah Virus in the Syrian Golden Hamster Model: Effects of Dose, Exposure Route and Viral Strain."
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "missed_pmid": "42797794",
+      "title": "Limited Antibodies to Henipaviruses Detected Among Nigerian Horses Using Pseudotyped Virus Neutralization Tests."
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "missed_pmid": "42797794",
+      "title": "Limited Antibodies to Henipaviruses Detected Among Nigerian Horses Using Pseudotyped Virus Neutralization Tests."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "missed_pmid": "42788643",
+      "title": "Virome Diversity and Zoonotic Risks of Haemaphysalis concinna Ticks in Northeastern China."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Tick-borne encephalitis virus?",
+      "missed_pmid": "42796768",
+      "title": "Surveillance of Tick-Borne Pathogens (TBPs) from Wildlife in the Valle d'Aosta Region, Northwestern Italy."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What antiviral drugs or treatments are effective against Tick-borne encephalitis virus?",
+      "missed_pmid": "42786511",
+      "title": "Establishment of an in vitro human blood-brain barrier model for antiviral screening against neurotropic viruses."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the epidemiology and outbreak history of Murray Valley encephalitis virus?",
+      "missed_pmid": "40825045",
+      "title": "\"The Perfect Swarm\" - Flooding across Northern Victoria leads to intensified mosquito breeding and subsequent re-emergence and transmission of Murray Valley encephalitis virus during the 2022-23 mosquito season."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42794825",
+      "title": "Evaluation of the NovaplexTM Tropical Fever Virus Assay."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus pathogenesis and transmission?",
+      "missed_pmid": "42795607",
+      "title": "Design and Evaluation of a Multi-Epitope Vaccine Targeting Conserved Envelope and NS5 Proteins of Usutu Virus Using Immunoinformatics."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "missed_pmid": "42691121",
+      "title": "Widespread circulation of West Nile and Usutu viruses in sedentary and migratory avifauna: A two-year study (2024-2025) of active surveillance in South of France."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "missed_pmid": "42702767",
+      "title": "Evidence of West Nile Virus Infections in Wild Boars (Sus scrofa) in the Netherlands, 2018-2021."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the epidemiology and outbreak history of Usutu virus?",
+      "missed_pmid": "42642052",
+      "title": "From bird viremia to bird surveillance: identifiability in a multi-scale vector-borne model of Usutu virus infection."
+    },
+    {
+      "organism": "Powassan virus",
+      "question": "What is known about Powassan virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42797810",
+      "title": "Powassan Virus Infects Mouse Testes and Reveals a Protective Role for Phagocytic Cells."
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is known about Rabies lyssavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42797954",
+      "title": "Rabies Virus Glycoprotein G Variation Is Associated with Neurovirulence and Reduced Vamp2 Abundance in a Mouse Model of Direct CNS Infection."
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What are the clinical symptoms and disease presentation of Rabies lyssavirus?",
+      "missed_pmid": "42796653",
+      "title": "Molecular Genetic Analysis of the Rabies Virus in Wild and Domestic Animals of Kazakhstan and the Development of a Diagnostic System."
+    },
+    {
+      "organism": "Suid alphaherpesvirus 1",
+      "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
+      "missed_pmid": "42732060",
+      "title": "LY6E regulates Pseudorabies virus early infection via impairing viral internalization."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42742229",
+      "title": "Enterovirus 71 drives TLR2-NF-\u03baB-dependent inflammatory skeletal muscle injury in neonatal BALB/c mice."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "missed_pmid": "42714139",
+      "title": "Dynamic epidemiological changes of hand, foot, and mouth disease and real-world effectiveness of EV-A71 vaccination: A case study in Shanghai (2009-2023)."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the genome organization and replication cycle of Enterovirus A71?",
+      "missed_pmid": "42655671",
+      "title": "Non-Polio Enterovirus A71 and D68 Infection of Human Neuromuscular Organoids Reveals Distinct Mechanisms of Neuromuscular Impairment."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41920000",
+      "title": "Attraction versus avoidance: honeybees vary in response to virus-contaminated food."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42086144",
+      "title": "Nosema ceranae and honey bee-associated virus levels in commercial beekeeping operations across Southwestern Saudi Arabia."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Chronic bee paralysis virus?",
+      "missed_pmid": "41033433",
+      "title": "Survival mechanisms of preselected breeder honeybee (Apis mellifera) colonies under Varroa-infestation: Selective breeding of natural selection."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Chronic bee paralysis virus?",
+      "missed_pmid": "42141051",
+      "title": "Shared pathogens among honey bees, wild bees and hoverflies in mountain ecosystems."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Chronic bee paralysis virus?",
+      "missed_pmid": "42797771",
+      "title": "Tissue-Resolved Virome Analysis of Natural Chronic Bee Paralysis Virus Outbreak in Apis mellifera Reveals Segment Stoichiometry Shifts and Divergent Covert Infections."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
