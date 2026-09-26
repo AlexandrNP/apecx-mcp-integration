@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T19:25:14.846909+00:00",
-  "runs": 97,
+  "updated": "2026-09-26T19:35:43.566548+00:00",
+  "runs": 98,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 14224,
-  "n_false_negatives": 3288,
+  "n_false_positives": 14238,
+  "n_false_negatives": 3294,
   "new_this_run": {
-    "false_positives": 88,
-    "false_negatives": 4
+    "false_positives": 14,
+    "false_negatives": 6
   },
   "false_positives": [
     {
@@ -160083,6 +160083,163 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_37124"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What is the genome organization and replication cycle of Chikungunya virus?",
+      "cited_pmid": "42753873",
+      "title": "Flavivirus NS1 possesses NTPase and RNA helix unwinding activities.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11060",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What antiviral drugs or treatments are effective against Chikungunya virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rift Valley fever virus",
+      "question": "What antiviral drugs or treatments are effective against Rift Valley fever virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "cited_pmid": "42796761",
+      "title": "Chikungunya Virus E2 N218K Enhances Heparan Sulfate-Dependent Attachment and Viral Internalization While Conferring Partial Attenuation in A129 Mice.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What antiviral drugs or treatments are effective against SARS-CoV-2?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Yellow fever virus?",
+      "cited_pmid": "2600591",
+      "title": "Serological evidence of dengue fever among refugees, Hargeysa, Somalia.",
+      "actual_organisms": [
+        "Dengue virus"
+      ]
+    },
+    {
+      "organism": "Human alphaherpesvirus 1",
+      "question": "What is the epidemiology and outbreak history of Human alphaherpesvirus 1?",
+      "cited_pmid": "28613699",
+      "title": "Zika Virus",
+      "actual_organisms": [
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42627231",
+      "title": "Factors impacting protective immunity conferred by vaccination with adeno-associated virus-like particles displaying human papillomavirus L2 residues 17-36.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10804"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "cited_pmid": "42680043",
+      "title": "Heat shock protein 90\u03b1 mediates endocytosis of duck hepatitis a virus type 3 (DHAV-3) via interaction with viral capsid protein 1.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1006063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_691956"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42728503",
+      "title": "Immunogenicity of a Vero cell-adapted Japanese encephalitis attenuated virus strain SA14-14-2 VC6.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the epidemiology and outbreak history of Norovirus?",
+      "cited_pmid": "37907693",
+      "title": "The impact and complete genome characterisation of viruses involved in outbreaks of gastroenteritis in a farrow-to-finish holding.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Foot-and-mouth disease virus?",
+      "cited_pmid": "42709838",
+      "title": "A target product profile and roadmap for Japanese encephalitis diagnostics in endemic areas in the context of other flaviviruses.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What antiviral drugs or treatments are effective against Foot-and-mouth disease virus?",
+      "cited_pmid": "42719836",
+      "title": "Monkeypox Virus Countermeasures: Vaccines, Antibodies, Drugs and Traditional Chinese Medicine.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -179813,6 +179970,42 @@
       "question": "What is the genome organization and replication cycle of Bourbon virus?",
       "missed_pmid": "39593716",
       "title": "Reverse Vaccinology Integrated with Biophysics Techniques for Designing a Peptide-Based Subunit Vaccine for Bourbon Virus."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "missed_pmid": "42774043",
+      "title": "COMMD3 coordinates mannose-6-phosphate receptor trafficking to sustain lysosomal protease maturation."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "35138784",
+      "title": "Molnupiravir"
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42797833",
+      "title": "The Role of Wildlife and Climate Change in the Emergence of One Health-Related Viral Diseases in Australia."
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is known about Ebola virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42779931",
+      "title": "Self-adjuvanting Ebola virus-like particles that incorporate a cellular interferon-inducing domain."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Japanese encephalitis virus?",
+      "missed_pmid": "42691126",
+      "title": "Qualitative risk assessment of Japanese encephalitis virus introduction and transmission in Pacific Island countries and territories."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus pathogenesis and transmission?",
+      "missed_pmid": "42759244",
+      "title": "Immunogenicity of norovirus VP1-expressing silkworm (Bombyx mori) pupae as an edible vaccine candidate."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
