@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T19:35:43.566548+00:00",
-  "runs": 98,
+  "updated": "2026-09-26T19:55:31.845460+00:00",
+  "runs": 99,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 14238,
-  "n_false_negatives": 3294,
+  "n_false_positives": 14306,
+  "n_false_negatives": 3296,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 6
+    "false_positives": 68,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -160240,6 +160240,774 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10255",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is known about Sapovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "42208737",
+      "title": "Identification and geographic evolutionary analysis of human pegivirus infection based on metatranscriptomic sequencing.",
+      "actual_organisms": [
+        "Human pegivirus"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What is the genome organization and replication cycle of Sapovirus?",
+      "cited_pmid": "42029738",
+      "title": "HAdV55 reprograms host 3D genome architecture and mitochondrial metabolism to drive pathogenesis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_714978"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What are the clinical symptoms and disease presentation of Sapovirus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42061096",
+      "title": "A randomized, observer-blind, phase 1 study of immune responses to three human adenovirus type 26 vector-based vaccines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46928"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B pathogenesis and transmission?",
+      "cited_pmid": "40367285",
+      "title": "Virus and cell specific HMGB1 secretion and subepithelial infiltrate formation in adenovirus keratitis.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42579901",
+      "title": "Parvovirus B19 serological states and antinuclear antibody positivity: A comparative clinical virology study including EBV and CMV DNAemia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "36268708",
+      "title": "Absence of pathogenic viruses in COVID-19 convalescent plasma.",
+      "actual_organisms": [
+        "Torque teno virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10372",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044472",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_93678",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "42710491",
+      "title": "Tracing the evolution and diversity of human parvovirus B19 across human history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "41775079",
+      "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus B?",
+      "cited_pmid": "31754812",
+      "title": "The Role of Emerging and Neglected Viruses in the Etiology of Hepatitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1869278",
+        "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus D?",
+      "cited_pmid": "42537589",
+      "title": "Comparative evaluation of in-house PCR and commercial TTV R-GENE assays for Torque Teno Virus quantification: An agreement and reliability study.",
+      "actual_organisms": [
+        "Torque teno virus"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "42029738",
+      "title": "HAdV55 reprograms host 3D genome architecture and mitochondrial metabolism to drive pathogenesis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_714978"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31754812",
+      "title": "The Role of Emerging and Neglected Viruses in the Etiology of Hepatitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1869278",
+        "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "36374042",
+      "title": "Control of Human Anelloviruses by Cytosine to Uracil Genome Editing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687333",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "35264187",
+      "title": "Clinical and molecular aspects of human pegiviruses in the interaction host and infectious agent.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human pegivirus",
+      "question": "What is known about Human pegivirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35264187",
+      "title": "Clinical and molecular aspects of human pegiviruses in the interaction host and infectious agent.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human pegivirus",
+      "question": "What antiviral drugs or treatments are effective against Human pegivirus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42497177",
+      "title": "Broad and durable protection against SARS-CoV-2 and SARS-CoV by an intranasal chimpanzee adenovirus vaccine expressing tandem RBDs and nucleocapsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310542",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42374805",
+      "title": "Development and Application of a Blocking ELISA for the Detection of Feline Calicivirus Antibodies Based on Monoclonal Antibodies Against VP1 Protein.",
+      "actual_organisms": [
+        "Feline calicivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10785"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "31754812",
+      "title": "The Role of Emerging and Neglected Viruses in the Etiology of Hepatitis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10798",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1869278",
+        "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052303",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "42671192",
+      "title": "Integration of an anellovirus genome in the SKNO-1 acute myeloid leukemia cell line.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048427",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect WU polyomavirus?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect KI polyomavirus?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against KI polyomavirus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38619081",
+      "title": "Pattern of multiple human papillomavirus infection and type competition: An analysis in healthy Chinese women aged 18-45 years.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 52?",
+      "cited_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 52?",
+      "cited_pmid": "40787470",
+      "title": "Integrating bioinformatics to explore HPV-31 and HPV-52 E6/E7 proteins: from structural analysis to antigenic epitope prediction.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 52?",
+      "cited_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 59?",
+      "cited_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is known about Human papillomavirus type 68 pathogenesis and transmission?",
+      "cited_pmid": "40243019",
+      "title": "Patterns of Co-infection of HPV52 With Other HPV Genotypes and Their Risks of Cervical Precancer and Carcinoma.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 68",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 68?",
+      "cited_pmid": "40787470",
+      "title": "Integrating bioinformatics to explore HPV-31 and HPV-52 E6/E7 proteins: from structural analysis to antigenic epitope prediction.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "40787470",
+      "title": "Integrating bioinformatics to explore HPV-31 and HPV-52 E6/E7 proteins: from structural analysis to antigenic epitope prediction.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37270364",
+      "title": "Cross-neutralizing protection of vaginal and oral mucosa from HPV challenge by vaccination in a mouse model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40228400",
+      "title": "Expression, purification, and immunogenicity study of human papillomavirus type 52 virus-like particles produced in Hansenula polymorpha.",
+      "actual_organisms": [
+        "Human papillomavirus type 52",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "15564743",
+      "title": "Intracellular expression patterns of the human papillomavirus type 59 E1/E4 protein in COS cells, keratinocytes, and genital epithelium.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 pathogenesis and transmission?",
+      "cited_pmid": "15866067",
+      "title": "Progression from productive infection to integration and oncogenic transformation in human papillomavirus type 59-immortalized foreskin keratinocytes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 39?",
+      "cited_pmid": "39465910",
+      "title": "Comprehensive Analysis of Codon Usage Bias in Human Papillomavirus Type 51.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35264187",
+      "title": "Clinical and molecular aspects of human pegiviruses in the interaction host and infectious agent.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2594177",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is known about GB virus C pathogenesis and transmission?",
+      "cited_pmid": "42248885",
+      "title": "A pegivirus associated with encephalitis in red-legged partridges shows neurotropism across avian species.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1307799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What diagnostic assays or laboratory tests detect GB virus C?",
+      "cited_pmid": "38401369",
+      "title": "Human papillomavirus negative high grade cervical lesions and cancers: Suggested guidance for HPV testing quality assurance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What diagnostic assays or laboratory tests detect GB virus C?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the genome organization and replication cycle of GB virus C?",
+      "cited_pmid": "42208737",
+      "title": "Identification and geographic evolutionary analysis of human pegivirus infection based on metatranscriptomic sequencing.",
+      "actual_organisms": [
+        "Human pegivirus"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What antiviral drugs or treatments are effective against GB virus C?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What is the epidemiology and outbreak history of GB virus C?",
+      "cited_pmid": "35229315",
+      "title": "Occurrence and molecular characterization of human pegivirus-1 (HPgV-1) viremia in healthy volunteer blood donors from Northern Portugal.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1307799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "GB virus C",
+      "question": "What are the clinical symptoms and disease presentation of GB virus C?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What antiviral drugs or treatments are effective against Torque teno midi virus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -180006,6 +180774,18 @@
       "question": "What is known about Norovirus pathogenesis and transmission?",
       "missed_pmid": "42759244",
       "title": "Immunogenicity of norovirus VP1-expressing silkworm (Bombyx mori) pupae as an edible vaccine candidate."
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "missed_pmid": "38494245",
+      "title": "Expression and scale-up production of recombinant human papillomavirus type 52 L1 protein in methylotrophic yeast Hansenula polymorpha."
+    },
+    {
+      "organism": "Torque teno midi virus",
+      "question": "What is known about Torque teno midi virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33174620",
+      "title": "Diversity and dynamic changes of anelloviruses in plasma following allogeneic hematopoietic stem cell transplantation."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
