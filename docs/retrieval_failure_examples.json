@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T20:45:17.671665+00:00",
-  "runs": 104,
+  "updated": "2026-09-26T20:55:15.106915+00:00",
+  "runs": 105,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 14716,
-  "n_false_negatives": 3350,
+  "n_false_positives": 14776,
+  "n_false_negatives": 3358,
   "new_this_run": {
-    "false_positives": 53,
-    "false_negatives": 23
+    "false_positives": 60,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -165619,6 +165619,686 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10486",
         "http://purl.obolibrary.org/obo/NCBITaxon_51368"
       ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Cauliflower mosaic virus?",
+      "cited_pmid": "41596536",
+      "title": "Exploring the Peanut Viromes Across 15 Cultivars in Korea.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1046403",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Cauliflower mosaic virus?",
+      "cited_pmid": "39763273",
+      "title": "A new disease symptomology observed in wheat is associated with high levels of Triticum mosaic virus transcripts.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What antiviral drugs or treatments are effective against Maize streak virus?",
+      "cited_pmid": "42129034",
+      "title": "Construction of Attenuated Viruses by Changing the UpA Dinucleotide Frequency.",
+      "actual_organisms": [
+        "Turnip mosaic virus"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "39763273",
+      "title": "A new disease symptomology observed in wheat is associated with high levels of Triticum mosaic virus transcripts.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "40726513",
+      "title": "Characterization of Lumpy Skin Disease in Northern Bangladesh: Clinical, Pathological, Biochemical, and Molecular Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Plum pox virus",
+      "question": "What is known about Plum pox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "39597726",
+      "title": "One-Step Multiplex RT-PCR Method for Detection of Melon Viruses.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12205",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12263",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Turnip mosaic virus?",
+      "cited_pmid": "40290764",
+      "title": "Development of rapid and simple detection of bean common mosaic virus (BCMV) in mung beans (Vigna radiata) using reverse transcription-loop mediated isothermal amplification (RT-LAMP).",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12198",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Turnip mosaic virus?",
+      "cited_pmid": "39763273",
+      "title": "A new disease symptomology observed in wheat is associated with high levels of Triticum mosaic virus transcripts.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What diagnostic assays or laboratory tests detect Rice yellow mottle virus?",
+      "cited_pmid": "40290764",
+      "title": "Development of rapid and simple detection of bean common mosaic virus (BCMV) in mung beans (Vigna radiata) using reverse transcription-loop mediated isothermal amplification (RT-LAMP).",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12198",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the clinical symptoms and disease presentation of Rice yellow mottle virus?",
+      "cited_pmid": "40726513",
+      "title": "Characterization of Lumpy Skin Disease in Northern Bangladesh: Clinical, Pathological, Biochemical, and Molecular Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "39059502",
+      "title": "Improving grapevine virus diagnostics: Comparative analysis of three dsRNA enrichment methods for high-throughput sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "40290764",
+      "title": "Development of rapid and simple detection of bean common mosaic virus (BCMV) in mung beans (Vigna radiata) using reverse transcription-loop mediated isothermal amplification (RT-LAMP).",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12198",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12222",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What antiviral drugs or treatments are effective against Beet curly top virus?",
+      "cited_pmid": "42476198",
+      "title": "Integrated biocontrol of watermelon mosaic virus in squash using Artemisia extract and Bacillus mycoides.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1386"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the clinical symptoms and disease presentation of Beet curly top virus?",
+      "cited_pmid": "41080513",
+      "title": "Unveiling host-virus-vector interaction and latency phenomenon of banana bunchy top virus (BBTV) infecting banana.",
+      "actual_organisms": [
+        "Banana bunchy top virus"
+      ]
+    },
+    {
+      "organism": "Grapevine fanleaf virus",
+      "question": "What diagnostic assays or laboratory tests detect Grapevine fanleaf virus?",
+      "cited_pmid": "39059502",
+      "title": "Improving grapevine virus diagnostics: Comparative analysis of three dsRNA enrichment methods for high-throughput sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What antiviral drugs or treatments are effective against Cotton leaf curl virus?",
+      "cited_pmid": "42308425",
+      "title": "Indolylurea SST21 Targets Turnip Mosaic Virus Coat Protein to Disrupt Virion Assembly and Activate Host Defense.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41465694",
+      "title": "Drosophila C Virus and La Jolla Virus Formulations for Plant Protection Against Spotted-Wing Drosophila.",
+      "actual_organisms": [
+        "Drosophila C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1654357"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus pathogenesis and transmission?",
+      "cited_pmid": "42515856",
+      "title": "Virus Acquisition and Retention Periods for Transmission of Triticum Mosaic Virus by the Wheat Curl Mite.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431715",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3433003",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus pathogenesis and transmission?",
+      "cited_pmid": "36298813",
+      "title": "A Review of Vector-Borne Rice Viruses.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10990",
+        "http://purl.obolibrary.org/obo/NCBITaxon_373373"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What diagnostic assays or laboratory tests detect Flock House virus?",
+      "cited_pmid": "42092612",
+      "title": "Improved detection of rice yellow mottle virus with a polyclonal antibody xMAP assay: A high-throughput alternative to ELISA.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What diagnostic assays or laboratory tests detect Flock House virus?",
+      "cited_pmid": "41823880",
+      "title": "Integration of histopathology and molecular tools in shrimp health surveillance: A case study from Colombia.",
+      "actual_organisms": [
+        "Yellow head virus"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What diagnostic assays or laboratory tests detect Flock House virus?",
+      "cited_pmid": "39677847",
+      "title": "A sensitive batch detection of banana bunchy top virus using SYBR\u00ae Green real-time PCR.",
+      "actual_organisms": [
+        "Banana bunchy top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What diagnostic assays or laboratory tests detect Flock House virus?",
+      "cited_pmid": "42790584",
+      "title": "Highly sensitive detection and identification of six viruses in shrimps by universal primer based multiplex PCR.",
+      "actual_organisms": [
+        "Yellow head virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142102",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1513224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2917999",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3163622",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "39772173",
+      "title": "Maize Streak Virus: Single and Gemini Capsid Architecture.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "41420739",
+      "title": "Genome sequence of dahlia mosaic virus revisited: molecular characterization and genetic diversity of DMV and dahlia common mosaic virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_213888",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "cited_pmid": "38254661",
+      "title": "Predictive Modeling of Proteins Encoded by a Plant Virus Sheds a New Light on Their Structure and Inherent Multifunctionality.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What antiviral drugs or treatments are effective against Flock House virus?",
+      "cited_pmid": "42476198",
+      "title": "Integrated biocontrol of watermelon mosaic virus in squash using Artemisia extract and Bacillus mycoides.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1386"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the epidemiology and outbreak history of Flock House virus?",
+      "cited_pmid": "36990396",
+      "title": "Genetic diversity and epidemic histories of rice yellow mottle virus in Ghana.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the epidemiology and outbreak history of Flock House virus?",
+      "cited_pmid": "40733379",
+      "title": "Identification and Distribution of Begomoviruses Infecting Cassava Fields in Sierra Leone.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What are the clinical symptoms and disease presentation of Flock House virus?",
+      "cited_pmid": "40726513",
+      "title": "Characterization of Lumpy Skin Disease in Northern Bangladesh: Clinical, Pathological, Biochemical, and Molecular Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What are the clinical symptoms and disease presentation of Flock House virus?",
+      "cited_pmid": "39599824",
+      "title": "Rice Yellow Mottle Virus (RYMV): A Review.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What diagnostic assays or laboratory tests detect Drosophila C virus?",
+      "cited_pmid": "39059502",
+      "title": "Improving grapevine virus diagnostics: Comparative analysis of three dsRNA enrichment methods for high-throughput sequencing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2934366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What diagnostic assays or laboratory tests detect Drosophila C virus?",
+      "cited_pmid": "41920000",
+      "title": "Attraction versus avoidance: honeybees vary in response to virus-contaminated food.",
+      "actual_organisms": [
+        "Black queen cell virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112"
+      ]
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What antiviral drugs or treatments are effective against Drosophila C virus?",
+      "cited_pmid": "39601580",
+      "title": "CDK12 antagonizes a viral suppressor of RNAi to modulate antiviral RNAi in Drosophila.",
+      "actual_organisms": [
+        "Flock House virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is known about Black queen cell virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is known about Black queen cell virus pathogenesis and transmission?",
+      "cited_pmid": "39819374",
+      "title": "The infectivity of virus particles from Wolbachia-infected Drosophila.",
+      "actual_organisms": [
+        "Drosophila C virus",
+        "Flock House virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12283",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1869227",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_953",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "39677847",
+      "title": "A sensitive batch detection of banana bunchy top virus using SYBR\u00ae Green real-time PCR.",
+      "actual_organisms": [
+        "Banana bunchy top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "41823880",
+      "title": "Integration of histopathology and molecular tools in shrimp health surveillance: A case study from Colombia.",
+      "actual_organisms": [
+        "Yellow head virus"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "42092612",
+      "title": "Improved detection of rice yellow mottle virus with a polyclonal antibody xMAP assay: A high-throughput alternative to ELISA.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "cited_pmid": "39772173",
+      "title": "Maize Streak Virus: Single and Gemini Capsid Architecture.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "cited_pmid": "42155853",
+      "title": "Robust profiling of plus-stranded RNA virus replication dynamics using RT-qPCR with viral genomic RNA as an internal control.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6237"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "cited_pmid": "41427710",
+      "title": "A recurrent adaptive mutation in the transmembrane 2B protein of an insect picorna-like virus in a nonnative host.",
+      "actual_organisms": [
+        "Drosophila C virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1530251",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80614"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What are the clinical symptoms and disease presentation of Black queen cell virus?",
+      "cited_pmid": "40726513",
+      "title": "Characterization of Lumpy Skin Disease in Northern Bangladesh: Clinical, Pathological, Biochemical, and Molecular Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39599824",
+      "title": "Rice Yellow Mottle Virus (RYMV): A Review.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42092612",
+      "title": "Improved detection of rice yellow mottle virus with a polyclonal antibody xMAP assay: A high-throughput alternative to ELISA.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus pathogenesis and transmission?",
+      "cited_pmid": "39595340",
+      "title": "Natural Co-Infections of Aeromonas veronii and Yellow Catfish Calicivirus (YcCV) in Ascites Disease Outbreaks in Cultured Yellow Catfish: An Emerging Fish Disease in China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_642",
+        "http://purl.obolibrary.org/obo/NCBITaxon_654"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "cited_pmid": "39677847",
+      "title": "A sensitive batch detection of banana bunchy top virus using SYBR\u00ae Green real-time PCR.",
+      "actual_organisms": [
+        "Banana bunchy top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42295471",
+      "title": "Identification and characterization of an endogenous pararetrovirus in Gentiana triflora plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "38254661",
+      "title": "Predictive Modeling of Proteins Encoded by a Plant Virus Sheds a New Light on Their Structure and Inherent Multifunctionality.",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "42728462",
+      "title": "The complete genomic sequence of a novel member of the genus Caulimovirus isolated from Dregea volubilis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47903"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "40403429",
+      "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "42308425",
+      "title": "Indolylurea SST21 Targets Turnip Mosaic Virus Coat Protein to Disrupt Virion Assembly and Activate Host Defense.",
+      "actual_organisms": [
+        "Turnip mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "42350842",
+      "title": "Nano-enabled RNAi strategies for sustainable citrus protection against viral pathogens.",
+      "actual_organisms": [
+        "Citrus tristeza virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_104664",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301220",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33759",
+        "http://purl.obolibrary.org/obo/NCBITaxon_73561"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "40621851",
+      "title": "[Grapevine fanleaf virus biology].",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46003",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6231"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the epidemiology and outbreak history of Yellow head virus?",
+      "cited_pmid": "40526604",
+      "title": "Grains, trade and war in the multimodal transmission of Rice yellow mottle virus: An historical and phylogeographical retrospective.",
+      "actual_organisms": [
+        "Rice yellow mottle virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the epidemiology and outbreak history of Yellow head virus?",
+      "cited_pmid": "36990396",
+      "title": "Genetic diversity and epidemic histories of rice yellow mottle virus in Ghana.",
+      "actual_organisms": [
+        "Rice yellow mottle virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -185721,6 +186401,54 @@
       "question": "What diagnostic assays or laboratory tests detect Soft-shelled turtle iridovirus?",
       "missed_pmid": "19439104",
       "title": "Complete sequence determination of a novel reptile iridovirus isolated from soft-shelled turtle and evolutionary analysis of Iridoviridae."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Watermelon mosaic virus?",
+      "missed_pmid": "38675860",
+      "title": "Development and Application of Attenuated Plant Viruses as Biological Control Agents in Japan."
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39601580",
+      "title": "CDK12 antagonizes a viral suppressor of RNAi to modulate antiviral RNAi in Drosophila."
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is known about Flock House virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39339263",
+      "title": "Development of Biolayer Interferometry (BLI)-Based Double-Stranded RNA Detection Method with Application in mRNA-Based Therapeutics and Vaccines."
+    },
+    {
+      "organism": "Flock House virus",
+      "question": "What is the genome organization and replication cycle of Flock House virus?",
+      "missed_pmid": "38847568",
+      "title": "The RNA interference response to alphanodavirus replication in Phlebotomus papatasi sand fly cells."
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What diagnostic assays or laboratory tests detect Drosophila C virus?",
+      "missed_pmid": "39495785",
+      "title": "Tissue specific innate immune responses impact viral infection in Drosophila."
+    },
+    {
+      "organism": "Drosophila C virus",
+      "question": "What antiviral drugs or treatments are effective against Drosophila C virus?",
+      "missed_pmid": "38948804",
+      "title": "Drosophila melanogaster Toll-9 elicits antiviral immunity against Drosophila C virus."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "missed_pmid": "41600909",
+      "title": "Viruses Infecting Cuban Honey Bees and Evolution of Deformed-Wing-Virus Variants."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42055177",
+      "title": "Functional characterization of PmPen5 from the black tiger shrimp Penaeus monodon."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
