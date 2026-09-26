@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T20:05:17.598204+00:00",
-  "runs": 100,
+  "updated": "2026-09-26T20:15:12.185500+00:00",
+  "runs": 101,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 14381,
-  "n_false_negatives": 3308,
+  "n_false_positives": 14464,
+  "n_false_negatives": 3312,
   "new_this_run": {
-    "false_positives": 75,
-    "false_negatives": 12
+    "false_positives": 83,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -161847,6 +161847,959 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_31631",
         "http://purl.obolibrary.org/obo/NCBITaxon_39054"
       ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42638053",
+      "title": "[Expression and immunogenicity of porcine deltacoronavirus S-trimer protein].",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41766820",
+      "title": "Novel BPI3Vc-vectored surface displayed fusion and hemagglutinin-neuraminidase antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669354",
+      "title": "Recombinant Toxoplasma gondii expressing FIPV spike protein S1 subunit: A proof-of-concept approach against toxoplasmosis and feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42515629",
+      "title": "Susceptibility of Cell Lines from Different Species to Porcine Deltacoronavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1766554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "41910331",
+      "title": "Elucidating the enigmatic biology of arteriviruses through receptor discovery.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_76803",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "38683604",
+      "title": "Genome Characterization of a Tailam Virus Discovered in Brown Rats in Yunnan Province, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1117633",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560155",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "41670863",
+      "title": "First detection of a recombinant enterovirus G carrying a torovirus papain-like cysteine protease gene from India.",
+      "actual_organisms": [
+        "Torovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_106966",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "42644606",
+      "title": "Conserved structural features of RNA export pores spanning the double membrane of arterivirus and coronavirus replication organelles.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42763909",
+      "title": "Virucidal activity and differential antiviral efficacy of curcuminoid preparations against porcine epidemic diarrhea virus and feline infectious peritonitis virus.",
+      "actual_organisms": [
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What is known about Torovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42646738",
+      "title": "Plant-Produced Vaccines for Protection from Human and Veterinary Coronaviruses.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What is known about Torovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What is known about Torovirus pathogenesis and transmission?",
+      "cited_pmid": "42771225",
+      "title": "Shotgun metagenomic sequencing and genetic characterization of four enteric viruses in a dairy farm suffering a diarrhea outbreak of undetermined cause in adult cattle.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428511",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What diagnostic assays or laboratory tests detect Torovirus?",
+      "cited_pmid": "39935536",
+      "title": "Development of a one-step multiplex RT-qPCR method for rapid detection of bovine diarrhea viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1435485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What is the genome organization and replication cycle of Torovirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What antiviral drugs or treatments are effective against Torovirus?",
+      "cited_pmid": "42720819",
+      "title": "Combined use of dill essential oil and tannic acid creates stage-specific, and time-dependent antiviral effect against bovine viral pathogens (BoHV-1, BVDV, BPIV-3, BRSV, and BEV).",
+      "actual_organisms": [
+        "Bovine parainfluenza virus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What antiviral drugs or treatments are effective against Torovirus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What is the epidemiology and outbreak history of Torovirus?",
+      "cited_pmid": "39351302",
+      "title": "Epidemiological survey of calf diarrhea related viruses in several areas of Guangdong Province.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1906931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3090774",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46473",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What are the clinical symptoms and disease presentation of Torovirus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Torovirus",
+      "question": "What are the clinical symptoms and disease presentation of Torovirus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42648114",
+      "title": "FECV and FIPV: What biotype labels can, and cannot, tell us about feline coronavirus biology.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42620651",
+      "title": "Sustained clinical remission and long-term safety of molnupiravir as first-line therapy for effusive feline infectious peritonitis: a 40-week retrospective study.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is the epidemiology and outbreak history of Canine coronavirus?",
+      "cited_pmid": "39202744",
+      "title": "Canine Distemper Virus: Origins, Mutations, Diagnosis, and Epidemiology in Mexico.",
+      "actual_organisms": [
+        "Rinderpest virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41766820",
+      "title": "Novel BPI3Vc-vectored surface displayed fusion and hemagglutinin-neuraminidase antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What diagnostic assays or laboratory tests detect Transmissible gastroenteritis virus?",
+      "cited_pmid": "39935536",
+      "title": "Development of a one-step multiplex RT-qPCR method for rapid detection of bovine diarrhea viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1435485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "41312195",
+      "title": "Gut Virome of Tibetan Pigs Reveals the Diversity, Composition, and Distribution of Potential Novel Viruses/Variants.",
+      "actual_organisms": [
+        "Torovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_106966",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1910928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39733"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the epidemiology and outbreak history of Transmissible gastroenteritis virus?",
+      "cited_pmid": "41007979",
+      "title": "Importance and Characterisation of Concurrent Pathogens in Diarrhoeic Calves from North-Western Spain.",
+      "actual_organisms": [
+        "Torovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10927",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5741",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5800",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5806",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5807",
+        "http://purl.obolibrary.org/obo/NCBITaxon_590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_696855"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the clinical symptoms and disease presentation of Transmissible gastroenteritis virus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the epidemiology and outbreak history of Porcine deltacoronavirus?",
+      "cited_pmid": "40559594",
+      "title": "The Challenge of Lyssavirus Infections in Domestic and Other Animals: A Mix of Virological Confusion, Consternation, Chagrin, and Curiosity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36273875",
+      "title": "Immunogenicity of a recombinant hemagglutinin neuraminidase-Porcine rubulavirus produced by Escherichia coli of Porcine rubulavirus gives protective immunity of litter after challenge.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "26940828",
+      "title": "Production of an enzymatically active and immunogenic form of ectodomain of Porcine rubulavirus hemagglutinin-neuraminidase in the yeast Pichia pastoris.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4922"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "27496728",
+      "title": "Cloning, expression and characterization of potential immunogenic recombinant hemagglutinin-neuraminidase protein of Porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "42100657",
+      "title": "Development of an indirect enzyme-linked immunosorbent assay based on the nucleocapsid protein of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "41312195",
+      "title": "Gut Virome of Tibetan Pigs Reveals the Diversity, Composition, and Distribution of Potential Novel Viruses/Variants.",
+      "actual_organisms": [
+        "Torovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_106966",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10780",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1910928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39733"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "26728078",
+      "title": "Molecular characterisation of Porcine rubulavirus (PorPV) isolates from different outbreaks in Mexico.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "26584829",
+      "title": "Molecular and epidemiological studies of Porcine rubulavirus infection - an overview.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "40567259",
+      "title": "Complexity of Diarrhea-Associated Viruses in Stunted Pigs Identified by Viral Metagenomics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_686982"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "23770154",
+      "title": "Respiratory disease in growing pigs after Porcine rubulavirus experimental infection.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "28502901",
+      "title": "Neuraminidase activity of blue eye disease porcine rubulavirus: Specificity, affinity and inhibition studies.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2898537"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "42377026",
+      "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "42644606",
+      "title": "Conserved structural features of RNA export pores spanning the double membrane of arterivirus and coronavirus replication organelles.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "42181111",
+      "title": "Reverse genetics approach for arteriviruses using circular polymerase extension reaction.",
+      "actual_organisms": [
+        "Equine arteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "23770154",
+      "title": "Respiratory disease in growing pigs after Porcine rubulavirus experimental infection.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42734722",
+      "title": "Establishment of a blocking ELISA for assessing neutralizing antibody levels against porcine epidemic diarrhea virus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What diagnostic assays or laboratory tests detect Bovine parainfluenza virus 3?",
+      "cited_pmid": "39935536",
+      "title": "Development of a one-step multiplex RT-qPCR method for rapid detection of bovine diarrhea viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1435485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_74501"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40493685",
+      "title": "Evolutionary and structural basis of SLAMF1 utilization in morbilliviruses-Implications for host range and cross-species transmission.",
+      "actual_organisms": [
+        "Cetacean morbillivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41766820",
+      "title": "Novel BPI3Vc-vectored surface displayed fusion and hemagglutinin-neuraminidase antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus pathogenesis and transmission?",
+      "cited_pmid": "34152961",
+      "title": "Novel Morbillivirus as Putative Cause of Fetal Death and Encephalitis among Swine.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846955",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "42705086",
+      "title": "SCAN: A sample-to-answer cross-priming isothermal assay for on-site virus detection with RT-qPCR sensitivity and genomically similar virus differentiation specificity.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "41743080",
+      "title": "Portable Molecular Diagnostics for Cetacean Morbillivirus: Development of a Reverse Transcription Insulated Isothermal PCR (RT-iiPCR) for Global Surveillance.",
+      "actual_organisms": [
+        "Cetacean morbillivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119020",
+        "http://purl.obolibrary.org/obo/NCBITaxon_29271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37131"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "42652023",
+      "title": "Natural Infection of Domestic Dogs with Raccoon Dog and Fox Amdoparvovirus During a Severe Disease Outbreak.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310911"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Avian metapneumovirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Avian metapneumovirus?",
+      "cited_pmid": "18155122",
+      "title": "The complete genome sequence of the Atlantic salmon paramyxovirus (ASPV).",
+      "actual_organisms": [
+        "Atlantic salmon paramyxovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35350"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Avian metapneumovirus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the epidemiology and outbreak history of Avian metapneumovirus?",
+      "cited_pmid": "36986279",
+      "title": "Screening for Influenza and Morbillivirus in Seals and Porpoises in the Baltic and North Sea.",
+      "actual_organisms": [
+        "Cetacean morbillivirus",
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What are the clinical symptoms and disease presentation of Avian metapneumovirus?",
+      "cited_pmid": "42771068",
+      "title": "Clinical characteristics and outcomes of respiratory syncytial virus and human metapneumovirus \u0131nfections in children under five years of age.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41766820",
+      "title": "Novel BPI3Vc-vectored surface displayed fusion and hemagglutinin-neuraminidase antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 pathogenesis and transmission?",
+      "cited_pmid": "34231027",
+      "title": "Genetic analysis of human parainfluenza virus type 4 associated with severe acute respiratory infection in children in Luohe City, Henan Province, China, during 2017-2018.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is the genome organization and replication cycle of Human parainfluenza virus 2?",
+      "cited_pmid": "42198700",
+      "title": "Whole-Genome Phylogenetic Characterization of Human Parainfluenza Virus Type 4 Circulating in St. Petersburg, Russia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 2?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is known about Human parainfluenza virus 4 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41766820",
+      "title": "Novel BPI3Vc-vectored surface displayed fusion and hemagglutinin-neuraminidase antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
+      "cited_pmid": "31954277",
+      "title": "Human parainfluenza virus circulation, United States, 2011-2019.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
+      "cited_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
     }
   ],
   "false_negatives": [
@@ -181697,6 +182650,30 @@
       "question": "What is known about Gallid alphaherpesvirus 1 and neutralizing antibodies or vaccines?",
       "missed_pmid": "39804092",
       "title": "Host-virus interactions during infection with a wild-type ILTV strain or a glycoprotein G deletion mutant ILTV vaccine strain in an ex vivo system."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42603976",
+      "title": "Integrating delivery systems and microenvironmental cues to accelerate clinical translation of cardiac reprogramming."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is known about Transmissible gastroenteritis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42646738",
+      "title": "Plant-Produced Vaccines for Protection from Human and Veterinary Coronaviruses."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What diagnostic assays or laboratory tests detect Transmissible gastroenteritis virus?",
+      "missed_pmid": "42377026",
+      "title": "Development of a High-Resolution Melting (HRM)-Based Multiplex Real-Time PCR Assay of PEDV, TGEV, PoRV, PDCoV, PRV, and PRRSV."
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What is the epidemiology and outbreak history of Human parainfluenza virus 4?",
+      "missed_pmid": "31705838",
+      "title": "Characteristics of human parainfluenza virus type 4 infection in hospitalized children in Korea."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
