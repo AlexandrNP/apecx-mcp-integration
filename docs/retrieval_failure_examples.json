@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T21:15:18.944778+00:00",
-  "runs": 107,
+  "updated": "2026-09-26T21:25:22.743387+00:00",
+  "runs": 108,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 15076,
-  "n_false_negatives": 3373,
+  "n_false_positives": 15147,
+  "n_false_negatives": 3381,
   "new_this_run": {
-    "false_positives": 92,
-    "false_negatives": 13
+    "false_positives": 71,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -169760,6 +169760,787 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_80942",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "cited_pmid": "42781794",
+      "title": "Diagnostics for Hemorrhagic Fever Viruses: Lassa Fever as an Example.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the epidemiology and outbreak history of SARS-CoV-2?",
+      "cited_pmid": "42583999",
+      "title": "Research Output and Global Trends in Lassa Fever: A 50-Year Bibliometric Analysis (1975-2025).",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What are the clinical symptoms and disease presentation of SARS-CoV-2?",
+      "cited_pmid": "42752578",
+      "title": "A systematic review of ultrasound to predict severe disease in patients with dengue and other viral infections associated with hemorrhagic fevers.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What diagnostic assays or laboratory tests detect Influenza A virus?",
+      "cited_pmid": "42781794",
+      "title": "Diagnostics for Hemorrhagic Fever Viruses: Lassa Fever as an Example.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "42766081",
+      "title": "The Role of Mortality Surveillance in Case Detection and Response During the 2025 Sudan Virus Disease Outbreak in Uganda.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186540"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What diagnostic assays or laboratory tests detect Ebola virus?",
+      "cited_pmid": "42781794",
+      "title": "Diagnostics for Hemorrhagic Fever Viruses: Lassa Fever as an Example.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ebola virus",
+      "question": "What is the genome organization and replication cycle of Ebola virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33226742",
+      "title": "Casirivimab",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is known about Lassa mammarenavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34165945",
+      "title": "Sotrovimab",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What diagnostic assays or laboratory tests detect Lassa mammarenavirus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What is the genome organization and replication cycle of Lassa mammarenavirus?",
+      "cited_pmid": "38421167",
+      "title": "Cryo-EM structure of rotavirus B NSP2 reveals its unique tertiary architecture.",
+      "actual_organisms": [
+        "Rotavirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "5358980",
+      "title": "Diseases from Vietnam.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lassa mammarenavirus",
+      "question": "What are the clinical symptoms and disease presentation of Lassa mammarenavirus?",
+      "cited_pmid": "5312525",
+      "title": "Virological study of an epidemic of febrile illness with haemorrhagic manifestations at Kanpur, India, during 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42795591",
+      "title": "Multicentre Evaluation of Cepheid Xpert\u00ae Research-Use-Only Panel for Molecular Rapid Detection of Gastrointestinal Pathogens.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_590"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What is the genome organization and replication cycle of Nipah henipavirus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Nipah henipavirus?",
+      "cited_pmid": "5358980",
+      "title": "Diseases from Vietnam.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Nipah henipavirus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What are the clinical symptoms and disease presentation of Nipah henipavirus?",
+      "cited_pmid": "42455865",
+      "title": "Bleeding in haemorrhagic fever with renal syndrome: A systematic review characterising the loss of haemostasis in hantavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42775090",
+      "title": "Development and clinical validation of a colorimetric isothermal assay for rapid detection of monkeypox virus.",
+      "actual_organisms": [
+        "Monkeypox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "15218197",
+      "title": "Molecular characterization of Penicillium chrysogenum virus: reconsideration of the taxonomy of the genus Chrysovirus.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5076"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What antiviral drugs or treatments are effective against Hantaan orthohantavirus?",
+      "cited_pmid": "34014630",
+      "title": "Covid-19 Drugs",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "cited_pmid": "42455865",
+      "title": "Bleeding in haemorrhagic fever with renal syndrome: A systematic review characterising the loss of haemostasis in hantavirus infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "cited_pmid": "5358980",
+      "title": "Diseases from Vietnam.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What are the clinical symptoms and disease presentation of Hantaan orthohantavirus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "cited_pmid": "42795628",
+      "title": "Lassa Virus-A Persistent and Evolving Threat.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11617",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42779973",
+      "title": "Computational design of potent, broadly neutralizing anti-Nipah virus and Hendra virus miniproteins.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052223"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is known about Norovirus pathogenesis and transmission?",
+      "cited_pmid": "42391226",
+      "title": "Hantavirus stability and inactivation.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052503"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What is the epidemiology and outbreak history of Norovirus?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is known about Monkeypox virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "cited_pmid": "42684008",
+      "title": "Genome organization and packaging, mutation impacts and quasi-periodic patterns in viral genomes.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What antiviral drugs or treatments are effective against Monkeypox virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "cited_pmid": "4249614",
+      "title": "A clinical and epidemiological study of an epidemic of febrile illness with haemorrhagic manifestations which occurred at Kanpur, India, in 1968.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus B?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2010483",
+      "title": "The prospects for AIDS vaccines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052223",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42674244",
+      "title": "Nipah virus: an exceptionally virulent emerging zoonotic pathogen.",
+      "actual_organisms": [
+        "Nipah henipavirus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What antiviral drugs or treatments are effective against Deformed wing virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "42415885",
+      "title": "Hantavirus: A Comprehensive Contemporary Review of Virology, Global Epidemiology, Clinical Variants, Diagnosis, Treatment, and Intensive Care Management.",
+      "actual_organisms": [
+        "Hantaan orthohantavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980413",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052499",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious salmon anemia virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "cited_pmid": "42606356",
+      "title": "Lassa fever and Argentine hemorrhagic fever treatment in guinea pigs using broad-spectrum cap-dependent endonuclease inhibitors.",
+      "actual_organisms": [
+        "Lassa mammarenavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169991",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151693"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What antiviral drugs or treatments are effective against Infectious salmon anemia virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "35138784",
+      "title": "Molnupiravir",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694009"
+      ]
     }
   ],
   "false_negatives": [
@@ -190000,6 +190781,54 @@
       "question": "What is known about Ilesha virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "570581",
       "title": "Human arthropod-borne virus infections in Nigeria. Serological and virological investigations and Shaki, Oyo State."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is known about Hantaan orthohantavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42582457",
+      "title": "The role of immune cells in Hantaan-induced hemorrhagic fever with renal syndrome."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hantaan orthohantavirus?",
+      "missed_pmid": "42566355",
+      "title": "Epidemiology and changes in age distribution of hemorrhagic fever with renal syndrome in Shaanxi, China, from 2004 to 2023."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "missed_pmid": "42797778",
+      "title": "Integrated Analysis of Human Hemorrhagic Fever with Renal Syndrome Cases and Rodent Hantavirus Surveillance in Zhejiang Province, China, 2025."
+    },
+    {
+      "organism": "Hantaan orthohantavirus",
+      "question": "What is the genome organization and replication cycle of Hantaan orthohantavirus?",
+      "missed_pmid": "42237939",
+      "title": "Fatty acid synthase promotes Hantaan virus infection through lipogenic regulation in the tree shrew model."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is known about Human immunodeficiency virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42598737",
+      "title": "Canonical Antibodies Adopt Distinct Binding Modes to Recognize Viral Glycan Shields."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What diagnostic assays or laboratory tests detect Norovirus?",
+      "missed_pmid": "42767071",
+      "title": "Detectable human-associated microbial source tracking markers in ambient recreational water strengthen associations between general fecal pollution indicators and gastrointestinal illness in swimmers."
+    },
+    {
+      "organism": "Monkeypox virus",
+      "question": "What is the genome organization and replication cycle of Monkeypox virus?",
+      "missed_pmid": "42748357",
+      "title": "Differential pathogenesis and antiviral treatment outcomes of MPXV clade Ib and clade IIb in a BALB/c mouse model."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genome organization and replication cycle of Tobacco mosaic virus?",
+      "missed_pmid": "42687685",
+      "title": "Self-Assembly of Hierarchically Structured Materials From Liquid Crystalline Mesophases of Tobacco Mosaic Virus-Like Particles."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
