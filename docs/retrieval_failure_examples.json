@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T21:05:08.346227+00:00",
-  "runs": 106,
+  "updated": "2026-09-26T21:15:18.944778+00:00",
+  "runs": 107,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 14984,
-  "n_false_negatives": 3360,
+  "n_false_positives": 15076,
+  "n_false_negatives": 3373,
   "new_this_run": {
-    "false_positives": 208,
-    "false_negatives": 2
+    "false_positives": 92,
+    "false_negatives": 13
   },
   "false_positives": [
     {
@@ -168664,6 +168664,1102 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_59301",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is known about Palyam virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42190918",
+      "title": "Development of an alternative neutralization assay using Akabane virus-based transcription and replication-competent virus-like particles.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What antiviral drugs or treatments are effective against Palyam virus?",
+      "cited_pmid": "40872791",
+      "title": "Baculovirus-Based Biocontrol: Synergistic and Antagonistic Interactions of PxGV, PxNPV, SeMNPV, and SfMNPV in Integrative Pest Management.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976935",
+        "http://purl.obolibrary.org/obo/NCBITaxon_98383"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What diagnostic assays or laboratory tests detect Akabane virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Akabane virus",
+      "question": "What are the clinical symptoms and disease presentation of Akabane virus?",
+      "cited_pmid": "2559514",
+      "title": "Arbovirus infections and viral haemorrhagic fevers in Uganda: a serological survey in Karamoja district, 1984.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What diagnostic assays or laboratory tests detect Schmallenberg virus?",
+      "cited_pmid": "42766670",
+      "title": "Epidemiological investigation of Shuni virus infections in hospitals in two provinces of South Africa (2019-2021) using molecular and serological surveillance.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What antiviral drugs or treatments are effective against Schmallenberg virus?",
+      "cited_pmid": "40872791",
+      "title": "Baculovirus-Based Biocontrol: Synergistic and Antagonistic Interactions of PxGV, PxNPV, SeMNPV, and SfMNPV in Integrative Pest Management.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10454",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2976935",
+        "http://purl.obolibrary.org/obo/NCBITaxon_98383"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "cited_pmid": "32910551",
+      "title": "Shuni virus-induced meningoencephalitis after experimental infection of cattle.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Schmallenberg virus",
+      "question": "What are the clinical symptoms and disease presentation of Schmallenberg virus?",
+      "cited_pmid": "37235549",
+      "title": "Immunocompetent hamsters as a model for orthobunyavirus-induced neuroinvasion and neuropathology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is known about Chuzan virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What diagnostic assays or laboratory tests detect Chuzan virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "23686694",
+      "title": "Clarifying Bunyamwera virus riddles of the past.",
+      "actual_organisms": [
+        "Ngari virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_365047"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What is known about Uukuniemi virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What diagnostic assays or laboratory tests detect Uukuniemi virus?",
+      "cited_pmid": "33477718",
+      "title": "Differentiation of Antibodies against Selected Simbu Serogroup Viruses by a Glycoprotein Gc-Based Triplex ELISA.",
+      "actual_organisms": [
+        "Akabane virus",
+        "Schmallenberg virus",
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What diagnostic assays or laboratory tests detect Uukuniemi virus?",
+      "cited_pmid": "25988444",
+      "title": "Orthobunyavirus antibodies among humans in selected parts of the Rift Valley and northeastern Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Uukuniemi virus",
+      "question": "What antiviral drugs or treatments are effective against Uukuniemi virus?",
+      "cited_pmid": "42475393",
+      "title": "Quercetin, a flavonoid, suppresses viral proliferation by interfering with the ubiquitin transfer from E1 to E2 enzymes.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "26601440",
+      "title": "Zoonotic and emerging orbivirus infections.",
+      "actual_organisms": [
+        "Palyam virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_356862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40064"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "42766670",
+      "title": "Epidemiological investigation of Shuni virus infections in hospitals in two provinces of South Africa (2019-2021) using molecular and serological surveillance.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "12789111",
+      "title": "Isolations of Bwamba virus from south central Uganda and north eastern Tanzania.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169701"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genome organization and replication cycle of Cricket paralysis virus?",
+      "cited_pmid": "23686694",
+      "title": "Clarifying Bunyamwera virus riddles of the past.",
+      "actual_organisms": [
+        "Ngari virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_365047"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "1124969",
+      "title": "Arthropod-borne viral infections of man in Nigeria, 1964-1970.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "33496223",
+      "title": "Shuni Virus in Cases of Neurologic Disease in Humans, South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Cricket paralysis virus?",
+      "cited_pmid": "37235549",
+      "title": "Immunocompetent hamsters as a model for orthobunyavirus-induced neuroinvasion and neuropathology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42190918",
+      "title": "Development of an alternative neutralization assay using Akabane virus-based transcription and replication-competent virus-like particles.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24313924",
+      "title": "Evaluating the protective efficacy of a trivalent vaccine containing Akabane virus, Aino virus and Chuzan virus against Schmallenberg virus infection.",
+      "actual_organisms": [
+        "Akabane virus",
+        "Chuzan virus",
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11582",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36803054",
+      "title": "Characterization of experimental Shuni virus infection in the mouse.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus pathogenesis and transmission?",
+      "cited_pmid": "32910551",
+      "title": "Shuni virus-induced meningoencephalitis after experimental infection of cattle.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "42514709",
+      "title": "Establishment of an Indirect ELISA for Bovine Infectious Rhinotracheitis Based on Eukaryotic Expression of gD Protein in CHO Cells.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59509"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "42766670",
+      "title": "Epidemiological investigation of Shuni virus infections in hospitals in two provinces of South Africa (2019-2021) using molecular and serological surveillance.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "30567991",
+      "title": "M Segment-Based Minigenomes and Virus-Like Particle Assays as an Approach To Assess the Potential of Tick-Borne Phlebovirus Genome Reassortment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1933191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "23686694",
+      "title": "Clarifying Bunyamwera virus riddles of the past.",
+      "actual_organisms": [
+        "Ngari virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_365047"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "41805942",
+      "title": "Conserved non-coding RNA motifs influence the neuropathogenicity of Simbuviruses: Molecular dissection in the Schmallenberg virus model.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "33492492",
+      "title": "Molecular docking studies of some selected gallic acid derivatives against five non-structural proteins of novel coronavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "41613592",
+      "title": "Development of a HiBiT-tagged reporter Akabane virus and its application in antiviral drug screening.",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "34808093",
+      "title": "Potential Mosquito Vectors for Shuni Virus, South Africa, 2014-2018.",
+      "actual_organisms": [
+        "Shuni virus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "1124969",
+      "title": "Arthropod-borne viral infections of man in Nigeria, 1964-1970.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "26601440",
+      "title": "Zoonotic and emerging orbivirus infections.",
+      "actual_organisms": [
+        "Palyam virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_356862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40064"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "42340116",
+      "title": "The Dynamic Transmission of Simbu Group Viruses in New South Wales, Australia.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What are the clinical symptoms and disease presentation of Sacbrood virus?",
+      "cited_pmid": "18796727",
+      "title": "Molecular characterization of medically important viruses of the genus Orthobunyavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is known about Bombyx mori nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40527357",
+      "title": "Baculovirus dual-phase infection strategy and biotechnological applications: A structural and regulatory review.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "41310286",
+      "title": "Strategic Timing of Larval Harvest as a Practical Approach to Increase Baculovirus Mass Production.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048335"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "40431686",
+      "title": "The Individual and Combined Entomopathogenic Activity of a Spodoptera frugiperda Multiple Nucleopolyhedrovirus and a Type I Spodoptera frugiperda Granulovirus on S. frugiperda Larvae.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the genome organization and replication cycle of Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "35337025",
+      "title": "A Renewed Appreciation of Helicoverpa armigera Nucleopolyhedrovirus BJ (Formerly Helicoverpa assulta Nucleopolyhedrovirus) with Whole Genome Sequencing.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2306063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558016"
+      ]
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Autographa californica nucleopolyhedrovirus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Autographa californica nucleopolyhedrovirus?",
+      "cited_pmid": "42190918",
+      "title": "Development of an alternative neutralization assay using Akabane virus-based transcription and replication-competent virus-like particles.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is known about Kashmir bee virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41217189",
+      "title": "Insights into the viral landscape of the western honey bee and native bees in Bangladesh.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is the epidemiology and outbreak history of Kashmir bee virus?",
+      "cited_pmid": "25889959",
+      "title": "Vertical transmission of honey bee viruses in a Belgian queen breeding program.",
+      "actual_organisms": [
+        "Aphid lethal paralysis virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1005993",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Aphid lethal paralysis virus?",
+      "cited_pmid": "41310286",
+      "title": "Strategic Timing of Larval Harvest as a Practical Approach to Increase Baculovirus Mass Production.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048335"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Aphid lethal paralysis virus?",
+      "cited_pmid": "40431686",
+      "title": "The Individual and Combined Entomopathogenic Activity of a Spodoptera frugiperda Multiple Nucleopolyhedrovirus and a Type I Spodoptera frugiperda Granulovirus on S. frugiperda Larvae.",
+      "actual_organisms": [
+        "Spodoptera frugiperda nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307454"
+      ]
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Aphid lethal paralysis virus?",
+      "cited_pmid": "1124969",
+      "title": "Arthropod-borne viral infections of man in Nigeria, 1964-1970.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Helicoverpa armigera nucleopolyhedrovirus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24313924",
+      "title": "Evaluating the protective efficacy of a trivalent vaccine containing Akabane virus, Aino virus and Chuzan virus against Schmallenberg virus infection.",
+      "actual_organisms": [
+        "Akabane virus",
+        "Chuzan virus",
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11582",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus pathogenesis and transmission?",
+      "cited_pmid": "33672975",
+      "title": "Entry of Phenuiviruses into Mammalian Host Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980418"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What diagnostic assays or laboratory tests detect Cydia pomonella granulovirus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What diagnostic assays or laboratory tests detect Cydia pomonella granulovirus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is the genome organization and replication cycle of Cydia pomonella granulovirus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is the genome organization and replication cycle of Cydia pomonella granulovirus?",
+      "cited_pmid": "30567991",
+      "title": "M Segment-Based Minigenomes and Virus-Like Particle Assays as an Approach To Assess the Potential of Tick-Borne Phlebovirus Genome Reassortment.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1933191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3051992",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052811"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What antiviral drugs or treatments are effective against Cydia pomonella granulovirus?",
+      "cited_pmid": "33492492",
+      "title": "Molecular docking studies of some selected gallic acid derivatives against five non-structural proteins of novel coronavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is the epidemiology and outbreak history of Cydia pomonella granulovirus?",
+      "cited_pmid": "42693472",
+      "title": "Winter activity and virus infection of Culicoides biting midges (Diptera: Ceratopogonidae) in German livestock housing before and during the 2024 BTV-3 outbreak.",
+      "actual_organisms": [
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is the epidemiology and outbreak history of Cydia pomonella granulovirus?",
+      "cited_pmid": "2559514",
+      "title": "Arbovirus infections and viral haemorrhagic fevers in Uganda: a serological survey in Karamoja district, 1984.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052462",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What are the clinical symptoms and disease presentation of Cydia pomonella granulovirus?",
+      "cited_pmid": "37235549",
+      "title": "Immunocompetent hamsters as a model for orthobunyavirus-induced neuroinvasion and neuropathology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What are the clinical symptoms and disease presentation of Cydia pomonella granulovirus?",
+      "cited_pmid": "42766670",
+      "title": "Epidemiological investigation of Shuni virus infections in hospitals in two provinces of South Africa (2019-2021) using molecular and serological surveillance.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What is known about Bwamba orthobunyavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35003005",
+      "title": "Co-circulation of Orthobunyaviruses and Rift Valley Fever Virus in Mauritania, 2015.",
+      "actual_organisms": [
+        "Ngari virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11584",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942"
+      ]
+    },
+    {
+      "organism": "Bwamba orthobunyavirus",
+      "question": "What antiviral drugs or treatments are effective against Bwamba orthobunyavirus?",
+      "cited_pmid": "40563128",
+      "title": "Detection of Novel Orthobunyavirus Reassortants in Fatal Neurologic Case in Horse and Culicoides Biting Midges, South Africa.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36803054",
+      "title": "Characterization of experimental Shuni virus infection in the mouse.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42066579",
+      "title": "Recombinant AcHERV-baculovirus vaccine elicits robust immune responses against human norovirus.",
+      "actual_organisms": [
+        "Autographa californica nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11827",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus pathogenesis and transmission?",
+      "cited_pmid": "33258753",
+      "title": "Comparative characterization of the reassortant Orthobunyavirus Ngari with putative parental viruses, Bunyamwera and Batai: in vitro characterization and ex vivo stability.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus pathogenesis and transmission?",
+      "cited_pmid": "32910551",
+      "title": "Shuni virus-induced meningoencephalitis after experimental infection of cattle.",
+      "actual_organisms": [
+        "Shuni virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus pathogenesis and transmission?",
+      "cited_pmid": "25188437",
+      "title": "Molecular characterization of human pathogenic bunyaviruses of the Nyando and Bwamba/Pongola virus groups leads to the genetic identification of Moju\u00ed dos Campos and Kaeng Khoi virus.",
+      "actual_organisms": [
+        "Bwamba orthobunyavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2848037",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35316",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What diagnostic assays or laboratory tests detect Ngari virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What antiviral drugs or treatments are effective against Ngari virus?",
+      "cited_pmid": "6274526",
+      "title": "[Serological survey for the prevalence of certain arboviruses in the human population of the south-east area of Central African Republic (author's transl)].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is the epidemiology and outbreak history of Ngari virus?",
+      "cited_pmid": "34808093",
+      "title": "Potential Mosquito Vectors for Shuni Virus, South Africa, 2014-2018.",
+      "actual_organisms": [
+        "Shuni virus"
+      ]
+    },
+    {
+      "organism": "Shuni virus",
+      "question": "What is the genome organization and replication cycle of Shuni virus?",
+      "cited_pmid": "39893347",
+      "title": "Emergence of a natural reassortant between Shamonda and Sathuperi viruses of the species Orthobunyavirus schmallenbergense in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052437"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is known about Ilesha virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41514363",
+      "title": "A neutralizing antibody protects Kunming mice against AKAV lethal challenge.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3151837"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is known about Ilesha virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24313924",
+      "title": "Evaluating the protective efficacy of a trivalent vaccine containing Akabane virus, Aino virus and Chuzan virus against Schmallenberg virus infection.",
+      "actual_organisms": [
+        "Akabane virus",
+        "Chuzan virus",
+        "Schmallenberg virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11582",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is known about Ilesha virus pathogenesis and transmission?",
+      "cited_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line.",
+      "actual_organisms": [
+        "Akabane virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is known about Ilesha virus pathogenesis and transmission?",
+      "cited_pmid": "26601440",
+      "title": "Zoonotic and emerging orbivirus infections.",
+      "actual_organisms": [
+        "Palyam virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_356862",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40064"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What diagnostic assays or laboratory tests detect Ilesha virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is the genome organization and replication cycle of Ilesha virus?",
+      "cited_pmid": "26212363",
+      "title": "Complete genome sequence of trivittatus virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35516"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is the genome organization and replication cycle of Ilesha virus?",
+      "cited_pmid": "42009539",
+      "title": "[Dynamics of the replication process of Akabane virus GZTS-1 strain in Vero cells].",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What antiviral drugs or treatments are effective against Ilesha virus?",
+      "cited_pmid": "41613592",
+      "title": "Development of a HiBiT-tagged reporter Akabane virus and its application in antiviral drug screening.",
+      "actual_organisms": [
+        "Akabane virus"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What antiviral drugs or treatments are effective against Ilesha virus?",
+      "cited_pmid": "42475393",
+      "title": "Quercetin, a flavonoid, suppresses viral proliferation by interfering with the ubiquitin transfer from E1 to E2 enzymes.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10725",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is the epidemiology and outbreak history of Ilesha virus?",
+      "cited_pmid": "16699043",
+      "title": "Batai and Ngari viruses: M segment reassortment and association with severe febrile disease outbreaks in East Africa.",
+      "actual_organisms": [
+        "Ngari virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What are the clinical symptoms and disease presentation of Ilesha virus?",
+      "cited_pmid": "37235549",
+      "title": "Immunocompetent hamsters as a model for orthobunyavirus-induced neuroinvasion and neuropathology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35304",
+        "http://purl.obolibrary.org/obo/NCBITaxon_80942",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -188826,6 +189922,84 @@
       "question": "What is known about Sepik virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "17172387",
       "title": "Characterization of Sepik and Entebbe bat viruses closely related to yellow fever virus."
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "missed_pmid": "37427788",
+      "title": "The structure and mechanism of action of a distinct class of dicistrovirus intergenic region IRESs."
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genome organization and replication cycle of Cricket paralysis virus?",
+      "missed_pmid": "37041031",
+      "title": "Initiation of translation on nedicistrovirus and related intergenic region IRESs by their factor-independent binding to the P site of 80S ribosomes."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "25889959",
+      "title": "Vertical transmission of honey bee viruses in a Belgian queen breeding program."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "missed_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "missed_pmid": "41217189",
+      "title": "Insights into the viral landscape of the western honey bee and native bees in Bangladesh."
+    },
+    {
+      "organism": "Autographa californica nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Autographa californica nucleopolyhedrovirus?",
+      "missed_pmid": "35337025",
+      "title": "A Renewed Appreciation of Helicoverpa armigera Nucleopolyhedrovirus BJ (Formerly Helicoverpa assulta Nucleopolyhedrovirus) with Whole Genome Sequencing."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is known about Kashmir bee virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco."
+    },
+    {
+      "organism": "Aphid lethal paralysis virus",
+      "question": "What is known about Aphid lethal paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29580079",
+      "title": "Metagenomic analysis of bat guano samples revealed the presence of viruses potentially carried by insects, among others by Apis mellifera in Hungary."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus pathogenesis and transmission?",
+      "missed_pmid": "35055934",
+      "title": "Efficacy of Helicoverpa Armigera Nucleopolyhedrovirus on Soybean for Control of Helicoverpa zea (Boddie) (Lepidoptera: Noctuidae) in Arkansas Agriculture."
+    },
+    {
+      "organism": "Cydia pomonella granulovirus",
+      "question": "What is known about Cydia pomonella granulovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40227301",
+      "title": "Establishment of an embryonic cell line of Grapholita molesta (Lepidoptera: Tortricidae) and in vitro replication of Cydia pomonella granulovirus in it."
+    },
+    {
+      "organism": "Spodoptera frugiperda nucleopolyhedrovirus",
+      "question": "What is known about Spodoptera frugiperda nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41310286",
+      "title": "Strategic Timing of Larval Harvest as a Practical Approach to Increase Baculovirus Mass Production."
+    },
+    {
+      "organism": "Ngari virus",
+      "question": "What is known about Ngari virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33309594",
+      "title": "Ngari virus (Orthobunyavirus, Peribunyaviridae) in ixodid ticks collected from cattle in Guinea."
+    },
+    {
+      "organism": "Ilesha virus",
+      "question": "What is known about Ilesha virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "570581",
+      "title": "Human arthropod-borne virus infections in Nigeria. Serological and virological investigations and Shaki, Oyo State."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
