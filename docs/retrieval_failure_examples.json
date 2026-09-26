@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T16:15:29.630223+00:00",
-  "runs": 81,
+  "updated": "2026-09-26T16:25:21.137949+00:00",
+  "runs": 82,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 12043,
-  "n_false_negatives": 3177,
+  "n_false_positives": 12090,
+  "n_false_negatives": 3178,
   "new_this_run": {
-    "false_positives": 128,
-    "false_negatives": 7
+    "false_positives": 47,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -135720,6 +135720,527 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12305",
         "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is the genome organization and replication cycle of Human coronavirus OC43?",
+      "cited_pmid": "42797868",
+      "title": "Balancing Genome Plasticity and Evolutionary Constraint During the Long-Term Evolution of Feline Coronaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42652003",
+      "title": "Identification of Conserved B-Cell Epitope Candidates Associated with Neutralizing Activity of Bovine Coronavirus Spike Protein.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55987"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the genome organization and replication cycle of Human coronavirus NL63?",
+      "cited_pmid": "42749190",
+      "title": "Molecular epidemiological surveillance of the feline coronavirus reveals novel recombinant FCoV strains with evidence of ongoing viral evolution.",
+      "actual_organisms": [
+        "Canine coronavirus",
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus 229E?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genome organization and replication cycle of Porcine epidemic diarrhea virus?",
+      "cited_pmid": "42551610",
+      "title": "A strain of high cell-adapted porcine deltacoronavirus: Isolation, genetic evolution, and pathogenicity analysis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What is known about Canine coronavirus pathogenesis and transmission?",
+      "cited_pmid": "42652023",
+      "title": "Natural Infection of Domestic Dogs with Raccoon Dog and Fox Amdoparvovirus During a Severe Disease Outbreak.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310911"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Canine coronavirus?",
+      "cited_pmid": "42778896",
+      "title": "A decade of endemic human coronaviruses: epidemiological patterns and clinical significance in an adult cohort at a tertiary care hospital in Germany.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290028",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42653319",
+      "title": "The Combination of Nirmatrelvir and Ivermectin Exerts Strongly Synergistic Antiviral and Anti-Inflammatory Effects Against Murine Coronavirus Infection of Macrophages.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694005"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What diagnostic assays or laboratory tests detect Transmissible gastroenteritis virus?",
+      "cited_pmid": "42611143",
+      "title": "Performance evaluation of methods for detecting enteric viruses in meat products.",
+      "actual_organisms": [
+        "Murine hepatitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_223997",
+        "http://purl.obolibrary.org/obo/NCBITaxon_291484",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42734165",
+      "title": "The Q653R substitution in the spike protein is associated with attenuation of a GVI-1 infectious bronchitis virus strain.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genome organization and replication cycle of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42555161",
+      "title": "GTPase domain of porcine Mx1 protein interacts with the N protein of porcine deltacoronavirus to inhibit viral replication.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the epidemiology and outbreak history of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42731210",
+      "title": "Comparative pathogenicity of Ma5 vaccine and a field isolate of the avian infectious bronchitis virus in SPF chickens.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757781"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the epidemiology and outbreak history of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42786517",
+      "title": "Occurrence of respiratory and enteric bacteria and viruses in calves in Iceland.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1661",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_731",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75985"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the genome organization and replication cycle of Porcine deltacoronavirus?",
+      "cited_pmid": "42730980",
+      "title": "Phylogenetic Divergence and Molecular Signatures of Porcine Epidemic Diarrhea Virus S-INDEL Subtype.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What is the epidemiology and outbreak history of Porcine deltacoronavirus?",
+      "cited_pmid": "42515557",
+      "title": "Genetic and Antigenic Characterization of Bovine and Porcine Respiratory Coronaviruses Circulating in Western Europe, 2020-2023.",
+      "actual_organisms": [
+        "Bovine coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42005"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42734722",
+      "title": "Establishment of a blocking ELISA for assessing neutralizing antibody levels against porcine epidemic diarrhea virus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_85708"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42767122",
+      "title": "Airway infection with murine \u03b3-herpesvirus 68 triggers gut-to-liver bacterial translocation via increased intestinal permeability.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42551610",
+      "title": "A strain of high cell-adapted porcine deltacoronavirus: Isolation, genetic evolution, and pathogenicity analysis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42759724",
+      "title": "4-octyl itaconate inhibits porcine epidemic diarrhea virus replication by modulating the ferroptosis axis and the autophagy pathway.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42555161",
+      "title": "GTPase domain of porcine Mx1 protein interacts with the N protein of porcine deltacoronavirus to inhibit viral replication.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42730980",
+      "title": "Phylogenetic Divergence and Molecular Signatures of Porcine Epidemic Diarrhea Virus S-INDEL Subtype.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42659737",
+      "title": "Targeting viral Fe-S clusters with TEMPOL confers broad-spectrum anti-coronavirus activity.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42651695",
+      "title": "Combinatorial Therapy with Long-Acting Tenofovir and Tizoxanide Controls Viral Replication and Liver Inflammation in a Murine AAV-HBV Model of Chronic Hepatitis B.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1897737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2760905"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42758786",
+      "title": "A feline coronavirus nucleocapsid protein disrupts ZC3HAV1-viral RNA association to counteract host RNA-level restriction.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42797828",
+      "title": "In Vitro Assessment of Antiviral Activity of Saikosaponin B2 Against Porcine Epidemic Diarrheal Virus.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42777847",
+      "title": "Antiviral efficacy and therapeutic potential of the novel nucleoside analog CLEVir-X against feline infectious peritonitis virus in vitro and in vivo.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42683631",
+      "title": "Porcine Enteric Coronaviruses: Origins, Global Spread, Transmission Pathways and Pathogenesis.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "42767337",
+      "title": "De Ritis Ratio and L-FABP as Supportive Biomarkers of Hepatic Involvement in Cats with Effusive FIP.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "Feline infectious peritonitis virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Murine hepatitis virus?",
+      "cited_pmid": "42795466",
+      "title": "Hyperglycemia in Cats Infected by SARS-CoV-2: Pancreatic Alterations and Potential Antiviral Therapeutics.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42788272",
+      "title": "Patterns in the dynamics of respiratory viruses after the COVID-19 pandemic: an observational, retrospective study using sentinel surveillance network data, Catalonia, 2022 to 2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Tobacco mosaic virus?",
+      "cited_pmid": "42761200",
+      "title": "Metatranscriptomic profiling uncovers a distinctive pepper virome in tropical Indonesia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_184020",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_909827"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
+      "cited_pmid": "42727818",
+      "title": "Establishment and application of a triplex real-time fluorescent quantitative RT-PCR assay for simultaneous detection of H5, H7 subtype AIV and virulent NDV.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10386",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10995",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "42555161",
+      "title": "GTPase domain of porcine Mx1 protein interacts with the N protein of porcine deltacoronavirus to inhibit viral replication.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2789016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "42743136",
+      "title": "Detection of bacterial gene expression elements on Tobacco mosaic virus RNA using cDNA analysis.",
+      "actual_organisms": [
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "22820404",
+      "title": "Severe acute respiratory syndrome coronavirus accessory proteins 6 and 9b interact in vivo.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "42709010",
+      "title": "A New Threat Emerges: The First Detection of GVIII Genotype IBV in China and the Urgent Need for Molecular Surveillance.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "42249296",
+      "title": "Flexible bronchoscopy in young infants with hCoV-NL63-associated necrotizing laryngotracheobronchitis: findings and interventional value.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1313"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -154784,6 +155305,12 @@
       "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
       "missed_pmid": "42705425",
       "title": "Catalase protects Penaeus vannamei against WSSV by regulating redox homeostasis."
+    },
+    {
+      "organism": "Porcine epidemic diarrhea virus",
+      "question": "What is the genome organization and replication cycle of Porcine epidemic diarrhea virus?",
+      "missed_pmid": "42465716",
+      "title": "A trivalent inactivated PDCoV-PEDV-TGEV vaccine confers protective efficacy in piglets coinfected with porcine rotavirus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
