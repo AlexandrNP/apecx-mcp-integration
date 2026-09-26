@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T15:55:28.119458+00:00",
-  "runs": 79,
+  "updated": "2026-09-26T16:05:12.157847+00:00",
+  "runs": 80,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 11789,
-  "n_false_negatives": 3169,
+  "n_false_positives": 11915,
+  "n_false_negatives": 3170,
   "new_this_run": {
-    "false_positives": 50,
-    "false_negatives": 4
+    "false_positives": 126,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -132909,6 +132909,1375 @@
       "actual_organisms": [
         "Citrus tristeza virus"
       ]
+    },
+    {
+      "organism": "Rabies lyssavirus",
+      "question": "What is the genome organization and replication cycle of Rabies lyssavirus?",
+      "cited_pmid": "14747569",
+      "title": "Complete genome sequence of Fer-de-Lance virus reveals a novel gene in reptilian paramyxoviruses.",
+      "actual_organisms": [
+        "Fer-de-Lance virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1283308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_659372"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30232190",
+      "title": "Characterization of Antibody Interactions with the G Protein of Vesicular Stomatitis Virus Indiana Strain and Other Vesiculovirus G Proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655696",
+      "title": "A Lethal Pseudofilovirus Model in Ifnar1(-/-) Mice Using Recombinant Vesicular Stomatitis Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is known about Mammalian orthoreovirus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "42797834",
+      "title": "Two Pentaplex Real-Time Fluorescent PCR Assays for Simultaneous Detection of Ten Ovine Respiratory and Reproductive Pathogens.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1133363",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358764",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mammalian orthoreovirus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "cited_pmid": "39893347",
+      "title": "Emergence of a natural reassortant between Shamonda and Sathuperi viruses of the species Orthobunyavirus schmallenbergense in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052437"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the genome organization and replication cycle of Mammalian orthoreovirus?",
+      "cited_pmid": "14747569",
+      "title": "Complete genome sequence of Fer-de-Lance virus reveals a novel gene in reptilian paramyxoviruses.",
+      "actual_organisms": [
+        "Fer-de-Lance virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1283308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_659372"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What antiviral drugs or treatments are effective against Mammalian orthoreovirus?",
+      "cited_pmid": "40936042",
+      "title": "Development of a biotechnological process for the production of recombinant canine interferon-alpha using the baculovirus-insect cell and larvae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What is the epidemiology and outbreak history of Mammalian orthoreovirus?",
+      "cited_pmid": "33809526",
+      "title": "Isolation and Genetic Characterization of Puumala Orthohantavirus Strains from France.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mammalian orthoreovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mammalian orthoreovirus?",
+      "cited_pmid": "39999459",
+      "title": "Exploring Routes of Infection of Severe Fever with Thrombocytopenia Syndrome Virus Using Experimentally Infected Animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669355",
+      "title": "Validation of SARS-CoV-2 neutralization assay using VSV-based pseudovirus system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is known about Bluetongue virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What diagnostic assays or laboratory tests detect Bluetongue virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "38492201",
+      "title": "Isolation and whole-genome sequence analysis of Balagodu virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "40936042",
+      "title": "Development of a biotechnological process for the production of recombinant canine interferon-alpha using the baculovirus-insect cell and larvae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the epidemiology and outbreak history of Bluetongue virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "cited_pmid": "40512309",
+      "title": "Colorado Tick Fever Virus: Quantification, Propagation, Storage, and Detection.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What is known about Colorado tick fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41550982",
+      "title": "Corrigendum to \"Isolation and characterization of a novel coltivirus from Haemaphysalis concinna ticks in Northeastern China\" [Infectious Medicine 4 (2025) 100179].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Colorado tick fever virus?",
+      "cited_pmid": "39258964",
+      "title": "Development of a rapid and reliable surveillance method for Ornithodoros turicata americanus in gopher tortoise (Gopherus polyphemus) burrows in the southeastern United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10497"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What diagnostic assays or laboratory tests detect Colorado tick fever virus?",
+      "cited_pmid": "39229478",
+      "title": "Control strategies for emerging infectious diseases: Crimean-Congo hemorrhagic fever management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Colorado tick fever virus",
+      "question": "What are the clinical symptoms and disease presentation of Colorado tick fever virus?",
+      "cited_pmid": "40551327",
+      "title": "The rising threat of tickborne infections: A growing public health concern.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40157130",
+      "title": "Preclinical development of a replication-competent vesicular stomatitis virus-based Lassa virus vaccine candidate advanced into human clinical trials.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669355",
+      "title": "Validation of SARS-CoV-2 neutralization assay using VSV-based pseudovirus system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40936042",
+      "title": "Development of a biotechnological process for the production of recombinant canine interferon-alpha using the baculovirus-insect cell and larvae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797870",
+      "title": "Mitigation of the Risk of Importing Akabane and Exotic Bluetongue Virus in Ruminant-Sourced Sera.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655696",
+      "title": "A Lethal Pseudofilovirus Model in Ifnar1(-/-) Mice Using Recombinant Vesicular Stomatitis Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "cited_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is known about Banna virus pathogenesis and transmission?",
+      "cited_pmid": "36653513",
+      "title": "Whole-genome sequence analysis of a novel orthobunyavirus isolated in Japan in the 1980s.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2922982",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052441"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What diagnostic assays or laboratory tests detect Banna virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the genome organization and replication cycle of Banna virus?",
+      "cited_pmid": "39893347",
+      "title": "Emergence of a natural reassortant between Shamonda and Sathuperi viruses of the species Orthobunyavirus schmallenbergense in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12101",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052437"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What antiviral drugs or treatments are effective against Banna virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the epidemiology and outbreak history of Banna virus?",
+      "cited_pmid": "30457543",
+      "title": "Chuzan Virus in Yaks, Qinghai-Tibetan Plateau, China.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the epidemiology and outbreak history of Banna virus?",
+      "cited_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What is the epidemiology and outbreak history of Banna virus?",
+      "cited_pmid": "39229478",
+      "title": "Control strategies for emerging infectious diseases: Crimean-Congo hemorrhagic fever management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges.",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "41539551",
+      "title": "Diagnostic and pathological characterization of senecavirus A-associated epidemic transient neonatal losses in swine.",
+      "actual_organisms": [
+        "Rotavirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_119602",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_390157",
+        "http://purl.obolibrary.org/obo/NCBITaxon_586425",
+        "http://purl.obolibrary.org/obo/NCBITaxon_590",
+        "http://purl.obolibrary.org/obo/NCBITaxon_713"
+      ]
+    },
+    {
+      "organism": "Banna virus",
+      "question": "What are the clinical symptoms and disease presentation of Banna virus?",
+      "cited_pmid": "39573905",
+      "title": "Serosurvey of Arboviruses in Free-Ranging Mantled Howler Monkeys (Alouatta palliata) in Costa Rica.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus B?",
+      "cited_pmid": "40570711",
+      "title": "Occurrence and diversity of porcine rotavirus groups A, B, C and H in Danish pigs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913"
+      ]
+    },
+    {
+      "organism": "Rotavirus B",
+      "question": "What antiviral drugs or treatments are effective against Rotavirus B?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669355",
+      "title": "Validation of SARS-CoV-2 neutralization assay using VSV-based pseudovirus system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is known about Chandipura virus pathogenesis and transmission?",
+      "cited_pmid": "30457543",
+      "title": "Chuzan Virus in Yaks, Qinghai-Tibetan Plateau, China.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What diagnostic assays or laboratory tests detect Chandipura virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "38492201",
+      "title": "Isolation and whole-genome sequence analysis of Balagodu virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "14747569",
+      "title": "Complete genome sequence of Fer-de-Lance virus reveals a novel gene in reptilian paramyxoviruses.",
+      "actual_organisms": [
+        "Fer-de-Lance virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1283308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_659372"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the genome organization and replication cycle of Chandipura virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "cited_pmid": "40936042",
+      "title": "Development of a biotechnological process for the production of recombinant canine interferon-alpha using the baculovirus-insect cell and larvae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What antiviral drugs or treatments are effective against Chandipura virus?",
+      "cited_pmid": "42770873",
+      "title": "Andrographolide Inhibits Rabies Virus Replication.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the epidemiology and outbreak history of Chandipura virus?",
+      "cited_pmid": "40430233",
+      "title": "Viruses in Simuliidae: An Updated Systematic Review of Arboviral Diversity and Vector Potential.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11036",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chandipura virus",
+      "question": "What is the epidemiology and outbreak history of Chandipura virus?",
+      "cited_pmid": "37018550",
+      "title": "Epidemiology of Chuzan Virus Infection in Free-Ranging and Farmed Cervids in South Korea: A Seroprevalence Survey.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30232190",
+      "title": "Characterization of Antibody Interactions with the G Protein of Vesicular Stomatitis Virus Indiana Strain and Other Vesiculovirus G Proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655696",
+      "title": "A Lethal Pseudofilovirus Model in Ifnar1(-/-) Mice Using Recombinant Vesicular Stomatitis Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus pathogenesis and transmission?",
+      "cited_pmid": "521797",
+      "title": "Fer de Lance virus (FDLV): a probable paramyxovirus isolated from a reptile.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_662"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus pathogenesis and transmission?",
+      "cited_pmid": "9696127",
+      "title": "Structure, expression and phylogenetic analysis of the glycoprotein gene of Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What diagnostic assays or laboratory tests detect Piry virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What diagnostic assays or laboratory tests detect Piry virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genome organization and replication cycle of Piry virus?",
+      "cited_pmid": "14747569",
+      "title": "Complete genome sequence of Fer-de-Lance virus reveals a novel gene in reptilian paramyxoviruses.",
+      "actual_organisms": [
+        "Fer-de-Lance virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1283308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_659372"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genome organization and replication cycle of Piry virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genome organization and replication cycle of Piry virus?",
+      "cited_pmid": "38492201",
+      "title": "Isolation and whole-genome sequence analysis of Balagodu virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genome organization and replication cycle of Piry virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "cited_pmid": "40936042",
+      "title": "Development of a biotechnological process for the production of recombinant canine interferon-alpha using the baculovirus-insect cell and larvae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "cited_pmid": "32993044",
+      "title": "How Bank Vole-PUUV Interactions Influence the Eco-Evolutionary Processes Driving Nephropathia Epidemica Epidemiology-An Experimental and Genomic Approach.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "cited_pmid": "32882953",
+      "title": "Detection and Genetic Characterization of Puumala Orthohantavirus S-Segment in Areas of France Non-Endemic for Nephropathia Epidemica.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "cited_pmid": "30457543",
+      "title": "Chuzan Virus in Yaks, Qinghai-Tibetan Plateau, China.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What are the clinical symptoms and disease presentation of Piry virus?",
+      "cited_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges.",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What are the clinical symptoms and disease presentation of Piry virus?",
+      "cited_pmid": "39999459",
+      "title": "Exploring Routes of Infection of Severe Fever with Thrombocytopenia Syndrome Virus Using Experimentally Infected Animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What are the clinical symptoms and disease presentation of Piry virus?",
+      "cited_pmid": "9163882",
+      "title": "Intraerythrocytic inclusions associated with iridoviral infection in a fer de lance (Bothrops moojeni) snake.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is known about Cocal virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42669355",
+      "title": "Validation of SARS-CoV-2 neutralization assay using VSV-based pseudovirus system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186672",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is known about Cocal virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655696",
+      "title": "A Lethal Pseudofilovirus Model in Ifnar1(-/-) Mice Using Recombinant Vesicular Stomatitis Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What diagnostic assays or laboratory tests detect Cocal virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What diagnostic assays or laboratory tests detect Cocal virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What diagnostic assays or laboratory tests detect Cocal virus?",
+      "cited_pmid": "42797870",
+      "title": "Mitigation of the Risk of Importing Akabane and Exotic Bluetongue Virus in Ruminant-Sourced Sera.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the genome organization and replication cycle of Cocal virus?",
+      "cited_pmid": "521797",
+      "title": "Fer de Lance virus (FDLV): a probable paramyxovirus isolated from a reptile.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_662"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What antiviral drugs or treatments are effective against Cocal virus?",
+      "cited_pmid": "40936042",
+      "title": "Development of a biotechnological process for the production of recombinant canine interferon-alpha using the baculovirus-insect cell and larvae system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the epidemiology and outbreak history of Cocal virus?",
+      "cited_pmid": "30457543",
+      "title": "Chuzan Virus in Yaks, Qinghai-Tibetan Plateau, China.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "Cocal virus",
+      "question": "What is the epidemiology and outbreak history of Cocal virus?",
+      "cited_pmid": "37018550",
+      "title": "Epidemiology of Chuzan Virus Infection in Free-Ranging and Farmed Cervids in South Korea: A Seroprevalence Survey.",
+      "actual_organisms": [
+        "Chuzan virus"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Epizootic hemorrhagic disease virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hemorrhagic disease virus?",
+      "cited_pmid": "38829449",
+      "title": "Replication of Akabane virus and related orthobunyaviruses in a fetal-bovine-brain-derived cell line.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_159150",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70566"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What diagnostic assays or laboratory tests detect Palyam virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What is the genome organization and replication cycle of Palyam virus?",
+      "cited_pmid": "40901539",
+      "title": "Isolation and Genetic Characterization of Three Palyam Serogroup Orbiviruses From Culicoides Spp. and Associated Infections in Cattle in Yunnan, China.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10892",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Palyam virus",
+      "question": "What antiviral drugs or treatments are effective against Palyam virus?",
+      "cited_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges.",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What diagnostic assays or laboratory tests detect Chuzan virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What diagnostic assays or laboratory tests detect Chuzan virus?",
+      "cited_pmid": "32448993",
+      "title": "RT-qPCR for the diagnosis of the vesiculovirus Cocal virus.",
+      "actual_organisms": [
+        "Cocal virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198833"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "14747569",
+      "title": "Complete genome sequence of Fer-de-Lance virus reveals a novel gene in reptilian paramyxoviruses.",
+      "actual_organisms": [
+        "Fer-de-Lance virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1283308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_659372"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What is the genome organization and replication cycle of Chuzan virus?",
+      "cited_pmid": "38492201",
+      "title": "Isolation and whole-genome sequence analysis of Balagodu virus in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11572",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2304618"
+      ]
+    },
+    {
+      "organism": "Chuzan virus",
+      "question": "What antiviral drugs or treatments are effective against Chuzan virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40466409",
+      "title": "Exploring approaches and advancements in the development and evaluation of multi-epitope subunit vaccines against tick-borne viruses.",
+      "actual_organisms": [
+        "Banna virus"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30182034",
+      "title": "Lentivector Producer Cell Lines with Stably Expressed Vesiculovirus Envelopes.",
+      "actual_organisms": [
+        "Cocal virus",
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus pathogenesis and transmission?",
+      "cited_pmid": "34275961",
+      "title": "Identification of a novel filovirus in a common lancehead (Bothrops atrox (Linnaeus, 1758)).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is known about Fer-de-Lance virus pathogenesis and transmission?",
+      "cited_pmid": "42217945",
+      "title": "Study on host-pathogen interactions of Palyam serogroup viruses using a novel immortalized bovine cerebrum cell line.",
+      "actual_organisms": [
+        "Chuzan virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431251"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What diagnostic assays or laboratory tests detect Fer-de-Lance virus?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What diagnostic assays or laboratory tests detect Fer-de-Lance virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What diagnostic assays or laboratory tests detect Fer-de-Lance virus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the genome organization and replication cycle of Fer-de-Lance virus?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the genome organization and replication cycle of Fer-de-Lance virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What antiviral drugs or treatments are effective against Fer-de-Lance virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What antiviral drugs or treatments are effective against Fer-de-Lance virus?",
+      "cited_pmid": "42330318",
+      "title": "Phase I Study of Oncolytic Virus VV1 as Monotherapy or in Combination with Avelumab in Patients with Relapsed Refractory Solid Tumors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the epidemiology and outbreak history of Fer-de-Lance virus?",
+      "cited_pmid": "42797769",
+      "title": "Nationwide Distribution and Prevalence of Epizootic Haemorrhagic Disease Virus Infection in Portugal (2023-2025).",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the epidemiology and outbreak history of Fer-de-Lance virus?",
+      "cited_pmid": "37578645",
+      "title": "Complete genome sequences of epizootic hemorrhagic disease virus serotypes 5 and 6 isolated in Japan.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the epidemiology and outbreak history of Fer-de-Lance virus?",
+      "cited_pmid": "39229478",
+      "title": "Control strategies for emerging infectious diseases: Crimean-Congo hemorrhagic fever management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What is the epidemiology and outbreak history of Fer-de-Lance virus?",
+      "cited_pmid": "42639316",
+      "title": "Chandipura Virus: \"The Silent Threat Emerging in India's Viral Landscape\".",
+      "actual_organisms": [
+        "Chandipura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Fer-de-Lance virus",
+      "question": "What are the clinical symptoms and disease presentation of Fer-de-Lance virus?",
+      "cited_pmid": "40512309",
+      "title": "Colorado Tick Fever Virus: Quantification, Propagation, Storage, and Detection.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "34433470",
+      "title": "Development and evaluation of recombinase polymerase amplification combined with lateral flow dipstick assays for co-detection of epizootic haemorrhagic disease virus and the Palyam serogroup virus.",
+      "actual_organisms": [
+        "Epizootic hemorrhagic disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1428763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_306276"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What is the genome organization and replication cycle of Grass carp reovirus?",
+      "cited_pmid": "34275961",
+      "title": "Identification of a novel filovirus in a common lancehead (Bothrops atrox (Linnaeus, 1758)).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11266"
+      ]
     }
   ],
   "false_negatives": [
@@ -151925,6 +153294,12 @@
       "question": "What is known about Watermelon mosaic virus and neutralizing antibodies or vaccines?",
       "missed_pmid": "40403429",
       "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What are the clinical symptoms and disease presentation of African horse sickness virus?",
+      "missed_pmid": "31100884",
+      "title": "Phylogenetic Characterization of the Palyam Serogroup Orbiviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
