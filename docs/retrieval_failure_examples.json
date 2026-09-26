@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T15:25:30.161930+00:00",
-  "runs": 76,
+  "updated": "2026-09-26T15:35:13.779552+00:00",
+  "runs": 77,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 11584,
-  "n_false_negatives": 3158,
+  "n_false_positives": 11651,
+  "n_false_negatives": 3162,
   "new_this_run": {
-    "false_positives": 207,
-    "false_negatives": 11
+    "false_positives": 67,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -130655,6 +130655,772 @@
         "Punta Toro virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_187978"
       ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Nipah henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Nipah henipavirus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What diagnostic assays or laboratory tests detect Hendra henipavirus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What is the genome organization and replication cycle of Hendra henipavirus?",
+      "cited_pmid": "42726904",
+      "title": "Discovering host-viral protein interactions in autophagy: A LIR discovery pipeline for identifying LC3-interacting region motifs in highly virulent viruses.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1570291"
+      ]
+    },
+    {
+      "organism": "Hendra henipavirus",
+      "question": "What antiviral drugs or treatments are effective against Hendra henipavirus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is known about Mumps orthorubulavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Mumps orthorubulavirus?",
+      "cited_pmid": "42300833",
+      "title": "High prevalence and clinical impact of microbial co-detection in hospitalized children with human parainfluenza virus type 1.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What is the epidemiology and outbreak history of Mumps orthorubulavirus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mumps orthorubulavirus",
+      "question": "What are the clinical symptoms and disease presentation of Mumps orthorubulavirus?",
+      "cited_pmid": "42771068",
+      "title": "Clinical characteristics and outcomes of respiratory syncytial virus and human metapneumovirus \u0131nfections in children under five years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36273875",
+      "title": "Immunogenicity of a recombinant hemagglutinin neuraminidase-Porcine rubulavirus produced by Escherichia coli of Porcine rubulavirus gives protective immunity of litter after challenge.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "28185101",
+      "title": "Full-genome sequencing and phylogenetic analysis of four neurovirulent Mexican isolates of porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "40929366",
+      "title": "Distinct Evolutionary Signatures of Human Parainfluenza Viruses 2 and 4 Reveal Host Antagonism Divergence and Phylogenetic Discordance.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human respirovirus 3?",
+      "cited_pmid": "42783219",
+      "title": "Etiology and Clinical Manifestations of Acute Respiratory Infections in Pediatric Patients: A Retrospective Study in Moscow, Russia.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_329641"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42771665",
+      "title": "A single-cycle, recombinant VSV platform Nipah vaccine cross-protects against Hendra virus in nonhuman primates.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "32100137",
+      "title": "Common and unique mechanisms of filamentous actin formation by viruses of the genus Orthorubulavirus.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42732490",
+      "title": "Nipah virus in the era of global connectivity: molecular evolution, transmission risk, and preparedness strategies.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "40559594",
+      "title": "The Challenge of Lyssavirus Infections in Domestic and Other Animals: A Mix of Virological Confusion, Consternation, Chagrin, and Curiosity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "40345597",
+      "title": "Technical validation of a multiplex real-time PCR for combined detection of Rift Valley fever, chikungunya, Zika and dengue viruses.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "Avian metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "30863823",
+      "title": "Complete Genome Sequences of the Index Isolates of Two Genotypes of Pacific Salmon Paramyxovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_348289"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "39088577",
+      "title": "Novel sialidase inhibitors suppress mumps virus replication and infection.",
+      "actual_organisms": [
+        "Mumps orthorubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052560",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "41925494",
+      "title": "Animal Trauma and the Creation of a Rinderpest Epidemic in German East Africa.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What is known about Canine distemper virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36971637",
+      "title": "SEROLOGIC RESPONSE AND ADVERSE EFFECTS OF RECOMBINANT CANINE DISTEMPER VACCINATION IN THREE AQUARIUM-HOUSED WALRUSES (ODOBENUS ROSMARUS).",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Canine distemper virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Canine distemper virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36273875",
+      "title": "Immunogenicity of a recombinant hemagglutinin neuraminidase-Porcine rubulavirus produced by Escherichia coli of Porcine rubulavirus gives protective immunity of litter after challenge.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is known about Rinderpest virus pathogenesis and transmission?",
+      "cited_pmid": "28185101",
+      "title": "Full-genome sequencing and phylogenetic analysis of four neurovirulent Mexican isolates of porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "40345597",
+      "title": "Technical validation of a multiplex real-time PCR for combined detection of Rift Valley fever, chikungunya, Zika and dengue viruses.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What diagnostic assays or laboratory tests detect Rinderpest virus?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "26728078",
+      "title": "Molecular characterisation of Porcine rubulavirus (PorPV) isolates from different outbreaks in Mexico.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "42728501",
+      "title": "Complete genome sequence of a novel alternavirus infecting Fusarium falciforme.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2973078",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3371239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5506",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64636"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What antiviral drugs or treatments are effective against Rinderpest virus?",
+      "cited_pmid": "42794455",
+      "title": "Discovery of Quercetin as a Potential Entry Inhibitor of Nipah Virus: A Path Toward Antiviral Therapy.",
+      "actual_organisms": [
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the epidemiology and outbreak history of Rinderpest virus?",
+      "cited_pmid": "40559594",
+      "title": "The Challenge of Lyssavirus Infections in Domestic and Other Animals: A Mix of Virological Confusion, Consternation, Chagrin, and Curiosity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the epidemiology and outbreak history of Rinderpest virus?",
+      "cited_pmid": "41923840",
+      "title": "Diagnostic and vaccination challenges in the PPR pre-eradication era: Identifying gaps\u00a0and potential unintended consequences.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the clinical symptoms and disease presentation of Rinderpest virus?",
+      "cited_pmid": "42771068",
+      "title": "Clinical characteristics and outcomes of respiratory syncytial virus and human metapneumovirus \u0131nfections in children under five years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36971637",
+      "title": "SEROLOGIC RESPONSE AND ADVERSE EFFECTS OF RECOMBINANT CANINE DISTEMPER VACCINATION IN THREE AQUARIUM-HOUSED WALRUSES (ODOBENUS ROSMARUS).",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is known about Phocine distemper virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39827673",
+      "title": "Phylogenetic and molecular analysis of hemagglutinin gene and Fsp-coding region of canine distemper virus: Insight into novel vaccine development.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Phocine distemper virus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Phocine distemper virus?",
+      "cited_pmid": "34181967",
+      "title": "Comparison of hemagglutination inhibition tests, immunoperoxidase monolayer assays, and serum neutralizing tests in detecting antibodies against blue eye disease in pigs.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the genome organization and replication cycle of Phocine distemper virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What is the epidemiology and outbreak history of Phocine distemper virus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "42668364",
+      "title": "Placentitis and abortion caused by canine distemper virus in a Linnaeus's two-toed sloth.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "42730537",
+      "title": "Fatal Canine Distemper Virus Infections in Free-Ranging Black-Tufted Marmosets (Callithrix penicillata) in Central Brazil.",
+      "actual_organisms": [
+        "Canine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "33789313",
+      "title": "Neonatal-Onset Familial Mediterranean Fever in an Infant with Human Parainfluenza Virus-4 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the epidemiology and outbreak history of Bovine parainfluenza virus 3?",
+      "cited_pmid": "26584829",
+      "title": "Molecular and epidemiological studies of Porcine rubulavirus infection - an overview.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What are the clinical symptoms and disease presentation of Bovine parainfluenza virus 3?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Porcine rubulavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine rubulavirus?",
+      "cited_pmid": "42797634",
+      "title": "A Recombinant RABV-G-Based Chemiluminescence Immunoassay for Quantitative Detection of Rabies Virus Antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_149595"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "42580486",
+      "title": "Dihydroorotate dehydrogenase inhibitors are potent antiviral agents against henipaviruses and arenaviruses.",
+      "actual_organisms": [
+        "Hendra henipavirus",
+        "Nipah henipavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1221391",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1678143",
+        "http://purl.obolibrary.org/obo/NCBITaxon_260964",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
     }
   ],
   "false_negatives": [
@@ -149605,6 +150371,30 @@
       "question": "What is the epidemiology and outbreak history of Schmallenberg virus?",
       "missed_pmid": "34696407",
       "title": "An Investigation of Culicoides (Diptera: Ceratopogonidae) as Potential Vectors of Medically and Veterinary Important Arboviruses in South Africa."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "missed_pmid": "42794197",
+      "title": "Development and Validation of a Nomogram for Predicting Severe Respiratory Illness in Children with Isolated Human Metapneumovirus Infection."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "missed_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "missed_pmid": "42796677",
+      "title": "Epidemiological and Molecular Characterization of Human Metapneumovirus (HMPV) in Children Under 14 Years of Age in Shijiazhuang City, China."
+    },
+    {
+      "organism": "Canine distemper virus",
+      "question": "What diagnostic assays or laboratory tests detect Canine distemper virus?",
+      "missed_pmid": "35491822",
+      "title": "Development and Validation of a Pan-Genotypic Real-Time Quantitative Reverse Transcription-PCR Assay To Detect Canine Distemper Virus and Phocine Distemper Virus in Domestic Animals and Wildlife."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
