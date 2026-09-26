@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T12:59:19.855200+00:00",
-  "runs": 62,
+  "updated": "2026-09-26T13:08:07.876231+00:00",
+  "runs": 63,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 9607,
-  "n_false_negatives": 2972,
+  "n_false_positives": 9784,
+  "n_false_negatives": 2994,
   "new_this_run": {
-    "false_positives": 219,
-    "false_negatives": 5
+    "false_positives": 177,
+    "false_negatives": 22
   },
   "false_positives": [
     {
@@ -107962,6 +107962,1959 @@
         "Common midwife toad virus",
         "Ranavirus"
       ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "cited_pmid": "38004704",
+      "title": "Development of a Melting-Curve-Based Multiplex Real-Time PCR Assay for the Simultaneous Detection of Viruses Causing Respiratory Infection.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What antiviral drugs or treatments are effective against SARS-CoV-2?",
+      "cited_pmid": "42682883",
+      "title": "Host cell entry receptors as pharmacological targets in respiratory viral infections: from biology to clinical translation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What antiviral drugs or treatments are effective against SARS-CoV-2?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What are the clinical symptoms and disease presentation of SARS-CoV-2?",
+      "cited_pmid": "42778896",
+      "title": "A decade of endemic human coronaviruses: epidemiological patterns and clinical significance in an adult cohort at a tertiary care hospital in Germany.",
+      "actual_organisms": [
+        "Human coronavirus 229E",
+        "Human coronavirus NL63",
+        "Human coronavirus OC43",
+        "http://purl.obolibrary.org/obo/NCBITaxon_290028",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "42781893",
+      "title": "Recurring Temporal Association Between Influenza A Epidemics and Subsequent Influenza B Dominance in Post-Pandemic Korea, 2022-2026.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "cited_pmid": "42788272",
+      "title": "Patterns in the dynamics of respiratory viruses after the COVID-19 pandemic: an observational, retrospective study using sentinel surveillance network data, Catalonia, 2022 to 2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42282816",
+      "title": "A phage display library to dissect antibody responses to human coronavirus spike proteins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694002",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "22876187",
+      "title": "Structural bases of coronavirus attachment to host aminopeptidase N and its inhibition by neutralizing antibodies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11146",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What is known about Human coronavirus OC43 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "23185609",
+      "title": "Human monoclonal antibodies against highly conserved HR1 and HR2 domains of the SARS-CoV spike protein are more broadly neutralizing.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus OC43?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "cited_pmid": "42673845",
+      "title": "Design, synthesis, and structural characterization of covalent tetrahydroquinoline-based inhibitors of coronavirus 3CLpro.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human coronavirus OC43",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus OC43?",
+      "cited_pmid": "42587342",
+      "title": "Synthesis of 1,3,5-Triazine-Indole Conjugates as Broad-Spectrum Coronavirus Entry Inhibitors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42551189",
+      "title": "Highly potent antiviral drug candidates targeting SARS-CoV-2 nsp3 and nsp5.",
+      "actual_organisms": [
+        "Middle East respiratory syndrome-related coronavirus",
+        "SARS-CoV-2",
+        "Severe acute respiratory syndrome-related coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42587342",
+      "title": "Synthesis of 1,3,5-Triazine-Indole Conjugates as Broad-Spectrum Coronavirus Entry Inhibitors.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What antiviral drugs or treatments are effective against Human coronavirus NL63?",
+      "cited_pmid": "42673845",
+      "title": "Design, synthesis, and structural characterization of covalent tetrahydroquinoline-based inhibitors of coronavirus 3CLpro.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human coronavirus 229E",
+      "question": "What is known about Human coronavirus 229E pathogenesis and transmission?",
+      "cited_pmid": "22820404",
+      "title": "Severe acute respiratory syndrome coronavirus accessory proteins 6 and 9b interact in vivo.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is known about Human respirovirus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42300833",
+      "title": "High prevalence and clinical impact of microbial co-detection in hospitalized children with human parainfluenza virus type 1.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What diagnostic assays or laboratory tests detect Human respirovirus 3?",
+      "cited_pmid": "37951882",
+      "title": "Establishment of RT-RPA-Cas12a assay for rapid and sensitive detection of human rhinovirus B.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "41396244",
+      "title": "Characterization of human parainfluenza virus type 2 circulating in southern France between 2017 and 2022 using whole-genome sequencing.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What is the genome organization and replication cycle of Human respirovirus 3?",
+      "cited_pmid": "42198700",
+      "title": "Whole-Genome Phylogenetic Characterization of Human Parainfluenza Virus Type 4 Circulating in St. Petersburg, Russia.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11224",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11226",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What antiviral drugs or treatments are effective against Human respirovirus 3?",
+      "cited_pmid": "35138785",
+      "title": "Paxlovid",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human respirovirus 3",
+      "question": "What are the clinical symptoms and disease presentation of Human respirovirus 3?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "cited_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Human metapneumovirus?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "Avian metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Human metapneumovirus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42646738",
+      "title": "Plant-Produced Vaccines for Protection from Human and Veterinary Coronaviruses.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33226742",
+      "title": "Casirivimab",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42219293",
+      "title": "Continued co-circulation of multiple human parainfluenza virus type 3 lineages in Fukushima and Miyagi, Japan in 2025.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "22820404",
+      "title": "Severe acute respiratory syndrome coronavirus accessory proteins 6 and 9b interact in vivo.",
+      "actual_organisms": [
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus pathogenesis and transmission?",
+      "cited_pmid": "42797780",
+      "title": "Dahlia Virome Analysis Reveals Multiple Novel Viruses in Mixed Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "42100657",
+      "title": "Development of an indirect enzyme-linked immunosorbent assay based on the nucleocapsid protein of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "cited_pmid": "42269389",
+      "title": "An extraction-free multiplex RT-PCR assay for simultaneous detection of six respiratory pathogens using polychromatic melting curve analysis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the genome organization and replication cycle of Sendai virus?",
+      "cited_pmid": "24821769",
+      "title": "Cryo-EM near-atomic structure of a dsRNA fungal virus shows ancient structural motifs preserved in the dsRNA viral lineage.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42720819",
+      "title": "Combined use of dill essential oil and tannic acid creates stage-specific, and time-dependent antiviral effect against bovine viral pathogens (BoHV-1, BVDV, BPIV-3, BRSV, and BEV).",
+      "actual_organisms": [
+        "Bovine parainfluenza virus 3",
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12064",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_801"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What antiviral drugs or treatments are effective against Sendai virus?",
+      "cited_pmid": "42772325",
+      "title": "Antiviral activity of Cirsium japonicum var. spinossimum extract and its flavonoid cirsimaritin against human coronavirus OC43.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "42788272",
+      "title": "Patterns in the dynamics of respiratory viruses after the COVID-19 pandemic: an observational, retrospective study using sentinel surveillance network data, Catalonia, 2022 to 2025.",
+      "actual_organisms": [
+        "Human coronavirus NL63",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is the epidemiology and outbreak history of Sendai virus?",
+      "cited_pmid": "41305396",
+      "title": "Long-Term Trends in Human Parainfluenza Virus Types 1, 2, and 3 Infection in Korea (2007-2024).",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "33789313",
+      "title": "Neonatal-Onset Familial Mediterranean Fever in an Infant with Human Parainfluenza Virus-4 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What are the clinical symptoms and disease presentation of Sendai virus?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is known about Influenza B virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40854331",
+      "title": "Development and optimisation of influenza C and influenza D pseudotyped viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What antiviral drugs or treatments are effective against Influenza B virus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Influenza B virus",
+      "question": "What is the epidemiology and outbreak history of Influenza B virus?",
+      "cited_pmid": "42781893",
+      "title": "Recurring Temporal Association Between Influenza A Epidemics and Subsequent Influenza B Dominance in Post-Pandemic Korea, 2022-2026.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Influenza C virus",
+      "question": "What is known about Influenza C virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "4246007",
+      "title": "A new influenza A virus infection in turkeys. VI. Artificial immunization against the malignant virus strain turkey-Ontario 7732-66.",
+      "actual_organisms": [
+        "Influenza A virus"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is the genome organization and replication cycle of Rhinovirus B?",
+      "cited_pmid": "24821769",
+      "title": "Cryo-EM near-atomic structure of a dsRNA fungal virus shows ancient structural motifs preserved in the dsRNA viral lineage.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "42682883",
+      "title": "Host cell entry receptors as pharmacological targets in respiratory viral infections: from biology to clinical translation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Rhinovirus B?",
+      "cited_pmid": "42783219",
+      "title": "Etiology and Clinical Manifestations of Acute Respiratory Infections in Pediatric Patients: A Retrospective Study in Moscow, Russia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797887",
+      "title": "Bovine Adenovirus 3-Based Viral Vectors for Veterinary Vaccine Development: Progress, Limitations, and Future Directions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42730619",
+      "title": "Imprinting-Like Serological Signatures in Human Adenovirus Infections Revealed by Cross-Adsorption Neutralization Profiling of HAdV-3, HAdV-5, and HAdV-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33226742",
+      "title": "Casirivimab",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B pathogenesis and transmission?",
+      "cited_pmid": "41989164",
+      "title": "CD46 and DSG2 synergistically mediate human adenovirus type 7 infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10519",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is known about Human mastadenovirus B pathogenesis and transmission?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42100657",
+      "title": "Development of an indirect enzyme-linked immunosorbent assay based on the nucleocapsid protein of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus B?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus B?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What antiviral drugs or treatments are effective against Human mastadenovirus B?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus B?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus B?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus B",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus B?",
+      "cited_pmid": "33789313",
+      "title": "Neonatal-Onset Familial Mediterranean Fever in an Infant with Human Parainfluenza Virus-4 Infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797887",
+      "title": "Bovine Adenovirus 3-Based Viral Vectors for Veterinary Vaccine Development: Progress, Limitations, and Future Directions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus D?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "42720153",
+      "title": "Emerging Trend of Notably High Prevalence of Human Enteric Adenovirus F41 Among Pediatric Patients With Acute Gastroenteritis in Thailand, 2022-2024.",
+      "actual_organisms": [
+        "Human mastadenovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10524",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "42529807",
+      "title": "National Burden of Human Adenovirus Infections in China: A Community-Based Multiplier Modeling Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_55883"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "41305396",
+      "title": "Long-Term Trends in Human Parainfluenza Virus Types 1, 2, and 3 Infection in Korea (2007-2024).",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What are the clinical symptoms and disease presentation of Human mastadenovirus D?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42646738",
+      "title": "Plant-Produced Vaccines for Protection from Human and Veterinary Coronaviruses.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus pathogenesis and transmission?",
+      "cited_pmid": "22819936",
+      "title": "Expression and purification of coronavirus envelope proteins using a modified \u03b2-barrel construct.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "Severe acute respiratory syndrome-related coronavirus"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What diagnostic assays or laboratory tests detect Human bocavirus?",
+      "cited_pmid": "37951882",
+      "title": "Establishment of RT-RPA-Cas12a assay for rapid and sensitive detection of human rhinovirus B.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the genome organization and replication cycle of Human bocavirus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "42708289",
+      "title": "Chalcones as a Platform for the Development of Novel Antiviral Agents: A Review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What antiviral drugs or treatments are effective against Human bocavirus?",
+      "cited_pmid": "35138785",
+      "title": "Paxlovid",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is the epidemiology and outbreak history of Human bocavirus?",
+      "cited_pmid": "22833101",
+      "title": "Genomic and serological detection of bat coronavirus from bats in the Philippines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1508220",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What are the clinical symptoms and disease presentation of Human bocavirus?",
+      "cited_pmid": "33734656",
+      "title": "Infections in Endocrinology: Viruses",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Avian infectious bronchitis virus?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "Avian metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What antiviral drugs or treatments are effective against Avian infectious bronchitis virus?",
+      "cited_pmid": "42682883",
+      "title": "Host cell entry receptors as pharmacological targets in respiratory viral infections: from biology to clinical translation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Avian infectious bronchitis virus?",
+      "cited_pmid": "42590789",
+      "title": "Comparative clinical, immunological, and pulmonary responses to virulent bovine respiratory syncytial virus infection in colostrum-fed, intranasally vaccinated calves.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797887",
+      "title": "Bovine Adenovirus 3-Based Viral Vectors for Veterinary Vaccine Development: Progress, Limitations, and Future Directions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine respiratory syncytial virus?",
+      "cited_pmid": "42100657",
+      "title": "Development of an indirect enzyme-linked immunosorbent assay based on the nucleocapsid protein of bovine parainfluenza virus type 3.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "cited_pmid": "41793875",
+      "title": "Comparative RNA-seq analysis of Bovine parainfluenza virus type 3 and its V gene-deleted variant reveals that deletion of the V gene affects autophagy signaling.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "cited_pmid": "42755548",
+      "title": "Isolation and Characterization of bovine parainfluenza virus type 3 genotype C from brown cattle with respiratory disease in Yili, Xinjiang, China.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What antiviral drugs or treatments are effective against Bovine respiratory syncytial virus?",
+      "cited_pmid": "42654763",
+      "title": "A Combined Intranasal and Parenteral Vaccination Strategy Reduces Morbidity and Antimicrobial Treatments Associated with Bovine Respiratory Disease in Danish Commercial Veal Calves.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_214906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75985"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42459547",
+      "title": "A novel bovine viral vaccine for reproductive safety and performance in cattle.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42536013",
+      "title": "Molecular basis for protection and cross-protection by human antibodies targeting the parainfluenza virus hemagglutinin-neuraminidase protein.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What diagnostic assays or laboratory tests detect Bovine parainfluenza virus 3?",
+      "cited_pmid": "42492780",
+      "title": "Standardization of a quantitative multiplex real-time PCR system for the detection of bovine respiratory disease pathogens in clinical samples of dairy cattle from southern Brazil.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11099",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11128",
+        "http://purl.obolibrary.org/obo/NCBITaxon_214906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2767358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2843852",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_54315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_745",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75984"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the genome organization and replication cycle of Bovine parainfluenza virus 3?",
+      "cited_pmid": "39203475",
+      "title": "Molecular Evolutionary Analyses of the Fusion Genes in Human Parainfluenza Virus Type 4.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is the epidemiology and outbreak history of Bovine parainfluenza virus 3?",
+      "cited_pmid": "42497673",
+      "title": "An intervention study to compare the outcome of administering a live intranasal Bovine Respiratory Syncytial Virus and Parainfluenza-3 vaccine to maternally derived antibody positive calves on the day of birth with calves vaccinated at one week of age.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus"
+      ]
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What are the clinical symptoms and disease presentation of Bovine parainfluenza virus 3?",
+      "cited_pmid": "42590789",
+      "title": "Comparative clinical, immunological, and pulmonary responses to virulent bovine respiratory syncytial virus infection in colostrum-fed, intranasally vaccinated calves.",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus pathogenesis and transmission?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus pathogenesis and transmission?",
+      "cited_pmid": "42796677",
+      "title": "Epidemiological and Molecular Characterization of Human Metapneumovirus (HMPV) in Children Under 14 Years of Age in Shijiazhuang City, China.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "41966613",
+      "title": "Evaluation of the clinical and analytical performance of the LIAISON PLEX for the qualitative detection of human adenovirus in respiratory samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "42522621",
+      "title": "[Production and preliminary application of monoclonal antibodies against structural proteins of human parainfluenza virus type 3].",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42340122",
+      "title": "Isolation of Metabolites With Antiviral Activity From the Brown Algae Dictyota fasciola and Dictyota mediterranea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10298",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1926659",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6191",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42772325",
+      "title": "Antiviral activity of Cirsium japonicum var. spinossimum extract and its flavonoid cirsimaritin against human coronavirus OC43.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 1",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 1?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41935577",
+      "title": "Development and characterization of neutralizing monoclonal antibodies against clinically relevant human adenovirus subgroup B serotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_167159",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "cited_pmid": "42233639",
+      "title": "Human parainfluenza virus 3 fusion protein cleavage: a key determinant of infection and spread.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "cited_pmid": "41105524",
+      "title": "Cytoplasmic domain of CM2 is involved in the replication of influenza C virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "cited_pmid": "42734165",
+      "title": "The Q653R substitution in the spike protein is associated with attenuation of a GVI-1 infectious bronchitis virus strain.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus pathogenesis and transmission?",
+      "cited_pmid": "39078148",
+      "title": "Comparison of mutations in human parainfluenza viruses during passage in primary human bronchial/tracheal epithelial air-liquid interface cultures and cell lines.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "Avian metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
+      "cited_pmid": "42507119",
+      "title": "Human Bocavirus (HBoV): An update on current status and future prospects in Saudi Arabia.",
+      "actual_organisms": [
+        "Human bocavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2005386"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What antiviral drugs or treatments are effective against Deformed wing virus?",
+      "cited_pmid": "42172325",
+      "title": "Developmental candidate GHP-88310/EIDD-3608 with high tolerability and oral efficacy in measles and respiratory paramyxovirus models.",
+      "actual_organisms": [
+        "Human respirovirus 3",
+        "Sendai virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What antiviral drugs or treatments are effective against Deformed wing virus?",
+      "cited_pmid": "42624304",
+      "title": "In vitro antiviral effects of an mTORC1 inhibitor targeting the rapamycin-binding protein complex.",
+      "actual_organisms": [
+        "Influenza A virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "34668744",
+      "title": "Eptesicus fuscus Orthorubulavirus, a Close Relative of Human Parainfluenza Virus 4, Discovered in a Bat in South Dakota.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1300978",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2884705",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2905673",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "22833101",
+      "title": "Genomic and serological detection of bat coronavirus from bats in the Philippines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1508220",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the epidemiology and outbreak history of Deformed wing virus?",
+      "cited_pmid": "41305396",
+      "title": "Long-Term Trends in Human Parainfluenza Virus Types 1, 2, and 3 Infection in Korea (2007-2024).",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the clinical symptoms and disease presentation of Deformed wing virus?",
+      "cited_pmid": "42501735",
+      "title": "Clinical characteristics and co-infection patterns of human metapneumovirus infection in children under 5 years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1507401"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is known about Penicillium chrysogenum virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42646738",
+      "title": "Plant-Produced Vaccines for Protection from Human and Veterinary Coronaviruses.",
+      "actual_organisms": [
+        "SARS-CoV-2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11149",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28295",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42715193",
+      "title": "Development of a multiplex real-time PCR assay with fluorescence probe-melting-curve analysis for one-tube detection of respiratory pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_169066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "42687618",
+      "title": "Enhanced Efficiency of the LLC-MK2 Cell Line with Stable Expression of TMPRSS2 in Isolating Human Parainfluenza Virus 3 from Respiratory Specimens.",
+      "actual_organisms": [
+        "Human respirovirus 3"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "cited_pmid": "36064562",
+      "title": "Seasonal epidemiological and clinical characteristics of pediatric patients with human parainfluenza virus infection by serotype: a retrospective study.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "Human parainfluenza virus 2",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "42744079",
+      "title": "Identification of 1,2-dihydroquinazolin-2-ones kinase inhibitors as anti-coronavirus agents.",
+      "actual_organisms": [
+        "Human coronavirus OC43"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is the epidemiology and outbreak history of Penicillium chrysogenum virus?",
+      "cited_pmid": "40021020",
+      "title": "Global epidemiology, seasonality and climatic drivers of the four human parainfluenza virus types.",
+      "actual_organisms": [
+        "Human parainfluenza virus 4",
+        "Human respirovirus 3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "42300833",
+      "title": "High prevalence and clinical impact of microbial co-detection in hospitalized children with human parainfluenza virus type 1.",
+      "actual_organisms": [
+        "Human parainfluenza virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1301",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 2?",
+      "cited_pmid": "35138785",
+      "title": "Paxlovid",
+      "actual_organisms": [
+        "SARS-CoV-2"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 4",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 4?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -125796,6 +127749,138 @@
       "question": "What is known about Cryphonectria hypovirus 1 and neutralizing antibodies or vaccines?",
       "missed_pmid": "42797802",
       "title": "Heterologous Expression of Cryphonectria Hypovirus 1 in Fusarium verticillioides Reveals Stable Replication and Reduced Fumonisin Production."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42566492",
+      "title": "Directed evolution of a stem-helix-targeting antibody enables MERS-CoV cross-neutralization through enhanced binding affinity."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is known about SARS-CoV-2 pathogenesis and transmission?",
+      "missed_pmid": "42712680",
+      "title": "Divergent lipid utilization strategies of SARS-CoV-2 and MERS-CoV revealed by comparative multi-omics profiling of infected mouse lung tissues."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What diagnostic assays or laboratory tests detect SARS-CoV-2?",
+      "missed_pmid": "42444019",
+      "title": "Clinical Characteristics of Seasonal Human Coronavirus Infections Among Children in the Post-COVID-19 Pandemic Era: A Retrospective Study Comparing HCoV Species and SARS-CoV-2 in Hokkaido, Japan, From April 2021 to September 2025."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "41169699",
+      "title": "Complete genome analysis of human influenza C virus co-infection with WU polyomavirus in a Sri Lankan child: A brief report."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "42709773",
+      "title": "Spatiotemporal dynamics and phylogeography of HCoV-NL63 and HCoV-OC43 in Thailand, 2024-2025."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What is the genome organization and replication cycle of SARS-CoV-2?",
+      "missed_pmid": "41698961",
+      "title": "Metagenomic sequencing identifies potential respiratory pathogens in PCR-negative subset of surveillance samples."
+    },
+    {
+      "organism": "SARS-CoV-2",
+      "question": "What are the clinical symptoms and disease presentation of SARS-CoV-2?",
+      "missed_pmid": "42733987",
+      "title": "Epidemiologic and Seasonal Trends of Four Endemic Human Coronaviruses in Korea from 2018 to 2024."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is known about Influenza A virus pathogenesis and transmission?",
+      "missed_pmid": "42152489",
+      "title": "Influenza a virus NS2 suppresses NFKB/NF-\u03baB signaling to facilitate viral replication by mediating the autophagic-degradation of IKBKG/NEMO."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the genome organization and replication cycle of Influenza A virus?",
+      "missed_pmid": "42774097",
+      "title": "Transcriptional signatures of respiratory syncytial virus (RSV) infection using relaxed magnitude altitude score with hub-centric network analysis (RMAS-HCNA)."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What is the epidemiology and outbreak history of Influenza A virus?",
+      "missed_pmid": "39310063",
+      "title": "Comparative study on the incidence of non-COVID-19 viral pneumonia before and after the COVID-19 pandemic: A retrospective analysis based on respiratory non-COVID viral nucleic acid results."
+    },
+    {
+      "organism": "Influenza A virus",
+      "question": "What are the clinical symptoms and disease presentation of Influenza A virus?",
+      "missed_pmid": "42756189",
+      "title": "Comparative epidemiology of six respiratory pathogens among children aged 28\u202fdays to 14\u202fyears with acute respiratory infections in coastal Xiamen and inland Linxia, China: a multicenter retrospective study."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is known about Human coronavirus NL63 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42249296",
+      "title": "Flexible bronchoscopy in young infants with hCoV-NL63-associated necrotizing laryngotracheobronchitis: findings and interventional value."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What diagnostic assays or laboratory tests detect Human coronavirus NL63?",
+      "missed_pmid": "42639089",
+      "title": "High prevalence of human coronaviruses in rural and urban Ghana in the post-COVID-19 era."
+    },
+    {
+      "organism": "Human coronavirus NL63",
+      "question": "What is the epidemiology and outbreak history of Human coronavirus NL63?",
+      "missed_pmid": "42788272",
+      "title": "Patterns in the dynamics of respiratory viruses after the COVID-19 pandemic: an observational, retrospective study using sentinel surveillance network data, Catalonia, 2022 to 2025."
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What is known about Sendai virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42748593",
+      "title": "Generation of TWO iPSC lines (CRICKi025-A and CRICKi026-A) from healthy donor bone marrow mesenchymal stromal cells."
+    },
+    {
+      "organism": "Sendai virus",
+      "question": "What diagnostic assays or laboratory tests detect Sendai virus?",
+      "missed_pmid": "42762668",
+      "title": "Generation of an induced pluripotent stem cell line, JHUi010-A, from an arrhythmogenic cardiomyopathy patient harboring pathogenic DSG2 variant c.2358delA."
+    },
+    {
+      "organism": "Human bocavirus",
+      "question": "What is known about Human bocavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42783219",
+      "title": "Etiology and Clinical Manifestations of Acute Respiratory Infections in Pediatric Patients: A Retrospective Study in Moscow, Russia."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Avian infectious bronchitis virus?",
+      "missed_pmid": "42795469",
+      "title": "A Colloidal Gold Immunochromatographic Strip Based on a Conserved Epitope Peptide for Rapid Detection of Antibodies Against Avian Infectious Bronchitis Virus."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What antiviral drugs or treatments are effective against Avian infectious bronchitis virus?",
+      "missed_pmid": "42786487",
+      "title": "Recombinant GI-19 infectious bronchitis virus induction of humoral immunosuppression with reduced HI antibody response following Newcastle disease virus vaccination and bursal cell apoptosis."
+    },
+    {
+      "organism": "Bovine parainfluenza virus 3",
+      "question": "What is known about Bovine parainfluenza virus 3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42616599",
+      "title": "PBLD promotes virus-induced pyroptosis via NF-\u03baB/Caspase-3/GSDME signaling pathway."
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus pathogenesis and transmission?",
+      "missed_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
