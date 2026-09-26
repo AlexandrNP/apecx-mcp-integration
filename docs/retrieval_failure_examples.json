@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T20:35:18.341084+00:00",
-  "runs": 103,
+  "updated": "2026-09-26T20:45:17.671665+00:00",
+  "runs": 104,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 14663,
-  "n_false_negatives": 3327,
+  "n_false_positives": 14716,
+  "n_false_negatives": 3350,
   "new_this_run": {
-    "false_positives": 72,
-    "false_negatives": 13
+    "false_positives": 53,
+    "false_negatives": 23
   },
   "false_positives": [
     {
@@ -165027,6 +165027,598 @@
       "actual_organisms": [
         "Yaba monkey tumor virus"
       ]
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What is known about Invertebrate iridescent virus 6 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29601483",
+      "title": "Invertebrate Iridoviruses: A Glance over the Last Decade.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What diagnostic assays or laboratory tests detect Invertebrate iridescent virus 6?",
+      "cited_pmid": "21392535",
+      "title": "Evaluation of a loop-mediated isothermal amplification assay for rapid diagnosis of soft-shelled turtle iridovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What diagnostic assays or laboratory tests detect Invertebrate iridescent virus 6?",
+      "cited_pmid": "32268179",
+      "title": "Rapid diagnosis of largemouth bass ranavirus in fish samples using the loop-mediated isothermal amplification method.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656"
+      ]
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What diagnostic assays or laboratory tests detect Invertebrate iridescent virus 6?",
+      "cited_pmid": "23665768",
+      "title": "A loop-mediated isothermal amplification method for the detection of members of the genus Ranavirus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409"
+      ]
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What is the epidemiology and outbreak history of Invertebrate iridescent virus 6?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What is known about Nodamura virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24725955",
+      "title": "Differential segregation of nodaviral coat protein and RNA into progeny virions during mixed infection with FHV and NoV.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "cited_pmid": "23665768",
+      "title": "A loop-mediated isothermal amplification method for the detection of members of the genus Ranavirus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "cited_pmid": "21392535",
+      "title": "Evaluation of a loop-mediated isothermal amplification assay for rapid diagnosis of soft-shelled turtle iridovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "cited_pmid": "32268179",
+      "title": "Rapid diagnosis of largemouth bass ranavirus in fish samples using the loop-mediated isothermal amplification method.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What is the genome organization and replication cycle of Nodamura virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What antiviral drugs or treatments are effective against Nodamura virus?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What is the epidemiology and outbreak history of Nodamura virus?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What are the clinical symptoms and disease presentation of Nodamura virus?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33424335",
+      "title": "Viral impacts on honey bee populations: A review.",
+      "actual_organisms": [
+        "Chronic bee paralysis virus",
+        "Slow bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41173177",
+      "title": "Infection timelines and co-infection effects of Israeli acute paralysis virus and deformed wing virus in the honey bee (Apis mellifera).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41173177",
+      "title": "Infection timelines and co-infection effects of Israeli acute paralysis virus and deformed wing virus in the honey bee (Apis mellifera).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41173177",
+      "title": "Infection timelines and co-infection effects of Israeli acute paralysis virus and deformed wing virus in the honey bee (Apis mellifera).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31300700",
+      "title": "Detection of replicative Kashmir Bee Virus and Black Queen Cell Virus in Asian hornet Vespa velutina (Lepelieter 1836) in Italy.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_68876",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Slow bee paralysis virus?",
+      "cited_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "cited_pmid": "23665768",
+      "title": "A loop-mediated isothermal amplification method for the detection of members of the genus Ranavirus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10401",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409"
+      ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What antiviral drugs or treatments are effective against Cryphonectria hypovirus 1?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34910561",
+      "title": "A Simple Multiplex Reverse Transcription-PCR Method for the Diagnosis of L-A and M Totiviruses in Saccharomyces cerevisiae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What diagnostic assays or laboratory tests detect Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "35062256",
+      "title": "Identification and Molecular Characterization of Novel Mycoviruses in Saccharomyces and Non-Saccharomyces Yeasts of Oenological Interest.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1247836",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186767",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186768",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_439488",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932",
+        "http://purl.obolibrary.org/obo/NCBITaxon_675059"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What antiviral drugs or treatments are effective against Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What are the clinical symptoms and disease presentation of Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What is known about Ustilago maydis virus H1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "24747010",
+      "title": "Selection and characterization of single-chain recombinant antibodies against infectious haematopoietic necrosis virus from mouse phage display library.",
+      "actual_organisms": [
+        "Soft-shelled turtle iridovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11287",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1906674",
+        "http://purl.obolibrary.org/obo/NCBITaxon_219584"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What antiviral drugs or treatments are effective against Ustilago maydis virus H1?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ustilago maydis virus H1",
+      "question": "What are the clinical symptoms and disease presentation of Ustilago maydis virus H1?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bohle iridovirus?",
+      "cited_pmid": "21392535",
+      "title": "Evaluation of a loop-mediated isothermal amplification assay for rapid diagnosis of soft-shelled turtle iridovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What antiviral drugs or treatments are effective against Bohle iridovirus?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What are the clinical symptoms and disease presentation of Bohle iridovirus?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What diagnostic assays or laboratory tests detect Ambystoma tigrinum virus?",
+      "cited_pmid": "21392535",
+      "title": "Evaluation of a loop-mediated isothermal amplification assay for rapid diagnosis of soft-shelled turtle iridovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What antiviral drugs or treatments are effective against Ambystoma tigrinum virus?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What are the clinical symptoms and disease presentation of Ambystoma tigrinum virus?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35343600",
+      "title": "Mouse circulating extracellular vesicles contain virus-derived siRNAs active in antiviral immunity.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64320"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "38630724",
+      "title": "Live-attenuated virus vaccine defective in RNAi suppression induces rapid protection in neonatal and adult mice lacking mature B and T cells.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "28844332",
+      "title": "The Ambystoma tigrinum virus (ATV) RNase III gene can modulate host PKR activation and interferon production.",
+      "actual_organisms": [
+        "Ambystoma tigrinum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_315953",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "21392535",
+      "title": "Evaluation of a loop-mediated isothermal amplification assay for rapid diagnosis of soft-shelled turtle iridovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What antiviral drugs or treatments are effective against Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "29921327",
+      "title": "Enhanced susceptibility of cancer cells to oncolytic rhabdo-virotherapy by expression of Nodamura virus protein B2 as a suppressor of RNA interference.",
+      "actual_organisms": [
+        "Nodamura virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Epizootic hematopoietic necrosis virus?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What is known about Common midwife toad virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "25266901",
+      "title": "Isolation of a Bohle-like iridovirus from boreal toads housed within a cosmopolitan aquarium collection.",
+      "actual_organisms": [
+        "Bohle iridovirus",
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1419340",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What is known about Common midwife toad virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "22163333",
+      "title": "Viruses of fish: an overview of significant pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What is the genome organization and replication cycle of Common midwife toad virus?",
+      "cited_pmid": "27812275",
+      "title": "Comparative Genomics of Amphibian-like Ranaviruses, Nucleocytoplasmic Large DNA Viruses of Poikilotherms.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2731341",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2732007"
+      ]
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What are the clinical symptoms and disease presentation of Common midwife toad virus?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the genome organization and replication cycle of Santee-Cooper ranavirus?",
+      "cited_pmid": "22570241",
+      "title": "Complete genome sequence of the European sheatfish virus.",
+      "actual_organisms": [
+        "Epizootic hematopoietic necrosis virus",
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1127767"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What antiviral drugs or treatments are effective against Santee-Cooper ranavirus?",
+      "cited_pmid": "42448070",
+      "title": "Cepharanthine suppresses LMBV replication via cell cycle arrest and immunomodulation.",
+      "actual_organisms": [
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_176656",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What is the epidemiology and outbreak history of Santee-Cooper ranavirus?",
+      "cited_pmid": "27315226",
+      "title": "Investigation of Amphibian Mortality Events in Wildlife Reveals an On-Going Ranavirus Epidemic in the North of the Netherlands.",
+      "actual_organisms": [
+        "Common midwife toad virus",
+        "Ranavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486"
+      ]
+    },
+    {
+      "organism": "Santee-Cooper ranavirus",
+      "question": "What are the clinical symptoms and disease presentation of Santee-Cooper ranavirus?",
+      "cited_pmid": "25678427",
+      "title": "Pathology of a Bohle-like virus infection in two Australian frog species (Litoria splendida and Litoria caerulea).",
+      "actual_organisms": [
+        "Ranavirus"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is known about Soft-shelled turtle iridovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "21392535",
+      "title": "Evaluation of a loop-mediated isothermal amplification assay for rapid diagnosis of soft-shelled turtle iridovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is the genome organization and replication cycle of Soft-shelled turtle iridovirus?",
+      "cited_pmid": "29601483",
+      "title": "Invertebrate Iridoviruses: A Glance over the Last Decade.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_51368"
+      ]
     }
   ],
   "false_negatives": [
@@ -184991,6 +185583,144 @@
       "question": "What is the genome organization and replication cycle of Koala retrovirus?",
       "missed_pmid": "38305758",
       "title": "A recent gibbon ape leukemia virus germline integration in a rodent from New Guinea."
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What is known about Invertebrate iridescent virus 6 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "29746571",
+      "title": "p38b and JAK-STAT signaling protect against Invertebrate iridescent virus 6 infection in Drosophila."
+    },
+    {
+      "organism": "Invertebrate iridescent virus 6",
+      "question": "What is known about Invertebrate iridescent virus 6 pathogenesis and transmission?",
+      "missed_pmid": "29708485",
+      "title": "Protein-protein interactions among the structural proteins of Chilo iridescent virus."
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What is known about Nodamura virus pathogenesis and transmission?",
+      "missed_pmid": "25843799",
+      "title": "RIG-I-dependent antiviral immunity is effective against an RNA virus encoding a potent suppressor of RNAi."
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "missed_pmid": "25753649",
+      "title": "Nodamura virus B2 amino terminal domain sensitivity to small interfering RNA."
+    },
+    {
+      "organism": "Nodamura virus",
+      "question": "What diagnostic assays or laboratory tests detect Nodamura virus?",
+      "missed_pmid": "25502394",
+      "title": "Rapid evolution of virus sequences in intrinsically disordered protein regions."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is the genome organization and replication cycle of Acute bee paralysis virus?",
+      "missed_pmid": "41561081",
+      "title": "Acute bee paralysis virus regulation of microRNA expression dynamics in the insect host (Apis mellifera) cell line, AmE-711."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40214029",
+      "title": "Use of Hive Debris to Detect Acute Bee Paralysis Virus, Chronic Bee Paralysis Virus and Deformed Wing Virus in Honey Bees: An Innovative and Non-Invasive Approach."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What is known about Chronic bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31300700",
+      "title": "Detection of replicative Kashmir Bee Virus and Black Queen Cell Virus in Asian hornet Vespa velutina (Lepelieter 1836) in Italy."
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What is known about Slow bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31834965",
+      "title": "Contrasting impacts of a novel specialist vector on multihost viral pathogen epidemiology in wild and managed bees."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Cryphonectria hypovirus 1?",
+      "missed_pmid": "36560682",
+      "title": "Canker Development and Biocontrol Potential of CHV-1 Infected English Isolates of Cryphonectria parasitica Is Dependent on the Virus Concentration and the Compatibility of the Fungal Inoculums."
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What diagnostic assays or laboratory tests detect Penicillium chrysogenum virus?",
+      "missed_pmid": "813998",
+      "title": "Action of nucleases on double-stranded RNA."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35127053",
+      "title": "Infection by dsRNA viruses is associated with enhanced sporulation efficiency in Saccharomyces cerevisiae."
+    },
+    {
+      "organism": "Sclerotinia sclerotiorum hypovirus 1",
+      "question": "What diagnostic assays or laboratory tests detect Sclerotinia sclerotiorum hypovirus 1?",
+      "missed_pmid": "21813149",
+      "title": "A novel mycovirus closely related to hypoviruses that infects the plant pathogenic fungus Sclerotinia sclerotiorum."
+    },
+    {
+      "organism": "Bohle iridovirus",
+      "question": "What is the genome organization and replication cycle of Bohle iridovirus?",
+      "missed_pmid": "25266901",
+      "title": "Isolation of a Bohle-like iridovirus from boreal toads housed within a cosmopolitan aquarium collection."
+    },
+    {
+      "organism": "Ambystoma tigrinum virus",
+      "question": "What is the genome organization and replication cycle of Ambystoma tigrinum virus?",
+      "missed_pmid": "19439104",
+      "title": "Complete sequence determination of a novel reptile iridovirus isolated from soft-shelled turtle and evolutionary analysis of Iridoviridae."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is known about Epizootic hematopoietic necrosis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "22405879",
+      "title": "Development of an in vitro system to measure the sensitivity to the antiviral Mx protein of fish viruses."
+    },
+    {
+      "organism": "Epizootic hematopoietic necrosis virus",
+      "question": "What is the genome organization and replication cycle of Epizootic hematopoietic necrosis virus?",
+      "missed_pmid": "22570241",
+      "title": "Complete genome sequence of the European sheatfish virus."
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What is known about Common midwife toad virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "27315226",
+      "title": "Investigation of Amphibian Mortality Events in Wildlife Reveals an On-Going Ranavirus Epidemic in the North of the Netherlands."
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What diagnostic assays or laboratory tests detect Common midwife toad virus?",
+      "missed_pmid": "27455198",
+      "title": "MONITORING RANAVIRUS-ASSOCIATED MORTALITY IN A DUTCH HEATHLAND IN THE AFTERMATH OF A RANAVIRUS DISEASE OUTBREAK."
+    },
+    {
+      "organism": "Common midwife toad virus",
+      "question": "What is the genome organization and replication cycle of Common midwife toad virus?",
+      "missed_pmid": "28803676",
+      "title": "Ranavirus phylogenomics: Signatures of recombination and inversions among bullfrog ranaculture isolates."
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What is known about Soft-shelled turtle iridovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "21756948",
+      "title": "Construction of green fluorescent protein-tagged recombinant iridovirus to assess viral replication."
+    },
+    {
+      "organism": "Soft-shelled turtle iridovirus",
+      "question": "What diagnostic assays or laboratory tests detect Soft-shelled turtle iridovirus?",
+      "missed_pmid": "19439104",
+      "title": "Complete sequence determination of a novel reptile iridovirus isolated from soft-shelled turtle and evolutionary analysis of Iridoviridae."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
