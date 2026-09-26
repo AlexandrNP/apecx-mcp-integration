@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-26T15:45:15.996421+00:00",
-  "runs": 78,
+  "updated": "2026-09-26T15:55:28.119458+00:00",
+  "runs": 79,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 11739,
-  "n_false_negatives": 3165,
+  "n_false_positives": 11789,
+  "n_false_negatives": 3169,
   "new_this_run": {
-    "false_positives": 88,
-    "false_negatives": 3
+    "false_positives": 50,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -132352,6 +132352,563 @@
         "Atlantic salmon paramyxovirus",
         "http://purl.obolibrary.org/obo/NCBITaxon_35350"
       ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genome organization and replication cycle of Tobacco mosaic virus?",
+      "cited_pmid": "42024191",
+      "title": "Analysis of bidirectional promoter activity and structure of the large intergenic region (LIR) in mulberry crinkle leaf virus.",
+      "actual_organisms": [
+        "Cauliflower mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2842884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845646"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genome organization and replication cycle of Tobacco mosaic virus?",
+      "cited_pmid": "40403429",
+      "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Tobacco mosaic virus?",
+      "cited_pmid": "42494488",
+      "title": "A novel pyrimidine-guanidine derivative YYH-6 confers tomato resistance to TYLCV via multitarget regulation of host defense genes and proteins.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "cited_pmid": "39639665",
+      "title": "Construction and Characterization of a Full-Length Infectious cDNA Clone of a Strain of Watermelon Mosaic Virus Isolated from Melon.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_358"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Cucumber mosaic virus?",
+      "cited_pmid": "40392308",
+      "title": "Viral Challenges in Wheat: Comprehensive Diagnosis and Innovative Management Approaches.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75746"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Cucumber mosaic virus?",
+      "cited_pmid": "41156646",
+      "title": "Characterization of the Pepper Virome in Oklahoma Reveals Emerging RNA and DNA Viruses.",
+      "actual_organisms": [
+        "Beet curly top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Tomato spotted wilt virus",
+      "question": "What diagnostic assays or laboratory tests detect Tomato spotted wilt virus?",
+      "cited_pmid": "41033674",
+      "title": "A Precise TaqMan-Based Real-Time qPCR Assay for Detecting and Quantifying Blackberry Chlorotic Ringspot Virus, Blueberry Shock Virus, and Plum Pox Virus in Fruit Tree Seedlings.",
+      "actual_organisms": [
+        "Plum pox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_339420",
+        "http://purl.obolibrary.org/obo/NCBITaxon_747056"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "40403429",
+      "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42636372",
+      "title": "A dominant mutation in tomato DNA POLYMERASE DELTA 1 causes geminivirus DNA replication catastrophe.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42295471",
+      "title": "Identification and characterization of an endogenous pararetrovirus in Gentiana triflora plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "41225909",
+      "title": "Characterization and Construction of Full-Length cDNA Infectious Clone of a Novel BCMV Isolate in Pathogroup III.",
+      "actual_organisms": [
+        "Bean common mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240595",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the epidemiology and outbreak history of Potato virus Y?",
+      "cited_pmid": "41156646",
+      "title": "Characterization of the Pepper Virome in Oklahoma Reveals Emerging RNA and DNA Viruses.",
+      "actual_organisms": [
+        "Beet curly top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the clinical symptoms and disease presentation of Potato virus Y?",
+      "cited_pmid": "40621851",
+      "title": "[Grapevine fanleaf virus biology].",
+      "actual_organisms": [
+        "Grapevine fanleaf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46003",
+        "http://purl.obolibrary.org/obo/NCBITaxon_6231"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is known about Cauliflower mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is known about Cauliflower mosaic virus pathogenesis and transmission?",
+      "cited_pmid": "42797780",
+      "title": "Dahlia Virome Analysis Reveals Multiple Novel Viruses in Mixed Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genome organization and replication cycle of Cauliflower mosaic virus?",
+      "cited_pmid": "42728462",
+      "title": "The complete genomic sequence of a novel member of the genus Caulimovirus isolated from Dregea volubilis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12315",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47903"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is known about Maize streak virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What diagnostic assays or laboratory tests detect Maize streak virus?",
+      "cited_pmid": "40392308",
+      "title": "Viral Challenges in Wheat: Comprehensive Diagnosis and Innovative Management Approaches.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75746"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What is the genome organization and replication cycle of Maize streak virus?",
+      "cited_pmid": "40173013",
+      "title": "A method for in-depth analysis of circular DNA virus populations by unambiguously profiling the low abundant virus variants and partial genomic components.",
+      "actual_organisms": [
+        "Banana bunchy top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_123735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What antiviral drugs or treatments are effective against Maize streak virus?",
+      "cited_pmid": "42793185",
+      "title": "Synthetic Potato Systemin Enhances Solanum tuberosum Resistance to Potato Virus Y.",
+      "actual_organisms": [
+        "Potato virus Y"
+      ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the clinical symptoms and disease presentation of Maize streak virus?",
+      "cited_pmid": "42771466",
+      "title": "Identification and Characterization of PVYN-Wi Isolates Associated with External Tuber Necrosis in the San Luis Valley (Colorado): A New Challenge for Seed Potato Certification.",
+      "actual_organisms": [
+        "Potato virus Y",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36048",
+        "http://purl.obolibrary.org/obo/NCBITaxon_95342"
+      ]
+    },
+    {
+      "organism": "Barley yellow dwarf virus",
+      "question": "What is the genome organization and replication cycle of Barley yellow dwarf virus?",
+      "cited_pmid": "40403429",
+      "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins.",
+      "actual_organisms": [
+        "Watermelon mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Plum pox virus",
+      "question": "What is the epidemiology and outbreak history of Plum pox virus?",
+      "cited_pmid": "41156646",
+      "title": "Characterization of the Pepper Virome in Oklahoma Reveals Emerging RNA and DNA Viruses.",
+      "actual_organisms": [
+        "Beet curly top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Citrus tristeza virus",
+      "question": "What is the genome organization and replication cycle of Citrus tristeza virus?",
+      "cited_pmid": "39772173",
+      "title": "Maize Streak Virus: Single and Gemini Capsid Architecture.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is known about Turnip mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "cited_pmid": "42295471",
+      "title": "Identification and characterization of an endogenous pararetrovirus in Gentiana triflora plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Turnip mosaic virus?",
+      "cited_pmid": "42793185",
+      "title": "Synthetic Potato Systemin Enhances Solanum tuberosum Resistance to Potato Virus Y.",
+      "actual_organisms": [
+        "Potato virus Y"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Turnip mosaic virus?",
+      "cited_pmid": "40020892",
+      "title": "Phylodynamics and phylogeography of watermelon mosaic virus: Multiple local invasion routes in southern France and recombination-driven limits to global analysis.",
+      "actual_organisms": [
+        "Watermelon mosaic virus"
+      ]
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Turnip mosaic virus?",
+      "cited_pmid": "42641121",
+      "title": "Dual functional plant gene inhibits viral infection and development of systemic necrosis symptoms by distinct mechanisms in Arabidopsis.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What is known about Rice yellow mottle virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What diagnostic assays or laboratory tests detect Rice yellow mottle virus?",
+      "cited_pmid": "41538379",
+      "title": "Improved Diagnostic Tools to Reliably Detect Modern Wheat Mosaic Virus Isolates.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_431317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What is the genome organization and replication cycle of Rice yellow mottle virus?",
+      "cited_pmid": "39772173",
+      "title": "Maize Streak Virus: Single and Gemini Capsid Architecture.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What is the genome organization and replication cycle of Rice yellow mottle virus?",
+      "cited_pmid": "42295471",
+      "title": "Identification and characterization of an endogenous pararetrovirus in Gentiana triflora plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What antiviral drugs or treatments are effective against Rice yellow mottle virus?",
+      "cited_pmid": "42494488",
+      "title": "A novel pyrimidine-guanidine derivative YYH-6 confers tomato resistance to TYLCV via multitarget regulation of host defense genes and proteins.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What antiviral drugs or treatments are effective against Rice yellow mottle virus?",
+      "cited_pmid": "40392308",
+      "title": "Viral Challenges in Wheat: Comprehensive Diagnosis and Innovative Management Approaches.",
+      "actual_organisms": [
+        "Wheat streak mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4751",
+        "http://purl.obolibrary.org/obo/NCBITaxon_70735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_75746"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What antiviral drugs or treatments are effective against Rice yellow mottle virus?",
+      "cited_pmid": "42793185",
+      "title": "Synthetic Potato Systemin Enhances Solanum tuberosum Resistance to Potato Virus Y.",
+      "actual_organisms": [
+        "Potato virus Y"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What is the epidemiology and outbreak history of Rice yellow mottle virus?",
+      "cited_pmid": "42410684",
+      "title": "Prevalence and diversity of yellow dwarf virus strains in Nebraska cereal crops.",
+      "actual_organisms": [
+        "Barley yellow dwarf virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169986",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2170100",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2908236",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rice yellow mottle virus",
+      "question": "What are the clinical symptoms and disease presentation of Rice yellow mottle virus?",
+      "cited_pmid": "42645550",
+      "title": "Emerging Viruses Associated with Chayote (Sechium edule): Current Knowledge, Perspectives, Insights, Challenges, and Future Directions.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is known about Beet curly top virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "cited_pmid": "41621718",
+      "title": "Rapid colorimetric detection of Citrus tristeza virus combining portable sample preparation and reverse transcription-loop mediated isothermal amplification.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is the genome organization and replication cycle of Beet curly top virus?",
+      "cited_pmid": "40173013",
+      "title": "A method for in-depth analysis of circular DNA virus populations by unambiguously profiling the low abundant virus variants and partial genomic components.",
+      "actual_organisms": [
+        "Banana bunchy top virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_123735",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the clinical symptoms and disease presentation of Beet curly top virus?",
+      "cited_pmid": "42797780",
+      "title": "Dahlia Virome Analysis Reveals Multiple Novel Viruses in Mixed Infections.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1077151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3700165"
+      ]
+    },
+    {
+      "organism": "Bean common mosaic virus",
+      "question": "What is the epidemiology and outbreak history of Bean common mosaic virus?",
+      "cited_pmid": "41069991",
+      "title": "Cassava mosaic disease in Burkina Faso: epidemiological aspects and disease management perspectives.",
+      "actual_organisms": [
+        "African cassava mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_62079"
+      ]
+    },
+    {
+      "organism": "Banana bunchy top virus",
+      "question": "What is known about Banana bunchy top virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Banana bunchy top virus",
+      "question": "What diagnostic assays or laboratory tests detect Banana bunchy top virus?",
+      "cited_pmid": "42092612",
+      "title": "Improved detection of rice yellow mottle virus with a polyclonal antibody xMAP assay: A high-throughput alternative to ELISA.",
+      "actual_organisms": [
+        "Maize streak virus",
+        "Rice yellow mottle virus"
+      ]
+    },
+    {
+      "organism": "Banana bunchy top virus",
+      "question": "What is the genome organization and replication cycle of Banana bunchy top virus?",
+      "cited_pmid": "42295471",
+      "title": "Identification and characterization of an endogenous pararetrovirus in Gentiana triflora plants.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10639",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Banana bunchy top virus",
+      "question": "What antiviral drugs or treatments are effective against Banana bunchy top virus?",
+      "cited_pmid": "42494488",
+      "title": "A novel pyrimidine-guanidine derivative YYH-6 confers tomato resistance to TYLCV via multitarget regulation of host defense genes and proteins.",
+      "actual_organisms": [
+        "Tomato yellow leaf curl virus"
+      ]
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is known about Watermelon mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42795354",
+      "title": "Construction and Characterization of an Attenuated Vaccine Vector Based on Cucumber Mosaic Virus RNA2.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
+      "cited_pmid": "41621718",
+      "title": "Rapid colorimetric detection of Citrus tristeza virus combining portable sample preparation and reverse transcription-loop mediated isothermal amplification.",
+      "actual_organisms": [
+        "Citrus tristeza virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -151344,6 +151901,30 @@
       "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
       "missed_pmid": "42790584",
       "title": "Highly sensitive detection and identification of six viruses in shrimps by universal primer based multiplex PCR."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is known about Turnip mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42796740",
+      "title": "Previous Viral Infection Triggers Fungal Resistance Breakdown in Host Plants."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is known about Turnip mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42780819",
+      "title": "Alterations to fungal and viral pathogen infection in coinfected plant cultivars with diverse single-pathogen host resistances."
+    },
+    {
+      "organism": "Turnip mosaic virus",
+      "question": "What is the genome organization and replication cycle of Turnip mosaic virus?",
+      "missed_pmid": "42341164",
+      "title": "Potyviral genome-linked protein targets NbMYB330 to attenuate hydrogen-peroxide-induced antiviral immunity in plants."
+    },
+    {
+      "organism": "Watermelon mosaic virus",
+      "question": "What is known about Watermelon mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40403429",
+      "title": "Construction of watermelon mosaic virus-Beijing isolate infectious clone and study of the dynamic localization and accumulation of virus-encoded proteins."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
