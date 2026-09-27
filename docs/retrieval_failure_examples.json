@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:36:05.659337+00:00",
-  "runs": 446,
+  "updated": "2026-09-27T22:37:44.054967+00:00",
+  "runs": 447,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24839,
-  "n_false_negatives": 4857,
+  "n_false_positives": 24846,
+  "n_false_negatives": 4863,
   "new_this_run": {
-    "false_positives": 8,
-    "false_negatives": 1
+    "false_positives": 7,
+    "false_negatives": 6
   },
   "false_positives": [
     {
@@ -280035,6 +280035,83 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33758",
         "http://purl.obolibrary.org/obo/NCBITaxon_42789"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C pathogenesis and transmission?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42198730",
+      "title": "Enterovirus Testing in Hand, Foot, and Mouth Disease and Herpangina: A Highly Sensitive Single-Round VP4-VP2 Reverse-Transcription Polymerase Chain Reaction Assay with a Redesigned Reverse Primer.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "cited_pmid": "42108465",
+      "title": "Complete genome sequencing and molecular characterization of indigenous enterovirus A71 genogroups D and G of India.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "188604",
+      "title": "Antirival activity of N-phenyl-N'-arylthiourea derivatives against some Rhinoviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42172979",
+      "title": "Towards the development of a mucosal vectored vaccine against enterovirus D68.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus A71?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
     }
   ],
   "false_negatives": [
@@ -309179,6 +309256,42 @@
       "question": "What antiviral drugs or treatments are effective against Echovirus 11?",
       "missed_pmid": "39599886",
       "title": "Recent Molecular Epidemiology of Echovirus 11 Throughout North and West Africa Resulted in the First Identification of a Recombinant Strain from an Acute Flaccid Paralysis Case in West Africa."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genome organization and replication cycle of Enterovirus C?",
+      "missed_pmid": "15269368",
+      "title": "Sequence analysis of human rhinoviruses in the RNA-dependent RNA polymerase coding region reveals large within-species variation."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B pathogenesis and transmission?",
+      "missed_pmid": "15269368",
+      "title": "Sequence analysis of human rhinoviruses in the RNA-dependent RNA polymerase coding region reveals large within-species variation."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What is known about Rhinovirus B pathogenesis and transmission?",
+      "missed_pmid": "15722530",
+      "title": "Phylogenetic analysis of human rhinovirus capsid protein VP1 and 2A protease coding sequences confirms shared genus-like relationships with human enteroviruses."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "missed_pmid": "18066110",
+      "title": "In vitro evaluation of the antiviral effects of the homeopathic preparation Gripp-Heel on selected respiratory viruses."
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "How does Rhinovirus B evade or modulate the host immune response?",
+      "missed_pmid": "23216743",
+      "title": "Spread of different rhinovirus B genotypes in hospitalized children in Spain."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus A71?",
+      "missed_pmid": "42198730",
+      "title": "Enterovirus Testing in Hand, Foot, and Mouth Disease and Herpangina: A Highly Sensitive Single-Round VP4-VP2 Reverse-Transcription Polymerase Chain Reaction Assay with a Redesigned Reverse Primer."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
