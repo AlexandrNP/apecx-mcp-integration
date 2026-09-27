@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:29:40.563736+00:00",
-  "runs": 278,
+  "updated": "2026-09-27T15:31:14.403921+00:00",
+  "runs": 279,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22711,
-  "n_false_negatives": 4008,
+  "n_false_positives": 22718,
+  "n_false_negatives": 4011,
   "new_this_run": {
-    "false_positives": 12,
-    "false_negatives": 12
+    "false_positives": 7,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -256657,6 +256657,83 @@
       "actual_organisms": [
         "Chelonid herpesvirus 5"
       ]
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "cited_pmid": "33383414",
+      "title": "Cryphonectria nitschkei chrysovirus 1 with unique molecular features and a very narrow host range.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_399394"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Penicillium chrysogenum virus?",
+      "cited_pmid": "35299787",
+      "title": "Long-read sequencing reveals the evolutionary drivers of intra-host diversity across natural RNA mycovirus infections.",
+      "actual_organisms": [
+        "Cryphonectria hypovirus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5115",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5116"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "27313294",
+      "title": "Genome Sequence of Saccharomyces cerevisiae Double-Stranded RNA Virus L-A-28.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "29019944",
+      "title": "Variation and Distribution of L-A Helper Totiviruses in Saccharomyces sensu stricto Yeasts Producing Different Killer Toxins.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_4930"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What is known about Saccharomyces cerevisiae virus L-A and neutralizing antibodies or vaccines?",
+      "cited_pmid": "27940540",
+      "title": "Relationships and Evolution of Double-Stranded RNA Totiviruses of Yeasts Inferred from Analysis of L-A-2 and L-BC Variants in Wine Yeast Strain Populations.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3152141",
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932"
+      ]
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "cited_pmid": "28757599",
+      "title": "Different Metabolic Pathways Are Involved in Response of Saccharomyces cerevisiae to L-A and M Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_4932"
+      ]
+    },
+    {
+      "organism": "Rosellinia necatrix megabirnavirus 1",
+      "question": "What antiviral drugs or treatments are effective against Rosellinia necatrix megabirnavirus 1?",
+      "cited_pmid": "27030271",
+      "title": "Differential Inductions of RNA Silencing among Encapsidated Double-Stranded RNA Mycoviruses in the White Root Rot Fungus Rosellinia necatrix.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1285597",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1299297",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_311227",
+        "http://purl.obolibrary.org/obo/NCBITaxon_674981",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77043",
+        "http://purl.obolibrary.org/obo/NCBITaxon_77044"
+      ]
     }
   ],
   "false_negatives": [
@@ -280707,6 +280784,24 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hematopoietic necrosis virus?",
       "missed_pmid": "12030764",
       "title": "Rapid differentiation of Australian, European and American ranaviruses based on variation in major capsid protein gene sequence."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genome organization and replication cycle of Cryphonectria hypovirus 1?",
+      "missed_pmid": "33563819",
+      "title": "Distinct Roles of Two DNA Methyltransferases from Cryphonectria parasitica in Fungal Virulence, Responses to Hypovirus Infection, and Viral Clearance."
+    },
+    {
+      "organism": "Cryphonectria hypovirus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cryphonectria hypovirus 1?",
+      "missed_pmid": "30673478",
+      "title": "Phenotypic and Molecular Investigations on Hypovirulent Cryphonectria parasitica in Italy."
+    },
+    {
+      "organism": "Saccharomyces cerevisiae virus L-A",
+      "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
+      "missed_pmid": "27711183",
+      "title": "XRN1 Is a Species-Specific Virus Restriction Factor in Yeasts."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
