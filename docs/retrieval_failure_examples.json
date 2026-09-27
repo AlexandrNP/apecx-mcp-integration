@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:47:57.417545+00:00",
-  "runs": 261,
+  "updated": "2026-09-27T14:49:31.072261+00:00",
+  "runs": 262,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22340,
+  "n_false_positives": 22361,
   "n_false_negatives": 3816,
   "new_this_run": {
-    "false_positives": 48,
-    "false_negatives": 13
+    "false_positives": 21,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -252610,6 +252610,234 @@
       "actual_organisms": [
         "Human papillomavirus type 51",
         "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What is known about Human papillomavirus 18 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 18?",
+      "cited_pmid": "9085547",
+      "title": "Identification of cis-regulatory elements in the upstream regulatory region of human papillomavirus type 59.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2846106"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 18",
+      "question": "How does Human papillomavirus 18 evade or modulate the host immune response?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10580",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 31?",
+      "cited_pmid": "37852554",
+      "title": "Co-infection with human papillomavirus and sexually transmitted infections among Chinese individuals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2130",
+        "http://purl.obolibrary.org/obo/NCBITaxon_813"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 31",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 31?",
+      "cited_pmid": "36471500",
+      "title": "Could HPV Type 33 Be More Risky Than We Thought?",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is known about Human papillomavirus type 45 pathogenesis and transmission?",
+      "cited_pmid": "8030272",
+      "title": "Nucleotide sequence and phylogenetic classification of human papillomavirus type 59.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What is known about Human papillomavirus type 45 pathogenesis and transmission?",
+      "cited_pmid": "10971130",
+      "title": "Propagation of human papillomavirus type 59 in the athymic mouse xenograft system.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 45?",
+      "cited_pmid": "37852554",
+      "title": "Co-infection with human papillomavirus and sexually transmitted infections among Chinese individuals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2130",
+        "http://purl.obolibrary.org/obo/NCBITaxon_813"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 45",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 45?",
+      "cited_pmid": "12726726",
+      "title": "Infection with the oncogenic human papillomavirus type 59 alters protein components of the cornified cell envelope.",
+      "actual_organisms": [
+        "Human papillomavirus type 59",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10580",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "33009576",
+      "title": "Sustained Cross-reactive Antibody Responses After Human Papillomavirus Vaccinations: Up to 12 Years Follow-up in the Finnish Maternity Cohort.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is known about Human papillomavirus type 52 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36322543",
+      "title": "Serologic Response to Human Papillomavirus Genotypes Among Unvaccinated Women: Findings From the HITCH Cohort Study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333750",
+        "http://purl.obolibrary.org/obo/NCBITaxon_333760"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 52?",
+      "cited_pmid": "36571268",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by GP5+/6+-PCR-based reverse dot blot hybridization assay and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 52?",
+      "cited_pmid": "34232709",
+      "title": "Regulation of Human Papillomavirus 18 Genome Replication, Establishment, and Persistence by Sequences in the Viral Upstream Regulatory Region.",
+      "actual_organisms": [
+        "Human papillomavirus 18",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "How does Human papillomavirus type 52 evade or modulate the host immune response?",
+      "cited_pmid": "35858339",
+      "title": "Apoptotic caspases suppress an MDA5-driven IFN response during productive replication of human papillomavirus type 31.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "29981762",
+      "title": "Genetic variability and lineage phylogeny of human papillomavirus type 45 based on E6 and E7 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 52",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 52?",
+      "cited_pmid": "36085531",
+      "title": "Analysis of the genomic diversity of human papillomavirus type 31 in cervical samples reveals the presence of novel sublineages in clade C.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 59?",
+      "cited_pmid": "36571268",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by GP5+/6+-PCR-based reverse dot blot hybridization assay and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 59?",
+      "cited_pmid": "36085531",
+      "title": "Analysis of the genomic diversity of human papillomavirus type 31 in cervical samples reveals the presence of novel sublineages in clade C.",
+      "actual_organisms": [
+        "Human papillomavirus type 31",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 59",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 59?",
+      "cited_pmid": "29981762",
+      "title": "Genetic variability and lineage phylogeny of human papillomavirus type 45 based on E6 and E7 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 45",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
       ]
     }
   ],
