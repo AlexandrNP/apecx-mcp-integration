@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:11:38.212636+00:00",
-  "runs": 462,
+  "updated": "2026-09-27T23:15:06.114675+00:00",
+  "runs": 463,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24918,
-  "n_false_negatives": 4874,
+  "n_false_positives": 24926,
+  "n_false_negatives": 4877,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 1
+    "false_positives": 8,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -280918,6 +280918,87 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_10319",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42228746",
+      "title": "VP1-141 is a determinant of a Vero cell-adapted Coxsackievirus A10 for vaccine development.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "42198730",
+      "title": "Enterovirus Testing in Hand, Foot, and Mouth Disease and Herpangina: A Highly Sensitive Single-Round VP4-VP2 Reverse-Transcription Polymerase Chain Reaction Assay with a Redesigned Reverse Primer.",
+      "actual_organisms": [
+        "Enterovirus A71",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138948"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "39599886",
+      "title": "Recent Molecular Epidemiology of Echovirus 11 Throughout North and West Africa Resulted in the First Identification of a Recombinant Strain from an Acute Flaccid Paralysis Case in West Africa.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "39495348",
+      "title": "A meningoencephalitis outbreak associated with echovirus type 18 (E18) in south-western Hungary in mid-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 11?",
+      "cited_pmid": "39335111",
+      "title": "Receptors and Host Factors for Enterovirus Infection: Implications for Cancer Therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 11?",
+      "cited_pmid": "37909741",
+      "title": "Molecular characterization of a novel clade echovirus 3 isolated from patients with hand-foot-and-mouth disease in southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47516"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
+      "cited_pmid": "37977075",
+      "title": "Changes in enterovirus epidemiology after easing of lockdown measures.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "cited_pmid": "39335111",
+      "title": "Receptors and Host Factors for Enterovirus Infection: Implications for Cancer Therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
     }
   ],
   "false_negatives": [
@@ -310164,6 +310245,24 @@
       "question": "What is the genome organization and replication cycle of Suid alphaherpesvirus 1?",
       "missed_pmid": "41893645",
       "title": "Veterinary Herpesviruses: Experimental Tools for Transcriptomics and Neuroscience."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What is known about Enterovirus A71 pathogenesis and transmission?",
+      "missed_pmid": "38270132",
+      "title": "Emerging Enterovirus A71 Subgenogroup B5 Causing Severe Hand, Foot, and Mouth Disease, Vietnam, 2023."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus A71?",
+      "missed_pmid": "40318791",
+      "title": "Peptides designed based on 3C substrates exhibit antiviral efficacy in vivo."
+    },
+    {
+      "organism": "Enterovirus A71",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus A71?",
+      "missed_pmid": "38189249",
+      "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
