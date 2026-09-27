@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:57:31.239849+00:00",
-  "runs": 240,
+  "updated": "2026-09-27T13:59:02.978310+00:00",
+  "runs": 241,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21913,
-  "n_false_negatives": 3645,
+  "n_false_positives": 21936,
+  "n_false_negatives": 3650,
   "new_this_run": {
-    "false_positives": 20,
+    "false_positives": 23,
     "false_negatives": 5
   },
   "false_positives": [
@@ -247876,6 +247876,264 @@
       "actual_organisms": [
         "Coxsackievirus A6"
       ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "cited_pmid": "41241852",
+      "title": "Cytopathic Effect and Morphogenesis of WUPyV in Human Airway Epithelial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "41725820",
+      "title": "Characterization of viral diversity in wild marmot blood from the Qinghai-Tibet Plateau.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_687329",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of BK polyomavirus?",
+      "cited_pmid": "37715108",
+      "title": "Identification of a novel polyomavirus in wild Sonoran Desert rodents of the family Heteromyidae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "41241852",
+      "title": "Cytopathic Effect and Morphogenesis of WUPyV in Human Airway Epithelial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "37715108",
+      "title": "Identification of a novel polyomavirus in wild Sonoran Desert rodents of the family Heteromyidae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genome organization and replication cycle of JC polyomavirus?",
+      "cited_pmid": "41304224",
+      "title": "ISG20 Restricts BK Polyomavirus Infection and Engages in Reciprocal Regulation with Viral Large T Antigen.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the epidemiology and outbreak history of JC polyomavirus?",
+      "cited_pmid": "35456801",
+      "title": "KI and WU Polyomaviruses: Seroprevalence Study and DNA Prevalence in SARS-CoV-2 RNA Positive and Negative Respiratory Samples.",
+      "actual_organisms": [
+        "WU polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42671253",
+      "title": "BKV activates the interferon-\u03b2 response in primary and immortalized microvascular endothelial cells late in the infectious cycle, resulting in persistence.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "How does JC polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42761272",
+      "title": "Synthetic consensus DNA vaccines against Merkel cell polyomavirus large and small T antigens induce robust polyfunctional T cell responses.",
+      "actual_organisms": [
+        "Merkel cell polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of JC polyomavirus?",
+      "cited_pmid": "41548497",
+      "title": "Molecular detection and phylogenetic analysis of KI polyomavirus and WU polyomavirus in respiratory tract samples from children under five.",
+      "actual_organisms": [
+        "KI polyomavirus",
+        "WU polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genome organization and replication cycle of Merkel cell polyomavirus?",
+      "cited_pmid": "41228301",
+      "title": "Molecular Characterization of Polyomavirus-Positive and Negative Merkel Cell Carcinoma.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of Merkel cell polyomavirus?",
+      "cited_pmid": "42656208",
+      "title": "Progressive multifocal leukoencephalopathy in an untreated chronic lymphocytic leukemia patient: Case report and review of the literature.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Merkel cell polyomavirus?",
+      "cited_pmid": "37715108",
+      "title": "Identification of a novel polyomavirus in wild Sonoran Desert rodents of the family Heteromyidae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Merkel cell polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Merkel cell polyomavirus?",
+      "cited_pmid": "41548497",
+      "title": "Molecular detection and phylogenetic analysis of KI polyomavirus and WU polyomavirus in respiratory tract samples from children under five.",
+      "actual_organisms": [
+        "KI polyomavirus",
+        "WU polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What antiviral drugs or treatments are effective against WU polyomavirus?",
+      "cited_pmid": "42715497",
+      "title": "Tenofovir in Progressive Multifocal Leukoencephalopathy: Virus Suppression Without Clinical Benefit in 2 Cases.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What are the clinical symptoms and disease presentation of WU polyomavirus?",
+      "cited_pmid": "42656208",
+      "title": "Progressive multifocal leukoencephalopathy in an untreated chronic lymphocytic leukemia patient: Case report and review of the literature.",
+      "actual_organisms": [
+        "JC polyomavirus"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "How does WU polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42744829",
+      "title": "PD-1 regulates CD4+ T cell-mediated CD8+ T cell responses in the brain to balance viral control and neuroinflammation.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "How does WU polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of WU polyomavirus?",
+      "cited_pmid": "37715108",
+      "title": "Identification of a novel polyomavirus in wild Sonoran Desert rodents of the family Heteromyidae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of KI polyomavirus?",
+      "cited_pmid": "41241852",
+      "title": "Cytopathic Effect and Morphogenesis of WUPyV in Human Airway Epithelial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of KI polyomavirus?",
+      "cited_pmid": "42671253",
+      "title": "BKV activates the interferon-\u03b2 response in primary and immortalized microvascular endothelial cells late in the infectious cycle, resulting in persistence.",
+      "actual_organisms": [
+        "BK polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "How does KI polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42737859",
+      "title": "Immune Evasion by Neurotropic Viruses: Molecular Strategies, Cellular Targets, and Consequences for CNS Infection.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10358",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "How does KI polyomavirus evade or modulate the host immune response?",
+      "cited_pmid": "42744829",
+      "title": "PD-1 regulates CD4+ T cell-mediated CD8+ T cell responses in the brain to balance viral control and neuroinflammation.",
+      "actual_organisms": [
+        "JC polyomavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1891730",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_36362"
+      ]
     }
   ],
   "false_negatives": [
@@ -269748,6 +270006,36 @@
       "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
       "missed_pmid": "42220743",
       "title": "Onychomadesis: A Rare Manifestation of Coxsackievirus A6 Infection in an Adult Patient."
+    },
+    {
+      "organism": "BK polyomavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of BK polyomavirus?",
+      "missed_pmid": "40677315",
+      "title": "A Novel Perspective on Tubular C4d Positivity in BK Polyomavirus Nephropathy."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What is known about JC polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35417947",
+      "title": "[The phenomenon of pseudotumorous cross immunohistochemical reactivity of glia in progressive multifocal leukoencephalopathy]."
+    },
+    {
+      "organism": "JC polyomavirus",
+      "question": "What diagnostic assays or laboratory tests detect JC polyomavirus?",
+      "missed_pmid": "42656208",
+      "title": "Progressive multifocal leukoencephalopathy in an untreated chronic lymphocytic leukemia patient: Case report and review of the literature."
+    },
+    {
+      "organism": "WU polyomavirus",
+      "question": "What is the genome organization and replication cycle of WU polyomavirus?",
+      "missed_pmid": "34207902",
+      "title": "KI and WU Polyomavirus in Respiratory Samples of SARS-CoV-2 Infected Patients."
+    },
+    {
+      "organism": "KI polyomavirus",
+      "question": "What is known about KI polyomavirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33895421",
+      "title": "Heterogeneous associations of polyomaviruses and herpesviruses with allergy-related phenotypes in childhood."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
