@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:56:23.837041+00:00",
-  "runs": 266,
+  "updated": "2026-09-27T14:58:04.379413+00:00",
+  "runs": 267,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22435,
-  "n_false_negatives": 3854,
+  "n_false_positives": 22451,
+  "n_false_negatives": 3865,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 10
+    "false_positives": 16,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -253639,6 +253639,200 @@
       "actual_organisms": [
         "Equine infectious anemia virus"
       ]
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Jaagsiekte sheep retrovirus?",
+      "cited_pmid": "36851488",
+      "title": "Unique Structure and Distinctive Properties of the Ancient and Ubiquitous Gamma-Type Envelope Glycoprotein.",
+      "actual_organisms": [
+        "Rous sarcoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian foamy virus?",
+      "cited_pmid": "36146781",
+      "title": "Occurrence of Equine Foamy Virus Infection in Horses from Poland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_109270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What is known about Bovine foamy virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35605011",
+      "title": "Plasma antibodies from humans infected with zoonotic simian foamy virus do not inhibit cell-to-cell transmission of the virus despite binding to the surface of infected cells.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What is known about Bovine foamy virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "36146781",
+      "title": "Occurrence of Equine Foamy Virus Infection in Horses from Poland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_109270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine foamy virus?",
+      "cited_pmid": "36851589",
+      "title": "A Combined Approach for Detection of Ovine Small Ruminant Retrovirus Co-Infections.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169971",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What diagnostic assays or laboratory tests detect Bovine foamy virus?",
+      "cited_pmid": "39424126",
+      "title": "Establishment and validation of a real-time fluorescent PCR freeze-dried type assay for 11 sheep and goats pathogens.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10258",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12110",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_171632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47898",
+        "http://purl.obolibrary.org/obo/NCBITaxon_777",
+        "http://purl.obolibrary.org/obo/NCBITaxon_83555"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What is the genome organization and replication cycle of Bovine foamy virus?",
+      "cited_pmid": "37885034",
+      "title": "PREB inhibits the replication of prototype foamy virus by affecting its transcription.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11963"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What are the clinical symptoms and disease presentation of Bovine foamy virus?",
+      "cited_pmid": "37760228",
+      "title": "Pathological Spectrum of Ovine Pulmonary Adenocarcinoma in Small Ruminants: A Focus on the Mixed Form.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_140052"
+      ]
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine foamy virus?",
+      "cited_pmid": "36878926",
+      "title": "The crystal structure of a simian Foamy Virus receptor binding domain provides clues about entry into host cells.",
+      "actual_organisms": [
+        "Simian foamy virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is known about Rous sarcoma virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "35525404",
+      "title": "Dual display hemagglutinin 1 and 5 on the surface of enveloped virus-like particles in silkworm expression system.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_102793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_114727",
+        "http://purl.obolibrary.org/obo/NCBITaxon_271108",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Rous sarcoma virus?",
+      "cited_pmid": "36851589",
+      "title": "A Combined Approach for Detection of Ovine Small Ruminant Retrovirus Co-Infections.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11660",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169971",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genome organization and replication cycle of Rous sarcoma virus?",
+      "cited_pmid": "35632854",
+      "title": "Retroviral RNA Processing.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the clinical symptoms and disease presentation of Rous sarcoma virus?",
+      "cited_pmid": "37760228",
+      "title": "Pathological Spectrum of Ovine Pulmonary Adenocarcinoma in Small Ruminants: A Focus on the Mixed Form.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_140052"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "cited_pmid": "39644946",
+      "title": "Discovery of two novel foamy viruses in sea lions and dolphins provides insight into their evolutionary history.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2169668",
+        "http://purl.obolibrary.org/obo/NCBITaxon_327046"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "cited_pmid": "41754570",
+      "title": "Co-Infection and Phylogenetic Evolution of CIAV in Marek's Disease Tumour-Bearing Flocks in Central China.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11636",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "cited_pmid": "39583158",
+      "title": "Association between genetic clades and cancer prevalence suggested by French-wide study of oncogenic small ruminant \u03b2-retrovirus diversity.",
+      "actual_organisms": [
+        "Jaagsiekte sheep retrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2913605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64283",
+        "http://purl.obolibrary.org/obo/NCBITaxon_69576"
+      ]
     }
   ],
   "false_negatives": [
@@ -276765,6 +276959,72 @@
       "question": "What diagnostic assays or laboratory tests detect Caprine arthritis encephalitis virus?",
       "missed_pmid": "36558875",
       "title": "Loss of Caprine Arthritis Encephalitis Virus (CAEV) Herd Accreditation: Characteristics, Diagnostic Approach, and Specific Follow-Up Scenarios on Large Dairy Goat Farms."
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What is the epidemiology and outbreak history of Jaagsiekte sheep retrovirus?",
+      "missed_pmid": "36849557",
+      "title": "Molecular detection of mixed infection with peste des petits ruminants and retroviruses in Egyptian sheep and goats."
+    },
+    {
+      "organism": "Jaagsiekte sheep retrovirus",
+      "question": "What are the clinical symptoms and disease presentation of Jaagsiekte sheep retrovirus?",
+      "missed_pmid": "37901353",
+      "title": "Differences in CpG island distribution between exogenous and endogenous jaagsiekte sheep retrovirus strains."
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is the epidemiology and outbreak history of Simian foamy virus?",
+      "missed_pmid": "35605011",
+      "title": "Plasma antibodies from humans infected with zoonotic simian foamy virus do not inhibit cell-to-cell transmission of the virus despite binding to the surface of infected cells."
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What is known about Bovine foamy virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33147813",
+      "title": "Functional Analyses of Bovine Foamy Virus-Encoded miRNAs Reveal the Importance of a Defined miRNA for Virus Replication and Host-Virus Interaction."
+    },
+    {
+      "organism": "Bovine foamy virus",
+      "question": "What is known about Bovine foamy virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37766274",
+      "title": "Effects of Chemokine Ligand 2 on Budding of Bovine Foamy Virus."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is known about Rous sarcoma virus pathogenesis and transmission?",
+      "missed_pmid": "34934184",
+      "title": "The expression profiles of chemokines, innate immune and apoptotic genes in tumors caused by Rous Sarcoma Virus (RSV-A) in chickens."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Rous sarcoma virus?",
+      "missed_pmid": "34329985",
+      "title": "Research Note: Rous sarcoma growth differs among congenic lines containing major histocompatibility (B) complex recombinants."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Rous sarcoma virus?",
+      "missed_pmid": "34798320",
+      "title": "Identification of novel microRNAs in Rous sarcoma Virus (RSV) and their target sites in tumor suppressor genes of chicken."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Rous sarcoma virus?",
+      "missed_pmid": "35038897",
+      "title": "Novel Function of Avian p53 in Binding to ALV-J LTR Contributes to Its Antiviral Roles."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rous sarcoma virus?",
+      "missed_pmid": "34374542",
+      "title": "Curvature of the Retroviral Capsid Assembly Is Modulated by a Molecular Switch."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "missed_pmid": "36851488",
+      "title": "Unique Structure and Distinctive Properties of the Ancient and Ubiquitous Gamma-Type Envelope Glycoprotein."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
