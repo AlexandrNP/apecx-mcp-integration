@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:17:12.796340+00:00",
-  "runs": 464,
+  "updated": "2026-09-27T23:19:05.432286+00:00",
+  "runs": 465,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24927,
+  "n_false_positives": 24929,
   "n_false_negatives": 4880,
   "new_this_run": {
-    "false_positives": 1,
-    "false_negatives": 3
+    "false_positives": 2,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -281009,6 +281009,27 @@
         "Enterovirus A71",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "41321839",
+      "title": "Epidemiology and genetic characteristics of coxsackievirus A16 associated with hand-foot-mouth disease in Hangzhou city, Zhejiang province from 2021 to 2024.",
+      "actual_organisms": [
+        "Coxsackievirus A16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A16",
+      "question": "What is known about Coxsackievirus A16 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42212125",
+      "title": "Antigenic characterization and mapping of a conserved neutralizing epitope on VP1 of coxsackievirus A5.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42786"
       ]
     }
   ],
