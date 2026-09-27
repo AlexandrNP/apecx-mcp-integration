@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:40:57.306047+00:00",
-  "runs": 389,
+  "updated": "2026-09-27T20:42:49.232664+00:00",
+  "runs": 390,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24282,
-  "n_false_negatives": 4792,
+  "n_false_positives": 24295,
+  "n_false_negatives": 4802,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 7
+    "false_positives": 13,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -273715,6 +273715,146 @@
       "actual_organisms": [
         "Cyprinid herpesvirus 3"
       ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42231532",
+      "title": "Pediatric NIH Workshop: Session III-Specialties and Complexities of Juvenile NHP Models for HIV Prevention Research.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Simian immunodeficiency virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_57667",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What is known about Human immunodeficiency virus 2 pathogenesis and transmission?",
+      "cited_pmid": "1823118",
+      "title": "Transient high levels of viremia in patients with primary human immunodeficiency virus type 1 infection.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human immunodeficiency virus 2?",
+      "cited_pmid": "42054824",
+      "title": "Evaluation of a modified 2-step diagnostic algorithm for human immunodeficiency virus type 1 utilizing an HIV-1/2 antigen/antibody immunoassay screen and an HIV nucleic acid amplification test.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 2?",
+      "cited_pmid": "1900576",
+      "title": "High titers of cytopathic virus in plasma of patients with symptomatic primary HIV-1 infection.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "cited_pmid": "31826843",
+      "title": "Inhibitors of the interferon response increase the replication of gorilla simian foamy viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "41900452",
+      "title": "Advancing HIV Diagnostics: Comparative Evaluation of Multisure HIV-1/2 Rapid Confirmatory Test Against Geenius and Traditional Reference Assays Within a CDC-Aligned Diagnostic Framework.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Human immunodeficiency virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "42054824",
+      "title": "Evaluation of a modified 2-step diagnostic algorithm for human immunodeficiency virus type 1 utilizing an HIV-1/2 antigen/antibody immunoassay screen and an HIV nucleic acid amplification test.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "41959410",
+      "title": "Atlas of HIV cis-regulatory elements reveals extensive transcriptional variation across clades, isolates, and within individuals.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "Human immunodeficiency virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "cited_pmid": "1900576",
+      "title": "High titers of cytopathic virus in plasma of patients with symptomatic primary HIV-1 infection.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the clinical symptoms and disease presentation of Simian immunodeficiency virus?",
+      "cited_pmid": "1823118",
+      "title": "Transient high levels of viremia in patients with primary human immunodeficiency virus type 1 infection.",
+      "actual_organisms": [
+        "Human immunodeficiency virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is known about Simian foamy virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31635161",
+      "title": "Simian Foamy Viruses in Central and South America: A New World of Discovery.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is known about Simian foamy virus pathogenesis and transmission?",
+      "cited_pmid": "31766538",
+      "title": "Bovine Foamy Virus: Shared and Unique Molecular Features In Vitro and In Vivo.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_207343",
+        "http://purl.obolibrary.org/obo/NCBITaxon_327046",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What antiviral drugs or treatments are effective against Simian foamy virus?",
+      "cited_pmid": "31826843",
+      "title": "Inhibitors of the interferon response increase the replication of gorilla simian foamy viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10271"
+      ]
     }
   ],
   "false_negatives": [
@@ -302469,6 +302609,66 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Chelonid herpesvirus 5?",
       "missed_pmid": "29960922",
       "title": "Molecular evolution of fibropapilloma-associated herpesviruses infecting juvenile green and loggerhead sea turtles."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the genome organization and replication cycle of Human immunodeficiency virus 1?",
+      "missed_pmid": "2027749",
+      "title": "Identification and analysis of antisense RNA target regions of the human immunodeficiency virus type 1."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What is the epidemiology and outbreak history of Human immunodeficiency virus 1?",
+      "missed_pmid": "1900576",
+      "title": "High titers of cytopathic virus in plasma of patients with symptomatic primary HIV-1 infection."
+    },
+    {
+      "organism": "Human immunodeficiency virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human immunodeficiency virus 1?",
+      "missed_pmid": "1823118",
+      "title": "Transient high levels of viremia in patients with primary human immunodeficiency virus type 1 infection."
+    },
+    {
+      "organism": "Human immunodeficiency virus 2",
+      "question": "What are the clinical symptoms and disease presentation of Human immunodeficiency virus 2?",
+      "missed_pmid": "42062072",
+      "title": "False-positive HIV-2 serology in a patient with multibacillary leprosy."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus pathogenesis and transmission?",
+      "missed_pmid": "42231532",
+      "title": "Pediatric NIH Workshop: Session III-Specialties and Complexities of Juvenile NHP Models for HIV Prevention Research."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Simian immunodeficiency virus?",
+      "missed_pmid": "42212707",
+      "title": "The Spatial Biology of HIV Transmission and Infection: Imaging the Female and Male Reproductive Tracts."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "How does Simian immunodeficiency virus evade or modulate the host immune response?",
+      "missed_pmid": "42162557",
+      "title": "Depletion and recovery of IgG following treatment with an anti-FcRn antibody and IdeS in pigtail macaques."
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is known about Simian foamy virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31582445",
+      "title": "Complete Genome Sequence of a Papio anubis Simian Foamy Provirus."
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is known about Simian foamy virus pathogenesis and transmission?",
+      "missed_pmid": "31658739",
+      "title": "Eco-Epidemiological Profile and Molecular Characterization of Simian Foamy Virus in a Recently-Captured Invasive Population of Leontopithecus chrysomelas (Golden-Headed Lion Tamarin) in Rio de Janeiro, Brazil."
+    },
+    {
+      "organism": "Simian foamy virus",
+      "question": "What is the epidemiology and outbreak history of Simian foamy virus?",
+      "missed_pmid": "32268512",
+      "title": "Genome Analysis and Replication Studies of the African Green Monkey Simian Foamy Virus Serotype 3 Strain FV2014."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
