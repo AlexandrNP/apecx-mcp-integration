@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:08:02.780812+00:00",
-  "runs": 432,
+  "updated": "2026-09-27T22:10:31.220974+00:00",
+  "runs": 433,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24704,
+  "n_false_positives": 24718,
   "n_false_negatives": 4850,
   "new_this_run": {
-    "false_positives": 2,
+    "false_positives": 14,
     "false_negatives": 0
   },
   "false_positives": [
@@ -278521,6 +278521,156 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_12078",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "41615588",
+      "title": "Molecular insights into astrovirus, kobuvirus and rotavirus a coinfection in pigs (Sus domesticus) from Haryana, India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10967",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1156769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239567",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28875"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "35592728",
+      "title": "Approaches applied to detect SARS-CoV-2 in wastewater and perspectives post-COVID-19.",
+      "actual_organisms": [
+        "Mengovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "42429385",
+      "title": "Molecular Types of Rhinovirus Among Cases of Acute Respiratory Infections in a University Hospital.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42391313",
+      "title": "RNF31 restricts EV-A71 replication through innate immune activation and VP4 degradation, and is antagonized by viral 3C proteases.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733614",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42172979",
+      "title": "Towards the development of a mucosal vectored vaccine against enterovirus D68.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "42170749",
+      "title": "Prospective use of wastewater surveillance for early detection of enterovirus D68 in community outbreaks among children, Niigata City, Japan, 2024.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genome organization and replication cycle of Mengovirus?",
+      "cited_pmid": "42584091",
+      "title": "Genomic surveillance of enterovirus D68 circulating in 2025 reveals the emergence of a novel A2/B3 recombinant lineage.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42341523",
+      "title": "Myricetin prevents lethal enterovirus infection by broadly targeting a conserved surface-exposed loops on the VP1 capsid.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31631",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42205094",
+      "title": "Enterovirus D68 Epidemic in Children With Acute Respiratory Infections in Beijing, China, 2017-2024.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "42366172",
+      "title": "Household Transmission of Enterovirus D68, Washington and Oregon, United States, 2022-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42156043",
+      "title": "[Acute Flaccid Myelitis].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42750430",
+      "title": "Clinical Characteristics of Enterovirus D68 Respiratory Disease in Colorado Children Over a Decade: 2014-2025.",
+      "actual_organisms": [
+        "Enterovirus D68"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "42189918",
+      "title": "Decoding the complex receptor landscape of enterovirus D68.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42501789",
+      "title": "First report and molecular characterization of bovine kobuvirus in beef cattle from eastern Inner Mongolia, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1476554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
       ]
     }
   ],
