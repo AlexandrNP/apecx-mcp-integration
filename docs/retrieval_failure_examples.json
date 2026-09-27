@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T08:58:06.876240+00:00",
-  "runs": 188,
+  "updated": "2026-09-27T09:01:21.061817+00:00",
+  "runs": 189,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20130,
-  "n_false_negatives": 3571,
+  "n_false_positives": 20153,
+  "n_false_negatives": 3574,
   "new_this_run": {
-    "false_positives": 38,
-    "false_negatives": 2
+    "false_positives": 23,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -227389,6 +227389,272 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3241425",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "42432512",
+      "title": "Novel iflavirus species discovered through virome analysis of cotton field-collected aphids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980417",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "38971572",
+      "title": "Molecular investigation and infection patterns of seven viruses of honey bee (Apis mellifera L, 1758) populations from southeastern Morocco.",
+      "actual_organisms": [
+        "Black queen cell virus",
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "Kashmir bee virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Cricket paralysis virus?",
+      "cited_pmid": "42364905",
+      "title": "Persistence of deformed wing virus (DWV) in Apis mellifera L. colonies after Varroa destructor treatment with oxalic acid and amitraz.",
+      "actual_organisms": [
+        "Deformed wing virus"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Cricket paralysis virus?",
+      "cited_pmid": "39747229",
+      "title": "Regional patterns and climatic predictors of viruses in honey bee (Apis mellifera) colonies over time.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cricket paralysis virus?",
+      "cited_pmid": "41600909",
+      "title": "Viruses Infecting Cuban Honey Bees and Evolution of Deformed-Wing-Virus Variants.",
+      "actual_organisms": [
+        "Black queen cell virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cricket paralysis virus?",
+      "cited_pmid": "38959190",
+      "title": "Varroa destructor shapes the unique viral landscapes of the honey bee populations of the Azores archipelago.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cricket paralysis virus?",
+      "cited_pmid": "42432512",
+      "title": "Novel iflavirus species discovered through virome analysis of cotton field-collected aphids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980417",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "42058241",
+      "title": "Epidemiological Study and Phylogenetic analysis of Common Pathogenic Viruses of Honeybee in Apiaries of Iran.",
+      "actual_organisms": [
+        "Black queen cell virus",
+        "Deformed wing virus",
+        "Kashmir bee virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845793",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "42306944",
+      "title": "Genetic mechanisms underlying the structural elaboration and dissemination of viral internal ribosomal entry sites.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_324901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39738",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Israeli acute paralysis virus?",
+      "cited_pmid": "40140539",
+      "title": "Sporogen-AO1 inhibits eukaryotic translation elongation.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Israeli acute paralysis virus?",
+      "cited_pmid": "41600909",
+      "title": "Viruses Infecting Cuban Honey Bees and Evolution of Deformed-Wing-Virus Variants.",
+      "actual_organisms": [
+        "Black queen cell virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Israeli acute paralysis virus?",
+      "cited_pmid": "38959190",
+      "title": "Varroa destructor shapes the unique viral landscapes of the honey bee populations of the Azores archipelago.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Israeli acute paralysis virus?",
+      "cited_pmid": "40687091",
+      "title": "Comprehensive analysis of the codon usage patterns in the polyprotein coding sequences of the honeybee viruses.",
+      "actual_organisms": [
+        "Kashmir bee virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10381",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "40028018",
+      "title": "Generation, Propagation, and Titering of Dicistrovirus From an Infectious Clone.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "Israeli acute paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genome organization and replication cycle of Black queen cell virus?",
+      "cited_pmid": "38959190",
+      "title": "Varroa destructor shapes the unique viral landscapes of the honey bee populations of the Azores archipelago.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What antiviral drugs or treatments are effective against Black queen cell virus?",
+      "cited_pmid": "39835498",
+      "title": "Stimulation of IRES-Dependent Translation by Rocaglamide A Increases the Replication and Virulence of Cricket Paralysis Virus in Lepidopteran Insect Cells.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Black queen cell virus?",
+      "cited_pmid": "41950991",
+      "title": "Molecular characterization and phylogenetic analysis of Sacbrood virus in Varroa destructor.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "41600909",
+      "title": "Viruses Infecting Cuban Honey Bees and Evolution of Deformed-Wing-Virus Variants.",
+      "actual_organisms": [
+        "Black queen cell virus",
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the epidemiology and outbreak history of Sacbrood virus?",
+      "cited_pmid": "39747229",
+      "title": "Regional patterns and climatic predictors of viruses in honey bee (Apis mellifera) colonies over time.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Israeli acute paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1547219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92444"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
+      "cited_pmid": "38959190",
+      "title": "Varroa destructor shapes the unique viral landscapes of the honey bee populations of the Azores archipelago.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12173"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
+      "cited_pmid": "42264207",
+      "title": "Surveillance of gastrointestinal viruses of free-ranging and rehabilitated Sea turtles in the United States.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "How does Kashmir bee virus evade or modulate the host immune response?",
+      "cited_pmid": "42477720",
+      "title": "Chinese sacbrood virus destroys AcPPAN-copper homeostasis to evade phenoloxidase-based antiviral immunity in Apis cerana.",
+      "actual_organisms": [
+        "Sacbrood virus"
+      ]
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Kashmir bee virus?",
+      "cited_pmid": "41950991",
+      "title": "Molecular characterization and phylogenetic analysis of Sacbrood virus in Varroa destructor.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
     }
   ],
   "false_negatives": [
@@ -248817,6 +249083,24 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Norovirus?",
       "missed_pmid": "42471440",
       "title": "Metatranscriptomics reveals urbanization-driven divergence in rodent viromes and zoonotic risks in Chinese megacities."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "missed_pmid": "38959190",
+      "title": "Varroa destructor shapes the unique viral landscapes of the honey bee populations of the Azores archipelago."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "missed_pmid": "41217189",
+      "title": "Insights into the viral landscape of the western honey bee and native bees in Bangladesh."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "How does Sacbrood virus evade or modulate the host immune response?",
+      "missed_pmid": "41465720",
+      "title": "Larval Metabolic and Physiological Mechanisms Underlying Resistance to Chinese Sacbrood Virus in Apis cerana."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
