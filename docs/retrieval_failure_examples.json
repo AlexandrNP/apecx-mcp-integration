@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T07:05:49.980486+00:00",
-  "runs": 152,
+  "updated": "2026-09-27T07:07:54.813120+00:00",
+  "runs": 153,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18990,
-  "n_false_negatives": 3512,
+  "n_false_positives": 19021,
+  "n_false_negatives": 3517,
   "new_this_run": {
-    "false_positives": 35,
-    "false_negatives": 17
+    "false_positives": 31,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -214551,6 +214551,320 @@
         "Acute bee paralysis virus",
         "Deformed wing virus"
       ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is known about Infectious salmon anemia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39010235",
+      "title": "Fish Iridoviridae: infection, vaccination and immune response.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What is the genome organization and replication cycle of Infectious salmon anemia virus?",
+      "cited_pmid": "41471201",
+      "title": "Infection Dynamics and Host Responses to Two IPNV Isolates in Liver of Atlantic Salmon (Salmo salar).",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious salmon anemia virus?",
+      "cited_pmid": "41903595",
+      "title": "Identification of potential virulence sites of IHNV G protein and its impact on pathogenicity and immunogenicity of IHNV in rainbow trout (Oncorhynchus mykiss).",
+      "actual_organisms": [
+        "Infectious hematopoietic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_228582"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious salmon anemia virus?",
+      "cited_pmid": "42046907",
+      "title": "Expanding the Fish-Brain Invitrome With the Senegalese Sole SsB-1 Cell Line-A Versatile Model for Neurotropic Virus Research.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "Nervous necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_685443"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "How does Infectious salmon anemia virus evade or modulate the host immune response?",
+      "cited_pmid": "42313451",
+      "title": "Characterization of cell lines persistently infected with infectious pancreatic necrosis virus.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "39708296",
+      "title": "Rapid Visual Detection of Red Sea Bream Iridovirus Using a Novel Cross-Priming Amplification-Based Lateral Flow Assay.",
+      "actual_organisms": [
+        "Red sea bream iridovirus"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "42094426",
+      "title": "STAT1 expression in myeloid cells restrains murine norovirus-induced hepatitis and fibrosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious hematopoietic necrosis virus?",
+      "cited_pmid": "38095472",
+      "title": "Orange-spotted grouper nervous necrosis virus-encoded protein A induces interferon expression via RIG-I/MDA5-MAVS-TBK1-IRF3 signaling in fish cells.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "How does Infectious hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "41181121",
+      "title": "Characterisation of post-translational and transcriptional reprogramming of the immune response to ISAV and IPNV infections in salmon head kidney cells.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "Infectious salmon anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2907958",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Infectious hematopoietic necrosis virus",
+      "question": "How does Infectious hematopoietic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "42392336",
+      "title": "Cyprinid herpesvirus 3 ORF24 facilitates viral replication via RLR signaling pathway-mediated innate immune evasion.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What antiviral drugs or treatments are effective against Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "38111732",
+      "title": "Kaempferol is a novel antiviral agent against channel catfish virus infection through blocking viral attachment and penetration in vitro.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "How does Viral hemorrhagic septicemia virus evade or modulate the host immune response?",
+      "cited_pmid": "42799954",
+      "title": "West Nile Virus Exploits miR-155-5p-Mediated Regulation of TRIM32-I\u03baB\u03b1 Axis to Evade NF-\u03baB-Mediated Innate Immune Responses in Human Microglial Cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11050",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "41341289",
+      "title": "Comparison of Gross Lesions in Poultry Naturally Infected With High Pathogenicity Avian Influenza H5N6 and H5N1 Viruses in South Korea, 2023-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_102793"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "What are the clinical symptoms and disease presentation of Infectious pancreatic necrosis virus?",
+      "cited_pmid": "42217944",
+      "title": "Hyperglycemia enhances Chikungunya virus-induced tissue damage: Histopathological evidence from a murine model.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124"
+      ]
+    },
+    {
+      "organism": "Infectious pancreatic necrosis virus",
+      "question": "How does Infectious pancreatic necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "38095472",
+      "title": "Orange-spotted grouper nervous necrosis virus-encoded protein A induces interferon expression via RIG-I/MDA5-MAVS-TBK1-IRF3 signaling in fish cells.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What antiviral drugs or treatments are effective against Cyprinid herpesvirus 3?",
+      "cited_pmid": "38111732",
+      "title": "Kaempferol is a novel antiviral agent against channel catfish virus infection through blocking viral attachment and penetration in vitro.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cyprinid herpesvirus 3?",
+      "cited_pmid": "38335866",
+      "title": "Proprotein convertase cleavage of Ictalurid herpesvirus 1 spike-like protein ORF46 is modulated by N-glycosylation.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What diagnostic assays or laboratory tests detect Channel catfish virus?",
+      "cited_pmid": "42465764",
+      "title": "Rapid, non-invasive, visual point-of-care detection of koi herpesvirus using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What is the epidemiology and outbreak history of Channel catfish virus?",
+      "cited_pmid": "42667507",
+      "title": "Shrimp Aquaculture Under Viral Threats: Insights into Pathogens and Control Strategies.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_142102",
+        "http://purl.obolibrary.org/obo/NCBITaxon_222557",
+        "http://purl.obolibrary.org/obo/NCBITaxon_342409",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_96029"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Channel catfish virus?",
+      "cited_pmid": "42046907",
+      "title": "Expanding the Fish-Brain Invitrome With the Senegalese Sole SsB-1 Cell Line-A Versatile Model for Neurotropic Virus Research.",
+      "actual_organisms": [
+        "Infectious pancreatic necrosis virus",
+        "Nervous necrosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_685443"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "How does Channel catfish virus evade or modulate the host immune response?",
+      "cited_pmid": "38095472",
+      "title": "Orange-spotted grouper nervous necrosis virus-encoded protein A induces interferon expression via RIG-I/MDA5-MAVS-TBK1-IRF3 signaling in fish cells.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
+    },
+    {
+      "organism": "Channel catfish virus",
+      "question": "How does Channel catfish virus evade or modulate the host immune response?",
+      "cited_pmid": "37689228",
+      "title": "Effect of Agaricus bisporus Polysaccharides (ABPs) on anti-CCV immune response of channel catfish.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5341"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "cited_pmid": "42790721",
+      "title": "Red blood cells as antiviral responders in RGNNV-infected European sea bass: a transcriptomic study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "cited_pmid": "42392336",
+      "title": "Cyprinid herpesvirus 3 ORF24 facilitates viral replication via RLR signaling pathway-mediated innate immune evasion.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What diagnostic assays or laboratory tests detect Grass carp reovirus?",
+      "cited_pmid": "42465764",
+      "title": "Rapid, non-invasive, visual point-of-care detection of koi herpesvirus using loop-mediated isothermal amplification.",
+      "actual_organisms": [
+        "Cyprinid herpesvirus 3"
+      ]
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Grass carp reovirus?",
+      "cited_pmid": "40871284",
+      "title": "Characteristic Analysis of Ictalurus punctatus STING and Screening Validation of Interacting Proteins with Ictalurid herpesvirus 1.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is known about Nervous necrosis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39010235",
+      "title": "Fish Iridoviridae: infection, vaccination and immune response.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10486",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10487"
+      ]
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "How does Nervous necrosis virus evade or modulate the host immune response?",
+      "cited_pmid": "42790721",
+      "title": "Red blood cells as antiviral responders in RGNNV-infected European sea bass: a transcriptomic study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Largemouth bass virus?",
+      "cited_pmid": "40871284",
+      "title": "Characteristic Analysis of Ictalurus punctatus STING and Screening Validation of Interacting Proteins with Ictalurid herpesvirus 1.",
+      "actual_organisms": [
+        "Channel catfish virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Largemouth bass virus?",
+      "cited_pmid": "42790721",
+      "title": "Red blood cells as antiviral responders in RGNNV-infected European sea bass: a transcriptomic study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_143919",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_43763"
+      ]
+    },
+    {
+      "organism": "Largemouth bass virus",
+      "question": "How does Largemouth bass virus evade or modulate the host immune response?",
+      "cited_pmid": "38095472",
+      "title": "Orange-spotted grouper nervous necrosis virus-encoded protein A induces interferon expression via RIG-I/MDA5-MAVS-TBK1-IRF3 signaling in fish cells.",
+      "actual_organisms": [
+        "Nervous necrosis virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -235625,6 +235939,36 @@
       "question": "What is the genome organization and replication cycle of Aphid lethal paralysis virus?",
       "missed_pmid": "28969654",
       "title": "Viral metagenomics of aphids present in bean and maize plots on mixed-use farms in Kenya reveals the presence of three dicistroviruses including a novel Big Sioux River virus-like dicistrovirus."
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious salmon anemia virus?",
+      "missed_pmid": "41067591",
+      "title": "Virus-inclusive single nucleus RNA-sequencing reveals two distinct endothelial response patterns in infectious salmon anaemia."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "missed_pmid": "40564252",
+      "title": "Red Sea Bream Iridovirus Stability in Freeze-Thaw Cycles: Quantitative Assays of Infectious Particles."
+    },
+    {
+      "organism": "Red sea bream iridovirus",
+      "question": "How does Red sea bream iridovirus evade or modulate the host immune response?",
+      "missed_pmid": "40715855",
+      "title": "Apoptosis in spotted sea bass brain and astroglia-like cell line implies a possible pathogenesis of Lateolabrax maculatus iridovirus infection."
+    },
+    {
+      "organism": "Grass carp reovirus",
+      "question": "How does Grass carp reovirus evade or modulate the host immune response?",
+      "missed_pmid": "42361627",
+      "title": "Sexual dimorphism of antiviral immunity in grass carp (Ctenopharyngodon idella): TLR7 and TLR8b promote resistance to GCRV in males, whereas TLR8a increases susceptibility in females."
+    },
+    {
+      "organism": "Nervous necrosis virus",
+      "question": "What is the epidemiology and outbreak history of Nervous necrosis virus?",
+      "missed_pmid": "42800478",
+      "title": "Simultaneous detection of positive-sense RNA1 and RNA2 of nervous necrosis virus in viral factories of infected brain cells using RNA-fluorescence in situ hybridization."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
