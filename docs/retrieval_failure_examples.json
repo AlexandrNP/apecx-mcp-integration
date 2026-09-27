@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T01:35:04.143916+00:00",
-  "runs": 131,
+  "updated": "2026-09-27T01:45:12.223754+00:00",
+  "runs": 132,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 17711,
-  "n_false_negatives": 3455,
+  "n_false_positives": 17734,
+  "n_false_negatives": 3460,
   "new_this_run": {
-    "false_positives": 116,
-    "false_negatives": 0
+    "false_positives": 23,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -200069,6 +200069,255 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
         "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
       ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bluetongue virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Feline leukemia virus?",
+      "cited_pmid": "42522891",
+      "title": "Establishment and Characterization of Human Cell Lines Stably Infected With Bovine Leukemia Virus In Vitro Reveals Apoptosis After Latency and Silencing.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2024330",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Feline leukemia virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What is the genome organization and replication cycle of Infectious bursal disease virus?",
+      "cited_pmid": "23498904",
+      "title": "Chrysovirus structure: repeated helical core as evidence of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_187221",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rous sarcoma virus?",
+      "cited_pmid": "42594766",
+      "title": "Molecular characterization and biological characteristics of a highly pathogenic recombinant ALV-J strain (HUE2023) with cross-clade gp85 recombination.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1401444"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Tobacco mosaic virus?",
+      "cited_pmid": "42283464",
+      "title": "Orthotospovirus tomatomaculae (Tomato spotted wilt virus [TSWV]) infects ovules and pollen to achieve vertical transmission in Capsicum annuum.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Potato virus Y?",
+      "cited_pmid": "42556132",
+      "title": "Mechanistic insights into potyviral and cucumoviral subversion of plant resistance.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42208336",
+      "title": "A recombinant baculovirus expressing multi-epitopes elicits protective immunity against ALV-J infection in chickens.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1401444"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Israeli acute paralysis virus?",
+      "cited_pmid": "42515592",
+      "title": "Retrovirus-Induced Immunosuppression: Role of the Transmembrane Envelope Protein.",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_394239"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Israeli acute paralysis virus?",
+      "cited_pmid": "42401561",
+      "title": "Cryo-EM structure of African horse sickness virus VP2 receptor-binding protein enables nanoparticle vaccine design.",
+      "actual_organisms": [
+        "African horse sickness virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Israeli acute paralysis virus?",
+      "cited_pmid": "42594766",
+      "title": "Molecular characterization and biological characteristics of a highly pathogenic recombinant ALV-J strain (HUE2023) with cross-clade gp85 recombination.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1401444"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "33837717",
+      "title": "Structure and assembly of double-stranded RNA mycoviruses.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1000373",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11008",
+        "http://purl.obolibrary.org/obo/NCBITaxon_296210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "20463071",
+      "title": "The T=1 capsid protein of Penicillium chrysogenum virus is formed by a repeated helix-rich core indicative of gene duplication.",
+      "actual_organisms": [
+        "Penicillium chrysogenum virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11007",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "cited_pmid": "42617765",
+      "title": "Characteristics and functions of a cell adhesion molecule PvCadN in Penaeus vannamei during WSSV infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "cited_pmid": "42352348",
+      "title": "The Proto Type Galectin Drgal1-L2 from Zebrafish Hinders Infection by the Infectious Hematopoietic Necrosis Virus by Binding to Its Glycosylated Receptors on the Epithelial Cell Surface.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "cited_pmid": "29251589",
+      "title": "ICTV Virus Taxonomy Profile: Chrysoviridae.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249310",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560087"
+      ]
+    },
+    {
+      "organism": "Infectious salmon anemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Infectious salmon anemia virus?",
+      "cited_pmid": "42066873",
+      "title": "Cell-mediated response against heat-inactivated viral hemorrhagic septicemia virus (VHSV) IVb using rainbow trout (Oncorhynchus mykiss) dorsal fin cells as antigen presenting cells.",
+      "actual_organisms": [
+        "Viral hemorrhagic septicemia virus"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Viral hemorrhagic septicemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Viral hemorrhagic septicemia virus?",
+      "cited_pmid": "42352348",
+      "title": "The Proto Type Galectin Drgal1-L2 from Zebrafish Hinders Infection by the Infectious Hematopoietic Necrosis Virus by Binding to Its Glycosylated Receptors on the Epithelial Cell Surface.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11290"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What antiviral drugs or treatments are effective against Penicillium chrysogenum virus?",
+      "cited_pmid": "42515657",
+      "title": "Chalcones as a Versatile Antiviral Scaffold: Molecular Targets, ADMET Profiles, and Translational Challenges.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10891",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Penicillium chrysogenum virus",
+      "question": "What is the epidemiology and outbreak history of Penicillium chrysogenum virus?",
+      "cited_pmid": "42231872",
+      "title": "Southward Spread of Pepper Necrotic Spot Orthotospovirus into Chile: Identification and Characterization.",
+      "actual_organisms": [
+        "Tomato spotted wilt virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1078947",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196"
+      ]
     }
   ],
   "false_negatives": [
@@ -220801,6 +221050,36 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Human metapneumovirus?",
       "missed_pmid": "42774097",
       "title": "Transcriptional signatures of respiratory syncytial virus (RSV) infection using relaxed magnitude altitude score with hub-centric network analysis (RMAS-HCNA)."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genome organization and replication cycle of Feline leukemia virus?",
+      "missed_pmid": "42572183",
+      "title": "Laboratory Changes Supporting a Diagnosis of Immune-Mediated Anemia in Cats With Initial Suspicion of Progressive Feline Leukemia Virus."
+    },
+    {
+      "organism": "African horse sickness virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of African horse sickness virus?",
+      "missed_pmid": "42401561",
+      "title": "Cryo-EM structure of African horse sickness virus VP2 receptor-binding protein enables nanoparticle vaccine design."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rous sarcoma virus?",
+      "missed_pmid": "38546893",
+      "title": "Investigating the correlation between prominent viruses and hematological malignancies: a literature review."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "missed_pmid": "42722174",
+      "title": "WSSV exploits host glycolytic reprogramming to promote hemocyanin lactylation and enhance cell-associated WSSV levels in shrimp."
+    },
+    {
+      "organism": "Cyprinid herpesvirus 3",
+      "question": "What is the genome organization and replication cycle of Cyprinid herpesvirus 3?",
+      "missed_pmid": "39451576",
+      "title": "Cloning and Identification of Common Carp (Cyprinus carpio) PI3KC3 and Its Expression in Response to CyHV-3 Infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
