@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:31:06.487986+00:00",
-  "runs": 413,
+  "updated": "2026-09-27T21:33:59.354262+00:00",
+  "runs": 414,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24541,
-  "n_false_negatives": 4841,
+  "n_false_positives": 24549,
+  "n_false_negatives": 4842,
   "new_this_run": {
-    "false_positives": 35,
-    "false_negatives": 2
+    "false_positives": 8,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -276601,6 +276601,96 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_39054",
         "http://purl.obolibrary.org/obo/NCBITaxon_42785"
       ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genome organization and replication cycle of Foot-and-mouth disease virus?",
+      "cited_pmid": "41728820",
+      "title": "Epidemiology of Hand, Foot, and Mouth Disease and Genetic Evolution Dynamics of Coxsackievirus A6 in Taiyuan, Shanxi, China From 2017 to 2024.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "cited_pmid": "41765676",
+      "title": "[Etiological characteristics of hand, foot and mouth disease in Henan Province, 2021-2024].",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Foot-and-mouth disease virus?",
+      "cited_pmid": "42131302",
+      "title": "Serial passaging in vitro generates a Vero cell-adapted coxsackievirus A6 strain with distinct phenotypic characteristics.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Foot-and-mouth disease virus?",
+      "cited_pmid": "42535854",
+      "title": "KREMEN1 residue W94 is essential for receptor binding and infection by a major group of enteroviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Foot-and-mouth disease virus?",
+      "cited_pmid": "41903847",
+      "title": "Molecular epidemiological and genetic characteristics of coxsackievirus A6 circulating in mainland China from 1992 to 2023.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Theiler's murine encephalomyelitis virus?",
+      "cited_pmid": "42055673",
+      "title": "A Rare Case of Adult-Onset Human Parechovirus Type A3 Encephalitis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684"
+      ]
     }
   ],
   "false_negatives": [
@@ -305649,6 +305739,12 @@
       "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
       "missed_pmid": "30944213",
       "title": "Bacterial Stabilization of a Panel of Picornaviruses."
+    },
+    {
+      "organism": "Theiler's murine encephalomyelitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Theiler's murine encephalomyelitis virus?",
+      "missed_pmid": "40270964",
+      "title": "Infection of a \u03b2-galactosidase-deficient mouse strain with Theiler's murine encephalomyelitis virus reveals limited immunological dysregulations in this lysosomal storage disease."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
