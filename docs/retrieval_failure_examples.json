@@ -1,12 +1,12 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T09:28:29.626072+00:00",
-  "runs": 197,
+  "updated": "2026-09-27T10:04:07.768154+00:00",
+  "runs": 198,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20478,
+  "n_false_positives": 20526,
   "n_false_negatives": 3582,
   "new_this_run": {
-    "false_positives": 61,
+    "false_positives": 48,
     "false_negatives": 0
   },
   "false_positives": [
@@ -231329,6 +231329,551 @@
       "title": "Genome-wide evolution and recombination of circulating human adenoviruses in Gwangju, South Korea, 2023-2025.",
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is known about Human metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40400688",
+      "title": "Identification and characterization of a novel human adenovirus type HAdV-D116.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Human metapneumovirus?",
+      "cited_pmid": "41600897",
+      "title": "Nationwide Genomic Surveillance of Human Respiratory Adenoviruses in 2023-2024: Evidence of Extensive Diversity and Recombination in Russia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3035906",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What are the clinical symptoms and disease presentation of Human metapneumovirus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human metapneumovirus?",
+      "cited_pmid": "40367285",
+      "title": "Virus and cell specific HMGB1 secretion and subepithelial infiltrate formation in adenovirus keratitis.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human metapneumovirus?",
+      "cited_pmid": "40916329",
+      "title": "A new adenovirus isolated from a western lowland gorilla held in captivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10509",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10783",
+        "http://purl.obolibrary.org/obo/NCBITaxon_108098",
+        "http://purl.obolibrary.org/obo/NCBITaxon_130308",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is known about Human mastadenovirus D and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40568591",
+      "title": "Human saliva exerts strong type-dependent effects on adenovirus infectivity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What diagnostic assays or laboratory tests detect Human mastadenovirus D?",
+      "cited_pmid": "27276185",
+      "title": "A real-time reverse transcriptase polymerase chain reaction for detection and quantification of Vesiculovirus.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genome organization and replication cycle of Human mastadenovirus D?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "37862094",
+      "title": "Colorado tick fever virus: a review of historical literature and research emphasis for a modern era.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the epidemiology and outbreak history of Human mastadenovirus D?",
+      "cited_pmid": "42797809",
+      "title": "Epidemiological Characteristics and Evolutionary Characterization of Human Metapneumovirus in Jiaxing, China.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47886"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human mastadenovirus D?",
+      "cited_pmid": "42441716",
+      "title": "Structural requirements of blood factors binding to soluble hexon trimers with implications for adenovirus cell targeting and immune evasion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10534",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210"
+      ]
+    },
+    {
+      "organism": "Human mastadenovirus D",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human mastadenovirus D?",
+      "cited_pmid": "42775853",
+      "title": "Avian metapneumovirus infections in poultry flocks in Poland - molecular evidence for emerging divergence from vaccine strains.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Yaba monkey tumor virus",
+      "question": "What diagnostic assays or laboratory tests detect Yaba monkey tumor virus?",
+      "cited_pmid": "27276185",
+      "title": "A real-time reverse transcriptase polymerase chain reaction for detection and quantification of Vesiculovirus.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39951465",
+      "title": "Establishment of reverse genetics systems for Colorado tick fever virus.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "30182034",
+      "title": "Lentivector Producer Cell Lines with Stably Expressed Vesiculovirus Envelopes.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11271",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_50713"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42478837",
+      "title": "Mucosal boosting of chimpanzee adenovirus-vectored vaccine encoding SARS-CoV-2 RBD-heterodimer provides robust protection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_310542",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "37862094",
+      "title": "Colorado tick fever virus: a review of historical literature and research emphasis for a modern era.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "37293222",
+      "title": "Geographical distribution and pathogenesis of ticks and tick-borne viral diseases.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1216928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12542",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1618189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33743"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "27276185",
+      "title": "A real-time reverse transcriptase polymerase chain reaction for detection and quantification of Vesiculovirus.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1972577",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "16054706",
+      "title": "Real-time PCR assay for the detection of tanapox virus and yaba-like disease virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What diagnostic assays or laboratory tests detect Aichi virus 1?",
+      "cited_pmid": "40512309",
+      "title": "Colorado Tick Fever Virus: Quantification, Propagation, Storage, and Detection.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "11277691",
+      "title": "The genome sequence of Yaba-like disease virus, a yatapoxvirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "14645589",
+      "title": "Complete genomic sequence and comparative analysis of the tumorigenic poxvirus Yaba monkey tumor virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genome organization and replication cycle of Aichi virus 1?",
+      "cited_pmid": "37714509",
+      "title": "Genomic and phylogenetic profiling of RNA of tick-borne arboviruses in Hainan Island, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "39229478",
+      "title": "Control strategies for emerging infectious diseases: Crimean-Congo hemorrhagic fever management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "12456156",
+      "title": "What is your diagnosis?: Multifocal subcutaneous tumors in a young male baboon.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "39999459",
+      "title": "Exploring Routes of Infection of Severe Fever with Thrombocytopenia Syndrome Virus Using Experimentally Infected Animals.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2748958"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "15105545",
+      "title": "Yaba-like disease virus protein Y144R, a member of the complement control protein family, is present on enveloped virions that are associated with virus-induced actin tails.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653087"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "17959666",
+      "title": "Yaba monkey tumor virus encodes a functional inhibitor of interleukin-18.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "21917954",
+      "title": "Comparative analysis of poxvirus orthologues of the vaccinia virus E3 protein: modulation of protein kinase R activity, cytokine responses, and virus pathogenicity.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10273",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "33396704",
+      "title": "Limbic Encephalitis Brain Damage Induced by Cocal Virus in Adult Mice Is Reduced by Environmental Enrichment: Neuropathological and Behavioral Studies.",
+      "actual_organisms": [
+        "Piry virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_50713"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "39204215",
+      "title": "First Genomic Evidence of California Hare Coltivirus from Natural Populations of Ixodes persulcatus Ticks in Northeast China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2936928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "32882953",
+      "title": "Detection and Genetic Characterization of Puumala Orthohantavirus S-Segment in Areas of France Non-Endemic for Nephropathia Epidemica.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052493"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is known about Piry virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42780759",
+      "title": "Human metapneumovirus prevention in children: emerging roles of monoclonal antibodies and vaccines.",
+      "actual_organisms": [
+        "Human metapneumovirus"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What diagnostic assays or laboratory tests detect Piry virus?",
+      "cited_pmid": "16054706",
+      "title": "Real-time PCR assay for the detection of tanapox virus and yaba-like disease virus.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10282",
+        "http://purl.obolibrary.org/obo/NCBITaxon_132475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47837",
+        "http://purl.obolibrary.org/obo/NCBITaxon_99000"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What diagnostic assays or laboratory tests detect Piry virus?",
+      "cited_pmid": "42791819",
+      "title": "Development of a Non-Invasive Indirect ELISA for Detecting IgY Against a Novel Avian Metapneumovirus Subtype C in Egg Yolks of Laying Ducks.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_38525"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What diagnostic assays or laboratory tests detect Piry virus?",
+      "cited_pmid": "42515055",
+      "title": "Wastewater Surveillance of Aichi Virus in Baltimore.",
+      "actual_organisms": [
+        "Aichi virus 1",
+        "http://purl.obolibrary.org/obo/NCBITaxon_194960",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "cited_pmid": "40581051",
+      "title": "LAVR-289, a broad-spectrum antiviral, protects immunosuppressed Syrian hamsters against lethal adenovirus challenge.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "cited_pmid": "42749451",
+      "title": "RNAi-based therapeutics targeting the F gene in human metapneumovirus: An in-silico approach.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What antiviral drugs or treatments are effective against Piry virus?",
+      "cited_pmid": "41250301",
+      "title": "Virucidal Effects of Contact Lens Disinfectants Against Enveloped and Nonenveloped Pathogenic Viruses Causing Conjunctivitis.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700",
+        "http://purl.obolibrary.org/obo/NCBITaxon_880565"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "cited_pmid": "39229478",
+      "title": "Control strategies for emerging infectious diseases: Crimean-Congo hemorrhagic fever management.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980416",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052518"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the epidemiology and outbreak history of Piry virus?",
+      "cited_pmid": "37862094",
+      "title": "Colorado tick fever virus: a review of historical literature and research emphasis for a modern era.",
+      "actual_organisms": [
+        "Colorado tick fever virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10911",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946187"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What are the clinical symptoms and disease presentation of Piry virus?",
+      "cited_pmid": "40911481",
+      "title": "Adenoviral Retinitis: A Rare Case Presentation of a Common Virus.",
+      "actual_organisms": [
+        "Human mastadenovirus D",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1907210",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5810",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5811"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What are the clinical symptoms and disease presentation of Piry virus?",
+      "cited_pmid": "12456156",
+      "title": "What is your diagnosis?: Multifocal subcutaneous tumors in a young male baboon.",
+      "actual_organisms": [
+        "Yaba monkey tumor virus"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What are the clinical symptoms and disease presentation of Piry virus?",
+      "cited_pmid": "42771068",
+      "title": "Clinical characteristics and outcomes of respiratory syncytial virus and human metapneumovirus \u0131nfections in children under five years of age.",
+      "actual_organisms": [
+        "Human metapneumovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Piry virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Piry virus?",
+      "cited_pmid": "32504705",
+      "title": "Distribution and evolution of the major viruses infecting cucurbitaceous and solanaceous crops in the French Mediterranean area.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12305",
+        "http://purl.obolibrary.org/obo/NCBITaxon_146500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_91753",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
