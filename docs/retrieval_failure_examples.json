@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:20:35.857439+00:00",
-  "runs": 274,
+  "updated": "2026-09-27T15:24:26.341743+00:00",
+  "runs": 275,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22609,
-  "n_false_negatives": 3944,
+  "n_false_positives": 22643,
+  "n_false_negatives": 3971,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 10
+    "false_positives": 34,
+    "false_negatives": 27
   },
   "false_positives": [
     {
@@ -255571,6 +255571,371 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052676",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "32894214",
+      "title": "Determination of the virulence of single nucleopolyhedrovirus occlusion bodies using a novel laser capture microdissection method.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2982619"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "24567913",
+      "title": "Immunological-based assays for specific detection of shrimp viruses.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "White spot syndrome virus",
+        "Yellow head virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1593240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_222557",
+        "http://purl.obolibrary.org/obo/NCBITaxon_230604",
+        "http://purl.obolibrary.org/obo/NCBITaxon_259389",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2770846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "25196450",
+      "title": "Establishment of a sensitive and specific hyper-branched rolling circle amplification assay and test strip for TSV.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "37356253",
+      "title": "Differential activity of nucleotide analogs against tick-borne encephalitis and yellow fever viruses in human cell lines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bombyx mori nucleopolyhedrovirus?",
+      "cited_pmid": "32530959",
+      "title": "Genome sequence analysis of a Helicoverpa armigera single nucleopolyhedrovirus (HearNPV-TR) isolated from Heliothis peltigera\u00a0in Turkey.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_48861",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "23997442",
+      "title": "Host and virus protein interaction studies in understanding shrimp virus gene function.",
+      "actual_organisms": [
+        "Yellow head virus"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37356253",
+      "title": "Differential activity of nucleotide analogs against tick-borne encephalitis and yellow fever viruses in human cell lines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is known about White spot syndrome virus pathogenesis and transmission?",
+      "cited_pmid": "42401682",
+      "title": "Integrated comparative genomic and transcriptomic analysis reveals a wsv249 mutation drives enhanced pathogenicity in white spot syndrome virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92652"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What diagnostic assays or laboratory tests detect White spot syndrome virus?",
+      "cited_pmid": "25196450",
+      "title": "Establishment of a sensitive and specific hyper-branched rolling circle amplification assay and test strip for TSV.",
+      "actual_organisms": [
+        "Taura syndrome virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12317",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "38328580",
+      "title": "Classification, replication, and transcription of Nidovirales.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "cited_pmid": "41461456",
+      "title": "Bombyx mori RPS3 participates in the UV damage repair of Bombyx mori nucleopolyhedrovirus by interacting with Bm65.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "cited_pmid": "41831899",
+      "title": "Discovery of a novel compound against BmNPV using virtual screening based on the protein structure of the viral whole genome.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the epidemiology and outbreak history of White spot syndrome virus?",
+      "cited_pmid": "23997438",
+      "title": "Shrimp viral diseases, import risk assessment and international trade.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genome organization and replication cycle of Taura syndrome virus?",
+      "cited_pmid": "38328580",
+      "title": "Classification, replication, and transcription of Nidovirales.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "cited_pmid": "37356253",
+      "title": "Differential activity of nucleotide analogs against tick-borne encephalitis and yellow fever viruses in human cell lines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "cited_pmid": "41831899",
+      "title": "Discovery of a novel compound against BmNPV using virtual screening based on the protein structure of the viral whole genome.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What are the clinical symptoms and disease presentation of Taura syndrome virus?",
+      "cited_pmid": "23997442",
+      "title": "Host and virus protein interaction studies in understanding shrimp virus gene function.",
+      "actual_organisms": [
+        "Yellow head virus"
+      ]
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "How does Taura syndrome virus evade or modulate the host immune response?",
+      "cited_pmid": "41494040",
+      "title": "piR-bmo-796514 facilitates the proliferation of exogenous DNA virus (baculovirus) by targeting the host E3 ubiquitin ligase RNF181.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37356253",
+      "title": "Differential activity of nucleotide analogs against tick-borne encephalitis and yellow fever viruses in human cell lines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11084",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31493654",
+      "title": "Baculovirus ODV-E66 degrades larval peritrophic membrane to facilitate baculovirus oral infection.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "41611515",
+      "title": "[Identification of proteins binding to interacting homologous regions in Bombyx mori nucleopolyhedrovirus].",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "38328580",
+      "title": "Classification, replication, and transcription of Nidovirales.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_76804"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "cited_pmid": "41598933",
+      "title": "Transcriptome Dynamics of BmN Cells During the Early Phase of Bombyx mori Nucleopolyhedrovirus Infection.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "cited_pmid": "41831899",
+      "title": "Discovery of a novel compound against BmNPV using virtual screening based on the protein structure of the viral whole genome.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the epidemiology and outbreak history of Yellow head virus?",
+      "cited_pmid": "37112999",
+      "title": "Vector Competence of Aedes albopictus for Yellow Fever Virus: Risk of Reemergence of Urban Yellow Fever in Brazil.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11089"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the epidemiology and outbreak history of Yellow head virus?",
+      "cited_pmid": "23997438",
+      "title": "Shrimp viral diseases, import risk assessment and international trade.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the clinical symptoms and disease presentation of Yellow head virus?",
+      "cited_pmid": "37913792",
+      "title": "Strange, Rare and Peculiar Symptoms of COVID-19 Cases Managed by Practitioners of the Homeopathy Help Network.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "cited_pmid": "31302508",
+      "title": "The cysteine-rich region of a baculovirus VP91 protein contributes to the morphogenesis of occlusion bodies.",
+      "actual_organisms": [
+        "Helicoverpa armigera nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "How does Yellow head virus evade or modulate the host immune response?",
+      "cited_pmid": "41494040",
+      "title": "piR-bmo-796514 facilitates the proliferation of exogenous DNA virus (baculovirus) by targeting the host E3 ubiquitin ligase RNF181.",
+      "actual_organisms": [
+        "Bombyx mori nucleopolyhedrovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "38314674",
+      "title": "Virus-host coevolutionary analyses of an Alphabaculovirus with a wide host range.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204440",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3047383",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048194",
+        "http://purl.obolibrary.org/obo/NCBITaxon_558016",
+        "http://purl.obolibrary.org/obo/NCBITaxon_559170",
+        "http://purl.obolibrary.org/obo/NCBITaxon_78219",
+        "http://purl.obolibrary.org/obo/NCBITaxon_79796"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "37206359",
+      "title": "Field and agroinoculation screening of national collection of urd bean (Vigna mungo) germplasm accessions for new sources of mung bean yellow mosaic virus (MYMV) resistance.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12197",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33726"
+      ]
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow head virus?",
+      "cited_pmid": "32530959",
+      "title": "Genome sequence analysis of a Helicoverpa armigera single nucleopolyhedrovirus (HearNPV-TR) isolated from Heliothis peltigera\u00a0in Turkey.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_48861",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "32530959",
+      "title": "Genome sequence analysis of a Helicoverpa armigera single nucleopolyhedrovirus (HearNPV-TR) isolated from Heliothis peltigera\u00a0in Turkey.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_48861",
+        "http://purl.obolibrary.org/obo/NCBITaxon_991878"
+      ]
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "How does Helicoverpa armigera nucleopolyhedrovirus evade or modulate the host immune response?",
+      "cited_pmid": "31953986",
+      "title": "Host permissiveness to baculovirus influences time-dependent immune responses and fitness costs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10468",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_307456",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46015"
+      ]
     }
   ],
   "false_negatives": [
@@ -279237,6 +279602,168 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Uukuniemi virus?",
       "missed_pmid": "25065140",
       "title": "[Genetic characterization of the Zaliv Terpeniya virus (ZTV, Bunyaviridae, Phlebovirus, Uukuniemi serogroup) strains isolated from the ticks Ixodes (Ceratixodes) uriae White, 1852, obligate parasites of the Alcidae birds, in high latitudes of Northern Eurasia and the mosquitoes Culex modestus Ficalbi, 1889, in subtropics Transcaucasus]."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41485528",
+      "title": "Co-occurrence of the nucleopolyhedrovirus and bidensovirus in silkworm, Bombyx mori L.: Evidence from Kashmir and molecular comparison of Indian bidensovirus isolates."
+    },
+    {
+      "organism": "Bombyx mori nucleopolyhedrovirus",
+      "question": "What is the epidemiology and outbreak history of Bombyx mori nucleopolyhedrovirus?",
+      "missed_pmid": "41611515",
+      "title": "[Identification of proteins binding to interacting homologous regions in Bombyx mori nucleopolyhedrovirus]."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "missed_pmid": "42448068",
+      "title": "Shrimp TM9SF4 facilitates WSSV infection probably through interacting with viral VP24 and regulating host autophagy."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What is the genome organization and replication cycle of White spot syndrome virus?",
+      "missed_pmid": "42392332",
+      "title": "PcTRIM23 knockdown correlates with increased WSSV replication, hepatopancreatic apoptosis, and ROS accumulation in Procambarus clarkii."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "missed_pmid": "42329080",
+      "title": "Emodin induces defensive autophagy against white spot syndrome virus infection via targeting the hemocyanin-mediated endoplasmic reticulum-mitochondrial crosstalk in shrimp."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against White spot syndrome virus?",
+      "missed_pmid": "42439566",
+      "title": "Feedback GABA signaling suppresses white spot syndrome virus infection via mTORC1-mediated autophagy inhibition in shrimp."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the clinical symptoms and disease presentation of White spot syndrome virus?",
+      "missed_pmid": "24426311",
+      "title": "Association of dual viral infection with mortality of Pacific white shrimp (Litopenaeus vannamei) in culture ponds in India."
+    },
+    {
+      "organism": "White spot syndrome virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of White spot syndrome virus?",
+      "missed_pmid": "42392331",
+      "title": "A cell-penetrating peptide Pep-1 fused nanobody Nb24 targeting VP28 inhibits WSSV replication in crayfish Procambarus clarkii."
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What is the genome organization and replication cycle of Taura syndrome virus?",
+      "missed_pmid": "25196450",
+      "title": "Establishment of a sensitive and specific hyper-branched rolling circle amplification assay and test strip for TSV."
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "missed_pmid": "23921257",
+      "title": "RNA-Seq analysis reveals genes associated with resistance to Taura syndrome virus (TSV) in the Pacific white shrimp Litopenaeus vannamei."
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "missed_pmid": "28366189",
+      "title": "ICTV Virus Taxonomy Profile: Dicistroviridae."
+    },
+    {
+      "organism": "Taura syndrome virus",
+      "question": "What antiviral drugs or treatments are effective against Taura syndrome virus?",
+      "missed_pmid": "23469011",
+      "title": "Transcriptome analysis of Pacific white shrimp (Litopenaeus vannamei) hepatopancreas in response to Taura syndrome Virus (TSV) experimental infection."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36560598",
+      "title": "Simultaneous Production of a Virus-Like Particle Linked to dsRNA to Enhance dsRNA Delivery for Yellow Head Virus Inhibition."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is known about Yellow head virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "36851575",
+      "title": "Coinfection with Yellow Head Virus Genotype 8 (YHV-8) and Oriental Wenrivirus 1 (OWV1) in Wild Penaeus chinensis from the Yellow Sea."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What diagnostic assays or laboratory tests detect Yellow head virus?",
+      "missed_pmid": "25562958",
+      "title": "[Rapid detection of Macrobrachium rosenbergii nodavirus isolated in China by a reverse-transcription loop-mediated isothermal amplification assay combined with a lateral flow dipstick method]."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "missed_pmid": "23997442",
+      "title": "Host and virus protein interaction studies in understanding shrimp virus gene function."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "missed_pmid": "38013134",
+      "title": "Identification of immune-responsive circular RNAs in shrimp (Litopenaeus vannamei) upon yellow head virus infection."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the genome organization and replication cycle of Yellow head virus?",
+      "missed_pmid": "27221155",
+      "title": "A novel method of real-time reverse-transcription loop-mediated isothermal amplification developed for rapid and quantitative detection of a new genotype (YHV-8) of yellow head virus."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "missed_pmid": "37123012",
+      "title": "In silico screening of chalcones and flavonoids as potential inhibitors against yellow head virus 3C-like protease."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow head virus?",
+      "missed_pmid": "24567913",
+      "title": "Immunological-based assays for specific detection of shrimp viruses."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What is the epidemiology and outbreak history of Yellow head virus?",
+      "missed_pmid": "36686577",
+      "title": "Failed shrimp vaccination attempt with yellow head virus (YHV) attenuated in an immortal insect cell line."
+    },
+    {
+      "organism": "Yellow head virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow head virus?",
+      "missed_pmid": "38588870",
+      "title": "Molecular characterization of a short-chained pentraxin gene from kuruma shrimp Marsupenaeus japonicus hemocytes."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31302508",
+      "title": "The cysteine-rich region of a baculovirus VP91 protein contributes to the morphogenesis of occlusion bodies."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What is known about Helicoverpa armigera nucleopolyhedrovirus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32894214",
+      "title": "Determination of the virulence of single nucleopolyhedrovirus occlusion bodies using a novel laser capture microdissection method."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What diagnostic assays or laboratory tests detect Helicoverpa armigera nucleopolyhedrovirus?",
+      "missed_pmid": "32489276",
+      "title": "Manifold passages in an assorted infection in a host could improve virulence of Helicoverpa armigera Nucleopolyhedrovirus (HaNPV)."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "What antiviral drugs or treatments are effective against Helicoverpa armigera nucleopolyhedrovirus?",
+      "missed_pmid": "31768105",
+      "title": "A new Helicoverpa armigera Nucleopolyhedrovirus isolate from Heliothis peltigera (Denis & Schiffermuller) (Lepidoptera: Noctuidae) in Turkey."
+    },
+    {
+      "organism": "Helicoverpa armigera nucleopolyhedrovirus",
+      "question": "How does Helicoverpa armigera nucleopolyhedrovirus evade or modulate the host immune response?",
+      "missed_pmid": "31493654",
+      "title": "Baculovirus ODV-E66 degrades larval peritrophic membrane to facilitate baculovirus oral infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
