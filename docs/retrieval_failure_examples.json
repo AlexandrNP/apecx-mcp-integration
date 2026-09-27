@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T20:37:29.405313+00:00",
-  "runs": 387,
+  "updated": "2026-09-27T20:39:12.752346+00:00",
+  "runs": 388,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24267,
-  "n_false_negatives": 4777,
+  "n_false_positives": 24276,
+  "n_false_negatives": 4785,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 5
+    "false_positives": 9,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -273552,6 +273552,111 @@
         "Bluetongue virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "cited_pmid": "39810237",
+      "title": "Monkeypox: a re-emergent virus with global health implications - a comprehensive review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the epidemiology and outbreak history of Cowpox virus?",
+      "cited_pmid": "39621257",
+      "title": "Poxvirus Epidemiology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cowpox virus?",
+      "cited_pmid": "27774853",
+      "title": "Detection of pseudocowpox virus in water buffalo (Bubalus bubalis) with vesicular disease in the state of S\u00e3o Paulo, Brazil, in 2016.",
+      "actual_organisms": [
+        "Orf virus",
+        "Pseudocowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_129727"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What antiviral drugs or treatments are effective against Orf virus?",
+      "cited_pmid": "39608644",
+      "title": "Molecular analysis of the 2022 mpox outbreak and antiviral activity of dihydroorotate dehydrogenase inhibitors against orthopoxviruses.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the epidemiology and outbreak history of Orf virus?",
+      "cited_pmid": "39621257",
+      "title": "Poxvirus Epidemiology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Myxoma virus?",
+      "cited_pmid": "39959162",
+      "title": "Preparation and application evaluation of monoclonal antibodies against Monkeypox virus A29 protein.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10240",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_44129",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What is the epidemiology and outbreak history of Myxoma virus?",
+      "cited_pmid": "39621257",
+      "title": "Poxvirus Epidemiology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What antiviral drugs or treatments are effective against Pseudocowpox virus?",
+      "cited_pmid": "39608644",
+      "title": "Molecular analysis of the 2022 mpox outbreak and antiviral activity of dihydroorotate dehydrogenase inhibitors against orthopoxviruses.",
+      "actual_organisms": [
+        "Cowpox virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10245"
+      ]
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the epidemiology and outbreak history of Pseudocowpox virus?",
+      "cited_pmid": "39621257",
+      "title": "Poxvirus Epidemiology.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10242",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10244",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10255"
+      ]
     }
   ],
   "false_negatives": [
@@ -302216,6 +302321,54 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Epizootic hemorrhagic disease virus?",
       "missed_pmid": "40476604",
       "title": "Isolation and genetic characterization of a novel Kevo orbivirus and a strain of Mobuck virus from Ochlerotatus communis mosquitoes in Finland."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is known about Cowpox virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39959162",
+      "title": "Preparation and application evaluation of monoclonal antibodies against Monkeypox virus A29 protein."
+    },
+    {
+      "organism": "Cowpox virus",
+      "question": "What is the genome organization and replication cycle of Cowpox virus?",
+      "missed_pmid": "39608644",
+      "title": "Molecular analysis of the 2022 mpox outbreak and antiviral activity of dihydroorotate dehydrogenase inhibitors against orthopoxviruses."
+    },
+    {
+      "organism": "Orf virus",
+      "question": "What is the genome organization and replication cycle of Orf virus?",
+      "missed_pmid": "42319195",
+      "title": "Molecular Characterisation of Orf Virus in Goats From Eastern T\u00fcrkiye."
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What diagnostic assays or laboratory tests detect Myxoma virus?",
+      "missed_pmid": "38543802",
+      "title": "Identification and Characterisation of a Myxoma Virus Detected in the Italian Hare (Lepus corsicanus)."
+    },
+    {
+      "organism": "Myxoma virus",
+      "question": "What antiviral drugs or treatments are effective against Myxoma virus?",
+      "missed_pmid": "38990486",
+      "title": "Comparative analysis of two novel complete genomes of myxoma virus vaccine strains."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the genome organization and replication cycle of Pseudocowpox virus?",
+      "missed_pmid": "33159590",
+      "title": "qPCR assay for the detection of pseudocowpox virus."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What is the epidemiology and outbreak history of Pseudocowpox virus?",
+      "missed_pmid": "28516287",
+      "title": "Spread of poxviruses in livestock in Brazil associated with cases of double and triple infection."
+    },
+    {
+      "organism": "Pseudocowpox virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Pseudocowpox virus?",
+      "missed_pmid": "25674608",
+      "title": "Evidence of zoonotic pseudocowpox virus infection from a cattle in Turkey."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
