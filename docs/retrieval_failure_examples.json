@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:06:53.813220+00:00",
-  "runs": 460,
+  "updated": "2026-09-27T23:08:31.450451+00:00",
+  "runs": 461,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24908,
-  "n_false_negatives": 4872,
+  "n_false_positives": 24912,
+  "n_false_negatives": 4873,
   "new_this_run": {
-    "false_positives": 3,
-    "false_negatives": 0
+    "false_positives": 4,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -280816,6 +280816,46 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_226901",
         "http://purl.obolibrary.org/obo/NCBITaxon_562"
       ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42037410",
+      "title": "EV-D68 exploits clathrin-mediated endocytosis and compensatory macropinocytosis for cellular entry.",
+      "actual_organisms": [
+        "Enterovirus D68",
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "42630966",
+      "title": "Enterovirus infections in children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "cited_pmid": "42595093",
+      "title": "Construction of a suckling mouse model based on an EV-C96 clinical isolate and its application in drug screening and vaccine development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1193974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_325445"
+      ]
+    },
+    {
+      "organism": "Encephalomyocarditis virus",
+      "question": "What are the clinical symptoms and disease presentation of Encephalomyocarditis virus?",
+      "cited_pmid": "42156043",
+      "title": "[Acute Flaccid Myelitis].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950"
+      ]
     }
   ],
   "false_negatives": [
@@ -310050,6 +310090,12 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B3?",
       "missed_pmid": "30944213",
       "title": "Bacterial Stabilization of a Panel of Picornaviruses."
+    },
+    {
+      "organism": "Enterovirus D68",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus D68?",
+      "missed_pmid": "42764925",
+      "title": "Preclinical evaluation of GW406108X, a broad-spectrum therapeutic blocking ULK1/2-mediated autophagy to inhibit enterovirus replication."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
