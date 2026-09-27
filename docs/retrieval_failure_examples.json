@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:00:37.892957+00:00",
-  "runs": 301,
+  "updated": "2026-09-27T17:02:16.193555+00:00",
+  "runs": 302,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23127,
-  "n_false_negatives": 4176,
+  "n_false_positives": 23132,
+  "n_false_negatives": 4180,
   "new_this_run": {
-    "false_positives": 26,
-    "false_negatives": 12
+    "false_positives": 5,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -261173,6 +261173,58 @@
         "Coxsackievirus A6",
         "http://purl.obolibrary.org/obo/NCBITaxon_12059"
       ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What antiviral drugs or treatments are effective against La Crosse virus?",
+      "cited_pmid": "42255587",
+      "title": "Antiviral Mechanisms of Justicidin B and Tuberculatin from Phyllanthus brasiliensis against Oropouche Virus Infection.",
+      "actual_organisms": [
+        "Oropouche virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "cited_pmid": "40735330",
+      "title": "Clinical Characteristics and Outcome of Jamestown Canyon Virus Infection in Hospitalized Wisconsin Patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is known about Oropouche virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42296443",
+      "title": "Oropouche virus: viral evolution, epidemiological trends, and challenges for control.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bunyamwera virus",
+      "question": "What are the clinical symptoms and disease presentation of Bunyamwera virus?",
+      "cited_pmid": "40735330",
+      "title": "Clinical Characteristics and Outcome of Jamestown Canyon Virus Infection in Hospitalized Wisconsin Patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
+    },
+    {
+      "organism": "Cache Valley virus",
+      "question": "What are the clinical symptoms and disease presentation of Cache Valley virus?",
+      "cited_pmid": "40735330",
+      "title": "Clinical Characteristics and Outcome of Jamestown Canyon Virus Infection in Hospitalized Wisconsin Patients.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35511"
+      ]
     }
   ],
   "false_negatives": [
@@ -286231,6 +286283,30 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
       "missed_pmid": "38189249",
       "title": "N-terminal acetyltransferase 6 facilitates enterovirus 71 replication by regulating PI4KB expression and replication organelle biogenesis."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What are the clinical symptoms and disease presentation of La Crosse virus?",
+      "missed_pmid": "40504766",
+      "title": "West Nile Virus and Other Nationally Notifiable Arboviral Diseases - United States, 2023."
+    },
+    {
+      "organism": "La Crosse virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of La Crosse virus?",
+      "missed_pmid": "40462967",
+      "title": "The La Crosse virus Gc head domain is a major determinant of virus dissemination and pathogenesis."
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What are the clinical symptoms and disease presentation of Oropouche virus?",
+      "missed_pmid": "42377030",
+      "title": "Oropouche virus causes acute hepatitis in mice controlled by type I interferons."
+    },
+    {
+      "organism": "Oropouche virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Oropouche virus?",
+      "missed_pmid": "42447154",
+      "title": "Phylogeographic dynamics of oropouche virus in the Colombian Amazon: Evolutionary insights in a climatic context."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
