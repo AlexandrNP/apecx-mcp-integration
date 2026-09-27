@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:31:14.403921+00:00",
-  "runs": 279,
+  "updated": "2026-09-27T15:44:42.088429+00:00",
+  "runs": 280,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22718,
-  "n_false_negatives": 4011,
+  "n_false_positives": 22749,
+  "n_false_negatives": 4031,
   "new_this_run": {
-    "false_positives": 7,
-    "false_negatives": 3
+    "false_positives": 31,
+    "false_negatives": 20
   },
   "false_positives": [
     {
@@ -256734,6 +256734,395 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_77043",
         "http://purl.obolibrary.org/obo/NCBITaxon_77044"
       ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is known about Deformed wing virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34908449",
+      "title": "Enoxacin Shows Broad-Spectrum Antiviral Activity against Diverse Viruses by Enhancing Antiviral RNA Interference in Insects.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What diagnostic assays or laboratory tests detect Deformed wing virus?",
+      "cited_pmid": "39971007",
+      "title": "Development and validation of a point-of-care molecular assay for sacbrood virus (SBV) diagnosis in apiaries.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "35993738",
+      "title": "Multiple Viral Protein Genome-Linked Proteins Compensate for Viral Translation in a Positive-Sense Single-Stranded RNA Virus Infection.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "cited_pmid": "35543767",
+      "title": "Full genome sequence of a novel iflavirus from the leafhopper Recilia dorsalis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1920698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2944541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "41405388",
+      "title": "In silico detection and characterization of novel Picornavirales mined from publicly available insect RNA-seq data sets.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Deformed wing virus?",
+      "cited_pmid": "41764678",
+      "title": "Diverse novel and avian-associated viruses in the ileal viromes of Northern Mockingbird (Mimus polyglottos).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12091",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3079366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3569313",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5819",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689759"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39339872",
+      "title": "Israeli Acute Paralysis Virus Is an Emerging Pathogen Contributing to Brood Disease of Apis cerana.",
+      "actual_organisms": [
+        "Israeli acute paralysis virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33969"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "41538088",
+      "title": "Development of multiplex RT-PCR assays containing an internal amplification control for the detection of dicistro-, iflaviruses and CBPV in honey bees. Part 1 - assays design and optimization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "cited_pmid": "39971007",
+      "title": "Development and validation of a point-of-care molecular assay for sacbrood virus (SBV) diagnosis in apiaries.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is the genome organization and replication cycle of Cricket paralysis virus?",
+      "cited_pmid": "35543767",
+      "title": "Full genome sequence of a novel iflavirus from the leafhopper Recilia dorsalis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1920698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2944541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "34908449",
+      "title": "Enoxacin Shows Broad-Spectrum Antiviral Activity against Diverse Viruses by Enhancing Antiviral RNA Interference in Insects.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is known about Israeli acute paralysis virus pathogenesis and transmission?",
+      "cited_pmid": "35435741",
+      "title": "Draft Genome Sequence of a Novel Iflavirus from Leafhoppers (Exitianus capicola) in Iraq.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2920377",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Israeli acute paralysis virus?",
+      "cited_pmid": "39971007",
+      "title": "Development and validation of a point-of-care molecular assay for sacbrood virus (SBV) diagnosis in apiaries.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Israeli acute paralysis virus?",
+      "cited_pmid": "41538088",
+      "title": "Development of multiplex RT-PCR assays containing an internal amplification control for the detection of dicistro-, iflaviruses and CBPV in honey bees. Part 1 - assays design and optimization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "cited_pmid": "35993738",
+      "title": "Multiple Viral Protein Genome-Linked Proteins Compensate for Viral Translation in a Positive-Sense Single-Stranded RNA Virus Infection.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the epidemiology and outbreak history of Israeli acute paralysis virus?",
+      "cited_pmid": "40885432",
+      "title": "Landscape-scale virome analysis uncovers endemic and emerging honey bee viruses in the Silk-Road hub of Uzbekistan.",
+      "actual_organisms": [
+        "Deformed wing virus",
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2510845",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3120295"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Israeli acute paralysis virus?",
+      "cited_pmid": "33188728",
+      "title": "Nonstructural Protein 1 of SARS-CoV-2 Is a Potent Pathogenicity Factor Redirecting Host Protein Synthesis Machinery toward Viral RNA.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "cited_pmid": "33591970",
+      "title": "Imd pathway-specific immune assays reveal NF-\u03baB stimulation by viral RNA PAMPs in Aedes aegypti Aag2 cells.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "39971007",
+      "title": "Development and validation of a point-of-care molecular assay for sacbrood virus (SBV) diagnosis in apiaries.",
+      "actual_organisms": [
+        "Sacbrood virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "41538088",
+      "title": "Development of multiplex RT-PCR assays containing an internal amplification control for the detection of dicistro-, iflaviruses and CBPV in honey bees. Part 1 - assays design and optimization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "cited_pmid": "40870611",
+      "title": "Rapid and Accurate Detection of the Most Common Bee Pathogens; Nosema ceranae, Aspergillus flavus, Paenibacillus larvae and Black Queen Cell Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1464",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2720874",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977",
+        "http://purl.obolibrary.org/obo/NCBITaxon_44249"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What antiviral drugs or treatments are effective against Black queen cell virus?",
+      "cited_pmid": "34908449",
+      "title": "Enoxacin Shows Broad-Spectrum Antiviral Activity against Diverse Viruses by Enhancing Antiviral RNA Interference in Insects.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279"
+      ]
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Black queen cell virus?",
+      "cited_pmid": "40523966",
+      "title": "Distinct virome compositions and lack of viral diversification indicate that viral spillover is a dead-end between the western honey bee and the common eastern bumblebee.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "41538088",
+      "title": "Development of multiplex RT-PCR assays containing an internal amplification control for the detection of dicistro-, iflaviruses and CBPV in honey bees. Part 1 - assays design and optimization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_180822",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "cited_pmid": "40870611",
+      "title": "Rapid and Accurate Detection of the Most Common Bee Pathogens; Nosema ceranae, Aspergillus flavus, Paenibacillus larvae and Black Queen Cell Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1464",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2720874",
+        "http://purl.obolibrary.org/obo/NCBITaxon_27977",
+        "http://purl.obolibrary.org/obo/NCBITaxon_44249"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "35993738",
+      "title": "Multiple Viral Protein Genome-Linked Proteins Compensate for Viral Translation in a Positive-Sense Single-Stranded RNA Virus Infection.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "36508145",
+      "title": "Full genome sequence of a novel iflavirus from the aster leafhopper Macrosteles fascifrons.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2999245",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "cited_pmid": "35543767",
+      "title": "Full genome sequence of a novel iflavirus from the leafhopper Recilia dorsalis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1920698",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2944541",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What antiviral drugs or treatments are effective against Sacbrood virus?",
+      "cited_pmid": "34908449",
+      "title": "Enoxacin Shows Broad-Spectrum Antiviral Activity against Diverse Viruses by Enhancing Antiviral RNA Interference in Insects.",
+      "actual_organisms": [
+        "Cricket paralysis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10623",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12637",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2081351",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64279"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
+      "cited_pmid": "41405388",
+      "title": "In silico detection and characterization of novel Picornavirales mined from publicly available insect RNA-seq data sets.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1213186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232799",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_464095",
+        "http://purl.obolibrary.org/obo/NCBITaxon_699189",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
+      "cited_pmid": "41764678",
+      "title": "Diverse novel and avian-associated viruses in the ileal viromes of Northern Mockingbird (Mimus polyglottos).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12091",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_232795",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3079366",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3569313",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5819",
+        "http://purl.obolibrary.org/obo/NCBITaxon_689759"
+      ]
     }
   ],
   "false_negatives": [
@@ -280802,6 +281191,126 @@
       "question": "What antiviral drugs or treatments are effective against Saccharomyces cerevisiae virus L-A?",
       "missed_pmid": "27711183",
       "title": "XRN1 Is a Species-Specific Virus Restriction Factor in Yeasts."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "missed_pmid": "41684634",
+      "title": "Comprehensive virome analysis of Varroa destructor populations in South Korea."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What is the genome organization and replication cycle of Deformed wing virus?",
+      "missed_pmid": "42017458",
+      "title": "Distinct Host Gene Expression Patterns Induced by Covert Deformed Wing Virus Infections in Honeybees (Apis mellifera)."
+    },
+    {
+      "organism": "Deformed wing virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Deformed wing virus?",
+      "missed_pmid": "40429190",
+      "title": "Host Specificity of Snodgrassella in Eastern and Western Honeybees and Its Effects on Naturally Occurring Deformed Wing Virus Titers."
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "missed_pmid": "36508145",
+      "title": "Full genome sequence of a novel iflavirus from the aster leafhopper Macrosteles fascifrons."
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What is known about Cricket paralysis virus pathogenesis and transmission?",
+      "missed_pmid": "35751691",
+      "title": "Complete genome analysis of a novel iflavirus from the spotted lanternfly Lycorma delicatula."
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "missed_pmid": "35993738",
+      "title": "Multiple Viral Protein Genome-Linked Proteins Compensate for Viral Translation in a Positive-Sense Single-Stranded RNA Virus Infection."
+    },
+    {
+      "organism": "Cricket paralysis virus",
+      "question": "What diagnostic assays or laboratory tests detect Cricket paralysis virus?",
+      "missed_pmid": "35435741",
+      "title": "Draft Genome Sequence of a Novel Iflavirus from Leafhoppers (Exitianus capicola) in Iraq."
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "What is the genome organization and replication cycle of Israeli acute paralysis virus?",
+      "missed_pmid": "39339872",
+      "title": "Israeli Acute Paralysis Virus Is an Emerging Pathogen Contributing to Brood Disease of Apis cerana."
+    },
+    {
+      "organism": "Israeli acute paralysis virus",
+      "question": "How does Israeli acute paralysis virus evade or modulate the host immune response?",
+      "missed_pmid": "40856022",
+      "title": "Interactions of husbandry, landscape, and immunity in regulating viral loads for managed honey bees."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What diagnostic assays or laboratory tests detect Black queen cell virus?",
+      "missed_pmid": "40905163",
+      "title": "Evaluation of the performance of a point-of-care molecular assay for simultaneous detection of the agents of American foulbrood and European foulbrood in apiaries."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "What antiviral drugs or treatments are effective against Black queen cell virus?",
+      "missed_pmid": "40346929",
+      "title": "Honey Bee Viromes From Varroa destructor-Resistant and Susceptible Colonies."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "How does Black queen cell virus evade or modulate the host immune response?",
+      "missed_pmid": "40140730",
+      "title": "Honey bee egg composition changes seasonally and after acute maternal virus infection."
+    },
+    {
+      "organism": "Black queen cell virus",
+      "question": "How does Black queen cell virus evade or modulate the host immune response?",
+      "missed_pmid": "41086214",
+      "title": "Elevated virus infection of honey bee queens reduces methyl oleate production and destabilizes colony-level social structure."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39971007",
+      "title": "Development and validation of a point-of-care molecular assay for sacbrood virus (SBV) diagnosis in apiaries."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is known about Sacbrood virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39898642",
+      "title": "Chinese sacbrood virus mediates m6A modification to target and suppress the expression of hemolymph maintenance gene AF9, exacerbating bee infections."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What diagnostic assays or laboratory tests detect Sacbrood virus?",
+      "missed_pmid": "39339872",
+      "title": "Israeli Acute Paralysis Virus Is an Emerging Pathogen Contributing to Brood Disease of Apis cerana."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "missed_pmid": "40346929",
+      "title": "Honey Bee Viromes From Varroa destructor-Resistant and Susceptible Colonies."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "missed_pmid": "40371106",
+      "title": "MeRIP-Seq initially revealed the role of m6A modification in Chinese sacbrood virus-infected Apis cerana larvae."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genome organization and replication cycle of Sacbrood virus?",
+      "missed_pmid": "40597634",
+      "title": "Comparative transcriptome analysis reveals various host responses to sacbrood virus infection in Apis cerana and Apis mellifera."
+    },
+    {
+      "organism": "Sacbrood virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Sacbrood virus?",
+      "missed_pmid": "40885432",
+      "title": "Landscape-scale virome analysis uncovers endemic and emerging honey bee viruses in the Silk-Road hub of Uzbekistan."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
