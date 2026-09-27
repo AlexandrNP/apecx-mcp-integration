@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:09:25.398826+00:00",
-  "runs": 247,
+  "updated": "2026-09-27T14:11:08.960541+00:00",
+  "runs": 248,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22019,
-  "n_false_negatives": 3695,
+  "n_false_positives": 22034,
+  "n_false_negatives": 3704,
   "new_this_run": {
-    "false_positives": 19,
-    "false_negatives": 11
+    "false_positives": 15,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -249036,6 +249036,166 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_33757",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What antiviral drugs or treatments are effective against Yellow fever virus?",
+      "cited_pmid": "42588574",
+      "title": "Cross-Family Mechanistic Analysis of Plant Alkaloids Against Neglected Arboviruses and Related RNA Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the epidemiology and outbreak history of Yellow fever virus?",
+      "cited_pmid": "42576848",
+      "title": "Yellow fever in older adults: an overlooked high-risk population in South American outbreaks.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Yellow fever virus?",
+      "cited_pmid": "39617074",
+      "title": "From bytes to bites: In-silico creation of a novel multi-epitope vaccine against Murray Valley Encephalitis Virus.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11077",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "How does Yellow fever virus evade or modulate the host immune response?",
+      "cited_pmid": "42577415",
+      "title": "Characterization of virus neuroinvasion, blood-brain barrier integrity and neuroinflammation following Powassan virus infection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "How does Japanese encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42577415",
+      "title": "Characterization of virus neuroinvasion, blood-brain barrier integrity and neuroinflammation following Powassan virus infection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is known about Tick-borne encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42577415",
+      "title": "Characterization of virus neuroinvasion, blood-brain barrier integrity and neuroinflammation following Powassan virus infection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tick-borne encephalitis virus?",
+      "cited_pmid": "40425079",
+      "title": "Genotype patterns and evolutionary rates: uncovering Japanese encephalitis virus spread across Asia's climate regions.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "Murray Valley encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655668",
+      "title": "Development of Cell Culture-Derived Hemagglutination Antigens for Japanese Encephalitis Virus Genotypes 1 and 3.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is known about Murray Valley encephalitis virus pathogenesis and transmission?",
+      "cited_pmid": "42645624",
+      "title": "Chandipura virus encephalitis: an emerging pediatric neurotropic threat in india-virology, epidemiology, pathogenesis, and public health challenges.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11270",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11272",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_56820"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "How does Murray Valley encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42577415",
+      "title": "Characterization of virus neuroinvasion, blood-brain barrier integrity and neuroinflammation following Powassan virus infection in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11083",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "How does Murray Valley encephalitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42680695",
+      "title": "Neuronal Apoptotic Bodies Facilitate Japanese Encephalitis Virus Infection and Pathogenicity.",
+      "actual_organisms": [
+        "Japanese encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murray Valley encephalitis virus?",
+      "cited_pmid": "36366578",
+      "title": "Japanese Encephalitis Virus: The Emergence of Genotype IV in Australia and Its Potential Endemicity.",
+      "actual_organisms": [
+        "Japanese encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_204269",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "cited_pmid": "42588574",
+      "title": "Cross-Family Mechanistic Analysis of Plant Alkaloids Against Neglected Arboviruses and Related RNA Viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "39429370",
+      "title": "Therapeutic Plasma Exchange for Murray Valley Encephalitis: A Case Report and Review of Clinical Features, Diagnosis, and Challenges in Management.",
+      "actual_organisms": [
+        "Murray Valley encephalitis virus"
+      ]
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What are the clinical symptoms and disease presentation of Usutu virus?",
+      "cited_pmid": "42801153",
+      "title": "A Multisystem Presentation of West Nile Neuroinvasive Disease: Lessons in Diagnostic Complexity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
     }
   ],
   "false_negatives": [
@@ -271208,6 +271368,60 @@
       "question": "What is the epidemiology and outbreak history of Enterovirus A71?",
       "missed_pmid": "41902671",
       "title": "Epidemiological shifts in coxsackievirus A-induced hand, foot, and mouth disease in China, 2008-2024."
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus pathogenesis and transmission?",
+      "missed_pmid": "42580329",
+      "title": "Update on the Pathophysiology of Yellow Fever Intoxication."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is known about Japanese encephalitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42652006",
+      "title": "Development of JEV NS1 Specific Capture-ELISA Based on a Single Monoclonal Antibody."
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Japanese encephalitis virus?",
+      "missed_pmid": "38803004",
+      "title": "Serosurvey for Japanese encephalitis virus antibodies following an outbreak in an immunologically na\u00efve population, Victoria, 2022: a cross-sectional study."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "How does Tick-borne encephalitis virus evade or modulate the host immune response?",
+      "missed_pmid": "42525345",
+      "title": "DNA Vaccine Encoding the prM-E Polyprotein of the Tick-Borne Encephalitis Virus."
+    },
+    {
+      "organism": "Tick-borne encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tick-borne encephalitis virus?",
+      "missed_pmid": "42593751",
+      "title": "Serological Evidence of Tick-Borne Encephalitis Virus (TBEV) Exposure Among Hospitalized Neurological Patients in Israel, 2010-2019."
+    },
+    {
+      "organism": "Murray Valley encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murray Valley encephalitis virus?",
+      "missed_pmid": "38803004",
+      "title": "Serosurvey for Japanese encephalitis virus antibodies following an outbreak in an immunologically na\u00efve population, Victoria, 2022: a cross-sectional study."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is known about Usutu virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42188867",
+      "title": "First Usutu Virus Infection in an Asymptomatic Blood Donor in Greece."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What is the genome organization and replication cycle of Usutu virus?",
+      "missed_pmid": "42320777",
+      "title": "Detection and sequencing of Usutu virus during mosquito surveillance: Use of multiple assays and techniques for identification at low levels."
+    },
+    {
+      "organism": "Usutu virus",
+      "question": "What antiviral drugs or treatments are effective against Usutu virus?",
+      "missed_pmid": "42168123",
+      "title": "The Human Threat From West Nile Virus and Usutu Virus in a Changing Climate."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
