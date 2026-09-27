@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:52:56.781800+00:00",
-  "runs": 264,
+  "updated": "2026-09-27T14:54:45.014900+00:00",
+  "runs": 265,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22405,
-  "n_false_negatives": 3839,
+  "n_false_positives": 22421,
+  "n_false_negatives": 3844,
   "new_this_run": {
-    "false_positives": 31,
-    "false_negatives": 14
+    "false_positives": 16,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -253309,6 +253309,187 @@
         "Sindbis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_11019"
       ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What antiviral drugs or treatments are effective against Transmissible gastroenteritis virus?",
+      "cited_pmid": "42402032",
+      "title": "Magnolol inhibits porcine epidemic diarrhea virus infection by suppressing cathepsin L expression in vitro and in vivo.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2018513",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42405772",
+      "title": "Coronavirus membrane protein with a fluorescent protein tag enables particle tracking for the study of virus assembly and egress in live cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "How does Transmissible gastroenteritis virus evade or modulate the host immune response?",
+      "cited_pmid": "42684955",
+      "title": "Porcine epidemic diarrhea virus infection promotes Peyer's patch immune induction and epithelial defense via single-cell transcriptional reprogramming.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42693188",
+      "title": "Global transmission pathways and adaptive molecular evolution of avian infectious bronchitis GI-23 (Variant 2).",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42730980",
+      "title": "Phylogenetic Divergence and Molecular Signatures of Porcine Epidemic Diarrhea Virus S-INDEL Subtype.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What diagnostic assays or laboratory tests detect Porcine deltacoronavirus?",
+      "cited_pmid": "42702239",
+      "title": "A single-tube dual-gene RAA-PfAgo assay for simultaneous detection and identification of PEDV field and vaccine strains.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Porcine deltacoronavirus",
+      "question": "What antiviral drugs or treatments are effective against Porcine deltacoronavirus?",
+      "cited_pmid": "42402032",
+      "title": "Magnolol inhibits porcine epidemic diarrhea virus infection by suppressing cathepsin L expression in vitro and in vivo.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2018513",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42620304",
+      "title": "Virus-like particles vaccine of porcine epidemic diarrhea virus spike 1 protein induces protective immunity challenge in piglets.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42113844",
+      "title": "Host species-specific mutations in the thumb domain of the 3Dpol polymerase are required for efficient replication of human hepatitis A virus in mice.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12091",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "cited_pmid": "42405772",
+      "title": "Coronavirus membrane protein with a fluorescent protein tag enables particle tracking for the study of virus assembly and egress in live cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "42702239",
+      "title": "A single-tube dual-gene RAA-PfAgo assay for simultaneous detection and identification of PEDV field and vaccine strains.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Murine hepatitis virus?",
+      "cited_pmid": "42385281",
+      "title": "Characterization of a method to detect hepatitis A virus and norovirus in meat products.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12092",
+        "http://purl.obolibrary.org/obo/NCBITaxon_122928",
+        "http://purl.obolibrary.org/obo/NCBITaxon_142786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_208726",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_357231",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42402032",
+      "title": "Magnolol inhibits porcine epidemic diarrhea virus infection by suppressing cathepsin L expression in vitro and in vivo.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2018513",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "42140805",
+      "title": "Genetic evolution and epidemiological dynamics of porcine epidemic diarrhea virus in Guangxi, China, from 2020 to 2023.",
+      "actual_organisms": [
+        "Porcine epidemic diarrhea virus",
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10913",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murine hepatitis virus?",
+      "cited_pmid": "42506651",
+      "title": "The Role of Human Viral Entry Receptor Mouse Models in Advancing Antiviral Antibodies and Vaccines.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138950",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Murine hepatitis virus?",
+      "cited_pmid": "42693188",
+      "title": "Global transmission pathways and adaptive molecular evolution of avian infectious bronchitis GI-23 (Variant 2).",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -276345,6 +276526,36 @@
       "question": "What diagnostic assays or laboratory tests detect Semliki Forest virus?",
       "missed_pmid": "41408316",
       "title": "Identification of a culturable fungal species and endosymbiotic bacteria in saliva of Aedes aegypti and Culex pipiens and their impact on arbovirus infection in vitro."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Transmissible gastroenteritis virus?",
+      "missed_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein."
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "How does Transmissible gastroenteritis virus evade or modulate the host immune response?",
+      "missed_pmid": "42721780",
+      "title": "SADS-CoV Nsp1 hijacks proteasomal subunits to degrade IRF1."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42142632",
+      "title": "Development of a CRISPR-Cas13a assay for mouse hepatitis virus detection."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is known about Murine hepatitis virus pathogenesis and transmission?",
+      "missed_pmid": "42363004",
+      "title": "Acute viral encephalitis impacts dense-core amyloid plaque pathology and dysregulates myeloid responses to amyloid plaques."
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "missed_pmid": "42119203",
+      "title": "In silico characterisation of a novel SARS-CoV-2 envelope protein inhibitor and in vitro validation against murine coronavirus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
