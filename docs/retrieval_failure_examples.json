@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:46:09.835161+00:00",
-  "runs": 260,
+  "updated": "2026-09-27T14:47:57.417545+00:00",
+  "runs": 261,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22292,
-  "n_false_negatives": 3803,
+  "n_false_positives": 22340,
+  "n_false_negatives": 3816,
   "new_this_run": {
-    "false_positives": 37,
-    "false_negatives": 9
+    "false_positives": 48,
+    "false_negatives": 13
   },
   "false_positives": [
     {
@@ -252118,6 +252118,499 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
         "http://purl.obolibrary.org/obo/NCBITaxon_551523"
       ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is known about Human papillomavirus 16 pathogenesis and transmission?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 16?",
+      "cited_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "cited_pmid": "39886739",
+      "title": "Clinicopathologic Features and Viral Status of Low-risk HPV6 and HPV11-Associated Squamous Cell Carcinoma of the Uterine Cervix and Vulva.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "30583025",
+      "title": "Genetic variability of human papillomavirus type 51 E6, E7, L1 and L2 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 16?",
+      "cited_pmid": "35048388",
+      "title": "Genetic variation of E6, E7, and L1 genes of human papillomavirus 51 from central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "35963773",
+      "title": "Comparative pilot study about HPV test with partial genotyping in primary screening versus other strategies for cervical cancer population screening, CRYGEN 16/18 study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 11?",
+      "cited_pmid": "36571268",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by GP5+/6+-PCR-based reverse dot blot hybridization assay and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus 11?",
+      "cited_pmid": "30583025",
+      "title": "Genetic variability of human papillomavirus type 51 E6, E7, L1 and L2 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus 11?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 11?",
+      "cited_pmid": "32246353",
+      "title": "Orientation-dependent toxic effect of human papillomavirus type 33 long control region DNA in Escherichia coli cells.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 11?",
+      "cited_pmid": "39696338",
+      "title": "HPV11 targeting KDM4A regulates the polarization of macrophage M1 and promotes the development of nasal inverted papilloma.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 11?",
+      "cited_pmid": "42589622",
+      "title": "Experimental Analysis of HPV16 L1/L2 Chimeric VLP Internalization by Human Peripheral Blood Leukocytes.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "35048388",
+      "title": "Genetic variation of E6, E7, and L1 genes of human papillomavirus 51 from central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus 11",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus 11?",
+      "cited_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is known about Human papillomavirus type 33 pathogenesis and transmission?",
+      "cited_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the epidemiology and outbreak history of Human papillomavirus type 33?",
+      "cited_pmid": "37280193",
+      "title": "Pattern of infection and genotypes of human papillomavirus in Zhengzhou City based on a four-year (2015-2018) epidemiological study.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 33?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "How does Human papillomavirus type 33 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "How does Human papillomavirus type 33 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "33832494",
+      "title": "Genetic variability of human papillomavirus type 39 based on E6, E7 and L1 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "42426820",
+      "title": "Genetic variation of human papillomavirus type 39 E6 and E7 genes in central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 33",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 33?",
+      "cited_pmid": "30583025",
+      "title": "Genetic variability of human papillomavirus type 51 E6, E7, L1 and L2 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "35963773",
+      "title": "Comparative pilot study about HPV test with partial genotyping in primary screening versus other strategies for cervical cancer population screening, CRYGEN 16/18 study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "cited_pmid": "36571268",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by GP5+/6+-PCR-based reverse dot blot hybridization assay and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genome organization and replication cycle of Human papillomavirus type 51?",
+      "cited_pmid": "37461035",
+      "title": "Transcriptional activity of the long control region in human papillomavirus type 33 intratype variants.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 51?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 51?",
+      "cited_pmid": "39540396",
+      "title": "Long-Term Infection With a Particular Human Papillomavirus (HPV) Genotype, HPV Subtype, or HPV Genomic Variant Does not Significantly Influence the Clinical Course of Recurrent Respiratory Papillomatosis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "32246353",
+      "title": "Orientation-dependent toxic effect of human papillomavirus type 33 long control region DNA in Escherichia coli cells.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 51?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "How does Human papillomavirus type 51 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "How does Human papillomavirus type 51 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "How does Human papillomavirus type 51 evade or modulate the host immune response?",
+      "cited_pmid": "41696954",
+      "title": "Recurrent respiratory papillomatosis: Recent advances in HPV-6/HPV-11-targeted immunotherapy.",
+      "actual_organisms": [
+        "Human papillomavirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10571",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "How does Human papillomavirus type 51 evade or modulate the host immune response?",
+      "cited_pmid": "39258910",
+      "title": "Characterization of HPV6/11-reactive T-cell subsets in papillomas of patients with juvenile-onset recurrent respiratory papillomatosis and identification of HPV11 E7-specific candidate TCR clonotypes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 51?",
+      "cited_pmid": "33832494",
+      "title": "Genetic variability of human papillomavirus type 39 based on E6, E7 and L1 genes in Southwest China.",
+      "actual_organisms": [
+        "Human papillomavirus type 39",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_151340"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42505425",
+      "title": "Exploration of immune correlates of viral clearance after PVX2 immunotherapy in patients with human papillomavirus type 16 infection and cervical intraepithelial neoplasia grade \u22641.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "35963773",
+      "title": "Comparative pilot study about HPV test with partial genotyping in primary screening versus other strategies for cervical cancer population screening, CRYGEN 16/18 study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "36512112",
+      "title": "Incorporating HPV 33 and cytology into HPV 16/18 screening may be feasible. A cross-sectional study.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 39?",
+      "cited_pmid": "36571268",
+      "title": "Head-to-head comparison of genotyping of human papillomavirus by GP5+/6+-PCR-based reverse dot blot hybridization assay and SPF10-PCR-based line probe assay.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus type 39?",
+      "cited_pmid": "36658539",
+      "title": "Human papilloma virus infection and its associated risk for cervical lesions: a cross-sectional study in Putuo area of Shanghai, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 39?",
+      "cited_pmid": "32246353",
+      "title": "Orientation-dependent toxic effect of human papillomavirus type 33 long control region DNA in Escherichia coli cells.",
+      "actual_organisms": [
+        "Human papillomavirus type 33",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_337041",
+        "http://purl.obolibrary.org/obo/NCBITaxon_561",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus type 39?",
+      "cited_pmid": "39095779",
+      "title": "Manipulating host secreted protein gene expression: an indirect approach by HPV11/16 E6/E7 to suppress PBMC cytokine secretion.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "How does Human papillomavirus type 39 evade or modulate the host immune response?",
+      "cited_pmid": "40264759",
+      "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "How does Human papillomavirus type 39 evade or modulate the host immune response?",
+      "cited_pmid": "40330484",
+      "title": "Human papillomavirus E1 proteins inhibit RIG-I/MDA5-MAVS, TLR3-TRIF, cGAS-STING, and JAK-STAT signaling pathways to evade innate antiviral immunity.",
+      "actual_organisms": [
+        "Human papillomavirus 16",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Human papillomavirus type 39?",
+      "cited_pmid": "35048388",
+      "title": "Genetic variation of E6, E7, and L1 genes of human papillomavirus 51 from central China.",
+      "actual_organisms": [
+        "Human papillomavirus type 51",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10566"
+      ]
     }
   ],
   "false_negatives": [
@@ -274938,6 +275431,84 @@
       "question": "What are the clinical symptoms and disease presentation of Bagaza virus?",
       "missed_pmid": "29739470",
       "title": "Experimental infection of grey partridges with Bagaza virus: pathogenicity evaluation and potential role as a competent host."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "missed_pmid": "37276242",
+      "title": "High Specificity of HPV Cell-Free DNA Tests in Persons With HIV for the Detection of HPV-Related Cancer."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus 16?",
+      "missed_pmid": "37772799",
+      "title": "A rapid HPV typing assay to support global cervical cancer screening and risk-based management: A cross-sectional study."
+    },
+    {
+      "organism": "Human papillomavirus 16",
+      "question": "What are the clinical symptoms and disease presentation of Human papillomavirus 16?",
+      "missed_pmid": "10951274",
+      "title": "Erythroplasia of queyrat: coinfection with cutaneous carcinogenic human papillomavirus type 8 and genital papillomaviruses in a carcinoma in situ."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35048388",
+      "title": "Genetic variation of E6, E7, and L1 genes of human papillomavirus 51 from central China."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "30583025",
+      "title": "Genetic variability of human papillomavirus type 51 E6, E7, L1 and L2 genes in Southwest China."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "20377838",
+      "title": "Detection of human papillomavirus in a urothelial carcinoma mimicking urethral caruncle."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What is known about Human papillomavirus type 51 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "32579382",
+      "title": "Squamous Cell Carcinoma In Situ Originating From Nasal Polyps With Human Papillomavirus 51 Infection: A Case Report."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What diagnostic assays or laboratory tests detect Human papillomavirus type 51?",
+      "missed_pmid": "24608304",
+      "title": "Prevalence of abnormal anal cytology and high-grade squamous intraepithelial lesions among a cohort of HIV-infected men who have sex with men."
+    },
+    {
+      "organism": "Human papillomavirus type 51",
+      "question": "What antiviral drugs or treatments are effective against Human papillomavirus type 51?",
+      "missed_pmid": "21559551",
+      "title": "Expression of the transformed phenotype induced by diverse acting viral oncogenes mediates sensitivity to growth suppression induced by caffeic Acid phenethyl ester (cape)."
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "1847266",
+      "title": "Genome organization and nucleotide sequence of human papillomavirus type 39."
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "34294082",
+      "title": "Lineage analysis of human papillomavirus type 39 in cervical samples of Iranian women."
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "33832494",
+      "title": "Genetic variability of human papillomavirus type 39 based on E6, E7 and L1 genes in Southwest China."
+    },
+    {
+      "organism": "Human papillomavirus type 39",
+      "question": "What is known about Human papillomavirus type 39 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "10951274",
+      "title": "Erythroplasia of queyrat: coinfection with cutaneous carcinogenic human papillomavirus type 8 and genital papillomaviruses in a carcinoma in situ."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
