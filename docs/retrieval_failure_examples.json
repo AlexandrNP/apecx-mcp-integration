@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T10:47:07.647219+00:00",
-  "runs": 202,
+  "updated": "2026-09-27T11:04:11.581365+00:00",
+  "runs": 203,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 20701,
-  "n_false_negatives": 3583,
+  "n_false_positives": 20730,
+  "n_false_negatives": 3585,
   "new_this_run": {
-    "false_positives": 35,
-    "false_negatives": 0
+    "false_positives": 29,
+    "false_negatives": 2
   },
   "false_positives": [
     {
@@ -233942,6 +233942,316 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_232799",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genome organization and replication cycle of Bluetongue virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What antiviral drugs or treatments are effective against Bluetongue virus?",
+      "cited_pmid": "42575000",
+      "title": "Cidofovir inhibits lumpy skin disease virus replication by targeting viral DNA polymerase and modulating host apoptosis.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What are the clinical symptoms and disease presentation of Bluetongue virus?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the genome organization and replication cycle of Lumpy skin disease virus?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the genome organization and replication cycle of Lumpy skin disease virus?",
+      "cited_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What antiviral drugs or treatments are effective against Lumpy skin disease virus?",
+      "cited_pmid": "38382931",
+      "title": "Inhibitory effects of kaempferol, quercetin and luteolin on the replication of human parainfluenza virus type 2 in vitro.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the epidemiology and outbreak history of Lumpy skin disease virus?",
+      "cited_pmid": "42668370",
+      "title": "Selective culling and the potential persistence of lumpy skin disease in cattle herds: insights from a mechanistic transmission model.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Lumpy skin disease virus?",
+      "cited_pmid": "42762882",
+      "title": "Functional study of intrinsically disordered region of porcine circovirus type 2 capsid protein for fusing foreign epitope.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2039697",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "How does Lumpy skin disease virus evade or modulate the host immune response?",
+      "cited_pmid": "41144893",
+      "title": "Development of a Novel Mucosal Vaccine Vector Derived From Human Parainfluenza Virus Type 2 and Its Efficacy as a SARS-CoV-2 Vaccine by Intratracheal Administration Using Transgenic Mice Expressing Human Angiotensin-Converting Enzyme 2.",
+      "actual_organisms": [
+        "Human parainfluenza virus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Lumpy skin disease virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Lumpy skin disease virus?",
+      "cited_pmid": "42655042",
+      "title": "Molecular Epidemiological Characteristics and Genetic Evolution of Bluetongue Virus in Yunnan Province, China.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42758862",
+      "title": "Peripheral human mAb therapy yields modulation of neuroinflammation and long-term functional recovery from lyssavirus infection.",
+      "actual_organisms": [
+        "Rabies lyssavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_551523",
+        "http://purl.obolibrary.org/obo/NCBITaxon_90961",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "42797860",
+      "title": "Genome Constellations Recovered Following In Vitro Co-Infection and Serial Passage of Bluetongue Virus Serotypes 1 and 16.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "42709478",
+      "title": "Bluetongue virus: current perspectives on characterisation and the need to formalise nomenclature in an era of rapidly evolving technology.",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2946186",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3095284"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "41684324",
+      "title": "The Meningitis and Encephalitis Registry of Lower Saxony, Germany (MERIN) - design and main results of circulating neurotropic pathogen surveillance, 2003 to 2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10335",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12062",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "42648113",
+      "title": "Longitudinal whole-genome analysis of bluetongue virus identifies conserved serotype-specific genomes and distinct genomic constellations within a Colorado sheep flock (2021-2023).",
+      "actual_organisms": [
+        "Bluetongue virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 7?",
+      "cited_pmid": "42575000",
+      "title": "Cidofovir inhibits lumpy skin disease virus replication by targeting viral DNA polymerase and modulating host apoptosis.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "42671895",
+      "title": "Prevalence and viral load dynamics of PCV-2 and PCV-3 on large Hungarian swine farms.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1868221"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "37891594",
+      "title": "A fatal case of neonatal viral sepsis caused by human parainfluenza virus type 3.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42213155",
+      "title": "Dissecting myocardial and systemic drivers of cardiac dysfunction in the murine CVB3 myocarditis model using microRNA-guided viral detargeting.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "41494659",
+      "title": "Cardiomyocyte \u03b2-arrestins mediate inflammation and cGAS-STING activation in CVB3 viral myocarditis.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "42497213",
+      "title": "EV-B 3D polymerase remodels viral populations through 5'UTR recombination to subvert cardiac antiviral innate immunity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "42655042",
+      "title": "Molecular Epidemiological Characteristics and Genetic Evolution of Bluetongue Virus in Yunnan Province, China.",
+      "actual_organisms": [
+        "Bluetongue virus"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "42685183",
+      "title": "Three thousand five hundred\u00a0years of sheeppox virus evolution inferred from archaeological and codicological genomes.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10265",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10266",
+        "http://purl.obolibrary.org/obo/NCBITaxon_186805"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What is known about Human parainfluenza virus 2 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42675487",
+      "title": "Development and immunological evaluation of a multi-antigen recombinant adenovirus vaccine candidate against PRRSV and PCV2.",
+      "actual_organisms": [
+        "Porcine circovirus 2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28344"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "42626706",
+      "title": "Development of a recombinase polymerase amplification isothermal assay for rapid visual and lateral flow detection of porcine parvovirus-7.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1506574",
+        "http://purl.obolibrary.org/obo/NCBITaxon_46221"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 2?",
+      "cited_pmid": "42638066",
+      "title": "[A colloidal gold test strip assay for antibody detection based on the VP7 protein of epizootic hemorrhagic disease virus].",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10469",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12647",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054"
+      ]
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What antiviral drugs or treatments are effective against Human parainfluenza virus 2?",
+      "cited_pmid": "42575000",
+      "title": "Cidofovir inhibits lumpy skin disease virus replication by targeting viral DNA polymerase and modulating host apoptosis.",
+      "actual_organisms": [
+        "Lumpy skin disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -255442,6 +255752,18 @@
       "question": "What is the genome organization and replication cycle of Bovine papular stomatitis virus?",
       "missed_pmid": "42357632",
       "title": "Whole Genome Characterization of Lumpy Skin Disease Virus and Bovine Papular Stomatitis Virus Detected in Cattle During the 2024-2025 Outbreaks in Tunisia."
+    },
+    {
+      "organism": "Bluetongue virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Bluetongue virus?",
+      "missed_pmid": "42797991",
+      "title": "A Field-Applicable Method for Bluetongue Virus Detection Using Filter Paper Cards."
+    },
+    {
+      "organism": "Human parainfluenza virus 2",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parainfluenza virus 2?",
+      "missed_pmid": "40552829",
+      "title": "Evidence that hPIV2 paramyxovirus antigenomes are edited during infection."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
