@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T15:24:26.341743+00:00",
-  "runs": 275,
+  "updated": "2026-09-27T15:26:12.329060+00:00",
+  "runs": 276,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22643,
-  "n_false_negatives": 3971,
+  "n_false_positives": 22673,
+  "n_false_negatives": 3979,
   "new_this_run": {
-    "false_positives": 34,
-    "false_negatives": 27
+    "false_positives": 30,
+    "false_negatives": 8
   },
   "false_positives": [
     {
@@ -255936,6 +255936,321 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_307456",
         "http://purl.obolibrary.org/obo/NCBITaxon_46015"
       ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus pathogenesis and transmission?",
+      "cited_pmid": "42222729",
+      "title": "The Rubisco small subunit of cucumber interacts with the cucumber mosaic virus movement and silencing suppressor proteins.",
+      "actual_organisms": [
+        "Cucumber mosaic virus"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect Tobacco mosaic virus?",
+      "cited_pmid": "42462095",
+      "title": "A novel Loop-mediated Isothermal Amplification Method for Screening Detection of Genetically Modified Cotton.",
+      "actual_organisms": [
+        "Cauliflower mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genome organization and replication cycle of Tobacco mosaic virus?",
+      "cited_pmid": "42363846",
+      "title": "Coding-complete genome sequence of cucumber green mottle mosaic virus in Iraq.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "How does Tobacco mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42145089",
+      "title": "Cucumber Mosaic Virus Coat Protein Sequesters Host CDPK7-Like Into Phase-Separated Condensates to Promote Viral Infection.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y"
+      ]
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Tobacco mosaic virus?",
+      "cited_pmid": "42655669",
+      "title": "Genetic Diversity and Phylogeny of Chilli Veinal Mottle Virus in Yunnan Tobacco-Planting Regions Based on the CP Gene.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Cucumber mosaic virus?",
+      "cited_pmid": "42515608",
+      "title": "Plant-Derived Anti-TMV Metabolites: Mechanisms, Limitations and Future Perspectives.",
+      "actual_organisms": [
+        "Tobacco mosaic virus"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cucumber mosaic virus?",
+      "cited_pmid": "42397701",
+      "title": "Variability and population structure of watermelon mosaic virus in zucchini crops in Poland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_146500"
+      ]
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cucumber mosaic virus?",
+      "cited_pmid": "42245397",
+      "title": "High-throughput virome profiling reveals squash vein yellowing virus in bottle gourd and cucumber in India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_397544"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "42473416",
+      "title": "Rapid screening of ten tobamoviruses based on reverse-transcription recombinase-aided amplification and lateral flow dipstick.",
+      "actual_organisms": [
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12253",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1391702",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35281",
+        "http://purl.obolibrary.org/obo/NCBITaxon_388038",
+        "http://purl.obolibrary.org/obo/NCBITaxon_425279"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What diagnostic assays or laboratory tests detect Potato virus Y?",
+      "cited_pmid": "42388321",
+      "title": "Rhodamine B/gold nanoparticles-coloaded UiO-66 as a novel probe for highly sensitive and dual-mode detection of Potato virus S in field samples.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12169",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12183"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "41820463",
+      "title": "High-throughput sequencing-based virome analysis reveals genomic diversity and recombination of tomato-infecting viruses in Korea.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10832",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47669",
+        "http://purl.obolibrary.org/obo/NCBITaxon_67754"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genome organization and replication cycle of Potato virus Y?",
+      "cited_pmid": "42024191",
+      "title": "Analysis of bidirectional promoter activity and structure of the large intergenic region (LIR) in mulberry crinkle leaf virus.",
+      "actual_organisms": [
+        "Cauliflower mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2842884",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2845646"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What antiviral drugs or treatments are effective against Potato virus Y?",
+      "cited_pmid": "42515608",
+      "title": "Plant-Derived Anti-TMV Metabolites: Mechanisms, Limitations and Future Perspectives.",
+      "actual_organisms": [
+        "Tobacco mosaic virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Potato virus Y?",
+      "cited_pmid": "42222729",
+      "title": "The Rubisco small subunit of cucumber interacts with the cucumber mosaic virus movement and silencing suppressor proteins.",
+      "actual_organisms": [
+        "Cucumber mosaic virus"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "cited_pmid": "42316991",
+      "title": "A viral protein promotes host L-asparaginase activity and weakens the asparagine-induced resistance pathway for the benefit of virus infection.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12239",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "cited_pmid": "42464954",
+      "title": "Tripartite Interaction Between Penicillium pinophilum-Host Plants and CMV-Y: A Model for Endophyte-Mediated Viral Biocontrol.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_128442",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560652",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_5073"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Potato virus Y?",
+      "cited_pmid": "42655669",
+      "title": "Genetic Diversity and Phylogeny of Chilli Veinal Mottle Virus in Yunnan Tobacco-Planting Regions Based on the CP Gene.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Potato virus Y?",
+      "cited_pmid": "42397701",
+      "title": "Variability and population structure of watermelon mosaic virus in zucchini crops in Poland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_146500"
+      ]
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Potato virus Y?",
+      "cited_pmid": "42245397",
+      "title": "High-throughput virome profiling reveals squash vein yellowing virus in bottle gourd and cucumber in India.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12235",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2204151",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_397544"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is known about Cauliflower mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41754593",
+      "title": "Generation of a Bivalent Recombinant Vaccine Conferring Dual Protection Against Potyvirus and Orthotospovirus in Cucurbits.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12232",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560196",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89471"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is known about Cauliflower mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42515608",
+      "title": "Plant-Derived Anti-TMV Metabolites: Mechanisms, Limitations and Future Perspectives.",
+      "actual_organisms": [
+        "Tobacco mosaic virus"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genome organization and replication cycle of Cauliflower mosaic virus?",
+      "cited_pmid": "42363846",
+      "title": "Coding-complete genome sequence of cucumber green mottle mosaic virus in Iraq.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cauliflower mosaic virus?",
+      "cited_pmid": "42222729",
+      "title": "The Rubisco small subunit of cucumber interacts with the cucumber mosaic virus movement and silencing suppressor proteins.",
+      "actual_organisms": [
+        "Cucumber mosaic virus"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cauliflower mosaic virus?",
+      "cited_pmid": "42548270",
+      "title": "Systemic infection of tobacco mosaic virus is limited by upward transport and phloem unloading without coat protein.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Tobacco mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "How does Cauliflower mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42145089",
+      "title": "Cucumber Mosaic Virus Coat Protein Sequesters Host CDPK7-Like Into Phase-Separated Condensates to Promote Viral Infection.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "Potato virus Y"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "How does Cauliflower mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42556132",
+      "title": "Mechanistic insights into potyviral and cucumoviral subversion of plant resistance.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "How does Cauliflower mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42641121",
+      "title": "Dual functional plant gene inhibits viral infection and development of systemic necrosis symptoms by distinct mechanisms in Arabidopsis.",
+      "actual_organisms": [
+        "Cucumber mosaic virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "How does Cauliflower mosaic virus evade or modulate the host immune response?",
+      "cited_pmid": "42198697",
+      "title": "Polymorphisms for Defence and Virulence in the Arabidopsis thaliana-Cucumber mosaic virus Interaction Are Expressed in the Host's Native Habitat.",
+      "actual_organisms": [
+        "Cucumber mosaic virus"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cauliflower mosaic virus?",
+      "cited_pmid": "42655669",
+      "title": "Genetic Diversity and Phylogeny of Chilli Veinal Mottle Virus in Yunnan Tobacco-Planting Regions Based on the CP Gene.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3240493",
+        "http://purl.obolibrary.org/obo/NCBITaxon_52280"
+      ]
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Cauliflower mosaic virus?",
+      "cited_pmid": "42397701",
+      "title": "Variability and population structure of watermelon mosaic virus in zucchini crops in Poland.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12195",
+        "http://purl.obolibrary.org/obo/NCBITaxon_146500"
+      ]
     }
   ],
   "false_negatives": [
@@ -279764,6 +280079,54 @@
       "question": "How does Helicoverpa armigera nucleopolyhedrovirus evade or modulate the host immune response?",
       "missed_pmid": "31493654",
       "title": "Baculovirus ODV-E66 degrades larval peritrophic membrane to facilitate baculovirus oral infection."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What is known about Tobacco mosaic virus pathogenesis and transmission?",
+      "missed_pmid": "42515608",
+      "title": "Plant-Derived Anti-TMV Metabolites: Mechanisms, Limitations and Future Perspectives."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "What are the clinical symptoms and disease presentation of Tobacco mosaic virus?",
+      "missed_pmid": "42554312",
+      "title": "Apparent cooperativity between human CMV virions introduces errors in conventional methods of calculating multiplicity of infection."
+    },
+    {
+      "organism": "Tobacco mosaic virus",
+      "question": "How does Tobacco mosaic virus evade or modulate the host immune response?",
+      "missed_pmid": "42585332",
+      "title": "A transcription factor TOE3 simultaneously promotes growth and antiviral immunity by disrupting ABA core module in tobacco."
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is known about Cucumber mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42222729",
+      "title": "The Rubisco small subunit of cucumber interacts with the cucumber mosaic virus movement and silencing suppressor proteins."
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What is known about Cucumber mosaic virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42198697",
+      "title": "Polymorphisms for Defence and Virulence in the Arabidopsis thaliana-Cucumber mosaic virus Interaction Are Expressed in the Host's Native Habitat."
+    },
+    {
+      "organism": "Cucumber mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against Cucumber mosaic virus?",
+      "missed_pmid": "42145089",
+      "title": "Cucumber Mosaic Virus Coat Protein Sequesters Host CDPK7-Like Into Phase-Separated Condensates to Promote Viral Infection."
+    },
+    {
+      "organism": "Potato virus Y",
+      "question": "How does Potato virus Y evade or modulate the host immune response?",
+      "missed_pmid": "42348179",
+      "title": "Role of a Synonymous Mutation at Codon 178 in P1 That Attenuates Potato Virus Y-Induced Tobacco Vein Necrosis and Its Application for Expressing Human Interferon."
+    },
+    {
+      "organism": "Cauliflower mosaic virus",
+      "question": "What is the genome organization and replication cycle of Cauliflower mosaic virus?",
+      "missed_pmid": "40408450",
+      "title": "Stylet cuticular gene-directed mutagenesis impairs the pea aphid vector capacity to transmit a plant virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
