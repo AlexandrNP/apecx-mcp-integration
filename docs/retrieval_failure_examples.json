@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T19:12:09.988119+00:00",
-  "runs": 355,
+  "updated": "2026-09-27T19:14:14.406999+00:00",
+  "runs": 356,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23756,
-  "n_false_negatives": 4594,
+  "n_false_positives": 23768,
+  "n_false_negatives": 4601,
   "new_this_run": {
-    "false_positives": 15,
-    "false_negatives": 3
+    "false_positives": 12,
+    "false_negatives": 7
   },
   "false_positives": [
     {
@@ -267991,6 +267991,137 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_59562",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42083096",
+      "title": "Antibody responses to inactivated (adjuvanted) and attenuated (non-adjuvanted) feline panleukopaenia virus vaccination, including in different injection sites.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_35344"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41929732",
+      "title": "Feline leukemia virus-negative acute lymphoid B-cell aleukemic leukemia in a cat with prolonged survival.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genome organization and replication cycle of Feline leukemia virus?",
+      "cited_pmid": "42129643",
+      "title": "Clinical and virological effects of the integrase inhibitor raltegravir in cats with naturally progressive feline leukaemia virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Feline leukemia virus?",
+      "cited_pmid": "42075731",
+      "title": "Genetic Diversity of the BLV env Gene and gp51 Mutations in Genotypes G4 and G7 Circulating in Dairy Cattle in the Novosibirsk Region (Western Siberia, Russia).",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What antiviral drugs or treatments are effective against Rous sarcoma virus?",
+      "cited_pmid": "41920397",
+      "title": "Interferon dynamics in deltaretroviruses: why HTLV-1 evades, but BLV responds.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What antiviral drugs or treatments are effective against Rous sarcoma virus?",
+      "cited_pmid": "42129643",
+      "title": "Clinical and virological effects of the integrase inhibitor raltegravir in cats with naturally progressive feline leukaemia virus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the clinical symptoms and disease presentation of Rous sarcoma virus?",
+      "cited_pmid": "42310831",
+      "title": "Disseminated histiocytic sarcoma in 2 FeLV-positive cats in Brazil.",
+      "actual_organisms": [
+        "Feline leukemia virus"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "How does Rous sarcoma virus evade or modulate the host immune response?",
+      "cited_pmid": "41775431",
+      "title": "Effects of oncolytic immunotherapy with RP1 (vusolimogene oderparepvec) on immune cells mediate responsiveness to anti-PD-1 via STING-mediated interferon signaling.",
+      "actual_organisms": [
+        "Gibbon ape leukemia virus"
+      ]
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rous sarcoma virus?",
+      "cited_pmid": "26637454",
+      "title": "Episodic Diversifying Selection Shaped the Genomes of Gibbon Ape Leukemia Virus and Related Gammaretroviruses.",
+      "actual_organisms": [
+        "Gibbon ape leukemia virus"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What antiviral drugs or treatments are effective against Gibbon ape leukemia virus?",
+      "cited_pmid": "41920397",
+      "title": "Interferon dynamics in deltaretroviruses: why HTLV-1 evades, but BLV responds.",
+      "actual_organisms": [
+        "Bovine leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What are the clinical symptoms and disease presentation of Gibbon ape leukemia virus?",
+      "cited_pmid": "41835954",
+      "title": "Corrigendum to Feline lymphoma associated with feline leukemia virus (FeLV) and feline immunodeficiency virus (FIV) infections in Brazil- Systematic review [Veterinary and Animal Science volume 30 (December 2025) 100514].",
+      "actual_organisms": [
+        "Feline leukemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11673"
+      ]
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Gibbon ape leukemia virus?",
+      "cited_pmid": "36851488",
+      "title": "Unique Structure and Distinctive Properties of the Ancient and Ubiquitous Gamma-Type Envelope Glycoprotein.",
+      "actual_organisms": [
+        "Rous sarcoma virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11908",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_153136",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1653395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044781",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -295557,6 +295688,48 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Powassan virus?",
       "missed_pmid": "42410041",
       "title": "Restraint of Powassan virus replication by TRIM5\u03b1 facilitates viral avoidance of antiviral immunity."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What is known about Feline leukemia virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41901790",
+      "title": "Clinical Features and Outcomes of Treatment for Effusive Feline Infectious Peritonitis with GS-441524 in Seventeen Retrovirus-Positive Cats."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Feline leukemia virus?",
+      "missed_pmid": "42310831",
+      "title": "Disseminated histiocytic sarcoma in 2 FeLV-positive cats in Brazil."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline leukemia virus?",
+      "missed_pmid": "41835954",
+      "title": "Corrigendum to Feline lymphoma associated with feline leukemia virus (FeLV) and feline immunodeficiency virus (FIV) infections in Brazil- Systematic review [Veterinary and Animal Science volume 30 (December 2025) 100514]."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What antiviral drugs or treatments are effective against Feline leukemia virus?",
+      "missed_pmid": "41868399",
+      "title": "Feline leukemia virus point-of-care lateral flow tests have low positive predictive value in apparently healthy shelter cats."
+    },
+    {
+      "organism": "Feline leukemia virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Feline leukemia virus?",
+      "missed_pmid": "42288833",
+      "title": "Cross-species transmission of host adaptation of feline leukemia virus between domestic cats and the wild felid Leopardus guigna."
+    },
+    {
+      "organism": "Rous sarcoma virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rous sarcoma virus?",
+      "missed_pmid": "34050170",
+      "title": "Structure of the mature Rous sarcoma virus lattice reveals a role for IP6 in the formation of the capsid hexamer."
+    },
+    {
+      "organism": "Gibbon ape leukemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Gibbon ape leukemia virus?",
+      "missed_pmid": "27384662",
+      "title": "Endogenous Gibbon Ape Leukemia Virus Identified in a Rodent (Melomys burtoni subsp.) from Wallacea (Indonesia)."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
