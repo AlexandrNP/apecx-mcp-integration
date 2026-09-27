@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:53:23.414483+00:00",
-  "runs": 346,
+  "updated": "2026-09-27T18:55:18.469716+00:00",
+  "runs": 347,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23671,
-  "n_false_negatives": 4522,
+  "n_false_positives": 23680,
+  "n_false_negatives": 4533,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 9
+    "false_positives": 9,
+    "false_negatives": 11
   },
   "false_positives": [
     {
@@ -267072,6 +267072,96 @@
         "Potato virus Y",
         "http://purl.obolibrary.org/obo/NCBITaxon_12305"
       ]
+    },
+    {
+      "organism": "Maize streak virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Maize streak virus?",
+      "cited_pmid": "28864424",
+      "title": "Wheat streak mosaic virus coat protein is a host-specific long-distance transport determinant in oat.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_31741",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39729"
+      ]
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Beet curly top virus?",
+      "cited_pmid": "31485748",
+      "title": "Complementary-sense gene regulation in beet curly top virus-SpCT.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10831"
+      ]
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is known about African cassava mosaic virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "31007376",
+      "title": "A method for generating virus-free cassava plants to combat viral disease epidemics in Africa.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "37999244",
+      "title": "Elicitor-Driven Defense Mechanisms: Shielding Cotton Plants against the Onslaught of Cotton Leaf Curl Multan Virus (CLCuMuV) Disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_134386"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus pathogenesis and transmission?",
+      "cited_pmid": "37271420",
+      "title": "Sentinel plot surveillance of cotton leaf curl disease in Pakistan- a case study at the cultivated cotton-wild host plant interface.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_463360"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
+      "cited_pmid": "37514259",
+      "title": "qPCR Assay as a Tool for Examining Cotton Resistance to the Virus Complex Causing CLCuD: Yield Loss Inversely Correlates with Betasatellite, Not Virus, DNA Titer.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12877",
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is the genome organization and replication cycle of Cotton leaf curl virus?",
+      "cited_pmid": "38122873",
+      "title": "Phylogenetic and recombination analysis of Begomoviruses associated with Cotton leaf curl disease and in silico analysis of viral-host protein interactions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_190729"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Cotton leaf curl virus?",
+      "cited_pmid": "38710255",
+      "title": "Gossypium hirsutum calmodulin-like protein (CML 11) interaction with geminivirus encoded protein using bioinformatics and molecular techniques.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811"
+      ]
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "How does Cotton leaf curl virus evade or modulate the host immune response?",
+      "cited_pmid": "37073495",
+      "title": "Cotton leaf curl Multan virus C4 protein suppresses autophagy to facilitate viral infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10811",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322"
+      ]
     }
   ],
   "false_negatives": [
@@ -294206,6 +294296,72 @@
       "question": "What is the genome organization and replication cycle of Watermelon mosaic virus?",
       "missed_pmid": "35394500",
       "title": "A single substitution in Vacuolar protein sorting 4 is responsible for resistance to Watermelon mosaic virus in melon."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What is known about Beet curly top virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35549320",
+      "title": "Curly Top Disease of Hemp (Cannabis sativa) in California Is Caused by Mild-Type Strains of Beet curly top virus Often in Mixed Infection."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What diagnostic assays or laboratory tests detect Beet curly top virus?",
+      "missed_pmid": "34894753",
+      "title": "An Overview of Pathogens Associated with Biotic Stresses in Hemp Crops in Oregon, 2019 to 2020."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the clinical symptoms and disease presentation of Beet curly top virus?",
+      "missed_pmid": "37430481",
+      "title": "New Assays for Rapid Detection of Beet Leafhopper-Associated Plant Pathogens, 'Candidatus Phytoplasma trifolii', Beet Curly Top Virus, and Spiroplasma citri."
+    },
+    {
+      "organism": "Beet curly top virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Beet curly top virus?",
+      "missed_pmid": "39162474",
+      "title": "Geminivirus C4/AC4 proteins hijack cellular COAT PROTEIN COMPLEX I for chloroplast targeting and viral infections."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What is known about African cassava mosaic virus pathogenesis and transmission?",
+      "missed_pmid": "28270156",
+      "title": "A rapid virus-induced gene silencing (VIGS) method for assessing resistance and susceptibility to cassava mosaic disease."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What diagnostic assays or laboratory tests detect African cassava mosaic virus?",
+      "missed_pmid": "30739973",
+      "title": "Resistance of advanced cassava breeding clones to infection by major viruses in Uganda."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What antiviral drugs or treatments are effective against African cassava mosaic virus?",
+      "missed_pmid": "34219746",
+      "title": "South West and North Central Nigeria: Assessment of cassava mosaic disease and field status of African cassava mosaic virus and East African cassava mosaic virus."
+    },
+    {
+      "organism": "African cassava mosaic virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of African cassava mosaic virus?",
+      "missed_pmid": "40465802",
+      "title": "Comparative analysis of pattern-triggered and effector-triggered immunity gene expression in susceptible and tolerant cassava genotypes following begomovirus infection."
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37698688",
+      "title": "Multiplex Cas9-based excision of CLCuV betasatellite and DNA-A revealed reduction of viral load with asymptomatic cotton plants."
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What is known about Cotton leaf curl virus pathogenesis and transmission?",
+      "missed_pmid": "37346125",
+      "title": "Utilization of primary and secondary biochemical compounds in cotton as diagnostic markers for measuring resistance to cotton leaf curl virus."
+    },
+    {
+      "organism": "Cotton leaf curl virus",
+      "question": "What diagnostic assays or laboratory tests detect Cotton leaf curl virus?",
+      "missed_pmid": "38440193",
+      "title": "A comprehensive review on Gossypium hirsutum resistance against cotton leaf curl virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
