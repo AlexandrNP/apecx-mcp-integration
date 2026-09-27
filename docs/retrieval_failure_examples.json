@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:15:22.496339+00:00",
-  "runs": 406,
+  "updated": "2026-09-27T21:17:07.973487+00:00",
+  "runs": 407,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24455,
+  "n_false_positives": 24467,
   "n_false_negatives": 4836,
   "new_this_run": {
-    "false_positives": 28,
-    "false_negatives": 1
+    "false_positives": 12,
+    "false_negatives": 0
   },
   "false_positives": [
     {
@@ -275618,6 +275618,147 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_12059",
         "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Hepatitis A virus?",
+      "cited_pmid": "42506651",
+      "title": "The Role of Human Viral Entry Receptor Mouse Models in Advancing Antiviral Antibodies and Vaccines.",
+      "actual_organisms": [
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42293247",
+      "title": "Comparative immunogenic and structural analysis of virus-like particle and inactivated whole-virion vaccines against enterovirus D68.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "42655817",
+      "title": "Development of a mu3ABC-Based Lateral Flow Immunochromatographic Strip for Rapid DIVA-Compatible Detection of Antibodies Specific to Foot-and-Mouth Disease Virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "42606511",
+      "title": "Hepatitis Overview: Viral Hepatitis.",
+      "actual_organisms": [
+        "Hepatitis A virus"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "42411042",
+      "title": "Advances in Antiviral Drug Development Targeting Viral Proteases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the epidemiology and outbreak history of Enterovirus C?",
+      "cited_pmid": "42348598",
+      "title": "Detection of Coxsackievirus A24v during an acute haemorrhagic conjunctivitis outbreak in Dar es Salaam, Tanzania, January-February 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12089"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "How does Enterovirus C evade or modulate the host immune response?",
+      "cited_pmid": "41214106",
+      "title": "CLEC12A signaling represses protective immune responses and contributes to hippocampal pathology in neurotropic picornavirus infection.",
+      "actual_organisms": [
+        "Theiler's murine encephalomyelitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "42654963",
+      "title": "Information-Entropy-Based Single Amino Acid Polymorphism Analysis Reveals Functional Variance of Enterovirus 2A Proteases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Enterovirus C?",
+      "cited_pmid": "42357655",
+      "title": "In Silico Saturation-Mutagenesis-Based Genomic Mutation Risk Assessment for Enterovirus B.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_41846",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the clinical symptoms and disease presentation of Foot-and-mouth disease virus?",
+      "cited_pmid": "42483411",
+      "title": "Age-stratified clinical characteristics of hand, foot, and mouth disease in children and its guiding value for diagnosis and treatment.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Foot-and-mouth disease virus?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "How does Foot-and-mouth disease virus evade or modulate the host immune response?",
+      "cited_pmid": "42287823",
+      "title": "Differential immune responses elicited by two tetravalent epitope-based DNA vaccines differently designed for human hand-foot-and-mouth disease.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
     }
   ],
