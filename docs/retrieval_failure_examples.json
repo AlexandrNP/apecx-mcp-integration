@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T16:02:46.461737+00:00",
-  "runs": 289,
+  "updated": "2026-09-27T16:04:31.583601+00:00",
+  "runs": 290,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22948,
-  "n_false_negatives": 4121,
+  "n_false_positives": 22958,
+  "n_false_negatives": 4125,
   "new_this_run": {
-    "false_positives": 16,
-    "false_negatives": 2
+    "false_positives": 10,
+    "false_negatives": 4
   },
   "false_positives": [
     {
@@ -259264,6 +259264,114 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_173087",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B3?",
+      "cited_pmid": "40318791",
+      "title": "Peptides designed based on 3C substrates exhibit antiviral efficacy in vivo.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "40620854",
+      "title": "Corrigendum: Commentary: Risk factors and early markers for echovirus type 11 associated haemorrhage-hepatitis syndrome in neonates, a retrospective cohort study.",
+      "actual_organisms": [
+        "Echovirus 11"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "40444373",
+      "title": "Coxsackievirus B4 (CV-B4) linked to four severe neonatal infections including one fatal, Northern Ireland, October 2024 to February 2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "42170749",
+      "title": "Prospective use of wastewater surveillance for early detection of enterovirus D68 in community outbreaks among children, Niigata City, Japan, 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "39545343",
+      "title": "Molecular Analysis of Coxsackievirus B2 Associated With Severe Symptoms of the Central Nervous System.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_82639"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "39592765",
+      "title": "Synthesis, characterization, molecular docking, pharmacokinetics, and molecular dynamics of new bis-thiazoles based on bis-thiosemicarbazone as anti-coxsackievirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "How does Coxsackievirus A6 evade or modulate the host immune response?",
+      "cited_pmid": "42325006",
+      "title": "Targeting the Myocardial Microenvironment: Novel Antiviral Strategies and Therapeutic Perspectives for Coxsackievirus B-Induced Myocarditis.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "40620854",
+      "title": "Corrigendum: Commentary: Risk factors and early markers for echovirus type 11 associated haemorrhage-hepatitis syndrome in neonates, a retrospective cohort study.",
+      "actual_organisms": [
+        "Echovirus 11"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is known about Echovirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40733627",
+      "title": "Investigation of the Mouse Infection Model for Echovirus 18.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is known about Echovirus 11 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "40075457",
+      "title": "Establishment and application of a wild neonatal mouse model infected with an Echovirus 30 isolate.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -283992,6 +284100,30 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Human papillomavirus 16?",
       "missed_pmid": "40264759",
       "title": "Human papillomavirus E2 proteins suppress innate antiviral signaling pathways."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is known about Coxsackievirus A6 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42042771",
+      "title": "Construction of the Multi-Epitope HFMD Vaccine Based on an Attenuated CVB3 Vector and Evaluation of Immunological Responses in Mice."
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What is the epidemiology and outbreak history of Coxsackievirus A6?",
+      "missed_pmid": "40261447",
+      "title": "Circulation of non-polio enteroviruses in the Ural Federal District and Western Siberia in 2023: the return of an old foe?"
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 11?",
+      "missed_pmid": "42662932",
+      "title": "Fatal Echovirus 11 Hepatitis in an Immunocompromised Adult Associated With Lineage 1."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "How does Echovirus 11 evade or modulate the host immune response?",
+      "missed_pmid": "39790073",
+      "title": "Neonatal acute liver failure cases with echovirus 11 infections, Japan, August to November 2024."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
