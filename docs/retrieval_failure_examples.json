@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T13:17:54.351443+00:00",
-  "runs": 230,
+  "updated": "2026-09-27T13:24:26.648968+00:00",
+  "runs": 231,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 21734,
-  "n_false_negatives": 3602,
+  "n_false_positives": 21743,
+  "n_false_negatives": 3603,
   "new_this_run": {
-    "false_positives": 4,
-    "false_negatives": 2
+    "false_positives": 9,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -245903,6 +245903,96 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3052310",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What antiviral drugs or treatments are effective against Zika virus?",
+      "cited_pmid": "42786511",
+      "title": "Establishment of an in vitro human blood-brain barrier model for antiviral screening against neurotropic viruses.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "cited_pmid": "42801153",
+      "title": "A Multisystem Presentation of West Nile Neuroinvasive Disease: Lessons in Diagnostic Complexity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Zika virus?",
+      "cited_pmid": "42667977",
+      "title": "Mosquito diversity and arbovirus detection in Paraguay: first evidence of dengue and chikungunya virus infection in field populations.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_37124",
+        "http://purl.obolibrary.org/obo/NCBITaxon_59562",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "6206738",
+      "title": "Yellow fever monoclonal antibodies: type-specific and cross-reactive determinants identified by immunofluorescence.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2733347"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "3028713",
+      "title": "Cross-infection enhancement among African flaviviruses by immune mouse ascitic fluids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40005",
+        "http://purl.obolibrary.org/obo/NCBITaxon_64314"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is known about Yellow fever virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "2841406",
+      "title": "Detection of virus-specific antigen in the nuclei or nucleoli of cells infected with Zika or Langat virus.",
+      "actual_organisms": [
+        "Zika virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Yellow fever virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Yellow fever virus?",
+      "cited_pmid": "1659238",
+      "title": "Genetic selection of a flavivirus-refractory strain of the yellow fever mosquito Aedes aegypti.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3044782"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What are the clinical symptoms and disease presentation of Japanese encephalitis virus?",
+      "cited_pmid": "42801153",
+      "title": "A Multisystem Presentation of West Nile Neuroinvasive Disease: Lessons in Diagnostic Complexity.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11082"
+      ]
+    },
+    {
+      "organism": "Japanese encephalitis virus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Japanese encephalitis virus?",
+      "cited_pmid": "42696092",
+      "title": "Surveillance of tick-borne encephalitis virus and Tribe\u010d Virus in Ixodes ricinus ticks from Slovakia.",
+      "actual_organisms": [
+        "Tick-borne encephalitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_881914"
+      ]
     }
   ],
   "false_negatives": [
@@ -267517,6 +267607,12 @@
       "question": "What is known about Sabia mammarenavirus and neutralizing antibodies or vaccines?",
       "missed_pmid": "29593043",
       "title": "A Vaccine Platform against Arenaviruses Based on a Recombinant Hyperattenuated Mopeia Virus Expressing Heterologous Glycoproteins."
+    },
+    {
+      "organism": "Zika virus",
+      "question": "What are the clinical symptoms and disease presentation of Zika virus?",
+      "missed_pmid": "2841406",
+      "title": "Detection of virus-specific antigen in the nuclei or nucleoli of cells infected with Zika or Langat virus."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
