@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:09:54.817935+00:00",
-  "runs": 403,
+  "updated": "2026-09-27T21:11:31.051624+00:00",
+  "runs": 404,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24398,
-  "n_false_negatives": 4829,
+  "n_false_positives": 24408,
+  "n_false_negatives": 4832,
   "new_this_run": {
-    "false_positives": 11,
-    "false_negatives": 0
+    "false_positives": 10,
+    "false_negatives": 3
   },
   "false_positives": [
     {
@@ -274970,6 +274970,112 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_41846",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42595093",
+      "title": "Construction of a suckling mouse model based on an EV-C96 clinical isolate and its application in drug screening and vaccine development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1193974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_325445"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Human parechovirus?",
+      "cited_pmid": "42630966",
+      "title": "Enterovirus infections in children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "How does Human parechovirus evade or modulate the host immune response?",
+      "cited_pmid": "41191104",
+      "title": "Parechovirus-3 infection disrupts immunometabolism and leads to glutamate excitotoxicity in neural organoids.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_195055",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431395"
+      ]
+    },
+    {
+      "organism": "Foot-and-mouth disease virus",
+      "question": "What antiviral drugs or treatments are effective against Foot-and-mouth disease virus?",
+      "cited_pmid": "42601612",
+      "title": "In silico, in vitro, and in vivo evaluation of the antiviral potential of glycyrrhizic acid and chitosan nanoparticles against foot and mouth disease virus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12118",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42595093",
+      "title": "Construction of a suckling mouse model based on an EV-C96 clinical isolate and its application in drug screening and vaccine development.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1193974",
+        "http://purl.obolibrary.org/obo/NCBITaxon_325445"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "41156586",
+      "title": "Surveillance of Acute Flaccid Paralysis (AFP) in Greece: 2008-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 pathogenesis and transmission?",
+      "cited_pmid": "41058151",
+      "title": "Simultaneous detection of canine astrovirus and canine kobuvirus by duplex qPCR: validation and evidence of extraintestinal viral RNA in naturally infected dogs.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10788",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11153",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1157338",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239569",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1836608",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3115137",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3430625",
+        "http://purl.obolibrary.org/obo/NCBITaxon_72149"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42630966",
+      "title": "Enterovirus infections in children.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the clinical symptoms and disease presentation of Aichi virus 1?",
+      "cited_pmid": "41019008",
+      "title": "Neonatal Sepsis Caused by Human Parechovirus Type A3 With Marked Hyperferritinemia: A Case Report.",
+      "actual_organisms": [
+        "Human parechovirus"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "42566319",
+      "title": "T-cell immunoglobulin and mucin domain 1 and transmembrane serine protease 2 synergistically enhance entry of a bat-derived merbecovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_282700"
+      ]
     }
   ],
   "false_negatives": [
@@ -303946,6 +304052,24 @@
       "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
       "missed_pmid": "27992789",
       "title": "Analysis of Aichi virus and Saffold virus association with pediatric acute gastroenteritis."
+    },
+    {
+      "organism": "Hepatitis A virus",
+      "question": "What is known about Hepatitis A virus pathogenesis and transmission?",
+      "missed_pmid": "42565867",
+      "title": "Hepatitis A vaccination during ventricular assist device support in heart transplant candidates: immunogenicity and safety in a single-center cohort."
+    },
+    {
+      "organism": "Human parechovirus",
+      "question": "What antiviral drugs or treatments are effective against Human parechovirus?",
+      "missed_pmid": "41019008",
+      "title": "Neonatal Sepsis Caused by Human Parechovirus Type A3 With Marked Hyperferritinemia: A Case Report."
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "41060741",
+      "title": "Acute viral gastroenteritis following rotavirus vaccine implementation in Venezuela: Is rotavirus still a cause for concern?"
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
