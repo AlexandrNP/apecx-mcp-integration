@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T22:02:30.412026+00:00",
-  "runs": 429,
+  "updated": "2026-09-27T22:04:10.458125+00:00",
+  "runs": 430,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24659,
-  "n_false_negatives": 4849,
+  "n_false_positives": 24688,
+  "n_false_negatives": 4850,
   "new_this_run": {
-    "false_positives": 6,
-    "false_negatives": 0
+    "false_positives": 29,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -278012,6 +278012,333 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_12104",
         "http://purl.obolibrary.org/obo/NCBITaxon_12124"
       ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42049139",
+      "title": "Human intestinal organoid-derived epithelium reveals donor-dependent antiviral responses to therapeutics against enteric picornaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What diagnostic assays or laboratory tests detect Enterovirus C?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What antiviral drugs or treatments are effective against Enterovirus C?",
+      "cited_pmid": "41485922",
+      "title": "Sofosbuvir/Velpatasvir in Chronic Hepatitis C, Compensated and Decompensated Cirrhosis, and Retreatment Settings.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the clinical symptoms and disease presentation of Enterovirus C?",
+      "cited_pmid": "42061817",
+      "title": "Sepsis-like symptoms from parechovirus A type 5 in a neonate: First Japanese case and literature review.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Enterovirus C?",
+      "cited_pmid": "41733345",
+      "title": "A novel glycoform of the rotavirus outer capsid protein VP7 is secreted from polarized cells and activates innate immune cells.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42655653",
+      "title": "A Panel of VHH Antibodies Against Sabin Type 1 Poliovirus D-Antigen Reveals Strain-Specific and Cross-Serotype Reactivity.",
+      "actual_organisms": [
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12080"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is known about Aichi virus 1 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42506651",
+      "title": "The Role of Human Viral Entry Receptor Mouse Models in Advancing Antiviral Antibodies and Vaccines.",
+      "actual_organisms": [
+        "Enterovirus C",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12475",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42411042",
+      "title": "Advances in Antiviral Drug Development Targeting Viral Proteases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What antiviral drugs or treatments are effective against Aichi virus 1?",
+      "cited_pmid": "42733848",
+      "title": "Development of a lethal adult mouse model of Coxsackievirus B1 infection for antiviral research.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12071",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the epidemiology and outbreak history of Aichi virus 1?",
+      "cited_pmid": "42348598",
+      "title": "Detection of Coxsackievirus A24v during an acute haemorrhagic conjunctivitis outbreak in Dar es Salaam, Tanzania, January-February 2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12089"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Aichi virus 1?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "How does Aichi virus 1 evade or modulate the host immune response?",
+      "cited_pmid": "42643661",
+      "title": "The APC/C subunit APC7 exerts antiviral effects by targeting the adaptor protein MAVS.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Aichi virus 1",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Aichi virus 1?",
+      "cited_pmid": "42743357",
+      "title": "Genomic epidemiology of coxsackievirus A24 variant during the 2024 acute hemorrhagic conjunctivitis outbreak in Coastal Kenya.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12089"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42293247",
+      "title": "Comparative immunogenic and structural analysis of virus-like particle and inactivated whole-virion vaccines against enterovirus D68.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41321794",
+      "title": "Parechovirus meningitis in infants: report of the first cluster of cases in Saudi Arabia.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42061817",
+      "title": "Sepsis-like symptoms from parechovirus A type 5 in a neonate: First Japanese case and literature review.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is known about Mengovirus pathogenesis and transmission?",
+      "cited_pmid": "42082698",
+      "title": "Contrasting MRI patterns in early infant human parechovirus CNS infection: a brief report.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What diagnostic assays or laboratory tests detect Mengovirus?",
+      "cited_pmid": "41313027",
+      "title": "A post-implementation evaluation of BioFire FilmArray Meningitis/Encephalitis panel for pathogen detection in cerebrospinal fluid with a special focus on clinical significance of HHV-6.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10368",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42049139",
+      "title": "Human intestinal organoid-derived epithelium reveals donor-dependent antiviral responses to therapeutics against enteric picornaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42467054",
+      "title": "Optimization of the antiviral spectrum of cyclophilin inhibitors targeting respiratory viruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11246",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11250",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31605",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What antiviral drugs or treatments are effective against Mengovirus?",
+      "cited_pmid": "42411042",
+      "title": "Advances in Antiviral Drug Development Targeting Viral Proteases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052230",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41570237",
+      "title": "Genetic diversity of parechoviruses (Picornaviridae: Paavivirinae: Parechovirus: Parechovirus ahumpari) circulating in Nizhny Novgorod in 2021-2024.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3431395",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the epidemiology and outbreak history of Mengovirus?",
+      "cited_pmid": "41206097",
+      "title": "Parechovirus-A3 Infection in Neonates and Young Infants from the Pre-Coronavirus Disease 2019 Pandemic Period to the Post-Restriction Era from the Pediatric Parechovirus Surveillance Group in Japan.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_138954"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42055673",
+      "title": "A Rare Case of Adult-Onset Human Parechovirus Type A3 Encephalitis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the clinical symptoms and disease presentation of Mengovirus?",
+      "cited_pmid": "42001594",
+      "title": "Human parechovirus infection in neonates and young infants: Clinical features, diagnostic challenges, and neurodevelopmental outcomes.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1711684",
+        "http://purl.obolibrary.org/obo/NCBITaxon_195055",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Mengovirus?",
+      "cited_pmid": "42419574",
+      "title": "The C-terminal T234 residue of VP3 is required for KREMEN1 receptor-dependent infectivity and pathogenesis of coxsackieviruses A10 and A8.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757778",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42769"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "How does Mengovirus evade or modulate the host immune response?",
+      "cited_pmid": "42643661",
+      "title": "The APC/C subunit APC7 exerts antiviral effects by targeting the adaptor protein MAVS.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11276",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42648245",
+      "title": "Molecular epidemiology and genetic evolutionary patterns of parechovirus A1 circulating in Chiang Mai, Thailand: A decade-long analysis.",
+      "actual_organisms": [
+        "Human parechovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12063",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Mengovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Mengovirus?",
+      "cited_pmid": "42488850",
+      "title": "Phylogenetic analysis of enteroviruses from non-human primates suggests two new species within the genus Enterovirus and inter-species recombination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428500",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3428502",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -307108,6 +307435,12 @@
       "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
       "missed_pmid": "41586838",
       "title": "[Hand-foot-mouth disease with atypical clinical presentation caused by Coxsackievirus A6]."
+    },
+    {
+      "organism": "Enterovirus C",
+      "question": "What is known about Enterovirus C and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42023833",
+      "title": "Emergence of vaccine-derived poliovirus strains from the novel oral polio vaccine in the Central African Republic."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
