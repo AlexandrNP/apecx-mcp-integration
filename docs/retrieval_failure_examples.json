@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:41:10.875464+00:00",
-  "runs": 340,
+  "updated": "2026-09-27T18:43:02.411108+00:00",
+  "runs": 341,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23602,
-  "n_false_negatives": 4466,
+  "n_false_positives": 23611,
+  "n_false_negatives": 4471,
   "new_this_run": {
-    "false_positives": 14,
-    "false_negatives": 9
+    "false_positives": 9,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -266349,6 +266349,103 @@
         "Human parainfluenza virus 2",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What diagnostic assays or laboratory tests detect Sapovirus?",
+      "cited_pmid": "42649517",
+      "title": "Drivers of the paradigm shift in norovirus diagnostics: technological innovation, contextual demands, and collaborative synergy.",
+      "actual_organisms": [
+        "Norovirus"
+      ]
+    },
+    {
+      "organism": "Sapovirus",
+      "question": "What antiviral drugs or treatments are effective against Sapovirus?",
+      "cited_pmid": "42602140",
+      "title": "Antiviral strategies against human norovirus: Molecular targets, therapeutics, and vaccine development.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "cited_pmid": "35593671",
+      "title": "Development and evaluation of polyclonal antibodies based antigen capture ELISA for detection of porcine rotavirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10912",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11292"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41527874",
+      "title": "Astrovirus and norovirus infections and their association with diarrheal symptoms in immunocompromised children.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1485",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41652591",
+      "title": "A recombinant adenoviral vector vaccine expressing the ORF2 capsid protein confers robust protection against chicken astrovirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12029",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_336959",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is known about Human astrovirus pathogenesis and transmission?",
+      "cited_pmid": "41618476",
+      "title": "Geographic and cross-species transmission of Mamastroviruses from multiple hosts.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_249588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What antiviral drugs or treatments are effective against Human astrovirus?",
+      "cited_pmid": "42602140",
+      "title": "Antiviral strategies against human norovirus: Molecular targets, therapeutics, and vaccine development.",
+      "actual_organisms": [
+        "Norovirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "What is the epidemiology and outbreak history of Human astrovirus?",
+      "cited_pmid": "41712013",
+      "title": "Porcine astrovirus: a review.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1239567",
+        "http://purl.obolibrary.org/obo/NCBITaxon_249588",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Human astrovirus",
+      "question": "How does Human astrovirus evade or modulate the host immune response?",
+      "cited_pmid": "41435889",
+      "title": "MDA5-MAVS and interferon-lambda signaling in the intestinal epithelium limit murine astrovirus infection.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1141625",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -293147,6 +293244,36 @@
       "question": "What diagnostic assays or laboratory tests detect Human parainfluenza virus 4?",
       "missed_pmid": "19261793",
       "title": "Clinical and molecular epidemiology of human parainfluenza virus 4 infections in hong kong: subtype 4B as common as subtype 4A."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What antiviral drugs or treatments are effective against Norovirus?",
+      "missed_pmid": "42617594",
+      "title": "RNA structures regulate norovirus life cycle and enable rational attenuation in vivo."
+    },
+    {
+      "organism": "Norovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Norovirus?",
+      "missed_pmid": "42627869",
+      "title": "Emergence of a novel GII.17 variant is associated with immune evasion rather than an altered HBGA-binding profile."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is known about Rotavirus C pathogenesis and transmission?",
+      "missed_pmid": "35840863",
+      "title": "Multiple reassortment and interspecies transmission events contribute to the diversity of porcine-like human rotavirus C strains detected in South Korea."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What diagnostic assays or laboratory tests detect Rotavirus C?",
+      "missed_pmid": "36560830",
+      "title": "Global Infection Rate of Rotavirus C during 1980-2022 and Analysis of Critical Factors in the Host Range Restriction of Virus VP4."
+    },
+    {
+      "organism": "Rotavirus C",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Rotavirus C?",
+      "missed_pmid": "35175914",
+      "title": "Genomic diversity and intragenic recombination of species C rotaviruses."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
