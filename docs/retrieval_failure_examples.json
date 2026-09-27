@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:38:16.907921+00:00",
-  "runs": 314,
+  "updated": "2026-09-27T17:42:23.243075+00:00",
+  "runs": 315,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23285,
-  "n_false_negatives": 4276,
+  "n_false_positives": 23289,
+  "n_false_negatives": 4281,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 9
+    "false_positives": 4,
+    "false_negatives": 5
   },
   "false_positives": [
     {
@@ -262912,6 +262912,56 @@
       "actual_organisms": [
         "Tobacco mosaic virus"
       ]
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "39339872",
+      "title": "Israeli Acute Paralysis Virus Is an Emerging Pathogen Contributing to Brood Disease of Apis cerana.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33969",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Chronic bee paralysis virus?",
+      "cited_pmid": "39339872",
+      "title": "Israeli Acute Paralysis Virus Is an Emerging Pathogen Contributing to Brood Disease of Apis cerana.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33969",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Slow bee paralysis virus?",
+      "cited_pmid": "31077121",
+      "title": "Molecular Identification of Six Honeybee Viruses in Iranian Apiaries.",
+      "actual_organisms": [
+        "Acute bee paralysis virus",
+        "Chronic bee paralysis virus",
+        "Kashmir bee virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_198112",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463",
+        "http://purl.obolibrary.org/obo/NCBITaxon_92395"
+      ]
+    },
+    {
+      "organism": "Slow bee paralysis virus",
+      "question": "What are the clinical symptoms and disease presentation of Slow bee paralysis virus?",
+      "cited_pmid": "39339872",
+      "title": "Israeli Acute Paralysis Virus Is an Emerging Pathogen Contributing to Brood Disease of Apis cerana.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_294365",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052737",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33969",
+        "http://purl.obolibrary.org/obo/NCBITaxon_89463"
+      ]
     }
   ],
   "false_negatives": [
@@ -288570,6 +288620,36 @@
       "question": "What is the genetic diversity, phylogeny, and evolution of Barley yellow dwarf virus?",
       "missed_pmid": "39853960",
       "title": "A novel quantitative trait locus for barley yellow dwarf virus resistance and kernel traits on chromosome 2D of a wheat cultivar Jagger."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What is known about Acute bee paralysis virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31077121",
+      "title": "Molecular Identification of Six Honeybee Viruses in Iranian Apiaries."
+    },
+    {
+      "organism": "Acute bee paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Acute bee paralysis virus?",
+      "missed_pmid": "38805657",
+      "title": "Effects of summer treatments against Varroa destructor on viral load and colony performance of Apis mellifera colonies in Eastern Canada."
+    },
+    {
+      "organism": "Chronic bee paralysis virus",
+      "question": "What antiviral drugs or treatments are effective against Chronic bee paralysis virus?",
+      "missed_pmid": "31077121",
+      "title": "Molecular Identification of Six Honeybee Viruses in Iranian Apiaries."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What is known about Kashmir bee virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "31077121",
+      "title": "Molecular Identification of Six Honeybee Viruses in Iranian Apiaries."
+    },
+    {
+      "organism": "Kashmir bee virus",
+      "question": "What diagnostic assays or laboratory tests detect Kashmir bee virus?",
+      "missed_pmid": "32205181",
+      "title": "Development of a multiplex RT-PCR assay for the routine detection of seven RNA viruses in Apis mellifera."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
