@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T14:54:45.014900+00:00",
-  "runs": 265,
+  "updated": "2026-09-27T14:56:23.837041+00:00",
+  "runs": 266,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 22421,
-  "n_false_negatives": 3844,
+  "n_false_positives": 22435,
+  "n_false_negatives": 3854,
   "new_this_run": {
-    "false_positives": 16,
-    "false_negatives": 5
+    "false_positives": 14,
+    "false_negatives": 10
   },
   "false_positives": [
     {
@@ -253490,6 +253490,155 @@
         "Avian infectious bronchitis virus",
         "http://purl.obolibrary.org/obo/NCBITaxon_9606"
       ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42505121",
+      "title": "Rapid and robust immune response boosting with potent, next-generation adjuvant in viral vector-primed primates.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_467144"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "40559583",
+      "title": "Comparative Evaluation of a Multistrain Indirect ELISA Targeting Anti- p26 and gp45 Antibodies for EIAV Detection.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "cited_pmid": "38791660",
+      "title": "Development of a Bead-Based Multiplex Fluorescent Immunoassay to Detect Antibodies against Maedi-Visna Virus in Sheep.",
+      "actual_organisms": [
+        "Visna-maedi virus"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is the genome organization and replication cycle of Simian immunodeficiency virus?",
+      "cited_pmid": "39861793",
+      "title": "Equine Infectious Anemia Virus Cellular Partners Along the Viral Cycle.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What antiviral drugs or treatments are effective against Simian immunodeficiency virus?",
+      "cited_pmid": "39902183",
+      "title": "SERINC5 counters retroviruses and non-retroviruses.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What is known about Equine infectious anemia virus pathogenesis and transmission?",
+      "cited_pmid": "40303092",
+      "title": "Equine Infectious Anaemia: The Active Surveillance of an Entire Equid Population Reduces the Occurrence of the Infection.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Equine infectious anemia virus",
+      "question": "What diagnostic assays or laboratory tests detect Equine infectious anemia virus?",
+      "cited_pmid": "40261479",
+      "title": "Serodiagnosis of equine infectious anemia by indirect ELISA based on a novel synthetic peptide derived from gp45 glycoprotein.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What diagnostic assays or laboratory tests detect Mouse mammary tumor virus?",
+      "cited_pmid": "38791660",
+      "title": "Development of a Bead-Based Multiplex Fluorescent Immunoassay to Detect Antibodies against Maedi-Visna Virus in Sheep.",
+      "actual_organisms": [
+        "Visna-maedi virus"
+      ]
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What are the clinical symptoms and disease presentation of Mouse mammary tumor virus?",
+      "cited_pmid": "37567196",
+      "title": "[Indurative mastitis in a herd of Dorper sheep caused by an infection with Maedi Visna virus].",
+      "actual_organisms": [
+        "Visna-maedi virus"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is known about Visna-maedi virus pathogenesis and transmission?",
+      "cited_pmid": "38965632",
+      "title": "Investigation, management and control of a maedi outbreak in Norway in 2019-2020.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_254355"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "39861793",
+      "title": "Equine Infectious Anemia Virus Cellular Partners Along the Viral Cycle.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11632",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "cited_pmid": "39665545",
+      "title": "Equine lentivirus Gag protein degrades mitochondrial antiviral signaling protein via the E3 ubiquitin ligase Smurf1.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11646",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11654",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11676",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2751881",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What antiviral drugs or treatments are effective against Visna-maedi virus?",
+      "cited_pmid": "39902183",
+      "title": "SERINC5 counters retroviruses and non-retroviruses.",
+      "actual_organisms": [
+        "Equine infectious anemia virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11786",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12721",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31931"
+      ]
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Visna-maedi virus?",
+      "cited_pmid": "40549908",
+      "title": "EIAV encodes an accessory protein that antagonizes the host restriction factor equine tetherin.",
+      "actual_organisms": [
+        "Equine infectious anemia virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -276556,6 +276705,66 @@
       "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
       "missed_pmid": "42119203",
       "title": "In silico characterisation of a novel SARS-CoV-2 envelope protein inhibitor and in vitro validation against murine coronavirus."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What is known about Simian immunodeficiency virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "42517631",
+      "title": "The rebound-initiating viral reservoir (RIVR) in SIV/SHIV infection is dominated by plasma virus sequences present at the time of ART initiation."
+    },
+    {
+      "organism": "Simian immunodeficiency virus",
+      "question": "What diagnostic assays or laboratory tests detect Simian immunodeficiency virus?",
+      "missed_pmid": "42413644",
+      "title": "Selective immune modulation in seminal plasma during simian immunodeficiency virus infection despite systemic inflammation."
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What is known about Mouse mammary tumor virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40741558",
+      "title": "Prevalence of Mouse Mammary Tumor Virus-Like Virus in Breast Milk and Associated Factors of Exposure Among Healthy Nursing Women in Morocco."
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What is known about Mouse mammary tumor virus pathogenesis and transmission?",
+      "missed_pmid": "40956086",
+      "title": "Apobec3 shows rapid evolution in house mouse subspecies and unusual hypermutation patterns of endogenous mouse mammary tumor viruses."
+    },
+    {
+      "organism": "Mouse mammary tumor virus",
+      "question": "What antiviral drugs or treatments are effective against Mouse mammary tumor virus?",
+      "missed_pmid": "40874377",
+      "title": "Decitabine suppresses tumor growth by activating mouse mammary tumor virus and interferon-\u03b2 pathways."
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is known about Visna-maedi virus pathogenesis and transmission?",
+      "missed_pmid": "37567196",
+      "title": "[Indurative mastitis in a herd of Dorper sheep caused by an infection with Maedi Visna virus]."
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What is the genome organization and replication cycle of Visna-maedi virus?",
+      "missed_pmid": "37793308",
+      "title": "In silico discovery of epitopes of gag and env proteins for the development of a multi-epitope vaccine candidate against Maedi Visna Virus using reverse vaccinology approach."
+    },
+    {
+      "organism": "Visna-maedi virus",
+      "question": "What antiviral drugs or treatments are effective against Visna-maedi virus?",
+      "missed_pmid": "38791660",
+      "title": "Development of a Bead-Based Multiplex Fluorescent Immunoassay to Detect Antibodies against Maedi-Visna Virus in Sheep."
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Caprine arthritis encephalitis virus?",
+      "missed_pmid": "37508067",
+      "title": "Isolation and Identification of Caprine Arthritis Encephalitis Virus from Animals in the Republic of Mordovia."
+    },
+    {
+      "organism": "Caprine arthritis encephalitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Caprine arthritis encephalitis virus?",
+      "missed_pmid": "36558875",
+      "title": "Loss of Caprine Arthritis Encephalitis Virus (CAEV) Herd Accreditation: Characteristics, Diagnostic Approach, and Specific Follow-Up Scenarios on Large Dairy Goat Farms."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
