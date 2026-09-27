@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T18:49:33.503137+00:00",
-  "runs": 344,
+  "updated": "2026-09-27T18:51:25.993969+00:00",
+  "runs": 345,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23638,
-  "n_false_negatives": 4504,
+  "n_false_positives": 23660,
+  "n_false_negatives": 4513,
   "new_this_run": {
-    "false_positives": 2,
-    "false_negatives": 1
+    "false_positives": 22,
+    "false_negatives": 9
   },
   "false_positives": [
     {
@@ -266716,6 +266716,250 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_1980517",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 30?",
+      "cited_pmid": "39150641",
+      "title": "Disseminated Echovirus 11 infection in a newborn in the Province of Bolzano, Italy.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the epidemiology and outbreak history of Echovirus 30?",
+      "cited_pmid": "39495348",
+      "title": "A meningoencephalitis outbreak associated with echovirus type 18 (E18) in south-western Hungary in mid-2023.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 30?",
+      "cited_pmid": "38828746",
+      "title": "Genetic variation and evolutionary characteristics of Echovirus 11: new variant within genotype D5 associated with neonatal death found in China.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "cited_pmid": "39292620",
+      "title": "SAR Analysis of Novel Coxsackie virus A9 Capsid Binders.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12067",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Coxsackievirus B5?",
+      "cited_pmid": "39339932",
+      "title": "Coxsackievirus B3 Activates Macrophages Independently of CAR-Mediated Viral Entry.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12072",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12390",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Coxsackievirus B5?",
+      "cited_pmid": "37833525",
+      "title": "Molecular evolutionary dynamics of enterovirus A71, coxsackievirus A16 and coxsackievirus A6 causing hand, foot and mouth disease in Thailand, 2000-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_86107"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "39150641",
+      "title": "Disseminated Echovirus 11 infection in a newborn in the Province of Bolzano, Italy.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "37485505",
+      "title": "Investigating the mechanism of Echovirus 30 cell invasion.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 pathogenesis and transmission?",
+      "cited_pmid": "36714132",
+      "title": "Case report: Clinical and virological characteristics of aseptic meningitis caused by a recombinant echovirus 18 in an immunocompetent adult.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47506"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What diagnostic assays or laboratory tests detect Echovirus 7?",
+      "cited_pmid": "39654326",
+      "title": "Performance Evaluation of Molecular Detection of Enteroviruses: Results of 18 Years of Quality Control for Molecular Diagnostics (QCMD) External Quality Assessment Program, 2005-2022.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758",
+        "http://purl.obolibrary.org/obo/NCBITaxon_42789"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genome organization and replication cycle of Echovirus 7?",
+      "cited_pmid": "38828746",
+      "title": "Genetic variation and evolutionary characteristics of Echovirus 11: new variant within genotype D5 associated with neonatal death found in China.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12073",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the epidemiology and outbreak history of Echovirus 7?",
+      "cited_pmid": "39066174",
+      "title": "Intensified Circulation of Echovirus 11 after the COVID-19 Pandemic in Poland: Detection of a Highly Pathogenic Virus Variant.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "39220203",
+      "title": "A new case of Echovirus 11 neonatal fulminant hepatitis involving male twins in a Northern Italy Tertiary University Hospital: Insight on a possible immunological clue.",
+      "actual_organisms": [
+        "Echovirus 11"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "36560629",
+      "title": "Switching of Receptor Binding Poses between Closely Related Enteroviruses.",
+      "actual_organisms": [
+        "Echovirus 11",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1922331",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606",
+        "http://purl.obolibrary.org/obo/NCBITaxon_96451"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 7?",
+      "cited_pmid": "39335111",
+      "title": "Receptors and Host Factors for Enterovirus Infection: Implications for Cancer Therapy.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_33758"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "35420443",
+      "title": "Pathological Characteristics of Echovirus 30 Infection in a Mouse Model.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "How does Echovirus 7 evade or modulate the host immune response?",
+      "cited_pmid": "36147849",
+      "title": "Transcriptome sequencing analysis of echovirus 30 infection reveals its potential pathogenesis.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "40078744",
+      "title": "Genetic characterizations and molecular epidemiology of human echovirus 30 isolated from Ningxia, China.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "37909741",
+      "title": "Molecular characterization of a novel clade echovirus 3 isolated from patients with hand-foot-and-mouth disease in southwest China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_47516"
+      ]
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Echovirus 11?",
+      "cited_pmid": "37485505",
+      "title": "Investigating the mechanism of Echovirus 30 cell invasion.",
+      "actual_organisms": [
+        "Echovirus 30",
+        "http://purl.obolibrary.org/obo/NCBITaxon_138949"
+      ]
     }
   ],
   "false_negatives": [
@@ -293742,6 +293986,60 @@
       "question": "What antiviral drugs or treatments are effective against Crimean-Congo hemorrhagic fever orthonairovirus?",
       "missed_pmid": "42347546",
       "title": "Crimean-Congo Hemorrhagic Fever Virus in Africa: Epidemiological Trends, Transmission Ecology, Hotspot Heterogeneity, and Preparedness Challenges-A Narrative Review."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is known about Echovirus 30 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "35420443",
+      "title": "Pathological Characteristics of Echovirus 30 Infection in a Mouse Model."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What is the genome organization and replication cycle of Echovirus 30?",
+      "missed_pmid": "37485505",
+      "title": "Investigating the mechanism of Echovirus 30 cell invasion."
+    },
+    {
+      "organism": "Echovirus 30",
+      "question": "What antiviral drugs or treatments are effective against Echovirus 30?",
+      "missed_pmid": "36714132",
+      "title": "Case report: Clinical and virological characteristics of aseptic meningitis caused by a recombinant echovirus 18 in an immunocompetent adult."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37244518",
+      "title": "Construction of coxsackievirus B5 viruses with luciferase reporters and their applications in vitro and in vivo."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What is known about Coxsackievirus B5 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "37076847",
+      "title": "Molecular characterization of coxsackievirus B5 from the sputum of pneumonia children patients of Kunming, Southwest China."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B5?",
+      "missed_pmid": "38149210",
+      "title": "Optimization of RT-PCR methods for enterovirus detection in groundwater."
+    },
+    {
+      "organism": "Coxsackievirus B5",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus B5?",
+      "missed_pmid": "37543144",
+      "title": "Long noncoding RNA 1392 regulates MDA5 by interaction with ELAVL1 to inhibit coxsackievirus B5 infection."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is known about Echovirus 11 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "39150641",
+      "title": "Disseminated Echovirus 11 infection in a newborn in the Province of Bolzano, Italy."
+    },
+    {
+      "organism": "Echovirus 11",
+      "question": "What is the epidemiology and outbreak history of Echovirus 11?",
+      "missed_pmid": "38458420",
+      "title": "Increased circulation of echovirus 11 in the general population and hospital patients as elicited by the non-polio enterovirus laboratory-based sentinel surveillance in northern Italy, 2023."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
