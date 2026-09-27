@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T06:54:01.374227+00:00",
-  "runs": 147,
+  "updated": "2026-09-27T06:56:05.472376+00:00",
+  "runs": 148,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 18724,
-  "n_false_negatives": 3487,
+  "n_false_positives": 18768,
+  "n_false_negatives": 3488,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 2
+    "false_positives": 44,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -211557,6 +211557,482 @@
       "actual_organisms": [
         "http://purl.obolibrary.org/obo/NCBITaxon_11963"
       ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is known about Bovine respiratory syncytial virus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "41766820",
+      "title": "Novel BPI3Vc-vectored surface displayed fusion and hemagglutinin-neuraminidase antigens elicit broadly neutralizing antibodies in cattle.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the genome organization and replication cycle of Bovine respiratory syncytial virus?",
+      "cited_pmid": "41637037",
+      "title": "Genome-wide CRISPR/Cas9 knockout screen identifies host factors essential for bovine parainfluenza virus type 3 replication.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11216"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What is the epidemiology and outbreak history of Bovine respiratory syncytial virus?",
+      "cited_pmid": "38539942",
+      "title": "Viral Diseases in Water Buffalo (Bubalus bubalis): New Insights and Perspectives.",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine respiratory syncytial virus?",
+      "cited_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Bovine respiratory syncytial virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Bovine respiratory syncytial virus?",
+      "cited_pmid": "42774097",
+      "title": "Transcriptional signatures of respiratory syncytial virus (RSV) infection using relaxed magnitude altitude score with hub-centric network analysis (RMAS-HCNA).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12814",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052763"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What antiviral drugs or treatments are effective against Canine coronavirus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine coronavirus?",
+      "cited_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine coronavirus?",
+      "cited_pmid": "32215955",
+      "title": "Phocine distemper virus uses phocine and other animal SLAMs as a receptor but not human SLAM.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Canine coronavirus?",
+      "cited_pmid": "42731278",
+      "title": "PD-L1 expression in tissues of cats with naturally occurring feline infectious peritonitis.",
+      "actual_organisms": [
+        "Feline coronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135"
+      ]
+    },
+    {
+      "organism": "Canine coronavirus",
+      "question": "How does Canine coronavirus evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Feline coronavirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Feline coronavirus?",
+      "cited_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What is the epidemiology and outbreak history of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42655675",
+      "title": "Is PPR Epidemiological Research Addressing Global Eradication Priorities? A Scoping Review (2015-2025).",
+      "actual_organisms": [
+        "unknown"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the clinical symptoms and disease presentation of Transmissible gastroenteritis virus?",
+      "cited_pmid": "28104449",
+      "title": "Acute neurologic disease in Porcine rubulavirus experimentally infected piglets.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Transmissible gastroenteritis virus?",
+      "cited_pmid": "42678995",
+      "title": "Rab10 coordinates SADS-CoV non-lytic egress through the ERGIC-TGN-lysosome trafficking pathway.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_693996"
+      ]
+    },
+    {
+      "organism": "Transmissible gastroenteritis virus",
+      "question": "How does Transmissible gastroenteritis virus evade or modulate the host immune response?",
+      "cited_pmid": "42767122",
+      "title": "Airway infection with murine \u03b3-herpesvirus 68 triggers gut-to-liver bacterial translocation via increased intestinal permeability.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10376",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42536048",
+      "title": "RNA G-Quadruplexes in the Porcine Deltacoronavirus Genome: Structural Regulation and Therapeutic Targeting for Antiviral Strategies.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the genome organization and replication cycle of Murine hepatitis virus?",
+      "cited_pmid": "42370845",
+      "title": "Coding-complete genome sequence of transmissible gastroenteritis virus isolated from a diarrheic piglet in South Korea.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What antiviral drugs or treatments are effective against Murine hepatitis virus?",
+      "cited_pmid": "42699082",
+      "title": "Scorpion venom peptides: Novel therapeutic approaches for inflammatory and hepatic disorders.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10407"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What is the epidemiology and outbreak history of Murine hepatitis virus?",
+      "cited_pmid": "24768705",
+      "title": "Long-term RNA persistence of porcine rubulavirus (PorPV-LPMV) after an outbreak of a natural infection: the detection of viral mRNA in sentinel pigs suggests viral transmission.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murine hepatitis virus?",
+      "cited_pmid": "39046448",
+      "title": "Glycan-shielded homodimer structure and dynamical features of the canine distemper virus hemagglutinin relevant for viral entry and efficient vaccination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murine hepatitis virus?",
+      "cited_pmid": "32976525",
+      "title": "Immunoinformatics approach for predicting epitopes in HN and F proteins of Porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Murine hepatitis virus?",
+      "cited_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Murine hepatitis virus",
+      "question": "How does Murine hepatitis virus evade or modulate the host immune response?",
+      "cited_pmid": "42677814",
+      "title": "Lactiplantibacillus plantarum CRL1506 ameliorates poly(I:C)-induced acute liver injury through cell wall-dependent modulation of inflammatory and antiviral immune responses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_1590"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What is the genome organization and replication cycle of Rinderpest virus?",
+      "cited_pmid": "38683604",
+      "title": "Genome Characterization of a Tailam Virus Discovered in Brown Rats in Yunnan Province, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1117633",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560155",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rinderpest virus?",
+      "cited_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rinderpest virus?",
+      "cited_pmid": "32976525",
+      "title": "Immunoinformatics approach for predicting epitopes in HN and F proteins of Porcine rubulavirus.",
+      "actual_organisms": [
+        "Porcine rubulavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10345"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Rinderpest virus?",
+      "cited_pmid": "32215955",
+      "title": "Phocine distemper virus uses phocine and other animal SLAMs as a receptor but not human SLAM.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "How does Rinderpest virus evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "How does Rinderpest virus evade or modulate the host immune response?",
+      "cited_pmid": "40493685",
+      "title": "Evolutionary and structural basis of SLAMF1 utilization in morbilliviruses-Implications for host range and cross-species transmission.",
+      "actual_organisms": [
+        "Cetacean morbillivirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Rinderpest virus",
+      "question": "How does Rinderpest virus evade or modulate the host immune response?",
+      "cited_pmid": "26546155",
+      "title": "La Piedad Michoac\u00e1n Mexico Virus V protein antagonizes type I interferon response by binding STAT2 protein and preventing STATs nuclear translocation.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560080",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2898537",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What antiviral drugs or treatments are effective against Phocine distemper virus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "42620651",
+      "title": "Sustained clinical remission and long-term safety of molnupiravir as first-line therapy for effusive feline infectious peritonitis: a 40-week retrospective study.",
+      "actual_organisms": [
+        "Feline coronavirus"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "32609600",
+      "title": "CANINE DISTEMPER VIRUS IN THE SEA OTTER (ENHYDRA LUTRIS) POPULATION IN WASHINGTON STATE, USA.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the clinical symptoms and disease presentation of Phocine distemper virus?",
+      "cited_pmid": "23770154",
+      "title": "Respiratory disease in growing pigs after Porcine rubulavirus experimental infection.",
+      "actual_organisms": [
+        "Porcine rubulavirus"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Phocine distemper virus?",
+      "cited_pmid": "39046448",
+      "title": "Glycan-shielded homodimer structure and dynamical features of the canine distemper virus hemagglutinin relevant for viral entry and efficient vaccination.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3052342",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Phocine distemper virus?",
+      "cited_pmid": "42420488",
+      "title": "Structure and receptor recognition of type-II feline infectious peritonitis virus spike glycoprotein.",
+      "actual_organisms": [
+        "Transmissible gastroenteritis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11135",
+        "http://purl.obolibrary.org/obo/NCBITaxon_694448"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Phocine distemper virus?",
+      "cited_pmid": "42714163",
+      "title": "Low-pH-induced conformational changes in the spike protein promote porcine deltacoronavirus infection by enhancing viral binding efficiency to the porcine aminopeptidase receptor.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1159901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28293"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "How does Phocine distemper virus evade or modulate the host immune response?",
+      "cited_pmid": "42633649",
+      "title": "Porcine deltacoronavirus nucleocapsid protein inhibits RIG-I signaling pathway by suppressing G3BP1-mediated stress granules formation.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus"
+      ]
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "How does Phocine distemper virus evade or modulate the host immune response?",
+      "cited_pmid": "42515629",
+      "title": "Susceptibility of Cell Lines from Different Species to Porcine Deltacoronavirus.",
+      "actual_organisms": [
+        "Porcine deltacoronavirus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1766554",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42797887",
+      "title": "Bovine Adenovirus 3-Based Viral Vectors for Veterinary Vaccine Development: Progress, Limitations, and Future Directions.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10510",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1763",
+        "http://purl.obolibrary.org/obo/NCBITaxon_28285",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Avian metapneumovirus?",
+      "cited_pmid": "38683604",
+      "title": "Genome Characterization of a Tailam Virus Discovered in Brown Rats in Yunnan Province, China.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_10116",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1117633",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560155",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560185",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What antiviral drugs or treatments are effective against Avian metapneumovirus?",
+      "cited_pmid": "42385734",
+      "title": "[New drugs for horses and production animals in 2025].",
+      "actual_organisms": [
+        "Bovine respiratory syncytial virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40051",
+        "http://purl.obolibrary.org/obo/NCBITaxon_40054",
+        "http://purl.obolibrary.org/obo/NCBITaxon_562"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Avian metapneumovirus?",
+      "cited_pmid": "42593857",
+      "title": "Broad permissiveness of mammalian nectin-4 orthologs for morbilliviruses: a notable exception in dolphin nectin-4.",
+      "actual_organisms": [
+        "Cetacean morbillivirus",
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11234",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2853286",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3139435",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Avian metapneumovirus?",
+      "cited_pmid": "32215955",
+      "title": "Phocine distemper virus uses phocine and other animal SLAMs as a receptor but not human SLAM.",
+      "actual_organisms": [
+        "Phocine distemper virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11229",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -232481,6 +232957,12 @@
       "question": "What are the cell tropism, host receptors, and entry mechanism of Simian foamy virus?",
       "missed_pmid": "41668976",
       "title": "Structure-guided engineering of prototype foamy virus Env identifies key residues for heparan sulfate binding and enhances transduction efficiency."
+    },
+    {
+      "organism": "Phocine distemper virus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Phocine distemper virus?",
+      "missed_pmid": "42593857",
+      "title": "Broad permissiveness of mammalian nectin-4 orthologs for morbilliviruses: a notable exception in dolphin nectin-4."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
