@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T21:25:42.924420+00:00",
-  "runs": 411,
+  "updated": "2026-09-27T21:29:00.316608+00:00",
+  "runs": 412,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 24499,
-  "n_false_negatives": 4838,
+  "n_false_positives": 24506,
+  "n_false_negatives": 4839,
   "new_this_run": {
-    "false_positives": 9,
-    "false_negatives": 0
+    "false_positives": 7,
+    "false_negatives": 1
   },
   "false_positives": [
     {
@@ -276126,6 +276126,88 @@
         "Coxsackievirus A16",
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
       ]
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus B3?",
+      "cited_pmid": "39907434",
+      "title": "Serology supportive of recent coxsackievirus B infection is correlated with multisystem inflammatory syndrome in children (MIS-C).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Rhinovirus B",
+      "question": "What antiviral drugs or treatments are effective against Rhinovirus B?",
+      "cited_pmid": "42382355",
+      "title": "Abietic acid targets RAN to restrict coxsackievirus B3 infection.",
+      "actual_organisms": [
+        "Coxsackievirus B3"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What diagnostic assays or laboratory tests detect Coxsackievirus A6?",
+      "cited_pmid": "39907434",
+      "title": "Serology supportive of recent coxsackievirus B infection is correlated with multisystem inflammatory syndrome in children (MIS-C).",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2697049",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2757792",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Coxsackievirus A6",
+      "question": "What antiviral drugs or treatments are effective against Coxsackievirus A6?",
+      "cited_pmid": "42381309",
+      "title": "ZN002: A Novel Natural Product Small Molecule Inhibitor Targets the Coxsackie-Adenovirus Receptor (CAR) to Control Coxsackie B3 Viral Proliferation.",
+      "actual_organisms": [
+        "Coxsackievirus B3",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10325",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10508",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12165"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is known about Echovirus 7 and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42262130",
+      "title": "Research progress on the association between viruses and cardiac diseases.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12066",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What are the clinical symptoms and disease presentation of Echovirus 7?",
+      "cited_pmid": "41767084",
+      "title": "Acute Fulminant Cerebral Edema Caused by Coxsackievirus A6 Infection: A Case Report.",
+      "actual_organisms": [
+        "Coxsackievirus A6",
+        "http://purl.obolibrary.org/obo/NCBITaxon_31704",
+        "http://purl.obolibrary.org/obo/NCBITaxon_39054"
+      ]
+    },
+    {
+      "organism": "Echovirus 7",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Echovirus 7?",
+      "cited_pmid": "24586469",
+      "title": "Population structure and evolution of Rhinoviruses.",
+      "actual_organisms": [
+        "Rhinovirus B",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12058",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12059",
+        "http://purl.obolibrary.org/obo/NCBITaxon_147711",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -305156,6 +305238,12 @@
       "question": "What antiviral drugs or treatments are effective against Enterovirus A71?",
       "missed_pmid": "40466758",
       "title": "Voxtalisib inhibits enterovirus 71 replication by downregulating host RAN and restoring IFN-STAT signaling."
+    },
+    {
+      "organism": "Coxsackievirus B3",
+      "question": "What is known about Coxsackievirus B3 and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40110808",
+      "title": "Mitigating murine acute and chronic Coxsackievirus B3-induced myocarditis with human right atrial appendage-derived stromal cells."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
