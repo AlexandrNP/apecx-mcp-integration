@@ -1,13 +1,13 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T23:46:56.410885+00:00",
-  "runs": 477,
+  "updated": "2026-09-27T23:48:59.799454+00:00",
+  "runs": 478,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 25102,
-  "n_false_negatives": 4969,
+  "n_false_positives": 25112,
+  "n_false_negatives": 4975,
   "new_this_run": {
-    "false_positives": 17,
-    "false_negatives": 12
+    "false_positives": 10,
+    "false_negatives": 6
   },
   "false_positives": [
     {
@@ -282882,6 +282882,121 @@
         "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
         "http://purl.obolibrary.org/obo/NCBITaxon_693996"
       ]
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What antiviral drugs or treatments are effective against Avian infectious bronchitis virus?",
+      "cited_pmid": "42263279",
+      "title": "Evaluating how infectious bursal disease virus influences influenza A virus transmission in chickens.",
+      "actual_organisms": [
+        "Infectious bursal disease virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11309",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11320"
+      ]
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "cited_pmid": "42655149",
+      "title": "Evaluation of Universal Biomolecular Medium for Molecular Detection of Respiratory Viruses: A Paired, Multi-Platform Comparison.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2093",
+        "http://purl.obolibrary.org/obo/NCBITaxon_520",
+        "http://purl.obolibrary.org/obo/NCBITaxon_724",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Avian leukosis virus",
+      "question": "What diagnostic assays or laboratory tests detect Avian leukosis virus?",
+      "cited_pmid": "42378840",
+      "title": "Development of a rapid recombinase polymerase amplification assay for avian polyomaviruses.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_102796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1702318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is known about Avian metapneumovirus and neutralizing antibodies or vaccines?",
+      "cited_pmid": "42661599",
+      "title": "Development and immunogenicity of a novel subunit vaccine candidate against avian metapneumovirus.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_2096"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "42378840",
+      "title": "Development of a rapid recombinase polymerase amplification assay for avian polyomaviruses.",
+      "actual_organisms": [
+        "Avian infectious bronchitis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_102796",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1702318",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2560319"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "cited_pmid": "41929279",
+      "title": "Development of a quadruplex RT-qPCR for the detection of avian leukosis virus, chicken infectious anemia virus, avian reovirus, and fowl adenovirus.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_12618",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1354736",
+        "http://purl.obolibrary.org/obo/NCBITaxon_226901",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2716322",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687",
+        "http://purl.obolibrary.org/obo/NCBITaxon_38170"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the genome organization and replication cycle of Avian metapneumovirus?",
+      "cited_pmid": "41915665",
+      "title": "Mapping the mutational landscape of an avian retrovirus envelope protein across its evolutionary trajectory.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11955",
+        "http://purl.obolibrary.org/obo/NCBITaxon_1401444",
+        "http://purl.obolibrary.org/obo/NCBITaxon_2559587"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Avian metapneumovirus?",
+      "cited_pmid": "42671868",
+      "title": "Reduced expression of human metapneumovirus matrix protein impacts virus assembly and ribonucleoprotein localization.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_162387",
+        "http://purl.obolibrary.org/obo/NCBITaxon_3048687"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What are the cell tropism, host receptors, and entry mechanism of Avian metapneumovirus?",
+      "cited_pmid": "42444011",
+      "title": "Residues Y142, I143, T146, Q206, S215, R228, G267, and M268 in the surface glycoprotein of FGV-like subgroup A avian leukosis virus are the key sites determining Tva receptor binding and infectivity.",
+      "actual_organisms": [
+        "Avian leukosis virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_167158",
+        "http://purl.obolibrary.org/obo/NCBITaxon_363745"
+      ]
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the genetic diversity, phylogeny, and evolution of Avian metapneumovirus?",
+      "cited_pmid": "42656370",
+      "title": "Genotype turnover and global evolutionary dynamics of G gene duplication variants in human metapneumovirus: insights from prospective surveillance in Nantong, China, 2024-2025.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_162145",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
     }
   ],
   "false_negatives": [
@@ -312698,6 +312813,42 @@
       "question": "What antiviral drugs or treatments are effective against Porcine deltacoronavirus?",
       "missed_pmid": "42054371",
       "title": "Computational design of an ultrapotent deltacoronavirus miniprotein inhibitor."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What diagnostic assays or laboratory tests detect Avian infectious bronchitis virus?",
+      "missed_pmid": "42375291",
+      "title": "Detection and molecular characterization of infectious bronchitis virus in pigeons and spotted doves from Bogor Regency, West Java Province, Indonesia in 2024."
+    },
+    {
+      "organism": "Avian infectious bronchitis virus",
+      "question": "What antiviral drugs or treatments are effective against Avian infectious bronchitis virus?",
+      "missed_pmid": "42501538",
+      "title": "The Vero cell-adapted infectious bronchitis virus strain rHV80 exhibits high immunogenicity and broad tissue tropism."
+    },
+    {
+      "organism": "Infectious bursal disease virus",
+      "question": "What diagnostic assays or laboratory tests detect Infectious bursal disease virus?",
+      "missed_pmid": "42198692",
+      "title": "Mapping Molecular Determinants of Antigenicity and Pathogenicity of Infectious Bursal Disease Virus (IBDV): A Scoping Review."
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What diagnostic assays or laboratory tests detect Avian metapneumovirus?",
+      "missed_pmid": "42497499",
+      "title": "Optimization of filters and processing conditions for aerosol detection of relevant avian respiratory viruses in poultry under experimental and field conditions."
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "What is the epidemiology and outbreak history of Avian metapneumovirus?",
+      "missed_pmid": "42599520",
+      "title": "Emerging and Re-Emerging Viral Infections in Poultry: Integrating Traditional and AI-Based Control Strategies."
+    },
+    {
+      "organism": "Avian metapneumovirus",
+      "question": "How does Avian metapneumovirus evade or modulate the host immune response?",
+      "missed_pmid": "42625918",
+      "title": "Genetic Characterization and Subtype Isolation of Circulating Metapneumovirus in Commercial Turkeys in the Central Region."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
