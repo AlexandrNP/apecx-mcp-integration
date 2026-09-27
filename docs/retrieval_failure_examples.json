@@ -1,10 +1,10 @@
 {
   "experiment": "pure_rag_failure_examples",
-  "updated": "2026-09-27T17:24:01.543697+00:00",
-  "runs": 309,
+  "updated": "2026-09-27T17:26:13.425781+00:00",
+  "runs": 310,
   "model": "mistral-nemo:latest",
-  "n_false_positives": 23218,
-  "n_false_negatives": 4238,
+  "n_false_positives": 23227,
+  "n_false_negatives": 4245,
   "new_this_run": {
     "false_positives": 9,
     "false_negatives": 7
@@ -262159,6 +262159,96 @@
       "actual_organisms": [
         "unknown"
       ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "cited_pmid": "38826256",
+      "title": "Development of RT-RPA-based point-of-care tests for epidemic arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What diagnostic assays or laboratory tests detect Chikungunya virus?",
+      "cited_pmid": "39627454",
+      "title": "RT-RPA as a dual tool for detection and phylogenetic analysis of epidemic arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "How does Chikungunya virus evade or modulate the host immune response?",
+      "cited_pmid": "40468739",
+      "title": "Lack of pathogenic involvement of CCL4 and its receptor CCR5 in arthritogenic alphavirus disease.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_10090",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "cited_pmid": "38797948",
+      "title": "Pathogenicity and virulence of O'nyong-nyong virus: A less studied Togaviridae with pandemic potential.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11018",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the genome organization and replication cycle of Ross River virus?",
+      "cited_pmid": "40249804",
+      "title": "A conserved opal termination codon optimizes a temperature-dependent trade-off between protein production and processing in alphaviruses.",
+      "actual_organisms": [
+        "http://purl.obolibrary.org/obo/NCBITaxon_11034"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is the epidemiology and outbreak history of Ross River virus?",
+      "cited_pmid": "42748151",
+      "title": "Unraveling the epidemiological and dispersal dynamics of the 2024-2025 chikungunya virus epidemic on R\u00e9union Island.",
+      "actual_organisms": [
+        "Chikungunya virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "How does Ross River virus evade or modulate the host immune response?",
+      "cited_pmid": "42447179",
+      "title": "Rasputin/G3BP mediates subversion of antiviral immunity by o'nyong-nyong virus in Anopheles coluzzii.",
+      "actual_organisms": [
+        "O'nyong-nyong virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_11019"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "38826256",
+      "title": "Development of RT-RPA-based point-of-care tests for epidemic arthritogenic alphaviruses.",
+      "actual_organisms": [
+        "Mayaro virus",
+        "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+      ]
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "cited_pmid": "42734797",
+      "title": "Plaque Reduction Neutralization Test Against Chikungunya Virus Using Liver Homogenate.",
+      "actual_organisms": [
+        "Chikungunya virus"
+      ]
     }
   ],
   "false_negatives": [
@@ -287589,6 +287679,48 @@
       "question": "What are the clinical symptoms and disease presentation of Heartland virus?",
       "missed_pmid": "38096954",
       "title": "Pathological and virological findings of type I interferon receptor knockout mice upon experimental infection with Heartland virus."
+    },
+    {
+      "organism": "Chikungunya virus",
+      "question": "What are the clinical symptoms and disease presentation of Chikungunya virus?",
+      "missed_pmid": "42086041",
+      "title": "Evaluation of Cross-Protective Responses against Mayaro Virus among Chikungunya Virus-Infected Patients from Paraguay."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "40056951",
+      "title": "Complete inactivation of orthoflavi- and alphaviruses by acetone for safe titering by ELISA."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What is known about Ross River virus pathogenesis and transmission?",
+      "missed_pmid": "40306107",
+      "title": "Ross River virus genomes from Australia and the Pacific display coincidental and antagonistic codon usage patterns with common vertebrate hosts and a principal vector."
+    },
+    {
+      "organism": "Ross River virus",
+      "question": "What are the clinical symptoms and disease presentation of Ross River virus?",
+      "missed_pmid": "38323434",
+      "title": "The impact of arthritogenic viruses in oral tissues."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus and neutralizing antibodies or vaccines?",
+      "missed_pmid": "38797948",
+      "title": "Pathogenicity and virulence of O'nyong-nyong virus: A less studied Togaviridae with pandemic potential."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What is known about O'nyong-nyong virus pathogenesis and transmission?",
+      "missed_pmid": "40096126",
+      "title": "Development of a virulent O'nyong'nyong challenge model to determine heterologous protection mediated by a hydrogen peroxide-inactivated chikungunya virus vaccine."
+    },
+    {
+      "organism": "O'nyong-nyong virus",
+      "question": "What diagnostic assays or laboratory tests detect O'nyong-nyong virus?",
+      "missed_pmid": "40014625",
+      "title": "Low capacity for molecular detection of Alphaviruses other than Chikungunya virus in 23 European laboratories, March 2022."
     }
   ],
   "note": "Accumulating catalog: a deduped union across benchmark runs, keyed on (organism, pmid). A false positive is an off-organism paper the unfiltered (pure RAG) reader cited; a false negative is an on-organism paper it missed but the organism-filtered reader cited. Every entry is a real citation cross-referenced against the stamped corpus, not synthesized."
